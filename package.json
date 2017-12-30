@@ -2,7 +2,8 @@
   "name": "Nodal",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --settings.json",
+    "deploy" ""
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
