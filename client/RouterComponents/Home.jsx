@@ -1,5 +1,5 @@
 import React from 'react';
-import Nodal from '../Nodal';
+import Nodal from '../UIComponents/Nodal';
 
 class Home extends React.Component {
   constructor(props) {
