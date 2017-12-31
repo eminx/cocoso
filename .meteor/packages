@@ -18,5 +18,10 @@ shell-server@0.3.0            # Server-side component of the `meteor shell` comm
 
 autopublish@1.0.7             # Publish all data to the clients (for prototyping)
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
-static-html
 react-meteor-data
+gadicc:blaze-react-component
+accounts-password
+useraccounts:ratchet
+static-html
+accounts-base
+accounts-ui
