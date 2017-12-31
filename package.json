@@ -2,11 +2,13 @@
   "name": "Nodal",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "deploy" ""
+    "start": "meteor run"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "meteor-node-stubs": "^0.3.2"
+    "meteor-node-stubs": "^0.3.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-meteor-data": "^0.2.11"
   }
 }
