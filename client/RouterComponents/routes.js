@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
+import 'antd/dist/antd.min.css';
 
 // route components
 import HomeContainer from './HomeContainer';
