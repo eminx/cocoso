@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 
-class AddContentForm extends React.Component {
+class CreateGatheringForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -14,23 +14,33 @@ class AddContentForm extends React.Component {
       if (err) {
         return;
       }
-
+      console.log(fieldsValue);
       // Should format date value before submit.
-      const rangeValue = fieldsValue['range-picker'];
-      const rangeTimeValue = fieldsValue['range-time-picker'];
-      const values = {
-        ...fieldsValue,
-        'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-        'date-time-picker': fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss'),
-        'month-picker': fieldsValue['month-picker'].format('YYYY-MM'),
-        'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
-        'range-time-picker': [
-          rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
-          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
-        ],
-        'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
-      };
-      console.log('Received values of form: ', values);
+      // const rangeValue = fieldsValue['range-picker'];
+      // const rangeTimeValue = fieldsValue['range-time-picker'];
+      // const values = {
+      //   ...fieldsValue,
+      //   'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
+      //   'date-time-picker': fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss'),
+      //   'month-picker': fieldsValue['month-picker'].format('YYYY-MM'),
+      //   'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
+      //   // 'range-time-picker': [
+      //     // rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
+      //     // rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
+      //   ],
+      //   'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
+      // };
+      // console.log('Received values of form: ', values);
+      if (!err) {
+        const formValues = this.props.form.getFieldsValue();
+        Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('success');
+          }
+        });
+      }
     });
   }
 
@@ -53,18 +63,15 @@ class AddContentForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
-      wrapperCol: { span: 14 },
+      wrapperCol: { span: 10 },
     };
     const config = {
       rules: [{ type: 'object', required: true, message: 'Please select time!' }],
     };
-    const rangeConfig = {
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
-    };
     return (
       <Form onSubmit={this.handleSubmit}>
 
-        <FormItem {...formItemLayout} label="Name">
+        <FormItem {...formItemLayout} label="Title">
           {getFieldDecorator('title', {
             rules: [{
               required: true,
@@ -76,28 +83,26 @@ class AddContentForm extends React.Component {
         </FormItem>
 
         <FormItem {...formItemLayout} label="Short description">
-          {getFieldDecorator('short-description', {
+          {getFieldDecorator('shortDescription', {
             rules: [{
-              required: true,
-              message: 'Enter the Title',
+              required: true, message: 'Please enter a brief description',
             }],
           })(
             <Input placeholder="Enter a short description" />
           )}
         </FormItem>
 
-        <FormItem {...formItemLayout} label="Long description">
-          {getFieldDecorator('short-description', {
+        <FormItem {...formItemLayout} label="Detailed description">
+          {getFieldDecorator('longDescription', {
             rules: [{
-              required: true,
-              message: 'Enter the Title',
+              required: true, message: 'Please enter a detailed description',
             }],
           })(
-            <TextArea placeholder="Enter a detailed description of your thing" autosize />
+            <TextArea placeholder="Enter a detailed description of your Stream" autosize />
           )}
         </FormItem>
 
-        <FormItem
+       {/* <FormItem
           {...formItemLayout}
           label="Select the Day"
         >
@@ -114,7 +119,7 @@ class AddContentForm extends React.Component {
             <TimePicker />
           )}
         </FormItem>
-
+*/}
         <FormItem
           {...formItemLayout}
           label="Select Room"
@@ -137,27 +142,27 @@ class AddContentForm extends React.Component {
 
         <FormItem
           {...formItemLayout}
-          label="Capacity (max 60)"
+          label="Capacity"
         >
           {getFieldDecorator('capacity', { initialValue: 15 })(
-            <InputNumber min={1} max={60} />
+            <InputNumber min={1} max={300} />
           )}
           <span className="ant-form-text">people (incl. children)</span>
         </FormItem>
 
         <FormItem
           {...formItemLayout}
-          label="Have to RSVP"
+          label="Should RSVP?"
         >
-          {getFieldDecorator('rsvp', { valuePropName: 'checked' })(
+          {getFieldDecorator('isRSVPrequired', { valuePropName: 'checked' })(
             <Switch />
           )}
         </FormItem>
 
         <FormItem
           {...formItemLayout}
-          label="Select image"
-          extra="choose an image from your device"
+          label="Select an image"
+          extra="Pick an image from your device"
         >
           {getFieldDecorator('upload-image', {
             valuePropName: 'fileList',
@@ -175,7 +180,7 @@ class AddContentForm extends React.Component {
           {...formItemLayout}
           label="Phone Number"
         >
-          {getFieldDecorator('phone-number', {
+          {getFieldDecorator('phoneNumber', {
             rules: [{ required: true, message: 'Phone number to contact' }],
           })(
             <Input />
@@ -188,12 +193,12 @@ class AddContentForm extends React.Component {
             sm: { span: 16, offset: 8 },
           }}
         >
-          <Button type="primary" htmlType="submit">Post the Gathering</Button>
+          <Button type="primary" htmlType="submit">Post the Stream</Button>
         </FormItem>
       </Form>
     );
   }
 }
 
-const WrappedAddContentForm = Form.create()(AddContentForm);
+const WrappedAddContentForm = Form.create()(CreateGatheringForm);
 export default WrappedAddContentForm;

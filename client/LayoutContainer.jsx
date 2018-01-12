@@ -17,7 +17,7 @@ const LayoutContainer = ({children}) => {
           style={{ lineHeight: '64px', float: 'right' }}
         >
           <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-          <Menu.Item key="2"><Link to="/new">Create</Link></Menu.Item>
+          <Menu.Item key="2"><Link to="/create-a-gathering">Create</Link></Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: '0 50px', marginTop: 64 }}>
