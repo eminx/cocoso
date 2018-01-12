@@ -193,7 +193,7 @@ class CreateGatheringForm extends React.Component {
             sm: { span: 16, offset: 8 },
           }}
         >
-          <Button type="primary" htmlType="submit">Post the Stream</Button>
+          <Button type="primary" htmlType="submit">Save and Continue</Button>
         </FormItem>
       </Form>
     );

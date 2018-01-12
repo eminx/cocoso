@@ -11,7 +11,7 @@ Meteor.methods({
 		const currentUserId = Meteor.userId();
 		if (currentUserId === userId) {
 			try {
-				Gatherings.insert({
+				const add = Gatherings.insert({
 					createdBy: userId,
 					title: formValues.title,
 					shortDescription: formValues.shortDescription,
@@ -19,8 +19,10 @@ Meteor.methods({
 					room: formValues.room,
 					capacity: formValues.capacity,
 					phoneNumber: formValues.phoneNumber,
-					isRSVPrequired: formValues.isRSVPrequired
-				})
+					isRSVPrequired: formValues.isRSVPrequired,
+					isSentForReview: false,
+					isPublished: false
+				});
 			} catch(e) {
 				throw new Meteor.Error('phishy-spam', "Couldn't add to Collection");
 			}

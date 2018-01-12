@@ -1,6 +1,8 @@
 import React from 'react';
 import { List, Avatar, Icon, Card } from 'antd';
-import { List as ListSUI } from 'semantic-ui-react';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 const listData = [];
 for (let i = 0; i < 5; i++) {
