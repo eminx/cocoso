@@ -11,3 +11,7 @@
 .ant-layout-header {
 	background-color: #fff;
 }
+
+.rbc-calendar {
+  min-height: 600px;
+}

@@ -1,0 +1,25 @@
+Nodal TODO:
+
+- Implement form validation,
+X- Implement creating gathering in the BE
+X- Remove insecure package and make it secure
+- Add the Calendar on the homepage and get the created event data
+- Add end time and event to an event optionally 
+- Quick update
+- On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
+	- Click create button
+	- Fill the form and submit
+	- get a summary of details entered
+	- You confirm (you get an email)
+	- Then admin also gets an email to overview the event
+	- Event should only be visible to admins and the creator (isVerified: false)
+	- Ability to chat between admins and creator
+	- Hanna talks about details with an admin.
+	- Then admin confirms, and event goes public 
+	- Members who have it on, receive Notifications
+	- People can optionally chat with Hanna, or with each other, on a feed that appears on the event-page
+	- If Hanna is denied for the event, admin has to enter a short text as a reason that appears by the event.
+
+later	- Chat function to be able to chat with each other; public/private/categories/channels/personal
+
+- Another form to create a seed for other people to co-create a session. This is a non-event, it's a concept for people to communicate to each other in order to co-create gatherings in the future. This will also allow chatting scoped for this purpose.  

@@ -2,6 +2,7 @@ import React from 'react';
 import { List, Avatar, Icon, Card } from 'antd';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import CalendarView from './CalendarView';
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 const listData = [];
@@ -34,6 +35,7 @@ class Nodal extends React.Component {
   render(){
 	  return (
 	  	<div>
+	  		<CalendarView />
        	<List
 			    itemLayout="vertical"
 			    size="large"
