@@ -1,9 +1,6 @@
 import React from 'react';
 import { List, Avatar, Icon, Card } from 'antd';
-import BigCalendar from 'react-big-calendar';
-import moment from 'moment';
 import CalendarView from './CalendarView';
-BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 const listData = [];
 for (let i = 0; i < 5; i++) {

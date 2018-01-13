@@ -5,6 +5,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
+import nodenParts from '../constants/parts';
 
 class CreateGatheringForm extends React.Component {
   handleSubmit = (e) => {
@@ -14,7 +15,6 @@ class CreateGatheringForm extends React.Component {
       if (err) {
         return;
       }
-      console.log(fieldsValue);
       // Should format date value before submit.
       // const rangeValue = fieldsValue['range-picker'];
       // const rangeTimeValue = fieldsValue['range-time-picker'];
@@ -32,23 +32,25 @@ class CreateGatheringForm extends React.Component {
       // };
       // console.log('Received values of form: ', values);
       if (!err) {
-        const formValues = this.props.form.getFieldsValue();
-        Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('success');
-          }
-        });
+        this.overviewInputs();
       }
     });
   }
 
-  handleSelectChange = (value) => {
-    console.log(value);
-    // this.props.form.setFieldsValue({
-    //   note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-    // });
+  overviewInputs() {
+    this.createGathering();
+  }
+
+  createGathering() {
+    const formValues = this.props.form.getFieldsValue();
+    Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('success');
+      }
+    });
+    this.props.form.resetFields();
   }
 
   normFile = (e) => {
@@ -92,7 +94,7 @@ class CreateGatheringForm extends React.Component {
           )}
         </FormItem>
 
-        <FormItem {...formItemLayout} label="Detailed description">
+        <FormItem {...formItemLayout} label="Long description">
           {getFieldDecorator('longDescription', {
             rules: [{
               required: true, message: 'Please enter a detailed description',
@@ -125,17 +127,14 @@ class CreateGatheringForm extends React.Component {
           label="Select Room"
         >
           {getFieldDecorator('room', {
-            rules: [{ required: true, message: 'Please select the Space in Noden' }],
+            rules: [{ required: true, message: 'Please select a part of Noden in which this gathering will be held' }],
           })(
             <Select
-              placeholder="Select space..."
-              onChange={this.handleSelectChange}
+              placeholder="Select part of Noden..."
             >
-              <Option value="big-room">Big Room</Option>
-              <Option value="small-room">Small Room</Option>
-              <Option value="sound-studio">Sound Studio</Option>
-              <Option value="smoking-room">Smoking Room</Option>
-              <Option value="kitchen">Kitchen</Option>
+              {nodenParts.map(part => (
+                <Option key={part.name} value={part.name}>{part.name}</Option>
+              ))}
             </Select>
           )}
         </FormItem>
@@ -154,7 +153,10 @@ class CreateGatheringForm extends React.Component {
           {...formItemLayout}
           label="Should RSVP?"
         >
-          {getFieldDecorator('isRSVPrequired', { valuePropName: 'checked' })(
+          {getFieldDecorator('isRSVPrequired', {
+            valuePropName: 'checked',
+            initialValue: false
+          })(
             <Switch />
           )}
         </FormItem>

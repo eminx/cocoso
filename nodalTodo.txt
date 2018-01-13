@@ -3,7 +3,8 @@ Nodal TODO:
 - Implement form validation,
 X- Implement creating gathering in the BE
 X- Remove insecure package and make it secure
-- Add the Calendar on the homepage and get the created event data
+X- Add the Calendar on the homepage 
+- Get the created event data
 - Add end time and event to an event optionally 
 - Quick update
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
@@ -22,4 +23,4 @@ X- Remove insecure package and make it secure
 
 later	- Chat function to be able to chat with each other; public/private/categories/channels/personal
 
-- Another form to create a seed for other people to co-create a session. This is a non-event, it's a concept for people to communicate to each other in order to co-create gatherings in the future. This will also allow chatting scoped for this purpose.  
+- One can also create a stream. This is a non-event, it's a concept for people to communicate to each other in order to co-create gatherings in the future. This is more of an abstraction and a theme for future gatherings to happen. This will also allow chatting scoped for this purpose. It's like groups. But it's not based on "people" who form the group, it's based on a "stream"; a theme which people see as a purpose to gather for...
