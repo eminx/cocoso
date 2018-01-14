@@ -4,9 +4,16 @@ Nodal TODO:
 X- Implement creating gathering in the BE
 X- Remove insecure package and make it secure
 X- Add the Calendar on the homepage 
-- Get the created event data
-- Add end time and event to an event optionally 
+X- Get the created event data
+- Add duration or ending time to display on the calendar
+- Add the above info to the calendar accordingly
+- Create routes for dedicated pages for gatherings
+- Add copy link to send out
+- Add image uploading
+- 
 - Quick update
+
+
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
 	- Click create button
 	- Fill the form and submit

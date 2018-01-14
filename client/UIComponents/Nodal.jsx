@@ -27,7 +27,6 @@ const IconText = ({ type, text }) => (
   </span>
 );
 
-
 class Nodal extends React.Component { 
 	state = {
 		mode: 'list'
@@ -52,7 +51,7 @@ class Nodal extends React.Component {
         </Radio.Group>
 
 	  		{	mode === 'calendar' ?
-	  			<CalendarView /> :
+	  			<CalendarView gatherings={gatherings} /> :
 
 	       	<List
 				    itemLayout="vertical"

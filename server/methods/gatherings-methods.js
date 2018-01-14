@@ -1,18 +1,22 @@
 Meteor.methods({
 	createGathering(userId, formValues) {
+		console.log('received:', userId, formValues);
 		check(formValues.title, String);
 		check(formValues.shortDescription, String);
 		check(formValues.longDescription, String);
 		check(formValues.room, String);
 		check(formValues.capacity, Number);
 		check(formValues.phoneNumber, String);
+		check(formValues.datePicker, String);
+		check(formValues.timePicker, String);
 		check(formValues.isRSVPrequired, Boolean);
 		
 		const currentUserId = Meteor.userId();
 		if (currentUserId === userId) {
 			try {
 				const add = Gatherings.insert({
-					createdBy: userId,
+					authorId: userId,
+					authorName: 'someonE',
 					title: formValues.title,
 					shortDescription: formValues.shortDescription,
 					longDescription: formValues.longDescription,
@@ -20,6 +24,9 @@ Meteor.methods({
 					capacity: formValues.capacity,
 					phoneNumber: formValues.phoneNumber,
 					isRSVPrequired: formValues.isRSVPrequired,
+					startDate: formValues.datePicker,
+					endDate: formValues.datePicker,
+					startTime: formValues.timePicker,
 					isSentForReview: false,
 					isPublished: false
 				});

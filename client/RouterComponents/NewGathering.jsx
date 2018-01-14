@@ -15,6 +15,7 @@ class NewGathering extends React.Component {
 
 	createGathering = () => {
     const formValues = this.state.values;
+    console.log(formValues);
     Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
       if (error) {
         console.log(error);
