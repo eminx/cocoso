@@ -5,9 +5,11 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
+import moment from 'moment';
 import nodenParts from '../constants/parts';
 
 class CreateGatheringForm extends React.Component {
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,41 +18,16 @@ class CreateGatheringForm extends React.Component {
         return;
       }
       // Should format date value before submit.
-      // const rangeValue = fieldsValue['range-picker'];
-      // const rangeTimeValue = fieldsValue['range-time-picker'];
-      // const values = {
-      //   ...fieldsValue,
-      //   'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-      //   'date-time-picker': fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss'),
-      //   'month-picker': fieldsValue['month-picker'].format('YYYY-MM'),
-      //   'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
-      //   // 'range-time-picker': [
-      //     // rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
-      //     // rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
-      //   ],
-      //   'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
-      // };
-      // console.log('Received values of form: ', values);
+      const values = {
+        ...fieldsValue,
+        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
+        'timePicker': fieldsValue['timePicker'].format('HH:mm'),
+      };
+      console.log('Received values of form: ', values);
       if (!err) {
-        this.overviewInputs();
+        this.props.registerGatheringLocally(values);
       }
     });
-  }
-
-  overviewInputs() {
-    this.createGathering();
-  }
-
-  createGathering() {
-    const formValues = this.props.form.getFieldsValue();
-    Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('success');
-      }
-    });
-    this.props.form.resetFields();
   }
 
   normFile = (e) => {
@@ -67,137 +44,143 @@ class CreateGatheringForm extends React.Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 10 },
     };
-    const config = {
+    const configDate = {
+      rules: [{ type: 'object', required: true, message: 'Please select the day!'}],
+    };
+    const configTime = {
       rules: [{ type: 'object', required: true, message: 'Please select time!' }],
     };
+
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <div>
+        <Form onSubmit={this.handleSubmit}>
 
-        <FormItem {...formItemLayout} label="Title">
-          {getFieldDecorator('title', {
-            rules: [{
-              required: true,
-              message: 'Enter the Title',
-            }],
-          })(
-            <Input placeholder="Amazing Workshop..." />
-          )}
-        </FormItem>
+          <FormItem {...formItemLayout} label="Title">
+            {getFieldDecorator('title', {
+              rules: [{
+                required: true,
+                message: 'Enter the Title',
+              }],
+            })(
+              <Input placeholder="Amazing Workshop..." />
+            )}
+          </FormItem>
 
-        <FormItem {...formItemLayout} label="Short description">
-          {getFieldDecorator('shortDescription', {
-            rules: [{
-              required: true, message: 'Please enter a brief description',
-            }],
-          })(
-            <Input placeholder="Enter a short description" />
-          )}
-        </FormItem>
+          <FormItem {...formItemLayout} label="Short description">
+            {getFieldDecorator('shortDescription', {
+              rules: [{
+                required: true, message: 'Please enter a brief description',
+              }],
+            })(
+              <Input placeholder="Enter a short description" />
+            )}
+          </FormItem>
 
-        <FormItem {...formItemLayout} label="Long description">
-          {getFieldDecorator('longDescription', {
-            rules: [{
-              required: true, message: 'Please enter a detailed description',
-            }],
-          })(
-            <TextArea placeholder="Enter a detailed description of your Stream" autosize />
-          )}
-        </FormItem>
+          <FormItem {...formItemLayout} label="Long description">
+            {getFieldDecorator('longDescription', {
+              rules: [{
+                required: true, message: 'Please enter a detailed description',
+              }],
+            })(
+              <TextArea placeholder="Enter a detailed description of your Stream" autosize />
+            )}
+          </FormItem>
 
-       {/* <FormItem
-          {...formItemLayout}
-          label="Select the Day"
-        >
-          {getFieldDecorator('date-picker', config)(
-            <DatePicker />
-          )}
-        </FormItem>
-        
-        <FormItem
-          {...formItemLayout}
-          label="Select the Time"
-        >
-          {getFieldDecorator('time-picker', config)(
-            <TimePicker />
-          )}
-        </FormItem>
-*/}
-        <FormItem
-          {...formItemLayout}
-          label="Select Room"
-        >
-          {getFieldDecorator('room', {
-            rules: [{ required: true, message: 'Please select a part of Noden in which this gathering will be held' }],
-          })(
-            <Select
-              placeholder="Select part of Noden..."
-            >
-              {nodenParts.map(part => (
-                <Option key={part.name} value={part.name}>{part.name}</Option>
-              ))}
-            </Select>
-          )}
-        </FormItem>
+         <FormItem
+            {...formItemLayout}
+            label="Select the Day"
+          >
+            {getFieldDecorator('datePicker', configDate)(
+              <DatePicker />
+            )}
+          </FormItem>
+          
+          <FormItem
+            {...formItemLayout}
+            label="Select the Time"
+          >
+            {getFieldDecorator('timePicker', configTime)(
+              <TimePicker format='HH:mm' />
+            )}
+          </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="Capacity"
-        >
-          {getFieldDecorator('capacity', { initialValue: 15 })(
-            <InputNumber min={1} max={300} />
-          )}
-          <span className="ant-form-text">people (incl. children)</span>
-        </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="Select Room"
+          >
+            {getFieldDecorator('room', {
+              rules: [{ required: true, message: 'Please select a part of Noden in which this gathering will be held' }],
+            })(
+              <Select
+                placeholder="Select part of Noden..."
+              >
+                {nodenParts.map(part => (
+                  <Option key={part.name} value={part.name}>{part.name}</Option>
+                ))}
+              </Select>
+            )}
+          </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="Should RSVP?"
-        >
-          {getFieldDecorator('isRSVPrequired', {
-            valuePropName: 'checked',
-            initialValue: false
-          })(
-            <Switch />
-          )}
-        </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="Capacity"
+          >
+            {getFieldDecorator('capacity', { initialValue: 15 })(
+              <InputNumber min={1} max={300} />
+            )}
+            <span className="ant-form-text">people (incl. children)</span>
+          </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="Select an image"
-          extra="Pick an image from your device"
-        >
-          {getFieldDecorator('upload-image', {
-            valuePropName: 'fileList',
-            getValueFromEvent: this.normFile,
-          })(
-            <Upload name="logo" action="/upload.do" listType="picture">
-              <Button>
-                <Icon type="upload" /> Click to upload
-              </Button>
-            </Upload>
-          )}
-        </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="Should RSVP?"
+          >
+            {getFieldDecorator('isRSVPrequired', {
+              valuePropName: 'checked',
+              initialValue: false
+            })(
+              <Switch />
+            )}
+          </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="Phone Number"
-        >
-          {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'Phone number to contact' }],
-          })(
-            <Input />
-          )}
-        </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="Select an image"
+            extra="Pick an image from your device"
+          >
+            {getFieldDecorator('upload-image', {
+              valuePropName: 'fileList',
+              getValueFromEvent: this.normFile,
+            })(
+              <Upload name="logo" action="/upload.do" listType="picture">
+                <Button>
+                  <Icon type="upload" /> Click to upload
+                </Button>
+              </Upload>
+            )}
+          </FormItem>
 
-        <FormItem
-          wrapperCol={{
-            xs: { span: 24, offset: 0 },
-            sm: { span: 16, offset: 8 },
-          }}
-        >
-          <Button type="primary" htmlType="submit">Save and Continue</Button>
-        </FormItem>
-      </Form>
+          <FormItem
+            {...formItemLayout}
+            label="Phone Number"
+          >
+            {getFieldDecorator('phoneNumber', {
+              rules: [{ required: true, message: 'Phone number to contact' }],
+            })(
+              <Input />
+            )}
+          </FormItem>
+
+          <FormItem
+            wrapperCol={{
+              xs: { span: 24, offset: 0 },
+              sm: { span: 16, offset: 8 },
+            }}
+          >
+            <Button type="primary" htmlType="submit">Save and Continue</Button>
+          </FormItem>
+        </Form>
+      </div>
     );
   }
 }

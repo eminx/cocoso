@@ -29,3 +29,12 @@ Meteor.methods({
 		}
 	}
 });
+
+Meteor.publish('gatherings', function () {
+  return Gatherings.find({}, {
+    fields: {
+    	isSentForReview: 0,
+    	phoneNumber: 0
+    }
+  });
+});

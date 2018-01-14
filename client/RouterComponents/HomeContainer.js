@@ -7,10 +7,12 @@ export default HomeContainer = withTracker((props) => {
   
   // const handle = Meteor.subscribe('myDataSub', props.subID);
   
-  const calendarList = Meteor.subscribe('calendarView', props.id);
-  const isLoading = !calendarList.ready();
+  const gatherings = Meteor.subscribe('gatherings');
+  const isLoading = !gatherings.ready();
+  const gatheringsList = Gatherings ? Gatherings.find().fetch() : null;
   return {
     isLoading,
-    calendarList
+		gatherings,
+		gatheringsList
   };
 })(Home);

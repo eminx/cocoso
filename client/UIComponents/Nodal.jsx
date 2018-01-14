@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Avatar, Icon, Card } from 'antd';
+import { List, Avatar, Icon, Card, Radio } from 'antd';
 import CalendarView from './CalendarView';
 
 const listData = [];
@@ -29,32 +29,54 @@ const IconText = ({ type, text }) => (
 
 
 class Nodal extends React.Component { 
+	state = {
+		mode: 'list'
+	}
+
+	handleModeChange = (e) => {
+    const mode = e.target.value;
+    this.setState({ mode });
+  }
+
   render(){
+
+  	const { gatherings } = this.props;
+  	const { mode } = this.state;
+
 	  return (
 	  	<div>
-	  		<CalendarView />
-       	<List
-			    itemLayout="vertical"
-			    size="large"
-			    pagination={pagination}
-			    dataSource={listData}
-			    renderItem={item => (
-			    	<Card>
-				      <List.Item
-				        key={item.title}
-				        actions={[<IconText type="star-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
-				        extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
-				      >
-				        <List.Item.Meta
-				          avatar={<Avatar src={item.avatar} />}
-				          title={<a href={item.href}>{item.title}</a>}
-				          description={item.description}
-				        />
-				        {item.content}
-				      </List.Item>
-			      </Card>
-			    )}
-			  />
+
+	  		<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
+          <Radio.Button value="calendar">Calendar</Radio.Button>
+          <Radio.Button value="list">List</Radio.Button>
+        </Radio.Group>
+
+	  		{	mode === 'calendar' ?
+	  			<CalendarView /> :
+
+	       	<List
+				    itemLayout="vertical"
+				    size="large"
+				    pagination={pagination}
+				    dataSource={gatherings}
+				    renderItem={item => (
+				    	<Card>
+					      <List.Item
+					        key={item.title}
+					        actions={[<IconText type="star-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
+					        extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
+					      >
+					        <List.Item.Meta
+					          avatar={<Avatar src={listData[0].avatar} />}
+					          title={<a href={item.title}>{item.title}</a>}
+					          description={item.shortDescription}
+					        />
+					        {item.longDescription}
+					      </List.Item>
+				      </Card>
+				    )}
+				  />
+				}
 	    </div>
     )
 	}

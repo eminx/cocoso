@@ -6,7 +6,7 @@ class Home extends React.Component {
  
   render() {
     return (
-      <Nodal subID={this.state.subID} />
+      <Nodal gatherings={this.props.gatheringsList} subID={this.state.subID} />
     )
   }
 }
