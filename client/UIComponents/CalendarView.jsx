@@ -10,10 +10,9 @@ let CalendarView = props => {
   const { gatherings } = props;
 
   gatherings.forEach(gather => {
-    gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm');
-    gather.end = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm');
-    gather.allDay = true;
-    console.log(gatherings);
+    gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();;
+    gather.end = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();;
+    console.log(gather);
   });
 
   return (
