@@ -21,7 +21,8 @@ class CreateGatheringForm extends React.Component {
       const values = {
         ...fieldsValue,
         'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePicker': fieldsValue['timePicker'].format('HH:mm'),
+        'timePickerStart': fieldsValue['timePickerStart'].format('HH:mm'),
+        'timePickerEnd': fieldsValue['timePickerEnd'].format('HH:mm'),
       };
       console.log('Received values of form: ', values);
       if (!err) {
@@ -47,8 +48,11 @@ class CreateGatheringForm extends React.Component {
     const configDate = {
       rules: [{ type: 'object', required: true, message: 'Please select the day!'}],
     };
-    const configTime = {
-      rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+    const configTimeStart = {
+      rules: [{ type: 'object', required: true, message: 'Please select the start time!' }],
+    };
+    const configTimeEnd = {
+      rules: [{ type: 'object', required: true, message: 'Please select the ending time!' }],
     };
 
     return (
@@ -97,9 +101,12 @@ class CreateGatheringForm extends React.Component {
           
           <FormItem
             {...formItemLayout}
-            label="Select the Time"
+            label="Start & End Time"
           >
-            {getFieldDecorator('timePicker', configTime)(
+            {getFieldDecorator('timePickerStart', configTimeStart)(
+              <TimePicker format='HH:mm' />
+            )}
+            {getFieldDecorator('timePickerEnd', configTimeEnd)(
               <TimePicker format='HH:mm' />
             )}
           </FormItem>

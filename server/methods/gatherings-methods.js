@@ -8,7 +8,8 @@ Meteor.methods({
 		check(formValues.capacity, Number);
 		check(formValues.phoneNumber, String);
 		check(formValues.datePicker, String);
-		check(formValues.timePicker, String);
+		check(formValues.timePickerStart, String);
+		check(formValues.timePickerEnd, String);
 		check(formValues.isRSVPrequired, Boolean);
 		
 		const currentUserId = Meteor.userId();
@@ -26,7 +27,8 @@ Meteor.methods({
 					isRSVPrequired: formValues.isRSVPrequired,
 					startDate: formValues.datePicker,
 					endDate: formValues.datePicker,
-					startTime: formValues.timePicker,
+					startTime: formValues.timePickerStart,
+					endTime: formValues.timePickerEnd,
 					isSentForReview: false,
 					isPublished: false
 				});

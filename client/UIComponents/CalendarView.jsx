@@ -18,12 +18,9 @@ let CalendarView = props => {
   return (
     <div>
       <BigCalendar
-      	{...props}
         events={gatherings}
         defaultView="week"
-        culture="se"
         views={['week', 'day', 'agenda']}
-        defaultDate={new Date(2015, 3, 1)}
       />
     </div>
   )
