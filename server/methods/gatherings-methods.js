@@ -49,3 +49,13 @@ Meteor.publish('gatherings', function () {
     }
   });
 });
+
+Meteor.publish('gathering', function (id) {
+  return Gatherings.find(id)
+  /*, {
+    fields: {
+    	isSentForReview: 0,
+    	phoneNumber: 0
+    }
+  })*/;
+});

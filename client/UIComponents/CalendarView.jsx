@@ -12,6 +12,7 @@ let CalendarView = props => {
   return (
     <div>
       <BigCalendar
+        onSelectEvent={props.onSelect}
         events={gatherings}
         defaultView="week"
         views={['week', 'day', 'agenda']}

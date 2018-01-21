@@ -1,6 +1,6 @@
 import React from 'react';
 import CreateGatheringForm from '../UIComponents/CreateGatheringForm';
-import { Modal } from 'antd';
+import ModalArticle from '../UIComponents/ModalArticle';
 
 class NewGathering extends React.Component {
 	state={
@@ -30,23 +30,30 @@ class NewGathering extends React.Component {
   showModal = () => this.setState({modalConfirm: true})
  
   render() {
+
+    const { modalConfirm, values } = this.state;
+
     return (
     	<div>
 	      <CreateGatheringForm 
-	      	values={this.state.values}
+	      	values={values}
 	      	registerGatheringLocally={this.registerGatheringLocally}
 	      	createGathering={this.props.createGathering}
 	      />
-	      <Modal
-          title="overview your data"
-          visible={this.state.modalConfirm}
-          onOk={this.createGathering}
-          onCancel={this.hideModal}
-          okText="Confirm and send as proposal"
-          cancelText="Go back and edit"
-        >
-          Your gathering is almost there. Please overview it before sending in for confirmation.
-        </Modal>
+  	    { modalConfirm 
+          ?
+            <ModalArticle
+              item={this.state.values}
+              loading
+              title="overview your data"
+              visible={modalConfirm}
+              onOk={this.createGathering}
+              onCancel={this.hideModal}
+              okText="Confirm and send as proposal"
+              cancelText="Go back and edit"
+            />
+          : null 
+        }
        </div>
     )
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Avatar, Icon, Card, Radio } from 'antd';
 import CalendarView from './CalendarView';
+import { Link } from 'react-router-dom';
 
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
@@ -39,6 +40,10 @@ class Nodal extends React.Component {
     this.setState({ mode });
   }
 
+  onSelect = (gathering, e) => {
+
+  }
+
   render(){
 
   	const { gatherings } = this.props;
@@ -57,7 +62,7 @@ class Nodal extends React.Component {
 	      </div>
 
 	  		{	mode === 'calendar' ?
-	  			<CalendarView gatherings={gatherings} /> :
+	  			<CalendarView gatherings={gatherings} onSelect={this.onSelect} /> :
 
 	       	<List
 				    itemLayout="vertical"
@@ -72,7 +77,7 @@ class Nodal extends React.Component {
 					      >
 					        <List.Item.Meta
 					          avatar={<Avatar src={listData[0].avatar} />}
-					          title={<a href={item.title}>{item.title}</a>}
+					          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
 					          description={item.shortDescription}
 					        />
 					        {item.longDescription}
