@@ -9,12 +9,6 @@ let CalendarView = props => {
 
   const { gatherings } = props;
 
-  gatherings.forEach(gather => {
-    gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();;
-    gather.end = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();;
-    console.log(gather);
-  });
-
   return (
     <div>
       <BigCalendar

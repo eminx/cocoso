@@ -15,3 +15,9 @@
 .rbc-calendar {
   min-height: 300px;
 }
+
+@media (max-width: 600px) {
+	.rbc-toolbar {
+		flex-direction: column;
+	}
+}

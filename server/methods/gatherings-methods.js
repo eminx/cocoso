@@ -6,6 +6,7 @@ Meteor.methods({
 		check(formValues.longDescription, String);
 		check(formValues.room, String);
 		check(formValues.capacity, Number);
+		check(formValues.duration, Number);
 		check(formValues.phoneNumber, String);
 		check(formValues.datePicker, String);
 		check(formValues.timePickerStart, String);
@@ -29,6 +30,7 @@ Meteor.methods({
 					endDate: formValues.datePicker,
 					startTime: formValues.timePickerStart,
 					endTime: formValues.timePickerEnd,
+					duration: formValues.duration,
 					isSentForReview: false,
 					isPublished: false
 				});

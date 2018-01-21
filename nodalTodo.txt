@@ -5,13 +5,15 @@ X- Implement creating gathering in the BE
 X- Remove insecure package and make it secure
 X- Add the Calendar on the homepage 
 X- Get the created event data
-- Add duration or ending time to display on the calendar
-- Add the above info to the calendar accordingly
+X- Add duration or ending time to display on the calendar
+X- Add the above info to the calendar accordingly
+- Add quick modal view of an event (both for homepage list/calendar and also overview on create)
 - Create routes for dedicated pages for gatherings
-- Add copy link to send out
+- Add burger menu and menu items
+- Add edit event feature
 - Add image uploading
-- 
-- Quick update
+- Fix list view to include the info
+- Add copy link to send out
 
 
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.

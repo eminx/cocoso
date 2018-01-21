@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Home from './Home';
+import moment from 'moment';
  
 export default HomeContainer = withTracker((props) => {
   //here we can pull out the props.subID and change our Meteor subscription based on it
@@ -10,6 +11,12 @@ export default HomeContainer = withTracker((props) => {
   const gatherings = Meteor.subscribe('gatherings');
   const isLoading = !gatherings.ready();
   const gatheringsList = Gatherings ? Gatherings.find().fetch() : null;
+  
+  gatheringsList.forEach(gather => {
+    gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();
+    gather.end = moment(gather.startDate + gather.endTime, 'YYYY-MM-DD HH:mm').toDate();
+  });
+
   return {
     isLoading,
 		gatherings,

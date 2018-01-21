@@ -17,12 +17,16 @@ class CreateGatheringForm extends React.Component {
       if (err) {
         return;
       }
-      // Should format date value before submit.
+      console.log(fieldsValue['timePickerStart'], fieldsValue.duration);
+      const startTime = fieldsValue['timePickerStart'], 
+          endTime = startTime.clone();
+      endTime.add(fieldsValue.duration,'minutes');
+
       const values = {
         ...fieldsValue,
         'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePickerStart': fieldsValue['timePickerStart'].format('HH:mm'),
-        'timePickerEnd': fieldsValue['timePickerEnd'].format('HH:mm'),
+        'timePickerStart': startTime.format('HH:mm'),
+        'timePickerEnd': endTime.format('HH:mm')
       };
       console.log('Received values of form: ', values);
       if (!err) {
@@ -51,9 +55,11 @@ class CreateGatheringForm extends React.Component {
     const configTimeStart = {
       rules: [{ type: 'object', required: true, message: 'Please select the start time!' }],
     };
-    const configTimeEnd = {
-      rules: [{ type: 'object', required: true, message: 'Please select the ending time!' }],
+    const configDuration = {
+      rules: [{ type: 'number', required: true, message: 'Please type duration'}],
+      initialValue: 60
     };
+
 
     return (
       <div>
@@ -101,13 +107,19 @@ class CreateGatheringForm extends React.Component {
           
           <FormItem
             {...formItemLayout}
-            label="Start & End Time"
+            label="Start time"
           >
             {getFieldDecorator('timePickerStart', configTimeStart)(
               <TimePicker format='HH:mm' />
             )}
-            {getFieldDecorator('timePickerEnd', configTimeEnd)(
-              <TimePicker format='HH:mm' />
+          </FormItem>
+
+          <FormItem
+            {...formItemLayout}
+            label="Duration"
+          >
+            {getFieldDecorator('duration', configDuration)(
+              <InputNumber />
             )}
           </FormItem>
 

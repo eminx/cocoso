@@ -2,6 +2,11 @@ import React from 'react';
 import { List, Avatar, Icon, Card, Radio } from 'antd';
 import CalendarView from './CalendarView';
 
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import 'moment/locale/sv';
+BigCalendar.momentLocalizer(moment);
+
 const listData = [];
 for (let i = 0; i < 5; i++) {
   listData.push({
@@ -13,12 +18,9 @@ for (let i = 0; i < 5; i++) {
   });
 }
 
-const pagination = {
-  pageSize: 10,
-  current: 1,
-  total: listData.length,
-  onChange: (() => {}),
-};
+function sortDates(a,b) {
+	return a.start - b.start;
+}
 
 const IconText = ({ type, text }) => (
   <span>
@@ -40,15 +42,19 @@ class Nodal extends React.Component {
   render(){
 
   	const { gatherings } = this.props;
+	  const gatheringsSorted = gatherings.sort(sortDates);
+  	console.log("gatheringsSorted", gatheringsSorted);
   	const { mode } = this.state;
 
 	  return (
 	  	<div>
-
-	  		<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
-          <Radio.Button value="calendar">Calendar</Radio.Button>
-          <Radio.Button value="list">List</Radio.Button>
-        </Radio.Group>
+	  		
+	  		<div style={{display: 'flex', justifyContent: 'center', marginBottom: '1em'}}>
+		  		<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
+	          <Radio.Button value="list">List</Radio.Button>
+	          <Radio.Button value="calendar">Calendar</Radio.Button>
+	        </Radio.Group>
+	      </div>
 
 	  		{	mode === 'calendar' ?
 	  			<CalendarView gatherings={gatherings} /> :
@@ -56,8 +62,7 @@ class Nodal extends React.Component {
 	       	<List
 				    itemLayout="vertical"
 				    size="large"
-				    pagination={pagination}
-				    dataSource={gatherings}
+				    dataSource={gatheringsSorted}
 				    renderItem={item => (
 				    	<Card>
 					      <List.Item
