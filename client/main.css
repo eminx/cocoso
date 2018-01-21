@@ -2,6 +2,10 @@
 	font-family: sans-serif;
 }
 
+#render-target {
+	background-color: #f0f2f5;
+}
+
 .layout {
 	max-width: 960px;
 	margin: 0 auto;
@@ -20,4 +24,22 @@
 	.rbc-toolbar {
 		flex-direction: column;
 	}
+}
+
+.rbc-toolbar {
+	padding: 10px;
+	margin-bottom: 0 !important;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border: 1px solid #DDD;
+	border-bottom: none;
+	background-color: #f9f9f9;
+}
+
+button.rbc-active {
+	background: #fff !important;
+	border-color: #1890ff !important;
+	color: #1890ff !important;
+	-webkit-box-shadow: -1px 0 0 0 #1890ff;
+	box-shadow: -1px 0 0 0 #1890ff;
 }

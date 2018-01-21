@@ -20,7 +20,7 @@ const LayoutContainer = ({children}) => {
           <Menu.Item key="2"><Link to="/create-a-gathering">Create</Link></Menu.Item>
         </Menu>
       </Header>
-      <Content style={{ padding: '0 20px', marginTop: 20 }}>
+      <Content style={{ marginTop: 20 }}>
         {children}
       </Content>
       <Footer style={{ textAlign: 'center' }}>
