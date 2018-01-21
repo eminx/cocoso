@@ -41,7 +41,7 @@ class Nodal extends React.Component {
   }
 
   onSelect = (gathering, e) => {
-
+  	this.props.push(`/gathering/${gathering._id}`);
   }
 
   render(){

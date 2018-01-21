@@ -3,10 +3,10 @@ import Nodal from '../UIComponents/Nodal';
 
 class Home extends React.Component {
   state = {subID: 1};
- 
+
   render() {
     return (
-      <Nodal gatherings={this.props.gatheringsList} subID={this.state.subID} />
+      <Nodal push={this.props.history.push} gatherings={this.props.gatheringsList} subID={this.state.subID} />
     )
   }
 }

@@ -13,7 +13,7 @@ const browserHistory = createBrowserHistory();
 
 export const renderRoutes = () => (
   <Router history={browserHistory}>
-    <LayoutContainer>
+    <LayoutContainer match={browserHistory}>
       <Route exact path="/" component={HomeContainer}/>
       <Route exact path="/create-a-gathering" component={NewGatheringContainer}/>
       <Route exact path="/create-a-stream" component={NewStreamContainer}/>

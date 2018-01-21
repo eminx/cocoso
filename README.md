@@ -15,4 +15,28 @@ This application will enable members of Noden to get actively engaged at plannin
 - A gathering/workshop/event facilitator can view certain information such as:
   - A list of RSVP'ed members with the info of whether or not they are paying members
  
+## Installation & Running
 
+1. Make sure to have installed Node on your computer, by going to this url and downloading its package: ```https://nodejs.org/en/```
+
+2. Install meteor locally by running: ```curl https://install.meteor.com/ | sh``` on your terminal (OSX & Linux). For Windows, refer to the meteor website: https://www.meteor.com/install
+
+3. Clone the repo to your computer at your favourite location: ```git clone git@github.com:eminx/Nodal.git```
+
+4. Go to the repo: ```cd Nodal```
+
+5. Run ```meteor npm install```
+
+Your installation should be finished. Just do this to run the app:
+
+```meteor``` or ```npm start```
+
+And go to: ```localhost:3000``` on your favourite browser.
+
+## Documentations
+
+Ant Design: https://ant.design
+
+React JS: https://reactjs.org/docs
+
+Meteor: http://docs.meteor.com/#/full/

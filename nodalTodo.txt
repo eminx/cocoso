@@ -7,8 +7,8 @@ X- Add the Calendar on the homepage
 X- Get the created event data
 X- Add duration or ending time to display on the calendar
 X- Add the above info to the calendar accordingly
-- Add quick modal view of an event (both for homepage list/calendar and also overview on create)
-- Create routes for dedicated pages for gatherings
+X- Add quick modal view of an event (both for homepage list/calendar and also overview on create)
+X- Create routes for dedicated pages for gatherings
 - Add burger menu and menu items
 - Add edit event feature
 - Add image uploading
