@@ -1,6 +1,6 @@
 Nodal TODO:
 
-- Implement form validation,
+X- Implement form validation,
 X- Implement creating gathering in the BE
 X- Remove insecure package and make it secure
 X- Add the Calendar on the homepage 
