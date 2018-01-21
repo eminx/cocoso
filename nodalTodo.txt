@@ -12,9 +12,9 @@ X- Create routes for dedicated pages for gatherings
 - Add burger menu and menu items
 - Add edit event feature
 - Add image uploading
-- Fix list view to include the info
+X- Fix list view to include the info
 - Add copy link to send out
-
+- Chat... (epic)
 
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
 	- Click create button
