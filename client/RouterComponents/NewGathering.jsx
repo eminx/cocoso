@@ -5,7 +5,10 @@ import ModalArticle from '../UIComponents/ModalArticle';
 class NewGathering extends React.Component {
 	state={
 		modalConfirm: false,
-		values: null
+		values: null,
+    isLoading: false,
+    isSuccess: false,
+    isError: false
 	}
 
 	registerGatheringLocally = (values) => {
@@ -16,12 +19,21 @@ class NewGathering extends React.Component {
 	createGathering = () => {
     const formValues = this.state.values;
     console.log(formValues);
-    Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {    
+    this.setState({isLoading: true});
+    Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {
       if (error) {
+        this.setState({
+          isLoading: false,
+          isError: true
+        });
         console.log(error);
       } else {
+        this.setState({
+          isLoading: false,
+          isSuccess: true,
+          values: null
+        });
         console.log(result, 'success');
-        this.hideModal();
       }
     });
   }
@@ -45,15 +57,16 @@ class NewGathering extends React.Component {
             <ModalArticle
               item={this.state.values}
               loading
-              title="overview your data"
+              title="Overview The Information"
               visible={modalConfirm}
               onOk={this.createGathering}
               onCancel={this.hideModal}
-              okText="Confirm and send as proposal"
+              okText="Confirm"
               cancelText="Go back and edit"
             />
           : null 
         }
+
        </div>
     )
   }

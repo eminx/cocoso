@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Switch, Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import LayoutContainer from '../LayoutContainer';
 
@@ -14,11 +14,13 @@ const browserHistory = createBrowserHistory();
 export const renderRoutes = () => (
   <Router history={browserHistory}>
     <LayoutContainer match={browserHistory}>
-      <Route exact path="/" component={HomeContainer}/>
-      <Route exact path="/create-a-gathering" component={NewGatheringContainer}/>
-      <Route exact path="/create-a-stream" component={NewStreamContainer}/>
-      <Route path="/gathering/:id" component={GatheringContainer}/>
-      {/*<Route path="*" component={NotFoundPage}/>*/}
+    	<Switch>
+	      <Route exact path="/" component={HomeContainer}/>
+	      <Route exact path="/create-a-gathering" component={NewGatheringContainer}/>
+	      <Route exact path="/create-a-stream" component={NewStreamContainer}/>
+	      <Route path="/gathering/:id" component={GatheringContainer}/>
+	      {/*<Route path="*" component={NotFoundPage}/>*/}
+	    </Switch>
     </LayoutContainer>
   </Router>
 );
