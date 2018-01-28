@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col } from 'antd/lib';
 import CardArticle from '../UIComponents/CardArticle';
 
 class Gathering extends React.Component {

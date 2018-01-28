@@ -1,6 +1,7 @@
 import React from 'react';
 import CreateGatheringForm from '../UIComponents/CreateGatheringForm';
 import ModalArticle from '../UIComponents/ModalArticle';
+import { Redirect } from 'react-router-dom'
 
 class NewGathering extends React.Component {
 	state={
@@ -8,7 +9,8 @@ class NewGathering extends React.Component {
 		values: null,
     isLoading: false,
     isSuccess: false,
-    isError: false
+    isError: false,
+    newGatheringId: null
 	}
 
 	registerGatheringLocally = (values) => {
@@ -18,7 +20,6 @@ class NewGathering extends React.Component {
 
 	createGathering = () => {
     const formValues = this.state.values;
-    console.log(formValues);
     this.setState({isLoading: true});
     Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {
       if (error) {
@@ -26,14 +27,12 @@ class NewGathering extends React.Component {
           isLoading: false,
           isError: true
         });
-        console.log(error);
       } else {
         this.setState({
           isLoading: false,
           isSuccess: true,
-          values: null
+          newGatheringId: result
         });
-        console.log(result, 'success');
       }
     });
   }
@@ -43,7 +42,11 @@ class NewGathering extends React.Component {
  
   render() {
 
-    const { modalConfirm, values } = this.state;
+    const { modalConfirm, values, isLoading, isSuccess, newGatheringId } = this.state;
+
+    if (isSuccess) {
+      return <Redirect to={`/gathering/${newGatheringId}`} />
+    }
 
     return (
     	<div>
@@ -56,7 +59,7 @@ class NewGathering extends React.Component {
           ?
             <ModalArticle
               item={this.state.values}
-              loading
+              isLoading={isLoading}
               title="Overview The Information"
               visible={modalConfirm}
               onOk={this.createGathering}

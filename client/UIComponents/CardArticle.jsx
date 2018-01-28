@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Avatar, Row, Col } from 'antd';
+import { Card, Icon, Avatar, Row, Col } from 'antd/lib';
 const { Meta } = Card;
 
 class CardArticle extends React.Component {

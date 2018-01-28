@@ -34,6 +34,7 @@ Meteor.methods({
 					isSentForReview: false,
 					isPublished: false
 				});
+				return add;
 			} catch(e) {
 				throw new Meteor.Error('phishy-spam', "Couldn't add to Collection");
 			}

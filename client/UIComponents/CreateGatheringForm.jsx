@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon } from 'antd';
+import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -17,7 +17,6 @@ class CreateGatheringForm extends React.Component {
       if (err) {
         return;
       }
-      console.log(fieldsValue['timePickerStart'], fieldsValue.duration);
       const startTime = fieldsValue['timePickerStart'], 
           endTime = startTime.clone();
       endTime.add(fieldsValue.duration,'minutes');
@@ -28,7 +27,6 @@ class CreateGatheringForm extends React.Component {
         'timePickerStart': startTime.format('HH:mm'),
         'timePickerEnd': endTime.format('HH:mm')
       };
-      console.log('Received values of form: ', values);
       if (!err) {
         this.props.registerGatheringLocally(values);
       }

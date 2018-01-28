@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon } from 'antd';
+import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;

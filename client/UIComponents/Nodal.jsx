@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Avatar, Icon, Card, Radio } from 'antd';
+import { List, Avatar, Icon, Card, Radio } from 'antd/lib';
 import CalendarView from './CalendarView';
 import { Link } from 'react-router-dom';
 
