@@ -33,14 +33,6 @@ class CreateGatheringForm extends React.Component {
     });
   }
 
-  normFile = (e) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  }
-
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -167,7 +159,7 @@ class CreateGatheringForm extends React.Component {
           >
             {getFieldDecorator('upload-image', {
               valuePropName: 'fileList',
-              getValueFromEvent: this.normFile,
+              getValueFromEvent: this.props.uploadImage,
             })(
               <Upload name="logo" action="/upload.do" listType="picture">
                 <Button>
