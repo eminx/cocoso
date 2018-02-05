@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-const s3Settings = Meteor.settings.s3;
+const s3Settings = Meteor.settings.AWSs3;
 console.log("s3Settings", s3Settings);
 
 Slingshot.fileRestrictions("gatheringImageUpload", {
@@ -9,7 +9,7 @@ Slingshot.fileRestrictions("gatheringImageUpload", {
 
 Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
-  AWSSecretAccessKey: s3Settings.AWSAccessKeyId,
+  AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketName,
   acl: "public-read",
   region: s3Settings.AWSRegion,
@@ -30,7 +30,7 @@ Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
 
 });
 
-Meteor.publish('gatheringImage', function () {
+Meteor.publish('images', function () {
   return Images.find({}, {
     // fields: {
     	// isSentForReview: 0,
@@ -38,3 +38,20 @@ Meteor.publish('gatheringImage', function () {
     // }
   });
 });
+
+Meteor.methods({
+	addGatheringImageInfo(newGatheringId, downloadUrl, timeStamp, currentUserId) {
+		if (Meteor.userId() === currentUserId) {
+			try {
+				Images.insert({
+					gatheringId: newGatheringId,
+					imageurl: downloadUrl,
+    			time: timeStamp,
+    			uploadedBy: currentUserId
+				});
+			} catch(e) {
+				throw new Meteor.error(e);
+			}
+		}
+	}
+})

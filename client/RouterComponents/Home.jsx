@@ -6,7 +6,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Nodal push={this.props.history.push} gatherings={this.props.gatheringsList} subID={this.state.subID} />
+      <Nodal push={this.props.history.push} images={this.props.imagesArray} gatherings={this.props.gatheringsList} subID={this.state.subID} />
     )
   }
 }

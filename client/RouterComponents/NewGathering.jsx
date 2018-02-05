@@ -20,24 +20,32 @@ class NewGathering extends React.Component {
 		this.showModal();
 	}
 
-  uploadImage = (e) => {
-    const file = e.file.originFileObj;
+  registerImage = (e) => {
+    this.setState({
+      uploadableImage: e.file.originFileObj
+    })
+  }
+
+  uploadImage = () => {
+    const { newGatheringId, uploadableImage } = this.state;
 
     const currentUserId = Meteor.userId();
     const upload = new Slingshot.Upload("gatheringImageUpload");
     const timeStamp = Math.floor(Date.now());
     
-    upload.send(file, function (error, downloadUrl) {
+    upload.send(uploadableImage, (error, downloadUrl) => {
       if (error) {
-        console.error('Error uploading');
-        alert (error);
+        console.error('Error uploading:', error);
       } else {
-        console.log("Success!");
-        console.log('uploaded file available here: '+downloadUrl);
-        Images.insert({
-          imageurl: downloadUrl,
-          time: timeStamp,
-          uploadedBy: currentUserId
+        Meteor.call('addGatheringImageInfo', newGatheringId, downloadUrl, timeStamp, currentUserId, (err, res) => {
+          if (err) {
+            alert(err);
+          } else {
+            this.setState({
+              isLoading: false,
+              isSuccess: true
+            })
+          }
         });
       }
     });
@@ -54,10 +62,10 @@ class NewGathering extends React.Component {
         });
       } else {
         this.setState({
-          isLoading: false,
-          isSuccess: true,
+          // isLoading: false,
           newGatheringId: result
         });
+        this.uploadImage();
       }
     });
   }
@@ -78,8 +86,7 @@ class NewGathering extends React.Component {
 	      <CreateGatheringForm 
 	      	values={values}
 	      	registerGatheringLocally={this.registerGatheringLocally}
-	      	createGathering={this.props.createGathering}
-          uploadImage={this.uploadImage}
+          uploadImage={this.registerImage}
 	      />
   	    { modalConfirm 
           ?

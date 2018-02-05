@@ -9,9 +9,11 @@ export default HomeContainer = withTracker((props) => {
   // const handle = Meteor.subscribe('myDataSub', props.subID);
   
   const gatherings = Meteor.subscribe('gatherings');
+  const images = Meteor.subscribe('images');
   const isLoading = !gatherings.ready();
   const gatheringsList = Gatherings ? Gatherings.find().fetch() : null;
-  
+  const imagesArray = Images ? Images.find().fetch() : null;
+
   gatheringsList.forEach(gather => {
     gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();
     gather.end = moment(gather.startDate + gather.endTime, 'YYYY-MM-DD HH:mm').toDate();
@@ -20,6 +22,7 @@ export default HomeContainer = withTracker((props) => {
   return {
     isLoading,
 		gatherings,
-		gatheringsList
+		gatheringsList,
+    imagesArray
   };
 })(Home);

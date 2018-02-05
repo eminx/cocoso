@@ -46,11 +46,11 @@ class Nodal extends React.Component {
 
   render(){
 
-  	const { gatherings } = this.props;
+  	const { gatherings, images } = this.props;
 	  const gatheringsSorted = gatherings.sort(sortDates);
-  	console.log("gatheringsSorted", gatheringsSorted);
   	const { mode } = this.state;
 
+  	console.log(images);
 	  return (
 	  	<div>
 	  		
@@ -61,30 +61,34 @@ class Nodal extends React.Component {
 	        </Radio.Group>
 	      </div>
 
-	  		{	mode === 'calendar' ?
-	  			<CalendarView gatherings={gatherings} onSelect={this.onSelect} /> :
-
-	       	<List
-				    itemLayout="vertical"
-				    size="large"
-				    dataSource={gatheringsSorted}
-				    renderItem={item => (
-				    	<Card>
-					      <List.Item
-					        key={item.title}
-					        actions={[<IconText type="star-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
-					        extra={<img width={272} alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />}
-					      >
-					        <List.Item.Meta
-					          avatar={<Avatar src={listData[0].avatar} />}
-					          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
-					          description={item.shortDescription}
-					        />
-					        {item.longDescription}
-					      </List.Item>
-				      </Card>
-				    )}
-				  />
+	  		{	mode === 'calendar'
+		  		?
+		  			<CalendarView gatherings={gatherings} images={images} onSelect={this.onSelect} />
+		  		:
+		       	<List
+					    itemLayout="vertical"
+					    size="large"
+					    dataSource={gatheringsSorted}
+					    renderItem={item => {
+					    	const img = images.filter(img => img.gatheringId === item._id);
+					    	return (
+						    	<Card>
+							      <List.Item
+							        key={item.title}
+							        actions={[<IconText type="star-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
+							        extra={<img width={272} alt="logo" src={img ? img.uploadurl : ""} />}
+							      >
+							        <List.Item.Meta
+							          avatar={<Avatar src={listData[0].avatar} />}
+							          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
+							          description={item.shortDescription}
+							        />
+							        {item.longDescription}
+							      </List.Item>
+						      </Card>
+						    )
+						  }}
+					  />
 				}
 	    </div>
     )

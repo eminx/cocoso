@@ -2,8 +2,8 @@
   "name": "Nodal",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings-production.json nodal.eu.meteorapp.com"
+    "start": "meteor run --settings settings.json",
+    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json nodal.eu.meteorapp.com"
   },
   "theme": {
     "primary-color": "orange"
