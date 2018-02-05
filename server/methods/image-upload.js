@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-const s3Settings = Meteor.settings.private.s3;
+const s3Settings = Meteor.settings.s3;
 console.log("s3Settings", s3Settings);
 
 Slingshot.fileRestrictions("gatheringImageUpload", {
