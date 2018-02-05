@@ -1,14 +1,18 @@
+import { Meteor } from 'meteor/meteor';
+const s3Settings = Meteor.settings.private.s3;
+console.log("s3Settings", s3Settings);
+
 Slingshot.fileRestrictions("gatheringImageUpload", {
   allowedFileTypes: ["image/png", "image/jpeg"],
-  maxSize: 2 * 1024 * 1024,
+  maxSize: 5 * 3024 * 3024,
 });
 
 Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
-  AWSAccessKeyId: "AKIAJHYRXJXFQWVLBLLA",
-  AWSSecretAccessKey: "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",
-  bucket: "nodal-gatherings",
+  AWSAccessKeyId: s3Settings.AWSAccessKeyId,
+  AWSSecretAccessKey: s3Settings.AWSAccessKeyId,
+  bucket: s3Settings.AWSBucketName,
   acl: "public-read",
-  region: "eu-central-1",
+  region: s3Settings.AWSRegion,
 
   authorize: function () {
     if (!this.userId) {
@@ -24,4 +28,13 @@ Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
     return currentUserId + "/" + file.name;
   }
 
+});
+
+Meteor.publish('gatheringImage', function () {
+  return Images.find({}, {
+    // fields: {
+    	// isSentForReview: 0,
+    	// phoneNumber: 0
+    // }
+  });
 });
