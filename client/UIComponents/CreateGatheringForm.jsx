@@ -18,7 +18,7 @@ class CreateGatheringForm extends React.Component {
         return;
       }
       const startTime = fieldsValue['timePickerStart'], 
-          endTime = startTime.clone();
+            endTime = startTime.clone();
       endTime.add(fieldsValue.duration,'minutes');
 
       const values = {
@@ -40,13 +40,13 @@ class CreateGatheringForm extends React.Component {
       wrapperCol: { span: 10 },
     };
     const configDate = {
-      rules: [{ type: 'object', required: true, message: 'Please select the day!'}],
+      rules: [{ type: 'object', required: false, message: 'Please select the day!'}],
     };
     const configTimeStart = {
-      rules: [{ type: 'object', required: true, message: 'Please select the start time!' }],
+      rules: [{ type: 'object', required: false, message: 'Please select the start time!' }],
     };
     const configDuration = {
-      rules: [{ type: 'number', required: true, message: 'Please type duration'}],
+      rules: [{ type: 'number', required: false, message: 'Please type duration'}],
       initialValue: 60
     };
 
@@ -58,7 +58,7 @@ class CreateGatheringForm extends React.Component {
           <FormItem {...formItemLayout} label="Title">
             {getFieldDecorator('title', {
               rules: [{
-                required: true,
+                required: false,
                 message: 'Enter the Title',
               }],
             })(
@@ -69,7 +69,7 @@ class CreateGatheringForm extends React.Component {
           <FormItem {...formItemLayout} label="Short description">
             {getFieldDecorator('shortDescription', {
               rules: [{
-                required: true, message: 'Please enter a brief description',
+                required: false, message: 'Please enter a brief description',
               }],
             })(
               <Input placeholder="Enter a short description" />
@@ -79,7 +79,7 @@ class CreateGatheringForm extends React.Component {
           <FormItem {...formItemLayout} label="Long description">
             {getFieldDecorator('longDescription', {
               rules: [{
-                required: true, message: 'Please enter a detailed description',
+                required: false, message: 'Please enter a detailed description',
               }],
             })(
               <TextArea placeholder="Enter a detailed description of your Stream" autosize />
@@ -118,7 +118,7 @@ class CreateGatheringForm extends React.Component {
             label="Select Room"
           >
             {getFieldDecorator('room', {
-              rules: [{ required: true, message: 'Please select a part of Noden in which this gathering will be held' }],
+              rules: [{ required: false, message: 'Please select a part of Noden in which this gathering will be held' }],
             })(
               <Select
                 placeholder="Select part of Noden..."
@@ -174,7 +174,7 @@ class CreateGatheringForm extends React.Component {
             label="Phone Number"
           >
             {getFieldDecorator('phoneNumber', {
-              rules: [{ required: true, message: 'Phone number to contact' }],
+              rules: [{ required: false, message: 'Phone number to contact' }],
             })(
               <Input />
             )}

@@ -3,10 +3,7 @@ import CreateGatheringForm from '../UIComponents/CreateGatheringForm';
 import ModalArticle from '../UIComponents/ModalArticle';
 import { Redirect } from 'react-router-dom'
 import Evaporate from 'evaporate';
-import crypto from 'crypto-js';
-
-// const AWS_KEY = Meteor.settings.private.s3.AWSAccessKeyId;
-// const bucket = Meteor.settings.private.s3.AWSAccessKeyId;
+import AWS from 'aws-sdk';
 
 class NewGathering extends React.Component {
 	state={
@@ -24,31 +21,26 @@ class NewGathering extends React.Component {
 	}
 
   uploadImage = (e) => {
-    const config = {
-      signerUrl: '',
-      aws_key: '',
-      bucket: '',
-      cloudfront: true,
-      computeContentMd5: true,
-      cryptoMd5Method: (data) => (
-        crypto.createHash('md5').update(data).digest('base64')
-      )
-    };
+    const file = e.file.originFileObj;
 
-    console.log(e);
-    // first you create, then 'add'/upload
-    Evaporate.create(config)
-    .then(evaporate =>
-      evaporate.add({
-        name: this.state.values.title,
-        file: e,
-        progress: (progress) => {
-          console.log(progress);
-        }
-      })
-    )
-    .then(s3Key => console.log('file location: ', s3Key))
-    .catch(err => console.log('error', err));
+    const currentUserId = Meteor.userId();
+    const upload = new Slingshot.Upload("gatheringImageUpload");
+    const timeStamp = Math.floor(Date.now());
+    
+    upload.send(file, function (error, downloadUrl) {
+      if (error) {
+        console.error('Error uploading');
+        alert (error);
+      } else {
+        console.log("Success!");
+        console.log('uploaded file available here: '+downloadUrl);
+        Images.insert({
+          imageurl: downloadUrl,
+          time: timeStamp,
+          uploadedBy: currentUserId
+        });
+      }
+    });
   }
 
 	createGathering = () => {

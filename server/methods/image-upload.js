@@ -1,28 +1,27 @@
-// Slingshot.fileRestrictions("GatheringImage", {
-//   allowedFileTypes: ["image/png", "image/jpeg", "image/jpg"],
-//   maxSize: 4 * 2000 * 2000 // 2 MB (use null for unlimited)
-// });
+Slingshot.fileRestrictions("gatheringImageUpload", {
+  allowedFileTypes: ["image/png", "image/jpeg"],
+  maxSize: 2 * 1024 * 1024,
+});
 
+Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
+  AWSAccessKeyId: "AKIAJHYRXJXFQWVLBLLA",
+  AWSSecretAccessKey: "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",
+  bucket: "nodal-gatherings",
+  acl: "public-read",
+  region: "eu-central-1",
 
-// Slingshot.createDirective("GatheringImage", Slingshot.S3Storage, {
-//   bucket: "nodal-gatherings", // change this to your s3's bucket name
+  authorize: function () {
+    if (!this.userId) {
+      var message = "Please login before posting images";
+      throw new Meteor.Error("Login Required", message);
+    }
 
-//   acl: "public-read",
+    return true;
+  },
 
-//   authorize: function (file, metaContext) {
-    
-//     //Deny uploads if user is not logged in.
-//     if (!this.userId) {
-//       var message = "Please login before posting files";
-//       throw new Meteor.Error("Login Required", message);
-//     }
+  key: function (file) {
+    var currentUserId = Meteor.user().emails[0].address;
+    return currentUserId + "/" + file.name;
+  }
 
-//     return true;
-//   },
-
-//   key: function (file, metaContext) {
-//     // User's image url with ._id attached:
-
-//     return metaContext.avatarId + "/" + Date.now() + "-" + file.name;
-//   }
-// });
+});
