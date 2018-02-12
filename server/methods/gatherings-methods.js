@@ -1,6 +1,5 @@
 Meteor.methods({
-	createGathering(userId, formValues) {
-		console.log('received:', userId, formValues);
+	createGathering(formValues, imageUrl) {
 		check(formValues.title, String);
 		check(formValues.shortDescription, String);
 		check(formValues.longDescription, String);
@@ -12,32 +11,32 @@ Meteor.methods({
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
 		check(formValues.isRSVPrequired, Boolean);
+		check(imageUrl, String);
 		
-		const currentUserId = Meteor.userId();
-		if (currentUserId === userId) {
-			try {
-				const add = Gatherings.insert({
-					authorId: userId,
-					authorName: 'someonE',
-					title: formValues.title,
-					shortDescription: formValues.shortDescription,
-					longDescription: formValues.longDescription,
-					room: formValues.room,
-					capacity: formValues.capacity,
-					phoneNumber: formValues.phoneNumber,
-					isRSVPrequired: formValues.isRSVPrequired,
-					startDate: formValues.datePicker,
-					endDate: formValues.datePicker,
-					startTime: formValues.timePickerStart,
-					endTime: formValues.timePickerEnd,
-					duration: formValues.duration,
-					isSentForReview: false,
-					isPublished: false
-				});
-				return add;
-			} catch(e) {
-				throw new Meteor.Error('phishy-spam', "Couldn't add to Collection");
-			}
+		const userId = Meteor.userId();
+		try {
+			const add = Gatherings.insert({
+				authorId: userId,
+				authorName: 'someone',
+				title: formValues.title,
+				shortDescription: formValues.shortDescription,
+				longDescription: formValues.longDescription,
+				room: formValues.room,
+				capacity: formValues.capacity,
+				phoneNumber: formValues.phoneNumber,
+				isRSVPrequired: formValues.isRSVPrequired,
+				startDate: formValues.datePicker,
+				endDate: formValues.datePicker,
+				startTime: formValues.timePickerStart,
+				endTime: formValues.timePickerEnd,
+				duration: formValues.duration,
+				imageUrl: imageUrl,
+				isSentForReview: true,
+				isPublished: false
+			});
+			return add;
+		} catch(e) {
+			throw new Meteor.Error(e, "Couldn't add to Collection");
 		}
 	}
 });

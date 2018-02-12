@@ -12,7 +12,9 @@ class NewGathering extends React.Component {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newGatheringId: null
+    newGatheringId: null,
+    uploadedImage: null,
+    uploadableImage: null
 	}
 
 	registerGatheringLocally = (values) => {
@@ -23,27 +25,29 @@ class NewGathering extends React.Component {
   registerImage = (e) => {
     this.setState({
       uploadableImage: e.file.originFileObj
-    })
+    });
   }
 
-  uploadImage = () => {
+  uploadImage = (e) => {
     const { newGatheringId, uploadableImage } = this.state;
 
     const currentUserId = Meteor.userId();
     const upload = new Slingshot.Upload("gatheringImageUpload");
     const timeStamp = Math.floor(Date.now());
     
-    upload.send(uploadableImage, (error, downloadUrl) => {
+    upload.send(e.file.originFileObj, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
       } else {
+        console.log("downloadUrl", downloadUrl);
         Meteor.call('addGatheringImageInfo', newGatheringId, downloadUrl, timeStamp, currentUserId, (err, res) => {
           if (err) {
             alert(err);
           } else {
             this.setState({
               isLoading: false,
-              isSuccess: true
+              isSuccess: true,
+              uploadedImage: downloadUrl
             })
           }
         });
@@ -52,9 +56,9 @@ class NewGathering extends React.Component {
   }
 
 	createGathering = () => {
-    const formValues = this.state.values;
+    const { values, uploadedImage } = this.state;
     this.setState({isLoading: true});
-    Meteor.call('createGathering', Meteor.userId(), formValues, (error, result) => {
+    Meteor.call('createGathering', values, uploadedImage, (error, result) => {
       if (error) {
         this.setState({
           isLoading: false,
@@ -62,10 +66,9 @@ class NewGathering extends React.Component {
         });
       } else {
         this.setState({
-          // isLoading: false,
-          newGatheringId: result
+          isLoading: false,
+          newGatheringId: result,
         });
-        this.uploadImage();
       }
     });
   }
@@ -75,23 +78,25 @@ class NewGathering extends React.Component {
  
   render() {
 
-    const { modalConfirm, values, isLoading, isSuccess, newGatheringId } = this.state;
+    const { modalConfirm, values, isLoading, isSuccess, newGatheringId, uploadedImage } = this.state;
 
-    if (isSuccess) {
+    if (newGatheringId) {
       return <Redirect to={`/gathering/${newGatheringId}`} />
     }
 
     return (
     	<div>
-	      <CreateGatheringForm 
+	      <CreateGatheringForm
 	      	values={values}
 	      	registerGatheringLocally={this.registerGatheringLocally}
-          uploadImage={this.registerImage}
+          uploadImage={this.uploadImage}
+          isImageUploaded={this.state.uploadedImage}
 	      />
-  	    { modalConfirm 
+  	    { modalConfirm
           ?
             <ModalArticle
-              item={this.state.values}
+              imageSrc={uploadedImage}
+              item={values}
               isLoading={isLoading}
               title="Overview The Information"
               visible={modalConfirm}
@@ -100,7 +105,7 @@ class NewGathering extends React.Component {
               okText="Confirm"
               cancelText="Go back and edit"
             />
-          : null 
+          : null
         }
 
        </div>

@@ -12,7 +12,7 @@ class CardArticle extends React.Component {
         <Card
           title={<div><h1>{item.title}</h1><h2>{item.shortDescription}</h2></div>}
           bordered={false}
-          cover={<img alt="example" src="https://pre00.deviantart.net/0300/th/pre/i/2015/096/9/1/coldstone_mountains_by_newmand-d5n1xqw.jpg" />}
+          cover={<img alt="example" src={item.imageUrl} />}
           actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
         >
           <Meta

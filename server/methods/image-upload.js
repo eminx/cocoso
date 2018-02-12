@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 const s3Settings = Meteor.settings.AWSs3;
-console.log("s3Settings", s3Settings);
 
 Slingshot.fileRestrictions("gatheringImageUpload", {
   allowedFileTypes: ["image/png", "image/jpeg"],
