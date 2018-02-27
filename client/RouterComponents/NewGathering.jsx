@@ -1,9 +1,14 @@
 import React from 'react';
 import CreateGatheringForm from '../UIComponents/CreateGatheringForm';
 import ModalArticle from '../UIComponents/ModalArticle';
+import { message } from 'antd/lib';
 import { Redirect } from 'react-router-dom'
 import Evaporate from 'evaporate';
 import AWS from 'aws-sdk';
+
+const successCreation = () => {
+  message.success('Your event is successfully created');
+};
 
 class NewGathering extends React.Component {
 	state={
@@ -51,17 +56,6 @@ class NewGathering extends React.Component {
           uploadedImage: downloadUrl
         });
         this.createGathering(downloadUrl);
-        console.log("downloadUrl", downloadUrl);
-        // Meteor.call('addGatheringImageInfo', newGatheringId, downloadUrl, timeStamp, currentUserId, (err, res) => {
-        //   if (err) {
-        //     alert(err);
-        //   } else {
-        //     this.setState({
-        //       isLoading: false,
-        //       uploadedImage: downloadUrl
-        //     })
-        //   }
-        // });
       }
     });
   }
@@ -94,6 +88,7 @@ class NewGathering extends React.Component {
     const { modalConfirm, values, isLoading, isSuccess, newGatheringId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
 
     if (isSuccess) {
+      successCreation();
       return <Redirect to={`/gathering/${newGatheringId}`} />
     }
 
