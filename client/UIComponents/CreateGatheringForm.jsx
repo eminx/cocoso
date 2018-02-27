@@ -50,6 +50,8 @@ class CreateGatheringForm extends React.Component {
       initialValue: 60
     };
 
+    const { uploadableImage, setUploadableImage } = this.props;
+
 
     return (
       <div>
@@ -155,15 +157,15 @@ class CreateGatheringForm extends React.Component {
           <FormItem
             {...formItemLayout}
             label="Select an image"
-            extra="Pick an image from your device"
+            extra={ uploadableImage ? uploadableImage.name : "Pick an image from your device" }
           >
             {getFieldDecorator('upload-image', {
               required: true,
               valuePropName: 'fileList',
-              getValueFromEvent: this.props.uploadImage,
+              getValueFromEvent: setUploadableImage,
             })(
               <Upload name="gathering" action="/upload.do" >
-                { this.props.isImageUploaded
+                { uploadableImage
                   ? <Button><Icon type="check-circle" />Image selected</Button>
                   : <Button><Icon type="upload" />Pick an image</Button>
                 }

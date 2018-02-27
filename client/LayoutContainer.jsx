@@ -2,8 +2,6 @@ import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd/lib';
-// import antd from 'antd/lib';
-// console.log("antd", antd);
 const { Header, Content, Footer } = Layout;
 
 class LayoutContainer extends React.Component {

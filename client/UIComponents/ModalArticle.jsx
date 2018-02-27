@@ -7,7 +7,6 @@ class ModalArticle extends React.Component {
   render() {
 
     const { isLoading, item, imageSrc } = this.props;
-    console.log("imageSrc", imageSrc);
 
     return (
       <Spin spinning={isLoading}>
@@ -21,7 +20,7 @@ class ModalArticle extends React.Component {
           >
             <Meta
               avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-              title={`Will be held at: ${item.room}`}
+              title={`${item.room}, Noden`}
               description={item.longDescription}
             />
           </Card>
