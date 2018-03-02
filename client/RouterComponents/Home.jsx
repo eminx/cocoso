@@ -32,7 +32,7 @@ class Home extends React.Component {
     }
 
     return (
-    	<div>
+    	<div style={{padding: 12}}>
 
     		<div style={{display: 'flex', justifyContent: 'center', marginBottom: '1em'}}>
 		  		<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
@@ -42,11 +42,11 @@ class Home extends React.Component {
 	      </div>
 
     		<Row>
-    			<Col sm={8}>
+    			<Col md={8}>
     				
     			</Col>
 
-    			<Col xs={24} sm={16}>
+    			<Col xs={24} sm={24} md={16}>
     				{
     					mode === 'calendar'
     					?

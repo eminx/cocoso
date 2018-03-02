@@ -37,7 +37,7 @@ class CreateGatheringForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
-      wrapperCol: { span: 10 },
+      wrapperCol: { span: 18 },
     };
     const configDate = {
       rules: [{ type: 'object', required: true, message: 'Please select the day!'}],
@@ -55,6 +55,7 @@ class CreateGatheringForm extends React.Component {
 
     return (
       <div>
+        <h2>Please enter the details about your gathering</h2>
         <Form onSubmit={this.handleSubmit}>
 
           <FormItem {...formItemLayout} label="Title">

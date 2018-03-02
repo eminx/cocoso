@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import 'moment/locale/sv';
+import 'moment/locale/en-gb';
 BigCalendar.momentLocalizer(moment);
 
 const avatarSrc = 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png';
@@ -26,6 +26,9 @@ const footerIcons = [
 	<IconText type="message" text="2" />
 ];
 
+function shortenDescription(str) {
+    return str.split(/\s+/).slice(0,20).join(" ");
+}
 
 class Nodal extends React.Component { 
 
@@ -55,10 +58,10 @@ class Nodal extends React.Component {
 				      >
 				        <List.Item.Meta
 				          avatar={<Avatar src={avatarSrc} />}
-				          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
+				          title={<Link to={`/gathering/${item._id}`}>{<h2>{item.title}</h2>}</Link>}
 				          description={item.shortDescription}
 				        />
-				        {item.longDescription}
+				        {shortenDescription(item.longDescription) + '...'}
 				      </List.Item>
 			      </Card>
 			    )}

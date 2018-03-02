@@ -15,7 +15,9 @@ let CalendarView = props => {
         onSelectEvent={props.onSelect}
         events={gatherings}
         defaultView="week"
-        views={['week', 'day', 'agenda']}
+        timeslots={4}
+        views={['month', 'week']}
+        popupOffset={{x: 0, y: 200}}
       />
     </div>
   )

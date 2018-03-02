@@ -13,6 +13,7 @@ export default HomeContainer = withTracker((props) => {
   const isLoading = !gatherings.ready();
   const gatheringsList = Gatherings ? Gatherings.find().fetch() : null;
   const imagesArray = Images ? Images.find().fetch() : null;
+  const currentUser = Meteor.user();
 
   gatheringsList.forEach(gather => {
     gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();
@@ -23,6 +24,7 @@ export default HomeContainer = withTracker((props) => {
     isLoading,
 		gatherings,
 		gatheringsList,
-    imagesArray
+    imagesArray,
+    currentUser
   };
 })(Home);

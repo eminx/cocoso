@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateGatheringForm from '../UIComponents/CreateGatheringForm';
 import ModalArticle from '../UIComponents/ModalArticle';
-import { message } from 'antd/lib';
+import { Row, Col, message, Alert, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom'
 import Evaporate from 'evaporate';
 import AWS from 'aws-sdk';
@@ -9,6 +9,8 @@ import AWS from 'aws-sdk';
 const successCreation = () => {
   message.success('Your event is successfully created', 6);
 };
+
+const sideNote = "Please check if a corresponding time and room is not taken already. \n It is your responsibility to make sure that there's no overlapping gatherings."
 
 class NewGathering extends React.Component {
 	state={
@@ -85,6 +87,17 @@ class NewGathering extends React.Component {
  
   render() {
 
+    if (!this.props.currentUser) {
+      return (
+        <div style={{maxWidth: 600, margin: '0 auto'}}>
+          <Alert
+            message="You have to signup and become an active member in order to initiate a creation at Noden"
+            type="error"
+          />
+        </div>
+      )
+    }
+
     const { modalConfirm, values, isLoading, isSuccess, newGatheringId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
 
     if (isSuccess) {
@@ -93,13 +106,26 @@ class NewGathering extends React.Component {
     }
 
     return (
-    	<div>
-	      <CreateGatheringForm
-	      	values={values}
-	      	registerGatheringLocally={this.registerGatheringLocally}
-          setUploadableImage={this.setUploadableImage}
-          uploadableImage={this.state.uploadableImage}
-	      />
+    	<div style={{padding: 24}}>
+        <h1>Create a gathering</h1>
+        <Row gutter={48}>
+          <Col xs={24} sm={24} md={16}>
+    	      <CreateGatheringForm
+    	      	values={values}
+    	      	registerGatheringLocally={this.registerGatheringLocally}
+              setUploadableImage={this.setUploadableImage}
+              uploadableImage={this.state.uploadableImage}
+    	      />
+          </Col>
+          <Col xs={24} sm={24} md={8}>
+            <Affix>
+              <Alert
+                message={sideNote}
+                type="info"
+              />
+            </Affix>
+          </Col>
+        </Row>
   	    { modalConfirm
           ?
             <ModalArticle

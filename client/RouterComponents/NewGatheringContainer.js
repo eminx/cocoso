@@ -10,8 +10,11 @@ export default NewGatheringContainer = withTracker((props) => {
   const calendarList = Meteor.subscribe('calendarView', props.id);
   const isLoading = !calendarList.ready();
   const Images = Meteor.subscribe('images');
+  const currentUser = Meteor.user();
+
   return {
     isLoading,
-    calendarList
+    calendarList,
+    currentUser
   };
 })(NewGathering);

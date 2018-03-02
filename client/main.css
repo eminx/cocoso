@@ -17,6 +17,7 @@
 
 .rbc-calendar {
   min-height: 300px;
+  /* max-height: 500px; */
 }
 
 @media (max-width: 600px) {
@@ -43,6 +44,10 @@ button.rbc-active {
 	box-shadow: -1px 0 0 0 #1890ff;
 }
 
-.ant-card-meta-description {
+.ant-list .ant-card {
+	margin-bottom: 24px;
+}
+
+.ant-card .ant-card-meta-description {
 	color: rgba(0, 0, 0, .65);
 }

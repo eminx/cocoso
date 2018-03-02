@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Icon, Avatar, Row, Col, Button, message } from 'antd/lib';
 const { Meta } = Card;
+import moment from 'moment';
 
 const IconText = ({ type, text }) => (
   <span>
@@ -35,7 +36,7 @@ class CardArticle extends React.Component {
       this.setState({
         isComing: false
       });
-      message.info("Said that you aren't coming, but thanks for letting us know!");
+      message.info("Sad that you aren't coming, but thanks for letting us know!");
     }
   }
 	
@@ -43,6 +44,13 @@ class CardArticle extends React.Component {
 
     const { isLoading, item } = this.props;
     const { isComing } = this.state;
+
+    const eventTimes = item 
+    ?
+      `${item.startTime}–${item.endTime}, ${moment(item.startDate).format('Do MMMM dddd')}`
+    :
+      null;
+    console.log(eventTimes);
 
     const rsvpButtonGroup = 
       <Button.Group>
@@ -64,7 +72,7 @@ class CardArticle extends React.Component {
         >
           <Meta
             avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-            title={`${item.room}, Noden`}
+            title={<span>{item.room}, Noden<br />{eventTimes}</span>}
             description={item.longDescription}
           />
         </Card>
