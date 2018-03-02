@@ -9,7 +9,7 @@ class Gathering extends React.Component {
     	<div>
     		<Row>
     			<Col span={4} />
-    			<Col span={16}>
+    			<Col xs={24} sm={16}>
     				<CardArticle item={this.props.theGathering} isLoading={this.props.isLoading} />
     			</Col>
     			<Col span={4} />

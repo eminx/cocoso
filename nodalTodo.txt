@@ -11,17 +11,17 @@ X- Add quick modal view of an event (both for homepage list/calendar and also ov
 X- Create routes for dedicated pages for gatherings
 - Add burger menu and menu items
 - Add edit event feature
-- Add image uploading
+X- Add image uploading
 - Admin management
 X- Fix list view to include the info
 - Add copy link to send out
 - Chat... (epic)
 
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
-	- Click create button
-	- Fill the form and submit
-	- get a summary of details entered
-	- You confirm (you get an email)
+	X- Click create button
+	X- Fill the form and submit
+	X- get a summary of details entered
+	X- You confirm (you get an email)
 	- Then admin also gets an email to overview the event
 	- Event should only be visible to admins and the creator (isVerified: false)
 	- Ability to chat between admins and creator
@@ -33,4 +33,8 @@ X- Fix list view to include the info
 
 later	- Chat function to be able to chat with each other; public/private/categories/channels/personal
 
-- One can also create a stream. This is a non-event, it's a concept for people to communicate to each other in order to co-create gatherings in the future. This is more of an abstraction and a theme for future gatherings to happen. This will also allow chatting scoped for this purpose. It's like groups. But it's not based on "people" who form the group, it's based on a "stream"; a theme which people see as a purpose to gather for...
+- One can also create a stream. This is a non-event, it's a concept for people to communicate to each other
+ in order to co-create gatherings in the future. This is more of an abstraction and a theme for future
+  gatherings to happen. This will also allow chatting scoped for this purpose. It's like groups. But it's
+   not based on "people" who form the group, it's based on a "stream"; a theme which people see as a
+    purpose to gather for...

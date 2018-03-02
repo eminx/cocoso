@@ -1,6 +1,5 @@
 import React from 'react';
-import { List, Avatar, Icon, Card, Radio } from 'antd/lib';
-import CalendarView from './CalendarView';
+import { List, Avatar, Icon, Card, Radio, Button } from 'antd/lib';
 import { Link } from 'react-router-dom';
 
 import BigCalendar from 'react-big-calendar';
@@ -8,16 +7,7 @@ import moment from 'moment';
 import 'moment/locale/sv';
 BigCalendar.momentLocalizer(moment);
 
-const listData = [];
-for (let i = 0; i < 5; i++) {
-  listData.push({
-    href: 'http://ant.design',
-    title: `ant design part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+const avatarSrc = 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png';
 
 function sortDates(a,b) {
 	return a.start - b.start;
@@ -30,62 +20,49 @@ const IconText = ({ type, text }) => (
   </span>
 );
 
+const footerIcons = [
+	<IconText type="star-o" text="156" />, 
+	<IconText type="like-o" text="156" />, 
+	<IconText type="message" text="2" />
+];
+
+
 class Nodal extends React.Component { 
-	state = {
-		mode: 'list'
+
+	state= {
 	}
 
-	handleModeChange = (e) => {
-    const mode = e.target.value;
-    this.setState({ mode });
-  }
+  render() {
 
-  onSelect = (gathering, e) => {
-  	this.props.push(`/gathering/${gathering._id}`);
-  }
-
-  render(){
+  	const rsvpButton = <Button>Read more</Button>;
 
   	const { gatherings, images } = this.props;
 	  const gatheringsSorted = gatherings.sort(sortDates);
-  	const { mode } = this.state;
 
 	  return (
 	  	<div>
-	  		
-	  		<div style={{display: 'flex', justifyContent: 'center', marginBottom: '1em'}}>
-		  		<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
-	          <Radio.Button value="list">List</Radio.Button>
-	          <Radio.Button value="calendar">Calendar</Radio.Button>
-	        </Radio.Group>
-	      </div>
 
-	  		{	mode === 'calendar'
-		  		?
-		  			<CalendarView gatherings={gatherings} images={images} onSelect={this.onSelect} />
-		  		:
-		       	<List
-					    itemLayout="vertical"
-					    size="large"
-					    dataSource={gatheringsSorted}
-					    renderItem={item => (
-					    	<Card>
-						      <List.Item
-						        key={item.title}
-						        actions={[<IconText type="star-o" text="156" />, <IconText type="like-o" text="156" />, <IconText type="message" text="2" />]}
-						        extra={<img width={272} alt="image" src={item.imageUrl} />}
-						      >
-						        <List.Item.Meta
-						          avatar={<Avatar src={listData[0].avatar} />}
-						          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
-						          description={item.shortDescription}
-						        />
-						        {item.longDescription}
-						      </List.Item>
-					      </Card>
-					    )}
-					  />
-				}
+       	<List
+			    itemLayout="vertical"
+			    size="large"
+			    dataSource={gatheringsSorted}
+			    renderItem={(item, i) => (
+			    	<Card>
+				      <List.Item
+				        key={item.title + i}
+				        actions={[<Link to={`/gathering/${item._id}`}>{rsvpButton}</Link>]}
+				        extra={<img width={272} alt="image" src={item.imageUrl} />}
+				      >
+				        <List.Item.Meta
+				          avatar={<Avatar src={avatarSrc} />}
+				          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
+				          description={item.shortDescription}
+				        />
+				        {item.longDescription}
+				      </List.Item>
+			      </Card>
+			    )}
+			  />
 	    </div>
     )
 	}

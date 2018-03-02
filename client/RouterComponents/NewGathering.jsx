@@ -7,7 +7,7 @@ import Evaporate from 'evaporate';
 import AWS from 'aws-sdk';
 
 const successCreation = () => {
-  message.success('Your event is successfully created');
+  message.success('Your event is successfully created', 6);
 };
 
 class NewGathering extends React.Component {

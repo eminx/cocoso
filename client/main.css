@@ -9,7 +9,6 @@
 .layout {
 	max-width: 960px;
 	margin: 0 auto;
-	background: #fff;
 }
 
 .ant-layout-header {
@@ -42,4 +41,8 @@ button.rbc-active {
 	color: #1890ff !important;
 	-webkit-box-shadow: -1px 0 0 0 #1890ff;
 	box-shadow: -1px 0 0 0 #1890ff;
+}
+
+.ant-card-meta-description {
+	color: rgba(0, 0, 0, .65);
 }
