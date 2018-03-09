@@ -38,24 +38,85 @@ Meteor.methods({
 		} catch(e) {
 			throw new Meteor.Error(e, "Couldn't add to Collection");
 		}
+	},
+
+	registerAttendance(gatheringId) {
+		if (!Meteor.userId()) {
+			return null;
+		} else {
+			check(gatheringId, String);
+			const currentUser = Meteor.user();
+			const theGathering = Gatherings.findOne(gatheringId);
+			if (theGathering.capacity > theGathering.attendees.length) {
+				try {
+					Gatherings.update(gatheringId, {
+						$addToSet: {
+	            attendees: {
+	              userId: currentUser._id, 
+	              userInfo: currentUser.profile, 
+	              date: new Date()
+	            }
+	          }
+					});
+					try {
+						Meteor.users.update(currentUser._id, {
+							$addToSet: {
+								attending: {
+									gatheringId: theGathering._id,
+									gatheringTitle: theGathering.title,
+									gatheringAuthorName: theGathering.authorName,
+									gatheringAuthorId: theGathering.authorId
+								}
+							}
+						});
+					} catch(err) {
+						throw new Meteor.Error(e, "Couldn't update the Collection");
+					}
+					return true;
+				} catch(err) {
+					console.log(err);
+					throw new Meteor.Error(err, "Couldn't update the Collection");
+				}
+			} else {
+				console.log(err);
+				throw new Meteor.Error(err, "Sorry the capacity is full");
+			}
+		}
+	},
+
+	unRegisterAttendance(gatheringId) {
+		if (!Meteor.userId()) {
+			return null;
+		} else {
+			check(gatheringId, String);
+			const currentUser = Meteor.user();
+			const theGathering = Gatherings.findOne(gatheringId);
+			try {
+				Gatherings.update(gatheringId, {
+					$pull: {
+            attendees: {
+              userId: Meteor.userId()
+            }
+          }
+				});
+				try {
+					Meteor.users.update(currentUser._id, {
+						$pull: {
+							attending: {
+								gatheringId: theGathering._id
+							}
+						}
+					});
+				} catch(err) {
+					console.log(err);
+					throw new Meteor.Error(err, "Couldn't update the Collection");
+				}
+				return true;
+			} catch(err) {
+				console.log(err);
+				throw new Meteor.Error(err, "Couldn't update the Collection");
+			}
+		}
 	}
 });
 
-Meteor.publish('gatherings', function () {
-  return Gatherings.find({}, {
-    fields: {
-    	isSentForReview: 0,
-    	phoneNumber: 0
-    }
-  });
-});
-
-Meteor.publish('gathering', function (id) {
-  return Gatherings.find(id)
-  /*, {
-    fields: {
-    	isSentForReview: 0,
-    	phoneNumber: 0
-    }
-  })*/;
-});

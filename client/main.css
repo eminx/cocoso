@@ -7,7 +7,7 @@
 }
 
 .layout {
-	max-width: 960px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 
@@ -27,13 +27,19 @@
 }
 
 .rbc-toolbar {
+	flex-wrap: wrap;
+	justify-content: center;
 	padding: 10px;
 	margin-bottom: 0 !important;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	border: 1px solid #DDD;
 	border-bottom: none;
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
+}
+
+.rbc-time-view, .rbc-agenda-content {
+	background-color: #fff;
 }
 
 button.rbc-active {

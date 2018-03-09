@@ -19,46 +19,87 @@ const footerIcons = [
 class CardArticle extends React.Component {
 
   state= {
-    isComing: false
+    isAttending: false
+  }
+
+  componentDidMount() {
+    this.setIsAttending();
+  }
+
+  setIsAttending = () => {
+    const gathering = this.props.item;
+    const currentUser = Meteor.user();
+    let isAttending = false;
+    if (!currentUser) {
+      console.log('olmadi');
+      return;
+    }
+    for (let event of currentUser.attending) {
+      console.log(event.gatheringId, gathering._id);
+      if (event.gatheringId === gathering._id) {
+        console.log('yey');
+        isAttending = true;
+      }
+    } 
+    this.setState({
+      isAttending: isAttending
+    });
   }
 
   signupComing = () => {
-    if (!this.state.isComing) {
-      this.setState({
-        isComing: true
-      });
-      message.success("You're successfully registered!");
+    const { isAttending } = this.state;
+    const gathering = this.props.item;
+    if (!isAttending) {
+      if (gathering) {
+        Meteor.call('registerAttendance', gathering._id, (err, res) => {
+          if (err) {
+            message.error("It didn't work :/");
+            console.log(err);
+          } else {
+            console.log('success');
+            this.setIsAttending();
+            message.success("You're successfully registered!");
+          }
+        });
+      } else {
+        message.error("Sorry, the event is full");
+      }
     }
   }
 
   signupNotComing = () => {
-    if (this.state.isComing) {
-      this.setState({
-        isComing: false
+    const { isAttending } = this.state;
+    if (isAttending) {
+      const gatheringId = this.props.item._id;
+      Meteor.call('unRegisterAttendance', gatheringId, (err, res) => {
+        if (err) {
+          message.error("It didn't work :/");
+          console.log(err);
+        } else {
+          this.setIsAttending();
+          message.info("Sad that you aren't coming, but thanks for letting us know!");
+        }
       });
-      message.info("Sad that you aren't coming, but thanks for letting us know!");
     }
   }
 	
   render() {
-
     const { isLoading, item } = this.props;
-    const { isComing } = this.state;
+    const { isAttending } = this.state;
 
     const eventTimes = item 
     ?
       `${item.startTime}–${item.endTime}, ${moment(item.startDate).format('Do MMMM dddd')}`
     :
       null;
-    console.log(eventTimes);
 
     const rsvpButtonGroup = 
       <Button.Group>
-        <Button type={isComing ? 'default' : 'primary'} onClick={this.signupNotComing}>
-          <Icon type={isComing ? 'minus-circle-o' : 'minus-circle' } />I'm not coming
+        <Button type={isAttending ? 'default' : 'primary'} onClick={this.signupNotComing}>
+          <Icon type={isAttending ? 'minus-circle-o' : 'minus-circle' } />I'm not coming
         </Button>
-        <Button type={isComing ? 'primary' : 'default'} onClick={this.signupComing}>
-          <Icon type={isComing ? 'heart' : 'heart-o' } />I'm coming!
+        <Button type={isAttending ? 'primary' : 'default'} onClick={this.signupComing}>
+          <Icon type={isAttending ? 'heart' : 'heart-o' } />I'm coming!
         </Button>
       </Button.Group>;
 

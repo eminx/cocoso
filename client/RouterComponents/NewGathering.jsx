@@ -107,7 +107,7 @@ class NewGathering extends React.Component {
 
     return (
     	<div style={{padding: 24}}>
-        <h1>Create a gathering</h1>
+        <h1>Organise a gathering</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
     	      <CreateGatheringForm
@@ -118,10 +118,11 @@ class NewGathering extends React.Component {
     	      />
           </Col>
           <Col xs={24} sm={24} md={8}>
-            <Affix>
+            <Affix offsetTop={50}>
               <Alert
                 message={sideNote}
-                type="info"
+                type="warning"
+                showIcon
               />
             </Affix>
           </Col>
