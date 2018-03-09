@@ -17,6 +17,13 @@ Meteor.methods({
 		try {
 			const add = Gatherings.insert({
 				authorId: userId,
+				attendees: [
+					{
+						userId: userId, 
+            userInfo: Meteor.user(), 
+	          date: new Date()
+					}
+				],
 				authorName: 'someone',
 				title: formValues.title,
 				shortDescription: formValues.shortDescription,
@@ -32,7 +39,8 @@ Meteor.methods({
 				duration: formValues.duration,
 				imageUrl: imageUrl,
 				isSentForReview: true,
-				isPublished: false
+				isPublished: false,
+				creationDate: new Date()
 			});
 			return add;
 		} catch(e) {
@@ -47,7 +55,7 @@ Meteor.methods({
 			check(gatheringId, String);
 			const currentUser = Meteor.user();
 			const theGathering = Gatherings.findOne(gatheringId);
-			if (theGathering.capacity > theGathering.attendees.length) {
+			if (!theGathering.attendees || theGathering.capacity > theGathering.attendees.length) {
 				try {
 					Gatherings.update(gatheringId, {
 						$addToSet: {

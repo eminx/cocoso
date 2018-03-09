@@ -19,28 +19,35 @@ const footerIcons = [
 class CardArticle extends React.Component {
 
   state= {
-    isAttending: false
+    isAttending: false,
+    isMyEventWTF: false
   }
 
   componentDidMount() {
+    const gathering = this.props.item;
+    const currentUser = this.props.currentUser;
+    const isMyEventWTF = gathering.authorId === currentUser._id;
+    this.setState({
+      isMyEventWTF: isMyEventWTF
+    });
     this.setIsAttending();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.currentUser.attending !== prevProps.currentUser.attending) {
+      this.setIsAttending();
+    }
   }
 
   setIsAttending = () => {
     const gathering = this.props.item;
-    const currentUser = Meteor.user();
+    const currentUser = this.props.currentUser;
     let isAttending = false;
-    if (!currentUser) {
-      console.log('olmadi');
-      return;
-    }
     for (let event of currentUser.attending) {
-      console.log(event.gatheringId, gathering._id);
       if (event.gatheringId === gathering._id) {
-        console.log('yey');
         isAttending = true;
       }
-    } 
+    }
     this.setState({
       isAttending: isAttending
     });
@@ -85,7 +92,8 @@ class CardArticle extends React.Component {
 	
   render() {
     const { isLoading, item } = this.props;
-    const { isAttending } = this.state;
+    const { isAttending, isMyEventWTF } = this.state;
+    const hostActions = <p>Here are actions you can do as the host of this activity</p>;
 
     const eventTimes = item 
     ?
@@ -109,7 +117,7 @@ class CardArticle extends React.Component {
           title={<div><h1>{item.title}</h1><h3 style={{color: 'rgba(0,0,0,.65)'}}>{item.shortDescription}</h3></div>}
           bordered={false}
           cover={<img alt="example" src={item.imageUrl} />}
-          actions={[rsvpButtonGroup]}
+          actions={[isMyEventWTF ? hostActions : rsvpButtonGroup]}
         >
           <Meta
             avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
