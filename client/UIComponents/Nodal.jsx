@@ -58,7 +58,7 @@ class Nodal extends React.Component {
 				      >
 				        <List.Item.Meta
 				          avatar={<Avatar src={avatarSrc} />}
-				          title={<Link to={`/gathering/${item._id}`}>{<h2>{item.title}</h2>}</Link>}
+				          title={<Link to={`/gathering/${item._id}`}>{item.title}</Link>}
 				          description={item.shortDescription}
 				        />
 				        {shortenDescription(item.longDescription) + '...'}

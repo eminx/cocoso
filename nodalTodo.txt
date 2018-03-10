@@ -12,7 +12,7 @@ X- Create routes for dedicated pages for gatherings
 - Add burger menu and menu items
 - Add edit event feature
 X- Add image uploading
-- Admin management
+- Admin management: Add you and Hampus isSuperAdmin: true.
 X- Fix list view to include the info
 - Add copy link to send out
 X- Make it look OK on mobile

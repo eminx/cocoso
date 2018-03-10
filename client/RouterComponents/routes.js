@@ -8,6 +8,7 @@ import HomeContainer from './HomeContainer';
 import NewGatheringContainer from './NewGatheringContainer';
 import GatheringContainer from './GatheringContainer';
 import NewStreamContainer from './NewStreamContainer';
+import Memberetc from './Memberetc';
 
 const browserHistory = createBrowserHistory();
 
@@ -16,9 +17,10 @@ export const renderRoutes = () => (
     <LayoutContainer match={browserHistory}>
     	<Switch>
 	      <Route exact path="/" component={HomeContainer}/>
-	      <Route exact path="/create-a-gathering" component={NewGatheringContainer}/>
-	      <Route exact path="/create-a-stream" component={NewStreamContainer}/>
-	      <Route path="/gathering/:id" component={GatheringContainer}/>
+	      <Route exact path="/create-a-gathering" component={NewGatheringContainer} />
+	      <Route exact path="/create-a-stream" component={NewStreamContainer} />
+	      <Route path="/gathering/:id" component={GatheringContainer} />
+	      <Route exact path="/member" component={Memberetc} />
 	      {/*<Route path="*" component={NotFoundPage}/>*/}
 	    </Switch>
     </LayoutContainer>

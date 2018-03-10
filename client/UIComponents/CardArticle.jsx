@@ -36,15 +36,18 @@ class CardArticle extends React.Component {
         </Button>
       </Button.Group>;
 
-    const hostActions = 
-      <Button.Group>
-        <Button disabled>
-          <Icon type="edit" />Edit this post
-        </Button>
-        <Button disabled>
-          <Icon type="delete"/>Delete this post
-        </Button>
-      </Button.Group>;
+    const hostActions =
+      <div>
+        <h4 style={{color: 'rgba(0, 0, 0, .55)'}}>You're the host of this activity</h4>
+        <Button.Group>
+          <Button disabled>
+            <Icon type="edit" />Edit this post
+          </Button>
+          <Button disabled>
+            <Icon type="delete"/>Delete this post
+          </Button>
+        </Button.Group>
+      </div>;
 
     return (
       <Card
