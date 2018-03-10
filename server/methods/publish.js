@@ -1,7 +1,8 @@
 Meteor.publish('attendingEvents', function() {
 	return Meteor.users.find(this.userId, {
 		fields: {
-			attending: 1
+			attending: 1,
+      profile: 1
 		}
 	})
 });
@@ -25,4 +26,9 @@ Meteor.publish('gathering', function (id) {
     	phoneNumber: 0
     }
   })*/;
+});
+
+Accounts.onCreateUser(function (options, user) {
+  user.attending = [];
+  return user;
 });

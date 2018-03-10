@@ -1,6 +1,7 @@
-* {
-	font-family: sans-serif;
+h1 {
+	font-size: 28px;
 }
+
 
 #render-target {
 	background-color: #f0f2f5;
@@ -38,7 +39,7 @@
 	/* background-color: #f9f9f9; */
 }
 
-.rbc-time-view, .rbc-agenda-content {
+.rbc-time-view, .rbc-month-view, .rbc-agenda-content {
 	background-color: #fff;
 }
 
@@ -54,6 +55,20 @@ button.rbc-active {
 	margin-bottom: 24px;
 }
 
+.ant-list .ant-list-item-extra {
+	overflow: hidden;
+}
+
 .ant-card .ant-card-meta-description {
 	color: rgba(0, 0, 0, .65);
+}
+
+.ant-card .ant-card-head-title {
+	white-space: inherit;
+}
+
+@media (max-width: 480px) {
+	h1 {
+		font-size: 22px;
+	}
 }

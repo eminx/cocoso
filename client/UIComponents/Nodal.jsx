@@ -54,7 +54,7 @@ class Nodal extends React.Component {
 				      <List.Item
 				        key={item.title + i}
 				        actions={[<Link to={`/gathering/${item._id}`}>{rsvpButton}</Link>]}
-				        extra={<img width={272} alt="image" src={item.imageUrl} />}
+				        extra={<img height={180} alt="image" src={item.imageUrl} style={{marginBottom: 24}} />}
 				      >
 				        <List.Item.Meta
 				          avatar={<Avatar src={avatarSrc} />}

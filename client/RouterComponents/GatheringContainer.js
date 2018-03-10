@@ -6,13 +6,12 @@ export default GatheringContainer = withTracker((props) => {
   const gathering = Meteor.subscribe('gathering', gatheringId);
   Meteor.subscribe('attendingEvents');
   const isLoading = !gathering.ready();
-  const theGathering = Gatherings ? Gatherings.findOne({_id:gatheringId}) : null;
+  const gatheringData = Gatherings ? Gatherings.findOne({_id:gatheringId}) : null;
   const currentUser = Meteor.user();
-
+  
   return {
     isLoading,
-    gathering,
-    theGathering,
-    currentUser
+    gatheringData,
+    currentUser,
   };
 })(Gathering);

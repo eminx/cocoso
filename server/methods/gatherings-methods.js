@@ -17,13 +17,7 @@ Meteor.methods({
 		try {
 			const add = Gatherings.insert({
 				authorId: userId,
-				attendees: [
-					{
-						userId: userId, 
-            userInfo: Meteor.user(), 
-	          date: new Date()
-					}
-				],
+				attendees: [],
 				authorName: 'someone',
 				title: formValues.title,
 				shortDescription: formValues.shortDescription,
@@ -60,7 +54,7 @@ Meteor.methods({
 					Gatherings.update(gatheringId, {
 						$addToSet: {
 	            attendees: {
-	              userId: currentUser._id, 
+	              userId: currentUser._id,
 	              userInfo: currentUser.profile, 
 	              date: new Date()
 	            }
@@ -125,6 +119,39 @@ Meteor.methods({
 				throw new Meteor.Error(err, "Couldn't update the Collection");
 			}
 		}
+	},
+
+	toggleAttendanceAsHost(gatheringId, userId) {
+		if (!Meteor.userId()) {
+			return null;
+		}
+		const theGathering = Gatherings.findOne(gatheringId);
+		const currentUser = Meteor.user();
+		if (theGathering.authorId !== currentUser._id) {
+			throw Meteor.Error(err, "This is not your activity!");
+		}
+
+		const attendees  = theGathering.attendees
+		try {
+			for (let i in attendees) {
+				if (attendees[i].userId === userId) {
+					if (!attendees[i].didNotAttend) {
+						attendees[i].didNotAttend = true;
+					} else {
+						attendees[i].didNotAttend = false;
+					}
+				}
+			}
+			Gatherings.update(gatheringId, {
+				$set: {
+					attendees: attendees
+				}
+			});
+		} catch (e) {
+			console.log(err);
+			throw new Meteor.Error(err, "Couldn't toggle attendance");
+		}
+
 	}
 });
 

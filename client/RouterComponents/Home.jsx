@@ -35,7 +35,7 @@ class Home extends React.Component {
     }
 
     return (
-    	<div style={{padding: 12}}>
+    	<div style={{padding: 24}}>
         <Row gutter={32}>
           <Col xs={24} sm={24} md={8}>
             <h2>Welcome to Noden</h2>

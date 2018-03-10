@@ -15,10 +15,14 @@ X- Add image uploading
 - Admin management
 X- Fix list view to include the info
 - Add copy link to send out
+X- Make it look OK on mobile
 
-- Register the event RSVP on the DB: create an array at users object about the events she's attending. The event id, name, maybe some more info. Also add the users id and username to events document on mongo with an array of items: participants: [{user...}]
-- Make sure to pull this as well from the arrays when user unsubscribes
-- Add a feature for the event organiser to confirm who came with a simple tick of participants... (switch probably better)
+X- Register the event RSVP on the DB: create an array at users object about the events she's attending. The event id, name, maybe some more info. Also add the users id and username to events document on mongo with an array of items: participants: [{user...}]
+X- Make sure to pull this as well from the arrays when user unsubscribes
+X- Add a feature for the event organiser to confirm who came with a simple tick of participants... 
+X- Username, name etc handling: On signup and for other features
+X- Test all of this
+
 - Chat... (epic)
 
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
