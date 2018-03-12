@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Spin, Button, Icon, Divider, Checkbox, List, Avatar, Affix, message } from 'antd/lib';
+import { Row, Col, Spin, Button, Icon, Divider, Checkbox, List, Avatar, Affix, Popconfirm, message } from 'antd/lib';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import CardArticle from '../UIComponents/CardArticle';
 const ListItem = List.Item;
@@ -91,7 +91,7 @@ class Gathering extends React.Component {
   }
 
   getManageButtons = () => {
-    const { currentUser } = this.props;
+    const { currentUser, gatheringData } = this.props;
     const { isAttending } = this.state;
 
     const isMyEventWTF = this.isMyEvent();
@@ -139,7 +139,9 @@ class Gathering extends React.Component {
     //   </div>;
 
     let manageButtons;
-    if (currentUser) {
+    if (currentUser && currentUser.isSuperAdmin && gatheringData && !gatheringData.isPublished) {
+      manageButtons = this.adminApprovalButtons();
+    } else if (currentUser) {
       manageButtons = rsvpButtonGroupForUser;
     } else {
       manageButtons = rsvpButtonGroupForNonUser;
@@ -159,22 +161,19 @@ class Gathering extends React.Component {
         }
       });
     }
-    if (currentUser && currentUser.isSuperAdmin && gatheringData && !gatheringData.isPublished) {
-      return (
-        <div style={{marginTop: 30}}>
-          <p>This event is not published.</p>
-          <Popconfirm 
-            title="Are you sure" onConfirm={confirm} okText="Yes" cancelText="No">
-            <Button
-              type="primary" 
-              onClick={() => Meteor.call('publishGathering', gatheringData._id)}
-            >
-              Publish
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    }
+    return (
+      <div style={{marginTop: 30}}>
+        <p>This event is not published.</p>
+        <Popconfirm 
+          title="Are you sure" onConfirm={confirm} okText="Yes" cancelText="No">
+          <Button
+            type="primary" 
+          >
+            Publish
+          </Button>
+        </Popconfirm>
+      </div>
+    )
   }
 
   isMyEvent = () => {
@@ -210,8 +209,6 @@ class Gathering extends React.Component {
             }
     			</Col>
     			<Col sm={24} md={8}>
-            {this.adminApprovalButtons()}
-
             { isMyEventWTF 
               ?
                 gatheringData.attendees.length > 0 
@@ -231,7 +228,9 @@ class Gathering extends React.Component {
                         ))}
                       </List>
                     </div>
-                  : <p>Currently no one registered. Keep spreading the word!</p>
+                  : gatheringData.isPublished
+                    ? <p>Currently no one registered. Keep spreading the word!</p>
+                    : <p>Your activity is awaiting review to be published.</p>
               : manageButtons
             }
             

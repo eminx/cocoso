@@ -10,9 +10,9 @@ Meteor.publish('attendingEvents', function() {
 
 Meteor.publish('gatherings', function () {
   const user = Meteor.user();
-  if (user.isSuperAdmin) {
+  if (user && user.isSuperAdmin) {
     return Gatherings.find();
-  } else {
+  } else if (user) {
     return Gatherings.find({
     	$or: [{
         isPublished: true
@@ -25,13 +25,22 @@ Meteor.publish('gatherings', function () {
       	phoneNumber: 0
       }
     });
+  } else {
+    return Gatherings.find({
+      isPublished: true
+    });
   }
 });
 
 Meteor.publish('gathering', function (id) {
   const user = Meteor.user();
-  if (user.isSuperAdmin) {
+  if (user && user.isSuperAdmin) {
     return Gatherings.find({
+      _id: id
+    });
+  } else if (user) {
+    return Gatherings.find({
+      _id: id,
       $or: [{
         isPublished: true
       }, {
