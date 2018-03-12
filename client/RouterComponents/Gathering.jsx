@@ -5,27 +5,11 @@ import CardArticle from '../UIComponents/CardArticle';
 const ListItem = List.Item;
 
 class Gathering extends React.Component {
-  state= {
-    isAttending: false
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { isLoading, currentUser } = this.props;
-    if (prevProps.isLoading && !isLoading && currentUser) {
-      this.setIsAttending();
-    } else if (currentUser && currentUser.attending && prevProps.currentUser && prevProps.currentUser.attending) {
-      if (currentUser.attending.length !== prevProps.currentUser.attending.length) {
-        this.setIsAttending();
-      }
-    } else if (!prevProps.currentUser && currentUser) {
-      this.setIsAttending();
-    }
-  }
 
   checkIfAttending = () => {
     const { gatheringData, currentUser } = this.props;
     let isAttending = false;
-    if (currentUser.attending && gatheringData) {
+    if (currentUser && currentUser.attending && gatheringData) {
       for (let event of currentUser.attending) {
         if (event.gatheringId === gatheringData._id) {
           isAttending = true;
@@ -35,15 +19,8 @@ class Gathering extends React.Component {
     return isAttending;
   }
 
-  setIsAttending = () => {
-    const isAttending = this.checkIfAttending();
-    this.setState({
-      isAttending: isAttending
-    });
-  }
-
   signupComing = () => {
-    const { isAttending } = this.state;
+    const isAttending = this.checkIfAttending();
     const { gatheringData } = this.props;
     if (!isAttending && gatheringData) {
       Meteor.call('registerAttendance', gatheringData._id, (err, res) => {
@@ -60,7 +37,7 @@ class Gathering extends React.Component {
   }
 
   signupNotComing = () => {
-    const { isAttending } = this.state;
+    const isAttending = this.checkIfAttending();
     const { gatheringData } = this.props;
     if (isAttending && gatheringData) {
       const gatheringId = gatheringData._id;
@@ -92,7 +69,7 @@ class Gathering extends React.Component {
 
   getManageButtons = () => {
     const { currentUser, gatheringData } = this.props;
-    const { isAttending } = this.state;
+    const isAttending = this.checkIfAttending();
 
     const isMyEventWTF = this.isMyEvent();
 
@@ -186,7 +163,7 @@ class Gathering extends React.Component {
   render() {
 
     const { gatheringData, isLoading, currentUser } = this.props;
-    const { isAttending } = this.state;
+    const isAttending = this.checkIfAttending();
     const isMyEventWTF = this.isMyEvent();
 
     const manageButtons = this.getManageButtons();
@@ -209,31 +186,32 @@ class Gathering extends React.Component {
             }
     			</Col>
     			<Col sm={24} md={8}>
-            { isMyEventWTF 
-              ?
-                gatheringData.attendees.length > 0 
-                  ?
-                    <div style={{padding: 12}}>
-                      <h3>Attendees</h3>
-                      <p>Please uncheck for those who did not attend</p>
-                      <List bordered itemLayout="horizontal" size="small">
-                        {gatheringData.attendees.map((attendee, i) => (
-                          <ListItem key={attendee.userId + i}>
-                            <List.Item.Meta
-                              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                              title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.userId}</span>}
-                            />
-                            <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
-                          </ListItem>
-                        ))}
-                      </List>
-                    </div>
-                  : gatheringData.isPublished
-                    ? <p>Currently no one registered. Keep spreading the word!</p>
-                    : <p>Your activity is awaiting review to be published.</p>
-              : manageButtons
-            }
-            
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
+              { isMyEventWTF 
+                ?
+                  gatheringData.attendees.length > 0 
+                    ?
+                      <div style={{padding: 12}}>
+                        <h3>Attendees</h3>
+                        <p>Please uncheck for those who did not attend</p>
+                        <List bordered itemLayout="horizontal" size="small">
+                          {gatheringData.attendees.map((attendee, i) => (
+                            <ListItem key={attendee.userId + i}>
+                              <List.Item.Meta
+                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.userId}</span>}
+                              />
+                              <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
+                            </ListItem>
+                          ))}
+                        </List>
+                      </div>
+                    : gatheringData.isPublished
+                      ? <p>Currently no one registered. Keep spreading the word!</p>
+                      : <p>Your activity is awaiting review to be published.</p>
+                : manageButtons
+              }
+            </div>
           </Col>
     		</Row>
       </div>
