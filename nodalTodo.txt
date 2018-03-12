@@ -1,30 +1,6 @@
-Nodal TODO:
+# Nodal logs:
 
-X- Implement form validation,
-X- Implement creating gathering in the BE
-X- Remove insecure package and make it secure
-X- Add the Calendar on the homepage 
-X- Get the created event data
-X- Add duration or ending time to display on the calendar
-X- Add the above info to the calendar accordingly
-X- Add quick modal view of an event (both for homepage list/calendar and also overview on create)
-X- Create routes for dedicated pages for gatherings
-- Add burger menu and menu items
-- Add edit event feature
-X- Add image uploading
-- Admin management: Add you and Hampus isSuperAdmin: true.
-X- Fix list view to include the info
-- Add copy link to send out
-X- Make it look OK on mobile
-
-X- Register the event RSVP on the DB: create an array at users object about the events she's attending. The event id, name, maybe some more info. Also add the users id and username to events document on mongo with an array of items: participants: [{user...}]
-X- Make sure to pull this as well from the arrays when user unsubscribes
-X- Add a feature for the event organiser to confirm who came with a simple tick of participants... 
-X- Username, name etc handling: On signup and for other features
-X- Test all of this
-
-- Chat... (epic)
-
+## Scenario:
 - On the page, she pays, successful payment, we create an account. and we send welcome email with login info, introduction, and a link to the page.
 	X- Click create button
 	X- Fill the form and submit
@@ -46,3 +22,36 @@ later	- Chat function to be able to chat with each other; public/private/categor
   gatherings to happen. This will also allow chatting scoped for this purpose. It's like groups. But it's
    not based on "people" who form the group, it's based on a "stream"; a theme which people see as a
     purpose to gather for...
+
+
+## TODOS
+### Early todo
+X- Implement form validation,
+X- Implement creating gathering in the BE
+X- Remove insecure package and make it secure
+X- Add the Calendar on the homepage 
+X- Get the created event data
+X- Add duration or ending time to display on the calendar
+X- Add the above info to the calendar accordingly
+X- Add quick modal view of an event (both for homepage list/calendar and also overview on create)
+X- Create routes for dedicated pages for gatherings
+X- Fix menu items nice for mobile
+X- Add image uploading
+X- Admin management: Add you and Hampus isSuperAdmin: true.
+X- Fix list view to include the info
+X- Make it look OK on mobile
+
+X- Register the event RSVP on the DB: create an array at users object about the events she's attending. The event id, name, maybe some more info. Also add the users id and username to events document on mongo with an array of items: participants: [{user...}]
+X- Make sure to pull this as well from the arrays when user unsubscribes
+X- Add a feature for the event organiser to confirm who came with a simple tick of participants... 
+X- Username, name etc handling: On signup and for other features
+X- Test all of this
+
+### Todo as of 12 Mar 2018:
+- Implement user profile info entering: full name, personnummer etc.
+- Add the above details to relevant fields
+- Add the part about how to message between creators and super admin, when an activity needs to be edited. 
+- Hence editing an activity by the creator.
+- Connecting with Moonclerk 
+- Emails for notification (for superadmin and creator)
+- Chat... (epic)

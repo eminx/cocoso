@@ -192,7 +192,7 @@ class CreateGatheringForm extends React.Component {
               sm: { span: 16, offset: 8 },
             }}
           >
-            <Button type="primary" htmlType="submit">Save and Continue</Button>
+            <Button type="primary" htmlType="submit">Continue</Button>
           </FormItem>
         </Form>
       </div>
