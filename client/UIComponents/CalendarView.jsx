@@ -14,7 +14,7 @@ let CalendarView = props => {
       <BigCalendar
         onSelectEvent={props.onSelect}
         events={gatherings}
-        defaultView="week"
+        defaultView="month"
         timeslots={4}
         views={['month', 'week']}
         popupOffset={{x: 0, y: 200}}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, Spin, Checkbox, List, Avatar, message } from 'antd/lib';
+import { Row, Col, Spin, Button, Icon, Divider, Checkbox, List, Avatar, Affix, message } from 'antd/lib';
+import Blaze from 'meteor/gadicc:blaze-react-component';
 import CardArticle from '../UIComponents/CardArticle';
 const ListItem = List.Item;
 
@@ -10,20 +11,21 @@ class Gathering extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { isLoading, currentUser } = this.props;
-    if (prevProps.isLoading && !isLoading) {
+    if (prevProps.isLoading && !isLoading && currentUser) {
       this.setIsAttending();
     } else if (currentUser && currentUser.attending && prevProps.currentUser && prevProps.currentUser.attending) {
       if (currentUser.attending.length !== prevProps.currentUser.attending.length) {
         this.setIsAttending();
-        console.log('geliyor');
       }
+    } else if (!prevProps.currentUser && currentUser) {
+      this.setIsAttending();
     }
   }
 
   checkIfAttending = () => {
     const { gatheringData, currentUser } = this.props;
     let isAttending = false;
-    if (currentUser.attending) {
+    if (currentUser.attending && gatheringData) {
       for (let event of currentUser.attending) {
         if (event.gatheringId === gatheringData._id) {
           isAttending = true;
@@ -88,11 +90,107 @@ class Gathering extends React.Component {
     });
   }
 
+  getManageButtons = () => {
+    const { currentUser } = this.props;
+    const { isAttending } = this.state;
+
+    const isMyEventWTF = this.isMyEvent();
+
+    const rsvpButtonGroupForUser = 
+      <Button.Group>
+        <Button type={isAttending ? 'default' : 'primary'} onClick={this.signupNotComing}>
+          <Icon type={isAttending ? 'minus-circle-o' : 'minus-circle' } />I'm not coming
+        </Button>
+        <Button type={isAttending ? 'primary' : 'default'} onClick={this.signupComing}>
+          <Icon type={isAttending ? 'heart' : 'heart-o' } />I'm coming!
+        </Button>
+      </Button.Group>;
+
+    const rsvpButtonGroupForNonUser = 
+      <div>
+        <Button.Group>
+          <Button type={isAttending ? 'default' : 'primary'} disabled>
+            <Icon type={isAttending ? 'minus-circle-o' : 'minus-circle' } />I'm not coming
+          </Button>
+          <Button type={isAttending ? 'primary' : 'default'} disabled>
+            <Icon type={isAttending ? 'heart' : 'heart-o' } />I'm coming!
+          </Button>
+        </Button.Group>
+        <Divider />
+        <p style={{cursor: 'default'}}>You have to sign in to RSVP</p>
+        <Blaze template="loginButtons" >
+          <Button>
+            <Icon type="login" />
+          </Button>
+        </Blaze>
+      </div>
+
+    // const hostActions =
+    //   <div>
+    //     <h4 style={{color: 'rgba(0, 0, 0, .55)'}}>You're the host of this activity</h4>
+    //     <Button.Group>
+    //       <Button disabled>
+    //         <Icon type="edit" />Edit this post
+    //       </Button>
+    //       <Button disabled>
+    //         <Icon type="delete"/>Delete this post
+    //       </Button>
+    //     </Button.Group>
+    //   </div>;
+
+    let manageButtons;
+    if (currentUser) {
+      manageButtons = rsvpButtonGroupForUser;
+    } else {
+      manageButtons = rsvpButtonGroupForNonUser;
+    }
+
+    return manageButtons;
+  }
+
+  adminApprovalButtons = () => {
+    const { currentUser, gatheringData } = this.props;
+    const confirm = () => {
+      Meteor.call('publishGathering', gatheringData._id, (err, res) => {
+        if (err) {
+          message.error("Sorry didn't happen for some reason :/")
+        } else {
+          message.success("The activity is successfully published.");
+        }
+      });
+    }
+    if (currentUser && currentUser.isSuperAdmin && gatheringData && !gatheringData.isPublished) {
+      return (
+        <div style={{marginTop: 30}}>
+          <p>This event is not published.</p>
+          <Popconfirm 
+            title="Are you sure" onConfirm={confirm} okText="Yes" cancelText="No">
+            <Button
+              type="primary" 
+              onClick={() => Meteor.call('publishGathering', gatheringData._id)}
+            >
+              Publish
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  }
+
+  isMyEvent = () => {
+    const { gatheringData, currentUser } = this.props;
+    if (currentUser && gatheringData) {
+      return gatheringData.authorId === currentUser._id
+    }
+  }
+
   render() {
 
     const { gatheringData, isLoading, currentUser } = this.props;
     const { isAttending } = this.state;
-    const isMyEventWTF = currentUser && gatheringData ? gatheringData.authorId === currentUser._id : false;
+    const isMyEventWTF = this.isMyEvent();
+
+    const manageButtons = this.getManageButtons();
 
     return (
     	<div>
@@ -104,8 +202,7 @@ class Gathering extends React.Component {
                   isLoading={isLoading}
                   isAttending={isAttending}
                   isMyEventWTF={isMyEventWTF}
-                  signupComing={this.signupComing}
-                  signupNotComing={this.signupNotComing}
+                  currentUser={currentUser}
                 />
               : <div style={{display: 'flex', justifyContent: 'center'}}>
                   <Spin size="large" />
@@ -113,6 +210,8 @@ class Gathering extends React.Component {
             }
     			</Col>
     			<Col sm={24} md={8}>
+            {this.adminApprovalButtons()}
+
             { isMyEventWTF 
               ?
                 gatheringData.attendees.length > 0 
@@ -133,8 +232,9 @@ class Gathering extends React.Component {
                       </List>
                     </div>
                   : <p>Currently no one registered. Keep spreading the word!</p>
-              : null
+              : manageButtons
             }
+            
           </Col>
     		</Row>
       </div>

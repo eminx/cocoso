@@ -5,7 +5,7 @@ import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
 
-const aboutNoden = "Noden is a place for anyone who has an interest to create, co-create, manage, attend or somehow get engaged in cultural, artistic or perhaps political activities. Besides all, Noden is a place for manifesting who you choose to become, and cherishing what it means to gather together."
+const aboutNoden = "Noden is a place for anyone who has an interest to create, co-create, manage, attend or somehow get engaged in cultural, artistic or perhaps political activities. Besides all, Noden is a place for manifesting who you choose to become, and cherishing what it means to get together."
 
 class Home extends React.Component {
 	state = {

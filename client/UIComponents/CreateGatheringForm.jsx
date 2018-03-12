@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon } from 'antd/lib';
+import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -55,7 +55,8 @@ class CreateGatheringForm extends React.Component {
 
     return (
       <div>
-        <h2>Please enter the details about your gathering</h2>
+        <h3>Please enter the details about your gathering</h3>
+        <Divider />
         <Form onSubmit={this.handleSubmit}>
 
           <FormItem {...formItemLayout} label="Title">

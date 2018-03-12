@@ -13,7 +13,7 @@ class ModalArticle extends React.Component {
         <Modal
           {...this.props} style={{top: 20}} > 
           <Card
-            title={<div><h1>{item.title}</h1><h2>{item.shortDescription}</h2></div>}
+            title={<div><h1>{item.title}</h1><h3 style={{color: 'rgba(0,0,0,.65)'}}>{item.shortDescription}</h3></div>}
             bordered={false}
             cover={<img alt="example" src={imageSrc} />}
             actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}

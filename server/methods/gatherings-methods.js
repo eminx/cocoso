@@ -42,6 +42,25 @@ Meteor.methods({
 		}
 	},
 
+	publishGathering(gatheringId) {
+		check(gatheringId, String);
+		const user = Meteor.user();
+		if (user.isSuperAdmin) {
+			try {
+				const update = Gatherings.update(gatheringId, {
+					$set: {
+						isPublished: true,
+						publishDate: new Date(),
+						publishedBy: user._id
+					}
+				});
+				return update;
+			} catch (e) {
+				throw new Meteor.Error(e, "Couldn't publish the happening");
+			}
+		}
+	},
+
 	registerAttendance(gatheringId) {
 		if (!Meteor.userId()) {
 			return null;
@@ -71,6 +90,7 @@ Meteor.methods({
 								}
 							}
 						});
+						return true
 					} catch(err) {
 						throw new Meteor.Error(e, "Couldn't update the Collection");
 					}
@@ -151,7 +171,6 @@ Meteor.methods({
 			console.log(err);
 			throw new Meteor.Error(err, "Couldn't toggle attendance");
 		}
-
 	}
 });
 
