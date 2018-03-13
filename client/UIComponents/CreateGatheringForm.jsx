@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider } from 'antd/lib';
+import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider, Modal } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -12,6 +12,14 @@ class CreateGatheringForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!this.props.uploadableImage) {
+      Modal.error({
+        title: 'Image is required',
+        content: 'Please upload an image',
+      });
+      return;
+    }
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
@@ -35,26 +43,36 @@ class CreateGatheringForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { uploadableImage, setUploadableImage } = this.props;
+
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },
     };
     const configDate = {
-      rules: [{ type: 'object', required: true, message: 'Please select the day!'}],
+      rules: [{
+        type: 'object',
+        required: true,
+        message: 'Please select the day!'
+      }],
     };
     const configTimeStart = {
-      rules: [{ type: 'object', required: true, message: 'Please select the start time!' }],
+      rules: [{
+        type: 'object',
+        required: true,
+        message: 'Please select the start time!' }],
     };
     const configDuration = {
-      rules: [{ type: 'number', required: true, message: 'Please type duration'}],
+      rules: [{
+        type: 'number',
+        required: true,
+        message: 'Please type duration'
+      }],
       initialValue: 60
     };
 
-    const { uploadableImage, setUploadableImage } = this.props;
-
-
     return (
-      <div>
+      <div className="create-gathering-form">
         <h3>Please enter the details about your gathering</h3>
         <Divider />
         <Form onSubmit={this.handleSubmit}>
@@ -73,7 +91,8 @@ class CreateGatheringForm extends React.Component {
           <FormItem {...formItemLayout} label="Short description">
             {getFieldDecorator('shortDescription', {
               rules: [{
-                required: true, message: 'Please enter a brief description',
+                required: true,
+                message: 'Please enter a brief description',
               }],
             })(
               <Input placeholder="Enter a short description" />
@@ -83,7 +102,8 @@ class CreateGatheringForm extends React.Component {
           <FormItem {...formItemLayout} label="Long description">
             {getFieldDecorator('longDescription', {
               rules: [{
-                required: true, message: 'Please enter a detailed description',
+                required: true,
+                message: 'Please enter a detailed description',
               }],
             })(
               <TextArea placeholder="Enter a detailed description of your Stream" autosize />
@@ -110,7 +130,7 @@ class CreateGatheringForm extends React.Component {
 
           <FormItem
             {...formItemLayout}
-            label="Duration"
+            label="Duration (mins)"
           >
             {getFieldDecorator('duration', configDuration)(
               <InputNumber />
@@ -122,7 +142,9 @@ class CreateGatheringForm extends React.Component {
             label="Select Room"
           >
             {getFieldDecorator('room', {
-              rules: [{ required: true, message: 'Please select a part of Noden in which this gathering will be held' }],
+              rules: [{
+                required: true,
+                message: 'Please select a part of Noden in which this gathering will be held' }],
             })(
               <Select
                 placeholder="Select part of Noden..."
@@ -159,20 +181,19 @@ class CreateGatheringForm extends React.Component {
           <FormItem
             {...formItemLayout}
             label="Select an image"
-            extra={ uploadableImage ? uploadableImage.name : "Pick an image from your device" }
+            className="upload-image-col"
+            extra={ uploadableImage ? null : "Pick an image from your device" }
           >
-            {getFieldDecorator('upload-image', {
-              required: true,
-              valuePropName: 'fileList',
-              getValueFromEvent: setUploadableImage,
-            })(
-              <Upload name="gathering" action="/upload.do" >
-                { uploadableImage
-                  ? <Button><Icon type="check-circle" />Image selected</Button>
-                  : <Button><Icon type="upload" />Pick an image</Button>
-                }
-              </Upload>
-            )}
+            <Upload 
+              name="gathering"
+              action="/upload.do"
+              onChange={setUploadableImage}
+            >
+              { uploadableImage
+                ? <Button><Icon type="check-circle" />Image selected</Button>
+                : <Button><Icon type="upload" />Pick an image</Button>
+              }
+            </Upload>
           </FormItem>
 
           <FormItem
@@ -180,7 +201,10 @@ class CreateGatheringForm extends React.Component {
             label="Phone Number"
           >
             {getFieldDecorator('phoneNumber', {
-              rules: [{ required: true, message: 'Phone number to contact' }],
+              rules: [{
+                required: true,
+                message: 'Phone number to contact'
+              }],
             })(
               <Input />
             )}

@@ -165,6 +165,7 @@ class CreateStreamForm extends React.Component {
           extra="Pick an image from your device"
         >
           {getFieldDecorator('upload-image', {
+            required: true,
             valuePropName: 'fileList',
             getValueFromEvent: this.normFile,
           })(
