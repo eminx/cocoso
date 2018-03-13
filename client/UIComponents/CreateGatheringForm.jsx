@@ -13,18 +13,19 @@ class CreateGatheringForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!this.props.uploadableImage) {
-      Modal.error({
-        title: 'Image is required',
-        content: 'Please upload an image',
-      });
-      return;
-    }
-
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
         return;
       }
+
+      if (!this.props.uploadableImage) {
+        Modal.error({
+          title: 'Image is required',
+          content: 'Please upload an image',
+        }); 
+        return;
+      }
+
       const startTime = fieldsValue['timePickerStart'], 
             endTime = startTime.clone();
       endTime.add(fieldsValue.duration,'minutes');
@@ -40,7 +41,7 @@ class CreateGatheringForm extends React.Component {
       }
     });
   }
-
+  
   render() {
     const { getFieldDecorator } = this.props.form;
     const { uploadableImage, setUploadableImage } = this.props;

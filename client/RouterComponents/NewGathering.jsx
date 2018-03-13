@@ -29,7 +29,6 @@ class NewGathering extends React.Component {
       values: values, 
       modalConfirm: true
     });
-    // this.uploadImage();
 	}
 
   setUploadableImage = (e) => {
@@ -45,6 +44,8 @@ class NewGathering extends React.Component {
   }
 
   uploadImage = () => {
+    this.setState({isLoading: true});
+    
     const { uploadableImage } = this.state;
 
     const upload = new Slingshot.Upload("gatheringImageUpload");
@@ -63,7 +64,6 @@ class NewGathering extends React.Component {
   }
 
 	createGathering = (uploadedImage) => {
-    this.setState({isLoading: true});
     const { values } = this.state;
 
     Meteor.call('createGathering', values, uploadedImage, (error, result) => {
