@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert } from 'antd/lib';
+import { Row, Col, Radio, Alert, Spin } from 'antd/lib';
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
@@ -26,6 +26,7 @@ class Home extends React.Component {
 
 
   render() {
+    const { isLoading } = this.props;
   	const gatherings = this.props.gatheringsList;
   	const images = this.props.imagesArray;
   	const { mode, goto } = this.state;
@@ -72,20 +73,26 @@ class Home extends React.Component {
           </Col>
 
           <Col xs={24} sm={24} md={16}>
-    				{
-    					mode === 'calendar'
-    					?
-	    					<CalendarView
-		    					gatherings={gatherings}
-		    					images={images} 
-		    					onSelect={this.onSelect}
-		    				/>
-		    			:
-			    			<Nodal 
-		    					push={this.props.history.push}
-		    					images={this.props.imagesArray}
-		    					gatherings={this.props.gatheringsList}
-		    				/>
+            {
+              isLoading
+              ? 
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <Spin size="large" />
+                </div>
+              :
+      					mode === 'calendar'
+      					?
+  	    					<CalendarView
+  		    					gatherings={gatherings}
+  		    					images={images} 
+  		    					onSelect={this.onSelect}
+  		    				/>
+  		    			:
+  			    			<Nodal 
+  		    					push={this.props.history.push}
+  		    					images={this.props.imagesArray}
+  		    					gatherings={this.props.gatheringsList}
+  		    				/>
     				}
     			</Col>
     		</Row>
