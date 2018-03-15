@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert, Spin } from 'antd/lib';
+import { Row, Col, Radio, Alert, Spin, Button } from 'antd/lib';
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
 
-const aboutNoden = "Noden is a place for anyone who has an interest to create, co-create, manage, attend or somehow get engaged in cultural, artistic or perhaps political activities. Besides all, Noden is a place for manifesting who you choose to become, and cherishing what it means to get together."
+const aboutNoden = <div>
+  <p>
+    Noden is a place for anyone who has an interest to create, co-create, manage, attend or somehow get engaged in cultural, artistic or perhaps political activities. Besides all, Noden is a place for manifesting who you choose to become, and cherishing what it means to get together.
+  </p>
+  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+    <Button href="https://app.moonclerk.com/pay/6p0450jmt0kw" type="primary">Become a paying member</Button><p>for <span style={{fontFamily: 'monospace, sans'}}>100kr/mo</span></p>
+  </div>
+</div>;
 
 class Home extends React.Component {
 	state = {

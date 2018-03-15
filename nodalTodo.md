@@ -48,10 +48,12 @@ X- Username, name etc handling: On signup and for other features
 X- Test all of this
 
 ### Todo as of 12 Mar 2018:
-- Implement user profile info entering: full name, personnummer etc.
-- Add the above details to relevant fields
-- Add the part about how to message between creators and super admin, when an activity needs to be edited. 
-- Hence editing an activity by the creator.
+- Implement user profile info entering: full name, personnummer etc
+- Add the above details to relevant fields in the db
+- Add the part about how to message between creators and super admin, when an activity needs to be edited  
+- Hence editing an activity by the creator (update)
 - Connecting with Moonclerk 
 - Emails for notification (for superadmin and creator)
 - Chat... (epic)
+
+
