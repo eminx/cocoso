@@ -25,10 +25,8 @@ h1 {
 	margin: 0 auto;
 }
 
-@media (max-width: 600px) {
-	.layout.ant-layout .ant-layout-header {
-		padding: 0 24px;
-	}
+.layout.ant-layout .ant-layout-header {
+	padding: 0 24px;
 }
 
 .rbc-calendar {

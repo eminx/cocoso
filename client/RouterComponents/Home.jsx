@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert, Spin, Button } from 'antd/lib';
+import { Row, Col, Radio, Alert, Spin, Button, Divider } from 'antd/lib';
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
@@ -50,11 +50,11 @@ class Home extends React.Component {
           </Col>
           <Col xs={0} sm={0} md={16}>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
-              <h2>Upcoming activities</h2>
-              <Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
+              
+              {/*<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
                 <Radio.Button value="list">List</Radio.Button>
                 <Radio.Button value="calendar">Calendar</Radio.Button>
-              </Radio.Group>
+              </Radio.Group>*/}
             </div>
           </Col>
         </Row>
@@ -87,19 +87,20 @@ class Home extends React.Component {
                   <Spin size="large" />
                 </div>
               :
-      					mode === 'calendar'
-      					?
+                <div>
   	    					<CalendarView
   		    					gatherings={gatherings}
   		    					images={images} 
   		    					onSelect={this.onSelect}
   		    				/>
-  		    			:
+                  <Divider />
+                  <h2 style={{textAlign: 'center'}}>Upcoming activities</h2>
   			    			<Nodal 
   		    					push={this.props.history.push}
   		    					images={this.props.imagesArray}
   		    					gatherings={this.props.gatheringsList}
   		    				/>
+                </div>
     				}
     			</Col>
     		</Row>
