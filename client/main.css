@@ -9,7 +9,7 @@ h1 {
 }
 
 .logo {
-	background-image: url('http://static1.squarespace.com/static/54105706e4b07bc380c2febe/t/5551b1c0e4b008b6a4518465/1431417282149/syntheism_logotype.png');
+	background-image: url('https://static1.squarespace.com/static/54105706e4b07bc380c2febe/t/5551b1c0e4b008b6a4518465/1431417282149/syntheism_logotype.png');
 	width: 50px;
 	height: 50px;
 	background-size: contain;
@@ -117,4 +117,8 @@ button.rbc-active {
   line-height: 1;
   font-size: 14px;
   color: #f5222d;
+}
+
+textarea.ant-input {
+	min-height: 240px;
 }

@@ -98,7 +98,7 @@ class Home extends React.Component {
   			    			<Nodal 
   		    					push={this.props.history.push}
   		    					images={this.props.imagesArray}
-  		    					gatherings={this.props.gatheringsList}
+  		    					gatherings={gatherings}
   		    				/>
                 </div>
     				}

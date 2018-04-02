@@ -36,15 +36,12 @@ class Nodal extends React.Component {
 	}
 
   render() {
-
   	const rsvpButton = <Button>Read more</Button>;
-
   	const { gatherings, images } = this.props;
 	  const gatheringsSorted = gatherings.sort(sortDates);
 
 	  return (
 	  	<div>
-
        	<List
 			    itemLayout="vertical"
 			    size="large"

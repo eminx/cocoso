@@ -19,12 +19,11 @@ const footerIcons = [
 class CardArticle extends React.Component {
   render() {
     const { item, isAttending, isMyEventWTF, currentUser } = this.props;
-
-    const eventTimes = item 
-    ?
-      `${item.startTime}–${item.endTime}, ${moment(item.startDate).format('Do MMMM dddd')}`
-    :
-      null;
+    const eventTimes = item
+      ?
+        `${item.startTime}–${item.endTime}, ${moment(item.startDate).format('Do MMMM dddd')}`
+      :
+        null;
 
     return (
       <Card

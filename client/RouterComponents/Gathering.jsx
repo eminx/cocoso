@@ -129,6 +129,7 @@ class Gathering extends React.Component {
 
   adminApprovalButtons = () => {
     const { currentUser, gatheringData } = this.props;
+    
     const confirm = () => {
       Meteor.call('publishGathering', gatheringData._id, (err, res) => {
         if (err) {
@@ -138,6 +139,7 @@ class Gathering extends React.Component {
         }
       });
     }
+
     return (
       <div style={{marginTop: 30}}>
         <p>This event is not published.</p>
@@ -161,7 +163,6 @@ class Gathering extends React.Component {
   }
 
   render() {
-
     const { gatheringData, isLoading, currentUser } = this.props;
     const isAttending = this.checkIfAttending();
     const isMyEventWTF = this.isMyEvent();
@@ -171,45 +172,48 @@ class Gathering extends React.Component {
     return (
     	<div>
     		<Row gutter={24}>
-    			<Col sm={24} md={16}>
-            {!isLoading && gatheringData
-              ? <CardArticle 
-                  item={gatheringData}
-                  isLoading={isLoading}
-                  isAttending={isAttending}
-                  isMyEventWTF={isMyEventWTF}
-                  currentUser={currentUser}
-                />
-              : <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <Spin size="large" />
-                </div>
+          <Col sm={24} md={16}>
+            {
+              !isLoading && gatheringData
+                ? <CardArticle 
+                    item={gatheringData}
+                    isLoading={isLoading}
+                    isAttending={isAttending}
+                    isMyEventWTF={isMyEventWTF}
+                    currentUser={currentUser}
+                  />
+                : <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Spin size="large" />
+                  </div>
             }
     			</Col>
+
     			<Col sm={24} md={8}>
             <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
-              { isMyEventWTF 
-                ?
-                  gatheringData.attendees.length > 0 
-                    ?
-                      <div style={{padding: 12}}>
-                        <h3>Attendees</h3>
-                        <p>Please uncheck for those who did not attend</p>
-                        <List bordered itemLayout="horizontal" size="small">
-                          {gatheringData.attendees.map((attendee, i) => (
-                            <ListItem key={attendee.userId + i}>
-                              <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.userId}</span>}
-                              />
-                              <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
-                            </ListItem>
-                          ))}
-                        </List>
-                      </div>
-                    : gatheringData.isPublished
-                      ? <p>Currently no one registered. Keep spreading the word!</p>
-                      : <p>Your activity is awaiting review to be published.</p>
-                : manageButtons
+              {
+                isMyEventWTF 
+                  ?
+                    gatheringData.attendees.length > 0 
+                      ?
+                        <div style={{padding: 12}}>
+                          <h3>Attendees</h3>
+                          <p>Please uncheck for those who did not attend</p>
+                          <List bordered itemLayout="horizontal" size="small">
+                            {gatheringData.attendees.map((attendee, i) => (
+                              <ListItem key={attendee.userId + i}>
+                                <List.Item.Meta
+                                  avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                  title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.userId}</span>}
+                                />
+                                <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
+                              </ListItem>
+                            ))}
+                          </List>
+                        </div>
+                      : gatheringData.isPublished
+                        ? <p>Currently no one registered. Keep spreading the word!</p>
+                        : <p>Your activity is awaiting review to be published.</p>
+                  : manageButtons
               }
             </div>
           </Col>
