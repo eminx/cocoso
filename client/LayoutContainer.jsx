@@ -25,6 +25,9 @@ class LayoutContainer extends React.Component {
               mode="horizontal"
               style={{ lineHeight: '64px', float: 'right' }}
             >
+              <Menu.Item key="/events">
+                <Link to="/">Events</Link>
+              </Menu.Item>
               <Menu.Item key="/create">
                 <Link to="/create">Create</Link>
               </Menu.Item>
@@ -34,7 +37,7 @@ class LayoutContainer extends React.Component {
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>
-            <div style={{margin: '1em'}}>
+            <div style={{margin: '1em 2em'}}>
               <Blaze template="loginButtons" />
             </div>
             {children}

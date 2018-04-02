@@ -71,15 +71,6 @@ class Home extends React.Component {
                 type="info"
               />
             </div>
-            <Col xs={0} sm={0} md={24}>
-              <h3>Weekly agenda</h3>
-              <BigCalendar
-                onSelectEvent={this.onSelect}
-                events={gatherings}
-                defaultView="agenda"
-                views={['agenda']}
-              />
-            </Col>
           </Col>
 
           <Col xs={24} sm={24} md={16}>

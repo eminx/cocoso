@@ -6,7 +6,6 @@ Meteor.methods({
 		check(formValues.room, String);
 		check(formValues.capacity, Number);
 		check(formValues.duration, Number);
-		check(formValues.phoneNumber, String);
 		check(formValues.datePicker, String);
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
@@ -74,7 +73,7 @@ Meteor.methods({
 						$addToSet: {
 	            attendees: {
 	              userId: currentUser._id,
-	              userInfo: currentUser.profile, 
+	              username: currentUser.username, 
 	              date: new Date()
 	            }
 	          }

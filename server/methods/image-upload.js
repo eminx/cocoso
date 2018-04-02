@@ -18,13 +18,12 @@ Slingshot.createDirective("gatheringImageUpload", Slingshot.S3Storage, {
       var message = "Please login before posting images";
       throw new Meteor.Error("Login Required", message);
     }
-
     return true;
   },
 
   key: function (file) {
-    var currentUserId = Meteor.user().emails[0].address;
-    return currentUserId + "/" + file.name;
+    var currentUserId = Meteor.userId()
+    return currentUserId + file.name;
   }
 
 });

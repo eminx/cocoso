@@ -203,7 +203,7 @@ class Gathering extends React.Component {
                               <ListItem key={attendee.userId + i}>
                                 <List.Item.Meta
                                   avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                  title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.userId}</span>}
+                                  title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.username}</span>}
                                 />
                                 <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
                               </ListItem>
