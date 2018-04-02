@@ -34,6 +34,15 @@ h1 {
   /* max-height: 500px; */
 }
 
+/* .rbc-calendar .rbc-btn-group:nth-child(2n+1) {
+	display: none;
+} */
+
+.center-that {
+	display: flex;
+	justify-content: center;
+}
+
 @media (max-width: 600px) {
 	.rbc-toolbar {
 		flex-direction: column;

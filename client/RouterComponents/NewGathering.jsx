@@ -10,7 +10,7 @@ const successCreation = () => {
   message.success('Your event is successfully created', 6);
 };
 
-const sideNote = "Please check if a corresponding time and room is not taken already. \n It is your responsibility to make sure that there's no overlapping gatherings."
+const sideNote = "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping events."
 
 class NewGathering extends React.Component {
 	state={
@@ -91,7 +91,7 @@ class NewGathering extends React.Component {
       return (
         <div style={{maxWidth: 600, margin: '0 auto'}}>
           <Alert
-            message="You have to signup and become an active member in order to initiate a creation at Noden"
+            message="You have to signin to create an event. Just do it!"
             type="error"
           />
         </div>
@@ -102,12 +102,12 @@ class NewGathering extends React.Component {
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/gathering/${newGatheringId}`} />
+      return <Redirect to={`/event/${newGatheringId}`} />
     }
 
     return (
     	<div style={{padding: 24}}>
-        <h1>Organise a gathering</h1>
+        <h1>Organise an event</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
     	      <CreateGatheringForm

@@ -1,9 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd/lib';
+import Blaze from 'meteor/gadicc:blaze-react-component';
 const { Header, Content, Footer } = Layout;
 
 class LayoutContainer extends React.Component {
+  componentWillMount() {
+    Accounts.ui.config({
+      passwordSignupFields: 'USERNAME_AND_EMAIL'
+    });
+  }
   
   render() {
 
@@ -19,18 +25,18 @@ class LayoutContainer extends React.Component {
               mode="horizontal"
               style={{ lineHeight: '64px', float: 'right' }}
             >
-              <Menu.Item key="/create-a-gathering">
-                <Link to="/create-a-gathering">Create</Link>
-              </Menu.Item>
-              <Menu.Item key="/member">
-                <Link to="/member">Members</Link>
+              <Menu.Item key="/create">
+                <Link to="/create">Create</Link>
               </Menu.Item>
             </Menu>
             <Link to="/">
-              <div className="logo" />
+              <h1 className="ub-logo">Urban Burn Events</h1>
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>
+            <div style={{margin: '1em'}}>
+              <Blaze template="loginButtons" />
+            </div>
             {children}
           </Content>
           <Footer style={{ textAlign: 'center' }}>

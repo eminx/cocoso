@@ -41,7 +41,7 @@ class CreateGatheringForm extends React.Component {
       }
     });
   }
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { uploadableImage, setUploadableImage } = this.props;
@@ -74,7 +74,7 @@ class CreateGatheringForm extends React.Component {
 
     return (
       <div className="create-gathering-form">
-        <h3>Please enter the details about your gathering</h3>
+        <h3>Please enter the details about your event</h3>
         <Divider />
         <Form onSubmit={this.handleSubmit}>
 
@@ -138,22 +138,14 @@ class CreateGatheringForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="Select Room"
-          >
+          <FormItem {...formItemLayout} label="Enter place in the UB">
             {getFieldDecorator('room', {
               rules: [{
                 required: true,
-                message: 'Please select a part of Noden in which this gathering will be held' }],
+                message: 'Please enter where in the UB you are hosting your event',
+              }],
             })(
-              <Select
-                placeholder="Select part of Noden..."
-              >
-                {nodenParts.map(part => (
-                  <Option key={part.name} value={part.name}>{part.name}</Option>
-                ))}
-              </Select>
+              <Input placeholder="Example: The main stage..." />
             )}
           </FormItem>
 
@@ -169,7 +161,7 @@ class CreateGatheringForm extends React.Component {
 
           <FormItem
             {...formItemLayout}
-            label="Should RSVP?"
+            label="Require RSVP?"
           >
             {getFieldDecorator('isRSVPrequired', {
               valuePropName: 'checked',
@@ -195,20 +187,6 @@ class CreateGatheringForm extends React.Component {
                 : <Button><Icon type="upload" />Pick an image</Button>
               }
             </Upload>
-          </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="Phone Number"
-          >
-            {getFieldDecorator('phoneNumber', {
-              rules: [{
-                required: true,
-                message: 'Phone number to contact'
-              }],
-            })(
-              <Input />
-            )}
           </FormItem>
 
           <FormItem

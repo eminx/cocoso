@@ -4,13 +4,15 @@ import { Row, Col, Radio, Alert, Spin, Button, Divider } from 'antd/lib';
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
+import moment from 'moment';
 
-const aboutNoden = <div>
+const aboutUB = <div>
   <p>
-    Noden is a place for anyone who has an interest to create, co-create, manage, attend or somehow get engaged in cultural, artistic or perhaps political activities. Besides all, Noden is a place for manifesting who you choose to become, and cherishing what it means to get together.
+    Wanna host a workshop, performance, jam session, training, meditation or any timely event at the Urban burn in Stockholm? This is made for you!
+    Just press create and then fill the form and then once you confirm it, it will automatically be published in this web-app. You can then share the link in your networks to communicate about it.
   </p>
   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-    <Button href="https://app.moonclerk.com/pay/6p0450jmt0kw" type="primary">Become a paying member</Button><p>for <span style={{fontFamily: 'monospace, sans'}}>100kr/mo</span></p>
+    <Link to="/create"><Button type="primary">Create an Event</Button></Link>
   </div>
 </div>;
 
@@ -31,30 +33,31 @@ class Home extends React.Component {
   	});
   }
 
-
   render() {
     const { isLoading } = this.props;
   	const gatherings = this.props.gatheringsList;
   	const images = this.props.imagesArray;
   	const { mode, goto } = this.state;
 
+    let futureEvents = [];
+
+    gatherings.forEach((event) => {
+      if (moment(event).isAfter('2010-10-19')) {
+        console.log('xxx');
+      }
+    });
+
   	if (goto) {
-      return <Redirect to={`/gathering/${goto}`} />
+      return <Redirect to={`/event/${goto}`} />
     }
 
     return (
     	<div style={{padding: 24}}>
         <Row gutter={32}>
           <Col xs={24} sm={24} md={8}>
-            <h2>Welcome to Noden</h2>
           </Col>
           <Col xs={0} sm={0} md={16}>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
-              
-              {/*<Radio.Group onChange={this.handleModeChange} value={mode} style={{ marginBottom: 8 }}>
-                <Radio.Button value="list">List</Radio.Button>
-                <Radio.Button value="calendar">Calendar</Radio.Button>
-              </Radio.Group>*/}
             </div>
           </Col>
         </Row>
@@ -63,8 +66,8 @@ class Home extends React.Component {
           <Col xs={24} sm={24} md={8}>
             <div style={{marginBottom: 24}}>
               <Alert
-                message="Shortly about Noden"
-                description={aboutNoden}
+                message="Events at the Urban Burn"
+                description={aboutUB}
                 type="info"
               />
             </div>
