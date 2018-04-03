@@ -1,4 +1,6 @@
 node_modules/
 settings.json
 settings-production.json
+settings-ub.json
+settingsub.json
 nodal credentials.txt
