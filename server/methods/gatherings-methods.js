@@ -32,7 +32,7 @@ Meteor.methods({
 				duration: formValues.duration,
 				imageUrl: imageUrl,
 				isSentForReview: true,
-				isPublished: false,
+				isPublished: true,
 				creationDate: new Date()
 			});
 			return add;
