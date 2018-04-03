@@ -33,7 +33,7 @@ class CardArticle extends React.Component {
       >
         <Meta
           avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-          title={<span>{item.room}, Noden<br />{eventTimes}</span>}
+          title={<span>{item.room}, Nobelberget<br />{eventTimes}</span>}
           description={item.longDescription}
         />
       </Card>

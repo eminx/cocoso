@@ -66,7 +66,7 @@ class Home extends React.Component {
           <Col xs={24} sm={24} md={8}>
             <div style={{marginBottom: 24}}>
               <Alert
-                message="Events at the Urban Burn"
+                message="Host an event or workshop at the Urban Burn"
                 description={aboutUB}
                 type="info"
               />

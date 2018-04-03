@@ -33,7 +33,7 @@ class LayoutContainer extends React.Component {
               </Menu.Item>
             </Menu>
             <Link to="/">
-              <h1 className="ub-logo">Urban Burn Events</h1>
+              <h2 className="ub-logo">UB Events</h2>
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>

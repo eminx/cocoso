@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row, Col, Spin, Button, Icon, Divider, Checkbox, List, Avatar, Affix, Popconfirm, message } from 'antd/lib';
-import Blaze from 'meteor/gadicc:blaze-react-component';
 import CardArticle from '../UIComponents/CardArticle';
 const ListItem = List.Item;
 
@@ -95,11 +94,6 @@ class Gathering extends React.Component {
         </Button.Group>
         <Divider />
         <p style={{cursor: 'default'}}>You have to sign in to RSVP</p>
-        <Blaze template="loginButtons" >
-          <Button>
-            <Icon type="login" />
-          </Button>
-        </Blaze>
       </div>
 
     // const hostActions =
