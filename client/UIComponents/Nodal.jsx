@@ -36,7 +36,7 @@ class Nodal extends React.Component {
 	}
 
   render() {
-  	const rsvpButton = <Button>Read more</Button>;
+  	const readMoreButton = <Button>Read more</Button>;
   	const { gatherings, images } = this.props;
 	  const gatheringsSorted = gatherings.sort(sortDates);
 
@@ -50,8 +50,8 @@ class Nodal extends React.Component {
 			    	<Card>
 				      <List.Item
 				        key={item.title + i}
-				        actions={[<Link to={`/event/${item._id}`}>{rsvpButton}</Link>]}
-				        extra={<img height={180} alt="image" src={item.imageUrl} style={{marginBottom: 24}} />}
+				        actions={[<Link to={`/event/${item._id}`}>{readMoreButton}</Link>]}
+				        extra={<Link to={`/event/${item._id}`}><img height={180} alt="image" src={item.imageUrl} style={{marginBottom: 24}} /></Link>}
 				      >
 				        <List.Item.Meta
 				          avatar={<Avatar src={avatarSrc} />}

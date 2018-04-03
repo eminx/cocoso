@@ -37,7 +37,7 @@ class LayoutContainer extends React.Component {
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>
-            <div style={{margin: '1em 2em'}}>
+            <div style={{margin: '1em 2em', textAlign: 'right'}}>
               <Blaze template="loginButtons" />
             </div>
             {children}

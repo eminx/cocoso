@@ -183,7 +183,7 @@ class Gathering extends React.Component {
     			</Col>
 
     			<Col sm={24} md={8}>
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: 10, marginBottom: 100}}>
               {
                 isMyEventWTF 
                   ?

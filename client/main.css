@@ -128,6 +128,11 @@ button.rbc-active {
   color: #f5222d;
 }
 
-textarea.ant-input {
+textarea#longDescription.ant-input {
 	min-height: 240px;
+}
+
+.login-link-and-dropdown-list > #login-dropdown-list {
+	right: -1px;
+	left: auto;
 }
