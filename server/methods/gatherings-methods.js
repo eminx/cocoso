@@ -12,12 +12,12 @@ Meteor.methods({
 		check(formValues.isRSVPrequired, Boolean);
 		check(imageUrl, String);
 		
-		const userId = Meteor.userId();
+		const user = Meteor.user();
 		try {
 			const add = Gatherings.insert({
-				authorId: userId,
+				authorId: user._id,
 				attendees: [],
-				authorName: 'someone',
+				authorName: user.username,
 				title: formValues.title,
 				shortDescription: formValues.shortDescription,
 				longDescription: formValues.longDescription,

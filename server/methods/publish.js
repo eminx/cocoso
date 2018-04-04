@@ -60,8 +60,3 @@ Meteor.publish('gathering', function (id) {
     }
   })*/;
 });
-
-Accounts.onCreateUser(function (options, user) {
-  user.attending = [];
-  return user;
-});

@@ -31,15 +31,15 @@ class LayoutContainer extends React.Component {
               <Menu.Item key="/create">
                 <Link to="/create">Create</Link>
               </Menu.Item>
+              <Menu.Item key="/login">
+                <Blaze template="loginButtons" />
+              </Menu.Item>
             </Menu>
             <Link to="/">
               <h2 className="ub-logo">UB Events</h2>
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>
-            <div style={{margin: '1em 2em', textAlign: 'right'}}>
-              <Blaze template="loginButtons" />
-            </div>
             {children}
           </Content>
           <Footer style={{ textAlign: 'center' }}>
