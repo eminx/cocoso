@@ -117,7 +117,6 @@ button.rbc-active {
 	font-weight: bold;
 }
 
-
 .upload-image-col .ant-form-item-label label:before {
   display: inline-block;
   margin-right: 4px;
@@ -146,4 +145,17 @@ textarea#longDescription.ant-input {
 	flex-direction: column;
 }
 
+
+li.ant-menu-item span {
+  display: block;
+}
+
+#login-buttons {
+	display: block;
+	line-height: inherit;
+}
+
+#login-sign-in-link {
+	display: block;
+}
 

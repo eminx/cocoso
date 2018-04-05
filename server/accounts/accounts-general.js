@@ -1,8 +1,11 @@
 Accounts.onCreateUser((options, user) => {
   user.attending = [];
-  if (user.services && user.services.facebook) {
+  if (user.services.facebook) {
 	  user.username = user.services.facebook.name;
 	  user.emails = [{address: user.services.facebook.email}];
+	} else if (user.services.google) {
+		user.username = user.services.google.name;
+		user.emails = [{address: user.services.google.email}];
 	}
 	return user;
 });
