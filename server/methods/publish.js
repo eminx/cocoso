@@ -60,3 +60,7 @@ Meteor.publish('gathering', function (id) {
     }
   })*/;
 });
+
+Meteor.publish('places', function () {
+  return Places.find();
+});

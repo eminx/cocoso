@@ -8,7 +8,7 @@ export default GatheringContainer = withTracker((props) => {
   const isLoading = !gathering.ready();
   const gatheringData = Gatherings ? Gatherings.findOne({_id:gatheringId}) : null;
   const currentUser = Meteor.user();
-  
+
   return {
     isLoading,
     gatheringData,

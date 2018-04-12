@@ -3,6 +3,16 @@ import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd/lib';
 const { Meta } = Card;
 import moment from 'moment';
 
+const getInitials = (string) => {
+  var names = string.split(' '),
+    initials = names[0].substring(0, 1).toUpperCase();
+  
+  if (names.length > 1) {
+    initials += names[names.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
+};
+
 const IconText = ({ type, text }) => (
   <span>
     <Icon type={type} style={{ marginRight: 8 }} />
@@ -21,9 +31,11 @@ class CardArticle extends React.Component {
     const { item, isAttending, isMyEventWTF, currentUser } = this.props;
     const eventTimes = item
       ?
-        `${item.startTime}–${item.endTime}, ${moment(item.startDate).format('Do MMMM dddd')}`
+        `${item.startTime}–${item.endTime}`
       :
         null;
+
+    const eventDate = moment(item.startDate).format('Do MMMM dddd');
 
     return (
       <Card
@@ -32,8 +44,8 @@ class CardArticle extends React.Component {
         cover={<img alt="example" src={item.imageUrl} />}
       >
         <Meta
-          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-          title={<span>{item.room}, Nobelberget<br />{eventTimes}</span>}
+          avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}
+          title={<div><b>{item.room}, Nobelberget<br />{eventTimes}, {eventDate}</b><br /> hosted by {item.authorName} <Divider /></div>}
           description={item.longDescription}
         />
       </Card>

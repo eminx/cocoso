@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider, Modal } from 'antd/lib';
+import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider, Modal, message } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -9,6 +9,22 @@ import moment from 'moment';
 import nodenParts from '../constants/parts';
 
 class CreateGatheringForm extends React.Component {
+  state = {
+    addPlaceModal: false
+  }
+
+  addPlace = (name) => {
+    Meteor.call('addPlace', name, (err, res) => {
+      if (err) {
+        message.error("It didn't work :/");
+        console.log(err);
+      } else {
+        message.success("Your place succesfully added to the list :)");
+        this.setState({addPlaceModal: false});
+      }
+    });
+    
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -71,6 +87,8 @@ class CreateGatheringForm extends React.Component {
       }],
       initialValue: 60
     };
+
+    const { places } = this.props;
 
     return (
       <div className="create-gathering-form">
@@ -137,15 +155,28 @@ class CreateGatheringForm extends React.Component {
               <InputNumber />
             )}
           </FormItem>
+          
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <span style={{marginRight: 10}}>Your place is not here?</span>
+            <Button onClick={() => this.setState({addPlaceModal: true})}>Add place</Button>
+          </div>
 
-          <FormItem {...formItemLayout} label="Enter place in the UB">
+          <FormItem
+            {...formItemLayout}
+            label="Select Room"
+          >
             {getFieldDecorator('room', {
               rules: [{
                 required: true,
-                message: 'Please enter where in the UB you are hosting your event',
-              }],
+                message: 'Please enter where in the UB you are hosting your event' }],
             })(
-              <Input placeholder="Example: The main stage..." />
+              <Select
+                placeholder="Select place in the venue..."
+              >
+                {places ? places.map((part, i) => (
+                  <Option key={part.name + i} value={part.name}>{part.name}</Option>
+                )) : null}
+              </Select>
             )}
           </FormItem>
 
@@ -198,6 +229,22 @@ class CreateGatheringForm extends React.Component {
             <Button type="primary" htmlType="submit">Continue</Button>
           </FormItem>
         </Form>
+
+        <Modal
+          className="addplace-modal"
+          title="Add a place"
+          visible={this.state.addPlaceModal}
+          onOk={() => this.setState({addPlaceModal: false})}
+          onCancel={() => this.setState({addPlaceModal: false})}
+        >
+          <h3>Please enter the name of the place to be added to the list</h3>
+          <Input.Search 
+            placeholder="type and press enter" 
+            enterButton="Add" 
+            size="large"
+            onSearch={value => this.addPlace(value)} />
+        </Modal>
+
       </div>
     );
   }

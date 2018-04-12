@@ -2,10 +2,19 @@ import React from 'react';
 import { Modal, Card, Icon, Avatar, Spin } from 'antd/lib';
 const { Meta } = Card;
 
+const getInitials = (string) => {
+  var names = string.split(' '),
+    initials = names[0].substring(0, 1).toUpperCase();
+  
+  if (names.length > 1) {
+    initials += names[names.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
+};
+
 class ModalArticle extends React.Component {
 	
   render() {
-
     const { isLoading, item, imageSrc } = this.props;
 
     return (
@@ -24,7 +33,7 @@ class ModalArticle extends React.Component {
               cover={<img alt="example" src={imageSrc} />}
             >
               <Meta
-                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}
                 title={`${item.room}, Noden`}
                 description={item.longDescription}
               />

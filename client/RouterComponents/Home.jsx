@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const aboutUB = <div>
   <p>
-    Wanna host a workshop, performance, jam session, training, meditation or any timely event at the Urban burn in Stockholm? This is made for you!
+    Wanna host a workshop, performance, jam session, training, meditation or any timely event at the UrbanBurn in Stockholm? This is made for you!
     Just press create and then fill the form and then once you confirm it, it will automatically be published in this web-app. You can then share the link in your networks to communicate about it.
   </p>
   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
@@ -41,11 +41,11 @@ class Home extends React.Component {
 
     let futureEvents = [];
 
-    gatherings.forEach((event) => {
-      if (moment(event).isAfter('2010-10-19')) {
-        console.log('xxx');
-      }
-    });
+    // gatherings.forEach((event) => {
+    //   if (moment(event).isAfter('2010-10-19')) {
+    //     console.log('xxx');
+    //   }
+    // });
 
   	if (goto) {
       return <Redirect to={`/event/${goto}`} />
@@ -53,27 +53,31 @@ class Home extends React.Component {
 
     return (
     	<div style={{padding: 24}}>
-        <Row gutter={32}>
+        <Row>
+          <Col xs={0} sm={0} md={8} />
           <Col xs={24} sm={24} md={8}>
+            <Alert
+              message="Host an event or workshop at the Urban Burn"
+              description={aboutUB}
+              type="info"
+            />
+            <Divider />
           </Col>
-          <Col xs={0} sm={0} md={16}>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            </div>
-          </Col>
+          <Col xs={0} sm={0} md={8} />
         </Row>
-
         <Row gutter={32}>
-          <Col xs={24} sm={24} md={8}>
+          <Col xs={24} sm={24} md={12}>
             <div style={{marginBottom: 24}}>
-              <Alert
-                message="Host an event or workshop at the Urban Burn"
-                description={aboutUB}
-                type="info"
+              <h2 style={{textAlign: 'center'}}>Calendar</h2>
+              <CalendarView
+                gatherings={gatherings}
+                images={images} 
+                onSelect={this.onSelect}
               />
             </div>
           </Col>
 
-          <Col xs={24} sm={24} md={16}>
+          <Col xs={24} sm={24} md={12}>
             {
               isLoading
               ? 
@@ -82,13 +86,7 @@ class Home extends React.Component {
                 </div>
               :
                 <div>
-  	    					<CalendarView
-  		    					gatherings={gatherings}
-  		    					images={images} 
-  		    					onSelect={this.onSelect}
-  		    				/>
-                  <Divider />
-                  <h2 style={{textAlign: 'center'}}>Upcoming activities</h2>
+                  <h2 style={{textAlign: 'center'}}>Upcoming events</h2>
   			    			<Nodal 
   		    					push={this.props.history.push}
   		    					images={this.props.imagesArray}

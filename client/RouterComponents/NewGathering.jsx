@@ -10,7 +10,7 @@ const successCreation = () => {
   message.success('Your event is successfully created', 6);
 };
 
-const sideNote = "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping events."
+const sideNote = "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping events (unless it turns out to be really cool ;p)."
 
 class NewGathering extends React.Component {
 	state={
@@ -115,6 +115,7 @@ class NewGathering extends React.Component {
     	      	registerGatheringLocally={this.registerGatheringLocally}
               setUploadableImage={this.setUploadableImage}
               uploadableImage={this.state.uploadableImage}
+              places={this.props.places}
     	      />
           </Col>
           <Col xs={24} sm={24} md={8}>

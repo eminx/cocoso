@@ -166,9 +166,28 @@ Meteor.methods({
 					attendees: attendees
 				}
 			});
-		} catch (e) {
+		} catch (err) {
 			console.log(err);
 			throw new Meteor.Error(err, "Couldn't toggle attendance");
+		}
+	},
+
+	addPlace(name) {
+		if (Meteor.userId()) {
+			if (Places.findOne({name: name})) {
+				throw new Meteor.Error(err, "That place already exists!");
+			} else {
+				try {
+					Places.insert({
+						name: name,
+						addedBy: Meteor.user().username
+					});
+					return true;
+				} catch(err) {
+					throw new Meteor.Error(err, "Couldn't add the place : /");
+				}
+				
+			}
 		}
 	}
 });

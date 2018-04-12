@@ -14,7 +14,7 @@ let CalendarView = props => {
         events={gatherings}
         defaultView="week"
         timeslots={4}
-        views={['week', 'day', 'agenda']}
+        views={['week']}
         popupOffset={{x: 0, y: 200}}
       />
     </div>
