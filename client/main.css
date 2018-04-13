@@ -17,7 +17,7 @@ h1 {
 }
 
 .layout {
-	max-width: 1200px;
+	max-width: 900px;
 	margin: 0 auto;
 	margin-bottom: 50px;
 }
@@ -37,6 +37,10 @@ h1 {
 .rbc-calendar {
   min-height: 300px;
   /* max-height: 500px; */
+}
+
+.rbc-calendar .span.rbc-btn-group {
+  display: none;
 }
 
 /* .rbc-calendar .rbc-btn-group:nth-child(2n+1) {

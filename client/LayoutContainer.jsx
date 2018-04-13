@@ -12,7 +12,6 @@ class LayoutContainer extends React.Component {
   }
   
   render() {
-
     const { match, children } = this.props;
     const pathname = match.location.pathname;
 

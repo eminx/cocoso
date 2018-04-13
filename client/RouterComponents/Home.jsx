@@ -66,7 +66,7 @@ class Home extends React.Component {
           <Col xs={0} sm={0} md={8} />
         </Row>
         <Row gutter={32}>
-          <Col xs={24} sm={24} md={12}>
+          <Col xs={24} sm={24} md={8}>
             <div style={{marginBottom: 24}}>
               <h2 style={{textAlign: 'center'}}>Calendar</h2>
               <CalendarView
@@ -77,7 +77,7 @@ class Home extends React.Component {
             </div>
           </Col>
 
-          <Col xs={24} sm={24} md={12}>
+          <Col xs={24} sm={24} md={16}>
             {
               isLoading
               ? 
