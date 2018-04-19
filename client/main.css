@@ -1,7 +1,6 @@
-body {
-	background-image: -webkit-linear-gradient(left, #ADFFAD, #FFC9AD);
-	background-image: -o-linear-gradient(left, #ADFFAD, #FFC9AD);
-	background-image: linear-gradient(to right, #ADFFAD, #FFC9AD);
+body > #render-target {
+	background-color: rgb(231, 233, 233);
+	font-family: 'Verdana', 'Geneva', sans-serif;
 }
 
 h1 {
@@ -9,7 +8,6 @@ h1 {
 }
 
 .logo {
-	background-image: url('https://static1.squarespace.com/static/54105706e4b07bc380c2febe/t/5551b1c0e4b008b6a4518465/1431417282149/syntheism_logotype.png');
 	width: 50px;
 	height: 50px;
 	background-size: contain;
@@ -17,13 +15,13 @@ h1 {
 }
 
 .layout {
-	max-width: 900px;
+	max-width: 960px;
 	margin: 0 auto;
 	margin-bottom: 50px;
 }
 
 .layout.ant-layout {
-	background: none;
+	background-color: rgb(231, 233, 233);
 }
 
 .ant-layout .ant-layout-footer {

@@ -56,11 +56,6 @@ class Home extends React.Component {
         <Row>
           <Col xs={0} sm={0} md={8} />
           <Col xs={24} sm={24} md={8}>
-            <Alert
-              message="Host an event or workshop at the Urban Burn"
-              description={aboutUB}
-              type="info"
-            />
             <Divider />
           </Col>
           <Col xs={0} sm={0} md={8} />
@@ -68,11 +63,11 @@ class Home extends React.Component {
         <Row gutter={32}>
           <Col xs={24} sm={24} md={8}>
             <div style={{marginBottom: 24}}>
-              <h2 style={{textAlign: 'center'}}>Calendar</h2>
-              <CalendarView
-                gatherings={gatherings}
-                images={images} 
-                onSelect={this.onSelect}
+              <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
+              <Alert
+                title="<About></About>"
+                message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
+                type="info"
               />
             </div>
           </Col>
@@ -86,7 +81,16 @@ class Home extends React.Component {
                 </div>
               :
                 <div>
-                  <h2 style={{textAlign: 'center'}}>Upcoming events</h2>
+                  <h2 style={{textAlign: 'center'}}>Calendar</h2>
+                  <CalendarView
+                    gatherings={gatherings}
+                    images={images} 
+                    onSelect={this.onSelect}
+                  />
+                  
+                  <Divider/>
+                  
+                  <h2 style={{textAlign: 'center'}}>Current bookings</h2>
   			    			<Nodal 
   		    					push={this.props.history.push}
   		    					images={this.props.imagesArray}

@@ -107,7 +107,7 @@ class NewGathering extends React.Component {
 
     return (
     	<div style={{padding: 24}}>
-        <h1>Organise an event</h1>
+        <h1>Book</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
     	      <CreateGatheringForm
