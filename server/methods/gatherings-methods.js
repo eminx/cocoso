@@ -172,7 +172,7 @@ Meteor.methods({
 		}
 	},
 
-	addPlace(name) {
+	addSpace(name) {
 		if (Meteor.userId()) {
 			if (Places.findOne({name: name})) {
 				throw new Meteor.Error(err, "That place already exists!");

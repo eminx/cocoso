@@ -24,8 +24,7 @@ class Gathering extends React.Component {
     if (!isAttending && gatheringData) {
       Meteor.call('registerAttendance', gatheringData._id, (err, res) => {
         if (err) {
-          message.error("It didn't work :/");
-          console.log(err);
+          message.error(err.reason);
         } else {
           message.success("You're successfully registered!");
         }
@@ -42,8 +41,7 @@ class Gathering extends React.Component {
       const gatheringId = gatheringData._id;
       Meteor.call('unRegisterAttendance', gatheringId, (err, res) => {
         if (err) {
-          message.error("It didn't work :/");
-          console.log(err);
+          message.error(err.reason);
         } else {
           message.info("Sad that you aren't coming, but thanks for letting us know!");
         }
@@ -58,10 +56,7 @@ class Gathering extends React.Component {
     e.preventDefault();
     Meteor.call('toggleAttendanceAsHost', gatheringData._id, userId, (err, res) => {
       if (err) {
-        message.error("It didn't work :/");
-        console.log(err);
-      } else {
-        console.log('fixed');
+        message.error(err.reason);
       }
     });
   }
@@ -127,7 +122,7 @@ class Gathering extends React.Component {
     const confirm = () => {
       Meteor.call('publishGathering', gatheringData._id, (err, res) => {
         if (err) {
-          message.error("Sorry didn't happen for some reason :/")
+          message.error(err.reason)
         } else {
           message.success("The activity is successfully published.");
         }

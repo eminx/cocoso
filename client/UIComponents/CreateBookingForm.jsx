@@ -8,18 +8,19 @@ const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
 import nodenParts from '../constants/parts';
 
-class CreateGatheringForm extends React.Component {
+class CreateBookingForm extends React.Component {
   state = {
-    addPlaceModal: false
+    addSpaceModal: false
   }
 
-  addPlace = (name) => {
-    Meteor.call('addPlace', name, (err, res) => {
+  addSpace = (name) => {
+    Meteor.call('addSpace', name, (err, res) => {
       if (err) {
         message.error(err.reason);
+        console.log(err);
       } else {
         message.success("Your place succesfully added to the list :)");
-        this.setState({addPlaceModal: false});
+        this.setState({addSpaceModal: false});
       }
     });
     
@@ -30,14 +31,6 @@ class CreateGatheringForm extends React.Component {
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
-        return;
-      }
-
-      if (!this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image',
-        }); 
         return;
       }
 
@@ -62,8 +55,8 @@ class CreateGatheringForm extends React.Component {
     const { uploadableImage, setUploadableImage } = this.props;
 
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 },
     };
     const configDate = {
       rules: [{
@@ -82,7 +75,7 @@ class CreateGatheringForm extends React.Component {
       rules: [{
         type: 'number',
         required: true,
-        message: 'Please type duration'
+        message: 'Please type duration in minutes'
       }],
       initialValue: 60
     };
@@ -102,33 +95,21 @@ class CreateGatheringForm extends React.Component {
                 message: 'Enter the Title',
               }],
             })(
-              <Input placeholder="Amazing Workshop..." />
-            )}
-          </FormItem>
-
-          <FormItem {...formItemLayout} label="Short description">
-            {getFieldDecorator('shortDescription', {
-              rules: [{
-                required: true,
-                message: 'Please enter a brief description',
-              }],
-            })(
-              <Input placeholder="Enter a short description" />
+              <Input placeholder="Booking title" />
             )}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Long description">
             {getFieldDecorator('longDescription', {
               rules: [{
-                required: true,
-                message: 'Please enter a detailed description',
+                message: 'Please enter a detailed description (optional)',
               }],
             })(
-              <TextArea placeholder="Enter a detailed description of your Stream" autosize />
+              <TextArea placeholder="Optionally enter a description" autosize />
             )}
           </FormItem>
 
-         <FormItem
+          <FormItem
             {...formItemLayout}
             label="Select the Day"
           >
@@ -156,48 +137,26 @@ class CreateGatheringForm extends React.Component {
           </FormItem>
           
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <span style={{marginRight: 10}}>Your place is not here?</span>
-            <Button onClick={() => this.setState({addPlaceModal: true})}>Add place</Button>
+            <span style={{marginRight: 10}}>Wanna add space/equipment to the list?</span>
+            <Button onClick={() => this.setState({addSpaceModal: true})}>Add</Button>
           </div>
 
           <FormItem
             {...formItemLayout}
-            label="Select Room"
+            label="Space/equipment"
           >
             {getFieldDecorator('room', {
               rules: [{
                 required: true,
-                message: 'Please enter where in the UB you are hosting your event' }],
+                message: 'Please enter which part of Skogen you want to book' }],
             })(
               <Select
-                placeholder="Select place in the venue..."
+                placeholder="Select place"
               >
                 {places ? places.map((part, i) => (
                   <Option key={part.name + i} value={part.name}>{part.name}</Option>
                 )) : null}
               </Select>
-            )}
-          </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="Capacity"
-          >
-            {getFieldDecorator('capacity', { initialValue: 15 })(
-              <InputNumber min={1} max={300} />
-            )}
-            <span className="ant-form-text">people (incl. children)</span>
-          </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="Require RSVP?"
-          >
-            {getFieldDecorator('isRSVPrequired', {
-              valuePropName: 'checked',
-              initialValue: false
-            })(
-              <Switch />
             )}
           </FormItem>
 
@@ -230,18 +189,18 @@ class CreateGatheringForm extends React.Component {
         </Form>
 
         <Modal
-          className="addplace-modal"
-          title="Add a place"
-          visible={this.state.addPlaceModal}
-          onOk={() => this.setState({addPlaceModal: false})}
-          onCancel={() => this.setState({addPlaceModal: false})}
+          className="addSpace-modal"
+          title="Add a space/equipment for booking"
+          visible={this.state.addSpaceModal}
+          onOk={() => this.setState({addSpaceModal: false})}
+          onCancel={() => this.setState({addSpaceModal: false})}
         >
-          <h3>Please enter the name of the place to be added to the list</h3>
+          <h3>Please enter the name of the space or equipment to be added to the list</h3>
           <Input.Search 
             placeholder="type and press enter" 
             enterButton="Add" 
             size="large"
-            onSearch={value => this.addPlace(value)} />
+            onSearch={value => this.addSpace(value)} />
         </Modal>
 
       </div>
@@ -249,5 +208,5 @@ class CreateGatheringForm extends React.Component {
   }
 }
 
-const WrappedAddContentForm = Form.create()(CreateGatheringForm);
+const WrappedAddContentForm = Form.create()(CreateBookingForm);
 export default WrappedAddContentForm;

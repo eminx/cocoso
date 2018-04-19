@@ -6,6 +6,7 @@ import LayoutContainer from '../LayoutContainer';
 // route components
 import HomeContainer from './HomeContainer';
 import NewGatheringContainer from './NewGatheringContainer';
+import NewBookSpaceContainer from './NewBookSpaceContainer';
 import GatheringContainer from './GatheringContainer';
 import NewStreamContainer from './NewStreamContainer';
 import Memberetc from './Memberetc';
@@ -17,7 +18,7 @@ export const renderRoutes = () => (
     <LayoutContainer match={browserHistory}>
     	<Switch>
 	      <Route exact path="/" component={HomeContainer}/>
-	      <Route exact path="/create" component={NewGatheringContainer} />
+	      <Route exact path="/book" component={NewBookSpaceContainer} />
 	      <Route exact path="/create-a-stream" component={NewStreamContainer} />
 	      <Route path="/booking/:id" component={GatheringContainer} />
 	      <Route exact path="/member" component={Memberetc} />
