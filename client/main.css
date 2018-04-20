@@ -1,4 +1,4 @@
-body > #render-target {
+body, body > #render-target {
 	background-color: rgb(231, 233, 233);
 	font-family: 'Verdana', 'Geneva', sans-serif;
 }
@@ -8,10 +8,15 @@ h1 {
 }
 
 .logo {
-	width: 50px;
+	width: 90px;
 	height: 50px;
+	background-repeat: no-repeat;
 	background-size: contain;
 	margin-top: 5px;
+}
+
+.skogen-logo {
+	background-image: url('https://skogen.pm/wp-content/themes/skogen/images/skogen-logo-x2.png');
 }
 
 .layout {
@@ -124,7 +129,7 @@ button.rbc-active {
 	font-weight: bold;
 }
 
-.upload-image-col .ant-form-item-label label:before {
+/* .upload-image-col .ant-form-item-label label:before {
   display: inline-block;
   margin-right: 4px;
   content: "*";
@@ -132,7 +137,7 @@ button.rbc-active {
   line-height: 1;
   font-size: 14px;
   color: #f5222d;
-}
+} */
 
 textarea#longDescription.ant-input {
 	min-height: 240px;
@@ -152,6 +157,16 @@ textarea#longDescription.ant-input {
 	flex-direction: column;
 }
 
+li.ant-menu-item {
+	color: #2e3880;
+	font-size: 14px;
+	letter-spacing: 0.6px;
+	text-transform: uppercase;
+}
+
+li.ant-menu-item:last-of-type {
+	text-transform: initial;
+}
 
 li.ant-menu-item span {
   display: block;
@@ -166,6 +181,6 @@ li.ant-menu-item span {
 	display: block;
 }
 
-.addspace-modal .ant-modal-footer {
+.addSpace-modal .ant-modal-footer {
 	display: none;
 }

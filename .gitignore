@@ -2,5 +2,6 @@ node_modules/
 settings.json
 settings-production.json
 settings-ub.json
+settings-skogen.json
 settingsub.json
 nodal credentials.txt

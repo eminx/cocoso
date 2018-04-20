@@ -15,7 +15,7 @@ const getInitials = (string) => {
 class ModalArticle extends React.Component {
 	
   render() {
-    const { isLoading, item, imageSrc } = this.props;
+    const { isLoading, item } = this.props;
 
     return (
       <Modal
@@ -28,9 +28,8 @@ class ModalArticle extends React.Component {
             </div>
           :
             <Card
-              title={<div><h1>{item.title}</h1><h3 style={{color: 'rgba(0,0,0,.65)'}}>{item.shortDescription}</h3></div>}
+              title={<div><h1>{item.title}</h1></div>}
               bordered={false}
-              cover={<img alt="example" src={imageSrc} />}
             >
               <Meta
                 avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}

@@ -177,35 +177,7 @@ class Gathering extends React.Component {
             }
     			</Col>
 
-    			<Col sm={24} md={8}>
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: 10, marginBottom: 100}}>
-              {
-                isMyEventWTF 
-                  ?
-                    gatheringData.attendees.length > 0 
-                      ?
-                        <div style={{padding: 12}}>
-                          <h3>Attendees</h3>
-                          <p>Please uncheck for those who did not attend</p>
-                          <List bordered itemLayout="horizontal" size="small">
-                            {gatheringData.attendees.map((attendee, i) => (
-                              <ListItem key={attendee.userId + i}>
-                                <List.Item.Meta
-                                  avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                  title={<span className={!attendee.didNotAttend ? 'bold-font' : ''}>{attendee.username}</span>}
-                                />
-                                <Checkbox checked={!attendee.didNotAttend} onChange={this.toggleAttendance.bind(this, attendee.userId)} />
-                              </ListItem>
-                            ))}
-                          </List>
-                        </div>
-                      : gatheringData.isPublished
-                        ? <p>Currently no one registered. Keep spreading the word!</p>
-                        : <p>Your activity is awaiting review to be published.</p>
-                  : manageButtons
-              }
-            </div>
-          </Col>
+    			
     		</Row>
       </div>
     )

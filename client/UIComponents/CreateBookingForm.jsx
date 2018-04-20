@@ -151,7 +151,7 @@ class CreateBookingForm extends React.Component {
                 message: 'Please enter which part of Skogen you want to book' }],
             })(
               <Select
-                placeholder="Select place"
+                placeholder="Select space/equipment"
               >
                 {places ? places.map((part, i) => (
                   <Option key={part.name + i} value={part.name}>{part.name}</Option>
@@ -160,7 +160,7 @@ class CreateBookingForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem
+          {/*<FormItem
             {...formItemLayout}
             label="Select an image"
             className="upload-image-col"
@@ -176,7 +176,7 @@ class CreateBookingForm extends React.Component {
                 : <Button><Icon type="upload" />Pick an image</Button>
               }
             </Upload>
-          </FormItem>
+          </FormItem>*/}
 
           <FormItem
             wrapperCol={{

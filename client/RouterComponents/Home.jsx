@@ -48,21 +48,14 @@ class Home extends React.Component {
     // });
 
   	if (goto) {
-      return <Redirect to={`/event/${goto}`} />
+      return <Redirect to={`/booking/${goto}`} />
     }
 
     return (
     	<div style={{padding: 24}}>
-        <Row>
-          <Col xs={0} sm={0} md={8} />
-          <Col xs={24} sm={24} md={8}>
-            <Divider />
-          </Col>
-          <Col xs={0} sm={0} md={8} />
-        </Row>
         <Row gutter={32}>
-          <Col xs={24} sm={24} md={8}>
-            <div style={{marginBottom: 24}}>
+          <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
+            <div style={{maxWidth: 400}}>
               <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
               <Alert
                 title="<About></About>"
@@ -70,34 +63,39 @@ class Home extends React.Component {
                 type="info"
               />
             </div>
+          </div>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} sm={24} md={12}>
+            <div style={{marginBottom: 50}}>
+              <h2 style={{textAlign: 'center'}}>Calendar</h2>
+              <CalendarView
+                gatherings={gatherings}
+                images={images} 
+                onSelect={this.onSelect}
+              />
+            </div>
           </Col>
 
-          <Col xs={24} sm={24} md={16}>
-            {
-              isLoading
-              ? 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <Spin size="large" />
-                </div>
-              :
-                <div>
-                  <h2 style={{textAlign: 'center'}}>Calendar</h2>
-                  <CalendarView
-                    gatherings={gatherings}
-                    images={images} 
-                    onSelect={this.onSelect}
-                  />
-                  
-                  <Divider/>
-                  
-                  <h2 style={{textAlign: 'center'}}>Current bookings</h2>
-  			    			<Nodal 
-  		    					push={this.props.history.push}
-  		    					images={this.props.imagesArray}
-  		    					gatherings={gatherings}
-  		    				/>
-                </div>
-    				}
+          <Col xs={24} sm={24} md={12}>
+            <div style={{marginBottom: 50}}>
+              <h2 style={{textAlign: 'center'}}>Current bookings</h2>
+              {
+                isLoading
+                ? 
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Spin size="large" />
+                  </div>
+                :
+                  <div>
+    			    			<Nodal 
+    		    					push={this.props.history.push}
+    		    					images={this.props.imagesArray}
+    		    					gatherings={gatherings}
+    		    				/>
+                  </div>
+      				}
+            </div>
     			</Col>
     		</Row>
       </div>

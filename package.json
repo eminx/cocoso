@@ -2,8 +2,8 @@
   "name": "Nodal",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings-ub.json",
-    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings-ub.json events.urbanburn.se"
+    "start": "meteor run --settings settings-skogen.json",
+    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings-skogen.json new.skogen.pm"
   },
   "theme": {
     "primary-color": "orange"

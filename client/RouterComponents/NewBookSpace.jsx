@@ -7,7 +7,7 @@ import Evaporate from 'evaporate';
 import AWS from 'aws-sdk';
 
 const successCreation = () => {
-  message.success('Your event is successfully created', 6);
+  message.success('Your booking is successfully registered', 6);
 };
 
 const sideNote = "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping bookings."
@@ -19,12 +19,13 @@ class NewBookSpace extends React.Component {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newGatheringId: null,
+    newBookingId: null,
     uploadedImage: null,
     uploadableImage: null
 	}
 
 	registerGatheringLocally = (values) => {
+    values.authorName = this.props.currentUser.username;
 		this.setState({
       values: values, 
       modalConfirm: true
@@ -58,15 +59,15 @@ class NewBookSpace extends React.Component {
         this.setState({
           uploadedImage: downloadUrl
         });
-        this.createGathering(downloadUrl);
+        this.createBooking(downloadUrl);
       }
     });
   }
 
-	createGathering = (uploadedImage) => {
+	createBooking = () => {
     const { values } = this.state;
 
-    Meteor.call('createGathering', values, uploadedImage, (error, result) => {
+    Meteor.call('createBooking', values, (error, result) => {
       if (error) {
         this.setState({
           isLoading: false,
@@ -75,7 +76,7 @@ class NewBookSpace extends React.Component {
       } else {
         this.setState({
           isLoading: false,
-          newGatheringId: result,
+          newBookingId: result,
           isSuccess: true
         });
       }
@@ -91,18 +92,18 @@ class NewBookSpace extends React.Component {
       return (
         <div style={{maxWidth: 600, margin: '0 auto'}}>
           <Alert
-            message="You have to signin to create an event. Just do it!"
+            message="You have to signin to create a booking. Just do it!"
             type="error"
           />
         </div>
       )
     }
 
-    const { modalConfirm, values, isLoading, isSuccess, newGatheringId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
+    const { modalConfirm, values, isLoading, isSuccess, newBookingId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/event/${newGatheringId}`} />
+      return <Redirect to={`/booking/${newBookingId}`} />
     }
 
     return (
@@ -131,12 +132,11 @@ class NewBookSpace extends React.Component {
   	    { modalConfirm
           ?
             <ModalArticle
-              imageSrc={uploadableImageLocal}
               item={values}
               isLoading={isLoading}
               title="Overview The Information"
               visible={modalConfirm}
-              onOk={this.uploadImage}
+              onOk={this.createBooking}
               onCancel={this.hideModal}
               okText="Confirm"
               cancelText="Go back and edit"

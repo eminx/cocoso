@@ -39,13 +39,12 @@ class CardArticle extends React.Component {
 
     return (
       <Card
-        title={<div><h1>{item.title}</h1><h3 style={{color: 'rgba(0,0,0,.65)'}}>{item.shortDescription}</h3></div>}
+        title={<div><h1>{item.title}</h1></div>}
         bordered={false}
-        cover={<img alt="example" src={item.imageUrl} />}
       >
         <Meta
           avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}
-          title={<div><b>{item.room}, Nobelberget<br />{eventTimes}, {eventDate}</b><br /> hosted by {item.authorName} <Divider /></div>}
+          title={<div><b>{item.room}, Skogen<br />{eventTimes}, {eventDate}</b><br /> booked by {item.authorName} <Divider /></div>}
           description={item.longDescription}
         />
       </Card>

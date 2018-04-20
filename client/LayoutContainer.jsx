@@ -24,18 +24,18 @@ class LayoutContainer extends React.Component {
               mode="horizontal"
               style={{ lineHeight: '64px', float: 'right' }}
             >
-              <Menu.Item key="/bookings">
+              {/*<Menu.Item key="/bookings">
                 <Link to="/">Bookings</Link>
-              </Menu.Item>
+              </Menu.Item>*/}
               <Menu.Item key="/create">
-                <Link to="/create">Book</Link>
+                <Link to="/book">Book</Link>
               </Menu.Item>
               <Menu.Item key="/login">
                 <Blaze template="loginButtons" />
               </Menu.Item>
             </Menu>
             <Link to="/">
-              <h2 className="ub-logo">Skogen</h2>
+              <div className="logo skogen-logo" />
             </Link>
           </Header>
           <Content style={{ marginTop: 20 }}>

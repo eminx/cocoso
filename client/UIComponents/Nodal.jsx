@@ -27,7 +27,7 @@ const footerIcons = [
 ];
 
 function shortenDescription(str) {
-    return str.split(/\s+/).slice(0,20).join(" ");
+  return str.split(/\s+/).slice(0,20).join(" ");
 }
 
 class Nodal extends React.Component { 
@@ -51,14 +51,13 @@ class Nodal extends React.Component {
 				      <List.Item
 				        key={item.title + i}
 				        actions={[<Link to={`/booking/${item._id}`}>{readMoreButton}</Link>]}
-				        extra={<Link to={`/booking/${item._id}`}><img height={180} alt="image" src={item.imageUrl} style={{marginBottom: 24}} /></Link>}
 				      >
 				        <List.Item.Meta
 				          avatar={<Avatar src={avatarSrc} />}
-				          title={<Link to={`/booking/${item._id}`}>{item.title}</Link>}
+				          title={<Link to={`/booking/${item._id}`}><h2>{item.title}</h2></Link>}
 				          description={item.shortDescription}
 				        />
-				        {shortenDescription(item.longDescription) + '...'}
+				        {/*shortenDescription(item.longDescription) + '...'*/}
 				      </List.Item>
 			      </Card>
 			    )}
