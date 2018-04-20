@@ -55,12 +55,12 @@ class Home extends React.Component {
     	<div style={{padding: 24}}>
         <Row gutter={32}>
           <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
-            <div style={{maxWidth: 400}}>
-              <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
-              <Alert
-                title="<About></About>"
-                message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
-                type="info"
+            <div style={{maxWidth: 900}}>
+              <h2 style={{textAlign: 'center'}}>Calendar</h2>
+              <CalendarView
+                gatherings={gatherings}
+                images={images} 
+                onSelect={this.onSelect}
               />
             </div>
           </div>
@@ -68,11 +68,11 @@ class Home extends React.Component {
         <Row gutter={32}>
           <Col xs={24} sm={24} md={12}>
             <div style={{marginBottom: 50}}>
-              <h2 style={{textAlign: 'center'}}>Calendar</h2>
-              <CalendarView
-                gatherings={gatherings}
-                images={images} 
-                onSelect={this.onSelect}
+              <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
+              <Alert
+                title="<About></About>"
+                message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
+                type="info"
               />
             </div>
           </Col>

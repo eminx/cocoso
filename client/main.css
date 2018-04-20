@@ -1,6 +1,7 @@
-body, body > #render-target {
-	background-color: rgb(231, 233, 233);
+html, body, body > #render-target {
+	background-color: rgb(231, 233, 233) !important;
 	font-family: 'Verdana', 'Geneva', sans-serif;
+	color: #2e3880;
 }
 
 h1 {
@@ -38,7 +39,7 @@ h1 {
 }
 
 .rbc-calendar {
-  min-height: 300px;
+  min-height: 600px;
   /* max-height: 500px; */
 }
 

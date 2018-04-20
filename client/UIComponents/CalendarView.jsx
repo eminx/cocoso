@@ -12,9 +12,10 @@ let CalendarView = props => {
       <BigCalendar
         onSelectEvent={props.onSelect}
         events={gatherings}
-        defaultView="week"
-        timeslots={4}
-        views={['week']}
+        defaultView="month"
+        showMultiDayTimes
+        step={60}
+        views={['month', 'week', 'day', 'agenda']}
         popupOffset={{x: 0, y: 200}}
       />
     </div>
