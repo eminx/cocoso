@@ -161,12 +161,18 @@ textarea#longDescription.ant-input {
 li.ant-menu-item {
 	color: #2e3880;
 	font-size: 14px;
-	letter-spacing: 0.6px;
 	text-transform: uppercase;
+	font-weight: bold;
+  letter-spacing: -0.2px;
+}
+
+.ant-menu-horizontal > li.ant-menu-item > a, .ant-menu-horizontal > .ant-menu-submenu > a {
+	color: #2e3880;
 }
 
 li.ant-menu-item:last-of-type {
 	text-transform: initial;
+	font-weight: normal;
 }
 
 li.ant-menu-item span {

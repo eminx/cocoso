@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 const s3Settings = Meteor.settings.AWSs3;
 
 Slingshot.fileRestrictions("gatheringImageUpload", {
-  allowedFileTypes: ["image/png", "image/jpeg"],
+  allowedFileTypes: ["image/png", "image/jpeg", "image/jpg"],
   maxSize: 5 * 3024 * 3024,
 });
 
@@ -52,4 +52,4 @@ Meteor.methods({
 			}
 		}
 	}
-})
+});
