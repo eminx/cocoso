@@ -128,7 +128,7 @@ class CreateGatheringForm extends React.Component {
             )}
           </FormItem>
 
-         <FormItem
+          <FormItem
             {...formItemLayout}
             label="Select the Day"
           >
@@ -142,7 +142,7 @@ class CreateGatheringForm extends React.Component {
             label="Start time"
           >
             {getFieldDecorator('timePickerStart', configTimeStart)(
-              <TimePicker format='HH:mm' />
+              <TimePicker minuteStep={30} format='HH:mm' />
             )}
           </FormItem>
 

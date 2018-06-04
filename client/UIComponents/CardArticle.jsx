@@ -43,7 +43,7 @@ class CardArticle extends React.Component {
         bordered={false}
       >
         <Meta
-          avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}
+          avatar={<Avatar>{getInitials(item.authorName || 'emo')}</Avatar>}
           title={<div><b>{item.room}, Skogen<br />{eventTimes}, {eventDate}</b><br /> booked by {item.authorName} <Divider /></div>}
           description={item.longDescription}
         />

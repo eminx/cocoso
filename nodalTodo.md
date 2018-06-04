@@ -56,4 +56,13 @@ X- Test all of this
 - Emails for notification (for superadmin and creator)
 - Chat... (epic)
 
+### Todo as of May 21:
+- Unique username (needed anyways for FB + Google users)
+- Implement modal window asking about user info such as personnummer after sign up.
+- Implement editing of an activity
+- Implement chat for superadmin and activity host to have a dialogue.
+- Emails setting.
+- Connection with Moonclerk 
+
+
 

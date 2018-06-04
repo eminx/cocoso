@@ -36,7 +36,7 @@ class CreateBookingForm extends React.Component {
 
       const startTime = fieldsValue['timePickerStart'], 
             endTime = startTime.clone();
-      endTime.add(fieldsValue.duration,'minutes');
+      endTime.add(fieldsValue.duration,'hours');
 
       const values = {
         ...fieldsValue,
@@ -77,7 +77,7 @@ class CreateBookingForm extends React.Component {
         required: true,
         message: 'Please type duration in minutes'
       }],
-      initialValue: 60
+      initialValue: 1
     };
 
     const { places } = this.props;
@@ -123,16 +123,16 @@ class CreateBookingForm extends React.Component {
             label="Start time"
           >
             {getFieldDecorator('timePickerStart', configTimeStart)(
-              <TimePicker format='HH:mm' />
+              <TimePicker format='HH:mm' minuteStep={30} />
             )}
           </FormItem>
 
           <FormItem
             {...formItemLayout}
-            label="Duration (mins)"
+            label="Duration (h)"
           >
             {getFieldDecorator('duration', configDuration)(
-              <InputNumber />
+              <InputNumber step={0.5} />
             )}
           </FormItem>
           
