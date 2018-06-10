@@ -148,7 +148,7 @@ class CreateGatheringForm extends React.Component {
 
           <FormItem
             {...formItemLayout}
-            label="Duration (mins)"
+            label="Duration (hours)"
           >
             {getFieldDecorator('duration', configDuration)(
               <InputNumber />
