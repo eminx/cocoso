@@ -5,12 +5,6 @@ import Blaze from 'meteor/gadicc:blaze-react-component';
 const { Header, Content, Footer } = Layout;
 
 class LayoutContainer extends React.Component {
-  componentWillMount() {
-    Accounts.ui.config({
-      passwordSignupFields: 'USERNAME_AND_EMAIL'
-    });
-  }
-  
   render() {
     const { match, children } = this.props;
     const pathname = match.location.pathname;

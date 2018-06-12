@@ -52,7 +52,7 @@ class CreateBookingForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { uploadableImage, setUploadableImage } = this.props;
+    const { uploadableImage, setUploadableImage, places, bookingData } = this.props;
 
     const formItemLayout = {
       labelCol: { span: 8 },
@@ -64,23 +64,26 @@ class CreateBookingForm extends React.Component {
         required: true,
         message: 'Please select the day!'
       }],
+      initialValue: bookingData ? moment(bookingData.startDate) : null
     };
     const configTimeStart = {
       rules: [{
         type: 'object',
         required: true,
-        message: 'Please select the start time!' }],
+        message: 'Please select the start time!'
+      }],
+      initialValue: bookingData ? moment(bookingData.startTime, 'HH:mm') : null
     };
+
+    const durationCal = bookingData ? moment(bookingData.endTime, 'HH:mm').diff(moment(bookingData.startTime, 'HH:mm'), 'hours') : null;
     const configDuration = {
       rules: [{
         type: 'number',
         required: true,
-        message: 'Please type duration in minutes'
+        message: 'Please type duration in hours!'
       }],
-      initialValue: 1
+      initialValue: durationCal
     };
-
-    const { places } = this.props;
 
     return (
       <div className="create-gathering-form">
@@ -92,8 +95,9 @@ class CreateBookingForm extends React.Component {
             {getFieldDecorator('title', {
               rules: [{
                 required: true,
-                message: 'Enter the Title',
+                message: 'Enter the Title'
               }],
+              initialValue: bookingData ? bookingData.title : null
             })(
               <Input placeholder="Booking title" />
             )}
@@ -104,6 +108,7 @@ class CreateBookingForm extends React.Component {
               rules: [{
                 message: 'Please enter a detailed description (optional)',
               }],
+              initialValue: bookingData ? bookingData.longDescription : null
             })(
               <TextArea placeholder="Optionally enter a description" autosize />
             )}
@@ -148,7 +153,9 @@ class CreateBookingForm extends React.Component {
             {getFieldDecorator('room', {
               rules: [{
                 required: true,
-                message: 'Please enter which part of Skogen you want to book' }],
+                message: 'Please enter which part of Skogen you want to book'
+              }],
+              initialValue: bookingData ? bookingData.room : null
             })(
               <Select
                 placeholder="Select space/equipment"
@@ -159,24 +166,6 @@ class CreateBookingForm extends React.Component {
               </Select>
             )}
           </FormItem>
-
-          {/*<FormItem
-            {...formItemLayout}
-            label="Select an image"
-            className="upload-image-col"
-            extra={ uploadableImage ? null : "Pick an image from your device" }
-          >
-            <Upload 
-              name="gathering"
-              action="/upload.do"
-              onChange={setUploadableImage}
-            >
-              { uploadableImage
-                ? <Button><Icon type="check-circle" />Image selected</Button>
-                : <Button><Icon type="upload" />Pick an image</Button>
-              }
-            </Upload>
-          </FormItem>*/}
 
           <FormItem
             wrapperCol={{

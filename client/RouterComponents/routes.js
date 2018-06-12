@@ -10,6 +10,7 @@ import NewBookSpaceContainer from './NewBookSpaceContainer';
 import GatheringContainer from './GatheringContainer';
 import NewStreamContainer from './NewStreamContainer';
 import Memberetc from './Memberetc';
+import EditBookingContainer from './EditBookingContainer';
 
 const browserHistory = createBrowserHistory();
 
@@ -21,6 +22,7 @@ export const renderRoutes = () => (
 	      <Route exact path="/book" component={NewBookSpaceContainer} />
 	      <Route exact path="/create-a-stream" component={NewStreamContainer} />
 	      <Route path="/booking/:id" component={GatheringContainer} />
+	      <Route path="/edit-booking/:id/" component={EditBookingContainer} />
 	      <Route exact path="/member" component={Memberetc} />
 	      {/*<Route path="*" component={NotFoundPage}/>*/}
 	    </Switch>

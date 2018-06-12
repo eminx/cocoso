@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Col, Spin, Button, Icon, Divider, Checkbox, List, Avatar, Affix, Popconfirm, message } from 'antd/lib';
 import CardArticle from '../UIComponents/CardArticle';
 const ListItem = List.Item;
@@ -160,25 +161,30 @@ class Gathering extends React.Component {
 
     return (
     	<div>
-    		<Row gutter={24}>
-          <Col sm={24} md={16}>
-            {
-              !isLoading && gatheringData
-                ? <CardArticle 
-                    item={gatheringData}
-                    isLoading={isLoading}
-                    isAttending={isAttending}
-                    isMyEventWTF={isMyEventWTF}
-                    currentUser={currentUser}
-                  />
-                : <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <Spin size="large" />
-                  </div>
-            }
-    			</Col>
+        { !isLoading && gatheringData
+          ?
+        		<Row gutter={24}>
+              <Col sm={24} md={16}>
+                <CardArticle 
+                  item={gatheringData}
+                  isLoading={isLoading}
+                  isAttending={isAttending}
+                  isMyEventWTF={isMyEventWTF}
+                  currentUser={currentUser}
+                />
+        			</Col>
 
-    			
-    		</Row>
+              <Col sm={24} md={8}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <Link to={`/edit-booking/${gatheringData._id}`}><Button>Edit</Button></Link>
+                </div>
+              </Col>
+        		</Row>
+          :
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+              <Spin size="large" />
+            </div>
+        }
       </div>
     )
   }

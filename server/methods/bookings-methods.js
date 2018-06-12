@@ -29,4 +29,38 @@ Meteor.methods({
 			throw new Meteor.Error(e, "Couldn't add to Collection");
 		}
 	},
+
+	updateBooking(formValues, bookingId) {
+		check(formValues.title, String);
+		check(formValues.room, String);
+		check(formValues.duration, Number);
+		check(formValues.datePicker, String);
+		check(formValues.timePickerStart, String);
+		check(formValues.timePickerEnd, String);
+
+		const user = Meteor.user();
+		const theG = Gatherings.findOne(bookingId);
+		if (user._id !== theG.authorId) {
+			throw new Meteor.Error("You are not allowed!");
+			return false;
+		};
+		try {
+			const add = Gatherings.update(bookingId, {
+				$set: {
+					title: formValues.title,
+					longDescription: formValues.longDescription,
+					room: formValues.room,
+					startDate: formValues.datePicker,
+					endDate: formValues.datePicker,
+					startTime: formValues.timePickerStart,
+					endTime: formValues.timePickerEnd,
+					duration: formValues.duration,
+					latestUpdate: new Date()
+				}
+			});
+			return bookingId;
+		} catch(e) {
+			throw new Meteor.Error(e, "Couldn't add to Collection");
+		}
+	}
 })

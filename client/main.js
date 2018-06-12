@@ -9,3 +9,7 @@ import 'antd/dist/antd.min.css';
 Meteor.startup(() => {
   render(renderRoutes() , document.getElementById('render-target'));
 });
+
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
