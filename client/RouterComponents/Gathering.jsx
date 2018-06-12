@@ -175,9 +175,13 @@ class Gathering extends React.Component {
         			</Col>
 
               <Col sm={24} md={8}>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <Link to={`/edit-booking/${gatheringData._id}`}><Button>Edit</Button></Link>
-                </div>
+                { currentUser && currentUser._id === gatheringData.authorId
+                  ?
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                      <Link to={`/edit-booking/${gatheringData._id}`}><Button>Edit</Button></Link>
+                    </div>
+                  : null
+                }
               </Col>
         		</Row>
           :
