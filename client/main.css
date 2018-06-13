@@ -93,6 +93,43 @@ h1 {
 	padding-right: 5px;
 }
 
+.rbc-event.category-0 {
+	background-color: hsla(16, 86%, 44%, 1)
+}
+
+.rbc-event.category-1 {
+	background-color: hsla(36, 86%, 44%, 1)
+}
+
+.rbc-event.category-2 {
+	background-color: hsla(56, 86%, 44%, 1)
+}
+
+.rbc-event.category-3 {
+	background-color: hsla(76, 86%, 44%, 1);
+}
+
+.rbc-event.category-4 {
+	background-color: hsla(96, 86%, 44%, 1);
+}
+
+.rbc-event.category-5 {
+	background-color: hsla(116, 86%, 44%, 1);
+}
+
+.rbc-event.category-6 {
+	background-color: hsla(136, 86%, 44%, 1);
+}
+
+.rbc-event.category-7 {
+	background-color: hsla(156, 86%, 44%, 1);
+}
+
+.rbc-event.category-7 {
+	background-color: hsla(176, 86%, 44%, 1);
+}
+
+
 button.rbc-active {
 	background: #fff !important;
 	border-color: #1890ff !important;

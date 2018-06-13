@@ -6,16 +6,6 @@ import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
 import moment from 'moment';
 
-const aboutUB = <div>
-  <p>
-    Wanna host a workshop, performance, jam session, training, meditation or any timely event at the UrbanBurn in Stockholm? This is made for you!
-    Just press create and then fill the form and then once you confirm it, it will automatically be published in this web-app. You can then share the link in your networks to communicate about it.
-  </p>
-  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-    <Link to="/create"><Button type="primary">Create an Event</Button></Link>
-  </div>
-</div>;
-
 class Home extends React.Component {
 	state = {
 		mode: 'list',
@@ -34,7 +24,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, placesList } = this.props;
   	const gatherings = this.props.gatheringsList;
   	const images = this.props.imagesArray;
   	const { mode, goto } = this.state;

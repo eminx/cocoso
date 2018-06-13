@@ -5,13 +5,12 @@ import { removeSpace } from '../functions';
 let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
 
 let CalendarView = props => {
-
   const { gatherings } = props;
 
   return (
     <div>
       <BigCalendar
-        eventPropGetter={event => ({className: 'category-' + removeSpace(event.room)})}
+        eventPropGetter={event => ({className: 'category-' + event.roomIndex})}
         onSelectEvent={props.onSelect}
         events={gatherings}
         defaultView="month"

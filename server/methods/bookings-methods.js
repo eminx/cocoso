@@ -1,3 +1,19 @@
+const placesList = Places.find().fetch();
+console.log("placesList", placesList);
+
+const getRoomIndex = (room) => {
+  if (placesList.length > 0) {
+  	let roomIndex;
+    placesList.forEach((place, i) => {
+      if (place.name === room) {
+      	console.log("i.toString()", i.toString());
+        roomIndex = i.toString();
+      }
+    })
+    return roomIndex;
+  }
+};
+
 Meteor.methods({
 	createBooking(formValues) {
 		check(formValues.title, String);
@@ -7,7 +23,9 @@ Meteor.methods({
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
 		
+		const roomIndex = getRoomIndex(formValues.room);
 		const user = Meteor.user();
+		
 		try {
 			const add = Gatherings.insert({
 				authorId: user._id,
@@ -15,6 +33,7 @@ Meteor.methods({
 				title: formValues.title,
 				longDescription: formValues.longDescription,
 				room: formValues.room,
+				roomIndex: roomIndex,
 				startDate: formValues.datePicker,
 				endDate: formValues.datePicker,
 				startTime: formValues.timePickerStart,
@@ -38,18 +57,22 @@ Meteor.methods({
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
 
+		const roomIndex = getRoomIndex(formValues.room);
+		console.log("roomIndex", roomIndex);
 		const user = Meteor.user();
 		const theG = Gatherings.findOne(bookingId);
 		if (user._id !== theG.authorId) {
 			throw new Meteor.Error("You are not allowed!");
 			return false;
 		};
+		
 		try {
 			const add = Gatherings.update(bookingId, {
 				$set: {
 					title: formValues.title,
 					longDescription: formValues.longDescription,
 					room: formValues.room,
+					roomIndex: roomIndex,
 					startDate: formValues.datePicker,
 					endDate: formValues.datePicker,
 					startTime: formValues.timePickerStart,
