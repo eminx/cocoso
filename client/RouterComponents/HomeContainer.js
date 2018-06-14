@@ -14,6 +14,8 @@ export default HomeContainer = withTracker((props) => {
   const gatheringsList = Gatherings ? Gatherings.find().fetch() : null;
   const imagesArray = Images ? Images.find().fetch() : null;
   const currentUser = Meteor.user();
+  const placesSub = Meteor.subscribe('places');
+  const placesList = Places ? Places.find().fetch() : null;
 
   gatheringsList.forEach(gather => {
     gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();
@@ -25,6 +27,7 @@ export default HomeContainer = withTracker((props) => {
 		gatherings,
 		gatheringsList,
     imagesArray,
-    currentUser
+    currentUser,
+    placesList
   };
 })(Home);

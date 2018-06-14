@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert, Spin, Button, Divider } from 'antd/lib';
+import { Row, Col, Radio, Alert, Spin, Button, Divider, Select } from 'antd/lib';
+const Option = Select.Option;
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
@@ -10,6 +11,7 @@ class Home extends React.Component {
 	state = {
 		mode: 'list',
 		goto: null,
+    calendarFilter: "Show All"
 	}
 
 	handleModeChange = (e) => {
@@ -23,19 +25,25 @@ class Home extends React.Component {
   	});
   }
 
+  handleCalendarFilterChange = (value) => {
+    this.setState({
+      calendarFilter: value
+    });
+  }
+
   render() {
     const { isLoading, placesList } = this.props;
   	const gatherings = this.props.gatheringsList;
   	const images = this.props.imagesArray;
-  	const { mode, goto } = this.state;
+  	const { mode, goto, calendarFilter } = this.state;
 
     let futureEvents = [];
 
-    // gatherings.forEach((event) => {
-    //   if (moment(event).isAfter('2010-10-19')) {
-    //     console.log('xxx');
-    //   }
-    // });
+    let filteredBookings = gatherings;
+
+    if (calendarFilter !== "Show All") {
+      filteredBookings = gatherings.filter(booking => booking.room === calendarFilter);
+    }
 
   	if (goto) {
       return <Redirect to={`/booking/${goto}`} />
@@ -47,8 +55,21 @@ class Home extends React.Component {
           <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
             <div style={{maxWidth: 900}}>
               <h2 style={{textAlign: 'center'}}>Calendar</h2>
+
+              <Select
+                size="large"
+                defaultValue="Show All"
+                onChange={this.handleCalendarFilterChange}
+                style={{ width: 240 }}
+              >
+                <Option key="Show All">Show all</Option>
+                {placesList.map((room) => (
+                  <Option key={room.name}>{room.name}</Option>
+                ))}
+              </Select>
+
               <CalendarView
-                gatherings={gatherings}
+                gatherings={filteredBookings}
                 images={images} 
                 onSelect={this.onSelect}
               />
@@ -59,6 +80,7 @@ class Home extends React.Component {
           <Col xs={24} sm={24} md={12}>
             <div style={{marginBottom: 50}}>
               <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
+
               <Alert
                 title="<About></About>"
                 message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
