@@ -1,17 +1,19 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert, Spin, Button, Divider, Select } from 'antd/lib';
+import { Row, Col, Radio, Alert, Spin, Button, Divider, Select, Tag } from 'antd/lib';
 const Option = Select.Option;
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
 import moment from 'moment';
 
+import colors from '../constants/colors';
+
 class Home extends React.Component {
 	state = {
 		mode: 'list',
 		goto: null,
-    calendarFilter: "Show All"
+    calendarFilter: "All rooms"
 	}
 
 	handleModeChange = (e) => {
@@ -41,7 +43,7 @@ class Home extends React.Component {
 
     let filteredBookings = gatherings;
 
-    if (calendarFilter !== "Show All") {
+    if (calendarFilter !== "All rooms") {
       filteredBookings = gatherings.filter(booking => booking.room === calendarFilter);
     }
 
@@ -58,15 +60,27 @@ class Home extends React.Component {
 
               <Select
                 size="large"
-                defaultValue="Show All"
+                defaultValue="All rooms"
                 onChange={this.handleCalendarFilterChange}
                 style={{ width: 240 }}
               >
-                <Option key="Show All">Show all</Option>
+                <Option key="All rooms">All rooms</Option>
                 {placesList.map((room) => (
                   <Option key={room.name}>{room.name}</Option>
                 ))}
               </Select>
+
+              <div style={{display: 'flex', justifyContent: 'center', padding: 12}}>
+                <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
+                {placesList.map((room, i) => (
+                  <Tag
+                    color={colors[i]}
+                    className={calendarFilter === room.name ? 'checked' : null}
+                    onClick={() => this.handleCalendarFilterChange(room.name)}
+                    key={room.name}>{room.name}
+                  </Tag>
+                ))}
+              </div>
 
               <CalendarView
                 gatherings={filteredBookings}

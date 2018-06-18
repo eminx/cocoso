@@ -16,12 +16,15 @@ const getRoomIndex = (room) => {
 
 Meteor.methods({
 	createBooking(formValues) {
+		console.log("formValues", formValues);
 		check(formValues.title, String);
 		check(formValues.room, String);
-		check(formValues.duration, Number);
-		check(formValues.datePicker, String);
+		check(formValues.dateStart, String);
+		check(formValues.dateEnd, String);
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
+		check(formValues.timePickerEnd, String);
+		check(formValues.isEntireDay, Boolean);
 		
 		const roomIndex = getRoomIndex(formValues.room);
 		const user = Meteor.user();
@@ -34,11 +37,12 @@ Meteor.methods({
 				longDescription: formValues.longDescription,
 				room: formValues.room,
 				roomIndex: roomIndex,
-				startDate: formValues.datePicker,
-				endDate: formValues.datePicker,
-				startTime: formValues.timePickerStart,
-				endTime: formValues.timePickerEnd,
-				duration: formValues.duration,
+				startDate: formValues.dateStart,
+				endDate: formValues.dateEnd,
+				startTime: formValues.timePickerStart || undefined,
+				endTime: formValues.timePickerEnd || undefined,
+				duration: formValues.duration || undefined,
+				isFullDay: formValues.isEntireDay,
 				isSentForReview: true,
 				isPublished: true,
 				creationDate: new Date()
@@ -52,8 +56,9 @@ Meteor.methods({
 	updateBooking(formValues, bookingId) {
 		check(formValues.title, String);
 		check(formValues.room, String);
-		check(formValues.duration, Number);
-		check(formValues.datePicker, String);
+		// check(formValues.duration, Number);
+		check(formValues.dateStart, String);
+		check(formValues.dateEnd, String);
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
 

@@ -17,7 +17,9 @@ let CalendarView = props => {
         showMultiDayTimes
         step={60}
         views={['month', 'week', 'day', 'agenda']}
-        popupOffset={{x: 0, y: 200}}
+        popup
+        popupOffset={30}
+        showMultiDayTimes
       />
     </div>
   )

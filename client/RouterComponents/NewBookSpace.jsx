@@ -65,10 +65,14 @@ class NewBookSpace extends React.Component {
   }
 
 	createBooking = () => {
+    console.log('yes baby')
     const { values } = this.state;
+    console.log("values", values);
 
     Meteor.call('createBooking', values, (error, result) => {
+      console.log('we got here');
       if (error) {
+        console.log("error", error);
         this.setState({
           isLoading: false,
           isError: true
@@ -101,10 +105,7 @@ class NewBookSpace extends React.Component {
 
     const { modalConfirm, values, isLoading, isSuccess, newBookingId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
 
-    if (isSuccess) {
-      successCreation();
-      return <Redirect to={`/booking/${newBookingId}`} />
-    }
+    isSuccess ? successCreation() : null;
 
     return (
     	<div style={{padding: 24}}>
@@ -141,6 +142,12 @@ class NewBookSpace extends React.Component {
               okText="Confirm"
               cancelText="Go back and edit"
             />
+          : null
+        }
+
+        { isSuccess
+          ?
+            <Redirect to={`/booking/${newBookingId}`} />
           : null
         }
 

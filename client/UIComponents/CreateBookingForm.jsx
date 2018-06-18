@@ -3,14 +3,14 @@ import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switc
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
 import nodenParts from '../constants/parts';
 
 class CreateBookingForm extends React.Component {
   state = {
-    addSpaceModal: false
+    addSpaceModal: false,
+    isEntireDay: false
   }
 
   addSpace = (name) => {
@@ -23,27 +23,50 @@ class CreateBookingForm extends React.Component {
         this.setState({addSpaceModal: false});
       }
     });
-    
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
+
+    const { isEntireDay } = this.state;
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
         return;
       }
 
-      const startTime = fieldsValue['timePickerStart'], 
-            endTime = startTime.clone();
-      endTime.add(fieldsValue.duration,'hours');
+      let startTime = 'XX:xx', endTime = 'XX:xx';
+      if (!isEntireDay) {
+        startTime= fieldsValue['timePickerStart'];
+        endTime = startTime.clone();
+        endTime.add(fieldsValue.duration,'hours');
+      }
+      
+
+      const getDates = () => {
+        const dates = [];
+        if (isEntireDay) {
+          dates[0] = fieldsValue['rangePicker'][0].format('YYYY-MM-DD');
+          dates[1] = fieldsValue['rangePicker'][1].format('YYYY-MM-DD');
+        } else {
+          dates[0] = fieldsValue['datePicker'].format('YYYY-MM-DD');
+          dates[1] = dates[0];
+        }
+        return dates;
+      }
 
       const values = {
         ...fieldsValue,
-        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePickerStart': startTime.format('HH:mm'),
-        'timePickerEnd': endTime.format('HH:mm')
-      };
+        'dateStart': getDates()[0],
+        'dateEnd': getDates()[1],
+        'timePickerStart': isEntireDay ? startTime : startTime.format('HH:mm'),
+        'timePickerEnd': isEntireDay ? endTime : endTime.format('HH:mm'),
+        'isEntireDay': isEntireDay
+      }
+
+      values.datePicker = null;
+      values.rangePicker = null;
+
       if (!err) {
         this.props.registerGatheringLocally(values);
       }
@@ -53,15 +76,24 @@ class CreateBookingForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { uploadableImage, setUploadableImage, places, bookingData } = this.props;
+    const { addSpaceModal, isEntireDay } = this.state;
 
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 },
     };
+    const configRange = {
+      rules: [{
+        type: 'array',
+        required: isEntireDay,
+        message: 'Please select the day/days!'
+      }],
+      initialValue: bookingData ? moment(bookingData.startDate) : null
+    };
     const configDate = {
       rules: [{
         type: 'object',
-        required: true,
+        required: !isEntireDay,
         message: 'Please select the day!'
       }],
       initialValue: bookingData ? moment(bookingData.startDate) : null
@@ -69,7 +101,7 @@ class CreateBookingForm extends React.Component {
     const configTimeStart = {
       rules: [{
         type: 'object',
-        required: true,
+        required: !isEntireDay,
         message: 'Please select the start time!'
       }],
       initialValue: bookingData ? moment(bookingData.startTime, 'HH:mm') : null
@@ -79,7 +111,7 @@ class CreateBookingForm extends React.Component {
     const configDuration = {
       rules: [{
         type: 'number',
-        required: true,
+        required: !isEntireDay,
         message: 'Please type duration in hours!'
       }],
       initialValue: durationCal
@@ -114,32 +146,53 @@ class CreateBookingForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="Select the Day"
-          >
-            {getFieldDecorator('datePicker', configDate)(
-              <DatePicker />
-            )}
-          </FormItem>
-          
-          <FormItem
-            {...formItemLayout}
-            label="Start time"
-          >
-            {getFieldDecorator('timePickerStart', configTimeStart)(
-              <TimePicker format='HH:mm' minuteStep={30} />
-            )}
+          <FormItem {...formItemLayout} label="full day(s)?">
+            <Switch onChange={() => this.setState({isEntireDay: !isEntireDay})} checked={isEntireDay} />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="Duration (h)"
-          >
-            {getFieldDecorator('duration', configDuration)(
-              <InputNumber step={0.5} />
-            )}
-          </FormItem>
+          { isEntireDay
+            ?
+              <FormItem
+                {...formItemLayout}
+                label="Select the days"
+              >
+                {getFieldDecorator('rangePicker', configRange)(
+                  <RangePicker />
+                )}
+              </FormItem>      
+
+            :
+              <div>
+                <FormItem
+                  {...formItemLayout}
+                  label="Select the day"
+                >
+                  {getFieldDecorator('datePicker', configDate)(
+                    <DatePicker />
+                  )}
+                </FormItem>
+                
+                <FormItem
+                  {...formItemLayout}
+                  label="Start time"
+                >
+                  {getFieldDecorator('timePickerStart', configTimeStart)(
+                    <TimePicker format='HH:mm' minuteStep={30} />
+                  )}
+                </FormItem>
+
+                <FormItem
+                  {...formItemLayout}
+                  label="Duration (h)"
+                >
+                  {getFieldDecorator('duration', configDuration)(
+                    <InputNumber step={0.5} />
+                  )}
+                </FormItem>
+              </div>
+          }   
+
+          
           
           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <span style={{marginRight: 10}}>Wanna add space/equipment to the list?</span>
@@ -180,7 +233,7 @@ class CreateBookingForm extends React.Component {
         <Modal
           className="addSpace-modal"
           title="Add a space/equipment for booking"
-          visible={this.state.addSpaceModal}
+          visible={addSpaceModal}
           onOk={() => this.setState({addSpaceModal: false})}
           onCancel={() => this.setState({addSpaceModal: false})}
         >
