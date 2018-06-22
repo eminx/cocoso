@@ -1,13 +1,14 @@
 import React from 'react';
+import moment from 'moment';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, Radio, Alert, Spin, Button, Divider, Select, Tag } from 'antd/lib';
 const Option = Select.Option;
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
-import moment from 'moment';
-
 import colors from '../constants/colors';
+
+const yesterday = moment(new Date()).add(-1, 'days');
 
 class Home extends React.Component {
 	state = {
@@ -39,7 +40,14 @@ class Home extends React.Component {
   	const images = this.props.imagesArray;
   	const { mode, goto, calendarFilter } = this.state;
 
-    let futureEvents = [];
+    let futureBooking = [];
+
+    gatherings.filter(gathering => {
+      const yesterday = moment(new Date()).add(-1, 'days');
+      if (moment(gathering.startDate).isAfter(yesterday)) {
+        futureBooking.push(gathering);
+      }
+    });
 
     let filteredBookings = gatherings;
 
@@ -56,32 +64,18 @@ class Home extends React.Component {
         <Row gutter={32}>
           <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
             <div style={{maxWidth: 900}}>
-              <h2 style={{textAlign: 'center'}}>Calendar</h2>
-
-              <Select
-                size="large"
-                defaultValue="All rooms"
-                onChange={this.handleCalendarFilterChange}
-                style={{ width: 240 }}
-              >
-                <Option key="All rooms">All rooms</Option>
-                {placesList.map((room) => (
-                  <Option key={room.name}>{room.name}</Option>
-                ))}
-              </Select>
-
-              <div style={{display: 'flex', justifyContent: 'center', padding: 12}}>
-                <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
-                {placesList.map((room, i) => (
-                  <Tag
-                    color={colors[i]}
-                    className={calendarFilter === room.name ? 'checked' : null}
-                    onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}>{room.name}
-                  </Tag>
-                ))}
-              </div>
-
+              <h2 style={{textAlign: 'center'}}>Bookings Calendar</h2>
+                <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
+                  <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
+                  {placesList.map((room, i) => (
+                    <Tag
+                      color={colors[i]}
+                      className={calendarFilter === room.name ? 'checked' : null}
+                      onClick={() => this.handleCalendarFilterChange(room.name)}
+                      key={room.name}>{room.name}
+                    </Tag>
+                  ))}
+                </div>
               <CalendarView
                 gatherings={filteredBookings}
                 images={images} 
@@ -117,7 +111,7 @@ class Home extends React.Component {
     			    			<Nodal 
     		    					push={this.props.history.push}
     		    					images={this.props.imagesArray}
-    		    					gatherings={gatherings}
+    		    					gatherings={futureBooking}
     		    				/>
                   </div>
       				}

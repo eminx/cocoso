@@ -1,12 +1,10 @@
 const placesList = Places.find().fetch();
-console.log("placesList", placesList);
 
 const getRoomIndex = (room) => {
   if (placesList.length > 0) {
   	let roomIndex;
     placesList.forEach((place, i) => {
       if (place.name === room) {
-      	console.log("i.toString()", i.toString());
         roomIndex = i.toString();
       }
     })
@@ -16,7 +14,6 @@ const getRoomIndex = (room) => {
 
 Meteor.methods({
 	createBooking(formValues) {
-		console.log("formValues", formValues);
 		check(formValues.title, String);
 		check(formValues.room, String);
 		check(formValues.dateStart, String);
@@ -63,7 +60,6 @@ Meteor.methods({
 		check(formValues.timePickerEnd, String);
 
 		const roomIndex = getRoomIndex(formValues.room);
-		console.log("roomIndex", roomIndex);
 		const user = Meteor.user();
 		const theG = Gatherings.findOne(bookingId);
 		if (user._id !== theG.authorId) {

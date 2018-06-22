@@ -24,6 +24,7 @@
     "node-s3-public-url": "^1.0.2",
     "react": "^16.2.0",
     "react-big-calendar": "^0.17.0",
+    "react-chat-ui": "^0.3.2",
     "react-dom": "^16.2.0",
     "react-meteor-data": "^0.2.11",
     "react-router": "^4.2.0",
