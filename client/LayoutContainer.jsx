@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, Menu } from 'antd/lib';
+import { Layout, Menu, Icon } from 'antd/lib';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 const { Header, Content, Footer } = Layout;
 
@@ -28,9 +28,18 @@ class LayoutContainer extends React.Component {
                 <Blaze template="loginButtons" />
               </Menu.Item>
             </Menu>
+
             <Link to="/">
-              <div className="logo skogen-logo" />
+              { pathname === '/'
+                ?
+                  <div className="logo skogen-logo" />
+                : 
+                  <div className="logo">
+                    <Icon style={{fontSize: 36, color: '#2e3880'}} type="arrow-left" />
+                  </div>
+              }
             </Link>
+              
           </Header>
           <Content style={{ marginTop: 20 }}>
             {children}

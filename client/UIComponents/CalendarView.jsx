@@ -19,7 +19,7 @@ let CalendarView = props => {
         views={['month', 'week', 'day', 'agenda']}
         popup
         popupOffset={30}
-        showMultiDayTimes
+        allDayAccessor="isMultipleDay"
       />
     </div>
   )

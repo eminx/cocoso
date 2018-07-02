@@ -61,6 +61,16 @@ Meteor.publish('gathering', function (id) {
   })*/;
 });
 
+Meteor.publish('chat', function (contextId) {
+  const user = Meteor.user();
+  if (user) {
+    return Chats.find({
+      contextId: contextId
+    })
+  }
+});
+
 Meteor.publish('places', function () {
   return Places.find();
 });
+

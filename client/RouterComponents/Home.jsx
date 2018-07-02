@@ -65,17 +65,17 @@ class Home extends React.Component {
           <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
             <div style={{maxWidth: 900}}>
               <h2 style={{textAlign: 'center'}}>Bookings Calendar</h2>
-                <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
-                  <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
-                  {placesList.map((room, i) => (
-                    <Tag
-                      color={colors[i]}
-                      className={calendarFilter === room.name ? 'checked' : null}
-                      onClick={() => this.handleCalendarFilterChange(room.name)}
-                      key={room.name}>{room.name}
-                    </Tag>
-                  ))}
-                </div>
+              <div className="tags-container" style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
+                <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
+                {placesList.map((room, i) => (
+                  <Tag
+                    color={colors[i]}
+                    className={calendarFilter === room.name ? 'checked' : null}
+                    onClick={() => this.handleCalendarFilterChange(room.name)}
+                    key={room.name}>{room.name}
+                  </Tag>
+                ))}
+              </div>
               <CalendarView
                 gatherings={filteredBookings}
                 images={images} 

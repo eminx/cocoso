@@ -33,7 +33,7 @@ class ModalArticle extends React.Component {
             >
               <Meta
                 avatar={<Avatar>{getInitials(item.authorName)}</Avatar>}
-                title={`${item.room}, Noden`}
+                title={`${item.room}, Skogen`}
                 description={item.longDescription}
               />
             </Card>

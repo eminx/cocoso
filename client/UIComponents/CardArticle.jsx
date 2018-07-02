@@ -27,15 +27,21 @@ const footerIcons = [
 ];
 
 class CardArticle extends React.Component {
+
+  getEventTimes = (event) => {
+    if (event) {
+      if (event.isMultipleDay || event.isFullDay) {
+        return moment(event.startDate).format('Do MMM') + ' ' + event.startTime + ' – ' + 
+          moment(event.endDate).format('Do MMM') + ' ' + event.endTime;
+      } else {
+        return `${event.startTime}–${event.endTime} ${moment(event.startDate).format('Do MMMM')}`;
+      }
+    }
+  }
+
   render() {
     const { item, isAttending, isMyEventWTF, currentUser } = this.props;
-    const eventTimes = item
-      ?
-        `${item.startTime}–${item.endTime}`
-      :
-        null;
-
-    const eventDate = moment(item.startDate).format('Do MMMM dddd');
+    const eventTimes = this.getEventTimes(item);
 
     return (
       <Card
@@ -44,7 +50,7 @@ class CardArticle extends React.Component {
       >
         <Meta
           avatar={<Avatar>{getInitials(item.authorName || 'emo')}</Avatar>}
-          title={<div><b>{item.room}, Skogen<br />{eventTimes}, {eventDate}</b><br /> booked by {item.authorName} <Divider /></div>}
+          title={<div><b>{item.room}, Skogen<br />{eventTimes}</b><br /> booked by {item.authorName} <Divider /></div>}
           description={item.longDescription}
         />
       </Card>

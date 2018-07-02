@@ -21,7 +21,7 @@ Meteor.methods({
 		check(formValues.timePickerStart, String);
 		check(formValues.timePickerEnd, String);
 		check(formValues.timePickerEnd, String);
-		check(formValues.isEntireDay, Boolean);
+		check(formValues.isMultipleDay, Boolean);
 		
 		const roomIndex = getRoomIndex(formValues.room);
 		const user = Meteor.user();
@@ -39,11 +39,15 @@ Meteor.methods({
 				startTime: formValues.timePickerStart || undefined,
 				endTime: formValues.timePickerEnd || undefined,
 				duration: formValues.duration || undefined,
-				isFullDay: formValues.isEntireDay,
+				isMultipleDay: formValues.isMultipleDay,
 				isSentForReview: true,
 				isPublished: true,
 				creationDate: new Date()
-			});
+			}, () => Meteor.call('createChat', formValues.title, add, (error, result) => {
+				if (error) {
+					console.log('Chat is not created due to error: ', error)
+				}
+			}));
 			return add;
 		} catch(e) {
 			throw new Meteor.Error(e, "Couldn't add to Collection");
@@ -74,8 +78,8 @@ Meteor.methods({
 					longDescription: formValues.longDescription,
 					room: formValues.room,
 					roomIndex: roomIndex,
-					startDate: formValues.datePicker,
-					endDate: formValues.datePicker,
+					startDate: formValues.dateStart,
+					endDate: formValues.dateEnd,
 					startTime: formValues.timePickerStart,
 					endTime: formValues.timePickerEnd,
 					duration: formValues.duration,

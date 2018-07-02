@@ -93,52 +93,63 @@ h1 {
 	padding-right: 5px;
 }
 
-.ant-tag {
+.tags-container .ant-tag {
 	margin-bottom: 8px;
 }
 
-.rbc-event.category-0, .ant-tag-magenta.checked {
+.rbc-calendar .rbc-event.category-0, .ant-tag-magenta.checked {
 	background-color: #eb2f96;
+	border:  1px solid #eb2f96;
 }
 
-.rbc-event.category-1, .ant-tag-red.checked {
+.rbc-calendar .rbc-event.category-1, .ant-tag-red.checked {
 	background-color: #f5222d;
+	border:  1px solid #f5222d;
 }
 
-.rbc-event.category-2, .ant-tag-volcano.checked {
+.rbc-calendar .rbc-event.category-2, .ant-tag-volcano.checked {
 	background-color: #fa541c;
+	border:  1px solid #fa541c;
 }
 
-.rbc-event.category-3, .ant-tag-orange.checked {
+.rbc-calendar .rbc-event.category-3, .ant-tag-orange.checked {
 	background-color: #fa8c16;
+	border:  1px solid #fa8c16;
 }
 
-.rbc-event.category-4, .ant-tag-gold.checked {
+.rbc-calendar .rbc-event.category-4, .ant-tag-gold.checked {
 	background-color: #faad14;
+	border:  1px solid #faad14;
 }
 
-.rbc-event.category-5, .ant-tag-lime.checked {
+.rbc-calendar .rbc-event.category-5, .ant-tag-lime.checked {
 	background-color: #a0d911;
+	border:  1px solid ;
 }
 
-.rbc-event.category-6, .ant-tag-green.checked {
+.rbc-calendar .rbc-event.category-6, .ant-tag-green.checked {
 	background-color: #52c41a;
+	border:  1px solid ;
 }
 
-.rbc-event.category-7, .ant-tag-cyan.checked {
+.rbc-calendar .rbc-event.category-7, .ant-tag-cyan.checked {
 	background-color: #13c2c2;
+	border:  1px solid ;
 }
 
-.rbc-event.category-8, .ant-tag-blue.checked {
+.rbc-calendar .rbc-event.category-8, .ant-tag-blue.checked {
 	background-color: #1890ff;
+	border:  1px solid ;
 }
 
-.rbc-event.category-9, .ant-tag-geekblue.checked {
+.rbc-calendar .rbc-event.category-9, .ant-tag-geekblue.checked {
 	background-color: #2f54eb;
+	border:  1px solid ;
 }
 
-.rbc-event.category-10, .ant-tag-purple.checked {
+.rbc-calendar .rbc-event.category-10, .ant-tag-purple.checked {
 	background-color: #722ed1
+	border:  1px solid ;
 }
 
 .ant-tag-magenta.checked,
@@ -154,8 +165,6 @@ h1 {
 .ant-tag-purple.checked {
 	color: #fff;
 }
-
-
 
 button.rbc-active {
 	background: #fff !important;

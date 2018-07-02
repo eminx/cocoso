@@ -19,7 +19,7 @@ export default HomeContainer = withTracker((props) => {
 
   gatheringsList.forEach(gather => {
     gather.start = moment(gather.startDate + gather.startTime, 'YYYY-MM-DD HH:mm').toDate();
-    gather.end = moment(gather.startDate + gather.endTime, 'YYYY-MM-DD HH:mm').toDate();
+    gather.end = moment(gather.endDate + gather.endTime, 'YYYY-MM-DD HH:mm').toDate();
   });
 
   return {
