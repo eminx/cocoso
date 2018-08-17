@@ -14,12 +14,12 @@ const getRoomIndex = (room) => {
 
 Meteor.methods({
 	createBooking(formValues) {
+		console.log(formValues, 'createdbooking...');
 		check(formValues.title, String);
 		check(formValues.room, String);
 		check(formValues.dateStart, String);
 		check(formValues.dateEnd, String);
 		check(formValues.timePickerStart, String);
-		check(formValues.timePickerEnd, String);
 		check(formValues.timePickerEnd, String);
 		check(formValues.isMultipleDay, Boolean);
 		

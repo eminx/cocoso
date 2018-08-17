@@ -1,16 +1,23 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider, Modal, message } from 'antd/lib';
+import { Col, Form, Input, DatePicker, TimePicker, Button, Select, InputNumber, Switch, Upload, Icon, Divider, Modal, message } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
-import nodenParts from '../constants/parts';
 
 class CreateBookingForm extends React.Component {
   state = {
     addSpaceModal: false,
     isMultipleDay: false
+  }
+
+  componentDidMount() {
+    if (this.props.bookingData) {
+      this.setState({
+        isMultipleDay: this.props.bookingData.isMultipleDay || false
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -41,45 +48,41 @@ class CreateBookingForm extends React.Component {
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
+        console.log(err);
         return;
       }
 
-      let startTime, endTime;
+      let startTime, endTime, startDate, endDate;
       if (!isMultipleDay) {
         startTime = fieldsValue['timePickerStart'];
         endTime = startTime.clone();
         endTime.add(fieldsValue.duration,'hours');
         startTime = startTime.format('HH:mm');
         endTime = endTime.format('HH:mm');
+        startDate = fieldsValue['datePicker'].format('YYYY-MM-DD');
+        endDate = startDate;
       } else {
-        const range = fieldsValue['rangePicker'];
-        startTime = range[0].format('HH:mm');
-        endTime = range[1].format('HH:mm');
-      }
-
-      const getDates = () => {
-        const dates = [];
-        if (isMultipleDay) {
-          dates[0] = fieldsValue['rangePicker'][0].format('YYYY-MM-DD');
-          dates[1] = fieldsValue['rangePicker'][1].format('YYYY-MM-DD');
-        } else {
-          dates[0] = fieldsValue['datePicker'].format('YYYY-MM-DD');
-          dates[1] = dates[0];
-        }
-        return dates;
+        startTime = fieldsValue['timePickerMultiDayStart'].format('HH:mm');
+        endTime = fieldsValue['timePickerMultiDayFinish'].format('HH:mm');
+        startDate = fieldsValue['datePickerMultiDayStart']
+        startDate = startDate.format('YYYY-MM-DD');
+        endDate = fieldsValue['datePickerMultiDayFinish'];
+        endDate = endDate.format('YYYY-MM-DD');
       }
 
       const values = {
-        ...fieldsValue,
-        'dateStart': getDates()[0],
-        'dateEnd': getDates()[1],
-        'timePickerStart': startTime,
-        'timePickerEnd': endTime,
-        'isMultipleDay': isMultipleDay
+        title: fieldsValue['title'],
+        room: fieldsValue['room'],
+        longDescription: fieldsValue['longDescription'],
+        duration: fieldsValue['duration'] || null,
+        dateStart: startDate,
+        dateEnd: endDate,
+        timePickerStart: startTime,
+        timePickerEnd: endTime,
+        isMultipleDay: isMultipleDay
       }
 
       values.datePicker = null;
-      values.rangePicker = null;
 
       if (!err) {
         this.props.registerGatheringLocally(values);
@@ -96,21 +99,48 @@ class CreateBookingForm extends React.Component {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 },
     };
-    const configRange = {
+    
+    const datePickerMultiDayStart = {
       rules: [{
-        type: 'array',
+        type: 'object',
         required: isMultipleDay,
-        message: 'Please select the day/days!'
+        message: 'Please select the start day!'
       }],
-      initialValue: bookingData ? moment(bookingData.startDate) : null
+      initialValue: bookingData ? moment(bookingData.startDate, 'YYYY-MM-DD') : null
     };
+    const datePickerMultiDayFinish = {
+      rules: [{
+        type: 'object',
+        required: isMultipleDay,
+        message: 'Please select the ending day!'
+      }],
+      initialValue: bookingData ? moment(bookingData.endDate, 'YYYY-MM-DD') : null
+    };
+    const timePickerMultiDayStart = {
+      rules: [{
+        type: 'object',
+        required: isMultipleDay,
+        message: 'Please select the start time!'
+      }],
+      initialValue: bookingData ? moment(bookingData.startTime, 'HH:mm') : null
+    };
+
+    const timePickerMultiDayFinish = {
+      rules: [{
+        type: 'object',
+        required: isMultipleDay,
+        message: 'Please select the ending time!'
+      }],
+      initialValue: bookingData ? moment(bookingData.endTime, 'HH:mm') : null
+    };
+
     const configDate = {
       rules: [{
         type: 'object',
         required: !isMultipleDay,
         message: 'Please select the day!'
       }],
-      initialValue: bookingData ? moment(bookingData.startDate) : null
+      initialValue: bookingData ? moment(bookingData.startDate, 'YYYY-MM-DD') : null
     };
     const configTimeStart = {
       rules: [{
@@ -149,7 +179,7 @@ class CreateBookingForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Long description">
+          <FormItem {...formItemLayout} label="Description">
             {getFieldDecorator('longDescription', {
               rules: [{
                 message: 'Please enter a detailed description (optional)',
@@ -166,17 +196,49 @@ class CreateBookingForm extends React.Component {
 
           { isMultipleDay
             ?
-              <FormItem
-                {...formItemLayout}
-                label="Select the days"
-              >
-                {getFieldDecorator('rangePicker', configRange)(
-                  <RangePicker
-                    showTime={{ format: 'HH:mm', minuteStep: 30 }}
-                    placeholder={['Start Time', 'End Time']}
-                  />
-                )}
-              </FormItem>      
+              <div>
+                <FormItem
+                  {...formItemLayout}
+                  label="Start day & time"
+                >
+                  <Col span={12}>
+                    <FormItem>
+                      {getFieldDecorator('datePickerMultiDayStart', datePickerMultiDayStart)(
+                        <DatePicker />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Divider type="vertical" />
+                  <Col span={12}>
+                    <FormItem>
+                      {getFieldDecorator('timePickerMultiDayStart', timePickerMultiDayStart)(
+                        <TimePicker format='HH:mm' minuteStep={30} />
+                      )}
+                    </FormItem>
+                  </Col>
+                </FormItem>
+
+                <FormItem
+                  {...formItemLayout}
+                  label="Finish day & time"
+                >
+                  <Col span={12}>
+                    <FormItem>
+                      {getFieldDecorator('datePickerMultiDayFinish', datePickerMultiDayFinish)(
+                        <DatePicker />
+                      )}
+                    </FormItem>
+                  </Col>
+                  <Divider type="vertical" />
+                  <Col span={12}>
+                    <FormItem>
+                      {getFieldDecorator('timePickerMultiDayFinish', timePickerMultiDayFinish)(
+                        <TimePicker format='HH:mm' minuteStep={30} />
+                      )}
+                    </FormItem>
+                  </Col>
+                </FormItem>
+              </div>
 
             :
               <div>

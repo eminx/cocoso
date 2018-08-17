@@ -328,10 +328,11 @@ body{
 	text-align: left;
   line-height: 1.5em;
 }
-.talktext p{
+.talktext p {
   /* remove webkit p margins */
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
+  marginBottom:  0;
 }
 
 .talktext-senderinfo {

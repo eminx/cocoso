@@ -66,7 +66,6 @@ class NewBookSpace extends React.Component {
 
 	createBooking = () => {
     const { values } = this.state;
-    console.log("values", values);
 
     Meteor.call('createBooking', values, (error, result) => {
       if (error) {
