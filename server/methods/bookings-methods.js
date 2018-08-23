@@ -29,10 +29,12 @@ Meteor.methods({
 		try {
 			const add = Gatherings.insert({
 				authorId: user._id,
+				attendees: [],
 				authorName: user.username,
 				title: formValues.title,
 				longDescription: formValues.longDescription,
 				room: formValues.room,
+				capacity: formValues.capacity || 20,
 				roomIndex: roomIndex,
 				startDate: formValues.dateStart,
 				endDate: formValues.dateEnd,
@@ -90,5 +92,7 @@ Meteor.methods({
 		} catch(e) {
 			throw new Meteor.Error(e, "Couldn't add to Collection");
 		}
-	}
+	},
+
+
 })

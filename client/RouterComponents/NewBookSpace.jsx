@@ -7,7 +7,7 @@ import Evaporate from 'evaporate';
 import AWS from 'aws-sdk';
 
 const successCreation = () => {
-  message.success('Your booking is successfully registered', 6);
+  message.success('Your booking is successfully created', 6);
 };
 
 const sideNote = "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping bookings."
