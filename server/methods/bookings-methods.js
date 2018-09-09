@@ -1,6 +1,5 @@
-const placesList = Places.find().fetch();
-
 const getRoomIndex = (room) => {
+	const placesList = Places.find().fetch();
   if (placesList.length > 0) {
   	let roomIndex;
     placesList.forEach((place, i) => {
@@ -14,7 +13,6 @@ const getRoomIndex = (room) => {
 
 Meteor.methods({
 	createBooking(formValues) {
-		console.log(formValues, 'createdbooking...');
 		check(formValues.title, String);
 		check(formValues.room, String);
 		check(formValues.dateStart, String);

@@ -92,7 +92,7 @@ class CreateBookingForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { uploadableImage, setUploadableImage, places, bookingData } = this.props;
+    const { uploadableImage, setUploadableImage, places, bookingData, currentUser } = this.props;
     const { addSpaceModal, isMultipleDay } = this.state;
 
     const formItemLayout = {
@@ -270,11 +270,13 @@ class CreateBookingForm extends React.Component {
                 </FormItem>
               </div>
           }   
-
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <span style={{marginRight: 10}}>Wanna add space/equipment to the list?</span>
-            <Button onClick={() => this.setState({addSpaceModal: true})}>Add</Button>
-          </div>
+          {
+            currentUser && currentUser.profile && currentUser.profile.isSuperAdmin &&
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <span style={{marginRight: 10}}>Wanna add space/equipment to the list?</span>
+                <Button onClick={() => this.setState({addSpaceModal: true})}>Add</Button>
+              </div>
+          }
 
           <FormItem
             {...formItemLayout}

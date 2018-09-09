@@ -174,13 +174,17 @@ Meteor.methods({
 
 	addSpace(name) {
 		if (Meteor.userId()) {
+			let placesCounter = 0;
+			Places.find().forEach(place => {placesCounter += 1});
+
 			if (Places.findOne({name: name})) {
 				throw new Meteor.Error(err, "That place already exists!");
 			} else {
 				try {
 					Places.insert({
 						name: name,
-						addedBy: Meteor.user().username
+						addedBy: Meteor.user().username,
+						roomIndex: placesCounter
 					});
 					return true;
 				} catch(err) {

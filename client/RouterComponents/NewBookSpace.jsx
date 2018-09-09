@@ -89,7 +89,9 @@ class NewBookSpace extends React.Component {
  
   render() {
 
-    if (!this.props.currentUser) {
+    const { currentUser } = this.props;
+
+    if (!currentUser) {
       return (
         <div style={{maxWidth: 600, margin: '0 auto'}}>
           <Alert
@@ -115,6 +117,7 @@ class NewBookSpace extends React.Component {
               setUploadableImage={this.setUploadableImage}
               uploadableImage={this.state.uploadableImage}
               places={this.props.places}
+              currentUser={currentUser}
     	      />
           </Col>
           <Col xs={24} sm={24} md={8}>
