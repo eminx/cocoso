@@ -9,7 +9,7 @@
     "primary-color": "orange"
   },
   "dependencies": {
-    "antd": "^3.1.4",
+    "antd": "^3.9.2",
     "aws-sdk": "^2.188.0",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",

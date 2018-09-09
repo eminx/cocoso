@@ -11,6 +11,7 @@ import GatheringContainer from './GatheringContainer';
 import NewStreamContainer from './NewStreamContainer';
 import Memberetc from './Memberetc';
 import EditBookingContainer from './EditBookingContainer';
+import GroupsListContainer from './GroupsListContainer';
 
 const browserHistory = createBrowserHistory();
 
@@ -24,6 +25,8 @@ export const renderRoutes = () => (
 	      <Route path="/booking/:id" component={GatheringContainer} />
 	      <Route path="/edit-booking/:id/" component={EditBookingContainer} />
 	      <Route exact path="/member" component={Memberetc} />
+	      <Route path="/groups/" component={GroupsListContainer} />
+	      {/*<Route path="/group/:id" component={GroupContainer} />*/}
 	      {/*<Route path="*" component={NotFoundPage}/>*/}
 	    </Switch>
     </LayoutContainer>
