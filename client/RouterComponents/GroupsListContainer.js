@@ -3,19 +3,13 @@ import GroupsList from './GroupsList';
  
 export default GroupsListContainer = withTracker((props) => {
   const groupsSubscription = Meteor.subscribe('groups');
-  const placesSubscription = Meteor.subscribe('places');
-
-  const places = Places ? Places.find().fetch() : null;
-  // const groups = Groups ? Groups.find().fetch() : null;
-  
-  const isLoading = !placesSubscription.ready();
-
+  const groupsData = Groups ? Groups.find().fetch() : null;
+  const isLoading = !groupsSubscription.ready();
   const currentUser = Meteor.user();
 
   return {
     isLoading,
     currentUser,
-    places,
-    // groups,
+    groupsData,
   };
 })(GroupsList);

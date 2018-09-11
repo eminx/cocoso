@@ -32,6 +32,15 @@ Meteor.publish('gatherings', function () {
   }
 });
 
+Meteor.publish('groups', function () {
+  const user = Meteor.user();
+  if (user) {
+    return Groups.find({
+      isPublished: true
+    });
+  }
+});
+
 Meteor.publish('gathering', function (id) {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
@@ -61,6 +70,14 @@ Meteor.publish('gathering', function (id) {
   })*/;
 });
 
+Meteor.publish('group', function (id) {
+  const user = Meteor.user();
+  return Groups.find({
+    _id: id
+  });
+});
+
+
 Meteor.publish('chat', function (contextId) {
   const user = Meteor.user();
   if (user) {
@@ -73,4 +90,5 @@ Meteor.publish('chat', function (contextId) {
 Meteor.publish('places', function () {
   return Places.find();
 });
+
 

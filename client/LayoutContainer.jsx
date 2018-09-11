@@ -13,7 +13,6 @@ class LayoutContainer extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     const { match } = this.props;
     const pathname = match.location.pathname;
-    console.log(pathname, nextProps.match.location.pathname);
     if (nextProps.match.location.pathname !== pathname) {
       this.closeMenu();
     }
@@ -51,39 +50,23 @@ class LayoutContainer extends React.Component {
             <MenuItem key="/">
               <Link to="/">Home</Link>
             </MenuItem>
-            <MenuItem key="book">
-              <Link to="/book">Book</Link>
+            <MenuItem key="new-booking">
+              <Link to="/new-booking">New Booking</Link>
+            </MenuItem>
+            <MenuItem key="new-group">
+              <Link to="/new-group">New Group</Link>
             </MenuItem>
             <MenuItem key="groups">
               <Link to="/groups">Groups</Link>
             </MenuItem>
-            <MenuItem key="profile">
+            <MenuItem key="loginButtons">
               <Blaze template="loginButtons" />
             </MenuItem>
           </Menu>
         </Drawer>
 
         <Layout className="layout">
-          <Header style={{backgroundColor: '#fff'}}>
-            <Menu
-              selectedKeys={[pathname]}
-              mode="horizontal"
-              style={{ lineHeight: '64px', float: 'right' }}
-            >
-              {/*<Menu.Item key="/bookings">
-                <Link to="/">Bookings</Link>
-              </Menu.Item>*/}
-              {/*<Menu.Item key="/create">
-                <Link to="/book">Book</Link>
-              </Menu.Item>
-              <Menu.Item key="/login">
-                <Blaze template="loginButtons" />
-              </Menu.Item>*/}
-              <MenuItem key="menu-icon" onClick={this.openMenu}>
-                <Icon theme="outlined" type="menu-fold" theme="outlined" />
-              </MenuItem>
-            </Menu>
-
+          <Header style={{backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between'}}>
             <Link to="/">
               { pathname === '/'
                 ?
@@ -94,6 +77,8 @@ class LayoutContainer extends React.Component {
                   </div>
               }
             </Link>
+
+            <Icon onClick={this.openMenu} theme="outlined" type="menu-fold" theme="outlined" style={{fontSize: 24, padding: 18, cursor: 'pointer'}} />
           </Header>
 
           <Content style={{ marginTop: 20 }}>

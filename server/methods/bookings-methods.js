@@ -13,6 +13,11 @@ const getRoomIndex = (room) => {
 
 Meteor.methods({
 	createBooking(formValues) {
+		const user = Meteor.user();
+		if (!user) {
+			return false;
+		}
+
 		check(formValues.title, String);
 		check(formValues.room, String);
 		check(formValues.dateStart, String);
@@ -22,7 +27,6 @@ Meteor.methods({
 		check(formValues.isMultipleDay, Boolean);
 		
 		const roomIndex = getRoomIndex(formValues.room);
-		const user = Meteor.user();
 		
 		try {
 			const add = Gatherings.insert({
@@ -55,6 +59,11 @@ Meteor.methods({
 	},
 
 	updateBooking(formValues, bookingId) {
+		const user = Meteor.user();
+		if (!user) {
+			return false;
+		}
+
 		check(formValues.title, String);
 		check(formValues.room, String);
 		// check(formValues.duration, Number);
@@ -64,7 +73,6 @@ Meteor.methods({
 		check(formValues.timePickerEnd, String);
 
 		const roomIndex = getRoomIndex(formValues.room);
-		const user = Meteor.user();
 		const theG = Gatherings.findOne(bookingId);
 		if (user._id !== theG.authorId) {
 			throw new Meteor.Error("You are not allowed!");
@@ -91,6 +99,4 @@ Meteor.methods({
 			throw new Meteor.Error(e, "Couldn't add to Collection");
 		}
 	},
-
-
 })

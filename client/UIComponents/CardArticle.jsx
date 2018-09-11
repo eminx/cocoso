@@ -33,8 +33,10 @@ class CardArticle extends React.Component {
       if (event.isMultipleDay || event.isFullDay) {
         return moment(event.startDate).format('Do MMM') + ' ' + event.startTime + ' – ' + 
           moment(event.endDate).format('Do MMM') + ' ' + event.endTime;
-      } else {
+      } else if (event.startTime) {
         return `${event.startTime}–${event.endTime} ${moment(event.startDate).format('Do MMMM')}`;
+      } else {
+        return '';
       }
     }
   }
@@ -50,8 +52,8 @@ class CardArticle extends React.Component {
       >
         <Meta
           avatar={<Avatar>{getInitials(item.authorName || 'emo')}</Avatar>}
-          title={<div><b>{item.room}, Skogen<br />{eventTimes}</b><br /> booked by {item.authorName} <Divider /></div>}
-          description={item.longDescription}
+          title={<div><b>{item.room || ''}, Skogen<br />{eventTimes}</b><br /> booked by {item.authorName} <Divider /></div>}
+          description={item.longDescription || item.description}
         />
       </Card>
     )
