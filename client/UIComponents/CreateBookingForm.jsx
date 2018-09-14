@@ -186,7 +186,10 @@ class CreateBookingForm extends React.Component {
               }],
               initialValue: bookingData ? bookingData.longDescription : null
             })(
-              <TextArea placeholder="Optionally enter a description" autosize />
+              <TextArea
+                placeholder="Optionally enter a description"
+                autosize={{ minRows: 3, maxRows: 6 }}
+              />
             )}
           </FormItem>
 

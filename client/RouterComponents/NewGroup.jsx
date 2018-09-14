@@ -64,10 +64,10 @@ class NewGroup extends React.Component {
     });
   }
 
-	createBooking = () => {
+	createBooking = (downloadUrl) => {
     const { values } = this.state;
 
-    Meteor.call('createGroup', values, (error, result) => {
+    Meteor.call('createGroup', values, downloadUrl, (error, result) => {
       if (error) {
         console.log("error", error);
         this.setState({
@@ -137,7 +137,7 @@ class NewGroup extends React.Component {
               isLoading={isLoading}
               title="Overview The Information"
               visible={modalConfirm}
-              onOk={this.createBooking}
+              onOk={this.uploadImage}
               onCancel={this.hideModal}
               okText="Confirm"
               cancelText="Go back and edit"

@@ -1,5 +1,5 @@
 Meteor.methods({
-	createGroup(formValues) {
+	createGroup(formValues, imageUrl) {
 		const user = Meteor.user();
 		if (!user) {
 			return false;
@@ -18,6 +18,7 @@ Meteor.methods({
 				description: formValues.description,
 				readingMaterial: formValues.readingMaterial,
 				capacity: formValues.capacity || 20,
+				imageUrl,
 				isPublished: true,
 				creationDate: new Date()
 			}, () => Meteor.call('createChat', formValues.title, add, (error, result) => {

@@ -74,7 +74,7 @@ class CreateGroupForm extends React.Component {
             })(
               <TextArea
                 placeholder="Enter a description for your study group"
-                autosize={{ minRows: 3, maxRows: 6 }}
+                autosize={{ minRows: 6, maxRows: 12 }}
               />
             )}
           </FormItem>

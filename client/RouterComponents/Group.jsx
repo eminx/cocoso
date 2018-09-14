@@ -44,8 +44,14 @@ class Group extends React.Component {
 
     const messages = this.getChatMessages();
 
+    const titleStyle = {
+      marginLeft: 24,
+      fontWeigth: 300,
+      color: '#0g0g0g'
+    }
+
     return (
-    	<div style={{padding: 24}}>
+    	<div>
         { !isLoading && groupData
           ?
         		<Row gutter={24}>
@@ -65,18 +71,16 @@ class Group extends React.Component {
         }
         <Divider />
         <Row gutter={24}>
-          <Col sm={24} md={20} lg={16}>
-            { 
-              chatData ?
-                <div>
-                  <h2>Chat Section</h2>
-                  <Chattery
-                    messages={messages}
-                    onNewMessage={this.addNewChatMessage}
-                  />
-                </div>
-              : null
+          <Col sm={24} md={16}>
+
+            <h4 style={titleStyle}>Chat Section</h4>  
+            { chatData &&  
+              <Chattery
+                messages={messages}
+                onNewMessage={this.addNewChatMessage}
+              />
             }
+
           </Col>
         </Row>
       </div>

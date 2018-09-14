@@ -1,16 +1,43 @@
 import React from 'react';
 import moment from 'moment';
 import { Link, Redirect } from 'react-router-dom';
-import { Menu, Row, Col, List, Spin, Divider } from 'antd/lib';
+import { Menu, Row, Col, List, Card, Spin, Divider, Avatar } from 'antd/lib';
 import colors from '../constants/colors';
 
 const MenuItemGroup = Menu.ItemGroup;
 const MenuItem = Menu.Item;
+const ListItem = List.Item;
+const { Meta } = Card;
 
+const getInitials = (string) => {
+  var names = string.split(' '),
+    initials = names[0].substring(0, 1).toUpperCase();
+  
+  if (names.length > 1) {
+    initials += names[names.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
+};
 
-class GroupsList extends React.Component {
-	state = {
+class GroupsList extends React.PureComponent {
 
+	getTitle = (group) => {
+		return (
+			<div>
+				<h1>{group.title}</h1>
+				<h3 style={{fontWeight: 300}}><em>reading: <b>{group.readingMaterial}</b></em></h3>
+			</div>
+		)
+	}
+
+	getExtra = (group) => {
+		return (
+			<div>
+				<b>{group.members.length + ' / ' + group.capacity}</b> 
+				<br />
+				created by {group.authorName}
+			</div>
+		)	
 	}
 
 	render() {
@@ -27,17 +54,7 @@ class GroupsList extends React.Component {
 		return (
 			<Row gutter={24}>
 				<Col md={8}>
-					<Menu>
-	          <MenuItemGroup key="g1" title="My Groups">
-	            <MenuItem key="1">Group 1</MenuItem>
-	            <MenuItem key="2">Group 2</MenuItem>
-	          </MenuItemGroup>
-
-	          <MenuItemGroup key="g2" title="Other Groups">
-	            <MenuItem key="3">Group 3</MenuItem>
-	            <MenuItem key="4">Group 4</MenuItem>
-	          </MenuItemGroup>
-	        </Menu>
+					
 
         </Col>
 
@@ -45,10 +62,21 @@ class GroupsList extends React.Component {
 					<List 
 						dataSource={groupsData}
 						renderItem={group => 
-							<List.Item>
-								{group.title}
-								{group.description}
-							</List.Item>
+							<ListItem style={{paddingBottom: 0}}>
+								<Link to={`/group/${group._id}`} style={{width: '100%'}}>
+									<Card
+						        title={this.getTitle(group)}
+						        bordered
+						        hoverable
+						        extra={this.getExtra(group)}
+						        style={{width: '100%', marginBottom: 0}}
+						      >
+						        <Meta
+						          description={group.description}
+						        />
+						      </Card>
+						    </Link>
+							</ListItem>
 						}
 					/>
 				</Col>
