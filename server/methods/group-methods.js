@@ -38,16 +38,16 @@ Meteor.methods({
           })
       );
 
-      // Meteor.users.update(user._id, {
-      //   $addToSet: {
-      //     groups: {
-      //       groupId: theGroup._id,
-      //       name: theGroup.name,
-      //       joinDate: new Date(),
-      //       meAdmin: true
-      //     }
-      //   }
-      // });
+      Meteor.users.update(user._id, {
+        $addToSet: {
+          groups: {
+            groupId: theGroup._id,
+            name: theGroup.name,
+            joinDate: new Date(),
+            meAdmin: true
+          }
+        }
+      });
 
       return add;
     } catch (e) {
@@ -138,7 +138,7 @@ Meteor.methods({
       Meteor.users.update(user._id, {
         $pull: {
           groups: {
-            groupId: theGroup._id
+            groupId: groupId
           }
         }
       });
