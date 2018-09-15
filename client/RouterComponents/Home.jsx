@@ -1,7 +1,17 @@
 import React from 'react';
 import moment from 'moment';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, Alert, Spin, Button, Divider, Select, Tag } from 'antd/lib';
+import {
+  Row,
+  Col,
+  Radio,
+  Alert,
+  Spin,
+  Button,
+  Divider,
+  Select,
+  Tag
+} from 'antd/lib';
 const Option = Select.Option;
 import BigCalendar from 'react-big-calendar';
 import Nodal from '../UIComponents/Nodal';
@@ -11,74 +21,97 @@ import colors from '../constants/colors';
 const yesterday = moment(new Date()).add(-1, 'days');
 
 class Home extends React.Component {
-	state = {
-		mode: 'list',
-		goto: null,
-    calendarFilter: "All rooms"
-	}
+  state = {
+    mode: 'list',
+    goto: null,
+    calendarFilter: 'All rooms'
+  };
 
-	handleModeChange = (e) => {
+  handleModeChange = e => {
     const mode = e.target.value;
     this.setState({ mode });
-  }
+  };
 
   onSelect = (gathering, e) => {
-  	this.setState({
-  		goto: gathering._id
-  	});
-  }
+    this.setState({
+      goto: gathering._id
+    });
+  };
 
-  handleCalendarFilterChange = (value) => {
+  handleCalendarFilterChange = value => {
     this.setState({
       calendarFilter: value
     });
-  }
+  };
 
   render() {
     const { isLoading, placesList } = this.props;
-  	const gatherings = this.props.gatheringsList;
-  	const images = this.props.imagesArray;
-  	const { mode, goto, calendarFilter } = this.state;
+    const gatherings = this.props.gatheringsList;
+    const images = this.props.imagesArray;
+    const { mode, goto, calendarFilter } = this.state;
 
-    let futureBooking = [];
+    const futureBooking = [];
 
     gatherings.filter(gathering => {
       const yesterday = moment(new Date()).add(-1, 'days');
-      if (moment(gathering.startDate).isAfter(yesterday)) {
-        futureBooking.push(gathering);
+      if (moment(gathering.endDate).isAfter(yesterday)) {
+        futureBookings.push(gathering);
       }
     });
 
     let filteredBookings = gatherings;
 
-    if (calendarFilter !== "All rooms") {
-      filteredBookings = gatherings.filter(booking => booking.room === calendarFilter);
+    if (calendarFilter !== 'All rooms') {
+      filteredBookings = gatherings.filter(
+        booking => booking.room === calendarFilter
+      );
     }
 
-  	if (goto) {
-      return <Redirect to={`/booking/${goto}`} />
+    if (goto) {
+      return <Redirect to={`/booking/${goto}`} />;
     }
 
     return (
-    	<div style={{padding: 24}}>
+      <div style={{ padding: 24 }}>
         <Row gutter={32}>
-          <div style={{justifyContent: 'center', display: 'flex', marginBottom: 50}}>
-            <div style={{maxWidth: 900}}>
-              <h2 style={{textAlign: 'center'}}>Bookings Calendar</h2>
-              <div className="tags-container" style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
-                <Tag.CheckableTag checked={calendarFilter === 'All rooms'} onChange={() => this.handleCalendarFilterChange('All rooms')} key={'All rooms'}>{'All rooms'}</Tag.CheckableTag>
+          <div
+            style={{
+              justifyContent: 'center',
+              display: 'flex',
+              marginBottom: 50
+            }}
+          >
+            <div style={{ maxWidth: 900 }}>
+              <h2 style={{ textAlign: 'center' }}>Bookings Calendar</h2>
+              <div
+                className="tags-container"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <Tag.CheckableTag
+                  checked={calendarFilter === 'All rooms'}
+                  onChange={() => this.handleCalendarFilterChange('All rooms')}
+                  key={'All rooms'}
+                >
+                  {'All rooms'}
+                </Tag.CheckableTag>
                 {placesList.map((room, i) => (
                   <Tag
                     color={colors[i]}
                     className={calendarFilter === room.name ? 'checked' : null}
                     onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}>{room.name}
+                    key={room.name}
+                  >
+                    {room.name}
                   </Tag>
                 ))}
               </div>
               <CalendarView
                 gatherings={filteredBookings}
-                images={images} 
+                images={images}
                 onSelect={this.onSelect}
               />
             </div>
@@ -86,8 +119,8 @@ class Home extends React.Component {
         </Row>
         <Row gutter={32}>
           <Col xs={24} sm={24} md={12}>
-            <div style={{marginBottom: 50}}>
-              <h2 style={{textAlign: 'center'}}>Book Skogen</h2>
+            <div style={{ marginBottom: 50 }}>
+              <h2 style={{ textAlign: 'center' }}>Book Skogen</h2>
 
               <Alert
                 title="<About></About>"
@@ -98,28 +131,26 @@ class Home extends React.Component {
           </Col>
 
           <Col xs={24} sm={24} md={12}>
-            <div style={{marginBottom: 50}}>
-              <h2 style={{textAlign: 'center'}}>Current bookings</h2>
-              {
-                isLoading
-                ? 
-                  <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <Spin size="large" />
-                  </div>
-                :
-                  <div>
-    			    			<Nodal 
-    		    					push={this.props.history.push}
-    		    					images={this.props.imagesArray}
-    		    					gatherings={futureBooking}
-    		    				/>
-                  </div>
-      				}
+            <div style={{ marginBottom: 50 }}>
+              <h2 style={{ textAlign: 'center' }}>Current bookings</h2>
+              {isLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Spin size="large" />
+                </div>
+              ) : (
+                <div>
+                  <Nodal
+                    push={this.props.history.push}
+                    images={this.props.imagesArray}
+                    gatherings={futureBookings}
+                  />
+                </div>
+              )}
             </div>
-    			</Col>
-    		</Row>
+          </Col>
+        </Row>
       </div>
-    )
+    );
   }
 }
 
