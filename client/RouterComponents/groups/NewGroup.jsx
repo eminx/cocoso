@@ -6,7 +6,7 @@ import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successCreation = () => {
-  message.success('Your booking is successfully created', 6);
+  message.success('Your study group is successfully created', 6);
 };
 
 const sideNote = 'This page is dedicated to create study groups at Skogen.';
@@ -53,7 +53,7 @@ class NewGroup extends React.Component {
 
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('gatheringImageUpload');
+    const upload = new Slingshot.Upload('groupImageUpload');
     const timeStamp = Math.floor(Date.now());
 
     upload.send(uploadableImage, (error, downloadUrl) => {
@@ -63,12 +63,12 @@ class NewGroup extends React.Component {
         this.setState({
           uploadedImage: downloadUrl
         });
-        this.createBooking(downloadUrl);
+        this.createGroup(downloadUrl);
       }
     });
   };
 
-  createBooking = downloadUrl => {
+  createGroup = downloadUrl => {
     const { values } = this.state;
 
     Meteor.call('createGroup', values, downloadUrl, (error, result) => {
@@ -98,7 +98,7 @@ class NewGroup extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to signin to create a booking. Just do it!"
+            message="You have to signin to create a group. Just do it!"
             type="error"
           />
         </div>

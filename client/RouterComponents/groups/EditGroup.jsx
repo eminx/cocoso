@@ -50,10 +50,15 @@ class EditGroup extends React.Component {
 
   uploadImage = () => {
     this.setState({ isLoading: true });
-
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('gatheringImageUpload');
+    if (uploadableImage === null) {
+      console.log('orray');
+      this.updateGroup();
+      return;
+    }
+
+    const upload = new Slingshot.Upload('groupImageUpload');
     const timeStamp = Math.floor(Date.now());
 
     upload.send(uploadableImage, (error, downloadUrl) => {
@@ -63,19 +68,19 @@ class EditGroup extends React.Component {
         this.setState({
           uploadedImage: downloadUrl
         });
-        this.createBooking(downloadUrl);
+        this.updateGroup(downloadUrl);
       }
     });
   };
 
-  updateBooking = () => {
+  updateGroup = () => {
     const { values } = this.state;
     const { groupData } = this.props;
     const { uploadedImage } = this.state;
-    let imageUrl = uploadableImage || groupData.imageUrl;
+    let imageUrl = uploadedImage || groupData.imageUrl;
 
     Meteor.call(
-      'updateBooking',
+      'updateGroup',
       groupData._id,
       values,
       imageUrl,
@@ -104,7 +109,7 @@ class EditGroup extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to signin to create a booking. Just do it!"
+            message="You have to signin to create a study group. Just do it!"
             type="error"
           />
         </div>
@@ -124,14 +129,14 @@ class EditGroup extends React.Component {
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/booking/${newGroupId}`} />;
+      return <Redirect to={`/group/${newGroupId}`} />;
     }
 
     const { groupData } = this.props;
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Edit your booking</h1>
+        <h1>Edit your Study Group</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreateGroupForm

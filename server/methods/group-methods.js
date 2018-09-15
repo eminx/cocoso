@@ -78,7 +78,8 @@ Meteor.methods({
           title: formValues.title,
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
-          capacity: formValues.capacity
+          capacity: formValues.capacity,
+          imageUrl: imageUrl
         }
       });
       return groupId;
