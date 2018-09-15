@@ -126,10 +126,13 @@ class Group extends React.Component {
           <Col sm={24} md={16}>
             <h4 style={titleStyle}>Chat Section</h4>
             {chatData && (
-              <Chattery
-                messages={messages}
-                onNewMessage={this.addNewChatMessage}
-              />
+              <div>
+                <h4 style={titleStyle}>Chat Section</h4>
+                <Chattery
+                  messages={messages}
+                  onNewMessage={this.addNewChatMessage}
+                />
+              </div>
             )}
           </Col>
         </Row>

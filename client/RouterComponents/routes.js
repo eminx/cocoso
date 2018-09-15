@@ -21,7 +21,7 @@ const browserHistory = createBrowserHistory();
 
 export const renderRoutes = () => (
   <Router history={browserHistory}>
-    <LayoutContainer match={browserHistory}>
+    <LayoutContainer history={browserHistory}>
       <Switch>
         <Route exact path="/" component={HomeContainer} />
 
@@ -35,7 +35,7 @@ export const renderRoutes = () => (
         <Route path="/edit-group/:id/" component={EditGroupContainer} />
 
         <Route path="/my-profile/" component={ProfileContainer} />
-        {/*<Route path="/group/:id" component={GroupContainer} />*/}
+
         {/*<Route path="*" component={NotFoundPage}/>*/}
       </Switch>
     </LayoutContainer>

@@ -1,43 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Drawer, Layout, List, Menu, Icon } from 'antd/lib';
-import Blaze from 'meteor/gadicc:blaze-react-component';
+import { Drawer, Layout, Divider, Menu, Icon } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
 
 class LayoutContainer extends React.Component {
   state = {
-    menuOpen: false,
-  }
+    menuOpen: false
+  };
 
   componentWillUpdate(nextProps, nextState) {
-    const { match } = this.props;
-    const pathname = match.location.pathname;
-    if (nextProps.match.location.pathname !== pathname) {
+    const { history } = this.props;
+    const pathname = history.location.pathname;
+    if (nextProps.history.location.pathname !== pathname) {
       this.closeMenu();
     }
   }
 
   openMenu = () => {
     this.setState({
-      menuOpen: true,
+      menuOpen: true
     });
-  }
+  };
 
   closeMenu = () => {
     this.setState({
-      menuOpen: false,
+      menuOpen: false
     });
-  }
+  };
 
   render() {
-    const { match, children } = this.props;
-    const pathname = match.location.pathname;
+    const { history, children } = this.props;
+    const pathname = history.location.pathname;
+    const currentUser = Meteor.user();
 
     return (
       <div>
         <Drawer
-          title="Menu"
+          title="MENU"
           placement="right"
           onClose={this.closeMenu}
           visible={this.state.menuOpen}
@@ -46,51 +46,87 @@ class LayoutContainer extends React.Component {
           <Menu
             mode="inline"
             onClick={this.closeMenu}
+            style={{ borderRight: 'none' }}
           >
             <MenuItem key="/">
-              <Link to="/">Home</Link>
+              <Link to="/">
+                <b>Home</b>
+              </Link>
             </MenuItem>
+
             <MenuItem key="new-booking">
-              <Link to="/new-booking">New Booking</Link>
+              <Link to="/new-booking">
+                <b>New Booking</b>
+              </Link>
+            </MenuItem>
+
+            <MenuItem key="divider-1" style={{ padding: 0, margin: 0 }}>
+              <Divider style={{ padding: 0 }} />
+            </MenuItem>
+
+            <MenuItem key="groups">
+              <Link to="/groups">
+                <b>Groups</b>
+              </Link>
             </MenuItem>
             <MenuItem key="new-group">
-              <Link to="/new-group">New Group</Link>
+              <Link to="/new-group">
+                <b>New Group</b>
+              </Link>
             </MenuItem>
-            <MenuItem key="groups">
-              <Link to="/groups">Groups</Link>
+
+            <MenuItem key="divider-2" style={{ padding: 0, margin: 0 }}>
+              <Divider style={{ padding: 0 }} />
             </MenuItem>
-            <MenuItem key="loginButtons">
-              <Blaze template="loginButtons" />
+
+            <MenuItem key="my-profile">
+              <Link to="/my-profile">
+                <b>My Profile</b>
+              </Link>
             </MenuItem>
           </Menu>
         </Drawer>
 
         <Layout className="layout">
-          <Header style={{backgroundColor: '#fff', display: 'flex', justifyContent: 'space-between'}}>
-            <Link to="/">
-              { pathname === '/'
-                ?
-                  <div className="logo skogen-logo" />
-                : 
-                  <div className="logo">
-                    <Icon style={{fontSize: 36, color: '#2e3880'}} type="arrow-left" />
-                  </div>
-              }
-            </Link>
+          <Header
+            style={{
+              backgroundColor: '#fff',
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
+            {pathname === '/' ? (
+              <Link to="/">
+                <div className="logo skogen-logo" />
+              </Link>
+            ) : (
+              <div className="logo" onClick={history.goBack}>
+                <Icon
+                  style={{ fontSize: 36, color: '#2e3880' }}
+                  type="arrow-left"
+                />
+              </div>
+            )}
 
-            <Icon onClick={this.openMenu} theme="outlined" type="menu-fold" theme="outlined" style={{fontSize: 24, padding: 18, cursor: 'pointer'}} />
+            {currentUser ? (
+              <Icon
+                onClick={this.openMenu}
+                theme="outlined"
+                type="menu-fold"
+                theme="outlined"
+                style={{ fontSize: 24, padding: 18, cursor: 'pointer' }}
+              />
+            ) : (
+              <Link to="/my-profile">Signin / Signup</Link>
+            )}
           </Header>
 
-          <Content style={{ marginTop: 20 }}>
-            {children}
-          </Content>
+          <Content style={{ marginTop: 20 }}>{children}</Content>
 
-          <Footer style={{ textAlign: 'center' }}>
-            
-          </Footer>
+          <Footer style={{ textAlign: 'center' }} />
         </Layout>
       </div>
-    )
+    );
   }
 }
 

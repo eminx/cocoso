@@ -8,18 +8,10 @@ class Profile extends React.Component {
   render() {
     const { currentUser, isLoading } = this.props;
 
-    if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Spin size="large" />
-        </div>
-      );
-    }
-
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col>
+          <Col span={8}>
             <Blaze template="loginButtons" />
           </Col>
         </Row>
