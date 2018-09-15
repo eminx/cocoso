@@ -34,7 +34,11 @@ export const renderRoutes = () => (
         <Route path="/group/:id" component={GroupContainer} />
         <Route path="/edit-group/:id/" component={EditGroupContainer} />
 
-        <Route path="/my-profile/" component={ProfileContainer} />
+        <Route
+          path="/my-profile/"
+          history={browserHistory}
+          component={ProfileContainer}
+        />
 
         {/*<Route path="*" component={NotFoundPage}/>*/}
       </Switch>

@@ -9,30 +9,25 @@
     "primary-color": "orange"
   },
   "dependencies": {
+    "@babel/runtime": "7.0.0-beta.55",
     "antd": "^3.9.2",
-    "aws-sdk": "^2.188.0",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
-    "crypto-js": "^3.1.9-1",
-    "date-arithmetic": "^3.1.0",
-    "evaporate": "^2.1.4",
     "history": "^4.7.2",
     "indexof": "0.0.1",
-    "less": "^2.7.3",
-    "meteor-node-stubs": "^0.3.2",
+    "meteor-node-stubs": "^0.4.1",
     "node-s3-public-url": "^1.0.2",
-    "react": "^16.4.1",
+    "react": "^16.5.1",
     "react-big-calendar": "^0.17.0",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.5.1",
     "react-meteor-data": "^0.2.11",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "semantic-ui-react": "^0.77.2",
-    "webcrypto": "^0.1.1"
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "semantic-ui-react": "^0.77.2"
   },
   "devDependencies": {
     "babel-plugin-import": "1.6.0",
-    "meteor-babel": "^7.0.0-beta.36"
+    "meteor-babel": "^7.0.0"
   }
 }

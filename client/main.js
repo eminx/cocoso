@@ -7,9 +7,5 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'antd/dist/antd.min.css';
 
 Meteor.startup(() => {
-  render(renderRoutes() , document.getElementById('render-target'));
-});
-
-Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_AND_EMAIL'
+  render(renderRoutes(), document.getElementById('render-target'));
 });

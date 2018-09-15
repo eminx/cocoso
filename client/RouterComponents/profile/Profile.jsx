@@ -1,20 +1,23 @@
 import React from 'react';
-import { AccountsReact } from 'meteor/meteoreact:accounts';
+import Blaze from 'meteor/gadicc:blaze-react-component';
+import { Accounts, STATES } from 'meteor/std:accounts-ui';
+
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
+
 import { Row, Col, Spin } from 'antd/lib';
 
 class Profile extends React.Component {
   render() {
-    const { currentUser, isLoading } = this.props;
+    const { currentUser, isLoading, history } = this.props;
 
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col span={8}>
-            <AccountsReact
-            // history={history}
-            // route={path}
-            // token={params.token} // for the reset-password route
-            />
+          <Col sm={6} md={16} />
+          <Col sm={18} md={8}>
+            <Blaze template="loginButtons" />
           </Col>
         </Row>
       </div>

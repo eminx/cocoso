@@ -1,43 +1,45 @@
 @import 'bigcalendar-custom.css';
 
-html, body, body > #render-target {
-	background-color: rgb(231, 233, 233) !important;
-	font-family: 'Verdana', 'Geneva', sans-serif;
-	color: #2e3880;
+html,
+body,
+body > #render-target {
+  background-color: rgb(231, 233, 233) !important;
+  font-family: 'Verdana', 'Geneva', sans-serif;
+  color: #2e3880;
 }
 
 h1 {
-	font-size: 28px;
+  font-size: 28px;
 }
 
 .logo {
-	width: 90px;
-	height: 50px;
-	background-repeat: no-repeat;
-	background-size: contain;
-	margin-top: 5px;
+  width: 90px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-top: 5px;
 }
 
 .skogen-logo {
-	background-image: url('https://skogen.pm/wp-content/themes/skogen/images/skogen-logo-x2.png');
+  background-image: url('https://skogen.pm/wp-content/themes/skogen/images/skogen-logo-x2.png');
 }
 
 .layout {
-	max-width: 960px;
-	margin: 0 auto;
-	margin-bottom: 50px;
+  max-width: 960px;
+  margin: 0 auto;
+  margin-bottom: 50px;
 }
 
 .layout.ant-layout {
-	background-color: rgb(231, 233, 233);
+  background-color: rgb(231, 233, 233);
 }
 
 .ant-layout .ant-layout-footer {
-	background: none;	
+  background: none;
 }
 
 .layout.ant-layout .ant-layout-header {
-	padding: 0 24px;
+  padding: 0 24px;
 }
 
 .rbc-calendar {
@@ -54,102 +56,115 @@ h1 {
 } */
 
 .center-that {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 600px) {
-	.rbc-toolbar {
-		flex-direction: column;
-	}
+  .rbc-toolbar {
+    flex-direction: column;
+  }
 }
 
 .rbc-toolbar {
-	flex-wrap: wrap;
-	justify-content: center;
-	padding: 10px;
-	margin-bottom: 0 !important;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	border: 1px solid #DDD;
-	border-bottom: none;
-	/* background-color: #f9f9f9; */
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 0 !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  /* background-color: #f9f9f9; */
 }
 
-.rbc-time-view, .rbc-month-view, .rbc-agenda-content {
-	background-color: #fff;
+.rbc-time-view,
+.rbc-month-view,
+.rbc-agenda-content {
+  background-color: #fff;
 }
 
 .rbc-calendar .rbc-agenda-content {
-	font-size: .8em;
+  font-size: 0.8em;
 }
 
 .rbc-calendar .rbc-agenda-view table tbody > tr > td {
-	padding: 5px;
+  padding: 5px;
 }
 
 .rbc-calendar .rbc-agenda-view table .rbc-agenda-time-cell {
-	padding-left: 5px;
-	padding-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .tags-container .ant-tag {
-	margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
-.rbc-calendar .rbc-event.category-0, .ant-tag-magenta.checked {
-	background-color: #eb2f96;
-	border:  1px solid #eb2f96;
+.rbc-calendar .rbc-event.category-0,
+.ant-tag-magenta.checked {
+  background-color: #eb2f96;
+  border: 1px solid #eb2f96;
 }
 
-.rbc-calendar .rbc-event.category-1, .ant-tag-red.checked {
-	background-color: #f5222d;
-	border:  1px solid #f5222d;
+.rbc-calendar .rbc-event.category-1,
+.ant-tag-red.checked {
+  background-color: #f5222d;
+  border: 1px solid #f5222d;
 }
 
-.rbc-calendar .rbc-event.category-2, .ant-tag-volcano.checked {
-	background-color: #fa541c;
-	border:  1px solid #fa541c;
+.rbc-calendar .rbc-event.category-2,
+.ant-tag-volcano.checked {
+  background-color: #fa541c;
+  border: 1px solid #fa541c;
 }
 
-.rbc-calendar .rbc-event.category-3, .ant-tag-orange.checked {
-	background-color: #fa8c16;
-	border:  1px solid #fa8c16;
+.rbc-calendar .rbc-event.category-3,
+.ant-tag-orange.checked {
+  background-color: #fa8c16;
+  border: 1px solid #fa8c16;
 }
 
-.rbc-calendar .rbc-event.category-4, .ant-tag-gold.checked {
-	background-color: #faad14;
-	border:  1px solid #faad14;
+.rbc-calendar .rbc-event.category-4,
+.ant-tag-gold.checked {
+  background-color: #faad14;
+  border: 1px solid #faad14;
 }
 
-.rbc-calendar .rbc-event.category-5, .ant-tag-lime.checked {
-	background-color: #a0d911;
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-5,
+.ant-tag-lime.checked {
+  background-color: #a0d911;
+  border: 1px solid;
 }
 
-.rbc-calendar .rbc-event.category-6, .ant-tag-green.checked {
-	background-color: #52c41a;
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-6,
+.ant-tag-green.checked {
+  background-color: #52c41a;
+  border: 1px solid;
 }
 
-.rbc-calendar .rbc-event.category-7, .ant-tag-cyan.checked {
-	background-color: #13c2c2;
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-7,
+.ant-tag-cyan.checked {
+  background-color: #13c2c2;
+  border: 1px solid;
 }
 
-.rbc-calendar .rbc-event.category-8, .ant-tag-blue.checked {
-	background-color: #1890ff;
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-8,
+.ant-tag-blue.checked {
+  background-color: #1890ff;
+  border: 1px solid;
 }
 
-.rbc-calendar .rbc-event.category-9, .ant-tag-geekblue.checked {
-	background-color: #2f54eb;
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-9,
+.ant-tag-geekblue.checked {
+  background-color: #2f54eb;
+  border: 1px solid;
 }
 
-.rbc-calendar .rbc-event.category-10, .ant-tag-purple.checked {
-	background-color: #722ed1
-	border:  1px solid ;
+.rbc-calendar .rbc-event.category-10,
+.ant-tag-purple.checked {
+  background-color: #722ed1;
+  border: 1px solid;
 }
 
 .ant-tag-magenta.checked,
@@ -163,46 +178,46 @@ h1 {
 .ant-tag-blue.checked,
 .ant-tag-geekblue.checked,
 .ant-tag-purple.checked {
-	color: #fff;
+  color: #fff;
 }
 
 button.rbc-active {
-	background: #fff !important;
-	border-color: #1890ff !important;
-	color: #1890ff !important;
-	-webkit-box-shadow: -1px 0 0 0 #1890ff;
-	box-shadow: -1px 0 0 0 #1890ff;
+  background: #fff !important;
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+  -webkit-box-shadow: -1px 0 0 0 #1890ff;
+  box-shadow: -1px 0 0 0 #1890ff;
 }
 
 .ant-list .ant-card {
-	margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .ant-list .ant-list-item-extra {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .ant-list .ant-list-item-meta {
-	align-items: center;
+  align-items: center;
 }
 
 .ant-card .ant-card-meta-description {
-	color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
 }
 
 .ant-card .ant-card-head-title {
-	white-space: inherit;
+  white-space: inherit;
 }
 
 @media (max-width: 480px) {
-	h1 {
-		font-size: 22px;
-		line-height: 26px;
-	}
+  h1 {
+    font-size: 22px;
+    line-height: 26px;
+  }
 }
 
 .bold-font {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 /* .upload-image-col .ant-form-item-label label:before {
@@ -216,21 +231,21 @@ button.rbc-active {
 } */
 
 textarea#longDescription.ant-input {
-	min-height: 240px;
+  min-height: 240px;
 }
 
 .login-link-and-dropdown-list > #login-dropdown-list {
-	right: -1px;
-	left: auto;
+  right: -1px;
+  left: auto;
 }
 
-#login-username-or-email-label-and-input, 
+#login-username-or-email-label-and-input,
 #login-password-label-and-input,
 #login-username-label-and-input,
 #login-email-label-and-input,
 #forgot-password-email-label-and-input {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /* li.ant-menu-item {
@@ -241,8 +256,9 @@ textarea#longDescription.ant-input {
   letter-spacing: -0.2px;
 }
  */
-.ant-menu-horizontal > li.ant-menu-item > a, .ant-menu-horizontal > .ant-menu-submenu > a {
-	color: #2e3880;
+.ant-menu-horizontal > li.ant-menu-item > a,
+.ant-menu-horizontal > .ant-menu-submenu > a {
+  color: #2e3880;
 }
 
 li.ant-menu-item span {
@@ -250,14 +266,14 @@ li.ant-menu-item span {
 }
 
 #login-buttons {
-	display: block;
-	line-height: inherit;
+  display: block;
+  line-height: inherit;
 }
 
 #login-sign-in-link {
-	display: block;
+  display: block;
 }
 
 .addSpace-modal .ant-modal-footer {
-	display: none;
+  display: none;
 }
