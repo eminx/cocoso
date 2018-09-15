@@ -205,8 +205,9 @@ class Group extends React.PureComponent {
                       <ListItem>
                         <b>
                           {member.username +
-                            (member.username === currentUser.username &&
-                              ' (you)')}
+                            (member.username === currentUser.username
+                              ? ' (admin)'
+                              : '')}
                         </b>
                       </ListItem>
                     )}
