@@ -1,10 +1,5 @@
 import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
-import { Accounts, STATES } from 'meteor/std:accounts-ui';
-
-Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_AND_EMAIL'
-});
 
 import { Row, Col, Spin } from 'antd/lib';
 

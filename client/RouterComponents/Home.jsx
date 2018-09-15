@@ -50,7 +50,7 @@ class Home extends React.Component {
     const images = this.props.imagesArray;
     const { mode, goto, calendarFilter } = this.state;
 
-    const futureBooking = [];
+    const futureBookings = [];
 
     gatherings.filter(gathering => {
       const yesterday = moment(new Date()).add(-1, 'days');
