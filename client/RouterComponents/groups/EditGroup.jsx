@@ -1,39 +1,37 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import CreateGroupForm from '../UIComponents/CreateGroupForm';
-import ModalArticle from '../UIComponents/ModalArticle';
+import CreateGroupForm from '../../UIComponents/CreateGroupForm';
+import ModalArticle from '../../UIComponents/ModalArticle';
 import { Row, Col, message, Alert, Affix } from 'antd/lib';
-import { Redirect } from 'react-router-dom'
-import Evaporate from 'evaporate';
-import AWS from 'aws-sdk';
+import { Redirect } from 'react-router-dom';
 
 const successCreation = () => {
   message.success('Your group is successfully edited', 6);
 };
 
-const sideNote = "This page is dedicated to create study groups at Skogen."
+const sideNote = 'This page is dedicated to create study groups at Skogen.';
 
 class EditGroup extends React.Component {
-	state={
-		modalConfirm: false,
-		values: null,
+  state = {
+    modalConfirm: false,
+    values: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null
-	}
+  };
 
-	registerGroupLocally = (values) => {
+  registerGroupLocally = values => {
     values.authorName = this.props.currentUser.username || 'emo';
-		this.setState({
-      values: values, 
+    this.setState({
+      values: values,
       modalConfirm: true
     });
-	}
+  };
 
-	updateBooking = () => {
+  updateBooking = () => {
     const { values } = this.state;
     const { groupData } = this.props;
 
@@ -51,74 +49,75 @@ class EditGroup extends React.Component {
         });
       }
     });
-  }
+  };
 
-  hideModal = () => this.setState({modalConfirm: false})
-  showModal = () => this.setState({modalConfirm: true})
- 
+  hideModal = () => this.setState({ modalConfirm: false });
+  showModal = () => this.setState({ modalConfirm: true });
+
   render() {
-
     if (!this.props.currentUser) {
       return (
-        <div style={{maxWidth: 600, margin: '0 auto'}}>
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
             message="You have to signin to create a booking. Just do it!"
             type="error"
           />
         </div>
-      )
+      );
     }
 
-    const { modalConfirm, values, isLoading, isSuccess, newGroupId, uploadedImage, uploadableImage, uploadableImageLocal } = this.state;
+    const {
+      modalConfirm,
+      values,
+      isLoading,
+      isSuccess,
+      newGroupId,
+      uploadedImage,
+      uploadableImage,
+      uploadableImageLocal
+    } = this.state;
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/booking/${newGroupId}`} />
+      return <Redirect to={`/booking/${newGroupId}`} />;
     }
 
     const { groupData } = this.props;
 
     return (
-    	<div style={{padding: 24}}>
+      <div style={{ padding: 24 }}>
         <h1>Edit your booking</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
-    	      <CreateGroupForm
-    	      	values={values}
+            <CreateGroupForm
+              values={values}
               groupData={groupData}
-    	      	registerGroupLocally={this.registerGroupLocally}
+              registerGroupLocally={this.registerGroupLocally}
               setUploadableImage={this.setUploadableImage}
               uploadableImage={this.state.uploadableImage}
               places={this.props.places}
-    	      />
+            />
           </Col>
           <Col xs={24} sm={24} md={8}>
             <Affix offsetTop={50}>
-              <Alert
-                message={sideNote}
-                type="warning"
-                showIcon
-              />
+              <Alert message={sideNote} type="warning" showIcon />
             </Affix>
           </Col>
         </Row>
-  	    { modalConfirm
-          ?
-            <ModalArticle
-              item={values}
-              isLoading={isLoading}
-              title="Overview The Information"
-              visible={modalConfirm}
-              onOk={this.updateBooking}
-              onCancel={this.hideModal}
-              okText="Confirm"
-              cancelText="Go back and edit"
-            />
-          : null
-        }
-
-       </div>
-    )
+        {modalConfirm ? (
+          <ModalArticle
+            item={values}
+            isLoading={isLoading}
+            title="Overview The Information"
+            visible={modalConfirm}
+            onOk={this.updateBooking}
+            onCancel={this.hideModal}
+            okText="Confirm"
+            cancelText="Go back and edit"
+          />
+        ) : null}
+      </div>
+    );
   }
 }
 
