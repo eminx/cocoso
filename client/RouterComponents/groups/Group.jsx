@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Chattery from '../../chattery';
 import {
   Row,
@@ -8,7 +8,7 @@ import {
   Button,
   Icon,
   Divider,
-  Checkbox,
+  Modal,
   List,
   Avatar,
   Affix,
@@ -20,7 +20,54 @@ import {
 const ListItem = List.Item;
 const { Meta } = Card;
 
-class Group extends React.Component {
+class Group extends React.PureComponent {
+  state = {
+    modalOpen: false,
+    redirectToLogin: false
+  };
+
+  isMember = () => {
+    const { currentUser, group } = this.props;
+    if (!currentUser || !group) {
+      return false;
+    }
+
+    const isMember = group.members.some(
+      member => member.memberId === currentUser._id
+    );
+
+    return Boolean(isMember);
+  };
+
+  isAdmin = () => {
+    const { currentUser, group } = this.props;
+    if (!currentUser || !group) {
+      return false;
+    }
+
+    const isAdmin = group.admin && group.admin._id === currentUser._id;
+
+    return Boolean(isAdmin);
+  };
+
+  openModal = () => {
+    if (!this.props.currentUser) {
+      this.setState({
+        redirectToLogin: true
+      });
+      return;
+    }
+    this.setState({
+      modalOpen: true
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      modalOpen: false
+    });
+  };
+
   addNewChatMessage = message => {
     Meteor.call(
       'addChatMessage',
@@ -84,10 +131,42 @@ class Group extends React.Component {
     }
   };
 
+  joinGroup = () => {
+    const { group } = this.props;
+
+    Meteor.call('joinGroup', group._id, (error, response) => {
+      if (error) {
+        message.error('error.reason');
+      } else {
+        message.success('You are added to the group');
+      }
+      this.closeModal();
+    });
+  };
+
+  leaveGroup = () => {
+    const { group } = this.props;
+
+    Meteor.call('leaveGroup', group._id, (error, response) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.info('You are removed from the group');
+      }
+      this.closeModal();
+    });
+  };
+
   render() {
+    if (this.state.redirectToLogin) {
+      return <Redirect to="/my-profile" />;
+    }
+
     const { group, isLoading, currentUser, chatData } = this.props;
-    const isAdmin = currentUser && group && currentUser._id === group.authorId;
     const messages = this.getChatMessages();
+
+    const isMember = this.isMember();
+    const isAdmin = this.isAdmin();
 
     const titleStyle = {
       marginLeft: 24,
@@ -110,9 +189,13 @@ class Group extends React.Component {
               </Card>
             </Col>
 
-            <Col sm={24} md={8}>
-              <Button type="primary" onClick={null} block>
-                Join this Group
+            <Col sm={24} md={8} style={{ paddingTop: 24 }}>
+              <Button
+                type={isMember ? null : 'primary'}
+                onClick={this.openModal}
+                block
+              >
+                {isMember ? 'Leave this group' : 'Join this Group'}
               </Button>
             </Col>
           </Row>
@@ -124,7 +207,6 @@ class Group extends React.Component {
         <Divider />
         <Row gutter={24}>
           <Col sm={24} md={16}>
-            <h4 style={titleStyle}>Chat Section</h4>
             {chatData && (
               <div>
                 <h4 style={titleStyle}>Chat Section</h4>
@@ -136,6 +218,21 @@ class Group extends React.Component {
             )}
           </Col>
         </Row>
+
+        <Modal
+          title={`Confirm ${
+            isMember ? 'leaving' : 'participation to'
+          } the group`}
+          visible={this.state.modalOpen}
+          onOk={isMember ? this.leaveGroup : this.joinGroup}
+          onCancel={this.closeModal}
+        >
+          <p>
+            Are you sure you want to
+            {isMember ? 'leave' : 'join'}
+            this Study Group?
+          </p>
+        </Modal>
       </div>
     );
   }

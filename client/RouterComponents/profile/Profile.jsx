@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Blaze from 'meteor/gadicc:blaze-react-component';
-
+import { AccountsReact } from 'meteor/meteoreact:accounts';
 import { Row, Col, Spin } from 'antd/lib';
 
 class Profile extends React.Component {
@@ -12,7 +10,11 @@ class Profile extends React.Component {
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
           <Col span={8}>
-            <Blaze template="loginButtons" />
+            <AccountsReact
+            // history={history}
+            // route={path}
+            // token={params.token} // for the reset-password route
+            />
           </Col>
         </Row>
       </div>

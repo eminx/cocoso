@@ -32,7 +32,7 @@ class LayoutContainer extends React.Component {
   render() {
     const { history, children } = this.props;
     const pathname = history.location.pathname;
-    const currentUser = Meteor.user();
+    const currentUser = Meteor.userId();
 
     return (
       <div>
