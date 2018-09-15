@@ -38,20 +38,28 @@ Meteor.methods({
           })
       );
 
-      Meteor.users.update(user._id, {
-        $addToSet: {
-          groups: {
-            groupId: theGroup._id,
-            name: theGroup.name,
-            joinDate: new Date(),
-            meAdmin: true
+      try {
+        Meteor.users.update(user._id, {
+          $addToSet: {
+            groups: {
+              groupId: add,
+              name: formValues.title,
+              joinDate: new Date(),
+              meAdmin: true
+            }
           }
-        }
-      });
-
+        });
+      } catch (error) {
+        throw new Meteor.Error(
+          error,
+          "Couldn't add the group info to user collection, but group is created"
+        );
+        console.log(error);
+      }
       return add;
-    } catch (e) {
-      throw new Meteor.Error(e, "Couldn't add group to the collection");
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't add group to the collection");
+      console.log(error);
     }
   },
 

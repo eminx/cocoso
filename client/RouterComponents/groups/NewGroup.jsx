@@ -60,10 +60,12 @@ class NewGroup extends React.Component {
       if (error) {
         console.error('Error uploading:', error);
       } else {
-        this.setState({
-          uploadedImage: downloadUrl
-        });
-        this.createGroup(downloadUrl);
+        this.setState(
+          {
+            uploadedImage: downloadUrl
+          },
+          () => this.createGroup(downloadUrl)
+        );
       }
     });
   };
