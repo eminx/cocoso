@@ -12,9 +12,16 @@ Meteor.methods({
     try {
       const add = Groups.insert(
         {
-          authorId: user._id,
-          members: [],
-          authorName: user.username,
+          adminId: user._id,
+          adminUsername: user.username,
+          members: [
+            {
+              memberId: user._id,
+              username: user.username,
+              profileImage: user.profileImage || null,
+              joinDate: new Date()
+            }
+          ],
           title: formValues.title,
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
@@ -30,20 +37,32 @@ Meteor.methods({
             }
           })
       );
+
+      // Meteor.users.update(user._id, {
+      //   $addToSet: {
+      //     groups: {
+      //       groupId: theGroup._id,
+      //       name: theGroup.name,
+      //       joinDate: new Date(),
+      //       meAdmin: true
+      //     }
+      //   }
+      // });
+
       return add;
     } catch (e) {
       throw new Meteor.Error(e, "Couldn't add group to the collection");
     }
   },
 
-  updateGroup(formValues, groupId) {
+  updateGroup(groupId, formValues, imageUrl) {
     const user = Meteor.user();
     if (!user) {
       return false;
     }
 
     const theGroup = Groups.findOne(groupId);
-    if (user._id !== theGroup.authorId) {
+    if (user._id !== theGroup.adminId) {
       throw new Meteor.Error('You are not allowed!');
       return false;
     }

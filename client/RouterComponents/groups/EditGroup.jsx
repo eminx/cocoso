@@ -20,7 +20,8 @@ class EditGroup extends React.Component {
     isError: false,
     newGroupId: null,
     uploadedImage: null,
-    uploadableImage: null
+    uploadableImage: null,
+    uploadableImageLocal: null
   };
 
   registerGroupLocally = values => {
@@ -31,24 +32,68 @@ class EditGroup extends React.Component {
     });
   };
 
+  setUploadableImage = e => {
+    const theImageFile = e.file.originFileObj;
+    const reader = new FileReader();
+    reader.readAsDataURL(theImageFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage: theImageFile,
+          uploadableImageLocal: reader.result
+        });
+      },
+      false
+    );
+  };
+
+  uploadImage = () => {
+    this.setState({ isLoading: true });
+
+    const { uploadableImage } = this.state;
+
+    const upload = new Slingshot.Upload('gatheringImageUpload');
+    const timeStamp = Math.floor(Date.now());
+
+    upload.send(uploadableImage, (error, downloadUrl) => {
+      if (error) {
+        console.error('Error uploading:', error);
+      } else {
+        this.setState({
+          uploadedImage: downloadUrl
+        });
+        this.createBooking(downloadUrl);
+      }
+    });
+  };
+
   updateBooking = () => {
     const { values } = this.state;
     const { groupData } = this.props;
+    const { uploadedImage } = this.state;
+    let imageUrl = uploadableImage || groupData.imageUrl;
 
-    Meteor.call('updateBooking', values, groupData._id, (error, result) => {
-      if (error) {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          newGroupId: result,
-          isSuccess: true
-        });
+    Meteor.call(
+      'updateBooking',
+      groupData._id,
+      values,
+      imageUrl,
+      (error, result) => {
+        if (error) {
+          this.setState({
+            isLoading: false,
+            isError: true
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            newGroupId: result,
+            isSuccess: true
+          });
+        }
       }
-    });
+    );
   };
 
   hideModal = () => this.setState({ modalConfirm: false });
@@ -94,7 +139,9 @@ class EditGroup extends React.Component {
               groupData={groupData}
               registerGroupLocally={this.registerGroupLocally}
               setUploadableImage={this.setUploadableImage}
-              uploadableImage={this.state.uploadableImage}
+              uploadableImage={
+                (groupData && groupData.imageUrl) || this.state.uploadableImage
+              }
               places={this.props.places}
             />
           </Col>
@@ -110,7 +157,7 @@ class EditGroup extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={this.updateBooking}
+            onOk={this.uploadImage}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

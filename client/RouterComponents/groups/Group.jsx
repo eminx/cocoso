@@ -45,7 +45,7 @@ class Group extends React.PureComponent {
       return false;
     }
 
-    const isAdmin = group.admin && group.admin._id === currentUser._id;
+    const isAdmin = group && group.adminId === currentUser._id;
 
     return Boolean(isAdmin);
   };
@@ -125,7 +125,7 @@ class Group extends React.PureComponent {
         <div>
           <b>{group.members.length + ' / ' + group.capacity}</b>
           <br />
-          created by {group.authorName}
+          created by {group.adminUsername}
         </div>
       );
     }
@@ -184,19 +184,43 @@ class Group extends React.PureComponent {
                 bordered
                 extra={this.getExtra(group, isAdmin)}
                 style={{ width: '100%', marginBottom: 0 }}
+                cover={
+                  group.imageUrl ? (
+                    <img alt="group-image" src={group.imageUrl} />
+                  ) : null
+                }
               >
                 <Meta description={group.description} />
               </Card>
             </Col>
 
-            <Col sm={24} md={8} style={{ paddingTop: 24 }}>
-              <Button
-                type={isMember ? null : 'primary'}
-                onClick={this.openModal}
-                block
-              >
-                {isMember ? 'Leave this group' : 'Join this Group'}
-              </Button>
+            <Col sm={24} md={8} style={{ padding: 24 }}>
+              {isAdmin ? (
+                <div>
+                  <h4>Members of this Study Group:</h4>
+                  <List
+                    dataSource={group.members}
+                    bordered
+                    renderItem={member => (
+                      <ListItem>
+                        <b>
+                          {member.username +
+                            (member.username === currentUser.username &&
+                              ' (you)')}
+                        </b>
+                      </ListItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <Button
+                  type={isMember ? null : 'primary'}
+                  onClick={this.openModal}
+                  block
+                >
+                  {isMember ? 'Leave this group' : 'Join this Group'}
+                </Button>
+              )}
             </Col>
           </Row>
         ) : (

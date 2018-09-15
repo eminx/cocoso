@@ -1,8 +1,9 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { Row, Col, message, Alert, Affix } from 'antd/lib';
+
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
 
 const successCreation = () => {
   message.success('Your booking is successfully created', 6);
@@ -19,7 +20,8 @@ class NewGroup extends React.Component {
     isError: false,
     newGroupId: null,
     uploadedImage: null,
-    uploadableImage: null
+    uploadableImage: null,
+    uploadableImageLocal: null
   };
 
   registerGroupLocally = values => {
@@ -141,6 +143,7 @@ class NewGroup extends React.Component {
             item={values}
             isLoading={isLoading}
             title="Overview The Information"
+            imageSrc={uploadableImageLocal}
             visible={modalConfirm}
             onOk={this.uploadImage}
             onCancel={this.hideModal}

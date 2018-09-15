@@ -5,6 +5,13 @@ import { Row, Col, List, Card, Spin } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
 
+function shortenDescription(str) {
+  return str
+    .split(/\s+/)
+    .slice(0, 20)
+    .join(' ');
+}
+
 class GroupsList extends React.PureComponent {
   getTitle = group => {
     return (
@@ -24,7 +31,7 @@ class GroupsList extends React.PureComponent {
       <div>
         <b>{group.members.length + ' / ' + group.capacity}</b>
         <br />
-        created by {group.authorName}
+        created by {group.adminUsername}
       </div>
     );
   };
@@ -45,6 +52,7 @@ class GroupsList extends React.PureComponent {
         <Col md={8} />
 
         <Col md={14}>
+          <h2> Current Study Groups</h2>
           <List
             dataSource={groupsData}
             renderItem={group => (
@@ -57,7 +65,7 @@ class GroupsList extends React.PureComponent {
                     extra={this.getExtra(group)}
                     style={{ width: '100%', marginBottom: 0 }}
                   >
-                    <Meta description={group.description} />
+                    <Meta description={shortenDescription(group.description)} />
                   </Card>
                 </Link>
               </ListItem>
