@@ -118,22 +118,9 @@ class LayoutContainer extends React.Component {
               justifyContent: 'space-between'
             }}
           >
-            {pathname === '/' ? (
-              <Link to="/">
-                <div className="logo skogen-logo" />
-              </Link>
-            ) : (
-              <div
-                className="logo"
-                onClick={history.goBack}
-                style={{ cursor: 'pointer' }}
-              >
-                <Icon
-                  style={{ fontSize: 36, color: '#2e3880' }}
-                  type="arrow-left"
-                />
-              </div>
-            )}
+            <Link to="/">
+              <div className="logo skogen-logo" />
+            </Link>
 
             {currentUser ? (
               <Icon
