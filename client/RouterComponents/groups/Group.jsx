@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Chattery from '../../chattery';
 import {
@@ -194,26 +194,8 @@ class Group extends React.PureComponent {
               </Card>
             </Col>
 
-            <Col sm={24} md={8} style={{ padding: 24 }}>
-              {isAdmin ? (
-                <div>
-                  <h4>Members of this Study Group:</h4>
-                  <List
-                    dataSource={group.members}
-                    bordered
-                    renderItem={member => (
-                      <ListItem>
-                        <b>
-                          {member.username +
-                            (member.username === currentUser.username
-                              ? ' (admin)'
-                              : '')}
-                        </b>
-                      </ListItem>
-                    )}
-                  />
-                </div>
-              ) : (
+            <Col sm={24} md={8} style={{ padding: 36 }}>
+              {!isAdmin && (
                 <Button
                   type={isMember ? null : 'primary'}
                   onClick={this.openModal}
@@ -221,6 +203,37 @@ class Group extends React.PureComponent {
                 >
                   {isMember ? 'Leave this group' : 'Join this Group'}
                 </Button>
+              )}
+
+              <Divider />
+
+              {currentUser && (
+                <Fragment>
+                  <h4>Members:</h4>
+                  <List
+                    dataSource={group.members}
+                    bordered
+                    style={{ backgroundColor: '#fff' }}
+                    renderItem={member => (
+                      <ListItem>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%'
+                          }}
+                        >
+                          <b>{member.username}</b>
+                          <em>
+                            {member.username === currentUser.username && ' you'}
+                            {member.username === group.adminUsername &&
+                              ' admin'}
+                          </em>
+                        </div>
+                      </ListItem>
+                    )}
+                  />
+                </Fragment>
               )}
             </Col>
           </Row>
@@ -254,7 +267,7 @@ class Group extends React.PureComponent {
         >
           <p>
             Are you sure you want to
-            {isMember ? 'leave' : 'join'}
+            {isMember ? ' leave ' : ' join '}
             this Study Group?
           </p>
         </Modal>
