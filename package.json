@@ -1,5 +1,5 @@
 {
-  "name": "Nodal",
+  "name": "nodal",
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings-skogen.json",

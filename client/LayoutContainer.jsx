@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Drawer, Layout, Divider, Menu, Icon } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
+const MenuItemGroup = Menu.ItemGroup;
 
 class LayoutContainer extends React.Component {
   state = {
@@ -38,7 +39,7 @@ class LayoutContainer extends React.Component {
     return (
       <div>
         <Drawer
-          title="MENU"
+          // title="MENU"
           placement="right"
           onClose={this.closeMenu}
           visible={this.state.menuOpen}
@@ -49,34 +50,55 @@ class LayoutContainer extends React.Component {
             onClick={this.closeMenu}
             style={{ borderRight: 'none' }}
           >
-            <MenuItem key="/">
-              <Link to="/">
-                <b>Home</b>
-              </Link>
-            </MenuItem>
+            <MenuItemGroup key="making-it-work" title="MAKING IT WORK">
+              <MenuItem key="calendar">
+                <Link to="/">
+                  <b>Calendar</b>
+                </Link>
+              </MenuItem>
 
-            <MenuItem key="new-booking">
-              <Link to="/new-booking">
-                <b>New Booking</b>
-              </Link>
-            </MenuItem>
+              <MenuItem key="new-booking">
+                <Link to="new-booking">
+                  <b>Book</b>
+                </Link>
+              </MenuItem>
 
-            <MenuItem key="divider-1" style={{ padding: 0, margin: 0 }}>
+              <MenuItem key="documents">
+                <Link to="documents">
+                  <b>Documents</b>
+                </Link>
+              </MenuItem>
+
+              {/* <MenuItem key="divider-1" style={{ padding: 0, margin: 0 }}>
+                <Divider style={{ padding: 0 }} />
+              </MenuItem> */}
+            </MenuItemGroup>
+
+            <MenuItem key="divider-2" style={{ padding: 0, margin: 0 }}>
               <Divider style={{ padding: 0 }} />
             </MenuItem>
 
-            <MenuItem key="groups">
-              <Link to="/groups">
-                <b>Groups</b>
-              </Link>
-            </MenuItem>
-            <MenuItem key="new-group">
-              <Link to="/new-group">
-                <b>New Group</b>
-              </Link>
-            </MenuItem>
+            <MenuItemGroup key="the-school" title="THE SCHOOL">
+              <MenuItem key="groups">
+                <Link to="/groups">
+                  <b>Groups</b>
+                </Link>
+              </MenuItem>
 
-            <MenuItem key="divider-2" style={{ padding: 0, margin: 0 }}>
+              <MenuItem key="new-group">
+                <Link to="/new-group">
+                  <b>New Group</b>
+                </Link>
+              </MenuItem>
+
+              <MenuItem key="about-the-school">
+                <Link to="/about-the-school">
+                  <b>About the School</b>
+                </Link>
+              </MenuItem>
+            </MenuItemGroup>
+
+            <MenuItem key="divider-3" style={{ padding: 0, margin: 0 }}>
               <Divider style={{ padding: 0 }} />
             </MenuItem>
 
