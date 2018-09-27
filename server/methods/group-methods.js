@@ -1,8 +1,8 @@
 Meteor.methods({
   createGroup(formValues, imageUrl) {
     const user = Meteor.user();
-    if (!user) {
-      return false;
+    if (!user || !user.isRegisteredMember) {
+      throw new Meteor.Error('Not allowed!');
     }
     check(formValues.title, String);
     check(formValues.description, String);
@@ -65,8 +65,8 @@ Meteor.methods({
 
   updateGroup(groupId, formValues, imageUrl) {
     const user = Meteor.user();
-    if (!user) {
-      return false;
+    if (!user || !user.isRegisteredMember) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theGroup = Groups.findOne(groupId);
@@ -98,7 +98,7 @@ Meteor.methods({
 
   joinGroup(groupId) {
     const user = Meteor.user();
-    if (!user) {
+    if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -130,7 +130,7 @@ Meteor.methods({
 
   leaveGroup(groupId) {
     const user = Meteor.user();
-    if (!user) {
+    if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('You are not allowed!');
     }
 

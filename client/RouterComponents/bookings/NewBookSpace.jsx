@@ -93,11 +93,11 @@ class NewBookSpace extends React.Component {
   render() {
     const { currentUser } = this.props;
 
-    if (!currentUser) {
+    if (!currentUser || !currentUser.isRegisteredMember) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to signin to create a booking. Just do it!"
+            message="You have to become a registered member to create a group."
             type="error"
           />
         </div>

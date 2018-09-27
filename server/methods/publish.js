@@ -100,7 +100,14 @@ Meteor.publish('places', function() {
 
 Meteor.publish('users', function() {
   const user = Meteor.user();
-  // if (user && user.isSuperAdmin) {
-  return Meteor.users.find();
-  // }
+  if (user && user.isSuperAdmin) {
+    return Meteor.users.find();
+  }
+});
+
+Meteor.publish('me', function() {
+  const userId = Meteor.userId();
+  if (userId) {
+    return Meteor.users.find(userId);
+  }
 });

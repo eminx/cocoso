@@ -31,25 +31,22 @@ class Users extends React.PureComponent {
   render() {
     const { isLoading, currentUser, users } = this.props;
 
+    if (!currentUser || !currentUser.isSuperAdmin) {
+      return (
+        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+          <Alert
+            message="You are not allowed to view this content"
+            type="warning"
+          />
+        </div>
+      );
+    }
+
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Spin size="large" />
         </div>
-      );
-    }
-
-    if (!currentUser || !currentUser.isSuperAdmin) {
-      return (
-        <Row gutter={48}>
-          <Col>
-            <Alert
-              title="Not allowed"
-              message="You are not allowed to view this content"
-              type="warning"
-            />
-          </Col>
-        </Row>
       );
     }
 

@@ -1,14 +1,16 @@
-import React from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Drawer, Layout, Divider, Menu, Icon } from 'antd/lib';
+import { Drawer, Layout, Divider, Menu, Icon, Spin } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
 const MenuItemGroup = Menu.ItemGroup;
 
-class LayoutContainer extends React.Component {
+class LayoutPage extends React.Component {
   state = {
-    menuOpen: false
+    menuOpen: false,
+    me: false
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -32,9 +34,16 @@ class LayoutContainer extends React.Component {
   };
 
   render() {
-    const { history, children } = this.props;
+    const { history, children, currentUser, isLoading } = this.props;
     const pathname = history.location.pathname;
-    const currentUser = Meteor.userId();
+
+    if (isLoading) {
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Spin size="large" />
+        </div>
+      );
+    }
 
     return (
       <div>
@@ -107,6 +116,21 @@ class LayoutContainer extends React.Component {
                 <b>My Profile</b>
               </Link>
             </MenuItem>
+
+            {currentUser.isSuperAdmin && (
+              <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
+                <Divider style={{ padding: 0 }} />
+              </MenuItem>
+            )}
+            {currentUser.isSuperAdmin && (
+              <MenuItemGroup key="admin" title="ADMIN">
+                <MenuItem key="users">
+                  <Link to="/users">
+                    <b>Users</b>
+                  </Link>
+                </MenuItem>
+              </MenuItemGroup>
+            )}
           </Menu>
         </Drawer>
 
@@ -144,4 +168,13 @@ class LayoutContainer extends React.Component {
   }
 }
 
-export default LayoutContainer;
+export default (LayoutContainer = withTracker(props => {
+  const meSub = Meteor.subscribe('me');
+  const currentUser = Meteor.user();
+  const isLoading = !meSub.ready();
+
+  return {
+    isLoading,
+    currentUser
+  };
+})(LayoutPage));
