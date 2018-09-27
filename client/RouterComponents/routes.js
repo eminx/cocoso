@@ -16,6 +16,7 @@ import GroupsListContainer from './groups/GroupsListContainer';
 import GroupContainer from './groups/GroupContainer';
 
 import ProfileContainer from './profile/ProfileContainer';
+import UsersContainer from './users/UsersContainer';
 
 const browserHistory = createBrowserHistory();
 
@@ -39,6 +40,8 @@ export const renderRoutes = () => (
           history={browserHistory}
           component={ProfileContainer}
         />
+
+        <Route path="/users" component={UsersContainer} />
 
         {/*<Route path="*" component={NotFoundPage}/>*/}
       </Switch>

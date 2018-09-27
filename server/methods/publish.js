@@ -97,3 +97,10 @@ Meteor.publish('chat', function(contextId) {
 Meteor.publish('places', function() {
   return Places.find();
 });
+
+Meteor.publish('users', function() {
+  const user = Meteor.user();
+  // if (user && user.isSuperAdmin) {
+  return Meteor.users.find();
+  // }
+});

@@ -123,7 +123,6 @@ class Home extends React.Component {
               <h2 style={{ textAlign: 'center' }}>Book Skogen</h2>
 
               <Alert
-                title="<About></About>"
                 message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
                 type="info"
               />
