@@ -77,10 +77,6 @@ class LayoutPage extends React.Component {
                   <b>Documents</b>
                 </Link>
               </MenuItem>
-
-              {/* <MenuItem key="divider-1" style={{ padding: 0, margin: 0 }}>
-                <Divider style={{ padding: 0 }} />
-              </MenuItem> */}
             </MenuItemGroup>
 
             <MenuItem key="divider-2" style={{ padding: 0, margin: 0 }}>
