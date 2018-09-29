@@ -37,14 +37,6 @@ class LayoutPage extends React.Component {
     const { history, children, currentUser, isLoading } = this.props;
     const pathname = history.location.pathname;
 
-    if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Spin size="large" />
-        </div>
-      );
-    }
-
     return (
       <div>
         <Drawer
@@ -113,20 +105,22 @@ class LayoutPage extends React.Component {
               </Link>
             </MenuItem>
 
-            {currentUser.isSuperAdmin && (
-              <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
-                <Divider style={{ padding: 0 }} />
-              </MenuItem>
-            )}
-            {currentUser.isSuperAdmin && (
-              <MenuItemGroup key="admin" title="ADMIN">
-                <MenuItem key="users">
-                  <Link to="/users">
-                    <b>Users</b>
-                  </Link>
+            {currentUser &&
+              currentUser.isSuperAdmin && (
+                <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
+                  <Divider style={{ padding: 0 }} />
                 </MenuItem>
-              </MenuItemGroup>
-            )}
+              )}
+            {currentUser &&
+              currentUser.isSuperAdmin && (
+                <MenuItemGroup key="admin" title="ADMIN">
+                  <MenuItem key="users">
+                    <Link to="/users">
+                      <b>Users</b>
+                    </Link>
+                  </MenuItem>
+                </MenuItemGroup>
+              )}
           </Menu>
         </Drawer>
 
@@ -167,10 +161,8 @@ class LayoutPage extends React.Component {
 export default (LayoutContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
-  const isLoading = !meSub.ready();
 
   return {
-    isLoading,
     currentUser
   };
 })(LayoutPage));

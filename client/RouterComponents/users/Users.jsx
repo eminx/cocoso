@@ -63,7 +63,6 @@ class Users extends React.PureComponent {
                 <Card
                   title={user.username}
                   bordered
-                  hoverable
                   extra={user.emails[0].address}
                   style={{ width: '100%', marginBottom: 0 }}
                 >
