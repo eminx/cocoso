@@ -1,19 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { Link, Redirect } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  Radio,
-  Alert,
-  Spin,
-  Button,
-  Divider,
-  Select,
-  Tag
-} from 'antd/lib';
-const Option = Select.Option;
-import BigCalendar from 'react-big-calendar';
+import { Redirect } from 'react-router-dom';
+import { Row, Col, Alert, Tag } from 'antd/lib';
+import { PulseLoader } from 'react-spinners';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
@@ -53,7 +42,6 @@ class Home extends React.Component {
     const futureBookings = [];
 
     gatherings.filter(gathering => {
-      const yesterday = moment(new Date()).add(-1, 'days');
       if (moment(gathering.endDate).isAfter(yesterday)) {
         futureBookings.push(gathering);
       }
@@ -81,7 +69,7 @@ class Home extends React.Component {
               marginBottom: 50
             }}
           >
-            <div style={{ maxWidth: 900 }}>
+            <div style={{ maxWidth: 900, width: '100%' }}>
               <h2 style={{ textAlign: 'center' }}>Bookings Calendar</h2>
               <div
                 className="tags-container"
@@ -134,7 +122,7 @@ class Home extends React.Component {
               <h2 style={{ textAlign: 'center' }}>Current bookings</h2>
               {isLoading ? (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Spin size="large" />
+                  <PulseLoader loading />
                 </div>
               ) : (
                 <div>

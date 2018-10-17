@@ -4,21 +4,16 @@ import Chattery from '../../chattery';
 import {
   Row,
   Col,
-  Spin,
   Button,
-  Icon,
   Divider,
   Modal,
   List,
-  Avatar,
-  Affix,
-  Popconfirm,
   Card,
-  Anchor,
   message
 } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
+import { PulseLoader } from 'react-spinners';
 
 class Group extends React.PureComponent {
   state = {
@@ -239,7 +234,7 @@ class Group extends React.PureComponent {
           </Row>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Spin size="large" />
+            <PulseLoader loading />
           </div>
         )}
         <Divider />

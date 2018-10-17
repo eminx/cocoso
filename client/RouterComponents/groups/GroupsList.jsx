@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, List, Card, Spin } from 'antd/lib';
+import { Row, Col, List, Card } from 'antd/lib';
+import { PulseLoader } from 'react-spinners';
 
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -42,7 +43,7 @@ class GroupsList extends React.PureComponent {
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Spin size="large" />
+          <PulseLoader loading />
         </div>
       );
     }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Card, Icon, Avatar, Spin } from 'antd/lib';
+import { Modal, Card, Avatar } from 'antd/lib';
+import { PulseLoader } from 'react-spinners';
 const { Meta } = Card;
 
 const getInitials = string => {
@@ -20,7 +21,7 @@ class ModalArticle extends React.Component {
       <Modal {...this.props} style={{ top: 20 }}>
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Spin size="large" />
+            <PulseLoader loading />
           </div>
         ) : (
           <Card

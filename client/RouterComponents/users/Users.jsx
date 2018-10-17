@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Row, Col, Alert, List, Card, Spin, Button, message } from 'antd/lib';
+import { PulseLoader } from 'react-spinners';
 
 const ListItem = List.Item;
-const { Meta } = Card;
 
 class Users extends React.PureComponent {
   toggleVerification = user => {
@@ -45,7 +44,7 @@ class Users extends React.PureComponent {
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Spin size="large" />
+          <PulseLoader loading />
         </div>
       );
     }

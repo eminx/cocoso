@@ -1,19 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Chattery from '../../chattery';
-import {
-  Row,
-  Col,
-  Spin,
-  Button,
-  Divider,
-  List,
-
-} from 'antd/lib';
-
-const ListItem = List.Item;
+import { Row, Col, Button, Divider, List } from 'antd/lib';
 
 import CardArticle from '../../UIComponents/CardArticle';
+import { PulseLoader } from 'react-spinners';
 
 class Booking extends React.Component {
   addNewChatMessage = message => {
@@ -83,7 +74,7 @@ class Booking extends React.Component {
           </Row>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Spin size="large" />
+            <PulseLoader loading />
           </div>
         )}
         <Divider />

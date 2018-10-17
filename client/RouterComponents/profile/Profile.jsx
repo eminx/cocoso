@@ -1,7 +1,7 @@
 import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 
-import { Row, Col, Spin } from 'antd/lib';
+import { Row, Col } from 'antd/lib';
 
 class Profile extends React.Component {
   render() {

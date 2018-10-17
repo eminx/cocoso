@@ -1,5 +1,3 @@
 {
-	"plugins": [
-		["import", { "libraryName": "antd"}]
-	]
+  "plugins": [["import", { "libraryName": "antd" }], "emotion"]
 }

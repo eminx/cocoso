@@ -1,5 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Drawer, Layout, Divider, Menu, Icon, Spin } from 'antd/lib';
@@ -34,8 +34,7 @@ class LayoutPage extends React.Component {
   };
 
   render() {
-    const { history, children, currentUser, isLoading } = this.props;
-    const pathname = history.location.pathname;
+    const { children, currentUser } = this.props;
 
     return (
       <div>
@@ -59,13 +58,13 @@ class LayoutPage extends React.Component {
               </MenuItem>
 
               <MenuItem key="new-booking">
-                <Link to="new-booking">
+                <Link to="/new-booking">
                   <b>Book</b>
                 </Link>
               </MenuItem>
 
               <MenuItem key="documents">
-                <Link to="documents">
+                <Link to="/documents">
                   <b>Documents</b>
                 </Link>
               </MenuItem>
