@@ -68,7 +68,7 @@ Meteor.methods({
     }
   },
 
-  updateGroup(groupId, formValues, imageUrl) {
+  updateGroup(groupId, formValues, imageUrl, documentUrl, documentId) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -84,6 +84,8 @@ Meteor.methods({
     check(formValues.description, String);
     check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
+    check(documentUrl, String);
+    check(documentId, String);
 
     try {
       const add = Groups.update(groupId, {
@@ -92,7 +94,9 @@ Meteor.methods({
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
           capacity: formValues.capacity,
-          imageUrl: imageUrl
+          imageUrl,
+          documentId,
+          documentUrl
         }
       });
       return groupId;

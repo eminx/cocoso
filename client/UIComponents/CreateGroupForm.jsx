@@ -18,7 +18,6 @@ import {
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import moment from 'moment';
 
 class CreateGroupForm extends React.Component {
   handleSubmit = e => {

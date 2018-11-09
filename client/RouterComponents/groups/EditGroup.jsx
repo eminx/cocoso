@@ -21,7 +21,8 @@ class EditGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
+    uploadableDocument: null
   };
 
   registerGroupLocally = values => {
@@ -48,12 +49,66 @@ class EditGroup extends React.Component {
     );
   };
 
+  setUploadableDocument = e => {
+    const theDocumentFile = e.file.originFileObj;
+    const reader = new FileReader();
+    reader.readAsDataURL(theDocumentFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableDocument: theDocumentFile
+        });
+      },
+      false
+    );
+  };
+
+  uploadDocument = () => {
+    this.setState({ isLoading: true });
+
+    const { uploadableDocument, values } = this.state;
+    if (!uploadableDocument) {
+      this.uploadImage();
+      return;
+    }
+
+    const upload = new Slingshot.Upload('groupDocumentUpload');
+
+    upload.send(uploadableDocument, (error, downloadUrl) => {
+      if (error) {
+        console.error('Error uploading:', error);
+      } else {
+        Meteor.call(
+          'createDocument',
+          values.readingMaterial,
+          downloadUrl,
+          'group',
+          (error, respond) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(respond);
+              this.setState(
+                {
+                  uploadedDocumentUrl: downloadUrl,
+                  uploadedDocumentId: respond
+                },
+                () => this.uploadImage()
+              );
+            }
+          }
+        );
+      }
+    });
+  };
+
   uploadImage = () => {
     this.setState({ isLoading: true });
     const { uploadableImage } = this.state;
 
     if (uploadableImage === null) {
-      console.log('orray');
+      console.log('no uploadable image');
       this.updateGroup();
       return;
     }
@@ -74,16 +129,24 @@ class EditGroup extends React.Component {
   };
 
   updateGroup = () => {
-    const { values } = this.state;
+    const {
+      values,
+      uploadedImage,
+      uploadedDocumentUrl,
+      uploadedDocumentId
+    } = this.state;
     const { groupData } = this.props;
-    const { uploadedImage } = this.state;
-    let imageUrl = uploadedImage || groupData.imageUrl;
+    const imageUrl = uploadedImage || groupData.imageUrl;
+    const documentUrl = uploadedDocumentUrl || groupData.documentUrl;
+    const documentId = uploadedDocumentId || groupData.documentId;
 
     Meteor.call(
       'updateGroup',
       groupData._id,
       values,
       imageUrl,
+      documentUrl,
+      documentId,
       (error, result) => {
         if (error) {
           this.setState({
@@ -124,7 +187,8 @@ class EditGroup extends React.Component {
       newGroupId,
       uploadedImage,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
+      uploadableDocument
     } = this.state;
 
     if (isSuccess) {
@@ -145,7 +209,11 @@ class EditGroup extends React.Component {
               registerGroupLocally={this.registerGroupLocally}
               setUploadableImage={this.setUploadableImage}
               uploadableImage={
-                (groupData && groupData.imageUrl) || this.state.uploadableImage
+                (groupData && groupData.imageUrl) || uploadableImage
+              }
+              setUploadableDocument={this.setUploadableDocument}
+              uploadableDocument={
+                (groupData && groupData.documentUrl) || uploadableDocument
               }
               places={this.props.places}
             />
@@ -162,7 +230,7 @@ class EditGroup extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={this.uploadImage}
+            onOk={this.uploadDocument}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

@@ -69,10 +69,6 @@ class NewGroup extends React.Component {
     this.setState({ isLoading: true });
 
     const { uploadableDocument, values } = this.state;
-    if (!uploadableDocument) {
-      this.uploadImage();
-      return;
-    }
 
     const upload = new Slingshot.Upload('groupDocumentUpload');
 
