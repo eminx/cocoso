@@ -61,6 +61,12 @@ class Booking extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
+        <div style={{ paddingBottom: 24 }}>
+          <Link to="/">
+            <Button icon="arrow-left">Back to Calendar</Button>
+          </Link>
+        </div>
+
         {!isLoading && bookingData ? (
           <Row gutter={24}>
             <Col sm={24} md={16} style={{ position: 'relative' }}>

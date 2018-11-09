@@ -1,5 +1,5 @@
 Meteor.methods({
-  createGroup(formValues, imageUrl) {
+  createGroup(formValues, imageUrl, documentUrl, documentId) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -8,6 +8,8 @@ Meteor.methods({
     check(formValues.description, String);
     check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
+    check(documentUrl, String);
+    check(documentId, String);
 
     try {
       const add = Groups.insert(
@@ -27,15 +29,18 @@ Meteor.methods({
           readingMaterial: formValues.readingMaterial,
           capacity: formValues.capacity || 20,
           imageUrl,
+          documentUrl,
+          documentId,
           isPublished: true,
           creationDate: new Date()
         },
-        () =>
+        () => {
           Meteor.call('createChat', formValues.title, add, (error, result) => {
             if (error) {
               console.log('Chat is not created due to error: ', error);
             }
-          })
+          });
+        }
       );
 
       try {

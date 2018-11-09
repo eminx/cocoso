@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, Alert, Tag } from 'antd/lib';
+import { Row, Col, Alert, Tag, Modal } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
 import Nodal from '../UIComponents/Nodal';
 import CalendarView from '../UIComponents/CalendarView';
@@ -13,7 +13,8 @@ class Home extends React.Component {
   state = {
     mode: 'list',
     goto: null,
-    calendarFilter: 'All rooms'
+    calendarFilter: 'All rooms',
+    modal: null
   };
 
   handleModeChange = e => {
@@ -21,9 +22,9 @@ class Home extends React.Component {
     this.setState({ mode });
   };
 
-  onSelect = (gathering, e) => {
+  handleSelect = (booking, e) => {
     this.setState({
-      goto: gathering._id
+      modal: booking
     });
   };
 
@@ -33,11 +34,23 @@ class Home extends React.Component {
     });
   };
 
+  handleCloseModal = () => {
+    this.setState({
+      modal: null
+    });
+  };
+
+  handleGotoBooking = () => {
+    this.setState({
+      goto: this.state.modal._id
+    });
+  };
+
   render() {
     const { isLoading, placesList } = this.props;
     const gatherings = this.props.gatheringsList;
     const images = this.props.imagesArray;
-    const { mode, goto, calendarFilter } = this.state;
+    const { mode, goto, modal, calendarFilter } = this.state;
 
     const futureBookings = [];
 
@@ -58,6 +71,10 @@ class Home extends React.Component {
     if (goto) {
       return <Redirect to={`/booking/${goto}`} />;
     }
+
+    const modalStyle = {
+      width: 80
+    };
 
     return (
       <div style={{ padding: 24 }}>
@@ -100,7 +117,7 @@ class Home extends React.Component {
               <CalendarView
                 gatherings={filteredBookings}
                 images={images}
-                onSelect={this.onSelect}
+                onSelect={this.handleSelect}
               />
             </div>
           </div>
@@ -136,6 +153,38 @@ class Home extends React.Component {
             </div>
           </Col>
         </Row>
+
+        {modal && (
+          <Modal
+            title={modal.title}
+            visible
+            onOk={this.handleGotoBooking}
+            onCancel={this.handleCloseModal}
+            okText="to Booking page"
+            cancelText="Close"
+          >
+            <div>
+              <Row>
+                <Col span={8}>booked by: </Col>
+                <Col span={8}>
+                  <b>{modal.authorName}</b>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>space/equipment: </Col>
+                <Col span={8}>
+                  <b>{modal.room}</b>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>information:</Col>
+                <Col span={8}>
+                  <b>{modal.longDescription}</b>
+                </Col>
+              </Row>
+            </div>
+          </Modal>
+        )}
       </div>
     );
   }

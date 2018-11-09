@@ -6,10 +6,36 @@ Slingshot.fileRestrictions('groupImageUpload', {
   maxSize: 5 * 3024 * 3024
 });
 
+Slingshot.fileRestrictions('groupDocumentUpload', {
+  allowedFileTypes: ['application/pdf'],
+  maxSize: 5 * 1000 * 1000
+});
+
 Slingshot.createDirective('groupImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketName,
+  acl: 'public-read',
+  region: s3Settings.AWSRegion,
+
+  authorize: function() {
+    if (!this.userId) {
+      var message = 'Please login before posting images';
+      throw new Meteor.Error('Login Required', message);
+    }
+    return true;
+  },
+
+  key: function(file) {
+    var currentUserId = Meteor.userId();
+    return currentUserId + file.name;
+  }
+});
+
+Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
+  AWSAccessKeyId: s3Settings.AWSAccessKeyId,
+  AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
+  bucket: s3Settings.AWSBucketReadingMaterials,
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 

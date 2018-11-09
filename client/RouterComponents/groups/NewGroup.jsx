@@ -21,7 +21,9 @@ class NewGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
+    uploadedDocument: null,
+    uploadableDocument: null
   };
 
   registerGroupLocally = values => {
@@ -48,46 +50,109 @@ class NewGroup extends React.Component {
     );
   };
 
-  uploadImage = () => {
+  setUploadableDocument = e => {
+    const theDocumentFile = e.file.originFileObj;
+    const reader = new FileReader();
+    reader.readAsDataURL(theDocumentFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableDocument: theDocumentFile
+        });
+      },
+      false
+    );
+  };
+
+  uploadDocument = () => {
     this.setState({ isLoading: true });
 
-    const { uploadableImage } = this.state;
+    const { uploadableDocument, values } = this.state;
+    if (!uploadableDocument) {
+      this.uploadImage();
+      return;
+    }
 
-    const upload = new Slingshot.Upload('groupImageUpload');
-    const timeStamp = Math.floor(Date.now());
+    const upload = new Slingshot.Upload('groupDocumentUpload');
 
-    upload.send(uploadableImage, (error, downloadUrl) => {
+    upload.send(uploadableDocument, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
       } else {
-        this.setState(
-          {
-            uploadedImage: downloadUrl
-          },
-          () => this.createGroup(downloadUrl)
+        Meteor.call(
+          'createDocument',
+          values.readingMaterial,
+          downloadUrl,
+          'group',
+          (error, respond) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(respond);
+              this.setState(
+                {
+                  uploadedDocumentUrl: downloadUrl,
+                  uploadedDocumentId: respond
+                },
+                () => this.uploadImage()
+              );
+            }
+          }
         );
       }
     });
   };
 
-  createGroup = downloadUrl => {
-    const { values } = this.state;
+  uploadImage = () => {
+    const { uploadableImage } = this.state;
 
-    Meteor.call('createGroup', values, downloadUrl, (error, result) => {
+    const upload = new Slingshot.Upload('groupImageUpload');
+
+    upload.send(uploadableImage, (error, imageUrl) => {
       if (error) {
-        console.log('error', error);
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
+        console.error('Error uploading:', error);
       } else {
-        this.setState({
-          isLoading: false,
-          newGroupId: result,
-          isSuccess: true
-        });
+        this.setState(
+          {
+            uploadedImageUrl: imageUrl
+          },
+          () => this.createGroup()
+        );
       }
     });
+  };
+
+  createGroup = () => {
+    const {
+      values,
+      uploadedDocumentUrl,
+      uploadedDocumentId,
+      uploadedImageUrl
+    } = this.state;
+
+    Meteor.call(
+      'createGroup',
+      values,
+      uploadedImageUrl,
+      uploadedDocumentUrl,
+      uploadedDocumentId,
+      (error, result) => {
+        if (error) {
+          console.log('error', error);
+          this.setState({
+            isLoading: false,
+            isError: true
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            newGroupId: result,
+            isSuccess: true
+          });
+        }
+      }
+    );
   };
 
   hideModal = () => this.setState({ modalConfirm: false });
@@ -113,9 +178,9 @@ class NewGroup extends React.Component {
       isLoading,
       isSuccess,
       newGroupId,
-      uploadedImage,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
+      uploadableDocument
     } = this.state;
 
     isSuccess ? successCreation() : null;
@@ -129,9 +194,10 @@ class NewGroup extends React.Component {
               values={values}
               registerGroupLocally={this.registerGroupLocally}
               setUploadableImage={this.setUploadableImage}
-              uploadableImage={this.state.uploadableImage}
+              uploadableImage={uploadableImage}
+              setUploadableDocument={this.setUploadableDocument}
+              uploadableDocument={uploadableDocument}
               places={this.props.places}
-              currentUser={currentUser}
             />
           </Col>
           <Col xs={24} sm={24} md={8}>
@@ -147,7 +213,7 @@ class NewGroup extends React.Component {
             title="Overview The Information"
             imageSrc={uploadableImageLocal}
             visible={modalConfirm}
-            onOk={this.uploadImage}
+            onOk={this.uploadDocument}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

@@ -53,7 +53,7 @@ class GroupsList extends React.PureComponent {
         <Col md={8} />
 
         <Col md={14}>
-          <h2> Current Study Groups</h2>
+          <h2 style={{ paddingLeft: 24 }}> Current Study Groups</h2>
           <List
             dataSource={groupsData}
             renderItem={group => (

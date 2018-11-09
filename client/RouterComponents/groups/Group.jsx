@@ -101,6 +101,13 @@ class Group extends React.PureComponent {
           <em>
             reading: <b>{group.readingMaterial}</b>
           </em>
+          <Divider type="vertical" />
+          <Button
+            icon="download"
+            href={group.documentUrl}
+            disabled={!group.documentUrl}
+            target="_blank"
+          />
         </h3>
       </div>
     );
@@ -171,6 +178,12 @@ class Group extends React.PureComponent {
 
     return (
       <div>
+        <div style={{ paddingBottom: 24, paddingLeft: 24 }}>
+          <Link to="/groups">
+            <Button icon="arrow-left">Back to Groups</Button>
+          </Link>
+        </div>
+
         {!isLoading && group ? (
           <Row gutter={24}>
             <Col sm={24} md={16}>
@@ -200,7 +213,7 @@ class Group extends React.PureComponent {
                 </Button>
               )}
 
-              <Divider />
+              {!isAdmin && <Divider />}
 
               {currentUser && (
                 <Fragment>

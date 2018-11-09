@@ -30,9 +30,9 @@ class CreateGroupForm extends React.Component {
         return;
       }
 
-      if (!this.props.uploadableImage) {
+      if (!this.props.uploadableImage || !this.props.uploadableDocument) {
         Modal.error({
-          title: 'Image is required',
+          title: 'Image and attachment are required',
           content: 'Please upload an image'
         });
         return;
@@ -56,8 +56,9 @@ class CreateGroupForm extends React.Component {
     const {
       uploadableImage,
       setUploadableImage,
-      groupData,
-      currentUser
+      uploadableDocument,
+      setUploadableDocument,
+      groupData
     } = this.props;
 
     const formItemLayout = {
@@ -100,7 +101,7 @@ class CreateGroupForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Reading Material">
+          <FormItem {...formItemLayout} label="Reading material">
             {getFieldDecorator('readingMaterial', {
               rules: [
                 {
@@ -111,6 +112,35 @@ class CreateGroupForm extends React.Component {
               ],
               initialValue: groupData ? groupData.readingMaterial : null
             })(<Input placeholder="Reading Material" />)}
+          </FormItem>
+
+          <FormItem
+            {...formItemLayout}
+            label={<span className="ant-form-item-required">Attachment</span>}
+            className="upload-image-col"
+            extra={
+              uploadableDocument
+                ? null
+                : 'Select the reading material from your device'
+            }
+          >
+            <Upload
+              name="gathering"
+              action="/upload.do"
+              onChange={setUploadableDocument}
+            >
+              {uploadableDocument ? (
+                <Button>
+                  <Icon type="check-circle" />
+                  Document selected
+                </Button>
+              ) : (
+                <Button>
+                  <Icon type="upload" />
+                  Pick a document
+                </Button>
+              )}
+            </Upload>
           </FormItem>
 
           <FormItem {...formItemLayout} label="Capacity">
@@ -131,7 +161,7 @@ class CreateGroupForm extends React.Component {
 
           <FormItem
             {...formItemLayout}
-            label="Select an image"
+            label={<span className="ant-form-item-required">Cover image</span>}
             className="upload-image-col"
             extra={uploadableImage ? null : 'Pick an image from your device'}
           >
