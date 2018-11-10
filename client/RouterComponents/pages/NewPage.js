@@ -9,9 +9,7 @@ const successCreation = () => {
   message.success('Your study group is successfully created', 6);
 };
 
-const sideNote = 'This page is dedicated to create study groups at Skogen.';
-
-class NewGroup extends React.Component {
+class NewPage extends React.Component {
   state = {
     modalConfirm: false,
     values: null,
@@ -118,7 +116,7 @@ class NewGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Create a Study Group</h1>
+        <h1>Create a Page</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreatePageForm
