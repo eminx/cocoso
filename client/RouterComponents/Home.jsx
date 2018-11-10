@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, Alert, Tag, Modal } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
-import Nodal from '../UIComponents/Nodal';
+import BookingsList from '../UIComponents/BookingsList';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
 
@@ -143,7 +143,7 @@ class Home extends React.Component {
                 </div>
               ) : (
                 <div>
-                  <Nodal
+                  <BookingsList
                     push={this.props.history.push}
                     images={this.props.imagesArray}
                     gatherings={futureBookings}

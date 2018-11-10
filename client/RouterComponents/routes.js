@@ -15,6 +15,10 @@ import EditGroupContainer from './groups/EditGroupContainer';
 import GroupsListContainer from './groups/GroupsListContainer';
 import GroupContainer from './groups/GroupContainer';
 
+import PageContainer from './pages/PageContainer';
+import NewPageContainer from './pages/NewPageContainer';
+import EditPageContainer from './pages/EditPageContainer';
+
 import ProfileContainer from './profile/ProfileContainer';
 import UsersContainer from './users/UsersContainer';
 
@@ -35,6 +39,10 @@ export const renderRoutes = () => (
           <Route path="/groups/" component={GroupsListContainer} />
           <Route path="/group/:id" component={GroupContainer} />
           <Route path="/edit-group/:id/" component={EditGroupContainer} />
+
+          <Route exact path="/new-page" component={NewPageContainer} />
+          <Route path="/page/:id" component={PageContainer} />
+          <Route path="/edit-page/:id/" component={EditPageContainer} />
 
           <Route
             path="/my-profile/"

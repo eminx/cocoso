@@ -215,7 +215,6 @@ class EditGroup extends React.Component {
               uploadableDocument={
                 (groupData && groupData.documentUrl) || uploadableDocument
               }
-              places={this.props.places}
             />
           </Col>
           <Col xs={24} sm={24} md={8}>

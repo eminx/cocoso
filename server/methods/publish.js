@@ -85,6 +85,12 @@ Meteor.publish('group', function(id) {
   });
 });
 
+Meteor.publish('page', function(id) {
+  return Pages.find({
+    _id: id
+  });
+});
+
 Meteor.publish('chat', function(contextId) {
   const user = Meteor.user();
   if (user) {
