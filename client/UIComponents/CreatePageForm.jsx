@@ -33,7 +33,7 @@ class CreatePageForm extends React.Component {
 
       const values = {
         title: fieldsValue['title'],
-        description: fieldsValue['description']
+        longDescription: fieldsValue['longDescription']
       };
 
       if (!err) {
@@ -65,22 +65,22 @@ class CreatePageForm extends React.Component {
                   message: 'Please enter the Title'
                 }
               ],
-              initialValue: groupData ? groupData.title : null
-            })(<Input placeholder="Booking title" />)}
+              initialValue: pageData ? pageData.title : null
+            })(<Input placeholder="Page title" />)}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Description">
-            {getFieldDecorator('description', {
+            {getFieldDecorator('longDescription', {
               rules: [
                 {
                   required: true,
                   message: 'Please enter a detailed description'
                 }
               ],
-              initialValue: groupData ? groupData.description : null
+              initialValue: pageData ? pageData.longDescription : null
             })(
               <TextArea
-                placeholder="Enter a description for your study group"
+                placeholder="Enter a description"
                 autosize={{ minRows: 6, maxRows: 12 }}
               />
             )}

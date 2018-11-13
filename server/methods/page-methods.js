@@ -1,19 +1,20 @@
 Meteor.methods({
-  createPage(formValues) {
+  createPage(formValues, imageUrl) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
     check(formValues.title, String);
-    check(formValues.description, String);
+    check(formValues.longDescription, String);
 
     try {
-      const newPageId = Gatherings.insert({
+      const newPageId = Pages.insert({
         authorId: user._id,
         authorName: user.username,
         title: formValues.title,
-        longDescription: formValues.description,
+        imageUrl,
+        longDescription: formValues.longDescription,
         isPublished: true,
         creationDate: new Date()
       });
@@ -23,27 +24,22 @@ Meteor.methods({
     }
   },
 
-  updatePage(formValues, pageId) {
+  updatePage(pageId, formValues, imageUrl) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
     check(formValues.title, String);
-    check(formValues.description, String);
+    check(formValues.longDescription, String);
+    check(imageUrl, String);
 
     try {
       const thePage = Pages.update(pageId, {
         $set: {
           title: formValues.title,
           longDescription: formValues.longDescription,
-          room: formValues.room,
-          roomIndex: roomIndex,
-          startDate: formValues.dateStart,
-          endDate: formValues.dateEnd,
-          startTime: formValues.timePickerStart,
-          endTime: formValues.timePickerEnd,
-          duration: formValues.duration,
+          imageUrl,
           latestUpdate: new Date()
         }
       });

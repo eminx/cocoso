@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, List, Card } from 'antd/lib';
+import { Row, Col, List, Card, Radio, Button } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
 
 const ListItem = List.Item;
 const { Meta } = Card;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 function shortenDescription(str) {
   return str
@@ -50,10 +52,21 @@ class GroupsList extends React.PureComponent {
 
     return (
       <Row gutter={24}>
-        <Col md={8} />
+        <Col md={8}>
+          <Link to="/new-group">
+            <Button type="primary">New Group</Button>
+          </Link>
+        </Col>
 
         <Col md={14}>
           <h2 style={{ paddingLeft: 24 }}> Current Study Groups</h2>
+
+          <RadioGroup defaultValue="ongoing" size="large">
+            <RadioButton value="ongoing">Ongoing</RadioButton>
+            <RadioButton value="my-groups">My Groups</RadioButton>
+            <RadioButton value="archived">Archived</RadioButton>
+          </RadioGroup>
+
           <List
             dataSource={groupsData}
             renderItem={group => (

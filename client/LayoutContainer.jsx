@@ -2,7 +2,16 @@ import { withTracker } from 'meteor/react-meteor-data';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Drawer, Layout, Divider, Menu, Icon, Spin } from 'antd/lib';
+import {
+  Drawer,
+  Layout,
+  Divider,
+  Menu,
+  Icon,
+  Spin,
+  Badge,
+  Popover
+} from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
 const MenuItemGroup = Menu.ItemGroup;
@@ -10,7 +19,8 @@ const MenuItemGroup = Menu.ItemGroup;
 class LayoutPage extends React.Component {
   state = {
     menuOpen: false,
-    me: false
+    me: false,
+    isNotificationPopoverOpen: false
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -33,8 +43,20 @@ class LayoutPage extends React.Component {
     });
   };
 
+  toggleNotificationsPopover = () => {
+    this.setState({
+      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen
+    });
+  };
+
   render() {
     const { children, currentUser } = this.props;
+
+    const menuIconStyle = {
+      fontSize: 24,
+      padding: '18px 12px',
+      cursor: 'pointer'
+    };
 
     return (
       <div>
@@ -104,22 +126,26 @@ class LayoutPage extends React.Component {
               </Link>
             </MenuItem>
 
-            {currentUser &&
-              currentUser.isSuperAdmin && (
-                <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
-                  <Divider style={{ padding: 0 }} />
+            {currentUser && currentUser.isSuperAdmin && (
+              <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
+                <Divider style={{ padding: 0 }} />
+              </MenuItem>
+            )}
+            {currentUser && currentUser.isSuperAdmin && (
+              <MenuItemGroup key="admin" title="ADMIN">
+                <MenuItem key="pages">
+                  <Link to="/new-page">
+                    <b>New Page</b>
+                  </Link>
                 </MenuItem>
-              )}
-            {currentUser &&
-              currentUser.isSuperAdmin && (
-                <MenuItemGroup key="admin" title="ADMIN">
-                  <MenuItem key="users">
-                    <Link to="/users">
-                      <b>Users</b>
-                    </Link>
-                  </MenuItem>
-                </MenuItemGroup>
-              )}
+
+                <MenuItem key="users">
+                  <Link to="/users">
+                    <b>Users</b>
+                  </Link>
+                </MenuItem>
+              </MenuItemGroup>
+            )}
           </Menu>
         </Drawer>
 
@@ -135,17 +161,30 @@ class LayoutPage extends React.Component {
               <div className="logo skogen-logo" />
             </Link>
 
-            {currentUser ? (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Popover
+                placement="bottom"
+                title="Notifications"
+                content="bla bla"
+              >
+                <div style={{ paddingRight: 18 }}>
+                  <Badge count={3}>
+                    <Icon
+                      onClick={this.toggleNotificationsPopover}
+                      theme="outlined"
+                      type="bell"
+                      style={{ fontSize: 24, cursor: 'pointer' }}
+                    />
+                  </Badge>
+                </div>
+              </Popover>
               <Icon
                 onClick={this.openMenu}
                 theme="outlined"
                 type="menu-fold"
-                theme="outlined"
-                style={{ fontSize: 24, padding: 18, cursor: 'pointer' }}
+                style={menuIconStyle}
               />
-            ) : (
-              <Link to="/my-profile">Signin / Signup</Link>
-            )}
+            </div>
           </Header>
 
           <Content style={{ marginTop: 20 }}>{children}</Content>

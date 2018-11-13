@@ -61,6 +61,7 @@ h1 {
 
 .ant-card .ant-card-meta-description {
   color: rgba(0, 0, 0, 0.65);
+  white-space: pre-line;
 }
 
 .ant-card .ant-card-head-title {

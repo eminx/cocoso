@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import CreatePageForm from '../../UIComponents/CreateBookingForm';
+import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 import { Row, Col, message, Alert, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
@@ -29,24 +29,73 @@ class EditPage extends React.Component {
     });
   };
 
-  updatePage = () => {
-    const { values } = this.state;
-    const { gatheringData } = this.props;
+  setUploadableImage = e => {
+    const theImageFile = e.file.originFileObj;
+    const reader = new FileReader();
+    reader.readAsDataURL(theImageFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage: theImageFile,
+          uploadableImageLocal: reader.result
+        });
+      },
+      false
+    );
+  };
 
-    Meteor.call('updatePage', values, gatheringData._id, (error, result) => {
+  uploadImage = () => {
+    this.setState({ isLoading: true });
+    const { uploadableImage } = this.state;
+
+    if (!uploadableImage) {
+      console.log('no uploadable image');
+      this.updatePage();
+      return;
+    }
+
+    const upload = new Slingshot.Upload('pageImageUpload');
+
+    upload.send(uploadableImage, (error, imageUrl) => {
       if (error) {
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
+        console.error('Error uploading:', error);
       } else {
-        this.setState({
-          isLoading: false,
-          newBookingId: result,
-          isSuccess: true
-        });
+        this.setState(
+          {
+            uploadedImageUrl: imageUrl
+          },
+          () => this.updatePage()
+        );
       }
     });
+  };
+
+  updatePage = () => {
+    const { values, uploadedImageUrl } = this.state;
+    const { pageData } = this.props;
+    const imageUrl = uploadedImageUrl || pageData.imageUrl;
+
+    Meteor.call(
+      'updatePage',
+      pageData._id,
+      values,
+      imageUrl,
+      (error, result) => {
+        if (error) {
+          this.setState({
+            isLoading: false,
+            isError: true
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            newPageId: result,
+            isSuccess: true
+          });
+        }
+      }
+    );
   };
 
   hideModal = () => this.setState({ modalConfirm: false });
@@ -56,10 +105,7 @@ class EditPage extends React.Component {
     if (!this.props.currentUser || !this.props.currentUser.isSuperAdmin) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to signin to create a booking. Just do it!"
-            type="error"
-          />
+          <Alert message="You are not allowed." type="error" />
         </div>
       );
     }
@@ -95,11 +141,6 @@ class EditPage extends React.Component {
               }
             />
           </Col>
-          <Col xs={24} sm={24} md={8}>
-            <Affix offsetTop={50}>
-              <Alert message={sideNote} type="warning" showIcon />
-            </Affix>
-          </Col>
         </Row>
         {modalConfirm ? (
           <ModalArticle
@@ -107,7 +148,7 @@ class EditPage extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={this.upload}
+            onOk={this.uploadImage}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

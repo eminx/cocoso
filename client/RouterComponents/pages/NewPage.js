@@ -47,6 +47,7 @@ class NewPage extends React.Component {
   };
 
   uploadImage = () => {
+    this.setState({ isLoading: true });
     const { uploadableImage } = this.state;
 
     const upload = new Slingshot.Upload('pageImageUpload');
@@ -57,9 +58,10 @@ class NewPage extends React.Component {
       } else {
         this.setState(
           {
-            uploadedImageUrl: imageUrl
+            uploadedImageUrl: imageUrl,
+            isLoading: false
           },
-          () => this.createGroup()
+          () => this.createPage()
         );
       }
     });
@@ -91,7 +93,7 @@ class NewPage extends React.Component {
   render() {
     const { currentUser } = this.props;
 
-    if (!currentUser || !currentUser.isRegisteredMember) {
+    if (!currentUser || !currentUser.isSuperAdmin) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
@@ -142,7 +144,7 @@ class NewPage extends React.Component {
           />
         ) : null}
 
-        {isSuccess ? <Redirect to={`/group/${newPageId}`} /> : null}
+        {isSuccess ? <Redirect to={`/page/${newPageId}`} /> : null}
       </div>
     );
   }
