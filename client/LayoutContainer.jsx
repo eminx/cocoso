@@ -10,11 +10,45 @@ import {
   Icon,
   Spin,
   Badge,
-  Popover
+  Popover,
+  List
 } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
 const MenuItemGroup = Menu.ItemGroup;
+
+const notifications = [
+  {
+    title: 'Title wow',
+    count: 3,
+    link: '/group/jGP7McurY8KAsvwHc'
+  },
+  {
+    title: 'Pinery Jam Sessions',
+    count: 3,
+    link: '/booking/3jBTEHSwtqpxbKvSL'
+  },
+  {
+    title: 'Amazing Workshop',
+    count: 2,
+    link: '/group/iAf8QzPLNBNHexX82'
+  }
+];
+
+const NotificationList = ({ list }) => (
+  <List
+    size="small"
+    dataSource={list}
+    renderItem={item => (
+      <Link
+        to={item.link}
+        onClick={() => this.handleNotificationVisibility(false)}
+      >
+        <List.Item>{item.title}</List.Item>
+      </Link>
+    )}
+  />
+);
 
 class LayoutPage extends React.Component {
   state = {
@@ -43,19 +77,21 @@ class LayoutPage extends React.Component {
     });
   };
 
-  toggleNotificationsPopover = () => {
+  handleNotificationVisibility = visibleValue => {
     this.setState({
-      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen
+      isNotificationPopoverOpen: visibleValue
     });
   };
 
   render() {
+    const { isNotificationPopoverOpen } = this.state;
     const { children, currentUser } = this.props;
 
     const menuIconStyle = {
       fontSize: 24,
       padding: '18px 12px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      marginLeft: 18
     };
 
     return (
@@ -165,18 +201,19 @@ class LayoutPage extends React.Component {
               <Popover
                 placement="bottom"
                 title="Notifications"
-                content="bla bla"
+                content={<NotificationList list={notifications} />}
+                trigger="click"
+                visible={isNotificationPopoverOpen}
+                onVisibleChange={this.handleNotificationVisibility}
               >
-                <div style={{ paddingRight: 18 }}>
-                  <Badge count={3}>
-                    <Icon
-                      onClick={this.toggleNotificationsPopover}
-                      theme="outlined"
-                      type="bell"
-                      style={{ fontSize: 24, cursor: 'pointer' }}
-                    />
-                  </Badge>
-                </div>
+                <Badge count={3}>
+                  <Icon
+                    onClick={this.toggleNotificationsPopover}
+                    theme="outlined"
+                    type="bell"
+                    style={{ fontSize: 24, cursor: 'pointer' }}
+                  />
+                </Badge>
               </Popover>
               <Icon
                 onClick={this.openMenu}
