@@ -60,18 +60,13 @@ class CreateGroupForm extends React.Component {
       groupData
     } = this.props;
 
-    const formItemLayout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    };
-
     return (
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>
         <Divider />
 
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="Title">
+          <FormItem>
             {getFieldDecorator('title', {
               rules: [
                 {
@@ -83,7 +78,7 @@ class CreateGroupForm extends React.Component {
             })(<Input placeholder="Booking title" />)}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Description">
+          <FormItem>
             {getFieldDecorator('description', {
               rules: [
                 {
@@ -100,7 +95,7 @@ class CreateGroupForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Reading material">
+          <FormItem>
             {getFieldDecorator('readingMaterial', {
               rules: [
                 {
@@ -114,8 +109,6 @@ class CreateGroupForm extends React.Component {
           </FormItem>
 
           <FormItem
-            {...formItemLayout}
-            label={<span className="ant-form-item-required">Attachment</span>}
             className="upload-image-col"
             extra={
               uploadableDocument
@@ -135,14 +128,14 @@ class CreateGroupForm extends React.Component {
                 </Button>
               ) : (
                 <Button>
-                  <Icon type="upload" />
-                  Pick a document
+                  {/* <Icon type="upload" /> */}
+                  Choose an attachment
                 </Button>
               )}
             </Upload>
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Capacity">
+          <FormItem>
             {getFieldDecorator('capacity', {
               rules: [
                 {
@@ -159,8 +152,6 @@ class CreateGroupForm extends React.Component {
           </FormItem>
 
           <FormItem
-            {...formItemLayout}
-            label={<span className="ant-form-item-required">Cover image</span>}
             className="upload-image-col"
             extra={uploadableImage ? null : 'Pick an image from your device'}
           >
@@ -177,8 +168,8 @@ class CreateGroupForm extends React.Component {
                 </Button>
               ) : (
                 <Button>
-                  <Icon type="upload" />
-                  Pick an image
+                  {/* <Icon type="upload" /> */}
+                  Choose an image
                 </Button>
               )}
             </Upload>

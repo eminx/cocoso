@@ -70,13 +70,13 @@ class GroupsList extends React.PureComponent {
         <Col md={14}>
           <h2 style={{ textAlign: 'center' }}>Study Groups</h2>
 
-          <div style={centerStyle}>
+          {/* <div style={centerStyle}>
             <RadioGroup defaultValue="ongoing" size="large">
               <RadioButton value="ongoing">Ongoing</RadioButton>
               <RadioButton value="my-groups">My Groups</RadioButton>
               <RadioButton value="archived">Archived</RadioButton>
             </RadioGroup>
-          </div>
+          </div> */}
 
           <List
             dataSource={groupsData}
@@ -90,7 +90,15 @@ class GroupsList extends React.PureComponent {
                     extra={this.getExtra(group)}
                     style={{ width: '100%', marginBottom: 0 }}
                   >
-                    <Meta description={shortenDescription(group.description)} />
+                    <Meta
+                      description={
+                        <div style={{ textAlign: 'right' }}>
+                          <Link to={`/group/${group._id}`}>
+                            <Button>Read more</Button>
+                          </Link>
+                        </div>
+                      }
+                    />
                   </Card>
                 </Link>
               </ListItem>

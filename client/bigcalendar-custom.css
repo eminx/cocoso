@@ -55,31 +55,31 @@
 .rbc-calendar .rbc-event.category-0,
 .ant-tag-magenta.checked {
   background-color: #eb2f96;
-  border: 1px solid #eb2f96;
+  /* border: 1px solid #eb2f96; */
 }
 
 .rbc-calendar .rbc-event.category-1,
 .ant-tag-red.checked {
   background-color: #f5222d;
-  border: 1px solid #f5222d;
+  /* border: 1px solid #f5222d; */
 }
 
 .rbc-calendar .rbc-event.category-2,
 .ant-tag-volcano.checked {
   background-color: #fa541c;
-  border: 1px solid #fa541c;
+  /* border: 1px solid #fa541c; */
 }
 
 .rbc-calendar .rbc-event.category-3,
 .ant-tag-orange.checked {
   background-color: #fa8c16;
-  border: 1px solid #fa8c16;
+  /* border: 1px solid #fa8c16; */
 }
 
 .rbc-calendar .rbc-event.category-4,
 .ant-tag-gold.checked {
   background-color: #faad14;
-  border: 1px solid #faad14;
+  /* border: 1px solid #faad14; */
 }
 
 .rbc-calendar .rbc-event.category-5,

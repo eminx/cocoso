@@ -11,7 +11,9 @@ import {
   Spin,
   Badge,
   Popover,
-  List
+  List,
+  Row,
+  Col
 } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
@@ -95,7 +97,7 @@ class LayoutPage extends React.Component {
     };
 
     return (
-      <div>
+      <div className="main-viewport">
         <Drawer
           // title="MENU"
           placement="right"
@@ -185,45 +187,68 @@ class LayoutPage extends React.Component {
           </Menu>
         </Drawer>
 
-        <Layout className="layout">
-          <Header
-            style={{
-              backgroundColor: '#fff',
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
-          >
-            <Link to="/">
-              <div className="logo skogen-logo" />
-            </Link>
+        <div className="header-container">
+          <Row className="header-background">
+            <Col sm={8} />
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Popover
-                placement="bottom"
-                title="Notifications"
-                content={<NotificationList list={notifications} />}
-                trigger="click"
-                visible={isNotificationPopoverOpen}
-                onVisibleChange={this.handleNotificationVisibility}
+            <Col sm={8} style={{ display: 'flex', justifyContent: 'center' }}>
+              <Link to="/">
+                <div className="logo skogen-logo" />
+              </Link>
+            </Col>
+
+            <Col sm={8}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  color: '#030303'
+                }}
               >
-                <Badge count={3}>
-                  <Icon
-                    onClick={this.toggleNotificationsPopover}
-                    theme="outlined"
-                    type="bell"
-                    style={{ fontSize: 24, cursor: 'pointer' }}
-                  />
-                </Badge>
-              </Popover>
-              <Icon
-                onClick={this.openMenu}
-                theme="outlined"
-                type="menu-fold"
-                style={menuIconStyle}
-              />
-            </div>
-          </Header>
+                <Popover
+                  placement="bottom"
+                  title="Notifications"
+                  content={<NotificationList list={notifications} />}
+                  trigger="click"
+                  visible={isNotificationPopoverOpen}
+                  onVisibleChange={this.handleNotificationVisibility}
+                >
+                  <Badge count={3}>
+                    <Icon
+                      onClick={this.toggleNotificationsPopover}
+                      theme="outlined"
+                      type="bell"
+                      style={{ fontSize: 24, cursor: 'pointer' }}
+                    />
+                  </Badge>
+                </Popover>
+                <Icon
+                  onClick={this.openMenu}
+                  theme="outlined"
+                  type="menu-fold"
+                  style={menuIconStyle}
+                />
+              </div>
+              <div
+                style={{
+                  textAlign: 'right',
+                  padding: 12,
+                  color: '#030303',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  textShadow: '.3px .3px #fff'
+                }}
+              >
+                {currentUser
+                  ? `LOGGED IN AS: ${currentUser.username}`
+                  : `LOGIN`}
+              </div>
+            </Col>
+          </Row>
+        </div>
 
+        <Layout className="layout">
           <Content style={{ marginTop: 20 }}>{children}</Content>
 
           <Footer style={{ textAlign: 'center' }} />

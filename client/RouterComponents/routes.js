@@ -3,6 +3,9 @@ import { Switch, Router, Route } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import LayoutContainer from '../LayoutContainer';
 
+import skogen from '../themes/skogen';
+import { ThemeProvider } from 'styled-components';
+
 // route components
 import HomeContainer from './HomeContainer';
 

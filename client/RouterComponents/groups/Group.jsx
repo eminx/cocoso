@@ -4,11 +4,11 @@ import Chattery from '../../chattery';
 import {
   Row,
   Col,
-  Button,
   Divider,
   Modal,
   List,
   Card,
+  Button,
   message
 } from 'antd/lib';
 const ListItem = List.Item;
@@ -186,7 +186,8 @@ class Group extends React.PureComponent {
 
         {!isLoading && group ? (
           <Row gutter={24}>
-            <Col sm={24} md={16}>
+            <Col md={4} />
+            <Col sm={24} md={12}>
               <Card
                 title={this.getTitle(group)}
                 bordered
