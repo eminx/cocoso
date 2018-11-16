@@ -212,7 +212,7 @@ class CreateBookingForm extends React.Component {
         <h3>Please enter the details below</h3>
         <Divider />
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="Title">
+          <FormItem>
             {getFieldDecorator('title', {
               rules: [
                 {
@@ -224,7 +224,7 @@ class CreateBookingForm extends React.Component {
             })(<Input placeholder="Booking title" />)}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Description">
+          <FormItem>
             {getFieldDecorator('longDescription', {
               rules: [
                 {
@@ -240,7 +240,7 @@ class CreateBookingForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem {...formItemLayout} label="multiple days?">
+          <FormItem label="Is it for multiple days?">
             <Switch
               onChange={() => this.setState({ isMultipleDay: !isMultipleDay })}
               checked={isMultipleDay}
@@ -249,7 +249,7 @@ class CreateBookingForm extends React.Component {
 
           {isMultipleDay ? (
             <div>
-              <FormItem {...formItemLayout} label="Start day & time">
+              <FormItem>
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator(
@@ -269,7 +269,7 @@ class CreateBookingForm extends React.Component {
                 </Col>
               </FormItem>
 
-              <FormItem {...formItemLayout} label="Finish day & time">
+              <FormItem>
                 <Col span={12}>
                   <FormItem>
                     {getFieldDecorator(
@@ -291,42 +291,41 @@ class CreateBookingForm extends React.Component {
             </div>
           ) : (
             <div>
-              <FormItem {...formItemLayout} label="Select the day">
+              <FormItem>
                 {getFieldDecorator('datePicker', configDate)(<DatePicker />)}
               </FormItem>
 
-              <FormItem {...formItemLayout} label="Start time">
+              <FormItem>
                 {getFieldDecorator('timePickerStart', configTimeStart)(
                   <TimePicker format="HH:mm" minuteStep={30} />
                 )}
               </FormItem>
 
-              <FormItem {...formItemLayout} label="Duration (h)">
+              <FormItem>
                 {getFieldDecorator('duration', configDuration)(
                   <InputNumber step={0.5} />
                 )}
               </FormItem>
             </div>
           )}
-          {currentUser &&
-            currentUser.isSuperAdmin && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <span style={{ marginRight: 10 }}>
-                  Wanna add space/equipment to the list?
-                </span>
-                <Button onClick={() => this.setState({ addSpaceModal: true })}>
-                  Add
-                </Button>
-              </div>
-            )}
+          {currentUser && currentUser.isSuperAdmin && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <span style={{ marginRight: 10 }}>
+                Wanna add space/equipment to the list?
+              </span>
+              <Button onClick={() => this.setState({ addSpaceModal: true })}>
+                Add
+              </Button>
+            </div>
+          )}
 
-          <FormItem {...formItemLayout} label="Space/equipment">
+          <FormItem>
             {getFieldDecorator('room', {
               rules: [
                 {

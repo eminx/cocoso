@@ -97,10 +97,8 @@ class Group extends React.PureComponent {
     return (
       <div>
         <h1>{group.title}</h1>
-        <h3 style={{ fontWeight: 300 }}>
-          <em>
-            reading: <b>{group.readingMaterial}</b>
-          </em>
+        <h4>
+          reading: <b>{group.readingMaterial}</b>
           <Divider type="vertical" />
           <Button
             icon="download"
@@ -108,7 +106,7 @@ class Group extends React.PureComponent {
             disabled={!group.documentUrl}
             target="_blank"
           />
-        </h3>
+        </h4>
       </div>
     );
   };
@@ -178,14 +176,14 @@ class Group extends React.PureComponent {
 
     return (
       <div>
-        <div style={{ paddingBottom: 24, paddingLeft: 24 }}>
+        <div style={{ paddingBottom: 12, paddingLeft: 12 }}>
           <Link to="/groups">
             <Button icon="arrow-left">Back to Groups</Button>
           </Link>
         </div>
 
         {!isLoading && group ? (
-          <Row gutter={24}>
+          <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
             <Col md={4} />
             <Col sm={24} md={12}>
               <Card
@@ -203,18 +201,17 @@ class Group extends React.PureComponent {
               </Card>
             </Col>
 
-            <Col sm={24} md={8} style={{ padding: 36 }}>
+            <Col sm={24} md={8} style={{ padding: 24 }}>
               {!isAdmin && (
                 <Button
                   type={isMember ? null : 'primary'}
                   onClick={this.openModal}
                   block
+                  style={{ marginBottom: 24 }}
                 >
                   {isMember ? 'Leave this group' : 'Join this Group'}
                 </Button>
               )}
-
-              {!isAdmin && <Divider />}
 
               {currentUser && (
                 <Fragment>
@@ -233,11 +230,8 @@ class Group extends React.PureComponent {
                           }}
                         >
                           <b>{member.username}</b>
-                          <em>
-                            {member.username === currentUser.username && ' you'}
-                            {member.username === group.adminUsername &&
-                              ' admin'}
-                          </em>
+                          {member.username === currentUser.username && ' you'}
+                          {member.username === group.adminUsername && ' admin'}
                         </div>
                       </ListItem>
                     )}
@@ -248,7 +242,7 @@ class Group extends React.PureComponent {
           </Row>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader loading />
+            <PulseLoader color="#ea3924" loading />
           </div>
         )}
         <Divider />

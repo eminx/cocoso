@@ -21,7 +21,7 @@ class ModalArticle extends React.Component {
       <Modal {...this.props} style={{ top: 20 }}>
         {isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader loading />
+            <PulseLoader color="#ea3924" loading />
           </div>
         ) : (
           <Card

@@ -75,7 +75,7 @@ class CreateGroupForm extends React.Component {
                 }
               ],
               initialValue: groupData ? groupData.title : null
-            })(<Input placeholder="Booking title" />)}
+            })(<Input placeholder="Group title" />)}
           </FormItem>
 
           <FormItem>
@@ -89,7 +89,7 @@ class CreateGroupForm extends React.Component {
               initialValue: groupData ? groupData.description : null
             })(
               <TextArea
-                placeholder="Enter a description for your study group"
+                placeholder="Group description (details of the Study etc.)"
                 autosize={{ minRows: 6, maxRows: 12 }}
               />
             )}
@@ -105,7 +105,7 @@ class CreateGroupForm extends React.Component {
                 }
               ],
               initialValue: groupData ? groupData.readingMaterial : null
-            })(<Input placeholder="Reading Material" />)}
+            })(<Input placeholder="Reading material" />)}
           </FormItem>
 
           <FormItem

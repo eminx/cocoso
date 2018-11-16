@@ -44,7 +44,7 @@ class Users extends React.PureComponent {
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <PulseLoader loading />
+          <PulseLoader color="#ea3924" loading />
         </div>
       );
     }

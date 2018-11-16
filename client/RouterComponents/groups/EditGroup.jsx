@@ -172,7 +172,7 @@ class EditGroup extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to signin to create a study group. Just do it!"
+            message="You have to become a registered member to create a study group. Just do it!"
             type="error"
           />
         </div>

@@ -1,23 +1,38 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
 
-* {
+*,
+html,
+html > body > #render-target {
   font-family: 'Roboto', sans-serif;
+  color: #030303;
+}
+
+body a {
+  color: #ea3924;
 }
 
 .ant-layout {
   background-color: #fff;
 }
 
-h1 {
+.ant-layout h1 {
   letter-spacing: -0.5px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.ant-layout h1,
+.ant-modal-wrap h1,
+.ant-layout h2,
+.ant-modal-wrap h2,
+.ant-layout h3,
+.ant-modal-wrap h3,
+.ant-layout h4,
+.ant-modal-wrap h4,
+.ant-layout h5,
+.ant-modal-wrap h5,
+.ant-layout h6,
+.ant-modal-wrap h6,
+.ant-modal-body .ant-confirm-body .ant-confirm-title {
+  text-transform: uppercase;
   font-weight: 700;
 }
 
@@ -82,15 +97,15 @@ textarea.ant-input {
   border-color: #797979;
 }
 
-.ant-switch {
+.ant-layout .ant-switch {
   border: 1px solid #030303;
   border-radius: 0;
   background-color: #fff;
 }
-.ant-switch:after {
+.ant-layout .ant-switch:after {
   background-color: #030303;
 }
-.ant-switch.ant-switch-checked {
+.ant-layout .ant-switch.ant-switch-checked {
   background-color: #fbd5d0;
 }
 

@@ -20,11 +20,9 @@ class GroupsList extends React.PureComponent {
     return (
       <div>
         <h1>{group.title}</h1>
-        <h3 style={{ fontWeight: 300 }}>
-          <em>
-            reading: <b>{group.readingMaterial}</b>
-          </em>
-        </h3>
+        <h4>
+          reading: <b>{group.readingMaterial}</b>
+        </h4>
       </div>
     );
   };
@@ -45,7 +43,7 @@ class GroupsList extends React.PureComponent {
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <PulseLoader loading />
+          <PulseLoader color="#ea3924" loading />
         </div>
       );
     }
@@ -64,10 +62,9 @@ class GroupsList extends React.PureComponent {
               <Button type="primary">New Group</Button>
             </Link>
           </div>
-          <Divider />
         </Col>
 
-        <Col md={14}>
+        <Col md={14} style={{ paddingLeft: 24, paddingRight: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Study Groups</h2>
 
           {/* <div style={centerStyle}>

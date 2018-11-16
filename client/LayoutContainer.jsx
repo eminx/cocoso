@@ -189,15 +189,31 @@ class LayoutPage extends React.Component {
 
         <div className="header-container">
           <Row className="header-background">
-            <Col sm={8} />
+            <Col xs={8} />
 
-            <Col sm={8} style={{ display: 'flex', justifyContent: 'center' }}>
+            <Col xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
               <Link to="/">
                 <div className="logo skogen-logo" />
               </Link>
             </Col>
 
-            <Col sm={8}>
+            <Col xs={8}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <span
+                  style={{
+                    textAlign: 'right',
+                    padding: '6px 12px',
+                    color: '#030303',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    backgroundColor: 'rgba(255, 255, 255, .7)'
+                  }}
+                >
+                  <Link to="/my-profile">
+                    {currentUser ? currentUser.username : 'LOGIN'}
+                  </Link>
+                </span>
+              </div>
               <div
                 style={{
                   display: 'flex',
@@ -229,20 +245,6 @@ class LayoutPage extends React.Component {
                   type="menu-fold"
                   style={menuIconStyle}
                 />
-              </div>
-              <div
-                style={{
-                  textAlign: 'right',
-                  padding: 12,
-                  color: '#030303',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  textShadow: '.3px .3px #fff'
-                }}
-              >
-                {currentUser
-                  ? `LOGGED IN AS: ${currentUser.username}`
-                  : `LOGIN`}
               </div>
             </Col>
           </Row>

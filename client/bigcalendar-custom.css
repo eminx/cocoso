@@ -7,11 +7,12 @@
   display: none;
 }
 
-.rbc-event-content {
+.rbc-calendar .rbc-event-content {
+  color: #fff;
   font-size: 12px;
 }
 
-.rbc-toolbar {
+.ant-layout .rbc-toolbar {
   flex-wrap: wrap;
   justify-content: center;
   padding: 10px;
@@ -20,6 +21,7 @@
   border-top-right-radius: 5px;
   border: 1px solid #ddd;
   border-bottom: none;
+  font-size: 12px;
   /* background-color: #f9f9f9; */
 }
 
@@ -61,6 +63,10 @@
   background-color: rgba(127, 114, 167, 0.3);
   color: rgb(127, 114, 167);
   border: 1px solid rgb(127, 114, 167);
+}
+
+.tags-container .ant-tag-checkable-checked {
+  background-color: #ea3924;
 }
 
 .rbc-calendar .rbc-event.category-1,
@@ -230,5 +236,9 @@
 .rbc-toolbar .rbc-btn-group + .rbc-toolbar-label {
   text-transform: uppercase;
   color: #ea3924;
+  font-weight: 700;
+}
+
+.rbc-calendar .rbc-date-cell > a {
   font-weight: 700;
 }

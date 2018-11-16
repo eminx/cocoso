@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, Alert, Tag, Modal } from 'antd/lib';
+import { Row, Col, Alert, Tag, Button, Modal } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
@@ -22,8 +23,14 @@ class Home extends React.Component {
   };
 
   handleSelect = (booking, e) => {
+    const { currentUser } = this.props;
+
     Modal.info({
-      title: booking.title,
+      title: (
+        <div>
+          <h2>{booking.title}</h2> <h4>{this.getBookingTimes(booking)}</h4>
+        </div>
+      ),
       content: (
         <div>
           <Row>
@@ -44,9 +51,18 @@ class Home extends React.Component {
               <b>{booking.longDescription}</b>
             </Col>
           </Row>
+
+          {currentUser && currentUser.username === booking.authorName && (
+            <div style={{ position: 'absolute', bottom: 24, right: 96 }}>
+              <a href={`/edit-booking/${booking._id}`}>
+                <Button>Edit</Button>
+              </a>
+            </div>
+          )}
         </div>
       ),
-      okType: 'secondary'
+      okType: 'secondary',
+      closable: true
     });
   };
 
@@ -131,7 +147,6 @@ class Home extends React.Component {
             }}
           >
             <div style={{ maxWidth: 900, width: '100%' }}>
-              <h2 style={{ textAlign: 'center' }}>Bookings Calendar</h2>
               <div
                 className="tags-container"
                 style={{
@@ -161,7 +176,7 @@ class Home extends React.Component {
 
               {isLoading ? (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <PulseLoader />
+                  <PulseLoader color="#ea3924" />
                 </div>
               ) : (
                 <CalendarView
@@ -172,18 +187,6 @@ class Home extends React.Component {
               )}
             </div>
           </div>
-        </Row>
-        <Row gutter={32}>
-          <Col xs={24} sm={24} md={12}>
-            <div style={{ marginBottom: 50 }}>
-              <h2 style={{ textAlign: 'center' }}>Book Skogen</h2>
-
-              <Alert
-                message="With this application you're able to book certain resources at the Skogen facility and view bookings done by other members"
-                type="info"
-              />
-            </div>
-          </Col>
         </Row>
       </div>
     );
