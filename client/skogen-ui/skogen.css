@@ -118,6 +118,24 @@ textarea.ant-input {
   border-bottom: none;
 }
 
+.ant-card .ant-card-cover {
+  padding: 24px;
+}
+
+.ant-card .ant-card-cover img {
+  border-radius: 0;
+}
+
+.ant-card .ant-card-meta .ant-card-meta-description,
+.ant-list-item,
+.ant-list-item-content,
+.ant-modal-close,
+.anticon,
+p,
+body {
+  color: #030303;
+}
+
 .ant-popover-content .ant-popover-inner {
   border-radius: 0;
   border: 1px solid #030303;
@@ -144,31 +162,15 @@ textarea.ant-input {
   color: #030303;
 }
 
-/* Calendar */
+/* .rbc-calendar .rbc-event {
+  border: 1px solid #030300;
+} */
 
-.rbc-event {
+.ant-modal .ant-modal-content {
+  border: 1px solid #030303;
   border-radius: 0;
 }
 
-.rbc-month-view > .rbc-month-row + .rbc-month-row,
-.rbc-row-bg > .rbc-day-bg + .rbc-day-bg,
-.rbc-month-view > .rbc-month-header .rbc-header + .rbc-header,
-.rbc-month-view .rbc-header,
-.rbc-time-header > .rbc-row > * + *,
-.rbc-time-header > .rbc-row:first-child {
-  border: none;
-}
-
-.rbc-day-bg.rbc-off-range-bg {
-  background-color: #fff;
-}
-
-.rbc-row-bg .rbc-day-bg.rbc-today,
-.rbc-today {
-  background-color: #fff;
-  border: 1px solid #ea3924;
-}
-
-.rbc-calendar .rbc-event {
-  border: 1px solid #030300;
+.ant-modal .ant-modal-content .ant-confirm-body .ant-confirm-content {
+  color: #030303;
 }

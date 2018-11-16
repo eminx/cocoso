@@ -50,72 +50,117 @@
 
 .tags-container .ant-tag {
   margin-bottom: 8px;
+  border-radius: 0;
 }
 
 .rbc-calendar .rbc-event.category-0,
-.ant-tag-magenta.checked {
-  background-color: #eb2f96;
-  /* border: 1px solid #eb2f96; */
+.tags-container .ant-tag-magenta.checked {
+  background-color: rgb(127, 114, 167);
+}
+.tags-container .ant-tag-magenta {
+  background-color: rgba(127, 114, 167, 0.3);
+  color: rgb(127, 114, 167);
+  border: 1px solid rgb(127, 114, 167);
 }
 
 .rbc-calendar .rbc-event.category-1,
-.ant-tag-red.checked {
-  background-color: #f5222d;
-  /* border: 1px solid #f5222d; */
+.tags-container .ant-tag-red.checked {
+  background-color: rgb(226, 89, 87);
+}
+.tags-container .ant-tag-red {
+  background-color: rgba(226, 89, 87, 0.3);
+  color: rgb(226, 89, 87);
+  border: 1px solid rgb(226, 89, 87);
 }
 
 .rbc-calendar .rbc-event.category-2,
-.ant-tag-volcano.checked {
-  background-color: #fa541c;
-  /* border: 1px solid #fa541c; */
+.tags-container .ant-tag-volcano.checked {
+  background-color: rgb(89, 18, 38);
+}
+.tags-container .ant-tag-volcano {
+  background-color: rgba(89, 18, 38, 0.3);
+  color: rgb(89, 18, 38);
+  border: 1px solid rgb(89, 18, 38);
 }
 
 .rbc-calendar .rbc-event.category-3,
-.ant-tag-orange.checked {
-  background-color: #fa8c16;
-  /* border: 1px solid #fa8c16; */
+.tags-container .ant-tag-orange.checked {
+  background-color: rgb(148, 227, 173);
+}
+.tags-container .ant-tag-orange {
+  background-color: rgba(148, 227, 173, 0.3);
+  color: rgb(148, 227, 173);
+  border: 1px solid rgb(148, 227, 173);
 }
 
 .rbc-calendar .rbc-event.category-4,
-.ant-tag-gold.checked {
-  background-color: #faad14;
-  /* border: 1px solid #faad14; */
+.tags-container .ant-tag-gold.checked {
+  background-color: rgb(246, 113, 26);
+}
+.tags-container .ant-tag-gold {
+  background-color: rgba(246, 113, 26, 0.3);
+  color: rgb(246, 113, 26);
+  border: 1px solid rgb(246, 113, 26);
 }
 
 .rbc-calendar .rbc-event.category-5,
-.ant-tag-lime.checked {
-  background-color: #a0d911;
-  border: 1px solid;
+.tags-container .ant-tag-lime.checked {
+  background-color: rgb(194, 195, 34);
+}
+.tags-container .ant-tag-lime {
+  background-color: rgba(194, 195, 34, 0.3);
+  color: rgb(194, 195, 34);
+  border: 1px solid rgb(194, 195, 34);
 }
 
 .rbc-calendar .rbc-event.category-6,
-.ant-tag-green.checked {
-  background-color: #52c41a;
-  border: 1px solid;
+.tags-container .ant-tag-green.checked {
+  background-color: rgb(111, 148, 98);
+}
+.tags-container .ant-tag-green {
+  background-color: rgba(111, 148, 98, 0.3);
+  color: rgb(111, 148, 98);
+  border: 1px solid rgb(111, 148, 98);
 }
 
 .rbc-calendar .rbc-event.category-7,
-.ant-tag-cyan.checked {
-  background-color: #13c2c2;
-  border: 1px solid;
+.tags-container .ant-tag-cyan.checked {
+  background-color: rgb(85, 152, 246);
+}
+.tags-container .ant-tag-cyan {
+  background-color: rgba(85, 152, 246, 0.3);
+  color: rgb(85, 152, 246);
+  border: 1px solid rgb(85, 152, 246);
 }
 
 .rbc-calendar .rbc-event.category-8,
-.ant-tag-blue.checked {
-  background-color: #1890ff;
-  border: 1px solid;
+.tags-container .ant-tag-blue.checked {
+  background-color: rgb(93, 162, 152);
+}
+.tags-container .ant-tag-blue {
+  background-color: rgba(93, 162, 152, 0.3);
+  color: rgb(93, 162, 152);
+  border: 1px solid rgb(93, 162, 152);
 }
 
 .rbc-calendar .rbc-event.category-9,
-.ant-tag-geekblue.checked {
-  background-color: #2f54eb;
-  border: 1px solid;
+.tags-container .ant-tag-geekblue.checked {
+  background-color: rgb(236, 166, 104);
+}
+.tags-container .ant-tag-geekblue {
+  background-color: rgba(236, 166, 104, 0.3);
+  color: rgb(236, 166, 104);
+  border: 1px solid rgb(236, 166, 104);
 }
 
 .rbc-calendar .rbc-event.category-10,
-.ant-tag-purple.checked {
-  background-color: #722ed1;
-  border: 1px solid;
+.tags-container .ant-tag-purple.checked {
+  background-color: rgb(81, 119, 148);
+}
+.tags-container .ant-tag-purple {
+  background-color: rgba(81, 119, 148, 0.3);
+  color: rgb(81, 119, 148);
+  border: 1px solid rgb(81, 119, 148);
 }
 
 .ant-tag-magenta.checked,
@@ -132,10 +177,58 @@
   color: #fff;
 }
 
-button.rbc-active {
-  background: #fff !important;
-  border-color: #1890ff !important;
-  color: #1890ff !important;
-  -webkit-box-shadow: -1px 0 0 0 #1890ff;
-  box-shadow: -1px 0 0 0 #1890ff;
+.rbc-calendar .rbc-event {
+  border-radius: 0;
+}
+
+.rbc-calendar .rbc-toolbar,
+.rbc-calendar .rbc-time-view,
+.rbc-calendar .rbc-month-view,
+.rbc-calendar .rbc-month-view .rbc-header,
+.rbc-calendar .rbc-month-view > .rbc-month-row + .rbc-month-row,
+.rbc-calendar .rbc-row-bg > .rbc-day-bg + .rbc-day-bg,
+.rbc-calendar .rbc-month-view > .rbc-month-header .rbc-header + .rbc-header,
+.rbc-calendar .rbc-month-view .rbc-header,
+.rbc-calendar .rbc-time-header > .rbc-row > * + *,
+.rbc-calendar .rbc-time-header > .rbc-row:first-child {
+  border: none;
+}
+
+.rbc-day-bg.rbc-off-range-bg {
+  background-color: #fff;
+}
+
+.rbc-calendar .rbc-row-bg .rbc-day-bg.rbc-today,
+.rbc-today {
+  background-color: #fff;
+  border: 1px solid #ea3924;
+}
+
+.rbc-toolbar .rbc-btn-group button:active,
+.rbc-toolbar .rbc-btn-group button:focus,
+.rbc-toolbar .rbc-btn-group button:hover,
+.rbc-toolbar .rbc-btn-group button.rbc-active,
+.rbc-toolbar .rbc-btn-group button.rbc-active:focus,
+.rbc-toolbar .rbc-btn-group button.rbc-active:active {
+  outline: none;
+  background-color: #fbd5d0;
+  color: #ea3924;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.rbc-toolbar .rbc-btn-group button {
+  cursor: pointer;
+  color: #ea3924;
+  background-color: #fff;
+  text-transform: uppercase;
+  font-style: italic;
+  border: none;
+}
+
+.rbc-toolbar .rbc-btn-group + .rbc-toolbar-label {
+  text-transform: uppercase;
+  color: #ea3924;
+  font-weight: 700;
 }

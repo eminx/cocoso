@@ -3,7 +3,6 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, Alert, Tag, Modal } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
-import BookingsList from '../UIComponents/BookingsList';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
 
@@ -23,8 +22,31 @@ class Home extends React.Component {
   };
 
   handleSelect = (booking, e) => {
-    this.setState({
-      modal: booking
+    Modal.info({
+      title: booking.title,
+      content: (
+        <div>
+          <Row>
+            <Col span={12}>booked by: </Col>
+            <Col span={12}>
+              <b>{booking.authorName}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>space/equipment: </Col>
+            <Col span={12}>
+              <b>{booking.room}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>information:</Col>
+            <Col span={12}>
+              <b>{booking.longDescription}</b>
+            </Col>
+          </Row>
+        </div>
+      ),
+      okType: 'secondary'
     });
   };
 
@@ -46,24 +68,46 @@ class Home extends React.Component {
     });
   };
 
+  getBookingTimes = booking => {
+    if (booking) {
+      if (booking.isMultipleDay || booking.isFullDay) {
+        return (
+          moment(booking.startDate).format('Do MMM') +
+          ' ' +
+          booking.startTime +
+          ' – ' +
+          moment(booking.endDate).format('Do MMM') +
+          ' ' +
+          booking.endTime
+        );
+      } else if (booking.startTime) {
+        return `${booking.startTime}–${booking.endTime} ${moment(
+          booking.startDate
+        ).format('Do MMMM')}`;
+      } else {
+        return '';
+      }
+    }
+  };
+
   render() {
     const { isLoading, placesList } = this.props;
-    const gatherings = this.props.gatheringsList;
+    const bookings = this.props.bookingsList;
     const images = this.props.imagesArray;
     const { mode, goto, modal, calendarFilter } = this.state;
 
     const futureBookings = [];
 
-    gatherings.filter(gathering => {
-      if (moment(gathering.endDate).isAfter(yesterday)) {
-        futureBookings.push(gathering);
+    bookings.filter(booking => {
+      if (moment(booking.endDate).isAfter(yesterday)) {
+        futureBookings.push(booking);
       }
     });
 
-    let filteredBookings = gatherings;
+    let filteredBookings = bookings;
 
     if (calendarFilter !== 'All rooms') {
-      filteredBookings = gatherings.filter(
+      filteredBookings = bookings.filter(
         booking => booking.room === calendarFilter
       );
     }
@@ -114,11 +158,18 @@ class Home extends React.Component {
                   </Tag>
                 ))}
               </div>
-              <CalendarView
-                gatherings={filteredBookings}
-                images={images}
-                onSelect={this.handleSelect}
-              />
+
+              {isLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <PulseLoader />
+                </div>
+              ) : (
+                <CalendarView
+                  bookings={filteredBookings}
+                  images={images}
+                  onSelect={this.handleSelect}
+                />
+              )}
             </div>
           </div>
         </Row>
@@ -133,58 +184,7 @@ class Home extends React.Component {
               />
             </div>
           </Col>
-
-          <Col xs={24} sm={24} md={12}>
-            <div style={{ marginBottom: 50 }}>
-              <h2 style={{ textAlign: 'center' }}>Current bookings</h2>
-              {isLoading ? (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <PulseLoader loading />
-                </div>
-              ) : (
-                <div>
-                  <BookingsList
-                    push={this.props.history.push}
-                    images={this.props.imagesArray}
-                    gatherings={futureBookings}
-                  />
-                </div>
-              )}
-            </div>
-          </Col>
         </Row>
-
-        {modal && (
-          <Modal
-            title={modal.title}
-            visible
-            onOk={this.handleGotoBooking}
-            onCancel={this.handleCloseModal}
-            okText="to Booking page"
-            cancelText="Close"
-          >
-            <div>
-              <Row>
-                <Col span={8}>booked by: </Col>
-                <Col span={8}>
-                  <b>{modal.authorName}</b>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={8}>space/equipment: </Col>
-                <Col span={8}>
-                  <b>{modal.room}</b>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={8}>information:</Col>
-                <Col span={8}>
-                  <b>{modal.longDescription}</b>
-                </Col>
-              </Row>
-            </div>
-          </Modal>
-        )}
       </div>
     );
   }
