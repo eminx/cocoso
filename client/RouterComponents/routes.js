@@ -25,6 +25,8 @@ import EditPageContainer from './pages/EditPageContainer';
 import ProfileContainer from './profile/ProfileContainer';
 import UsersContainer from './users/UsersContainer';
 
+import DocumentsListContainer from './documents/DocumentsListContainer';
+
 const browserHistory = createBrowserHistory();
 
 export const renderRoutes = () => (
@@ -52,6 +54,8 @@ export const renderRoutes = () => (
             history={browserHistory}
             component={ProfileContainer}
           />
+
+          <Route path="/documents" component={DocumentsListContainer} />
 
           <Route path="/users" component={UsersContainer} />
 

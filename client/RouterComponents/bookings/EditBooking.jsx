@@ -60,7 +60,7 @@ class EditBooking extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to signin to create a booking. Just do it!"
+            message="You have to signin to create a booking."
             type="error"
           />
         </div>
@@ -72,10 +72,7 @@ class EditBooking extends React.Component {
       values,
       isLoading,
       isSuccess,
-      newBookingId,
-      uploadedImage,
-      uploadableImage,
-      uploadableImageLocal
+      newBookingId
     } = this.state;
 
     if (isSuccess) {

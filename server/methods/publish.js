@@ -104,6 +104,10 @@ Meteor.publish('places', function() {
   return Places.find();
 });
 
+Meteor.publish('documents', function() {
+  return Documents.find();
+});
+
 Meteor.publish('users', function() {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {

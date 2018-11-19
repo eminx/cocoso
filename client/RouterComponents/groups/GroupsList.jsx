@@ -65,7 +65,7 @@ class GroupsList extends React.PureComponent {
         </Col>
 
         <Col md={14} style={{ paddingLeft: 24, paddingRight: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Study Groups</h2>
+          <h2 style={{ textAlign: 'center' }}>Groups</h2>
 
           {/* <div style={centerStyle}>
             <RadioGroup defaultValue="ongoing" size="large">

@@ -217,11 +217,6 @@ class EditGroup extends React.Component {
               }
             />
           </Col>
-          <Col xs={24} sm={24} md={8}>
-            <Affix offsetTop={50}>
-              <Alert message={sideNote} type="warning" showIcon />
-            </Affix>
-          </Col>
         </Row>
         {modalConfirm ? (
           <ModalArticle
