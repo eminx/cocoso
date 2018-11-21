@@ -136,9 +136,23 @@ class Home extends React.Component {
       width: 80
     };
 
+    const centerStyle = {
+      display: 'flex',
+      justifyContent: 'center',
+      padding: 24,
+      marginBottom: 24
+    };
+
     return (
-      <div style={{ padding: 24 }}>
-        <Row gutter={32}>
+      <div style={{ padding: 24, paddingTop: 0 }}>
+        <Row gutter={24}>
+          <div style={centerStyle}>
+            <Link to="/new-booking">
+              <Button type="primary">New Booking</Button>
+            </Link>
+          </div>
+        </Row>
+        <Row gutter={24}>
           <div
             style={{
               justifyContent: 'center',

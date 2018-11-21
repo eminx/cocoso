@@ -98,14 +98,14 @@ class Group extends React.PureComponent {
       <div>
         <h1>{group.title}</h1>
         <h4>
-          reading: <b>{group.readingMaterial}</b>
-          <Divider type="vertical" />
-          <Button
-            icon="download"
-            href={group.documentUrl}
-            disabled={!group.documentUrl}
-            target="_blank"
-          />
+          <span>reading: </span>
+          {group.documentUrl ? (
+            <a href={group.documentUrl} target="_blank">
+              {group.readingMaterial}
+            </a>
+          ) : (
+            <span>{group.readingMaterial}</span>
+          )}
         </h4>
       </div>
     );
@@ -176,9 +176,9 @@ class Group extends React.PureComponent {
 
     return (
       <div>
-        <div style={{ paddingBottom: 12, paddingLeft: 12 }}>
+        <div style={{ padding: 12 }}>
           <Link to="/groups">
-            <Button icon="arrow-left">Back to Groups</Button>
+            <Button icon="arrow-left">Groups</Button>
           </Link>
         </div>
 

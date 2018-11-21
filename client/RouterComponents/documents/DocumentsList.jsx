@@ -37,8 +37,6 @@ class DocumentsList extends React.PureComponent {
   render() {
     const { isLoading, currentUser, documentsData } = this.props;
 
-    console.log(documentsData);
-
     if (isLoading) {
       return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>

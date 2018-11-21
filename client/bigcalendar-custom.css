@@ -197,7 +197,9 @@
 .rbc-calendar .rbc-month-view .rbc-header,
 .rbc-calendar .rbc-time-header > .rbc-row > * + *,
 .rbc-calendar .rbc-time-header > .rbc-row:first-child {
-  border: none;
+  /* border: none; */
+  border-color: #fbd5d0;
+  border-radius: 0;
 }
 
 .rbc-day-bg.rbc-off-range-bg {

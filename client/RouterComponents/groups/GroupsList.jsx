@@ -19,7 +19,7 @@ class GroupsList extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h1>{group.title}</h1>
+        <h2>{group.title}</h2>
         <h4>
           reading: <b>{group.readingMaterial}</b>
         </h4>
@@ -59,7 +59,9 @@ class GroupsList extends React.PureComponent {
         <Col md={8}>
           <div style={centerStyle}>
             <Link to="/new-group">
-              <Button type="primary">New Group</Button>
+              <Button type="primary" component="span">
+                New Group
+              </Button>
             </Link>
           </div>
         </Col>
@@ -79,25 +81,24 @@ class GroupsList extends React.PureComponent {
             dataSource={groupsData}
             renderItem={group => (
               <ListItem style={{ paddingBottom: 0 }}>
-                <Link to={`/group/${group._id}`} style={{ width: '100%' }}>
-                  <Card
-                    title={this.getTitle(group)}
-                    bordered
-                    hoverable
-                    extra={this.getExtra(group)}
-                    style={{ width: '100%', marginBottom: 0 }}
-                  >
-                    <Meta
-                      description={
-                        <div style={{ textAlign: 'right' }}>
-                          <Link to={`/group/${group._id}`}>
-                            <Button>Read more</Button>
-                          </Link>
-                        </div>
-                      }
-                    />
-                  </Card>
-                </Link>
+                {/* <Link to={`/group/${group._id}`} style={{ width: '100%' }}> */}
+                <Card
+                  title={this.getTitle(group)}
+                  bordered
+                  extra={this.getExtra(group)}
+                  style={{ width: '100%', marginBottom: 0 }}
+                >
+                  <Meta
+                    description={
+                      <div style={{ textAlign: 'right' }}>
+                        <Link to={`/group/${group._id}`}>
+                          <Button>Read more</Button>
+                        </Link>
+                      </div>
+                    }
+                  />
+                </Card>
+                {/* </Link> */}
               </ListItem>
             )}
           />

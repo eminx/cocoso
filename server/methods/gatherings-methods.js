@@ -180,7 +180,7 @@ Meteor.methods({
           attendees: attendees
         }
       });
-    } catch (e) {
+    } catch (err) {
       console.log(err);
       throw new Meteor.Error(err, "Couldn't toggle attendance");
     }
@@ -198,7 +198,7 @@ Meteor.methods({
     });
 
     if (Places.findOne({ name: name })) {
-      throw new Meteor.Error(err, 'That place already exists!');
+      throw new Meteor.Error('That place already exists!');
     } else {
       try {
         Places.insert({

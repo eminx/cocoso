@@ -98,7 +98,7 @@ class LayoutPage extends React.Component {
 
     return (
       <div className="main-viewport">
-        <Drawer
+        {/* <Drawer
           // title="MENU"
           placement="right"
           onClose={this.closeMenu}
@@ -185,7 +185,7 @@ class LayoutPage extends React.Component {
               </MenuItemGroup>
             )}
           </Menu>
-        </Drawer>
+        </Drawer> */}
 
         <div className="header-container">
           <Row className="header-background">
@@ -214,7 +214,7 @@ class LayoutPage extends React.Component {
                   </Link>
                 </span>
               </div>
-              <div
+              {/* <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -245,13 +245,27 @@ class LayoutPage extends React.Component {
                   type="menu-fold"
                   style={menuIconStyle}
                 />
-              </div>
+              </div> */}
             </Col>
           </Row>
         </div>
 
+        <div className="skogen-menu-layout">
+          <Link to="/">
+            <b>Calendar</b>
+          </Link>
+
+          <Link to="/groups">
+            <b>Groups</b>
+          </Link>
+
+          <Link to="/documents">
+            <b>Documents</b>
+          </Link>
+        </div>
+
         <Layout className="layout">
-          <Content style={{ marginTop: 20 }}>{children}</Content>
+          <Content>{children}</Content>
 
           <Footer style={{ textAlign: 'center' }} />
         </Layout>

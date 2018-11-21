@@ -27,6 +27,13 @@ h1 {
   background-size: contain;
 }
 
+@media (max-width: 600px) {
+  .logo {
+    width: 90px;
+    height: 50px;
+  }
+}
+
 .skogen-logo {
   background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/skogen-logo-x2.png');
   background-repeat: no-repeat;

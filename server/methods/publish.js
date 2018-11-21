@@ -39,12 +39,12 @@ Meteor.publish('gatherings', function() {
 });
 
 Meteor.publish('groups', function() {
-  const user = Meteor.user();
-  if (user) {
-    return Groups.find({
-      isPublished: true
-    });
-  }
+  // const user = Meteor.user();
+  // if (user) {
+  return Groups.find({
+    isPublished: true
+  });
+  // }
 });
 
 Meteor.publish('gathering', function(id) {
