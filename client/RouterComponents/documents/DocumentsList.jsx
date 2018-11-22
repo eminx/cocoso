@@ -48,7 +48,8 @@ class DocumentsList extends React.PureComponent {
     const centerStyle = {
       display: 'flex',
       justifyContent: 'center',
-      padding: 24
+      padding: 24,
+      paddingBottom: 0
     };
 
     return (
@@ -61,7 +62,7 @@ class DocumentsList extends React.PureComponent {
           </div>
         </Col>
 
-        <Col md={14} style={{ paddingLeft: 24, paddingRight: 24 }}>
+        <Col md={14} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Documents</h2>
 
           {/* <div style={centerStyle}>

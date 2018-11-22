@@ -179,6 +179,10 @@ body {
   color: #030303;
 }
 
+.empty-card-body.ant-card > .ant-card-body {
+  padding: 0;
+}
+
 /* .rbc-calendar .rbc-event {
   border: 1px solid #030300;
 } */

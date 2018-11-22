@@ -239,6 +239,7 @@
   text-transform: uppercase;
   color: #ea3924;
   font-weight: 700;
+  font-size: 16px;
 }
 
 .rbc-calendar .rbc-date-cell > a {

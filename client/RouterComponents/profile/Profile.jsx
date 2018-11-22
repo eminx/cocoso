@@ -8,7 +8,7 @@ class Profile extends React.Component {
     const { currentUser, isLoading, history } = this.props;
 
     return (
-      <div style={{ padding: 24 }}>
+      <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
           <Col sm={6} md={16} />
           <Col sm={18} md={8}>

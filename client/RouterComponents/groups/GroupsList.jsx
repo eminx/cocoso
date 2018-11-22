@@ -1,7 +1,10 @@
 import React from 'react';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
+
+import { compareForSort } from '../../functions';
 
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -19,7 +22,9 @@ class GroupsList extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h2>{group.title}</h2>
+        <h3>
+          <Link to={`/group/${group._id}`}>{group.title}</Link>
+        </h3>
         <h4>
           reading: <b>{group.readingMaterial}</b>
         </h4>
@@ -33,6 +38,10 @@ class GroupsList extends React.PureComponent {
         <b>{group.members.length + ' / ' + group.capacity}</b>
         <br />
         created by {group.adminUsername}
+        <br />
+        <span style={{ fontSize: 10 }}>
+          {moment(group.creationDate).format('Do MMM YYYY')}
+        </span>
       </div>
     );
   };
@@ -48,10 +57,13 @@ class GroupsList extends React.PureComponent {
       );
     }
 
+    const groupsSorted = groupsData.sort(compareForSort);
+
     const centerStyle = {
       display: 'flex',
       justifyContent: 'center',
-      padding: 24
+      padding: 24,
+      paddingBottom: 0
     };
 
     return (
@@ -66,7 +78,7 @@ class GroupsList extends React.PureComponent {
           </div>
         </Col>
 
-        <Col md={14} style={{ paddingLeft: 24, paddingRight: 24 }}>
+        <Col md={14} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Groups</h2>
 
           {/* <div style={centerStyle}>
@@ -78,27 +90,16 @@ class GroupsList extends React.PureComponent {
           </div> */}
 
           <List
-            dataSource={groupsData}
+            dataSource={groupsSorted.reverse()}
             renderItem={group => (
               <ListItem style={{ paddingBottom: 0 }}>
-                {/* <Link to={`/group/${group._id}`} style={{ width: '100%' }}> */}
                 <Card
                   title={this.getTitle(group)}
                   bordered
                   extra={this.getExtra(group)}
                   style={{ width: '100%', marginBottom: 0 }}
-                >
-                  <Meta
-                    description={
-                      <div style={{ textAlign: 'right' }}>
-                        <Link to={`/group/${group._id}`}>
-                          <Button>Read more</Button>
-                        </Link>
-                      </div>
-                    }
-                  />
-                </Card>
-                {/* </Link> */}
+                  className="empty-card-body"
+                />
               </ListItem>
             )}
           />
