@@ -6,10 +6,10 @@ import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successCreation = () => {
-  message.success('Your study group is successfully created', 6);
+  message.success('Your group is successfully created', 6);
 };
 
-const sideNote = 'This page is dedicated to create study groups at Skogen.';
+const sideNote = 'This page is dedicated to create groups at Skogen.';
 
 class NewGroup extends React.Component {
   state = {
@@ -183,7 +183,7 @@ class NewGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Create a Study Group</h1>
+        <h1>Create a Group</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreateGroupForm

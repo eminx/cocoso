@@ -6,7 +6,7 @@ import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successCreation = () => {
-  message.success('Your study group is successfully created', 6);
+  message.success('New page is successfully created', 6);
 };
 
 class NewPage extends React.Component {

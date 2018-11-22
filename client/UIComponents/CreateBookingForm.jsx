@@ -303,7 +303,7 @@ class CreateBookingForm extends React.Component {
 
               <FormItem>
                 {getFieldDecorator('duration', configDuration)(
-                  <InputNumber step={0.5} />
+                  <InputNumber placeholder="duration (h)" step={0.5} />
                 )}
               </FormItem>
             </div>

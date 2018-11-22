@@ -271,7 +271,7 @@ class Group extends React.PureComponent {
           <p>
             Are you sure you want to
             {isMember ? ' leave ' : ' join '}
-            this Study Group?
+            this Group?
           </p>
         </Modal>
       </div>

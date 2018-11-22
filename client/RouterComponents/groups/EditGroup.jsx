@@ -9,7 +9,7 @@ const successCreation = () => {
   message.success('Your group is successfully edited', 6);
 };
 
-const sideNote = 'This page is dedicated to create study groups at Skogen.';
+const sideNote = 'This page is dedicated to create groups at Skogen.';
 
 class EditGroup extends React.Component {
   state = {
@@ -172,7 +172,7 @@ class EditGroup extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a registered member to create a study group. Just do it!"
+            message="You have to become a registered member to create a group. Just do it!"
             type="error"
           />
         </div>
@@ -200,7 +200,7 @@ class EditGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Edit your Study Group</h1>
+        <h1>Edit your Group</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreateGroupForm
