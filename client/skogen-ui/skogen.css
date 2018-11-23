@@ -5,6 +5,7 @@ html,
 html > body > #render-target {
   font-family: 'Roboto', sans-serif;
   color: #030303;
+  word-break: break-all;
 }
 
 body a {

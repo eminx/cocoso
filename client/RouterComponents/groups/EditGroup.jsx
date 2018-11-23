@@ -2,18 +2,21 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
-const successCreation = () => {
+const successCreation = () =>
   message.success('Your group is successfully edited', 6);
-};
+
+const successDelete = () =>
+  message.success('The group is successfully deleted', 4);
 
 const sideNote = 'This page is dedicated to create groups at Skogen.';
 
 class EditGroup extends React.Component {
   state = {
     modalConfirm: false,
+    isDeleteModalOn: false,
     values: null,
     isLoading: false,
     isSuccess: false,
@@ -167,12 +170,33 @@ class EditGroup extends React.Component {
   hideModal = () => this.setState({ modalConfirm: false });
   showModal = () => this.setState({ modalConfirm: true });
 
+  hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
+  showDeleteModal = () => this.setState({ isDeleteModalOn: true });
+
+  deleteGroup = () => {
+    const groupId = this.props.groupData._id;
+    Meteor.call('deleteGroup', groupId, (error, respond) => {
+      if (error) {
+        this.setState({
+          isLoading: false,
+          isError: true
+        });
+      } else {
+        successDelete();
+        this.setState({
+          isLoading: false,
+          isSuccess: true
+        });
+      }
+    });
+  };
+
   render() {
     if (!this.props.currentUser) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a registered member to create a group. Just do it!"
+            message="You have to become a registered member to create a group."
             type="error"
           />
         </div>
@@ -181,6 +205,7 @@ class EditGroup extends React.Component {
 
     const {
       modalConfirm,
+      isDeleteModalOn,
       values,
       isLoading,
       isSuccess,
@@ -191,18 +216,32 @@ class EditGroup extends React.Component {
       uploadableDocument
     } = this.state;
 
-    if (isSuccess) {
+    if (isSuccess && newGroupId) {
       successCreation();
       return <Redirect to={`/group/${newGroupId}`} />;
+    } else if (isSuccess) {
+      return <Redirect to="/groups" />;
     }
 
-    const { groupData } = this.props;
+    const { groupData, currentUser } = this.props;
 
     return (
       <div style={{ padding: 24 }}>
         <h1>Edit your Group</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
+            {groupData && currentUser && groupData.adminId === currentUser._id && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  padding: 12
+                }}
+              >
+                <Button onClick={this.showDeleteModal}>Delete</Button>
+              </div>
+            )}
+
             <CreateGroupForm
               values={values}
               groupData={groupData}
@@ -218,7 +257,7 @@ class EditGroup extends React.Component {
             />
           </Col>
         </Row>
-        {modalConfirm ? (
+        {modalConfirm && (
           <ModalArticle
             item={values}
             isLoading={isLoading}
@@ -229,7 +268,18 @@ class EditGroup extends React.Component {
             okText="Confirm"
             cancelText="Go back and edit"
           />
-        ) : null}
+        )}
+
+        <Modal
+          title="Confirm"
+          visible={isDeleteModalOn}
+          onOk={this.deleteGroup}
+          onCancel={this.hideDeleteModal}
+          okText="Yes, delete"
+          cancelText="Cancel"
+        >
+          Are you sure you want to delete this group?
+        </Modal>
       </div>
     );
   }

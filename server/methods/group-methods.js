@@ -105,6 +105,25 @@ Meteor.methods({
     }
   },
 
+  deleteGroup(groupId) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+      return false;
+    }
+    const groupToDelete = Groups.findOne(groupId);
+    if (groupToDelete.adminId !== user._id) {
+      throw new Meteor.Error('You are not allowed!');
+      return false;
+    }
+
+    try {
+      Groups.remove(groupId, true);
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't remove from collection");
+    }
+  },
+
   joinGroup(groupId) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {

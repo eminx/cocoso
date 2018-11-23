@@ -96,8 +96,8 @@ class Group extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h1>{group.title}</h1>
-        <h4>
+        <h3>{group.title}</h3>
+        <h5>
           <span>reading: </span>
           {group.documentUrl ? (
             <a href={group.documentUrl} target="_blank">
@@ -106,7 +106,7 @@ class Group extends React.PureComponent {
           ) : (
             <span>{group.readingMaterial}</span>
           )}
-        </h4>
+        </h5>
       </div>
     );
   };
