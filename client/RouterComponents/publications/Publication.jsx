@@ -35,17 +35,10 @@ class Publication extends React.PureComponent {
   getTitle = publication => {
     return (
       <div>
-        <h3>{publication.title}</h3>
-        <h5>by: {publication.authors}</h5>
-        <div>
-          <Button
-            icon="download"
-            href={publication.linkToDigitalCopy}
-            target="_blank"
-          >
-            Download
-          </Button>
-        </div>
+        <h2 style={{ marginBottom: 0 }}>{publication.title}</h2>
+        <h4 style={{ fontWeight: 300 }}>
+          <em>{publication.authors}</em>
+        </h4>
       </div>
     );
   };
@@ -56,7 +49,12 @@ class Publication extends React.PureComponent {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <b>{publication.format}</b>
           <Divider type="vertical" />
-          <Link to={`/edit-publication/${publication._id}`}>Edit</Link>
+          <Link
+            to={`/edit-publication/${publication._id}`}
+            style={{ position: 'absolute', top: 24, right: 24 }}
+          >
+            Edit
+          </Link>
         </div>
       );
     } else {
@@ -77,12 +75,6 @@ class Publication extends React.PureComponent {
 
     const isAdmin = this.isAdmin();
 
-    const titleStyle = {
-      marginLeft: 24,
-      fontWeigth: 300,
-      color: '#0g0g0g'
-    };
-
     return (
       <div>
         <div style={{ padding: 12 }}>
@@ -93,21 +85,31 @@ class Publication extends React.PureComponent {
 
         {!isLoading && publication ? (
           <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
-            <Col md={4} />
             <Col sm={24} md={12}>
               <Card
-                title={this.getTitle(publication)}
                 bordered
-                extra={this.getExtra(publication, isAdmin)}
                 style={{ width: '100%', marginBottom: 0 }}
                 cover={
                   publication.imageUrl ? (
                     <img alt="publication-image" src={publication.imageUrl} />
                   ) : null
                 }
-              >
-                <Meta description={publication.description} />
-              </Card>
+                bodyStyle={{ display: 'none' }}
+              />
+            </Col>
+            <Col sm={24} md={12} style={{ position: 'relative', padding: 24 }}>
+              {this.getTitle(publication)}
+              {this.getExtra(publication, isAdmin)}
+              <br />
+              <div style={{ whiteSpace: 'pre-line' }}>
+                <p>
+                  {publication.purchaseInfo} <br />{' '}
+                  <a href={publication.linkToDigitalCopy} target="_blank">
+                    Download
+                  </a>
+                </p>
+                <p>{publication.description}</p>
+              </div>
             </Col>
           </Row>
         ) : (

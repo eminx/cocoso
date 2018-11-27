@@ -259,8 +259,8 @@ class LayoutPage extends React.Component {
             <b>Groups</b>
           </Link>
 
-          <Link to="/documents">
-            <b>Documents</b>
+          <Link to="/publications">
+            <b>Community Press</b>
           </Link>
         </div>
 

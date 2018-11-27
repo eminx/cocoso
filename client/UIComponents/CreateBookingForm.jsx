@@ -27,14 +27,27 @@ class CreateBookingForm extends React.Component {
     isMultipleDay: false
   };
 
+  componentDidMount() {
+    if (this.props.bookingData) {
+      this.setIsMultiDay();
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.bookingData && !prevProps.bookingData) {
+      this.setIsMultiDay();
+    }
+  }
+
+  setIsMultiDay = () => {
     const { bookingData } = this.props;
-    if (bookingData.isMultipleDay !== this.state.isMultipleDay) {
+
+    if (bookingData) {
       this.setState({
         isMultipleDay: bookingData.isMultipleDay
       });
     }
-  }
+  };
 
   addSpace = name => {
     Meteor.call('addSpace', name, (err, res) => {
@@ -106,11 +119,7 @@ class CreateBookingForm extends React.Component {
       bookingData,
       currentUser
     } = this.props;
-    const { addSpaceModal } = this.state;
-
-    const isMultipleDay = bookingData
-      ? bookingData.isMultipleDay
-      : this.state.bookingData.isMultipleDay;
+    const { addSpaceModal, isMultipleDay } = this.state;
 
     const formItemLayout = {
       labelCol: { span: 8 },

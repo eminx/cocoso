@@ -47,7 +47,7 @@ Meteor.methods({
     publicationId,
     formValues,
     imageUrl,
-    documentUrl,
+    linkToDigitalCopy,
     documentId
   ) {
     const user = Meteor.user();
@@ -58,16 +58,17 @@ Meteor.methods({
     const thePublication = Publications.findOne(publicationId);
     if (user._id !== thePublication.adminId) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
 
+    check(publicationId, String);
     check(formValues.title, String);
     check(formValues.authors, String);
     check(formValues.format, String);
     check(formValues.publishDate, String);
     check(formValues.description, String);
-    check(formValues.readingMaterial, String);
-    check(documentUrl, String);
+    check(formValues.purchaseInfo, String);
+    check(imageUrl, String);
+    check(linkToDigitalCopy, String);
     check(documentId, String);
 
     try {

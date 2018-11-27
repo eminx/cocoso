@@ -26,7 +26,6 @@ function shortenDescription(str) {
 
 class DocumentsList extends React.PureComponent {
   getExtra = doc => {
-    console.log(doc);
     return (
       <div>
         <em> {doc.uploadedByName}</em>

@@ -227,6 +227,14 @@ class EditGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
+        {groupData && (
+          <div style={{ marginBottom: 12 }}>
+            <Link to={`/group/${groupData._id}`}>
+              <Button icon="arrow-left">{groupData.title}</Button>
+            </Link>
+          </div>
+        )}
+
         <h1>Edit your Group</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -84,7 +85,7 @@ class EditPublication extends React.Component {
       } else {
         Meteor.call(
           'createDocument',
-          values.readingMaterial,
+          values.title,
           downloadUrl,
           'publication',
           (error, respond) => {
@@ -140,7 +141,8 @@ class EditPublication extends React.Component {
     } = this.state;
     const { publicationData } = this.props;
     const imageUrl = uploadedImage || publicationData.imageUrl;
-    const documentUrl = uploadedDocumentUrl || publicationData.documentUrl;
+    const linkToDigitalCopy =
+      uploadedDocumentUrl || publicationData.linkToDigitalCopy;
     const documentId = uploadedDocumentId || publicationData.documentId;
 
     Meteor.call(
@@ -148,10 +150,11 @@ class EditPublication extends React.Component {
       publicationData._id,
       values,
       imageUrl,
-      documentUrl,
+      linkToDigitalCopy,
       documentId,
       (error, result) => {
         if (error) {
+          console.log(error);
           this.setState({
             isLoading: false,
             isError: true
@@ -227,6 +230,14 @@ class EditPublication extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
+        {publicationData && (
+          <div style={{ marginBottom: 12 }}>
+            <Link to={`/publication/${publicationData._id}`}>
+              <Button icon="arrow-left">{publicationData.title}</Button>
+            </Link>
+          </div>
+        )}
+
         <h1>Edit your Publication</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
@@ -254,7 +265,7 @@ class EditPublication extends React.Component {
               }
               setUploadableDocument={this.setUploadableDocument}
               uploadableDocument={
-                (publicationData && publicationData.documentUrl) ||
+                (publicationData && publicationData.linkToDigitalCopy) ||
                 uploadableDocument
               }
             />
