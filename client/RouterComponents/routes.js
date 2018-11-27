@@ -18,6 +18,11 @@ import EditGroupContainer from './groups/EditGroupContainer';
 import GroupsListContainer from './groups/GroupsListContainer';
 import GroupContainer from './groups/GroupContainer';
 
+import NewPublicationContainer from './publications/NewPublicationContainer';
+import EditPublicationContainer from './publications/EditPublicationContainer';
+import PublicationsListContainer from './publications/PublicationsListContainer';
+import PublicationContainer from './publications/PublicationContainer';
+
 import PageContainer from './pages/PageContainer';
 import NewPageContainer from './pages/NewPageContainer';
 import EditPageContainer from './pages/EditPageContainer';
@@ -44,6 +49,18 @@ export const renderRoutes = () => (
           <Route path="/groups/" component={GroupsListContainer} />
           <Route path="/group/:id" component={GroupContainer} />
           <Route path="/edit-group/:id/" component={EditGroupContainer} />
+
+          <Route
+            exact
+            path="/new-publication"
+            component={NewPublicationContainer}
+          />
+          <Route path="/publications/" component={PublicationsListContainer} />
+          <Route path="/publication/:id" component={PublicationContainer} />
+          <Route
+            path="/edit-publication/:id/"
+            component={EditPublicationContainer}
+          />
 
           <Route exact path="/new-page" component={NewPageContainer} />
           <Route path="/page/:id" component={PageContainer} />

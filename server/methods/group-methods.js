@@ -118,7 +118,7 @@ Meteor.methods({
     }
 
     try {
-      Groups.remove(groupId, true);
+      Groups.remove(groupId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

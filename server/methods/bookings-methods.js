@@ -117,7 +117,7 @@ Meteor.methods({
     }
 
     try {
-      Gatherings.remove(bookingId, true);
+      Gatherings.remove(bookingId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

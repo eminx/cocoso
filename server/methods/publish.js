@@ -47,6 +47,13 @@ Meteor.publish('groups', function() {
   // }
 });
 
+Meteor.publish('publications', function() {
+  return Publications.find({
+    isPublished: true
+  });
+  // }
+});
+
 Meteor.publish('gathering', function(id) {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
@@ -81,6 +88,12 @@ Meteor.publish('gathering', function(id) {
 
 Meteor.publish('group', function(id) {
   return Groups.find({
+    _id: id
+  });
+});
+
+Meteor.publish('publication', function(id) {
+  return Publications.find({
     _id: id
   });
 });

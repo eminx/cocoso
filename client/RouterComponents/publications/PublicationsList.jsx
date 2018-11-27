@@ -18,36 +18,38 @@ function shortenDescription(str) {
     .join(' ');
 }
 
-class GroupsList extends React.PureComponent {
-  getTitle = group => {
+class PublicationsList extends React.PureComponent {
+  getTitle = publication => {
     return (
       <div>
         <h3>
-          <Link to={`/group/${group._id}`}>{group.title}</Link>
+          <Link to={`/publication/${publication._id}`}>
+            {publication.title}
+          </Link>
         </h3>
         <h5>
-          reading: <b>{group.readingMaterial}</b>
+          by: <b>{publication.authors}</b>
         </h5>
       </div>
     );
   };
 
-  getExtra = group => {
+  getExtra = publication => {
     return (
       <div>
-        <b>{group.members.length + ' / ' + group.capacity}</b>
+        <b>{publication.format}</b>
         <br />
-        created by {group.adminUsername}
+        created by {publication.adminUsername}
         <br />
         <span style={{ fontSize: 10 }}>
-          {moment(group.creationDate).format('Do MMM YYYY')}
+          published: {moment(publication.publishDate).format('Do MMM YYYY')}
         </span>
       </div>
     );
   };
 
   render() {
-    const { isLoading, currentUser, groupsData } = this.props;
+    const { isLoading, currentUser, publicationsData } = this.props;
 
     if (isLoading) {
       return (
@@ -57,7 +59,7 @@ class GroupsList extends React.PureComponent {
       );
     }
 
-    const groupsSorted = groupsData.sort(compareForSort);
+    const publicationsSorted = publicationsData.sort(compareForSort);
 
     const centerStyle = {
       display: 'flex',
@@ -70,33 +72,33 @@ class GroupsList extends React.PureComponent {
       <Row gutter={24}>
         <Col md={8}>
           <div style={centerStyle}>
-            <Link to="/new-group">
+            <Link to="/new-publication">
               <Button type="primary" component="span">
-                New Group
+                New Publication
               </Button>
             </Link>
           </div>
         </Col>
 
         <Col md={14} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Groups</h2>
+          <h2 style={{ textAlign: 'center' }}>Publications</h2>
 
           {/* <div style={centerStyle}>
             <RadioGroup defaultValue="ongoing" size="large">
               <RadioButton value="ongoing">Ongoing</RadioButton>
-              <RadioButton value="my-groups">My Groups</RadioButton>
+              <RadioButton value="my-publications">My Publications</RadioButton>
               <RadioButton value="archived">Archived</RadioButton>
             </RadioGroup>
           </div> */}
 
           <List
-            dataSource={groupsSorted.reverse()}
-            renderItem={group => (
+            dataSource={publicationsSorted.reverse()}
+            renderItem={publication => (
               <ListItem style={{ paddingBottom: 0 }}>
                 <Card
-                  title={this.getTitle(group)}
+                  title={this.getTitle(publication)}
                   bordered
-                  extra={this.getExtra(group)}
+                  extra={this.getExtra(publication)}
                   style={{ width: '100%', marginBottom: 0 }}
                   className="empty-card-body"
                 />
@@ -111,4 +113,4 @@ class GroupsList extends React.PureComponent {
   }
 }
 
-export default GroupsList;
+export default PublicationsList;
