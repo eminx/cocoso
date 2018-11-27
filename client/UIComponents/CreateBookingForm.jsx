@@ -27,21 +27,13 @@ class CreateBookingForm extends React.Component {
     isMultipleDay: false
   };
 
-  componentDidMount() {
-    if (this.props.bookingData) {
+  componentDidUpdate(prevProps, prevState) {
+    const { bookingData } = this.props;
+    if (bookingData.isMultipleDay !== this.state.isMultipleDay) {
       this.setState({
-        isMultipleDay: this.props.bookingData.isMultipleDay || false
+        isMultipleDay: bookingData.isMultipleDay
       });
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // const { bookingData } = this.props;
-    // if (bookingData) {
-    //   this.setState({
-    //     isMultipleDay: bookingData.isMultipleDay
-    //   })
-    // }
   }
 
   addSpace = name => {
@@ -114,7 +106,11 @@ class CreateBookingForm extends React.Component {
       bookingData,
       currentUser
     } = this.props;
-    const { addSpaceModal, isMultipleDay } = this.state;
+    const { addSpaceModal } = this.state;
+
+    const isMultipleDay = bookingData
+      ? bookingData.isMultipleDay
+      : this.state.bookingData.isMultipleDay;
 
     const formItemLayout = {
       labelCol: { span: 8 },
