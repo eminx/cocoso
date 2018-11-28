@@ -262,6 +262,12 @@ class LayoutPage extends React.Component {
           <Link to="/publications">
             <b>Community Press</b>
           </Link>
+
+          {currentUser && currentUser.isSuperAdmin && (
+            <Link to="/users">
+              <b>Users</b>
+            </Link>
+          )}
         </div>
 
         <Layout className="layout">

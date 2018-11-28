@@ -12,9 +12,9 @@ const yesterday = moment(new Date()).add(-1, 'days');
 class Home extends React.Component {
   state = {
     mode: 'list',
-    goto: null,
+    editBooking: null,
     calendarFilter: 'All rooms',
-    modal: null
+    selectedBooking: null
   };
 
   handleModeChange = e => {
@@ -22,47 +22,10 @@ class Home extends React.Component {
     this.setState({ mode });
   };
 
-  handleSelect = (booking, e) => {
-    const { currentUser } = this.props;
-
-    Modal.info({
-      title: (
-        <div>
-          <h2>{booking.title}</h2> <h4>{this.getBookingTimes(booking)}</h4>
-        </div>
-      ),
-      content: (
-        <div>
-          <Row>
-            <Col span={12}>booked by: </Col>
-            <Col span={12}>
-              <b>{booking.authorName}</b>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>space/equipment: </Col>
-            <Col span={12}>
-              <b>{booking.room}</b>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>information:</Col>
-            <Col span={12}>
-              <b>{booking.longDescription}</b>
-            </Col>
-          </Row>
-
-          {currentUser && currentUser.username === booking.authorName && (
-            <div style={{ position: 'absolute', bottom: 24, right: 96 }}>
-              <a href={`/edit-booking/${booking._id}`}>
-                <Button>Edit</Button>
-              </a>
-            </div>
-          )}
-        </div>
-      ),
-      okType: 'secondary',
-      closable: true
+  handleSelectBooking = (booking, e) => {
+    e.preventDefault();
+    this.setState({
+      selectedBooking: booking
     });
   };
 
@@ -74,13 +37,13 @@ class Home extends React.Component {
 
   handleCloseModal = () => {
     this.setState({
-      modal: null
+      selectedBooking: null
     });
   };
 
-  handleGotoBooking = () => {
+  handleEditBooking = () => {
     this.setState({
-      goto: this.state.modal._id
+      editBooking: true
     });
   };
 
@@ -88,21 +51,39 @@ class Home extends React.Component {
     if (booking) {
       if (booking.isMultipleDay || booking.isFullDay) {
         return (
-          moment(booking.startDate).format('Do MMM') +
+          moment(booking.startDate).format('DD MMM') +
           ' ' +
           booking.startTime +
           ' – ' +
-          moment(booking.endDate).format('Do MMM') +
+          moment(booking.endDate).format('DD MMM') +
           ' ' +
           booking.endTime
         );
       } else if (booking.startTime) {
         return `${booking.startTime}–${booking.endTime} ${moment(
           booking.startDate
-        ).format('Do MMMM')}`;
+        ).format('DD MMMM')}`;
       } else {
         return '';
       }
+    }
+  };
+
+  isCreator = () => {
+    const { currentUser } = this.props;
+    const { selectedBooking } = this.state;
+
+    if (!selectedBooking || !currentUser) {
+      return false;
+    }
+
+    if (
+      selectedBooking &&
+      currentUser &&
+      currentUser.username === selectedBooking.authorName
+    ) {
+      console.log(currentUser, selectedBooking);
+      return true;
     }
   };
 
@@ -110,7 +91,7 @@ class Home extends React.Component {
     const { isLoading, currentUser, placesList } = this.props;
     const bookings = this.props.bookingsList;
     const images = this.props.imagesArray;
-    const { mode, goto, modal, calendarFilter } = this.state;
+    const { editBooking, calendarFilter, selectedBooking } = this.state;
 
     const futureBookings = [];
 
@@ -128,13 +109,9 @@ class Home extends React.Component {
       );
     }
 
-    if (goto) {
-      return <Redirect to={`/booking/${goto}`} />;
+    if (editBooking) {
+      return <Redirect to={`/edit-booking/${selectedBooking._id}`} />;
     }
-
-    const modalStyle = {
-      width: 80
-    };
 
     const centerStyle = {
       display: 'flex',
@@ -198,12 +175,47 @@ class Home extends React.Component {
                 <CalendarView
                   bookings={filteredBookings}
                   images={images}
-                  onSelect={this.handleSelect}
+                  onSelect={this.handleSelectBooking}
                 />
               )}
             </div>
           </div>
         </Row>
+
+        <Modal
+          visible={Boolean(selectedBooking)}
+          okText="Edit"
+          cancelText="Close"
+          okButtonProps={!this.isCreator() && { style: { display: 'none' } }}
+          onOk={this.handleEditBooking}
+          onCancel={this.handleCloseModal}
+          title={
+            <div>
+              <h2>{selectedBooking && selectedBooking.title}</h2>{' '}
+              <h4>{this.getBookingTimes(selectedBooking)}</h4>
+            </div>
+          }
+          destroyOnClose
+        >
+          <Row>
+            <Col span={12}>booked by: </Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.authorName}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>space/equipment: </Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.room}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>information:</Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.longDescription}</b>
+            </Col>
+          </Row>
+        </Modal>
       </div>
     );
   }

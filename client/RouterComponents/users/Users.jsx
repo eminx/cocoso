@@ -53,8 +53,8 @@ class Users extends React.PureComponent {
       <Row gutter={24}>
         <Col md={8} />
 
-        <Col md={14}>
-          <h2 style={{ paddingLeft: 24 }}>Members </h2>
+        <Col md={14} style={{ padding: 24 }}>
+          <h2>Members </h2>
           <List
             dataSource={users}
             renderItem={user => (

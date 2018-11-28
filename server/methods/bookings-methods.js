@@ -95,6 +95,7 @@ Meteor.methods({
           startTime: formValues.timePickerStart,
           endTime: formValues.timePickerEnd,
           duration: formValues.duration,
+          isMultipleDay: formValues.isMultipleDay,
           latestUpdate: new Date()
         }
       });

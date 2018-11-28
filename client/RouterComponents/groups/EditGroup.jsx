@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
