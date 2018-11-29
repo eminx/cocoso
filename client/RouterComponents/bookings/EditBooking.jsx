@@ -107,10 +107,8 @@ class EditBooking extends React.Component {
       newBookingId
     } = this.state;
 
-    if (isSuccess && newBookingId) {
+    if (isSuccess) {
       successCreation();
-      return <Redirect to={`/booking/${newBookingId}`} />;
-    } else if (isSuccess) {
       return <Redirect to="/" />;
     }
 

@@ -207,9 +207,18 @@
 }
 
 .rbc-calendar .rbc-row-bg .rbc-day-bg.rbc-today,
-.rbc-today {
+.rbc-calendar .rbc-today {
   background-color: #fff;
   border: 1px solid #ea3924;
+}
+.rbc-calendar .rbc-time-content > * + * > * {
+  border-left: 1px dashed #030303;
+}
+.rbc-calendar .rbc-timeslot-group {
+  border-bottom: 1px solid #030303;
+}
+.rbc-calendar .rbc-time-content {
+  border-top: none;
 }
 
 .rbc-toolbar .rbc-btn-group button:active,

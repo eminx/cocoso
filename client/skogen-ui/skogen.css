@@ -1,9 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
 
+::selection {
+  background-color: #ea3924 !important;
+}
+
+::-moz-selection {
+  background-color: #ea3924 !important;
+}
+
 *,
 html,
 html > body > #render-target,
-.word-break {
+.word-break,
+body .ant-input {
   font-family: 'Roboto', sans-serif;
   color: #030303;
   word-break: break-word;
@@ -81,24 +90,25 @@ button.ant-btn.ant-btn-primary:focus {
   border: none;
 }
 
-input.ant-input,
-input.ant-input-number-input,
-input.ant-time-picker-input,
-.ant-select > .ant-select-selection,
-textarea.ant-input {
+body .ant-input,
+body input.ant-input-number-input,
+body input.ant-time-picker-input,
+body .ant-select > .ant-select-selection,
+body textarea.ant-input {
   border: 1px solid #030303;
   border-radius: 0;
   color: #030303;
 }
-.ant-input:focus,
-.ant-input:hover,
-.ant-time-picker-input:hover,
-.ant-time-picker-input:focus,
-.ant-input-number-input:hover,
-.ant-input-number-input:focus,
-.ant-select-selection:hover,
-.ant-select-selection:focus {
+body .ant-input:focus,
+body .ant-input:hover,
+body .ant-time-picker-input:hover,
+body .ant-time-picker-input:focus,
+body .ant-input-number-input:hover,
+body .ant-input-number-input:focus,
+body .ant-select-selection:hover,
+body .ant-select-selection:focus {
   border-color: #797979;
+  box-shadow: 0 0 0 2px rgba(251, 213, 208, 0.5);
 }
 
 .ant-layout .ant-switch {

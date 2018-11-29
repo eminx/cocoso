@@ -82,7 +82,6 @@ class Home extends React.Component {
       currentUser &&
       currentUser.username === selectedBooking.authorName
     ) {
-      console.log(currentUser, selectedBooking);
       return true;
     }
   };
