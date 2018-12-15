@@ -24,10 +24,12 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.room, String);
-    check(formValues.dateStart, String);
-    check(formValues.dateEnd, String);
-    check(formValues.timePickerStart, String);
-    check(formValues.timePickerEnd, String);
+    formValues.datesAndTimes.forEach(recurrence => {
+      check(recurrence.startDate, String);
+      check(recurrence.endDate, String);
+      check(recurrence.startTime, String);
+      check(recurrence.endTime, String);
+    });
     check(formValues.isPublicActivity, Boolean);
 
     const roomIndex = getRoomIndex(formValues.room);
@@ -42,15 +44,11 @@ Meteor.methods({
           longDescription: formValues.longDescription,
           room: formValues.room,
           capacity: formValues.capacity || 20,
+          datesAndTimes: formValues.datesAndTimes,
           roomIndex: roomIndex,
-          startDate: formValues.dateStart,
-          endDate: formValues.dateEnd,
-          startTime: formValues.timePickerStart || undefined,
-          endTime: formValues.timePickerEnd || undefined,
           imageUrl: uploadedImage || null,
           isSentForReview: false,
           isPublicActivity: formValues.isPublicActivity,
-          isMultipleDay: formValues.isMultipleDay,
           isPublished: true,
           creationDate: new Date()
         },
@@ -75,16 +73,17 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.room, String);
-    check(formValues.dateStart, String);
-    check(formValues.dateEnd, String);
-    check(formValues.timePickerStart, String);
-    check(formValues.timePickerEnd, String);
+    formValues.datesAndTimes.forEach(recurrence => {
+      check(recurrence.startDate, String);
+      check(recurrence.endDate, String);
+      check(recurrence.startTime, String);
+      check(recurrence.endTime, String);
+    });
 
     const roomIndex = getRoomIndex(formValues.room);
     const theG = Gatherings.findOne(bookingId);
     if (user._id !== theG.authorId) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
 
     try {
@@ -94,12 +93,8 @@ Meteor.methods({
           longDescription: formValues.longDescription,
           room: formValues.room,
           roomIndex: roomIndex,
-          startDate: formValues.dateStart,
-          endDate: formValues.dateEnd,
-          startTime: formValues.timePickerStart,
-          endTime: formValues.timePickerEnd,
+          datesAndTimes: formValues.datesAndTimes,
           isPublicActivity: formValues.isPublicActivity,
-          isMultipleDay: formValues.isMultipleDay,
           imageUrl,
           latestUpdate: new Date()
         }

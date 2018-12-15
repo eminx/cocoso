@@ -18,31 +18,35 @@ export default (HomeContainer = withTracker(props => {
   const placesList = Places ? Places.find().fetch() : null;
 
   const allActivities = [];
-  bookingsList.forEach(booking => {
-    booking.datesAndTimes.forEach(recurrence => {
-      allActivities.push({
-        title: booking.title,
-        start: moment(
-          recurrence.startDate + recurrence.startTime,
-          'YYYY-MM-DD HH:mm'
-        ).toDate(),
-        end: moment(
-          recurrence.endDate + recurrence.endTime,
-          'YYYY-MM-DD HH:mm'
-        ).toDate(),
-        startDate: recurrence.startDate,
-        startTime: recurrence.startTime,
-        endDate: recurrence.endDate,
-        endTime: recurrence.endTime,
-        authorName: booking.authorName,
-        room: booking.room,
-        longDescription: booking.longDescription,
-        isMultipleDay: recurrence.isMultipleDay,
-        roomIndex: booking.roomIndex,
-        _id: booking._id
-      });
+  if (bookingsList) {
+    bookingsList.forEach(booking => {
+      if (booking.datesAndTimes) {
+        booking.datesAndTimes.forEach(recurrence => {
+          allActivities.push({
+            title: booking.title,
+            start: moment(
+              recurrence.startDate + recurrence.startTime,
+              'YYYY-MM-DD HH:mm'
+            ).toDate(),
+            end: moment(
+              recurrence.endDate + recurrence.endTime,
+              'YYYY-MM-DD HH:mm'
+            ).toDate(),
+            startDate: recurrence.startDate,
+            startTime: recurrence.startTime,
+            endDate: recurrence.endDate,
+            endTime: recurrence.endTime,
+            authorName: booking.authorName,
+            room: booking.room,
+            longDescription: booking.longDescription,
+            isMultipleDay: recurrence.isMultipleDay,
+            roomIndex: booking.roomIndex,
+            _id: booking._id
+          });
+        });
+      }
     });
-  });
+  }
 
   return {
     isLoading,

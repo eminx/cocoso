@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Row,
   Col,
   Form,
   Input,
@@ -21,11 +22,11 @@ const FormItem = Form.Item;
 const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
 
-const emptyDateAndTime = {
-  dateStart: null,
-  dateEnd: null,
-  timeStart: null,
-  timeEnd: null
+let emptyDateAndTime = {
+  startDate: null,
+  endDate: null,
+  startTime: null,
+  endTime: null
 };
 
 class CreateBookingForm extends Component {
@@ -50,8 +51,18 @@ class CreateBookingForm extends Component {
       return;
     }
 
+    const datesAndTimesWithMoment = bookingData.datesAndTimes.map(
+      recurrence => ({
+        ...recurrence,
+        startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
+        startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
+        endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
+        endTimeMoment: moment(recurrence.endTime, 'HH:mm')
+      })
+    );
+
     this.setState({
-      datesAndTimes: bookingData.datesAndTimes
+      datesAndTimes: datesAndTimesWithMoment
     });
   };
 
@@ -75,6 +86,7 @@ class CreateBookingForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const { datesAndTimes } = this.state;
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
@@ -90,26 +102,19 @@ class CreateBookingForm extends Component {
         return;
       }
 
-      const startTime = fieldsValue['timePickerMultiDayStart'].format('HH:mm');
-      const endTime = fieldsValue['timePickerMultiDayFinish'].format('HH:mm');
-      let startDate = fieldsValue['datePickerMultiDayStart'];
-      startDate = startDate.format('YYYY-MM-DD');
-      let endDate = fieldsValue['datePickerMultiDayFinish'];
-      endDate = endDate.format('YYYY-MM-DD');
+      const datesAndTimesWithoutMoment = datesAndTimes.map(recurrence => ({
+        startDate: recurrence.startDate,
+        startTime: recurrence.startTime,
+        endDate: recurrence.endDate,
+        endTime: recurrence.endTime
+      }));
 
       const values = {
         title: fieldsValue['title'],
         room: fieldsValue['room'],
         longDescription: fieldsValue['longDescription'],
-        duration: fieldsValue['duration'] || null,
-        dateStart: startDate,
-        dateEnd: endDate,
-        timePickerStart: startTime,
-        timePickerEnd: endTime,
-        isMultipleDay: startDate !== endDate
+        datesAndTimes: datesAndTimesWithoutMoment
       };
-
-      values.datePicker = null;
 
       if (!err) {
         this.props.registerGatheringLocally(values);
@@ -119,13 +124,7 @@ class CreateBookingForm extends Component {
 
   renderDateTime = () => {
     const { datesAndTimes } = this.state;
-    const { bookingData, removeRecurrence } = this.props;
-    const { getFieldDecorator } = this.props.form;
-
-    const props = {
-      bookingData,
-      getFieldDecorator
-    };
+    const { removeRecurrence } = this.props;
 
     return (
       <div style={{ marginBottom: 12 }}>
@@ -134,16 +133,16 @@ class CreateBookingForm extends Component {
             key={index}
             recurrence={recurrence}
             handleStartDateChange={(date, dateString) =>
-              this.handleDateAndTimeChange(date, dateString, index, 'dateStart')
+              this.handleDateAndTimeChange(date, dateString, index, 'startDate')
             }
             handleStartTimeChange={(time, timeString) =>
-              this.handleDateAndTimeChange(time, timeString, index, 'timeStart')
+              this.handleDateAndTimeChange(time, timeString, index, 'startTime')
             }
             handleFinishDateChange={(date, dateString) =>
-              this.handleDateAndTimeChange(date, dateString, index, 'dateEnd')
+              this.handleDateAndTimeChange(date, dateString, index, 'endDate')
             }
             handleFinishTimeChange={(time, timeString) =>
-              this.handleDateAndTimeChange(time, timeString, index, 'timeEnd')
+              this.handleDateAndTimeChange(time, timeString, index, 'endTime')
             }
           />
         ))}
@@ -157,7 +156,7 @@ class CreateBookingForm extends Component {
           }}
         >
           <Icon
-            style={{ fontSize: 48 }}
+            style={{ fontSize: 48, cursor: 'pointer' }}
             type="plus-circle"
             onClick={this.addRecurrence}
           />
@@ -170,51 +169,11 @@ class CreateBookingForm extends Component {
     const { datesAndTimes } = this.state;
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
-        item[entity] = date;
+        item[entity + 'Moment'] = date;
+        item[entity] = dateString;
       }
       return item;
     });
-    this.setState({
-      datesAndTimes: newDatesAndTimes
-    });
-  };
-
-  handleStartDateChange = (date, dateString, index) => {
-    const { datesAndTimes } = this.state;
-    const newDatesAndTimes = datesAndTimes.map((item, i) => {
-      if (index === i) {
-        return {
-          ...item,
-          dateStart: date
-        };
-      } else {
-        return item;
-      }
-    });
-    this.setState({
-      datesAndTimes: newDatesAndTimes
-    });
-  };
-
-  handleStartTimeChange = (time, timeString, index) => {
-    const { datesAndTimes } = this.state;
-    const newDatesAndTimes = (datesAndTimes[index].startTime = time);
-    this.setState({
-      datesAndTimes: newDatesAndTimes
-    });
-  };
-
-  handleFinishDateChange = (date, dateString, index) => {
-    const { datesAndTimes } = this.state;
-    const newDatesAndTimes = (datesAndTimes[index].endDate = date);
-    this.setState({
-      datesAndTimes: newDatesAndTimes
-    });
-  };
-
-  handleFinishTimeChange = (time, timeString, index) => {
-    const { datesAndTimes } = this.state;
-    const newDatesAndTimes = (datesAndTimes[index].endTime = time);
     this.setState({
       datesAndTimes: newDatesAndTimes
     });
@@ -251,7 +210,7 @@ class CreateBookingForm extends Component {
                 }
               ],
               initialValue: bookingData ? bookingData.title : null
-            })(<Input placeholder="Booking title" />)}
+            })(<Input placeholder="Title" />)}
           </FormItem>
 
           <FormItem>
@@ -391,7 +350,7 @@ class DatesAndTimes extends Component {
         <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
             onChange={handleStartDateChange}
-            value={recurrence.dateStart}
+            value={recurrence.startDateMoment}
             placeholder="Start date"
           />
         </FormItem>
@@ -399,7 +358,7 @@ class DatesAndTimes extends Component {
         <FormItem style={{ marginBottom: 12 }}>
           <TimePicker
             onChange={handleStartTimeChange}
-            value={recurrence.timeStart}
+            value={recurrence.startTimeMoment}
             format="HH:mm"
             minuteStep={30}
             placeholder="Start time"
@@ -410,14 +369,14 @@ class DatesAndTimes extends Component {
           <DatePicker
             placeholder="Finish date"
             onChange={handleFinishDateChange}
-            value={recurrence.dateEnd}
+            value={recurrence.endDateMoment}
           />
         </FormItem>
 
         <FormItem style={{ marginBottom: 12 }}>
           <TimePicker
             onChange={handleFinishTimeChange}
-            value={recurrence.timeEnd}
+            value={recurrence.endTimeMoment}
             format="HH:mm"
             minuteStep={30}
             placeholder="Finish time"

@@ -27,8 +27,9 @@ class NewBookSpace extends React.Component {
 
   registerGatheringLocally = values => {
     values.authorName = this.props.currentUser.username || 'emo';
+
     this.setState({
-      values: values,
+      values,
       modalConfirm: true
     });
   };
