@@ -37,6 +37,28 @@ const notifications = [
   }
 ];
 
+const menu = [
+  {
+    label: 'Making It Work',
+    route: '/'
+  },
+  {
+    label: 'Groups',
+    route: '/groups'
+  },
+  {
+    label: 'Community Press',
+    route: '/publications'
+  }
+];
+
+const adminMenu = [
+  {
+    label: 'Users',
+    route: '/users'
+  }
+];
+
 const NotificationList = ({ list }) => (
   <List
     size="small"
@@ -98,95 +120,6 @@ class LayoutPage extends React.Component {
 
     return (
       <div className="main-viewport">
-        {/* <Drawer
-          // title="MENU"
-          placement="right"
-          onClose={this.closeMenu}
-          visible={this.state.menuOpen}
-          closable
-        >
-          <Menu
-            mode="inline"
-            onClick={this.closeMenu}
-            style={{ borderRight: 'none' }}
-          >
-            <MenuItemGroup key="making-it-work" title="MAKING IT WORK">
-              <MenuItem key="calendar">
-                <Link to="/">
-                  <b>Calendar</b>
-                </Link>
-              </MenuItem>
-
-              <MenuItem key="new-booking">
-                <Link to="/new-booking">
-                  <b>Book</b>
-                </Link>
-              </MenuItem>
-
-              <MenuItem key="documents">
-                <Link to="/documents">
-                  <b>Documents</b>
-                </Link>
-              </MenuItem>
-            </MenuItemGroup>
-
-            <MenuItem key="divider-2" style={{ padding: 0, margin: 0 }}>
-              <Divider style={{ padding: 0 }} />
-            </MenuItem>
-
-            <MenuItemGroup key="the-school" title="THE SCHOOL">
-              <MenuItem key="groups">
-                <Link to="/groups">
-                  <b>Groups</b>
-                </Link>
-              </MenuItem>
-
-              <MenuItem key="new-group">
-                <Link to="/new-group">
-                  <b>New Group</b>
-                </Link>
-              </MenuItem>
-
-              <MenuItem key="about-the-school">
-                <Link to="/about-the-school">
-                  <b>About the School</b>
-                </Link>
-              </MenuItem>
-            </MenuItemGroup>
-
-            <MenuItem key="divider-3" style={{ padding: 0, margin: 0 }}>
-              <Divider style={{ padding: 0 }} />
-            </MenuItem>
-
-            <MenuItem key="my-profile">
-              <Link to="/my-profile">
-                <b>My Profile</b>
-              </Link>
-            </MenuItem>
-
-            {currentUser && currentUser.isSuperAdmin && (
-              <MenuItem key="divider-4" style={{ padding: 0, margin: 0 }}>
-                <Divider style={{ padding: 0 }} />
-              </MenuItem>
-            )}
-            {currentUser && currentUser.isSuperAdmin && (
-              <MenuItemGroup key="admin" title="ADMIN">
-                <MenuItem key="pages">
-                  <Link to="/new-page">
-                    <b>New Page</b>
-                  </Link>
-                </MenuItem>
-
-                <MenuItem key="users">
-                  <Link to="/users">
-                    <b>Users</b>
-                  </Link>
-                </MenuItem>
-              </MenuItemGroup>
-            )}
-          </Menu>
-        </Drawer> */}
-
         <div className="header-container">
           <Row className="header-background">
             <Col xs={8} />
@@ -251,23 +184,18 @@ class LayoutPage extends React.Component {
         </div>
 
         <div className="skogen-menu-layout">
-          <Link to="/">
-            <b>Calendar</b>
-          </Link>
-
-          <Link to="/groups">
-            <b>Groups</b>
-          </Link>
-
-          <Link to="/publications">
-            <b>Community Press</b>
-          </Link>
-
-          {currentUser && currentUser.isSuperAdmin && (
-            <Link to="/users">
-              <b>Users</b>
+          {menu.map(item => (
+            <Link to={item.route} key={item.label}>
+              <b>{item.label}</b>
             </Link>
-          )}
+          ))}
+          {currentUser &&
+            currentUser.isSuperAdmin &&
+            adminMenu.map(item => (
+              <Link to={item.route} key={item.label}>
+                <b>{item.label}</b>
+              </Link>
+            ))}
         </div>
 
         <Layout className="layout">

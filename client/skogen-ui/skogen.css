@@ -12,7 +12,8 @@
 html,
 html > body > #render-target,
 .word-break,
-body .ant-input {
+body .ant-input,
+.tags-container .ant-tag {
   font-family: 'Roboto', sans-serif;
   color: #030303;
   word-break: break-word;
@@ -20,6 +21,10 @@ body .ant-input {
 
 body a {
   color: #ea3924;
+}
+
+body a:hover {
+  color: #ad2539;
 }
 
 .main-viewport .layout.ant-layout {
@@ -212,7 +217,7 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
-  padding: 24px;
+  padding: 12px;
   flex-wrap: wrap;
   text-transform: uppercase;
   background-color: rgba(255, 255, 255, 0.9);
@@ -223,6 +228,9 @@ body {
 }
 
 .skogen-menu-layout > a > b {
-  padding: 12px;
   color: #ea3924;
+}
+
+.skogen-menu-layout > a {
+  padding: 6px 12px;
 }

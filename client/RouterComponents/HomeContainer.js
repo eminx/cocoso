@@ -3,8 +3,8 @@ import Home from './Home';
 import moment from 'moment';
 
 export default (HomeContainer = withTracker(props => {
-  //here we can pull out the props.subID and change our Meteor subscription based on it
-  //this is handled on the publication side of things
+  // here we can pull out the props.subID and change our Meteor subscription based on it
+  // this is handled on the publication side of things
 
   // const handle = Meteor.subscribe('myDataSub', props.subID);
 
@@ -17,21 +17,37 @@ export default (HomeContainer = withTracker(props => {
   const placesSub = Meteor.subscribe('places');
   const placesList = Places ? Places.find().fetch() : null;
 
+  const allActivities = [];
   bookingsList.forEach(booking => {
-    booking.start = moment(
-      booking.startDate + booking.startTime,
-      'YYYY-MM-DD HH:mm'
-    ).toDate();
-    booking.end = moment(
-      booking.endDate + booking.endTime,
-      'YYYY-MM-DD HH:mm'
-    ).toDate();
+    booking.datesAndTimes.forEach(recurrence => {
+      allActivities.push({
+        title: booking.title,
+        start: moment(
+          recurrence.startDate + recurrence.startTime,
+          'YYYY-MM-DD HH:mm'
+        ).toDate(),
+        end: moment(
+          recurrence.endDate + recurrence.endTime,
+          'YYYY-MM-DD HH:mm'
+        ).toDate(),
+        startDate: recurrence.startDate,
+        startTime: recurrence.startTime,
+        endDate: recurrence.endDate,
+        endTime: recurrence.endTime,
+        authorName: booking.authorName,
+        room: booking.room,
+        longDescription: booking.longDescription,
+        isMultipleDay: recurrence.isMultipleDay,
+        roomIndex: booking.roomIndex,
+        _id: booking._id
+      });
+    });
   });
 
   return {
     isLoading,
     bookings,
-    bookingsList,
+    allActivities,
     imagesArray,
     currentUser,
     placesList

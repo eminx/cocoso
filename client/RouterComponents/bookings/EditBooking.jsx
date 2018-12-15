@@ -3,7 +3,17 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Affix, Modal, Button } from 'antd/lib';
+import {
+  Row,
+  Col,
+  message,
+  Alert,
+  Affix,
+  Modal,
+  Button,
+  Switch,
+  Divider
+} from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
 const successCreation = () =>
@@ -25,7 +35,74 @@ class EditBooking extends React.Component {
     isError: false,
     newBookingId: null,
     uploadedImage: null,
-    uploadableImage: null
+    uploadableImage: null,
+    uploadableImageLocal: null,
+    isPublicActivity: false,
+    numberOfRecurrence: 0
+  };
+
+  componentDidMount() {
+    this.setPublicActivity();
+    this.setNumberOfRecurrence();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.gatheringData) {
+      this.setPublicActivity();
+    }
+
+    if (!prevProps.gatheringData) {
+      this.setNumberOfRecurrence();
+    }
+  }
+
+  setUploadableImage = e => {
+    const theImageFile = e.file.originFileObj;
+    const reader = new FileReader();
+    reader.readAsDataURL(theImageFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage: theImageFile,
+          uploadableImageLocal: reader.result
+        });
+      },
+      false
+    );
+  };
+
+  setPublicActivity = () => {
+    const { gatheringData } = this.props;
+    if (!gatheringData) {
+      return;
+    }
+
+    this.setState({
+      isPublicActivity: gatheringData.isPublicActivity
+    });
+  };
+
+  setNumberOfRecurrence = () => {
+    const { gatheringData } = this.props;
+    if (!gatheringData) {
+      return;
+    }
+    this.setState({
+      numberOfRecurrence: gatheringData.datesAndTimes.length
+    });
+  };
+
+  addRecurrence = () => {
+    this.setState({
+      numberOfRecurrence: this.state.numberOfRecurrence + 1
+    });
+  };
+
+  removeRecurrence = index => {
+    this.setState({
+      numberOfRecurrence: this.state.numberOfRecurrence + 1
+    });
   };
 
   registerGatheringLocally = values => {
@@ -36,14 +113,46 @@ class EditBooking extends React.Component {
     });
   };
 
+  uploadImage = () => {
+    this.setState({ isLoading: true });
+
+    const { uploadableImage } = this.state;
+
+    if (!uploadableImage) {
+      console.log('No uploadable image');
+      this.updateBooking();
+      return;
+    }
+
+    const upload = new Slingshot.Upload('activityImageUpload');
+
+    upload.send(uploadableImage, (error, downloadUrl) => {
+      if (error) {
+        console.error('Error uploading:', error);
+      } else {
+        this.setState(
+          {
+            uploadedImage: downloadUrl
+          },
+          () => this.updateBooking()
+        );
+      }
+    });
+  };
+
   updateBooking = () => {
-    const { values } = this.state;
+    const { values, isPublicActivity, uploadedImage } = this.state;
     const { gatheringData } = this.props;
+
+    values.isPublicActivity = isPublicActivity;
+
+    const imageUrl = uploadedImage || gatheringData.imageUrl;
 
     Meteor.call(
       'updateBooking',
       values,
       gatheringData._id,
+      imageUrl,
       (error, respond) => {
         if (error) {
           this.setState({
@@ -86,6 +195,12 @@ class EditBooking extends React.Component {
     });
   };
 
+  handlePublicActivitySwitch = value => {
+    this.setState({
+      isPublicActivity: value
+    });
+  };
+
   render() {
     if (!this.props.currentUser) {
       return (
@@ -104,7 +219,10 @@ class EditBooking extends React.Component {
       values,
       isLoading,
       isSuccess,
-      newBookingId
+      newBookingId,
+      uploadableImage,
+      isPublicActivity,
+      numberOfRecurrence
     } = this.state;
 
     if (isSuccess) {
@@ -133,13 +251,30 @@ class EditBooking extends React.Component {
                   <Button onClick={this.showDeleteModal}>Delete</Button>
                 </div>
               )}
+
+            <Row>
+              <h4>public event?</h4>
+              <Switch
+                checked={isPublicActivity}
+                onChange={this.handlePublicActivitySwitch}
+              />
+            </Row>
+
+            <Divider />
+
             <CreateBookingForm
               values={values}
               bookingData={gatheringData}
               registerGatheringLocally={this.registerGatheringLocally}
               setUploadableImage={this.setUploadableImage}
-              uploadableImage={this.state.uploadableImage}
               places={this.props.places}
+              uploadableImage={
+                (gatheringData && gatheringData.imageUrl) || uploadableImage
+              }
+              isPublicActivity={isPublicActivity}
+              numberOfRecurrence={numberOfRecurrence}
+              removeRecurrence={this.removeRecurrence}
+              addRecurrence={this.addRecurrence}
             />
           </Col>
           <Col xs={24} sm={24} md={8}>
@@ -154,7 +289,7 @@ class EditBooking extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={this.updateBooking}
+            onOk={isPublicActivity ? this.uploadImage : this.updateBooking}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

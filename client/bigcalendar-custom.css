@@ -60,7 +60,7 @@
   background-color: rgb(127, 114, 167);
 }
 .tags-container .ant-tag-magenta {
-  background-color: rgba(127, 114, 167, 0.3);
+  /* background-color: rgba(127, 114, 167, 0.3);1*/
   color: rgb(127, 114, 167);
   border: 1px solid rgb(127, 114, 167);
 }
@@ -74,7 +74,7 @@
   background-color: rgb(226, 89, 87);
 }
 .tags-container .ant-tag-red {
-  background-color: rgba(226, 89, 87, 0.3);
+  background-color: rgba(226, 89, 87, 0.1);
   color: rgb(226, 89, 87);
   border: 1px solid rgb(226, 89, 87);
 }
@@ -84,7 +84,7 @@
   background-color: rgb(89, 18, 38);
 }
 .tags-container .ant-tag-volcano {
-  background-color: rgba(89, 18, 38, 0.3);
+  background-color: rgba(89, 18, 38, 0.1);
   color: rgb(89, 18, 38);
   border: 1px solid rgb(89, 18, 38);
 }
@@ -94,7 +94,7 @@
   background-color: rgb(148, 227, 173);
 }
 .tags-container .ant-tag-orange {
-  background-color: rgba(148, 227, 173, 0.3);
+  background-color: rgba(148, 227, 173, 0.1);
   color: rgb(148, 227, 173);
   border: 1px solid rgb(148, 227, 173);
 }
@@ -104,7 +104,7 @@
   background-color: rgb(246, 113, 26);
 }
 .tags-container .ant-tag-gold {
-  background-color: rgba(246, 113, 26, 0.3);
+  background-color: rgba(246, 113, 26, 0.1);
   color: rgb(246, 113, 26);
   border: 1px solid rgb(246, 113, 26);
 }
@@ -114,7 +114,7 @@
   background-color: rgb(194, 195, 34);
 }
 .tags-container .ant-tag-lime {
-  background-color: rgba(194, 195, 34, 0.3);
+  background-color: rgba(194, 195, 34, 0.1);
   color: rgb(194, 195, 34);
   border: 1px solid rgb(194, 195, 34);
 }
@@ -124,7 +124,7 @@
   background-color: rgb(111, 148, 98);
 }
 .tags-container .ant-tag-green {
-  background-color: rgba(111, 148, 98, 0.3);
+  background-color: rgba(111, 148, 98, 0.1);
   color: rgb(111, 148, 98);
   border: 1px solid rgb(111, 148, 98);
 }
@@ -134,7 +134,7 @@
   background-color: rgb(85, 152, 246);
 }
 .tags-container .ant-tag-cyan {
-  background-color: rgba(85, 152, 246, 0.3);
+  background-color: rgba(85, 152, 246, 0.1);
   color: rgb(85, 152, 246);
   border: 1px solid rgb(85, 152, 246);
 }
@@ -144,7 +144,7 @@
   background-color: rgb(93, 162, 152);
 }
 .tags-container .ant-tag-blue {
-  background-color: rgba(93, 162, 152, 0.3);
+  background-color: rgba(93, 162, 152, 0.1);
   color: rgb(93, 162, 152);
   border: 1px solid rgb(93, 162, 152);
 }
@@ -154,7 +154,7 @@
   background-color: rgb(236, 166, 104);
 }
 .tags-container .ant-tag-geekblue {
-  background-color: rgba(236, 166, 104, 0.3);
+  background-color: rgba(236, 166, 104, 0.1);
   color: rgb(236, 166, 104);
   border: 1px solid rgb(236, 166, 104);
 }
@@ -164,7 +164,7 @@
   background-color: rgb(81, 119, 148);
 }
 .tags-container .ant-tag-purple {
-  background-color: rgba(81, 119, 148, 0.3);
+  background-color: rgba(81, 119, 148, 0.1);
   color: rgb(81, 119, 148);
   border: 1px solid rgb(81, 119, 148);
 }

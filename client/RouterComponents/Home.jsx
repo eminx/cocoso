@@ -48,25 +48,23 @@ class Home extends React.Component {
   };
 
   getBookingTimes = booking => {
-    if (booking) {
-      if (booking.isMultipleDay || booking.isFullDay) {
-        return (
-          moment(booking.startDate).format('DD MMM') +
-          ' ' +
-          booking.startTime +
-          ' – ' +
-          moment(booking.endDate).format('DD MMM') +
-          ' ' +
-          booking.endTime
-        );
-      } else if (booking.startTime) {
-        return `${booking.startTime}–${booking.endTime} ${moment(
-          booking.startDate
-        ).format('DD MMMM')}`;
-      } else {
-        return '';
-      }
+    if (!booking) {
+      return '';
     }
+    if (booking.startDate === booking.endDate) {
+      return `${booking.startTime}–${booking.endTime} ${moment(
+        booking.startDate
+      ).format('DD MMMM')}`;
+    }
+    return (
+      moment(booking.startDate).format('DD MMM') +
+      ' ' +
+      booking.startTime +
+      ' – ' +
+      moment(booking.endDate).format('DD MMM') +
+      ' ' +
+      booking.endTime
+    );
   };
 
   isCreator = () => {
@@ -87,23 +85,22 @@ class Home extends React.Component {
   };
 
   render() {
-    const { isLoading, currentUser, placesList } = this.props;
-    const bookings = this.props.bookingsList;
+    const { isLoading, currentUser, placesList, allActivities } = this.props;
     const images = this.props.imagesArray;
     const { editBooking, calendarFilter, selectedBooking } = this.state;
 
     const futureBookings = [];
 
-    bookings.filter(booking => {
+    allActivities.filter(booking => {
       if (moment(booking.endDate).isAfter(yesterday)) {
         futureBookings.push(booking);
       }
     });
 
-    let filteredBookings = bookings;
+    let filteredBookings = allActivities;
 
     if (calendarFilter !== 'All rooms') {
-      filteredBookings = bookings.filter(
+      filteredBookings = allActivities.filter(
         booking => booking.room === calendarFilter
       );
     }

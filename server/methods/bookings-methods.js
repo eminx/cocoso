@@ -12,10 +12,14 @@ const getRoomIndex = room => {
 };
 
 Meteor.methods({
-  createBooking(formValues) {
+  createBooking(formValues, uploadedImage) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
+    }
+
+    if (formValues.isPublicActivity && !uploadedImage) {
+      throw new Meteor.Error('Image is required for public activities');
     }
 
     check(formValues.title, String);
@@ -24,7 +28,7 @@ Meteor.methods({
     check(formValues.dateEnd, String);
     check(formValues.timePickerStart, String);
     check(formValues.timePickerEnd, String);
-    check(formValues.isMultipleDay, Boolean);
+    check(formValues.isPublicActivity, Boolean);
 
     const roomIndex = getRoomIndex(formValues.room);
 
@@ -43,9 +47,10 @@ Meteor.methods({
           endDate: formValues.dateEnd,
           startTime: formValues.timePickerStart || undefined,
           endTime: formValues.timePickerEnd || undefined,
-          duration: formValues.duration || undefined,
+          imageUrl: uploadedImage || null,
+          isSentForReview: false,
+          isPublicActivity: formValues.isPublicActivity,
           isMultipleDay: formValues.isMultipleDay,
-          isSentForReview: true,
           isPublished: true,
           creationDate: new Date()
         },
@@ -62,7 +67,7 @@ Meteor.methods({
     }
   },
 
-  updateBooking(formValues, bookingId) {
+  updateBooking(formValues, bookingId, imageUrl) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -70,7 +75,6 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.room, String);
-    // check(formValues.duration, Number);
     check(formValues.dateStart, String);
     check(formValues.dateEnd, String);
     check(formValues.timePickerStart, String);
@@ -94,8 +98,9 @@ Meteor.methods({
           endDate: formValues.dateEnd,
           startTime: formValues.timePickerStart,
           endTime: formValues.timePickerEnd,
-          duration: formValues.duration,
+          isPublicActivity: formValues.isPublicActivity,
           isMultipleDay: formValues.isMultipleDay,
+          imageUrl,
           latestUpdate: new Date()
         }
       });

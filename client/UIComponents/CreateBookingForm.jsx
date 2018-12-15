@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Col,
   Form,
@@ -21,32 +21,44 @@ const FormItem = Form.Item;
 const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
 
-class CreateBookingForm extends React.Component {
+const emptyDateAndTime = {
+  dateStart: null,
+  dateEnd: null,
+  timeStart: null,
+  timeEnd: null
+};
+
+class CreateBookingForm extends Component {
   state = {
     addSpaceModal: false,
-    isMultipleDay: false
+    datesAndTimes: [emptyDateAndTime]
   };
 
   componentDidMount() {
-    if (this.props.bookingData) {
-      this.setIsMultiDay();
+    this.setDatesAndTimes();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.bookingData && this.props.bookingData) {
+      this.setDatesAndTimes();
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.bookingData && !prevProps.bookingData) {
-      this.setIsMultiDay();
-    }
-  }
-
-  setIsMultiDay = () => {
+  setDatesAndTimes = () => {
     const { bookingData } = this.props;
-
-    if (bookingData) {
-      this.setState({
-        isMultipleDay: bookingData.isMultipleDay
-      });
+    if (!bookingData) {
+      return;
     }
+
+    this.setState({
+      datesAndTimes: bookingData.datesAndTimes
+    });
+  };
+
+  addRecurrence = () => {
+    this.setState({
+      datesAndTimes: [...this.state.datesAndTimes, { ...emptyDateAndTime }]
+    });
   };
 
   addSpace = name => {
@@ -64,31 +76,26 @@ class CreateBookingForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const { isMultipleDay } = this.state;
-
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
         console.log(err);
         return;
       }
 
-      let startTime, endTime, startDate, endDate;
-      if (!isMultipleDay) {
-        startTime = fieldsValue['timePickerStart'];
-        endTime = startTime.clone();
-        endTime.add(fieldsValue.duration, 'hours');
-        startTime = startTime.format('HH:mm');
-        endTime = endTime.format('HH:mm');
-        startDate = fieldsValue['datePicker'].format('YYYY-MM-DD');
-        endDate = startDate;
-      } else {
-        startTime = fieldsValue['timePickerMultiDayStart'].format('HH:mm');
-        endTime = fieldsValue['timePickerMultiDayFinish'].format('HH:mm');
-        startDate = fieldsValue['datePickerMultiDayStart'];
-        startDate = startDate.format('YYYY-MM-DD');
-        endDate = fieldsValue['datePickerMultiDayFinish'];
-        endDate = endDate.format('YYYY-MM-DD');
+      if (this.props.isPublicActivity && !this.props.uploadableImage) {
+        Modal.error({
+          title: 'Image is required',
+          content: 'Please upload an image'
+        });
+        return;
       }
+
+      const startTime = fieldsValue['timePickerMultiDayStart'].format('HH:mm');
+      const endTime = fieldsValue['timePickerMultiDayFinish'].format('HH:mm');
+      let startDate = fieldsValue['datePickerMultiDayStart'];
+      startDate = startDate.format('YYYY-MM-DD');
+      let endDate = fieldsValue['datePickerMultiDayFinish'];
+      endDate = endDate.format('YYYY-MM-DD');
 
       const values = {
         title: fieldsValue['title'],
@@ -99,7 +106,7 @@ class CreateBookingForm extends React.Component {
         dateEnd: endDate,
         timePickerStart: startTime,
         timePickerEnd: endTime,
-        isMultipleDay: isMultipleDay
+        isMultipleDay: startDate !== endDate
       };
 
       values.datePicker = null;
@@ -110,6 +117,109 @@ class CreateBookingForm extends React.Component {
     });
   };
 
+  renderDateTime = () => {
+    const { datesAndTimes } = this.state;
+    const { bookingData, removeRecurrence } = this.props;
+    const { getFieldDecorator } = this.props.form;
+
+    const props = {
+      bookingData,
+      getFieldDecorator
+    };
+
+    return (
+      <div style={{ marginBottom: 12 }}>
+        {datesAndTimes.map((recurrence, index) => (
+          <DatesAndTimes
+            key={index}
+            recurrence={recurrence}
+            handleStartDateChange={(date, dateString) =>
+              this.handleDateAndTimeChange(date, dateString, index, 'dateStart')
+            }
+            handleStartTimeChange={(time, timeString) =>
+              this.handleDateAndTimeChange(time, timeString, index, 'timeStart')
+            }
+            handleFinishDateChange={(date, dateString) =>
+              this.handleDateAndTimeChange(date, dateString, index, 'dateEnd')
+            }
+            handleFinishTimeChange={(time, timeString) =>
+              this.handleDateAndTimeChange(time, timeString, index, 'timeEnd')
+            }
+          />
+        ))}
+        <div
+          style={{
+            padding: 24,
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: 24,
+            backgroundColor: '#f8f8f8'
+          }}
+        >
+          <Icon
+            style={{ fontSize: 48 }}
+            type="plus-circle"
+            onClick={this.addRecurrence}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  handleDateAndTimeChange = (date, dateString, index, entity) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = datesAndTimes.map((item, i) => {
+      if (index === i) {
+        item[entity] = date;
+      }
+      return item;
+    });
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleStartDateChange = (date, dateString, index) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = datesAndTimes.map((item, i) => {
+      if (index === i) {
+        return {
+          ...item,
+          dateStart: date
+        };
+      } else {
+        return item;
+      }
+    });
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleStartTimeChange = (time, timeString, index) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = (datesAndTimes[index].startTime = time);
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleFinishDateChange = (date, dateString, index) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = (datesAndTimes[index].endDate = date);
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleFinishTimeChange = (time, timeString, index) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = (datesAndTimes[index].endTime = time);
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const {
@@ -117,99 +227,14 @@ class CreateBookingForm extends React.Component {
       setUploadableImage,
       places,
       bookingData,
-      currentUser
+      currentUser,
+      isPublicActivity
     } = this.props;
-    const { addSpaceModal, isMultipleDay } = this.state;
+    const { addSpaceModal } = this.state;
 
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
-    };
-
-    const datePickerMultiDayStart = {
-      rules: [
-        {
-          type: 'object',
-          required: isMultipleDay,
-          message: 'Please select the start day!'
-        }
-      ],
-      initialValue: bookingData
-        ? moment(bookingData.startDate, 'YYYY-MM-DD')
-        : null
-    };
-    const datePickerMultiDayFinish = {
-      rules: [
-        {
-          type: 'object',
-          required: isMultipleDay,
-          message: 'Please select the ending day!'
-        }
-      ],
-      initialValue: bookingData
-        ? moment(bookingData.endDate, 'YYYY-MM-DD')
-        : null
-    };
-    const timePickerMultiDayStart = {
-      rules: [
-        {
-          type: 'object',
-          required: isMultipleDay,
-          message: 'Please select the start time!'
-        }
-      ],
-      initialValue: bookingData ? moment(bookingData.startTime, 'HH:mm') : null
-    };
-
-    const timePickerMultiDayFinish = {
-      rules: [
-        {
-          type: 'object',
-          required: isMultipleDay,
-          message: 'Please select the ending time!'
-        }
-      ],
-      initialValue: bookingData ? moment(bookingData.endTime, 'HH:mm') : null
-    };
-
-    const configDate = {
-      rules: [
-        {
-          type: 'object',
-          required: !isMultipleDay,
-          message: 'Please select the day!'
-        }
-      ],
-      initialValue: bookingData
-        ? moment(bookingData.startDate, 'YYYY-MM-DD')
-        : null
-    };
-    const configTimeStart = {
-      rules: [
-        {
-          type: 'object',
-          required: !isMultipleDay,
-          message: 'Please select the start time!'
-        }
-      ],
-      initialValue: bookingData ? moment(bookingData.startTime, 'HH:mm') : null
-    };
-
-    const durationCal = bookingData
-      ? moment(bookingData.endTime, 'HH:mm').diff(
-          moment(bookingData.startTime, 'HH:mm'),
-          'hours'
-        )
-      : null;
-    const configDuration = {
-      rules: [
-        {
-          type: 'number',
-          required: !isMultipleDay,
-          message: 'Please type duration in hours!'
-        }
-      ],
-      initialValue: durationCal
     };
 
     return (
@@ -239,80 +264,39 @@ class CreateBookingForm extends React.Component {
               initialValue: bookingData ? bookingData.longDescription : null
             })(
               <TextArea
-                placeholder="Optionally enter a description"
+                placeholder="Description"
                 autosize={{ minRows: 3, maxRows: 6 }}
               />
             )}
           </FormItem>
 
-          <FormItem label="Is it for multiple days?">
-            <Switch
-              onChange={() => this.setState({ isMultipleDay: !isMultipleDay })}
-              checked={isMultipleDay}
-            />
-          </FormItem>
+          {this.renderDateTime()}
 
-          {isMultipleDay ? (
-            <div>
-              <FormItem>
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator(
-                      'datePickerMultiDayStart',
-                      datePickerMultiDayStart
-                    )(<DatePicker />)}
-                  </FormItem>
-                </Col>
-                <Divider type="vertical" />
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator(
-                      'timePickerMultiDayStart',
-                      timePickerMultiDayStart
-                    )(<TimePicker format="HH:mm" minuteStep={30} />)}
-                  </FormItem>
-                </Col>
-              </FormItem>
-
-              <FormItem>
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator(
-                      'datePickerMultiDayFinish',
-                      datePickerMultiDayFinish
-                    )(<DatePicker />)}
-                  </FormItem>
-                </Col>
-                <Divider type="vertical" />
-                <Col span={12}>
-                  <FormItem>
-                    {getFieldDecorator(
-                      'timePickerMultiDayFinish',
-                      timePickerMultiDayFinish
-                    )(<TimePicker format="HH:mm" minuteStep={30} />)}
-                  </FormItem>
-                </Col>
-              </FormItem>
-            </div>
-          ) : (
-            <div>
-              <FormItem>
-                {getFieldDecorator('datePicker', configDate)(<DatePicker />)}
-              </FormItem>
-
-              <FormItem>
-                {getFieldDecorator('timePickerStart', configTimeStart)(
-                  <TimePicker format="HH:mm" minuteStep={30} />
+          {isPublicActivity && (
+            <FormItem
+              className="upload-image-col"
+              extra={uploadableImage ? null : 'Pick an image from your device'}
+            >
+              <Upload
+                name="gathering"
+                action="/upload.do"
+                onChange={setUploadableImage}
+              >
+                {uploadableImage ? (
+                  <Button>
+                    <Icon type="check-circle" />
+                    Image selected
+                  </Button>
+                ) : (
+                  <Button>
+                    <Icon type="upload" />
+                    Pick an image
+                  </Button>
                 )}
-              </FormItem>
-
-              <FormItem>
-                {getFieldDecorator('duration', configDuration)(
-                  <InputNumber placeholder="duration (h)" step={0.5} />
-                )}
-              </FormItem>
-            </div>
+              </Upload>
+            </FormItem>
           )}
+
           {currentUser && currentUser.isSuperAdmin && (
             <div
               style={{
@@ -389,3 +373,57 @@ class CreateBookingForm extends React.Component {
 
 const WrappedAddContentForm = Form.create()(CreateBookingForm);
 export default WrappedAddContentForm;
+
+class DatesAndTimes extends Component {
+  render() {
+    const {
+      recurrence,
+      handleStartDateChange,
+      handleStartTimeChange,
+      handleFinishDateChange,
+      handleFinishTimeChange
+    } = this.props;
+
+    return (
+      <div
+        style={{ padding: 12, backgroundColor: '#f8f8f8', marginBottom: 12 }}
+      >
+        <FormItem style={{ marginBottom: 6 }}>
+          <DatePicker
+            onChange={handleStartDateChange}
+            value={recurrence.dateStart}
+            placeholder="Start date"
+          />
+        </FormItem>
+
+        <FormItem style={{ marginBottom: 12 }}>
+          <TimePicker
+            onChange={handleStartTimeChange}
+            value={recurrence.timeStart}
+            format="HH:mm"
+            minuteStep={30}
+            placeholder="Start time"
+          />
+        </FormItem>
+
+        <FormItem style={{ marginBottom: 6 }}>
+          <DatePicker
+            placeholder="Finish date"
+            onChange={handleFinishDateChange}
+            value={recurrence.dateEnd}
+          />
+        </FormItem>
+
+        <FormItem style={{ marginBottom: 12 }}>
+          <TimePicker
+            onChange={handleFinishTimeChange}
+            value={recurrence.timeEnd}
+            format="HH:mm"
+            minuteStep={30}
+            placeholder="Finish time"
+          />
+        </FormItem>
+      </div>
+    );
+  }
+}

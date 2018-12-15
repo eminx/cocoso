@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Switch, Divider, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
 const successCreation = () => {
@@ -20,7 +20,9 @@ class NewBookSpace extends React.Component {
     isError: false,
     newBookingId: null,
     uploadedImage: null,
-    uploadableImage: null
+    uploadableImage: null,
+    isPublicActivity: false,
+    numberOfRecurrence: 1
   };
 
   registerGatheringLocally = values => {
@@ -52,25 +54,28 @@ class NewBookSpace extends React.Component {
 
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('gatheringImageUpload');
-    const timeStamp = Math.floor(Date.now());
+    const upload = new Slingshot.Upload('activityImageUpload');
 
     upload.send(uploadableImage, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
       } else {
-        this.setState({
-          uploadedImage: downloadUrl
-        });
-        this.createBooking(downloadUrl);
+        this.setState(
+          {
+            uploadedImage: downloadUrl
+          },
+          () => this.createBooking()
+        );
       }
     });
   };
 
   createBooking = () => {
-    const { values } = this.state;
+    const { values, isPublicActivity, uploadedImage } = this.state;
 
-    Meteor.call('createBooking', values, (error, result) => {
+    values.isPublicActivity = isPublicActivity;
+
+    Meteor.call('createBooking', values, uploadedImage, (error, result) => {
       if (error) {
         console.log('error', error);
         this.setState({
@@ -89,6 +94,12 @@ class NewBookSpace extends React.Component {
 
   hideModal = () => this.setState({ modalConfirm: false });
   showModal = () => this.setState({ modalConfirm: true });
+
+  handlePublicActivitySwitch = value => {
+    this.setState({
+      isPublicActivity: value
+    });
+  };
 
   render() {
     const { currentUser } = this.props;
@@ -112,23 +123,36 @@ class NewBookSpace extends React.Component {
       newBookingId,
       uploadedImage,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
+      isPublicActivity,
+      numberOfRecurrence
     } = this.state;
 
     isSuccess ? successCreation() : null;
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Make an Internal Booking</h1>
+        <h2>Create a Booking or Public Event</h2>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
+            <Row>
+              <h4>public event?</h4>
+              <Switch
+                checked={isPublicActivity}
+                onChange={this.handlePublicActivitySwitch}
+              />
+            </Row>
+
+            <Divider />
             <CreateBookingForm
               values={values}
               registerGatheringLocally={this.registerGatheringLocally}
               setUploadableImage={this.setUploadableImage}
               uploadableImage={this.state.uploadableImage}
               places={this.props.places}
+              isPublicActivity={isPublicActivity}
               currentUser={currentUser}
+              numberOfRecurrence={numberOfRecurrence}
             />
           </Col>
         </Row>
@@ -138,10 +162,11 @@ class NewBookSpace extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={this.createBooking}
+            onOk={isPublicActivity ? this.uploadImage : this.createBooking}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"
+            imageSrc={uploadedImage}
           />
         ) : null}
 
