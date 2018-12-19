@@ -23,17 +23,20 @@ const notifications = [
   {
     title: 'Title wow',
     count: 3,
-    link: '/group/jGP7McurY8KAsvwHc'
+    context: 'group',
+    contextId: 'jGP7McurY8KAsvwHc'
   },
   {
     title: 'Pinery Jam Sessions',
     count: 3,
-    link: '/booking/3jBTEHSwtqpxbKvSL'
+    context: 'group',
+    contextId: 'jGP7McurY8KAsvwHc'
   },
   {
     title: 'Amazing Workshop',
     count: 2,
-    link: '/group/iAf8QzPLNBNHexX82'
+    context: 'group',
+    contextId: 'iAf8QzPLNBNHexX82'
   }
 ];
 
@@ -111,6 +114,14 @@ class LayoutPage extends React.Component {
     const { isNotificationPopoverOpen } = this.state;
     const { children, currentUser } = this.props;
 
+    const notifications = currentUser && currentUser.notifications;
+    let notificationsCounter = 0;
+    if (notifications && notifications.length > 0) {
+      notifications.forEach(notification => {
+        notificationsCounter += notification.count;
+      });
+    }
+
     const menuIconStyle = {
       fontSize: 24,
       padding: '18px 12px',
@@ -147,7 +158,7 @@ class LayoutPage extends React.Component {
                   </Link>
                 </span>
               </div>
-              {/* <div
+              <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -163,7 +174,7 @@ class LayoutPage extends React.Component {
                   visible={isNotificationPopoverOpen}
                   onVisibleChange={this.handleNotificationVisibility}
                 >
-                  <Badge count={3}>
+                  <Badge count={notificationsCounter}>
                     <Icon
                       onClick={this.toggleNotificationsPopover}
                       theme="outlined"
@@ -178,7 +189,7 @@ class LayoutPage extends React.Component {
                   type="menu-fold"
                   style={menuIconStyle}
                 />
-              </div> */}
+              </div>
             </Col>
           </Row>
         </div>

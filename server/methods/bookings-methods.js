@@ -35,30 +35,22 @@ Meteor.methods({
     const roomIndex = getRoomIndex(formValues.room);
 
     try {
-      const add = Gatherings.insert(
-        {
-          authorId: user._id,
-          attendees: [],
-          authorName: user.username,
-          title: formValues.title,
-          longDescription: formValues.longDescription,
-          room: formValues.room,
-          capacity: formValues.capacity || 20,
-          datesAndTimes: formValues.datesAndTimes,
-          roomIndex: roomIndex,
-          imageUrl: uploadedImage || null,
-          isSentForReview: false,
-          isPublicActivity: formValues.isPublicActivity,
-          isPublished: true,
-          creationDate: new Date()
-        },
-        () =>
-          Meteor.call('createChat', formValues.title, add, (error, result) => {
-            if (error) {
-              console.log('Chat is not created due to error: ', error);
-            }
-          })
-      );
+      const add = Gatherings.insert({
+        authorId: user._id,
+        attendees: [],
+        authorName: user.username,
+        title: formValues.title,
+        longDescription: formValues.longDescription,
+        room: formValues.room,
+        capacity: formValues.capacity || 20,
+        datesAndTimes: formValues.datesAndTimes,
+        roomIndex: roomIndex,
+        imageUrl: uploadedImage || null,
+        isSentForReview: false,
+        isPublicActivity: formValues.isPublicActivity,
+        isPublished: true,
+        creationDate: new Date()
+      });
       return add;
     } catch (e) {
       throw new Meteor.Error(e, "Couldn't add to Collection");

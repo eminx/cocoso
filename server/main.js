@@ -9,9 +9,7 @@ Meteor.startup(() => {
   //           startDate: gathering.startDate,
   //           startTime: gathering.startTime,
   //           endDate: gathering.endDate,
-  //           endTime: gathering.endTime,
-  //           start: gathering.start,
-  //           end: gathering.end
+  //           endTime: gathering.endTime
   //         }
   //       ]
   //     }

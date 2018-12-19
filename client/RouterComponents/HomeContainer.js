@@ -39,7 +39,7 @@ export default (HomeContainer = withTracker(props => {
             authorName: booking.authorName,
             room: booking.room,
             longDescription: booking.longDescription,
-            isMultipleDay: recurrence.isMultipleDay,
+            isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
             roomIndex: booking.roomIndex,
             _id: booking._id
           });
