@@ -102,6 +102,16 @@ class NewBookSpace extends React.Component {
     });
   };
 
+  redirectSuccess = () => {
+    const { isPublicActivity, newBookingId } = this.state;
+    successCreation();
+    if (isPublicActivity) {
+      return <Redirect to={`/event/${newBookingId}`} />;
+    } else {
+      return <Redirect to={`/booking/${newBookingId}`} />;
+    }
+  };
+
   render() {
     const { currentUser } = this.props;
 
@@ -128,8 +138,6 @@ class NewBookSpace extends React.Component {
       isPublicActivity,
       numberOfRecurrence
     } = this.state;
-
-    isSuccess ? successCreation() : null;
 
     return (
       <div style={{ padding: 24 }}>
@@ -171,7 +179,7 @@ class NewBookSpace extends React.Component {
           />
         ) : null}
 
-        {isSuccess ? <Redirect to={`/booking/${newBookingId}`} /> : null}
+        {isSuccess && this.redirectSuccess()}
       </div>
     );
   }

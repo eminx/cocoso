@@ -94,18 +94,20 @@ class PublicActivityThumb extends React.Component {
       filter: 'brightness(50%)'
     };
 
-    let clickLink = `/event/{${item._id}`;
+    let clickLink = `/event/${item._id}`;
 
     return (
       <div style={thumbStyle}>
-        <Link to={`/event/${item._id}`}>
+        <Link to={clickLink}>
           <div style={coverStyle} />
           <div style={{ position: 'relative', padding: '24px 16px' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               {item.datesAndTimes.map(date => this.renderDate(date))}
             </div>
-            <h3 style={{ ...commonStyle, fontSize: 24 }}>{item.title}</h3>
-            <h4 style={{ ...commonStyle, fontSize: 16 }}>{item.authorName}</h4>
+            <h3 style={{ ...commonStyle, fontSize: 24, marginBottom: 6 }}>
+              {item.title}
+            </h3>
+            <h4 style={{ ...commonStyle, fontSize: 16 }}>{item.subTitle}</h4>
           </div>
         </Link>
       </div>

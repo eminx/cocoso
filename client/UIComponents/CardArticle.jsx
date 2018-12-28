@@ -55,7 +55,12 @@ class CardArticle extends React.Component {
 
     return (
       <div>
-        <h2>{item.title}</h2>
+        <div style={{ marginBottom: 16 }}>
+          <h2 style={{ marginBottom: 0 }}>{item.title}</h2>
+          {item.subTitle && (
+            <h4 style={{ fontWeight: 300 }}>{item.subTitle}</h4>
+          )}
+        </div>
         <div style={{ paddingBottom: 12 }}>
           <img
             width="100%"

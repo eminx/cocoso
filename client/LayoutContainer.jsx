@@ -143,7 +143,7 @@ class LayoutPage extends React.Component {
                   </Link>
                 </span>
               </div>
-              <div
+              {/* <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -169,7 +169,7 @@ class LayoutPage extends React.Component {
                     />
                   </Badge>
                 </Popover>
-              </div>
+              </div> */}
             </Col>
           </Row>
         </div>

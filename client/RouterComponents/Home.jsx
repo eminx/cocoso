@@ -8,90 +8,23 @@ import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
+const compareForSort = (a, b) => {
+  const firstOccA = a.datesAndTimes[0];
+  const firstOccB = b.datesAndTimes[0];
+  const dateA = new Date(
+    firstOccA.startDate + 'T' + firstOccA.startTime + ':00Z'
+  );
+  const dateB = new Date(
+    firstOccB.startDate + 'T' + firstOccB.startTime + ':00Z'
+  );
+  return dateA - dateB;
+};
+
 const yesterday = moment(new Date()).add(-1, 'days');
 
 class Home extends React.Component {
-  state = {
-    mode: 'list',
-    editBooking: null,
-    calendarFilter: 'All rooms',
-    selectedBooking: null
-  };
-
-  handleModeChange = e => {
-    const mode = e.target.value;
-    this.setState({ mode });
-  };
-
-  handleSelectBooking = (booking, e) => {
-    e.preventDefault();
-    this.setState({
-      selectedBooking: booking
-    });
-  };
-
-  handleCalendarFilterChange = value => {
-    this.setState({
-      calendarFilter: value
-    });
-  };
-
-  handleCloseModal = () => {
-    this.setState({
-      selectedBooking: null
-    });
-  };
-
-  handleEditBooking = () => {
-    this.setState({
-      editBooking: true
-    });
-  };
-
-  getBookingTimes = booking => {
-    if (!booking) {
-      return '';
-    }
-    if (booking.startDate === booking.endDate) {
-      return `${booking.startTime}–${booking.endTime} ${moment(
-        booking.startDate
-      ).format('DD MMMM')}`;
-    }
-    return (
-      moment(booking.startDate).format('DD MMM') +
-      ' ' +
-      booking.startTime +
-      ' – ' +
-      moment(booking.endDate).format('DD MMM') +
-      ' ' +
-      booking.endTime
-    );
-  };
-
-  isCreator = () => {
-    const { currentUser } = this.props;
-    const { selectedBooking } = this.state;
-
-    if (!selectedBooking || !currentUser) {
-      return false;
-    }
-
-    if (
-      selectedBooking &&
-      currentUser &&
-      currentUser.username === selectedBooking.authorName
-    ) {
-      return true;
-    }
-  };
-
   render() {
     const { isLoading, currentUser, bookingsList } = this.props;
-    const { editBooking, selectedBooking } = this.state;
-
-    if (editBooking) {
-      return <Redirect to={`/edit-booking/${selectedBooking._id}`} />;
-    }
 
     const centerStyle = {
       display: 'flex',
@@ -103,18 +36,10 @@ class Home extends React.Component {
       activity => activity.isPublicActivity === true
     );
 
+    const sortedPublicActivities = publicActivities.sort(compareForSort);
+
     return (
       <div style={{ padding: 24 }}>
-        {currentUser && currentUser.isRegisteredMember && (
-          <Row gutter={24}>
-            <div style={centerStyle}>
-              <Link to="/new-booking">
-                <Button type="primary">New Booking</Button>
-              </Link>
-            </div>
-          </Row>
-        )}
-
         <Row gutter={24}>
           <div
             style={{
@@ -130,7 +55,7 @@ class Home extends React.Component {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                  {publicActivities.map(activity => (
+                  {sortedPublicActivities.map(activity => (
                     <PublicActivityThumb key={activity.title} item={activity} />
                   ))}
                 </div>

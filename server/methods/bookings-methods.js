@@ -40,6 +40,7 @@ Meteor.methods({
         attendees: [],
         authorName: user.username,
         title: formValues.title,
+        subTitle: formValues.subTitle || null,
         longDescription: formValues.longDescription,
         room: formValues.room,
         capacity: formValues.capacity || 20,
@@ -82,6 +83,7 @@ Meteor.methods({
       const add = Gatherings.update(bookingId, {
         $set: {
           title: formValues.title,
+          subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
           room: formValues.room,
           roomIndex: roomIndex,

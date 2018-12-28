@@ -10,7 +10,7 @@ import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Calendar extends React.Component {
+class Calendar extends React.PureComponent {
   state = {
     mode: 'list',
     editBooking: null,
@@ -212,11 +212,18 @@ class Calendar extends React.Component {
               <b>{selectedBooking && selectedBooking.room}</b>
             </Col>
           </Row>
-          <Row>
-            <Col span={12}>information:</Col>
-            <Col span={12}>
-              <b>{selectedBooking && selectedBooking.longDescription}</b>
-            </Col>
+          <Row style={{ paddingTop: 12 }}>
+            <Row span={24}>
+              <em>
+                {selectedBooking &&
+                  selectedBooking.longDescription.slice(0, 120) + '...'}
+              </em>
+              {selectedBooking && selectedBooking.isPublicActivity && (
+                <Link to={`/event/${selectedBooking._id}`}>
+                  go to the event page
+                </Link>
+              )}
+            </Row>
           </Row>
         </Modal>
       </div>

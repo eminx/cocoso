@@ -111,6 +111,7 @@ class CreateBookingForm extends Component {
 
       const values = {
         title: fieldsValue['title'],
+        subTitle: fieldsValue['subTitle'],
         room: fieldsValue['room'],
         longDescription: fieldsValue['longDescription'],
         datesAndTimes: datesAndTimesWithoutMoment
@@ -212,6 +213,23 @@ class CreateBookingForm extends Component {
               initialValue: bookingData ? bookingData.title : null
             })(<Input placeholder="Title" />)}
           </FormItem>
+
+          {isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('subTitle', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please enter a subtitle (typically artists name)'
+                  }
+                ],
+                initialValue:
+                  bookingData && bookingData.subTitle
+                    ? bookingData.subTitle
+                    : ''
+              })(<Input placeholder="Subtitle (i.e. the artist)" />)}
+            </FormItem>
+          )}
 
           <FormItem>
             {getFieldDecorator('longDescription', {
