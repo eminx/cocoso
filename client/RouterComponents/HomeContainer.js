@@ -9,51 +9,13 @@ export default (HomeContainer = withTracker(props => {
   // const handle = Meteor.subscribe('myDataSub', props.subID);
 
   const bookings = Meteor.subscribe('gatherings');
-  const images = Meteor.subscribe('images');
   const isLoading = !bookings.ready();
   const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
-  const imagesArray = Images ? Images.find().fetch() : null;
   const currentUser = Meteor.user();
-  const placesSub = Meteor.subscribe('places');
-  const placesList = Places ? Places.find().fetch() : null;
-
-  const allActivities = [];
-  if (bookingsList) {
-    bookingsList.forEach(booking => {
-      if (booking.datesAndTimes) {
-        booking.datesAndTimes.forEach(recurrence => {
-          allActivities.push({
-            title: booking.title,
-            start: moment(
-              recurrence.startDate + recurrence.startTime,
-              'YYYY-MM-DD HH:mm'
-            ).toDate(),
-            end: moment(
-              recurrence.endDate + recurrence.endTime,
-              'YYYY-MM-DD HH:mm'
-            ).toDate(),
-            startDate: recurrence.startDate,
-            startTime: recurrence.startTime,
-            endDate: recurrence.endDate,
-            endTime: recurrence.endTime,
-            authorName: booking.authorName,
-            room: booking.room,
-            longDescription: booking.longDescription,
-            isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
-            roomIndex: booking.roomIndex,
-            _id: booking._id
-          });
-        });
-      }
-    });
-  }
 
   return {
     isLoading,
-    bookings,
-    allActivities,
-    imagesArray,
-    currentUser,
-    placesList
+    bookingsList,
+    currentUser
   };
 })(Home));

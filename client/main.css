@@ -1,19 +1,12 @@
 @import 'bigcalendar-custom.css';
 
-html,
-body,
-body > #render-target {
-  background-color: rgb(231, 233, 233) !important;
-  font-family: 'Verdana', 'Geneva', sans-serif;
-  color: #2e3880;
-}
-
 .main-viewport {
   background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg');
   background-repeat: no-repeat;
   background-position: top;
   background-color: #fff;
   background-size: 100%;
+  min-height: 100vh;
 }
 
 h1 {

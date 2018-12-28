@@ -114,5 +114,27 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
+  },
+
+  registerAttendance(bookingId, values, occurenceIndex = 0) {
+    const theActivity = Gatherings.findOne(bookingId);
+    const occurences = [...theActivity.datesAndTimes];
+    values.registerDate = new Date();
+    if (occurences[occurenceIndex].attendees) {
+      occurences[occurenceIndex].attendees.push(values);
+    } else {
+      occurences[occurenceIndex].attendees = [values];
+    }
+
+    try {
+      Gatherings.update(bookingId, {
+        $set: {
+          datesAndTimes: occurences
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, "Couldn't add to collection");
+    }
   }
 });

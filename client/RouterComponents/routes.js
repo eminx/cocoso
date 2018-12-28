@@ -40,9 +40,10 @@ export const renderRoutes = () => (
       <LayoutContainer history={browserHistory}>
         <Switch>
           <Route exact path="/" component={HomeContainer} />
+          <Route exact path="/calendar" component={CalendarContainer} />
 
           <Route exact path="/new-booking" component={NewBookSpaceContainer} />
-          <Route path="/booking/:id" component={BookingContainer} />
+          <Route path="/event/:id" component={BookingContainer} />
           <Route path="/edit-booking/:id/" component={EditBookingContainer} />
 
           <Route exact path="/new-group" component={NewGroupContainer} />

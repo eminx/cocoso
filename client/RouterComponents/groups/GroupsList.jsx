@@ -37,7 +37,7 @@ class GroupsList extends React.PureComponent {
       <div>
         <b>{group.members.length + ' / ' + group.capacity}</b>
         <br />
-        created by {group.adminUsername}
+        {group.adminUsername}
         <br />
         <span style={{ fontSize: 10 }}>
           {moment(group.creationDate).format('Do MMM YYYY')}

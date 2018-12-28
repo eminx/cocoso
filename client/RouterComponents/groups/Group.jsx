@@ -125,7 +125,7 @@ class Group extends React.PureComponent {
         <div>
           <b>{group.members.length + ' / ' + group.capacity}</b>
           <br />
-          created by {group.adminUsername}
+          {group.adminUsername}
         </div>
       );
     }

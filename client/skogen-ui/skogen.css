@@ -149,6 +149,7 @@ body .ant-select-selection:focus {
 }
 
 .ant-card .ant-card-head {
+  /* padding: 0; */
   border-bottom: none;
 }
 

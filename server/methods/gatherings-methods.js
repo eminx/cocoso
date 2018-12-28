@@ -69,7 +69,7 @@ Meteor.methods({
     }
   },
 
-  registerAttendance(gatheringId) {
+  registerAttendanceX(gatheringId) {
     if (!Meteor.userId()) {
       throw new Meteor.Error('Not allowed!');
     } else {
@@ -117,7 +117,7 @@ Meteor.methods({
     }
   },
 
-  unRegisterAttendance(gatheringId) {
+  unRegisterAttendanceX(gatheringId) {
     if (!Meteor.userId()) {
       throw new Meteor.Error('Not allowed!');
     } else {

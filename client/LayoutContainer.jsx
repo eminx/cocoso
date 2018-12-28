@@ -16,34 +16,15 @@ import {
   Col
 } from 'antd/lib';
 const { Header, Content, Footer } = Layout;
-const MenuItem = Menu.Item;
-const MenuItemGroup = Menu.ItemGroup;
-
-const notifications = [
-  {
-    title: 'Title wow',
-    count: 3,
-    context: 'group',
-    contextId: 'jGP7McurY8KAsvwHc'
-  },
-  {
-    title: 'Pinery Jam Sessions',
-    count: 3,
-    context: 'group',
-    contextId: 'jGP7McurY8KAsvwHc'
-  },
-  {
-    title: 'Amazing Workshop',
-    count: 2,
-    context: 'group',
-    contextId: 'iAf8QzPLNBNHexX82'
-  }
-];
 
 const menu = [
   {
-    label: 'Making It Work',
+    label: 'Program',
     route: '/'
+  },
+  {
+    label: 'Making It Work',
+    route: '/calendar'
   },
   {
     label: 'Groups',
@@ -61,21 +42,6 @@ const adminMenu = [
     route: '/users'
   }
 ];
-
-const NotificationList = ({ list }) => (
-  <List
-    size="small"
-    dataSource={list}
-    renderItem={item => (
-      <Link
-        to={item.link}
-        onClick={() => this.handleNotificationVisibility(false)}
-      >
-        <List.Item>{item.title}</List.Item>
-      </Link>
-    )}
-  />
-);
 
 class LayoutPage extends React.Component {
   state = {
@@ -104,10 +70,29 @@ class LayoutPage extends React.Component {
     });
   };
 
-  handleNotificationVisibility = visibleValue => {
+  handleNotificationVisibility = () => {
     this.setState({
-      isNotificationPopoverOpen: visibleValue
+      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen
     });
+  };
+
+  renderNotificationList = list => {
+    return (
+      <List
+        size="small"
+        dataSource={list}
+        renderItem={item => (
+          <List.Item>
+            <Link
+              to={`/${item.context}/${item.contextId}`}
+              onClick={this.handleNotificationVisibility}
+            >
+              {item.title}
+            </Link>
+          </List.Item>
+        )}
+      />
+    );
   };
 
   render() {
@@ -163,13 +148,14 @@ class LayoutPage extends React.Component {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end',
-                  color: '#030303'
+                  color: '#030303',
+                  margin: '24px 12px'
                 }}
               >
                 <Popover
-                  placement="bottom"
+                  placement="bottomRight"
                   title="Notifications"
-                  content={<NotificationList list={notifications} />}
+                  content={this.renderNotificationList(notifications)}
                   trigger="click"
                   visible={isNotificationPopoverOpen}
                   onVisibleChange={this.handleNotificationVisibility}
@@ -183,12 +169,6 @@ class LayoutPage extends React.Component {
                     />
                   </Badge>
                 </Popover>
-                <Icon
-                  onClick={this.openMenu}
-                  theme="outlined"
-                  type="menu-fold"
-                  style={menuIconStyle}
-                />
               </div>
             </Col>
           </Row>

@@ -10,7 +10,7 @@ import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Home extends React.Component {
+class Calendar extends React.Component {
   state = {
     mode: 'list',
     editBooking: null,
@@ -86,8 +86,31 @@ class Home extends React.Component {
   };
 
   render() {
-    const { isLoading, currentUser, bookingsList } = this.props;
-    const { editBooking, selectedBooking } = this.state;
+    const {
+      isLoading,
+      currentUser,
+      placesList,
+      allActivities,
+      bookingsList
+    } = this.props;
+    const images = this.props.imagesArray;
+    const { editBooking, calendarFilter, selectedBooking } = this.state;
+
+    const futureBookings = [];
+
+    allActivities.filter(booking => {
+      if (moment(booking.endDate).isAfter(yesterday)) {
+        futureBookings.push(booking);
+      }
+    });
+
+    let filteredBookings = allActivities;
+
+    if (calendarFilter !== 'All rooms') {
+      filteredBookings = allActivities.filter(
+        booking => booking.room === calendarFilter
+      );
+    }
 
     if (editBooking) {
       return <Redirect to={`/edit-booking/${selectedBooking._id}`} />;
@@ -98,10 +121,6 @@ class Home extends React.Component {
       justifyContent: 'center',
       marginBottom: 24
     };
-
-    const publicActivities = bookingsList.filter(
-      activity => activity.isPublicActivity === true
-    );
 
     return (
       <div style={{ padding: 24 }}>
@@ -124,23 +143,85 @@ class Home extends React.Component {
             }}
           >
             <div style={{ maxWidth: 900, width: '100%' }}>
+              <div
+                className="tags-container"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <Tag.CheckableTag
+                  checked={calendarFilter === 'All rooms'}
+                  onChange={() => this.handleCalendarFilterChange('All rooms')}
+                  key={'All rooms'}
+                >
+                  {'All rooms'}
+                </Tag.CheckableTag>
+                {placesList.map((room, i) => (
+                  <Tag
+                    color={colors[i]}
+                    className={calendarFilter === room.name ? 'checked' : null}
+                    onClick={() => this.handleCalendarFilterChange(room.name)}
+                    key={room.name}
+                  >
+                    {room.name}
+                  </Tag>
+                ))}
+              </div>
+
               {isLoading ? (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <PulseLoader color="#ea3924" />
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                  {publicActivities.map(activity => (
-                    <PublicActivityThumb key={activity.title} item={activity} />
-                  ))}
-                </div>
+                <CalendarView
+                  bookings={filteredBookings}
+                  images={images}
+                  onSelect={this.handleSelectBooking}
+                />
               )}
             </div>
           </div>
         </Row>
+
+        <Modal
+          visible={Boolean(selectedBooking)}
+          okText="Edit"
+          cancelText="Close"
+          okButtonProps={!this.isCreator() && { style: { display: 'none' } }}
+          onOk={this.handleEditBooking}
+          onCancel={this.handleCloseModal}
+          title={
+            <div>
+              <h2>{selectedBooking && selectedBooking.title}</h2>{' '}
+              <h4>{this.getBookingTimes(selectedBooking)}</h4>
+            </div>
+          }
+          destroyOnClose
+        >
+          <Row>
+            <Col span={12}>booked by: </Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.authorName}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>space/equipment: </Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.room}</b>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>information:</Col>
+            <Col span={12}>
+              <b>{selectedBooking && selectedBooking.longDescription}</b>
+            </Col>
+          </Row>
+        </Modal>
       </div>
     );
   }
 }
 
-export default Home;
+export default Calendar;

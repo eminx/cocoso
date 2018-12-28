@@ -47,7 +47,6 @@ Meteor.methods({
       );
       Meteor.call('createNotifications', contextId);
     } catch (error) {
-      console.log('error', error);
       throw new Meteor.Error(error);
     }
   },
@@ -57,41 +56,39 @@ Meteor.methods({
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
     }
-
     try {
-      const theChat = Chats.findOne({ contextId });
-      if (theChat.contextName === 'group') {
-        const theGroup = Groups.findOne({ contextId: contextId });
-        const theOthers = theGroup.members.map(
-          member => member.memberId !== user._id
-        );
-        theOthers.forEach(member => {
-          const doesExist =
-            member.notifications &&
-            member.notifications.some(
-              notification => notification.contextId === contextId
-            );
-          if (doesExist) {
-            Meteor.users.updateOne(member.memberId, {
-              $inc: {
-                'notifications.$.count': 1
-              }
-            });
-            console.log('x');
-          } else {
-            Meteor.users.updateOne(member.memberId, {
-              $push: {
-                notifications: {
-                  title: theGroup.title,
-                  count: 1,
-                  context: 'group',
-                  contextId: theGroup._id
-                }
-              }
-            });
+      const theGroup = Groups.findOne(contextId);
+      const theOthers = theGroup.members.filter(
+        member => member.memberId !== user._id
+      );
+      theOthers.forEach(member => {
+        if (!member.notifications) {
+          return;
+        }
+        // const contextIdIndex = member.notifications.findIndex(
+        //   notification => notification.contextId === contextId
+        // );
+        // if (contextIdIndex !== -1) {
+        //   const notifications = [...member.notifications];
+        //   notifications[contextIdIndex].count += 1;
+        //   Meteor.users.updateOne(member.memberId, {
+        //     $set: {
+        //       notifications: notifications
+        //     }
+        //   });
+        // } else {
+        Meteor.users.update(member.memberId, {
+          $push: {
+            notifications: {
+              title: theGroup.title,
+              count: 1,
+              context: 'group',
+              contextId: theGroup._id
+            }
           }
         });
-      }
+        // }
+      });
     } catch (error) {
       console.log('error', error);
       throw new Meteor.Error(error);

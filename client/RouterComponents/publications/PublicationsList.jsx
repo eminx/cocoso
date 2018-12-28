@@ -39,7 +39,7 @@ class PublicationsList extends React.PureComponent {
       <div>
         <b>{publication.format}</b>
         <br />
-        created by {publication.adminUsername}
+        {publication.adminUsername}
         <br />
         <span style={{ fontSize: 10 }}>
           published: {moment(publication.publishDate).format('Do MMM YYYY')}
