@@ -87,7 +87,9 @@ class LayoutPage extends React.Component {
               to={`/${item.context}/${item.contextId}`}
               onClick={this.handleNotificationVisibility}
             >
-              {item.title}
+              <Badge count={item.count} offset={[10, 0]}>
+                <h4>{item.title}</h4>
+              </Badge>
             </Link>
           </List.Item>
         )}
@@ -143,7 +145,7 @@ class LayoutPage extends React.Component {
                   </Link>
                 </span>
               </div>
-              {/* <div
+              <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -169,7 +171,7 @@ class LayoutPage extends React.Component {
                     />
                   </Badge>
                 </Popover>
-              </div> */}
+              </div>
             </Col>
           </Row>
         </div>

@@ -216,6 +216,7 @@ class Calendar extends React.PureComponent {
             <Row span={24}>
               <em>
                 {selectedBooking &&
+                  selectedBooking.longDescription &&
                   selectedBooking.longDescription.slice(0, 120) + '...'}
               </em>
               {selectedBooking && selectedBooking.isPublicActivity && (

@@ -69,7 +69,7 @@ class CardArticle extends React.Component {
             src={item.imageUrl}
           />
         </div>
-        <div>{item.longDescription}</div>
+        <div style={{ whiteSpace: 'pre-line' }}>{item.longDescription}</div>
       </div>
     );
   }

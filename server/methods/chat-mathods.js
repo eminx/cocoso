@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { notification } from 'antd';
 
 Meteor.methods({
   createChat(contextName, contextId) {
@@ -58,20 +57,15 @@ Meteor.methods({
     }
     try {
       const theGroup = Groups.findOne(contextId);
-      const theOthers = theGroup.members.filter(
-        member => member.memberId !== user._id
-      );
-
+      const theOthers = theGroup.members
+        .filter(member => member.memberId !== user._id)
+        .map(other => Meteor.users.findOne(other.memberId));
       theOthers.forEach(member => {
-        if (!member.notifications) {
-          return;
-        }
         let contextIdIndex = -1;
         for (let i = 0; i < member.notifications.length; i++) {
-          console.log(member.notifications[i], contextId);
           if (member.notifications[i].contextId === contextId) {
             contextIdIndex = i;
-            console.log(contextIdIndex, 'contextid');
+            break;
           }
         }
 
@@ -82,13 +76,13 @@ Meteor.methods({
         if (contextIdIndex !== -1) {
           const notifications = [...member.notifications];
           notifications[contextIdIndex].count += 1;
-          Meteor.users.updateOne(member.memberId, {
+          Meteor.users.update(member._id, {
             $set: {
               notifications: notifications
             }
           });
         } else {
-          Meteor.users.update(member.memberId, {
+          Meteor.users.update(member._id, {
             $push: {
               notifications: {
                 title: theGroup.title,
