@@ -105,13 +105,11 @@ Meteor.methods({
           } catch (err) {
             throw new Meteor.Error(err, "Couldn't update the Collection");
           }
-          return true;
         } catch (err) {
           console.log(err);
           throw new Meteor.Error(err, "Couldn't update the Collection");
         }
       } else {
-        // console.log(err);
         throw new Meteor.Error('Sorry the capacity is full');
       }
     }

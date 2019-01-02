@@ -86,13 +86,7 @@ class Calendar extends React.PureComponent {
   };
 
   render() {
-    const {
-      isLoading,
-      currentUser,
-      placesList,
-      allActivities,
-      bookingsList
-    } = this.props;
+    const { isLoading, currentUser, placesList, allActivities } = this.props;
     const images = this.props.imagesArray;
     const { editBooking, calendarFilter, selectedBooking } = this.state;
 

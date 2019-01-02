@@ -46,6 +46,11 @@ class PublicActivityThumb extends React.Component {
       lineHeight: 1
     };
 
+    const yesterday = moment(new Date()).add(-1, 'days');
+    if (!moment(date.startDate).isAfter(yesterday)) {
+      sameStyle.color = '#aaa';
+    }
+
     return (
       <div
         key={date.startDate + date.startTime}
@@ -64,8 +69,7 @@ class PublicActivityThumb extends React.Component {
   };
 
   render() {
-    const { item, isAttending, isMyEventWTF, currentUser } = this.props;
-    const eventTimes = this.getEventTimes(item);
+    const { item } = this.props;
 
     const thumbStyle = {
       position: 'relative',

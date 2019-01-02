@@ -154,7 +154,7 @@ class LayoutPage extends React.Component {
                   margin: '24px 12px'
                 }}
               >
-                <Popover
+                {/* <Popover
                   placement="bottomRight"
                   title="Notifications"
                   content={this.renderNotificationList(notifications)}
@@ -170,7 +170,7 @@ class LayoutPage extends React.Component {
                       style={{ fontSize: 24, cursor: 'pointer' }}
                     />
                   </Badge>
-                </Popover>
+                </Popover> */}
               </div>
             </Col>
           </Row>

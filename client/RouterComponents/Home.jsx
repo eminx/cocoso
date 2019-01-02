@@ -26,17 +26,17 @@ class Home extends React.Component {
   render() {
     const { isLoading, currentUser, bookingsList } = this.props;
 
-    const centerStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-      marginBottom: 24
-    };
-
     const publicActivities = bookingsList.filter(
       activity => activity.isPublicActivity === true
     );
 
-    const sortedPublicActivities = publicActivities.sort(compareForSort);
+    const futurePublicActivities = publicActivities.filter(activity =>
+      activity.datesAndTimes.some(date =>
+        moment(date.endDate).isAfter(yesterday)
+      )
+    );
+
+    const sortedPublicActivities = futurePublicActivities.sort(compareForSort);
 
     return (
       <div style={{ padding: 24 }}>
