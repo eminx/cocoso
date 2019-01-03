@@ -13,18 +13,13 @@ const getInitials = string => {
   return initials;
 };
 
-const IconText = ({ type, text }) => (
-  <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-);
-
-const footerIcons = [
-  <IconText type="star-o" text="156" />,
-  <IconText type="like-o" text="156" />,
-  <IconText type="message" text="2" />
-];
+const sectionStyle = {
+  paddingTop: 12,
+  paddingRright: 12,
+  fontStyle: 'italic',
+  textAlign: 'right',
+  whiteSpace: 'pre-line'
+};
 
 class CardArticle extends React.Component {
   getEventTimes = event => {
@@ -51,7 +46,6 @@ class CardArticle extends React.Component {
 
   render() {
     const { item, isAttending, isMyEventWTF, currentUser } = this.props;
-    const eventTimes = this.getEventTimes(item);
 
     return (
       <div>
@@ -70,6 +64,16 @@ class CardArticle extends React.Component {
           />
         </div>
         <div style={{ whiteSpace: 'pre-line' }}>{item.longDescription}</div>
+
+        <div style={{ ...sectionStyle, textAlign: 'left' }}>
+          <h4>Practical information:</h4>
+          {item.practicalInfo && <div>{item.practicalInfo}</div>}
+        </div>
+
+        <div style={sectionStyle}>
+          {item.place && <div>{item.place}</div>}
+          {item.address && <div>{item.address}</div>}
+        </div>
       </div>
     );
   }

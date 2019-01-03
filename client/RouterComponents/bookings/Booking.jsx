@@ -14,6 +14,8 @@ import {
   InputNumber,
   message
 } from 'antd/lib';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 import CardArticle from '../../UIComponents/CardArticle';
 import { PulseLoader } from 'react-spinners';
@@ -81,7 +83,6 @@ class Booking extends React.Component {
     const { resetFields } = this.props.form;
     this.props.form.validateFields((error, values) => {
       if (!error) {
-        console.log('Received values of form: ', values);
         Meteor.call(
           'registerAttendance',
           bookingData._id,
@@ -110,12 +111,33 @@ class Booking extends React.Component {
       return;
     }
 
+    const isAdmin = this.isAdmin();
+
     const customPanelStyle = {
-      // background: 'rgba(251, 213, 208, .2)',
-      // borderRadius: 4,
       marginBottom: 24,
       border: '1px solid #030303',
       overflow: 'hidden'
+    };
+
+    const conditionalRender = occurence => {
+      if (
+        isAdmin &&
+        occurence &&
+        occurence.attendees &&
+        occurence.attendees.length > 0
+      ) {
+        return <RsvpList attendees={occurence.attendees} />;
+      } else if (!isAdmin) {
+        return (
+          <RsvpForm
+            currentUser={currentUser}
+            form={form}
+            handleSubmit={event => this.handleRSVPSubmit(event, occurenceIndex)}
+          />
+        );
+      } else {
+        return 'no data';
+      }
     };
 
     return (
@@ -128,16 +150,17 @@ class Booking extends React.Component {
             }
             style={customPanelStyle}
           >
-            <RsvpForm
-              currentUser={currentUser}
-              form={form}
-              handleSubmit={event =>
-                this.handleRSVPSubmit(event, occurenceIndex)
-              }
-            />
+            {conditionalRender(occurence)}
           </Panel>
         ))}
       </Collapse>
+    );
+  };
+
+  isAdmin = () => {
+    const { currentUser, bookingData } = this.props;
+    return (
+      currentUser && bookingData && currentUser._id === bookingData.authorId
     );
   };
 
@@ -161,7 +184,7 @@ class Booking extends React.Component {
         </div>
       ) : null;
 
-    const messages = this.getChatMessages();
+    // const messages = this.getChatMessages();
 
     return (
       <div style={{ padding: 24 }}>
@@ -274,14 +297,7 @@ const RsvpForm = props => {
             }
           ],
           initialValue: 1
-        })(
-          <InputNumber
-            min={1}
-            max={5}
-            placeholder="Number of people"
-            autosize
-          />
-        )}
+        })(<InputNumber min={1} max={5} placeholder="Number of people" />)}
       </Form.Item>
       <Form.Item style={{ width: '100%' }}>
         <Button
@@ -293,6 +309,40 @@ const RsvpForm = props => {
         </Button>
       </Form.Item>
     </Form>
+  );
+};
+
+const RsvpList = ({ attendees }) => {
+  return (
+    <ReactTable
+      data={attendees}
+      columns={[
+        {
+          Header: 'First name',
+          accessor: 'firstName'
+        },
+        {
+          Header: 'Last name',
+          accessor: 'lastName'
+        },
+        {
+          Header: 'People',
+          accessor: 'numberOfPeople'
+        }
+      ]}
+    />
+  );
+
+  return (
+    <div>
+      {attendees[0].map(item => (
+        <div key={item.firstName}>
+          <span>{item.firstName}</span>
+          <span>{item.lastName}</span>
+          <span>{item.numberOfPeople}</span>
+        </div>
+      ))}
+    </div>
   );
 };
 

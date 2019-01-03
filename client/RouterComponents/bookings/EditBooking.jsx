@@ -201,6 +201,16 @@ class EditBooking extends React.Component {
     });
   };
 
+  handleConfirmModal = () => {
+    const { isPublicActivity, uploadableImage } = this.state;
+    if (isPublicActivity && uploadableImage) {
+      this.uploadImage();
+    } else {
+      console.log('it shall be here');
+      this.updateBooking();
+    }
+  };
+
   render() {
     if (!this.props.currentUser) {
       return (
@@ -219,18 +229,17 @@ class EditBooking extends React.Component {
       values,
       isLoading,
       isSuccess,
-      newBookingId,
       uploadableImage,
       isPublicActivity,
       numberOfRecurrence
     } = this.state;
 
+    const { gatheringData, currentUser } = this.props;
+
     if (isSuccess) {
       successCreation();
-      return <Redirect to="/" />;
+      return <Redirect to={`/event/${gatheringData._id}`} />;
     }
-
-    const { gatheringData, currentUser } = this.props;
 
     return (
       <div style={{ padding: 24 }}>
@@ -289,7 +298,7 @@ class EditBooking extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
-            onOk={isPublicActivity ? this.uploadImage : this.updateBooking}
+            onOk={this.handleConfirmModal}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

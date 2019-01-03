@@ -19,14 +19,31 @@ import {
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-const RangePicker = DatePicker.RangePicker;
 import moment from 'moment';
+
+const compareForSort = (a, b) => {
+  const dateA = moment(a.startDate, 'YYYY-MM-DD');
+  const dateB = moment(b.startDate, 'YYYY-MM-DD');
+  return dateA.diff(dateB);
+};
 
 let emptyDateAndTime = {
   startDate: null,
   endDate: null,
   startTime: null,
   endTime: null
+};
+
+const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
+const defaultPracticalInfo = `MAT: Efter föreställning serveras en vegetarisk middag, välkommen att stanna och äta med oss. \n\n
+BILJETTPRIS: Skogen har inget fast biljettpris. Välkommen att donera för konst och mat när du går. Kontanter / Swish.`;
+
+const iconStyle = {
+  padding: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  marginBottom: 24,
+  backgroundColor: '#f8f8f8'
 };
 
 class CreateBookingForm extends Component {
@@ -51,15 +68,15 @@ class CreateBookingForm extends Component {
       return;
     }
 
-    const datesAndTimesWithMoment = bookingData.datesAndTimes.map(
-      recurrence => ({
-        ...recurrence,
-        startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
-        startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
-        endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
-        endTimeMoment: moment(recurrence.endTime, 'HH:mm')
-      })
-    );
+    const datesAndTimesSorted = bookingData.datesAndTimes.sort(compareForSort);
+
+    const datesAndTimesWithMoment = datesAndTimesSorted.map(recurrence => ({
+      ...recurrence,
+      startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
+      startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
+      endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
+      endTimeMoment: moment(recurrence.endTime, 'HH:mm')
+    }));
 
     this.setState({
       datesAndTimes: datesAndTimesWithMoment
@@ -69,6 +86,15 @@ class CreateBookingForm extends Component {
   addRecurrence = () => {
     this.setState({
       datesAndTimes: [...this.state.datesAndTimes, { ...emptyDateAndTime }]
+    });
+  };
+
+  removeRecurrence = index => {
+    const allOccurences = [...this.state.datesAndTimes];
+    allOccurences.splice(index, 1);
+
+    this.setState({
+      datesAndTimes: allOccurences
     });
   };
 
@@ -87,8 +113,9 @@ class CreateBookingForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { datesAndTimes } = this.state;
+    const { form, isPublicActivity } = this.props;
 
-    this.props.form.validateFields((err, fieldsValue) => {
+    form.validateFields((err, fieldsValue) => {
       if (err) {
         console.log(err);
         return;
@@ -112,10 +139,17 @@ class CreateBookingForm extends Component {
       const values = {
         title: fieldsValue['title'],
         subTitle: fieldsValue['subTitle'],
-        room: fieldsValue['room'],
         longDescription: fieldsValue['longDescription'],
         datesAndTimes: datesAndTimesWithoutMoment
       };
+
+      if (isPublicActivity) {
+        values.place = fieldsValue['place'];
+        values.address = fieldsValue['address'];
+        values.practicalInfo = fieldsValue['practicalInfo'];
+      } else {
+        values.room = fieldsValue['room'];
+      }
 
       if (!err) {
         this.props.registerGatheringLocally(values);
@@ -125,7 +159,6 @@ class CreateBookingForm extends Component {
 
   renderDateTime = () => {
     const { datesAndTimes } = this.state;
-    const { removeRecurrence } = this.props;
 
     return (
       <div style={{ marginBottom: 12 }}>
@@ -133,6 +166,8 @@ class CreateBookingForm extends Component {
           <DatesAndTimes
             key={index}
             recurrence={recurrence}
+            removeRecurrence={() => this.removeRecurrence(index)}
+            isNotDeletable={index === 0}
             handleStartDateChange={(date, dateString) =>
               this.handleDateAndTimeChange(date, dateString, index, 'startDate')
             }
@@ -147,15 +182,7 @@ class CreateBookingForm extends Component {
             }
           />
         ))}
-        <div
-          style={{
-            padding: 24,
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: 24,
-            backgroundColor: '#f8f8f8'
-          }}
-        >
+        <div style={{ ...iconStyle, padding: 24 }}>
           <Icon
             style={{ fontSize: 48, cursor: 'pointer' }}
             type="plus-circle"
@@ -274,6 +301,61 @@ class CreateBookingForm extends Component {
             </FormItem>
           )}
 
+          {isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('place', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please enter the address'
+                  }
+                ],
+                initialValue:
+                  bookingData && bookingData.place
+                    ? bookingData.place
+                    : 'Skogen'
+              })(<Input placeholder="Please enter the name of the place" />)}
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('address', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please enter the address'
+                  }
+                ],
+                initialValue:
+                  bookingData && bookingData.address
+                    ? bookingData.address
+                    : skogenAddress
+              })(<Input placeholder="Please enter the address" />)}
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('practicalInfo', {
+                rules: [
+                  {
+                    message: 'Please enter practical info (if any)'
+                  }
+                ],
+                initialValue:
+                  bookingData && bookingData.practicalInfo
+                    ? bookingData.practicalInfo
+                    : defaultPracticalInfo
+              })(
+                <TextArea
+                  placeholder="Practical info"
+                  autosize={{ minRows: 3, maxRows: 6 }}
+                />
+              )}
+            </FormItem>
+          )}
+
           {currentUser && currentUser.isSuperAdmin && (
             <div
               style={{
@@ -291,27 +373,30 @@ class CreateBookingForm extends Component {
             </div>
           )}
 
-          <FormItem>
-            {getFieldDecorator('room', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter which part of Skogen you want to book'
-                }
-              ],
-              initialValue: bookingData ? bookingData.room : null
-            })(
-              <Select placeholder="Select space/equipment">
-                {places
-                  ? places.map((part, i) => (
-                      <Option key={part.name + i} value={part.name}>
-                        {part.name}
-                      </Option>
-                    ))
-                  : null}
-              </Select>
-            )}
-          </FormItem>
+          {!isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('room', {
+                rules: [
+                  {
+                    required: true,
+                    message:
+                      'Please enter which part of Skogen you want to book'
+                  }
+                ],
+                initialValue: bookingData ? bookingData.room : 'Studio'
+              })(
+                <Select placeholder="Select space/equipment">
+                  {places
+                    ? places.map((part, i) => (
+                        <Option key={part.name + i} value={part.name}>
+                          {part.name}
+                        </Option>
+                      ))
+                    : null}
+                </Select>
+              )}
+            </FormItem>
+          )}
 
           <FormItem
             wrapperCol={{
@@ -358,13 +443,29 @@ class DatesAndTimes extends Component {
       handleStartDateChange,
       handleStartTimeChange,
       handleFinishDateChange,
-      handleFinishTimeChange
+      handleFinishTimeChange,
+      removeRecurrence,
+      isNotDeletable
     } = this.props;
 
     return (
       <div
-        style={{ padding: 12, backgroundColor: '#f8f8f8', marginBottom: 12 }}
+        style={{
+          padding: 12,
+          backgroundColor: '#f8f8f8',
+          marginBottom: 12
+        }}
       >
+        {!isNotDeletable && (
+          <div style={iconStyle}>
+            <Icon
+              style={{ fontSize: 18, cursor: 'pointer' }}
+              type="delete"
+              onClick={removeRecurrence}
+            />
+          </div>
+        )}
+
         <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
             onChange={handleStartDateChange}

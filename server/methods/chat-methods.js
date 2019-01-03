@@ -78,6 +78,9 @@ Meteor.methods({
         if (contextIdIndex !== -1) {
           const notifications = [...member.notifications];
           notifications[contextIdIndex].count += 1;
+          if (!notifications[contextIdIndex].unSeenIndexes) {
+            return;
+          }
           notifications[contextIdIndex].unSeenIndexes.push(unSeenIndex);
           Meteor.users.update(member._id, {
             $set: {

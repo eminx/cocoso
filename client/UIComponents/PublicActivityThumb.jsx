@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon } from 'antd/lib';
 import moment from 'moment';
 
-const IconText = ({ type, text }) => (
-  <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-);
+const compareForSort = (a, b) => {
+  const dateA = moment(a.startDate, 'YYYY-MM-DD');
+  const dateB = moment(b.startDate, 'YYYY-MM-DD');
+  return dateA.diff(dateB);
+};
 
 class PublicActivityThumb extends React.Component {
   getEventTimes = event => {
@@ -94,16 +92,17 @@ class PublicActivityThumb extends React.Component {
       backgroundImage: `url('${item.imageUrl}')`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
-      backgroundPosition: 'center center',
-      filter: 'brightness(50%)'
+      backgroundPosition: 'center center'
     };
 
     let clickLink = `/event/${item._id}`;
 
+    const coverClass = 'thumb-cover';
+
     return (
-      <div style={thumbStyle}>
+      <div style={thumbStyle} className="thumb-cover-container">
         <Link to={clickLink}>
-          <div style={coverStyle} />
+          <div style={coverStyle} className={coverClass} />
           <div style={{ position: 'relative', padding: '24px 16px' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               {item.datesAndTimes.map(date => this.renderDate(date))}

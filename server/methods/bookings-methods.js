@@ -23,7 +23,6 @@ Meteor.methods({
     }
 
     check(formValues.title, String);
-    check(formValues.room, String);
     formValues.datesAndTimes.forEach(recurrence => {
       check(recurrence.startDate, String);
       check(recurrence.endDate, String);
@@ -42,7 +41,10 @@ Meteor.methods({
         title: formValues.title,
         subTitle: formValues.subTitle || null,
         longDescription: formValues.longDescription,
-        room: formValues.room,
+        room: formValues.room || null,
+        place: formValues.place || null,
+        practicalInfo: formValues.practicalInfo || null,
+        address: formValues.address || null,
         capacity: formValues.capacity || 20,
         datesAndTimes: formValues.datesAndTimes,
         roomIndex: roomIndex,
@@ -65,7 +67,6 @@ Meteor.methods({
     }
 
     check(formValues.title, String);
-    check(formValues.room, String);
     formValues.datesAndTimes.forEach(recurrence => {
       check(recurrence.startDate, String);
       check(recurrence.endDate, String);
@@ -85,7 +86,10 @@ Meteor.methods({
           title: formValues.title,
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
-          room: formValues.room,
+          room: formValues.room || null,
+          place: formValues.place || null,
+          practicalInfo: formValues.practicalInfo || null,
+          address: formValues.address || null,
           roomIndex: roomIndex,
           datesAndTimes: formValues.datesAndTimes,
           isPublicActivity: formValues.isPublicActivity,

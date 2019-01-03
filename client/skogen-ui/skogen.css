@@ -235,3 +235,12 @@ body {
 .skogen-menu-layout > a {
   padding: 6px 12px;
 }
+
+.thumb-cover {
+  filter: brightness(50%);
+  transition: all ease-in-out 200ms;
+}
+
+.thumb-cover-container:hover .thumb-cover {
+  filter: brightness(70%);
+}

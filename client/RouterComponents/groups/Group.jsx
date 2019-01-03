@@ -159,12 +159,15 @@ class Group extends React.PureComponent {
 
   removeNotification = messageIndex => {
     const { group, currentUser } = this.props;
-    const shouldRun = currentUser.notifications.find(notification =>
-      notification.unSeenIndexes.some(unSeenIndex => {
+    const shouldRun = currentUser.notifications.find(notification => {
+      if (!notification.unSeenIndexes) {
+        return false;
+      }
+      return notification.unSeenIndexes.some(unSeenIndex => {
         console.log(unSeenIndex, messageIndex);
         return unSeenIndex === messageIndex;
-      })
-    );
+      });
+    });
     if (!shouldRun) {
       return;
     }
@@ -226,7 +229,7 @@ class Group extends React.PureComponent {
               </Card>
             </Col>
 
-            <Col sm={24} md={8} style={{ padding: 24 }}>
+            <Col sm={24} md={8} style={{ padding: 24, paddingTop: 0 }}>
               {!isAdmin && (
                 <Button
                   type={isMember ? null : 'primary'}
@@ -280,7 +283,19 @@ class Group extends React.PureComponent {
                   messages={messages}
                   onNewMessage={this.addNewChatMessage}
                   removeNotification={this.removeNotification}
+                  isMember={isMember}
                 />
+                {!isMember && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button
+                      type="primary"
+                      onClick={this.openModal}
+                      style={{ marginBottom: 24 }}
+                    >
+                      Join this group
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </Col>

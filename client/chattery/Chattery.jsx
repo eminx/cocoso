@@ -6,9 +6,18 @@ import './chattery.css';
 import { ChatteryWindow } from './ChatteryWindow';
 import { ChatteryInput } from './ChatteryInput';
 
+const noMemberText =
+  'If you want to participate to the discussion, please join the group.';
+
 class Chattery extends React.Component {
   render() {
-    const { messages, onNewMessage, removeNotification, meta } = this.props;
+    const {
+      messages,
+      onNewMessage,
+      removeNotification,
+      isMember,
+      meta
+    } = this.props;
 
     return (
       <div className="chattery-main-container">
@@ -17,7 +26,11 @@ class Chattery extends React.Component {
           meta={meta || null}
           removeNotification={removeNotification}
         />
-        <ChatteryInput onNewMessage={onNewMessage} />
+        {isMember ? (
+          <ChatteryInput onNewMessage={onNewMessage} />
+        ) : (
+          <p style={{ padding: 24, textAlign: 'center' }}>{noMemberText}</p>
+        )}
       </div>
     );
   }
