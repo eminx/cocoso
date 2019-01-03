@@ -11,6 +11,7 @@ import {
   List,
   Form,
   Input,
+  InputNumber,
   message
 } from 'antd/lib';
 
@@ -103,7 +104,7 @@ class Booking extends React.Component {
   };
 
   renderDates = () => {
-    const { bookingData, form } = this.props;
+    const { bookingData, form, currentUser } = this.props;
 
     if (!bookingData) {
       return;
@@ -128,6 +129,7 @@ class Booking extends React.Component {
             style={customPanelStyle}
           >
             <RsvpForm
+              currentUser={currentUser}
               form={form}
               handleSubmit={event =>
                 this.handleRSVPSubmit(event, occurenceIndex)
@@ -242,12 +244,14 @@ const RsvpForm = props => {
     >
       <Form.Item>
         {getFieldDecorator('firstName', {
-          rules: [{ required: true, message: 'Please enter your first name' }]
+          rules: [{ required: true, message: 'Please enter your first name' }],
+          initialValue: props.currentUser && props.currentUser.firstName
         })(<Input placeholder="First name" />)}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator('lastName', {
-          rules: [{ required: true, message: 'Please enter your last name' }]
+          rules: [{ required: true, message: 'Please enter your last name' }],
+          initialValue: props.currentUser && props.currentUser.lastName
         })(<Input placeholder="Last name" />)}
       </Form.Item>
       <Form.Item>
@@ -257,7 +261,8 @@ const RsvpForm = props => {
               required: true,
               message: 'Please enter your email address'
             }
-          ]
+          ],
+          initialValue: props.currentUser && props.currentUser.emails[0].address
         })(<Input placeholder="Email addresss" />)}
       </Form.Item>
       <Form.Item>
@@ -267,8 +272,16 @@ const RsvpForm = props => {
               required: true,
               message: 'Please enter the number of people in your party'
             }
-          ]
-        })(<Input placeholder="Number of people" />)}
+          ],
+          initialValue: 1
+        })(
+          <InputNumber
+            min={1}
+            max={5}
+            placeholder="Number of people"
+            autosize
+          />
+        )}
       </Form.Item>
       <Form.Item style={{ width: '100%' }}>
         <Button

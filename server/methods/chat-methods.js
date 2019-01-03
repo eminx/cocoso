@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { message } from 'antd';
 
 Meteor.methods({
   createChat(contextName, contextId) {
