@@ -110,10 +110,10 @@ class Booking extends React.Component {
     }
 
     const customPanelStyle = {
-      background: 'rgba(251, 213, 208, .2)',
-      borderRadius: 4,
+      // background: 'rgba(251, 213, 208, .2)',
+      // borderRadius: 4,
       marginBottom: 24,
-      border: 0,
+      border: '1px solid #030303',
       overflow: 'hidden'
     };
 

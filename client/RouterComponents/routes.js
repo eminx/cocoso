@@ -51,6 +51,7 @@ export const renderRoutes = () => (
               component={NewBookSpaceContainer}
             />
             <Route path="/event/:id" component={BookingContainer} />
+            <Route path="/booking/:id" component={BookingContainer} />
             <Route path="/edit-booking/:id/" component={EditBookingContainer} />
 
             <Route exact path="/new-group" component={NewGroupContainer} />

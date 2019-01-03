@@ -157,6 +157,31 @@ class Group extends React.PureComponent {
     });
   };
 
+  removeNotification = messageIndex => {
+    const { group, currentUser } = this.props;
+    const shouldRun = currentUser.notifications.find(notification =>
+      notification.unSeenIndexes.some(unSeenIndex => {
+        console.log(unSeenIndex, messageIndex);
+        return unSeenIndex === messageIndex;
+      })
+    );
+    if (!shouldRun) {
+      return;
+    }
+
+    Meteor.call(
+      'removeNotification',
+      group._id,
+      messageIndex,
+      (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.error(error.reason);
+        }
+      }
+    );
+  };
+
   render() {
     if (this.state.redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -254,6 +279,7 @@ class Group extends React.PureComponent {
                 <Chattery
                   messages={messages}
                   onNewMessage={this.addNewChatMessage}
+                  removeNotification={this.removeNotification}
                 />
               </div>
             )}

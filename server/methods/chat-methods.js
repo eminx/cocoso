@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { message } from 'antd';
 
 Meteor.methods({
   createChat(contextName, contextId) {
@@ -26,6 +27,8 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const unSeenIndex = Chats.findOne({ contextId }).messages.length;
+
     try {
       Chats.update(
         { contextId: contextId },
@@ -44,13 +47,13 @@ Meteor.methods({
           }
         }
       );
-      Meteor.call('createNotifications', contextId);
+      Meteor.call('createNotifications', contextId, unSeenIndex);
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  createNotifications(contextId) {
+  createNotifications(contextId, unSeenIndex) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -76,6 +79,7 @@ Meteor.methods({
         if (contextIdIndex !== -1) {
           const notifications = [...member.notifications];
           notifications[contextIdIndex].count += 1;
+          notifications[contextIdIndex].unSeenIndexes.push(unSeenIndex);
           Meteor.users.update(member._id, {
             $set: {
               notifications: notifications
@@ -88,10 +92,49 @@ Meteor.methods({
                 title: theGroup.title,
                 count: 1,
                 context: 'group',
-                contextId: theGroup._id
+                contextId: theGroup._id,
+                unSeenIndexes: [unSeenIndex]
               }
             }
           });
+        }
+      });
+    } catch (error) {
+      console.log('error', error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  removeNotification(contextId, messageIndex) {
+    const user = Meteor.user();
+    if (!user || !user.isRegisteredMember) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      const notifications = [...user.notifications];
+      if (!notifications) {
+        return;
+      }
+
+      const notificationIndex = notifications.findIndex(
+        notification => notification.contextId === contextId
+      );
+
+      if (notificationIndex < 0) {
+        return;
+      }
+
+      notifications[notificationIndex].count -= 1;
+      const newNotifications = notifications[
+        notificationIndex
+      ].unSeenIndexes.filter(unSeenIndex => unSeenIndex !== messageIndex);
+
+      Meteor.users.update(user._id, {
+        $set: {
+          notifications: newNotifications.filter(
+            notification => notification.count > 0
+          )
         }
       });
     } catch (error) {
