@@ -164,7 +164,6 @@ class Group extends React.PureComponent {
         return false;
       }
       return notification.unSeenIndexes.some(unSeenIndex => {
-        console.log(unSeenIndex, messageIndex);
         return unSeenIndex === messageIndex;
       });
     });

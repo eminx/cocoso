@@ -22,6 +22,8 @@ import { PulseLoader } from 'react-spinners';
 
 const Panel = Collapse.Panel;
 
+const yesterday = moment(new Date()).add(-1, 'days');
+
 class Booking extends React.Component {
   addNewChatMessage = message => {
     Meteor.call(
@@ -119,7 +121,7 @@ class Booking extends React.Component {
       overflow: 'hidden'
     };
 
-    const conditionalRender = occurence => {
+    const conditionalRender = (occurence, occurenceIndex) => {
       if (
         isAdmin &&
         occurence &&
@@ -128,6 +130,9 @@ class Booking extends React.Component {
       ) {
         return <RsvpList attendees={occurence.attendees} />;
       } else if (!isAdmin) {
+        if (moment(occurence.endDate).isBefore(yesterday)) {
+          return <p>This event has past</p>;
+        }
         return (
           <RsvpForm
             currentUser={currentUser}
@@ -150,7 +155,7 @@ class Booking extends React.Component {
             }
             style={customPanelStyle}
           >
-            {conditionalRender(occurence)}
+            {conditionalRender(occurence, occurenceIndex)}
           </Panel>
         ))}
       </Collapse>
@@ -331,18 +336,6 @@ const RsvpList = ({ attendees }) => {
         }
       ]}
     />
-  );
-
-  return (
-    <div>
-      {attendees[0].map(item => (
-        <div key={item.firstName}>
-          <span>{item.firstName}</span>
-          <span>{item.lastName}</span>
-          <span>{item.numberOfPeople}</span>
-        </div>
-      ))}
-    </div>
   );
 };
 
