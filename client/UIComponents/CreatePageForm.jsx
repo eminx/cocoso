@@ -23,13 +23,13 @@ class CreatePageForm extends React.Component {
         return;
       }
 
-      if (!this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
+      // if (!this.props.uploadableImage) {
+      //   Modal.error({
+      //     title: 'Image is required',
+      //     content: 'Please upload an image'
+      //   });
+      //   return;
+      // }
 
       const values = {
         title: fieldsValue['title'],
@@ -40,6 +40,22 @@ class CreatePageForm extends React.Component {
         this.props.registerPageLocally(values);
       }
     });
+  };
+
+  validateTitle = (rule, value, callback) => {
+    const { form, pageTitles } = this.props;
+    const pageExists =
+      pageTitles && value
+        ? pageTitles.some(title => title.toLowerCase() === value.toLowerCase())
+        : false;
+
+    if (pageExists) {
+      callback('A page with this title already exists');
+    } else if (value.length < 4) {
+      callback('Title has to be at least 4 characters');
+    } else {
+      callback();
+    }
   };
 
   render() {
@@ -63,6 +79,9 @@ class CreatePageForm extends React.Component {
                 {
                   required: true,
                   message: 'Please enter the Title'
+                },
+                {
+                  validator: this.validateTitle
                 }
               ],
               initialValue: pageData ? pageData.title : null
@@ -86,7 +105,7 @@ class CreatePageForm extends React.Component {
             )}
           </FormItem>
 
-          <FormItem
+          {/* <FormItem
             {...formItemLayout}
             label={<span className="ant-form-item-required">Cover image</span>}
             className="upload-image-col"
@@ -110,7 +129,7 @@ class CreatePageForm extends React.Component {
                 </Button>
               )}
             </Upload>
-          </FormItem>
+          </FormItem> */}
 
           <FormItem
             wrapperCol={{

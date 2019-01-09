@@ -33,6 +33,10 @@ const menu = [
   {
     label: 'Community Press',
     route: '/publications'
+  },
+  {
+    label: 'Info',
+    route: '/pages/about'
   }
 ];
 

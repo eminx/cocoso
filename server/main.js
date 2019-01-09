@@ -1,13 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
-  Meteor.users.find().forEach(user => {
-    if (!user.notifications) {
-      Meteor.users.update(user._id, {
-        $set: {
-          notifications: []
-        }
-      });
-    }
-  });
+  const smtp = Meteor.settings.mailCredentials.smtp;
+
+  process.env.MAIL_URL =
+    'smtps://' +
+    encodeURIComponent(smtp.userName) +
+    ':' +
+    smtp.password +
+    '@' +
+    smtp.host +
+    ':' +
+    smtp.port;
+  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
+  Accounts.emailTemplates.from = () => smtp.fromEmail;
 });

@@ -98,10 +98,8 @@ Meteor.publish('publication', function(id) {
   });
 });
 
-Meteor.publish('page', function(id) {
-  return Pages.find({
-    _id: id
-  });
+Meteor.publish('pages', function() {
+  return Pages.find();
 });
 
 Meteor.publish('chat', function(contextId) {

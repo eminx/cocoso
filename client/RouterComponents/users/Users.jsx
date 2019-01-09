@@ -62,7 +62,7 @@ class Users extends React.PureComponent {
                 <Card
                   title={user.username}
                   bordered
-                  extra={user.emails[0].address}
+                  extra={user && user.emails ? user.emails[0].address : null}
                   style={{ width: '100%', marginBottom: 0 }}
                 >
                   <Button

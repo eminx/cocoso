@@ -154,7 +154,7 @@ body .ant-select-selection:focus {
 }
 
 .ant-card .ant-card-cover {
-  padding: 24px;
+  padding: 0 24px;
 }
 
 .ant-card .ant-card-cover img {

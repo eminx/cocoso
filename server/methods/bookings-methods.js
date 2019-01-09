@@ -11,6 +11,21 @@ const getRoomIndex = room => {
   }
 };
 
+const siteUrl = Meteor.absoluteUrl();
+
+const getRegistrationText = (
+  firstName,
+  numberOfPeople,
+  occurence,
+  bookingId
+) => {
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully signed up for this event.\nYou have registered to come ${numberOfPeople} ${
+    numberOfPeople === 1 ? 'person' : 'people'
+  } in total for the event on ${occurence.startDate} at ${
+    occurence.startTime
+  }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${bookingId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\nSkogen Team`;
+};
+
 Meteor.methods({
   createBooking(formValues, uploadedImage) {
     const user = Meteor.user();
@@ -107,12 +122,10 @@ Meteor.methods({
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
     const bookingToDelete = Gatherings.findOne(bookingId);
     if (bookingToDelete.authorId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
 
     try {
@@ -138,6 +151,17 @@ Meteor.methods({
           datesAndTimes: occurences
         }
       });
+      Meteor.call(
+        'sendEmail',
+        Meteor.userId(),
+        `Your registration for "${theActivity.title}" at Skogen`,
+        getRegistrationText(
+          values.firstName,
+          values.numberOfPeople,
+          occurences[occurenceIndex],
+          bookingId
+        )
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't add to collection");

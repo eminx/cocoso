@@ -152,7 +152,8 @@ Meteor.methods({
         }
       });
     } catch (error) {
-      throw new Meteor.Error('Could not join the circle');
+      console.log(error);
+      throw new Meteor.Error(error, 'Could not join the circle');
     }
   },
 

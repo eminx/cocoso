@@ -19,7 +19,8 @@ class NewPage extends React.Component {
     newPageId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
+    isTitleVerified: false
   };
 
   registerPageLocally = values => {
@@ -91,13 +92,13 @@ class NewPage extends React.Component {
   showModal = () => this.setState({ modalConfirm: true });
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, pageTitles } = this.props;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a registered member to create a group."
+            message="You have to be super admin to create a static page."
             type="error"
           />
         </div>
@@ -111,7 +112,8 @@ class NewPage extends React.Component {
       isSuccess,
       newPageId,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
+      isTitleVerified
     } = this.state;
 
     isSuccess ? successCreation() : null;
@@ -122,6 +124,7 @@ class NewPage extends React.Component {
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreatePageForm
+              pageTitles={pageTitles}
               values={values}
               registerPageLocally={this.registerPageLocally}
               setUploadableImage={this.setUploadableImage}
@@ -137,7 +140,7 @@ class NewPage extends React.Component {
             title="Overview The Information"
             imageSrc={uploadableImageLocal}
             visible={modalConfirm}
-            onOk={this.uploadImage}
+            onOk={this.createPage}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

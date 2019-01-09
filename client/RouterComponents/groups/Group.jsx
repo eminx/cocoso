@@ -217,7 +217,7 @@ class Group extends React.PureComponent {
                 title={this.getTitle(group)}
                 bordered
                 extra={this.getExtra(group, isAdmin)}
-                style={{ width: '100%', marginBottom: 0 }}
+                style={{ width: '100%', marginBottom: 24 }}
                 cover={
                   group.imageUrl ? (
                     <img alt="group-image" src={group.imageUrl} />
