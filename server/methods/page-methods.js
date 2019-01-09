@@ -1,5 +1,5 @@
 Meteor.methods({
-  createPage(formValues, imageUrl) {
+  createPage(formValues) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
@@ -13,18 +13,18 @@ Meteor.methods({
         authorId: user._id,
         authorName: user.username,
         title: formValues.title,
-        imageUrl,
+        // imageUrl,
         longDescription: formValues.longDescription,
         isPublished: true,
         creationDate: new Date()
       });
-      return newPageId;
+      return formValues.title;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
 
-  updatePage(pageId, formValues, imageUrl) {
+  updatePage(pageId, formValues) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
@@ -32,20 +32,33 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.longDescription, String);
-    check(imageUrl, String);
+    // check(imageUrl, String);
 
     try {
-      const thePage = Pages.update(pageId, {
+      Pages.update(pageId, {
         $set: {
           title: formValues.title,
           longDescription: formValues.longDescription,
-          imageUrl,
+          // imageUrl,
           latestUpdate: new Date()
         }
       });
-      return pageId;
+      return formValues.title;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
+    }
+  },
+
+  deletePage(pageId) {
+    const user = Meteor.user();
+    if (!user || !user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      Pages.remove(pageId);
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   }
 });

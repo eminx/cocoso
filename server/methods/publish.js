@@ -102,6 +102,10 @@ Meteor.publish('pages', function() {
   return Pages.find();
 });
 
+Meteor.publish('page', function(title) {
+  return Pages.find({ title });
+});
+
 Meteor.publish('chat', function(contextId) {
   const user = Meteor.user();
   if (user) {

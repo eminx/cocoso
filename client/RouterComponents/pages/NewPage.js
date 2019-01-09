@@ -1,9 +1,12 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
+import { Link, Redirect } from 'react-router-dom';
+import { Row, Col, Radio, message, Alert, Affix } from 'antd/lib';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
+import PagesList from '../../UIComponents/PagesList';
+
+import { parseTitle } from '../../functions';
 
 const successCreation = () => {
   message.success('New page is successfully created', 6);
@@ -19,8 +22,7 @@ class NewPage extends React.Component {
     newPageId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null,
-    isTitleVerified: false
+    uploadableImageLocal: null
   };
 
   registerPageLocally = values => {
@@ -69,6 +71,11 @@ class NewPage extends React.Component {
   };
 
   createPage = () => {
+    const { currentUser } = this.props;
+    if (!currentUser || !currentUser.isSuperAdmin) {
+      message.error('This is not allowed');
+      return false;
+    }
     const { values, uploadedImageUrl } = this.state;
 
     Meteor.call('createPage', values, uploadedImageUrl, (error, result) => {
@@ -81,7 +88,7 @@ class NewPage extends React.Component {
       } else {
         this.setState({
           isLoading: false,
-          newPageId: result,
+          newPageId: parseTitle(result),
           isSuccess: true
         });
       }
@@ -112,17 +119,23 @@ class NewPage extends React.Component {
       isSuccess,
       newPageId,
       uploadableImage,
-      uploadableImageLocal,
-      isTitleVerified
+      uploadableImageLocal
     } = this.state;
 
     isSuccess ? successCreation() : null;
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Create a Page</h1>
         <Row gutter={48}>
+          <Col md={8}>
+            <PagesList
+              pageTitles={pageTitles}
+              activePageTitle={''}
+              onChange={this.handlePageClick}
+            />
+          </Col>
           <Col xs={24} sm={24} md={16}>
+            <h2>Create a Page</h2>
             <CreatePageForm
               pageTitles={pageTitles}
               values={values}

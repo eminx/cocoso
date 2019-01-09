@@ -1,35 +1,61 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Row, Col, Radio, Button, Divider, Card } from 'antd/lib';
+import PagesList from '../../UIComponents/PagesList';
 
-import { Row, Col, Card } from 'antd/lib';
+import { parseTitle } from '../../functions';
 
 class Page extends React.Component {
   render() {
-    const { page, pages, currentUser, isLoading, history } = this.props;
-    console.log(pages, 'wtf');
+    const { pages, pageId, currentUser, isLoading, history } = this.props;
+    const pageTitles = pages ? pages.map(page => page.title) : [];
+    const page =
+      pages && pages.length > 0
+        ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
+        : null;
+
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={4}>
-            {pages.map(page => (
-              <div key={page.title}>{page.title}</div>
-            ))}
-            <div>New Page</div>
+          <Col md={8}>
+            {currentUser && currentUser.isSuperAdmin && (
+              <div style={{ marginBottom: 24 }}>
+                <Link to="/new-page" key="new-page">
+                  <Button type="primary" block>
+                    New Page
+                  </Button>
+                </Link>
+              </div>
+            )}
+            <PagesList
+              pageTitles={pageTitles}
+              onChange={this.handlePageClick}
+              activePageTitle={pageId}
+            />
           </Col>
-          <Col md={16}>
-            <Card
-              title={page && <h2>{page.title}</h2>}
-              bordered
-              style={{ width: '100%', marginBottom: 0 }}
-              cover={
-                page && page.imageUrl ? (
-                  <img alt="group-image" src={page.imageUrl} />
-                ) : null
-              }
+
+          <Col md={12}>
+            <div
+              style={{
+                padding: 24,
+                border: '1px solid #030303',
+                marginBottom: 24
+              }}
             >
-              <Card.Meta description={page && page.longDescription} />
-            </Card>
+              <h3>{page && page.title}</h3>
+              <div style={{ whiteSpace: 'pre-line' }}>
+                {page && page.longDescription}
+              </div>
+            </div>
           </Col>
-          <Col md={4} />
+          <Col md={4}>
+            {page && currentUser && currentUser.isSuperAdmin && (
+              <Link to={`/edit-page/${parseTitle(page.title)}`}>
+                {' '}
+                <Button>Edit</Button>
+              </Link>
+            )}
+          </Col>
         </Row>
       </div>
     );

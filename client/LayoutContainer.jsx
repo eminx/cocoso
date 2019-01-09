@@ -36,7 +36,7 @@ const menu = [
   },
   {
     label: 'Info',
-    route: '/pages/about'
+    route: '/page/about-skogen'
   }
 ];
 

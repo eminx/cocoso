@@ -43,11 +43,17 @@ class CreatePageForm extends React.Component {
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageTitles } = this.props;
-    const pageExists =
-      pageTitles && value
-        ? pageTitles.some(title => title.toLowerCase() === value.toLowerCase())
-        : false;
+    const { form, pageData, pageTitles } = this.props;
+
+    let pageExists = false;
+    if (
+      pageTitles &&
+      value &&
+      (pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
+        pageData.title.toLowerCase() !== value.toLowerCase())
+    ) {
+      pageExists = true;
+    }
 
     if (pageExists) {
       callback('A page with this title already exists');
@@ -63,8 +69,8 @@ class CreatePageForm extends React.Component {
     const { uploadableImage, setUploadableImage, pageData } = this.props;
 
     const formItemLayout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
+      labelCol: { span: 6 },
+      wrapperCol: { span: 14 }
     };
 
     return (

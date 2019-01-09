@@ -236,7 +236,7 @@ class EditGroup extends React.Component {
           </div>
         )}
 
-        <h1>Edit your Group</h1>
+        <h2>Edit your Group</h2>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             {groupData && currentUser && groupData.adminId === currentUser._id && (

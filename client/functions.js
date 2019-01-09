@@ -19,4 +19,6 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-export { getInitials, removeSpace, compareForSort };
+const parseTitle = title => title.replace(/\s+/g, '-').toLowerCase();
+
+export { getInitials, removeSpace, compareForSort, parseTitle };
