@@ -12,7 +12,8 @@ import {
   Form,
   Input,
   InputNumber,
-  message
+  message,
+  Modal
 } from 'antd/lib';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -25,6 +26,11 @@ const Panel = Collapse.Panel;
 const yesterday = moment(new Date()).add(-1, 'days');
 
 class Booking extends React.Component {
+  state = {
+    isRsvpCancelModalOn: false,
+    rsvpCancelModalInfo: null
+  };
+
   addNewChatMessage = message => {
     Meteor.call(
       'addChatMessage',
@@ -106,6 +112,165 @@ class Booking extends React.Component {
     });
   };
 
+  openCancelRsvpModal = occurenceIndex => {
+    const { currentUser } = this.props;
+
+    this.setState({
+      isRsvpCancelModalOn: true,
+      rsvpCancelModalInfo: {
+        occurenceIndex,
+        email: currentUser ? currentUser.emails[0].address : '',
+        lastName:
+          currentUser && currentUser.lastName ? currentUser.lastName : ''
+      }
+    });
+  };
+
+  findRsvpInfo = () => {
+    const { rsvpCancelModalInfo } = this.state;
+    const { bookingData } = this.props;
+    const theOccurence =
+      bookingData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
+
+    const attendeeFinder = attendee =>
+      attendee.lastName === rsvpCancelModalInfo.lastName &&
+      attendee.email === rsvpCancelModalInfo.email;
+
+    const foundAttendee = theOccurence.attendees.find(attendeeFinder);
+    const foundAttendeeIndex = theOccurence.attendees.findIndex(attendeeFinder);
+
+    if (!foundAttendee) {
+      message.error(
+        'Sorry we could not find your registration. Please double check the date and spellings, and try again'
+      );
+    }
+
+    this.setState({
+      rsvpCancelModalInfo: {
+        ...rsvpCancelModalInfo,
+        attendeeIndex: foundAttendeeIndex,
+        isInfoFound: true,
+        firstName: foundAttendee.firstName,
+        numberOfPeople: foundAttendee.numberOfPeople
+      }
+    });
+  };
+
+  renderCancelRsvpModalContent = () => {
+    const { rsvpCancelModalInfo } = this.state;
+    if (!rsvpCancelModalInfo) {
+      return;
+    }
+
+    if (rsvpCancelModalInfo.isInfoFound) {
+      const user = {
+        ...rsvpCancelModalInfo,
+        emails: [{ address: rsvpCancelModalInfo.email }]
+      };
+      return (
+        <RsvpForm
+          isUpdateMode
+          handleDelete={this.handleRemoveRSVP}
+          currentUser={user}
+          form={this.props.form}
+          handleSubmit={event => this.handleChangeRSVPSubmit(event)}
+        />
+      );
+    } else {
+      return (
+        <div>
+          <Input
+            placeholder="Last name"
+            style={{ marginBottom: 24 }}
+            value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
+            onChange={e =>
+              this.setState({
+                rsvpCancelModalInfo: {
+                  ...rsvpCancelModalInfo,
+                  lastName: e.target.value
+                }
+              })
+            }
+          />
+          <Input
+            placeholder="Email"
+            value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
+            onChange={e =>
+              this.setState({
+                rsvpCancelModalInfo: {
+                  ...rsvpCancelModalInfo,
+                  email: e.target.value
+                }
+              })
+            }
+          />
+        </div>
+      );
+    }
+  };
+
+  handleChangeRSVPSubmit = event => {
+    event.preventDefault();
+    const { rsvpCancelModalInfo } = this.state;
+    const { bookingData, form } = this.props;
+    const { resetFields } = this.props.form;
+
+    form.validateFields((error, values) => {
+      if (error) {
+        message.error(error.reason);
+        return;
+      }
+
+      Meteor.call(
+        'updateAttendance',
+        bookingData._id,
+        values,
+        rsvpCancelModalInfo.occurenceIndex,
+        rsvpCancelModalInfo.attendeeIndex,
+        (error, respond) => {
+          if (error) {
+            console.log(error);
+            message.error(error.reason);
+          } else {
+            message.success('You have successfully updated your RSVP');
+            resetFields();
+            this.setState({
+              rsvpCancelModalInfo: null,
+              isRsvpCancelModalOn: false
+            });
+          }
+        }
+      );
+    });
+  };
+
+  handleRemoveRSVP = () => {
+    const { rsvpCancelModalInfo } = this.state;
+    const { bookingData, form } = this.props;
+    const { resetFields } = this.props.form;
+
+    Meteor.call(
+      'removeAttendance',
+      bookingData._id,
+      rsvpCancelModalInfo.occurenceIndex,
+      rsvpCancelModalInfo.attendeeIndex,
+      rsvpCancelModalInfo.email,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+          message.error(error.reason);
+        } else {
+          message.success('You have successfully removed your RSVP');
+          resetFields();
+          this.setState({
+            rsvpCancelModalInfo: null,
+            isRsvpCancelModalOn: false
+          });
+        }
+      }
+    );
+  };
+
   renderDates = () => {
     const { bookingData, form, currentUser } = this.props;
 
@@ -134,11 +299,26 @@ class Booking extends React.Component {
           return <p>This event has past</p>;
         }
         return (
-          <RsvpForm
-            currentUser={currentUser}
-            form={form}
-            handleSubmit={event => this.handleRSVPSubmit(event, occurenceIndex)}
-          />
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                marginBottom: 12
+              }}
+            >
+              <a onClick={() => this.openCancelRsvpModal(occurenceIndex)}>
+                Change/Cancel Existing RSVP
+              </a>
+            </div>
+            <RsvpForm
+              currentUser={currentUser}
+              form={form}
+              handleSubmit={event =>
+                this.handleRSVPSubmit(event, occurenceIndex)
+              }
+            />
+          </div>
         );
       } else {
         return 'no data';
@@ -171,6 +351,7 @@ class Booking extends React.Component {
 
   render() {
     const { bookingData, isLoading, currentUser, chatData } = this.props;
+    const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
     const EditButton =
       currentUser && bookingData && currentUser._id === bookingData.authorId ? (
@@ -247,6 +428,22 @@ class Booking extends React.Component {
             ) : null}
           </Col>
         </Row> */}
+
+        <Modal
+          title={
+            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
+              ? 'Now please continue'
+              : 'Please enter the details of your RSVP'
+          }
+          footer={
+            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound && null
+          }
+          visible={isRsvpCancelModalOn}
+          onOk={this.findRsvpInfo}
+          onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
+        >
+          {this.renderCancelRsvpModalContent()}
+        </Modal>
       </div>
     );
   }
@@ -257,19 +454,17 @@ function hasErrors(fieldsError) {
 }
 
 const RsvpForm = props => {
+  const { isUpdateMode, handleSubmit, handleDelete, form } = props;
+
   const {
     getFieldDecorator,
     getFieldsError,
     getFieldError,
     isFieldTouched
-  } = props.form;
+  } = form;
 
   return (
-    <Form
-      layout="inline"
-      onSubmit={props.handleSubmit}
-      style={{ paddingLeft: 12 }}
-    >
+    <Form layout="inline" onSubmit={handleSubmit} style={{ paddingLeft: 12 }}>
       <Form.Item>
         {getFieldDecorator('firstName', {
           rules: [{ required: true, message: 'Please enter your first name' }],
@@ -301,18 +496,28 @@ const RsvpForm = props => {
               message: 'Please enter the number of people in your party'
             }
           ],
-          initialValue: 1
+          initialValue:
+            (props.currentUser && props.currentUser.numberOfPeople) || 1
         })(<InputNumber min={1} max={5} placeholder="Number of people" />)}
       </Form.Item>
-      <Form.Item style={{ width: '100%' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 24
+        }}
+      >
         <Button
           type="primary"
           htmlType="submit"
           disabled={hasErrors(getFieldsError())}
         >
-          Register
+          {isUpdateMode ? 'Update' : 'Register'}
         </Button>
-      </Form.Item>
+
+        {isUpdateMode && <a onClick={handleDelete}>Remove your registration</a>}
+      </div>
     </Form>
   );
 };

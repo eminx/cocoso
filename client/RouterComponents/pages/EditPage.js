@@ -179,7 +179,7 @@ class EditPage extends React.Component {
         )}
         <h2>Edit your booking</h2>
         <Row gutter={48}>
-          <Col md={16}>
+          <Col md={20}>
             <CreatePageForm
               values={values}
               pageData={pageData}
@@ -192,7 +192,7 @@ class EditPage extends React.Component {
             />
           </Col>
 
-          <Col md={8}>
+          <Col md={4}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Button onClick={this.openDeleteModal}>Delete this page</Button>
             </div>

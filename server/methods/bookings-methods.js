@@ -26,6 +26,14 @@ const getRegistrationText = (
   }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${bookingId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\nSkogen Team`;
 };
 
+const getRemovalText = (firstName, occurence, bookingId) => {
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully removed your registration from this event.\nYou have previously registered to attend the event on ${
+    occurence.startDate
+  } at ${
+    occurence.startTime
+  }, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${bookingId}.\n\nKind regards,\nSkogen Team`;
+};
+
 Meteor.methods({
   createBooking(formValues, uploadedImage) {
     const user = Meteor.user();
@@ -153,7 +161,7 @@ Meteor.methods({
       });
       Meteor.call(
         'sendEmail',
-        Meteor.userId(),
+        values.email,
         `Your registration for "${theActivity.title}" at Skogen`,
         getRegistrationText(
           values.firstName,
@@ -165,6 +173,72 @@ Meteor.methods({
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't add to collection");
+    }
+  },
+
+  updateAttendance(bookingId, values, occurenceIndex, attendeeIndex) {
+    check(bookingId, String);
+    check(occurenceIndex, Number);
+    check(values.firstName, String);
+    check(values.lastName, String);
+    check(values.email, String);
+    check(values.numberOfPeople, Number);
+
+    const theActivity = Gatherings.findOne(bookingId);
+    const occurences = [...theActivity.datesAndTimes];
+    occurences[occurenceIndex].attendees[attendeeIndex] = values;
+
+    try {
+      Gatherings.update(bookingId, {
+        $set: {
+          datesAndTimes: occurences
+        }
+      });
+      Meteor.call(
+        'sendEmail',
+        values.email,
+        `Update to your registration for "${theActivity.title}" at Skogen`,
+        getRegistrationText(
+          values.firstName,
+          values.numberOfPeople,
+          occurences[occurenceIndex],
+          bookingId
+        )
+      );
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, "Couldn't update document");
+    }
+  },
+
+  removeAttendance(bookingId, occurenceIndex, attendeeIndex, email) {
+    check(bookingId, String);
+    check(occurenceIndex, Number);
+    check(attendeeIndex, Number);
+    check(email, String);
+
+    const theActivity = Gatherings.findOne(bookingId);
+    const occurences = [...theActivity.datesAndTimes];
+    const theOccurence = occurences[occurenceIndex];
+    const theNonAttendee = theOccurence.attendees[attendeeIndex];
+
+    occurences[occurenceIndex].attendees.splice(attendeeIndex, 1);
+
+    try {
+      Gatherings.update(bookingId, {
+        $set: {
+          datesAndTimes: occurences
+        }
+      });
+      Meteor.call(
+        'sendEmail',
+        theNonAttendee.email,
+        `Update to your registration for "${theActivity.title}" at Skogen`,
+        getRemovalText(theNonAttendee.firstName, theOccurence, bookingId)
+      );
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, "Couldn't update document");
     }
   }
 });

@@ -7,7 +7,6 @@ function isValidEmail(email) {
 
 Meteor.methods({
   sendEmail: (id, subjectEmail, textEmail, isNewUser) => {
-    console.log(id, subjectEmail, textEmail);
     if (!isNewUser && !Meteor.userId()) {
       return false;
     }
