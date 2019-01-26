@@ -59,7 +59,6 @@ Meteor.methods({
     try {
       const add = Gatherings.insert({
         authorId: user._id,
-        attendees: [],
         authorName: user.username,
         title: formValues.title,
         subTitle: formValues.subTitle || null,

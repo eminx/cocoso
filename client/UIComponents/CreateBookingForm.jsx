@@ -31,7 +31,8 @@ let emptyDateAndTime = {
   startDate: null,
   endDate: null,
   startTime: null,
-  endTime: null
+  endTime: null,
+  attendees: []
 };
 
 const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
@@ -75,7 +76,8 @@ class CreateBookingForm extends Component {
       startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
       startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
       endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
-      endTimeMoment: moment(recurrence.endTime, 'HH:mm')
+      endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
+      attendees: []
     }));
 
     this.setState({
@@ -133,7 +135,8 @@ class CreateBookingForm extends Component {
         startDate: recurrence.startDate,
         startTime: recurrence.startTime,
         endDate: recurrence.endDate,
-        endTime: recurrence.endTime
+        endTime: recurrence.endTime,
+        attendees: []
       }));
 
       const values = {

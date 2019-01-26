@@ -143,6 +143,7 @@ class Booking extends React.Component {
       message.error(
         'Sorry we could not find your registration. Please double check the date and spellings, and try again'
       );
+      return;
     }
 
     this.setState({
@@ -409,7 +410,7 @@ class Booking extends React.Component {
           </Row>
         ) : (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader loading />
+            <PulseLoader color="#ea3924" loading />
           </div>
         )}
 

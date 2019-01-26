@@ -18,27 +18,24 @@ class Page extends React.Component {
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
           <Col md={8}>
-            {currentUser && currentUser.isSuperAdmin && (
-              <div style={{ marginBottom: 24 }}>
-                <Link to="/new-page" key="new-page">
-                  <Button type="primary" block>
-                    New Page
-                  </Button>
-                </Link>
-              </div>
-            )}
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
               activePageTitle={pageId}
             />
+
+            {currentUser && currentUser.isSuperAdmin && (
+              <div style={{ marginLeft: 24 }}>
+                <Link to="/new-page" key="new-page">
+                  <Button type="primary">New Page</Button>
+                </Link>
+              </div>
+            )}
           </Col>
 
           <Col md={12}>
             <div
               style={{
-                padding: 24,
-                border: '1px solid #030303',
                 marginBottom: 24
               }}
             >
