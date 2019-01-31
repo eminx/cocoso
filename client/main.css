@@ -38,7 +38,7 @@ h1 {
 }
 
 .layout {
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -46,7 +46,7 @@ h1 {
   display: flex;
   flex-wrap: nowrap;
   margin: 0 auto;
-  max-width: 960px;
+  max-width: 1200px;
   padding: 24px;
 }
 

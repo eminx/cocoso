@@ -1,26 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Redirect } from 'react-router-dom';
-import { Row, Col, Alert, Tag, Button, Modal } from 'antd/lib';
+import { Row } from 'antd/lib';
 import { PulseLoader } from 'react-spinners';
-import CalendarView from '../UIComponents/CalendarView';
-import colors from '../constants/colors';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
+const yesterday = moment(new Date()).add(-1, 'days');
+
+const getFirstFutureOccurence = occurence =>
+  moment(occurence.endDate).isAfter(yesterday);
+
 const compareForSort = (a, b) => {
-  const firstOccA = a.datesAndTimes[0];
-  const firstOccB = b.datesAndTimes[0];
+  const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
+  const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
   const dateA = new Date(
-    firstOccA.startDate + 'T' + firstOccA.startTime + ':00Z'
+    firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );
   const dateB = new Date(
-    firstOccB.startDate + 'T' + firstOccB.startTime + ':00Z'
+    firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
   );
   return dateA - dateB;
 };
-
-const yesterday = moment(new Date()).add(-1, 'days');
 
 class Home extends React.Component {
   render() {
@@ -48,7 +47,7 @@ class Home extends React.Component {
               marginBottom: 50
             }}
           >
-            <div style={{ maxWidth: 900, width: '100%' }}>
+            <div style={{ width: '100%' }}>
               {isLoading ? (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <PulseLoader color="#ea3924" />

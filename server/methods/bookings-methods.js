@@ -112,6 +112,7 @@ Meteor.methods({
           room: formValues.room || null,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
+          internalInfo: formValues.internalInfo || null,
           address: formValues.address || null,
           roomIndex: roomIndex,
           datesAndTimes: formValues.datesAndTimes,

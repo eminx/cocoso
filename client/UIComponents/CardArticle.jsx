@@ -14,6 +14,7 @@ const getInitials = string => {
 };
 
 const sectionStyle = {
+  marginTop: 12,
   paddingTop: 12,
   paddingRright: 12,
   fontStyle: 'italic',
@@ -63,12 +64,16 @@ class CardArticle extends React.Component {
             src={item.imageUrl}
           />
         </div>
-        <div style={{ whiteSpace: 'pre-line' }}>{item.longDescription}</div>
-
-        <div style={{ ...sectionStyle, textAlign: 'left' }}>
-          <h4>Practical information:</h4>
-          {item.practicalInfo && <div>{item.practicalInfo}</div>}
+        <div style={{ whiteSpace: 'pre-line', color: 'rgba(0,0,0, .85)' }}>
+          {item.longDescription}
         </div>
+
+        {item.practicalInfo && item.practicalInfo.length > 0 && (
+          <div style={{ ...sectionStyle, textAlign: 'left' }}>
+            <h4>Practical information:</h4>
+            <div>{item.practicalInfo}</div>
+          </div>
+        )}
 
         {currentUser &&
           currentUser.isRegisteredMember &&
@@ -82,7 +87,8 @@ class CardArticle extends React.Component {
 
         <div style={sectionStyle}>
           <div>
-            {item.room}, {item.place}
+            {item.room && item.room + ', '}
+            {item.place}
           </div>
           <div>{item.address}</div>
         </div>

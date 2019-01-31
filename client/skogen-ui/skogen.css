@@ -10,12 +10,12 @@
 
 *,
 html,
-html > body > #render-target,
+#render-target,
 .word-break,
 body .ant-input,
 .tags-container .ant-tag {
   font-family: 'Roboto', sans-serif;
-  /* color: #030303; */
+  /* color: rgba(0, 0, 0, 0.85); */
   word-break: break-word;
 }
 
@@ -58,7 +58,7 @@ a.ant-btn,
 label.ant-radio-button-wrapper,
 label.ant-radio-button-wrapper:first-child,
 label.ant-radio-button-wrapper:last-child {
-  color: #ea3924;
+  color: rgba(0, 0, 0, 0.85);
   background-color: #fff;
   border-radius: 0;
   text-transform: uppercase;
@@ -100,9 +100,9 @@ body input.ant-input-number-input,
 body input.ant-time-picker-input,
 body .ant-select > .ant-select-selection,
 body textarea.ant-input {
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   border-radius: 0;
-  color: #030303;
+  color: rgba(0, 0, 0, 0.85);
 }
 body .ant-input:focus,
 body .ant-input:hover,
@@ -117,28 +117,28 @@ body .ant-select-selection:focus {
 }
 
 .ant-layout .ant-switch {
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   border-radius: 0;
   background-color: #fff;
 }
 .ant-layout .ant-switch:after {
-  background-color: #030303;
+  background-color: rgba(0, 0, 0, 0.85);
 }
 .ant-layout .ant-switch.ant-switch-checked {
   background-color: #fbd5d0;
 }
 
 .ant-form-item button.ant-btn {
-  border-color: #030303;
+  border-color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-list.ant-list-bordered {
   border-radius: 0;
-  border-color: #030303;
+  border-color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-card.ant-card-bordered {
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   border-radius: 0;
 }
 
@@ -168,17 +168,17 @@ body .ant-select-selection:focus {
 .anticon,
 p,
 body {
-  color: #030303;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .ant-popover-content .ant-popover-inner {
   border-radius: 0;
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
 }
 
 .ant-popover-arrow {
-  border-top: 1px solid #030303;
-  border-left: 1px solid #030303;
+  border-top: 1px solid rgba(0, 0, 0, 0.85);
+  border-left: 1px solid rgba(0, 0, 0, 0.85);
 }
 
 .ant-popover-placement-bottom > .ant-popover-content > .ant-popover-arrow,
@@ -192,13 +192,14 @@ body {
 .ant-alert.ant-alert-success,
 .ant-alert.ant-alert-error {
   border-radius: 0;
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   padding: 12px 16px 12px 40px;
-  color: #030303;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .empty-card-body.ant-card > .ant-card-body {
   padding: 0;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 /* .rbc-calendar .rbc-event {
@@ -206,12 +207,12 @@ body {
 } */
 
 .ant-modal .ant-modal-content {
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   border-radius: 0;
 }
 
 .ant-modal .ant-modal-content .ant-confirm-body .ant-confirm-content {
-  color: #030303;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .main-viewport .skogen-menu-layout {
@@ -222,9 +223,9 @@ body {
   flex-wrap: wrap;
   text-transform: uppercase;
   background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #030303;
+  border: 1px solid rgba(0, 0, 0, 0.85);
   border-bottom: none;
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 

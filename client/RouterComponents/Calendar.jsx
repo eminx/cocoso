@@ -136,7 +136,7 @@ class Calendar extends React.PureComponent {
               marginBottom: 50
             }}
           >
-            <div style={{ maxWidth: 900, width: '100%' }}>
+            <div style={{ width: '100%' }}>
               <div
                 className="tags-container"
                 style={{

@@ -71,7 +71,7 @@ class PublicActivityThumb extends React.Component {
 
     const thumbStyle = {
       position: 'relative',
-      flexBasis: 300,
+      flexBasis: 288,
       flexShrink: 0,
       flexGrow: 1,
       minHeight: 240
