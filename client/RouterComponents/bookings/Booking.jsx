@@ -322,7 +322,7 @@ class Booking extends React.Component {
           </div>
         );
       } else {
-        return 'no data';
+        return 'No one signed up yet. Spread the word!';
       }
     };
 

@@ -15,7 +15,7 @@ html > body > #render-target,
 body .ant-input,
 .tags-container .ant-tag {
   font-family: 'Roboto', sans-serif;
-  color: #030303;
+  /* color: #030303; */
   word-break: break-word;
 }
 

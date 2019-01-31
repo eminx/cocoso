@@ -70,9 +70,21 @@ class CardArticle extends React.Component {
           {item.practicalInfo && <div>{item.practicalInfo}</div>}
         </div>
 
+        {currentUser &&
+          currentUser.isRegisteredMember &&
+          item &&
+          item.internalInfo && (
+            <div style={{ ...sectionStyle, textAlign: 'left' }}>
+              <h4>Internal information for Skogen members:</h4>
+              <p>{item.internalInfo}</p>
+            </div>
+          )}
+
         <div style={sectionStyle}>
-          {item.place && <div>{item.place}</div>}
-          {item.address && <div>{item.address}</div>}
+          <div>
+            {item.room}, {item.place}
+          </div>
+          <div>{item.address}</div>
         </div>
       </div>
     );

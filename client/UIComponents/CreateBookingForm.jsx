@@ -147,9 +147,11 @@ class CreateBookingForm extends Component {
       };
 
       if (isPublicActivity) {
+        values.room = fieldsValue['room'];
         values.place = fieldsValue['place'];
         values.address = fieldsValue['address'];
         values.practicalInfo = fieldsValue['practicalInfo'];
+        values.internalInfo = fieldsValue['internalInfo'];
       } else {
         values.room = fieldsValue['room'];
       }
@@ -349,10 +351,32 @@ class CreateBookingForm extends Component {
                 initialValue:
                   bookingData && bookingData.practicalInfo
                     ? bookingData.practicalInfo
-                    : defaultPracticalInfo
+                    : ''
               })(
                 <TextArea
                   placeholder="Practical info"
+                  autosize={{ minRows: 3, maxRows: 6 }}
+                />
+              )}
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem>
+              {getFieldDecorator('internalInfo', {
+                rules: [
+                  {
+                    message:
+                      'Please enter internal info - shown only to Skogen members (if any)'
+                  }
+                ],
+                initialValue:
+                  bookingData && bookingData.internalInfo
+                    ? bookingData.internalInfo
+                    : ''
+              })(
+                <TextArea
+                  placeholder="Internal info"
                   autosize={{ minRows: 3, maxRows: 6 }}
                 />
               )}
@@ -376,30 +400,27 @@ class CreateBookingForm extends Component {
             </div>
           )}
 
-          {!isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('room', {
-                rules: [
-                  {
-                    required: true,
-                    message:
-                      'Please enter which part of Skogen you want to book'
-                  }
-                ],
-                initialValue: bookingData ? bookingData.room : 'Studio'
-              })(
-                <Select placeholder="Select space/equipment">
-                  {places
-                    ? places.map((part, i) => (
-                        <Option key={part.name + i} value={part.name}>
-                          {part.name}
-                        </Option>
-                      ))
-                    : null}
-                </Select>
-              )}
-            </FormItem>
-          )}
+          <FormItem>
+            {getFieldDecorator('room', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please enter which part of Skogen you want to book'
+                }
+              ],
+              initialValue: bookingData ? bookingData.room : 'Studio'
+            })(
+              <Select placeholder="Select space/equipment">
+                {places
+                  ? places.map((part, i) => (
+                      <Option key={part.name + i} value={part.name}>
+                        {part.name}
+                      </Option>
+                    ))
+                  : null}
+              </Select>
+            )}
+          </FormItem>
 
           <FormItem
             wrapperCol={{

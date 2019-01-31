@@ -198,7 +198,22 @@ class LayoutPage extends React.Component {
         <Layout className="layout">
           <Content>{children}</Content>
 
-          <Footer style={{ textAlign: 'center' }} />
+          <Footer style={{ borderTop: '1px dashed #030303' }}>
+            <p>
+              SKOGEN
+              <br />
+              Adres: Skogen, Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige
+              <br />
+              tel. +46-31-409862,
+              <br />
+              e-mail: <a href="mailto:info@skogen.pm">info@skogen.pm</a>
+            </p>
+            <p>
+              <a href="https://www.facebook.com/skogen.pm" target="_blank">
+                Facebook
+              </a>
+            </p>
+          </Footer>
         </Layout>
       </div>
     );
