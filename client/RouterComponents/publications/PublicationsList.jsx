@@ -71,13 +71,15 @@ class PublicationsList extends React.PureComponent {
     return (
       <Row gutter={24}>
         <Col md={8}>
-          <div style={centerStyle}>
-            <Link to="/new-publication">
-              <Button type="primary" component="span">
-                New Publication
-              </Button>
-            </Link>
-          </div>
+          {currentUser && currentUser.isRegisteredMember && (
+            <div style={centerStyle}>
+              <Link to="/new-publication">
+                <Button type="primary" component="span">
+                  New Publication
+                </Button>
+              </Link>
+            </div>
+          )}
         </Col>
 
         <Col md={14} style={{ padding: 24 }}>

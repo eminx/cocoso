@@ -149,33 +149,35 @@ class LayoutPage extends React.Component {
                   </Link>
                 </span>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  color: '#030303',
-                  margin: '24px 12px'
-                }}
-              >
-                <Popover
-                  placement="bottomRight"
-                  title="Notifications"
-                  content={this.renderNotificationList(notifications)}
-                  trigger="click"
-                  visible={isNotificationPopoverOpen}
-                  onVisibleChange={this.handleNotificationVisibility}
+              {notifications && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    color: '#030303',
+                    margin: '24px 12px'
+                  }}
                 >
-                  <Badge count={notificationsCounter}>
-                    <Icon
-                      onClick={this.toggleNotificationsPopover}
-                      theme="outlined"
-                      type="bell"
-                      style={{ fontSize: 24, cursor: 'pointer' }}
-                    />
-                  </Badge>
-                </Popover>
-              </div>
+                  <Popover
+                    placement="bottomRight"
+                    title="Notifications"
+                    content={this.renderNotificationList(notifications)}
+                    trigger="click"
+                    visible={isNotificationPopoverOpen}
+                    onVisibleChange={this.handleNotificationVisibility}
+                  >
+                    <Badge count={notificationsCounter}>
+                      <Icon
+                        onClick={this.toggleNotificationsPopover}
+                        theme="outlined"
+                        type="bell"
+                        style={{ fontSize: 24, cursor: 'pointer' }}
+                      />
+                    </Badge>
+                  </Popover>
+                </div>
+              )}
             </Col>
           </Row>
         </div>

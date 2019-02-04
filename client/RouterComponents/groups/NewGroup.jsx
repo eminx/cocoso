@@ -159,7 +159,7 @@ class NewGroup extends React.Component {
 
     if (!currentUser || !currentUser.isRegisteredMember) {
       return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
+        <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
             message="You have to become a registered member to create a group."
             type="error"
