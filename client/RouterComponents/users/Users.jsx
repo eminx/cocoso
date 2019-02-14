@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Alert, List, Card, Spin, Button, message } from 'antd/lib';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../../UIComponents/Loader';
 
 const ListItem = List.Item;
 
@@ -42,11 +42,7 @@ class Users extends React.PureComponent {
     }
 
     if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <PulseLoader color="#ea3924" loading />
-        </div>
-      );
+      return <Loader />;
     }
 
     return (

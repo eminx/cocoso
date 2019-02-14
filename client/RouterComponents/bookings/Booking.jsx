@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
 import Chattery from '../../chattery';
 import {
   Row,
@@ -9,6 +10,7 @@ import {
   Divider,
   Collapse,
   List,
+  Affix,
   Form,
   Input,
   InputNumber,
@@ -19,7 +21,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import CardArticle from '../../UIComponents/CardArticle';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../../UIComponents/Loader';
 
 const Panel = Collapse.Panel;
 
@@ -294,7 +296,27 @@ class Booking extends React.Component {
         occurence.attendees &&
         occurence.attendees.length > 0
       ) {
-        return <RsvpList attendees={occurence.attendees} />;
+        return (
+          <div>
+            <div
+              style={{
+                paddingBottom: 12,
+                display: 'flex',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <ReactToPrint
+                trigger={() => <Button>Print</Button>}
+                content={() => this.printableElement}
+                pageStyle={{ margin: 144 }}
+              />
+            </div>
+            <RsvpList
+              attendees={occurence.attendees}
+              ref={element => (this.printableElement = element)}
+            />
+          </div>
+        );
       } else if (!isAdmin) {
         if (moment(occurence.endDate).isBefore(yesterday)) {
           return <p>This event has past</p>;
@@ -361,13 +383,11 @@ class Booking extends React.Component {
             display: 'flex',
             justifyContent: 'center',
             position: 'absolute',
-            top: 0,
+            top: -36,
             right: 12
           }}
         >
-          <Link to={`/edit-booking/${bookingData._id}`}>
-            <Button>Edit</Button>
-          </Link>
+          <Link to={`/edit-booking/${bookingData._id}`}>Edit</Link>
         </div>
       ) : null;
 
@@ -383,9 +403,18 @@ class Booking extends React.Component {
 
         {!isLoading && bookingData ? (
           <Row gutter={24}>
+            <Col sm={24} md={5}>
+              <div style={{ marginBottom: 16 }}>
+                <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
+                {bookingData.subTitle && (
+                  <h4 style={{ fontWeight: 300 }}>{bookingData.subTitle}</h4>
+                )}
+              </div>
+            </Col>
+
             <Col
               sm={24}
-              md={14}
+              md={11}
               style={{ position: 'relative', marginBottom: 24 }}
             >
               <CardArticle
@@ -397,21 +426,20 @@ class Booking extends React.Component {
             </Col>
             <Col
               sm={24}
-              md={10}
+              md={8}
               style={{ display: 'flex', justifyContent: 'center' }}
             >
               {/* <Button type="primary">RSVP</Button> */}
+
               <Row style={{ width: '100%' }}>
-                <h4>Dates</h4>
+                <h3>Dates</h3>
                 <h6>please click to RSVP</h6>
                 {this.renderDates()}
               </Row>
             </Col>
           </Row>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader color="#ea3924" loading />
-          </div>
+          <Loader />
         )}
 
         <Divider />
@@ -523,26 +551,30 @@ const RsvpForm = props => {
   );
 };
 
-const RsvpList = ({ attendees }) => {
-  return (
-    <ReactTable
-      data={attendees}
-      columns={[
-        {
-          Header: 'First name',
-          accessor: 'firstName'
-        },
-        {
-          Header: 'Last name',
-          accessor: 'lastName'
-        },
-        {
-          Header: 'People',
-          accessor: 'numberOfPeople'
-        }
-      ]}
-    />
-  );
-};
+class RsvpList extends React.PureComponent {
+  render() {
+    const { attendees } = this.props;
+
+    return (
+      <ReactTable
+        data={attendees}
+        columns={[
+          {
+            Header: 'First name',
+            accessor: 'firstName'
+          },
+          {
+            Header: 'Last name',
+            accessor: 'lastName'
+          },
+          {
+            Header: 'People',
+            accessor: 'numberOfPeople'
+          }
+        ]}
+      />
+    );
+  }
+}
 
 export default Form.create()(Booking);

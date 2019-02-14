@@ -13,7 +13,7 @@ import {
 } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
-import { PulseLoader } from 'react-spinners';
+import Loader from '../../UIComponents/Loader';
 
 class Publication extends React.PureComponent {
   state = {
@@ -113,9 +113,7 @@ class Publication extends React.PureComponent {
             </Col>
           </Row>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader color="#ea3924" loading />
-          </div>
+          <Loader />
         )}
         <Divider />
       </div>

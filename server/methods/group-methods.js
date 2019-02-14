@@ -24,6 +24,7 @@ Meteor.methods({
               joinDate: new Date()
             }
           ],
+          meetings: [],
           title: formValues.title,
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
@@ -63,8 +64,8 @@ Meteor.methods({
       }
       return add;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add group to the collection");
       console.log(error);
+      throw new Meteor.Error(error, "Couldn't add group to the collection");
     }
   },
 
@@ -77,7 +78,6 @@ Meteor.methods({
     const theGroup = Groups.findOne(groupId);
     if (user._id !== theGroup.adminId) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
 
     check(formValues.title, String);
@@ -180,7 +180,103 @@ Meteor.methods({
         }
       });
     } catch (error) {
-      throw new Meteor.Error('Could not leave the circle');
+      throw new Meteor.Error('Could not leave the group');
+    }
+  },
+
+  addGroupMeeting(newMeeting, groupId) {
+    const user = Meteor.user();
+    if (!user || !user.isRegisteredMember) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      throw new Meteor.Error('You are not the admin!');
+    }
+
+    newMeeting.attendees = [];
+    try {
+      Groups.update(groupId, {
+        $push: {
+          meetings: newMeeting
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error(
+        'Could not create the meeting due to:',
+        error.reason
+      );
+    }
+  },
+
+  attendMeeting(groupId, meetingIndex) {
+    const user = Meteor.user();
+    // if (!user || !user.isRegisteredMember) {
+    //   throw new Meteor.Error('You are not allowed!');
+    // }
+
+    console.log(groupId, meetingIndex);
+
+    const theGroup = Groups.findOne(groupId);
+    if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
+      console.log('your no member');
+      throw new Meteor.Error('You are not a member!');
+    }
+
+    const updatedMeetings = [...theGroup.meetings];
+    updatedMeetings[meetingIndex].attendees.push({
+      memberId: user._id,
+      memberUsername: user.username,
+      confirmDate: new Date()
+    });
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          meetings: updatedMeetings
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error(
+        'Could not registered attendance due to:',
+        error.reason
+      );
+    }
+  },
+
+  unAttendMeeting(groupId, meetingIndex) {
+    const user = Meteor.user();
+    // if (!user || !user.isRegisteredMember) {
+    //   throw new Meteor.Error('You are not allowed!');
+    // }
+
+    console.log(groupId, meetingIndex);
+
+    const theGroup = Groups.findOne(groupId);
+    if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
+      console.log('your no member');
+      throw new Meteor.Error('You are not a member!');
+    }
+
+    const updatedMeetings = [...theGroup.meetings];
+    const theAttendees = [...updatedMeetings[meetingIndex].attendees];
+    const theAttendeesWithout = theAttendees.filter(
+      attendee => attendee.memberId !== user._id
+    );
+    updatedMeetings[meetingIndex].attendees = theAttendeesWithout;
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          meetings: updatedMeetings
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error(
+        'Could not removed attendance due to:',
+        error.reason
+      );
     }
   }
 });

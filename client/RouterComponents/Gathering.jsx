@@ -15,7 +15,7 @@ import {
   message
 } from 'antd/lib';
 import CardArticle from '../UIComponents/CardArticle';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../UIComponents/Loader';
 const ListItem = List.Item;
 
 class Gathering extends React.Component {
@@ -319,9 +319,7 @@ class Gathering extends React.Component {
             </Col>
           </Row>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader loading />
-          </div>
+          <Loader />
         )}
         <Divider />
         <Row gutter={24}>

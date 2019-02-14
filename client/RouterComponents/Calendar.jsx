@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, Alert, Tag, Button, Modal } from 'antd/lib';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
-import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -165,9 +164,7 @@ class Calendar extends React.PureComponent {
               </div>
 
               {isLoading ? (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <PulseLoader color="#ea3924" />
-                </div>
+                <Loader />
               ) : (
                 <CalendarView
                   bookings={filteredBookings}

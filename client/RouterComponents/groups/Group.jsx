@@ -1,24 +1,49 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import moment from 'moment';
+import MediaQuery from 'react-responsive';
+
 import Chattery from '../../chattery';
+import Loader from '../../UIComponents/Loader';
+
 import {
   Row,
   Col,
   Divider,
+  Collapse,
   Modal,
   List,
   Card,
   Button,
+  DatePicker,
+  TimePicker,
+  Select,
+  Icon,
   message
 } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
-import { PulseLoader } from 'react-spinners';
+const { Option } = Select;
+const Panel = Collapse.Panel;
+
+const defaultMeetingRoom = 'Office';
+
+const customPanelStyle = {
+  background: '#f7f7f7',
+  borderRadius: 4,
+  marginBottom: 12,
+  border: 0,
+  overflow: 'hidden'
+};
 
 class Group extends React.PureComponent {
   state = {
     modalOpen: false,
-    redirectToLogin: false
+    redirectToLogin: false,
+    newMeeting: {
+      room: defaultMeetingRoom
+    },
+    isFormValid: false
   };
 
   isMember = () => {
@@ -71,6 +96,7 @@ class Group extends React.PureComponent {
       (error, respond) => {
         if (error) {
           console.log('error', error);
+          message.error(error.error);
         }
       }
     );
@@ -96,7 +122,7 @@ class Group extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h3>{group.title}</h3>
+        <h2>{group.title}</h2>
         <h5>
           <span>reading: </span>
           {group.documentUrl ? (
@@ -136,7 +162,7 @@ class Group extends React.PureComponent {
 
     Meteor.call('joinGroup', group._id, (error, response) => {
       if (error) {
-        message.error('error.reason');
+        message.error(error.error);
       } else {
         message.success('You are added to the group');
       }
@@ -149,7 +175,7 @@ class Group extends React.PureComponent {
 
     Meteor.call('leaveGroup', group._id, (error, response) => {
       if (error) {
-        message.error(error.reason);
+        message.error(error.error);
       } else {
         message.info('You are removed from the group');
       }
@@ -178,18 +204,166 @@ class Group extends React.PureComponent {
       (error, respond) => {
         if (error) {
           console.log('error', error);
-          message.error(error.reason);
+          message.error(error.error);
         }
       }
     );
   };
 
+  isFormValid = () => {
+    const { newMeeting } = this.state;
+    return (
+      newMeeting &&
+      newMeeting.startTime &&
+      newMeeting.endTime &&
+      newMeeting.date
+    );
+  };
+
+  handleDateAndTimeChange = (date, dateString, entity) => {
+    const { newMeeting } = this.state;
+    newMeeting[entity] = dateString;
+    this.setState({ newMeeting, isFormValid: this.isFormValid() });
+  };
+
+  handlePlaceChange = place => {
+    const { newMeeting } = this.state;
+    newMeeting.room = place;
+    this.setState({ newMeeting, isFormValid: this.isFormValid() });
+  };
+
+  addMeeting = () => {
+    const { newMeeting } = this.state;
+    const { group } = this.props;
+    Meteor.call('addGroupMeeting', newMeeting, group._id, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.error);
+      } else {
+        message.success('Your group meeting is added!');
+      }
+    });
+  };
+
+  toggleAttendance = meetingIndex => {
+    const { group, currentUser } = this.props;
+    if (!currentUser) {
+      message.error('Please login and join the group to attend the meeting');
+      return;
+    }
+    if (!this.isMember()) {
+      message.error('Please join the group to attend.');
+      return;
+    }
+
+    const isAttending = group.meetings[meetingIndex].attendees
+      .map(attendee => attendee.memberId)
+      .includes(currentUser._id);
+
+    if (isAttending) {
+      Meteor.call(
+        'unAttendMeeting',
+        group._id,
+        meetingIndex,
+        (error, respond) => {
+          if (error) {
+            console.log('error', error);
+            message.error(error.error);
+          } else {
+            message.success('Your are successfully removed from the list!');
+          }
+        }
+      );
+    } else {
+      Meteor.call(
+        'attendMeeting',
+        group._id,
+        meetingIndex,
+        (error, respond) => {
+          if (error) {
+            console.log('error', error);
+            message.error(error.error);
+          } else {
+            message.success('Your attendance is successfully registered!');
+          }
+        }
+      );
+    }
+  };
+
+  renderDates = () => {
+    const { group, currentUser } = this.props;
+    if (!group) {
+      return;
+    }
+
+    return (
+      group.meetings &&
+      group.meetings.map((meeting, meetingIndex) => (
+        <Panel
+          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+          header={
+            <div>
+              <FancyDate meeting={meeting} />
+              <em
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                  bottom: 8
+                }}
+              >
+                {meeting.attendees && meeting.attendees.length}
+              </em>
+            </div>
+          }
+          style={{ ...customPanelStyle, flexBasis: 200, flexShrink: 0 }}
+        >
+          <div style={{ marginLeft: 24 }}>
+            {meeting.attendees && (
+              <List>
+                {meeting.attendees.map(attendee => (
+                  <ListItem key={attendee.memberUsername}>
+                    {attendee.memberUsername}
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </div>
+        </Panel>
+      ))
+    );
+  };
+
+  renderMeetings = () => {
+    const { group, currentUser } = this.props;
+    if (!group || !group.meetings) {
+      return;
+    }
+    return group.meetings.map((meeting, meetingIndex) => (
+      <MeetingInfo
+        isSmallViewport
+        key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+        meeting={meeting}
+        onClick={() => this.toggleAttendance(meetingIndex)}
+        isAttending={
+          currentUser &&
+          meeting.attendees &&
+          meeting.attendees
+            .map(attendee => attendee.memberId)
+            .includes(currentUser._id)
+        }
+      />
+    ));
+  };
+
   render() {
-    if (this.state.redirectToLogin) {
+    const { redirectToLogin, isFormValid } = this.state;
+
+    if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
     }
 
-    const { group, isLoading, currentUser, chatData } = this.props;
+    const { group, isLoading, currentUser, chatData, places } = this.props;
     const messages = this.getChatMessages();
 
     const isMember = this.isMember();
@@ -199,6 +373,13 @@ class Group extends React.PureComponent {
       marginLeft: 24,
       fontWeigth: 300,
       color: '#0g0g0g'
+    };
+
+    const collapseStyle = {
+      marginBottom: 24,
+      backgroundColor: '#fff',
+      borderRadius: 0,
+      borderColor: '#030303'
     };
 
     return (
@@ -211,7 +392,47 @@ class Group extends React.PureComponent {
 
         {!isLoading && group ? (
           <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
-            <Col md={4} />
+            <Col md={5} style={{ padding: 12, paddingTop: 0 }}>
+              {!isAdmin && (
+                <div style={{ padding: 24 }}>
+                  <Button
+                    type={isMember ? null : 'primary'}
+                    onClick={this.openModal}
+                    block
+                  >
+                    {isMember ? 'Leave group' : 'Join group'}
+                  </Button>
+                </div>
+              )}
+
+              {currentUser && (
+                <Fragment>
+                  <div style={{ paddingTop: 24, paddingLeft: 12 }}>
+                    <h3>Members</h3>
+                  </div>
+                  <List
+                    dataSource={group.members}
+                    style={{ backgroundColor: '#fff' }}
+                    renderItem={member => (
+                      <ListItem>
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            paddingLeft: 24
+                          }}
+                        >
+                          <em>{member.username}</em>
+                          {member.username === currentUser.username && ' you'}
+                          {member.username === group.adminUsername && ' admin'}
+                        </div>
+                      </ListItem>
+                    )}
+                  />
+                </Fragment>
+              )}
+            </Col>
             <Col sm={24} md={12}>
               <Card
                 title={this.getTitle(group)}
@@ -228,49 +449,63 @@ class Group extends React.PureComponent {
               </Card>
             </Col>
 
-            <Col sm={24} md={8} style={{ padding: 24, paddingTop: 0 }}>
-              {!isAdmin && (
-                <Button
-                  type={isMember ? null : 'primary'}
-                  onClick={this.openModal}
-                  block
-                  style={{ marginBottom: 24 }}
-                >
-                  {isMember ? 'Leave this group' : 'Join this Group'}
-                </Button>
+            <Col sm={24} md={6} style={{ paddingTop: 24 }}>
+              <div style={{ padding: '0 12px' }}>
+                <h3>Meetings</h3>
+
+                <p style={{ textAlign: 'right' }}>
+                  <em>
+                    {group.meetings && group.meetings.length > 0
+                      ? isAdmin
+                        ? 'Click to see the attendees'
+                        : 'Click to toggle attendance'
+                      : 'No meeting scheduled yet'}
+                  </em>
+                </p>
+              </div>
+              {group.meetings && isAdmin ? (
+                <div>
+                  <Collapse
+                    bordered={false}
+                    accordion
+                    defaultActiveKey={['1']}
+                    style={{ ...collapseStyle }}
+                  >
+                    {this.renderDates()}
+                  </Collapse>
+                </div>
+              ) : (
+                <div style={{ marginBottom: 24 }}>{this.renderMeetings()}</div>
               )}
 
-              {currentUser && (
-                <Fragment>
-                  <h4>Members:</h4>
-                  <List
-                    dataSource={group.members}
-                    bordered
-                    style={{ backgroundColor: '#fff' }}
-                    renderItem={member => (
-                      <ListItem>
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '100%'
-                          }}
-                        >
-                          <b>{member.username}</b>
-                          {member.username === currentUser.username && ' you'}
-                          {member.username === group.adminUsername && ' admin'}
-                        </div>
-                      </ListItem>
-                    )}
+              {isAdmin && (
+                <div>
+                  <h3>Add a Meeting</h3>
+                  <CreateMeetingForm
+                    handleDateChange={(date, dateString) =>
+                      this.handleDateAndTimeChange(date, dateString, 'date')
+                    }
+                    handleStartTimeChange={(time, timeString) =>
+                      this.handleDateAndTimeChange(
+                        time,
+                        timeString,
+                        'startTime'
+                      )
+                    }
+                    handleFinishTimeChange={(time, timeString) =>
+                      this.handleDateAndTimeChange(time, timeString, 'endTime')
+                    }
+                    places={places}
+                    handlePlaceChange={this.handlePlaceChange}
+                    handleSubmit={this.addMeeting}
+                    buttonDisabled={!isFormValid}
                   />
-                </Fragment>
+                </div>
               )}
             </Col>
           </Row>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <PulseLoader color="#ea3924" loading />
-          </div>
+          <Loader />
         )}
         <Divider />
         <Row gutter={24}>
@@ -320,3 +555,124 @@ class Group extends React.PureComponent {
 }
 
 export default Group;
+
+const MeetingInfo = ({ meeting, onClick, isAttending }) => {
+  const style = {
+    flexBasis: 180,
+    flexShrink: 0
+  };
+  if (isAttending) {
+    style.backgroundColor = '#fff5f4';
+  }
+
+  return (
+    <div style={style} className="toggleable" onClick={onClick}>
+      <FancyDate meeting={meeting} />
+
+      {isAttending && (
+        <div
+          style={{ position: 'absolute', bottom: 12, right: 12, fontSize: 12 }}
+        >
+          <em>You're attending</em>
+          <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const fancyDateStyle = {
+  color: '#030303',
+  fontWeight: 700,
+  lineHeight: 1
+};
+
+const FancyDate = ({ meeting }) => (
+  <div>
+    <div style={{ ...fancyDateStyle, fontSize: 24 }}>
+      {moment(meeting.date).format('DD')}
+    </div>
+    <div style={{ ...fancyDateStyle, fontSize: 15 }}>
+      {moment(meeting.date)
+        .format('MMM')
+        .toUpperCase()}
+    </div>
+    <div
+      style={{ ...fancyDateStyle, position: 'absolute', right: 12, top: 14 }}
+    >
+      {meeting.startTime} – {meeting.endTime}
+    </div>
+  </div>
+);
+
+const CreateMeetingForm = ({
+  handleDateChange,
+  handleStartTimeChange,
+  handleFinishTimeChange,
+  places,
+  handlePlaceChange,
+  handleSubmit,
+  buttonDisabled
+}) => {
+  return (
+    <div
+      style={{
+        padding: 12,
+        backgroundColor: '#f8f8f8',
+        marginBottom: 12
+      }}
+    >
+      <div style={{ marginBottom: 6 }}>
+        <DatePicker onChange={handleDateChange} placeholder="Date" required />
+      </div>
+
+      <div style={{ marginBottom: 6 }}>
+        <TimePicker
+          onChange={handleStartTimeChange}
+          format="HH:mm"
+          minuteStep={30}
+          placeholder="Start time"
+          required
+        />
+      </div>
+
+      <div style={{ marginBottom: 6 }}>
+        <TimePicker
+          onChange={handleFinishTimeChange}
+          format="HH:mm"
+          minuteStep={30}
+          placeholder="Finish time"
+          required
+        />
+      </div>
+
+      <div style={{ marginBottom: 0 }}>
+        <Select
+          placeholder="Select room"
+          defaultValue="Office"
+          onChange={handlePlaceChange}
+        >
+          {places
+            ? places.map((part, i) => (
+                <Option key={part.name + i} value={part.name}>
+                  {part.name}
+                </Option>
+              ))
+            : null}
+        </Select>
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: 0
+        }}
+      >
+        <Button type="submit" onClick={handleSubmit} disabled={buttonDisabled}>
+          Add
+        </Button>
+      </div>
+    </div>
+  );
+};

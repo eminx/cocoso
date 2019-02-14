@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Row } from 'antd/lib';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -49,9 +49,7 @@ class Home extends React.Component {
           >
             <div style={{ width: '100%' }}>
               {isLoading ? (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <PulseLoader color="#ea3924" />
-                </div>
+                <Loader />
               ) : (
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                   {sortedPublicActivities.map(activity => (

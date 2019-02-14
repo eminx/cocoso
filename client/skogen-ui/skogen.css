@@ -245,3 +245,24 @@ body {
 .thumb-cover-container:hover .thumb-cover {
   filter: brightness(70%);
 }
+
+.toggleable {
+  padding: 12px;
+  margin: 12px;
+  border: 1px solid #030303;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+.toggleable:hover {
+  background-color: #f8f8f8;
+}
+.toggleable:focus,
+.toggleable:active {
+  background-color: #f8f8f8;
+  border-width: 2px;
+}
+
+.scrollable-container {
+  -webkit-overflow-scrolling: touch;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
-import { PulseLoader } from 'react-spinners';
+import Loader from '../../UIComponents/Loader';
 
 import { compareForSort } from '../../functions';
 
@@ -50,11 +50,7 @@ class GroupsList extends React.PureComponent {
     const { isLoading, currentUser, groupsData } = this.props;
 
     if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <PulseLoader color="#ea3924" loading />
-        </div>
-      );
+      return <Loader />;
     }
 
     const groupsSorted = groupsData.sort(compareForSort);

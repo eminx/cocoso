@@ -10,7 +10,8 @@ import {
   IconButton,
   Divider
 } from 'antd/lib';
-import { PulseLoader } from 'react-spinners';
+
+import Loader from '../../UIComponents/Loader';
 
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -37,11 +38,7 @@ class DocumentsList extends React.PureComponent {
     const { isLoading, currentUser, documentsData } = this.props;
 
     if (isLoading) {
-      return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <PulseLoader color="#ea3924" loading />
-        </div>
-      );
+      return <Loader />;
     }
 
     const centerStyle = {

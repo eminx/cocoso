@@ -243,6 +243,14 @@ class EditBooking extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
+        {gatheringData && (
+          <div style={{ marginBottom: 12 }}>
+            <Link to={`/event/${gatheringData._id}`}>
+              <Button icon="arrow-left">{gatheringData.title}</Button>
+            </Link>
+          </div>
+        )}
+
         <h2>Edit your booking</h2>
 
         <Row gutter={48}>

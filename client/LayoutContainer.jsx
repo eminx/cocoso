@@ -124,7 +124,20 @@ class LayoutPage extends React.Component {
       <div className="main-viewport">
         <div className="header-container">
           <Row className="header-background">
-            <Col xs={8} />
+            <Col xs={8}>
+              <span
+                style={{
+                  padding: '6px 12px',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  backgroundColor: 'rgba(255, 255, 255, .7)'
+                }}
+              >
+                <Link to="/my-profile" style={{ color: '#030303' }}>
+                  {currentUser ? currentUser.username : 'LOGIN'}
+                </Link>
+              </span>
+            </Col>
 
             <Col xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
               <Link to="/">
@@ -132,51 +145,25 @@ class LayoutPage extends React.Component {
               </Link>
             </Col>
 
-            <Col xs={8}>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <span
-                  style={{
-                    textAlign: 'right',
-                    padding: '6px 12px',
-                    color: '#030303',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    backgroundColor: 'rgba(255, 255, 255, .7)'
-                  }}
-                >
-                  <Link to="/my-profile">
-                    {currentUser ? currentUser.username : 'LOGIN'}
-                  </Link>
-                </span>
-              </div>
+            <Col xs={8} style={{ textAlign: 'right' }}>
               {notifications && (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    color: '#030303',
-                    margin: '24px 12px'
-                  }}
+                <Popover
+                  placement="bottomRight"
+                  title="Notifications"
+                  content={this.renderNotificationList(notifications)}
+                  trigger="click"
+                  visible={isNotificationPopoverOpen}
+                  onVisibleChange={this.handleNotificationVisibility}
                 >
-                  <Popover
-                    placement="bottomRight"
-                    title="Notifications"
-                    content={this.renderNotificationList(notifications)}
-                    trigger="click"
-                    visible={isNotificationPopoverOpen}
-                    onVisibleChange={this.handleNotificationVisibility}
-                  >
-                    <Badge count={notificationsCounter}>
-                      <Icon
-                        onClick={this.toggleNotificationsPopover}
-                        theme="outlined"
-                        type="bell"
-                        style={{ fontSize: 24, cursor: 'pointer' }}
-                      />
-                    </Badge>
-                  </Popover>
-                </div>
+                  <Badge count={notificationsCounter}>
+                    <Icon
+                      onClick={this.toggleNotificationsPopover}
+                      theme="outlined"
+                      type="bell"
+                      style={{ fontSize: 24, cursor: 'pointer' }}
+                    />
+                  </Badge>
+                </Popover>
               )}
             </Col>
           </Row>
@@ -199,32 +186,54 @@ class LayoutPage extends React.Component {
 
         <Layout className="layout">
           <Content>{children}</Content>
-
-          <Footer style={{ borderTop: '1px dashed #030303' }}>
-            <p>
-              <b>SKOGEN</b>
-            </p>
-            <p>
-              Adres: Skogen, Masthuggsterrassen 3, SE-413 18 Göteborg, Sweden
-            </p>
-            <p>Tel. +46 31-409 862</p>
-            <p>
-              E-mail: <a href="mailto:info@skogen.pm">info@skogen.pm</a>
-            </p>
-            <p>
-              Facebook:{' '}
-              <a href="https://www.facebook.com/skogen.pm" target="_blank">
-                www.facebook.com/skogen.pm
-              </a>
-              <br />
-              (opens in a new tab)
-            </p>
-          </Footer>
         </Layout>
+        <FancyFooter />
       </div>
     );
   }
 }
+
+const FancyFooter = () => {
+  const style = {
+    textAlign: 'center',
+    backgroundColor: 'rgba(255, 245, 244, .8)',
+    padding: 24,
+    marginTop: 32
+  };
+
+  const boldBabe = {
+    textTransform: 'uppercase',
+    fontWeight: 700
+  };
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={style}>
+        <h3 style={boldBabe}>SKOGEN</h3>
+        <p>Masthuggsterrassen 3, SE-413 18 Göteborg, Sweden</p>
+        <p>
+          <a href="mailto:info@skogen.pm">info@skogen.pm</a>
+        </p>
+        <p>
+          <a href="https://www.facebook.com/skogen.pm" target="_blank">
+            www.facebook.com/skogen.pm
+          </a>
+          <br />
+          (opens in a new tab)
+        </p>
+        <h4 style={{ ...boldBabe, marginTop: 24 }}>
+          Skogen is an{' '}
+          <a
+            href="http://www.artistrun.space"
+            style={{ color: '#ea3214e6', borderBottom: '1px solid #ea3214e6' }}
+            target="_blank"
+          >
+            artistrun space
+          </a>
+        </h4>
+      </div>
+    </div>
+  );
+};
 
 export default (LayoutContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');
