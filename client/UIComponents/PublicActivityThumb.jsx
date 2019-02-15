@@ -2,10 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
+const yesterday = moment(new Date()).add(-1, 'days');
+
 const compareForSort = (a, b) => {
   const dateA = moment(a.startDate, 'YYYY-MM-DD');
   const dateB = moment(b.startDate, 'YYYY-MM-DD');
   return dateA.diff(dateB);
+};
+
+const dateStyle = {
+  color: '#fff',
+  fontWeight: 700,
+  lineHeight: 1
 };
 
 class PublicActivityThumb extends React.Component {
@@ -38,15 +46,12 @@ class PublicActivityThumb extends React.Component {
       return;
     }
 
-    const sameStyle = {
-      color: '#fff',
-      fontWeight: 700,
-      lineHeight: 1
-    };
+    const isPastEvent = !moment(date.startDate).isAfter(yesterday);
 
-    const yesterday = moment(new Date()).add(-1, 'days');
-    if (!moment(date.startDate).isAfter(yesterday)) {
-      sameStyle.color = '#aaa';
+    if (isPastEvent) {
+      dateStyle.color = '#aaa';
+    } else {
+      dateStyle.color = '#fff';
     }
 
     return (
@@ -54,10 +59,10 @@ class PublicActivityThumb extends React.Component {
         key={date.startDate + date.startTime}
         style={{ marginRight: 16, marginBottom: 16 }}
       >
-        <div style={{ ...sameStyle, fontSize: 24 }}>
+        <div style={{ ...dateStyle, fontSize: 24 }}>
           {moment(date.startDate).format('DD')}
         </div>
-        <div style={{ ...sameStyle, fontSize: 15 }}>
+        <div style={{ ...dateStyle, fontSize: 15 }}>
           {moment(date.startDate)
             .format('MMM')
             .toUpperCase()}
@@ -66,16 +71,54 @@ class PublicActivityThumb extends React.Component {
     );
   };
 
+  renderDates = () => {
+    const { item } = this.props;
+    const futureDates =
+      item.isGroup &&
+      item.datesAndTimes.filter(date =>
+        moment(date.startDate).isAfter(yesterday)
+      );
+    const remaining = item.isGroup && futureDates.length - 3;
+
+    if (item.isGroup) {
+      return (
+        <div
+          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}
+        >
+          {futureDates.slice(0, 3).map(date => this.renderDate(date))}
+          {remaining > 0 && (
+            <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
+              + {remaining}
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}
+        >
+          {item.datesAndTimes.slice(0, 3).map(date => this.renderDate(date))}
+        </div>
+      );
+    }
+  };
+
   render() {
     const { item } = this.props;
 
     const thumbStyle = {
       position: 'relative',
       flexBasis: 288,
-      flexShrink: 0,
       flexGrow: 1,
+      flexShrink: 0,
       minHeight: 240
     };
+
+    if (!item.isGroup) {
+      thumbStyle.flexBasis = 288 * 2;
+      thumbStyle.flexGrow = 2;
+    }
 
     const commonStyle = {
       color: '#fff',
@@ -95,7 +138,7 @@ class PublicActivityThumb extends React.Component {
       backgroundPosition: 'center center'
     };
 
-    let clickLink = `/event/${item._id}`;
+    let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
 
     const coverClass = 'thumb-cover';
 
@@ -104,13 +147,13 @@ class PublicActivityThumb extends React.Component {
         <Link to={clickLink}>
           <div style={coverStyle} className={coverClass} />
           <div style={{ position: 'relative', padding: '24px 16px' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-              {item.datesAndTimes.map(date => this.renderDate(date))}
-            </div>
+            {this.renderDates()}
             <h3 style={{ ...commonStyle, fontSize: 24, marginBottom: 6 }}>
               {item.title}
             </h3>
-            <h4 style={{ ...commonStyle, fontSize: 16 }}>{item.subTitle}</h4>
+            <h4 style={{ ...commonStyle, fontSize: 16 }}>
+              {item.subTitle || 'Study group'}
+            </h4>
           </div>
         </Link>
       </div>

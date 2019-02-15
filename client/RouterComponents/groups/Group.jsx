@@ -216,7 +216,7 @@ class Group extends React.PureComponent {
       newMeeting &&
       newMeeting.startTime &&
       newMeeting.endTime &&
-      newMeeting.date
+      newMeeting.startDate
     );
   };
 
@@ -235,6 +235,8 @@ class Group extends React.PureComponent {
   addMeeting = () => {
     const { newMeeting } = this.state;
     const { group } = this.props;
+    newMeeting.endDate = newMeeting.startDate;
+
     Meteor.call('addGroupMeeting', newMeeting, group._id, (error, respond) => {
       if (error) {
         console.log('error', error);
@@ -450,7 +452,7 @@ class Group extends React.PureComponent {
             </Col>
 
             <Col sm={24} md={6} style={{ paddingTop: 24 }}>
-              <div style={{ padding: '0 12px' }}>
+              <div>
                 <h3>Meetings</h3>
 
                 <p style={{ textAlign: 'right' }}>
@@ -483,7 +485,11 @@ class Group extends React.PureComponent {
                   <h3>Add a Meeting</h3>
                   <CreateMeetingForm
                     handleDateChange={(date, dateString) =>
-                      this.handleDateAndTimeChange(date, dateString, 'date')
+                      this.handleDateAndTimeChange(
+                        date,
+                        dateString,
+                        'startDate'
+                      )
                     }
                     handleStartTimeChange={(time, timeString) =>
                       this.handleDateAndTimeChange(
@@ -590,10 +596,10 @@ const fancyDateStyle = {
 const FancyDate = ({ meeting }) => (
   <div>
     <div style={{ ...fancyDateStyle, fontSize: 24 }}>
-      {moment(meeting.date).format('DD')}
+      {moment(meeting.startDate).format('DD')}
     </div>
     <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-      {moment(meeting.date)
+      {moment(meeting.startDate)
         .format('MMM')
         .toUpperCase()}
     </div>

@@ -22,8 +22,11 @@ const compareForSort = (a, b) => {
 };
 
 class Home extends React.Component {
-  render() {
-    const { isLoading, currentUser, bookingsList } = this.props;
+  getPublicActivities = () => {
+    const { bookingsList } = this.props;
+    if (!bookingsList) {
+      return null;
+    }
 
     const publicActivities = bookingsList.filter(
       activity => activity.isPublicActivity === true
@@ -35,7 +38,40 @@ class Home extends React.Component {
       )
     );
 
-    const sortedPublicActivities = futurePublicActivities.sort(compareForSort);
+    return futurePublicActivities;
+  };
+
+  getGroupMeetings = () => {
+    const { groupsList } = this.props;
+    if (!groupsList) {
+      return null;
+    }
+
+    const futureGroups = groupsList.filter(group =>
+      group.meetings.some(meeting =>
+        moment(meeting.startDate).isAfter(yesterday)
+      )
+    );
+
+    return futureGroups.map(group => ({
+      ...group,
+      datesAndTimes: group.meetings,
+      isGroup: true
+    }));
+  };
+
+  getAllSorted = () => {
+    const allActitivities = [
+      ...this.getPublicActivities(),
+      ...this.getGroupMeetings()
+    ];
+    return allActitivities.sort(compareForSort);
+  };
+
+  render() {
+    const { isLoading } = this.props;
+
+    const allSortedActivities = this.getAllSorted();
 
     return (
       <div style={{ padding: 24 }}>
@@ -52,7 +88,7 @@ class Home extends React.Component {
                 <Loader />
               ) : (
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                  {sortedPublicActivities.map(activity => (
+                  {allSortedActivities.map(activity => (
                     <PublicActivityThumb key={activity.title} item={activity} />
                   ))}
                 </div>

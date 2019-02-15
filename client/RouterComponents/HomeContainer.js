@@ -8,6 +8,9 @@ export default (HomeContainer = withTracker(props => {
 
   // const handle = Meteor.subscribe('myDataSub', props.subID);
 
+  const groupsSubscription = Meteor.subscribe('groups');
+  const groupsList = Groups ? Groups.find().fetch() : null;
+
   const bookings = Meteor.subscribe('gatherings');
   const isLoading = !bookings.ready();
   const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
@@ -16,6 +19,7 @@ export default (HomeContainer = withTracker(props => {
   return {
     isLoading,
     bookingsList,
-    currentUser
+    currentUser,
+    groupsList
   };
 })(Home));

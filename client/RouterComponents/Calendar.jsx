@@ -86,7 +86,6 @@ class Calendar extends React.PureComponent {
 
   render() {
     const { isLoading, currentUser, placesList, allActivities } = this.props;
-    const images = this.props.imagesArray;
     const { editBooking, calendarFilter, selectedBooking } = this.state;
 
     const futureBookings = [];
@@ -168,7 +167,6 @@ class Calendar extends React.PureComponent {
               ) : (
                 <CalendarView
                   bookings={filteredBookings}
-                  images={images}
                   onSelect={this.handleSelectBooking}
                 />
               )}
@@ -211,8 +209,15 @@ class Calendar extends React.PureComponent {
                   selectedBooking.longDescription.slice(0, 120) + '...'}
               </em>
               {selectedBooking && selectedBooking.isPublicActivity && (
-                <Link to={`/event/${selectedBooking._id}`}>
-                  go to the event page
+                <Link
+                  to={
+                    (selectedBooking.isGroup ? '/group/' : '/event/') +
+                    selectedBooking._id
+                  }
+                >
+                  {' '}
+                  go to the {selectedBooking.isGroup ? 'group ' : 'event '}
+                  page
                 </Link>
               )}
             </Row>

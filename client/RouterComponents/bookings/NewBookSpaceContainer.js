@@ -7,7 +7,6 @@ export default (NewBookSpaceContainer = withTracker(props => {
 
   const calendarList = Meteor.subscribe('calendarView', props.id);
   const isLoading = !calendarList.ready();
-  const Images = Meteor.subscribe('images');
   const placesSub = Meteor.subscribe('places');
   const meSub = Meteor.subscribe('me');
   const places = Places ? Places.find().fetch() : null;

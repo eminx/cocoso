@@ -1,3 +1,5 @@
+import { getRoomIndex, siteUrl } from './shared';
+
 Meteor.methods({
   createGroup(formValues, imageUrl, documentUrl, documentId) {
     const user = Meteor.user();
@@ -126,7 +128,7 @@ Meteor.methods({
 
   joinGroup(groupId) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -196,6 +198,8 @@ Meteor.methods({
     }
 
     newMeeting.attendees = [];
+    newMeeting.roomIndex = getRoomIndex(newMeeting.room);
+
     try {
       Groups.update(groupId, {
         $push: {
@@ -212,9 +216,9 @@ Meteor.methods({
 
   attendMeeting(groupId, meetingIndex) {
     const user = Meteor.user();
-    // if (!user || !user.isRegisteredMember) {
-    //   throw new Meteor.Error('You are not allowed!');
-    // }
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+    }
 
     console.log(groupId, meetingIndex);
 
@@ -247,9 +251,9 @@ Meteor.methods({
 
   unAttendMeeting(groupId, meetingIndex) {
     const user = Meteor.user();
-    // if (!user || !user.isRegisteredMember) {
-    //   throw new Meteor.Error('You are not allowed!');
-    // }
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+    }
 
     console.log(groupId, meetingIndex);
 
