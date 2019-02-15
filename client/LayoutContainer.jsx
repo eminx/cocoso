@@ -220,7 +220,8 @@ const FancyFooter = () => {
           <br />
           (opens in a new tab)
         </p>
-        <h4 style={{ ...boldBabe, marginTop: 24 }}>
+        <Divider style={{ background: '#030303' }} />
+        <p style={{ marginTop: 24 }}>
           Skogen is an{' '}
           <a
             href="http://www.artistrun.space"
@@ -229,7 +230,7 @@ const FancyFooter = () => {
           >
             artistrun space
           </a>
-        </h4>
+        </p>
       </div>
     </div>
   );

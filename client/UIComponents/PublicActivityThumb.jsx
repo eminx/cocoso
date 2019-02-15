@@ -110,13 +110,14 @@ class PublicActivityThumb extends React.Component {
     const thumbStyle = {
       position: 'relative',
       flexBasis: 288,
-      flexGrow: 0,
-      flexShrink: 0,
+      flexGrow: 1,
+      flexShrink: 1,
       minHeight: 240
     };
 
     if (!item.isGroup) {
       thumbStyle.flexBasis = 288 * 2;
+      thumbStyle.flexGrow = 2;
     }
 
     const commonStyle = {

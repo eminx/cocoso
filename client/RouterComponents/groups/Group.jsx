@@ -386,7 +386,7 @@ class Group extends React.PureComponent {
 
     return (
       <div>
-        <div style={{ padding: 12 }}>
+        <div style={{ padding: 24 }}>
           <Link to="/groups">
             <Button icon="arrow-left">Groups</Button>
           </Link>
@@ -396,7 +396,7 @@ class Group extends React.PureComponent {
           <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
             <Col md={5} style={{ padding: 12, paddingTop: 0 }}>
               {!isAdmin && (
-                <div style={{ padding: 24 }}>
+                <div style={{ padding: 12 }}>
                   <Button
                     type={isMember ? null : 'primary'}
                     onClick={this.openModal}
@@ -452,7 +452,7 @@ class Group extends React.PureComponent {
             </Col>
 
             <Col sm={24} md={6} style={{ paddingTop: 24 }}>
-              <div>
+              <div style={{ paddingLeft: 12 }}>
                 <h3>Meetings</h3>
 
                 <p style={{ textAlign: 'right' }}>

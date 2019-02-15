@@ -39,7 +39,7 @@ class Page extends React.Component {
               }}
             >
               <h3>{page && page.title}</h3>
-              <div style={{ whiteSpace: 'pre-line' }}>
+              <div style={{ whiteSpace: 'pre-line', color: '#030303' }}>
                 {page && page.longDescription}
               </div>
             </div>
