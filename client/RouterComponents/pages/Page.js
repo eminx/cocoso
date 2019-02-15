@@ -18,19 +18,18 @@ class Page extends React.Component {
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
           <Col md={8}>
-            <PagesList
-              pageTitles={pageTitles}
-              onChange={this.handlePageClick}
-              activePageTitle={pageId}
-            />
-
             {currentUser && currentUser.isSuperAdmin && (
-              <div style={{ marginLeft: 24 }}>
+              <div style={{ marginBottom: 12 }}>
                 <Link to="/new-page" key="new-page">
                   <Button type="primary">New Page</Button>
                 </Link>
               </div>
             )}
+            <PagesList
+              pageTitles={pageTitles}
+              onChange={this.handlePageClick}
+              activePageTitle={pageId}
+            />
           </Col>
 
           <Col md={12}>

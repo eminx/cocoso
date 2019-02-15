@@ -98,7 +98,7 @@ class PublicActivityThumb extends React.Component {
         <div
           style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}
         >
-          {item.datesAndTimes.slice(0, 3).map(date => this.renderDate(date))}
+          {item.datesAndTimes.map(date => this.renderDate(date))}
         </div>
       );
     }
@@ -110,14 +110,13 @@ class PublicActivityThumb extends React.Component {
     const thumbStyle = {
       position: 'relative',
       flexBasis: 288,
-      flexGrow: 1,
+      flexGrow: 0,
       flexShrink: 0,
       minHeight: 240
     };
 
     if (!item.isGroup) {
       thumbStyle.flexBasis = 288 * 2;
-      thumbStyle.flexGrow = 2;
     }
 
     const commonStyle = {

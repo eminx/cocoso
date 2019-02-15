@@ -116,7 +116,6 @@ Meteor.methods({
     const groupToDelete = Groups.findOne(groupId);
     if (groupToDelete.adminId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
 
     try {
@@ -128,7 +127,7 @@ Meteor.methods({
 
   joinGroup(groupId) {
     const user = Meteor.user();
-    if (!user) {
+    if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('You are not allowed!');
     }
 
