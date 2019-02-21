@@ -242,6 +242,12 @@ body {
   transition: all ease-in-out 200ms;
 }
 
+.thumb-cover-container {
+  position: relative;
+  flex: 288px 0 0;
+  height: 288px;
+}
+
 .thumb-cover-container:hover .thumb-cover {
   filter: brightness(70%);
 }

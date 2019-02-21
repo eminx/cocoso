@@ -145,6 +145,7 @@ class EditBooking extends React.Component {
     const { gatheringData } = this.props;
 
     values.isPublicActivity = isPublicActivity;
+    values.datesAndTimes = gatheringData.datesAndTimes;
 
     const imageUrl = uploadedImage || gatheringData.imageUrl;
 

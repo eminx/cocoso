@@ -36,6 +36,8 @@ const customPanelStyle = {
   overflow: 'hidden'
 };
 
+const yesterday = moment(new Date()).add(-1, 'days');
+
 class Group extends React.PureComponent {
   state = {
     modalOpen: false,
@@ -96,6 +98,7 @@ class Group extends React.PureComponent {
       (error, respond) => {
         if (error) {
           console.log('error', error);
+          message.destroy();
           message.error(error.error);
         }
       }
@@ -162,8 +165,10 @@ class Group extends React.PureComponent {
 
     Meteor.call('joinGroup', group._id, (error, response) => {
       if (error) {
+        message.destroy();
         message.error(error.error);
       } else {
+        message.destroy();
         message.success('You are added to the group');
       }
       this.closeModal();
@@ -175,8 +180,10 @@ class Group extends React.PureComponent {
 
     Meteor.call('leaveGroup', group._id, (error, response) => {
       if (error) {
+        message.destroy();
         message.error(error.error);
       } else {
+        message.destroy();
         message.info('You are removed from the group');
       }
       this.closeModal();
@@ -204,6 +211,7 @@ class Group extends React.PureComponent {
       (error, respond) => {
         if (error) {
           console.log('error', error);
+          message.destroy();
           message.error(error.error);
         }
       }
@@ -240,8 +248,10 @@ class Group extends React.PureComponent {
     Meteor.call('addGroupMeeting', newMeeting, group._id, (error, respond) => {
       if (error) {
         console.log('error', error);
+        message.destroy();
         message.error(error.error);
       } else {
+        message.destroy();
         message.success('Your group meeting is added!');
       }
     });
@@ -249,11 +259,23 @@ class Group extends React.PureComponent {
 
   toggleAttendance = meetingIndex => {
     const { group, currentUser } = this.props;
+    const meetingPast =
+      group && moment(group.meetings[meetingIndex].endDate).isBefore(yesterday);
+    if (meetingPast) {
+      message.destroy();
+      message.error(
+        'Meeting date has unfortunately past. Try an upcoming date'
+      );
+      return;
+    }
+
     if (!currentUser) {
+      message.destroy();
       message.error('Please login and join the group to attend the meeting');
       return;
     }
     if (!this.isMember()) {
+      message.destroy();
       message.error('Please join the group to attend.');
       return;
     }
@@ -270,8 +292,10 @@ class Group extends React.PureComponent {
         (error, respond) => {
           if (error) {
             console.log('error', error);
+            message.destroy();
             message.error(error.error);
           } else {
+            message.destroy();
             message.success('Your are successfully removed from the list!');
           }
         }
@@ -284,8 +308,10 @@ class Group extends React.PureComponent {
         (error, respond) => {
           if (error) {
             console.log('error', error);
+            message.destroy();
             message.error(error.error);
           } else {
+            message.destroy();
             message.success('Your attendance is successfully registered!');
           }
         }
@@ -305,17 +331,16 @@ class Group extends React.PureComponent {
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div>
+            <div style={{ paddingRight: 12 }}>
               <FancyDate meeting={meeting} />
-              <em
+              <div
                 style={{
-                  position: 'absolute',
-                  right: 12,
-                  bottom: 8
+                  paddingTop: 12,
+                  textAlign: 'center'
                 }}
               >
                 {meeting.attendees && meeting.attendees.length}
-              </em>
+              </div>
             </div>
           }
           style={{ ...customPanelStyle, flexBasis: 200, flexShrink: 0 }}
@@ -576,9 +601,7 @@ const MeetingInfo = ({ meeting, onClick, isAttending }) => {
       <FancyDate meeting={meeting} />
 
       {isAttending && (
-        <div
-          style={{ position: 'absolute', bottom: 12, right: 12, fontSize: 12 }}
-        >
+        <div style={{ paddingTop: 12, textAlign: 'center' }}>
           <em>You're attending</em>
           <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} />
         </div>
@@ -594,19 +617,32 @@ const fancyDateStyle = {
 };
 
 const FancyDate = ({ meeting }) => (
-  <div>
-    <div style={{ ...fancyDateStyle, fontSize: 24 }}>
-      {moment(meeting.startDate).format('DD')}
-    </div>
-    <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-      {moment(meeting.startDate)
-        .format('MMM')
-        .toUpperCase()}
+  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div>
+      <div style={{ ...fancyDateStyle, fontSize: 24 }}>
+        {moment(meeting.startDate).format('DD')}
+      </div>
+      <div style={{ ...fancyDateStyle, fontSize: 15 }}>
+        {moment(meeting.startDate)
+          .format('MMM')
+          .toUpperCase()}
+      </div>
     </div>
     <div
-      style={{ ...fancyDateStyle, position: 'absolute', right: 12, top: 14 }}
+      style={{
+        ...fancyDateStyle,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end'
+      }}
     >
-      {meeting.startTime} – {meeting.endTime}
+      <div>
+        {meeting.startTime} – {meeting.endTime}
+      </div>
+      <div style={{ fontWeight: 300 }}>
+        <em>{meeting.room}, Skogen</em>
+      </div>
     </div>
   </div>
 );

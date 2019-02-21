@@ -87,7 +87,13 @@ class Home extends React.Component {
               {isLoading ? (
                 <Loader />
               ) : (
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center'
+                  }}
+                >
                   {allSortedActivities.map(activity => (
                     <PublicActivityThumb key={activity.title} item={activity} />
                   ))}

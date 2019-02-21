@@ -282,6 +282,7 @@ class Booking extends React.Component {
     }
 
     const isAdmin = this.isAdmin();
+    const isRegisteredMember = this.isRegisteredMember();
 
     const customPanelStyle = {
       marginBottom: 24,
@@ -290,61 +291,61 @@ class Booking extends React.Component {
     };
 
     const conditionalRender = (occurence, occurenceIndex) => {
-      if (
-        isAdmin &&
-        occurence &&
-        occurence.attendees &&
-        occurence.attendees.length > 0
-      ) {
+      if (occurence && occurence.attendees) {
+        const eventPast = moment(occurence.endDate).isBefore(yesterday);
+
         return (
           <div>
-            <div
-              style={{
-                paddingBottom: 12,
-                display: 'flex',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <ReactToPrint
-                trigger={() => <Button>Print</Button>}
-                content={() => this.printableElement}
-                pageStyle={{ margin: 144 }}
-              />
-            </div>
-            <RsvpList
-              attendees={occurence.attendees}
-              ref={element => (this.printableElement = element)}
-            />
+            {eventPast ? (
+              <p>This event has past</p>
+            ) : (
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: 12
+                  }}
+                >
+                  <a onClick={() => this.openCancelRsvpModal(occurenceIndex)}>
+                    Change/Cancel Existing RSVP
+                  </a>
+                </div>
+                <RsvpForm
+                  currentUser={currentUser}
+                  form={form}
+                  handleSubmit={event =>
+                    this.handleRSVPSubmit(event, occurenceIndex)
+                  }
+                />
+              </div>
+            )}
+            {isRegisteredMember && (
+              <div>
+                <Divider />
+                <h4>Attendees</h4>
+                <span>Only visible to registered Skogen members</span>
+                <div
+                  style={{
+                    paddingBottom: 12,
+                    display: 'flex',
+                    justifyContent: 'flex-end'
+                  }}
+                >
+                  <ReactToPrint
+                    trigger={() => <Button>Print</Button>}
+                    content={() => this.printableElement}
+                    pageStyle={{ margin: 144 }}
+                  />
+                </div>
+                <RsvpList
+                  attendees={occurence.attendees}
+                  ref={element => (this.printableElement = element)}
+                />
+              </div>
+            )}
           </div>
         );
-      } else if (!isAdmin) {
-        if (moment(occurence.endDate).isBefore(yesterday)) {
-          return <p>This event has past</p>;
-        }
-        return (
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginBottom: 12
-              }}
-            >
-              <a onClick={() => this.openCancelRsvpModal(occurenceIndex)}>
-                Change/Cancel Existing RSVP
-              </a>
-            </div>
-            <RsvpForm
-              currentUser={currentUser}
-              form={form}
-              handleSubmit={event =>
-                this.handleRSVPSubmit(event, occurenceIndex)
-              }
-            />
-          </div>
-        );
-      } else {
-        return 'No one signed up yet. Spread the word!';
       }
     };
 
@@ -370,6 +371,11 @@ class Booking extends React.Component {
     return (
       currentUser && bookingData && currentUser._id === bookingData.authorId
     );
+  };
+
+  isRegisteredMember = () => {
+    const { currentUser } = this.props;
+    return currentUser && currentUser.isRegisteredMember;
   };
 
   render() {

@@ -107,19 +107,6 @@ class PublicActivityThumb extends React.Component {
   render() {
     const { item } = this.props;
 
-    const thumbStyle = {
-      position: 'relative',
-      flexBasis: 288,
-      flexGrow: 1,
-      flexShrink: 1,
-      minHeight: 240
-    };
-
-    if (!item.isGroup) {
-      thumbStyle.flexBasis = 288 * 2;
-      thumbStyle.flexGrow = 2;
-    }
-
     const commonStyle = {
       color: '#fff',
       fontWeight: 300,
@@ -143,7 +130,7 @@ class PublicActivityThumb extends React.Component {
     const coverClass = 'thumb-cover';
 
     return (
-      <div style={thumbStyle} className="thumb-cover-container">
+      <div className="thumb-cover-container">
         <Link to={clickLink}>
           <div style={coverStyle} className={coverClass} />
           <div style={{ position: 'relative', padding: '24px 16px' }}>

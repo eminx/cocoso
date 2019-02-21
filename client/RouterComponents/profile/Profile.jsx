@@ -1,10 +1,23 @@
 import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 
-import { Row, Col, Form, Input, Button, message } from 'antd/lib';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  message,
+  Divider,
+  Modal
+} from 'antd/lib';
 const FormItem = Form.Item;
 
 class Profile extends React.Component {
+  state = {
+    isDeleteModalOn: false
+  };
+
   handleSubmit = event => {
     event.preventDefault();
     this.props.form.validateFields((err, fieldsValue) => {
@@ -29,14 +42,28 @@ class Profile extends React.Component {
     });
   };
 
+  deleteAccount = () => {
+    Meteor.call('deleteAccount', (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+        return;
+      }
+    });
+    // message.success('Your account is successfully deleted from our database');
+    setTimeout(() => {
+      window.location.reload();
+    }, 400);
+  };
+
   render() {
-    const { currentUser, isLoading, history } = this.props;
+    const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const { isDeleteModalOn } = this.state;
 
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
-          <Col sm={6} />
           <Col sm={12} md={6}>
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
@@ -65,7 +92,7 @@ class Profile extends React.Component {
                 <FormItem
                   wrapperCol={{
                     xs: { span: 24, offset: 0 },
-                    sm: { span: 16, offset: 8 }
+                    sm: { span: 16, offset: 0 }
                   }}
                 >
                   <Button type="primary" htmlType="submit">
@@ -75,10 +102,30 @@ class Profile extends React.Component {
               </Form>
             )}
           </Col>
+          <Col sm={2} />
           <Col sm={18} md={8}>
             <Blaze template="loginButtons" />
+            <Divider />
+            {currentUser && (
+              <Button onClick={() => this.setState({ isDeleteModalOn: true })}>
+                Delete Account
+              </Button>
+            )}
           </Col>
         </Row>
+
+        <Modal
+          title="Are you sure?"
+          okText="Confirm Deletion"
+          onOk={this.deleteAccount}
+          onCancel={() => this.setState({ isDeleteModalOn: false })}
+          visible={isDeleteModalOn}
+        >
+          <p>
+            You are about to permanently delete your user information. This is
+            an irreversible action.
+          </p>
+        </Modal>
       </div>
     );
   }

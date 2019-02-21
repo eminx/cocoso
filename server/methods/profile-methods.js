@@ -21,5 +21,19 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
+  },
+
+  deleteAccount() {
+    const userId = Meteor.userId();
+    if (!userId) {
+      throw new Meteor.Error('You are not a member anyways!');
+    }
+    try {
+      Meteor.users.remove(userId);
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+      return;
+    }
   }
 });
