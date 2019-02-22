@@ -281,5 +281,28 @@ Meteor.methods({
         error.reason
       );
     }
+  },
+
+  addGroupDocument(documentUrl, groupId) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      console.log('your no admin');
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    try {
+      Groups.update(groupId, {
+        $push: {
+          documentLinks: documentUrl
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error('Could not add document due to:', error.reason);
+    }
   }
 });

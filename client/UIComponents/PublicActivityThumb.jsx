@@ -129,17 +129,36 @@ class PublicActivityThumb extends React.Component {
 
     const coverClass = 'thumb-cover';
 
+    let coverContainerClass = 'thumb-cover-container ';
+
+    const highlightClass = 'cover-highlight-title';
+
     return (
-      <div className="thumb-cover-container">
+      <div className={coverContainerClass}>
         <Link to={clickLink}>
           <div style={coverStyle} className={coverClass} />
           <div style={{ position: 'relative', padding: '24px 16px' }}>
             {this.renderDates()}
-            <h3 style={{ ...commonStyle, fontSize: 24, marginBottom: 6 }}>
-              {item.title}
+            <h3
+              style={{
+                ...commonStyle,
+                fontSize: 24,
+                marginBottom: 6,
+                lineHeight: '32px'
+              }}
+            >
+              {item.isGroup ? (
+                item.title
+              ) : (
+                <span className={highlightClass}>{item.title}</span>
+              )}
             </h3>
-            <h4 style={{ ...commonStyle, fontSize: 16 }}>
-              {item.subTitle || 'Study group'}
+            <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
+              {item.isGroup ? (
+                'Study group'
+              ) : (
+                <span className={highlightClass}>{item.subTitle}</span>
+              )}
             </h4>
           </div>
         </Link>

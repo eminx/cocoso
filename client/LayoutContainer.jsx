@@ -1,21 +1,21 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Drawer,
   Layout,
   Divider,
-  Menu,
+  Button,
   Icon,
-  Spin,
+  Form,
+  Input,
   Badge,
   Popover,
   List,
   Row,
   Col
 } from 'antd/lib';
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 
 const menu = [
   {
@@ -46,6 +46,8 @@ const adminMenu = [
     route: '/users'
   }
 ];
+
+const FormItem = Form.Item;
 
 class LayoutPage extends React.Component {
   state = {
@@ -193,34 +195,38 @@ class LayoutPage extends React.Component {
   }
 }
 
-const FancyFooter = () => {
-  const style = {
-    textAlign: 'center',
-    backgroundColor: 'rgba(255, 245, 244, .8)',
-    padding: 24,
-    marginTop: 32
-  };
+const widgetBgrstyle = {
+  textAlign: 'center',
+  backgroundColor: 'rgba(255, 245, 244, .8)',
+  padding: 24,
+  margin: 12,
+  marginTop: 32,
+  maxWidth: 320
+};
 
-  const boldBabe = {
-    textTransform: 'uppercase',
-    fontWeight: 700
-  };
+const boldBabe = {
+  textTransform: 'uppercase',
+  fontWeight: 700
+};
+
+const FancyFooter = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={style}>
-        <h3 style={boldBabe}>SKOGEN</h3>
-        <p>Masthuggsterrassen 3, SE-413 18 Göteborg, Sweden</p>
-        <p>
-          <a href="mailto:info@skogen.pm">info@skogen.pm</a>
-        </p>
-        <p>
-          <a href="https://www.facebook.com/skogen.pm" target="_blank">
-            www.facebook.com/skogen.pm
-          </a>
-          <br />
-          (opens in a new tab)
-        </p>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+      }}
+    >
+      <div style={widgetBgrstyle}>
+        <EmailSignupForm />
+
         <Divider style={{ background: '#030303' }} />
+
+        <SkogenInfo />
+
+        <Divider style={{ background: '#030303' }} />
+
         <p style={{ marginTop: 24 }}>
           Skogen is an{' '}
           <a
@@ -235,6 +241,48 @@ const FancyFooter = () => {
     </div>
   );
 };
+
+const EmailSignupForm = () => (
+  <Fragment>
+    <FormItem>
+      <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '10px' }}>
+        Sign up to Our Newsletter
+      </h4>
+    </FormItem>
+    <form method="POST" action="https://gansub.com/s/RKNO/">
+      <FormItem>
+        <Input addonBefore="email" id="email" name="email" />
+      </FormItem>
+
+      <FormItem>
+        <Input addonBefore="first name" id="first_name" name="first_name" />
+      </FormItem>
+
+      <input type="hidden" name="gan_repeat_email" />
+
+      <FormItem>
+        <Button htmlType="submit">Signup</Button>
+      </FormItem>
+    </form>
+  </Fragment>
+);
+
+const SkogenInfo = () => (
+  <Fragment>
+    <h3 style={boldBabe}>SKOGEN</h3>
+    <p>Masthuggsterrassen 3, SE-413 18 Göteborg, Sweden</p>
+    <p>
+      <a href="mailto:info@skogen.pm">info@skogen.pm</a>
+    </p>
+    <p>
+      <a href="https://www.facebook.com/skogen.pm" target="_blank">
+        www.facebook.com/skogen.pm
+      </a>
+      <br />
+      (opens in a new tab)
+    </p>
+  </Fragment>
+);
 
 export default (LayoutContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');

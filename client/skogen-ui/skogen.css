@@ -248,6 +248,14 @@ body {
   height: 288px;
 }
 
+.thumb-cover-container-event {
+  border: 5px solid #ea3924;
+}
+
+.cover-highlight-title {
+  background-color: rgba(234, 57, 36, 0.9);
+}
+
 .thumb-cover-container:hover .thumb-cover {
   filter: brightness(70%);
 }

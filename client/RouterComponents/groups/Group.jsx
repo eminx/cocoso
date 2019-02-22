@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
+import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
 
 import Chattery from '../../chattery';
@@ -45,7 +46,8 @@ class Group extends React.PureComponent {
     newMeeting: {
       room: defaultMeetingRoom
     },
-    isFormValid: false
+    isFormValid: false,
+    isUploading: false
   };
 
   isMember = () => {
@@ -383,8 +385,53 @@ class Group extends React.PureComponent {
     ));
   };
 
+  handleFileDrop = files => {
+    const { group, currentUser } = this.props;
+    this.setState({ isUploading: true });
+
+    const upload = new Slingshot.Upload('groupDocumentUpload');
+    files.forEach(file =>
+      upload.send(file, (error, downloadUrl) => {
+        if (error) {
+          console.error('Error uploading:', error);
+        } else {
+          Meteor.call(
+            'createDocument',
+            group.title + '-document',
+            downloadUrl,
+            currentUser.username,
+            'group',
+            group._id,
+            (error, respond) => {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log(respond);
+                Meteor.call(
+                  'addGroupDocument',
+                  downloadUrl,
+                  group._id,
+                  (error, respond) => {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log(respond);
+                      this.setState({
+                        isUploading: false
+                      });
+                    }
+                  }
+                );
+              }
+            }
+          );
+        }
+      })
+    );
+  };
+
   render() {
-    const { redirectToLogin, isFormValid } = this.state;
+    const { redirectToLogin, isFormValid, isUploading } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -459,6 +506,52 @@ class Group extends React.PureComponent {
                   />
                 </Fragment>
               )}
+
+              <Divider />
+
+              <div style={{ paddingTop: 24, paddingLeft: 12 }}>
+                <h3>Documents</h3>
+              </div>
+              <List
+                dataSource={group.documentLinks}
+                style={{ backgroundColor: '#fff' }}
+                renderItem={documentLink => (
+                  <ListItem>
+                    <div style={{ padding: 12 }}>
+                      <a href={documentLink} target="_blank">
+                        {documentLink}
+                      </a>
+                    </div>
+                  </ListItem>
+                )}
+              />
+
+              {isAdmin && (
+                <ReactDropzone onDrop={this.handleFileDrop}>
+                  {({ getRootProps, getInputProps, isDragActive }) => (
+                    <div
+                      {...getRootProps()}
+                      style={{
+                        width: '100%',
+                        height: 200,
+                        background: '#fff5f4cc',
+                        padding: 24,
+                        marginLeft: 12,
+                        border: '1px dashed #ea3924'
+                      }}
+                    >
+                      {isUploading ? (
+                        <div>
+                          <Loader />
+                          uploading
+                        </div>
+                      ) : (
+                        'Drop documents to upload'
+                      )}
+                    </div>
+                  )}
+                </ReactDropzone>
+              )}
             </Col>
             <Col sm={24} md={12}>
               <Card
@@ -507,7 +600,6 @@ class Group extends React.PureComponent {
 
               {isAdmin && (
                 <div>
-                  <h3>Add a Meeting</h3>
                   <CreateMeetingForm
                     handleDateChange={(date, dateString) =>
                       this.handleDateAndTimeChange(
@@ -664,6 +756,7 @@ const CreateMeetingForm = ({
         marginBottom: 12
       }}
     >
+      <h4>Add a Meeting</h4>
       <div style={{ marginBottom: 6 }}>
         <DatePicker onChange={handleDateChange} placeholder="Date" required />
       </div>

@@ -321,7 +321,7 @@ class Booking extends React.Component {
               </div>
             )}
             {isRegisteredMember && (
-              <div>
+              <div style={{ paddingLeft: 12 }}>
                 <Divider />
                 <h4>Attendees</h4>
                 <span>Only visible to registered Skogen members</span>
