@@ -7,7 +7,7 @@ Slingshot.fileRestrictions('groupImageUpload', {
 });
 
 Slingshot.fileRestrictions('groupDocumentUpload', {
-  allowedFileTypes: ['application/pdf'],
+  allowedFileTypes: ['application/pdf', 'image/png', 'image/jpeg'],
   maxSize: 5 * 1000 * 1000
 });
 

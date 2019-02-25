@@ -401,17 +401,19 @@ class Group extends React.PureComponent {
 
     const upload = new Slingshot.Upload('groupDocumentUpload');
     files.forEach(file => {
-      console.log('file:', file);
+      // if (file.type !== 'application/pdf' || file.type !== 'application/pdf' || file.type !== 'image')
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {
-        type: 'application/pdf'
+        type: file.type
       });
       console.log('uploadableFile:', uploadableFile);
       upload.send(uploadableFile, (error, downloadUrl) => {
         console.log(uploadableFile);
         if (error) {
           console.error('Error uploading:', error);
+          message.error(error.reason);
           closeLoader();
+          return;
         } else {
           Meteor.call(
             'createDocument',
@@ -477,13 +479,125 @@ class Group extends React.PureComponent {
     );
   };
 
+  renderMembersAndDocuments = () => {
+    const { group, currentUser } = this.props;
+
+    const { isUploading } = this.state;
+
+    const isMember = this.isMember();
+    const isAdmin = this.isAdmin();
+
+    return (
+      <Fragment>
+        {!isAdmin && (
+          <div style={{ padding: 12 }}>
+            <Button
+              type={isMember ? null : 'primary'}
+              onClick={this.openModal}
+              block
+            >
+              {isMember ? 'Leave group' : 'Join group'}
+            </Button>
+          </div>
+        )}
+
+        {currentUser && group && group.members && (
+          <Fragment>
+            <div style={{ paddingTop: 24, paddingLeft: 12 }}>
+              <h3>Members</h3>
+            </div>
+            <List
+              dataSource={group.members}
+              style={{ backgroundColor: '#fff' }}
+              renderItem={member => (
+                <ListItem style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      paddingLeft: 24
+                    }}
+                  >
+                    <em>{member.username}</em>
+                    {member.username === currentUser.username && ' you'}
+                    {member.username === group.adminUsername
+                      ? ' admin'
+                      : isAdmin && (
+                          <a
+                            onClick={() =>
+                              this.setState({
+                                potentialNewAdmin: member.username
+                              })
+                            }
+                          >
+                            make admin
+                          </a>
+                        )}
+                  </div>
+                </ListItem>
+              )}
+            />
+          </Fragment>
+        )}
+
+        <Divider />
+
+        <div style={{ paddingTop: 24, paddingLeft: 12 }}>
+          <h3>Documents</h3>
+        </div>
+        {group && group.documents && (
+          <List
+            dataSource={group.documents}
+            style={{ backgroundColor: '#fff', padding: 12 }}
+            renderItem={document => (
+              <ListItem>
+                <div>
+                  <a href={document.downloadUrl} target="_blank">
+                    {document.name}
+                  </a>
+                </div>
+              </ListItem>
+            )}
+          />
+        )}
+
+        {isAdmin && (
+          <Fragment>
+            <ReactDropzone onDrop={this.handleFileDrop}>
+              {({ getRootProps, getInputProps, isDragActive }) => (
+                <div
+                  {...getRootProps()}
+                  style={{
+                    width: '100%',
+                    height: 200,
+                    background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                    padding: 24,
+                    border: '1px dashed #ea3924',
+                    textAlign: 'center'
+                  }}
+                >
+                  {isUploading ? (
+                    <div>
+                      <Loader />
+                      uploading
+                    </div>
+                  ) : (
+                    <div>
+                      <b>Drop documents to upload</b>
+                    </div>
+                  )}
+                </div>
+              )}
+            </ReactDropzone>
+          </Fragment>
+        )}
+      </Fragment>
+    );
+  };
+
   render() {
-    const {
-      redirectToLogin,
-      isFormValid,
-      isUploading,
-      potentialNewAdmin
-    } = this.state;
+    const { redirectToLogin, isFormValid, potentialNewAdmin } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -518,110 +632,12 @@ class Group extends React.PureComponent {
 
         {!isLoading && group ? (
           <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
-            <Col md={5} style={{ padding: 12, paddingTop: 0 }}>
-              {!isAdmin && (
-                <div style={{ padding: 12 }}>
-                  <Button
-                    type={isMember ? null : 'primary'}
-                    onClick={this.openModal}
-                    block
-                  >
-                    {isMember ? 'Leave group' : 'Join group'}
-                  </Button>
-                </div>
-              )}
-
-              {currentUser && (
-                <Fragment>
-                  <div style={{ paddingTop: 24, paddingLeft: 12 }}>
-                    <h3>Members</h3>
-                  </div>
-                  <List
-                    dataSource={group.members}
-                    style={{ backgroundColor: '#fff' }}
-                    renderItem={member => (
-                      <ListItem style={{ position: 'relative' }}>
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            paddingLeft: 24
-                          }}
-                        >
-                          <em>{member.username}</em>
-                          {member.username === currentUser.username && ' you'}
-                          {member.username === group.adminUsername
-                            ? ' admin'
-                            : isAdmin && (
-                                <a
-                                  onClick={() =>
-                                    this.setState({
-                                      potentialNewAdmin: member.username
-                                    })
-                                  }
-                                >
-                                  make admin
-                                </a>
-                              )}
-                        </div>
-                      </ListItem>
-                    )}
-                  />
-                </Fragment>
-              )}
-
-              <Divider />
-
-              <div style={{ paddingTop: 24, paddingLeft: 12 }}>
-                <h3>Documents</h3>
-              </div>
-              <List
-                dataSource={group.documents}
-                style={{ backgroundColor: '#fff', padding: 12 }}
-                renderItem={document => (
-                  <ListItem>
-                    <div>
-                      <a href={document.downloadUrl} target="_blank">
-                        {document.name}
-                      </a>
-                    </div>
-                  </ListItem>
-                )}
-              />
-
-              {isAdmin && (
-                <Fragment>
-                  <ReactDropzone onDrop={this.handleFileDrop}>
-                    {({ getRootProps, getInputProps, isDragActive }) => (
-                      <div
-                        {...getRootProps()}
-                        style={{
-                          width: '100%',
-                          height: 200,
-                          background: isDragActive ? '#ea3924' : '#fff5f4cc',
-                          padding: 24,
-                          border: '3px dashed #ea3924',
-                          textAlign: 'center'
-                        }}
-                      >
-                        {isUploading ? (
-                          <div>
-                            <Loader />
-                            uploading
-                          </div>
-                        ) : (
-                          <div>
-                            <b>Drop documents to upload</b>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </ReactDropzone>
-                </Fragment>
-              )}
+            <Col lg={5} style={{ padding: 12, paddingTop: 0 }}>
+              <MediaQuery query="(min-width: 992px)">
+                {this.renderMembersAndDocuments()}
+              </MediaQuery>
             </Col>
-            <Col sm={24} md={12}>
+            <Col md={14} lg={12}>
               <Card
                 title={this.getTitle(group)}
                 bordered
@@ -637,7 +653,7 @@ class Group extends React.PureComponent {
               </Card>
             </Col>
 
-            <Col sm={24} md={6} style={{ paddingTop: 24 }}>
+            <Col md={10} lg={6} style={{ paddingTop: 24 }}>
               <div style={{ paddingLeft: 12 }}>
                 <h3>Meetings</h3>
 
@@ -698,6 +714,11 @@ class Group extends React.PureComponent {
         ) : (
           <Loader />
         )}
+
+        <MediaQuery query="(max-width: 991px)">
+          <div style={{ padding: 12 }}>{this.renderMembersAndDocuments()}</div>
+        </MediaQuery>
+
         <Divider />
         <Row gutter={24}>
           <Col sm={24} md={16}>
