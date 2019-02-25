@@ -108,7 +108,7 @@ class NewBookSpace extends React.Component {
     if (isPublicActivity) {
       return <Redirect to={`/event/${newBookingId}`} />;
     } else {
-      return <Redirect to={`/booking/${newBookingId}`} />;
+      return <Redirect to={`/calendar`} />;
     }
   };
 

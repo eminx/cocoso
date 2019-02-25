@@ -624,7 +624,7 @@ class Group extends React.PureComponent {
 
     return (
       <div>
-        <div style={{ padding: 24 }}>
+        <div style={{ padding: 12 }}>
           <Link to="/groups">
             <Button icon="arrow-left">Groups</Button>
           </Link>

@@ -237,7 +237,11 @@ class EditBooking extends React.Component {
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/event/${gatheringData._id}`} />;
+      if (isPublicActivity) {
+        return <Redirect to={`/event/${gatheringData._id}`} />;
+      } else {
+        return <Redirect to={'/calendar'} />;
+      }
     }
 
     return (
