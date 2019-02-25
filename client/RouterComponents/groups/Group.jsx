@@ -10,6 +10,7 @@ import Loader from '../../UIComponents/Loader';
 import {
   Row,
   Col,
+  Alert,
   Divider,
   Collapse,
   Modal,
@@ -47,7 +48,9 @@ class Group extends React.PureComponent {
       room: defaultMeetingRoom
     },
     isFormValid: false,
-    isUploading: false
+    isUploading: false,
+    droppedDocuments: null,
+    potentialNewAdmin: false
   };
 
   isMember = () => {
@@ -129,14 +132,7 @@ class Group extends React.PureComponent {
       <div>
         <h2>{group.title}</h2>
         <h5>
-          <span>reading: </span>
-          {group.documentUrl ? (
-            <a href={group.documentUrl} target="_blank">
-              {group.readingMaterial}
-            </a>
-          ) : (
-            <span>{group.readingMaterial}</span>
-          )}
+          <span>{group.readingMaterial}</span>
         </h5>
       </div>
     );
@@ -146,19 +142,11 @@ class Group extends React.PureComponent {
     if (isAdmin) {
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <b>{group.members.length + ' / ' + group.capacity}</b>
-          <Divider type="vertical" />
           <Link to={`/edit-group/${group._id}`}>Edit</Link>
         </div>
       );
     } else {
-      return (
-        <div>
-          <b>{group.members.length + ' / ' + group.capacity}</b>
-          <br />
-          {group.adminUsername}
-        </div>
-      );
+      return <div>{group.adminUsername}</div>;
     }
   };
 
@@ -321,6 +309,18 @@ class Group extends React.PureComponent {
     }
   };
 
+  deleteMeeting = meetingIndex => {
+    const { group } = this.props;
+    Meteor.call('deleteMeeting', group._id, meetingIndex, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.error);
+      } else {
+        message.success('The meeting is successfully removed');
+      }
+    });
+  };
+
   renderDates = () => {
     const { group, currentUser } = this.props;
     if (!group) {
@@ -335,23 +335,26 @@ class Group extends React.PureComponent {
           header={
             <div style={{ paddingRight: 12 }}>
               <FancyDate meeting={meeting} />
-              <div
-                style={{
-                  paddingTop: 12,
-                  textAlign: 'center'
-                }}
-              >
-                {meeting.attendees && meeting.attendees.length}
+              <div style={{ marginTop: 12 }}>
+                <span>{meeting.attendees && meeting.attendees.length}</span>
               </div>
             </div>
           }
           style={{ ...customPanelStyle, flexBasis: 200, flexShrink: 0 }}
         >
           <div style={{ marginLeft: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <a onClick={() => this.deleteMeeting(meetingIndex)}>
+                Delete this meeting
+              </a>
+            </div>
             {meeting.attendees && (
               <List>
                 {meeting.attendees.map(attendee => (
-                  <ListItem key={attendee.memberUsername}>
+                  <ListItem
+                    key={attendee.memberUsername}
+                    style={{ position: 'relative' }}
+                  >
                     {attendee.memberUsername}
                   </ListItem>
                 ))}
@@ -386,39 +389,60 @@ class Group extends React.PureComponent {
   };
 
   handleFileDrop = files => {
-    const { group, currentUser } = this.props;
+    if (files.length > 1) {
+      message.error('Please drop only file at a time.');
+      return;
+    }
+
+    const { group } = this.props;
     this.setState({ isUploading: true });
 
+    const closeLoader = () => this.setState({ isUploading: false });
+
     const upload = new Slingshot.Upload('groupDocumentUpload');
-    files.forEach(file =>
-      upload.send(file, (error, downloadUrl) => {
+    files.forEach(file => {
+      console.log('file:', file);
+      const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
+      const uploadableFile = new File([file], parsedName, {
+        type: 'application/pdf'
+      });
+      console.log('uploadableFile:', uploadableFile);
+      upload.send(uploadableFile, (error, downloadUrl) => {
+        console.log(uploadableFile);
         if (error) {
           console.error('Error uploading:', error);
+          closeLoader();
         } else {
           Meteor.call(
             'createDocument',
-            group.title + '-document',
+            uploadableFile.name,
             downloadUrl,
-            currentUser.username,
             'group',
             group._id,
             (error, respond) => {
               if (error) {
+                message.error(error);
                 console.log(error);
+                closeLoader();
               } else {
                 console.log(respond);
                 Meteor.call(
                   'addGroupDocument',
-                  downloadUrl,
+                  { name: uploadableFile.name, downloadUrl },
                   group._id,
                   (error, respond) => {
                     if (error) {
+                      message.error(error);
                       console.log(error);
+                      closeLoader();
                     } else {
                       console.log(respond);
-                      this.setState({
-                        isUploading: false
-                      });
+                      message.success(
+                        `${
+                          uploadableFile.name
+                        } is succesfully uploaded and assigned to this group!`
+                      );
+                      closeLoader();
                     }
                   }
                 );
@@ -426,12 +450,40 @@ class Group extends React.PureComponent {
             }
           );
         }
-      })
+      });
+    });
+  };
+
+  changeAdmin = () => {
+    const { potentialNewAdmin } = this.state;
+
+    const closeModal = () => this.setState({ potentialNewAdmin: false });
+
+    const { group } = this.props;
+    Meteor.call(
+      'changeAdmin',
+      group._id,
+      potentialNewAdmin,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+          message.error(error.error);
+          closeModal();
+        } else {
+          message.success('The admin is successfully changed');
+          closeModal();
+        }
+      }
     );
   };
 
   render() {
-    const { redirectToLogin, isFormValid, isUploading } = this.state;
+    const {
+      redirectToLogin,
+      isFormValid,
+      isUploading,
+      potentialNewAdmin
+    } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -488,7 +540,7 @@ class Group extends React.PureComponent {
                     dataSource={group.members}
                     style={{ backgroundColor: '#fff' }}
                     renderItem={member => (
-                      <ListItem>
+                      <ListItem style={{ position: 'relative' }}>
                         <div
                           style={{
                             display: 'flex',
@@ -499,7 +551,19 @@ class Group extends React.PureComponent {
                         >
                           <em>{member.username}</em>
                           {member.username === currentUser.username && ' you'}
-                          {member.username === group.adminUsername && ' admin'}
+                          {member.username === group.adminUsername
+                            ? ' admin'
+                            : isAdmin && (
+                                <a
+                                  onClick={() =>
+                                    this.setState({
+                                      potentialNewAdmin: member.username
+                                    })
+                                  }
+                                >
+                                  make admin
+                                </a>
+                              )}
                         </div>
                       </ListItem>
                     )}
@@ -513,13 +577,13 @@ class Group extends React.PureComponent {
                 <h3>Documents</h3>
               </div>
               <List
-                dataSource={group.documentLinks}
-                style={{ backgroundColor: '#fff' }}
-                renderItem={documentLink => (
+                dataSource={group.documents}
+                style={{ backgroundColor: '#fff', padding: 12 }}
+                renderItem={document => (
                   <ListItem>
-                    <div style={{ padding: 12 }}>
-                      <a href={documentLink} target="_blank">
-                        {documentLink}
+                    <div>
+                      <a href={document.downloadUrl} target="_blank">
+                        {document.name}
                       </a>
                     </div>
                   </ListItem>
@@ -527,30 +591,34 @@ class Group extends React.PureComponent {
               />
 
               {isAdmin && (
-                <ReactDropzone onDrop={this.handleFileDrop}>
-                  {({ getRootProps, getInputProps, isDragActive }) => (
-                    <div
-                      {...getRootProps()}
-                      style={{
-                        width: '100%',
-                        height: 200,
-                        background: '#fff5f4cc',
-                        padding: 24,
-                        marginLeft: 12,
-                        border: '1px dashed #ea3924'
-                      }}
-                    >
-                      {isUploading ? (
-                        <div>
-                          <Loader />
-                          uploading
-                        </div>
-                      ) : (
-                        'Drop documents to upload'
-                      )}
-                    </div>
-                  )}
-                </ReactDropzone>
+                <Fragment>
+                  <ReactDropzone onDrop={this.handleFileDrop}>
+                    {({ getRootProps, getInputProps, isDragActive }) => (
+                      <div
+                        {...getRootProps()}
+                        style={{
+                          width: '100%',
+                          height: 200,
+                          background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                          padding: 24,
+                          border: '3px dashed #ea3924',
+                          textAlign: 'center'
+                        }}
+                      >
+                        {isUploading ? (
+                          <div>
+                            <Loader />
+                            uploading
+                          </div>
+                        ) : (
+                          <div>
+                            <b>Drop documents to upload</b>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </ReactDropzone>
+                </Fragment>
               )}
             </Col>
             <Col sm={24} md={12}>
@@ -635,7 +703,7 @@ class Group extends React.PureComponent {
           <Col sm={24} md={16}>
             {chatData && (
               <div>
-                <h4 style={titleStyle}>Chat Section</h4>
+                <h4 style={titleStyle}>Discussion</h4>
                 <Chattery
                   messages={messages}
                   onNewMessage={this.addNewChatMessage}
@@ -670,6 +738,23 @@ class Group extends React.PureComponent {
             Are you sure you want to
             {isMember ? ' leave ' : ' join '}
             this Group?
+          </p>
+        </Modal>
+
+        <Modal
+          title="Are you sure"
+          visible={Boolean(potentialNewAdmin)}
+          onOk={this.changeAdmin}
+          onCancel={() => this.setState({ potentialNewAdmin: null })}
+        >
+          <p>
+            <b>
+              Please confirm you want to make {potentialNewAdmin} the new admin.
+            </b>
+          </p>
+          <p>
+            There can only be one admin at a time, so your admin priveleges will
+            be removed.
           </p>
         </Modal>
       </div>

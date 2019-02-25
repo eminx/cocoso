@@ -29,7 +29,7 @@ class CreateGroupForm extends React.Component {
         return;
       }
 
-      if (!this.props.uploadableImage || !this.props.uploadableDocument) {
+      if (!this.props.uploadableImage) {
         Modal.error({
           title: 'Image and attachment are required',
           content: 'Please upload an image'
@@ -79,6 +79,18 @@ class CreateGroupForm extends React.Component {
           </FormItem>
 
           <FormItem>
+            {getFieldDecorator('readingMaterial', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please enter a subtitle'
+                }
+              ],
+              initialValue: groupData ? groupData.readingMaterial : null
+            })(<Input placeholder="Subtitle" />)}
+          </FormItem>
+
+          <FormItem>
             {getFieldDecorator('description', {
               rules: [
                 {
@@ -93,46 +105,6 @@ class CreateGroupForm extends React.Component {
                 autosize={{ minRows: 6, maxRows: 12 }}
               />
             )}
-          </FormItem>
-
-          <FormItem>
-            {getFieldDecorator('readingMaterial', {
-              rules: [
-                {
-                  required: true,
-                  message:
-                    'Please enter the reading Material or area of interest'
-                }
-              ],
-              initialValue: groupData ? groupData.readingMaterial : null
-            })(<Input placeholder="Reading material" />)}
-          </FormItem>
-
-          <FormItem
-            className="upload-image-col"
-            extra={
-              uploadableDocument
-                ? null
-                : 'Select the reading material from your device'
-            }
-          >
-            <Upload
-              name="gathering"
-              action="/upload.do"
-              onChange={setUploadableDocument}
-            >
-              {uploadableDocument ? (
-                <Button>
-                  <Icon type="check-circle" />
-                  Document selected
-                </Button>
-              ) : (
-                <Button>
-                  {/* <Icon type="upload" /> */}
-                  Choose an attachment
-                </Button>
-              )}
-            </Upload>
           </FormItem>
 
           <FormItem>

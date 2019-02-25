@@ -145,7 +145,6 @@ class EditBooking extends React.Component {
     const { gatheringData } = this.props;
 
     values.isPublicActivity = isPublicActivity;
-    values.datesAndTimes = gatheringData.datesAndTimes;
 
     const imageUrl = uploadedImage || gatheringData.imageUrl;
 
@@ -207,7 +206,6 @@ class EditBooking extends React.Component {
     if (isPublicActivity && uploadableImage) {
       this.uploadImage();
     } else {
-      console.log('it shall be here');
       this.updateBooking();
     }
   };

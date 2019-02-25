@@ -439,7 +439,7 @@ class Booking extends React.Component {
 
               <Row style={{ width: '100%' }}>
                 <h3>Dates</h3>
-                <h6>please click to RSVP</h6>
+                <p>Please click to RSVP</p>
                 {this.renderDates()}
               </Row>
             </Col>

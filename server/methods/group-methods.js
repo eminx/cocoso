@@ -1,7 +1,7 @@
 import { getRoomIndex, siteUrl } from './shared';
 
 Meteor.methods({
-  createGroup(formValues, imageUrl, documentUrl, documentId) {
+  createGroup(formValues, imageUrl) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -10,8 +10,6 @@ Meteor.methods({
     check(formValues.description, String);
     check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
-    check(documentUrl, String);
-    check(documentId, String);
 
     try {
       const add = Groups.insert(
@@ -26,14 +24,13 @@ Meteor.methods({
               joinDate: new Date()
             }
           ],
+          documents: [],
           meetings: [],
           title: formValues.title,
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
           capacity: formValues.capacity || 20,
           imageUrl,
-          documentUrl,
-          documentId,
           isPublished: true,
           creationDate: new Date()
         },
@@ -71,7 +68,7 @@ Meteor.methods({
     }
   },
 
-  updateGroup(groupId, formValues, imageUrl, documentUrl, documentId) {
+  updateGroup(groupId, formValues, imageUrl) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -84,10 +81,7 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.description, String);
-    check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
-    check(documentUrl, String);
-    check(documentId, String);
 
     try {
       const add = Groups.update(groupId, {
@@ -96,9 +90,7 @@ Meteor.methods({
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
           capacity: formValues.capacity,
-          imageUrl,
-          documentId,
-          documentUrl
+          imageUrl
         }
       });
       return groupId;
@@ -111,7 +103,6 @@ Meteor.methods({
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
-      return false;
     }
     const groupToDelete = Groups.findOne(groupId);
     if (groupToDelete.adminId !== user._id) {
@@ -213,6 +204,35 @@ Meteor.methods({
     }
   },
 
+  deleteMeeting(groupId, meetingIndex) {
+    const user = Meteor.user();
+    if (!user || !user.isRegisteredMember) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      throw new Meteor.Error('You are not the admin!');
+    }
+
+    const newMeetings = theGroup.meetings.filter(
+      (meeting, mIndex) => mIndex !== meetingIndex
+    );
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          meetings: newMeetings
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error(
+        'Could not remove the meeting due to: ',
+        error.reason
+      );
+    }
+  },
+
   attendMeeting(groupId, meetingIndex) {
     const user = Meteor.user();
     if (!user) {
@@ -283,7 +303,7 @@ Meteor.methods({
     }
   },
 
-  addGroupDocument(documentUrl, groupId) {
+  addGroupDocument(document, groupId) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
@@ -298,11 +318,37 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $push: {
-          documentLinks: documentUrl
+          documents: document
         }
       });
     } catch (error) {
       throw new Meteor.Error('Could not add document due to:', error.reason);
+    }
+  },
+
+  changeAdmin(groupId, newAdminUsername) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      console.log('your no admin');
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          adminId: newAdmin._id,
+          adminUsername: newAdminUsername
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error('Could not change admin due to :', error.reason);
     }
   }
 });

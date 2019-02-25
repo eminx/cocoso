@@ -26,7 +26,7 @@ class GroupsList extends React.PureComponent {
           <Link to={`/group/${group._id}`}>{group.title}</Link>
         </h3>
         <h5>
-          reading: <b>{group.readingMaterial}</b>
+          <b>{group.readingMaterial}</b>
         </h5>
       </div>
     );
@@ -35,8 +35,6 @@ class GroupsList extends React.PureComponent {
   getExtra = group => {
     return (
       <div>
-        <b>{group.members.length + ' / ' + group.capacity}</b>
-        <br />
         {group.adminUsername}
         <br />
         <span style={{ fontSize: 10 }}>
