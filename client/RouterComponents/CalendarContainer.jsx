@@ -17,6 +17,9 @@ export default (CalendarContainer = withTracker(props => {
   const groupsSubscription = Meteor.subscribe('groups');
   const groupsList = Groups ? Groups.find().fetch() : null;
 
+  const manualsSubscription = Meteor.subscribe('manuals');
+  const manuals = Documents ? Documents.find().fetch() : null;
+
   const allActivities = [];
   if (bookingsList) {
     bookingsList.forEach(booking => {
@@ -89,6 +92,7 @@ export default (CalendarContainer = withTracker(props => {
     isLoading,
     allActivities,
     currentUser,
-    placesList
+    placesList,
+    manuals
   };
 })(Calendar));

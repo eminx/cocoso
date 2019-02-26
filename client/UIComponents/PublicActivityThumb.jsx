@@ -147,18 +147,10 @@ class PublicActivityThumb extends React.Component {
                 lineHeight: '32px'
               }}
             >
-              {item.isGroup ? (
-                item.title
-              ) : (
-                <span className={highlightClass}>{item.title}</span>
-              )}
+              {item.isGroup ? item.title : item.title}
             </h3>
             <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
-              {item.isGroup ? (
-                'Study group'
-              ) : (
-                <span className={highlightClass}>{item.subTitle}</span>
-              )}
+              {item.isGroup ? item.readingMaterial : item.subTitle}
             </h4>
           </div>
         </Link>

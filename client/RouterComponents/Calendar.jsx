@@ -2,10 +2,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, Alert, Tag, Button, Modal } from 'antd/lib';
+import ReactDropzone from 'react-dropzone';
+import {
+  Row,
+  Col,
+  Alert,
+  Card,
+  List,
+  Divider,
+  Tag,
+  Button,
+  Modal,
+  message
+} from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import colors from '../constants/colors';
+
+const ListItem = List.Item;
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -84,9 +98,68 @@ class Calendar extends React.PureComponent {
     }
   };
 
+  handleDropDocument = files => {
+    const { currentUser } = this.props;
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+
+    this.setState({ isUploading: true });
+
+    const closeLoader = () => this.setState({ isUploading: false });
+
+    const upload = new Slingshot.Upload('groupDocumentUpload');
+    files.forEach(file => {
+      const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
+      const uploadableFile = new File([file], parsedName, {
+        type: file.type
+      });
+      upload.send(uploadableFile, (error, downloadUrl) => {
+        if (error) {
+          message.error(error.reason);
+          closeLoader();
+          return;
+        } else {
+          Meteor.call(
+            'createDocument',
+            uploadableFile.name,
+            downloadUrl,
+            'manual',
+            currentUser.username,
+            (error, respond) => {
+              if (error) {
+                message.error(error);
+                closeLoader();
+              } else {
+                message.success(
+                  `${
+                    uploadableFile.name
+                  } is succesfully uploaded and assigned to manuals!`
+                );
+                closeLoader();
+              }
+            }
+          );
+        }
+      });
+    });
+  };
+
   render() {
-    const { isLoading, currentUser, placesList, allActivities } = this.props;
-    const { editBooking, calendarFilter, selectedBooking } = this.state;
+    const {
+      isLoading,
+      currentUser,
+      placesList,
+      allActivities,
+      manuals
+    } = this.props;
+    const {
+      editBooking,
+      calendarFilter,
+      selectedBooking,
+      isUploading
+    } = this.state;
 
     const futureBookings = [];
 
@@ -107,6 +180,8 @@ class Calendar extends React.PureComponent {
     if (editBooking) {
       return <Redirect to={`/edit-booking/${selectedBooking._id}`} />;
     }
+
+    const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
 
     const centerStyle = {
       display: 'flex',
@@ -172,6 +247,65 @@ class Calendar extends React.PureComponent {
               )}
             </div>
           </div>
+        </Row>
+
+        <Divider />
+
+        <Row>
+          <h3 style={{ textAlign: 'center' }}>Manuals</h3>
+          <Col md={8}>
+            {isSuperAdmin && (
+              <ReactDropzone onDrop={this.handleDropDocument}>
+                {({ getRootProps, getInputProps, isDragActive }) => (
+                  <div
+                    {...getRootProps()}
+                    style={{
+                      width: '100%',
+                      height: 200,
+                      background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                      padding: 24,
+                      border: '1px dashed #ea3924',
+                      textAlign: 'center'
+                    }}
+                  >
+                    {isUploading ? (
+                      <div>
+                        <Loader />
+                        uploading
+                      </div>
+                    ) : (
+                      <div>
+                        <b>Drop documents to upload</b>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </ReactDropzone>
+            )}
+          </Col>
+          <Col md={16} style={{ paddingLeft: 12, paddingRight: 12 }}>
+            {manuals && manuals.length > 0 && (
+              <List
+                dataSource={manuals}
+                renderItem={manual => (
+                  <ListItem style={{ paddingBottom: 0 }}>
+                    <Card
+                      title={
+                        <h4>
+                          <a href={manual.documentUrl} target="_blank">
+                            {manual.documentLabel}
+                          </a>
+                        </h4>
+                      }
+                      bordered={false}
+                      style={{ width: '100%', marginBottom: 0 }}
+                      className="empty-card-body"
+                    />
+                  </ListItem>
+                )}
+              />
+            )}
+          </Col>
         </Row>
 
         <Modal

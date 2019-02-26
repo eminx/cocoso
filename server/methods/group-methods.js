@@ -136,6 +136,7 @@ Meteor.methods({
             memberId: user._id,
             username: user.username,
             profileImage: user.profileImage || null,
+            isRegisteredMember: user.isRegisteredMember,
             joinDate: new Date()
           }
         }
