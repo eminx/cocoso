@@ -1,5 +1,11 @@
 import { getRoomIndex, siteUrl } from './shared';
 
+const compareForSort = (a, b) => {
+  const dateA = new Date(a.endDate);
+  const dateB = new Date(b.endDate);
+  return dateA - dateB;
+};
+
 Meteor.methods({
   createGroup(formValues, imageUrl) {
     const user = Meteor.user();
@@ -189,11 +195,17 @@ Meteor.methods({
 
     newMeeting.attendees = [];
     newMeeting.roomIndex = getRoomIndex(newMeeting.room);
+    console.log(newMeeting, 'newMeeting');
+    const meetings = [...theGroup.meetings];
+    meetings.push(newMeeting);
+    console.log(meetings, 'meetings');
+    const sortedMeetings = meetings.sort(compareForSort);
+    console.log(sortedMeetings, 'sortedMeetings');
 
     try {
       Groups.update(groupId, {
-        $push: {
-          meetings: newMeeting
+        $set: {
+          meetings: sortedMeetings
         }
       });
     } catch (error) {
@@ -339,6 +351,11 @@ Meteor.methods({
     }
 
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
+
+    if (!newAdmin.isRegisteredMember) {
+      throw new Meteor.error('This is not allowed!');
+      return;
+    }
 
     try {
       Groups.update(groupId, {

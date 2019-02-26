@@ -11,7 +11,6 @@ export default (NewBookSpaceContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const places = Places ? Places.find().fetch() : null;
   const currentUser = Meteor.user();
-  console.log(currentUser);
   return {
     isLoading,
     calendarList,

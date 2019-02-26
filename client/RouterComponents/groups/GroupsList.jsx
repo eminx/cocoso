@@ -7,9 +7,6 @@ import Loader from '../../UIComponents/Loader';
 import { compareForSort } from '../../functions';
 
 const ListItem = List.Item;
-const { Meta } = Card;
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
 function shortenDescription(str) {
   return str

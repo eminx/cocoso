@@ -247,6 +247,7 @@ body {
   flex: 288px 0 0;
   height: 288px;
   width: 288px;
+  max-width: 288px;
 }
 
 .thumb-cover-container-event {

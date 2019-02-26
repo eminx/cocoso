@@ -16,10 +16,14 @@ export default (HomeContainer = withTracker(props => {
   const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
   const currentUser = Meteor.user();
 
+  const manualsSubscription = Meteor.subscribe('manuals');
+  const manuals = Documents ? Documents.find().fetch() : null;
+
   return {
     isLoading,
     bookingsList,
     currentUser,
-    groupsList
+    groupsList,
+    manuals
   };
 })(Home));

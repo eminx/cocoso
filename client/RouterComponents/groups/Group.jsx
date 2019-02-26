@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, PureComponent, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
@@ -19,7 +19,9 @@ import {
   Button,
   DatePicker,
   TimePicker,
+  Input,
   Select,
+  Switch,
   Icon,
   message
 } from 'antd/lib';
@@ -27,6 +29,7 @@ const ListItem = List.Item;
 const { Meta } = Card;
 const { Option } = Select;
 const Panel = Collapse.Panel;
+const { TextArea } = Input;
 
 const defaultMeetingRoom = 'Office';
 
@@ -40,7 +43,7 @@ const customPanelStyle = {
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Group extends React.PureComponent {
+class Group extends Component {
   state = {
     modalOpen: false,
     redirectToLogin: false,
@@ -311,6 +314,17 @@ class Group extends React.PureComponent {
 
   deleteMeeting = meetingIndex => {
     const { group } = this.props;
+    if (!group || !group.meetings) {
+      return;
+    }
+
+    if (group.meetings[meetingIndex].attendees.length > 0) {
+      message.error(
+        'Sorry. Currently you can not delete meetings which have attendees registered to attend'
+      );
+      return;
+    }
+
     Meteor.call('deleteMeeting', group._id, meetingIndex, (error, respond) => {
       if (error) {
         console.log(error);
@@ -321,20 +335,33 @@ class Group extends React.PureComponent {
     });
   };
 
+  getFutureMeetings = () => {
+    const { group } = this.props;
+    if (!group || !group.meetings) {
+      return;
+    }
+
+    return group.meetings.filter(meeting =>
+      moment(meeting.endDate).isAfter(yesterday)
+    );
+  };
+
   renderDates = () => {
-    const { group, currentUser } = this.props;
+    const { group, places } = this.props;
     if (!group) {
       return;
     }
 
+    const futureMeetings = this.getFutureMeetings();
+
     return (
-      group.meetings &&
-      group.meetings.map((meeting, meetingIndex) => (
+      futureMeetings &&
+      futureMeetings.map((meeting, meetingIndex) => (
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
             <div style={{ paddingRight: 12 }}>
-              <FancyDate meeting={meeting} />
+              <FancyDate meeting={meeting} places={places} />
               <div style={{ marginTop: 12 }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
               </div>
@@ -367,16 +394,20 @@ class Group extends React.PureComponent {
   };
 
   renderMeetings = () => {
-    const { group, currentUser } = this.props;
+    const { group, currentUser, places } = this.props;
     if (!group || !group.meetings) {
       return;
     }
-    return group.meetings.map((meeting, meetingIndex) => (
+
+    const futureMeetings = this.getFutureMeetings();
+
+    return futureMeetings.map((meeting, meetingIndex) => (
       <MeetingInfo
         isSmallViewport
         key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
         meeting={meeting}
         onClick={() => this.toggleAttendance(meetingIndex)}
+        places={places}
         isAttending={
           currentUser &&
           meeting.attendees &&
@@ -390,7 +421,7 @@ class Group extends React.PureComponent {
 
   handleFileDrop = files => {
     if (files.length > 1) {
-      message.error('Please drop only file at a time.');
+      message.error('Please drop only one file at a time.');
       return;
     }
 
@@ -401,7 +432,6 @@ class Group extends React.PureComponent {
 
     const upload = new Slingshot.Upload('groupDocumentUpload');
     files.forEach(file => {
-      // if (file.type !== 'application/pdf' || file.type !== 'application/pdf' || file.type !== 'image')
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {
         type: file.type
@@ -523,7 +553,8 @@ class Group extends React.PureComponent {
                     {member.username === currentUser.username && ' you'}
                     {member.username === group.adminUsername
                       ? ' admin'
-                      : isAdmin && (
+                      : isAdmin &&
+                        member.isRegisteredMember && (
                           <a
                             onClick={() =>
                               this.setState({
@@ -724,7 +755,7 @@ class Group extends React.PureComponent {
           <Col sm={24} md={16}>
             {chatData && (
               <div>
-                <h4 style={titleStyle}>Discussion</h4>
+                <h3 style={titleStyle}>Discussion</h3>
                 <Chattery
                   messages={messages}
                   onNewMessage={this.addNewChatMessage}
@@ -785,7 +816,7 @@ class Group extends React.PureComponent {
 
 export default Group;
 
-const MeetingInfo = ({ meeting, onClick, isAttending }) => {
+const MeetingInfo = ({ meeting, onClick, isAttending, places }) => {
   const style = {
     flexBasis: 180,
     flexShrink: 0
@@ -796,7 +827,7 @@ const MeetingInfo = ({ meeting, onClick, isAttending }) => {
 
   return (
     <div style={style} className="toggleable" onClick={onClick}>
-      <FancyDate meeting={meeting} />
+      <FancyDate meeting={meeting} places={places} />
 
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
@@ -814,7 +845,7 @@ const fancyDateStyle = {
   lineHeight: 1
 };
 
-const FancyDate = ({ meeting }) => (
+const FancyDate = ({ meeting, places }) => (
   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
     <div>
       <div style={{ ...fancyDateStyle, fontSize: 24 }}>
@@ -838,82 +869,124 @@ const FancyDate = ({ meeting }) => (
       <div>
         {meeting.startTime} – {meeting.endTime}
       </div>
-      <div style={{ fontWeight: 300 }}>
-        <em>{meeting.room}, Skogen</em>
+      <div
+        style={{
+          fontWeight: 300,
+          maxWidth: 120,
+          marginTop: 12,
+          textAlign: 'right'
+        }}
+      >
+        <em>
+          {places.map(place => place.name).includes(meeting.room)
+            ? meeting.room + ', Skogen'
+            : meeting.room}
+        </em>
       </div>
     </div>
   </div>
 );
 
-const CreateMeetingForm = ({
-  handleDateChange,
-  handleStartTimeChange,
-  handleFinishTimeChange,
-  places,
-  handlePlaceChange,
-  handleSubmit,
-  buttonDisabled
-}) => {
-  return (
-    <div
-      style={{
-        padding: 12,
-        backgroundColor: '#f8f8f8',
-        marginBottom: 12
-      }}
-    >
-      <h4>Add a Meeting</h4>
-      <div style={{ marginBottom: 6 }}>
-        <DatePicker onChange={handleDateChange} placeholder="Date" required />
-      </div>
+class CreateMeetingForm extends PureComponent {
+  state = {
+    isLocal: true
+  };
 
-      <div style={{ marginBottom: 6 }}>
-        <TimePicker
-          onChange={handleStartTimeChange}
-          format="HH:mm"
-          minuteStep={30}
-          placeholder="Start time"
-          required
-        />
-      </div>
+  render() {
+    const {
+      handleDateChange,
+      handleStartTimeChange,
+      handleFinishTimeChange,
+      places,
+      handlePlaceChange,
+      handleSubmit,
+      buttonDisabled
+    } = this.props;
 
-      <div style={{ marginBottom: 6 }}>
-        <TimePicker
-          onChange={handleFinishTimeChange}
-          format="HH:mm"
-          minuteStep={30}
-          placeholder="Finish time"
-          required
-        />
-      </div>
+    const { isLocal } = this.state;
 
-      <div style={{ marginBottom: 0 }}>
-        <Select
-          placeholder="Select room"
-          defaultValue="Office"
-          onChange={handlePlaceChange}
-        >
-          {places
-            ? places.map((part, i) => (
-                <Option key={part.name + i} value={part.name}>
-                  {part.name}
-                </Option>
-              ))
-            : null}
-        </Select>
-      </div>
-
+    return (
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginBottom: 0
+          padding: 12,
+          backgroundColor: '#f8f8f8',
+          marginBottom: 12
         }}
       >
-        <Button type="submit" onClick={handleSubmit} disabled={buttonDisabled}>
-          Add
-        </Button>
+        <h4>Add a Meeting</h4>
+        <div style={{ marginBottom: 6 }}>
+          <DatePicker onChange={handleDateChange} placeholder="Date" required />
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          <TimePicker
+            onChange={handleStartTimeChange}
+            format="HH:mm"
+            minuteStep={30}
+            placeholder="Start time"
+            required
+          />
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          <TimePicker
+            onChange={handleFinishTimeChange}
+            format="HH:mm"
+            minuteStep={30}
+            placeholder="Finish time"
+            required
+          />
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          <Switch
+            checked={isLocal}
+            onChange={() => this.setState({ isLocal: !isLocal })}
+          />
+          <span style={{ marginLeft: 12 }}>At Skogen? </span>
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          {isLocal ? (
+            <Select
+              placeholder="Select room"
+              defaultValue="Office"
+              onChange={handlePlaceChange}
+            >
+              {places
+                ? places.map((part, i) => (
+                    <Option key={part.name + i} value={part.name}>
+                      {part.name}
+                    </Option>
+                  ))
+                : null}
+            </Select>
+          ) : (
+            <TextArea
+              placeholder="Location"
+              onChange={event => handlePlaceChange(event.target.value)}
+              autosize={{ minRows: 2, maxRows: 4 }}
+              style={{ width: 200 }}
+            />
+          )}
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: 0
+          }}
+        >
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={buttonDisabled}
+          >
+            Add
+          </Button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}

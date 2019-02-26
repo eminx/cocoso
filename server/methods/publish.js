@@ -47,6 +47,12 @@ Meteor.publish('groups', function() {
   // }
 });
 
+Meteor.publish('manuals', function() {
+  return Documents.find({
+    contextType: 'manual'
+  });
+});
+
 Meteor.publish('publications', function() {
   return Publications.find({
     isPublished: true
