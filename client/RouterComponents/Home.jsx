@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import { Row, Col, Divider, List, Card } from 'antd/lib';
+import { Row, Col, Divider, List, Card, message } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
@@ -93,11 +92,8 @@ class Home extends React.Component {
       const uploadableFile = new File([file], parsedName, {
         type: file.type
       });
-      console.log('uploadableFile:', uploadableFile);
       upload.send(uploadableFile, (error, downloadUrl) => {
-        console.log(uploadableFile);
         if (error) {
-          console.error('Error uploading:', error);
           message.error(error.reason);
           closeLoader();
           return;
@@ -111,7 +107,13 @@ class Home extends React.Component {
             (error, respond) => {
               if (error) {
                 message.error(error);
-                console.log(error);
+                closeLoader();
+              } else {
+                message.success(
+                  `${
+                    uploadableFile.name
+                  } is succesfully uploaded and assigned to manuals!`
+                );
                 closeLoader();
               }
             }

@@ -1,8 +1,19 @@
 import React from 'react';
-import { Row, Col, Alert, List, Card, Spin, Button, message } from 'antd/lib';
+import {
+  Row,
+  Dropdown,
+  Col,
+  Icon,
+  Alert,
+  List,
+  Card,
+  Menu,
+  message
+} from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 
 const ListItem = List.Item;
+const MenuItem = Menu.Item;
 
 class Users extends React.PureComponent {
   toggleVerification = user => {
@@ -45,6 +56,9 @@ class Users extends React.PureComponent {
       return <Loader />;
     }
 
+    const usersSorted =
+      users && users.sort((a, b) => a.username.localeCompare(b.username));
+
     return (
       <Row gutter={24}>
         <Col md={8} />
@@ -52,24 +66,43 @@ class Users extends React.PureComponent {
         <Col md={14} style={{ padding: 24 }}>
           <h2>Members </h2>
           <List
-            dataSource={users}
+            dataSource={usersSorted}
             renderItem={user => (
-              <ListItem style={{ paddingBottom: 0 }}>
-                <Card
-                  title={user.username}
-                  bordered
-                  extra={user && user.emails ? user.emails[0].address : null}
-                  style={{ width: '100%', marginBottom: 0 }}
-                >
-                  <Button
-                    onClick={() => this.toggleVerification(user)}
-                    disabled={user.isSuperAdmin}
+              <ListItem
+                actions={[
+                  <Dropdown
+                    trigger={['click']}
+                    placement="bottomRight"
+                    overlay={
+                      <Menu>
+                        {!user.isSuperAdmin && (
+                          <MenuItem>
+                            <a onClick={() => this.toggleVerification(user)}>
+                              {user.isRegisteredMember
+                                ? 'Remove user membership'
+                                : 'Verify this user'}
+                            </a>
+                          </MenuItem>
+                        )}
+                      </Menu>
+                    }
                   >
-                    {user.isRegisteredMember
-                      ? 'Remove user membership'
-                      : 'Verify this user'}
-                  </Button>
-                </Card>
+                    <div>
+                      <Icon type="ellipsis" />
+                    </div>
+                  </Dropdown>
+                ]}
+              >
+                <div>
+                  <div>
+                    <b>{user.username}</b>
+                  </div>
+                  <p style={{ fontSize: 12 }}>
+                    <em>
+                      {user && user.emails ? user.emails[0].address : null}
+                    </em>
+                  </p>
+                </div>
               </ListItem>
             )}
           />
