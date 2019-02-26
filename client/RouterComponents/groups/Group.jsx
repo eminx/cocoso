@@ -552,7 +552,8 @@ class Group extends Component {
                     <em>{member.username}</em>
                     {member.username === currentUser.username && ' you'}
                     {member.username === group.adminUsername && ' admin'}
-                    {member.username !== currentUser.username &&
+                    {isAdmin &&
+                      member.username !== currentUser.username &&
                       member.username !== group.adminUsername &&
                       member.isRegisteredMember && (
                         <a
