@@ -286,3 +286,54 @@ body {
 .scrollable-container {
   -webkit-overflow-scrolling: touch;
 }
+
+.main-viewport #login-buttons .login-button,
+.accounts-dialog .login-button {
+  background-color: #fbd5d0;
+  color: #030303;
+  text-transform: uppercase;
+  font-style: initial;
+  font-family: roboto;
+  border: 1px solid #fbd5d0;
+  font-weight: 600;
+  border-radius: 0;
+}
+
+.main-viewport #login-buttons .login-button,
+.accounts-dialog .login-button:hover {
+  background-color: #ea3924;
+  color: #fff;
+}
+
+.main-viewport #login-buttons input[type='text'],
+.accounts-dialog input[type='text'],
+#login-buttons input[type='email'],
+.accounts-dialog input[type='email'],
+#login-buttons input[type='password'],
+.accounts-dialog input[type='password'] {
+  border-radius: 0;
+}
+
+.main-viewport #login-buttons .additional-link-container {
+  padding: 12px;
+}
+
+.main-viewport .accounts-dialog .additional-link {
+  font-size: 100%;
+  text-transform: uppercase;
+  color: #ea3924;
+  font-weight: 700;
+  font-family: 'Roboto', sans;
+  float: none;
+}
+
+.main-viewport #login-buttons #signup-link {
+  float: none;
+  text-align: center;
+}
+
+.main-viewport .accounts-dialog {
+  border: 1px solid #030303;
+  border-radius: 0;
+  padding-bottom: 24px;
+}

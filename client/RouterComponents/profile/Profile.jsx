@@ -102,16 +102,19 @@ class Profile extends React.Component {
                 </FormItem>
               </Form>
             )}
-          </Col>
 
-          <Col md={8} style={{ paddingRight: 24 }}>
-            <Blaze template="loginButtons" />
             <Divider />
+
             {currentUser && (
               <Button onClick={() => this.setState({ isDeleteModalOn: true })}>
                 Delete Account
               </Button>
             )}
+          </Col>
+
+          <Col md={8} style={{ paddingRight: 24 }}>
+            <Blaze template="loginButtons" />
+            <Divider />
           </Col>
 
           <Col md={10}>
