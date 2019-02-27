@@ -158,6 +158,7 @@ class Group extends Component {
     const { group } = this.props;
 
     Meteor.call('joinGroup', group._id, (error, response) => {
+      this.closeModal();
       if (error) {
         message.destroy();
         message.error(error.error);
@@ -165,7 +166,6 @@ class Group extends Component {
         message.destroy();
         message.success('You are added to the group');
       }
-      this.closeModal();
     });
   };
 
@@ -173,6 +173,7 @@ class Group extends Component {
     const { group } = this.props;
 
     Meteor.call('leaveGroup', group._id, (error, response) => {
+      this.closeModal();
       if (error) {
         message.destroy();
         message.error(error.error);
@@ -180,7 +181,6 @@ class Group extends Component {
         message.destroy();
         message.info('You are removed from the group');
       }
-      this.closeModal();
     });
   };
 

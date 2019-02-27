@@ -1,5 +1,44 @@
 import { getRoomIndex, siteUrl } from './shared';
 
+const getGroupJoinText = (firstName, groupTitle, groupId) => {
+  return `Hi ${firstName},\n
+    This is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\n
+    We are very excited to have you participate this little school we have founded and look forward to learning with you.\n
+    You are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n
+    We look forward to your participation.\n
+    Skogen Team`;
+};
+
+const getGroupLeaveText = (firstName, groupTitle, groupId) => {
+  return `Hi ${firstName},\n
+    This is a confirmation email to inform you that you have successfully left the study group called "${groupTitle}".\n
+    If you want to join the group again, you can do so here at the group page: ${siteUrl}group/${groupId}.\n\n
+    Kind regards,\nSkogen Team`;
+};
+
+const getMeetingAttendText = (firstName, occurence, groupTitle, groupId) => {
+  return `Hi ${firstName},\n
+    This is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${
+      occurence.startDate
+    } at ${occurence.startTime}
+    as part of the study group called "${groupTitle}".\n
+    May there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.
+    You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n
+    We look forward to your participation.\nSkogen Team`;
+};
+
+const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
+  return `Hi ${firstName},\n
+    This is a confirmation email to inform you that we have successfully removed your attendance from the meeting on 
+    ${occurence.startDate} at ${
+    occurence.startTime
+  } as part of the study group called "${groupTitle}".\n
+    May there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.
+    You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n
+    We look forward to your participation.\n
+    Skogen Team`;
+};
+
 const compareForSort = (a, b) => {
   const dateA = new Date(a.endDate);
   const dateB = new Date(b.endDate);
@@ -124,7 +163,7 @@ Meteor.methods({
 
   joinGroup(groupId) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -145,11 +184,21 @@ Meteor.methods({
         $addToSet: {
           groups: {
             groupId: theGroup._id,
-            name: theGroup.name,
+            name: theGroup.title,
             joinDate: new Date()
           }
         }
       });
+      Meteor.call(
+        'sendEmail',
+        user._id,
+        `"${theGroup.title}" at Skogen`,
+        getGroupJoinText(
+          user.firstName || user.username,
+          theGroup.title,
+          groupId
+        )
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not join the circle');
@@ -158,7 +207,7 @@ Meteor.methods({
 
   leaveGroup(groupId) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -178,6 +227,16 @@ Meteor.methods({
           }
         }
       });
+      Meteor.call(
+        'sendEmail',
+        user._id,
+        `"${theGroup.title}" at Skogen`,
+        getGroupLeaveText(
+          user.firstName || user.username,
+          theGroup.title,
+          groupId
+        )
+      );
     } catch (error) {
       throw new Meteor.Error('Could not leave the group');
     }
@@ -267,6 +326,17 @@ Meteor.methods({
           meetings: updatedMeetings
         }
       });
+      Meteor.call(
+        'sendEmail',
+        user._id,
+        `"${theGroup.title}" at Skogen`,
+        getMeetingAttendText(
+          user.firstName || user.username,
+          updatedMeetings[meetingIndex],
+          theGroup.title,
+          groupId
+        )
+      );
     } catch (error) {
       throw new Meteor.Error(
         'Could not registered attendance due to:',
@@ -300,6 +370,17 @@ Meteor.methods({
           meetings: updatedMeetings
         }
       });
+      Meteor.call(
+        'sendEmail',
+        user._id,
+        `"${theGroup.title}" at Skogen`,
+        getMeetingUnattendText(
+          user.firstName || user.username,
+          updatedMeetings[meetingIndex],
+          theGroup.title,
+          groupId
+        )
+      );
     } catch (error) {
       throw new Meteor.Error(
         'Could not removed attendance due to:',
