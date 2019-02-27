@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Radio, Button, Divider, Card } from 'antd/lib';
+import { Row, Col, Button } from 'antd/lib';
 import PagesList from '../../UIComponents/PagesList';
+import Loader from '../../UIComponents/Loader';
 
 import { parseTitle } from '../../functions';
 
-class Page extends React.Component {
+class Page extends PureComponent {
   render() {
     const { pages, pageId, currentUser, isLoading, history } = this.props;
     const pageTitles = pages ? pages.map(page => page.title) : [];
@@ -13,6 +14,10 @@ class Page extends React.Component {
       pages && pages.length > 0
         ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
         : null;
+
+    if (isLoading) {
+      return <Loader />;
+    }
 
     return (
       <div style={{ padding: 24 }}>
@@ -32,7 +37,7 @@ class Page extends React.Component {
             />
           </Col>
 
-          <Col md={12}>
+          <Col md={8}>
             <div
               style={{
                 marginBottom: 24

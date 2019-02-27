@@ -19,7 +19,7 @@ class GroupsList extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h3>
+        <h3 style={{ overflowWrap: 'anywhere' }}>
           <Link to={`/group/${group._id}`}>{group.title}</Link>
         </h3>
         <h5>

@@ -420,7 +420,7 @@ class Group extends Component {
   };
 
   handleFileDrop = files => {
-    if (files.length > 1) {
+    if (files.length !== 1) {
       message.error('Please drop only one file at a time.');
       return;
     }
@@ -595,34 +595,33 @@ class Group extends Component {
         )}
 
         {isAdmin && (
-          <Fragment>
-            <ReactDropzone onDrop={this.handleFileDrop}>
-              {({ getRootProps, getInputProps, isDragActive }) => (
-                <div
-                  {...getRootProps()}
-                  style={{
-                    width: '100%',
-                    height: 200,
-                    background: isDragActive ? '#ea3924' : '#fff5f4cc',
-                    padding: 24,
-                    border: '1px dashed #ea3924',
-                    textAlign: 'center'
-                  }}
-                >
-                  {isUploading ? (
-                    <div>
-                      <Loader />
-                      uploading
-                    </div>
-                  ) : (
-                    <div>
-                      <b>Drop documents to upload</b>
-                    </div>
-                  )}
-                </div>
-              )}
-            </ReactDropzone>
-          </Fragment>
+          <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
+            {({ getRootProps, getInputProps, isDragActive }) => (
+              <div
+                {...getRootProps()}
+                style={{
+                  width: '100%',
+                  height: 200,
+                  background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                  padding: 24,
+                  border: '1px dashed #ea3924',
+                  textAlign: 'center'
+                }}
+              >
+                {isUploading ? (
+                  <div>
+                    <Loader />
+                    uploading
+                  </div>
+                ) : (
+                  <div>
+                    <b>Drop documents to upload</b>
+                  </div>
+                )}
+                <input {...getInputProps()} />
+              </div>
+            )}
+          </ReactDropzone>
         )}
       </Fragment>
     );

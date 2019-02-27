@@ -15,7 +15,7 @@ const activeStyle = {
 
 const linkStyle = {
   textTransform: 'uppercase',
-  padding: '6px 12px'
+  padding: '6px 0'
 };
 
 const PagesList = props => (
