@@ -331,6 +331,36 @@ Meteor.methods({
     }
   },
 
+  removeGroupDocument(documentName, groupId) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      console.log('your no admin');
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    const newDocuments = theGroup.documents.filter(
+      document => document.name !== documentName
+    );
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          documents: newDocuments
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error(
+        'Could not remove the document because: ',
+        error.reason
+      );
+    }
+  },
+
   changeAdmin(groupId, newAdminUsername) {
     const user = Meteor.user();
     if (!user) {

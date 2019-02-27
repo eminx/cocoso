@@ -11,6 +11,7 @@ import {
   Divider,
   Modal
 } from 'antd/lib';
+import SkogenTerms from '../../UIComponents/SkogenTerms';
 const FormItem = Form.Item;
 
 class Profile extends React.Component {
@@ -64,7 +65,7 @@ class Profile extends React.Component {
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
-          <Col sm={12} md={6}>
+          <Col md={6}>
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
                 <FormItem>
@@ -102,8 +103,8 @@ class Profile extends React.Component {
               </Form>
             )}
           </Col>
-          <Col sm={2} />
-          <Col sm={18} md={8}>
+
+          <Col md={8} style={{ paddingRight: 24 }}>
             <Blaze template="loginButtons" />
             <Divider />
             {currentUser && (
@@ -111,6 +112,10 @@ class Profile extends React.Component {
                 Delete Account
               </Button>
             )}
+          </Col>
+
+          <Col md={10}>
+            <SkogenTerms />
           </Col>
         </Row>
 

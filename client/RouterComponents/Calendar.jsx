@@ -3,23 +3,11 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import MediaQuery from 'react-responsive';
 import ReactDropzone from 'react-dropzone';
-import {
-  Row,
-  Col,
-  Alert,
-  Card,
-  List,
-  Divider,
-  Tag,
-  Button,
-  Modal,
-  message
-} from 'antd/lib';
+import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
+import NiceList from '../UIComponents/NiceList';
 import colors from '../constants/colors';
-
-const ListItem = List.Item;
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -146,6 +134,22 @@ class Calendar extends React.PureComponent {
     });
   };
 
+  removeManual = documentId => {
+    const { currentUser } = this.props;
+    if (!currentUser || !currentUser.isSuperAdmin) {
+      return;
+    }
+    Meteor.call('removeManual', documentId, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.destroy();
+        message.error(error.error);
+      } else {
+        message.success('The manual is successfully removed');
+      }
+    });
+  };
+
   render() {
     const {
       isLoading,
@@ -188,6 +192,16 @@ class Calendar extends React.PureComponent {
       justifyContent: 'center',
       marginBottom: 24
     };
+
+    const manualsList = manuals.map(manual => ({
+      ...manual,
+      actions: [
+        {
+          content: 'Remove',
+          handleClick: () => this.removeManual(manual._id)
+        }
+      ]
+    }));
 
     return (
       <div style={{ padding: 24 }}>
@@ -252,7 +266,7 @@ class Calendar extends React.PureComponent {
         <Divider />
 
         <Row>
-          <h3 style={{ textAlign: 'center' }}>Manuals</h3>
+          <h3 style={{ textAlign: 'center' }}>Skogen Manuals</h3>
           <Col md={8}>
             {isSuperAdmin && (
               <ReactDropzone onDrop={this.handleDropDocument}>
@@ -286,25 +300,23 @@ class Calendar extends React.PureComponent {
           </Col>
           <Col md={16} style={{ paddingLeft: 12, paddingRight: 12 }}>
             {manuals && manuals.length > 0 && (
-              <List
-                dataSource={manuals}
-                renderItem={manual => (
-                  <ListItem style={{ paddingBottom: 0 }}>
-                    <Card
-                      title={
-                        <h4>
-                          <a href={manual.documentUrl} target="_blank">
-                            {manual.documentLabel}
-                          </a>
-                        </h4>
-                      }
-                      bordered={false}
-                      style={{ width: '100%', marginBottom: 0 }}
-                      className="empty-card-body"
-                    />
-                  </ListItem>
+              <NiceList list={manualsList} actionsDisabled={!isSuperAdmin}>
+                {manual => (
+                  <Card
+                    key={manual.documentLabel}
+                    title={
+                      <h4>
+                        <a href={manual.documentUrl} target="_blank">
+                          {manual.documentLabel}
+                        </a>
+                      </h4>
+                    }
+                    bordered={false}
+                    style={{ width: '100%', marginBottom: 0 }}
+                    className="empty-card-body"
+                  />
                 )}
-              />
+              </NiceList>
             )}
           </Col>
         </Row>

@@ -137,6 +137,10 @@ body .ant-select-selection:focus {
   border-color: #030303;
 }
 
+.nicelist .ant-list-item-action {
+  margin-left: 24px;
+}
+
 .ant-card.ant-card-bordered {
   border: 1px solid #030303;
   border-radius: 0;

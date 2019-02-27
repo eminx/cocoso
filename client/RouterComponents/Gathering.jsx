@@ -147,19 +147,6 @@ class Gathering extends React.Component {
       </div>
     );
 
-    // const hostActions =
-    //   <div>
-    //     <h4 style={{color: 'rgba(0, 0, 0, .55)'}}>You're the host of this activity</h4>
-    //     <Button.Group>
-    //       <Button disabled>
-    //         <Icon type="edit" />Edit this post
-    //       </Button>
-    //       <Button disabled>
-    //         <Icon type="delete"/>Delete this post
-    //       </Button>
-    //     </Button.Group>
-    //   </div>;
-
     let manageButtons;
     if (
       currentUser &&
@@ -194,7 +181,7 @@ class Gathering extends React.Component {
       <div style={{ marginTop: 30 }}>
         <p>This event is not published.</p>
         <Popconfirm
-          title="Are you sure"
+          title="Are you sure?"
           onConfirm={confirm}
           okText="Yes"
           cancelText="No"
@@ -214,7 +201,6 @@ class Gathering extends React.Component {
 
   render() {
     const { gatheringData, isLoading, currentUser, chatData } = this.props;
-    const isAttending = this.checkIfAttending();
     const isMyEventWTF = this.isMyEvent();
 
     const manageButtons = this.getManageButtons();

@@ -3,6 +3,8 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import Chattery from '../../chattery';
+import FancyDate from '../../UIComponents/FancyDate';
+
 import {
   Row,
   Col,
@@ -24,8 +26,7 @@ import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';
 
 const Panel = Collapse.Panel;
-
-const yesterday = moment(new Date()).add(-1, 'days');
+const FormItem = Form.Item;
 
 class Booking extends React.Component {
   state = {
@@ -61,30 +62,6 @@ class Booking extends React.Component {
     }
 
     return messages;
-  };
-
-  renderPublicActivity = () => {};
-
-  getEventTimes = event => {
-    if (event) {
-      if (event.isMultipleDay || event.isFullDay) {
-        return (
-          moment(event.startDate).format('DD MMM') +
-          ' ' +
-          event.startTime +
-          ' – ' +
-          moment(event.endDate).format('DD MMM') +
-          ' ' +
-          event.endTime
-        );
-      } else if (event.startTime) {
-        return `${moment(event.startDate).format('DD MMM')} ${
-          event.startTime
-        }–${event.endTime}`;
-      } else {
-        return '';
-      }
-    }
   };
 
   handleRSVPSubmit = (event, occurenceIndex) => {
@@ -281,14 +258,17 @@ class Booking extends React.Component {
       return;
     }
 
-    const isAdmin = this.isAdmin();
     const isRegisteredMember = this.isRegisteredMember();
 
     const customPanelStyle = {
-      marginBottom: 24,
-      border: '1px solid #030303',
+      background: '#f7f7f7',
+      borderRadius: 4,
+      marginBottom: 12,
+      border: 0,
       overflow: 'hidden'
     };
+
+    const yesterday = moment(new Date()).add(-1, 'days');
 
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
@@ -355,7 +335,9 @@ class Booking extends React.Component {
           <Panel
             key={occurence.startDate + occurence.startTime}
             header={
-              <h3 style={{ margin: 0 }}>{this.getEventTimes(occurence)}</h3>
+              <h3 style={{ margin: 0 }}>
+                <FancyDate occurence={occurence} />
+              </h3>
             }
             style={customPanelStyle}
           >
@@ -409,7 +391,7 @@ class Booking extends React.Component {
 
         {!isLoading && bookingData ? (
           <Row gutter={24}>
-            <Col sm={24} md={5}>
+            <Col lg={5}>
               <div style={{ marginBottom: 16 }}>
                 <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
                 {bookingData.subTitle && (
@@ -418,11 +400,7 @@ class Booking extends React.Component {
               </div>
             </Col>
 
-            <Col
-              sm={24}
-              md={11}
-              style={{ position: 'relative', marginBottom: 24 }}
-            >
+            <Col lg={11} style={{ position: 'relative', marginBottom: 24 }}>
               <CardArticle
                 item={bookingData}
                 isLoading={isLoading}
@@ -430,16 +408,12 @@ class Booking extends React.Component {
               />
               {EditButton}
             </Col>
-            <Col
-              sm={24}
-              md={8}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
+            <Col lg={8} style={{ display: 'flex', justifyContent: 'center' }}>
               {/* <Button type="primary">RSVP</Button> */}
 
               <Row style={{ width: '100%' }}>
                 <h3>Dates</h3>
-                <p>Please click to RSVP</p>
+                <p>Please click and open the date to RSVP</p>
                 {this.renderDates()}
               </Row>
             </Col>
@@ -500,19 +474,19 @@ const RsvpForm = props => {
 
   return (
     <Form layout="inline" onSubmit={handleSubmit} style={{ paddingLeft: 12 }}>
-      <Form.Item>
+      <FormItem>
         {getFieldDecorator('firstName', {
           rules: [{ required: true, message: 'Please enter your first name' }],
           initialValue: props.currentUser && props.currentUser.firstName
         })(<Input placeholder="First name" />)}
-      </Form.Item>
-      <Form.Item>
+      </FormItem>
+      <FormItem>
         {getFieldDecorator('lastName', {
           rules: [{ required: true, message: 'Please enter your last name' }],
           initialValue: props.currentUser && props.currentUser.lastName
         })(<Input placeholder="Last name" />)}
-      </Form.Item>
-      <Form.Item>
+      </FormItem>
+      <FormItem>
         {getFieldDecorator('email', {
           rules: [
             {
@@ -522,8 +496,8 @@ const RsvpForm = props => {
           ],
           initialValue: props.currentUser && props.currentUser.emails[0].address
         })(<Input placeholder="Email addresss" />)}
-      </Form.Item>
-      <Form.Item>
+      </FormItem>
+      <FormItem style={{ width: '100%' }}>
         {getFieldDecorator('numberOfPeople', {
           rules: [
             {
@@ -534,13 +508,14 @@ const RsvpForm = props => {
           initialValue:
             (props.currentUser && props.currentUser.numberOfPeople) || 1
         })(<InputNumber min={1} max={5} placeholder="Number of people" />)}
-      </Form.Item>
+      </FormItem>
       <div
         style={{
           width: '100%',
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: 24
+          alignItems: 'center',
+          marginTop: 12
         }}
       >
         <Button

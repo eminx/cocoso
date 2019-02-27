@@ -6,11 +6,12 @@ import MediaQuery from 'react-responsive';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
+import FancyDate from '../../UIComponents/FancyDate';
+import NiceList from '../../UIComponents/NiceList';
 
 import {
   Row,
   Col,
-  Alert,
   Divider,
   Collapse,
   Modal,
@@ -133,7 +134,7 @@ class Group extends Component {
   getTitle = group => {
     return (
       <div>
-        <h2>{group.title}</h2>
+        <h2 style={{ overflowWrap: 'anywhere' }}>{group.title}</h2>
         <h5>
           <span>{group.readingMaterial}</span>
         </h5>
@@ -341,12 +342,8 @@ class Group extends Component {
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div
-              style={{
-                paddingRight: 12
-              }}
-            >
-              <FancyDate meeting={meeting} places={places} />
+            <div>
+              <FancyDate occurence={meeting} places={places} />
               <div style={{ marginTop: 12 }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
               </div>
@@ -428,9 +425,7 @@ class Group extends Component {
       const uploadableFile = new File([file], parsedName, {
         type: file.type
       });
-      console.log('uploadableFile:', uploadableFile);
       upload.send(uploadableFile, (error, downloadUrl) => {
-        console.log(uploadableFile);
         if (error) {
           console.error('Error uploading:', error);
           message.error(error.reason);
@@ -509,6 +504,43 @@ class Group extends Component {
     const isMember = this.isMember();
     const isAdmin = this.isAdmin();
 
+    const documentsList =
+      group &&
+      group.documents.map(document => ({
+        ...document,
+        actions: [
+          {
+            content: 'Remove',
+            handleClick: () => this.removeGroupDocument(document.name)
+          }
+        ]
+      }));
+
+    const canBeAdmin = member => {
+      return (
+        isAdmin &&
+        member.isRegisteredMember &&
+        member.username !== currentUser.username &&
+        member.username !== group.adminUsername
+      );
+    };
+
+    const membersList =
+      group &&
+      group.members.map(member => ({
+        ...member,
+        actions: [
+          {
+            content: 'Make admin',
+            handleClick: () =>
+              this.setState({
+                potentialNewAdmin: member.username
+              }),
+            isDisabled: member.username === group.adminUsername
+          }
+        ]
+      }));
+
     return (
       <Fragment>
         {!isAdmin && (
@@ -528,40 +560,11 @@ class Group extends Component {
             <div style={{ paddingTop: 24, paddingLeft: 12 }}>
               <h3>Members</h3>
             </div>
-            <List
-              dataSource={group.members}
-              style={{ backgroundColor: '#fff' }}
-              renderItem={member => (
-                <ListItem style={{ position: 'relative' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      paddingLeft: 24
-                    }}
-                  >
-                    <em>{member.username}</em>
-                    {member.username === currentUser.username && ' you'}
-                    {member.username === group.adminUsername && ' admin'}
-                    {isAdmin &&
-                      member.username !== currentUser.username &&
-                      member.username !== group.adminUsername &&
-                      member.isRegisteredMember && (
-                        <a
-                          onClick={() =>
-                            this.setState({
-                              potentialNewAdmin: member.username
-                            })
-                          }
-                        >
-                          make admin
-                        </a>
-                      )}
-                  </div>
-                </ListItem>
-              )}
-            />
+            <div style={{ paddingLeft: 12 }}>
+              <NiceList list={membersList} actionsDisabled={!isAdmin}>
+                {member => <em>{member.username}</em>}
+              </NiceList>
+            </div>
           </Fragment>
         )}
 
@@ -570,23 +573,21 @@ class Group extends Component {
         <div style={{ paddingTop: 24, paddingLeft: 12 }}>
           <h3>Documents</h3>
         </div>
-        {group && group.documents && group.documents.length > 0 ? (
-          <List
-            dataSource={group.documents}
-            style={{ backgroundColor: '#fff', padding: 12 }}
-            renderItem={document => (
-              <ListItem>
-                <div>
+        <div style={{ paddingLeft: 12 }}>
+          {group && group.documents && group.documents.length > 0 ? (
+            <NiceList list={documentsList} actionsDisabled={!isAdmin}>
+              {document => (
+                <div style={{ width: '100%' }}>
                   <a href={document.downloadUrl} target="_blank">
                     {document.name}
                   </a>
                 </div>
-              </ListItem>
-            )}
-          />
-        ) : (
-          <em>No document assigned</em>
-        )}
+              )}
+            </NiceList>
+          ) : (
+            <em>No document assigned</em>
+          )}
+        </div>
 
         {isAdmin && (
           <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
@@ -618,6 +619,27 @@ class Group extends Component {
           </ReactDropzone>
         )}
       </Fragment>
+    );
+  };
+
+  removeGroupDocument = documentName => {
+    if (!this.isAdmin()) {
+      return;
+    }
+
+    Meteor.call(
+      'removeGroupDocument',
+      documentName,
+      this.props.group._id,
+      (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.destroy();
+          message.error(error.error);
+        } else {
+          message.success('The manual is successfully removed');
+        }
+      }
     );
   };
 
@@ -788,7 +810,7 @@ class Group extends Component {
         </Modal>
 
         <Modal
-          title="Are you sure"
+          title="Are you sure?"
           visible={Boolean(potentialNewAdmin)}
           onOk={this.changeAdmin}
           onCancel={() => this.setState({ potentialNewAdmin: null })}
@@ -828,7 +850,7 @@ const MeetingInfo = ({
 
   return (
     <div style={style} className="toggleable" onClick={onClick}>
-      <FancyDate meeting={meeting} places={places} />
+      <FancyDate occurence={meeting} places={places} />
 
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
@@ -839,54 +861,6 @@ const MeetingInfo = ({
     </div>
   );
 };
-
-const fancyDateStyle = {
-  color: '#030303',
-  fontWeight: 700,
-  lineHeight: 1
-};
-
-const FancyDate = ({ meeting, places }) => (
-  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <div>
-      <div style={{ ...fancyDateStyle, fontSize: 24 }}>
-        {moment(meeting.startDate).format('DD')}
-      </div>
-      <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(meeting.startDate)
-          .format('MMM')
-          .toUpperCase()}
-      </div>
-    </div>
-    <div
-      style={{
-        ...fancyDateStyle,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end'
-      }}
-    >
-      <div>
-        {meeting.startTime} – {meeting.endTime}
-      </div>
-      <div
-        style={{
-          fontWeight: 300,
-          maxWidth: 120,
-          marginTop: 12,
-          textAlign: 'right'
-        }}
-      >
-        <em>
-          {places.map(place => place.name).includes(meeting.room)
-            ? meeting.room + ', Skogen'
-            : meeting.room}
-        </em>
-      </div>
-    </div>
-  </div>
-);
 
 class CreateMeetingForm extends PureComponent {
   state = {

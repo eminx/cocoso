@@ -8,6 +8,7 @@ Meteor.methods({
     if (!user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
+
     try {
       Meteor.users.update(memberId, {
         $set: {
@@ -30,6 +31,12 @@ Meteor.methods({
     if (!user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
+
+    const theOtherUser = Meteor.users.findOne(memberId);
+    if (theOtherUser.isSuperAdmin) {
+      throw new Meteor.Error('You can not unverify a super admin');
+    }
+
     try {
       Meteor.users.update(memberId, {
         $set: {

@@ -24,5 +24,19 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");
     }
+  },
+
+  removeManual(documentId) {
+    const user = Meteor.user();
+    if (!user || !user.isSuperAdmin) {
+      throw new Meteor.Error(error, 'You do not have the priveleges');
+    }
+
+    try {
+      Documents.remove(documentId);
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, "Couldn't delete the document");
+    }
   }
 });

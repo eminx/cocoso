@@ -144,7 +144,8 @@ class PublicActivityThumb extends React.Component {
                 ...commonStyle,
                 fontSize: 24,
                 marginBottom: 6,
-                lineHeight: '32px'
+                lineHeight: '32px',
+                overflowWrap: 'anywhere'
               }}
             >
               {item.isGroup ? item.title : item.title}
