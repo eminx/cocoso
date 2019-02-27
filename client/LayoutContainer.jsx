@@ -83,6 +83,10 @@ class LayoutPage extends React.Component {
   };
 
   renderNotificationList = list => {
+    if (list.length === 0) {
+      return <em>You don't have unread messages</em>;
+    }
+
     return (
       <List
         size="small"

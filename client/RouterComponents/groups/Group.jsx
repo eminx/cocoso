@@ -252,15 +252,6 @@ class Group extends Component {
 
   toggleAttendance = meetingIndex => {
     const { group, currentUser } = this.props;
-    const meetingPast =
-      group && moment(group.meetings[meetingIndex].endDate).isBefore(yesterday);
-    if (meetingPast) {
-      message.destroy();
-      message.error(
-        'Meeting date has unfortunately past. Try an upcoming date'
-      );
-      return;
-    }
 
     if (!currentUser) {
       message.destroy();
@@ -269,7 +260,7 @@ class Group extends Component {
     }
     if (!this.isMember()) {
       message.destroy();
-      message.error('Please join the group to attend.');
+      message.error('Please join the group to attend the meeting');
       return;
     }
 
@@ -335,39 +326,38 @@ class Group extends Component {
     });
   };
 
-  getFutureMeetings = () => {
-    const { group } = this.props;
-    if (!group || !group.meetings) {
-      return;
-    }
-
-    return group.meetings.filter(meeting =>
-      moment(meeting.endDate).isAfter(yesterday)
-    );
-  };
-
   renderDates = () => {
     const { group, places } = this.props;
     if (!group) {
       return;
     }
 
-    const futureMeetings = this.getFutureMeetings();
+    const isFutureMeeting = meeting =>
+      moment(meeting.endDate).isAfter(yesterday);
 
     return (
-      futureMeetings &&
-      futureMeetings.map((meeting, meetingIndex) => (
+      group &&
+      group.meetings.map((meeting, meetingIndex) => (
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div style={{ paddingRight: 12 }}>
+            <div
+              style={{
+                paddingRight: 12
+              }}
+            >
               <FancyDate meeting={meeting} places={places} />
               <div style={{ marginTop: 12 }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
               </div>
             </div>
           }
-          style={{ ...customPanelStyle, flexBasis: 200, flexShrink: 0 }}
+          style={{
+            ...customPanelStyle,
+            flexBasis: 200,
+            flexShrink: 0,
+            display: isFutureMeeting(meeting) ? 'block' : 'none'
+          }}
         >
           <div style={{ marginLeft: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -399,13 +389,15 @@ class Group extends Component {
       return;
     }
 
-    const futureMeetings = this.getFutureMeetings();
+    const isFutureMeeting = meeting =>
+      moment(meeting.endDate).isAfter(yesterday);
 
-    return futureMeetings.map((meeting, meetingIndex) => (
+    return group.meetings.map((meeting, meetingIndex) => (
       <MeetingInfo
         isSmallViewport
         key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
         meeting={meeting}
+        isFutureMeeting={isFutureMeeting(meeting)}
         onClick={() => this.toggleAttendance(meetingIndex)}
         places={places}
         isAttending={
@@ -578,7 +570,7 @@ class Group extends Component {
         <div style={{ paddingTop: 24, paddingLeft: 12 }}>
           <h3>Documents</h3>
         </div>
-        {group && group.documents && (
+        {group && group.documents && group.documents.length > 0 ? (
           <List
             dataSource={group.documents}
             style={{ backgroundColor: '#fff', padding: 12 }}
@@ -592,6 +584,8 @@ class Group extends Component {
               </ListItem>
             )}
           />
+        ) : (
+          <em>No document assigned</em>
         )}
 
         {isAdmin && (
@@ -816,10 +810,17 @@ class Group extends Component {
 
 export default Group;
 
-const MeetingInfo = ({ meeting, onClick, isAttending, places }) => {
+const MeetingInfo = ({
+  meeting,
+  onClick,
+  isAttending,
+  places,
+  isFutureMeeting
+}) => {
   const style = {
     flexBasis: 180,
-    flexShrink: 0
+    flexShrink: 0,
+    display: isFutureMeeting ? 'block' : 'none'
   };
   if (isAttending) {
     style.backgroundColor = '#fff5f4';

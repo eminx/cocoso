@@ -37,13 +37,13 @@ class Page extends PureComponent {
             />
           </Col>
 
-          <Col md={8}>
+          <Col md={10}>
             <div
               style={{
                 marginBottom: 24
               }}
             >
-              <h3>{page && page.title}</h3>
+              <h2>{page && page.title}</h2>
               <div style={{ whiteSpace: 'pre-line', color: '#030303' }}>
                 {page && page.longDescription}
               </div>

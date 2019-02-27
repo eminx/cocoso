@@ -61,11 +61,11 @@ Meteor.methods({
           }
         });
       } catch (error) {
+        console.log(error);
         throw new Meteor.Error(
           error,
           "Couldn't add the group info to user collection, but group is created"
         );
-        console.log(error);
       }
       return add;
     } catch (error) {
@@ -196,12 +196,8 @@ Meteor.methods({
 
     newMeeting.attendees = [];
     newMeeting.roomIndex = getRoomIndex(newMeeting.room);
-    console.log(newMeeting, 'newMeeting');
-    const meetings = [...theGroup.meetings];
-    meetings.push(newMeeting);
-    console.log(meetings, 'meetings');
+    const meetings = [...theGroup.meetings, newMeeting];
     const sortedMeetings = meetings.sort(compareForSort);
-    console.log(sortedMeetings, 'sortedMeetings');
 
     try {
       Groups.update(groupId, {
@@ -252,11 +248,9 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    console.log(groupId, meetingIndex);
-
     const theGroup = Groups.findOne(groupId);
     if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
-      console.log('your no member');
+      console.log('you are not a member');
       throw new Meteor.Error('You are not a member!');
     }
 
@@ -286,8 +280,6 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
-
-    console.log(groupId, meetingIndex);
 
     const theGroup = Groups.findOne(groupId);
     if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
