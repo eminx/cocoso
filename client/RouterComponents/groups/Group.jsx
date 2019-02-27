@@ -519,15 +519,6 @@ class Group extends Component {
         ]
       }));
 
-    const canBeAdmin = member => {
-      return (
-        isAdmin &&
-        member.isRegisteredMember &&
-        member.username !== currentUser.username &&
-        member.username !== group.adminUsername
-      );
-    };
-
     const membersList =
       group &&
       group.members &&
@@ -688,6 +679,7 @@ class Group extends Component {
                 {this.renderMembersAndDocuments()}
               </MediaQuery>
             </Col>
+
             <Col md={14} lg={12}>
               <Card
                 title={this.getTitle(group)}
@@ -766,10 +758,6 @@ class Group extends Component {
           <Loader />
         )}
 
-        <MediaQuery query="(max-width: 991px)">
-          <div style={{ padding: 12 }}>{this.renderMembersAndDocuments()}</div>
-        </MediaQuery>
-
         <Divider />
         <Row gutter={24}>
           <Col sm={24} md={16}>
@@ -796,7 +784,16 @@ class Group extends Component {
               </div>
             )}
           </Col>
+          <Divider />
         </Row>
+
+        <MediaQuery query="(max-width: 991px)">
+          <Row>
+            <div style={{ padding: 12 }}>
+              {this.renderMembersAndDocuments()}
+            </div>
+          </Row>
+        </MediaQuery>
 
         <Modal
           title={`Confirm ${
