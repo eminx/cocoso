@@ -157,8 +157,9 @@ class Group extends Component {
   joinGroup = () => {
     const { group } = this.props;
 
+    this.closeModal();
+
     Meteor.call('joinGroup', group._id, (error, response) => {
-      this.closeModal();
       if (error) {
         message.destroy();
         message.error(error.error);
@@ -172,8 +173,9 @@ class Group extends Component {
   leaveGroup = () => {
     const { group } = this.props;
 
+    this.closeModal();
+
     Meteor.call('leaveGroup', group._id, (error, response) => {
-      this.closeModal();
       if (error) {
         message.destroy();
         message.error(error.error);
@@ -506,6 +508,7 @@ class Group extends Component {
 
     const documentsList =
       group &&
+      group.documents &&
       group.documents.map(document => ({
         ...document,
         actions: [
@@ -527,6 +530,7 @@ class Group extends Component {
 
     const membersList =
       group &&
+      group.members &&
       group.members.map(member => ({
         ...member,
         actions: [

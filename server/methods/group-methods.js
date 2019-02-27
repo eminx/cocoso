@@ -1,42 +1,27 @@
 import { getRoomIndex, siteUrl } from './shared';
 
 const getGroupJoinText = (firstName, groupTitle, groupId) => {
-  return `Hi ${firstName},\n
-    This is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\n
-    We are very excited to have you participate this little school we have founded and look forward to learning with you.\n
-    You are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n
-    We look forward to your participation.\n
-    Skogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\nWe are very excited to have you participate this little school we have founded and look forward to learning with you.\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
 const getGroupLeaveText = (firstName, groupTitle, groupId) => {
-  return `Hi ${firstName},\n
-    This is a confirmation email to inform you that you have successfully left the study group called "${groupTitle}".\n
-    If you want to join the group again, you can do so here at the group page: ${siteUrl}group/${groupId}.\n\n
-    Kind regards,\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully left the study group called "${groupTitle}".\nIf you want to join the group again, you can do so here at the group page: ${siteUrl}group/${groupId}.\n\nKind regards,\nSkogen Team`;
 };
 
 const getMeetingAttendText = (firstName, occurence, groupTitle, groupId) => {
-  return `Hi ${firstName},\n
-    This is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${
-      occurence.startDate
-    } at ${occurence.startTime}
-    as part of the study group called "${groupTitle}".\n
-    May there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.
-    You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n
-    We look forward to your participation.\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${
+    occurence.startDate
+  } at ${
+    occurence.startTime
+  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
 const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
-  return `Hi ${firstName},\n
-    This is a confirmation email to inform you that we have successfully removed your attendance from the meeting on 
-    ${occurence.startDate} at ${
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${
+    occurence.startDate
+  } at ${
     occurence.startTime
-  } as part of the study group called "${groupTitle}".\n
-    May there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.
-    You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n
-    We look forward to your participation.\n
-    Skogen Team`;
+  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
 const compareForSort = (a, b) => {
