@@ -38,6 +38,7 @@ class EditBooking extends React.Component {
     uploadableImage: null,
     uploadableImageLocal: null,
     isPublicActivity: false,
+    isBookingsDisabled: false,
     numberOfRecurrence: 0
   };
 
@@ -79,7 +80,8 @@ class EditBooking extends React.Component {
     }
 
     this.setState({
-      isPublicActivity: gatheringData.isPublicActivity
+      isPublicActivity: gatheringData.isPublicActivity,
+      isBookingsDisabled: Boolean(gatheringData.isBookingsDisabled)
     });
   };
 
@@ -141,10 +143,16 @@ class EditBooking extends React.Component {
   };
 
   updateBooking = () => {
-    const { values, isPublicActivity, uploadedImage } = this.state;
+    const {
+      values,
+      isPublicActivity,
+      isBookingsDisabled,
+      uploadedImage
+    } = this.state;
     const { gatheringData } = this.props;
 
     values.isPublicActivity = isPublicActivity;
+    values.isBookingsDisabled = isBookingsDisabled;
 
     const imageUrl = uploadedImage || gatheringData.imageUrl;
 
@@ -201,6 +209,12 @@ class EditBooking extends React.Component {
     });
   };
 
+  handleDisableBookingsSwitch = value => {
+    this.setState({
+      isBookingsDisabled: value
+    });
+  };
+
   handleConfirmModal = () => {
     const { isPublicActivity, uploadableImage } = this.state;
     if (isPublicActivity && uploadableImage) {
@@ -230,6 +244,7 @@ class EditBooking extends React.Component {
       isSuccess,
       uploadableImage,
       isPublicActivity,
+      isBookingsDisabled,
       numberOfRecurrence
     } = this.state;
 
@@ -272,12 +287,23 @@ class EditBooking extends React.Component {
                 </div>
               )}
 
-            <Row>
-              <h4>public event?</h4>
-              <Switch
-                checked={isPublicActivity}
-                onChange={this.handlePublicActivitySwitch}
-              />
+            <Row style={{ marginBottom: 12 }}>
+              <Col md={12}>
+                <h4>public event?</h4>
+                <Switch
+                  checked={isPublicActivity}
+                  onChange={this.handlePublicActivitySwitch}
+                />
+              </Col>
+              {isPublicActivity && (
+                <Col md={12}>
+                  <h4>bookings disabled?</h4>
+                  <Switch
+                    checked={isBookingsDisabled}
+                    onChange={this.handleDisableBookingsSwitch}
+                  />
+                </Col>
+              )}
             </Row>
 
             <Divider />

@@ -274,6 +274,10 @@ class Booking extends React.Component {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
+        if (bookingData.isBookingsDisabled) {
+          return <div>Bookings are disabled for this event. Just drop in</div>;
+        }
+
         return (
           <div>
             {eventPast ? (

@@ -557,7 +557,15 @@ class Group extends Component {
             </div>
             <div style={{ paddingLeft: 12 }}>
               <NiceList list={membersList} actionsDisabled={!isAdmin}>
-                {member => <em>{member.username}</em>}
+                {member => (
+                  <span
+                    style={{
+                      fontWeight: group.adminId === member.memberId ? 700 : 400
+                    }}
+                  >
+                    {member.username}
+                  </span>
+                )}
               </NiceList>
             </div>
           </Fragment>
@@ -758,9 +766,9 @@ class Group extends Component {
           <Loader />
         )}
 
-        <Divider />
         <Row gutter={24}>
-          <Col sm={24} md={16}>
+          <Col lg={5} />
+          <Col md={14} lg={12}>
             {chatData && (
               <div>
                 <h3 style={titleStyle}>Discussion</h3>
@@ -784,7 +792,7 @@ class Group extends Component {
               </div>
             )}
           </Col>
-          <Divider />
+          <Col md={10} lg={6} />
         </Row>
 
         <MediaQuery query="(max-width: 991px)">

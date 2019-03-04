@@ -61,6 +61,7 @@ Meteor.methods({
         imageUrl: uploadedImage || null,
         isSentForReview: false,
         isPublicActivity: formValues.isPublicActivity,
+        isBookingsDisabled: formValues.isBookingsDisabled,
         isPublished: true,
         creationDate: new Date()
       });
@@ -104,6 +105,7 @@ Meteor.methods({
           roomIndex: roomIndex,
           datesAndTimes: formValues.datesAndTimes,
           isPublicActivity: formValues.isPublicActivity,
+          isBookingsDisabled: formValues.isBookingsDisabled,
           imageUrl,
           latestUpdate: new Date()
         }

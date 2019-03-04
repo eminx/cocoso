@@ -22,6 +22,7 @@ class NewBookSpace extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     isPublicActivity: false,
+    isBookingsDisabled: false,
     numberOfRecurrence: 1
   };
 
@@ -72,9 +73,15 @@ class NewBookSpace extends React.Component {
   };
 
   createBooking = () => {
-    const { values, isPublicActivity, uploadedImage } = this.state;
+    const {
+      values,
+      isPublicActivity,
+      isBookingsDisabled,
+      uploadedImage
+    } = this.state;
 
     values.isPublicActivity = isPublicActivity;
+    values.isBookingsDisabled = isBookingsDisabled;
 
     Meteor.call('createBooking', values, uploadedImage, (error, result) => {
       if (error) {
@@ -99,6 +106,12 @@ class NewBookSpace extends React.Component {
   handlePublicActivitySwitch = value => {
     this.setState({
       isPublicActivity: value
+    });
+  };
+
+  handleDisableBookingsSwitch = value => {
+    this.setState({
+      isBookingsDisabled: value
     });
   };
 
@@ -136,6 +149,7 @@ class NewBookSpace extends React.Component {
       uploadableImage,
       uploadableImageLocal,
       isPublicActivity,
+      isBookingsDisabled,
       numberOfRecurrence
     } = this.state;
 
@@ -145,11 +159,22 @@ class NewBookSpace extends React.Component {
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <Row>
-              <h4>public event?</h4>
-              <Switch
-                checked={isPublicActivity}
-                onChange={this.handlePublicActivitySwitch}
-              />
+              <Col md={12}>
+                <h4>public event?</h4>
+                <Switch
+                  checked={isPublicActivity}
+                  onChange={this.handlePublicActivitySwitch}
+                />
+              </Col>
+              {isPublicActivity && (
+                <Col md={12}>
+                  <h4>bookings disabled?</h4>
+                  <Switch
+                    checked={isBookingsDisabled}
+                    onChange={this.handleDisableBookingsSwitch}
+                  />
+                </Col>
+              )}
             </Row>
 
             <Divider />

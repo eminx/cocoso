@@ -22,7 +22,7 @@ Meteor.methods({
 
   addChatMessage(contextId, msgBody) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -54,7 +54,7 @@ Meteor.methods({
 
   createNotifications(contextId, unSeenIndex) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
     try {
@@ -109,7 +109,7 @@ Meteor.methods({
 
   removeNotification(contextId, messageIndex) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
