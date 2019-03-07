@@ -38,12 +38,12 @@ const SkogenTerms = () => {
       </p>
       <p>
         For more information about how your personal information is handled, see
-        our GPDR policy.
+        our GDPR policy.
       </p>
       <Divider />
-      <h3>Skogen's data policy, GPDR</h3>
+      <h3>Skogen's data policy, GDPR</h3>
       <p>
-        GPDR (General Private Data Regulation) is an EU law that regulates how
+        GDPR (General Private Data Regulation) is an EU law that regulates how
         you as a user own your personal information and how you have the right
         to see it and know how it is used. Parties that collect, use, and store
         your private information do so only on loan, and must promise you that
@@ -100,9 +100,9 @@ const SkogenTerms = () => {
 
       <h3>Access outside the EU/EES</h3>
       <p>
-        The GPDR does not apply to countries outside the EU or EES. Your data
+        The GDPR does not apply to countries outside the EU or EES. Your data
         accessible to third parties when accessed on a device outside the EU is
-        not under the GPDR’s jurisdiction.
+        not under the GDPR’s jurisdiction.
       </p>
       <Divider />
 

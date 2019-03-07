@@ -275,7 +275,11 @@ class Booking extends React.Component {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         if (bookingData.isBookingsDisabled) {
-          return <div>Bookings are disabled for this event. Just drop in</div>;
+          return (
+            <div>
+              Bookings are disabled. Please check the practical information.
+            </div>
+          );
         }
 
         return (
@@ -511,7 +515,7 @@ const RsvpForm = props => {
           ],
           initialValue:
             (props.currentUser && props.currentUser.numberOfPeople) || 1
-        })(<InputNumber min={1} max={5} placeholder="Number of people" />)}
+        })(<InputNumber min={1} max={20} placeholder="Number of people" />)}
       </FormItem>
       <div
         style={{

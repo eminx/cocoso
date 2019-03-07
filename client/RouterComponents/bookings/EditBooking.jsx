@@ -16,11 +16,13 @@ import {
 } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
-const successCreation = () =>
-  message.success('Your booking is successfully edited', 6);
-
-const successDelete = () =>
-  message.success('The booking is successfully deleted', 4);
+const successEditMessage = isDeleted => {
+  if (isDeleted) {
+    message.success('The booking is successfully deleted', 4);
+  } else {
+    message.success('Your booking is successfully edited', 6);
+  }
+};
 
 const sideNote =
   "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping bookings.";
@@ -194,7 +196,6 @@ class EditBooking extends React.Component {
           isError: true
         });
       } else {
-        successDelete();
         this.setState({
           isLoading: false,
           isSuccess: true
@@ -251,11 +252,14 @@ class EditBooking extends React.Component {
     const { gatheringData, currentUser } = this.props;
 
     if (isSuccess) {
-      successCreation();
+      successEditMessage(isDeleteModalOn);
+      if (isDeleteModalOn) {
+        return <Redirect to="/calendar" />;
+      }
       if (isPublicActivity) {
         return <Redirect to={`/event/${gatheringData._id}`} />;
       } else {
-        return <Redirect to={'/calendar'} />;
+        return <Redirect to="/calendar" />;
       }
     }
 
