@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 
@@ -162,7 +163,9 @@ class Users extends React.PureComponent {
             onChange={e => this.setState({ filterWord: e.target.value })}
           />
           <Divider />
-          <h2>{filter} Users </h2>
+          <h2 style={{ textAlign: 'center' }}>
+            {filter} Users ({usersSorted.length}){' '}
+          </h2>
           <span style={{ marginRight: 12 }}>sorted by </span>
           <RadioGroup
             options={sortOptions}
@@ -179,6 +182,9 @@ class Users extends React.PureComponent {
                 <p style={{ fontSize: 12 }}>
                   <em>{user && user.emails ? user.emails[0].address : null}</em>
                 </p>
+                <div style={{ fontSize: 10, color: '#aaa' }}>
+                  joined {moment(user.createdAt).format('Do MMM YYYY')}
+                </div>
               </div>
             )}
           </NiceList>

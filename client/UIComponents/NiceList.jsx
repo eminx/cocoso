@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Menu, Icon, List, Dropdown } from 'antd/lib';
-import Loader from './Loader';
 
 const MenuItem = Menu.Item;
 const ListItem = List.Item;
@@ -15,6 +14,7 @@ class NiceList extends PureComponent {
         className="nicelist"
         renderItem={(listItem, index) => (
           <ListItem
+            style={{ alignItems: 'start' }}
             actions={
               actionsDisabled
                 ? []
@@ -47,7 +47,14 @@ class NiceList extends PureComponent {
                       }
                     >
                       <div>
-                        <Icon style={{ fontSize: 24 }} type="ellipsis" />
+                        <Icon
+                          style={{
+                            fontSize: 24,
+                            marginTop: 6,
+                            transform: 'rotate(90deg)'
+                          }}
+                          type="ellipsis"
+                        />
                       </div>
                     </Dropdown>
                   ]
