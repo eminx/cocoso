@@ -1,27 +1,20 @@
 import React from 'react';
-import {
-  Row,
-  Radio,
-  Col,
-  Icon,
-  Alert,
-  List,
-  Card,
-  Menu,
-  Input,
-  message,
-  Divider
-} from 'antd/lib';
+import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 
 const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
 import NiceList from '../../UIComponents/NiceList';
 
+const compareUsersByDate = (a, b) => {
+  const dateA = new Date(a.createdAt);
+  const dateB = new Date(b.createdAt);
+  return dateA - dateB;
+};
+
 class Users extends React.PureComponent {
   state = {
-    sortBy: '',
+    sortBy: 'join-date',
     filter: 'all',
     filterWord: ''
   };
@@ -54,6 +47,12 @@ class Users extends React.PureComponent {
     });
   };
 
+  handleSortChange = event => {
+    this.setState({
+      sortBy: event.target.value
+    });
+  };
+
   render() {
     const { isLoading, currentUser, users } = this.props;
     const { filter, filterWord, sortBy } = this.state;
@@ -73,12 +72,9 @@ class Users extends React.PureComponent {
       return <Loader />;
     }
 
-    const usersSorted =
-      users && users.sort((a, b) => a.username.localeCompare(b.username));
-
     const usersFiltered =
-      usersSorted &&
-      usersSorted.filter(user => {
+      users &&
+      users.filter(user => {
         if (filter === 'all') {
           return true;
         } else if (filter === 'verified') {
@@ -116,6 +112,17 @@ class Users extends React.PureComponent {
       }
     ];
 
+    const sortOptions = [
+      {
+        label: 'Date joined',
+        value: 'join-date'
+      },
+      {
+        label: 'Username',
+        value: 'username'
+      }
+    ];
+
     const usersFilteredWithType = usersList.filter(user => {
       return (
         user.username.toLowerCase().indexOf(filterWord.toLowerCase()) !== -1 ||
@@ -124,6 +131,19 @@ class Users extends React.PureComponent {
           .indexOf(filterWord.toLowerCase()) !== -1
       );
     });
+
+    let usersSorted;
+    switch (sortBy) {
+      case 'username':
+        usersSorted = usersFilteredWithType.sort((a, b) =>
+          a.username.localeCompare(b.username)
+        );
+        break;
+      case 'join-date':
+      default:
+        usersSorted = usersFilteredWithType.sort(compareUsersByDate);
+        break;
+    }
 
     return (
       <Row gutter={24}>
@@ -136,18 +156,21 @@ class Users extends React.PureComponent {
             value={filter}
             style={{ marginBottom: 12 }}
           />
-
           <Input
             placeholder="filter username or email address..."
             value={filterWord}
             onChange={e => this.setState({ filterWord: e.target.value })}
           />
-
           <Divider />
-
           <h2>{filter} Users </h2>
-
-          <NiceList list={usersFilteredWithType}>
+          <span style={{ marginRight: 12 }}>sorted by </span>
+          <RadioGroup
+            options={sortOptions}
+            onChange={this.handleSortChange}
+            value={sortBy}
+            style={{ marginBottom: 12 }}
+          />
+          <NiceList list={usersSorted}>
             {user => (
               <div key={user.username}>
                 <div>
