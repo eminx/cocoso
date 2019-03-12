@@ -9,7 +9,7 @@ import NiceList from '../../UIComponents/NiceList';
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
   const dateB = new Date(b.createdAt);
-  return dateA - dateB;
+  return dateB - dateA;
 };
 
 class Users extends React.PureComponent {
@@ -157,7 +157,7 @@ class Users extends React.PureComponent {
             style={{ marginBottom: 12 }}
           />
           <Input
-            placeholder="filter username or email address..."
+            placeholder="filter by username or email address..."
             value={filterWord}
             onChange={e => this.setState({ filterWord: e.target.value })}
           />
