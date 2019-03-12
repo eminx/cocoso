@@ -151,28 +151,35 @@ class Users extends React.PureComponent {
         <Col md={8} />
 
         <Col md={8} style={{ padding: 24 }}>
-          <RadioGroup
-            options={filterOptions}
-            onChange={this.handleFilterChange}
-            value={filter}
-            style={{ marginBottom: 12 }}
-          />
-          <Input
-            placeholder="filter by username or email address..."
-            value={filterWord}
-            onChange={e => this.setState({ filterWord: e.target.value })}
-          />
-          <Divider />
           <h2 style={{ textAlign: 'center' }}>
             {filter} Users ({usersSorted.length}){' '}
           </h2>
-          <span style={{ marginRight: 12 }}>sorted by </span>
-          <RadioGroup
-            options={sortOptions}
-            onChange={this.handleSortChange}
-            value={sortBy}
-            style={{ marginBottom: 12 }}
-          />
+
+          <div style={{ background: '#f8f8f8', padding: 12 }}>
+            <span style={{ marginRight: 12 }}>filtered by </span>
+            <RadioGroup
+              options={filterOptions}
+              onChange={this.handleFilterChange}
+              value={filter}
+              style={{ marginBottom: 12 }}
+            />
+            <Input
+              placeholder="filter by username or email address..."
+              value={filterWord}
+              onChange={e => this.setState({ filterWord: e.target.value })}
+            />
+
+            <Divider />
+
+            <span style={{ marginRight: 12 }}>sorted by </span>
+            <RadioGroup
+              options={sortOptions}
+              onChange={this.handleSortChange}
+              value={sortBy}
+              style={{ marginBottom: 12 }}
+            />
+          </div>
+
           <NiceList list={usersSorted}>
             {user => (
               <div key={user.username}>
