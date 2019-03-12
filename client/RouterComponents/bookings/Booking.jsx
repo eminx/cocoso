@@ -270,17 +270,21 @@ class Booking extends React.Component {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
+    if (bookingData.isBookingsDisabled) {
+      return (
+        <div>
+          {bookingData.datesAndTimes.map((occurence, occurenceIndex) => (
+            <div style={{ ...customPanelStyle, padding: 12 }}>
+              <FancyDate occurence={occurence} />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
-
-        if (bookingData.isBookingsDisabled) {
-          return (
-            <div>
-              Bookings are disabled. Please check the practical information.
-            </div>
-          );
-        }
 
         return (
           <div>
@@ -342,12 +346,8 @@ class Booking extends React.Component {
         {bookingData.datesAndTimes.map((occurence, occurenceIndex) => (
           <Panel
             key={occurence.startDate + occurence.startTime}
-            header={
-              <h3 style={{ margin: 0 }}>
-                <FancyDate occurence={occurence} />
-              </h3>
-            }
-            style={customPanelStyle}
+            header={<FancyDate occurence={occurence} />}
+            style={{ ...customPanelStyle, paddingRight: 12 }}
           >
             {conditionalRender(occurence, occurenceIndex)}
           </Panel>
@@ -421,7 +421,11 @@ class Booking extends React.Component {
 
               <Row style={{ width: '100%' }}>
                 <h3>Dates</h3>
-                <p>Please click and open the date to RSVP</p>
+                <p>
+                  {bookingData.isBookingsDisabled
+                    ? 'Bookings are disabled. Please check the practical information.'
+                    : 'Please click and open the date to RSVP'}
+                </p>
                 {this.renderDates()}
               </Row>
             </Col>

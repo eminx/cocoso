@@ -4,8 +4,7 @@ import moment from 'moment';
 const fancyDateStyle = {
   color: '#030303',
   fontWeight: 700,
-  lineHeight: 1,
-  paddingRight: 12
+  lineHeight: 1
 };
 
 const DateJust = ({ children, ...otherProps }) => {
@@ -23,8 +22,11 @@ const DateJust = ({ children, ...otherProps }) => {
   );
 };
 
-const FancyDate = ({ occurence, places }) => (
-  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+const FancyDate = ({ occurence, places, ...otherProps }) => (
+  <div
+    style={{ display: 'flex', justifyContent: 'space-between' }}
+    {...otherProps}
+  >
     <div style={{ flexGrow: 1 }}>
       {occurence.startDate === occurence.endDate ? (
         <DateJust>{occurence.startDate}</DateJust>
