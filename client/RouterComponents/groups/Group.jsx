@@ -38,6 +38,7 @@ const customPanelStyle = {
   background: '#f7f7f7',
   borderRadius: 4,
   marginBottom: 12,
+  paddingRight: 12,
   border: 0,
   overflow: 'hidden'
 };
@@ -346,9 +347,9 @@ class Group extends Component {
           header={
             <div>
               <FancyDate occurence={meeting} places={places} />
-              <div style={{ marginTop: 12 }}>
+              {/* <div style={{ marginTop: 12, textAlign: 'center' }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
-              </div>
+              </div> */}
             </div>
           }
           style={{
@@ -359,23 +360,31 @@ class Group extends Component {
           }}
         >
           <div style={{ marginLeft: 24 }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <a onClick={() => this.deleteMeeting(meetingIndex)}>
-                Delete this meeting
-              </a>
-            </div>
+            <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
               <List>
                 {meeting.attendees.map(attendee => (
                   <ListItem
                     key={attendee.memberUsername}
-                    style={{ position: 'relative' }}
+                    style={{
+                      position: 'relative',
+                      paddingTop: 6,
+                      paddingBottom: 6
+                    }}
                   >
                     {attendee.memberUsername}
                   </ListItem>
                 ))}
               </List>
             )}
+
+            <Divider />
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <a onClick={() => this.deleteMeeting(meetingIndex)}>
+                Delete this meeting
+              </a>
+            </div>
           </div>
         </Panel>
       ))
@@ -391,23 +400,47 @@ class Group extends Component {
     const isFutureMeeting = meeting =>
       moment(meeting.endDate).isAfter(yesterday);
 
-    return group.meetings.map((meeting, meetingIndex) => (
-      <MeetingInfo
-        isSmallViewport
-        key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-        meeting={meeting}
-        isFutureMeeting={isFutureMeeting(meeting)}
-        onClick={() => this.toggleAttendance(meetingIndex)}
-        places={places}
-        isAttending={
-          currentUser &&
-          meeting.attendees &&
-          meeting.attendees
-            .map(attendee => attendee.memberId)
-            .includes(currentUser._id)
-        }
-      />
-    ));
+    return group.meetings.map((meeting, meetingIndex) => {
+      const isAttending =
+        currentUser &&
+        meeting.attendees &&
+        meeting.attendees
+          .map(attendee => attendee.memberId)
+          .includes(currentUser._id);
+
+      return (
+        <Panel
+          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+          header={
+            <MeetingInfo
+              isSmallViewport
+              isAttending={isAttending}
+              meeting={meeting}
+              isFutureMeeting={isFutureMeeting(meeting)}
+              places={places}
+            />
+          }
+          style={{
+            ...customPanelStyle,
+            flexBasis: 200,
+            flexShrink: 0,
+            display: isFutureMeeting(meeting) ? 'block' : 'none'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              paddingLeft: 12
+            }}
+          >
+            <Button onClick={() => this.toggleAttendance(meetingIndex)}>
+              {isAttending ? 'Cannot make it' : 'Register attendance'}
+            </Button>
+          </div>
+        </Panel>
+      );
+    });
   };
 
   handleFileDrop = files => {
@@ -705,15 +738,18 @@ class Group extends Component {
             </Col>
 
             <Col md={10} lg={6} style={{ paddingTop: 24 }}>
-              <div style={{ paddingLeft: 12 }}>
+              <div style={{ paddingLeft: 12, paddingRight: 12 }}>
                 <h3>Meetings</h3>
 
                 <p style={{ textAlign: 'right' }}>
                   <em>
-                    {group.meetings && group.meetings.length > 0
+                    {group.meetings &&
+                    group.meetings.filter(meeting =>
+                      moment(meeting.endDate).isAfter(yesterday)
+                    ).length > 0
                       ? isAdmin
-                        ? 'Click to see the attendees'
-                        : 'Click to toggle attendance'
+                        ? 'Open the dates to see the attendees'
+                        : 'Click and open the date to RSVP'
                       : 'No meeting scheduled yet'}
                   </em>
                 </p>
@@ -730,7 +766,14 @@ class Group extends Component {
                   </Collapse>
                 </div>
               ) : (
-                <div style={{ marginBottom: 24 }}>{this.renderMeetings()}</div>
+                <Collapse
+                  bordered={false}
+                  accordion
+                  defaultActiveKey={['1']}
+                  style={{ ...collapseStyle }}
+                >
+                  {this.renderMeetings()}
+                </Collapse>
               )}
 
               {isAdmin && (
@@ -841,24 +884,14 @@ class Group extends Component {
 
 export default Group;
 
-const MeetingInfo = ({
-  meeting,
-  onClick,
-  isAttending,
-  places,
-  isFutureMeeting
-}) => {
+const MeetingInfo = ({ meeting, isAttending, places }) => {
   const style = {
     flexBasis: 180,
-    flexShrink: 0,
-    display: isFutureMeeting ? 'block' : 'none'
+    flexShrink: 0
   };
-  if (isAttending) {
-    style.backgroundColor = '#fff5f4';
-  }
 
   return (
-    <div style={style} className="toggleable" onClick={onClick}>
+    <div style={style}>
       <FancyDate occurence={meeting} places={places} />
 
       {isAttending && (
