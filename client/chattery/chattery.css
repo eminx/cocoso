@@ -30,12 +30,12 @@
 
 .chattery-input {
   width: calc(100% - 60px);
-  height: 38px;
+  min-height: 96px;
   padding: 6px 10px;
   background-color: #fff;
   border: 1px solid #d1d1d1;
   border-radius: 4px 0 0 4px;
-  border-right: none;
+  /* border-right: none; */
   box-shadow: none;
   box-sizing: border-box;
 }
@@ -384,7 +384,8 @@
 .chattery-input {
   border-radius: 0;
   border: 1px solid #030303;
-  border-right: none;
+  /* border-right: none; */
+  color: #030303;
 }
 
 .chattery-submitbutton {
