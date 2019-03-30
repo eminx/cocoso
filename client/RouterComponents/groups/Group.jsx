@@ -679,6 +679,59 @@ class Group extends Component {
     );
   };
 
+  renderGroupInfo = () => {
+    const { group } = this.props;
+    const isAdmin = this.isAdmin();
+
+    return (
+      <Card
+        title={this.getTitle(group)}
+        bordered
+        extra={this.getExtra(group, isAdmin)}
+        style={{ width: '100%', marginBottom: 24 }}
+        cover={
+          group.imageUrl ? <img alt="group-image" src={group.imageUrl} /> : null
+        }
+      >
+        <Meta description={group.description} />
+      </Card>
+    );
+  };
+
+  renderDiscussion = () => {
+    const messages = this.getChatMessages();
+    const isMember = this.isMember();
+
+    const titleStyle = {
+      marginLeft: 24,
+      fontWeigth: 300,
+      color: '#0g0g0g'
+    };
+
+    return (
+      <div>
+        <h3 style={titleStyle}>Discussion</h3>
+        <Chattery
+          messages={messages}
+          onNewMessage={this.addNewChatMessage}
+          removeNotification={this.removeNotification}
+          isMember={isMember}
+        />
+        {!isMember && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              type="primary"
+              onClick={this.openModal}
+              style={{ marginBottom: 24 }}
+            >
+              Join this group
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   render() {
     const { redirectToLogin, isFormValid, potentialNewAdmin } = this.state;
 
@@ -686,17 +739,10 @@ class Group extends Component {
       return <Redirect to="/my-profile" />;
     }
 
-    const { group, isLoading, currentUser, chatData, places } = this.props;
-    const messages = this.getChatMessages();
+    const { group, isLoading, chatData, places } = this.props;
 
     const isMember = this.isMember();
     const isAdmin = this.isAdmin();
-
-    const titleStyle = {
-      marginLeft: 24,
-      fontWeigth: 300,
-      color: '#0g0g0g'
-    };
 
     const collapseStyle = {
       marginBottom: 24,
@@ -722,19 +768,7 @@ class Group extends Component {
             </Col>
 
             <Col md={14} lg={12}>
-              <Card
-                title={this.getTitle(group)}
-                bordered
-                extra={this.getExtra(group, isAdmin)}
-                style={{ width: '100%', marginBottom: 24 }}
-                cover={
-                  group.imageUrl ? (
-                    <img alt="group-image" src={group.imageUrl} />
-                  ) : null
-                }
-              >
-                <Meta description={group.description} />
-              </Card>
+              {this.renderGroupInfo()}
             </Col>
 
             <Col md={10} lg={6} style={{ paddingTop: 24 }}>
@@ -812,28 +846,7 @@ class Group extends Component {
         <Row gutter={24}>
           <Col lg={5} />
           <Col md={14} lg={12}>
-            {chatData && (
-              <div>
-                <h3 style={titleStyle}>Discussion</h3>
-                <Chattery
-                  messages={messages}
-                  onNewMessage={this.addNewChatMessage}
-                  removeNotification={this.removeNotification}
-                  isMember={isMember}
-                />
-                {!isMember && (
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button
-                      type="primary"
-                      onClick={this.openModal}
-                      style={{ marginBottom: 24 }}
-                    >
-                      Join this group
-                    </Button>
-                  </div>
-                )}
-              </div>
-            )}
+            {chatData && this.renderDiscussion()}
           </Col>
           <Col md={10} lg={6} />
         </Row>

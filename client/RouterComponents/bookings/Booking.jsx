@@ -282,6 +282,14 @@ class Booking extends React.Component {
       );
     }
 
+    const getTotalNumber = occurence => {
+      let counter = 0;
+      occurence.attendees.forEach(attendee => {
+        counter += attendee.numberOfPeople;
+      });
+      return counter;
+    };
+
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
@@ -303,13 +311,22 @@ class Booking extends React.Component {
                     Change/Cancel Existing RSVP
                   </a>
                 </div>
-                <RsvpForm
-                  currentUser={currentUser}
-                  form={form}
-                  handleSubmit={event =>
-                    this.handleRSVPSubmit(event, occurenceIndex)
-                  }
-                />
+                {occurence.capacity &&
+                occurence.attendees &&
+                getTotalNumber(occurence) >= occurence.capacity ? (
+                  <p>
+                    Unfortunately it's full of its capacity. Please check other
+                    recurrences.
+                  </p>
+                ) : (
+                  <RsvpForm
+                    currentUser={currentUser}
+                    form={form}
+                    handleSubmit={event =>
+                      this.handleRSVPSubmit(event, occurenceIndex)
+                    }
+                  />
+                )}
               </div>
             )}
             {isRegisteredMember && (

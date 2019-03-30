@@ -27,12 +27,15 @@ const compareForSort = (a, b) => {
   return dateA.diff(dateB);
 };
 
+const defaultCapacity = 40;
+
 let emptyDateAndTime = {
   startDate: null,
   endDate: null,
   startTime: null,
   endTime: null,
-  attendees: []
+  attendees: [],
+  capacity: defaultCapacity
 };
 
 const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
@@ -77,7 +80,8 @@ class CreateBookingForm extends Component {
       startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
       endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
       endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
-      attendees: []
+      capacity: recurrence.capacity,
+      attendees: recurrence.attendees || []
     }));
 
     this.setState({
@@ -136,7 +140,8 @@ class CreateBookingForm extends Component {
         startTime: recurrence.startTime,
         endDate: recurrence.endDate,
         endTime: recurrence.endTime,
-        attendees: []
+        capacity: recurrence.capacity || defaultCapacity,
+        attendees: recurrence.attendees || []
       }));
 
       const values = {
@@ -185,6 +190,9 @@ class CreateBookingForm extends Component {
             handleFinishTimeChange={(time, timeString) =>
               this.handleDateAndTimeChange(time, timeString, index, 'endTime')
             }
+            handleCapacityChange={value =>
+              this.handleCapacityChange(value, index)
+            }
           />
         ))}
         <div style={{ ...iconStyle, padding: 24 }}>
@@ -204,6 +212,19 @@ class CreateBookingForm extends Component {
       if (index === i) {
         item[entity + 'Moment'] = date;
         item[entity] = dateString;
+      }
+      return item;
+    });
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleCapacityChange = (value, index) => {
+    const { datesAndTimes } = this.state;
+    const newDatesAndTimes = datesAndTimes.map((item, i) => {
+      if (index === i) {
+        item.capacity = value;
       }
       return item;
     });
@@ -468,6 +489,7 @@ class DatesAndTimes extends Component {
       handleStartTimeChange,
       handleFinishDateChange,
       handleFinishTimeChange,
+      handleCapacityChange,
       removeRecurrence,
       isNotDeletable
     } = this.props;
@@ -523,6 +545,15 @@ class DatesAndTimes extends Component {
             format="HH:mm"
             minuteStep={30}
             placeholder="Finish time"
+          />
+        </FormItem>
+        <FormItem style={{ marginBottom: 12 }}>
+          <InputNumber
+            min={1}
+            max={90}
+            placeholder={'Capacity'}
+            value={recurrence.capacity}
+            onChange={handleCapacityChange}
           />
         </FormItem>
       </div>
