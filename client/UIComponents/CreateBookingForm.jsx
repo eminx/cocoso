@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReactQuill from 'react-quill';
+import { editorFormats, editorModules } from '../themes/skogen';
+
 import {
   Row,
   Col,
@@ -293,10 +296,12 @@ class CreateBookingForm extends Component {
               ],
               initialValue: bookingData ? bookingData.longDescription : null
             })(
-              <TextArea
-                placeholder="Description"
-                autosize={{ minRows: 3, maxRows: 6 }}
-              />
+              // <TextArea
+              //   placeholder="Description"
+              //   autosize={{ minRows: 3, maxRows: 6 }}
+              // />
+
+              <ReactQuill modules={editorModules} formats={editorFormats} />
             )}
           </FormItem>
 

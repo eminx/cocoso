@@ -7,7 +7,7 @@ import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
 const successCreation = () =>
-  message.success('Your group is successfully edited', 6);
+  message.success('Your group is successfully updated', 6);
 
 const successDelete = () =>
   message.success('The group is successfully deleted', 4);

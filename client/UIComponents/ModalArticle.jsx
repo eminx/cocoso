@@ -33,7 +33,13 @@ class ModalArticle extends React.Component {
             <Meta
               avatar={<Avatar>{getInitials(item.authorName || 'ad')}</Avatar>}
               title={item.room || item.readingMaterial}
-              description={item.longDescription || item.description}
+              description={
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: item.longDescription || item.description
+                  }}
+                />
+              }
               cover={imageSrc ? <img alt="image" src={imageSrc} /> : null}
             />
           </Card>

@@ -693,7 +693,11 @@ class Group extends Component {
           group.imageUrl ? <img alt="group-image" src={group.imageUrl} /> : null
         }
       >
-        <Meta description={group.description} />
+        <Meta
+          description={<div dangerouslySetInnerHTML={{
+            __html: group.description
+          }} />}
+        />
       </Card>
     );
   };

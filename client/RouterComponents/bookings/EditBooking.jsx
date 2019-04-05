@@ -20,7 +20,7 @@ const successEditMessage = isDeleted => {
   if (isDeleted) {
     message.success('The booking is successfully deleted', 4);
   } else {
-    message.success('Your booking is successfully edited', 6);
+    message.success('Your booking is successfully updated', 6);
   }
 };
 

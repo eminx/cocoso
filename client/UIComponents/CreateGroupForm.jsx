@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactQuill from 'react-quill';
+import { editorFormats, editorModules } from '../themes/skogen';
 import {
   Col,
   Form,
@@ -31,7 +33,7 @@ class CreateGroupForm extends React.Component {
 
       if (!this.props.uploadableImage) {
         Modal.error({
-          title: 'Image and attachment are required',
+          title: 'Image is required',
           content: 'Please upload an image'
         });
         return;
@@ -100,10 +102,11 @@ class CreateGroupForm extends React.Component {
               ],
               initialValue: groupData ? groupData.description : null
             })(
-              <TextArea
-                placeholder="Group description (details of the Study etc.)"
-                autosize={{ minRows: 6, maxRows: 12 }}
-              />
+              // <TextArea
+              //   placeholder="Group description (details of the Study etc.)"
+              //   autosize={{ minRows: 6, maxRows: 12 }}
+              // />
+              <ReactQuill modules={editorModules} formats={editorFormats} />
             )}
           </FormItem>
 

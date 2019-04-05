@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactQuill from 'react-quill';
+import { editorFormats, editorModules } from '../themes/skogen';
 import {
   Form,
   Input,
@@ -104,10 +106,12 @@ class CreatePageForm extends React.Component {
               ],
               initialValue: pageData ? pageData.longDescription : null
             })(
-              <TextArea
-                placeholder="Enter a description"
-                autosize={{ minRows: 6, maxRows: 12 }}
-              />
+              // <TextArea
+              //   placeholder="Enter a description"
+              //   autosize={{ minRows: 6, maxRows: 12 }}
+              // />
+
+              <ReactQuill modules={editorModules} formats={editorFormats} />
             )}
           </FormItem>
 

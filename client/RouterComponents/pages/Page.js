@@ -44,8 +44,14 @@ class Page extends PureComponent {
               }}
             >
               <h2>{page && page.title}</h2>
-              <div style={{ whiteSpace: 'pre-line', color: '#030303' }}>
-                {page && page.longDescription}
+              <div style={{ color: '#030303' }}>
+                {page && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: page.longDescription
+                    }}
+                  />
+                )}
               </div>
             </div>
           </Col>

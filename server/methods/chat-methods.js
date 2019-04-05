@@ -20,7 +20,7 @@ Meteor.methods({
     return theChat;
   },
 
-  addChatMessage(contextId, msgBody) {
+  addChatMessage(contextId, msgBody, contextType) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -46,6 +46,9 @@ Meteor.methods({
           }
         }
       );
+      if ((contextType = 'booking')) {
+        return;
+      }
       Meteor.call('createNotifications', contextId, unSeenIndex);
     } catch (error) {
       throw new Meteor.Error(error);

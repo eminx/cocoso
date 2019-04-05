@@ -44,27 +44,39 @@ Meteor.methods({
     const roomIndex = getRoomIndex(formValues.room);
 
     try {
-      const add = Gatherings.insert({
-        authorId: user._id,
-        authorName: user.username,
-        title: formValues.title,
-        subTitle: formValues.subTitle || null,
-        longDescription: formValues.longDescription,
-        room: formValues.room || null,
-        place: formValues.place || null,
-        practicalInfo: formValues.practicalInfo || null,
-        internalInfo: formValues.internalInfo || null,
-        address: formValues.address || null,
-        capacity: formValues.capacity || 20,
-        datesAndTimes: formValues.datesAndTimes,
-        roomIndex: roomIndex,
-        imageUrl: uploadedImage || null,
-        isSentForReview: false,
-        isPublicActivity: formValues.isPublicActivity,
-        isBookingsDisabled: formValues.isBookingsDisabled,
-        isPublished: true,
-        creationDate: new Date()
-      });
+      const add = Gatherings.insert(
+        {
+          authorId: user._id,
+          authorName: user.username,
+          title: formValues.title,
+          subTitle: formValues.subTitle || null,
+          longDescription: formValues.longDescription,
+          room: formValues.room || null,
+          place: formValues.place || null,
+          practicalInfo: formValues.practicalInfo || null,
+          internalInfo: formValues.internalInfo || null,
+          address: formValues.address || null,
+          capacity: formValues.capacity || 20,
+          datesAndTimes: formValues.datesAndTimes,
+          roomIndex: roomIndex,
+          imageUrl: uploadedImage || null,
+          isSentForReview: false,
+          isPublicActivity: formValues.isPublicActivity,
+          isBookingsDisabled: formValues.isBookingsDisabled,
+          isPublished: true,
+          creationDate: new Date()
+        },
+        () => {
+          if (!formValues.isPublicActivity) {
+            return;
+          }
+          Meteor.call('createChat', formValues.title, add, (error, result) => {
+            if (error) {
+              console.log('Chat is not created due to error: ', error);
+            }
+          });
+        }
+      );
       return add;
     } catch (e) {
       throw new Meteor.Error(e, "Couldn't add to Collection");

@@ -350,11 +350,14 @@ class Calendar extends React.PureComponent {
           </Row>
           <Row style={{ paddingTop: 12 }}>
             <Row span={24}>
-              <em>
-                {selectedBooking &&
-                  selectedBooking.longDescription &&
-                  selectedBooking.longDescription.slice(0, 120) + '...'}
-              </em>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    selectedBooking &&
+                    selectedBooking.longDescription &&
+                    selectedBooking.longDescription.slice(0, 120) + '...'
+                }}
+              />
               {selectedBooking && selectedBooking.isPublicActivity && (
                 <Link
                   to={

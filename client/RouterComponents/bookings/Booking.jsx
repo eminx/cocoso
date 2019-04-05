@@ -39,6 +39,7 @@ class Booking extends React.Component {
       'addChatMessage',
       this.props.bookingData._id,
       message,
+      'booking',
       (error, respond) => {
         if (error) {
           console.log('error', error);
@@ -385,9 +386,40 @@ class Booking extends React.Component {
     return currentUser && currentUser.isRegisteredMember;
   };
 
+  removeNotification = messageIndex => {
+    const { bookingData, currentUser } = this.props;
+    const shouldRun = currentUser.notifications.find(notification => {
+      if (!notification.unSeenIndexes) {
+        return false;
+      }
+      return notification.unSeenIndexes.some(unSeenIndex => {
+        return unSeenIndex === messageIndex;
+      });
+    });
+    if (!shouldRun) {
+      return;
+    }
+
+    Meteor.call(
+      'removeNotification',
+      bookingData._id,
+      messageIndex,
+      (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.destroy();
+          message.error(error.error);
+        }
+      }
+    );
+  };
+
   render() {
     const { bookingData, isLoading, currentUser, chatData } = this.props;
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
+
+    const messages = this.getChatMessages();
+    const isRegisteredMember = this.isRegisteredMember();
 
     const EditButton =
       currentUser && bookingData && currentUser._id === bookingData.authorId ? (
@@ -453,19 +485,26 @@ class Booking extends React.Component {
 
         <Divider />
 
-        {/* <Row gutter={24}>
-          <Col sm={24} md={20} lg={16}>
-            {chatData ? (
-              <div>
-                <h2>Chat Section</h2>
-                <Chattery
-                  messages={messages}
-                  onNewMessage={this.addNewChatMessage}
-                />
-              </div>
-            ) : null}
-          </Col>
-        </Row> */}
+        {bookingData &&
+          bookingData.isPublicActivity &&
+          messages &&
+          isRegisteredMember && (
+            <Row gutter={24}>
+              <Col sm={24} md={20} lg={16}>
+                {chatData ? (
+                  <div>
+                    <h2>Chat Section</h2>
+                    <Chattery
+                      messages={messages}
+                      onNewMessage={this.addNewChatMessage}
+                      removeNotification={this.removeNotification}
+                      isMember
+                    />
+                  </div>
+                ) : null}
+              </Col>
+            </Row>
+          )}
 
         <Modal
           title={
