@@ -46,7 +46,7 @@ class CardArticle extends React.Component {
   };
 
   render() {
-    const { item, isAttending, isMyEventWTF, currentUser } = this.props;
+    const { item, currentUser } = this.props;
 
     return (
       <div>
@@ -60,7 +60,10 @@ class CardArticle extends React.Component {
         </div>
 
         <div
-          style={{ color: 'rgba(0,0,0, .85)' }}
+          style={{
+            whiteSpace: 'pre-line',
+            color: 'rgba(0,0,0, .85)'
+          }}
           dangerouslySetInnerHTML={{
             __html: item.longDescription
           }}

@@ -9,6 +9,8 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
+    const verifiedUser = Meteor.users.findOne(memberId);
+
     try {
       Meteor.users.update(memberId, {
         $set: {
@@ -19,7 +21,7 @@ Meteor.methods({
         'sendEmail',
         memberId,
         'You are now a verified member at Skogen',
-        getVerifiedEmailText(user.username)
+        getVerifiedEmailText(verifiedUser.username)
       );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
