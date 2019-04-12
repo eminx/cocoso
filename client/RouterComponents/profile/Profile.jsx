@@ -1,5 +1,7 @@
 import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
+import ReactQuill from 'react-quill';
+import { editorFormats, editorModules } from '../../themes/skogen';
 
 import {
   Row,
@@ -16,7 +18,10 @@ const FormItem = Form.Item;
 
 class Profile extends React.Component {
   state = {
-    isDeleteModalOn: false
+    isDeleteModalOn: false,
+    isAddWorkModalOn: false,
+    workTitle: '',
+    workDescription: ''
   };
 
   handleSubmit = event => {
@@ -57,15 +62,44 @@ class Profile extends React.Component {
     }, 400);
   };
 
+  handleWorkTitleChange = event => {
+    this.setState({ workTitle: event.target.value });
+  };
+
+  handleWorkDescriptionChange = value => {
+    this.setState({ workDescription: value });
+  };
+
+  createWork = () => {
+    const { workTitle, workDescription } = this.state;
+    const newWork = { workTitle, workDescription };
+    Meteor.call('createWork', newWork, (error, response) => {
+      if (error) {
+        message.error('Could not create work due to ', error.error);
+      }
+      console.log(response);
+      message.success('You work is successfully created');
+    });
+  };
+
   render() {
     const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
-    const { isDeleteModalOn } = this.state;
+    const {
+      isDeleteModalOn,
+      isAddWorkModalOn,
+      workTitle,
+      workDescription
+    } = this.state;
 
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
-          <Col md={6}>
+          <Col md={8}>
+            <Blaze template="loginButtons" />
+
+            <Divider />
+
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
                 <FormItem>
@@ -115,12 +149,22 @@ class Profile extends React.Component {
                 <Divider />
               </div>
             )}
+
+            <Divider />
+
+            {currentUser && (
+              <div>
+                <Button
+                  onClick={() => this.setState({ isAddWorkModalOn: true })}
+                >
+                  Add work
+                </Button>
+                <Divider />
+              </div>
+            )}
           </Col>
 
-          <Col md={8} style={{ padding: 24 }}>
-            <Blaze template="loginButtons" />
-            <Divider />
-          </Col>
+          <Col md={4} />
 
           <Col md={10}>
             <SkogenTerms />
@@ -138,6 +182,26 @@ class Profile extends React.Component {
             You are about to permanently delete your user information. This is
             an irreversible action.
           </p>
+        </Modal>
+
+        <Modal
+          title="Create New Work"
+          okText="Create"
+          onOk={this.createWork}
+          onCancel={() => this.setState({ isAddWorkModalOn: false })}
+          visible={isAddWorkModalOn}
+        >
+          <Input
+            placeholder="Page title"
+            value={workTitle}
+            onChange={this.handleWorkTitleChange}
+          />
+          <ReactQuill
+            modules={editorModules}
+            formats={editorFormats}
+            value={workDescription}
+            onChange={this.handleWorkDescriptionChange}
+          />
         </Modal>
       </div>
     );

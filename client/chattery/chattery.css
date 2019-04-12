@@ -322,7 +322,7 @@
   /* remove webkit p margins */
   -webkit-margin-before: 0em;
   -webkit-margin-after: 0em;
-  marginbottom: 0;
+  white-space: pre-line;
 }
 
 .talktext-senderinfo {

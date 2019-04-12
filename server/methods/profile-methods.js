@@ -33,7 +33,24 @@ Meteor.methods({
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
-      return;
+    }
+  },
+
+  createWork(newWork) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not a member anyways!');
+    }
+    try {
+      const newWorkId = Works.insert({
+        ...newWork,
+        authorId: user._id,
+        authorUsername: user.username
+      });
+      return newWorkId;
+    } catch (e) {
+      console.log(error);
+      throw new Meteor.Error(error);
     }
   }
 });
