@@ -26,6 +26,9 @@ import EditPageContainer from './pages/EditPageContainer';
 
 import ProfileContainer from './profile/ProfileContainer';
 import UsersContainer from './users/UsersContainer';
+import UserContainer from './users/UserContainer';
+
+import WorkContainer from './works/WorkContainer';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -77,6 +80,8 @@ export const renderRoutes = () => (
           <Route path="/documents" component={DocumentsListContainer} />
 
           <Route path="/users" component={UsersContainer} />
+          <Route path="/user/:id" component={UserContainer} />
+          <Route path="/work/:id" component={WorkContainer} />
 
           {/*<Route path="*" component={NotFoundPage}/>*/}
           {/* </Switch> */}

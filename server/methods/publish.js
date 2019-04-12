@@ -112,6 +112,19 @@ Meteor.publish('page', function(title) {
   return Pages.find({ title });
 });
 
+Meteor.publish('work', function(id) {
+  return Works.find({
+    _id: id
+  });
+});
+
+Meteor.publish('myworks', function() {
+  const currentUserId = Meteor.userId();
+  return Works.find({
+    authorId: currentUserId
+  });
+});
+
 Meteor.publish('chat', function(contextId) {
   const user = Meteor.user();
   if (user) {

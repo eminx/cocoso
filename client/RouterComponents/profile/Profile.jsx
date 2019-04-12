@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../../themes/skogen';
@@ -13,14 +14,17 @@ import {
   Divider,
   Modal
 } from 'antd/lib';
+const TextArea = Input.TextArea;
 import SkogenTerms from '../../UIComponents/SkogenTerms';
 const FormItem = Form.Item;
+import NiceList from '../../UIComponents/NiceList';
 
 class Profile extends React.Component {
   state = {
     isDeleteModalOn: false,
     isAddWorkModalOn: false,
     workTitle: '',
+    workShortDescription: '',
     workDescription: ''
   };
 
@@ -31,10 +35,10 @@ class Profile extends React.Component {
         console.log(err);
         return;
       }
-      console.log(fieldsValue);
       const values = {
         firstName: fieldsValue['firstName'],
-        lastName: fieldsValue['lastName']
+        lastName: fieldsValue['lastName'],
+        bio: fieldsValue['bio']
       };
 
       Meteor.call('saveUserInfo', values, (error, respond) => {
@@ -66,40 +70,69 @@ class Profile extends React.Component {
     this.setState({ workTitle: event.target.value });
   };
 
+  handleWorkShortDescriptionChange = event => {
+    this.setState({ workShortDescription: event.target.value });
+  };
+
   handleWorkDescriptionChange = value => {
     this.setState({ workDescription: value });
   };
 
   createWork = () => {
     const { workTitle, workDescription } = this.state;
-    const newWork = { workTitle, workDescription };
+    const newWork = {
+      title: workTitle,
+      description: workDescription
+    };
     Meteor.call('createWork', newWork, (error, response) => {
       if (error) {
         message.error('Could not create work due to ', error.error);
       }
       console.log(response);
       message.success('You work is successfully created');
+      this.setState({
+        isAddWorkModalOn: false
+      });
     });
   };
 
+  removeWork = workId => {
+    console.log(workId);
+  };
+
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, myWorks } = this.props;
     const { getFieldDecorator } = this.props.form;
     const {
       isDeleteModalOn,
       isAddWorkModalOn,
       workTitle,
+      workShortDescription,
       workDescription
     } = this.state;
+
+    const myWorksWithActions = myWorks.map(work => ({
+      ...work,
+      actions: [
+        {
+          content: 'Remove',
+          handleClick: () => this.removeWork(work._id)
+        }
+      ]
+    }));
+
+    const formItemStyle = {
+      marginBottom: 24
+    };
 
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
+          <Blaze template="loginButtons" />
+
+          <Divider />
           <Col md={8}>
-            <Blaze template="loginButtons" />
-
-            <Divider />
-
+            <h2>Personal Info</h2>
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
                 <FormItem>
@@ -113,6 +146,7 @@ class Profile extends React.Component {
                     initialValue: currentUser ? currentUser.firstName : null
                   })(<Input placeholder="first name" />)}
                 </FormItem>
+
                 <FormItem>
                   {getFieldDecorator('lastName', {
                     rules: [
@@ -124,6 +158,18 @@ class Profile extends React.Component {
                     initialValue: currentUser ? currentUser.lastName : null
                   })(<Input placeholder="last name" />)}
                 </FormItem>
+
+                <FormItem>
+                  {getFieldDecorator('bio', {
+                    initialValue: currentUser ? currentUser.bio : null
+                  })(
+                    <ReactQuill
+                      modules={editorModules}
+                      formats={editorFormats}
+                    />
+                  )}
+                </FormItem>
+
                 <FormItem
                   wrapperCol={{
                     xs: { span: 24, offset: 0 },
@@ -136,6 +182,40 @@ class Profile extends React.Component {
                 </FormItem>
               </Form>
             )}
+            <Divider />
+          </Col>
+
+          <Col md={2} />
+
+          <Col md={10}>
+            <h2 style={{ marginBottom: 24 }}>Works</h2>
+
+            {currentUser && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Button
+                    onClick={() => this.setState({ isAddWorkModalOn: true })}
+                  >
+                    Add work
+                  </Button>
+                </div>
+
+                {myWorksWithActions && (
+                  <NiceList list={myWorksWithActions}>
+                    {work => (
+                      <div key={work.title}>
+                        <h3>
+                          <Link to={`/work/${work._id}`}>{work.title}</Link>
+                        </h3>
+                        <em
+                          dangerouslySetInnerHTML={{ __html: work.description }}
+                        />
+                      </div>
+                    )}
+                  </NiceList>
+                )}
+              </div>
+            )}
 
             <Divider />
 
@@ -143,21 +223,9 @@ class Profile extends React.Component {
               <div>
                 <Button
                   onClick={() => this.setState({ isDeleteModalOn: true })}
+                  style={{ color: 'red' }}
                 >
                   Delete Account
-                </Button>
-                <Divider />
-              </div>
-            )}
-
-            <Divider />
-
-            {currentUser && (
-              <div>
-                <Button
-                  onClick={() => this.setState({ isAddWorkModalOn: true })}
-                >
-                  Add work
                 </Button>
                 <Divider />
               </div>
@@ -165,7 +233,11 @@ class Profile extends React.Component {
           </Col>
 
           <Col md={4} />
+        </Row>
 
+        <Divider />
+
+        <Row>
           <Col md={10}>
             <SkogenTerms />
           </Col>
@@ -192,15 +264,25 @@ class Profile extends React.Component {
           visible={isAddWorkModalOn}
         >
           <Input
-            placeholder="Page title"
+            placeholder="Title"
             value={workTitle}
             onChange={this.handleWorkTitleChange}
+            style={formItemStyle}
           />
+
+          <TextArea
+            placeholder="Short description"
+            value={workShortDescription}
+            onChange={this.handleWorkShortDescriptionChange}
+            style={formItemStyle}
+          />
+
           <ReactQuill
             modules={editorModules}
             formats={editorFormats}
             value={workDescription}
             onChange={this.handleWorkDescriptionChange}
+            placeholder="description"
           />
         </Modal>
       </div>
