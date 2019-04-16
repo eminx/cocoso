@@ -46,7 +46,7 @@ Meteor.methods({
           }
         }
       );
-      if ((contextType = 'booking')) {
+      if (contextType === 'booking') {
         return;
       }
       Meteor.call('createNotifications', contextId, unSeenIndex);

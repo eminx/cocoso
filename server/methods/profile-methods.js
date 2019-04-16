@@ -47,7 +47,9 @@ Meteor.methods({
       const newWorkId = Works.insert({
         ...newWork,
         authorId: user._id,
-        authorUsername: user.username
+        authorUsername: user.username,
+        authorFirstName: user.firstName,
+        authorLastName: user.lastName
       });
       return newWorkId;
     } catch (e) {

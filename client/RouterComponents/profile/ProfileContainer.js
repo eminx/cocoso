@@ -3,14 +3,13 @@ import Profile from './Profile';
 
 export default (ProfileContainer = withTracker(props => {
   const currentUser = Meteor.user();
-  const myWorksSubscription = Meteor.subscribe('myworks');
-  const isLoading = !currentUser || !myWorksSubscription.ready();
-  const myWorks = Works.find().fetch() || null;
-  console.log(myWorks);
+  // const myWorksSubscription = Meteor.subscribe('myworks');
+  const isLoading = !currentUser;
+  // const myWorks = Works.find().fetch() || null;
 
   return {
     isLoading,
-    currentUser,
-    myWorks
+    currentUser
+    // myWorks
   };
 })(Profile));
