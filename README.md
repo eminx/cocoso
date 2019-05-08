@@ -14,9 +14,9 @@ This application will enable members of Skogen to get actively engaged at planni
 
 1. Install meteor locally by running: `curl https://install.meteor.com/ | sh` on your terminal (OSX & Linux). For Windows, refer to the meteor website: https://www.meteor.com/install
 
-1. Clone the repo to your computer at your favourite location: `git clone git@github.com:eminx/Nodal.git`
+1. Clone the repo to your computer at your favourite location: `git clone git@github.com:eminx/SkogenApp.git`
 
-1. Go to the repo: `cd Nodal`
+1. Go to the repo: `cd SkogenApp`
 
 1. Run `meteor npm install`
 
