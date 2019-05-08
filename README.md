@@ -1,10 +1,10 @@
-# Nodal
+# SkogenApp
 
 A dedicated app for managing collaborative activities at Skogen
 
 ## Brief
 
-This application will enable members of Skogen to get actively engaged at planning, administering and facilitating different activities and recurring sessions (Streams) at Skogen. The aim is to have a dedicated platform with which any member can have an account in order to both participate and facilitate different activities.
+This application will enable members of Skogen to get actively engaged at planning, administering and facilitating different activities and recurring sessions such as study groups, conferences etc at Skogen. The aim is to have a dedicated platform with which any member can have an account in order to both participate and facilitate different activities.
 
 ## Installation & Running
 
