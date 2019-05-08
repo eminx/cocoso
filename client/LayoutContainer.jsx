@@ -232,16 +232,13 @@ const FancyFooter = () => {
         <Divider style={{ background: '#030303' }} />
 
         <p style={{ marginTop: 24 }}>
-          Built with ∞♥︎ at{' '}
-          <a href="http://www.infinitesimals.space" target="_blank">
-            infinitesimals labs
-          </a>
+          Crafted with ∞♥︎ at{' '}
+          <a href="http://www.infinitesimals.space">Infinitesimals Labs</a>
         </p>
         <p>
           <a
             href="https://github.com/eminx/SkogenApp"
             style={{ borderBottom: '1px solid #ea3214e6' }}
-            target="_blank"
           >
             source code
           </a>
