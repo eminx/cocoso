@@ -232,13 +232,18 @@ const FancyFooter = () => {
         <Divider style={{ background: '#030303' }} />
 
         <p style={{ marginTop: 24 }}>
-          Skogen is an{' '}
+          Built with ∞♥︎ at{' '}
+          <a href="http://www.infinitesimals.space" target="_blank">
+            infinitesimals labs
+          </a>
+        </p>
+        <p>
           <a
-            href="http://www.artistrun.space"
-            style={{ color: '#ea3214e6', borderBottom: '1px solid #ea3214e6' }}
+            href="https://github.com/eminx/SkogenApp"
+            style={{ borderBottom: '1px solid #ea3214e6' }}
             target="_blank"
           >
-            artistrun space
+            source code
           </a>
         </p>
       </div>

@@ -23,13 +23,13 @@ import Loader from '../../UIComponents/Loader';
 
 class Profile extends React.Component {
   state = {
-    isDeleteModalOn: false,
-    isAddWorkModalOn: false,
-    workTitle: '',
-    workShortDescription: '',
-    workDescription: '',
-    isUploading: false,
-    imageUrl: null
+    isDeleteModalOn: false
+    // isAddWorkModalOn: false,
+    // workTitle: '',
+    // workShortDescription: '',
+    // workDescription: '',
+    // isUploading: false,
+    // imageUrl: null
   };
 
   handleSubmit = event => {
@@ -197,17 +197,6 @@ class Profile extends React.Component {
                     ],
                     initialValue: currentUser ? currentUser.lastName : null
                   })(<Input placeholder="last name" />)}
-                </FormItem>
-
-                <FormItem>
-                  {getFieldDecorator('bio', {
-                    initialValue: currentUser ? currentUser.bio : null
-                  })(
-                    <ReactQuill
-                      modules={editorModules}
-                      formats={editorFormats}
-                    />
-                  )}
                 </FormItem>
 
                 <FormItem

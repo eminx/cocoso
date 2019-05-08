@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+// import LazyLoad from 'react-lazyload';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -114,29 +117,31 @@ class PublicActivityThumb extends React.Component {
     };
 
     const coverStyle = {
-      position: 'absolute',
-      top: 0,
-      width: '100%',
-      height: '100%',
-      maxHeight: '100%',
-      backgroundImage: `url('${item.imageUrl}')`,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center center'
+      position: 'absolute'
+    };
+
+    const imageStyle = {
+      width: 288,
+      height: 288,
+      objectFit: 'cover'
     };
 
     let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
-
     const coverClass = 'thumb-cover';
-
     let coverContainerClass = 'thumb-cover-container ';
-
-    const highlightClass = 'cover-highlight-title';
 
     return (
       <div className={coverContainerClass}>
         <Link to={clickLink}>
-          <div style={coverStyle} className={coverClass} />
+          <div className={coverClass}>
+            <LazyLoadImage
+              alt={item.title}
+              src={item.imageUrl}
+              style={imageStyle}
+              effect="black-and-white"
+            />
+          </div>
+
           <div style={{ position: 'relative', padding: '24px 16px' }}>
             {this.renderDates()}
             <h3

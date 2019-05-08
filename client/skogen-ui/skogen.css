@@ -242,6 +242,7 @@ body {
 }
 
 .thumb-cover {
+  position: 'absolute';
   filter: brightness(50%);
   transition: all ease-in-out 200ms;
 }
