@@ -231,6 +231,11 @@ const FancyFooter = () => {
 
         <Divider style={{ background: '#030303' }} />
 
+        <h4>Swish for donations:</h4>
+        <h3 style={{ ...boldBabe }}>123 388 4772</h3>
+
+        <Divider style={{ background: '#030303' }} />
+
         <p style={{ marginTop: 24 }}>
           Crafted with ∞♥︎ at{' '}
           <a href="http://www.infinitesimals.space">Infinitesimals Labs</a>
