@@ -27,3 +27,4 @@ service-configuration@1.0.11
 underscore@1.0.10
 email
 accounts-ui
+force-ssl
