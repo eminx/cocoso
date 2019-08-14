@@ -1,7 +1,17 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
+import {
+  Row,
+  Col,
+  List,
+  Card,
+  Radio,
+  Button,
+  Divider,
+  message
+} from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 
@@ -20,6 +30,10 @@ function shortenDescription(str) {
 }
 
 class GroupsList extends React.PureComponent {
+  state = {
+    filterBy: 'active'
+  };
+
   getTitle = group => {
     return (
       <div>
@@ -45,8 +59,54 @@ class GroupsList extends React.PureComponent {
     );
   };
 
-  archiveGroup = group => {
-    console.log(group);
+  archiveGroup = groupId => {
+    Meteor.call('archiveGroup', groupId, (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.success('Group is successfully archived');
+      }
+    });
+  };
+
+  unarchiveGroup = groupId => {
+    Meteor.call('unarchiveGroup', groupId, (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.success('Group is successfully unarchived');
+      }
+    });
+  };
+
+  getFilteredGroups = () => {
+    const { groupsData, currentUser } = this.props;
+    const { filterBy } = this.state;
+
+    if (!groupsData) {
+      console.log('wtf');
+      return [];
+    }
+    console.log(groupsData);
+    const filteredGroups = groupsData.filter(group => {
+      if (filterBy === 'archived') {
+        return group.isArchived === true;
+      } else if (filterBy === 'my-group') {
+        return group.members.some(
+          member => member.memberId === currentUser._id
+        );
+      } else {
+        return !group.isArchived;
+      }
+    });
+    console.log(filteredGroups);
+    return filteredGroups;
+  };
+
+  handleSelectedFilter = e => {
+    this.setState({
+      filterBy: e.target.value
+    });
   };
 
   render() {
@@ -57,7 +117,9 @@ class GroupsList extends React.PureComponent {
     const { isLoading, currentUser, groupsData } = this.props;
     const isSuperAdmin = (currentUser && currentUser.isSuperAdmin) || false;
 
-    const groupsSorted = groupsData.sort(compareForSort);
+    const groupsFilteredAndSorted = this.getFilteredGroups().sort(
+      compareForSort
+    );
 
     const centerStyle = {
       display: 'flex',
@@ -71,12 +133,14 @@ class GroupsList extends React.PureComponent {
       width: '100%'
     };
 
-    const groupsList = groupsSorted.map(group => ({
+    const groupsList = groupsFilteredAndSorted.map(group => ({
       ...group,
       actions: [
         {
-          content: 'Archive',
-          handleClick: () => this.archiveGroup(group._id)
+          content: group.isArchived ? 'Unarchive' : 'Archive',
+          handleClick: group.isArchived
+            ? () => this.unarchiveGroup(group._id)
+            : () => this.archiveGroup(group._id)
         }
       ]
     }));
@@ -93,11 +157,15 @@ class GroupsList extends React.PureComponent {
           </div>
 
           <div style={{ paddingTop: 12, paddingLeft: 12 }}>
-            <RadioGroup defaultValue="active" size="small">
+            <RadioGroup
+              value={this.state.filterBy}
+              size="small"
+              onChange={this.handleSelectedFilter}
+            >
               <Radio value="active" style={radioButton}>
                 Active Groups
               </Radio>
-              <Radio value="created-by-me" style={radioButton}>
+              <Radio value="my-group" style={radioButton}>
                 My Groups
               </Radio>
               <Radio value="archived" style={radioButton}>
@@ -118,7 +186,7 @@ class GroupsList extends React.PureComponent {
               {group => (
                 <Card
                   title={this.getTitle(group)}
-                  bordered
+                  bordered={false}
                   extra={this.getExtra(group)}
                   style={{ width: '100%', marginBottom: 0 }}
                   className="empty-card-body"
@@ -126,21 +194,6 @@ class GroupsList extends React.PureComponent {
               )}
             </NiceList>
           )}
-
-          <List
-            dataSource={groupsSorted.reverse()}
-            renderItem={group => (
-              <ListItem style={{ paddingBottom: 0 }}>
-                <Card
-                  title={this.getTitle(group)}
-                  bordered
-                  extra={this.getExtra(group)}
-                  style={{ width: '100%', marginBottom: 0 }}
-                  className="empty-card-body"
-                />
-              </ListItem>
-            )}
-          />
         </Col>
 
         <Col md={16} />
