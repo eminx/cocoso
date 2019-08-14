@@ -37,12 +37,21 @@ class GroupsList extends React.PureComponent {
   getTitle = group => {
     return (
       <div>
-        <h3 style={{ overflowWrap: 'anywhere' }}>
-          <Link to={`/group/${group._id}`}>{group.title}</Link>
-        </h3>
-        <h5>
-          <b>{group.readingMaterial}</b>
-        </h5>
+        <div>
+          <h3 style={{ overflowWrap: 'anywhere' }}>
+            <Link to={`/group/${group._id}`}>{group.title}</Link>
+          </h3>
+          <h5>
+            <b>{group.readingMaterial}</b>
+          </h5>
+        </div>
+        <div style={{ textAlign: 'right', lineHeight: '16px' }}>
+          <span style={{ fontSize: 12 }}>{group.adminUsername}</span>
+          <br />
+          <span style={{ fontSize: 10 }}>
+            {moment(group.creationDate).format('Do MMM YYYY')}
+          </span>
+        </div>
       </div>
     );
   };
@@ -187,7 +196,7 @@ class GroupsList extends React.PureComponent {
                 <Card
                   title={this.getTitle(group)}
                   bordered={false}
-                  extra={this.getExtra(group)}
+                  // extra={this.getExtra(group)}
                   style={{ width: '100%', marginBottom: 0 }}
                   className="empty-card-body"
                 />
