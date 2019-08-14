@@ -456,5 +456,43 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error('Could not change admin due to :', error.reason);
     }
+  },
+
+  archiveGroup(groupId) {
+    const user = Meteor.user();
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      console.log('you are not an admin');
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          isArchived: true
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error('Could not archive the group', error);
+    }
+  },
+
+  unarchiveGroup(groupId) {
+    const user = Meteor.user();
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id) {
+      console.log('you are not an admin');
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    try {
+      Groups.update(groupId, {
+        $set: {
+          isArchived: false
+        }
+      });
+    } catch (error) {
+      throw new Meteor.Error('Could not archive the group', error);
+    }
   }
 });
