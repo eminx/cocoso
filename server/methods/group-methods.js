@@ -461,9 +461,8 @@ Meteor.methods({
   archiveGroup(groupId) {
     const user = Meteor.user();
     const theGroup = Groups.findOne(groupId);
-    if (theGroup.adminId !== user._id) {
-      console.log('you are not an admin');
-      throw new Meteor.Error('You are not admin!');
+    if (theGroup.adminId !== user._id && !user.isSuperAdmin) {
+      throw new Meteor.Error('You do not have admin privileges!');
     }
 
     try {
@@ -480,8 +479,7 @@ Meteor.methods({
   unarchiveGroup(groupId) {
     const user = Meteor.user();
     const theGroup = Groups.findOne(groupId);
-    if (theGroup.adminId !== user._id) {
-      console.log('you are not an admin');
+    if (theGroup.adminId !== user._id && !user.isSuperAdmin) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -492,7 +490,7 @@ Meteor.methods({
         }
       });
     } catch (error) {
-      throw new Meteor.Error('Could not archive the group', error);
+      throw new Meteor.Error('Could not unarchive the group', error);
     }
   }
 });

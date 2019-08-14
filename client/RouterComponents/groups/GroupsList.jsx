@@ -62,7 +62,7 @@ class GroupsList extends React.PureComponent {
   archiveGroup = groupId => {
     Meteor.call('archiveGroup', groupId, (error, respond) => {
       if (error) {
-        message.error(error.reason);
+        message.error(error.error);
       } else {
         message.success('Group is successfully archived');
       }
@@ -84,10 +84,8 @@ class GroupsList extends React.PureComponent {
     const { filterBy } = this.state;
 
     if (!groupsData) {
-      console.log('wtf');
       return [];
     }
-    console.log(groupsData);
     const filteredGroups = groupsData.filter(group => {
       if (filterBy === 'archived') {
         return group.isArchived === true;
@@ -99,7 +97,6 @@ class GroupsList extends React.PureComponent {
         return !group.isArchived;
       }
     });
-    console.log(filteredGroups);
     return filteredGroups;
   };
 
@@ -140,7 +137,9 @@ class GroupsList extends React.PureComponent {
           content: group.isArchived ? 'Unarchive' : 'Archive',
           handleClick: group.isArchived
             ? () => this.unarchiveGroup(group._id)
-            : () => this.archiveGroup(group._id)
+            : () => this.archiveGroup(group._id),
+          isDisabled:
+            group.adminId !== currentUser._id && !currentUser.isSuperAdmin
         }
       ]
     }));
@@ -181,7 +180,7 @@ class GroupsList extends React.PureComponent {
           {groupsList && groupsList.length > 0 && (
             <NiceList
               list={groupsList.reverse()}
-              actionsDisabled={!isSuperAdmin}
+              // actionsDisabled={!isSuperAdmin}
             >
               {group => (
                 <Card
