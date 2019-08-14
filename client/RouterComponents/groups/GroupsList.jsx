@@ -110,8 +110,10 @@ class GroupsList extends React.PureComponent {
   };
 
   handleSelectedFilter = e => {
+    const { currentUser } = this.props;
     const value = e.target.value;
-    if (value === 'my-groups') {
+    if (!currentUser && value === 'my-groups') {
+      message.destroy();
       message.error('You need an account for filtering your groups');
       return;
     }
@@ -121,11 +123,12 @@ class GroupsList extends React.PureComponent {
   };
 
   render() {
+    const { isLoading, currentUser, groupsData } = this.props;
+
     if (isLoading) {
       return <Loader />;
     }
 
-    const { isLoading, currentUser, groupsData } = this.props;
     const isSuperAdmin = (currentUser && currentUser.isSuperAdmin) || false;
 
     const groupsFilteredAndSorted = this.getFilteredGroups().sort(
