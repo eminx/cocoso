@@ -139,7 +139,8 @@ class GroupsList extends React.PureComponent {
             ? () => this.unarchiveGroup(group._id)
             : () => this.archiveGroup(group._id),
           isDisabled:
-            group.adminId !== currentUser._id && !currentUser.isSuperAdmin
+            !currentUser ||
+            (group.adminId !== currentUser._id && !currentUser.isSuperAdmin)
         }
       ]
     }));
@@ -180,7 +181,7 @@ class GroupsList extends React.PureComponent {
           {groupsList && groupsList.length > 0 && (
             <NiceList
               list={groupsList.reverse()}
-              // actionsDisabled={!isSuperAdmin}
+              actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
             >
               {group => (
                 <Card
