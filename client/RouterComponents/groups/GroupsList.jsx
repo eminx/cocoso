@@ -98,7 +98,7 @@ class GroupsList extends React.PureComponent {
     const filteredGroups = groupsData.filter(group => {
       if (filterBy === 'archived') {
         return group.isArchived === true;
-      } else if (filterBy === 'my-group') {
+      } else if (filterBy === 'my-groups') {
         return group.members.some(
           member => member.memberId === currentUser._id
         );
@@ -110,8 +110,13 @@ class GroupsList extends React.PureComponent {
   };
 
   handleSelectedFilter = e => {
+    const value = e.target.value;
+    if (value === 'my-groups') {
+      message.error('You need an account for filtering your groups');
+      return;
+    }
     this.setState({
-      filterBy: e.target.value
+      filterBy: value
     });
   };
 
@@ -174,7 +179,7 @@ class GroupsList extends React.PureComponent {
               <Radio value="active" style={radioButton}>
                 Active Groups
               </Radio>
-              <Radio value="my-group" style={radioButton}>
+              <Radio value="my-groups" style={radioButton}>
                 My Groups
               </Radio>
               <Radio value="archived" style={radioButton}>
