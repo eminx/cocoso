@@ -3,6 +3,10 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
+import NiceList from '../../UIComponents/NiceList';
+
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 import { compareForSort } from '../../functions';
 
@@ -41,12 +45,17 @@ class GroupsList extends React.PureComponent {
     );
   };
 
-  render() {
-    const { isLoading, currentUser, groupsData } = this.props;
+  archiveGroup = group => {
+    console.log(group);
+  };
 
+  render() {
     if (isLoading) {
       return <Loader />;
     }
+
+    const { isLoading, currentUser, groupsData } = this.props;
+    const isSuperAdmin = (currentUser && currentUser.isSuperAdmin) || false;
 
     const groupsSorted = groupsData.sort(compareForSort);
 
@@ -56,6 +65,21 @@ class GroupsList extends React.PureComponent {
       padding: 24,
       paddingBottom: 0
     };
+
+    const radioButton = {
+      padding: 8,
+      width: '100%'
+    };
+
+    const groupsList = groupsSorted.map(group => ({
+      ...group,
+      actions: [
+        {
+          content: 'Archive',
+          handleClick: () => this.archiveGroup(group._id)
+        }
+      ]
+    }));
 
     return (
       <Row gutter={24}>
@@ -67,18 +91,41 @@ class GroupsList extends React.PureComponent {
               </Button>
             </Link>
           </div>
+
+          <div style={{ paddingTop: 12, paddingLeft: 12 }}>
+            <RadioGroup defaultValue="active" size="small">
+              <Radio value="active" style={radioButton}>
+                Active Groups
+              </Radio>
+              <Radio value="created-by-me" style={radioButton}>
+                My Groups
+              </Radio>
+              <Radio value="archived" style={radioButton}>
+                Archived
+              </Radio>
+            </RadioGroup>
+          </div>
         </Col>
 
         <Col md={14} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Groups</h2>
 
-          {/* <div style={centerStyle}>
-            <RadioGroup defaultValue="ongoing" size="large">
-              <RadioButton value="ongoing">Ongoing</RadioButton>
-              <RadioButton value="my-groups">My Groups</RadioButton>
-              <RadioButton value="archived">Archived</RadioButton>
-            </RadioGroup>
-          </div> */}
+          {groupsList && groupsList.length > 0 && (
+            <NiceList
+              list={groupsList.reverse()}
+              actionsDisabled={!isSuperAdmin}
+            >
+              {group => (
+                <Card
+                  title={this.getTitle(group)}
+                  bordered
+                  extra={this.getExtra(group)}
+                  style={{ width: '100%', marginBottom: 0 }}
+                  className="empty-card-body"
+                />
+              )}
+            </NiceList>
+          )}
 
           <List
             dataSource={groupsSorted.reverse()}
