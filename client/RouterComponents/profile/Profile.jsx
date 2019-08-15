@@ -41,8 +41,8 @@ class Profile extends React.Component {
       }
       const values = {
         firstName: fieldsValue['firstName'],
-        lastName: fieldsValue['lastName'],
-        bio: fieldsValue['bio']
+        lastName: fieldsValue['lastName']
+        // bio: fieldsValue['bio']
       };
 
       Meteor.call('saveUserInfo', values, (error, respond) => {
