@@ -946,7 +946,7 @@ class Group extends Component {
           visible={inviteManagerOpen}
           onClose={this.handleCloseInviteManager}
         >
-          <InviteManager peopleInvited={[]} />
+          <InviteManager group={group} />
         </Drawer>
       </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Divider, Input, Button, Tag, message } from 'antd/lib';
 
-import { emailIsValid } from '../../functions';
+import { emailIsValid, includesSpecialCharacters } from '../../functions';
 
 const marginBottom = {
   marginBottom: 12
@@ -9,60 +9,71 @@ const marginBottom = {
 
 class InviteManager extends React.PureComponent {
   state = {
-    peopleToBeInvited: [],
     emailInput: '',
     firstNameInput: ''
   };
 
-  handleAddInviteEmail = event => {
-    event.preventDefault();
-    const { peopleToBeInvited, emailInput, firstNameInput } = this.state;
-    const { peopleInvited } = this.props;
+  checkIfAlreadyInvited = () => {
+    const { emailInput } = this.state;
+    const { group } = this.props;
+    const peopleInvited = group.peopleInvited;
+    const inviteEmailsList = peopleInvited.map(person => person.email);
+
+    if (inviteEmailsList.indexOf(emailInput) !== -1) {
+      message.error('This email address is already invited');
+      return;
+    }
+  };
+  checkIfValuesAreValid = () => {
+    const { emailInput, firstNameInput } = this.state;
 
     if (!emailIsValid(emailInput)) {
       message.error('Please enter a valid email');
       return;
     }
 
-    if (firstNameInput.length < 2) {
+    if (
+      firstNameInput.length < 2 ||
+      includesSpecialCharacters(firstNameInput)
+    ) {
       message.error('Please enter a valid first name');
       return;
     }
-
-    const inviteEmailsList = peopleToBeInvited.map(person => person.email);
-
-    if (inviteEmailsList.indexOf(emailInput) !== -1) {
-      message.error('This email address is already added to the list');
-      return;
-    } else if (peopleInvited.indexOf(emailInput) !== -1) {
-      message.error('This person is already invited');
-      return;
-    }
-
-    this.setState({
-      peopleToBeInvited: [
-        ...peopleToBeInvited,
-        {
-          email: emailInput,
-          firstName: firstNameInput
-        }
-      ],
-      emailInput: '',
-      firstNameInput: ''
-    });
   };
 
-  handleRemoveInviteEmail = (event, email) => {
+  handleSendInvite = event => {
     event.preventDefault();
-    const { peopleToBeInvited } = this.state;
-    const filteredPeople = peopleToBeInvited.filter(
-      person => person.email !== email
-    );
-    this.setState({ peopleToBeInvited: filteredPeople });
-  };
+    this.checkIfAlreadyInvited();
+    this.checkIfValuesAreValid();
 
-  handleSendInvites = () => {
-    const { peopleToBeInvited } = this.state;
+    const { emailInput, firstNameInput } = this.state;
+    const { group } = this.props;
+
+    const person = {
+      firstName: firstNameInput,
+      email: emailInput
+    };
+
+    Meteor.call(
+      'invitePersonToPrivateGroup',
+      group._id,
+      person,
+      (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.destroy();
+          message.error(error.error);
+        } else {
+          message.success(
+            `An email is sent and ${firstNameInput} is successfully invited to the group`
+          );
+          this.setState({
+            firstNameInput: '',
+            emailInput: ''
+          });
+        }
+      }
+    );
   };
 
   handleEmailInputChange = event => {
@@ -81,7 +92,8 @@ class InviteManager extends React.PureComponent {
 
   render() {
     const { emailInput, peopleToBeInvited, firstNameInput } = this.state;
-    const { peopleInvited } = this.props;
+    const { group } = this.props;
+    const peopleInvited = group.peopleInvited;
 
     return (
       <React.Fragment>
@@ -89,7 +101,6 @@ class InviteManager extends React.PureComponent {
           <Col xs={24} sm={24} md={16}>
             <div
               style={{
-                marginBottom: 24,
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
@@ -97,8 +108,7 @@ class InviteManager extends React.PureComponent {
               }}
             >
               <p>
-                Please add data for each person you'd like to invite and add to
-                the list.
+                Please add data for the person you want to invite to the group
               </p>
               <Input
                 type="email"
@@ -119,41 +129,11 @@ class InviteManager extends React.PureComponent {
 
               <Button
                 style={{ maxWidth: 240, ...marginBottom }}
-                onClick={this.handleAddInviteEmail}
+                onClick={this.handleSendInvite}
               >
-                Add
+                Send Invite
               </Button>
             </div>
-            <EmailsContainer
-              title="People to be Invited"
-              count={peopleToBeInvited.length}
-            >
-              {peopleToBeInvited.map(person => (
-                <Tag
-                  key={person.email}
-                  closable
-                  onClose={event =>
-                    this.handleRemoveInviteEmail(event, person.email)
-                  }
-                >
-                  <b>{person.firstName}</b> | {person.email}
-                </Tag>
-              ))}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: 12
-                }}
-              >
-                <Button
-                  disabled={peopleToBeInvited.length === 0}
-                  onClick={this.handleSendInvites}
-                >
-                  Send Invites
-                </Button>
-              </div>
-            </EmailsContainer>
           </Col>
         </Row>
 
@@ -166,7 +146,7 @@ class InviteManager extends React.PureComponent {
               count={peopleInvited.length}
             >
               {peopleInvited.map(person => (
-                <Tag key={person.email} color="green">
+                <Tag key={person.email} color="green" style={{ margin: 6 }}>
                   <b>{person.firstName}</b> | {person.email}
                 </Tag>
               ))}

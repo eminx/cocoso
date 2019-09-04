@@ -24,6 +24,15 @@ const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
   } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
+const getInviteToPrivateGroupText = (
+  firstName,
+  groupTitle,
+  groupId,
+  groupAdmin
+) => {
+  return `Hi ${firstName},\n\nThis is an email to invite you to a private group entitled ${groupTitle} created by ${groupAdmin}.\n\nIf you wish to accept this invite and join the group, simply go to the group page and click the "Join" button: ${siteUrl}group/${groupId}.\n\nPlease bear in mind that you have to have an account at the Skogen App, or create one, with this email address to which you received this email.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+};
+
 const compareForSort = (a, b) => {
   const dateA = new Date(a.endDate);
   const dateB = new Date(b.endDate);
@@ -31,7 +40,7 @@ const compareForSort = (a, b) => {
 };
 
 Meteor.methods({
-  createGroup(formValues, imageUrl) {
+  createGroup(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
@@ -62,6 +71,8 @@ Meteor.methods({
           capacity: formValues.capacity || 20,
           imageUrl,
           isPublished: true,
+          isPrivate: isPrivate,
+          peopleInvited: [],
           creationDate: new Date()
         },
         () => {
@@ -491,6 +502,53 @@ Meteor.methods({
       });
     } catch (error) {
       throw new Meteor.Error('Could not unarchive the group', error);
+    }
+  },
+
+  invitePersonToPrivateGroup(groupId, person) {
+    const user = Meteor.user();
+    const theGroup = Groups.findOne(groupId);
+    if (theGroup.adminId !== user._id && !user.isSuperAdmin) {
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    if (!theGroup.isPrivate) {
+      throw new Meteor.Error('This group is not private');
+    }
+
+    const invitedEmailsList = theGroup.peopleInvited.map(
+      person => person.email
+    );
+
+    if (invitedEmailsList.indexOf(person.email) !== -1) {
+      throw new Meteor.Error('This email address is already added to the list');
+    }
+
+    try {
+      Meteor.call(
+        'sendEmail',
+        person.email,
+        `Invitation to join the group "${theGroup.title}" at Skogen by ${
+          user.username
+        }`,
+        getInviteToPrivateGroupText(
+          person.firstName,
+          theGroup.title,
+          theGroup._id,
+          user.username
+        )
+      );
+
+      Groups.update(groupId, {
+        $addToSet: {
+          peopleInvited: {
+            email: person.email,
+            firstName: person.firstName
+          }
+        }
+      });
+    } catch (exception) {
+      throw new Meteor.Error('Could not send the invite to the person', error);
     }
   }
 });

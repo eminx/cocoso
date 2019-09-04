@@ -80,23 +80,29 @@ class NewGroup extends React.Component {
   };
 
   createGroup = () => {
-    const { values, uploadedImageUrl } = this.state;
+    const { values, uploadedImageUrl, isPrivate } = this.state;
 
-    Meteor.call('createGroup', values, uploadedImageUrl, (error, result) => {
-      if (error) {
-        console.log('error', error);
-        this.setState({
-          isLoading: false,
-          isError: true
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          newGroupId: result,
-          isSuccess: true
-        });
+    Meteor.call(
+      'createGroup',
+      values,
+      uploadedImageUrl,
+      isPrivate,
+      (error, result) => {
+        if (error) {
+          console.log('error', error);
+          this.setState({
+            isLoading: false,
+            isError: true
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            newGroupId: result,
+            isSuccess: true
+          });
+        }
       }
-    });
+    );
   };
 
   hideModal = () => this.setState({ modalConfirm: false });
@@ -142,19 +148,19 @@ class NewGroup extends React.Component {
 
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
-            <h4 style={{ marginBottom: 0 }}>Invite Only?</h4>
+            <h4 style={{ marginBottom: 0 }}>Private Group? (invite-only)</h4>
+            <p>
+              <em>
+                Note that you can <u>not</u> change it to public after you've
+                created it
+              </em>
+            </p>
             <Switch
               checked={isPrivate}
               onChange={this.handlePrivateGroupSwitch}
-              style={marginBottom}
+              style={{ marginBottom: 24 }}
             />
-            <p>You can manage invites after you created the group.</p>
-            <p>
-              <em>
-                Note that you can not change it to public after you've created
-                it
-              </em>
-            </p>
+            <p>You will manage invites after you'll have created the group.</p>
           </Col>
         </Row>
 
@@ -192,64 +198,3 @@ class NewGroup extends React.Component {
 }
 
 export default NewGroup;
-
-class InviteManager extends React.PureComponent {
-  render() {
-    return (
-      <Row>
-        <Col xs={24} sm={24} md={16}>
-          {isPrivate && (
-            <div>
-              <p>
-                Please type the email address of each persons you'd like to
-                invite and add to the list.
-              </p>
-              <Input.Search
-                enterButton
-                type="email"
-                onSearch={this.handleAddInviteEmail}
-                onChange={this.handleEmailInputChange}
-                value={emailInput}
-                style={{ ...marginBottom, maxWidth: 240 }}
-              />
-            </div>
-          )}
-          {isPrivate && (
-            <div
-              style={{
-                ...marginBottom,
-                padding: 12,
-                backgroundColor: '#eee'
-              }}
-            >
-              <h4>Invitees ({inviteEmails.length})</h4>
-              {inviteEmails.map(email => (
-                <Tag
-                  key={email}
-                  closable
-                  onClose={event => this.handleRemoveInviteEmail(event, email)}
-                >
-                  {email}
-                </Tag>
-              ))}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  margin: 24
-                }}
-              >
-                <Button
-                  disabled={inviteEmails.length === 0}
-                  onClick={this.handleSendInvites}
-                >
-                  Send Invites
-                </Button>
-              </div>
-            </div>
-          )}
-        </Col>
-      </Row>
-    );
-  }
-}

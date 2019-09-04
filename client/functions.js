@@ -25,4 +25,21 @@ function emailIsValid(email) {
   return /\S+@\S+\.\S+/.test(email);
 }
 
-export { getInitials, removeSpace, compareForSort, parseTitle, emailIsValid };
+function includesSpecialCharacters(string) {
+  const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+  if (format.test(string)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export {
+  getInitials,
+  removeSpace,
+  compareForSort,
+  parseTitle,
+  emailIsValid,
+  includesSpecialCharacters
+};
