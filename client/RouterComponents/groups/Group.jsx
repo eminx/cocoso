@@ -4,16 +4,13 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
 
-import Chattery from '../../chattery';
-import Loader from '../../UIComponents/Loader';
-import FancyDate from '../../UIComponents/FancyDate';
-import NiceList from '../../UIComponents/NiceList';
-
 import {
   Row,
   Col,
+  Anchor,
   Divider,
   Collapse,
+  Drawer,
   Modal,
   List,
   Card,
@@ -31,6 +28,12 @@ const { Meta } = Card;
 const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
+
+import Chattery from '../../chattery';
+import Loader from '../../UIComponents/Loader';
+import FancyDate from '../../UIComponents/FancyDate';
+import NiceList from '../../UIComponents/NiceList';
+import InviteManager from './InviteManager';
 
 const defaultMeetingRoom = 'Office';
 
@@ -55,7 +58,8 @@ class Group extends Component {
     isFormValid: false,
     isUploading: false,
     droppedDocuments: null,
-    potentialNewAdmin: false
+    potentialNewAdmin: false,
+    inviteManagerOpen: false
   };
 
   isMember = () => {
@@ -132,13 +136,32 @@ class Group extends Component {
     return messages;
   };
 
-  getTitle = group => {
+  getTitle = (group, isAdmin) => {
     return (
       <div>
-        <h2 style={{ overflowWrap: 'anywhere' }}>{group.title}</h2>
-        <h5>
-          <span>{group.readingMaterial}</span>
-        </h5>
+        <div>
+          <h2 style={{ overflowWrap: 'anywhere' }}>{group.title}</h2>
+          <h5>
+            <span>{group.readingMaterial}</span>
+          </h5>
+        </div>
+        <div
+          style={{ display: 'flex', justifyContent: 'flex-end', fontSize: 14 }}
+        >
+          {isAdmin ? (
+            <div>
+              <Link to={`/edit-group/${group._id}`}>Edit</Link>
+              <a
+                onClick={this.handleOpenInviteManager}
+                style={{ marginLeft: 12 }}
+              >
+                Manage Access
+              </a>
+            </div>
+          ) : (
+            <div>{group.adminUsername}</div>
+          )}
+        </div>
       </div>
     );
   };
@@ -531,6 +554,19 @@ class Group extends Component {
     );
   };
 
+  handleOpenInviteManager = event => {
+    event.preventDefault();
+    this.setState({
+      inviteManagerOpen: true
+    });
+  };
+
+  handleCloseInviteManager = () => {
+    this.setState({
+      inviteManagerOpen: false
+    });
+  };
+
   renderMembersAndDocuments = () => {
     const { group, currentUser } = this.props;
 
@@ -685,18 +721,22 @@ class Group extends Component {
 
     return (
       <Card
-        title={this.getTitle(group)}
+        title={this.getTitle(group, isAdmin)}
         bordered
-        extra={this.getExtra(group, isAdmin)}
+        // extra={this.getExtra(group, isAdmin)}
         style={{ width: '100%', marginBottom: 24 }}
         cover={
           group.imageUrl ? <img alt="group-image" src={group.imageUrl} /> : null
         }
       >
         <Meta
-          description={<div dangerouslySetInnerHTML={{
-            __html: group.description
-          }} />}
+          description={
+            <div
+              dangerouslySetInnerHTML={{
+                __html: group.description
+              }}
+            />
+          }
         />
       </Card>
     );
@@ -737,7 +777,12 @@ class Group extends Component {
   };
 
   render() {
-    const { redirectToLogin, isFormValid, potentialNewAdmin } = this.state;
+    const {
+      redirectToLogin,
+      isFormValid,
+      potentialNewAdmin,
+      inviteManagerOpen
+    } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -894,12 +939,19 @@ class Group extends Component {
             be removed.
           </p>
         </Modal>
+
+        <Drawer
+          width="80%"
+          title="Manage Access"
+          visible={inviteManagerOpen}
+          onClose={this.handleCloseInviteManager}
+        >
+          <InviteManager peopleInvited={[]} />
+        </Drawer>
       </div>
     );
   }
 }
-
-export default Group;
 
 const MeetingInfo = ({ meeting, isAttending, places }) => {
   const style = {
@@ -1024,3 +1076,5 @@ class CreateMeetingForm extends PureComponent {
     );
   }
 }
+
+export default Group;
