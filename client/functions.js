@@ -21,4 +21,8 @@ const compareForSort = (a, b) => {
 
 const parseTitle = title => title.replace(/\s+/g, '-').toLowerCase();
 
-export { getInitials, removeSpace, compareForSort, parseTitle };
+function emailIsValid(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+export { getInitials, removeSpace, compareForSort, parseTitle, emailIsValid };
