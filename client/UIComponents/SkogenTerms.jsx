@@ -43,7 +43,7 @@ const SkogenTerms = () => {
       <Divider />
       <h3>Skogen's data policy, GDPR</h3>
       <p>
-        GDPR (General Private Data Regulation) is an EU law that regulates how
+        GDPR (General Data Protection Regulation) is an EU law that regulates how
         you as a user own your personal information and how you have the right
         to see it and know how it is used. Parties that collect, use, and store
         your private information do so only on loan, and must promise you that
