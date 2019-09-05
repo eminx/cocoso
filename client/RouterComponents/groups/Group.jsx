@@ -776,6 +776,24 @@ class Group extends Component {
     );
   };
 
+  isInvited = () => {
+    const { group, currentUser } = this.props;
+
+    if (!currentUser || !group) {
+      return false;
+    }
+
+    const isInvited = group.peopleInvited.some(
+      person => person.email === currentUser.emails[0].address
+    );
+
+    return Boolean(isInvited);
+  };
+
+  isNoAccess = () => {
+    return !this.isMember() && !this.isAdmin() && !this.isInvited();
+  };
+
   render() {
     const {
       redirectToLogin,
@@ -799,6 +817,10 @@ class Group extends Component {
       borderRadius: 0,
       borderColor: '#030303'
     };
+
+    if (group && group.isPrivate && this.isNoAccess()) {
+      return null;
+    }
 
     return (
       <div>
