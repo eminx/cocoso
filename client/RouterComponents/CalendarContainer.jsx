@@ -60,7 +60,7 @@ export default (CalendarContainer = withTracker(props => {
       if (group.meetings) {
         group.meetings.forEach(meeting => {
           allActivities.push({
-            title: group.title,
+            title: group.isPrivate ? 'Group Meeting' : group.title,
             start: moment(
               meeting.startDate + meeting.startTime,
               'YYYY-MM-DD HH:mm'
@@ -81,7 +81,8 @@ export default (CalendarContainer = withTracker(props => {
             isPublicActivity: true,
             imageUrl: group.imageUrl,
             _id: group._id,
-            isGroup: true
+            isGroup: true,
+            isPrivateGroup: group.isPrivate
           });
         });
       }

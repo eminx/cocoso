@@ -488,8 +488,9 @@ class Booking extends React.Component {
           messages &&
           isRegisteredMember && (
             <Row gutter={24}>
-              <Col sm={24} md={20} lg={16}>
-                {chatData ? (
+              <Col lg={5} />
+              <Col lg={11}>
+                {chatData && (
                   <div>
                     <h2>Chat Section</h2>
                     <Chattery
@@ -499,7 +500,7 @@ class Booking extends React.Component {
                       isMember
                     />
                   </div>
-                ) : null}
+                )}
               </Col>
             </Row>
           )}

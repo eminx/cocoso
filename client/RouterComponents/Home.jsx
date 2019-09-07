@@ -68,8 +68,6 @@ class Home extends React.Component {
       }
     });
 
-    console.log(futureGroupsAllowed);
-
     return futureGroupsAllowed;
   };
 

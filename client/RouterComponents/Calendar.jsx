@@ -330,7 +330,12 @@ class Calendar extends React.PureComponent {
           onCancel={this.handleCloseModal}
           title={
             <div>
-              <h2>{selectedBooking && selectedBooking.title}</h2>{' '}
+              <h2>
+                {selectedBooking &&
+                  (selectedBooking.isPrivateGroup
+                    ? 'Group Meeting'
+                    : selectedBooking.title)}
+              </h2>{' '}
               <h4>{this.getBookingTimes(selectedBooking)}</h4>
             </div>
           }
@@ -355,7 +360,9 @@ class Calendar extends React.PureComponent {
                   __html:
                     selectedBooking &&
                     selectedBooking.longDescription &&
-                    selectedBooking.longDescription.slice(0, 120) + '...'
+                    (selectedBooking.isPrivateGroup
+                      ? ''
+                      : selectedBooking.longDescription.slice(0, 120) + '...')
                 }}
               />
               {selectedBooking && selectedBooking.isPublicActivity && (
@@ -366,8 +373,9 @@ class Calendar extends React.PureComponent {
                   }
                 >
                   {' '}
-                  go to the {selectedBooking.isGroup ? 'group ' : 'event '}
-                  page
+                  {!selectedBooking.isPrivateGroup &&
+                    `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
+                    page`}
                 </Link>
               )}
             </Row>
