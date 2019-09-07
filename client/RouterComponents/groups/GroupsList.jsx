@@ -106,7 +106,33 @@ class GroupsList extends React.PureComponent {
         return !group.isArchived;
       }
     });
-    return filteredGroups;
+
+    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(filteredGroups);
+    return filteredGroupsWithAccessFilter;
+  };
+
+  parseOnlyAllowedGroups = futureGroups => {
+    const { currentUser } = this.props;
+
+    const futureGroupsAllowed = futureGroups.filter(group => {
+      if (!group.isPrivate) {
+        return true;
+      } else {
+        if (!currentUser) {
+          return false;
+        }
+        const currentUserId = currentUser._id;
+        return (
+          group.adminId === currentUserId ||
+          group.members.some(member => member.memberId === currentUserId) ||
+          group.peopleInvited.some(
+            person => person.email === currentUser.emails[0].address
+          )
+        );
+      }
+    });
+
+    return futureGroupsAllowed;
   };
 
   handleSelectedFilter = e => {
