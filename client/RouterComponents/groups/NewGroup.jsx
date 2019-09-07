@@ -146,25 +146,33 @@ class NewGroup extends React.Component {
       <div style={{ padding: 24 }}>
         <h1>Create a Group</h1>
 
-        <Row gutter={48}>
-          <Col xs={24} sm={24} md={16}>
-            <h4 style={{ marginBottom: 0 }}>Private Group? (invite-only)</h4>
-            <p>
-              <em>
-                Note that you can <u>not</u> change it to public after you've
-                created it
-              </em>
-            </p>
-            <Switch
-              checked={isPrivate}
-              onChange={this.handlePrivateGroupSwitch}
-              style={{ marginBottom: 24 }}
-            />
-            <p>You will manage invites after you'll have created the group.</p>
-          </Col>
-        </Row>
+        {currentUser.isSuperAdmin && (
+          <div>
+            <Row gutter={48}>
+              <Col xs={24} sm={24} md={16}>
+                <h4 style={{ marginBottom: 0 }}>
+                  Private Group? (invite-only)
+                </h4>
+                <p>
+                  <em>
+                    Note that you can <u>not</u> change it to public after
+                    you've created it
+                  </em>
+                </p>
+                <Switch
+                  checked={isPrivate}
+                  onChange={this.handlePrivateGroupSwitch}
+                  style={{ marginBottom: 24 }}
+                />
+                <p>
+                  You will manage invites after you'll have created the group.
+                </p>
+              </Col>
+            </Row>
 
-        <Divider />
+            <Divider />
+          </div>
+        )}
 
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>

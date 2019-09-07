@@ -151,12 +151,14 @@ class Group extends Component {
           {isAdmin ? (
             <div>
               <Link to={`/edit-group/${group._id}`}>Edit</Link>
-              <a
-                onClick={this.handleOpenInviteManager}
-                style={{ marginLeft: 12 }}
-              >
-                Manage Access
-              </a>
+              {group.isPrivate && (
+                <a
+                  onClick={this.handleOpenInviteManager}
+                  style={{ marginLeft: 12 }}
+                >
+                  Manage Access
+                </a>
+              )}
             </div>
           ) : (
             <div>{group.adminUsername}</div>
@@ -962,14 +964,16 @@ class Group extends Component {
           </p>
         </Modal>
 
-        <Drawer
-          width="80%"
-          title="Manage Access"
-          visible={inviteManagerOpen}
-          onClose={this.handleCloseInviteManager}
-        >
-          <InviteManager group={group} />
-        </Drawer>
+        {group && group.isPrivate && (
+          <Drawer
+            width="80%"
+            title="Manage Access"
+            visible={inviteManagerOpen}
+            onClose={this.handleCloseInviteManager}
+          >
+            <InviteManager group={group} />
+          </Drawer>
+        )}
       </div>
     );
   }
