@@ -325,7 +325,11 @@ class Calendar extends React.PureComponent {
           visible={Boolean(selectedBooking)}
           okText="Edit"
           cancelText="Close"
-          okButtonProps={!this.isCreator() && { style: { display: 'none' } }}
+          okButtonProps={
+            (!this.isCreator() || selectedBooking.isGroup) && {
+              style: { display: 'none' }
+            }
+          }
           onOk={this.handleEditBooking}
           onCancel={this.handleCloseModal}
           title={
