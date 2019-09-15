@@ -144,6 +144,7 @@ class Group extends Component {
           <div style={{ textAlign: 'right' }}>
             <Tooltip
               placement="topRight"
+              trigger={['hover', 'click', 'focus']}
               title={
                 <span style={{ fontSize: 12 }}>
                   Private groups are only visible by their members, and

@@ -153,20 +153,25 @@ class NewGroup extends React.Component {
                 <h4 style={{ marginBottom: 0 }}>
                   Private Group? (invite-only)
                 </h4>
-                <p>
-                  <em>
-                    Note that you can <u>not</u> change it to public after
-                    you've created it
-                  </em>
-                </p>
                 <Switch
                   checked={isPrivate}
                   onChange={this.handlePrivateGroupSwitch}
                   style={{ marginBottom: 24 }}
                 />
-                <p>
-                  You will manage invites after you'll have created the group.
-                </p>
+                {isPrivate && (
+                  <div>
+                    <p>
+                      Private groups are only visible by their members, and
+                      participation is possible only via invites by their
+                      admins. You can <u>not</u> change it to public after
+                      you've created it.
+                    </p>
+                    <p>
+                      You will be able to manage the invites after you'll have
+                      created the group.
+                    </p>
+                  </div>
+                )}
               </Col>
             </Row>
 
