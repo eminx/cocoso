@@ -21,6 +21,7 @@ import {
   Select,
   Switch,
   Icon,
+  Tooltip,
   message
 } from 'antd/lib';
 const ListItem = List.Item;
@@ -139,6 +140,21 @@ class Group extends Component {
   getTitle = (group, isAdmin) => {
     return (
       <div>
+        {group.isPrivate && (
+          <div style={{ textAlign: 'right' }}>
+            <Tooltip
+              placement="topRight"
+              title={
+                <span style={{ fontSize: 12 }}>
+                  Private groups are only visible by their members, and
+                  participation is possible only via invites by their admins.
+                </span>
+              }
+            >
+              <em style={{ fontSize: 12 }}>This is a private group</em>
+            </Tooltip>
+          </div>
+        )}
         <div>
           <h2 style={{ overflowWrap: 'anywhere' }}>{group.title}</h2>
           <h5>
