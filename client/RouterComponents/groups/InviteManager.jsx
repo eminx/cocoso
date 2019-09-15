@@ -13,23 +13,26 @@ class InviteManager extends React.PureComponent {
     firstNameInput: ''
   };
 
-  checkIfAlreadyInvited = () => {
+  isAlreadyInvited = () => {
     const { emailInput } = this.state;
     const { group } = this.props;
     const peopleInvited = group.peopleInvited;
     const inviteEmailsList = peopleInvited.map(person => person.email);
 
     if (inviteEmailsList.indexOf(emailInput) !== -1) {
-      message.error('This email address is already invited');
-      return;
+      message.error('This email address is already added');
+      return true;
     }
+
+    return false;
   };
-  checkIfValuesAreValid = () => {
+
+  isValuesInvalid = () => {
     const { emailInput, firstNameInput } = this.state;
 
     if (!emailIsValid(emailInput)) {
       message.error('Please enter a valid email');
-      return;
+      return true;
     }
 
     if (
@@ -37,14 +40,17 @@ class InviteManager extends React.PureComponent {
       includesSpecialCharacters(firstNameInput)
     ) {
       message.error('Please enter a valid first name');
-      return;
+      return true;
     }
+
+    return;
   };
 
   handleSendInvite = event => {
     event.preventDefault();
-    this.checkIfAlreadyInvited();
-    this.checkIfValuesAreValid();
+    if (this.isAlreadyInvited() || this.isValuesInvalid()) {
+      return;
+    }
 
     const { emailInput, firstNameInput } = this.state;
     const { group } = this.props;
@@ -62,7 +68,7 @@ class InviteManager extends React.PureComponent {
         if (error) {
           console.log('error', error);
           message.destroy();
-          message.error(error.error);
+          message.error(error.reason);
         } else {
           message.success(
             `An email is sent and ${firstNameInput} is successfully invited to the group`
