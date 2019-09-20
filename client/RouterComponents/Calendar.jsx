@@ -334,12 +334,7 @@ class Calendar extends React.PureComponent {
           onCancel={this.handleCloseModal}
           title={
             <div>
-              <h2>
-                {selectedBooking &&
-                  (selectedBooking.isPrivateGroup
-                    ? 'Group Meeting'
-                    : selectedBooking.title)}
-              </h2>{' '}
+              <h2>{selectedBooking && selectedBooking.title}</h2>{' '}
               <h4>{this.getBookingTimes(selectedBooking)}</h4>
             </div>
           }
