@@ -60,7 +60,7 @@ export default (CalendarContainer = withTracker(props => {
       if (group.meetings) {
         group.meetings.forEach(meeting => {
           allActivities.push({
-            title: group.isPrivate ? 'Group Meeting' : group.title,
+            title: group.title,
             start: moment(
               meeting.startDate + meeting.startTime,
               'YYYY-MM-DD HH:mm'
