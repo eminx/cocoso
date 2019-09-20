@@ -61,6 +61,8 @@ class NewGroup extends React.Component {
   };
 
   uploadImage = () => {
+    this.setState({ isLoading: true });
+
     const { uploadableImage } = this.state;
 
     const upload = new Slingshot.Upload('groupImageUpload');
@@ -197,6 +199,7 @@ class NewGroup extends React.Component {
             title="Overview The Information"
             imageSrc={uploadableImageLocal}
             visible={modalConfirm}
+            okButtonProps={{ loading: isLoading }}
             onOk={this.uploadImage}
             onCancel={this.hideModal}
             okText="Confirm"

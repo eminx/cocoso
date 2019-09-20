@@ -1,19 +1,21 @@
 Meteor.methods({
-  createDocument(documentLabel, documentUrl, contextType, contextId) {
+  createDocument(documentLabel, documentUrl, contextType) {
     const user = Meteor.user();
     if (!user) {
       return;
     }
+
+    console.log(documentLabel, documentUrl, contextType);
+
     check(documentLabel, String);
     check(documentUrl, String);
     check(contextType, String);
-    check(contextId, String);
+
     try {
       const theNewDocId = Documents.insert({
         documentLabel,
         documentUrl,
         contextType,
-        contextId,
         uploadedUsername: user.username,
         uploadedBy: user._id,
         uploadedByName: user.username,

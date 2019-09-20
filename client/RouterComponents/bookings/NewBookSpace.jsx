@@ -197,6 +197,7 @@ class NewBookSpace extends React.Component {
             title="Overview The Information"
             visible={modalConfirm}
             onOk={isPublicActivity ? this.uploadImage : this.createBooking}
+            okButtonProps={{ loading: isLoading }}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

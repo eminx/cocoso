@@ -66,7 +66,7 @@ class NewPublication extends React.Component {
   uploadDocument = () => {
     this.setState({ isLoading: true });
 
-    const { uploadableDocument, values } = this.state;
+    const { uploadableDocument, values, newPublicationId } = this.state;
 
     const upload = new Slingshot.Upload('publicationDocumentUpload');
 
@@ -203,6 +203,7 @@ class NewPublication extends React.Component {
             imageSrc={uploadableImageLocal}
             visible={modalConfirm}
             onOk={this.uploadDocument}
+            okButtonProps={{ loading: isLoading }}
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"

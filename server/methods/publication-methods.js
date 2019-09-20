@@ -6,6 +6,8 @@ Meteor.methods({
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
     }
+
+    console.log(formValues, imageUrl, documentId);
     check(formValues.title, String);
     check(formValues.authors, String);
     check(formValues.format, String);
