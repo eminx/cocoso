@@ -148,7 +148,7 @@ class NewGroup extends React.Component {
       <div style={{ padding: 24 }}>
         <h1>Create a Group</h1>
 
-        {currentUser.isSuperAdmin && (
+        {currentUser.isRegisteredMember && (
           <div>
             <Row gutter={48}>
               <Col xs={24} sm={24} md={16}>
