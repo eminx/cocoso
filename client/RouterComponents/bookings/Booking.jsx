@@ -36,7 +36,8 @@ function registrationSuccess() {
 class Booking extends React.Component {
   state = {
     isRsvpCancelModalOn: false,
-    rsvpCancelModalInfo: null
+    rsvpCancelModalInfo: null,
+    capacityGotFullByYou: false
   };
 
   addNewChatMessage = message => {
@@ -260,6 +261,7 @@ class Booking extends React.Component {
 
   renderDates = () => {
     const { bookingData, form, currentUser } = this.props;
+    const { capacityGotFullByYou } = this.state;
 
     if (!bookingData) {
       return;
@@ -321,9 +323,10 @@ class Booking extends React.Component {
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
-                  <p>
-                    The capacity is has gotten full.
-                  </p>
+                    <p>
+                      {capacityGotFullByYou && 'Congrats! You just filled the last space!'}
+                      Capacity is full now.
+                    </p>
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
