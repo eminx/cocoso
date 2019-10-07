@@ -26,6 +26,13 @@ import Loader from '../../UIComponents/Loader';
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
+function registrationSuccess() {
+  Modal.success({
+    title: 'You are set!',
+    content: 'You have just successfully registered your attendance. Welcome!',
+  });
+}
+
 class Booking extends React.Component {
   state = {
     isRsvpCancelModalOn: false,
@@ -79,9 +86,10 @@ class Booking extends React.Component {
               console.log(error);
               message.error(error.reason);
             } else {
-              message.success(
-                'You have successfully registered your attendance'
-              );
+              registrationSuccess();
+              // message.success(
+              //   'You have successfully registered your attendance'
+              // );
               resetFields();
             }
           }
