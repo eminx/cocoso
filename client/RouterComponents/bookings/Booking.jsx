@@ -322,8 +322,7 @@ class Booking extends React.Component {
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
                   <p>
-                    Unfortunately it's full of its capacity. Please check other
-                    recurrences.
+                    The capacity is has gotten full.
                   </p>
                 ) : (
                   <RsvpForm
