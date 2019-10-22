@@ -628,6 +628,10 @@ class RsvpList extends React.PureComponent {
           {
             Header: 'People',
             accessor: 'numberOfPeople'
+          },
+          {
+            Header: 'Email',
+            accessor: 'email'
           }
         ]}
       />
