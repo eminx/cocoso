@@ -339,3 +339,27 @@ body {
   border-radius: 0;
   padding-bottom: 24px;
 }
+
+.ant-tabs .ant-tabs-nav .ant-tabs-tab-active.ant-tabs-tab {
+  color: #ad2539;
+}
+
+.ant-tabs .ant-tabs-nav .ant-tabs-tab {
+  color: #ea3924;
+}
+
+.ant-tabs .ant-tabs-nav .ant-tabs-ink-bar {
+  background-color: #ad2539;
+}
+
+.ant-tabs .ant-tabs-nav .ant-tabs-tab:hover {
+  color: #ad2539;
+}
+
+.ant-tabs .ant-tabs-bar {
+  border-bottom: none;
+}
+
+.ant-tabs .ant-card .ant-card-cover {
+  padding: 0 12px;
+}

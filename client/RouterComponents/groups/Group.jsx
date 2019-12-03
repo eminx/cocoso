@@ -16,6 +16,7 @@ import {
   Card,
   Button,
   DatePicker,
+  Tabs,
   TimePicker,
   Input,
   Select,
@@ -29,6 +30,7 @@ const { Meta } = Card;
 const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
+const { TabPane } = Tabs;
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -139,7 +141,7 @@ class Group extends Component {
 
   getTitle = (group, isAdmin) => {
     return (
-      <div>
+      <div style={{ paddingLeft: 12, paddingRight: 12 }}>
         {group.isPrivate && (
           <div style={{ textAlign: 'right' }}>
             <Tooltip
@@ -534,9 +536,7 @@ class Group extends Component {
                     } else {
                       console.log(respond);
                       message.success(
-                        `${
-                          uploadableFile.name
-                        } is succesfully uploaded and assigned to this group!`
+                        `${uploadableFile.name} is succesfully uploaded and assigned to this group!`
                       );
                       closeLoader();
                     }
@@ -735,29 +735,48 @@ class Group extends Component {
   };
 
   renderGroupInfo = () => {
-    const { group } = this.props;
+    const { group, chatData } = this.props;
     const isAdmin = this.isAdmin();
+    const isMember = this.isMember();
 
     return (
-      <Card
-        title={this.getTitle(group, isAdmin)}
-        bordered
-        // extra={this.getExtra(group, isAdmin)}
-        style={{ width: '100%', marginBottom: 24 }}
-        cover={
-          group.imageUrl ? <img alt="group-image" src={group.imageUrl} /> : null
-        }
-      >
-        <Meta
-          description={
-            <div
-              dangerouslySetInnerHTML={{
-                __html: group.description
-              }}
-            />
-          }
-        />
-      </Card>
+      <div>
+        {this.getTitle(group, isAdmin)}
+        <Tabs
+          type="line"
+          tabBarStyle={{ paddingLeft: 12, paddingRight: 12 }}
+          defaultActiveKey={isMember ? '2' : '1'}
+          animated={false}
+        >
+          <TabPane tab="Info" key="1">
+            <Card
+              title={null}
+              bordered={false}
+              // extra={this.getExtra(group, isAdmin)}
+              style={{ width: '100%', marginBottom: 24 }}
+              bodyStyle={{ padding: 12 }}
+              cover={
+                group.imageUrl ? (
+                  <img alt="group-image" src={group.imageUrl} />
+                ) : null
+              }
+            >
+              <Meta
+                description={
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: group.description
+                    }}
+                  />
+                }
+              />
+            </Card>
+          </TabPane>
+          <TabPane tab="Discussion" key="2">
+            <div>{chatData && this.renderDiscussion()}</div>
+          </TabPane>
+        </Tabs>
+      </div>
     );
   };
 
@@ -932,14 +951,6 @@ class Group extends Component {
         ) : (
           <Loader />
         )}
-
-        <Row gutter={24}>
-          <Col lg={5} />
-          <Col md={14} lg={12}>
-            {chatData && this.renderDiscussion()}
-          </Col>
-          <Col md={10} lg={6} />
-        </Row>
 
         <MediaQuery query="(max-width: 991px)">
           <Row>
