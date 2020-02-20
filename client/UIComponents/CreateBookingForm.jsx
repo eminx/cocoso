@@ -530,7 +530,7 @@ class DatesAndTimes extends Component {
             onChange={handleStartTimeChange}
             value={recurrence.startTimeMoment}
             format="HH:mm"
-            minuteStep={30}
+            minuteStep={5}
             placeholder="Start time"
           />
         </FormItem>
@@ -548,7 +548,7 @@ class DatesAndTimes extends Component {
             onChange={handleFinishTimeChange}
             value={recurrence.endTimeMoment}
             format="HH:mm"
-            minuteStep={30}
+            minuteStep={5}
             placeholder="Finish time"
           />
         </FormItem>

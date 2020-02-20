@@ -1062,7 +1062,7 @@ class CreateMeetingForm extends PureComponent {
           <TimePicker
             onChange={handleStartTimeChange}
             format="HH:mm"
-            minuteStep={30}
+            minuteStep={5}
             placeholder="Start time"
             required
           />
@@ -1072,7 +1072,7 @@ class CreateMeetingForm extends PureComponent {
           <TimePicker
             onChange={handleFinishTimeChange}
             format="HH:mm"
-            minuteStep={30}
+            minuteStep={5}
             placeholder="Finish time"
             required
           />
