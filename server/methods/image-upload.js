@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 const s3Settings = Meteor.settings.AWSs3;
+console.log(s3Settings.AWSBucketName);
 
 Slingshot.fileRestrictions('groupImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
