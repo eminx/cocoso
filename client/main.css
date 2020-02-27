@@ -1,7 +1,7 @@
 @import 'bigcalendar-custom.css';
 
 .main-viewport {
-  background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg');
+  /* background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg'); */
   background-repeat: no-repeat;
   background-position: top;
   background-color: #fff;
@@ -14,21 +14,21 @@ h1 {
 }
 
 .logo {
-  width: 180px;
-  height: 100px;
+  width: 100px;
+  height: 108px;
   background-repeat: no-repeat;
   background-size: contain;
 }
 
 @media (max-width: 600px) {
   .logo {
-    width: 90px;
-    height: 50px;
+    width: 50px;
+    height: 54px;
   }
 }
 
 .skogen-logo {
-  background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/skogen-logo-x2.png');
+  background-image: url('https://circles.garden/assets/images/logo-d184.png');
   background-repeat: no-repeat;
 }
 
