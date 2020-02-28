@@ -13,16 +13,6 @@ Slingshot.fileRestrictions('groupDocumentUpload', {
   maxSize: 5 * 1000 * 1000
 });
 
-Slingshot.fileRestrictions('publicationImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024
-});
-
-Slingshot.fileRestrictions('publicationDocumentUpload', {
-  allowedFileTypes: ['application/pdf'],
-  maxSize: 5 * 1000 * 1000
-});
-
 Slingshot.fileRestrictions('pageImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
   maxSize: 5 * 3024 * 3024
