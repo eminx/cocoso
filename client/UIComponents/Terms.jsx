@@ -1,10 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Divider } from 'antd/lib';
 
-const SkogenTerms = () => {
+const ContextName = 'Circles Community';
+
+const Terms = () => {
   return (
     <div>
-      <h3>Skogen user agreement</h3>
+      <h3>{ContextName} user agreement</h3>
       <p>
         With an account, you are a member and can join any one or all of our
         study group’s online forums free of charge. If you join a study group,
@@ -16,18 +19,18 @@ const SkogenTerms = () => {
       </p>
       <p>
         As a member you will also receive running notifications about things
-        happening at Skogen, and can sign yourself up (RSVP) for events with a
-        simple click. Your username will be visible for staff members in the
-        list of attendees.
+        happening at {ContextName}, and can sign yourself up (RSVP) for events
+        with a simple click. Your username will be visible for staff members in
+        the list of attendees.
       </p>
       <p>
         The discussions for each study group are visible to all members of
-        Skogen. These discussions are kept for the duration of the group and
-        will be archived, but can be erased if the group wishes.
+        {ContextName}. These discussions are kept for the duration of the group
+        and will be archived, but can be erased if the group wishes.
       </p>
       <p>
-        Skogen expects all members to keep respectful and supportive language
-        when communicating. We want to ensure a friendly and welcoming
+        {ContextName} expects all members to keep respectful and supportive
+        language when communicating. We want to ensure a friendly and welcoming
         environment, while encouraging critical thinking and constructive
         dialogue. Members who go against these simple rules run the risk of
         having their membership removed.
@@ -41,40 +44,42 @@ const SkogenTerms = () => {
         our GDPR policy.
       </p>
       <Divider />
-      <h3>Skogen's data policy, GDPR</h3>
+      <h3>{ContextName}'s data policy, GDPR</h3>
       <p>
-        GDPR (General Data Protection Regulation) is an EU law that regulates how
-        you as a user own your personal information and how you have the right
-        to see it and know how it is used. Parties that collect, use, and store
-        your private information do so only on loan, and must promise you that
-        they will protect it against intrusion and store it safely according to
-        the law. You must have knowledge of, and be able to agree or decline, as
-        well as terminate, any usage and storage of your personal information.
+        GDPR (General Data Protection Regulation) is an EU law that regulates
+        how you as a user own your personal information and how you have the
+        right to see it and know how it is used. Parties that collect, use, and
+        store your private information do so only on loan, and must promise you
+        that they will protect it against intrusion and store it safely
+        according to the law. You must have knowledge of, and be able to agree
+        or decline, as well as terminate, any usage and storage of your personal
+        information.
       </p>
       <h4>What data we collect, how we store it, and why</h4>
       <p>
-        Skogen collects only two pieces of information: a username and an e-mail
-        address. Your e-mail address is considered personal information. The
-        name you choose does not have to be your legal name, so if you choose to
-        use your legal name you do so at your own discretion. This name will be
-        displayed on the website only to other members: in the member list of
-        groups you have joined; when sending discussion messages; and in the
-        RSVP list when attending events (this latter visible only to staff).
+        {ContextName} collects only two pieces of information: a username and an
+        e-mail address. Your e-mail address is considered personal information.
+        The name you choose does not have to be your legal name, so if you
+        choose to use your legal name you do so at your own discretion. This
+        name will be displayed on the website only to other members: in the
+        member list of groups you have joined; when sending discussion messages;
+        and in the RSVP list when attending events (this latter visible only to
+        staff).
       </p>
       <p>
-        We use your e-mail address to send you notifications. Skogen collects
-        this information when you sign up for an account, as well as when you
-        change your account information. To login you will be asked to provide a
-        password for your account. It is your responsibility to ensure this
-        password is stored securely and is sufficiently robust.
+        We use your e-mail address to send you notifications. {ContextName}{' '}
+        collects this information when you sign up for an account, as well as
+        when you change your account information. To login you will be asked to
+        provide a password for your account. It is your responsibility to ensure
+        this password is stored securely and is sufficiently robust.
       </p>
       <Divider />
       <h3>Data storage</h3>
       <p>
-        Skogen uses cookies in your web browser for the sole purpose of storing
-        your password. Your password is encrypted in our database, so there is
-        no way we can access or read it. Your connection to Skogen is also
-        encrypted using SSL (HTTPS).
+        {ContextName} uses cookies in your web browser for the sole purpose of
+        storing your password. Your password is encrypted in our database, so
+        there is no way we can access or read it. Your connection to{' '}
+        {ContextName} is also encrypted using SSL (HTTPS).
       </p>
       <p>
         The list of e-mail addresses is secure and can be accessed only by the
@@ -108,7 +113,7 @@ const SkogenTerms = () => {
 
       <h3>Requesting information about your personal information</h3>
       <p>
-        You can contact Skogen via e-mail to request anything about your
+        You can contact {ContextName} via e-mail to request anything about your
         personal information—what we store, how it is used, and if you want to
         change or remove it.
       </p>
@@ -139,4 +144,4 @@ const SkogenTerms = () => {
   );
 };
 
-export default SkogenTerms;
+export default Terms;

@@ -16,10 +16,10 @@ import {
   Modal
 } from 'antd/lib';
 const TextArea = Input.TextArea;
-import SkogenTerms from '../../UIComponents/SkogenTerms';
 const FormItem = Form.Item;
 import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
+import Terms from '../../UIComponents/Terms';
 
 class Profile extends React.Component {
   state = {
@@ -270,7 +270,7 @@ class Profile extends React.Component {
 
         <Row>
           <Col md={10}>
-            <SkogenTerms />
+            <Terms />
           </Col>
         </Row>
 

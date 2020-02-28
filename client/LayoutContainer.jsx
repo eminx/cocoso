@@ -23,7 +23,7 @@ const menu = [
     route: '/'
   },
   {
-    label: 'Making It Work',
+    label: 'Calendar',
     route: '/calendar'
   },
   {
@@ -31,12 +31,12 @@ const menu = [
     route: '/groups'
   },
   {
-    label: 'Community Press',
-    route: '/publications'
+    label: 'Shops',
+    route: '/shops'
   },
   {
     label: 'Info',
-    route: '/page/about-skogen'
+    route: '/page/about-circles'
   }
 ];
 
@@ -295,11 +295,11 @@ const SkogenInfo = () => (
   </Fragment>
 );
 
-export default (LayoutContainer = withTracker(props => {
+export default LayoutContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
   return {
     currentUser
   };
-})(LayoutPage));
+})(LayoutPage);

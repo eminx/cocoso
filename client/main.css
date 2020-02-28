@@ -51,7 +51,7 @@ h1 {
 
 .layout.ant-layout {
   background-color: #fff;
-  border: 1px solid #030303;
+  /* border: 1px solid #030303; */
 }
 
 .ant-layout .ant-layout-footer {
