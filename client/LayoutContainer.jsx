@@ -19,20 +19,20 @@ const { Content } = Layout;
 
 const menu = [
   {
-    label: 'Program',
+    label: 'Marketplace',
     route: '/'
-  },
-  {
-    label: 'Calendar',
-    route: '/calendar'
-  },
-  {
-    label: 'Groups',
-    route: '/groups'
   },
   {
     label: 'Shops',
     route: '/shops'
+  },
+  {
+    label: 'Activities',
+    route: '/calendar'
+  },
+  {
+    label: 'Learning',
+    route: '/groups'
   },
   {
     label: 'Info',
@@ -223,31 +223,7 @@ const FancyFooter = () => {
       }}
     >
       <div style={widgetBgrstyle}>
-        <EmailSignupForm />
-
-        <Divider style={{ background: '#030303' }} />
-
-        <SkogenInfo />
-
-        <Divider style={{ background: '#030303' }} />
-
-        <h4>Swish for donations:</h4>
-        <h3 style={{ ...boldBabe }}>123 388 4772</h3>
-
-        <Divider style={{ background: '#030303' }} />
-
-        <p style={{ marginTop: 24 }}>
-          Crafted with ∞♥︎ at{' '}
-          <a href="http://www.infinitesimals.space">Infinitesimals Labs</a>
-        </p>
-        <p>
-          <a
-            href="https://github.com/eminx/SkogenApp"
-            style={{ borderBottom: '1px solid #ea3214e6' }}
-          >
-            source code
-          </a>
-        </p>
+        <CirclesInfo />
       </div>
     </div>
   );
@@ -278,19 +254,11 @@ const EmailSignupForm = () => (
   </Fragment>
 );
 
-const SkogenInfo = () => (
+const CirclesInfo = () => (
   <Fragment>
-    <h3 style={boldBabe}>SKOGEN</h3>
-    <p>Masthuggsterrassen 3, SE-413 18 Göteborg, Sweden</p>
+    <h3 style={boldBabe}>CIRCLES</h3>
     <p>
-      <a href="mailto:info@skogen.pm">info@skogen.pm</a>
-    </p>
-    <p>
-      <a href="https://www.facebook.com/skogen.pm" target="_blank">
-        www.facebook.com/skogen.pm
-      </a>
-      <br />
-      (opens in a new tab)
+      <a href="mailto:info@joincircles.net">info@joincircles.net</a>
     </p>
   </Fragment>
 );

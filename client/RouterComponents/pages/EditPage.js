@@ -162,7 +162,7 @@ class EditPage extends React.Component {
     if (isSuccess) {
       successCreation();
       if (newPageTitle === 'deleted') {
-        return <Redirect to="/page/about-skogen" />;
+        return <Redirect to="/page/about-circles" />;
       } else {
         return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
       }
