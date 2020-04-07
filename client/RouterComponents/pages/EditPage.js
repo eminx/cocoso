@@ -8,6 +8,8 @@ import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 import { parseTitle } from '../../functions';
 
+const contextName = Meteor.settings.public.contextName;
+
 const successCreation = () => {
   message.success('The page is successfully updated', 6);
 };
@@ -162,7 +164,7 @@ class EditPage extends React.Component {
     if (isSuccess) {
       successCreation();
       if (newPageTitle === 'deleted') {
-        return <Redirect to="/page/about-circles" />;
+        return <Redirect to={`/page/about-${contextName}`} />;
       } else {
         return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
       }

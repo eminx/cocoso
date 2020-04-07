@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Divider } from 'antd/lib';
 
-const ContextName = 'Circles Community';
+const contextName = Meteor.settings.public.contextName;
 
 const Terms = () => {
   return (
     <div>
-      <h3>{ContextName} user agreement</h3>
+      <h3>{contextName} user agreement</h3>
       <p>
         With an account, you are a member and can join any one or all of our
         study group’s online forums free of charge. If you join a study group,
@@ -19,17 +19,17 @@ const Terms = () => {
       </p>
       <p>
         As a member you will also receive running notifications about things
-        happening at {ContextName}, and can sign yourself up (RSVP) for events
+        happening at {contextName}, and can sign yourself up (RSVP) for events
         with a simple click. Your username will be visible for staff members in
         the list of attendees.
       </p>
       <p>
         The discussions for each study group are visible to all members of
-        {ContextName}. These discussions are kept for the duration of the group
+        {contextName}. These discussions are kept for the duration of the group
         and will be archived, but can be erased if the group wishes.
       </p>
       <p>
-        {ContextName} expects all members to keep respectful and supportive
+        {contextName} expects all members to keep respectful and supportive
         language when communicating. We want to ensure a friendly and welcoming
         environment, while encouraging critical thinking and constructive
         dialogue. Members who go against these simple rules run the risk of
@@ -44,7 +44,7 @@ const Terms = () => {
         our GDPR policy.
       </p>
       <Divider />
-      <h3>{ContextName}'s data policy, GDPR</h3>
+      <h3>{contextName}'s data policy, GDPR</h3>
       <p>
         GDPR (General Data Protection Regulation) is an EU law that regulates
         how you as a user own your personal information and how you have the
@@ -57,7 +57,7 @@ const Terms = () => {
       </p>
       <h4>What data we collect, how we store it, and why</h4>
       <p>
-        {ContextName} collects only two pieces of information: a username and an
+        {contextName} collects only two pieces of information: a username and an
         e-mail address. Your e-mail address is considered personal information.
         The name you choose does not have to be your legal name, so if you
         choose to use your legal name you do so at your own discretion. This
@@ -67,7 +67,7 @@ const Terms = () => {
         staff).
       </p>
       <p>
-        We use your e-mail address to send you notifications. {ContextName}{' '}
+        We use your e-mail address to send you notifications. {contextName}{' '}
         collects this information when you sign up for an account, as well as
         when you change your account information. To login you will be asked to
         provide a password for your account. It is your responsibility to ensure
@@ -76,10 +76,10 @@ const Terms = () => {
       <Divider />
       <h3>Data storage</h3>
       <p>
-        {ContextName} uses cookies in your web browser for the sole purpose of
+        {contextName} uses cookies in your web browser for the sole purpose of
         storing your password. Your password is encrypted in our database, so
         there is no way we can access or read it. Your connection to{' '}
-        {ContextName} is also encrypted using SSL (HTTPS).
+        {contextName} is also encrypted using SSL (HTTPS).
       </p>
       <p>
         The list of e-mail addresses is secure and can be accessed only by the
@@ -113,7 +113,7 @@ const Terms = () => {
 
       <h3>Requesting information about your personal information</h3>
       <p>
-        You can contact {ContextName} via e-mail to request anything about your
+        You can contact {contextName} via e-mail to request anything about your
         personal information—what we store, how it is used, and if you want to
         change or remove it.
       </p>
