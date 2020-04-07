@@ -1,8 +1,8 @@
-import { Email } from 'meteor/email'
+import { Email } from 'meteor/email';
 
-function isValidEmail (email) {
-  var re = /\S+@\S+\.\S+/
-  return re.test(email)
+function isValidEmail(email) {
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email);
 }
 
 Meteor.methods({
@@ -11,18 +11,18 @@ Meteor.methods({
     //   return false;
     // }
 
-    check([id, subjectEmail, textEmail], [String])
+    check([id, subjectEmail, textEmail], [String]);
     // Let other method calls from the same client start running,
     // without waiting for the email sending to complete.
-    var fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail
-    var toEmail
+    const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
+    let toEmail;
 
     if (isValidEmail(id)) {
-      toEmail = id
+      toEmail = id;
     } else if (id.length === 17) {
-      toEmail = Meteor.users.findOne({ _id: id }).emails[0].address
+      toEmail = Meteor.users.findOne({ _id: id }).emails[0].address;
     } else {
-      toEmail = Meteor.users.findOne({ username: id }).emails[0].address
+      toEmail = Meteor.users.findOne({ username: id }).emails[0].address;
     }
 
     Email.send({
@@ -30,6 +30,6 @@ Meteor.methods({
       to: toEmail,
       subject: subjectEmail,
       text: textEmail
-    })
+    });
   }
-})
+});

@@ -12,12 +12,14 @@ Accounts.onCreateUser((options, user) => {
   user.attending = [];
   user.groups = [];
   user.notifications = [];
-  Meteor.call(
-    'sendEmail',
-    user.emails[0].address,
-    'Welcome to ' + contextName,
-    getWelcomeEmailText(user.username),
-    true // is new user
-  );
+  console.log(user.emails[0].address, user.username);
+  console.log(contextName, publicSettings);
+  // Meteor.call(
+  //   'sendEmail',
+  //   user.emails[0].address,
+  //   'Welcome to ' + contextName,
+  //   getWelcomeEmailText(user.username),
+  //   true // is new user
+  // );
   return user;
 });
