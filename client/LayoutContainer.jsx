@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+
+const publicSettings = Meteor.settings.public;
 
 import {
   Layout,
@@ -19,24 +22,20 @@ const { Content } = Layout;
 
 const menu = [
   {
-    label: 'Marketplace',
+    label: 'Home',
     route: '/'
   },
   {
-    label: 'Shops',
-    route: '/shops'
-  },
-  {
-    label: 'Activities',
+    label: 'Calendar',
     route: '/calendar'
   },
   {
-    label: 'Learning',
+    label: 'Groups',
     route: '/groups'
   },
   {
     label: 'Info',
-    route: '/page/about-circles'
+    route: `/page/about-${publicSettings.contextSlug}`
   }
 ];
 
@@ -147,7 +146,11 @@ class LayoutPage extends React.Component {
 
             <Col xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
               <Link to="/">
-                <div className="logo skogen-logo" />
+                <div className="logo skogen-logo">
+                  <h1>
+                    <b>XYRDEN</b>
+                  </h1>
+                </div>
               </Link>
             </Col>
 
@@ -223,7 +226,7 @@ const FancyFooter = () => {
       }}
     >
       <div style={widgetBgrstyle}>
-        <CirclesInfo />
+        <FooterInfo />
       </div>
     </div>
   );
@@ -254,20 +257,22 @@ const EmailSignupForm = () => (
   </Fragment>
 );
 
-const CirclesInfo = () => (
+const FooterInfo = () => (
   <Fragment>
-    <h3 style={boldBabe}>CIRCLES</h3>
+    <h3 style={boldBabe}>{publicSettings.contextName}</h3>
     <p>
-      <a href="mailto:info@joincircles.net">info@joincircles.net</a>
+      <a href={`mailto:${publicSettings.contextEmail}`}>
+        {publicSettings.contextEmail}
+      </a>
     </p>
   </Fragment>
 );
 
-export default LayoutContainer = withTracker(props => {
+export default (LayoutContainer = withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
   return {
     currentUser
   };
-})(LayoutPage);
+})(LayoutPage));

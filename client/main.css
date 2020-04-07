@@ -14,8 +14,9 @@ h1 {
 }
 
 .logo {
-  width: 100px;
-  height: 108px;
+  width: 180px;
+  height: 60px;
+  text-align: center;
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -28,7 +29,7 @@ h1 {
 }
 
 .skogen-logo {
-  background-image: url('/logo-circles.png');
+  /* background-image: url('/logo-circles.png'); */
   background-repeat: no-repeat;
 }
 
