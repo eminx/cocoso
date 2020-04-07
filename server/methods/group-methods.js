@@ -1,11 +1,16 @@
+import { Meteor } from 'meteor/meteor';
+
+const publicSettings = Meteor.settings.public;
+const contextName = publicSettings.contextName;
+
 import { getRoomIndex, siteUrl } from './shared';
 
 const getGroupJoinText = (firstName, groupTitle, groupId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\nWe are very excited to have you participate this little school we have founded and look forward to learning with you.\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n\nWe look forward to your participation.\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\nWe are very excited to have you participate this little school we have founded and look forward to learning with you.\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n\nWe look forward to your participation.\n${contextName} Team`;
 };
 
 const getGroupLeaveText = (firstName, groupTitle, groupId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully left the study group called "${groupTitle}".\nIf you want to join the group again, you can do so here at the group page: ${siteUrl}group/${groupId}.\n\nKind regards,\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully left the study group called "${groupTitle}".\nIf you want to join the group again, you can do so here at the group page: ${siteUrl}group/${groupId}.\n\nKind regards,\n${contextName} Team`;
 };
 
 const getMeetingAttendText = (firstName, occurence, groupTitle, groupId) => {
@@ -13,7 +18,7 @@ const getMeetingAttendText = (firstName, occurence, groupTitle, groupId) => {
     occurence.startDate
   } at ${
     occurence.startTime
-  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${contextName} Team`;
 };
 
 const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
@@ -21,7 +26,7 @@ const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
     occurence.startDate
   } at ${
     occurence.startTime
-  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${contextName} Team`;
 };
 
 const getInviteToPrivateGroupText = (
@@ -30,7 +35,7 @@ const getInviteToPrivateGroupText = (
   groupId,
   groupAdmin
 ) => {
-  return `Hi ${firstName},\n\nThis is an email to invite you to a private group entitled ${groupTitle} created by ${groupAdmin}.\n\nIf you wish to accept this invite and join the group, simply go to the group page and click the "Join" button: ${siteUrl}group/${groupId}.\n\nPlease bear in mind that you have to have an account at the Skogen App, or create one, with this email address to which you received this email.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is an email to invite you to a private group entitled ${groupTitle} created by ${groupAdmin}.\n\nIf you wish to accept this invite and join the group, simply go to the group page and click the "Join" button: ${siteUrl}group/${groupId}.\n\nPlease bear in mind that you have to have an account at the ${contextName} App, or create one, with this email address to which you received this email.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${contextName} Team`;
 };
 
 const compareForSort = (a, b) => {
@@ -188,7 +193,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theGroup.title}" at Skogen`,
+        `"${theGroup.title}" at ${contextName}`,
         getGroupJoinText(
           user.firstName || user.username,
           theGroup.title,
@@ -226,7 +231,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theGroup.title}" at Skogen`,
+        `"${theGroup.title}" at ${contextName}`,
         getGroupLeaveText(
           user.firstName || user.username,
           theGroup.title,
@@ -325,7 +330,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theGroup.title}" at Skogen`,
+        `"${theGroup.title}" at ${contextName}`,
         getMeetingAttendText(
           user.firstName || user.username,
           updatedMeetings[meetingIndex],
@@ -369,7 +374,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theGroup.title}" at Skogen`,
+        `"${theGroup.title}" at ${contextName}`,
         getMeetingUnattendText(
           user.firstName || user.username,
           updatedMeetings[meetingIndex],
@@ -528,9 +533,9 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         person.email,
-        `Invitation to join the group "${theGroup.title}" at Skogen by ${
-          user.username
-        }`,
+        `Invitation to join the group "${
+          theGroup.title
+        }" at ${contextName} by ${user.username}`,
         getInviteToPrivateGroupText(
           person.firstName,
           theGroup.title,

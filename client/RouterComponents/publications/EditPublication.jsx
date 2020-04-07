@@ -12,7 +12,7 @@ const successCreation = () =>
 const successDelete = () =>
   message.success('The publication is successfully deleted', 4);
 
-const sideNote = 'This page is dedicated to create publications at Skogen.';
+const sideNote = 'This page is dedicated to create publications.';
 
 class EditPublication extends React.Component {
   state = {

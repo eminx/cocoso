@@ -29,7 +29,7 @@ const FormItem = Form.Item;
 function registrationSuccess() {
   Modal.success({
     title: 'You are set!',
-    content: 'You have just successfully registered your attendance. Welcome!',
+    content: 'You have just successfully registered your attendance. Welcome!'
   });
 }
 
@@ -323,10 +323,11 @@ class Booking extends React.Component {
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
-                    <p>
-                      {capacityGotFullByYou && 'Congrats! You just filled the last space!'}
-                      Capacity is full now.
-                    </p>
+                  <p>
+                    {capacityGotFullByYou &&
+                      'Congrats! You just filled the last space!'}
+                    Capacity is full now.
+                  </p>
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
@@ -342,7 +343,7 @@ class Booking extends React.Component {
               <div style={{ paddingLeft: 12 }}>
                 <Divider />
                 <h4>Attendees</h4>
-                <span>Only visible to registered Skogen members</span>
+                <span>Only visible to registered members</span>
                 <div
                   style={{
                     paddingBottom: 12,

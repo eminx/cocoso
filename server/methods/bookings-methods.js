@@ -1,3 +1,8 @@
+import { Meteor } from 'meteor/meteor';
+
+const publicSettings = Meteor.settings.public;
+const contextName = publicSettings.contextName;
+
 import { getRoomIndex, siteUrl } from './shared';
 
 const getRegistrationText = (
@@ -10,7 +15,7 @@ const getRegistrationText = (
     numberOfPeople === 1 ? 'person' : 'people'
   } in total for the event on ${occurence.startDate} at ${
     occurence.startTime
-  }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${bookingId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\nSkogen Team`;
+  }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${bookingId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\n${contextName} Team`;
 };
 
 const getRemovalText = (firstName, occurence, bookingId) => {
@@ -18,7 +23,7 @@ const getRemovalText = (firstName, occurence, bookingId) => {
     occurence.startDate
   } at ${
     occurence.startTime
-  }, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${bookingId}.\n\nKind regards,\nSkogen Team`;
+  }, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${bookingId}.\n\nKind regards,\n${contextName} Team`;
 };
 
 Meteor.methods({
@@ -164,7 +169,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         values.email,
-        `Your registration for "${theActivity.title}" at Skogen`,
+        `Your registration for "${theActivity.title}" at ${contextName}`,
         getRegistrationText(
           values.firstName,
           values.numberOfPeople,
@@ -199,7 +204,9 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         values.email,
-        `Update to your registration for "${theActivity.title}" at Skogen`,
+        `Update to your registration for "${
+          theActivity.title
+        }" at ${contextName}`,
         getRegistrationText(
           values.firstName,
           values.numberOfPeople,
@@ -235,7 +242,9 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         theNonAttendee.email,
-        `Update to your registration for "${theActivity.title}" at Skogen`,
+        `Update to your registration for "${
+          theActivity.title
+        }" at ${contextName}`,
         getRemovalText(theNonAttendee.firstName, theOccurence, bookingId)
       );
     } catch (error) {

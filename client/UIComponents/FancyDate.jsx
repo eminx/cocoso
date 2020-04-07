@@ -1,5 +1,8 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import moment from 'moment';
+
+const publicSettings = Meteor.settings.public;
 
 const fancyDateStyle = {
   color: '#030303',
@@ -61,7 +64,7 @@ const FancyDate = ({ occurence, places, ...otherProps }) => (
         >
           <em>
             {places.map(place => place.name).includes(occurence.room)
-              ? occurence.room + ', Skogen'
+              ? occurence.room + ', ' + publicSettings.contextName
               : occurence.room}
           </em>
         </div>

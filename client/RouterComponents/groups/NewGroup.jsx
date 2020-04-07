@@ -20,8 +20,6 @@ const successCreation = () => {
   message.success('Your group is successfully created', 6);
 };
 
-const sideNote = 'This page is dedicated to create groups at Skogen.';
-
 class NewGroup extends React.Component {
   state = {
     modalConfirm: false,

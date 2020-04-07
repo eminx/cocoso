@@ -12,7 +12,7 @@ const successCreation = () =>
 const successDelete = () =>
   message.success('The group is successfully deleted', 4);
 
-const sideNote = 'This page is dedicated to create groups at Skogen.';
+const sideNote = 'This page is dedicated to create groups';
 
 class EditGroup extends React.Component {
   state = {

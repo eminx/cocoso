@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component, PureComponent, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
@@ -37,6 +38,8 @@ import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
 import NiceList from '../../UIComponents/NiceList';
 import InviteManager from './InviteManager';
+
+const publicSettings = Meteor.settings.public;
 
 const defaultMeetingRoom = 'Office';
 
@@ -536,7 +539,9 @@ class Group extends Component {
                     } else {
                       console.log(respond);
                       message.success(
-                        `${uploadableFile.name} is succesfully uploaded and assigned to this group!`
+                        `${
+                          uploadableFile.name
+                        } is succesfully uploaded and assigned to this group!`
                       );
                       closeLoader();
                     }
@@ -1083,7 +1088,9 @@ class CreateMeetingForm extends PureComponent {
             checked={isLocal}
             onChange={() => this.setState({ isLocal: !isLocal })}
           />
-          <span style={{ marginLeft: 12 }}>At Skogen? </span>
+          <span style={{ marginLeft: 12 }}>
+            At {publicSettings.contextName}?{' '}
+          </span>
         </div>
 
         <div style={{ marginBottom: 6 }}>

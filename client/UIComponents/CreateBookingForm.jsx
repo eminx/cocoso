@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
@@ -19,10 +20,13 @@ import {
   Modal,
   message
 } from 'antd/lib';
+import moment from 'moment';
+
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import moment from 'moment';
+
+const publicSettings = Meteor.settings.public;
 
 const compareForSort = (a, b) => {
   const dateA = moment(a.startDate, 'YYYY-MM-DD');
@@ -40,10 +44,6 @@ let emptyDateAndTime = {
   attendees: [],
   capacity: defaultCapacity
 };
-
-const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
-const defaultPracticalInfo = `MAT: Efter föreställning serveras en vegetarisk middag, välkommen att stanna och äta med oss. \n\n
-BILJETTPRIS: Skogen har inget fast biljettpris. Välkommen att donera för konst och mat när du går. Kontanter / Swish.`;
 
 const iconStyle = {
   padding: 0,
@@ -344,7 +344,7 @@ class CreateBookingForm extends Component {
                 initialValue:
                   bookingData && bookingData.place
                     ? bookingData.place
-                    : 'Skogen'
+                    : publicSettings.contextName
               })(<Input placeholder="Please enter the name of the place" />)}
             </FormItem>
           )}
@@ -361,7 +361,7 @@ class CreateBookingForm extends Component {
                 initialValue:
                   bookingData && bookingData.address
                     ? bookingData.address
-                    : skogenAddress
+                    : publicSettings.contextAddress
               })(<Input placeholder="Please enter the address" />)}
             </FormItem>
           )}
@@ -393,7 +393,7 @@ class CreateBookingForm extends Component {
                 rules: [
                   {
                     message:
-                      'Please enter internal info - shown only to Skogen members (if any)'
+                      'Please enter internal info - shown only to members (if any)'
                   }
                 ],
                 initialValue:
@@ -431,7 +431,7 @@ class CreateBookingForm extends Component {
               rules: [
                 {
                   required: true,
-                  message: 'Please enter which part of Skogen you want to book'
+                  message: 'Please enter which part you want to book'
                 }
               ],
               initialValue: bookingData ? bookingData.room : 'Studio'

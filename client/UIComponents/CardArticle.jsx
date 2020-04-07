@@ -81,7 +81,7 @@ class CardArticle extends React.Component {
           item &&
           item.internalInfo && (
             <div style={{ ...sectionStyle, textAlign: 'left' }}>
-              <h4>Internal information for Skogen members:</h4>
+              <h4>Internal information for members:</h4>
               <p>{item.internalInfo}</p>
             </div>
           )}
