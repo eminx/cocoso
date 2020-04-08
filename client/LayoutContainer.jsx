@@ -146,7 +146,7 @@ class LayoutPage extends React.Component {
 
             <Col xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
               <Link to="/">
-                <div className="logo skogen-logo">
+                <div className="logo">
                   <h1>
                     <b>XYRDEN</b>
                   </h1>
@@ -178,7 +178,7 @@ class LayoutPage extends React.Component {
           </Row>
         </div>
 
-        <div className="skogen-menu-layout">
+        <div className="app-menu-layout">
           {menu.map(item => (
             <Link to={item.route} key={item.label}>
               <b>{item.label}</b>

@@ -219,7 +219,7 @@ body {
   color: #030303;
 }
 
-.main-viewport .skogen-menu-layout {
+.main-viewport .app-menu-layout {
   display: flex;
   width: 100%;
   justify-content: center;
@@ -233,11 +233,11 @@ body {
   margin: 0 auto;
 }
 
-.skogen-menu-layout > a > b {
+.app-menu-layout > a > b {
   color: #ea3924;
 }
 
-.skogen-menu-layout > a {
+.app-menu-layout > a {
   padding: 6px 12px;
 }
 
