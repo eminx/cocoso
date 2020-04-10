@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd/lib';
@@ -7,10 +8,34 @@ import Loader from '../../UIComponents/Loader';
 import { parseTitle } from '../../functions';
 
 class Page extends PureComponent {
+  state = {
+    pages: null,
+    isLoading: true,
+    currentUser: null
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      const currentUser = Meteor.user();
+      console.log(currentUser);
+      Meteor.call('getPages', (error, respond) => {
+        this.setState({
+          pages: respond,
+          currentUser,
+          isLoading: false
+        });
+      });
+    }, 1000);
+  }
+
   render() {
-    const { pages, pageId, currentUser, isLoading, history } = this.props;
+    const { match } = this.props;
+    const { pages, currentUser, isLoading } = this.state;
+
+    const pageId = match.params.id;
+
     const pageTitles = pages ? pages.map(page => page.title) : [];
-    const page =
+    const currentPage =
       pages && pages.length > 0
         ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
         : null;
@@ -43,12 +68,12 @@ class Page extends PureComponent {
                 marginBottom: 24
               }}
             >
-              <h2>{page && page.title}</h2>
+              <h2>{currentPage && currentPage.title}</h2>
               <div style={{ color: '#030303' }}>
-                {page && (
+                {currentPage && (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: page.longDescription
+                      __html: currentPage.longDescription
                     }}
                   />
                 )}
@@ -56,8 +81,8 @@ class Page extends PureComponent {
             </div>
           </Col>
           <Col md={4}>
-            {page && currentUser && currentUser.isSuperAdmin && (
-              <Link to={`/edit-page/${parseTitle(page.title)}`}>
+            {currentPage && currentUser && currentUser.isSuperAdmin && (
+              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
                 {' '}
                 <Button>Edit</Button>
               </Link>

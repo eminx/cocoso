@@ -20,7 +20,7 @@ import EditPublicationContainer from './publications/EditPublicationContainer';
 import PublicationsListContainer from './publications/PublicationsListContainer';
 import PublicationContainer from './publications/PublicationContainer';
 
-import PageContainer from './pages/PageContainer';
+import Page from './pages/Page';
 import NewPageContainer from './pages/NewPageContainer';
 import EditPageContainer from './pages/EditPageContainer';
 
@@ -68,7 +68,7 @@ export const renderRoutes = () => (
           />
 
           <Route exact path="/new-page" component={NewPageContainer} />
-          <Route path="/page/:id" component={PageContainer} />
+          <Route path="/page/:id" component={Page} />
           <Route path="/edit-page/:id/" component={EditPageContainer} />
 
           <Route

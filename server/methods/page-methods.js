@@ -1,4 +1,13 @@
 Meteor.methods({
+  getPages() {
+    try {
+      console.log(Pages.find().fetch());
+      return Pages.find().fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't add to Collection");
+    }
+  },
+
   createPage(formValues) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
