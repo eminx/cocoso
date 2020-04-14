@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd/lib';
+
+import { UserContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
 import Loader from '../../UIComponents/Loader';
 
@@ -10,27 +12,22 @@ import { parseTitle } from '../../functions';
 class Page extends PureComponent {
   state = {
     pages: null,
-    isLoading: true,
-    currentUser: null
+    isLoading: true
   };
 
   componentDidMount() {
-    setTimeout(() => {
-      const currentUser = Meteor.user();
-      console.log(currentUser);
-      Meteor.call('getPages', (error, respond) => {
-        this.setState({
-          pages: respond,
-          currentUser,
-          isLoading: false
-        });
+    Meteor.call('getPages', (error, respond) => {
+      this.setState({
+        pages: respond,
+        isLoading: false
       });
-    }, 1000);
+    });
   }
 
   render() {
+    const { currentUser } = this.context;
     const { match } = this.props;
-    const { pages, currentUser, isLoading } = this.state;
+    const { pages, isLoading } = this.state;
 
     const pageId = match.params.id;
 
@@ -93,5 +90,7 @@ class Page extends PureComponent {
     );
   }
 }
+
+Page.contextType = UserContext;
 
 export default Page;
