@@ -1,15 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Select, Button, Radio, Dropdown } from 'antd/lib';
+import { Row, Col } from 'antd/lib';
 
 import { parseTitle } from '../functions';
 
-const RadioButton = Radio.Button;
-const Option = Select.Option;
-
 const activeStyle = {
-  // backgroundColor: '#ea3924',
-  // color: '#fff',
   fontWeight: 700
 };
 

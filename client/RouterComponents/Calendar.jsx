@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import MediaQuery from 'react-responsive';
 import ReactDropzone from 'react-dropzone';
 import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd/lib';
 import Loader from '../UIComponents/Loader';

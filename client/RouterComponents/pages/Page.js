@@ -31,11 +31,12 @@ class Page extends PureComponent {
 
     const pageId = match.params.id;
 
-    const pageTitles = pages ? pages.map(page => page.title) : [];
     const currentPage =
       pages && pages.length > 0
         ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
         : null;
+
+    const pageTitles = pages ? pages.map(page => page.title) : [];
 
     if (isLoading) {
       return <Loader />;
