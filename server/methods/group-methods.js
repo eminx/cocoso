@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
+import { getRoomIndex, siteUrl, getHost } from './shared';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
-
-import { getRoomIndex, siteUrl } from './shared';
 
 const getGroupJoinText = (firstName, groupTitle, groupId) => {
   return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully joined the group called "${groupTitle}".\n\nWe are very excited to have you participate this little school we have founded and look forward to learning with you.\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at the group page: ${siteUrl}group/${groupId}.\n\nWe look forward to your participation.\n${contextName} Team`;
@@ -55,9 +54,12 @@ Meteor.methods({
     check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
 
+    const host = getHost(this);
+
     try {
       const add = Groups.insert(
         {
+          host,
           adminId: user._id,
           adminUsername: user.username,
           members: [

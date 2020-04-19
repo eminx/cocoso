@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
+
 const s3Settings = Meteor.settings.AWSs3;
 
 Slingshot.fileRestrictions('groupImageUpload', {
@@ -119,9 +121,12 @@ Meteor.publish('images', function() {
 
 Meteor.methods({
   addGatheringImageInfo(newGatheringId, downloadUrl, timeStamp, currentUserId) {
+    const host = getHost(this);
+
     if (Meteor.userId() === currentUserId) {
       try {
         Images.insert({
+          host,
           gatheringId: newGatheringId,
           imageurl: downloadUrl,
           time: timeStamp,

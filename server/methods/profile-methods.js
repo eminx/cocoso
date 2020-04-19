@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
 
 Meteor.methods({
   saveUserInfo(values) {
@@ -43,9 +44,13 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
     }
+
+    const host = getHost(this);
+
     try {
       const newWorkId = Works.insert({
         ...newWork,
+        host,
         authorId: user._id,
         authorUsername: user.username,
         authorFirstName: user.firstName,
