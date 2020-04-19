@@ -1,7 +1,10 @@
 Meteor.methods({
   getPages() {
     try {
-      return Pages.find().fetch();
+      return {
+        pages: Pages.find().fetch(),
+        absoluteUrl: Meteor.absoluteUrl()
+      };
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
