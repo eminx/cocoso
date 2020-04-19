@@ -1,15 +1,14 @@
-const os = require('os');
+import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
 
 Meteor.methods({
   getPages() {
+    const host = getHost(this);
+
     try {
-      const hostFromOs = os.hostname();
-      const host = this.connection.httpHeaders.host;
-      return {
-        pages: Pages.find().fetch(),
-        hostFromOs,
-        host
-      };
+      return Pages.find({
+        host: host
+      }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
@@ -24,8 +23,11 @@ Meteor.methods({
     check(formValues.title, String);
     check(formValues.longDescription, String);
 
+    const host = getHost(this);
+
     try {
-      const newPageId = Pages.insert({
+      Pages.insert({
+        host,
         authorId: user._id,
         authorName: user.username,
         title: formValues.title,

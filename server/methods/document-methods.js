@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
+
 Meteor.methods({
   createDocument(documentLabel, documentUrl, contextType) {
     const user = Meteor.user();
@@ -11,8 +14,11 @@ Meteor.methods({
     check(documentUrl, String);
     check(contextType, String);
 
+    const host = getHost(this);
+
     try {
       const theNewDocId = Documents.insert({
+        host,
         documentLabel,
         documentUrl,
         contextType,

@@ -11,4 +11,6 @@ export const getRoomIndex = room => {
   }
 };
 
+export const getHost = self => self.connection.httpHeaders.host;
+
 export const siteUrl = Meteor.absoluteUrl();

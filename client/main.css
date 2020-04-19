@@ -154,3 +154,13 @@ li.ant-menu-item span {
 .addSpace-modal .ant-modal-footer {
   display: none;
 }
+
+.ql-container .ql-editor {
+  min-height: 18em;
+}
+
+.ql-container .ql-editor p {
+  line-height: 1.5;
+  margin-bottom: 1em;
+  font-size: 14px;
+}

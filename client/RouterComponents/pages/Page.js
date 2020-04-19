@@ -19,7 +19,7 @@ class Page extends PureComponent {
     Meteor.call('getPages', (error, respond) => {
       console.log(respond);
       this.setState({
-        pages: respond.pages,
+        pages: respond,
         isLoading: false
       });
     });

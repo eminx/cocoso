@@ -2,23 +2,16 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 import {
-  Col,
   Form,
   Input,
-  DatePicker,
-  TimePicker,
   Button,
-  Select,
   InputNumber,
-  Switch,
   Upload,
   Icon,
   Divider,
   Modal,
   message
 } from 'antd/lib';
-const Option = Select.Option;
-const { TextArea } = Input;
 const FormItem = Form.Item;
 
 class CreateGroupForm extends React.Component {
@@ -101,13 +94,7 @@ class CreateGroupForm extends React.Component {
                 }
               ],
               initialValue: groupData ? groupData.description : null
-            })(
-              // <TextArea
-              //   placeholder="Group description (details of the Study etc.)"
-              //   autosize={{ minRows: 6, maxRows: 12 }}
-              // />
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            )}
+            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
 
           <FormItem>

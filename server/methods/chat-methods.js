@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
 
 Meteor.methods({
   createChat(contextName, contextId) {
@@ -7,7 +8,10 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const host = getHost(this);
+
     const theChat = Chats.insert({
+      host,
       contextName: contextName,
       contextId: contextId,
       createdBy: {

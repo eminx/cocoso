@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
@@ -48,9 +49,12 @@ Meteor.methods({
 
     const roomIndex = getRoomIndex(formValues.room);
 
+    const host = getHost(this);
+
     try {
       const add = Gatherings.insert(
         {
+          host,
           authorId: user._id,
           authorName: user.username,
           title: formValues.title,
