@@ -14,10 +14,4 @@ Meteor.startup(() => {
     smtp.port;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
-
-  console.log(
-    'your absolute url is:',
-    Meteor.absoluteUrl('xyshjns'),
-    Meteor.absoluteUrl.defaultOptions
-  );
 });

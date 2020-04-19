@@ -1,9 +1,14 @@
+const os = require('os');
+
 Meteor.methods({
   getPages() {
     try {
+      const hostFromOs = os.hostname();
+      const host = this.connection.httpHeaders.host;
       return {
         pages: Pages.find().fetch(),
-        absoluteUrl: Meteor.absoluteUrl()
+        hostFromOs,
+        host
       };
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
