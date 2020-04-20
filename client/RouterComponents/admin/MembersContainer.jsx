@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import Users from './Users';
+import Members from './Members';
 
-export default (UsersContainer = withTracker(props => {
+export default (MembersContainer = withTracker(props => {
   const currentUser = Meteor.user();
   const usersSubscription = Meteor.subscribe('users');
   const isLoading = !usersSubscription.ready();
@@ -12,4 +12,4 @@ export default (UsersContainer = withTracker(props => {
     currentUser,
     users
   };
-})(Users));
+})(Members));

@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
+import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
 
 const RadioGroup = Radio.Group;
 
@@ -13,7 +15,7 @@ const compareUsersByDate = (a, b) => {
   return dateB - dateA;
 };
 
-class Users extends React.PureComponent {
+class Members extends React.PureComponent {
   state = {
     sortBy: 'join-date',
     filter: 'all',
@@ -147,12 +149,20 @@ class Users extends React.PureComponent {
     }
 
     return (
-      <Row gutter={24}>
-        <Col md={8} />
+      <Row style={{ padding: 24 }}>
+        <Col md={7}>
+          <div style={{ ...linkStyle }}>
+            <Link to="/admin/settings">Settings</Link>
+          </div>
 
-        <Col md={8} style={{ padding: 24 }}>
+          <div style={{ ...activeStyle, ...linkStyle }}>
+            <Link to="/admin/members">Members</Link>
+          </div>
+        </Col>
+
+        <Col md={10} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>
-            {filter} Users ({usersSorted.length}){' '}
+            {filter} Members ({usersSorted.length}){' '}
           </h2>
 
           <div style={{ background: '#f8f8f8', padding: 12 }}>
@@ -203,4 +213,4 @@ class Users extends React.PureComponent {
   }
 }
 
-export default Users;
+export default Members;

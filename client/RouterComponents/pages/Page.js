@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, Button } from 'antd/lib';
 
 import { UserContext } from '../../LayoutContainer';
@@ -17,7 +17,6 @@ class Page extends PureComponent {
 
   componentDidMount() {
     Meteor.call('getPages', (error, respond) => {
-      console.log(respond);
       this.setState({
         pages: respond,
         isLoading: false
@@ -25,23 +24,36 @@ class Page extends PureComponent {
     });
   }
 
+  getCurrentPage = () => {
+    const { match } = this.props;
+    const { pages } = this.state;
+    if (!pages || pages.length === 0) {
+      return;
+    }
+
+    const routeName = match.params.id;
+
+    return pages.find(page => parseTitle(page.title) === parseTitle(routeName));
+  };
+
   render() {
     const { currentUser } = this.context;
     const { match } = this.props;
     const { pages, isLoading } = this.state;
 
-    const pageId = match.params.id;
-
-    const currentPage =
-      pages && pages.length > 0
-        ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
-        : null;
-
-    const pageTitles = pages ? pages.map(page => page.title) : [];
-
     if (isLoading) {
       return <Loader />;
     }
+
+    const routeName = match.params.id;
+
+    const currentPage = this.getCurrentPage();
+
+    if (!currentPage && pages && pages.length > 0) {
+      return <Redirect to={`/page/${parseTitle(pages[0].title)}`} />;
+    }
+
+    const pageTitles = pages && pages.map(page => page.title);
 
     return (
       <div style={{ padding: 24 }}>
@@ -57,7 +69,7 @@ class Page extends PureComponent {
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
-              activePageTitle={pageId}
+              activePageTitle={routeName}
             />
           </Col>
 

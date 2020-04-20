@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, message, Alert, Affix } from 'antd/lib';
+import { Redirect } from 'react-router-dom';
+import { Row, Col, message, Alert } from 'antd/lib';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -122,7 +122,7 @@ class NewPage extends React.Component {
       uploadableImageLocal
     } = this.state;
 
-    isSuccess ? successCreation() : null;
+    isSuccess && successCreation();
 
     return (
       <div style={{ padding: 24 }}>
@@ -146,7 +146,7 @@ class NewPage extends React.Component {
           </Col>
         </Row>
 
-        {modalConfirm ? (
+        {modalConfirm && (
           <ModalArticle
             item={values}
             isLoading={isLoading}
@@ -158,9 +158,9 @@ class NewPage extends React.Component {
             okText="Confirm"
             cancelText="Go back and edit"
           />
-        ) : null}
+        )}
 
-        {isSuccess ? <Redirect to={`/page/${newPageId}`} /> : null}
+        {isSuccess && <Redirect to={`/page/${newPageId}`} />}
       </div>
     );
   }

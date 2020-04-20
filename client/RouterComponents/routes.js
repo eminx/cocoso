@@ -25,9 +25,10 @@ import NewPageContainer from './pages/NewPageContainer';
 import EditPageContainer from './pages/EditPageContainer';
 
 import ProfileContainer from './profile/ProfileContainer';
-import UsersContainer from './users/UsersContainer';
-import UserContainer from './users/UserContainer';
+import Settings from './admin/Settings';
+import MembersContainer from './admin/MembersContainer';
 
+import UserContainer from './user/UserContainer';
 import WorkContainer from './works/WorkContainer';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
@@ -79,7 +80,9 @@ export const renderRoutes = () => (
 
           <Route path="/documents" component={DocumentsListContainer} />
 
-          <Route path="/users" component={UsersContainer} />
+          <Route path="/admin/settings" component={Settings} />
+          <Route path="/admin/members" component={MembersContainer} />
+
           <Route path="/user/:id" component={UserContainer} />
           <Route path="/work/:id" component={WorkContainer} />
 

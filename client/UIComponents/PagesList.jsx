@@ -4,11 +4,11 @@ import { Row, Col } from 'antd/lib';
 
 import { parseTitle } from '../functions';
 
-const activeStyle = {
+export const activeStyle = {
   fontWeight: 700
 };
 
-const linkStyle = {
+export const linkStyle = {
   textTransform: 'uppercase',
   padding: '6px 0'
 };
