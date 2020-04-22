@@ -1,14 +1,43 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd/lib';
-import PagesList from '../../UIComponents/PagesList';
+
+import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 
 import { parseTitle } from '../../functions';
 
 class Work extends PureComponent {
+  state = {
+    work: null,
+    isLoading: true
+  };
+
+  componentDidMount() {
+    this.getWork();
+  }
+
+  getWork = () => {
+    this.setState({ isLoading: true });
+    const { match } = this.props;
+    const workId = match.params.workId;
+    const username = match.params.username;
+
+    console.log(match, workId, username);
+
+    Meteor.call('getWork', workId, username, (error, respond) => {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      this.setState({
+        work: respond,
+        isLoading: false
+      });
+    });
+  };
+
   render() {
-    const { work, isLoading } = this.props;
+    const { work, isLoading } = this.state;
 
     if (!work || isLoading) {
       return <Loader />;
@@ -49,5 +78,7 @@ class Work extends PureComponent {
     );
   }
 }
+
+Work.contextType = UserContext;
 
 export default Work;

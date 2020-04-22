@@ -14,7 +14,6 @@ const theme = {
 };
 
 export default function() {
-  console.log('Im here');
   return (
     <Grommet theme={theme}>
       <Routes />

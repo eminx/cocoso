@@ -29,7 +29,7 @@ import Settings from './admin/Settings';
 import MembersContainer from './admin/MembersContainer';
 
 import UserContainer from './user/UserContainer';
-import WorkContainer from './works/WorkContainer';
+import Work from './works/Work';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -91,7 +91,7 @@ export default function() {
             <Route path="/admin/members" component={MembersContainer} />
 
             <Route path="/user/:id" component={UserContainer} />
-            <Route path="/work/:id" component={WorkContainer} />
+            <Route path="/:username/work/:workId" component={Work} />
 
             {/*<Route path="*" component={NotFoundPage}/>*/}
           </ScrollToTop>

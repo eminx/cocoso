@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, Button } from 'antd/lib';
+// import {} from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -62,7 +63,9 @@ class Page extends PureComponent {
             {currentUser && currentUser.isSuperAdmin && (
               <div style={{ marginBottom: 12 }}>
                 <Link to="/new-page" key="new-page">
-                  <Button type="primary">New Page</Button>
+                  <Button primary as="span">
+                    New Page
+                  </Button>
                 </Link>
               </div>
             )}
@@ -95,7 +98,7 @@ class Page extends PureComponent {
             {currentPage && currentUser && currentUser.isSuperAdmin && (
               <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
                 {' '}
-                <Button>Edit</Button>
+                <Button as="span">Edit</Button>
               </Link>
             )}
           </Col>

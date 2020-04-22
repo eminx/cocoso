@@ -23,14 +23,28 @@ import Terms from '../../UIComponents/Terms';
 
 class Profile extends React.Component {
   state = {
-    isDeleteModalOn: false
-    // isAddWorkModalOn: false,
-    // workTitle: '',
-    // workShortDescription: '',
-    // workDescription: '',
-    // isUploading: false,
-    // imageUrl: null
+    isDeleteModalOn: false,
+    isAddWorkModalOn: false,
+    workTitle: '',
+    workShortDescription: '',
+    workDescription: '',
+    isUploading: false,
+    imageUrl: null,
+    myWorks: []
   };
+
+  componentDidMount() {
+    Meteor.call('getMyWorks', (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+        return;
+      }
+      this.setState({
+        myWorks: respond
+      });
+    });
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -145,18 +159,19 @@ class Profile extends React.Component {
       isAddWorkModalOn,
       workTitle,
       workShortDescription,
-      workDescription
+      workDescription,
+      myWorks
     } = this.state;
 
-    // const myWorksWithActions = myWorks.map(work => ({
-    //   ...work,
-    //   actions: [
-    //     {
-    //       content: 'Remove',
-    //       handleClick: () => this.removeWork(work._id)
-    //     }
-    //   ]
-    // }));
+    const myWorksWithActions = myWorks.map(work => ({
+      ...work,
+      actions: [
+        {
+          content: 'Remove',
+          handleClick: () => this.removeWork(work._id)
+        }
+      ]
+    }));
 
     const formItemStyle = {
       marginBottom: 24
@@ -217,7 +232,7 @@ class Profile extends React.Component {
           <Col md={2} />
 
           <Col md={10}>
-            {/* <h2 style={{ marginBottom: 24 }}>Works</h2>
+            <h2 style={{ marginBottom: 24 }}>Works</h2>
 
             {currentUser && (
               <div>
@@ -248,7 +263,7 @@ class Profile extends React.Component {
               </div>
             )}
 
-            <Divider /> */}
+            <Divider />
 
             {currentUser && (
               <div>
@@ -287,7 +302,7 @@ class Profile extends React.Component {
           </p>
         </Modal>
 
-        {/* <Modal
+        <Modal
           title="Create New Work"
           okText="Create"
           onOk={this.createWork}
@@ -357,7 +372,7 @@ class Profile extends React.Component {
             placeholder="description"
             style={{ minHeight: 120 }}
           />
-        </Modal> */}
+        </Modal>
       </div>
     );
   }
