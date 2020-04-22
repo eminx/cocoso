@@ -1,28 +1,27 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import moment from 'moment'
-// import LazyLoad from 'react-lazyload';
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import 'react-lazy-load-image-component/src/effects/black-and-white.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
-const yesterday = moment(new Date()).add(-1, 'days')
+const yesterday = moment(new Date()).add(-1, 'days');
 
 const compareForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD')
-  const dateB = moment(b.startDate, 'YYYY-MM-DD')
-  return dateA.diff(dateB)
-}
+  const dateA = moment(a.startDate, 'YYYY-MM-DD');
+  const dateB = moment(b.startDate, 'YYYY-MM-DD');
+  return dateA.diff(dateB);
+};
 
 const dateStyle = {
   color: '#fff',
   fontWeight: 700,
   lineHeight: 1
-}
+};
 
 class PublicActivityThumb extends React.Component {
   getEventTimes = event => {
     if (!event) {
-      return
+      return;
     }
 
     if (event.isMultipleDay || event.isFullDay) {
@@ -34,27 +33,27 @@ class PublicActivityThumb extends React.Component {
         moment(event.endDate).format('Do MMM') +
         ' ' +
         event.endTime
-      )
+      );
     } else if (event.startTime) {
       return `${event.startTime}–${event.endTime} ${moment(
         event.startDate
-      ).format('DD MMMM')}`
+      ).format('DD MMMM')}`;
     } else {
-      return ''
+      return '';
     }
-  }
+  };
 
   renderDate = date => {
     if (!date) {
-      return
+      return;
     }
 
-    const isPastEvent = !moment(date.startDate).isAfter(yesterday)
+    const isPastEvent = !moment(date.startDate).isAfter(yesterday);
 
     if (isPastEvent) {
-      dateStyle.color = '#aaa'
+      dateStyle.color = '#aaa';
     } else {
-      dateStyle.color = '#fff'
+      dateStyle.color = '#fff';
     }
 
     return (
@@ -71,15 +70,15 @@ class PublicActivityThumb extends React.Component {
             .toUpperCase()}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   renderDates = () => {
-    const { item } = this.props
+    const { item } = this.props;
     const futureDates = item.datesAndTimes.filter(date =>
       moment(date.startDate).isAfter(yesterday)
-    )
-    const remaining = futureDates.length - 3
+    );
+    const remaining = futureDates.length - 3;
 
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -90,31 +89,31 @@ class PublicActivityThumb extends React.Component {
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
-  render () {
-    const { item } = this.props
+  render() {
+    const { item } = this.props;
 
     const commonStyle = {
       color: '#fff',
       fontWeight: 300,
       lineHeight: 1
-    }
+    };
 
     const coverStyle = {
       position: 'absolute'
-    }
+    };
 
     const imageStyle = {
       width: 288,
       height: 288,
       objectFit: 'cover'
-    }
+    };
 
-    let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`
-    const coverClass = 'thumb-cover'
-    let coverContainerClass = 'thumb-cover-container '
+    let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
+    const coverClass = 'thumb-cover';
+    let coverContainerClass = 'thumb-cover-container ';
 
     return (
       <div className={coverContainerClass}>
@@ -124,7 +123,7 @@ class PublicActivityThumb extends React.Component {
               alt={item.title}
               src={item.imageUrl}
               style={imageStyle}
-              effect='black-and-white'
+              effect="black-and-white"
             />
           </div>
 
@@ -147,8 +146,8 @@ class PublicActivityThumb extends React.Component {
           </div>
         </Link>
       </div>
-    )
+    );
   }
 }
 
-export default PublicActivityThumb
+export default PublicActivityThumb;
