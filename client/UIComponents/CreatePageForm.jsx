@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
-import { Form, Input, Button, Divider } from 'antd/lib';
-import { TextInput } from 'grommet';
+import { Form, Input, Divider } from 'antd/lib';
+import { TextInput, Button } from 'grommet';
 
 const FormItem = Form.Item;
 
@@ -68,9 +68,6 @@ class CreatePageForm extends React.Component {
 
     return (
       <div className="create-gathering-form">
-        <h3>Please enter the details below</h3>
-        <Divider />
-
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="Title">
             {getFieldDecorator('title', {
@@ -125,15 +122,8 @@ class CreatePageForm extends React.Component {
             </Upload>
           </FormItem> */}
 
-          <FormItem
-            wrapperCol={{
-              xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Continue
-            </Button>
+          <FormItem style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button type="submit" primary label="Continue" />
           </FormItem>
         </Form>
       </div>

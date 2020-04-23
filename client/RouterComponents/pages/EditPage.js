@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, message, Alert, Modal, Button } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { Row, Col, message, Alert, Modal } from 'antd/lib';
+import { Button } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -78,9 +78,8 @@ class EditPage extends React.Component {
   };
 
   updatePage = () => {
-    const { values, uploadedImageUrl } = this.state;
+    const { values } = this.state;
     const { currentUser, pageData } = this.props;
-    // const imageUrl = uploadedImageUrl || pageData.imageUrl;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
       message.error('You are not allowed');
@@ -173,15 +172,18 @@ class EditPage extends React.Component {
     return (
       <div style={{ padding: 24 }}>
         {pageData && (
-          <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 24 }}>
             <Link to={`/page/${pageData.title}`}>
-              <Button icon="arrow-left">{pageData.title}</Button>
+              <Button icon="arrow-left" label={pageData.title} />
             </Link>
           </div>
         )}
-        <h2>Edit your booking</h2>
+
         <Row gutter={48}>
-          <Col md={20}>
+          <Col md={4}>
+            <h2>Edit Page</h2>
+          </Col>
+          <Col md={15}>
             <CreatePageForm
               values={values}
               pageData={pageData}
@@ -194,9 +196,9 @@ class EditPage extends React.Component {
             />
           </Col>
 
-          <Col md={4}>
+          <Col md={5}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.openDeleteModal}>Delete this page</Button>
+              <Button onClick={this.openDeleteModal} label="Delete this page" />
             </div>
           </Col>
         </Row>

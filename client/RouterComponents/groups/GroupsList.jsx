@@ -2,32 +2,14 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  List,
-  Card,
-  Radio,
-  Button,
-  Divider,
-  message
-} from 'antd/lib';
+import { Row, Col, Card, Radio, message } from 'antd/lib';
+import { Button } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 
 const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
 import { compareForSort } from '../../functions';
-
-const ListItem = List.Item;
-
-function shortenDescription(str) {
-  return str
-    .split(/\s+/)
-    .slice(0, 20)
-    .join(' ');
-}
 
 class GroupsList extends React.PureComponent {
   state = {
@@ -107,7 +89,9 @@ class GroupsList extends React.PureComponent {
       }
     });
 
-    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(filteredGroups);
+    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
+      filteredGroups
+    );
     return filteredGroupsWithAccessFilter;
   };
 
@@ -191,11 +175,9 @@ class GroupsList extends React.PureComponent {
     return (
       <Row gutter={24}>
         <Col md={8}>
-          <div style={centerStyle}>
+          <div style={{ padding: 24 }}>
             <Link to="/new-group">
-              <Button type="primary" component="span">
-                New Group
-              </Button>
+              <Button as="span" primary label="New Group" />
             </Link>
           </div>
 
