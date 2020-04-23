@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd/lib';
+import { Row, Col, Card, Divider, Tag, Modal, message } from 'antd/lib';
+import { Button } from 'grommet';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';
@@ -208,7 +209,7 @@ class Calendar extends React.PureComponent {
           <Row gutter={24}>
             <div style={centerStyle}>
               <Link to="/new-booking">
-                <Button type="primary">New Booking</Button>
+                <Button primary label="New Booking" />
               </Link>
             </div>
           </Row>
