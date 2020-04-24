@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert } from 'antd/lib';
+import { Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -126,7 +127,7 @@ class NewPage extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <Row gutter={48}>
+        <Row gutter={24}>
           <Col md={8}>
             <PagesList
               pageTitles={pageTitles}
@@ -134,8 +135,8 @@ class NewPage extends React.Component {
               onChange={this.handlePageClick}
             />
           </Col>
-          <Col xs={24} sm={24} md={16}>
-            <h2>Create a Page</h2>
+          <Col xs={24} sm={24} md={12}>
+            <Heading level={3}>Create a New Page</Heading>
             <CreatePageForm
               pageTitles={pageTitles}
               values={values}

@@ -62,11 +62,11 @@ class CreatePageForm extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          <FormField label="Title" pad="small">
+          <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
             <TextInput plain={false} name="title" placeholder="Contributing" />
           </FormField>
 
-          <FormField label="Description" pad="small">
+          <FormField label="Description" margin={{ bottom: 'medium' }}>
             <ReactQuill
               name="longDescription"
               modules={editorModules}

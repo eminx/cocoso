@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col } from 'antd/lib';
-import { Button } from 'grommet';
+import { Button, Heading } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -74,13 +74,14 @@ class Page extends PureComponent {
             />
           </Col>
 
-          <Col md={10}>
+          <Col md={12}>
             <div
               style={{
                 marginBottom: 24
               }}
             >
-              <h2>{currentPage && currentPage.title}</h2>
+              <Heading level={3}>{currentPage && currentPage.title}</Heading>
+
               <div style={{ color: '#030303' }}>
                 {currentPage && (
                   <div

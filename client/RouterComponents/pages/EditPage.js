@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert, Modal } from 'antd/lib';
-import { Button } from 'grommet';
+import { Button, Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -171,19 +171,24 @@ class EditPage extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        {pageData && (
-          <div style={{ marginBottom: 24 }}>
-            <Link to={`/page/${pageData.title}`}>
-              <Button size="small" icon="arrow-left" label={pageData.title} />
-            </Link>
-          </div>
-        )}
-
-        <Row gutter={48}>
-          <Col md={4}>
-            <h2>Edit Page</h2>
+        <Row gutter={24}>
+          <Col md={8}>
+            {pageData && (
+              <div style={{ marginBottom: 24 }}>
+                <Link to={`/page/${pageData.title}`}>
+                  <Button
+                    plain
+                    size="small"
+                    icon="arrow-left"
+                    label={pageData.title}
+                  />
+                </Link>
+              </div>
+            )}
           </Col>
-          <Col md={15}>
+          <Col md={12}>
+            <Heading level={3}>Edit this Page</Heading>
+
             <CreatePageForm
               values={values}
               pageData={pageData}

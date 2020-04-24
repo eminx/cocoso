@@ -1,18 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  message,
-  Button,
-  Alert,
-  Input,
-  Switch,
-  Divider,
-  Tag
-} from 'antd/lib';
+import { Row, Col, message, Alert, Tag } from 'antd/lib';
 
-import { CheckBox, Heading, Paragraph } from 'grommet';
+import { CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -152,12 +142,6 @@ class NewGroup extends React.Component {
           <div>
             <Row gutter={48}>
               <Col xs={24} sm={24} md={6}>
-                <CheckBox
-                  checked={isPrivate}
-                  label={<span>Private Group? (invite-only)</span>}
-                  onChange={this.handlePrivateGroupSwitch}
-                />
-
                 <div style={{ paddingTop: 12 }}>
                   <Paragraph size="small">
                     Private groups are only visible by their members, and
@@ -173,6 +157,13 @@ class NewGroup extends React.Component {
               </Col>
 
               <Col xs={24} sm={24} md={18} lg={12}>
+                <FormField margin={{ bottom: 'small' }}>
+                  <CheckBox
+                    checked={isPrivate}
+                    label={<Text>Private group? (invite-only)</Text>}
+                    onChange={this.handlePrivateGroupSwitch}
+                  />
+                </FormField>
                 <CreateGroupForm
                   values={values}
                   registerGroupLocally={this.registerGroupLocally}

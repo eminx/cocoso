@@ -4,19 +4,16 @@ import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 
 import {
-  Row,
-  Col,
   Input,
   DatePicker,
   TimePicker,
   InputNumber,
-  Switch,
   Upload,
   Icon,
-  Divider,
   Modal,
   message
 } from 'antd/lib';
+
 import {
   Box,
   Form,
@@ -24,6 +21,7 @@ import {
   TextInput,
   TextArea,
   Text,
+  Heading,
   Select,
   Button
 } from 'grommet';
@@ -260,8 +258,14 @@ class CreateBookingForm extends Component {
 
     return (
       <div>
-        <Box direction="row" width="100%">
+        <Box direction="row" width="100%" wrap>
+          <Box pad="medium" flex={{ grow: 1 }}>
+            <Heading level={5}>Dates & Time</Heading>
+            {this.renderDateTime()}
+          </Box>
+
           <Box pad="medium" flex={{ grow: 2 }}>
+            <Heading level={5}>Details</Heading>
             <Form
               onSubmit={this.handleSubmit}
               value={formValues}
@@ -340,10 +344,11 @@ class CreateBookingForm extends Component {
                 </Field>
               )}
 
-              <Field label="Place">
+              <Field label="Room/Equipment">
                 <Select
                   plain={false}
-                  placeholder="Select space/equipment"
+                  placeholder="Select room/equipment to book"
+                  name="room"
                   options={placeOptions}
                 />
               </Field>
@@ -351,7 +356,7 @@ class CreateBookingForm extends Component {
               {isPublicActivity && (
                 <Box>
                   <Upload
-                    name="gathering"
+                    name="booking"
                     action="/upload.do"
                     onChange={setUploadableImage}
                   >
@@ -582,9 +587,6 @@ class CreateBookingForm extends Component {
                 </Button>
               </FormItem>
             </Form> */}
-          </Box>
-          <Box pad="medium" flex={{ grow: 1 }}>
-            {this.renderDateTime()}
           </Box>
         </Box>
 

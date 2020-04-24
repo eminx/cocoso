@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card, message } from 'antd/lib';
-import { Button, RadioButtonGroup } from 'grommet';
+import { Button, Heading, RadioButtonGroup } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 
@@ -191,8 +191,8 @@ class GroupsList extends React.PureComponent {
           </div>
         </Col>
 
-        <Col md={14} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Groups</h2>
+        <Col md={12} style={{ padding: 24 }}>
+          <Heading level={3}>Groups</Heading>
 
           {groupsList && groupsList.length > 0 && (
             <NiceList

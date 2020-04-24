@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
+import { Box, Heading, TextInput } from 'grommet';
+
 import Loader from '../../UIComponents/Loader';
 import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
 
@@ -150,7 +152,7 @@ class Members extends React.PureComponent {
 
     return (
       <Row style={{ padding: 24 }}>
-        <Col md={7}>
+        <Col md={8}>
           <div style={{ ...linkStyle }}>
             <Link to="/admin/settings">Settings</Link>
           </div>
@@ -160,10 +162,8 @@ class Members extends React.PureComponent {
           </div>
         </Col>
 
-        <Col md={10} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>
-            {filter} Members ({usersSorted.length}){' '}
-          </h2>
+        <Col md={12}>
+          <Heading level={3}>Members</Heading>
 
           <div style={{ background: '#f8f8f8', padding: 12 }}>
             <span style={{ marginRight: 12 }}>filtered by </span>
@@ -173,10 +173,14 @@ class Members extends React.PureComponent {
               value={filter}
               style={{ marginBottom: 12 }}
             />
-            <Input
+
+            <TextInput
+              plain={false}
               placeholder="filter by username or email address..."
               value={filterWord}
-              onChange={e => this.setState({ filterWord: e.target.value })}
+              onChange={event =>
+                this.setState({ filterWord: event.target.value })
+              }
             />
 
             <Divider />
@@ -189,6 +193,12 @@ class Members extends React.PureComponent {
               style={{ marginBottom: 12 }}
             />
           </div>
+
+          <Box pad="medium">
+            <Heading level={4} alignSelf="center">
+              {filter} members ({usersSorted.length}){' '}
+            </Heading>
+          </Box>
 
           <NiceList list={usersSorted}>
             {user => (
@@ -207,7 +217,7 @@ class Members extends React.PureComponent {
           </NiceList>
         </Col>
 
-        <Col md={8} />
+        <Col md={4} />
       </Row>
     );
   }

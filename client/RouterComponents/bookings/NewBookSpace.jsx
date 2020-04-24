@@ -37,6 +37,10 @@ class NewBookSpace extends React.Component {
     });
   };
 
+  confirmCreateBooking = values => {
+    isPublicActivity ? this.uploadImage : this.createBooking;
+  };
+
   setUploadableImage = e => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
@@ -159,45 +163,47 @@ class NewBookSpace extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <Heading level={3}>Create New Activity</Heading>
-        <Row>
-          <Col md={6} />
+        <Box>
+          <Heading alignSelf="center" level={3}>
+            Create a New Activity
+          </Heading>
+        </Box>
 
-          <Col md={18}>
-            <Box
-              direction="row"
-              pad={{ top: 'medium', left: 'medium', bottom: 'small' }}
-            >
-              <Box width="160px">
-                <CheckBox
-                  checked={isPublicActivity}
-                  label="public event?"
-                  onChange={this.handlePublicActivitySwitch}
-                />
-              </Box>
-              <Box width="160px">
-                {isPublicActivity && (
-                  <CheckBox
-                    checked={isBookingsDisabled}
-                    label="bookings disabled?"
-                    onChange={this.handleDisableBookingsSwitch}
-                  />
-                )}
-              </Box>
-            </Box>
-
-            <CreateBookingForm
-              values={values}
-              registerBookingLocally={this.registerBookingLocally}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImage={this.state.uploadableImage}
-              places={this.props.places}
-              isPublicActivity={isPublicActivity}
-              currentUser={currentUser}
-              numberOfRecurrence={numberOfRecurrence}
+        <Box
+          direction="row"
+          flex={{ grow: 2 }}
+          pad={{ top: 'medium', left: 'medium', bottom: 'xsmall' }}
+          wrap
+          justify="end"
+        >
+          <Box width="160px">
+            <CheckBox
+              checked={isPublicActivity}
+              label="public event?"
+              onChange={this.handlePublicActivitySwitch}
             />
-          </Col>
-        </Row>
+          </Box>
+          {isPublicActivity && (
+            <Box width="160px">
+              <CheckBox
+                checked={isBookingsDisabled}
+                label="bookings disabled?"
+                onChange={this.handleDisableBookingsSwitch}
+              />
+            </Box>
+          )}
+        </Box>
+
+        <CreateBookingForm
+          values={values}
+          registerBookingLocally={this.registerBookingLocally}
+          setUploadableImage={this.setUploadableImage}
+          uploadableImage={this.state.uploadableImage}
+          places={this.props.places}
+          isPublicActivity={isPublicActivity}
+          currentUser={currentUser}
+          numberOfRecurrence={numberOfRecurrence}
+        />
 
         {modalConfirm ? (
           <ModalArticle

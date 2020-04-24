@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, message } from 'antd/lib';
+import { Heading, TextInput } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
@@ -42,7 +43,7 @@ class Settings extends PureComponent {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={7}>
+          <Col md={8}>
             <div style={{ ...activeStyle, ...linkStyle }}>
               <Link to="/admin/settings">Settings</Link>
             </div>
@@ -52,8 +53,8 @@ class Settings extends PureComponent {
             </div>
           </Col>
 
-          <Col md={10} style={{ padding: 24 }}>
-            <h2 style={{ textAlign: 'center' }}>Settings</h2>
+          <Col md={12}>
+            <Heading level={3}>Settings</Heading>
             <div style={{ color: '#030303' }}>
               Here you will fill your settings.
             </div>

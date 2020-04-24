@@ -61,35 +61,29 @@ class CreateGroupForm extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          <Box pad="small">
-            <FormField label="Title">
-              <TextInput
-                plain={false}
-                name="title"
-                placeholder="Understanding Benjamin"
-              />
-            </FormField>
-          </Box>
+          <FormField label="Title" margin={{ bottom: 'medium' }}>
+            <TextInput
+              plain={false}
+              name="title"
+              placeholder="Understanding Benjamin"
+            />
+          </FormField>
 
-          <Box pad="small">
-            <FormField label="Subtitle">
-              <TextInput
-                plain={false}
-                name="readingMaterial"
-                placeholder="through his book Illuminations"
-              />
-            </FormField>
-          </Box>
+          <FormField label="Subtitle" margin={{ bottom: 'medium' }}>
+            <TextInput
+              plain={false}
+              name="readingMaterial"
+              placeholder="through his book Illuminations"
+            />
+          </FormField>
 
-          <Box pad="small">
-            <FormField label="Description">
-              <ReactQuill
-                name="description"
-                modules={editorModules}
-                formats={editorFormats}
-              />
-            </FormField>
-          </Box>
+          <FormField label="Description" margin={{ bottom: 'medium' }}>
+            <ReactQuill
+              name="description"
+              modules={editorModules}
+              formats={editorFormats}
+            />
+          </FormField>
 
           <Box direction="row" justify="end" pad="small">
             <Button type="submit" primary label="Continue" />
