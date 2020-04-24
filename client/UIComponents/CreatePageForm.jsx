@@ -67,7 +67,7 @@ class CreatePageForm extends React.Component {
     };
 
     return (
-      <div className="create-gathering-form">
+      <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="Title">
             {getFieldDecorator('title', {

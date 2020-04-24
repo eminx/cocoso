@@ -12,6 +12,8 @@ import {
   Tag
 } from 'antd/lib';
 
+import { CheckBox, Heading, Paragraph } from 'grommet';
+
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 import { emailIsValid } from '../../functions';
@@ -144,52 +146,45 @@ class NewGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Create a Group</h1>
+        <Heading level={3}>Create a New Group</Heading>
 
         {currentUser.isRegisteredMember && (
           <div>
             <Row gutter={48}>
-              <Col xs={24} sm={24} md={16}>
-                <h4 style={{ marginBottom: 0 }}>
-                  Private Group? (invite-only)
-                </h4>
-                <Switch
+              <Col xs={24} sm={24} md={6}>
+                <CheckBox
                   checked={isPrivate}
+                  label={<span>Private Group? (invite-only)</span>}
                   onChange={this.handlePrivateGroupSwitch}
-                  style={{ marginBottom: 24 }}
                 />
-                {isPrivate && (
-                  <div>
-                    <p>
-                      Private groups are only visible by their members, and
-                      participation is possible only via invites by their
-                      admins. You can <u>not</u> change it to public after
-                      you've created it.
-                    </p>
-                    <p>
-                      You will be able to manage the invites after you'll have
-                      created the group.
-                    </p>
-                  </div>
-                )}
+
+                <div style={{ paddingTop: 12 }}>
+                  <Paragraph size="small">
+                    Private groups are only visible by their members, and
+                    participation is possible only via invites by their admins.
+                    You can <u>not</u> change it to public after you've created
+                    it.
+                  </Paragraph>
+                  <Paragraph size="small">
+                    You will be able to manage the invites after you'll have
+                    created the group.
+                  </Paragraph>
+                </div>
+              </Col>
+
+              <Col xs={24} sm={24} md={12}>
+                <CreateGroupForm
+                  values={values}
+                  registerGroupLocally={this.registerGroupLocally}
+                  setUploadableImage={this.setUploadableImage}
+                  uploadableImage={uploadableImage}
+                  places={this.props.places}
+                />
               </Col>
             </Row>
-
-            <Divider />
           </div>
         )}
 
-        <Row gutter={48}>
-          <Col xs={24} sm={24} md={16}>
-            <CreateGroupForm
-              values={values}
-              registerGroupLocally={this.registerGroupLocally}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImage={uploadableImage}
-              places={this.props.places}
-            />
-          </Col>
-        </Row>
         {modalConfirm ? (
           <ModalArticle
             item={values}

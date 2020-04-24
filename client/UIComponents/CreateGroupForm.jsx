@@ -2,9 +2,9 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 import {
-  Form,
+  // Form,
   Input,
-  Button,
+  // Button,
   InputNumber,
   Upload,
   Icon,
@@ -14,9 +14,12 @@ import {
 } from 'antd/lib';
 const FormItem = Form.Item;
 
+import { Form, FormField, Box, TextInput, Button } from 'grommet';
+
 class CreateGroupForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = ({ value }) => {
+    console.log(value);
+    return;
 
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
@@ -46,7 +49,7 @@ class CreateGroupForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    // const { getFieldDecorator } = this.props.form;
     const {
       uploadableImage,
       setUploadableImage,
@@ -56,11 +59,39 @@ class CreateGroupForm extends React.Component {
     } = this.props;
 
     return (
-      <div className="create-gathering-form">
-        <h3>Please enter the details below</h3>
-        <Divider />
-
+      <div>
         <Form onSubmit={this.handleSubmit}>
+          <Box pad="small">
+            <FormField label="Title">
+              <TextInput name="title" placeholder="Understanding Benjamin" />
+            </FormField>
+          </Box>
+
+          <Box pad="small">
+            <FormField label="Subtitle">
+              <TextInput
+                name="readingMaterial"
+                placeholder="through his book Illuminations"
+              />
+            </FormField>
+          </Box>
+
+          <Box pad="small">
+            <FormField label="Description">
+              <ReactQuill
+                name="description"
+                modules={editorModules}
+                formats={editorFormats}
+              />
+            </FormField>
+          </Box>
+
+          <Box direction="row" justify="end" pad="small">
+            <Button type="submit" primary label="Continue" />
+          </Box>
+        </Form>
+
+        {/*<Form onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('title', {
               rules: [
@@ -130,7 +161,6 @@ class CreateGroupForm extends React.Component {
                 </Button>
               ) : (
                 <Button>
-                  {/* <Icon type="upload" /> */}
                   Choose an image
                 </Button>
               )}
@@ -147,10 +177,10 @@ class CreateGroupForm extends React.Component {
               Continue
             </Button>
           </FormItem>
-        </Form>
+        </Form> */}
       </div>
     );
   }
 }
 
-export default Form.create()(CreateGroupForm);
+export default CreateGroupForm;

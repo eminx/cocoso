@@ -6,7 +6,7 @@ import Routes from './RouterComponents/Routes';
 const theme = {
   global: {
     font: {
-      family: 'Roboto',
+      family: 'sans-serif',
       size: '14px',
       height: '20px'
     },

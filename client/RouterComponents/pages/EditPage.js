@@ -174,7 +174,7 @@ class EditPage extends React.Component {
         {pageData && (
           <div style={{ marginBottom: 24 }}>
             <Link to={`/page/${pageData.title}`}>
-              <Button icon="arrow-left" label={pageData.title} />
+              <Button size="small" icon="arrow-left" label={pageData.title} />
             </Link>
           </div>
         )}

@@ -2,12 +2,25 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, Radio, message } from 'antd/lib';
-import { Button } from 'grommet';
+import { Row, Col, Card, message } from 'antd/lib';
+import { Button, RadioButtonGroup } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 
-const RadioGroup = Radio.Group;
+const filterOptions = [
+  {
+    label: 'Active',
+    value: 'active'
+  },
+  {
+    label: 'My Groups',
+    value: 'my-groups'
+  },
+  {
+    label: 'Archived',
+    value: 'archived'
+  }
+];
 
 import { compareForSort } from '../../functions';
 
@@ -119,9 +132,9 @@ class GroupsList extends React.PureComponent {
     return futureGroupsAllowed;
   };
 
-  handleSelectedFilter = e => {
+  handleSelectedFilter = event => {
     const { currentUser } = this.props;
-    const value = e.target.value;
+    const value = event.target.value;
     if (!currentUser && value === 'my-groups') {
       message.destroy();
       message.error('You need an account for filtering your groups');
@@ -134,28 +147,15 @@ class GroupsList extends React.PureComponent {
 
   render() {
     const { isLoading, currentUser, groupsData } = this.props;
+    const { filterBy } = this.state;
 
     if (isLoading) {
       return <Loader />;
     }
 
-    const isSuperAdmin = (currentUser && currentUser.isSuperAdmin) || false;
-
     const groupsFilteredAndSorted = this.getFilteredGroups().sort(
       compareForSort
     );
-
-    const centerStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-      padding: 24,
-      paddingBottom: 0
-    };
-
-    const radioButton = {
-      padding: 8,
-      width: '100%'
-    };
 
     const groupsList = groupsFilteredAndSorted.map(group => ({
       ...group,
@@ -181,22 +181,13 @@ class GroupsList extends React.PureComponent {
             </Link>
           </div>
 
-          <div style={{ paddingTop: 12, paddingLeft: 12 }}>
-            <RadioGroup
-              value={this.state.filterBy}
-              size="small"
+          <div style={{ padding: 24 }}>
+            <RadioButtonGroup
+              name="filters"
+              options={filterOptions}
+              value={filterBy}
               onChange={this.handleSelectedFilter}
-            >
-              <Radio value="active" style={radioButton}>
-                Active Groups
-              </Radio>
-              <Radio value="my-groups" style={radioButton}>
-                My Groups
-              </Radio>
-              <Radio value="archived" style={radioButton}>
-                Archived
-              </Radio>
-            </RadioGroup>
+            />
           </div>
         </Col>
 

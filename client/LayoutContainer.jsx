@@ -10,6 +10,8 @@ const publicSettings = Meteor.settings.public;
 import { Layout, Icon, Badge, Popover, List, Row, Col } from 'antd/lib';
 const { Content } = Layout;
 
+import { Box, Anchor } from 'grommet';
+
 const menu = [
   {
     label: 'Home',
@@ -160,20 +162,28 @@ class LayoutPage extends React.Component {
             </Row>
           </div>
 
-          <div className="app-menu-layout">
+          <Box pad="small" justify="center" direction="row">
             {menu.map(item => (
               <Link to={item.route} key={item.label}>
-                <b>{item.label}</b>
+                <Box pad="small">
+                  <Anchor plain as="span">
+                    {item.label}
+                  </Anchor>
+                </Box>
               </Link>
             ))}
             {currentUser &&
               currentUser.isSuperAdmin &&
               adminMenu.map(item => (
                 <Link to={item.route} key={item.label}>
-                  <b>{item.label}</b>
+                  <Box pad="small">
+                    <Anchor plain as="span" pad="small">
+                      {item.label}
+                    </Anchor>
+                  </Box>
                 </Link>
               ))}
-          </div>
+          </Box>
 
           <Layout className="layout">
             <Content>{children}</Content>

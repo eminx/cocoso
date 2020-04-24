@@ -8,7 +8,6 @@ import MediaQuery from 'react-responsive';
 import {
   Row,
   Col,
-  Anchor,
   Divider,
   Collapse,
   Drawer,

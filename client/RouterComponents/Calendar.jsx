@@ -209,7 +209,7 @@ class Calendar extends React.PureComponent {
           <Row gutter={24}>
             <div style={centerStyle}>
               <Link to="/new-booking">
-                <Button primary label="New Booking" />
+                <Button label="New Booking" />
               </Link>
             </div>
           </Row>

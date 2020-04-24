@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i'); */
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
 
 ::selection {
   background-color: #ea3924 !important;
@@ -15,16 +15,15 @@ html,
 body .ant-input,
 .tags-container .ant-tag {
   font-family: '--apple-system', sans-serif;
-  /* color: #030303; */
   word-break: break-word;
 }
 
 body a {
-  color: #ea3924;
+  /* color: #ea3924; */
 }
 
 body a:hover {
-  color: #ad2539;
+  /* color: #ad2539; */
 }
 
 .main-viewport .layout.ant-layout {
@@ -33,10 +32,10 @@ body a:hover {
 }
 
 .ant-layout h1 {
-  letter-spacing: -0.5px;
+  /* letter-spacing: -0.5px; */
 }
 
-.ant-layout h1,
+/* .ant-layout h1,
 .ant-modal-wrap h1,
 .ant-layout h2,
 .ant-modal-wrap h2,
@@ -51,7 +50,7 @@ body a:hover {
 .ant-modal-body .ant-confirm-body .ant-confirm-title {
   text-transform: uppercase;
   font-weight: 700;
-}
+} */
 
 button.ant-btn,
 a.ant-btn,
@@ -153,7 +152,6 @@ body .ant-select-selection:focus {
 }
 
 .ant-card .ant-card-head {
-  /* padding: 0; */
   border-bottom: none;
 }
 
@@ -206,10 +204,6 @@ body {
   color: #030303;
 }
 
-/* .rbc-calendar .rbc-event {
-  border: 1px solid #030300;
-} */
-
 .ant-modal .ant-modal-content {
   border: 1px solid #030303;
   border-radius: 0;
@@ -227,8 +221,6 @@ body {
   flex-wrap: wrap;
   text-transform: uppercase;
   background-color: rgba(255, 255, 255, 0.9);
-  /* border: 1px solid #030303; */
-  /* border-bottom: none; */
   max-width: 1200px;
   margin: 0 auto;
 }
