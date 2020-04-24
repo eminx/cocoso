@@ -109,7 +109,7 @@ class EditBooking extends React.Component {
     });
   };
 
-  registerGatheringLocally = values => {
+  registerBookingLocally = values => {
     values.authorName = this.props.currentUser.username || 'emo';
     this.setState({
       values: values,
@@ -315,7 +315,7 @@ class EditBooking extends React.Component {
             <CreateBookingForm
               values={values}
               bookingData={gatheringData}
-              registerGatheringLocally={this.registerGatheringLocally}
+              registerBookingLocally={this.registerBookingLocally}
               setUploadableImage={this.setUploadableImage}
               places={this.props.places}
               uploadableImage={

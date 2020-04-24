@@ -172,7 +172,7 @@ class NewGroup extends React.Component {
                 </div>
               </Col>
 
-              <Col xs={24} sm={24} md={12}>
+              <Col xs={24} sm={24} md={18} lg={12}>
                 <CreateGroupForm
                   values={values}
                   registerGroupLocally={this.registerGroupLocally}

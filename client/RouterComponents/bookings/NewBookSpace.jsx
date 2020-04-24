@@ -1,8 +1,10 @@
 import React from 'react';
-import CreateBookingForm from '../../UIComponents/CreateBookingForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Switch, Divider, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
+import { Row, Col, message, Alert } from 'antd/lib';
+import { CheckBox, Box, Text, Heading } from 'grommet';
+
+import ModalArticle from '../../UIComponents/ModalArticle';
+import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 
 const successCreation = () => {
   message.success('Your booking is successfully created', 6);
@@ -26,7 +28,7 @@ class NewBookSpace extends React.Component {
     numberOfRecurrence: 1
   };
 
-  registerGatheringLocally = values => {
+  registerBookingLocally = values => {
     values.authorName = this.props.currentUser.username || 'emo';
 
     this.setState({
@@ -103,13 +105,15 @@ class NewBookSpace extends React.Component {
   hideModal = () => this.setState({ modalConfirm: false });
   showModal = () => this.setState({ modalConfirm: true });
 
-  handlePublicActivitySwitch = value => {
+  handlePublicActivitySwitch = event => {
+    const value = event.target.checked;
     this.setState({
       isPublicActivity: value
     });
   };
 
-  handleDisableBookingsSwitch = value => {
+  handleDisableBookingsSwitch = event => {
+    const value = event.target.checked;
     this.setState({
       isBookingsDisabled: value
     });
@@ -155,32 +159,36 @@ class NewBookSpace extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h2>Create a Booking or Public Event</h2>
-        <Row gutter={48}>
-          <Col xs={24} sm={24} md={16}>
-            <Row>
-              <Col md={12}>
-                <h4>public event?</h4>
-                <Switch
+        <Heading level={3}>Create New Activity</Heading>
+        <Row>
+          <Col md={6} />
+
+          <Col md={18}>
+            <Box
+              direction="row"
+              pad={{ top: 'medium', left: 'medium', bottom: 'small' }}
+            >
+              <Box width="160px">
+                <CheckBox
                   checked={isPublicActivity}
+                  label="public event?"
                   onChange={this.handlePublicActivitySwitch}
                 />
-              </Col>
-              {isPublicActivity && (
-                <Col md={12}>
-                  <h4>bookings disabled?</h4>
-                  <Switch
+              </Box>
+              <Box width="160px">
+                {isPublicActivity && (
+                  <CheckBox
                     checked={isBookingsDisabled}
+                    label="bookings disabled?"
                     onChange={this.handleDisableBookingsSwitch}
                   />
-                </Col>
-              )}
-            </Row>
+                )}
+              </Box>
+            </Box>
 
-            <Divider />
             <CreateBookingForm
               values={values}
-              registerGatheringLocally={this.registerGatheringLocally}
+              registerBookingLocally={this.registerBookingLocally}
               setUploadableImage={this.setUploadableImage}
               uploadableImage={this.state.uploadableImage}
               places={this.props.places}
@@ -190,6 +198,7 @@ class NewBookSpace extends React.Component {
             />
           </Col>
         </Row>
+
         {modalConfirm ? (
           <ModalArticle
             item={values}

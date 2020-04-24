@@ -63,13 +63,18 @@ class CreateGroupForm extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Box pad="small">
             <FormField label="Title">
-              <TextInput name="title" placeholder="Understanding Benjamin" />
+              <TextInput
+                plain={false}
+                name="title"
+                placeholder="Understanding Benjamin"
+              />
             </FormField>
           </Box>
 
           <Box pad="small">
             <FormField label="Subtitle">
               <TextInput
+                plain={false}
                 name="readingMaterial"
                 placeholder="through his book Illuminations"
               />

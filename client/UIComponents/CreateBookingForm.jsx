@@ -6,12 +6,9 @@ import { editorFormats, editorModules } from '../themes/skogen';
 import {
   Row,
   Col,
-  Form,
   Input,
   DatePicker,
   TimePicker,
-  Button,
-  Select,
   InputNumber,
   Switch,
   Upload,
@@ -20,13 +17,17 @@ import {
   Modal,
   message
 } from 'antd/lib';
+import {
+  Box,
+  Form,
+  FormField,
+  TextInput,
+  TextArea,
+  Text,
+  Select,
+  Button
+} from 'grommet';
 import moment from 'moment';
-
-const Option = Select.Option;
-const { TextArea } = Input;
-const FormItem = Form.Item;
-
-const publicSettings = Meteor.settings.public;
 
 const compareForSort = (a, b) => {
   const dateA = moment(a.startDate, 'YYYY-MM-DD');
@@ -53,10 +54,19 @@ const iconStyle = {
   backgroundColor: '#f8f8f8'
 };
 
+function Field({ label, children, ...otherProps }) {
+  return (
+    <FormField label={label} {...otherProps} margin={{ bottom: 'medium' }}>
+      {children}
+    </FormField>
+  );
+}
+
 class CreateBookingForm extends Component {
   state = {
     addSpaceModal: false,
-    datesAndTimes: [emptyDateAndTime]
+    datesAndTimes: [emptyDateAndTime],
+    formValues: {}
   };
 
   componentDidMount() {
@@ -119,55 +129,54 @@ class CreateBookingForm extends Component {
     });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { datesAndTimes } = this.state;
-    const { form, isPublicActivity } = this.props;
-
-    form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      if (this.props.isPublicActivity && !this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
-
-      const datesAndTimesWithoutMoment = datesAndTimes.map(recurrence => ({
-        startDate: recurrence.startDate,
-        startTime: recurrence.startTime,
-        endDate: recurrence.endDate,
-        endTime: recurrence.endTime,
-        capacity: recurrence.capacity || defaultCapacity,
-        attendees: recurrence.attendees || []
-      }));
-
-      const values = {
-        title: fieldsValue['title'],
-        subTitle: fieldsValue['subTitle'],
-        longDescription: fieldsValue['longDescription'],
-        datesAndTimes: datesAndTimesWithoutMoment
-      };
-
-      if (isPublicActivity) {
-        values.room = fieldsValue['room'];
-        values.place = fieldsValue['place'];
-        values.address = fieldsValue['address'];
-        values.practicalInfo = fieldsValue['practicalInfo'];
-        values.internalInfo = fieldsValue['internalInfo'];
-      } else {
-        values.room = fieldsValue['room'];
-      }
-
-      if (!err) {
-        this.props.registerGatheringLocally(values);
-      }
+  handleFormValueChange = formValues => {
+    this.setState({
+      formValues
     });
+  };
+
+  handleQuillChange = longDescription => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      longDescription
+    };
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleSubmit = ({ value }) => {
+    const { datesAndTimes } = this.state;
+    const {
+      isPublicActivity,
+      uploadableImage,
+      registerBookingLocally
+    } = this.props;
+
+    if (isPublicActivity && !uploadableImage) {
+      Modal.error({
+        title: 'Image is required',
+        content: 'Please upload an image'
+      });
+      return;
+    }
+
+    const datesAndTimesWithoutMoment = datesAndTimes.map(recurrence => ({
+      startDate: recurrence.startDate,
+      startTime: recurrence.startTime,
+      endDate: recurrence.endDate,
+      endTime: recurrence.endTime,
+      capacity: recurrence.capacity || defaultCapacity,
+      attendees: recurrence.attendees || []
+    }));
+
+    const values = {
+      ...value,
+      datesAndTimes: datesAndTimesWithoutMoment
+    };
+
+    registerBookingLocally(values);
   };
 
   renderDateTime = () => {
@@ -237,228 +246,347 @@ class CreateBookingForm extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const {
       uploadableImage,
       setUploadableImage,
       places,
-      bookingData,
-      currentUser,
       isPublicActivity
     } = this.props;
-    const { addSpaceModal } = this.state;
 
-    const formItemLayout = {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    };
+    const { addSpaceModal, formValues } = this.state;
+
+    const placeOptions =
+      places && places.map(part => ({ label: part.name, value: part.name }));
 
     return (
-      <div className="create-gathering-form">
-        <h3>Please enter the details below</h3>
-        <Divider />
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Enter the Title'
-                }
-              ],
-              initialValue: bookingData ? bookingData.title : null
-            })(<Input placeholder="Title" />)}
-          </FormItem>
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('subTitle', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter a subtitle (typically artists name)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.subTitle
-                    ? bookingData.subTitle
-                    : ''
-              })(<Input placeholder="Subtitle (i.e. the artist)" />)}
-            </FormItem>
-          )}
-
-          <FormItem>
-            {getFieldDecorator('longDescription', {
-              rules: [
-                {
-                  message: 'Please enter a detailed description (optional)'
-                }
-              ],
-              initialValue: bookingData ? bookingData.longDescription : null
-            })(
-              // <TextArea
-              //   placeholder="Description"
-              //   autosize={{ minRows: 3, maxRows: 6 }}
-              // />
-
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            )}
-          </FormItem>
-
-          {this.renderDateTime()}
-
-          {isPublicActivity && (
-            <FormItem
-              className="upload-image-col"
-              extra={uploadableImage ? null : 'Pick an image from your device'}
+      <div>
+        <Box direction="row" width="100%">
+          <Box pad="medium" flex={{ grow: 2 }}>
+            <Form
+              onSubmit={this.handleSubmit}
+              value={formValues}
+              onChange={this.handleFormValueChange}
+              errors={{ name: ['message', '<Box>...</Box>'] }}
+              validate="blur"
             >
-              <Upload
-                name="gathering"
-                action="/upload.do"
-                onChange={setUploadableImage}
+              <Field
+                label="Title"
+                required
+                // help="This is typicaly title of your event"
+                validate={(fieldValue, formValue) => console.log(fieldValue)}
               >
-                {uploadableImage ? (
-                  <Button>
-                    <Icon type="check-circle" />
-                    Image selected
-                  </Button>
-                ) : (
-                  <Button>
-                    <Icon type="upload" />
-                    Pick an image
-                  </Button>
+                <TextInput
+                  plain={false}
+                  name="title"
+                  placeholder="give it a title"
+                />
+              </Field>
+
+              {isPublicActivity && (
+                <Field label="Subtitle">
+                  <TextInput
+                    plain={false}
+                    name="subtitle"
+                    placeholder="give it a subtitle (artist name etc.)"
+                  />
+                </Field>
+              )}
+
+              <Field label="Description">
+                <ReactQuill
+                  modules={editorModules}
+                  formats={editorFormats}
+                  onChange={this.handleQuillChange}
+                />
+              </Field>
+
+              {isPublicActivity && (
+                <Field label="Place">
+                  <TextInput
+                    plain={false}
+                    name="place"
+                    placeholder="Artistosphere"
+                  />
+                </Field>
+              )}
+
+              {isPublicActivity && (
+                <Field label="Address">
+                  <TextArea
+                    plain={false}
+                    name="address"
+                    placeholder="17th Street, Berlin..."
+                  />
+                </Field>
+              )}
+
+              {isPublicActivity && (
+                <Field label="Practical Info">
+                  <TextArea
+                    plain={false}
+                    name="practicalInfo"
+                    placeholder="17th Street, Berlin..."
+                  />
+                </Field>
+              )}
+
+              {isPublicActivity && (
+                <Field label="Internal Info">
+                  <TextArea
+                    plain={false}
+                    name="internalInfo"
+                    placeholder="17th Street, Berlin..."
+                  />
+                </Field>
+              )}
+
+              <Field label="Place">
+                <Select
+                  plain={false}
+                  placeholder="Select space/equipment"
+                  options={placeOptions}
+                />
+              </Field>
+
+              {isPublicActivity && (
+                <Box>
+                  <Upload
+                    name="gathering"
+                    action="/upload.do"
+                    onChange={setUploadableImage}
+                  >
+                    {uploadableImage ? (
+                      <Button>
+                        <Icon type="check-circle" />
+                        Image selected
+                      </Button>
+                    ) : (
+                      <Button>
+                        <Icon type="upload" />
+                        Pick an image
+                      </Button>
+                    )}
+                  </Upload>
+                </Box>
+              )}
+
+              <Box direction="row" justify="end" pad="small">
+                <Button type="submit" primary label="Create" />
+              </Box>
+            </Form>
+            {/* 
+            <Form onSubmit={this.handleSubmit}>
+              <FormItem>
+                {getFieldDecorator('title', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Enter the Title'
+                    }
+                  ],
+                  initialValue: bookingData ? bookingData.title : null
+                })(<Input placeholder="Title" />)}
+              </FormItem>
+
+              {isPublicActivity && (
+                <FormItem>
+                  {getFieldDecorator('subTitle', {
+                    rules: [
+                      {
+                        required: true,
+                        message:
+                          'Please enter a subtitle (typically artists name)'
+                      }
+                    ],
+                    initialValue:
+                      bookingData && bookingData.subTitle
+                        ? bookingData.subTitle
+                        : ''
+                  })(<Input placeholder="Subtitle (i.e. the artist)" />)}
+                </FormItem>
+              )}
+
+              <FormItem>
+                {getFieldDecorator('longDescription', {
+                  rules: [
+                    {
+                      message: 'Please enter a detailed description (optional)'
+                    }
+                  ],
+                  initialValue: bookingData ? bookingData.longDescription : null
+                })(
+                  // <TextArea
+                  //   placeholder="Description"
+                  //   autosize={{ minRows: 3, maxRows: 6 }}
+                  // />
+
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
                 )}
-              </Upload>
-            </FormItem>
-          )}
+              </FormItem>
 
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('place', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter the address'
+              {isPublicActivity && (
+                <FormItem
+                  className="upload-image-col"
+                  extra={
+                    uploadableImage ? null : 'Pick an image from your device'
                   }
-                ],
-                initialValue:
-                  bookingData && bookingData.place
-                    ? bookingData.place
-                    : publicSettings.contextName
-              })(<Input placeholder="Please enter the name of the place" />)}
-            </FormItem>
-          )}
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter the address'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.address
-                    ? bookingData.address
-                    : publicSettings.contextAddress
-              })(<Input placeholder="Please enter the address" />)}
-            </FormItem>
-          )}
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('practicalInfo', {
-                rules: [
-                  {
-                    message: 'Please enter practical info (if any)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.practicalInfo
-                    ? bookingData.practicalInfo
-                    : ''
-              })(
-                <TextArea
-                  placeholder="Practical info"
-                  autosize={{ minRows: 3, maxRows: 6 }}
-                />
+                >
+                  <Upload
+                    name="gathering"
+                    action="/upload.do"
+                    onChange={setUploadableImage}
+                  >
+                    {uploadableImage ? (
+                      <Button>
+                        <Icon type="check-circle" />
+                        Image selected
+                      </Button>
+                    ) : (
+                      <Button>
+                        <Icon type="upload" />
+                        Pick an image
+                      </Button>
+                    )}
+                  </Upload>
+                </FormItem>
               )}
-            </FormItem>
-          )}
 
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('internalInfo', {
-                rules: [
-                  {
-                    message:
-                      'Please enter internal info - shown only to members (if any)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.internalInfo
-                    ? bookingData.internalInfo
-                    : ''
-              })(
-                <TextArea
-                  placeholder="Internal info"
-                  autosize={{ minRows: 3, maxRows: 6 }}
-                />
+              {isPublicActivity && (
+                <FormItem>
+                  {getFieldDecorator('place', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please enter the address'
+                      }
+                    ],
+                    initialValue:
+                      bookingData && bookingData.place
+                        ? bookingData.place
+                        : publicSettings.contextName
+                  })(
+                    <Input placeholder="Please enter the name of the place" />
+                  )}
+                </FormItem>
               )}
-            </FormItem>
-          )}
 
-          {currentUser && currentUser.isSuperAdmin && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <span style={{ marginRight: 10 }}>
-                Wanna add space/equipment to the list?
-              </span>
-              <Button onClick={() => this.setState({ addSpaceModal: true })}>
-                Add
-              </Button>
-            </div>
-          )}
+              {isPublicActivity && (
+                <FormItem>
+                  {getFieldDecorator('address', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Please enter the address'
+                      }
+                    ],
+                    initialValue:
+                      bookingData && bookingData.address
+                        ? bookingData.address
+                        : publicSettings.contextAddress
+                  })(<Input placeholder="Please enter the address" />)}
+                </FormItem>
+              )}
 
-          <FormItem>
-            {getFieldDecorator('room', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter which part you want to book'
-                }
-              ],
-              initialValue: bookingData ? bookingData.room : 'Studio'
-            })(
-              <Select placeholder="Select space/equipment">
-                {places
-                  ? places.map((part, i) => (
-                      <Option key={part.name + i} value={part.name}>
-                        {part.name}
-                      </Option>
-                    ))
-                  : null}
-              </Select>
-            )}
-          </FormItem>
+              {isPublicActivity && (
+                <FormItem>
+                  {getFieldDecorator('practicalInfo', {
+                    rules: [
+                      {
+                        message: 'Please enter practical info (if any)'
+                      }
+                    ],
+                    initialValue:
+                      bookingData && bookingData.practicalInfo
+                        ? bookingData.practicalInfo
+                        : ''
+                  })(
+                    <TextArea
+                      placeholder="Practical info"
+                      autosize={{ minRows: 3, maxRows: 6 }}
+                    />
+                  )}
+                </FormItem>
+              )}
 
-          <FormItem
-            wrapperCol={{
-              xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Continue
-            </Button>
-          </FormItem>
-        </Form>
+              {isPublicActivity && (
+                <FormItem>
+                  {getFieldDecorator('internalInfo', {
+                    rules: [
+                      {
+                        message:
+                          'Please enter internal info - shown only to members (if any)'
+                      }
+                    ],
+                    initialValue:
+                      bookingData && bookingData.internalInfo
+                        ? bookingData.internalInfo
+                        : ''
+                  })(
+                    <TextArea
+                      placeholder="Internal info"
+                      autosize={{ minRows: 3, maxRows: 6 }}
+                    />
+                  )}
+                </FormItem>
+              )}
+
+              {currentUser && currentUser.isSuperAdmin && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <span style={{ marginRight: 10 }}>
+                    Wanna add space/equipment to the list?
+                  </span>
+                  <Button
+                    onClick={() => this.setState({ addSpaceModal: true })}
+                  >
+                    Add
+                  </Button>
+                </div>
+              )}
+
+              <FormItem>
+                {getFieldDecorator('room', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please enter which part you want to book'
+                    }
+                  ],
+                  initialValue: bookingData ? bookingData.room : 'Studio'
+                })(
+                  <Select placeholder="Select space/equipment">
+                    {places
+                      ? places.map((part, i) => (
+                          <Option key={part.name + i} value={part.name}>
+                            {part.name}
+                          </Option>
+                        ))
+                      : null}
+                  </Select>
+                )}
+              </FormItem>
+
+              <FormItem
+                wrapperCol={{
+                  xs: { span: 24, offset: 0 },
+                  sm: { span: 16, offset: 8 }
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Continue
+                </Button>
+              </FormItem>
+            </Form> */}
+          </Box>
+          <Box pad="medium" flex={{ grow: 1 }}>
+            {this.renderDateTime()}
+          </Box>
+        </Box>
 
         <Modal
           className="addSpace-modal"
@@ -483,8 +611,12 @@ class CreateBookingForm extends Component {
   }
 }
 
-const WrappedAddContentForm = Form.create()(CreateBookingForm);
-export default WrappedAddContentForm;
+const segmentPad = {
+  top: 'xxsmall',
+  left: 'xxsmall',
+  right: 'xxsmall',
+  bottom: 'small'
+};
 
 class DatesAndTimes extends Component {
   render() {
@@ -517,15 +649,14 @@ class DatesAndTimes extends Component {
           </div>
         )}
 
-        <FormItem style={{ marginBottom: 6 }}>
+        <Box pad="xxsmall">
           <DatePicker
             onChange={handleStartDateChange}
             value={recurrence.startDateMoment}
             placeholder="Start date"
           />
-        </FormItem>
-
-        <FormItem style={{ marginBottom: 12 }}>
+        </Box>
+        <Box pad={segmentPad}>
           <TimePicker
             onChange={handleStartTimeChange}
             value={recurrence.startTimeMoment}
@@ -533,17 +664,15 @@ class DatesAndTimes extends Component {
             minuteStep={5}
             placeholder="Start time"
           />
-        </FormItem>
-
-        <FormItem style={{ marginBottom: 6 }}>
+        </Box>
+        <Box pad="xxsmall">
           <DatePicker
             placeholder="Finish date"
             onChange={handleFinishDateChange}
             value={recurrence.endDateMoment}
           />
-        </FormItem>
-
-        <FormItem style={{ marginBottom: 12 }}>
+        </Box>
+        <Box pad={segmentPad}>
           <TimePicker
             onChange={handleFinishTimeChange}
             value={recurrence.endTimeMoment}
@@ -551,8 +680,8 @@ class DatesAndTimes extends Component {
             minuteStep={5}
             placeholder="Finish time"
           />
-        </FormItem>
-        <FormItem style={{ marginBottom: 12 }}>
+        </Box>
+        <Box pad="xxsmall">
           <InputNumber
             min={1}
             max={90}
@@ -560,8 +689,10 @@ class DatesAndTimes extends Component {
             value={recurrence.capacity}
             onChange={handleCapacityChange}
           />
-        </FormItem>
+        </Box>
       </div>
     );
   }
 }
+
+export default CreateBookingForm;

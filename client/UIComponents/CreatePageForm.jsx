@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
-import { Form, Input, Divider } from 'antd/lib';
-import { TextInput, Button } from 'grommet';
-
-const FormItem = Form.Item;
+import { Input, Divider } from 'antd/lib';
+import { TextInput, FormField, Form, Box, Button } from 'grommet';
 
 class CreatePageForm extends React.Component {
   handleSubmit = e => {
@@ -58,16 +56,30 @@ class CreatePageForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { uploadableImage, setUploadableImage, pageData } = this.props;
-
-    const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 14 }
-    };
+    // const { getFieldDecorator } = this.props.form;
+    const { pageData } = this.props;
 
     return (
       <div>
+        <Form onSubmit={this.handleSubmit}>
+          <FormField label="Title" pad="small">
+            <TextInput plain={false} name="title" placeholder="Contributing" />
+          </FormField>
+
+          <FormField label="Description" pad="small">
+            <ReactQuill
+              name="longDescription"
+              modules={editorModules}
+              formats={editorFormats}
+            />
+          </FormField>
+
+          <Box direction="row" justify="end" pad="small">
+            <Button type="submit" primary label="Continue" />
+          </Box>
+        </Form>
+
+        {/* 
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="Title">
             {getFieldDecorator('title', {
@@ -94,9 +106,9 @@ class CreatePageForm extends React.Component {
               ],
               initialValue: pageData ? pageData.longDescription : null
             })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
-          </FormItem>
+          </FormItem> */}
 
-          {/* <FormItem
+        {/* <FormItem
             {...formItemLayout}
             label={<span className="ant-form-item-required">Cover image</span>}
             className="upload-image-col"
@@ -122,13 +134,12 @@ class CreatePageForm extends React.Component {
             </Upload>
           </FormItem> */}
 
-          <FormItem style={{ display: 'flex', justifyContent: 'center' }}>
+        {/* <FormItem style={{ display: 'flex', justifyContent: 'center' }}>
             <Button type="submit" primary label="Continue" />
-          </FormItem>
-        </Form>
+          </FormItem> */}
       </div>
     );
   }
 }
 
-export default Form.create()(CreatePageForm);
+export default CreatePageForm;
