@@ -1,13 +1,3 @@
-const colors = {
-  veryLightRed: '#FBD5D0',
-  primaryRed: '#EA3924'
-};
-
-const skogen = {
-  primary: colors.primaryRed,
-  secondary: colors.veryLightRed
-};
-
 const editorModules = {
   toolbar: [
     ['bold', 'italic', 'underline'],
@@ -23,4 +13,4 @@ const editorModules = {
 
 const editorFormats = ['bold', 'italic', 'underline', 'list', 'link', 'bullet'];
 
-export { colors, skogen, editorModules, editorFormats };
+export { editorModules, editorFormats };

@@ -136,13 +136,11 @@ class NewGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <Heading level={3}>Create a New Group</Heading>
-
         {currentUser.isRegisteredMember && (
           <div>
             <Row gutter={48}>
-              <Col xs={24} sm={24} md={6}>
-                <div style={{ paddingTop: 12 }}>
+              <Col xs={24} sm={24} md={8}>
+                <div style={{ marginTop: 48 }}>
                   <Paragraph size="small">
                     Private groups are only visible by their members, and
                     participation is possible only via invites by their admins.
@@ -156,7 +154,8 @@ class NewGroup extends React.Component {
                 </div>
               </Col>
 
-              <Col xs={24} sm={24} md={18} lg={12}>
+              <Col xs={24} sm={24} md={12}>
+                <Heading level={3}>Create a New Group</Heading>
                 <FormField margin={{ bottom: 'small' }}>
                   <CheckBox
                     checked={isPrivate}

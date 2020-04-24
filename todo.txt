@@ -1,0 +1,51 @@
+Make it one app together - Artistrun Space, CIC Community etc.
+
+
+FEATURES: 
+
+Create and manage: 
+- Private booking (calendar),
+- Public Event / manage attendees etc,
+- Study Course,
+- Upload media for a group or others?; manage media in a dedicated page? I like that.
+- Make your portfolio,
+- Manage all your shit basically,
+- Single artist feature toggle -> This will be a killer I think,
+
+
+SaaSing it up:
+
+
+TODO:
+
+-X Add Context for multiple needs like theme, user, etc
+
+-X Make a new admin panel (change Users to admin and make user a sub-page, and add configurations to a new page called settings)
+
+2- Find out a good validation/error management for forms (Grommet's builtin or compatible), and update all existing forms
+
+3- Implement Social Signups (Start with Google, Facebook and Instagram)
+
+5- Work around how the groups, users, verification kind of things would be saved in the db, and change the code accordingly, without messing up what was before.
+
+3- Create a form with custom Host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
+
+5- Divide my-profile into sections: 
+  - Basic Info (name, bio, contact, links, avatar etc)
+  - Works
+  - 
+
+
+
+CAN DO WITHOUT FOR NOW:
+
+2- Replace ant datetime with a non-moment solution (grommet)
+2- Make the date time work with time zones: part of the host settings to global adjust maybe?
+5- Fix the image resize problem and implement it
+3- Make all relevant pages without pubsub and with method calls to fetch data. Don't forget to fetch data again if necessary
+2- Drop unnecessary components like containers etc. (after making method call solution when relevant)
+5- Eventually get rid off ant.design completely
+8- Create portfolio feature
+8- Server side render
+5- Organise your menu and routes yourself? Especially needed for single-artist feature switch
+5- Revisit the notifications

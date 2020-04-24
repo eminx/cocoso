@@ -179,8 +179,8 @@ class EditPage extends React.Component {
                   <Button
                     plain
                     size="small"
-                    icon="arrow-left"
-                    label={pageData.title}
+                    // icon="arrow-left"
+                    label={`back to ${pageData.title}`}
                   />
                 </Link>
               </div>

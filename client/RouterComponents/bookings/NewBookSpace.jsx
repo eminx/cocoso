@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert } from 'antd/lib';
+import { message, Alert } from 'antd/lib';
 import { CheckBox, Box, Text, Heading } from 'grommet';
 
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -176,18 +176,18 @@ class NewBookSpace extends React.Component {
           wrap
           justify="end"
         >
-          <Box width="160px">
+          <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
-              label="public event?"
+              label={<Text>public event?</Text>}
               onChange={this.handlePublicActivitySwitch}
             />
           </Box>
           {isPublicActivity && (
-            <Box width="160px">
+            <Box flex={{ basis: 180 }} pad="small">
               <CheckBox
                 checked={isBookingsDisabled}
-                label="bookings disabled?"
+                label={<Text>bookings disabled?</Text>}
                 onChange={this.handleDisableBookingsSwitch}
               />
             </Box>
