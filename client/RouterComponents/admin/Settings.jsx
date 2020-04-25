@@ -11,7 +11,8 @@ import Loader from '../../UIComponents/Loader';
 class Settings extends PureComponent {
   state = {
     settings: null,
-    isLoading: true
+    isLoading: true,
+    formValueChanged: false
   };
 
   componentDidMount() {
@@ -42,7 +43,8 @@ class Settings extends PureComponent {
 
   handleFormChange = settings => {
     this.setState({
-      settings: settings
+      settings: settings,
+      formValueChanged: true
     });
   };
 
@@ -52,7 +54,13 @@ class Settings extends PureComponent {
       message.error('This is not allowed');
       return false;
     }
-    const { settings } = this.state;
+    const { settings, formValueChanged } = this.state;
+
+    if (!formValueChanged) {
+      message.destroy();
+      message.info('You have not changed any value');
+      return;
+    }
 
     Meteor.call('updateHostSettings', settings, (error, result) => {
       if (error) {
@@ -69,6 +77,7 @@ class Settings extends PureComponent {
         isLoading: false,
         isSuccess: true
       });
+      setTimeout(() => window.location.reload(), 2000);
     });
   };
 

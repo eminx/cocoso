@@ -42,7 +42,8 @@ class LayoutPage extends React.Component {
   state = {
     menuOpen: false,
     me: false,
-    isNotificationPopoverOpen: false
+    isNotificationPopoverOpen: false,
+    settings: null
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -52,6 +53,21 @@ class LayoutPage extends React.Component {
       this.closeMenu();
     }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.state.settings) {
+      this.getHostSettings();
+    }
+  }
+
+  getHostSettings = () => {
+    Meteor.call('getHostSettings', (error, respond) => {
+      this.setState({
+        settings: respond,
+        isLoading: false
+      });
+    });
+  };
 
   openMenu = () => {
     this.setState({
@@ -97,7 +113,7 @@ class LayoutPage extends React.Component {
   };
 
   render() {
-    const { isNotificationPopoverOpen } = this.state;
+    const { isNotificationPopoverOpen, settings } = this.state;
     const { currentUser, userLoading, children } = this.props;
 
     const notifications = currentUser && currentUser.notifications;
@@ -192,7 +208,7 @@ class LayoutPage extends React.Component {
             <Layout className="layout">
               <Content>{children}</Content>
             </Layout>
-            <FancyFooter />
+            <FancyFooter settings={settings} />
           </div>
         </UserContext.Provider>
       </Box>
@@ -214,7 +230,7 @@ const boldBabe = {
   fontWeight: 700
 };
 
-const FancyFooter = () => {
+const FancyFooter = ({ settings }) => {
   return (
     <div
       style={{
@@ -224,22 +240,24 @@ const FancyFooter = () => {
       }}
     >
       <div style={widgetBgrstyle}>
-        <FooterInfo />
+        <FooterInfo settings={settings} />
       </div>
     </div>
   );
 };
 
-const FooterInfo = () => (
-  <Fragment>
-    <h3 style={boldBabe}>{publicSettings.contextName}</h3>
-    <p>
-      <a href={`mailto:${publicSettings.contextEmail}`}>
-        {publicSettings.contextEmail}
-      </a>
-    </p>
-  </Fragment>
-);
+const FooterInfo = ({ settings }) =>
+  settings && (
+    <Fragment>
+      <h4 style={boldBabe}>{settings.name}</h4>
+      <p>
+        {settings.address}, {settings.city}
+      </p>
+      <p>
+        <a href={`mailto:${settings.email}`}>{settings.email}</a>
+      </p>
+    </Fragment>
+  );
 
 export default withTracker(props => {
   const meSub = Meteor.subscribe('me');
