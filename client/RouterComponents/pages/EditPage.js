@@ -162,7 +162,7 @@ class EditPage extends React.Component {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={7}>
+          <Col md={6}>
             {pageData && (
               <div style={{ marginBottom: 24 }}>
                 <Link to={`/page/${pageData.title}`}>
@@ -187,7 +187,7 @@ class EditPage extends React.Component {
             />
           </Col>
 
-          <Col md={5}>
+          <Col md={6}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Button onClick={this.openDeleteModal} label="Delete this page" />
             </div>

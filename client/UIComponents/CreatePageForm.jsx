@@ -8,10 +8,6 @@ class CreatePageForm extends React.Component {
   render() {
     const { formValues, onFormChange, onQuillChange, onSubmit } = this.props;
 
-    // if (!formValues.title || !formValues.longDescription) {
-    //   return null;
-    // }
-
     return (
       <div>
         <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>

@@ -6,15 +6,12 @@ import Routes from './RouterComponents/Routes';
 const theme = {
   global: {
     font: {
-      family: 'sans-serif',
-      size: '14px',
-      height: '20px'
+      family: 'Roboto, sans-serif',
+      size: '16px',
+      height: '24px'
     },
     colors: {
-      brand: '#ea3924'
-    },
-    focus: {
-      color: '#ea3924'
+      brand: '#020202'
     }
   },
   formField: {

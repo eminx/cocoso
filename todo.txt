@@ -26,9 +26,9 @@ TODO:
 
 3- Implement Social Signups (Start with Google, Facebook and Instagram)
 
-5- Work around how the groups, users, verification kind of things would be saved in the db, and change the code accordingly, without messing up what was before.
+5- For different hosts, work around how the groups, users, verification kind of things would be saved in the db and fetched/served/updated; and change the code accordingly without messing up what was before.
 
-3- Create a form with custom Host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
+3- Create a form with custom host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
 
 5- Divide my-profile into sections: 
   - Basic Info (name, bio, contact, links, avatar etc)

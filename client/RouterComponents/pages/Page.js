@@ -34,7 +34,11 @@ class Page extends PureComponent {
 
     const routeName = match.params.id;
 
-    return pages.find(page => parseTitle(page.title) === parseTitle(routeName));
+    const currentPage = pages.find(
+      page => parseTitle(page.title) === parseTitle(routeName)
+    );
+    console.log(currentPage);
+    return currentPage;
   };
 
   render() {
@@ -59,7 +63,7 @@ class Page extends PureComponent {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={7}>
+          <Col md={6}>
             {currentUser && currentUser.isSuperAdmin && (
               <div style={{ marginBottom: 12 }}>
                 <Link to="/new-page" key="new-page">
@@ -93,7 +97,7 @@ class Page extends PureComponent {
               </div>
             </div>
           </Col>
-          <Col md={5}>
+          <Col md={6}>
             {currentPage && currentUser && currentUser.isSuperAdmin && (
               <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
                 {' '}

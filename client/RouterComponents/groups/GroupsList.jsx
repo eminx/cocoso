@@ -174,7 +174,7 @@ class GroupsList extends React.PureComponent {
 
     return (
       <Row gutter={24}>
-        <Col md={7}>
+        <Col md={6}>
           <div style={{ padding: 24 }}>
             <Link to="/new-group">
               <Button as="span" primary label="New Group" />
@@ -212,7 +212,7 @@ class GroupsList extends React.PureComponent {
           )}
         </Col>
 
-        <Col md={5} />
+        <Col md={6} />
       </Row>
     );
   }

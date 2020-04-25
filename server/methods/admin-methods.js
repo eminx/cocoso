@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
 
+import { getHost } from './shared';
+
 const getVerifiedEmailText = username => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study groups and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;
 };
@@ -58,6 +60,44 @@ Meteor.methods({
       );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
+    }
+  },
+
+  getHostSettings() {
+    const user = Meteor.user();
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    const host = getHost(this);
+
+    try {
+      const currentHost = Hosts.findOne({ host });
+      return currentHost.settings;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  updateHostSettings(newSettings) {
+    const user = Meteor.user();
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    const host = getHost(this);
+
+    try {
+      Hosts.update(
+        { host },
+        {
+          $set: {
+            settings: newSettings
+          }
+        }
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
     }
   }
 });

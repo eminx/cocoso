@@ -121,7 +121,7 @@ class NewPage extends React.Component {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={7}>
+          <Col md={6}>
             <PagesList
               pageTitles={pageTitles}
               activePageTitle={''}

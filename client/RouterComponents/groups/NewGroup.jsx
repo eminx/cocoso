@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Tag } from 'antd/lib';
+import { Row, Col, message, Alert } from 'antd/lib';
 
-import { CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
+import { Box, CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -11,6 +11,11 @@ import { emailIsValid } from '../../functions';
 const successCreation = () => {
   message.success('Your group is successfully created', 6);
 };
+
+const privateParagraph1 =
+    "Private groups are only visible by their members, and participation is possible only via invites by their admins. You can <u>not</u> change it to public after you've created it.",
+  privateParagraph2 =
+    "You will be able to manage the invites after you'll have created the group.";
 
 class NewGroup extends React.Component {
   state = {
@@ -139,29 +144,22 @@ class NewGroup extends React.Component {
         {currentUser.isRegisteredMember && (
           <div>
             <Row gutter={48}>
-              <Col xs={24} sm={24} md={8}>
-                <div style={{ marginTop: 48 }}>
-                  <Paragraph size="small">
-                    Private groups are only visible by their members, and
-                    participation is possible only via invites by their admins.
-                    You can <u>not</u> change it to public after you've created
-                    it.
-                  </Paragraph>
-                  <Paragraph size="small">
-                    You will be able to manage the invites after you'll have
-                    created the group.
-                  </Paragraph>
-                </div>
-              </Col>
+              <Col xs={24} sm={24} md={6} />
 
               <Col xs={24} sm={24} md={12}>
                 <Heading level={3}>Create a New Group</Heading>
-                <FormField margin={{ bottom: 'small' }}>
+                <FormField>
                   <CheckBox
                     checked={isPrivate}
                     label={<Text>Private group? (invite-only)</Text>}
                     onChange={this.handlePrivateGroupSwitch}
                   />
+                  {isPrivate && (
+                    <Box margin={{ top: 'small' }}>
+                      <Paragraph size="small">{privateParagraph1}</Paragraph>
+                      <Paragraph size="small">{privateParagraph2}</Paragraph>
+                    </Box>
+                  )}
                 </FormField>
                 <CreateGroupForm
                   values={values}

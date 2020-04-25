@@ -152,7 +152,7 @@ class Members extends React.PureComponent {
 
     return (
       <Row style={{ padding: 24 }}>
-        <Col md={7}>
+        <Col md={6}>
           <div style={{ ...linkStyle }}>
             <Link to="/admin/settings">Settings</Link>
           </div>
@@ -217,7 +217,7 @@ class Members extends React.PureComponent {
           </NiceList>
         </Col>
 
-        <Col md={5} />
+        <Col md={6} />
       </Row>
     );
   }

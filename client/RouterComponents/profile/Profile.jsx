@@ -180,13 +180,13 @@ class Profile extends React.Component {
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col md={6}>
             <Blaze template="loginButtons" />
           </Col>
         </Row>
         <Row>
           <Divider />
-          <Col md={8}>
+          <Col md={12}>
             <h2>Personal Info</h2>
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
