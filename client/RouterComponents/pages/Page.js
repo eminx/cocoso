@@ -59,7 +59,7 @@ class Page extends PureComponent {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col md={7}>
             {currentUser && currentUser.isSuperAdmin && (
               <div style={{ marginBottom: 12 }}>
                 <Link to="/new-page" key="new-page">
@@ -93,7 +93,7 @@ class Page extends PureComponent {
               </div>
             </div>
           </Col>
-          <Col md={4}>
+          <Col md={5}>
             {currentPage && currentUser && currentUser.isSuperAdmin && (
               <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
                 {' '}

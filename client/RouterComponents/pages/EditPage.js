@@ -5,8 +5,9 @@ import { Row, Col, message, Alert, Modal } from 'antd/lib';
 import { Button, Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
+
 import { parseTitle } from '../../functions';
+import Loader from '../../UIComponents/Loader';
 
 const contextName = Meteor.settings.public.contextName;
 
@@ -16,69 +17,65 @@ const successCreation = () => {
 
 class EditPage extends React.Component {
   state = {
-    modalConfirm: false,
-    values: null,
+    formValues: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newPageTitle: null,
-    uploadedImage: null,
-    uploadableImage: null,
     isDeleteModalOn: false
   };
 
-  registerPageLocally = values => {
-    values.authorName = this.props.currentUser.username || 'emo';
-    this.setState({
-      values: values,
-      modalConfirm: true
-    });
-  };
+  componentDidMount() {
+    if (this.props.pageData) {
+      this.setFormValues();
+    }
+  }
 
-  setUploadableImage = e => {
-    const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
-        });
-      },
-      false
-    );
-  };
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.pageData && this.props.pageData) {
+      this.setFormValues();
+    }
+  }
 
-  uploadImage = () => {
-    this.setState({ isLoading: true });
-    const { uploadableImage } = this.state;
+  setFormValues = () => {
+    const { pageData } = this.props;
 
-    if (!uploadableImage) {
-      console.log('no uploadable image');
-      this.updatePage();
+    if (!pageData || !pageData.title || !pageData.longDescription) {
       return;
     }
-
-    const upload = new Slingshot.Upload('pageImageUpload');
-
-    upload.send(uploadableImage, (error, imageUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-      } else {
-        this.setState(
-          {
-            uploadedImageUrl: imageUrl
-          },
-          () => this.updatePage()
-        );
+    this.setState({
+      formValues: {
+        title: pageData.title,
+        longDescription: pageData.longDescription
       }
     });
   };
 
-  updatePage = () => {
-    const { values } = this.state;
+  handleFormChange = value => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...value,
+      longDescription: formValues.longDescription
+    };
+
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleQuillChange = longDescription => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      longDescription
+    };
+
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleSubmit = () => {
+    const { formValues } = this.state;
     const { currentUser, pageData } = this.props;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
@@ -86,26 +83,20 @@ class EditPage extends React.Component {
       return false;
     }
 
-    Meteor.call(
-      'updatePage',
-      pageData._id,
-      values,
-      // imageUrl,
-      (error, respond) => {
-        if (error) {
-          this.setState({
-            isLoading: false,
-            isError: true
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            newPageTitle: parseTitle(respond),
-            isSuccess: true
-          });
-        }
+    Meteor.call('updatePage', pageData._id, formValues, (error, respond) => {
+      if (error) {
+        this.setState({
+          isLoading: false,
+          isError: true
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          newPageTitle: parseTitle(respond),
+          isSuccess: true
+        });
       }
-    );
+    });
   };
 
   handleDeletePage = () => {
@@ -133,9 +124,6 @@ class EditPage extends React.Component {
     });
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
-
   closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
   openDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
@@ -151,14 +139,16 @@ class EditPage extends React.Component {
     }
 
     const {
-      modalConfirm,
-      values,
+      formValues,
       isLoading,
       isSuccess,
       newPageTitle,
-      uploadableImage,
       isDeleteModalOn
     } = this.state;
+
+    if (!pageData || !formValues) {
+      return <Loader />;
+    }
 
     if (isSuccess) {
       successCreation();
@@ -172,7 +162,7 @@ class EditPage extends React.Component {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col md={7}>
             {pageData && (
               <div style={{ marginBottom: 24 }}>
                 <Link to={`/page/${pageData.title}`}>
@@ -190,14 +180,10 @@ class EditPage extends React.Component {
             <Heading level={3}>Edit this Page</Heading>
 
             <CreatePageForm
-              values={values}
-              pageData={pageData}
-              pageTitles={pageTitles}
-              registerPageLocally={this.registerPageLocally}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImage={
-                (pageData && pageData.imageUrl) || uploadableImage
-              }
+              formValues={formValues}
+              onFormChange={this.handleFormChange}
+              onQuillChange={this.handleQuillChange}
+              onSubmit={this.handleSubmit}
             />
           </Col>
 
@@ -207,18 +193,6 @@ class EditPage extends React.Component {
             </div>
           </Col>
         </Row>
-        {modalConfirm ? (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            visible={modalConfirm}
-            onOk={this.updatePage}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        ) : null}
 
         <Modal
           onOk={this.handleDeletePage}

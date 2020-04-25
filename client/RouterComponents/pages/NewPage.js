@@ -4,7 +4,6 @@ import { Row, Col, message, Alert } from 'antd/lib';
 import { Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
 import PagesList from '../../UIComponents/PagesList';
 
 import { parseTitle } from '../../functions';
@@ -15,71 +14,51 @@ const successCreation = () => {
 
 class NewPage extends React.Component {
   state = {
-    modalConfirm: false,
-    values: null,
+    formValues: {
+      title: '',
+      longDescription: ''
+    },
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newPageId: null,
-    uploadedImage: null,
-    uploadableImage: null,
-    uploadableImageLocal: null
+    newPageId: null
   };
 
-  registerPageLocally = values => {
-    values.authorName = this.props.currentUser.username || 'emowtf';
+  handleFormChange = value => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...value,
+      longDescription: formValues.longDescription
+    };
+
     this.setState({
-      values: values,
-      modalConfirm: true
+      formValues: newFormValues
     });
   };
 
-  setUploadableImage = e => {
-    const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
-        });
-      },
-      false
-    );
-  };
+  handleQuillChange = longDescription => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      longDescription
+    };
 
-  uploadImage = () => {
-    this.setState({ isLoading: true });
-    const { uploadableImage } = this.state;
-
-    const upload = new Slingshot.Upload('pageImageUpload');
-
-    upload.send(uploadableImage, (error, imageUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-      } else {
-        this.setState(
-          {
-            uploadedImageUrl: imageUrl,
-            isLoading: false
-          },
-          () => this.createPage()
-        );
-      }
+    this.setState({
+      formValues: newFormValues
     });
   };
 
-  createPage = () => {
+  handleSubmit = () => {
     const { currentUser } = this.props;
     if (!currentUser || !currentUser.isSuperAdmin) {
       message.error('This is not allowed');
       return false;
     }
-    const { values, uploadedImageUrl } = this.state;
+    const { formValues } = this.state;
 
-    Meteor.call('createPage', values, uploadedImageUrl, (error, result) => {
+    console.log(formValues);
+
+    Meteor.call('createPage', formValues, (error, result) => {
       if (error) {
         console.log('error', error);
         this.setState({
@@ -96,8 +75,27 @@ class NewPage extends React.Component {
     });
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
+  validateTitle = (rule, value, callback) => {
+    const { form, pageData, pageTitles } = this.props;
+
+    let pageExists = false;
+    if (
+      pageTitles &&
+      value &&
+      (pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
+        pageData.title.toLowerCase() !== value.toLowerCase())
+    ) {
+      pageExists = true;
+    }
+
+    if (pageExists) {
+      callback('A page with this title already exists');
+    } else if (value.length < 4) {
+      callback('Title has to be at least 4 characters');
+    } else {
+      callback();
+    }
+  };
 
   render() {
     const { currentUser, pageTitles } = this.props;
@@ -113,22 +111,17 @@ class NewPage extends React.Component {
       );
     }
 
-    const {
-      modalConfirm,
-      values,
-      isLoading,
-      isSuccess,
-      newPageId,
-      uploadableImage,
-      uploadableImageLocal
-    } = this.state;
+    const { formValues, isLoading, isSuccess, newPageId } = this.state;
 
-    isSuccess && successCreation();
+    if (isSuccess && newPageId) {
+      successCreation();
+      return <Redirect to={`/page/${newPageId}`} />;
+    }
 
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col md={7}>
             <PagesList
               pageTitles={pageTitles}
               activePageTitle={''}
@@ -138,30 +131,13 @@ class NewPage extends React.Component {
           <Col xs={24} sm={24} md={12}>
             <Heading level={3}>Create a New Page</Heading>
             <CreatePageForm
-              pageTitles={pageTitles}
-              values={values}
-              registerPageLocally={this.registerPageLocally}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImage={uploadableImage}
+              formValues={formValues}
+              onFormChange={this.handleFormChange}
+              onQuillChange={this.handleQuillChange}
+              onSubmit={this.handleSubmit}
             />
           </Col>
         </Row>
-
-        {modalConfirm && (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            imageSrc={uploadableImageLocal}
-            visible={modalConfirm}
-            onOk={this.createPage}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        )}
-
-        {isSuccess && <Redirect to={`/page/${newPageId}`} />}
       </div>
     );
   }

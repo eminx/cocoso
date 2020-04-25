@@ -109,88 +109,93 @@ class LayoutPage extends React.Component {
     }
 
     return (
-      <UserContext.Provider value={{ currentUser, userLoading }}>
-        <div className="main-viewport">
-          <div className="header-container">
-            <Row className="header-background">
-              <Col xs={8}>
-                <span
-                  style={{
-                    padding: '6px 12px',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    backgroundColor: 'rgba(255, 255, 255, .7)'
-                  }}
-                >
-                  <Link to="/my-profile" style={{ color: '#030303' }}>
-                    {currentUser ? currentUser.username : 'LOGIN'}
-                  </Link>
-                </span>
-              </Col>
-
-              <Col xs={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Link to="/">
-                  <div className="logo">
-                    <h1>
-                      <b>XYRDEN</b>
-                    </h1>
-                  </div>
-                </Link>
-              </Col>
-
-              <Col xs={8} style={{ textAlign: 'right' }}>
-                {notifications && (
-                  <Popover
-                    placement="bottomRight"
-                    title="Notifications"
-                    content={this.renderNotificationList(notifications)}
-                    trigger="click"
-                    visible={isNotificationPopoverOpen}
-                    onVisibleChange={this.handleNotificationVisibility}
+      <Box>
+        <UserContext.Provider value={{ currentUser, userLoading }}>
+          <div className="main-viewport">
+            <div className="header-container">
+              <Row className="header-background">
+                <Col xs={8}>
+                  <span
+                    style={{
+                      padding: '6px 12px',
+                      textTransform: 'uppercase',
+                      fontWeight: 700,
+                      backgroundColor: 'rgba(255, 255, 255, .7)'
+                    }}
                   >
-                    <Badge count={notificationsCounter}>
-                      <Icon
-                        onClick={this.toggleNotificationsPopover}
-                        theme="outlined"
-                        type="bell"
-                        style={{ fontSize: 24, cursor: 'pointer' }}
-                      />
-                    </Badge>
-                  </Popover>
-                )}
-              </Col>
-            </Row>
-          </div>
+                    <Link to="/my-profile" style={{ color: '#030303' }}>
+                      {currentUser ? currentUser.username : 'LOGIN'}
+                    </Link>
+                  </span>
+                </Col>
 
-          <Box pad="small" justify="center" direction="row">
-            {menu.map(item => (
-              <Link to={item.route} key={item.label}>
-                <Box pad="small">
-                  <Anchor plain as="span">
-                    {item.label}
-                  </Anchor>
-                </Box>
-              </Link>
-            ))}
-            {currentUser &&
-              currentUser.isSuperAdmin &&
-              adminMenu.map(item => (
+                <Col
+                  xs={8}
+                  style={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <Link to="/">
+                    <div className="logo">
+                      <h1>
+                        <b>XYRDEN</b>
+                      </h1>
+                    </div>
+                  </Link>
+                </Col>
+
+                <Col xs={8} style={{ textAlign: 'right' }}>
+                  {notifications && (
+                    <Popover
+                      placement="bottomRight"
+                      title="Notifications"
+                      content={this.renderNotificationList(notifications)}
+                      trigger="click"
+                      visible={isNotificationPopoverOpen}
+                      onVisibleChange={this.handleNotificationVisibility}
+                    >
+                      <Badge count={notificationsCounter}>
+                        <Icon
+                          onClick={this.toggleNotificationsPopover}
+                          theme="outlined"
+                          type="bell"
+                          style={{ fontSize: 24, cursor: 'pointer' }}
+                        />
+                      </Badge>
+                    </Popover>
+                  )}
+                </Col>
+              </Row>
+            </div>
+
+            <Box pad="small" justify="center" direction="row">
+              {menu.map(item => (
                 <Link to={item.route} key={item.label}>
                   <Box pad="small">
-                    <Anchor plain as="span" pad="small">
+                    <Anchor plain as="span">
                       {item.label}
                     </Anchor>
                   </Box>
                 </Link>
               ))}
-          </Box>
+              {currentUser &&
+                currentUser.isSuperAdmin &&
+                adminMenu.map(item => (
+                  <Link to={item.route} key={item.label}>
+                    <Box pad="small">
+                      <Anchor plain as="span" pad="small">
+                        {item.label}
+                      </Anchor>
+                    </Box>
+                  </Link>
+                ))}
+            </Box>
 
-          <Layout className="layout">
-            <Content>{children}</Content>
-          </Layout>
-          <FancyFooter />
-        </div>
-      </UserContext.Provider>
+            <Layout className="layout">
+              <Content>{children}</Content>
+            </Layout>
+            <FancyFooter />
+          </div>
+        </UserContext.Provider>
+      </Box>
     );
   }
 }

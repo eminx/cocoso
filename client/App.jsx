@@ -12,6 +12,9 @@ const theme = {
     },
     colors: {
       brand: '#ea3924'
+    },
+    focus: {
+      color: '#ea3924'
     }
   },
   formField: {

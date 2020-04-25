@@ -31,7 +31,6 @@ Meteor.methods({
         authorId: user._id,
         authorName: user.username,
         title: formValues.title,
-        // imageUrl,
         longDescription: formValues.longDescription,
         isPublished: true,
         creationDate: new Date()

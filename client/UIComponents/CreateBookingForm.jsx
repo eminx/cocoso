@@ -346,6 +346,7 @@ class CreateBookingForm extends Component {
 
               <Field label="Room/Equipment">
                 <Select
+                  size="small"
                   plain={false}
                   placeholder="Select room/equipment to book"
                   name="room"

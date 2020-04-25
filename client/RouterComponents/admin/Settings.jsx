@@ -43,7 +43,7 @@ class Settings extends PureComponent {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col md={7}>
             <div style={{ ...activeStyle, ...linkStyle }}>
               <Link to="/admin/settings">Settings</Link>
             </div>
