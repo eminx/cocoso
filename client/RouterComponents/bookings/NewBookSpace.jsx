@@ -169,13 +169,7 @@ class NewBookSpace extends React.Component {
           </Heading>
         </Box>
 
-        <Box
-          direction="row"
-          flex={{ grow: 2 }}
-          pad={{ top: 'medium', left: 'medium', bottom: 'xsmall' }}
-          wrap
-          justify="end"
-        >
+        <Box direction="row" flex={{ grow: 2 }} wrap justify="end">
           <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
