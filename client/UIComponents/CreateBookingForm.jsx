@@ -36,9 +36,11 @@ const compareForSort = (a, b) => {
 
 const defaultCapacity = 40;
 
+const today = new Date().toISOString();
+
 let emptyDateAndTime = {
-  startDate: null,
-  endDate: null,
+  startDate: today,
+  endDate: today,
   startTime: null,
   endTime: null,
   attendees: [],
@@ -243,6 +245,8 @@ class CreateBookingForm extends Component {
     } else if (typeof date === 'object') {
       startDate = date[0];
       endDate = date[1];
+    } else {
+      return;
     }
 
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
@@ -680,7 +684,7 @@ class DatesAndTimes extends Component {
           <Box pad="xxsmall">
             <Calendar
               size="small"
-              dates={recurrence.dates}
+              dates={[recurrence.startDate, recurrence.endDate]}
               onSelect={handleDateChange}
               firstDayOfWeek={1}
               range
