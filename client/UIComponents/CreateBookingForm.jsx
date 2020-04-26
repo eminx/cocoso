@@ -21,6 +21,7 @@ import {
   TextInput,
   TextArea,
   Text,
+  Calendar,
   Heading,
   Select,
   Button
@@ -42,14 +43,6 @@ let emptyDateAndTime = {
   endTime: null,
   attendees: [],
   capacity: defaultCapacity
-};
-
-const iconStyle = {
-  padding: 0,
-  display: 'flex',
-  justifyContent: 'center',
-  marginBottom: 24,
-  backgroundColor: '#f8f8f8'
 };
 
 function Field({ label, children, ...otherProps }) {
@@ -188,6 +181,7 @@ class CreateBookingForm extends Component {
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
+            handleDateChange={date => this.handleDateChange(date, index)}
             handleStartDateChange={(date, dateString) =>
               this.handleDateAndTimeChange(date, dateString, index, 'startDate')
             }
@@ -205,19 +199,25 @@ class CreateBookingForm extends Component {
             }
           />
         ))}
-        <div style={{ ...iconStyle, padding: 24 }}>
+        <Box
+          justify="center"
+          pad="small"
+          margin="medium"
+          onClick={this.addRecurrence}
+          hoverIndicator
+        >
           <Icon
             style={{ fontSize: 48, cursor: 'pointer' }}
             type="plus-circle"
-            onClick={this.addRecurrence}
           />
-        </div>
+        </Box>
       </div>
     );
   };
 
   handleDateAndTimeChange = (date, dateString, index, entity) => {
     const { datesAndTimes } = this.state;
+
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
         item[entity + 'Moment'] = date;
@@ -225,6 +225,32 @@ class CreateBookingForm extends Component {
       }
       return item;
     });
+
+    this.setState({
+      datesAndTimes: newDatesAndTimes
+    });
+  };
+
+  handleDateChange = (date, index) => {
+    const { datesAndTimes } = this.state;
+
+    let startDate, endDate;
+    if (typeof date === 'string') {
+      startDate = date;
+      endDate = date;
+    } else if (typeof date === 'object') {
+      startDate = date[0];
+      endDate = date[1];
+    }
+
+    const newDatesAndTimes = datesAndTimes.map((item, i) => {
+      if (index === i) {
+        item.startDate = startDate;
+        item.endDate = endDate;
+      }
+      return item;
+    });
+
     this.setState({
       datesAndTimes: newDatesAndTimes
     });
@@ -625,6 +651,7 @@ class DatesAndTimes extends Component {
   render() {
     const {
       recurrence,
+      handleDateChange,
       handleStartDateChange,
       handleStartTimeChange,
       handleFinishDateChange,
@@ -635,65 +662,58 @@ class DatesAndTimes extends Component {
     } = this.props;
 
     return (
-      <div
-        style={{
-          padding: 12,
-          backgroundColor: '#f8f8f8',
-          marginBottom: 12
-        }}
-      >
+      <Box pad="small" background="light-1" margin={{ bottom: 'medium' }}>
         {!isNotDeletable && (
-          <div style={iconStyle}>
-            <Icon
-              style={{ fontSize: 18, cursor: 'pointer' }}
-              type="delete"
-              onClick={removeRecurrence}
-            />
-          </div>
+          <Box
+            pad="small"
+            justify="center"
+            onClick={removeRecurrence}
+            hoverIndicator
+          >
+            <Icon style={{ fontSize: 18, cursor: 'pointer' }} type="delete" />
+          </Box>
         )}
-
-        <Box pad="xxsmall">
-          <DatePicker
-            onChange={handleStartDateChange}
-            value={recurrence.startDateMoment}
-            placeholder="Start date"
-          />
+        <Box direction="row">
+          <Box pad="xxsmall">
+            <Calendar
+              size="small"
+              dates={recurrence.dates}
+              onSelect={handleDateChange}
+              firstDayOfWeek={1}
+              range
+            />
+          </Box>
+          <Box pad="medium" justify="evenly">
+            <Box pad={segmentPad}>
+              <TimePicker
+                onChange={handleStartTimeChange}
+                value={recurrence.startTimeMoment}
+                format="HH:mm"
+                minuteStep={5}
+                placeholder="Start time"
+              />
+            </Box>
+            <Box pad={segmentPad}>
+              <TimePicker
+                onChange={handleFinishTimeChange}
+                value={recurrence.endTimeMoment}
+                format="HH:mm"
+                minuteStep={5}
+                placeholder="Finish time"
+              />
+            </Box>
+            <Box pad="xxsmall">
+              <InputNumber
+                min={1}
+                max={90}
+                placeholder={'Capacity'}
+                value={recurrence.capacity}
+                onChange={handleCapacityChange}
+              />
+            </Box>
+          </Box>
         </Box>
-        <Box pad={segmentPad}>
-          <TimePicker
-            onChange={handleStartTimeChange}
-            value={recurrence.startTimeMoment}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Start time"
-          />
-        </Box>
-        <Box pad="xxsmall">
-          <DatePicker
-            placeholder="Finish date"
-            onChange={handleFinishDateChange}
-            value={recurrence.endDateMoment}
-          />
-        </Box>
-        <Box pad={segmentPad}>
-          <TimePicker
-            onChange={handleFinishTimeChange}
-            value={recurrence.endTimeMoment}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Finish time"
-          />
-        </Box>
-        <Box pad="xxsmall">
-          <InputNumber
-            min={1}
-            max={90}
-            placeholder={'Capacity'}
-            value={recurrence.capacity}
-            onChange={handleCapacityChange}
-          />
-        </Box>
-      </div>
+      </Box>
     );
   }
 }
