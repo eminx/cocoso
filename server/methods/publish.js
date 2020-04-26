@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { getHost } from './shared';
+
 Meteor.publish('attendingEvents', function() {
   return Meteor.users.find(this.userId, {
     fields: {
@@ -154,4 +157,9 @@ Meteor.publish('me', function() {
   if (userId) {
     return Meteor.users.find(userId);
   }
+});
+
+Meteor.publish('currentHost', function() {
+  const host = getHost(this);
+  return Hosts.find({ host }, { fields: { settings: true } });
 });

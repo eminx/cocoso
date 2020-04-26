@@ -37,7 +37,6 @@ class Page extends PureComponent {
     const currentPage = pages.find(
       page => parseTitle(page.title) === parseTitle(routeName)
     );
-    console.log(currentPage);
     return currentPage;
   };
 

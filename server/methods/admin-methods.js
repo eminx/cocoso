@@ -64,11 +64,6 @@ Meteor.methods({
   },
 
   getHostSettings() {
-    const user = Meteor.user();
-    if (!user.isSuperAdmin) {
-      throw new Meteor.Error('You are not allowed');
-    }
-
     const host = getHost(this);
 
     try {

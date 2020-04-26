@@ -16,28 +16,14 @@ class Settings extends PureComponent {
   };
 
   componentDidMount() {
-    const { currentUser } = this.context;
-    if (!currentUser || !currentUser.isSuperAdmin) {
-      return;
-    }
-
-    this.getHostSettings();
+    this.setHostSettings();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { currentUser } = this.context;
-    const { settings } = this.state;
-    if (!settings && currentUser && currentUser.isSuperAdmin) {
-      this.getHostSettings();
-    }
-  }
-
-  getHostSettings = () => {
-    Meteor.call('getHostSettings', (error, respond) => {
-      this.setState({
-        settings: respond,
-        isLoading: false
-      });
+  setHostSettings = () => {
+    const { settings } = this.context;
+    this.setState({
+      settings,
+      isLoading: false
     });
   };
 
@@ -49,6 +35,7 @@ class Settings extends PureComponent {
   };
 
   handleFormSubmit = () => {
+    this.setState({ isLoading: true });
     const { currentUser } = this.context;
     if (!currentUser || !currentUser.isSuperAdmin) {
       message.error('This is not allowed');
@@ -77,7 +64,6 @@ class Settings extends PureComponent {
         isLoading: false,
         isSuccess: true
       });
-      setTimeout(() => window.location.reload(), 2000);
     });
   };
 

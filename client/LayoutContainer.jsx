@@ -10,7 +10,8 @@ const publicSettings = Meteor.settings.public;
 import { Layout, Icon, Badge, Popover, List, Row, Col } from 'antd/lib';
 const { Content } = Layout;
 
-import { Box, Anchor } from 'grommet';
+import { Box, Anchor, Heading } from 'grommet';
+import Loader from './UIComponents/Loader';
 
 const menu = [
   {
@@ -42,8 +43,7 @@ class LayoutPage extends React.Component {
   state = {
     menuOpen: false,
     me: false,
-    isNotificationPopoverOpen: false,
-    settings: null
+    isNotificationPopoverOpen: false
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -53,21 +53,6 @@ class LayoutPage extends React.Component {
       this.closeMenu();
     }
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.state.settings) {
-      this.getHostSettings();
-    }
-  }
-
-  getHostSettings = () => {
-    Meteor.call('getHostSettings', (error, respond) => {
-      this.setState({
-        settings: respond,
-        isLoading: false
-      });
-    });
-  };
 
   openMenu = () => {
     this.setState({
@@ -113,8 +98,18 @@ class LayoutPage extends React.Component {
   };
 
   render() {
-    const { isNotificationPopoverOpen, settings } = this.state;
-    const { currentUser, userLoading, children } = this.props;
+    const { isNotificationPopoverOpen } = this.state;
+    const {
+      currentUser,
+      userLoading,
+      currentHost,
+      hostLoading,
+      children
+    } = this.props;
+
+    if (hostLoading) {
+      return <Loader />;
+    }
 
     const notifications = currentUser && currentUser.notifications;
     let notificationsCounter = 0;
@@ -124,9 +119,11 @@ class LayoutPage extends React.Component {
       });
     }
 
+    const settings = currentHost.settings;
+
     return (
       <Box>
-        <UserContext.Provider value={{ currentUser, userLoading }}>
+        <UserContext.Provider value={{ currentUser, userLoading, settings }}>
           <div className="main-viewport">
             <div className="header-container">
               <Row className="header-background">
@@ -150,10 +147,8 @@ class LayoutPage extends React.Component {
                   style={{ display: 'flex', justifyContent: 'center' }}
                 >
                   <Link to="/">
-                    <div className="logo">
-                      <h1>
-                        <b>XYRDEN</b>
-                      </h1>
+                    <div>
+                      <Heading level={1}>{settings.name}</Heading>
                     </div>
                   </Link>
                 </Col>
@@ -263,9 +258,14 @@ export default withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
+  const hostSub = Meteor.subscribe('currentHost');
+  const hostLoading = !hostSub.ready();
+  const currentHost = Hosts ? Hosts.findOne() : null;
 
   return {
     currentUser,
-    userLoading
+    userLoading,
+    currentHost,
+    hostLoading
   };
 })(LayoutPage);
