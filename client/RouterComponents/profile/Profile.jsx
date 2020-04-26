@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactDropzone from 'react-dropzone';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../../themes/skogen';
+import { editorFormats, editorModules } from '../../constants/quillConfig';
 
 import {
   Row,

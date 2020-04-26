@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactQuill from 'react-quill';
 import { TextInput, FormField, Form, Box, Button } from 'grommet';
+import ReactQuill from 'react-quill';
 
-import { editorFormats, editorModules } from '../themes/skogen';
+import { editorFormats, editorModules } from '../constants/quillConfig';
 
 class CreatePageForm extends React.Component {
   render() {

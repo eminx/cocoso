@@ -2,15 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { Icon, Badge, Popover, List } from 'antd/lib';
+import { Box, Anchor, Heading } from 'grommet';
 
 export const UserContext = React.createContext(null);
 
-const publicSettings = Meteor.settings.public;
-
-import { Layout, Icon, Badge, Popover, List, Row, Col } from 'antd/lib';
-const { Content } = Layout;
-
-import { Box, Anchor, Heading } from 'grommet';
 import Loader from './UIComponents/Loader';
 
 const menu = [
@@ -28,7 +24,7 @@ const menu = [
   },
   {
     label: 'Info',
-    route: `/page/about-${publicSettings.contextSlug}`
+    route: `/page/about`
   }
 ];
 
@@ -42,7 +38,6 @@ const adminMenu = [
 class LayoutPage extends React.Component {
   state = {
     menuOpen: false,
-    me: false,
     isNotificationPopoverOpen: false
   };
 
@@ -122,60 +117,59 @@ class LayoutPage extends React.Component {
     const settings = currentHost.settings;
 
     return (
-      <Box>
-        <UserContext.Provider value={{ currentUser, userLoading, settings }}>
-          <div className="main-viewport">
-            <div className="header-container">
-              <Row className="header-background">
-                <Col xs={8}>
-                  <span
-                    style={{
-                      padding: '6px 12px',
-                      textTransform: 'uppercase',
-                      fontWeight: 700,
-                      backgroundColor: 'rgba(255, 255, 255, .7)'
-                    }}
-                  >
-                    <Link to="/my-profile" style={{ color: '#030303' }}>
-                      {currentUser ? currentUser.username : 'LOGIN'}
-                    </Link>
-                  </span>
-                </Col>
-
-                <Col
-                  xs={8}
-                  style={{ display: 'flex', justifyContent: 'center' }}
+      <UserContext.Provider value={{ currentUser, userLoading, settings }}>
+        <div className="main-viewport">
+          <div className="layout">
+            <Box
+              justify="between"
+              alignSelf="center"
+              direction="row"
+              pad="medium"
+            >
+              <Box>
+                <span
+                  style={{
+                    padding: '0 12px',
+                    textTransform: 'uppercase',
+                    fontWeight: 700
+                  }}
                 >
-                  <Link to="/">
-                    <div>
-                      <Heading level={1}>{settings.name}</Heading>
-                    </div>
+                  <Link to="/my-profile" style={{ color: '#030303' }}>
+                    {currentUser ? currentUser.username : 'LOGIN'}
                   </Link>
-                </Col>
+                </span>
+              </Box>
 
-                <Col xs={8} style={{ textAlign: 'right' }}>
-                  {notifications && (
-                    <Popover
-                      placement="bottomRight"
-                      title="Notifications"
-                      content={this.renderNotificationList(notifications)}
-                      trigger="click"
-                      visible={isNotificationPopoverOpen}
-                      onVisibleChange={this.handleNotificationVisibility}
-                    >
-                      <Badge count={notificationsCounter}>
-                        <Icon
-                          onClick={this.toggleNotificationsPopover}
-                          theme="outlined"
-                          type="bell"
-                          style={{ fontSize: 24, cursor: 'pointer' }}
-                        />
-                      </Badge>
-                    </Popover>
-                  )}
-                </Col>
-              </Row>
-            </div>
+              <Box justify="center">
+                <Link to="/">
+                  <div>
+                    <Heading level={1}>{settings.name}</Heading>
+                  </div>
+                </Link>
+              </Box>
+
+              <Box style={{ textAlign: 'right' }}>
+                {notifications && (
+                  <Popover
+                    placement="bottomRight"
+                    title="Notifications"
+                    content={this.renderNotificationList(notifications)}
+                    trigger="click"
+                    visible={isNotificationPopoverOpen}
+                    onVisibleChange={this.handleNotificationVisibility}
+                  >
+                    <Badge count={notificationsCounter}>
+                      <Icon
+                        onClick={this.toggleNotificationsPopover}
+                        theme="outlined"
+                        type="bell"
+                        style={{ fontSize: 24, cursor: 'pointer' }}
+                      />
+                    </Badge>
+                  </Popover>
+                )}
+              </Box>
+            </Box>
 
             <Box pad="small" justify="center" direction="row">
               {menu.map(item => (
@@ -200,13 +194,11 @@ class LayoutPage extends React.Component {
                 ))}
             </Box>
 
-            <Layout className="layout">
-              <Content>{children}</Content>
-            </Layout>
+            <Box>{children}</Box>
             <FancyFooter settings={settings} />
           </div>
-        </UserContext.Provider>
-      </Box>
+        </div>
+      </UserContext.Provider>
     );
   }
 }

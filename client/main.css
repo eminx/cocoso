@@ -1,4 +1,5 @@
-@import 'bigcalendar-custom.css';
+@import './bigcalendar-custom.css';
+@import './quilleditor-custom.css';
 
 .main-viewport {
   /* background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg'); */
@@ -9,67 +10,9 @@
   padding-bottom: 240px;
 }
 
-h1 {
-  font-size: 28px;
-}
-
-.logo {
-  width: 180px;
-  height: 60px;
-  text-align: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-@media (max-width: 600px) {
-  .logo {
-    width: 50px;
-    height: 54px;
-  }
-}
-
-.header-container {
-  width: 100%;
-}
-
 .layout {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.ant-row.header-background {
-  display: flex;
-  flex-wrap: nowrap;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 24px;
-}
-
-.layout.ant-layout {
-  background-color: #fff;
-  /* border: 1px solid #030303; */
-}
-
-.ant-layout .ant-layout-footer {
-  background: none;
-}
-
-.layout.ant-layout .ant-layout-header {
-  padding: 0 24px;
-}
-
-.center-that {
-  display: flex;
-  justify-content: center;
-}
-
-.ant-list .ant-card {
-  margin-bottom: 24px;
-}
-
-.ant-list .ant-list-item-extra {
-  overflow: hidden;
 }
 
 .ant-list .ant-list-item-meta {
@@ -79,35 +22,6 @@ h1 {
 .ant-card .ant-card-meta-description {
   color: rgba(0, 0, 0, 0.65);
   white-space: pre-line;
-}
-
-.ant-card .ant-card-head-title {
-  white-space: inherit;
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 22px;
-    line-height: 26px;
-  }
-}
-
-.bold-font {
-  font-weight: bold;
-}
-
-/* .upload-image-col .ant-form-item-label label:before {
-  display: inline-block;
-  margin-right: 4px;
-  content: "*";
-  font-family: SimSun;
-  line-height: 1;
-  font-size: 14px;
-  color: #f5222d;
-} */
-
-textarea#longDescription.ant-input {
-  min-height: 240px;
 }
 
 .login-link-and-dropdown-list > #login-dropdown-list {
@@ -122,19 +36,6 @@ textarea#longDescription.ant-input {
 #forgot-password-email-label-and-input {
   display: flex;
   flex-direction: column;
-}
-
-/* li.ant-menu-item {
-	color: #2e3880;
-	font-size: 14px;
-	text-transform: uppercase;
-	font-weight: bold;
-  letter-spacing: -0.2px;
-}
- */
-.ant-menu-horizontal > li.ant-menu-item > a,
-.ant-menu-horizontal > .ant-menu-submenu > a {
-  color: #2e3880;
 }
 
 li.ant-menu-item span {
@@ -152,25 +53,4 @@ li.ant-menu-item span {
 
 .addSpace-modal .ant-modal-footer {
   display: none;
-}
-
-.quill > .ql-toolbar.ql-snow {
-  border-color: rgba(0, 0, 0, 0.33);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-.quill > .ql-container.ql-snow {
-  border-color: rgba(0, 0, 0, 0.33);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.ql-container .ql-editor {
-  min-height: 18em;
-}
-
-.ql-container .ql-editor p {
-  line-height: 1.5;
-  margin-bottom: 1em;
-  font-size: 14px;
 }

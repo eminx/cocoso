@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../themes/skogen';
+import { editorFormats, editorModules } from '../constants/quillConfig';
 import {
   // Form,
   Input,
