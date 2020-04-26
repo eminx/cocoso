@@ -171,6 +171,7 @@ class CreateBookingForm extends Component {
   };
 
   renderDateTime = () => {
+    const { isPublicActivity } = this.props;
     const { datesAndTimes } = this.state;
 
     return (
@@ -178,6 +179,7 @@ class CreateBookingForm extends Component {
         {datesAndTimes.map((recurrence, index) => (
           <DatesAndTimes
             key={index}
+            isPublicActivity={isPublicActivity}
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
@@ -285,7 +287,7 @@ class CreateBookingForm extends Component {
     return (
       <div>
         <Box direction="row" width="100%" wrap>
-          <Box pad="medium" flex={{ grow: 1 }}>
+          <Box pad="medium" flex={{ grow: 0 }}>
             <Heading level={5}>Dates & Time</Heading>
             {this.renderDateTime()}
           </Box>
@@ -658,7 +660,8 @@ class DatesAndTimes extends Component {
       handleFinishTimeChange,
       handleCapacityChange,
       removeRecurrence,
-      isNotDeletable
+      isNotDeletable,
+      isPublicActivity
     } = this.props;
 
     return (
@@ -685,32 +688,37 @@ class DatesAndTimes extends Component {
           </Box>
           <Box pad="medium" justify="evenly">
             <Box pad={segmentPad}>
+              <Text size="small">Start time</Text>
               <TimePicker
                 onChange={handleStartTimeChange}
                 value={recurrence.startTimeMoment}
                 format="HH:mm"
                 minuteStep={5}
-                placeholder="Start time"
+                placeholder="Select"
               />
             </Box>
             <Box pad={segmentPad}>
+              <Text size="small">Finish time</Text>
               <TimePicker
                 onChange={handleFinishTimeChange}
                 value={recurrence.endTimeMoment}
                 format="HH:mm"
                 minuteStep={5}
-                placeholder="Finish time"
+                placeholder="Select"
               />
             </Box>
-            <Box pad="xxsmall">
-              <InputNumber
-                min={1}
-                max={90}
-                placeholder={'Capacity'}
-                value={recurrence.capacity}
-                onChange={handleCapacityChange}
-              />
-            </Box>
+            {isPublicActivity && (
+              <Box pad="xxsmall">
+                <Text size="small">Capacity</Text>
+                <InputNumber
+                  min={1}
+                  max={90}
+                  placeholder={'Capacity'}
+                  value={recurrence.capacity}
+                  onChange={handleCapacityChange}
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
