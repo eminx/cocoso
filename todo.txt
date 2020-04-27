@@ -24,7 +24,7 @@ TODO:
 
 3-X Create a form with custom host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
 
-3- Implement custom AUTH
+3- Implement custom AUTH like in Librella. Actually build some reusable components with hooks. Eh wait a bit. 
 
 3- Divide my-profile into sections: 
   - Basic Info about me: full name, bio, city, external links, avatar; 
@@ -38,7 +38,11 @@ TODO:
 
 5- For different hosts, work around how the groups, users, verification kind of things would be saved in the db and fetched/served/updated; and change the code accordingly without messing up what was before.
 
-8- Media/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload because you have to be relevant to context no? I like the idea.
+8- Media/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload because you have to be relevant to context no? I like this idea.
+
+8- Schema validation on mongo
+
+8- Prop types for components
 
 CAN DO WITHOUT FOR NOW:
 
@@ -52,4 +56,15 @@ CAN DO WITHOUT FOR NOW:
 8- Server side render
 5- Organise your menu and routes yourself? Especially needed for single-artist feature switch
 5- Revisit the notifications
-5- Put all the method calls to a different dedicated file "actions"
+
+adminhood:
+
+USER:
+memberFor: [{host: 'xxx.artistrun.space', hostId: '09e39uroirjio', hostType: 'space'}, {...}]
+isAdmin: true 
+adminFor: [{host: 'xxx.artistrun.space', hostId: '09e39uroirjio', hostType: 'space'}, {...}]
+
+HOST: 
+admins: [{username: 'emin', userId: '908290890290', userEmail: 'e10durak@gmail.com', isConfirmed: true}, {...}]
+publicInfo: settings now..
+settings: future settings; theme etc.
