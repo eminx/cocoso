@@ -1,71 +1,48 @@
-import React, { PureComponent } from 'react';
-import { Menu, Icon, List, Dropdown } from 'antd/lib';
+import React from 'react';
+import { Menu, List as GrList, Box } from 'grommet';
 
-const MenuItem = Menu.Item;
-const ListItem = List.Item;
+function NiceList({ list, actionsDisabled, children }) {
+  return (
+    <GrList
+      border="horizontal"
+      data={list}
+      className="nicelist"
+      primaryKey={listItem => (
+        <ListItemWithActions
+          listItem={listItem}
+          actionsDisabled={actionsDisabled}
+          renderChildren={children}
+        />
+      )}
+    />
+  );
+}
 
-class NiceList extends PureComponent {
-  render() {
-    const { list, actionsDisabled, children } = this.props;
-
-    return (
-      <List
-        dataSource={list}
-        className="nicelist"
-        renderItem={(listItem, index) => (
-          <ListItem
-            style={{ alignItems: 'start' }}
-            actions={
-              actionsDisabled
-                ? []
-                : [
-                    <Dropdown
-                      trigger={['click']}
-                      placement="bottomRight"
-                      overlay={
-                        <Menu>
-                          {listItem.actions.map(action => (
-                            <MenuItem key={action.content}>
-                              <a
-                                onClick={
-                                  action.isDisabled ? null : action.handleClick
-                                }
-                                style={
-                                  action.isDisabled
-                                    ? {
-                                        color: '#ccc',
-                                        cursor: 'not-allowed'
-                                      }
-                                    : null
-                                }
-                              >
-                                {action.content}
-                              </a>
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      }
-                    >
-                      <div>
-                        <Icon
-                          style={{
-                            fontSize: 24,
-                            marginTop: 6,
-                            transform: 'rotate(90deg)'
-                          }}
-                          type="ellipsis"
-                        />
-                      </div>
-                    </Dropdown>
-                  ]
-            }
-          >
-            {children(listItem)}
-          </ListItem>
+function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
+  return (
+    <Box direction="row">
+      <Box flex={{ grow: 1 }}>{renderChildren(listItem)}</Box>
+      <Box flex={{ grow: 0 }}>
+        {!actionsDisabled && (
+          <Menu
+            label=""
+            items={listItem.actions.map(action => ({
+              label: action.content,
+              onClick: action.isDisabled ? null : action.handleClick,
+              style: action.isDisabled
+                ? {
+                    color: '#ccc',
+                    cursor: 'not-allowed'
+                  }
+                : null
+            }))}
+            background="light-1"
+            dropAlign={{ top: 'bottom', right: 'right' }}
+          />
         )}
-      />
-    );
-  }
+      </Box>
+    </Box>
+  );
 }
 
 export default NiceList;
