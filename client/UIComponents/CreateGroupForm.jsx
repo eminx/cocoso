@@ -1,19 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import {
-  // Form,
-  Input,
-  // Button,
-  InputNumber,
-  Upload,
-  Icon,
-  Divider,
-  Modal,
-  message
-} from 'antd/lib';
-const FormItem = Form.Item;
-
 import { Form, FormField, Box, TextInput, Button } from 'grommet';
 
 class CreateGroupForm extends React.Component {

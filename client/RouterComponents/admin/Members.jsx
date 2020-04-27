@@ -203,7 +203,9 @@ class Members extends React.PureComponent {
           <NiceList list={usersSorted}>
             {user => (
               <div key={user.username}>
-                <Heading level={6}>{user.username}</Heading>
+                <Text size="large" weight="bold">
+                  {user.username}
+                </Text>
                 <Text as="div" size="small">
                   {user && user.emails ? user.emails[0].address : null}
                 </Text>
