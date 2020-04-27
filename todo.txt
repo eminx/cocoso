@@ -24,7 +24,11 @@ TODO:
 
 3-X Create a form with custom host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
 
-3- Implement custom AUTH like in Librella. Actually build some reusable components with hooks. Eh wait a bit. 
+2- Replace ant datetime with a non-moment solution (grommet) - need to find a light library, or with moment, to convert ISO to different formats. Because Grommet works with ISO.
+
+3- Find out a good validation/error management for forms (Grommet's builtin or compatible), and update all existing forms. Actually I'm sure Grommet's existing one is great - so just find how it does the validation + error etc and fix it
+
+2- Replace Ant Design's Row/Col with another Grid solution. Try Grommet's Grid. Should work.
 
 3- Divide my-profile into sections: 
   - Basic Info about me: full name, bio, city, external links, avatar; 
@@ -32,32 +36,28 @@ TODO:
 	- Basic Info: name, email, address, city, country, main description (to appear at about page)
 	- Future: Email newsletter settings etc. 
 
-3- Find out a good validation/error management for forms (Grommet's builtin or compatible), and update all existing forms. Actually I'm sure Grommet's existing one is great - so just find how it does the validation + error etc and fix it
+5- For different hosts, work around how the groups, users, verification kind of things would be saved in the db and fetched/served/updated; and change the code accordingly without messing up what was before.
+
+3- Implement custom AUTH like in Librella. Actually build some reusable components with hooks. Eh wait a bit. 
 
 3- Implement Social Signups (Start with Google, Facebook and Instagram)
 
-5- For different hosts, work around how the groups, users, verification kind of things would be saved in the db and fetched/served/updated; and change the code accordingly without messing up what was before.
-
-5- Media/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload because you have to be relevant to context no? I like this idea.
-
-5- Schema validation on mongo
-
-5- Prop types for components
-
-5- I8TL
+5- Media: Images/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload there, because you have to be relevant to context no? I like this idea.
 
 CAN DO WITHOUT FOR NOW:
 
-2- Replace ant datetime with a non-moment solution (grommet)
 2- Make the date time work with time zones: part of the host settings to global adjust maybe?
-5- Fix the image resize problem and implement it
 3- Make all relevant pages without pubsub and with method calls to fetch data. Don't forget to fetch data again if necessary
-2- Drop unnecessary components like containers etc. (after making method call solution when relevant)
+2- Drop unnecessary components like containers etc. (after making method call solution when relevant or check what's the trend on Meteor) 
 5- Eventually get rid off ant.design completely
 8- Create portfolio feature
-8- Server side render
+5- Fix the image resize problem and implement it
 5- Organise your menu and routes yourself? Especially needed for single-artist feature switch
 5- Revisit the notifications
+5- Schema validation on mongo
+5- Prop types for components
+5- I8TL
+8- Server side render
 
 adminhood:
 

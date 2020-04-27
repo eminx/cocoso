@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
-import { Box, Heading, TextInput } from 'grommet';
+import { Box, Text, Heading, TextInput } from 'grommet';
 
 import Loader from '../../UIComponents/Loader';
 import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
@@ -203,15 +203,17 @@ class Members extends React.PureComponent {
           <NiceList list={usersSorted}>
             {user => (
               <div key={user.username}>
-                <div>
-                  <b>{user.username}</b>
-                </div>
-                <p style={{ fontSize: 12 }}>
-                  <em>{user && user.emails ? user.emails[0].address : null}</em>
-                </p>
-                <div style={{ fontSize: 10, color: '#aaa' }}>
+                <Heading level={6}>{user.username}</Heading>
+                <Text as="div" size="small">
+                  {user && user.emails ? user.emails[0].address : null}
+                </Text>
+                <Text
+                  as="div"
+                  size="xsmall"
+                  style={{ fontSize: 10, color: '#aaa' }}
+                >
                   joined {moment(user.createdAt).format('Do MMM YYYY')}
-                </div>
+                </Text>
               </div>
             )}
           </NiceList>
