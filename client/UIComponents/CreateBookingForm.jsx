@@ -688,8 +688,8 @@ class DatesAndTimes extends Component {
             <Icon style={{ fontSize: 18, cursor: 'pointer' }} type="delete" />
           </Box>
         )}
-        <Box direction="row">
-          <Box pad="xxsmall">
+        <Box direction="row" justify="around">
+          <Box pad="xsmall">
             <Calendar
               size="small"
               dates={[recurrence.startDate, recurrence.endDate]}
@@ -698,30 +698,12 @@ class DatesAndTimes extends Component {
               range
             />
           </Box>
-          <Box pad="medium" justify="evenly">
+          <Box pad="xsmall" justify="around" flex={{ grow: 0 }} basis="180px">
             <Box pad={segmentPad}>
               <Text size="small">Start time</Text>
-              <MaskedInput
-                mask={[
-                  {
-                    length: [1, 2],
-                    options: Array.from(
-                      { length: 24 },
-                      (v, k) => (k < 10 ? '0' : '') + k.toString()
-                    ),
-                    regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
-                    placeholder: 'hh'
-                  },
-                  { fixed: ':' },
-                  {
-                    length: 2,
-                    options: ['00', '15', '30', '45'],
-                    regexp: /^[0-5][0-9]$|^[0-9]$/,
-                    placeholder: 'mm'
-                  }
-                ]}
+              <GrTimePicker
                 value={recurrence.startTimeMoment}
-                onChange={event => handleStartTimeChange(event.target.value)}
+                onChange={handleStartTimeChange}
               />
 
               {/* <TimePicker
@@ -734,13 +716,18 @@ class DatesAndTimes extends Component {
             </Box>
             <Box pad={segmentPad}>
               <Text size="small">Finish time</Text>
-              <TimePicker
+              <GrTimePicker
+                value={recurrence.endTimeMoment}
+                onChange={handleFinishTimeChange}
+              />
+
+              {/* <TimePicker
                 onChange={handleFinishTimeChange}
                 value={recurrence.endTimeMoment}
                 format="HH:mm"
                 minuteStep={5}
                 placeholder="Select"
-              />
+              /> */}
             </Box>
             {isPublicActivity && (
               <Box pad="xxsmall">
@@ -760,5 +747,32 @@ class DatesAndTimes extends Component {
     );
   }
 }
+
+const GrTimePicker = ({ recurrence, onChange, value, ...otherProps }) => (
+  <MaskedInput
+    mask={[
+      {
+        length: [1, 2],
+        options: Array.from(
+          { length: 24 },
+          (v, k) => (k < 10 ? '0' : '') + k.toString()
+        ),
+        regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
+        placeholder: 'hh'
+      },
+      { fixed: ':' },
+      {
+        length: 2,
+        options: ['00', '15', '30', '45'],
+        regexp: /^[0-5][0-9]$|^[0-9]$/,
+        placeholder: 'mm'
+      }
+    ]}
+    value={value}
+    onChange={event => onChange(event.target.value)}
+    size="medium"
+    {...otherProps}
+  />
+);
 
 export default CreateBookingForm;
