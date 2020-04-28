@@ -299,7 +299,7 @@ class CreateBookingForm extends Component {
     return (
       <div>
         <Box direction="row" width="100%" wrap>
-          <Box pad={colPad} flex={{ grow: 1 }}>
+          <Box pad="medium" flex={{ grow: 0 }}>
             <Heading level={5}>Dates & Time</Heading>
             {this.renderDateTime()}
           </Box>
