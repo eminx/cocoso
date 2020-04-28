@@ -118,15 +118,21 @@ class LayoutPage extends React.Component {
 
     return (
       <UserContext.Provider value={{ currentUser, userLoading, settings }}>
-        <div className="main-viewport">
-          <div className="layout">
+        <Box className="main-viewport" justify="center" fill>
+          <Box width={{ max: '1280px' }} alignSelf="center" fill>
             <Box
               justify="between"
               alignSelf="center"
               direction="row"
-              pad="medium"
+              pad={{
+                top: 'medium',
+                right: 'medium',
+                bottom: 'small',
+                left: 'medium'
+              }}
+              fill="horizontal"
             >
-              <Box>
+              <Box basis="50px">
                 <span
                   style={{
                     padding: '0 12px',
@@ -143,12 +149,14 @@ class LayoutPage extends React.Component {
               <Box justify="center">
                 <Link to="/">
                   <div>
-                    <Heading level={1}>{settings.name}</Heading>
+                    <Heading level={1} style={{ marginBottom: 0 }}>
+                      {settings.name}
+                    </Heading>
                   </div>
                 </Link>
               </Box>
 
-              <Box style={{ textAlign: 'right' }}>
+              <Box basis="50px" justify="end" direction="row">
                 {notifications && (
                   <Popover
                     placement="bottomRight"
@@ -196,8 +204,8 @@ class LayoutPage extends React.Component {
 
             <Box>{children}</Box>
             <FancyFooter settings={settings} />
-          </div>
-        </div>
+          </Box>
+        </Box>
       </UserContext.Provider>
     );
   }

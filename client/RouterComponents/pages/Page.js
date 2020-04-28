@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col } from 'antd/lib';
-import { Button, Heading } from 'grommet';
+import { Button, Box, Heading } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -85,7 +85,7 @@ class Page extends PureComponent {
             >
               <Heading level={3}>{currentPage && currentPage.title}</Heading>
 
-              <div style={{ color: '#030303' }}>
+              <Box style={{ color: '#030303' }} animation="fadeIn">
                 {currentPage && (
                   <div
                     dangerouslySetInnerHTML={{
@@ -93,7 +93,7 @@ class Page extends PureComponent {
                     }}
                   />
                 )}
-              </div>
+              </Box>
             </div>
           </Col>
           <Col md={6}>

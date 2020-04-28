@@ -12,7 +12,7 @@ class Settings extends PureComponent {
   state = {
     settings: null,
     isLoading: true,
-    formValueChanged: false
+    isFormValueChanged: false
   };
 
   componentDidMount() {
@@ -30,7 +30,7 @@ class Settings extends PureComponent {
   handleFormChange = settings => {
     this.setState({
       settings: settings,
-      formValueChanged: true
+      isFormValueChanged: true
     });
   };
 
@@ -41,10 +41,9 @@ class Settings extends PureComponent {
       message.error('This is not allowed');
       return false;
     }
-    const { settings, formValueChanged } = this.state;
+    const { settings, isFormValueChanged } = this.state;
 
-    if (!formValueChanged) {
-      message.destroy();
+    if (!isFormValueChanged) {
       message.info('You have not changed any value');
       return;
     }
@@ -69,7 +68,7 @@ class Settings extends PureComponent {
 
   render() {
     const { currentUser } = this.context;
-    const { settings, isLoading } = this.state;
+    const { settings, isLoading, isFormValueChanged } = this.state;
 
     if (isLoading) {
       return <Loader />;
@@ -136,7 +135,12 @@ class Settings extends PureComponent {
               </FormField>
 
               <Box direction="row" justify="end" pad="small">
-                <Button type="submit" primary label="Confirm" />
+                <Button
+                  type="submit"
+                  primary
+                  label="Confirm"
+                  disabled={!isFormValueChanged}
+                />
               </Box>
             </Form>
           </Col>

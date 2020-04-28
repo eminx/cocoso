@@ -1,6 +1,4 @@
 import React from 'react';
-import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd/lib';
-const { Meta } = Card;
 import moment from 'moment';
 
 const getInitials = string => {

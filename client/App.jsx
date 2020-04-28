@@ -4,10 +4,11 @@ import { Grommet } from 'grommet';
 import Routes from './RouterComponents/Routes';
 
 const theme = {
+  spacing: 12,
   global: {
     font: {
-      family: 'Roboto, sans-serif',
-      size: '16px',
+      family: 'sans-serif',
+      size: '15px',
       height: '24px'
     },
     colors: {

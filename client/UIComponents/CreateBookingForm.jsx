@@ -289,15 +289,22 @@ class CreateBookingForm extends Component {
     const placeOptions =
       places && places.map(part => ({ label: part.name, value: part.name }));
 
+    const colPad = {
+      top: 'small',
+      bottom: 'medium',
+      left: 'medium',
+      right: 'medium'
+    };
+
     return (
       <div>
         <Box direction="row" width="100%" wrap>
-          <Box pad="medium" flex={{ grow: 0 }}>
+          <Box pad={colPad} flex={{ grow: 1 }}>
             <Heading level={5}>Dates & Time</Heading>
             {this.renderDateTime()}
           </Box>
 
-          <Box pad="medium" flex={{ grow: 2 }}>
+          <Box pad={colPad} flex={{ grow: 2 }}>
             <Heading level={5}>Details</Heading>
             <Form
               onSubmit={this.handleSubmit}
