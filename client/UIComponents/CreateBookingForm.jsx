@@ -22,6 +22,7 @@ import {
   TextArea,
   Text,
   Calendar,
+  MaskedInput,
   Heading,
   Select,
   Button
@@ -693,13 +694,36 @@ class DatesAndTimes extends Component {
           <Box pad="medium" justify="evenly">
             <Box pad={segmentPad}>
               <Text size="small">Start time</Text>
-              <TimePicker
+              <MaskedInput
+                mask={[
+                  {
+                    length: [1, 2],
+                    options: Array.from(
+                      { length: 24 },
+                      (v, k) => (k < 10 ? '0' : '') + k.toString()
+                    ),
+                    regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
+                    placeholder: 'hh'
+                  },
+                  { fixed: ':' },
+                  {
+                    length: 2,
+                    options: ['00', '15', '30', '45'],
+                    regexp: /^[0-5][0-9]$|^[0-9]$/,
+                    placeholder: 'mm'
+                  }
+                ]}
+                value={recurrence.startTimeMoment}
+                onChange={event => handleStartTimeChange(event.target.value)}
+              />
+
+              {/* <TimePicker
                 onChange={handleStartTimeChange}
                 value={recurrence.startTimeMoment}
                 format="HH:mm"
                 minuteStep={5}
                 placeholder="Select"
-              />
+              /> */}
             </Box>
             <Box pad={segmentPad}>
               <Text size="small">Finish time</Text>
