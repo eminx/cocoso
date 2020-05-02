@@ -2,7 +2,7 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import { Upload } from 'antd/lib';
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import { Form, FormField, Box, TextInput, Image, Button } from 'grommet';
+import { Form, FormField, Text, Box, TextInput, Image, Button } from 'grommet';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
@@ -63,12 +63,28 @@ const CreateGroupForm = ({
               required
             >
               {uploadableImageLocal ? (
-                <Box width="medium" height="small">
-                  <Image fit="cover" fill src={uploadableImageLocal} />
+                <Box width="large" height="medium">
+                  <Image
+                    fit="cover"
+                    fill
+                    src={uploadableImageLocal}
+                    style={{ cursor: 'pointer' }}
+                  />
                 </Box>
               ) : imageUrl ? (
-                <Box width="medium" height="small">
-                  <Image fit="cover" fill src={imageUrl} />
+                <Box width="large" height="medium">
+                  <Text size="small" margin={{ bottom: 'small' }}>
+                    <em>
+                      If you want to replace it with another one, click on the
+                      image to open the file picker
+                    </em>
+                  </Text>
+                  <Image
+                    fit="cover"
+                    fill
+                    src={imageUrl}
+                    style={{ cursor: 'pointer' }}
+                  />
                 </Box>
               ) : (
                 <Button

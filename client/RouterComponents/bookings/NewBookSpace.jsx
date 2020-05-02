@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
 import { CheckBox, Box, Text, Heading } from 'grommet';
 
-import ModalArticle from '../../UIComponents/ModalArticle';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 
 const successCreation = () => {
@@ -13,10 +12,32 @@ const successCreation = () => {
 const sideNote =
   "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping bookings.";
 
+const formModel = {
+  title: '',
+  subtitle: '',
+  longDescription: '',
+  place: '',
+  address: '',
+  practicalInfo: '',
+  internalInfo: '',
+  room: ''
+};
+
+const defaultCapacity = 40;
+const today = new Date().toISOString().substring(0, 10);
+const emptyDateAndTime = {
+  startDate: today,
+  endDate: today,
+  startTime: '',
+  endTime: '',
+  attendees: [],
+  capacity: defaultCapacity
+};
+
 class NewBookSpace extends React.Component {
   state = {
-    modalConfirm: false,
-    values: null,
+    formValues: { ...formModel },
+    datesAndTimes: [{ ...emptyDateAndTime }],
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -24,21 +45,41 @@ class NewBookSpace extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     isPublicActivity: false,
-    isBookingsDisabled: false,
-    numberOfRecurrence: 1
+    isBookingsDisabled: false
   };
 
-  registerBookingLocally = values => {
-    values.authorName = this.props.currentUser.username || 'emo';
+  handleFormValueChange = newValues => {
+    const { formValues } = this.state;
+
+    const newFormValues = {
+      ...newValues,
+      longDescription: formValues.longDescription
+    };
 
     this.setState({
-      values,
-      modalConfirm: true
+      formValues: newFormValues
     });
   };
 
-  confirmCreateBooking = values => {
-    isPublicActivity ? this.uploadImage : this.createBooking;
+  handleQuillChange = longDescription => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      longDescription
+    };
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleSubmit = () => {
+    const { isPublicActivity } = this.state;
+
+    if (isPublicActivity) {
+      this.uploadImage();
+    } else {
+      this.createBooking();
+    }
   };
 
   setUploadableImage = e => {
@@ -80,14 +121,21 @@ class NewBookSpace extends React.Component {
 
   createBooking = () => {
     const {
-      values,
+      formValues,
+      datesAndTimes,
       isPublicActivity,
       isBookingsDisabled,
       uploadedImage
     } = this.state;
 
-    values.isPublicActivity = isPublicActivity;
-    values.isBookingsDisabled = isBookingsDisabled;
+    console.log('maybe');
+
+    const values = {
+      ...formValues,
+      isPublicActivity: isPublicActivity,
+      isBookingsDisabled: isBookingsDisabled,
+      datesAndTimes: datesAndTimes
+    };
 
     Meteor.call('createBooking', values, uploadedImage, (error, result) => {
       if (error) {
@@ -106,9 +154,6 @@ class NewBookSpace extends React.Component {
     });
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
-
   handlePublicActivitySwitch = event => {
     const value = event.target.checked;
     this.setState({
@@ -123,18 +168,14 @@ class NewBookSpace extends React.Component {
     });
   };
 
-  redirectSuccess = () => {
-    const { isPublicActivity, newBookingId } = this.state;
-    successCreation();
-    if (isPublicActivity) {
-      return <Redirect to={`/event/${newBookingId}`} />;
-    } else {
-      return <Redirect to={`/calendar`} />;
-    }
+  setDatesAndTimes = datesAndTimes => {
+    this.setState({
+      datesAndTimes
+    });
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, places } = this.props;
 
     if (!currentUser || !currentUser.isRegisteredMember) {
       return (
@@ -149,7 +190,7 @@ class NewBookSpace extends React.Component {
 
     const {
       modalConfirm,
-      values,
+      formValues,
       isLoading,
       isSuccess,
       newBookingId,
@@ -158,8 +199,17 @@ class NewBookSpace extends React.Component {
       uploadableImageLocal,
       isPublicActivity,
       isBookingsDisabled,
-      numberOfRecurrence
+      datesAndTimes
     } = this.state;
+
+    if (isSuccess) {
+      successCreation();
+      if (isPublicActivity) {
+        return <Redirect to={`/event/${newBookingId}`} />;
+      } else {
+        return <Redirect to={`/calendar`} />;
+      }
+    }
 
     return (
       <div style={{ padding: 24 }}>
@@ -189,32 +239,17 @@ class NewBookSpace extends React.Component {
         </Box>
 
         <CreateBookingForm
-          values={values}
-          registerBookingLocally={this.registerBookingLocally}
           setUploadableImage={this.setUploadableImage}
-          uploadableImage={this.state.uploadableImage}
-          places={this.props.places}
+          uploadableImage={uploadableImage}
+          places={places}
           isPublicActivity={isPublicActivity}
-          currentUser={currentUser}
-          numberOfRecurrence={numberOfRecurrence}
+          formValues={formValues}
+          onFormValueChange={this.handleFormValueChange}
+          onQuillChange={this.handleQuillChange}
+          onSubmit={this.handleSubmit}
+          setDatesAndTimes={this.setDatesAndTimes}
+          datesAndTimes={datesAndTimes}
         />
-
-        {modalConfirm ? (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            visible={modalConfirm}
-            onOk={isPublicActivity ? this.uploadImage : this.createBooking}
-            okButtonProps={{ loading: isLoading }}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-            imageSrc={uploadedImage}
-          />
-        ) : null}
-
-        {isSuccess && this.redirectSuccess()}
       </div>
     );
   }

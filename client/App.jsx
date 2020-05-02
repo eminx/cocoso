@@ -12,7 +12,8 @@ const theme = {
       height: '24px'
     },
     colors: {
-      brand: '#020202'
+      brand: '#020202',
+      focus: 'rgba(0, 0, 0, .4)'
     }
   },
   formField: {

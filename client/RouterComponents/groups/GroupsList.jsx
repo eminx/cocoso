@@ -2,8 +2,8 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card, message } from 'antd/lib';
-import { Button, Heading, RadioButtonGroup } from 'grommet';
+import { Row, Col, message } from 'antd/lib';
+import { Box, Button, Avatar, Heading, RadioButtonGroup, Text } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 
@@ -29,37 +29,32 @@ class GroupsList extends React.PureComponent {
     filterBy: 'active'
   };
 
-  getTitle = group => {
+  getGroupItem = group => {
     return (
-      <div>
-        <div>
-          <h3 style={{ overflowWrap: 'anywhere' }}>
-            <Link to={`/group/${group._id}`}>{group.title}</Link>
-          </h3>
-          <h5>
-            <b>{group.readingMaterial}</b>
-          </h5>
-        </div>
-        <div style={{ textAlign: 'right', lineHeight: '16px' }}>
-          <span style={{ fontSize: 12 }}>{group.adminUsername}</span>
-          <br />
-          <span style={{ fontSize: 10 }}>
-            {moment(group.creationDate).format('Do MMM YYYY')}
-          </span>
-        </div>
-      </div>
-    );
-  };
-
-  getExtra = group => {
-    return (
-      <div>
-        {group.adminUsername}
-        <br />
-        <span style={{ fontSize: 10 }}>
-          {moment(group.creationDate).format('Do MMM YYYY')}
-        </span>
-      </div>
+      <Box direction="row" justify="stretch">
+        <Avatar
+          size="xlarge"
+          round="2px"
+          src={group.imageUrl}
+          flex={{ grow: 0 }}
+          margin={{ right: 'small' }}
+        />
+        <Box flex={{ grow: 1 }}>
+          <Box>
+            <Heading level={4} style={{ overflowWrap: 'anywhere' }}>
+              <Link to={`/group/${group._id}`}>{group.title}</Link>
+            </Heading>
+            <Heading level={6}>{group.readingMaterial}</Heading>
+          </Box>
+          <div style={{ textAlign: 'right', lineHeight: '16px' }}>
+            <span style={{ fontSize: 12 }}>{group.adminUsername}</span>
+            <br />
+            <span style={{ fontSize: 10 }}>
+              {moment(group.creationDate).format('Do MMM YYYY')}
+            </span>
+          </div>
+        </Box>
+      </Box>
     );
   };
 
@@ -198,16 +193,9 @@ class GroupsList extends React.PureComponent {
             <NiceList
               list={groupsList.reverse()}
               actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
+              border={false}
             >
-              {group => (
-                <Card
-                  title={this.getTitle(group)}
-                  bordered={false}
-                  // extra={this.getExtra(group)}
-                  style={{ width: '100%', marginBottom: 0 }}
-                  className="empty-card-body"
-                />
-              )}
+              {group => <Box>{this.getGroupItem(group)}</Box>}
             </NiceList>
           )}
         </Col>

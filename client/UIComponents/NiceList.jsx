@@ -1,10 +1,9 @@
 import React from 'react';
-import { Menu, List as GrList, Box } from 'grommet';
+import { Menu, List, Box } from 'grommet';
 
-function NiceList({ list, actionsDisabled, children }) {
+function NiceList({ list, actionsDisabled, children, ...otherProps }) {
   return (
-    <GrList
-      border="horizontal"
+    <List
       data={list}
       className="nicelist"
       primaryKey={listItem => (
@@ -14,6 +13,7 @@ function NiceList({ list, actionsDisabled, children }) {
           renderChildren={children}
         />
       )}
+      {...otherProps}
     />
   );
 }

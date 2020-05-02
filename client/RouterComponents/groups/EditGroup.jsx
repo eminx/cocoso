@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Modal, Button } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
 const successUpdate = () =>
@@ -237,8 +236,9 @@ class EditGroup extends React.Component {
         )}
 
         <h2>Edit your Group</h2>
-        <Row gutter={48}>
-          <Col xs={24} sm={24} md={16}>
+        <Row gutter={24}>
+          <Col md={6} />
+          <Col md={12}>
             {group && currentUser && group.adminId === currentUser._id && (
               <div
                 style={{
@@ -264,6 +264,7 @@ class EditGroup extends React.Component {
               isButtonDisabled={!isFormValid || isUpdating}
             />
           </Col>
+          <Col md={4} />
         </Row>
 
         <Modal
