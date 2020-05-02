@@ -5,22 +5,26 @@ import { Row, Col, message, Alert } from 'antd/lib';
 import { Box, CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
 import { emailIsValid } from '../../functions';
+import Loader from '../../UIComponents/Loader';
 
 const successCreation = () => {
   message.success('Your group is successfully created', 6);
 };
 
 const privateParagraph1 =
-    "Private groups are only visible by their members, and participation is possible only via invites by their admins. You can <u>not</u> change it to public after you've created it.",
+    "Private groups are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.",
   privateParagraph2 =
     "You will be able to manage the invites after you'll have created the group.";
 
 class NewGroup extends React.Component {
   state = {
-    modalConfirm: false,
-    values: null,
+    formValues: {
+      title: '',
+      readingMaterial: '',
+      description: '',
+      capacity: 12
+    },
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -28,15 +32,45 @@ class NewGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
+    isCreating: false
   };
 
-  registerGroupLocally = values => {
-    values.authorName = this.props.currentUser.username || 'emowtf';
+  handleFormChange = value => {
+    const { formValues } = this.state;
+    let capacity = parseInt(value.capacity) || 2;
+    if (capacity > 30) {
+      capacity = 30;
+    }
+
+    const newFormValues = {
+      ...value,
+      capacity,
+      description: formValues.description
+    };
+
     this.setState({
-      values: values,
-      modalConfirm: true
+      formValues: newFormValues
     });
+  };
+
+  handleQuillChange = description => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      description
+    };
+
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleSubmit = () => {
+    this.setState({
+      isCreating: true
+    });
+    this.uploadImage();
   };
 
   setUploadableImage = e => {
@@ -56,15 +90,13 @@ class NewGroup extends React.Component {
   };
 
   uploadImage = () => {
-    this.setState({ isLoading: true });
-
     const { uploadableImage } = this.state;
-
     const upload = new Slingshot.Upload('groupImageUpload');
 
     upload.send(uploadableImage, (error, imageUrl) => {
       if (error) {
         console.error('Error uploading:', error);
+        message.error(error.reason);
       } else {
         this.setState(
           {
@@ -77,33 +109,31 @@ class NewGroup extends React.Component {
   };
 
   createGroup = () => {
-    const { values, uploadedImageUrl, isPrivate } = this.state;
+    const { formValues, uploadedImageUrl, isPrivate } = this.state;
 
     Meteor.call(
       'createGroup',
-      values,
+      formValues,
       uploadedImageUrl,
       isPrivate,
-      (error, result) => {
+      (error, respond) => {
         if (error) {
           console.log('error', error);
+          message.error(error.reason);
           this.setState({
-            isLoading: false,
+            isCreating: false,
             isError: true
           });
         } else {
           this.setState({
-            isLoading: false,
-            newGroupId: result,
+            isCreating: false,
+            newGroupId: respond,
             isSuccess: true
           });
         }
       }
     );
   };
-
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
 
   handlePrivateGroupSwitch = () => {
     const { isPrivate } = this.state;
@@ -127,17 +157,37 @@ class NewGroup extends React.Component {
     }
 
     const {
-      modalConfirm,
-      values,
+      formValues,
       isLoading,
       isSuccess,
       newGroupId,
-      uploadableImage,
       uploadableImageLocal,
-      isPrivate
+      isPrivate,
+      isCreating
     } = this.state;
 
-    isSuccess ? successCreation() : null;
+    if (isLoading) {
+      return <Loader />;
+    }
+
+    // if (isCreating) {
+
+    // }
+
+    if (isSuccess) {
+      successCreation();
+      return <Redirect to={`/group/${newGroupId}`} />;
+    }
+
+    const buttonLabel = isCreating
+      ? 'Creating your group...'
+      : 'Confirm and Create Group';
+    const { title, description } = formValues;
+    const isFormValid =
+      formValues &&
+      title.length > 3 &&
+      description.length > 20 &&
+      uploadableImageLocal;
 
     return (
       <div style={{ padding: 24 }}>
@@ -161,34 +211,22 @@ class NewGroup extends React.Component {
                     </Box>
                   )}
                 </FormField>
+
                 <CreateGroupForm
-                  values={values}
-                  registerGroupLocally={this.registerGroupLocally}
+                  formValues={formValues}
+                  onFormChange={this.handleFormChange}
+                  onQuillChange={this.handleQuillChange}
+                  onSubmit={this.handleSubmit}
                   setUploadableImage={this.setUploadableImage}
-                  uploadableImage={uploadableImage}
-                  places={this.props.places}
+                  uploadableImageLocal={uploadableImageLocal}
+                  buttonLabel={buttonLabel}
+                  isFormValid={isFormValid}
+                  isButtonDisabled={!isFormValid || isCreating}
                 />
               </Col>
             </Row>
           </div>
         )}
-
-        {modalConfirm ? (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            imageSrc={uploadableImageLocal}
-            visible={modalConfirm}
-            okButtonProps={{ loading: isLoading }}
-            onOk={this.uploadImage}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        ) : null}
-
-        {isSuccess ? <Redirect to={`/group/${newGroupId}`} /> : null}
       </div>
     );
   }

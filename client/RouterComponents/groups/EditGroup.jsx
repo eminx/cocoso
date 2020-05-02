@@ -6,7 +6,7 @@ import ModalArticle from '../../UIComponents/ModalArticle';
 import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
-const successCreation = () =>
+const successUpdate = () =>
   message.success('Your group is successfully updated', 6);
 
 const successDelete = () =>
@@ -16,9 +16,13 @@ const sideNote = 'This page is dedicated to create groups';
 
 class EditGroup extends React.Component {
   state = {
-    modalConfirm: false,
+    formValues: {
+      title: '',
+      readingMaterial: '',
+      description: '',
+      capacity: 12
+    },
     isDeleteModalOn: false,
-    values: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -28,12 +32,78 @@ class EditGroup extends React.Component {
     uploadableImageLocal: null
   };
 
-  registerGroupLocally = values => {
-    values.authorName = this.props.currentUser.username || 'emo';
+  componentDidMount() {
+    if (this.props.group) {
+      this.setFormValues();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.group && this.props.group) {
+      this.setFormValues();
+    }
+  }
+
+  setFormValues = () => {
+    const { group } = this.props;
+
+    if (!group || !group.title || !group.description) {
+      return;
+    }
     this.setState({
-      values: values,
-      modalConfirm: true
+      formValues: {
+        title: group.title,
+        readingMaterial: group.readingMaterial,
+        description: group.description,
+        capacity: group.capacity
+      }
     });
+  };
+
+  handleFormChange = value => {
+    const { formValues } = this.state;
+    let capacity = parseInt(value.capacity) || 2;
+    if (capacity > 30) {
+      capacity = 30;
+    }
+
+    const newFormValues = {
+      ...value,
+      capacity,
+      description: formValues.description
+    };
+
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleQuillChange = description => {
+    const { formValues } = this.state;
+    const newFormValues = {
+      ...formValues,
+      description
+    };
+
+    this.setState({
+      formValues: newFormValues
+    });
+  };
+
+  handleSubmit = () => {
+    const { uploadableImage } = this.state;
+
+    this.setState({
+      isUpdating: true
+    });
+
+    if (!uploadableImage) {
+      console.log('no uploadable image');
+      this.updateGroup();
+      return;
+    }
+
+    this.uploadImage();
   };
 
   setUploadableImage = e => {
@@ -53,39 +123,33 @@ class EditGroup extends React.Component {
   };
 
   uploadImage = () => {
-    this.setState({ isLoading: true });
     const { uploadableImage } = this.state;
 
-    if (uploadableImage === null) {
-      console.log('no uploadable image');
-      this.updateGroup();
-      return;
-    }
-
     const upload = new Slingshot.Upload('groupImageUpload');
-    const timeStamp = Math.floor(Date.now());
 
     upload.send(uploadableImage, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
       } else {
-        this.setState({
-          uploadedImage: downloadUrl
-        });
-        this.updateGroup(downloadUrl);
+        this.setState(
+          {
+            uploadedImage: downloadUrl
+          },
+          this.updateGroup
+        );
       }
     });
   };
 
   updateGroup = () => {
-    const { values, uploadedImage } = this.state;
-    const { groupData } = this.props;
-    const imageUrl = uploadedImage || groupData.imageUrl;
+    const { group } = this.props;
+    const { formValues, uploadedImage } = this.state;
+    const imageUrl = uploadedImage || group.imageUrl;
 
     Meteor.call(
       'updateGroup',
-      groupData._id,
-      values,
+      group._id,
+      formValues,
       imageUrl,
       (error, result) => {
         if (error) {
@@ -96,7 +160,6 @@ class EditGroup extends React.Component {
         } else {
           this.setState({
             isLoading: false,
-            newGroupId: result,
             isSuccess: true
           });
         }
@@ -104,14 +167,11 @@ class EditGroup extends React.Component {
     );
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
-
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteGroup = () => {
-    const groupId = this.props.groupData._id;
+    const groupId = this.props.group._id;
     Meteor.call('deleteGroup', groupId, (error, respond) => {
       if (error) {
         this.setState({
@@ -129,7 +189,9 @@ class EditGroup extends React.Component {
   };
 
   render() {
-    if (!this.props.currentUser) {
+    const { group, currentUser } = this.props;
+
+    if (!currentUser) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
@@ -141,32 +203,35 @@ class EditGroup extends React.Component {
     }
 
     const {
-      modalConfirm,
       isDeleteModalOn,
-      values,
-      isLoading,
+      formValues,
       isSuccess,
-      newGroupId,
-      uploadedImage,
-      uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
+      isUpdating
     } = this.state;
 
-    if (isSuccess && newGroupId) {
-      successCreation();
-      return <Redirect to={`/group/${newGroupId}`} />;
-    } else if (isSuccess) {
-      return <Redirect to="/groups" />;
+    if (isSuccess) {
+      successUpdate();
+      return <Redirect to={`/group/${group._id}`} />;
     }
 
-    const { groupData, currentUser } = this.props;
+    const buttonLabel = isUpdating
+      ? 'Updating your group...'
+      : 'Confirm and Update Group';
+
+    const { title, description } = formValues;
+    const isFormValid =
+      formValues &&
+      title.length > 3 &&
+      description.length > 20 &&
+      (uploadableImageLocal || group.imageUrl);
 
     return (
       <div style={{ padding: 24 }}>
-        {groupData && (
+        {group && (
           <div style={{ marginBottom: 12 }}>
-            <Link to={`/group/${groupData._id}`}>
-              <Button icon="arrow-left">{groupData.title}</Button>
+            <Link to={`/group/${group._id}`}>
+              <Button icon="arrow-left">{group.title}</Button>
             </Link>
           </div>
         )}
@@ -174,7 +239,7 @@ class EditGroup extends React.Component {
         <h2>Edit your Group</h2>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
-            {groupData && currentUser && groupData.adminId === currentUser._id && (
+            {group && currentUser && group.adminId === currentUser._id && (
               <div
                 style={{
                   display: 'flex',
@@ -187,31 +252,22 @@ class EditGroup extends React.Component {
             )}
 
             <CreateGroupForm
-              values={values}
-              groupData={groupData}
-              registerGroupLocally={this.registerGroupLocally}
+              formValues={formValues}
+              onFormChange={this.handleFormChange}
+              onQuillChange={this.handleQuillChange}
+              onSubmit={this.handleSubmit}
               setUploadableImage={this.setUploadableImage}
-              uploadableImage={
-                (groupData && groupData.imageUrl) || uploadableImage
-              }
+              uploadableImageLocal={uploadableImageLocal}
+              imageUrl={group && group.imageUrl}
+              buttonLabel={buttonLabel}
+              isFormValid={isFormValid}
+              isButtonDisabled={!isFormValid || isUpdating}
             />
           </Col>
         </Row>
-        {modalConfirm && (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            visible={modalConfirm}
-            onOk={this.uploadImage}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        )}
 
         <Modal
-          title="Confirm"
+          title="Confirm Delete"
           visible={isDeleteModalOn}
           onOk={this.deleteGroup}
           onCancel={this.hideDeleteModal}

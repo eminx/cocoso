@@ -1,172 +1,97 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
+import { Upload } from 'antd/lib';
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import { Form, FormField, Box, TextInput, Button } from 'grommet';
+import { Form, FormField, Box, TextInput, Image, Button } from 'grommet';
 
-class CreateGroupForm extends React.Component {
-  handleSubmit = ({ value }) => {
-    console.log(value);
-    return;
+const Field = ({ children, ...otherProps }) => (
+  <FormField {...otherProps} margin={{ bottom: 'medium' }}>
+    {children}
+  </FormField>
+);
 
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+const CreateGroupForm = ({
+  uploadableImageLocal,
+  setUploadableImage,
+  formValues,
+  onFormChange,
+  onQuillChange,
+  onSubmit,
+  imageUrl,
+  buttonLabel,
+  isFormValid,
+  isButtonDisabled
+}) => {
+  return (
+    <div>
+      <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
+        <Field label="Title">
+          <TextInput
+            plain={false}
+            name="title"
+            placeholder="Understanding Benjamin"
+          />
+        </Field>
 
-      if (!this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
+        <Field label="Subtitle">
+          <TextInput
+            plain={false}
+            name="readingMaterial"
+            placeholder="through his book Illuminations"
+          />
+        </Field>
 
-      const values = {
-        title: fieldsValue['title'],
-        description: fieldsValue['description'],
-        readingMaterial: fieldsValue['readingMaterial'],
-        capacity: fieldsValue['capacity']
-      };
+        <Field label="Description">
+          <ReactQuill
+            value={formValues.description}
+            modules={editorModules}
+            formats={editorFormats}
+            onChange={onQuillChange}
+          />
+        </Field>
 
-      if (!err) {
-        this.props.registerGroupLocally(values);
-      }
-    });
-  };
+        <Field label="Capacity">
+          <TextInput plain={false} name="capacity" />
+        </Field>
 
-  render() {
-    // const { getFieldDecorator } = this.props.form;
-    const {
-      uploadableImage,
-      setUploadableImage,
-      uploadableDocument,
-      setUploadableDocument,
-      groupData
-    } = this.props;
-
-    return (
-      <div>
-        <Form onSubmit={this.handleSubmit}>
-          <FormField label="Title" margin={{ bottom: 'medium' }}>
-            <TextInput
-              plain={false}
-              name="title"
-              placeholder="Understanding Benjamin"
-            />
-          </FormField>
-
-          <FormField label="Subtitle" margin={{ bottom: 'medium' }}>
-            <TextInput
-              plain={false}
-              name="readingMaterial"
-              placeholder="through his book Illuminations"
-            />
-          </FormField>
-
-          <FormField label="Description" margin={{ bottom: 'medium' }}>
-            <ReactQuill
-              name="description"
-              modules={editorModules}
-              formats={editorFormats}
-            />
-          </FormField>
-
-          <Box direction="row" justify="end" pad="small">
-            <Button type="submit" primary label="Continue" />
-          </Box>
-        </Form>
-
-        {/*<Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter the Title'
-                }
-              ],
-              initialValue: groupData ? groupData.title : null
-            })(<Input placeholder="Group title" />)}
-          </FormItem>
-
-          <FormItem>
-            {getFieldDecorator('readingMaterial', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a subtitle'
-                }
-              ],
-              initialValue: groupData ? groupData.readingMaterial : null
-            })(<Input placeholder="Subtitle" />)}
-          </FormItem>
-
-          <FormItem>
-            {getFieldDecorator('description', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a detailed description'
-                }
-              ],
-              initialValue: groupData ? groupData.description : null
-            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
-          </FormItem>
-
-          <FormItem>
-            {getFieldDecorator('capacity', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter capacity for the group'
-                }
-              ],
-              min: 2,
-              max: 50,
-              initialValue: groupData ? groupData.capacity : null
-            })(
-              <InputNumber min={2} max={50} placeholder="Capacity" autosize />
-            )}
-          </FormItem>
-
-          <FormItem
-            className="upload-image-col"
-            extra={uploadableImage ? null : 'Pick an image from your device'}
-          >
+        <Field label="Image">
+          <Box alignSelf="center">
             <Upload
               name="gathering"
               action="/upload.do"
               onChange={setUploadableImage}
               required
             >
-              {uploadableImage ? (
-                <Button>
-                  <Icon type="check-circle" />
-                  Image selected
-                </Button>
+              {uploadableImageLocal ? (
+                <Box width="medium" height="small">
+                  <Image fit="cover" fill src={uploadableImageLocal} />
+                </Box>
+              ) : imageUrl ? (
+                <Box width="medium" height="small">
+                  <Image fit="cover" fill src={imageUrl} />
+                </Box>
               ) : (
-                <Button>
-                  Choose an image
-                </Button>
+                <Button
+                  plain
+                  hoverIndicator="light-1"
+                  label="Choose an image"
+                />
               )}
             </Upload>
-          </FormItem>
+          </Box>
+        </Field>
 
-          <FormItem
-            wrapperCol={{
-              xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Continue
-            </Button>
-          </FormItem>
-        </Form> */}
-      </div>
-    );
-  }
-}
+        <Box direction="row" justify="end" pad="small">
+          <Button
+            type="submit"
+            primary
+            label={buttonLabel}
+            disabled={isButtonDisabled}
+          />
+        </Box>
+      </Form>
+    </div>
+  );
+};
 
 export default CreateGroupForm;
