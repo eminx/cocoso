@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactQuill from 'react-quill';
+import ReactDropzone from 'react-dropzone';
+
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
-
-import { Input, Upload, Icon, Modal, message } from 'antd/lib';
+import { Icon, message } from 'antd/lib';
 
 import {
   Box,
@@ -14,7 +15,9 @@ import {
   TextArea,
   Heading,
   Select,
-  Button
+  Button,
+  Image,
+  Text
 } from 'grommet';
 import moment from 'moment';
 
@@ -45,7 +48,7 @@ function Field({ label, children, ...otherProps }) {
   );
 }
 
-class CreateBookingForm extends Component {
+class CreateBookingForm extends PureComponent {
   addRecurrence = () => {
     const { datesAndTimes, setDatesAndTimes } = this.props;
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
@@ -162,23 +165,21 @@ class CreateBookingForm extends Component {
 
   render() {
     const {
-      uploadableImage,
+      group,
+      uploadableImageLocal,
       setUploadableImage,
       places,
+      isCreating,
       isPublicActivity,
       onFormValueChange,
       formValues,
-      onSubmit
+      onSubmit,
+      isButtonDisabled,
+      buttonLabel,
+      isFormValid
     } = this.props;
 
     const placeOptions = places && places.map(part => part.name);
-
-    const colPad = {
-      top: 'small',
-      bottom: 'medium',
-      left: 'medium',
-      right: 'medium'
-    };
 
     if (!formValues) {
       return null;
@@ -192,17 +193,18 @@ class CreateBookingForm extends Component {
             {this.renderDateTime()}
           </Box>
 
-          <Box pad={colPad} flex={{ grow: 2 }}>
+          <Box pad="medium" flex={{ grow: 2 }}>
             <Heading level={5}>Details</Heading>
             <Form
               onSubmit={onSubmit}
               value={formValues}
               onChange={onFormValueChange}
               // errors={{ name: ['message', '<Box>...</Box>'] }}
-              // validate="blur"
+              validate="blur"
             >
               <Field
                 label="Title"
+                name="title"
                 required
                 // help="This is typicaly title of your event"
                 // validate={(fieldValue, formValue) => console.log(fieldValue)}
@@ -211,11 +213,12 @@ class CreateBookingForm extends Component {
                   plain={false}
                   name="title"
                   placeholder="give it a title"
+                  required
                 />
               </Field>
 
               {isPublicActivity && (
-                <Field label="Subtitle">
+                <Field label="Subtitle" name="subtitle">
                   <TextInput
                     plain={false}
                     name="subtitle"
@@ -233,7 +236,7 @@ class CreateBookingForm extends Component {
               </Field>
 
               {isPublicActivity && (
-                <Field label="Place">
+                <Field label="Place" name="place">
                   <TextInput
                     plain={false}
                     name="place"
@@ -243,7 +246,7 @@ class CreateBookingForm extends Component {
               )}
 
               {isPublicActivity && (
-                <Field label="Address">
+                <Field label="Address" name="address">
                   <TextArea
                     plain={false}
                     name="address"
@@ -253,7 +256,7 @@ class CreateBookingForm extends Component {
               )}
 
               {isPublicActivity && (
-                <Field label="Practical Info">
+                <Field label="Practical Info" name="practicalInfo">
                   <TextArea
                     plain={false}
                     name="practicalInfo"
@@ -263,7 +266,7 @@ class CreateBookingForm extends Component {
               )}
 
               {isPublicActivity && (
-                <Field label="Internal Info">
+                <Field label="Internal Info" name="internalInfo">
                   <TextArea
                     plain={false}
                     name="internalInfo"
@@ -272,7 +275,7 @@ class CreateBookingForm extends Component {
                 </Field>
               )}
 
-              <Field label="Room/Equipment">
+              <Field label="Room/Equipment" name="room">
                 <Select
                   size="small"
                   plain={false}
@@ -282,30 +285,72 @@ class CreateBookingForm extends Component {
                 />
               </Field>
 
-              {isPublicActivity && (
-                <Box>
-                  <Upload
-                    name="booking"
-                    action="/upload.do"
-                    onChange={setUploadableImage}
-                  >
-                    {uploadableImage ? (
-                      <Button>
-                        <Icon type="check-circle" />
-                        Image selected
-                      </Button>
-                    ) : (
-                      <Button>
-                        <Icon type="upload" />
-                        Pick an image
-                      </Button>
-                    )}
-                  </Upload>
-                </Box>
+              {isPublicActivity && !group && (
+                <Field
+                  label="Image"
+                  help={
+                    (uploadableImageLocal || (group && group.imageUrl)) && (
+                      <Text size="small">
+                        If you want to replace it with another one, click on the
+                        image to open the file picker
+                      </Text>
+                    )
+                  }
+                >
+                  <Box alignSelf="center">
+                    <ReactDropzone onDrop={setUploadableImage}>
+                      {({ getRootProps, getInputProps, isDragActive }) => (
+                        <Box
+                          {...getRootProps()}
+                          background="light-2"
+                          round="8px"
+                          width="large"
+                          height="medium"
+                        >
+                          {uploadableImageLocal ? (
+                            <Box width="large" height="medium">
+                              <Image
+                                fit="cover"
+                                fill
+                                src={uploadableImageLocal}
+                                style={{ cursor: 'pointer' }}
+                              />
+                            </Box>
+                          ) : group && group.imageUrl ? (
+                            <Box width="large" height="medium">
+                              <Image
+                                fit="cover"
+                                fill
+                                src={group && group.imageUrl}
+                                style={{ cursor: 'pointer' }}
+                              />
+                            </Box>
+                          ) : isCreating ? (
+                            <Text>Creating...</Text>
+                          ) : (
+                            <Box alignSelf="center" pad="large">
+                              <Button
+                                plain
+                                hoverIndicator="light-1"
+                                label="Drop an image or click to open the file picker"
+                              />
+                            </Box>
+                          )}
+                          <input {...getInputProps()} />
+                        </Box>
+                      )}
+                    </ReactDropzone>
+                  </Box>
+                </Field>
               )}
 
               <Box direction="row" justify="end" pad="small">
-                <Button type="submit" primary label="Create" />
+                <Button
+                  type="submit"
+                  primary
+                  disabled={isButtonDisabled}
+                  label={buttonLabel}
+                />
               </Box>
             </Form>
           </Box>

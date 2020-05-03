@@ -97,6 +97,9 @@ class NewGroup extends React.Component {
       if (error) {
         console.error('Error uploading:', error);
         message.error(error.reason);
+        this.setState({
+          isCreating: false
+        });
       } else {
         this.setState(
           {

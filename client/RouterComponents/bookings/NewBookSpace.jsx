@@ -45,7 +45,8 @@ class NewBookSpace extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     isPublicActivity: false,
-    isBookingsDisabled: false
+    isBookingsDisabled: false,
+    isCreating: false
   };
 
   handleFormValueChange = newValues => {
@@ -80,10 +81,18 @@ class NewBookSpace extends React.Component {
     } else {
       this.createBooking();
     }
+
+    this.setState({
+      isCreating: true
+    });
   };
 
-  setUploadableImage = e => {
-    const theImageFile = e.file.originFileObj;
+  setUploadableImage = files => {
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const theImageFile = files[0];
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
     reader.addEventListener(
@@ -108,6 +117,10 @@ class NewBookSpace extends React.Component {
     upload.send(uploadableImage, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
+        message.error(error.reason);
+        this.setState({
+          isCreating: false
+        });
       } else {
         this.setState(
           {
@@ -128,8 +141,6 @@ class NewBookSpace extends React.Component {
       uploadedImage
     } = this.state;
 
-    console.log('maybe');
-
     const values = {
       ...formValues,
       isPublicActivity: isPublicActivity,
@@ -141,12 +152,12 @@ class NewBookSpace extends React.Component {
       if (error) {
         console.log('error', error);
         this.setState({
-          isLoading: false,
+          isCreating: false,
           isError: true
         });
       } else {
         this.setState({
-          isLoading: false,
+          isCreating: false,
           newBookingId: result,
           isSuccess: true
         });
@@ -189,13 +200,10 @@ class NewBookSpace extends React.Component {
     }
 
     const {
-      modalConfirm,
       formValues,
-      isLoading,
       isSuccess,
+      isCreating,
       newBookingId,
-      uploadedImage,
-      uploadableImage,
       uploadableImageLocal,
       isPublicActivity,
       isBookingsDisabled,
@@ -210,6 +218,12 @@ class NewBookSpace extends React.Component {
         return <Redirect to={`/calendar`} />;
       }
     }
+
+    const buttonLabel = isCreating
+      ? 'Creating your activity...'
+      : 'Confirm and Create';
+    const { title } = formValues;
+    const isFormValid = formValues && title.length > 3 && uploadableImageLocal;
 
     return (
       <div style={{ padding: 24 }}>
@@ -240,8 +254,9 @@ class NewBookSpace extends React.Component {
 
         <CreateBookingForm
           setUploadableImage={this.setUploadableImage}
-          uploadableImage={uploadableImage}
+          uploadableImageLocal={uploadableImageLocal}
           places={places}
+          isCreating={isCreating}
           isPublicActivity={isPublicActivity}
           formValues={formValues}
           onFormValueChange={this.handleFormValueChange}
@@ -249,6 +264,9 @@ class NewBookSpace extends React.Component {
           onSubmit={this.handleSubmit}
           setDatesAndTimes={this.setDatesAndTimes}
           datesAndTimes={datesAndTimes}
+          buttonLabel={buttonLabel}
+          isFormValid={isFormValid}
+          isButtonDisabled={!isFormValid || isCreating}
         />
       </div>
     );
