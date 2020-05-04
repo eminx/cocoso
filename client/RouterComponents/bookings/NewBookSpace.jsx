@@ -14,8 +14,7 @@ const sideNote =
 
 const formModel = {
   title: '',
-  subtitle: '',
-  longDescription: '',
+  subTitle: '',
   place: '',
   address: '',
   practicalInfo: '',
@@ -37,6 +36,7 @@ const emptyDateAndTime = {
 class NewBookSpace extends React.Component {
   state = {
     formValues: { ...formModel },
+    longDescription: '',
     datesAndTimes: [{ ...emptyDateAndTime }],
     isLoading: false,
     isSuccess: false,
@@ -49,27 +49,15 @@ class NewBookSpace extends React.Component {
     isCreating: false
   };
 
-  handleFormValueChange = newValues => {
-    const { formValues } = this.state;
-
-    const newFormValues = {
-      ...newValues,
-      longDescription: formValues.longDescription
-    };
-
+  handleFormValueChange = formValues => {
     this.setState({
-      formValues: newFormValues
+      formValues
     });
   };
 
   handleQuillChange = longDescription => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      longDescription
-    };
     this.setState({
-      formValues: newFormValues
+      longDescription
     });
   };
 
@@ -135,6 +123,7 @@ class NewBookSpace extends React.Component {
   createBooking = () => {
     const {
       formValues,
+      longDescription,
       datesAndTimes,
       isPublicActivity,
       isBookingsDisabled,
@@ -143,9 +132,10 @@ class NewBookSpace extends React.Component {
 
     const values = {
       ...formValues,
-      isPublicActivity: isPublicActivity,
-      isBookingsDisabled: isBookingsDisabled,
-      datesAndTimes: datesAndTimes
+      isPublicActivity,
+      isBookingsDisabled,
+      datesAndTimes,
+      longDescription
     };
 
     Meteor.call('createBooking', values, uploadedImage, (error, result) => {
@@ -226,14 +216,21 @@ class NewBookSpace extends React.Component {
     const isFormValid = formValues && title.length > 3 && uploadableImageLocal;
 
     return (
-      <div style={{ padding: 24 }}>
+      <Box pad="medium">
         <Box>
-          <Heading alignSelf="center" level={3}>
+          <Heading level={3} alignSelf="center">
             Create a New Activity
           </Heading>
         </Box>
 
-        <Box direction="row" flex={{ grow: 2 }} wrap justify="end">
+        <Box
+          direction="row"
+          flex={{ grow: 2 }}
+          wrap
+          justify="end"
+          alignSelf="center"
+          pad="medium"
+        >
           <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
@@ -268,7 +265,7 @@ class NewBookSpace extends React.Component {
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}
         />
-      </div>
+      </Box>
     );
   }
 }

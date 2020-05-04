@@ -20,8 +20,8 @@ const sectionStyle = {
   whiteSpace: 'pre-line'
 };
 
-class CardArticle extends React.Component {
-  getEventTimes = event => {
+function CardArticle({ item, currentUser }) {
+  const getEventTimes = event => {
     if (event) {
       if (event.isMultipleDay || event.isFullDay) {
         return (
@@ -43,57 +43,48 @@ class CardArticle extends React.Component {
     }
   };
 
-  render() {
-    const { item, currentUser } = this.props;
+  return (
+    <div>
+      <div style={{ paddingBottom: 12 }}>
+        <img width="100%" height="100%" alt={item.title} src={item.imageUrl} />
+      </div>
 
-    return (
-      <div>
-        <div style={{ paddingBottom: 12 }}>
-          <img
-            width="100%"
-            height="100%"
-            alt={item.title}
-            src={item.imageUrl}
-          />
+      <div
+        style={{
+          whiteSpace: 'pre-line',
+          color: 'rgba(0,0,0, .85)'
+        }}
+        dangerouslySetInnerHTML={{
+          __html: item.longDescription
+        }}
+      />
+
+      {item.practicalInfo && item.practicalInfo.length > 0 && (
+        <div style={{ ...sectionStyle, textAlign: 'left' }}>
+          <h4>Practical information:</h4>
+          <div>{item.practicalInfo}</div>
         </div>
+      )}
 
-        <div
-          style={{
-            whiteSpace: 'pre-line',
-            color: 'rgba(0,0,0, .85)'
-          }}
-          dangerouslySetInnerHTML={{
-            __html: item.longDescription
-          }}
-        />
-
-        {item.practicalInfo && item.practicalInfo.length > 0 && (
+      {currentUser &&
+        currentUser.isRegisteredMember &&
+        item &&
+        item.internalInfo && (
           <div style={{ ...sectionStyle, textAlign: 'left' }}>
-            <h4>Practical information:</h4>
-            <div>{item.practicalInfo}</div>
+            <h4>Internal information for members:</h4>
+            <p>{item.internalInfo}</p>
           </div>
         )}
 
-        {currentUser &&
-          currentUser.isRegisteredMember &&
-          item &&
-          item.internalInfo && (
-            <div style={{ ...sectionStyle, textAlign: 'left' }}>
-              <h4>Internal information for members:</h4>
-              <p>{item.internalInfo}</p>
-            </div>
-          )}
-
-        <div style={sectionStyle}>
-          <div>
-            {item.room && item.room + ', '}
-            {item.place}
-          </div>
-          <div>{item.address}</div>
+      <div style={sectionStyle}>
+        <div>
+          {item.room && item.room + ', '}
+          {item.place}
         </div>
+        <div>{item.address}</div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default CardArticle;

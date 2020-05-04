@@ -113,7 +113,7 @@ Meteor.methods({
     }
 
     try {
-      const add = Gatherings.update(bookingId, {
+      Gatherings.update(bookingId, {
         $set: {
           title: formValues.title,
           subTitle: formValues.subTitle || null,

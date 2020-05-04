@@ -200,7 +200,11 @@ class NewGroup extends React.Component {
               <Col xs={24} sm={24} md={6} />
 
               <Col xs={24} sm={24} md={12}>
-                <Heading level={3}>Create a New Group</Heading>
+                <Box width="100%">
+                  <Heading level={3} alignSelf="center">
+                    Create a New Group
+                  </Heading>
+                </Box>
                 <FormField>
                   <CheckBox
                     checked={isPrivate}

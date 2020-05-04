@@ -24,9 +24,11 @@ TODO:
 
 3-X Create a form with custom host data that is now in settings file. This is the same one that would be used to register a new host - new client, and updates can be done here at the settings
 
-2- Replace ant datetime with a non-moment solution (grommet) - need to find a light library, or with moment, to convert ISO to different formats. Because Grommet works with ISO. Since we have to use moment due to big calendar, perhaps we can just use that?
+2- Date&time pickers from Grommet everywhere (group and edit left now only)
 
-3- Find out a good validation/error management for forms (Grommet's builtin or compatible), and update all existing forms. Actually I'm sure Grommet's existing one is great - so just find how it does the validation + error etc and implement it
+3- Form validation and error communication
+
+5- Resize images
 
 3- Divide my-profile into sections: 
   - Basic Info about me: full name, bio, city, external links, avatar; 
@@ -38,9 +40,9 @@ TODO:
 
 3- Implement custom AUTH like in Librella. Actually build some reusable components with hooks. Eh wait a bit. 
 
-3- Implement Social Signups (Start with Google, Facebook and Instagram)
-
 5- Media: Images/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload there, because you have to be relevant to context no? I like this idea.
+
+3- Implement Social Signups (Start with Google, Facebook and Instagram)
 
 
 CAN DO WITHOUT FOR NOW but needs to be done:

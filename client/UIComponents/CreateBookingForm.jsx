@@ -5,7 +5,7 @@ import ReactDropzone from 'react-dropzone';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
-import { Icon, message } from 'antd/lib';
+import { Row, Col, Icon, message } from 'antd/lib';
 
 import {
   Box,
@@ -165,7 +165,7 @@ class CreateBookingForm extends PureComponent {
 
   render() {
     const {
-      group,
+      imageUrl,
       uploadableImageLocal,
       setUploadableImage,
       places,
@@ -186,176 +186,174 @@ class CreateBookingForm extends PureComponent {
     }
 
     return (
-      <div>
-        <Box direction="row" width="100%" wrap>
-          <Box pad="medium" flex={{ grow: 0 }}>
-            <Heading level={5}>Dates & Time</Heading>
-            {this.renderDateTime()}
-          </Box>
+      <Row gutter={24}>
+        <Col md={6} />
+        <Col md={12} gutter={24}>
+          <Heading level={4}>Occurences</Heading>
 
-          <Box pad="medium" flex={{ grow: 2 }}>
-            <Heading level={5}>Details</Heading>
-            <Form
-              onSubmit={onSubmit}
-              value={formValues}
-              onChange={onFormValueChange}
-              // errors={{ name: ['message', '<Box>...</Box>'] }}
-              validate="blur"
+          {this.renderDateTime()}
+
+          <Box width="large" height="xsmall" />
+
+          <Heading level={4}>Details</Heading>
+          <Form
+            onSubmit={onSubmit}
+            value={formValues}
+            onChange={onFormValueChange}
+            // errors={{ name: ['message', '<Box>...</Box>'] }}
+            validate="blur"
+          >
+            <Field
+              label="Title"
+              name="title"
+              required
+              // help="This is typicaly title of your event"
+              // validate={(fieldValue, formValue) => console.log(fieldValue)}
             >
-              <Field
-                label="Title"
+              <TextInput
+                plain={false}
                 name="title"
+                placeholder="give it a title"
                 required
-                // help="This is typicaly title of your event"
-                // validate={(fieldValue, formValue) => console.log(fieldValue)}
-              >
+              />
+            </Field>
+
+            {isPublicActivity && (
+              <Field label="Subtitle" name="subTitle">
                 <TextInput
                   plain={false}
-                  name="title"
-                  placeholder="give it a title"
-                  required
+                  name="subTitle"
+                  placeholder="give it a subtitle (artist name etc.)"
                 />
               </Field>
+            )}
 
-              {isPublicActivity && (
-                <Field label="Subtitle" name="subtitle">
-                  <TextInput
-                    plain={false}
-                    name="subtitle"
-                    placeholder="give it a subtitle (artist name etc.)"
-                  />
-                </Field>
-              )}
+            <Field label="Description">
+              <ReactQuill
+                modules={editorModules}
+                formats={editorFormats}
+                onChange={this.onQuillChange}
+              />
+            </Field>
 
-              <Field label="Description">
-                <ReactQuill
-                  modules={editorModules}
-                  formats={editorFormats}
-                  onChange={this.onQuillChange}
-                />
-              </Field>
-
-              {isPublicActivity && (
-                <Field label="Place" name="place">
-                  <TextInput
-                    plain={false}
-                    name="place"
-                    placeholder="Artistosphere"
-                  />
-                </Field>
-              )}
-
-              {isPublicActivity && (
-                <Field label="Address" name="address">
-                  <TextArea
-                    plain={false}
-                    name="address"
-                    placeholder="17th Street, Berlin..."
-                  />
-                </Field>
-              )}
-
-              {isPublicActivity && (
-                <Field label="Practical Info" name="practicalInfo">
-                  <TextArea
-                    plain={false}
-                    name="practicalInfo"
-                    placeholder="17th Street, Berlin..."
-                  />
-                </Field>
-              )}
-
-              {isPublicActivity && (
-                <Field label="Internal Info" name="internalInfo">
-                  <TextArea
-                    plain={false}
-                    name="internalInfo"
-                    placeholder="17th Street, Berlin..."
-                  />
-                </Field>
-              )}
-
-              <Field label="Room/Equipment" name="room">
-                <Select
-                  size="small"
+            {isPublicActivity && (
+              <Field label="Place" name="place">
+                <TextInput
                   plain={false}
-                  placeholder="Select room/equipment to book"
-                  name="room"
-                  options={placeOptions}
+                  name="place"
+                  placeholder="Artistosphere"
                 />
               </Field>
+            )}
 
-              {isPublicActivity && !group && (
-                <Field
-                  label="Image"
-                  help={
-                    (uploadableImageLocal || (group && group.imageUrl)) && (
-                      <Text size="small">
-                        If you want to replace it with another one, click on the
-                        image to open the file picker
-                      </Text>
-                    )
-                  }
-                >
-                  <Box alignSelf="center">
-                    <ReactDropzone onDrop={setUploadableImage}>
-                      {({ getRootProps, getInputProps, isDragActive }) => (
-                        <Box
-                          {...getRootProps()}
-                          background="light-2"
-                          round="8px"
-                          width="large"
-                          height="medium"
-                        >
-                          {uploadableImageLocal ? (
-                            <Box width="large" height="medium">
-                              <Image
-                                fit="cover"
-                                fill
-                                src={uploadableImageLocal}
-                                style={{ cursor: 'pointer' }}
-                              />
-                            </Box>
-                          ) : group && group.imageUrl ? (
-                            <Box width="large" height="medium">
-                              <Image
-                                fit="cover"
-                                fill
-                                src={group && group.imageUrl}
-                                style={{ cursor: 'pointer' }}
-                              />
-                            </Box>
-                          ) : isCreating ? (
-                            <Text>Creating...</Text>
-                          ) : (
-                            <Box alignSelf="center" pad="large">
-                              <Button
-                                plain
-                                hoverIndicator="light-1"
-                                label="Drop an image or click to open the file picker"
-                              />
-                            </Box>
-                          )}
-                          <input {...getInputProps()} />
-                        </Box>
-                      )}
-                    </ReactDropzone>
-                  </Box>
-                </Field>
-              )}
-
-              <Box direction="row" justify="end" pad="small">
-                <Button
-                  type="submit"
-                  primary
-                  disabled={isButtonDisabled}
-                  label={buttonLabel}
+            {isPublicActivity && (
+              <Field label="Address" name="address">
+                <TextArea
+                  plain={false}
+                  name="address"
+                  placeholder="17th Street, Berlin..."
                 />
-              </Box>
-            </Form>
-          </Box>
-        </Box>
-      </div>
+              </Field>
+            )}
+
+            {isPublicActivity && (
+              <Field label="Practical Info" name="practicalInfo">
+                <TextArea
+                  plain={false}
+                  name="practicalInfo"
+                  placeholder="17th Street, Berlin..."
+                />
+              </Field>
+            )}
+
+            {isPublicActivity && (
+              <Field label="Internal Info" name="internalInfo">
+                <TextArea
+                  plain={false}
+                  name="internalInfo"
+                  placeholder="17th Street, Berlin..."
+                />
+              </Field>
+            )}
+
+            <Field label="Room/Equipment" name="room">
+              <Select
+                size="small"
+                plain={false}
+                placeholder="Select room/equipment to book"
+                name="room"
+                options={placeOptions}
+              />
+            </Field>
+
+            {isPublicActivity && (
+              <Field
+                label="Image"
+                help={
+                  (uploadableImageLocal || imageUrl) && (
+                    <Text size="small">
+                      If you want to replace it with another one, click on the
+                      image to reopen the file picker
+                    </Text>
+                  )
+                }
+              >
+                <Box alignSelf="center">
+                  <ReactDropzone onDrop={setUploadableImage}>
+                    {({ getRootProps, getInputProps, isDragActive }) => (
+                      <Box
+                        {...getRootProps()}
+                        background="light-2"
+                        round="8px"
+                        width="large"
+                        height="medium"
+                      >
+                        {uploadableImageLocal ? (
+                          <Box width="large" height="medium">
+                            <Image
+                              fit="cover"
+                              fill
+                              src={uploadableImageLocal}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </Box>
+                        ) : imageUrl ? (
+                          <Box width="large" height="medium">
+                            <Image
+                              fit="cover"
+                              fill
+                              src={imageUrl}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </Box>
+                        ) : (
+                          <Box alignSelf="center" pad="large">
+                            <Button
+                              plain
+                              hoverIndicator="light-1"
+                              label="Drop an image or click to open the file picker"
+                            />
+                          </Box>
+                        )}
+                        <input {...getInputProps()} />
+                      </Box>
+                    )}
+                  </ReactDropzone>
+                </Box>
+              </Field>
+            )}
+
+            <Box direction="row" justify="end" pad="small">
+              <Button
+                type="submit"
+                primary
+                disabled={isButtonDisabled}
+                label={buttonLabel}
+              />
+            </Box>
+          </Form>
+        </Col>
+      </Row>
     );
   }
 }

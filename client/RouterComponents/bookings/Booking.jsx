@@ -8,7 +8,6 @@ import FancyDate from '../../UIComponents/FancyDate';
 import {
   Row,
   Col,
-  Button,
   Divider,
   Collapse,
   Form,
@@ -19,6 +18,7 @@ import {
 } from 'antd/lib';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { Box, Button } from 'grommet';
 
 import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';
@@ -352,7 +352,7 @@ class Booking extends React.Component {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button>Print</Button>}
+                    trigger={() => <Button label="Print" />}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -445,19 +445,17 @@ class Booking extends React.Component {
         </div>
       ) : null;
 
-    // const messages = this.getChatMessages();
-
     return (
       <div style={{ padding: 24 }}>
         <div style={{ paddingBottom: 24 }}>
           <Link to="/">
-            <Button icon="arrow-left">Program</Button>
+            <Button label="Program" plain />
           </Link>
         </div>
 
         {!isLoading && bookingData ? (
           <Row gutter={24}>
-            <Col lg={5}>
+            <Col md={6}>
               <div style={{ marginBottom: 16 }}>
                 <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
                 {bookingData.subTitle && (
@@ -466,7 +464,7 @@ class Booking extends React.Component {
               </div>
             </Col>
 
-            <Col lg={11} style={{ position: 'relative', marginBottom: 24 }}>
+            <Col md={12} style={{ position: 'relative', marginBottom: 24 }}>
               <CardArticle
                 item={bookingData}
                 isLoading={isLoading}
@@ -474,10 +472,8 @@ class Booking extends React.Component {
               />
               {EditButton}
             </Col>
-            <Col lg={8} style={{ display: 'flex', justifyContent: 'center' }}>
-              {/* <Button type="primary">RSVP</Button> */}
-
-              <Row style={{ width: '100%' }}>
+            <Col md={6} style={{ display: 'flex', justifyContent: 'center' }}>
+              <Box width="100%">
                 <h3>Dates</h3>
                 <p>
                   {bookingData.isBookingsDisabled
@@ -485,7 +481,7 @@ class Booking extends React.Component {
                     : 'Please click and open the date to RSVP'}
                 </p>
                 {this.renderDates()}
-              </Row>
+              </Box>
             </Col>
           </Row>
         ) : (
@@ -499,8 +495,8 @@ class Booking extends React.Component {
           messages &&
           isRegisteredMember && (
             <Row gutter={24}>
-              <Col lg={5} />
-              <Col lg={11}>
+              <Col lg={6} />
+              <Col lg={12}>
                 {chatData && (
                   <div>
                     <h2>Chat Section</h2>
@@ -540,9 +536,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-const RsvpForm = props => {
-  const { isUpdateMode, handleSubmit, handleDelete, form } = props;
-
+function RsvpForm({ isUpdateMode, handleSubmit, handleDelete, form }) {
   const {
     getFieldDecorator,
     getFieldsError,
@@ -597,47 +591,42 @@ const RsvpForm = props => {
         }}
       >
         <Button
-          type="primary"
-          htmlType="submit"
+          primary
+          type="submit"
           disabled={hasErrors(getFieldsError())}
-        >
-          {isUpdateMode ? 'Update' : 'Register'}
-        </Button>
+          label={isUpdateMode ? 'Update' : 'Register'}
+        />
 
         {isUpdateMode && <a onClick={handleDelete}>Remove your registration</a>}
       </div>
     </Form>
   );
-};
+}
 
-class RsvpList extends React.PureComponent {
-  render() {
-    const { attendees } = this.props;
-
-    return (
-      <ReactTable
-        data={attendees}
-        columns={[
-          {
-            Header: 'First name',
-            accessor: 'firstName'
-          },
-          {
-            Header: 'Last name',
-            accessor: 'lastName'
-          },
-          {
-            Header: 'People',
-            accessor: 'numberOfPeople'
-          },
-          {
-            Header: 'Email',
-            accessor: 'email'
-          }
-        ]}
-      />
-    );
-  }
+function RsvpList({ attendees }) {
+  return (
+    <ReactTable
+      data={attendees}
+      columns={[
+        {
+          Header: 'First name',
+          accessor: 'firstName'
+        },
+        {
+          Header: 'Last name',
+          accessor: 'lastName'
+        },
+        {
+          Header: 'People',
+          accessor: 'numberOfPeople'
+        },
+        {
+          Header: 'Email',
+          accessor: 'email'
+        }
+      ]}
+    />
+  );
 }
 
 export default Form.create()(Booking);

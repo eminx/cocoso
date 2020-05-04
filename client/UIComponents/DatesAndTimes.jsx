@@ -26,7 +26,7 @@ const DatesAndTimes = ({
   }
 
   return (
-    <Box pad="small" background="light-1" margin={{ bottom: 'medium' }}>
+    <Box pad="small" margin={{ bottom: 'medium' }}>
       {!isNotDeletable && (
         <Box
           pad="small"
@@ -37,7 +37,7 @@ const DatesAndTimes = ({
           <Icon style={{ fontSize: 18, cursor: 'pointer' }} type="delete" />
         </Box>
       )}
-      <Box direction="row" justify="around">
+      <Box direction="row" justify="around" wrap>
         <Box pad="xsmall">
           <Calendar
             size="small"

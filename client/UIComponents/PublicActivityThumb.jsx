@@ -3,19 +3,14 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import { Box } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-const compareForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD');
-  const dateB = moment(b.startDate, 'YYYY-MM-DD');
-  return dateA.diff(dateB);
-};
-
 const dateStyle = {
-  color: '#fff',
   fontWeight: 700,
-  lineHeight: 1
+  lineHeight: 1,
+  fontStyle: 'italic'
 };
 
 class PublicActivityThumb extends React.Component {
@@ -51,9 +46,9 @@ class PublicActivityThumb extends React.Component {
     const isPastEvent = !moment(date.startDate).isAfter(yesterday);
 
     if (isPastEvent) {
-      dateStyle.color = '#aaa';
+      // dateStyle.color = '#aaa';
     } else {
-      dateStyle.color = '#fff';
+      // dateStyle.color = '#fff';
     }
 
     return (
@@ -81,7 +76,20 @@ class PublicActivityThumb extends React.Component {
     const remaining = futureDates.length - 3;
 
     return (
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: -12,
+          right: 12,
+          // color: '#fff',
+          // textShadow: '1px 2px 3px #050505',
+          zIndex: 99,
+          fontWeight: 300
+        }}
+      >
         {futureDates.slice(0, 3).map(date => this.renderDate(date))}
         {remaining > 0 && (
           <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
@@ -96,18 +104,14 @@ class PublicActivityThumb extends React.Component {
     const { item } = this.props;
 
     const commonStyle = {
-      color: '#fff',
+      // color: '#fff',
       fontWeight: 300,
       lineHeight: 1
     };
 
-    const coverStyle = {
-      position: 'absolute'
-    };
-
     const imageStyle = {
       width: 288,
-      height: 288,
+      height: 180,
       objectFit: 'cover'
     };
 
@@ -116,19 +120,9 @@ class PublicActivityThumb extends React.Component {
     let coverContainerClass = 'thumb-cover-container ';
 
     return (
-      <div className={coverContainerClass}>
+      <Box className={coverContainerClass} pad="medium">
         <Link to={clickLink}>
-          <div className={coverClass}>
-            <LazyLoadImage
-              alt={item.title}
-              src={item.imageUrl}
-              style={imageStyle}
-              effect="black-and-white"
-            />
-          </div>
-
-          <div style={{ position: 'relative', padding: '24px 16px' }}>
-            {this.renderDates()}
+          <Box>
             <h3
               style={{
                 ...commonStyle,
@@ -143,9 +137,20 @@ class PublicActivityThumb extends React.Component {
             <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
               {item.isGroup ? item.readingMaterial : item.subTitle}
             </h4>
-          </div>
+          </Box>
+
+          <Box>
+            <LazyLoadImage
+              alt={item.title}
+              src={item.imageUrl}
+              // style={imageStyle}
+              effect="black-and-white"
+            />
+
+            {this.renderDates()}
+          </Box>
         </Link>
-      </div>
+      </Box>
     );
   }
 }
