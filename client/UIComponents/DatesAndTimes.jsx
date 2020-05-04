@@ -50,14 +50,14 @@ const DatesAndTimes = ({
         <Box pad="xsmall" justify="around" flex={{ grow: 0 }} basis="180px">
           <Box pad={segmentPad}>
             <Text size="small">Start time</Text>
-            <GrTimePicker
+            <TimePicker
               value={recurrence.startTime}
               onChange={handleStartTimeChange}
             />
           </Box>
           <Box pad={segmentPad}>
             <Text size="small">Finish time</Text>
-            <GrTimePicker
+            <TimePicker
               value={recurrence.endTime}
               onChange={handleFinishTimeChange}
             />
@@ -80,7 +80,7 @@ const DatesAndTimes = ({
   );
 };
 
-const GrTimePicker = ({ onChange, value, ...otherProps }) => (
+const TimePicker = ({ onChange, value, ...otherProps }) => (
   <MaskedInput
     size="medium"
     mask={[
@@ -106,5 +106,7 @@ const GrTimePicker = ({ onChange, value, ...otherProps }) => (
     {...otherProps}
   />
 );
+
+export { TimePicker };
 
 export default DatesAndTimes;

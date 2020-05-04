@@ -15,9 +15,7 @@ import {
   List,
   Card,
   Button,
-  DatePicker,
   Tabs,
-  TimePicker,
   Input,
   Select,
   Switch,
@@ -25,6 +23,8 @@ import {
   Tooltip,
   message
 } from 'antd/lib';
+import { Box, Calendar, MaskedInput } from 'grommet';
+
 const ListItem = List.Item;
 const { Meta } = Card;
 const { Option } = Select;
@@ -37,6 +37,7 @@ import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
 import NiceList from '../../UIComponents/NiceList';
 import InviteManager from './InviteManager';
+import { TimePicker } from '../../UIComponents/DatesAndTimes';
 
 const publicSettings = Meteor.settings.public;
 
@@ -271,10 +272,15 @@ class Group extends Component {
     );
   };
 
-  handleDateAndTimeChange = (date, dateString, entity) => {
+  handleDateAndTimeChange = (dateOrTime, entity) => {
     const { newMeeting } = this.state;
-    newMeeting[entity] = dateString;
-    this.setState({ newMeeting, isFormValid: this.isFormValid() });
+    const newerMeeting = { ...newMeeting };
+    newerMeeting[entity] = dateOrTime;
+
+    this.setState({
+      newMeeting: newerMeeting,
+      isFormValid: this.isFormValid()
+    });
   };
 
   handlePlaceChange = place => {
@@ -841,7 +847,8 @@ class Group extends Component {
       redirectToLogin,
       isFormValid,
       potentialNewAdmin,
-      inviteManagerOpen
+      inviteManagerOpen,
+      newMeeting
     } = this.state;
 
     if (redirectToLogin) {
@@ -926,22 +933,15 @@ class Group extends Component {
               {isAdmin && (
                 <div>
                   <CreateMeetingForm
-                    handleDateChange={(date, dateString) =>
-                      this.handleDateAndTimeChange(
-                        date,
-                        dateString,
-                        'startDate'
-                      )
+                    newMeeting={newMeeting}
+                    handleDateChange={date =>
+                      this.handleDateAndTimeChange(date, 'startDate')
                     }
-                    handleStartTimeChange={(time, timeString) =>
-                      this.handleDateAndTimeChange(
-                        time,
-                        timeString,
-                        'startTime'
-                      )
+                    handleStartTimeChange={time =>
+                      this.handleDateAndTimeChange(time, 'startTime')
                     }
-                    handleFinishTimeChange={(time, timeString) =>
-                      this.handleDateAndTimeChange(time, timeString, 'endTime')
+                    handleFinishTimeChange={time =>
+                      this.handleDateAndTimeChange(time, 'endTime')
                     }
                     places={places}
                     handlePlaceChange={this.handlePlaceChange}
@@ -1038,6 +1038,7 @@ class CreateMeetingForm extends PureComponent {
 
   render() {
     const {
+      newMeeting,
       handleDateChange,
       handleStartTimeChange,
       handleFinishTimeChange,
@@ -1059,26 +1060,24 @@ class CreateMeetingForm extends PureComponent {
       >
         <h4>Add a Meeting</h4>
         <div style={{ marginBottom: 6 }}>
-          <DatePicker onChange={handleDateChange} placeholder="Date" required />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            onChange={handleStartTimeChange}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Start time"
-            required
+          <Calendar
+            size="small"
+            onSelect={handleDateChange}
+            firstDayOfWeek={1}
           />
         </div>
 
         <div style={{ marginBottom: 6 }}>
           <TimePicker
+            value={newMeeting.startTime}
+            onChange={handleStartTimeChange}
+          />
+        </div>
+
+        <div style={{ marginBottom: 6 }}>
+          <TimePicker
+            value={newMeeting.endTime}
             onChange={handleFinishTimeChange}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Finish time"
-            required
           />
         </div>
 
