@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Row, List } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
+import { Box } from 'grommet';
 
 const ListItem = List.Item;
 
@@ -108,35 +109,23 @@ class Home extends React.Component {
     const allSortedActivities = this.getAllSorted();
 
     return (
-      <div style={{ padding: 24 }}>
-        <Row gutter={24}>
-          <div
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              marginBottom: 50
-            }}
-          >
-            <div style={{ width: '100%' }}>
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                  }}
-                >
-                  {allSortedActivities.map(activity => (
-                    <PublicActivityThumb key={activity.title} item={activity} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Row>
-      </div>
+      <Box
+        // justify="center"
+        // direction="row"
+        width="100%"
+        margin={{ bottom: '50px' }}
+        pad="medium"
+      >
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Box direction="row" wrap justify="center">
+            {allSortedActivities.map(activity => (
+              <PublicActivityThumb key={activity.title} item={activity} />
+            ))}
+          </Box>
+        )}
+      </Box>
     );
   }
 }

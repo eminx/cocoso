@@ -8,9 +8,10 @@ import { Box } from 'grommet';
 const yesterday = moment(new Date()).add(-1, 'days');
 
 const dateStyle = {
-  fontWeight: 700,
+  fontWeight: 300,
   lineHeight: 1,
-  fontStyle: 'italic'
+  fontSize: 20,
+  color: '#030303'
 };
 
 class PublicActivityThumb extends React.Component {
@@ -54,15 +55,17 @@ class PublicActivityThumb extends React.Component {
     return (
       <div
         key={date.startDate + date.startTime}
-        style={{ marginRight: 16, marginBottom: 16 }}
+        style={{ marginRight: 12, marginBottom: 12 }}
       >
-        <div style={{ ...dateStyle, fontSize: 24 }}>
-          {moment(date.startDate).format('DD')}
-        </div>
-        <div style={{ ...dateStyle, fontSize: 15 }}>
-          {moment(date.startDate)
-            .format('MMM')
-            .toUpperCase()}
+        <div style={{ ...dateStyle }}>
+          <span style={{ fontSize: 24, marginRight: 2 }}>
+            <b>{moment(date.startDate).format('DD')}</b>
+          </span>
+          <span style={{ fontSize: 16 }}>
+            {moment(date.startDate)
+              .format('MMM')
+              .toUpperCase()}
+          </span>
         </div>
       </div>
     );
@@ -76,27 +79,16 @@ class PublicActivityThumb extends React.Component {
     const remaining = futureDates.length - 3;
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          position: 'absolute',
-          bottom: -12,
-          right: 12,
-          // color: '#fff',
-          // textShadow: '1px 2px 3px #050505',
-          zIndex: 99,
-          fontWeight: 300
-        }}
+      <Box
+        direction="row"
+        justify="end"
+        alignItems="center"
+        margin={{ top: 'small' }}
+        wrap
       >
         {futureDates.slice(0, 3).map(date => this.renderDate(date))}
-        {remaining > 0 && (
-          <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
-            + {remaining}
-          </div>
-        )}
-      </div>
+        {remaining > 0 && <div style={{ ...dateStyle }}>+ {remaining}</div>}
+      </Box>
     );
   };
 
@@ -104,7 +96,7 @@ class PublicActivityThumb extends React.Component {
     const { item } = this.props;
 
     const commonStyle = {
-      // color: '#fff',
+      color: '#030303',
       fontWeight: 300,
       lineHeight: 1
     };
@@ -116,11 +108,13 @@ class PublicActivityThumb extends React.Component {
     };
 
     let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
-    const coverClass = 'thumb-cover';
-    let coverContainerClass = 'thumb-cover-container ';
 
     return (
-      <Box className={coverContainerClass} pad="medium">
+      <Box
+        pad="small"
+        hoverIndicator={{ background: 'light-1' }}
+        onClick={() => null}
+      >
         <Link to={clickLink}>
           <Box>
             <h3
@@ -143,12 +137,12 @@ class PublicActivityThumb extends React.Component {
             <LazyLoadImage
               alt={item.title}
               src={item.imageUrl}
-              // style={imageStyle}
+              style={imageStyle}
               effect="black-and-white"
             />
-
-            {this.renderDates()}
           </Box>
+
+          <Box>{this.renderDates()}</Box>
         </Link>
       </Box>
     );

@@ -27,17 +27,6 @@ const formModel = {
   room: ''
 };
 
-const defaultCapacity = 40;
-const today = new Date().toISOString().substring(0, 10);
-const emptyDateAndTime = {
-  startDate: today,
-  endDate: today,
-  startTime: '',
-  endTime: '',
-  attendees: [],
-  capacity: defaultCapacity
-};
-
 class EditBooking extends PureComponent {
   state = {
     isDeleteModalOn: false,
@@ -109,7 +98,7 @@ class EditBooking extends PureComponent {
         longDescription,
         isPublicActivity,
         isBookingsDisabled,
-        datesAndTimes: [...datesAndTimes, { ...emptyDateAndTime }]
+        datesAndTimes: [...datesAndTimes]
       });
     }
   };
