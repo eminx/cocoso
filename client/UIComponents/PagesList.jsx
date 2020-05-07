@@ -1,37 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col } from 'antd/lib';
+import { Text } from 'grommet';
+
+import ListMenu from '../UIComponents/ListMenu';
 
 import { parseTitle } from '../functions';
 
-export const activeStyle = {
-  fontWeight: 700
-};
-
-export const linkStyle = {
-  textTransform: 'uppercase',
-  padding: '6px 0'
-};
-
-const PagesList = props => (
-  <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 24 }}>
-    <Row>
-      <Col md={24}>
-        {props.pageTitles.map((title, index) => (
-          <div
-            key={title + index}
-            style={
-              parseTitle(props.activePageTitle) === parseTitle(title)
-                ? { ...activeStyle, ...linkStyle }
-                : linkStyle
+const PagesList = ({ pageTitles, activePageTitle }) => {
+  return (
+    <ListMenu list={pageTitles}>
+      {title => (
+        <Link to={`/page/${parseTitle(title)}`}>
+          <Text
+            weight={
+              parseTitle(activePageTitle) === parseTitle(title)
+                ? 'bold'
+                : 'normal'
             }
           >
-            <Link to={`/page/${parseTitle(title)}`}>{title}</Link>
-          </div>
-        ))}
-      </Col>
-    </Row>
-  </div>
-);
+            {title}
+          </Text>
+        </Link>
+      )}
+    </ListMenu>
+  );
+};
 
 export default PagesList;

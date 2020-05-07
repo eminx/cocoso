@@ -63,20 +63,19 @@ class Page extends PureComponent {
       <Template
         heading={currentPage && currentPage.title}
         leftContent={
-          currentUser &&
-          currentUser.isSuperAdmin && (
-            <Box pad="small">
+          <Box>
+            {currentUser && currentUser.isSuperAdmin && (
               <Link to="/new-page" key="new-page" style={{ marginBottom: 12 }}>
                 <Button primary label="New Page" />
               </Link>
+            )}
 
-              <PagesList
-                pageTitles={pageTitles}
-                onChange={this.handlePageClick}
-                activePageTitle={routeName}
-              />
-            </Box>
-          )
+            <PagesList
+              pageTitles={pageTitles}
+              onChange={this.handlePageClick}
+              activePageTitle={routeName}
+            />
+          </Box>
         }
         rightContent={
           currentPage &&

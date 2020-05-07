@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactDropzone from 'react-dropzone';
 import ReactQuill from 'react-quill';
-
-import Personal from './Personal';
-import { editorFormats, editorModules } from '../../constants/quillConfig';
-
 import { Input, Button, message, Divider, Modal } from 'antd/lib';
 const TextArea = Input.TextArea;
 
 import { Text, Box } from 'grommet';
 
+import Personal from './Personal';
+import { editorFormats, editorModules } from '../../constants/quillConfig';
+import ListMenu from '../../UIComponents/ListMenu';
 import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 import Terms from '../../UIComponents/Terms';
@@ -45,12 +44,15 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    this.getMyWorks();
+    // this.getMyWorks();
     this.setInitialPersonalInfo();
   }
 
   setInitialPersonalInfo = () => {
     const { currentUser } = this.props;
+    if (!currentUser) {
+      return;
+    }
     this.setState({
       personal: {
         firstName: currentUser.firstName || '',
@@ -64,7 +66,7 @@ class Profile extends React.Component {
     Meteor.call('getMyWorks', (error, respond) => {
       if (error) {
         console.log(error);
-        message.error(error.reason);
+        // message.error(error.reason);
         return;
       }
       this.setState({
@@ -223,31 +225,37 @@ class Profile extends React.Component {
       <Template
         heading="Edit Personal Information"
         leftContent={
-          <Box>
-            {menuRoutes.map(datum => (
-              <Link to={datum.value} key={datum.value}>
-                <Text
-                  margin={{ bottom: 'medium' }}
-                  size="small"
-                  weight={pathname === datum.value ? 'bold' : 'normal'}
-                >
-                  {datum.label.toUpperCase()}
-                </Text>
-              </Link>
-            ))}
-            <Box pad="medium">
-              <Blaze template="loginButtons" />
-            </Box>
-          </Box>
+          <Fragment>
+            <ListMenu list={menuRoutes}>
+              {datum => (
+                <Link to={datum.value} key={datum.value}>
+                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                    {datum.label}
+                  </Text>
+                </Link>
+              )}
+            </ListMenu>
+            {currentUser && (
+              <Box pad="medium">
+                <Blaze template="loginButtons" />
+              </Box>
+            )}
+          </Fragment>
         }
       >
-        <Personal
-          formValues={personal}
-          bio={bio}
-          onQuillChange={this.handleQuillChange}
-          onFormChange={this.handleFormChange}
-          onSubmit={this.handleSubmit}
-        />
+        {currentUser ? (
+          <Personal
+            formValues={personal}
+            bio={bio}
+            onQuillChange={this.handleQuillChange}
+            onFormChange={this.handleFormChange}
+            onSubmit={this.handleSubmit}
+          />
+        ) : (
+          <Box pad="medium">
+            <Blaze template="loginButtons" />
+          </Box>
+        )}
 
         {currentUser && (
           <div>
