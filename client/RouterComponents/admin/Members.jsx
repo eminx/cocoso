@@ -33,15 +33,21 @@ function Members({ history }) {
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
-  useEffect(() => {
+  const getAndSetUsers = () => {
+    setLoading(true);
     Meteor.call('getUsers', (error, respond) => {
       if (error) {
         message.error(error.reason);
+        setLoading(false);
         return;
       }
       setUsers(respond);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    getAndSetUsers();
   }, []);
 
   if (loading) {
@@ -54,18 +60,22 @@ function Members({ history }) {
         if (error) {
           message.error(error.reason);
           console.log(error);
-        } else {
-          message.success('Verification removed');
+          getAndSetUsers();
+          return;
         }
+        getAndSetUsers();
+        message.success('Verification removed');
       });
     } else {
       Meteor.call('verifyMember', user._id, (error, response) => {
         if (error) {
           message.error(error.reason);
           console.log(error);
-        } else {
-          message.success('User is now verified');
+          getAndSetUsers();
+          return;
         }
+        getAndSetUsers();
+        message.success('User is now verified');
       });
     }
   };

@@ -312,7 +312,6 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
-      console.log('you are not a member');
       throw new Meteor.Error('You are not a member!');
     }
 
@@ -356,7 +355,6 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
-      console.log('your no member');
       throw new Meteor.Error('You are not a member!');
     }
 
@@ -400,7 +398,6 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (theGroup.adminId !== user._id) {
-      console.log('your no admin');
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -423,7 +420,6 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (theGroup.adminId !== user._id) {
-      console.log('your no admin');
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -453,7 +449,6 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (theGroup.adminId !== user._id) {
-      console.log('your no admin');
       throw new Meteor.Error('You are not admin!');
     }
 

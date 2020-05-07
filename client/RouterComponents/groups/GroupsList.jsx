@@ -1,9 +1,17 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { message } from 'antd/lib';
-import { Box, Button, Avatar, Heading, RadioButtonGroup, Text } from 'grommet';
+import {
+  Box,
+  Button,
+  Image,
+  Avatar,
+  Heading,
+  RadioButtonGroup,
+  Text
+} from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
@@ -25,39 +33,8 @@ const filterOptions = [
 
 import { compareForSort } from '../../functions';
 
-class GroupsList extends React.PureComponent {
-  state = {
-    filterBy: 'active'
-  };
-
-  getGroupItem = group => {
-    return (
-      <Box direction="row" justify="stretch">
-        <Avatar
-          size="xlarge"
-          round="2px"
-          src={group.imageUrl}
-          flex={{ grow: 0 }}
-          margin={{ right: 'small' }}
-        />
-        <Box flex={{ grow: 1 }}>
-          <Box>
-            <Heading level={4} style={{ overflowWrap: 'anywhere' }}>
-              <Link to={`/group/${group._id}`}>{group.title}</Link>
-            </Heading>
-            <Heading level={6}>{group.readingMaterial}</Heading>
-          </Box>
-          <div style={{ textAlign: 'right', lineHeight: '16px' }}>
-            <span style={{ fontSize: 12 }}>{group.adminUsername}</span>
-            <br />
-            <span style={{ fontSize: 10 }}>
-              {moment(group.creationDate).format('Do MMM YYYY')}
-            </span>
-          </div>
-        </Box>
-      </Box>
-    );
-  };
+function GroupsList({ isLoading, currentUser, groupsData }) {
+  const [filterBy, setFilterBy] = useState('active');
 
   archiveGroup = groupId => {
     Meteor.call('archiveGroup', groupId, (error, respond) => {
@@ -80,9 +57,6 @@ class GroupsList extends React.PureComponent {
   };
 
   getFilteredGroups = () => {
-    const { groupsData, currentUser } = this.props;
-    const { filterBy } = this.state;
-
     if (!groupsData) {
       return [];
     }
@@ -98,15 +72,13 @@ class GroupsList extends React.PureComponent {
       }
     });
 
-    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
+    const filteredGroupsWithAccessFilter = parseOnlyAllowedGroups(
       filteredGroups
     );
     return filteredGroupsWithAccessFilter;
   };
 
   parseOnlyAllowedGroups = futureGroups => {
-    const { currentUser } = this.props;
-
     const futureGroupsAllowed = futureGroups.filter(group => {
       if (!group.isPrivate) {
         return true;
@@ -129,76 +101,97 @@ class GroupsList extends React.PureComponent {
   };
 
   handleSelectedFilter = event => {
-    const { currentUser } = this.props;
     const value = event.target.value;
     if (!currentUser && value === 'my-groups') {
       message.destroy();
       message.error('You need an account for filtering your groups');
       return;
     }
-    this.setState({
-      filterBy: value
-    });
+    setFilterBy(value);
   };
 
-  render() {
-    const { isLoading, currentUser, groupsData } = this.props;
-    const { filterBy } = this.state;
-
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    const groupsFilteredAndSorted = this.getFilteredGroups().sort(
-      compareForSort
-    );
-
-    const groupsList = groupsFilteredAndSorted.map(group => ({
-      ...group,
-      actions: [
-        {
-          content: group.isArchived ? 'Unarchive' : 'Archive',
-          handleClick: group.isArchived
-            ? () => this.unarchiveGroup(group._id)
-            : () => this.archiveGroup(group._id),
-          isDisabled:
-            !currentUser ||
-            (group.adminId !== currentUser._id && !currentUser.isSuperAdmin)
-        }
-      ]
-    }));
-
-    return (
-      <Template
-        heading="Groups"
-        leftContent={
-          <Fragment>
-            <Link to="/new-group">
-              <Button as="span" primary label="New Group" />
-            </Link>
-            <Box pad={{ top: 'medium' }}>
-              <RadioButtonGroup
-                name="filters"
-                options={filterOptions}
-                value={filterBy}
-                onChange={this.handleSelectedFilter}
-              />
-            </Box>
-          </Fragment>
-        }
-      >
-        {groupsList && groupsList.length > 0 && (
-          <NiceList
-            list={groupsList.reverse()}
-            actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
-            border={false}
-          >
-            {group => <Box>{this.getGroupItem(group)}</Box>}
-          </NiceList>
-        )}
-      </Template>
-    );
+  if (isLoading) {
+    return <Loader />;
   }
+
+  const groupsFilteredAndSorted = getFilteredGroups().sort(compareForSort);
+
+  const groupsList = groupsFilteredAndSorted.map(group => ({
+    ...group,
+    actions: [
+      {
+        content: group.isArchived ? 'Unarchive' : 'Archive',
+        handleClick: group.isArchived
+          ? () => unarchiveGroup(group._id)
+          : () => archiveGroup(group._id),
+        isDisabled:
+          !currentUser ||
+          (group.adminId !== currentUser._id && !currentUser.isSuperAdmin)
+      }
+    ]
+  }));
+
+  return (
+    <Template
+      heading="Groups"
+      leftContent={
+        <Fragment>
+          <Link to="/new-group">
+            <Button as="span" primary label="New Group" />
+          </Link>
+          <Box pad={{ top: 'medium' }}>
+            <RadioButtonGroup
+              name="filters"
+              options={filterOptions}
+              value={filterBy}
+              onChange={handleSelectedFilter}
+            />
+          </Box>
+        </Fragment>
+      }
+    >
+      {groupsList && groupsList.length > 0 && (
+        <NiceList
+          list={groupsList.reverse()}
+          actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
+          border={false}
+        >
+          {group => <GroupItem group={group} />}
+        </NiceList>
+      )}
+    </Template>
+  );
 }
+
+const GroupItem = ({ group }) => (
+  <Box pad="small" direction="row">
+    <Box
+      width="xsmall"
+      height="xsmall"
+      round="2px"
+      margin={{ right: 'small' }}
+      flex={{ grow: 0 }}
+    >
+      <Image fit="cover" fill src={group.imageUrl} />
+    </Box>
+    <Box width="100%">
+      <Box>
+        <Heading level={4} style={{ overflowWrap: 'anywhere' }}>
+          <Link to={`/group/${group._id}`}>{group.title}</Link>
+        </Heading>
+        <Heading level={5}>{group.readingMaterial}</Heading>
+      </Box>
+
+      <Box flex={{ grow: 0 }} pad="small">
+        <Text size="small" textAlign="end">
+          {group.adminUsername}
+        </Text>
+        <Text size="xsmall" textAlign="end">
+          {moment(group.creationDate).format('Do MMM YYYY')}
+        </Text>
+      </Box>
+    </Box>
+  </Box>
+);
 
 export default GroupsList;
