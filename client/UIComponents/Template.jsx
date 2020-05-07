@@ -9,7 +9,7 @@ function Template({ leftContent, rightContent, heading, children }) {
         <Col md={6} />
         <Col md={12}>
           {heading && (
-            <Box pad={{ left: 'small' }}>
+            <Box pad={{ left: 'medium', top: 'small' }}>
               <Heading level={3}>{heading}</Heading>
             </Box>
           )}

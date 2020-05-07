@@ -3,15 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { message } from 'antd/lib';
-import {
-  Box,
-  Button,
-  Image,
-  Avatar,
-  Heading,
-  RadioButtonGroup,
-  Text
-} from 'grommet';
+import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';

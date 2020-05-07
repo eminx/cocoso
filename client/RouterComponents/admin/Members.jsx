@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Radio, Alert, message, Divider } from 'antd/lib';
-import { Box, Text, Heading, TextInput } from 'grommet';
+import { Alert, message, Divider } from 'antd/lib';
+import { Box, Text, Heading, RadioButtonGroup, TextInput } from 'grommet';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
+import ListMenu from '../../UIComponents/ListMenu';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },
   { label: 'Members', value: '/admin/members' }
 ];
-
-const RadioGroup = Radio.Group;
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -170,44 +169,56 @@ function Members({ history }) {
   return (
     <Template
       heading="Members"
-      leftContent={menuRoutes.map(datum => (
-        <Link to={datum.value} key={datum.value}>
-          <Text
-            margin={{ bottom: 'medium' }}
-            size="small"
-            weight={pathname === datum.value ? 'bold' : 'normal'}
-          >
-            {datum.label.toUpperCase()}
-          </Text>
-        </Link>
-      ))}
+      leftContent={
+        <ListMenu list={menuRoutes}>
+          {datum => (
+            <Link to={datum.value} key={datum.value}>
+              <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                {datum.label}
+              </Text>
+            </Link>
+          )}
+        </ListMenu>
+      }
     >
-      <div style={{ background: '#f8f8f8', padding: 12 }}>
-        <span style={{ marginRight: 12 }}>filtered by </span>
-        <RadioGroup
-          options={filterOptions}
-          onChange={event => setFilter(event.target.value)}
-          value={filter}
-          style={{ marginBottom: 12 }}
-        />
+      <Box
+        margin={{ bottom: 'large' }}
+        align="center"
+        background="light-1"
+        pad="small"
+      >
+        <Box flex={{ grow: 1 }} pad="small">
+          <RadioButtonGroup
+            name="filter"
+            options={filterOptions}
+            value={filter}
+            onChange={event => setFilter(event.target.value)}
+            direction="row"
+          />
+        </Box>
+        <Box flex={{ grow: 1 }}>
+          <TextInput
+            plain={false}
+            placeholder="filter by username or email address..."
+            value={filterWord}
+            onChange={event => setFilterWord(event.target.value)}
+            style={{ backgroundColor: 'white' }}
+          />
+        </Box>
+      </Box>
 
-        <TextInput
-          plain={false}
-          placeholder="filter by username or email address..."
-          value={filterWord}
-          onChange={event => setFilterWord(event.target.value)}
-        />
-
-        <Divider />
-
-        <span style={{ marginRight: 12 }}>sorted by </span>
-        <RadioGroup
+      <Box direction="row" alignSelf="center" justify="center">
+        <Text size="small" textAlign="center" margin="small">
+          sort by:
+        </Text>
+        <RadioButtonGroup
+          name="sort"
           options={sortOptions}
-          onChange={event => setSortBy(event.target.value)}
           value={sortBy}
-          style={{ marginBottom: 12 }}
+          onChange={event => setSortBy(event.target.value)}
+          direction="row"
         />
-      </div>
+      </Box>
 
       <Box pad="medium">
         <Heading level={4} alignSelf="center">

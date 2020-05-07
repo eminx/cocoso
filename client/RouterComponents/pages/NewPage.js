@@ -4,7 +4,6 @@ import { message, Alert } from 'antd/lib';
 import { Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
-import PagesList from '../../UIComponents/PagesList';
 import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 
@@ -119,16 +118,7 @@ class NewPage extends React.Component {
     }
 
     return (
-      <Template
-        heading="Create a New Page"
-        leftContent={
-          <PagesList
-            pageTitles={pageTitles}
-            activePageTitle={''}
-            onChange={this.handlePageClick}
-          />
-        }
-      >
+      <Template heading="Create a New Page">
         <CreatePageForm
           formValues={formValues}
           onFormChange={this.handleFormChange}

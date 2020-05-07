@@ -15,6 +15,7 @@ import {
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
+import ListMenu from '../../UIComponents/ListMenu';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },
@@ -97,17 +98,17 @@ class Settings extends PureComponent {
     return (
       <Template
         heading="Organisation Settings"
-        leftContent={menuRoutes.map(datum => (
-          <Link to={datum.value} key={datum.value}>
-            <Text
-              margin={{ bottom: 'medium' }}
-              size="small"
-              weight={pathname === datum.value ? 'bold' : 'normal'}
-            >
-              {datum.label.toUpperCase()}
-            </Text>
-          </Link>
-        ))}
+        leftContent={
+          <ListMenu list={menuRoutes}>
+            {datum => (
+              <Link to={datum.value} key={datum.value}>
+                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                  {datum.label}
+                </Text>
+              </Link>
+            )}
+          </ListMenu>
+        }
       >
         <Form
           value={settings}
