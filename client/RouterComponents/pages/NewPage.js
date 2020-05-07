@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert } from 'antd/lib';
+import { message, Alert } from 'antd/lib';
 import { Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import PagesList from '../../UIComponents/PagesList';
-
+import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 
 const successCreation = () => {
@@ -119,26 +119,23 @@ class NewPage extends React.Component {
     }
 
     return (
-      <div style={{ padding: 24 }}>
-        <Row gutter={24}>
-          <Col md={6}>
-            <PagesList
-              pageTitles={pageTitles}
-              activePageTitle={''}
-              onChange={this.handlePageClick}
-            />
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Heading level={3}>Create a New Page</Heading>
-            <CreatePageForm
-              formValues={formValues}
-              onFormChange={this.handleFormChange}
-              onQuillChange={this.handleQuillChange}
-              onSubmit={this.handleSubmit}
-            />
-          </Col>
-        </Row>
-      </div>
+      <Template
+        heading="Create a New Page"
+        leftContent={
+          <PagesList
+            pageTitles={pageTitles}
+            activePageTitle={''}
+            onChange={this.handlePageClick}
+          />
+        }
+      >
+        <CreatePageForm
+          formValues={formValues}
+          onFormChange={this.handleFormChange}
+          onQuillChange={this.handleQuillChange}
+          onSubmit={this.handleSubmit}
+        />
+      </Template>
     );
   }
 }

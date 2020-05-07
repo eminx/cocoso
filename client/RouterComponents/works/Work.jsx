@@ -4,8 +4,6 @@ import { Row, Col, Button } from 'antd/lib';
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 
-import { parseTitle } from '../../functions';
-
 class Work extends PureComponent {
   state = {
     work: null,

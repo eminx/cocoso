@@ -554,7 +554,7 @@ Meteor.methods({
           }
         }
       });
-    } catch (exception) {
+    } catch (error) {
       throw new Meteor.Error('Could not send the invite to the person', error);
     }
   }

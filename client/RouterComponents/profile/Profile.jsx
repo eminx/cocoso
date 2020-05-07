@@ -3,23 +3,32 @@ import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactDropzone from 'react-dropzone';
 import ReactQuill from 'react-quill';
+
+import Personal from './Personal';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
 
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  Button,
-  message,
-  Divider,
-  Modal
-} from 'antd/lib';
+import { Input, Button, message, Divider, Modal } from 'antd/lib';
 const TextArea = Input.TextArea;
-const FormItem = Form.Item;
+
+import { Text, Box } from 'grommet';
+
 import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 import Terms from '../../UIComponents/Terms';
+import Template from '../../UIComponents/Template';
+
+const personalModel = {
+  firstName: '',
+  lastName: '',
+  bio: '',
+  city: ''
+  // country: ''
+};
+
+const menuRoutes = [
+  { label: 'Profile', value: '/my-profile' },
+  { label: 'Works', value: 'my-works' }
+];
 
 class Profile extends React.Component {
   state = {
@@ -30,10 +39,28 @@ class Profile extends React.Component {
     workDescription: '',
     isUploading: false,
     imageUrl: null,
-    myWorks: []
+    myWorks: [],
+    personal: personalModel,
+    bio: ''
   };
 
   componentDidMount() {
+    this.getMyWorks();
+    this.setInitialPersonalInfo();
+  }
+
+  setInitialPersonalInfo = () => {
+    const { currentUser } = this.props;
+    this.setState({
+      personal: {
+        firstName: currentUser.firstName || '',
+        lastName: currentUser.lastName || ''
+      },
+      bio: currentUser.bio || ''
+    });
+  };
+
+  getMyWorks = () => {
     Meteor.call('getMyWorks', (error, respond) => {
       if (error) {
         console.log(error);
@@ -44,29 +71,41 @@ class Profile extends React.Component {
         myWorks: respond
       });
     });
-  }
+  };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
+  handleFormChange = formValues => {
+    this.setState({
+      personal: formValues
+    });
+  };
+
+  handleQuillChange = bio => {
+    this.setState({
+      bio
+    });
+  };
+
+  handleSubmit = () => {
+    const { personal, bio } = this.state;
+    this.setState({
+      isSaving: true
+    });
+
+    const values = {
+      ...personal,
+      bio
+    };
+    console.log(values);
+    Meteor.call('saveUserInfo', values, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+      } else {
+        message.success('Your data is successfully saved');
+        this.setState({
+          isSaving: false
+        });
       }
-      const values = {
-        firstName: fieldsValue['firstName'],
-        lastName: fieldsValue['lastName']
-        // bio: fieldsValue['bio']
-      };
-
-      Meteor.call('saveUserInfo', values, (error, respond) => {
-        if (error) {
-          console.log(error);
-          message.error(error.reason);
-        } else {
-          message.success('Your data is successfully saved');
-        }
-      });
     });
   };
 
@@ -78,7 +117,6 @@ class Profile extends React.Component {
         return;
       }
     });
-    // message.success('Your account is successfully deleted from our database');
     setTimeout(() => {
       window.location.reload();
     }, 400);
@@ -151,10 +189,12 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { isUploading, imageUrl } = this.state;
-    const { currentUser } = this.props;
-    const { getFieldDecorator } = this.props.form;
+    const { currentUser, history } = this.props;
     const {
+      personal,
+      bio,
+      isUploading,
+      imageUrl,
       isDeleteModalOn,
       isAddWorkModalOn,
       workTitle,
@@ -177,117 +217,76 @@ class Profile extends React.Component {
       marginBottom: 24
     };
 
+    const pathname = history && history.location.pathname;
+
     return (
-      <div style={{ padding: 24, minHeight: '80vh' }}>
-        <Row gutter={24}>
-          <Col md={6}>
-            <Blaze template="loginButtons" />
-          </Col>
-        </Row>
-        <Row>
-          <Divider />
-          <Col md={12}>
-            <h2>Personal Info</h2>
-            {currentUser && (
-              <Form onSubmit={this.handleSubmit}>
-                <FormItem>
-                  {getFieldDecorator('firstName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter your first name'
-                      }
-                    ],
-                    initialValue: currentUser ? currentUser.firstName : null
-                  })(<Input placeholder="first name" />)}
-                </FormItem>
-
-                <FormItem>
-                  {getFieldDecorator('lastName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter your last name'
-                      }
-                    ],
-                    initialValue: currentUser ? currentUser.lastName : null
-                  })(<Input placeholder="last name" />)}
-                </FormItem>
-
-                <FormItem
-                  wrapperCol={{
-                    xs: { span: 24, offset: 0 },
-                    sm: { span: 16, offset: 0 }
-                  }}
+      <Template
+        heading="Edit Personal Information"
+        leftContent={
+          <Box>
+            {menuRoutes.map(datum => (
+              <Link to={datum.value} key={datum.value}>
+                <Text
+                  margin={{ bottom: 'medium' }}
+                  size="small"
+                  weight={pathname === datum.value ? 'bold' : 'normal'}
                 >
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </FormItem>
-              </Form>
-            )}
-            <Divider />
-          </Col>
+                  {datum.label.toUpperCase()}
+                </Text>
+              </Link>
+            ))}
+            <Box pad="medium">
+              <Blaze template="loginButtons" />
+            </Box>
+          </Box>
+        }
+      >
+        <Personal
+          formValues={personal}
+          bio={bio}
+          onQuillChange={this.handleQuillChange}
+          onFormChange={this.handleFormChange}
+          onSubmit={this.handleSubmit}
+        />
 
-          <Col md={2} />
+        {currentUser && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button onClick={() => this.setState({ isAddWorkModalOn: true })}>
+                Add work
+              </Button>
+            </div>
 
-          <Col md={10}>
-            <h2 style={{ marginBottom: 24 }}>Works</h2>
-
-            {currentUser && (
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button
-                    onClick={() => this.setState({ isAddWorkModalOn: true })}
-                  >
-                    Add work
-                  </Button>
-                </div>
-
-                {myWorksWithActions && (
-                  <NiceList list={myWorksWithActions}>
-                    {work => (
-                      <div key={work.title}>
-                        <h3>
-                          <Link to={`/work/${work._id}`}>{work.title}</Link>
-                        </h3>
-                        <em
-                          dangerouslySetInnerHTML={{
-                            __html: work.shortDescription
-                          }}
-                        />
-                      </div>
-                    )}
-                  </NiceList>
+            {myWorksWithActions && (
+              <NiceList list={myWorksWithActions}>
+                {work => (
+                  <div key={work.title}>
+                    <h3>
+                      <Link to={`/work/${work._id}`}>{work.title}</Link>
+                    </h3>
+                    <em
+                      dangerouslySetInnerHTML={{
+                        __html: work.shortDescription
+                      }}
+                    />
+                  </div>
                 )}
-              </div>
+              </NiceList>
             )}
+          </div>
+        )}
 
+        {currentUser && (
+          <div>
+            <Button
+              onClick={() => this.setState({ isDeleteModalOn: true })}
+              style={{ color: 'red' }}
+            >
+              Delete Account
+            </Button>
             <Divider />
-
-            {currentUser && (
-              <div>
-                <Button
-                  onClick={() => this.setState({ isDeleteModalOn: true })}
-                  style={{ color: 'red' }}
-                >
-                  Delete Account
-                </Button>
-                <Divider />
-              </div>
-            )}
-          </Col>
-
-          <Col md={4} />
-        </Row>
-
-        <Divider />
-
-        <Row>
-          <Col md={10}>
-            <Terms />
-          </Col>
-        </Row>
+          </div>
+        )}
 
         <Modal
           title="Are you sure?"
@@ -373,9 +372,17 @@ class Profile extends React.Component {
             style={{ minHeight: 120 }}
           />
         </Modal>
-      </div>
+      </Template>
     );
   }
 }
 
-export default Form.create()(Profile);
+export default Profile;
+
+const SimpleMenu = ({ items, children }) => {
+  {
+    items.map((item, index) => {
+      return children(item, index);
+    });
+  }
+};

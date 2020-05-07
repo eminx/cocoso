@@ -111,7 +111,7 @@ class PublicActivityThumb extends React.Component {
 
     return (
       <Box
-        pad="small"
+        pad={{ bottom: 'medium', right: 'medium', left: 'medium' }}
         hoverIndicator={{ background: 'light-1' }}
         onClick={() => null}
       >

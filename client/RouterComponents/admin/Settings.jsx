@@ -1,12 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, message } from 'antd/lib';
-import { Heading, TextInput, FormField, Form, Box, Button } from 'grommet';
+import { message } from 'antd/lib';
+import {
+  Heading,
+  TextInput,
+  FormField,
+  Form,
+  Box,
+  Text,
+  Button
+} from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
-import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
 import Loader from '../../UIComponents/Loader';
+import Template from '../../UIComponents/Template';
+
+const menuRoutes = [
+  { label: 'Settings', value: '/admin/settings' },
+  { label: 'Members', value: '/admin/members' }
+];
 
 class Settings extends PureComponent {
   state = {
@@ -67,6 +80,7 @@ class Settings extends PureComponent {
   };
 
   render() {
+    const { history } = this.props;
     const { currentUser } = this.context;
     const { settings, isLoading, isFormValueChanged } = this.state;
 
@@ -78,74 +92,70 @@ class Settings extends PureComponent {
       return <h2>You are not allowed to be here</h2>;
     }
 
+    const pathname = history && history.location.pathname;
+
     return (
-      <div style={{ padding: 24 }}>
-        <Row gutter={24}>
-          <Col md={6}>
-            <div style={{ ...activeStyle, ...linkStyle }}>
-              <Link to="/admin/settings">Settings</Link>
-            </div>
-
-            <div style={{ ...linkStyle }}>
-              <Link to="/admin/members">Members</Link>
-            </div>
-          </Col>
-
-          <Col md={12}>
-            <Heading level={3}>Settings for your Organisation</Heading>
-            <Form
-              value={settings}
-              onChange={this.handleFormChange}
-              onSubmit={this.handleFormSubmit}
+      <Template
+        heading="Organisation Settings"
+        leftContent={menuRoutes.map(datum => (
+          <Link to={datum.value} key={datum.value}>
+            <Text
+              margin={{ bottom: 'medium' }}
+              size="small"
+              weight={pathname === datum.value ? 'bold' : 'normal'}
             >
-              <FormField label="Name">
-                <TextInput
-                  plain={false}
-                  name="name"
-                  placeholder="Sandy Art Space"
-                />
-              </FormField>
+              {datum.label.toUpperCase()}
+            </Text>
+          </Link>
+        ))}
+      >
+        <Form
+          value={settings}
+          onChange={this.handleFormChange}
+          onSubmit={this.handleFormSubmit}
+        >
+          <FormField label="Name">
+            <TextInput
+              plain={false}
+              name="name"
+              placeholder="Sandy Art Space"
+            />
+          </FormField>
 
-              <FormField label="Email address">
-                <TextInput
-                  plain={false}
-                  name="email"
-                  placeholder="contact@sandyartspace.net"
-                />
-              </FormField>
+          <FormField label="Email address">
+            <TextInput
+              plain={false}
+              name="email"
+              placeholder="contact@sandyartspace.net"
+            />
+          </FormField>
 
-              <FormField label="Address">
-                <TextInput
-                  plain={false}
-                  name="address"
-                  placeholder="Karl Marx strasse 99"
-                />
-              </FormField>
+          <FormField label="Address">
+            <TextInput
+              plain={false}
+              name="address"
+              placeholder="Karl Marx strasse 99"
+            />
+          </FormField>
 
-              <FormField label="City">
-                <TextInput plain={false} name="city" placeholder="Berlin" />
-              </FormField>
+          <FormField label="City">
+            <TextInput plain={false} name="city" placeholder="Berlin" />
+          </FormField>
 
-              <FormField label="Country">
-                <TextInput
-                  plain={false}
-                  name="country"
-                  placeholder="Sri Lanka"
-                />
-              </FormField>
+          <FormField label="Country">
+            <TextInput plain={false} name="country" placeholder="Sri Lanka" />
+          </FormField>
 
-              <Box direction="row" justify="end" pad="small">
-                <Button
-                  type="submit"
-                  primary
-                  label="Confirm"
-                  disabled={!isFormValueChanged}
-                />
-              </Box>
-            </Form>
-          </Col>
-        </Row>
-      </div>
+          <Box direction="row" justify="end" pad="small">
+            <Button
+              type="submit"
+              primary
+              label="Confirm"
+              disabled={!isFormValueChanged}
+            />
+          </Box>
+        </Form>
+      </Template>
     );
   }
 }

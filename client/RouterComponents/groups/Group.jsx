@@ -6,8 +6,6 @@ import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
 
 import {
-  Row,
-  Col,
   Divider,
   Collapse,
   Drawer,
@@ -23,7 +21,7 @@ import {
   Tooltip,
   message
 } from 'antd/lib';
-import { Box, Calendar, MaskedInput } from 'grommet';
+import { Box, Calendar } from 'grommet';
 
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -38,6 +36,7 @@ import FancyDate from '../../UIComponents/FancyDate';
 import NiceList from '../../UIComponents/NiceList';
 import InviteManager from './InviteManager';
 import { TimePicker } from '../../UIComponents/DatesAndTimes';
+import Template from '../../UIComponents/Template';
 
 const publicSettings = Meteor.settings.public;
 
@@ -843,6 +842,12 @@ class Group extends Component {
   };
 
   render() {
+    const { group, isLoading, places } = this.props;
+
+    if (!group || isLoading) {
+      return <Loader />;
+    }
+
     const {
       redirectToLogin,
       isFormValid,
@@ -854,8 +859,6 @@ class Group extends Component {
     if (redirectToLogin) {
       return <Redirect to="/my-profile" />;
     }
-
-    const { group, isLoading, chatData, places } = this.props;
 
     const isMember = this.isMember();
     const isAdmin = this.isAdmin();
@@ -878,20 +881,14 @@ class Group extends Component {
             <Button icon="arrow-left">Groups</Button>
           </Link>
         </div>
-
-        {!isLoading && group ? (
-          <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
-            <Col lg={5} style={{ padding: 12, paddingTop: 0 }}>
-              <MediaQuery query="(min-width: 992px)">
-                {this.renderMembersAndDocuments()}
-              </MediaQuery>
-            </Col>
-
-            <Col md={14} lg={12}>
-              {this.renderGroupInfo()}
-            </Col>
-
-            <Col md={10} lg={6} style={{ paddingTop: 24 }}>
+        <Template
+          leftContent={
+            <MediaQuery query="(min-width: 992px)">
+              {this.renderMembersAndDocuments()}
+            </MediaQuery>
+          }
+          rightContent={
+            <Box>
               <div style={{ paddingLeft: 12, paddingRight: 12 }}>
                 <h3>Meetings</h3>
 
@@ -950,19 +947,16 @@ class Group extends Component {
                   />
                 </div>
               )}
-            </Col>
-          </Row>
-        ) : (
-          <Loader />
-        )}
-
-        <MediaQuery query="(max-width: 991px)">
-          <Row>
+            </Box>
+          }
+        >
+          {this.renderGroupInfo()}
+          <MediaQuery query="(max-width: 991px)">
             <div style={{ padding: 12 }}>
               {this.renderMembersAndDocuments()}
             </div>
-          </Row>
-        </MediaQuery>
+          </MediaQuery>
+        </Template>
 
         <Modal
           title={`Confirm ${

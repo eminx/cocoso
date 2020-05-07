@@ -1,9 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import CreateGroupForm from '../../UIComponents/CreateGroupForm';
-import { Row, Col, message, Alert, Modal, Button } from 'antd/lib';
+import { message, Alert, Modal } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
+import { Box, Button } from 'grommet';
+
+import CreateGroupForm from '../../UIComponents/CreateGroupForm';
+import Template from '../../UIComponents/Template';
+import Loader from '../../UIComponents/Loader';
 
 const successUpdate = () =>
   message.success('Your group is successfully updated', 6);
@@ -190,6 +194,10 @@ class EditGroup extends React.Component {
   render() {
     const { group, currentUser } = this.props;
 
+    if (!group) {
+      return <Loader />;
+    }
+
     if (!currentUser) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
@@ -226,46 +234,40 @@ class EditGroup extends React.Component {
       (uploadableImageLocal || group.imageUrl);
 
     return (
-      <div style={{ padding: 24 }}>
-        {group && (
-          <div style={{ marginBottom: 12 }}>
+      <Template
+        heading="Edit your Group"
+        leftContent={
+          <Box pad="small">
             <Link to={`/group/${group._id}`}>
-              <Button icon="arrow-left">{group.title}</Button>
+              <Button plain label={group.title} />
             </Link>
-          </div>
-        )}
-
-        <h2>Edit your Group</h2>
-        <Row gutter={24}>
-          <Col md={6} />
-          <Col md={12}>
-            {group && currentUser && group.adminId === currentUser._id && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  padding: 12
-                }}
-              >
-                <Button onClick={this.showDeleteModal}>Delete</Button>
-              </div>
-            )}
-
-            <CreateGroupForm
-              formValues={formValues}
-              onFormChange={this.handleFormChange}
-              onQuillChange={this.handleQuillChange}
-              onSubmit={this.handleSubmit}
-              setUploadableImage={this.setUploadableImage}
-              uploadableImageLocal={uploadableImageLocal}
-              imageUrl={group && group.imageUrl}
-              buttonLabel={buttonLabel}
-              isFormValid={isFormValid}
-              isButtonDisabled={!isFormValid || isUpdating}
-            />
-          </Col>
-          <Col md={4} />
-        </Row>
+          </Box>
+        }
+        rightContent={
+          group.adminId === currentUser._id && (
+            <Box pad="small">
+              <Button
+                plain
+                color="status-critical"
+                label="Delete"
+                onClick={this.showDeleteModal}
+              />
+            </Box>
+          )
+        }
+      >
+        <CreateGroupForm
+          formValues={formValues}
+          onFormChange={this.handleFormChange}
+          onQuillChange={this.handleQuillChange}
+          onSubmit={this.handleSubmit}
+          setUploadableImage={this.setUploadableImage}
+          uploadableImageLocal={uploadableImageLocal}
+          imageUrl={group && group.imageUrl}
+          buttonLabel={buttonLabel}
+          isFormValid={isFormValid}
+          isButtonDisabled={!isFormValid || isUpdating}
+        />
 
         <Modal
           title="Confirm Delete"
@@ -277,7 +279,7 @@ class EditGroup extends React.Component {
         >
           Are you sure you want to delete this group?
         </Modal>
-      </div>
+      </Template>
     );
   }
 }

@@ -1,6 +1,11 @@
 @import './bigcalendar-custom.css';
 @import './quilleditor-custom.css';
 
+body {
+  min-height: 101vh;
+  /* overflow-y: scroll; */
+}
+
 .main-viewport {
   /* background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg'); */
   background-repeat: no-repeat;

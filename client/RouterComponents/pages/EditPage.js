@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Modal } from 'antd/lib';
+import { message, Alert, Modal } from 'antd/lib';
 import { Button, Heading } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
-
+import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 
@@ -160,39 +160,33 @@ class EditPage extends React.Component {
     }
 
     return (
-      <div style={{ padding: 24 }}>
-        <Row gutter={24}>
-          <Col md={6}>
-            {pageData && (
-              <div style={{ marginBottom: 24 }}>
-                <Link to={`/page/${pageData.title}`}>
-                  <Button
-                    plain
-                    size="small"
-                    // icon="arrow-left"
-                    label={`back to ${pageData.title}`}
-                  />
-                </Link>
-              </div>
-            )}
-          </Col>
-          <Col md={12}>
-            <Heading level={3}>Edit this Page</Heading>
-
-            <CreatePageForm
-              formValues={formValues}
-              onFormChange={this.handleFormChange}
-              onQuillChange={this.handleQuillChange}
-              onSubmit={this.handleSubmit}
+      <Template
+        heading="Edit this Page"
+        leftContent={
+          <Link to={`/page/${pageData.title}`}>
+            <Button
+              plain
+              size="small"
+              // icon="arrow-left"
+              label={`back to ${pageData.title}`}
             />
-          </Col>
-
-          <Col md={6}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button onClick={this.openDeleteModal} label="Delete this page" />
-            </div>
-          </Col>
-        </Row>
+          </Link>
+        }
+        rightContent={
+          <Button
+            plain
+            color="status-critical"
+            onClick={this.openDeleteModal}
+            label="Delete this page"
+          />
+        }
+      >
+        <CreatePageForm
+          formValues={formValues}
+          onFormChange={this.handleFormChange}
+          onQuillChange={this.handleQuillChange}
+          onSubmit={this.handleSubmit}
+        />
 
         <Modal
           onOk={this.handleDeletePage}
@@ -202,7 +196,7 @@ class EditPage extends React.Component {
         >
           Are you sure you want to delete this page?
         </Modal>
-      </div>
+      </Template>
     );
   }
 }

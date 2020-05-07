@@ -10,10 +10,11 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      return Works.find({
+      const works = Works.find({
         // host,
         authorId: user._id
       }).fetch();
+      return works;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }

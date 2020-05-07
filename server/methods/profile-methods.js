@@ -3,6 +3,7 @@ import { getHost } from './shared';
 
 Meteor.methods({
   saveUserInfo(values) {
+    console.log(values);
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -10,14 +11,14 @@ Meteor.methods({
 
     check(values.firstName, String);
     check(values.lastName, String);
-    // check(values.bio, String);
+    check(values.bio, String);
 
     try {
       Meteor.users.update(user._id, {
         $set: {
           firstName: values.firstName,
-          lastName: values.lastName
-          // bio: values.bio
+          lastName: values.lastName,
+          bio: values.bio
         }
       });
     } catch (error) {

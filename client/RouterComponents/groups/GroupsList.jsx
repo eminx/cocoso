@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Row, Col, message } from 'antd/lib';
+import { message } from 'antd/lib';
 import { Box, Button, Avatar, Heading, RadioButtonGroup, Text } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
+import Template from '../../UIComponents/Template';
 
 const filterOptions = [
   {
@@ -168,40 +169,34 @@ class GroupsList extends React.PureComponent {
     }));
 
     return (
-      <Row gutter={24}>
-        <Col md={6}>
-          <div style={{ padding: 24 }}>
+      <Template
+        heading="Groups"
+        leftContent={
+          <Fragment>
             <Link to="/new-group">
               <Button as="span" primary label="New Group" />
             </Link>
-          </div>
-
-          <div style={{ padding: 24 }}>
-            <RadioButtonGroup
-              name="filters"
-              options={filterOptions}
-              value={filterBy}
-              onChange={this.handleSelectedFilter}
-            />
-          </div>
-        </Col>
-
-        <Col md={12} style={{ padding: 24 }}>
-          <Heading level={3}>Groups</Heading>
-
-          {groupsList && groupsList.length > 0 && (
-            <NiceList
-              list={groupsList.reverse()}
-              actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
-              border={false}
-            >
-              {group => <Box>{this.getGroupItem(group)}</Box>}
-            </NiceList>
-          )}
-        </Col>
-
-        <Col md={6} />
-      </Row>
+            <Box pad={{ top: 'medium' }}>
+              <RadioButtonGroup
+                name="filters"
+                options={filterOptions}
+                value={filterBy}
+                onChange={this.handleSelectedFilter}
+              />
+            </Box>
+          </Fragment>
+        }
+      >
+        {groupsList && groupsList.length > 0 && (
+          <NiceList
+            list={groupsList.reverse()}
+            actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
+            border={false}
+          >
+            {group => <Box>{this.getGroupItem(group)}</Box>}
+          </NiceList>
+        )}
+      </Template>
     );
   }
 }

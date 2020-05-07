@@ -8,6 +8,8 @@ import { Box, Anchor, Heading } from 'grommet';
 export const UserContext = React.createContext(null);
 
 import Loader from './UIComponents/Loader';
+import UserPopup from './UIComponents/UserPopup';
+import NotificationsPopup from './UIComponents/NotificationsPopup';
 
 const menu = [
   {
@@ -132,20 +134,7 @@ class LayoutPage extends React.Component {
               }}
               fill="horizontal"
             >
-              <Box basis="50px">
-                <span
-                  style={{
-                    padding: '0 12px',
-                    textTransform: 'uppercase',
-                    fontWeight: 700
-                  }}
-                >
-                  <Link to="/my-profile" style={{ color: '#030303' }}>
-                    {currentUser ? currentUser.username : 'LOGIN'}
-                  </Link>
-                </span>
-              </Box>
-
+              <Box basis="120px" />
               <Box justify="center">
                 <Link to="/">
                   <div>
@@ -156,26 +145,18 @@ class LayoutPage extends React.Component {
                 </Link>
               </Box>
 
-              <Box basis="50px" justify="end" direction="row">
+              <Box
+                basis="120px"
+                justify="end"
+                direction="row"
+                alignContent="center"
+              >
                 {notifications && (
-                  <Popover
-                    placement="bottomRight"
-                    title="Notifications"
-                    content={this.renderNotificationList(notifications)}
-                    trigger="click"
-                    visible={isNotificationPopoverOpen}
-                    onVisibleChange={this.handleNotificationVisibility}
-                  >
-                    <Badge count={notificationsCounter}>
-                      <Icon
-                        onClick={this.toggleNotificationsPopover}
-                        theme="outlined"
-                        type="bell"
-                        style={{ fontSize: 24, cursor: 'pointer' }}
-                      />
-                    </Badge>
-                  </Popover>
+                  <NotificationsPopup>
+                    {this.renderNotificationList(notifications)}
+                  </NotificationsPopup>
                 )}
+                {currentUser && <UserPopup />}
               </Box>
             </Box>
 

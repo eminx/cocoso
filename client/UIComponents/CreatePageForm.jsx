@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextInput, FormField, Form, Box, Button } from 'grommet';
 import ReactQuill from 'react-quill';
-
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
 const CreatePageForm = ({

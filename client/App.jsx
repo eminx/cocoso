@@ -13,11 +13,16 @@ const theme = {
     },
     colors: {
       brand: '#020202',
-      focus: 'rgba(0, 0, 0, .4)'
+      focus: 'none'
     }
   },
   formField: {
     border: 'none'
+  },
+  list: {
+    item: {
+      border: false
+    }
   }
 };
 

@@ -1,11 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { Row, List } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 import { Box } from 'grommet';
-
-const ListItem = List.Item;
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -105,17 +102,10 @@ class Home extends React.Component {
 
   render() {
     const { isLoading } = this.props;
-
     const allSortedActivities = this.getAllSorted();
 
     return (
-      <Box
-        // justify="center"
-        // direction="row"
-        width="100%"
-        margin={{ bottom: '50px' }}
-        pad="medium"
-      >
+      <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
         {isLoading ? (
           <Loader />
         ) : (

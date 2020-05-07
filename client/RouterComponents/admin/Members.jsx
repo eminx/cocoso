@@ -1,15 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
+import { Radio, Alert, message, Divider } from 'antd/lib';
 import { Box, Text, Heading, TextInput } from 'grommet';
 
 import Loader from '../../UIComponents/Loader';
-import { activeStyle, linkStyle } from '../../UIComponents/PagesList';
+import NiceList from '../../UIComponents/NiceList';
+import Template from '../../UIComponents/Template';
+
+const menuRoutes = [
+  { label: 'Settings', value: '/admin/settings' },
+  { label: 'Members', value: '/admin/members' }
+];
 
 const RadioGroup = Radio.Group;
-
-import NiceList from '../../UIComponents/NiceList';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -59,7 +63,7 @@ class Members extends React.PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, users } = this.props;
+    const { isLoading, currentUser, users, history } = this.props;
     const { filter, filterWord, sortBy } = this.state;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
@@ -150,79 +154,78 @@ class Members extends React.PureComponent {
         break;
     }
 
+    const pathname = history && history.location.pathname;
+
     return (
-      <Row style={{ padding: 24 }}>
-        <Col md={6}>
-          <div style={{ ...linkStyle }}>
-            <Link to="/admin/settings">Settings</Link>
-          </div>
+      <Template
+        heading="Members"
+        leftContent={menuRoutes.map(datum => (
+          <Link to={datum.value} key={datum.value}>
+            <Text
+              margin={{ bottom: 'medium' }}
+              size="small"
+              weight={pathname === datum.value ? 'bold' : 'normal'}
+            >
+              {datum.label.toUpperCase()}
+            </Text>
+          </Link>
+        ))}
+      >
+        <div style={{ background: '#f8f8f8', padding: 12 }}>
+          <span style={{ marginRight: 12 }}>filtered by </span>
+          <RadioGroup
+            options={filterOptions}
+            onChange={this.handleFilterChange}
+            value={filter}
+            style={{ marginBottom: 12 }}
+          />
 
-          <div style={{ ...activeStyle, ...linkStyle }}>
-            <Link to="/admin/members">Members</Link>
-          </div>
-        </Col>
+          <TextInput
+            plain={false}
+            placeholder="filter by username or email address..."
+            value={filterWord}
+            onChange={event =>
+              this.setState({ filterWord: event.target.value })
+            }
+          />
 
-        <Col md={12}>
-          <Heading level={3}>Members</Heading>
+          <Divider />
 
-          <div style={{ background: '#f8f8f8', padding: 12 }}>
-            <span style={{ marginRight: 12 }}>filtered by </span>
-            <RadioGroup
-              options={filterOptions}
-              onChange={this.handleFilterChange}
-              value={filter}
-              style={{ marginBottom: 12 }}
-            />
+          <span style={{ marginRight: 12 }}>sorted by </span>
+          <RadioGroup
+            options={sortOptions}
+            onChange={this.handleSortChange}
+            value={sortBy}
+            style={{ marginBottom: 12 }}
+          />
+        </div>
 
-            <TextInput
-              plain={false}
-              placeholder="filter by username or email address..."
-              value={filterWord}
-              onChange={event =>
-                this.setState({ filterWord: event.target.value })
-              }
-            />
+        <Box pad="medium">
+          <Heading level={4} alignSelf="center">
+            {filter} members ({usersSorted.length}){' '}
+          </Heading>
+        </Box>
 
-            <Divider />
-
-            <span style={{ marginRight: 12 }}>sorted by </span>
-            <RadioGroup
-              options={sortOptions}
-              onChange={this.handleSortChange}
-              value={sortBy}
-              style={{ marginBottom: 12 }}
-            />
-          </div>
-
-          <Box pad="medium">
-            <Heading level={4} alignSelf="center">
-              {filter} members ({usersSorted.length}){' '}
-            </Heading>
-          </Box>
-
-          <NiceList list={usersSorted}>
-            {user => (
-              <div key={user.username}>
-                <Text size="large" weight="bold">
-                  {user.username}
-                </Text>
-                <Text as="div" size="small">
-                  {user && user.emails ? user.emails[0].address : null}
-                </Text>
-                <Text
-                  as="div"
-                  size="xsmall"
-                  style={{ fontSize: 10, color: '#aaa' }}
-                >
-                  joined {moment(user.createdAt).format('Do MMM YYYY')}
-                </Text>
-              </div>
-            )}
-          </NiceList>
-        </Col>
-
-        <Col md={6} />
-      </Row>
+        <NiceList list={usersSorted}>
+          {user => (
+            <div key={user.username}>
+              <Text size="large" weight="bold">
+                {user.username}
+              </Text>
+              <Text as="div" size="small">
+                {user && user.emails ? user.emails[0].address : null}
+              </Text>
+              <Text
+                as="div"
+                size="xsmall"
+                style={{ fontSize: 10, color: '#aaa' }}
+              >
+                joined {moment(user.createdAt).format('Do MMM YYYY')}
+              </Text>
+            </div>
+          )}
+        </NiceList>
+      </Template>
     );
   }
 }
