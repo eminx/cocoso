@@ -26,7 +26,7 @@ const DatesAndTimes = ({
   }
 
   return (
-    <Box pad="small" margin={{ bottom: 'medium' }}>
+    <Box pad="xsmall" margin={{ bottom: 'small' }}>
       {!isNotDeletable && (
         <Box
           pad="small"

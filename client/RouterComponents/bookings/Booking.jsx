@@ -6,8 +6,6 @@ import Chattery from '../../chattery';
 import FancyDate from '../../UIComponents/FancyDate';
 
 import {
-  Row,
-  Col,
   Divider,
   Collapse,
   Form,
@@ -22,6 +20,7 @@ import { Box, Button } from 'grommet';
 
 import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';
+import Template from '../../UIComponents/Template';
 
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
@@ -425,6 +424,11 @@ class Booking extends React.Component {
 
   render() {
     const { bookingData, isLoading, currentUser, chatData } = this.props;
+
+    if (!bookingData || isLoading) {
+      return <Loader />;
+    }
+
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
     const messages = this.getChatMessages();
@@ -437,8 +441,8 @@ class Booking extends React.Component {
             display: 'flex',
             justifyContent: 'center',
             position: 'absolute',
-            top: -36,
-            right: 12
+            top: -12,
+            right: 36
           }}
         >
           <Link to={`/edit-booking/${bookingData._id}`}>Edit</Link>
@@ -446,70 +450,47 @@ class Booking extends React.Component {
       ) : null;
 
     return (
-      <div style={{ padding: 24 }}>
-        <div style={{ paddingBottom: 24 }}>
-          <Link to="/">
-            <Button label="Program" plain />
-          </Link>
-        </div>
+      <Template
+        leftContent={
+          <Box>
+            <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
+            {bookingData.subTitle && (
+              <h4 style={{ fontWeight: 300 }}>{bookingData.subTitle}</h4>
+            )}
+          </Box>
+        }
+        rightContent={
+          <Box width="100%">
+            <h3>Dates</h3>
+            <p>
+              {bookingData.isBookingsDisabled
+                ? 'Bookings are disabled. Please check the practical information.'
+                : 'Please click and open the date to RSVP'}
+            </p>
+            {this.renderDates()}
+          </Box>
+        }
+      >
+        {EditButton}
+        <CardArticle
+          item={bookingData}
+          isLoading={isLoading}
+          currentUser={currentUser}
+        />
 
-        {!isLoading && bookingData ? (
-          <Row gutter={24}>
-            <Col md={6}>
-              <div style={{ marginBottom: 16 }}>
-                <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
-                {bookingData.subTitle && (
-                  <h4 style={{ fontWeight: 300 }}>{bookingData.subTitle}</h4>
-                )}
-              </div>
-            </Col>
-
-            <Col md={12} style={{ position: 'relative', marginBottom: 24 }}>
-              <CardArticle
-                item={bookingData}
-                isLoading={isLoading}
-                currentUser={currentUser}
-              />
-              {EditButton}
-            </Col>
-            <Col md={6} style={{ display: 'flex', justifyContent: 'center' }}>
-              <Box width="100%">
-                <h3>Dates</h3>
-                <p>
-                  {bookingData.isBookingsDisabled
-                    ? 'Bookings are disabled. Please check the practical information.'
-                    : 'Please click and open the date to RSVP'}
-                </p>
-                {this.renderDates()}
-              </Box>
-            </Col>
-          </Row>
-        ) : (
-          <Loader />
-        )}
-
-        <Divider />
-
-        {bookingData &&
-          bookingData.isPublicActivity &&
+        {bookingData.isPublicActivity &&
           messages &&
-          isRegisteredMember && (
-            <Row gutter={24}>
-              <Col lg={6} />
-              <Col lg={12}>
-                {chatData && (
-                  <div>
-                    <h2>Chat Section</h2>
-                    <Chattery
-                      messages={messages}
-                      onNewMessage={this.addNewChatMessage}
-                      removeNotification={this.removeNotification}
-                      isMember
-                    />
-                  </div>
-                )}
-              </Col>
-            </Row>
+          isRegisteredMember &&
+          chatData && (
+            <div>
+              <h2>Chat Section</h2>
+              <Chattery
+                messages={messages}
+                onNewMessage={this.addNewChatMessage}
+                removeNotification={this.removeNotification}
+                isMember
+              />
+            </div>
           )}
 
         <Modal
@@ -527,7 +508,7 @@ class Booking extends React.Component {
         >
           {this.renderCancelRsvpModalContent()}
         </Modal>
-      </div>
+      </Template>
     );
   }
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert } from 'antd/lib';
+import { message, Alert } from 'antd/lib';
 
 import { Box, CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import { emailIsValid } from '../../functions';
 import Loader from '../../UIComponents/Loader';
+import Template from '../../UIComponents/Template';
 
 const successCreation = () => {
   message.success('Your group is successfully created', 6);
@@ -193,48 +194,33 @@ class NewGroup extends React.Component {
       uploadableImageLocal;
 
     return (
-      <div style={{ padding: 24 }}>
-        {currentUser.isRegisteredMember && (
-          <div>
-            <Row gutter={48}>
-              <Col xs={24} sm={24} md={6} />
+      <Template heading="Create a New Group">
+        <FormField>
+          <CheckBox
+            checked={isPrivate}
+            label={<Text>Private group? (invite-only)</Text>}
+            onChange={this.handlePrivateGroupSwitch}
+          />
+          {isPrivate && (
+            <Box margin={{ top: 'small' }}>
+              <Paragraph size="small">{privateParagraph1}</Paragraph>
+              <Paragraph size="small">{privateParagraph2}</Paragraph>
+            </Box>
+          )}
+        </FormField>
 
-              <Col xs={24} sm={24} md={12}>
-                <Box width="100%">
-                  <Heading level={3} alignSelf="center">
-                    Create a New Group
-                  </Heading>
-                </Box>
-                <FormField>
-                  <CheckBox
-                    checked={isPrivate}
-                    label={<Text>Private group? (invite-only)</Text>}
-                    onChange={this.handlePrivateGroupSwitch}
-                  />
-                  {isPrivate && (
-                    <Box margin={{ top: 'small' }}>
-                      <Paragraph size="small">{privateParagraph1}</Paragraph>
-                      <Paragraph size="small">{privateParagraph2}</Paragraph>
-                    </Box>
-                  )}
-                </FormField>
-
-                <CreateGroupForm
-                  formValues={formValues}
-                  onFormChange={this.handleFormChange}
-                  onQuillChange={this.handleQuillChange}
-                  onSubmit={this.handleSubmit}
-                  setUploadableImage={this.setUploadableImage}
-                  uploadableImageLocal={uploadableImageLocal}
-                  buttonLabel={buttonLabel}
-                  isFormValid={isFormValid}
-                  isButtonDisabled={!isFormValid || isCreating}
-                />
-              </Col>
-            </Row>
-          </div>
-        )}
-      </div>
+        <CreateGroupForm
+          formValues={formValues}
+          onFormChange={this.handleFormChange}
+          onQuillChange={this.handleQuillChange}
+          onSubmit={this.handleSubmit}
+          setUploadableImage={this.setUploadableImage}
+          uploadableImageLocal={uploadableImageLocal}
+          buttonLabel={buttonLabel}
+          isFormValid={isFormValid}
+          isButtonDisabled={!isFormValid || isCreating}
+        />
+      </Template>
     );
   }
 }

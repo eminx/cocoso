@@ -4,6 +4,7 @@ import { message, Alert } from 'antd/lib';
 import { CheckBox, Box, Text, Heading } from 'grommet';
 
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
+import Template from '../../UIComponents/Template';
 
 const successCreation = () => {
   message.success('Your booking is successfully created', 6);
@@ -216,21 +217,8 @@ class NewBookSpace extends React.Component {
     const isFormValid = formValues && title.length > 3 && uploadableImageLocal;
 
     return (
-      <Box pad="medium">
-        <Box>
-          <Heading level={3} alignSelf="center">
-            Create a New Activity
-          </Heading>
-        </Box>
-
-        <Box
-          direction="row"
-          flex={{ grow: 2 }}
-          wrap
-          justify="end"
-          alignSelf="center"
-          pad="medium"
-        >
+      <Template heading="Create a New Activity">
+        <Box margin={{ bottom: 'medium' }}>
           <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
@@ -265,7 +253,7 @@ class NewBookSpace extends React.Component {
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}
         />
-      </Box>
+      </Template>
     );
   }
 }
