@@ -10,6 +10,15 @@ const getVerifiedEmailText = username => {
 };
 
 Meteor.methods({
+  getUsers() {
+    const user = Meteor.user();
+    if (!user || !user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    return Meteor.users.find().fetch();
+  },
+
   verifyMember(memberId) {
     const user = Meteor.user();
     if (!user.isSuperAdmin) {

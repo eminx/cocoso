@@ -26,7 +26,7 @@ import EditPageContainer from './pages/EditPageContainer';
 
 import ProfileContainer from './profile/ProfileContainer';
 import Settings from './admin/Settings';
-import MembersContainer from './admin/MembersContainer';
+import Members from './admin/Members';
 
 import UserContainer from './user/UserContainer';
 import Work from './works/Work';
@@ -96,7 +96,7 @@ export default function() {
             <Route path="/my-works" component={Works} />
 
             <Route path="/admin/settings" component={Settings} />
-            <Route path="/admin/members" component={MembersContainer} />
+            <Route path="/admin/members" component={Members} />
 
             <Route path="/user/:id" component={UserContainer} />
             <Route path="/:username/work/:workId" component={Work} />

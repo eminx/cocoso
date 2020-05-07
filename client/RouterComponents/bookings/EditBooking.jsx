@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Modal } from 'antd/lib';
+import { message, Alert, Modal } from 'antd/lib';
 import { Box, Heading, Button, CheckBox, Text } from 'grommet';
 
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
+import Template from '../../UIComponents/Template';
 
 const successEditMessage = isDeleted => {
   if (isDeleted) {
@@ -302,27 +303,17 @@ class EditBooking extends PureComponent {
     const isFormValid = formValues && title.length > 3;
 
     return (
-      <Box pad="medium">
-        <Box margin={{ bottom: 12 }}>
-          <Link to={`/event/${gatheringData._id}`}>
-            <Button label={gatheringData.title} plain />
-          </Link>
-        </Box>
-
-        <Box>
-          <Heading level={3} alignSelf="center">
-            Edit Activity
-          </Heading>
-        </Box>
-
-        <Box
-          direction="row"
-          flex={{ grow: 2 }}
-          wrap
-          justify="end"
-          alignSelf="center"
-          pad="medium"
-        >
+      <Template
+        heading="Edit Activity"
+        leftContent={
+          <Box margin={{ bottom: 12 }}>
+            <Link to={`/event/${gatheringData._id}`}>
+              <Button label={gatheringData.title} plain />
+            </Link>
+          </Box>
+        }
+      >
+        <Box margin={{ bottom: 'medium' }}>
           <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
@@ -377,7 +368,7 @@ class EditBooking extends PureComponent {
         >
           Are you sure you want to delete this booking?
         </Modal>
-      </Box>
+      </Template>
     );
   }
 }
