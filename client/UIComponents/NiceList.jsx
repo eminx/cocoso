@@ -3,18 +3,15 @@ import { Menu, List, Box } from 'grommet';
 
 function NiceList({ list, actionsDisabled, children, ...otherProps }) {
   return (
-    <List
-      data={list}
-      className="nicelist"
-      primaryKey={listItem => (
+    <List data={list} {...otherProps}>
+      {listItem => (
         <ListItemWithActions
           listItem={listItem}
           actionsDisabled={actionsDisabled}
           renderChildren={children}
         />
       )}
-      {...otherProps}
-    />
+    </List>
   );
 }
 

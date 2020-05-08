@@ -127,21 +127,24 @@ function GroupsList({ isLoading, currentUser, groupsData }) {
     <Template
       heading="Groups"
       leftContent={
-        <Fragment>
+        <Box pad="small" direction="row" justify="center">
           <Link to="/new-group">
             <Button as="span" primary label="New Group" />
           </Link>
-          <Box pad={{ top: 'medium' }}>
-            <RadioButtonGroup
-              name="filters"
-              options={filterOptions}
-              value={filterBy}
-              onChange={handleSelectedFilter}
-            />
-          </Box>
-        </Fragment>
+        </Box>
       }
     >
+      <Box pad="small">
+        <RadioButtonGroup
+          name="filters"
+          options={filterOptions}
+          value={filterBy}
+          onChange={handleSelectedFilter}
+          direction="row"
+          justify="center"
+        />
+      </Box>
+
       {groupsList && groupsList.length > 0 && (
         <NiceList
           list={groupsList.reverse()}
@@ -156,11 +159,10 @@ function GroupsList({ isLoading, currentUser, groupsData }) {
 }
 
 const GroupItem = ({ group }) => (
-  <Box pad="small" direction="row">
+  <Box direction="row">
     <Box
       width="xsmall"
       height="xsmall"
-      round="2px"
       margin={{ right: 'small' }}
       flex={{ grow: 0 }}
     >

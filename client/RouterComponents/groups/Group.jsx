@@ -763,7 +763,6 @@ class Group extends Component {
 
     return (
       <div>
-        <h3 style={titleStyle}>Discussion</h3>
         <Chattery
           messages={messages}
           onNewMessage={this.addNewChatMessage}
