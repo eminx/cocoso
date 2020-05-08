@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Alert, message, Divider } from 'antd/lib';
+import { Alert, message } from 'antd/lib';
 import { Box, Text, Heading, RadioButtonGroup, TextInput } from 'grommet';
 
 import Loader from '../../UIComponents/Loader';

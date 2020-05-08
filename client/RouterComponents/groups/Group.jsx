@@ -5,30 +5,22 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
 
+import { Drawer, Modal, Tooltip, message } from 'antd/lib';
 import {
-  Divider,
-  Collapse,
-  Drawer,
-  Modal,
+  Box,
   List,
-  Card,
-  Button,
+  Calendar,
   Tabs,
-  Input,
+  Tab,
+  Image,
   Select,
-  Switch,
-  Icon,
-  Tooltip,
-  message
-} from 'antd/lib';
-import { Box, Calendar } from 'grommet';
-
-const ListItem = List.Item;
-const { Meta } = Card;
-const { Option } = Select;
-const Panel = Collapse.Panel;
-const { TextArea } = Input;
-const { TabPane } = Tabs;
+  CheckBox,
+  TextArea,
+  Button,
+  Accordion,
+  AccordionPanel
+} from 'grommet';
+import { FormPrevious } from 'grommet-icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -42,14 +34,14 @@ const publicSettings = Meteor.settings.public;
 
 const defaultMeetingRoom = 'Office';
 
-const customPanelStyle = {
-  background: '#f7f7f7',
-  borderRadius: 4,
-  marginBottom: 12,
-  paddingRight: 12,
-  border: 0,
-  overflow: 'hidden'
-};
+// const customPanelStyle = {
+//   background: '#f7f7f7',
+//   borderRadius: 4,
+//   marginBottom: 12,
+//   paddingRight: 12,
+//   border: 0,
+//   overflow: 'hidden'
+// };
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -393,29 +385,24 @@ class Group extends Component {
     return (
       group &&
       group.meetings.map((meeting, meetingIndex) => (
-        <Panel
+        <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div>
+            <Box pad="small">
               <FancyDate occurence={meeting} places={places} />
-              {/* <div style={{ marginTop: 12, textAlign: 'center' }}>
-                <span>{meeting.attendees && meeting.attendees.length}</span>
-              </div> */}
-            </div>
+            </Box>
           }
           style={{
-            ...customPanelStyle,
-            flexBasis: 200,
-            flexShrink: 0,
+            // ...customPanelStyle,
             display: isFutureMeeting(meeting) ? 'block' : 'none'
           }}
         >
-          <div style={{ marginLeft: 24 }}>
+          <Box pad="small">
             <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
-              <List>
-                {meeting.attendees.map(attendee => (
-                  <ListItem
+              <List data={meeting.attendees}>
+                {attendee => (
+                  <Box
                     key={attendee.memberUsername}
                     style={{
                       position: 'relative',
@@ -424,20 +411,18 @@ class Group extends Component {
                     }}
                   >
                     {attendee.memberUsername}
-                  </ListItem>
-                ))}
+                  </Box>
+                )}
               </List>
             )}
-
-            <Divider />
 
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <a onClick={() => this.deleteMeeting(meetingIndex)}>
                 Delete this meeting
               </a>
             </div>
-          </div>
-        </Panel>
+          </Box>
+        </AccordionPanel>
       ))
     );
   };
@@ -460,36 +445,32 @@ class Group extends Component {
           .includes(currentUser._id);
 
       return (
-        <Panel
+        <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <MeetingInfo
-              isSmallViewport
-              isAttending={isAttending}
-              meeting={meeting}
-              isFutureMeeting={isFutureMeeting(meeting)}
-              places={places}
-            />
+            <Box pad="small">
+              <MeetingInfo
+                isSmallViewport
+                isAttending={isAttending}
+                meeting={meeting}
+                isFutureMeeting={isFutureMeeting(meeting)}
+                places={places}
+              />
+            </Box>
           }
           style={{
-            ...customPanelStyle,
-            flexBasis: 200,
-            flexShrink: 0,
+            // ...customPanelStyle,
             display: isFutureMeeting(meeting) ? 'block' : 'none'
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              paddingLeft: 12
-            }}
-          >
-            <Button onClick={() => this.toggleAttendance(meetingIndex)}>
-              {isAttending ? 'Cannot make it' : 'Register attendance'}
-            </Button>
-          </div>
-        </Panel>
+          <Box pad="small" justify="center" direction="row">
+            <Button
+              size="small"
+              label={isAttending ? 'Cannot make it' : 'Register attendance'}
+              onClick={() => this.toggleAttendance(meetingIndex)}
+            />
+          </Box>
+        </AccordionPanel>
       );
     });
   };
@@ -638,12 +619,10 @@ class Group extends Component {
         {!isAdmin && (
           <div style={{ padding: 12 }}>
             <Button
-              type={isMember ? null : 'primary'}
+              label={isMember ? 'Leave group' : 'Join group'}
+              primary={!isMember}
               onClick={this.openModal}
-              block
-            >
-              {isMember ? 'Leave group' : 'Join group'}
-            </Button>
+            />
           </div>
         )}
 
@@ -668,8 +647,6 @@ class Group extends Component {
           </Fragment>
         )}
 
-        <Divider />
-
         <div style={{ paddingTop: 24, paddingLeft: 12 }}>
           <h3>Documents</h3>
         </div>
@@ -692,16 +669,15 @@ class Group extends Component {
         {isAdmin && (
           <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
             {({ getRootProps, getInputProps, isDragActive }) => (
-              <div
+              <Box
+                width="medium"
+                height="small"
+                background="light-1"
+                border="1px dashed"
+                round
+                justify="center"
+                pad="medium"
                 {...getRootProps()}
-                style={{
-                  width: '100%',
-                  height: 200,
-                  background: isDragActive ? '#ea3924' : '#fff5f4cc',
-                  padding: 24,
-                  border: '1px dashed #ea3924',
-                  textAlign: 'center'
-                }}
               >
                 {isUploading ? (
                   <div>
@@ -714,7 +690,7 @@ class Group extends Component {
                   </div>
                 )}
                 <input {...getInputProps()} />
-              </div>
+              </Box>
             )}
           </ReactDropzone>
         )}
@@ -751,39 +727,25 @@ class Group extends Component {
     return (
       <div>
         {this.getTitle(group, isAdmin)}
-        <Tabs
-          type="line"
-          tabBarStyle={{ paddingLeft: 12, paddingRight: 12 }}
-          defaultActiveKey={isMember ? '2' : '1'}
-          animated={false}
-        >
-          <TabPane tab="Info" key="1">
-            <Card
-              title={null}
-              bordered={false}
-              // extra={this.getExtra(group, isAdmin)}
-              style={{ width: '100%', marginBottom: 24 }}
-              bodyStyle={{ padding: 12 }}
-              cover={
-                group.imageUrl ? (
-                  <img alt="group-image" src={group.imageUrl} />
-                ) : null
-              }
+
+        <Tabs alignSelf="start" justify="start">
+          <Tab title="Info">
+            <Box
+              width="large"
+              height="medium"
+              margin={{ top: 'small', bottom: 'small' }}
             >
-              <Meta
-                description={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: group.description
-                    }}
-                  />
-                }
-              />
-            </Card>
-          </TabPane>
-          <TabPane tab="Discussion" key="2">
+              <Image src={group.imageUrl} fit="contain" fill />
+            </Box>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: group.description
+              }}
+            />
+          </Tab>
+          <Tab title="Discussion">
             <div>{chatData && this.renderDiscussion()}</div>
-          </TabPane>
+          </Tab>
         </Tabs>
       </div>
     );
@@ -809,14 +771,14 @@ class Group extends Component {
           isMember={isMember}
         />
         {!isMember && (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              type="primary"
-              onClick={this.openModal}
-              style={{ marginBottom: 24 }}
-            >
-              Join this group
-            </Button>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: 24
+            }}
+          >
+            <Button label="Join this group" primary onClick={this.openModal} />
           </div>
         )}
       </div>
@@ -878,7 +840,7 @@ class Group extends Component {
       <div>
         <div style={{ padding: 12 }}>
           <Link to="/groups">
-            <Button icon="arrow-left">Groups</Button>
+            <Button plain label="Groups" icon={<FormPrevious />} />
           </Link>
         </div>
         <Template
@@ -889,7 +851,7 @@ class Group extends Component {
           }
           rightContent={
             <Box>
-              <div style={{ paddingLeft: 12, paddingRight: 12 }}>
+              <div style={{ paddingLeft: 24, paddingRight: 12 }}>
                 <h3>Meetings</h3>
 
                 <p style={{ textAlign: 'right' }}>
@@ -907,24 +869,23 @@ class Group extends Component {
               </div>
               {group.meetings && isAdmin ? (
                 <div>
-                  <Collapse
-                    bordered={false}
-                    accordion
-                    defaultActiveKey={['1']}
-                    style={{ ...collapseStyle }}
+                  <Accordion
+                    animate
+                    multiple={false}
+                    // style={{ ...collapseStyle }}
                   >
                     {this.renderDates()}
-                  </Collapse>
+                  </Accordion>
                 </div>
               ) : (
-                <Collapse
-                  bordered={false}
-                  accordion
-                  defaultActiveKey={['1']}
-                  style={{ ...collapseStyle }}
+                <Accordion
+                // bordered={false}
+                // accordion
+                // defaultActiveKey={['1']}
+                // style={{ ...collapseStyle }}
                 >
                   {this.renderMeetings()}
-                </Collapse>
+                </Accordion>
               )}
 
               {isAdmin && (
@@ -1006,19 +967,14 @@ class Group extends Component {
 }
 
 const MeetingInfo = ({ meeting, isAttending, places }) => {
-  const style = {
-    flexBasis: 180,
-    flexShrink: 0
-  };
-
   return (
-    <div style={style}>
+    <div>
       <FancyDate occurence={meeting} places={places} />
 
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
           <em>You're attending</em>
-          <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} />
+          {/* <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} /> */}
         </div>
       )}
     </div>
@@ -1049,7 +1005,8 @@ class CreateMeetingForm extends PureComponent {
         style={{
           padding: 12,
           backgroundColor: '#f8f8f8',
-          marginBottom: 12
+          marginBottom: 12,
+          marginTop: 12
         }}
       >
         <h4>Add a Meeting</h4>
@@ -1076,36 +1033,29 @@ class CreateMeetingForm extends PureComponent {
         </div>
 
         <div style={{ marginBottom: 6 }}>
-          <Switch
+          <CheckBox
             checked={isLocal}
-            onChange={() => this.setState({ isLocal: !isLocal })}
+            label={`At ${publicSettings.contextName}?`}
+            onChange={() => this.setState({ isLocal: event.target.checked })}
           />
-          <span style={{ marginLeft: 12 }}>
-            At {publicSettings.contextName}?{' '}
-          </span>
         </div>
 
         <div style={{ marginBottom: 6 }}>
           {isLocal ? (
             <Select
+              size="small"
+              plain={false}
               placeholder="Select room"
-              defaultValue="Office"
+              name="room"
+              options={places.map((part, i) => part.name)}
               onChange={handlePlaceChange}
-            >
-              {places
-                ? places.map((part, i) => (
-                    <Option key={part.name + i} value={part.name}>
-                      {part.name}
-                    </Option>
-                  ))
-                : null}
-            </Select>
+            />
           ) : (
             <TextArea
               placeholder="Location"
               onChange={event => handlePlaceChange(event.target.value)}
-              autosize={{ minRows: 2, maxRows: 4 }}
-              style={{ width: 200 }}
+              size="small"
+              // style={{ width: 200 }}
             />
           )}
         </div>
@@ -1118,12 +1068,11 @@ class CreateMeetingForm extends PureComponent {
           }}
         >
           <Button
+            label="Add"
             type="submit"
             onClick={handleSubmit}
             disabled={buttonDisabled}
-          >
-            Add
-          </Button>
+          />
         </div>
       </div>
     );
