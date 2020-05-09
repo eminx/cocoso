@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 const getInitials = string => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
@@ -35,11 +37,20 @@ function includesSpecialCharacters(string) {
   }
 }
 
+const callWithPromise = (method, ...parameters) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(method, ...parameters, (error, respond) => {
+      if (error) reject(error);
+      resolve(respond);
+    });
+  });
+
 export {
   getInitials,
   removeSpace,
   compareForSort,
   parseTitle,
   emailIsValid,
-  includesSpecialCharacters
+  includesSpecialCharacters,
+  callWithPromise
 };

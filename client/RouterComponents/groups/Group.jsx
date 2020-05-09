@@ -952,7 +952,7 @@ class Group extends Component {
 
         {group && group.isPrivate && (
           <Drawer
-            width="80%"
+            width="280px"
             title="Manage Access"
             visible={inviteManagerOpen}
             onClose={this.handleCloseInviteManager}

@@ -2,10 +2,10 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
 
-import { Box, CheckBox, Heading, Paragraph, Text, FormField } from 'grommet';
+import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
-import { emailIsValid } from '../../functions';
+import { emailIsValid, callWithPromise } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 
@@ -112,31 +112,28 @@ class NewGroup extends React.Component {
     });
   };
 
-  createGroup = () => {
+  createGroup = async () => {
     const { formValues, uploadedImageUrl, isPrivate } = this.state;
 
-    Meteor.call(
-      'createGroup',
-      formValues,
-      uploadedImageUrl,
-      isPrivate,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.reason);
-          this.setState({
-            isCreating: false,
-            isError: true
-          });
-        } else {
-          this.setState({
-            isCreating: false,
-            newGroupId: respond,
-            isSuccess: true
-          });
-        }
-      }
-    );
+    try {
+      const response = await callWithPromise(
+        'createGroup',
+        formValues,
+        uploadedImageUrl,
+        isPrivate
+      );
+      this.setState({
+        isCreating: false,
+        newGroupId: response,
+        isSuccess: true
+      });
+    } catch (error) {
+      message.error(error.error);
+      this.setState({
+        isCreating: false,
+        isError: true
+      });
+    }
   };
 
   handlePrivateGroupSwitch = () => {

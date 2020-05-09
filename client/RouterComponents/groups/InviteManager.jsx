@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Tag, message } from 'antd/lib';
+import { Tag, message } from 'antd/lib';
+import { Box, Heading, FormField, TextInput, Paragraph, Button } from 'grommet';
 
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
 
@@ -103,80 +104,56 @@ class InviteManager extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <Row>
-          <Col xs={24} sm={24} md={16}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'center'
-              }}
-            >
-              <p>
-                Please add data for the person you want to invite to the group
-              </p>
-              <Input
-                type="email"
-                onChange={this.handleEmailInputChange}
-                value={emailInput}
-                placeholder="samuel@skogen.pm"
-                addonBefore="email"
-                style={{ maxWidth: 240, ...marginBottom }}
-              />
+        <Box pad={{ top: 'medium', bottom: 'medium' }}>
+          <Paragraph>
+            Please add data for the person you want to invite to the group
+          </Paragraph>
+          <FormField label="email">
+            <TextInput
+              plain={false}
+              onChange={this.handleEmailInputChange}
+              value={emailInput}
+              placeholder="samuel@skogen.pm"
+            />
+          </FormField>
 
-              <Input
-                onChange={this.handleFirstNameInputChange}
-                value={firstNameInput}
-                placeholder="Samuel"
-                addonBefore="first name"
-                style={{ maxWidth: 240, ...marginBottom }}
-              />
+          <FormField label="first name">
+            <TextInput
+              plain={false}
+              onChange={this.handleFirstNameInputChange}
+              value={firstNameInput}
+              placeholder="Samuel"
+            />
+          </FormField>
 
-              <Button
-                style={{ maxWidth: 240, ...marginBottom }}
-                onClick={this.handleSendInvite}
-              >
-                Send Invite
-              </Button>
-            </div>
-          </Col>
-        </Row>
+          <Button
+            margin={{ top: 'small' }}
+            label="Send Invite"
+            onClick={this.handleSendInvite}
+          />
+        </Box>
 
-        <Divider />
-
-        <Row>
-          <Col xs={24} sm={24} md={16}>
-            <EmailsContainer
-              title="People Invited"
-              count={peopleInvited.length}
-            >
-              {peopleInvited.map(person => (
-                <Tag key={person.email} color="green" style={{ margin: 6 }}>
-                  <b>{person.firstName}</b> | {person.email}
-                </Tag>
-              ))}
-            </EmailsContainer>
-          </Col>
-        </Row>
+        <Box pad={{ top: 'medium', bottom: 'medium' }}>
+          <EmailsContainer title="People Invited" count={peopleInvited.length}>
+            {peopleInvited.map(person => (
+              <Tag key={person.email} color="green" style={{ margin: 6 }}>
+                <b>{person.firstName}</b> | {person.email}
+              </Tag>
+            ))}
+          </EmailsContainer>
+        </Box>
       </React.Fragment>
     );
   }
 }
 
 const EmailsContainer = props => (
-  <div
-    style={{
-      ...marginBottom,
-      padding: 12,
-      backgroundColor: '#eee'
-    }}
-  >
-    <h4>
+  <Box pad="small" background="light-1" round="4px">
+    <Heading level={4}>
       {props.title} ({props.count})
-    </h4>
-    <div>{props.children}</div>
-  </div>
+    </Heading>
+    <Box>{props.children}</Box>
+  </Box>
 );
 
 export default InviteManager;

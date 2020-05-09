@@ -45,6 +45,7 @@ const compareForSort = (a, b) => {
 
 Meteor.methods({
   createGroup(formValues, imageUrl, isPrivate = false) {
+    throw new Meteor.Error('get out of here');
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
       throw new Meteor.Error('Not allowed!');
