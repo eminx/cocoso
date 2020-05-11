@@ -10,6 +10,7 @@ export const UserContext = React.createContext(null);
 import Loader from './UIComponents/Loader';
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
+import { call } from './functions';
 
 const menu = [
   {
@@ -30,14 +31,24 @@ const menu = [
   }
 ];
 
-const LayoutPage = ({ currentUser, userLoading, currentHost, children }) => {
+const LayoutPage = ({ currentUser, userLoading, children }) => {
   const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
     false
   );
+  const [currentHost, setCurrentHost] = useState({});
 
-  if (!currentHost) {
-    return null;
-  }
+  const getHost = async () => {
+    try {
+      const respond = await call('getHostSettings');
+      setCurrentHost(respond);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getHost();
+  });
 
   renderNotificationList = list => {
     if (list.length === 0) {
@@ -64,10 +75,6 @@ const LayoutPage = ({ currentUser, userLoading, currentHost, children }) => {
     );
   };
 
-  if (hostLoading) {
-    return <Loader />;
-  }
-
   const notifications = currentUser && currentUser.notifications;
   let notificationsCounter = 0;
   if (notifications && notifications.length > 0) {
@@ -76,7 +83,7 @@ const LayoutPage = ({ currentUser, userLoading, currentHost, children }) => {
     });
   }
 
-  const settings = currentHost.settings;
+  const settings = currentHost;
 
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
@@ -155,7 +162,7 @@ const FancyFooter = ({ settings }) => {
 
 const FooterInfo = ({ settings }) =>
   settings && (
-    <Footer pad="medium">
+    <Footer pad="medium" direction="row" justify="center">
       <Box alignSelf="center">
         <Heading level={4} style={boldBabe}>
           {settings.name}
@@ -174,23 +181,9 @@ export default withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
-  // const hostSub = Meteor.subscribe('currentHost');
-  // const hostLoading = !hostSub.ready();
-  // const currentHost = Hosts ? Hosts.findOne() : null;
-
-  let currentHost;
-
-  Meteor.call('getHostSettings', (error, respond) => {
-    if (error) {
-      console.log(error);
-      return;
-    }
-    currentHost = respond;
-  });
 
   return {
     currentUser,
-    userLoading,
-    currentHost
+    userLoading
   };
 })(LayoutPage);
