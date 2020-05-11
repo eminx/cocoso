@@ -5,7 +5,7 @@ import { message, Alert } from 'antd/lib';
 import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
-import { emailIsValid, callWithPromise } from '../../functions';
+import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 
@@ -116,7 +116,7 @@ class NewGroup extends React.Component {
     const { formValues, uploadedImageUrl, isPrivate } = this.state;
 
     try {
-      const response = await callWithPromise(
+      const response = await call(
         'createGroup',
         formValues,
         uploadedImageUrl,

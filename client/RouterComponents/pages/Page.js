@@ -65,9 +65,15 @@ class Page extends PureComponent {
         leftContent={
           <Box>
             {currentUser && currentUser.isSuperAdmin && (
-              <Link to="/new-page" key="new-page" style={{ marginBottom: 12 }}>
-                <Button primary label="New Page" />
-              </Link>
+              <Box pad="small" direction="row" justify="center">
+                <Link
+                  to="/new-page"
+                  key="new-page"
+                  style={{ marginBottom: 12 }}
+                >
+                  <Button primary label="New Page" />
+                </Link>
+              </Box>
             )}
 
             <PagesList

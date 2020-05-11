@@ -37,7 +37,7 @@ function includesSpecialCharacters(string) {
   }
 }
 
-const callWithPromise = (method, ...parameters) =>
+const call = (method, ...parameters) =>
   new Promise((resolve, reject) => {
     Meteor.call(method, ...parameters, (error, respond) => {
       if (error) reject(error);
@@ -52,5 +52,5 @@ export {
   parseTitle,
   emailIsValid,
   includesSpecialCharacters,
-  callWithPromise
+  call
 };

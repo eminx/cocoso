@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Badge, Popover, List } from 'antd/lib';
-import { Box, Anchor, Heading } from 'grommet';
+import { Badge, List } from 'antd/lib';
+import { Box, Anchor, Heading, Paragraph, Footer } from 'grommet';
 
 export const UserContext = React.createContext(null);
 
@@ -30,44 +30,16 @@ const menu = [
   }
 ];
 
-const adminMenu = [
-  {
-    label: 'Admin',
-    route: '/admin/settings'
-  }
-];
-
-class LayoutPage extends React.Component {
-  state = {
-    menuOpen: false,
-    isNotificationPopoverOpen: false
-  };
-
-  componentWillUpdate(nextProps, nextState) {
-    const { history } = this.props;
-    const pathname = history.location.pathname;
-    if (nextProps.history.location.pathname !== pathname) {
-      this.closeMenu();
-    }
-  }
-
-  openMenu = () => {
-    this.setState({
-      menuOpen: true
-    });
-  };
-
-  closeMenu = () => {
-    this.setState({
-      menuOpen: false
-    });
-  };
-
-  handleNotificationVisibility = () => {
-    this.setState({
-      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen
-    });
-  };
+const LayoutPage = ({
+  currentUser,
+  userLoading,
+  currentHost,
+  hostLoading,
+  children
+}) => {
+  const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
+    false
+  );
 
   renderNotificationList = list => {
     if (list.length === 0) {
@@ -82,7 +54,7 @@ class LayoutPage extends React.Component {
           <List.Item>
             <Link
               to={`/${item.context}/${item.contextId}`}
-              onClick={this.handleNotificationVisibility}
+              onClick={setIsNotificationPopoverOpen(!isNotificationPopoverOpen)}
             >
               <Badge count={item.count} offset={[10, 0]}>
                 <h4>{item.title}</h4>
@@ -94,111 +66,80 @@ class LayoutPage extends React.Component {
     );
   };
 
-  render() {
-    const { isNotificationPopoverOpen } = this.state;
-    const {
-      currentUser,
-      userLoading,
-      currentHost,
-      hostLoading,
-      children
-    } = this.props;
-
-    if (hostLoading) {
-      return <Loader />;
-    }
-
-    const notifications = currentUser && currentUser.notifications;
-    let notificationsCounter = 0;
-    if (notifications && notifications.length > 0) {
-      notifications.forEach(notification => {
-        notificationsCounter += notification.count;
-      });
-    }
-
-    const settings = currentHost.settings;
-
-    return (
-      <UserContext.Provider value={{ currentUser, userLoading, settings }}>
-        <Box className="main-viewport" justify="center" fill>
-          <Box width={{ max: '1280px' }} alignSelf="center" fill>
-            <Box
-              justify="between"
-              alignSelf="center"
-              direction="row"
-              pad={{
-                top: 'medium',
-                right: 'medium',
-                bottom: 'small',
-                left: 'medium'
-              }}
-              fill="horizontal"
-            >
-              <Box basis="120px" />
-              <Box justify="center">
-                <Link to="/">
-                  <div>
-                    <Heading level={1} style={{ marginBottom: 0 }}>
-                      {settings.name}
-                    </Heading>
-                  </div>
-                </Link>
-              </Box>
-
-              <Box
-                basis="120px"
-                justify="end"
-                direction="row"
-                alignContent="center"
-              >
-                {notifications && (
-                  <NotificationsPopup>
-                    {this.renderNotificationList(notifications)}
-                  </NotificationsPopup>
-                )}
-                {currentUser && <UserPopup />}
-              </Box>
-            </Box>
-
-            <Box pad="small" justify="center" direction="row">
-              {menu.map(item => (
-                <Link to={item.route} key={item.label}>
-                  <Box pad="small">
-                    <Anchor plain as="span">
-                      {item.label}
-                    </Anchor>
-                  </Box>
-                </Link>
-              ))}
-              {currentUser &&
-                currentUser.isSuperAdmin &&
-                adminMenu.map(item => (
-                  <Link to={item.route} key={item.label}>
-                    <Box pad="small">
-                      <Anchor plain as="span" pad="small">
-                        {item.label}
-                      </Anchor>
-                    </Box>
-                  </Link>
-                ))}
-            </Box>
-
-            <Box>{children}</Box>
-            <FancyFooter settings={settings} />
-          </Box>
-        </Box>
-      </UserContext.Provider>
-    );
+  if (hostLoading) {
+    return <Loader />;
   }
-}
 
-const widgetBgrstyle = {
-  textAlign: 'center',
-  backgroundColor: 'rgba(255, 245, 244, .8)',
-  padding: 24,
-  margin: 12,
-  marginTop: 32,
-  maxWidth: 320
+  const notifications = currentUser && currentUser.notifications;
+  let notificationsCounter = 0;
+  if (notifications && notifications.length > 0) {
+    notifications.forEach(notification => {
+      notificationsCounter += notification.count;
+    });
+  }
+
+  const settings = currentHost.settings;
+
+  return (
+    <UserContext.Provider value={{ currentUser, userLoading, settings }}>
+      <Box className="main-viewport" justify="center" fill>
+        <Box width={{ max: '1280px' }} alignSelf="center" fill>
+          <Box
+            justify="between"
+            alignSelf="center"
+            direction="row"
+            pad={{
+              top: 'medium',
+              right: 'medium',
+              bottom: 'small',
+              left: 'medium'
+            }}
+            fill="horizontal"
+          >
+            <Box basis="120px" />
+            <Box justify="center">
+              <Link to="/">
+                <div>
+                  <Heading level={1} style={{ marginBottom: 0 }}>
+                    {settings.name}
+                  </Heading>
+                </div>
+              </Link>
+            </Box>
+
+            <Box
+              basis="120px"
+              justify="end"
+              direction="row"
+              alignContent="center"
+            >
+              {notifications && (
+                <NotificationsPopup>
+                  {this.renderNotificationList(notifications)}
+                </NotificationsPopup>
+              )}
+              {currentUser && <UserPopup />}
+            </Box>
+          </Box>
+
+          <Box pad="small" justify="center" direction="row">
+            {menu.map(item => (
+              <Link to={item.route} key={item.label}>
+                <Box pad="small">
+                  <Anchor plain as="span">
+                    {item.label}
+                  </Anchor>
+                </Box>
+              </Link>
+            ))}
+          </Box>
+
+          <Box>{children}</Box>
+          <FancyFooter settings={settings} />
+        </Box>
+      </Box>
+    </UserContext.Provider>
+  );
 };
 
 const boldBabe = {
@@ -208,31 +149,27 @@ const boldBabe = {
 
 const FancyFooter = ({ settings }) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-      }}
-    >
-      <div style={widgetBgrstyle}>
-        <FooterInfo settings={settings} />
-      </div>
-    </div>
+    <Box>
+      <FooterInfo settings={settings} />
+    </Box>
   );
 };
 
 const FooterInfo = ({ settings }) =>
   settings && (
-    <Fragment>
-      <h4 style={boldBabe}>{settings.name}</h4>
-      <p>
-        {settings.address}, {settings.city}
-      </p>
-      <p>
-        <a href={`mailto:${settings.email}`}>{settings.email}</a>
-      </p>
-    </Fragment>
+    <Footer pad="medium">
+      <Box alignSelf="center">
+        <Heading level={4} style={boldBabe}>
+          {settings.name}
+        </Heading>
+        <Paragraph>
+          {settings.address}, {settings.city}
+        </Paragraph>
+        <Paragraph>
+          <Anchor href={`mailto:${settings.email}`}>{settings.email}</Anchor>
+        </Paragraph>
+      </Box>
+    </Footer>
   );
 
 export default withTracker(props => {

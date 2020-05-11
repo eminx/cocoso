@@ -54,8 +54,18 @@ const CreateGroupForm = ({
           <TextInput plain={false} name="capacity" />
         </Field>
 
-        <Field label="Image">
-          <Box alignSelf="center">
+        <Field
+          label="Image"
+          help={
+            (uploadableImageLocal || imageUrl) && (
+              <Text size="small">
+                If you want to replace it with another one, click on the image
+                to reopen the file picker
+              </Text>
+            )
+          }
+        >
+          <Box justify="center" direction="row">
             <Upload
               name="gathering"
               action="/upload.do"
@@ -65,22 +75,16 @@ const CreateGroupForm = ({
               {uploadableImageLocal ? (
                 <Box width="large" height="medium">
                   <Image
-                    fit="cover"
+                    fit="contain"
                     fill
                     src={uploadableImageLocal}
                     style={{ cursor: 'pointer' }}
                   />
                 </Box>
               ) : imageUrl ? (
-                <Box width="large" height="medium">
-                  <Text size="small" margin={{ bottom: 'small' }}>
-                    <em>
-                      If you want to replace it with another one, click on the
-                      image to open the file picker
-                    </em>
-                  </Text>
+                <Box width="large" height="medium" alignSelf="center">
                   <Image
-                    fit="cover"
+                    fit="contain"
                     fill
                     src={imageUrl}
                     style={{ cursor: 'pointer' }}

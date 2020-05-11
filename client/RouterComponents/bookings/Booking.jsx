@@ -2,28 +2,29 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-import Chattery from '../../chattery';
-import FancyDate from '../../UIComponents/FancyDate';
-
-import {
-  Divider,
-  Collapse,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Modal
-} from 'antd/lib';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Box, Button } from 'grommet';
+import { Divider, Input, message, Modal } from 'antd/lib';
 
+import {
+  Accordion,
+  AccordionPanel,
+  Box,
+  Form,
+  FormField,
+  TextInput,
+  Button,
+  Heading,
+  Paragraph,
+  Text
+} from 'grommet';
+
+import Chattery from '../../chattery';
+import FancyDate from '../../UIComponents/FancyDate';
 import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
-
-const Panel = Collapse.Panel;
-const FormItem = Form.Item;
+import { call } from '../../functions';
 
 function registrationSuccess() {
   Modal.success({
@@ -70,32 +71,16 @@ class Booking extends React.Component {
     return messages;
   };
 
-  handleRSVPSubmit = (event, occurenceIndex) => {
-    event.preventDefault();
+  handleRSVPSubmit = async ({ value, touched }, occurenceIndex) => {
     const { bookingData } = this.props;
-    const { resetFields } = this.props.form;
-    this.props.form.validateFields((error, values) => {
-      if (!error) {
-        Meteor.call(
-          'registerAttendance',
-          bookingData._id,
-          values,
-          occurenceIndex,
-          (error, respond) => {
-            if (error) {
-              console.log(error);
-              message.error(error.reason);
-            } else {
-              registrationSuccess();
-              // message.success(
-              //   'You have successfully registered your attendance'
-              // );
-              resetFields();
-            }
-          }
-        );
-      }
-    });
+
+    try {
+      await call('registerAttendance', bookingData._id, value, occurenceIndex);
+      registrationSuccess();
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
   };
 
   openCancelRsvpModal = occurenceIndex => {
@@ -157,10 +142,9 @@ class Booking extends React.Component {
       return (
         <RsvpForm
           isUpdateMode
-          handleDelete={this.handleRemoveRSVP}
+          onDelete={this.handleRemoveRSVP}
           currentUser={user}
-          form={this.props.form}
-          handleSubmit={event => this.handleChangeRSVPSubmit(event)}
+          onSubmit={event => this.handleChangeRSVPSubmit(event)}
         />
       );
     } else {
@@ -196,70 +180,54 @@ class Booking extends React.Component {
     }
   };
 
-  handleChangeRSVPSubmit = event => {
-    event.preventDefault();
+  handleChangeRSVPSubmit = async ({ value, touched }) => {
     const { rsvpCancelModalInfo } = this.state;
-    const { bookingData, form } = this.props;
-    const { resetFields } = this.props.form;
+    const { bookingData } = this.props;
 
-    form.validateFields((error, values) => {
-      if (error) {
-        message.error(error.reason);
-        return;
-      }
-
-      Meteor.call(
+    try {
+      await call(
         'updateAttendance',
         bookingData._id,
-        values,
+        value,
         rsvpCancelModalInfo.occurenceIndex,
-        rsvpCancelModalInfo.attendeeIndex,
-        (error, respond) => {
-          if (error) {
-            console.log(error);
-            message.error(error.reason);
-          } else {
-            message.success('You have successfully updated your RSVP');
-            resetFields();
-            this.setState({
-              rsvpCancelModalInfo: null,
-              isRsvpCancelModalOn: false
-            });
-          }
-        }
+        rsvpCancelModalInfo.attendeeIndex
       );
-    });
+      message.success('You have successfully updated your RSVP');
+      this.setState({
+        rsvpCancelModalInfo: null,
+        isRsvpCancelModalOn: false
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
   };
 
-  handleRemoveRSVP = () => {
+  handleRemoveRSVP = async () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { bookingData, form } = this.props;
-    const { resetFields } = this.props.form;
+    const { bookingData } = this.props;
 
-    Meteor.call(
-      'removeAttendance',
-      bookingData._id,
-      rsvpCancelModalInfo.occurenceIndex,
-      rsvpCancelModalInfo.attendeeIndex,
-      rsvpCancelModalInfo.email,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-          message.error(error.reason);
-        } else {
-          message.success('You have successfully removed your RSVP');
-          resetFields();
-          this.setState({
-            rsvpCancelModalInfo: null,
-            isRsvpCancelModalOn: false
-          });
-        }
-      }
-    );
+    try {
+      await call(
+        'removeAttendance',
+        bookingData._id,
+        rsvpCancelModalInfo.occurenceIndex,
+        rsvpCancelModalInfo.attendeeIndex,
+        rsvpCancelModalInfo.email
+      );
+      message.success('You have successfully removed your RSVP');
+      this.setState({
+        rsvpCancelModalInfo: null,
+        isRsvpCancelModalOn: false
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
   };
 
   renderDates = () => {
-    const { bookingData, form, currentUser } = this.props;
+    const { bookingData, currentUser } = this.props;
     const { capacityGotFullByYou } = this.state;
 
     if (!bookingData) {
@@ -268,23 +236,15 @@ class Booking extends React.Component {
 
     const isRegisteredMember = this.isRegisteredMember();
 
-    const customPanelStyle = {
-      background: '#f7f7f7',
-      borderRadius: 4,
-      marginBottom: 12,
-      border: 0,
-      overflow: 'hidden'
-    };
-
     const yesterday = moment(new Date()).add(-1, 'days');
 
     if (bookingData.isBookingsDisabled) {
       return (
         <div>
           {bookingData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <div style={{ ...customPanelStyle, padding: 12 }}>
+            <Box pad="small">
               <FancyDate occurence={occurence} />
-            </div>
+            </Box>
           ))}
         </div>
       );
@@ -303,22 +263,16 @@ class Booking extends React.Component {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <div>
+          <Box>
             {eventPast ? (
               <p>This event has past</p>
             ) : (
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginBottom: 12
-                  }}
-                >
+              <Box>
+                <Box direction="row" justify="end" margin={{ bottom: 'small' }}>
                   <a onClick={() => this.openCancelRsvpModal(occurenceIndex)}>
                     Change/Cancel Existing RSVP
                   </a>
-                </div>
+                </Box>
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
@@ -330,18 +284,17 @@ class Booking extends React.Component {
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
-                    form={form}
-                    handleSubmit={event =>
+                    onSubmit={event =>
                       this.handleRSVPSubmit(event, occurenceIndex)
                     }
                   />
                 )}
-              </div>
+              </Box>
             )}
             {isRegisteredMember && (
-              <div style={{ paddingLeft: 12 }}>
+              <Box>
                 <Divider />
-                <h4>Attendees</h4>
+                <Heading level={5}>Attendees</Heading>
                 <span>Only visible to registered members</span>
                 <div
                   style={{
@@ -351,7 +304,7 @@ class Booking extends React.Component {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button label="Print" />}
+                    trigger={() => <Button size="small" label="Print" />}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -360,25 +313,28 @@ class Booking extends React.Component {
                   attendees={occurence.attendees}
                   ref={element => (this.printableElement = element)}
                 />
-              </div>
+              </Box>
             )}
-          </div>
+          </Box>
         );
       }
     };
 
     return (
-      <Collapse bordered={false} accordion defaultActiveKey={['1']}>
+      <Accordion animate multiple={false}>
         {bookingData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <Panel
+          <AccordionPanel
             key={occurence.startDate + occurence.startTime}
-            header={<FancyDate occurence={occurence} />}
-            style={{ ...customPanelStyle, paddingRight: 12 }}
+            header={
+              <Box pad="small">
+                <FancyDate occurence={occurence} />
+              </Box>
+            }
           >
             {conditionalRender(occurence, occurenceIndex)}
-          </Panel>
+          </AccordionPanel>
         ))}
-      </Collapse>
+      </Accordion>
     );
   };
 
@@ -452,21 +408,23 @@ class Booking extends React.Component {
     return (
       <Template
         leftContent={
-          <Box>
-            <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
+          <Box pad={{ left: 'small' }}>
+            <Heading level={3}>{bookingData.title}</Heading>
             {bookingData.subTitle && (
-              <h4 style={{ fontWeight: 300 }}>{bookingData.subTitle}</h4>
+              <Heading level={4} style={{ fontWeight: 300 }}>
+                {bookingData.subTitle}
+              </Heading>
             )}
           </Box>
         }
         rightContent={
           <Box width="100%">
-            <h3>Dates</h3>
-            <p>
+            <Heading level={4}>Dates</Heading>
+            <Paragraph>
               {bookingData.isBookingsDisabled
                 ? 'Bookings are disabled. Please check the practical information.'
                 : 'Please click and open the date to RSVP'}
-            </p>
+            </Paragraph>
             {this.renderDates()}
           </Box>
         }
@@ -482,15 +440,15 @@ class Booking extends React.Component {
           messages &&
           isRegisteredMember &&
           chatData && (
-            <div>
-              <h2>Chat Section</h2>
+            <Box>
+              <Heading level={4}>Chat Section</Heading>
               <Chattery
                 messages={messages}
                 onNewMessage={this.addNewChatMessage}
                 removeNotification={this.removeNotification}
                 isMember
               />
-            </div>
+            </Box>
           )}
 
         <Modal
@@ -513,73 +471,44 @@ class Booking extends React.Component {
   }
 }
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
+const fields = [
+  {
+    name: 'firstName',
+    label: 'First name'
+  },
+  {
+    name: 'lastName',
+    label: 'Last name'
+  },
+  {
+    name: 'email',
+    label: 'Email address'
+  },
+  {
+    name: 'numberOfPeople',
+    label: 'Number of people'
+  }
+];
 
-function RsvpForm({ isUpdateMode, handleSubmit, handleDelete, form }) {
-  const {
-    getFieldDecorator,
-    getFieldsError,
-    getFieldError,
-    isFieldTouched
-  } = form;
-
+function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
-    <Form layout="inline" onSubmit={handleSubmit} style={{ paddingLeft: 12 }}>
-      <FormItem>
-        {getFieldDecorator('firstName', {
-          rules: [{ required: true, message: 'Please enter your first name' }],
-          initialValue: props.currentUser && props.currentUser.firstName
-        })(<Input placeholder="First name" />)}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('lastName', {
-          rules: [{ required: true, message: 'Please enter your last name' }],
-          initialValue: props.currentUser && props.currentUser.lastName
-        })(<Input placeholder="Last name" />)}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              required: true,
-              message: 'Please enter your email address'
-            }
-          ],
-          initialValue: props.currentUser && props.currentUser.emails[0].address
-        })(<Input placeholder="Email addresss" />)}
-      </FormItem>
-      <FormItem style={{ width: '100%' }}>
-        {getFieldDecorator('numberOfPeople', {
-          rules: [
-            {
-              required: true,
-              message: 'Please enter the number of people in your party'
-            }
-          ],
-          initialValue:
-            (props.currentUser && props.currentUser.numberOfPeople) || 1
-        })(<InputNumber min={1} max={20} placeholder="Number of people" />)}
-      </FormItem>
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: 12
-        }}
-      >
-        <Button
-          primary
-          type="submit"
-          disabled={hasErrors(getFieldsError())}
-          label={isUpdateMode ? 'Update' : 'Register'}
-        />
+    <Form onSubmit={onSubmit}>
+      {fields.map(field => (
+        <FormField
+          key={field.name}
+          label={<Text size="small">{field.label}</Text>}
+        >
+          <TextInput plain={false} name={field.name} />
+        </FormField>
+      ))}
+      <Button
+        type="submit"
+        size="small"
+        // disabled={hasErrors(getFieldsError())}
+        label={isUpdateMode ? 'Update' : 'Register'}
+      />
 
-        {isUpdateMode && <a onClick={handleDelete}>Remove your registration</a>}
-      </div>
+      {isUpdateMode && <a onClick={onDelete}>Remove your registration</a>}
     </Form>
   );
 }
@@ -610,4 +539,4 @@ function RsvpList({ attendees }) {
   );
 }
 
-export default Form.create()(Booking);
+export default Booking;

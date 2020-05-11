@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Box, Avatar, DropButton, List, Text, Heading } from 'grommet';
+import { Box, Avatar, DropButton, List, Text } from 'grommet';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -15,12 +15,6 @@ export const adminRoutes = [
 
 const UserPopup = () => {
   const [open, setOpen] = useState(false);
-
-  // const history = useHistory();
-  function changeRoute(route) {
-    history.push(route);
-  }
-
   return (
     <DropButton
       open={open}
@@ -38,7 +32,6 @@ const UserPopup = () => {
                 <Link to={datum.value}>
                   <Text
                     margin={{ bottom: 'medium' }}
-                    // size="small"
                     textAlign="end"
                     color="dark-2"
                   >
@@ -57,7 +50,6 @@ const UserPopup = () => {
                 <Link to={datum.value}>
                   <Text
                     margin={{ bottom: 'medium' }}
-                    // size="small"
                     textAlign="end"
                     color="dark-2"
                   >

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { message, Alert, Modal } from 'antd/lib';
-import { Button, Heading } from 'grommet';
+import { Button } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import Template from '../../UIComponents/Template';

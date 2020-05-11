@@ -16,6 +16,7 @@ import {
   Select,
   CheckBox,
   TextArea,
+  Heading,
   Button,
   Accordion,
   AccordionPanel
@@ -135,7 +136,7 @@ class Group extends Component {
 
   getTitle = (group, isAdmin) => {
     return (
-      <div style={{ paddingLeft: 12, paddingRight: 12 }}>
+      <Box>
         {group.isPrivate && (
           <div style={{ textAlign: 'right' }}>
             <Tooltip
@@ -152,17 +153,17 @@ class Group extends Component {
             </Tooltip>
           </div>
         )}
-        <div>
-          <h2 style={{ overflowWrap: 'anywhere' }}>{group.title}</h2>
-          <h5>
-            <span>{group.readingMaterial}</span>
-          </h5>
-        </div>
-        <div
-          style={{ display: 'flex', justifyContent: 'flex-end', fontSize: 14 }}
-        >
+        <Box>
+          <Heading level={3} style={{ overflowWrap: 'anywhere' }}>
+            {group.title}
+          </Heading>
+          <Heading level={4} style={{ fontWeight: '300' }}>
+            {group.readingMaterial}
+          </Heading>
+        </Box>
+        <Box>
           {isAdmin ? (
-            <div>
+            <Box alignSelf="end" direction="row">
               <Link to={`/edit-group/${group._id}`}>Edit</Link>
               {group.isPrivate && (
                 <a
@@ -172,12 +173,12 @@ class Group extends Component {
                   Manage Access
                 </a>
               )}
-            </div>
+            </Box>
           ) : (
-            <div>{group.adminUsername}</div>
+            <Box alignSelf="end">{group.adminUsername}</Box>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   };
 
@@ -393,7 +394,6 @@ class Group extends Component {
             </Box>
           }
           style={{
-            // ...customPanelStyle,
             display: isFutureMeeting(meeting) ? 'block' : 'none'
           }}
         >
@@ -459,7 +459,6 @@ class Group extends Component {
             </Box>
           }
           style={{
-            // ...customPanelStyle,
             display: isFutureMeeting(meeting) ? 'block' : 'none'
           }}
         >
@@ -628,43 +627,36 @@ class Group extends Component {
 
         {currentUser && group && group.members && (
           <Fragment>
-            <div style={{ paddingTop: 24, paddingLeft: 12 }}>
-              <h3>Members</h3>
-            </div>
-            <div style={{ paddingLeft: 12 }}>
-              <NiceList list={membersList} actionsDisabled={!isAdmin}>
-                {member => (
-                  <span
-                    style={{
-                      fontWeight: group.adminId === member.memberId ? 700 : 400
-                    }}
-                  >
-                    {member.username}
-                  </span>
-                )}
-              </NiceList>
-            </div>
+            <Heading level={4}>Members</Heading>
+
+            <NiceList list={membersList} actionsDisabled={!isAdmin}>
+              {member => (
+                <span
+                  style={{
+                    fontWeight: group.adminId === member.memberId ? 700 : 400
+                  }}
+                >
+                  {member.username}
+                </span>
+              )}
+            </NiceList>
           </Fragment>
         )}
 
-        <div style={{ paddingTop: 24, paddingLeft: 12 }}>
-          <h3>Documents</h3>
-        </div>
-        <div style={{ paddingLeft: 12 }}>
-          {group && group.documents && group.documents.length > 0 ? (
-            <NiceList list={documentsList} actionsDisabled={!isAdmin}>
-              {document => (
-                <div style={{ width: '100%' }}>
-                  <a href={document.downloadUrl} target="_blank">
-                    {document.name}
-                  </a>
-                </div>
-              )}
-            </NiceList>
-          ) : (
-            <em>No document assigned</em>
-          )}
-        </div>
+        <Heading level={4}>Documents</Heading>
+        {group && group.documents && group.documents.length > 0 ? (
+          <NiceList list={documentsList} actionsDisabled={!isAdmin}>
+            {document => (
+              <div style={{ width: '100%' }}>
+                <a href={document.downloadUrl} target="_blank">
+                  {document.name}
+                </a>
+              </div>
+            )}
+          </NiceList>
+        ) : (
+          <em>No document assigned</em>
+        )}
 
         {isAdmin && (
           <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
@@ -824,13 +816,6 @@ class Group extends Component {
     const isMember = this.isMember();
     const isAdmin = this.isAdmin();
 
-    const collapseStyle = {
-      marginBottom: 24,
-      backgroundColor: '#fff',
-      borderRadius: 0,
-      borderColor: '#030303'
-    };
-
     if (group && group.isPrivate && this.isNoAccess()) {
       return null;
     }
@@ -850,41 +835,29 @@ class Group extends Component {
           }
           rightContent={
             <Box>
-              <div style={{ paddingLeft: 24, paddingRight: 12 }}>
-                <h3>Meetings</h3>
+              <Heading level={4}>Dates</Heading>
 
-                <p style={{ textAlign: 'right' }}>
-                  <em>
-                    {group.meetings &&
-                    group.meetings.filter(meeting =>
-                      moment(meeting.endDate).isAfter(yesterday)
-                    ).length > 0
-                      ? isAdmin
-                        ? 'Open the dates to see the attendees'
-                        : 'Click and open the date to RSVP'
-                      : 'No meeting scheduled yet'}
-                  </em>
-                </p>
-              </div>
+              <p style={{ textAlign: 'right' }}>
+                <em>
+                  {group.meetings &&
+                  group.meetings.filter(meeting =>
+                    moment(meeting.endDate).isAfter(yesterday)
+                  ).length > 0
+                    ? isAdmin
+                      ? 'Open the dates to see the attendees'
+                      : 'Click and open the date to RSVP'
+                    : 'No meeting scheduled yet'}
+                </em>
+              </p>
+
               {group.meetings && isAdmin ? (
                 <div>
-                  <Accordion
-                    animate
-                    multiple={false}
-                    // style={{ ...collapseStyle }}
-                  >
+                  <Accordion animate multiple={false}>
                     {this.renderDates()}
                   </Accordion>
                 </div>
               ) : (
-                <Accordion
-                // bordered={false}
-                // accordion
-                // defaultActiveKey={['1']}
-                // style={{ ...collapseStyle }}
-                >
-                  {this.renderMeetings()}
-                </Accordion>
+                <Accordion>{this.renderMeetings()}</Accordion>
               )}
 
               {isAdmin && (
@@ -912,9 +885,7 @@ class Group extends Component {
         >
           {this.renderGroupInfo()}
           <MediaQuery query="(max-width: 991px)">
-            <div style={{ padding: 12 }}>
-              {this.renderMembersAndDocuments()}
-            </div>
+            {this.renderMembersAndDocuments()}
           </MediaQuery>
         </Template>
 

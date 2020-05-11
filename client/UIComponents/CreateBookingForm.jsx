@@ -307,7 +307,7 @@ class CreateBookingForm extends PureComponent {
                       {uploadableImageLocal ? (
                         <Box width="large" height="medium">
                           <Image
-                            fit="cover"
+                            fit="contain"
                             fill
                             src={uploadableImageLocal}
                             style={{ cursor: 'pointer' }}
@@ -316,7 +316,7 @@ class CreateBookingForm extends PureComponent {
                       ) : imageUrl ? (
                         <Box width="large" height="medium">
                           <Image
-                            fit="cover"
+                            fit="contain"
                             fill
                             src={imageUrl}
                             style={{ cursor: 'pointer' }}

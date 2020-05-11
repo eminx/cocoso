@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu, List, Box } from 'grommet';
+import { MoreVertical } from 'grommet-icons';
 
 function NiceList({ list, actionsDisabled, children, ...otherProps }) {
   return (
@@ -22,7 +23,7 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
       <Box flex={{ grow: 0 }}>
         {!actionsDisabled && (
           <Menu
-            label=""
+            icon={<MoreVertical style={{ marginTop: -6 }} />}
             items={listItem.actions.map(action => ({
               label: action.content,
               onClick: action.isDisabled ? null : action.handleClick,
