@@ -11,7 +11,7 @@ Meteor.methods({
 
     try {
       const works = Works.find({
-        // host,
+        host,
         authorId: user._id
       }).fetch();
       return works;

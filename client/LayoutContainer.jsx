@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, List } from 'antd/lib';
 import { Box, Anchor, Heading, Paragraph, Footer } from 'grommet';
@@ -30,16 +30,14 @@ const menu = [
   }
 ];
 
-const LayoutPage = ({
-  currentUser,
-  userLoading,
-  currentHost,
-  hostLoading,
-  children
-}) => {
+const LayoutPage = ({ currentUser, userLoading, currentHost, children }) => {
   const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
     false
   );
+
+  if (!currentHost) {
+    return null;
+  }
 
   renderNotificationList = list => {
     if (list.length === 0) {
@@ -176,14 +174,23 @@ export default withTracker(props => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
-  const hostSub = Meteor.subscribe('currentHost');
-  const hostLoading = !hostSub.ready();
-  const currentHost = Hosts ? Hosts.findOne() : null;
+  // const hostSub = Meteor.subscribe('currentHost');
+  // const hostLoading = !hostSub.ready();
+  // const currentHost = Hosts ? Hosts.findOne() : null;
+
+  let currentHost;
+
+  Meteor.call('getHostSettings', (error, respond) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+    currentHost = respond;
+  });
 
   return {
     currentUser,
     userLoading,
-    currentHost,
-    hostLoading
+    currentHost
   };
 })(LayoutPage);

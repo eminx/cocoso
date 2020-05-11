@@ -3,7 +3,6 @@ import { getHost } from './shared';
 
 Meteor.methods({
   saveUserInfo(values) {
-    console.log(values);
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
