@@ -32,17 +32,7 @@ import { TimePicker } from '../../UIComponents/DatesAndTimes';
 import Template from '../../UIComponents/Template';
 
 const publicSettings = Meteor.settings.public;
-
 const defaultMeetingRoom = 'Office';
-
-// const customPanelStyle = {
-//   background: '#f7f7f7',
-//   borderRadius: 4,
-//   marginBottom: 12,
-//   paddingRight: 12,
-//   border: 0,
-//   overflow: 'hidden'
-// };
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -665,7 +655,6 @@ class Group extends Component {
                 width="medium"
                 height="small"
                 background="light-1"
-                border="1px dashed"
                 round
                 justify="center"
                 pad="medium"

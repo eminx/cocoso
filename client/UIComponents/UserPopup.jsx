@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Avatar, DropButton, List, Text } from 'grommet';
+import { UserSettings } from 'grommet-icons';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -13,7 +14,7 @@ export const adminRoutes = [
   { label: 'Members', value: '/admin/members' }
 ];
 
-const UserPopup = () => {
+const UserPopup = ({ isAdmin }) => {
   const [open, setOpen] = useState(false);
   return (
     <DropButton
@@ -23,7 +24,7 @@ const UserPopup = () => {
       dropAlign={{ right: 'right', top: 'bottom' }}
       dropContent={
         <Box pad="medium" width="small">
-          <Box margin={{ bottom: 'medium' }}>
+          <Box>
             <Text size="small" weight="bold">
               User
             </Text>
@@ -41,33 +42,33 @@ const UserPopup = () => {
               )}
             </List>
           </Box>
-          <Box>
-            <Text size="small" weight="bold">
-              Admin
-            </Text>
-            <List data={adminRoutes} border={false} pad="small">
-              {(datum, index) => (
-                <Link to={datum.value}>
-                  <Text
-                    margin={{ bottom: 'medium' }}
-                    textAlign="end"
-                    color="dark-2"
-                  >
-                    {datum.label}
-                  </Text>
-                </Link>
-              )}
-            </List>
-          </Box>
+          {isAdmin && (
+            <Box margin={{ top: 'medium' }}>
+              <Text size="small" weight="bold">
+                Admin
+              </Text>
+              <List data={adminRoutes} border={false} pad="small">
+                {(datum, index) => (
+                  <Link to={datum.value}>
+                    <Text
+                      margin={{ bottom: 'medium' }}
+                      textAlign="end"
+                      color="dark-2"
+                    >
+                      {datum.label}
+                    </Text>
+                  </Link>
+                )}
+              </List>
+            </Box>
+          )}
         </Box>
       }
     >
       <Box justify="center" pad="small">
-        <Avatar
-          background={{ color: 'dark-1' }}
-          size="medium"
-          src="https://s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80"
-        />
+        <Avatar size="medium">
+          <UserSettings />
+        </Avatar>
       </Box>
     </DropButton>
   );

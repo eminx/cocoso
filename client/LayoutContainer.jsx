@@ -38,12 +38,8 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
   const [currentHost, setCurrentHost] = useState({});
 
   const getHost = async () => {
-    try {
-      const respond = await call('getHostSettings');
-      setCurrentHost(respond);
-    } catch (error) {
-      console.log(error);
-    }
+    const respond = await call('getHostSettings');
+    setCurrentHost(respond);
   };
 
   useEffect(() => {
@@ -123,7 +119,7 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
                   {this.renderNotificationList(notifications)}
                 </NotificationsPopup>
               )}
-              {currentUser && <UserPopup />}
+              {currentUser && <UserPopup isAdmin={currentUser.isSuperAdmin} />}
             </Box>
           </Box>
 
