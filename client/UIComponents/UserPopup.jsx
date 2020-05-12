@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Avatar, DropButton, List, Text } from 'grommet';
-import { UserSettings } from 'grommet-icons';
+import { UserSettings, UserNew } from 'grommet-icons';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -14,7 +14,19 @@ export const adminRoutes = [
   { label: 'Members', value: '/admin/members' }
 ];
 
-const UserPopup = ({ isAdmin }) => {
+const UserPopup = ({ currentUser }) => {
+  if (!currentUser) {
+    return (
+      <Box justify="center" pad="small">
+        <Link to="/my-profile">
+          <Avatar size="medium">
+            <UserNew />
+          </Avatar>
+        </Link>
+      </Box>
+    );
+  }
+
   const [open, setOpen] = useState(false);
   return (
     <DropButton
@@ -42,7 +54,7 @@ const UserPopup = ({ isAdmin }) => {
               )}
             </List>
           </Box>
-          {isAdmin && (
+          {currentUser.isAdmin && (
             <Box margin={{ top: 'medium' }}>
               <Text size="small" weight="bold">
                 Admin

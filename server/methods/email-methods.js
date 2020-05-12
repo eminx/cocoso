@@ -7,13 +7,7 @@ function isValidEmail(email) {
 
 Meteor.methods({
   sendEmail: (id, subjectEmail, textEmail, isNewUser) => {
-    // if (!isNewUser && !Meteor.userId()) {
-    //   return false;
-    // }
-
     check([id, subjectEmail, textEmail], [String]);
-    // Let other method calls from the same client start running,
-    // without waiting for the email sending to complete.
     const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
     let toEmail;
 
@@ -25,11 +19,13 @@ Meteor.methods({
       toEmail = Meteor.users.findOne({ username: id }).emails[0].address;
     }
 
-    Email.send({
+    const data = {
       from: fromEmail,
       to: toEmail,
       subject: subjectEmail,
       text: textEmail
-    });
+    };
+
+    Email.send(data);
   }
 });

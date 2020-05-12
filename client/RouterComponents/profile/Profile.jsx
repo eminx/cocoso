@@ -223,7 +223,7 @@ class Profile extends React.Component {
 
     return (
       <Template
-        heading="Edit Personal Information"
+        heading="Personal Information"
         leftContent={
           <Fragment>
             <ListMenu list={menuRoutes}>

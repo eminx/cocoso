@@ -18,6 +18,7 @@
     "grommet-icons": "^4.4.0",
     "history": "^4.7.2",
     "indexof": "0.0.1",
+    "mailgun-js": "^0.22.0",
     "meteor-node-stubs": "^0.4.1",
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "node-s3-public-url": "^1.0.2",

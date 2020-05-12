@@ -526,6 +526,8 @@ Meteor.methods({
       throw new Meteor.Error('This email address is already added to the list');
     }
 
+    console.log(groupId, person);
+
     try {
       Meteor.call(
         'sendEmail',
@@ -550,7 +552,8 @@ Meteor.methods({
         }
       });
     } catch (error) {
-      throw new Meteor.Error('Could not send the invite to the person', error);
+      console.log(error);
+      throw new Meteor.Error(error, 'Could not send the invite to the person');
     }
   }
 });

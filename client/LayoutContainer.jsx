@@ -100,11 +100,9 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
             <Box basis="120px" />
             <Box justify="center">
               <Link to="/">
-                <div>
-                  <Heading level={1} style={{ marginBottom: 0 }}>
-                    {settings.name}
-                  </Heading>
-                </div>
+                <Heading level={1} style={{ marginBottom: 0 }}>
+                  Cic Network
+                </Heading>
               </Link>
             </Box>
 
@@ -119,7 +117,7 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
                   {this.renderNotificationList(notifications)}
                 </NotificationsPopup>
               )}
-              {currentUser && <UserPopup isAdmin={currentUser.isSuperAdmin} />}
+              <UserPopup currentUser={currentUser} />
             </Box>
           </Box>
 
