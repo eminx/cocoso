@@ -23,7 +23,7 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
       <Box flex={{ grow: 0 }}>
         {!actionsDisabled && (
           <Menu
-            icon={<MoreVertical style={{ marginTop: -6 }} />}
+            icon={<MoreVertical size="18px" style={{ marginTop: -6 }} />}
             items={listItem.actions.map(action => ({
               label: action.content,
               onClick: action.isDisabled ? null : action.handleClick,

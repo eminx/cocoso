@@ -5,9 +5,10 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
 
-import { Drawer, Modal, Tooltip, message } from 'antd/lib';
+import { Tooltip, message } from 'antd/lib';
 import {
   Box,
+  Layer,
   List,
   Calendar,
   Tabs,
@@ -19,9 +20,10 @@ import {
   Heading,
   Button,
   Accordion,
-  AccordionPanel
+  AccordionPanel,
+  Text
 } from 'grommet';
-import { FormPrevious } from 'grommet-icons';
+import { FormPrevious, Close } from 'grommet-icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -30,6 +32,7 @@ import NiceList from '../../UIComponents/NiceList';
 import InviteManager from './InviteManager';
 import { TimePicker } from '../../UIComponents/DatesAndTimes';
 import Template from '../../UIComponents/Template';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const publicSettings = Meteor.settings.public;
 const defaultMeetingRoom = 'Office';
@@ -606,30 +609,31 @@ class Group extends Component {
     return (
       <Fragment>
         {!isAdmin && (
-          <div style={{ padding: 12 }}>
+          <Box justify="center" direction="row" margin={{ bottom: 'large' }}>
             <Button
               label={isMember ? 'Leave group' : 'Join group'}
               primary={!isMember}
               onClick={this.openModal}
             />
-          </div>
+          </Box>
         )}
 
         {currentUser && group && group.members && (
           <Fragment>
             <Heading level={4}>Members</Heading>
-
-            <NiceList list={membersList} actionsDisabled={!isAdmin}>
-              {member => (
-                <span
-                  style={{
-                    fontWeight: group.adminId === member.memberId ? 700 : 400
-                  }}
-                >
-                  {member.username}
-                </span>
-              )}
-            </NiceList>
+            <Box margin={{ bottom: 'medium' }}>
+              <NiceList list={membersList} actionsDisabled={!isAdmin}>
+                {member => (
+                  <span
+                    style={{
+                      fontWeight: group.adminId === member.memberId ? 700 : 400
+                    }}
+                  >
+                    {member.username}
+                  </span>
+                )}
+              </NiceList>
+            </Box>
           </Fragment>
         )}
 
@@ -645,7 +649,9 @@ class Group extends Component {
             )}
           </NiceList>
         ) : (
-          <em>No document assigned</em>
+          <Text size="small" pad="small">
+            <em>No document assigned</em>
+          </Text>
         )}
 
         {isAdmin && (
@@ -736,12 +742,6 @@ class Group extends Component {
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
-    const titleStyle = {
-      marginLeft: 24,
-      fontWeigth: 300,
-      color: '#0g0g0g'
-    };
-
     return (
       <div>
         <Chattery
@@ -795,7 +795,8 @@ class Group extends Component {
       isFormValid,
       potentialNewAdmin,
       inviteManagerOpen,
-      newMeeting
+      newMeeting,
+      modalOpen
     } = this.state;
 
     if (redirectToLogin) {
@@ -823,10 +824,10 @@ class Group extends Component {
             </MediaQuery>
           }
           rightContent={
-            <Box>
+            <Box pad="small">
               <Heading level={4}>Dates</Heading>
 
-              <p style={{ textAlign: 'right' }}>
+              <Text size="small" pad="small">
                 <em>
                   {group.meetings &&
                   group.meetings.filter(meeting =>
@@ -837,7 +838,7 @@ class Group extends Component {
                       : 'Click and open the date to RSVP'
                     : 'No meeting scheduled yet'}
                 </em>
-              </p>
+              </Text>
 
               {group.meetings && isAdmin ? (
                 <div>
@@ -878,47 +879,56 @@ class Group extends Component {
           </MediaQuery>
         </Template>
 
-        <Modal
-          title={`Confirm ${
-            isMember ? 'leaving' : 'participation to'
-          } the group`}
-          visible={this.state.modalOpen}
-          onOk={isMember ? this.leaveGroup : this.joinGroup}
-          onCancel={this.closeModal}
-        >
-          <p>
-            Are you sure you want to
-            {isMember ? ' leave ' : ' join '}
-            this Group?
-          </p>
-        </Modal>
-
-        <Modal
-          title="Are you sure?"
-          visible={Boolean(potentialNewAdmin)}
-          onOk={this.changeAdmin}
-          onCancel={() => this.setState({ potentialNewAdmin: null })}
-        >
-          <p>
-            <b>
-              Please confirm you want to make {potentialNewAdmin} the new admin.
-            </b>
-          </p>
-          <p>
-            There can only be one admin at a time, so your admin priveleges will
-            be removed.
-          </p>
-        </Modal>
-
-        {group && group.isPrivate && (
-          <Drawer
-            width="280px"
-            title="Manage Access"
-            visible={inviteManagerOpen}
-            onClose={this.handleCloseInviteManager}
+        {modalOpen && (
+          <ConfirmModal
+            title={`Confirm ${
+              isMember ? 'leaving' : 'participation to'
+            } the group`}
+            onConfirm={isMember ? this.leaveGroup : this.joinGroup}
+            onCancel={this.closeModal}
           >
-            <InviteManager group={group} />
-          </Drawer>
+            <Text>
+              Are you sure you want to
+              {isMember ? ' leave ' : ' join '}
+              this Group?
+            </Text>
+          </ConfirmModal>
+        )}
+        {Boolean(potentialNewAdmin) && (
+          <ConfirmModal
+            title="Are you sure?"
+            onConfirm={this.changeAdmin}
+            onCancel={() => this.setState({ potentialNewAdmin: null })}
+          >
+            <Text>
+              <b>
+                Please confirm you want to make {potentialNewAdmin} the new
+                admin.
+              </b>
+            </Text>
+            <Text>
+              There can only be one admin at a time, so your admin priveleges
+              will be removed, and you won't be able to regain it again unless{' '}
+              {potentialNewAdmin} gives consent.
+            </Text>
+          </ConfirmModal>
+        )}
+
+        {group && group.isPrivate && inviteManagerOpen && (
+          <Layer full="vertical" position="right">
+            <Box fill style={{ maxWidth: '378px' }} pad="medium">
+              <Box direction="row" align="start" justify="between">
+                <Heading level={3}>Manage Access</Heading>
+                <Button
+                  flex={{ grow: 0 }}
+                  icon={<Close />}
+                  onClick={this.handleCloseInviteManager}
+                  plain
+                />
+              </Box>
+              <InviteManager group={group} />
+            </Box>
+          </Layer>
         )}
       </div>
     );

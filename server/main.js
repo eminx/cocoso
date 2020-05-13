@@ -14,6 +14,4 @@ Meteor.startup(() => {
     smtp.port;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
-
-  Hosts.insert({ host: 'www.nodal.app' });
 });

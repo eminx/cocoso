@@ -17,7 +17,7 @@ const theme = {
     }
   },
   formField: {
-    border: 'none'
+    border: false
   },
   list: {
     item: {

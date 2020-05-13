@@ -455,7 +455,7 @@ Meteor.methods({
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
 
     if (!newAdmin.isRegisteredMember) {
-      throw new Meteor.error('This is not allowed!');
+      throw new Meteor.Error('This is not allowed!');
       return;
     }
 
@@ -525,8 +525,6 @@ Meteor.methods({
     if (invitedEmailsList.indexOf(person.email) !== -1) {
       throw new Meteor.Error('This email address is already added to the list');
     }
-
-    console.log(groupId, person);
 
     try {
       Meteor.call(

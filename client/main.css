@@ -53,3 +53,8 @@ li.ant-menu-item span {
 .addSpace-modal .ant-modal-footer {
   display: none;
 }
+
+p {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.9);
+}
