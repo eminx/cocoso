@@ -5,7 +5,7 @@ import { Box, Heading } from 'grommet';
 function Template({ leftContent, rightContent, heading, children }) {
   return (
     <div>
-      <Row gutter={24}>
+      <Row>
         <Col md={6} />
         <Col md={12}>
           {heading && (
@@ -15,7 +15,7 @@ function Template({ leftContent, rightContent, heading, children }) {
           )}
         </Col>
       </Row>
-      <Row gutter={24}>
+      <Row>
         <Col md={6}>
           <Box pad="small">{leftContent}</Box>
         </Col>
