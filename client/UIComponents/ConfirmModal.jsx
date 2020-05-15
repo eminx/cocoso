@@ -7,8 +7,13 @@ const ConfirmModal = ({
   onConfirm,
   onCancel,
   confirmText,
+  cancelText,
+  visible,
   children
 }) => {
+  if (!visible) {
+    return null;
+  }
   return (
     <Layer position="center">
       <Box pad="medium" gap="small" width="medium">
@@ -26,7 +31,7 @@ const ConfirmModal = ({
           justify="end"
           pad={{ top: 'medium', bottom: 'small' }}
         >
-          <Button label="Cancel" onClick={onCancel} />
+          <Button label={cancelText || 'Cancel'} onClick={onCancel} />
           <Button
             label={confirmText || 'Confirm'}
             onClick={onConfirm}

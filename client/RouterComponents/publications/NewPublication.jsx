@@ -1,9 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
+import { Row, Col, message, Alert } from 'antd/lib';
 
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successCreation = () => {
   message.success('Your publication is successfully created', 6);
@@ -11,7 +10,6 @@ const successCreation = () => {
 
 class NewPublication extends React.Component {
   state = {
-    modalConfirm: false,
     values: null,
     isLoading: false,
     isSuccess: false,
@@ -26,10 +24,12 @@ class NewPublication extends React.Component {
 
   registerPublicationLocally = values => {
     values.authorName = this.props.currentUser.username || 'emowtf';
-    this.setState({
-      values: values,
-      modalConfirm: true
-    });
+    this.setState(
+      {
+        values
+      },
+      () => this.uploadDocument()
+    );
   };
 
   setUploadableImage = e => {
@@ -146,9 +146,6 @@ class NewPublication extends React.Component {
     );
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
-
   render() {
     const { currentUser } = this.props;
 
@@ -164,7 +161,6 @@ class NewPublication extends React.Component {
     }
 
     const {
-      modalConfirm,
       values,
       isLoading,
       isSuccess,
@@ -195,20 +191,6 @@ class NewPublication extends React.Component {
             />
           </Col>
         </Row>
-        {modalConfirm ? (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            imageSrc={uploadableImageLocal}
-            visible={modalConfirm}
-            onOk={this.uploadDocument}
-            okButtonProps={{ loading: isLoading }}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        ) : null}
       </div>
     );
   }

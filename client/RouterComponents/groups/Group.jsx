@@ -878,41 +878,37 @@ class Group extends Component {
             {this.renderMembersAndDocuments()}
           </MediaQuery>
         </Template>
-
-        {modalOpen && (
-          <ConfirmModal
-            title={`Confirm ${
-              isMember ? 'leaving' : 'participation to'
-            } the group`}
-            onConfirm={isMember ? this.leaveGroup : this.joinGroup}
-            onCancel={this.closeModal}
-          >
-            <Text>
-              Are you sure you want to
-              {isMember ? ' leave ' : ' join '}
-              this Group?
-            </Text>
-          </ConfirmModal>
-        )}
-        {Boolean(potentialNewAdmin) && (
-          <ConfirmModal
-            title="Are you sure?"
-            onConfirm={this.changeAdmin}
-            onCancel={() => this.setState({ potentialNewAdmin: null })}
-          >
-            <Text>
-              <b>
-                Please confirm you want to make {potentialNewAdmin} the new
-                admin.
-              </b>
-            </Text>
-            <Text>
-              There can only be one admin at a time, so your admin priveleges
-              will be removed, and you won't be able to regain it again unless{' '}
-              {potentialNewAdmin} gives consent.
-            </Text>
-          </ConfirmModal>
-        )}
+        <ConfirmModal
+          visible={modalOpen}
+          title={`Confirm ${
+            isMember ? 'leaving' : 'participation to'
+          } the group`}
+          onConfirm={isMember ? this.leaveGroup : this.joinGroup}
+          onCancel={this.closeModal}
+        >
+          <Text>
+            Are you sure you want to
+            {isMember ? ' leave ' : ' join '}
+            this Group?
+          </Text>
+        </ConfirmModal>
+        <ConfirmModal
+          visible={Boolean(potentialNewAdmin)}
+          title="Are you sure?"
+          onConfirm={this.changeAdmin}
+          onCancel={() => this.setState({ potentialNewAdmin: null })}
+        >
+          <Text>
+            <b>
+              Please confirm you want to make {potentialNewAdmin} the new admin.
+            </b>
+          </Text>
+          <Text>
+            There can only be one admin at a time, so your admin priveleges will
+            be removed, and you won't be able to regain it again unless{' '}
+            {potentialNewAdmin} gives consent.
+          </Text>
+        </ConfirmModal>
 
         {group && group.isPrivate && inviteManagerOpen && (
           <Layer full="vertical" position="right">

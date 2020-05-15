@@ -15,6 +15,7 @@ import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 import Terms from '../../UIComponents/Terms';
 import Template from '../../UIComponents/Template';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const personalModel = {
   firstName: '',
@@ -296,18 +297,18 @@ class Profile extends React.Component {
           </div>
         )}
 
-        <Modal
-          title="Are you sure?"
-          okText="Confirm Deletion"
-          onOk={this.deleteAccount}
-          onCancel={() => this.setState({ isDeleteModalOn: false })}
+        <ConfirmModal
           visible={isDeleteModalOn}
+          title="Are you sure?"
+          confirmText="Confirm Deletion"
+          onConfirm={this.deleteAccount}
+          onCancel={() => this.setState({ isDeleteModalOn: false })}
         >
-          <p>
+          <Text>
             You are about to permanently delete your user information. This is
             an irreversible action.
-          </p>
-        </Modal>
+          </Text>
+        </ConfirmModal>
 
         <Modal
           title="Create New Work"

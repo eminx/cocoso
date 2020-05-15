@@ -1,32 +1,27 @@
 import React from 'react';
-import { Row, Col } from 'antd/lib';
+import { Container, Row, Col } from 'react-grid-system';
 import { Box, Heading } from 'grommet';
 
 function Template({ leftContent, rightContent, heading, children }) {
   return (
-    <div>
-      <Row>
-        <Col md={6} />
-        <Col md={12}>
-          {heading && (
-            <Box pad={{ left: 'medium', top: 'small' }}>
-              <Heading level={3}>{heading}</Heading>
-            </Box>
-          )}
+    <Container fluid style={{ width: '100%' }}>
+      <Row gutterWidth={12}>
+        <Col md={4} lg={3}>
+          {leftContent}
         </Col>
+        <Col md={8} lg={6}>
+          <Box>
+            {heading && (
+              <Box pad={{ top: 'small', bottom: 'small' }}>
+                <Heading level={3}>{heading}</Heading>
+              </Box>
+            )}
+            {children}
+          </Box>
+        </Col>
+        <Col lg={3}>{rightContent}</Col>
       </Row>
-      <Row>
-        <Col md={6}>
-          <Box pad="small">{leftContent}</Box>
-        </Col>
-        <Col md={12}>
-          <Box pad="medium">{children}</Box>
-        </Col>
-        <Col md={6}>
-          <Box pad="small">{rightContent}</Box>
-        </Col>
-      </Row>
-    </div>
+    </Container>
   );
 }
 

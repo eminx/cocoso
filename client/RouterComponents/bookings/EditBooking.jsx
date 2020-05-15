@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { message, Alert, Modal } from 'antd/lib';
-import { Box, Heading, Button, CheckBox, Text } from 'grommet';
+import { message, Alert } from 'antd/lib';
+import { Box, Button, CheckBox, Text } from 'grommet';
 
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import Template from '../../UIComponents/Template';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const successEditMessage = isDeleted => {
   if (isDeleted) {
@@ -358,16 +359,15 @@ class EditBooking extends PureComponent {
           )}
         </Box>
 
-        <Modal
+        <ConfirmModal
           title="Confirm"
           visible={isDeleteModalOn}
-          onOk={this.deleteBooking}
+          onConfirm={this.deleteBooking}
           onCancel={this.hideDeleteModal}
-          okText="Yes, delete"
-          cancelText="Cancel"
+          confirmText="Yes, delete"
         >
           Are you sure you want to delete this booking?
-        </Modal>
+        </ConfirmModal>
       </Template>
     );
   }

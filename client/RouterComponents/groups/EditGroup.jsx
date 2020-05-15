@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { message, Alert, Modal } from 'antd/lib';
+import { message, Alert } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 import { Box, Button } from 'grommet';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import Template from '../../UIComponents/Template';
 import Loader from '../../UIComponents/Loader';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const successUpdate = () =>
   message.success('Your group is successfully updated', 6);
@@ -269,16 +270,15 @@ class EditGroup extends React.Component {
           isButtonDisabled={!isFormValid || isUpdating}
         />
 
-        <Modal
+        <ConfirmModal
           title="Confirm Delete"
           visible={isDeleteModalOn}
-          onOk={this.deleteGroup}
+          onConfirm={this.deleteGroup}
           onCancel={this.hideDeleteModal}
           okText="Yes, delete"
-          cancelText="Cancel"
         >
           Are you sure you want to delete this group?
-        </Modal>
+        </ConfirmModal>
       </Template>
     );
   }

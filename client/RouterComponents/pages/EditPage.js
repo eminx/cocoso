@@ -1,13 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { message, Alert, Modal } from 'antd/lib';
+import { message, Alert } from 'antd/lib';
 import { Button } from 'grommet';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 import Loader from '../../UIComponents/Loader';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const contextName = Meteor.settings.public.contextName;
 
@@ -188,14 +189,14 @@ class EditPage extends React.Component {
           onSubmit={this.handleSubmit}
         />
 
-        <Modal
-          onOk={this.handleDeletePage}
-          onCancel={this.closeDeleteModal}
+        <ConfirmModal
           visible={isDeleteModalOn}
+          onConfirm={this.handleDeletePage}
+          onCancel={this.closeDeleteModal}
           title="Confirm Delete"
         >
           Are you sure you want to delete this page?
-        </Modal>
+        </ConfirmModal>
       </Template>
     );
   }

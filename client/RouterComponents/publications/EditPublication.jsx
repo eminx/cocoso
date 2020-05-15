@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Button } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
+
+import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const successCreation = () =>
   message.success('Your publication is successfully updated', 6);
@@ -16,7 +17,6 @@ const sideNote = 'This page is dedicated to create publications.';
 
 class EditPublication extends React.Component {
   state = {
-    modalConfirm: false,
     isDeleteModalOn: false,
     values: null,
     isLoading: false,
@@ -31,10 +31,12 @@ class EditPublication extends React.Component {
 
   registerPublicationLocally = values => {
     values.authorName = this.props.currentUser.username || 'emo';
-    this.setState({
-      values: values,
-      modalConfirm: true
-    });
+    this.setState(
+      {
+        values
+      },
+      () => this.uploadDocument()
+    );
   };
 
   setUploadableImage = e => {
@@ -170,9 +172,6 @@ class EditPublication extends React.Component {
     );
   };
 
-  hideModal = () => this.setState({ modalConfirm: false });
-  showModal = () => this.setState({ modalConfirm: true });
-
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
@@ -207,15 +206,12 @@ class EditPublication extends React.Component {
     }
 
     const {
-      modalConfirm,
       isDeleteModalOn,
       values,
       isLoading,
       isSuccess,
       newPublicationId,
-      uploadedImage,
       uploadableImage,
-      uploadableImageLocal,
       uploadableDocument
     } = this.state;
 
@@ -271,29 +267,16 @@ class EditPublication extends React.Component {
             />
           </Col>
         </Row>
-        {modalConfirm && (
-          <ModalArticle
-            item={values}
-            isLoading={isLoading}
-            title="Overview The Information"
-            visible={modalConfirm}
-            onOk={this.uploadDocument}
-            onCancel={this.hideModal}
-            okText="Confirm"
-            cancelText="Go back and edit"
-          />
-        )}
 
-        <Modal
+        <ConfirmModal
           title="Confirm"
           visible={isDeleteModalOn}
-          onOk={this.deletePublication}
+          onConfirm={this.deletePublication}
           onCancel={this.hideDeleteModal}
-          okText="Yes, delete"
-          cancelText="Cancel"
+          confirmText="Yes, delete"
         >
           Are you sure you want to delete this publication?
-        </Modal>
+        </ConfirmModal>
       </div>
     );
   }

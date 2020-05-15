@@ -1,18 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Chattery from '../../chattery';
-import {
-  Row,
-  Col,
-  Divider,
-  Modal,
-  List,
-  Card,
-  Button,
-  message
-} from 'antd/lib';
-const ListItem = List.Item;
-const { Meta } = Card;
+import { Row, Col, Divider, Card, Button } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 
 class Publication extends React.PureComponent {
