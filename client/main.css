@@ -3,6 +3,7 @@
 
 body {
   min-height: 101vh;
+  margin: 0;
 }
 
 .main-viewport {

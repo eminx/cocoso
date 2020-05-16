@@ -31,6 +31,7 @@ import Members from './admin/Members';
 import UserContainer from './user/UserContainer';
 import Work from './works/Work';
 import Works from './works/Works';
+import NewWork from './works/NewWork';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -86,14 +87,10 @@ export default function() {
               component={ProfileContainer}
             />
 
-            {/* <Route
-              path="/settings"
-              component={Settings}
-            /> */}
-
             <Route path="/documents" component={DocumentsListContainer} />
 
             <Route path="/my-works" component={Works} />
+            <Route path="/new-work" component={NewWork} />
 
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />

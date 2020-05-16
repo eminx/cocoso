@@ -3,7 +3,7 @@ import React, { Component, PureComponent, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import MediaQuery from 'react-responsive';
+import { Visible } from 'react-grid-system';
 
 import { Tooltip, message } from 'antd/lib';
 import {
@@ -830,9 +830,9 @@ class Group extends Component {
         </Box>
         <Template
           leftContent={
-            <MediaQuery query="(min-width: 992px)">
+            <Visible lg xl>
               {this.renderMembersAndDocuments()}
-            </MediaQuery>
+            </Visible>
           }
           rightContent={
             <Box pad="small">
@@ -885,9 +885,9 @@ class Group extends Component {
           }
         >
           {this.renderGroupInfo()}
-          <MediaQuery query="(max-width: 991px)">
+          <Visible sm md>
             {this.renderMembersAndDocuments()}
-          </MediaQuery>
+          </Visible>
         </Template>
         <ConfirmModal
           visible={modalOpen}

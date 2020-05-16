@@ -87,21 +87,20 @@ const Header = ({ currentUser, title }) => {
       alignSelf="center"
       direction="row"
       pad={{
-        top: 'medium',
         right: 'medium',
         bottom: 'small',
         left: 'medium'
       }}
       fill="horizontal"
     >
-      <Box basis="120px" />
+      <Box basis="150px" />
       <Box justify="center">
         <Heading level={1} style={{ marginBottom: 0 }}>
           {title}
         </Heading>
       </Box>
 
-      <Box basis="120px" justify="end" direction="row" alignContent="center">
+      <Box basis="150px" justify="end" direction="row" alignContent="center">
         {currentUser && (
           <NotificationsPopup notifications={currentUser.notifications} />
         )}

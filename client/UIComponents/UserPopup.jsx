@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import { Box, Avatar, DropButton, List, Text } from 'grommet';
+import { withRouter } from 'react-router-dom';
+import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
 import { UserSettings, UserNew } from 'grommet-icons';
 
 export const userRoutes = [
@@ -14,20 +13,24 @@ export const adminRoutes = [
   { label: 'Members', value: '/admin/members' }
 ];
 
-const UserPopup = ({ currentUser }) => {
+const UserPopup = withRouter(({ currentUser, history }) => {
   if (!currentUser) {
     return (
       <Box justify="center" pad="small">
-        <Link to="/my-profile">
-          <Avatar size="medium">
-            <UserNew />
-          </Avatar>
-        </Link>
+        <Anchor
+          onClick={() => history.push('/my-profile')}
+          label={
+            <Avatar size="medium">
+              <UserNew />
+            </Avatar>
+          }
+        />
       </Box>
     );
   }
 
   const [open, setOpen] = useState(false);
+
   return (
     <DropButton
       open={open}
@@ -42,26 +45,9 @@ const UserPopup = ({ currentUser }) => {
             </Text>
             <List data={userRoutes} border={false} pad="small">
               {(datum, index) => (
-                <Link to={datum.value}>
-                  <Text
-                    margin={{ bottom: 'medium' }}
-                    textAlign="end"
-                    color="dark-2"
-                  >
-                    {datum.label}
-                  </Text>
-                </Link>
-              )}
-            </List>
-          </Box>
-          {currentUser.isAdmin && (
-            <Box margin={{ top: 'medium' }}>
-              <Text size="small" weight="bold">
-                Admin
-              </Text>
-              <List data={adminRoutes} border={false} pad="small">
-                {(datum, index) => (
-                  <Link to={datum.value}>
+                <Anchor
+                  onClick={() => history.push(datum.value)}
+                  label={
                     <Text
                       margin={{ bottom: 'medium' }}
                       textAlign="end"
@@ -69,7 +55,30 @@ const UserPopup = ({ currentUser }) => {
                     >
                       {datum.label}
                     </Text>
-                  </Link>
+                  }
+                />
+              )}
+            </List>
+          </Box>
+          {currentUser.isSuperAdmin && (
+            <Box margin={{ top: 'medium' }}>
+              <Text size="small" weight="bold">
+                Admin
+              </Text>
+              <List data={adminRoutes} border={false} pad="small">
+                {(datum, index) => (
+                  <Anchor
+                    onClick={() => history.push(datum.value)}
+                    label={
+                      <Text
+                        margin={{ bottom: 'medium' }}
+                        textAlign="end"
+                        color="dark-2"
+                      >
+                        {datum.label}
+                      </Text>
+                    }
+                  />
                 )}
               </List>
             </Box>
@@ -84,6 +93,6 @@ const UserPopup = ({ currentUser }) => {
       </Box>
     </DropButton>
   );
-};
+});
 
 export default UserPopup;

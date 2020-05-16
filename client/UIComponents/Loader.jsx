@@ -9,7 +9,7 @@ const loaderStyle = {
 
 const Loader = () => (
   <div style={loaderStyle}>
-    <PulseLoader color="#ea3924" loading />
+    <PulseLoader color="#020202" loading />
   </div>
 );
 

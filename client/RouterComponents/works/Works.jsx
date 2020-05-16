@@ -21,9 +21,19 @@ function Works({}) {
     return null;
   }
 
+  const myWorksWithActions = works.map(work => ({
+    ...work,
+    actions: [
+      {
+        content: 'Remove',
+        handleClick: () => this.removeWork(work._id)
+      }
+    ]
+  }));
+
   return (
     <Template heading="My Works">
-      <NiceList list={works} actionsDisabled>
+      <NiceList list={myWorksWithActions} actionsDisabled>
         {work => (
           <Box key={work.title} pad="medium">
             <Heading level={4}>{work.title}</Heading>
