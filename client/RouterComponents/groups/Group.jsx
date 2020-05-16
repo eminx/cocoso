@@ -150,7 +150,7 @@ class Group extends Component {
           </div>
         )}
         <Box>
-          <Text size="large" style={{ overflowWrap: 'anywhere' }}>
+          <Text size="xlarge" style={{ overflowWrap: 'anywhere' }}>
             {group.title}
           </Text>
           <Text weight={300}>{group.readingMaterial}</Text>
@@ -823,7 +823,9 @@ class Group extends Component {
         <Box pad="small">
           <Anchor
             onClick={() => history.push('/groups')}
-            label={<Button plain label="Groups" icon={<FormPrevious />} />}
+            label={
+              <Button gap="none" plain label="Groups" icon={<FormPrevious />} />
+            }
           />
         </Box>
         <Template

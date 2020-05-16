@@ -66,7 +66,7 @@ const NotificationList = withRouter(({ notifications, history }) => (
 ));
 
 const Badge = ({ children }) => (
-  <Box background="accent-4" pad={{ horizontal: 'xsmall' }} round>
+  <Box background="brand" pad={{ horizontal: 'xsmall' }} round>
     <Text size="small">{children}</Text>
   </Box>
 );
