@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import App from './App';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'antd/dist/antd.min.css';
+// import 'antd/dist/antd.min.css';
 import 'react-quill/dist/quill.snow.css';
 
 Meteor.startup(() => {
