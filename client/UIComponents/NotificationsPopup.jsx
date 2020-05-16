@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Anchor, Box, List, Stack, DropButton, Text, Heading } from 'grommet';
 import { Notification } from 'grommet-icons';
 
-const history = useHistory();
-
-const NotificationsPopup = ({ notifications, count }) => {
+const NotificationsPopup = ({ notifications }) => {
   const [open, setOpen] = useState(false);
   if (!notifications) {
     return null;
@@ -36,7 +34,7 @@ const NotificationsPopup = ({ notifications, count }) => {
   );
 };
 
-const NotificationList = ({ notifications }) => (
+const NotificationList = withRouter(({ notifications, history }) => (
   <Box>
     {notifications.length === 0 ? (
       <Text size="small"> You don't have unread messages</Text>
@@ -65,7 +63,7 @@ const NotificationList = ({ notifications }) => (
       </List>
     )}
   </Box>
-);
+));
 
 const Badge = ({ children }) => (
   <Box background="accent-4" pad={{ horizontal: 'xsmall' }} round>

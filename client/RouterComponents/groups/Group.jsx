@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PureComponent, Fragment } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
@@ -21,6 +21,7 @@ import {
   Button,
   Accordion,
   AccordionPanel,
+  Anchor,
   Text
 } from 'grommet';
 import { FormPrevious, Close } from 'grommet-icons';
@@ -128,6 +129,8 @@ class Group extends Component {
   };
 
   getTitle = (group, isAdmin) => {
+    const { history } = this.props;
+
     return (
       <Box>
         {group.isPrivate && (
@@ -147,24 +150,24 @@ class Group extends Component {
           </div>
         )}
         <Box>
-          <Heading level={3} style={{ overflowWrap: 'anywhere' }}>
+          <Text size="large" style={{ overflowWrap: 'anywhere' }}>
             {group.title}
-          </Heading>
-          <Heading level={4} style={{ fontWeight: '300' }}>
-            {group.readingMaterial}
-          </Heading>
+          </Text>
+          <Text weight={300}>{group.readingMaterial}</Text>
         </Box>
         <Box>
           {isAdmin ? (
             <Box alignSelf="end" direction="row">
-              <Link to={`/edit-group/${group._id}`}>Edit</Link>
+              <Anchor
+                onClick={() => history.push(`/edit-group/${group._id}`)}
+                label="Edit"
+              />
               {group.isPrivate && (
-                <a
+                <Anchor
                   onClick={this.handleOpenInviteManager}
                   style={{ marginLeft: 12 }}
-                >
-                  Manage Access
-                </a>
+                  label="Manage Access"
+                />
               )}
             </Box>
           ) : (
@@ -176,11 +179,16 @@ class Group extends Component {
   };
 
   getExtra = (group, isAdmin) => {
+    const { history } = this.props;
+
     if (isAdmin) {
       return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to={`/edit-group/${group._id}`}>Edit</Link>
-        </div>
+        <Box alignSelf>
+          <Anchor
+            onClick={() => history.push(`/edit-group/${group._id}`)}
+            label="Edit"
+          />
+        </Box>
       );
     } else {
       return <div>{group.adminUsername}</div>;
@@ -784,7 +792,7 @@ class Group extends Component {
   };
 
   render() {
-    const { group, isLoading, places } = this.props;
+    const { group, isLoading, places, history } = this.props;
 
     if (!group || isLoading) {
       return <Loader />;
@@ -812,11 +820,12 @@ class Group extends Component {
 
     return (
       <div>
-        <div style={{ padding: 12 }}>
-          <Link to="/groups">
-            <Button plain label="Groups" icon={<FormPrevious />} />
-          </Link>
-        </div>
+        <Box pad="small">
+          <Anchor
+            onClick={() => history.push('/groups')}
+            label={<Button plain label="Groups" icon={<FormPrevious />} />}
+          />
+        </Box>
         <Template
           leftContent={
             <MediaQuery query="(min-width: 992px)">

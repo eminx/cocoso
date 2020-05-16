@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { Box } from 'grommet';
+import { Box, Anchor, Text } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -93,13 +92,7 @@ class PublicActivityThumb extends React.Component {
   };
 
   render() {
-    const { item } = this.props;
-
-    const commonStyle = {
-      color: '#030303',
-      fontWeight: 300,
-      lineHeight: 1
-    };
+    const { item, history } = this.props;
 
     const imageStyle = {
       width: 288,
@@ -115,35 +108,32 @@ class PublicActivityThumb extends React.Component {
         hoverIndicator={{ background: 'light-1' }}
         onClick={() => null}
       >
-        <Link to={clickLink}>
-          <Box>
-            <h3
-              style={{
-                ...commonStyle,
-                fontSize: 24,
-                marginBottom: 6,
-                lineHeight: '32px',
-                overflowWrap: 'anywhere'
-              }}
-            >
-              {item.isGroup ? item.title : item.title}
-            </h3>
-            <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
-              {item.isGroup ? item.readingMaterial : item.subTitle}
-            </h4>
-          </Box>
+        <Anchor
+          onClick={() => history.push(clickLink)}
+          label={
+            <Box>
+              <Box>
+                <Text size="large">
+                  {item.isGroup ? item.title : item.title}
+                </Text>
+                <Text weight={300}>
+                  {item.isGroup ? item.readingMaterial : item.subTitle}
+                </Text>
+              </Box>
 
-          <Box>
-            <LazyLoadImage
-              alt={item.title}
-              src={item.imageUrl}
-              style={imageStyle}
-              effect="black-and-white"
-            />
-          </Box>
+              <Box>
+                <LazyLoadImage
+                  alt={item.title}
+                  src={item.imageUrl}
+                  style={imageStyle}
+                  effect="black-and-white"
+                />
+              </Box>
 
-          <Box>{this.renderDates()}</Box>
-        </Link>
+              <Box>{this.renderDates()}</Box>
+            </Box>
+          }
+        />
       </Box>
     );
   }

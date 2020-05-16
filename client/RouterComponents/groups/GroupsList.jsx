@@ -3,7 +3,15 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { message } from 'antd/lib';
-import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+import {
+  Box,
+  Anchor,
+  Button,
+  Image,
+  Heading,
+  RadioButtonGroup,
+  Text
+} from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
@@ -25,7 +33,7 @@ const filterOptions = [
 
 import { compareForSort } from '../../functions';
 
-function GroupsList({ isLoading, currentUser, groupsData }) {
+function GroupsList({ isLoading, currentUser, groupsData, history }) {
   const [filterBy, setFilterBy] = useState('active');
 
   archiveGroup = groupId => {
@@ -151,14 +159,14 @@ function GroupsList({ isLoading, currentUser, groupsData }) {
           actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
           border={false}
         >
-          {group => <GroupItem group={group} />}
+          {group => <GroupItem group={group} history={history} />}
         </NiceList>
       )}
     </Template>
   );
 }
 
-const GroupItem = ({ group }) => (
+const GroupItem = ({ group, history }) => (
   <Box direction="row">
     <Box
       width="xsmall"
@@ -170,10 +178,13 @@ const GroupItem = ({ group }) => (
     </Box>
     <Box width="100%">
       <Box>
-        <Heading level={4} style={{ overflowWrap: 'anywhere' }}>
-          <Link to={`/group/${group._id}`}>{group.title}</Link>
-        </Heading>
-        <Heading level={5}>{group.readingMaterial}</Heading>
+        <Text size="large" style={{ overflowWrap: 'anywhere' }}>
+          <Anchor
+            onClick={() => history.push(`/group/${group._id}`)}
+            label={group.title}
+          />
+        </Text>
+        <Text weight={300}>{group.readingMaterial}</Text>
       </Box>
 
       <Box flex={{ grow: 0 }} pad="small">

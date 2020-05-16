@@ -8,7 +8,6 @@ export const UserContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
-import AnchorLink from './UIComponents/AnchorLink';
 import { call } from './functions';
 
 const menu = [
@@ -52,8 +51,6 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
     title: 'Cic Network'
   };
 
-  const push = history.push;
-
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
       <Box className="main-viewport" justify="center" fill>
@@ -62,7 +59,10 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
           <Box pad="small" justify="center" direction="row">
             {menu.map(item => (
               <Box pad="small" key={item.label}>
-                <Anchor onClick={() => push(item.route)} label={item.label} />
+                <Anchor
+                  onClick={() => history.push(item.route)}
+                  label={item.label}
+                />
               </Box>
             ))}
           </Box>
@@ -96,11 +96,9 @@ const Header = ({ currentUser, title }) => {
     >
       <Box basis="120px" />
       <Box justify="center">
-        <Link to="/">
-          <Heading level={1} style={{ marginBottom: 0 }}>
-            {title}
-          </Heading>
-        </Link>
+        <Heading level={1} style={{ marginBottom: 0 }}>
+          {title}
+        </Heading>
       </Box>
 
       <Box basis="120px" justify="end" direction="row" alignContent="center">

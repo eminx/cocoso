@@ -101,7 +101,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, history } = this.props;
     const allSortedActivities = this.getAllSorted();
 
     return (
@@ -111,7 +111,11 @@ class Home extends React.Component {
         ) : (
           <Box direction="row" wrap justify="center">
             {allSortedActivities.map(activity => (
-              <PublicActivityThumb key={activity.title} item={activity} />
+              <PublicActivityThumb
+                key={activity.title}
+                item={activity}
+                history={history}
+              />
             ))}
           </Box>
         )}

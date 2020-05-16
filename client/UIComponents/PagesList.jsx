@@ -1,29 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Text } from 'grommet';
+import { withRouter } from 'react-router-dom';
+import { Text, Anchor } from 'grommet';
 
 import ListMenu from '../UIComponents/ListMenu';
 
 import { parseTitle } from '../functions';
 
-const PagesList = ({ pageTitles, activePageTitle }) => {
+const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   return (
     <ListMenu list={pageTitles}>
       {title => (
-        <Link to={`/page/${parseTitle(title)}`}>
-          <Text
-            weight={
-              parseTitle(activePageTitle) === parseTitle(title)
-                ? 'bold'
-                : 'normal'
-            }
-          >
-            {title}
-          </Text>
-        </Link>
+        <Anchor
+          onClick={() => history.push(`/page/${parseTitle(title)}`)}
+          label={
+            <Text
+              weight={
+                parseTitle(activePageTitle) === parseTitle(title)
+                  ? 'bold'
+                  : 'normal'
+              }
+            >
+              {title}
+            </Text>
+          }
+        />
       )}
     </ListMenu>
   );
-};
+});
 
 export default PagesList;

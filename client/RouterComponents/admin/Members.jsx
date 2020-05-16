@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Alert, message } from 'antd/lib';
-import { Box, Text, Heading, RadioButtonGroup, TextInput } from 'grommet';
+import {
+  Box,
+  Anchor,
+  Text,
+  Heading,
+  RadioButtonGroup,
+  TextInput
+} from 'grommet';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -172,11 +178,15 @@ function Members({ history }) {
       leftContent={
         <ListMenu list={menuRoutes}>
           {datum => (
-            <Link to={datum.value} key={datum.value}>
-              <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                {datum.label}
-              </Text>
-            </Link>
+            <Anchor
+              onClick={() => history.push(datum.value)}
+              key={datum.value}
+              label={
+                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                  {datum.label}
+                </Text>
+              }
+            />
           )}
         </ListMenu>
       }

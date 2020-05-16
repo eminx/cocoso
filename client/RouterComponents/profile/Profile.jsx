@@ -6,7 +6,7 @@ import ReactQuill from 'react-quill';
 import { Input, Button, message, Divider, Modal } from 'antd/lib';
 const TextArea = Input.TextArea;
 
-import { Text, Box } from 'grommet';
+import { Anchor, Text, Box } from 'grommet';
 
 import Personal from './Personal';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
@@ -229,11 +229,15 @@ class Profile extends React.Component {
           <Fragment>
             <ListMenu list={menuRoutes}>
               {datum => (
-                <Link to={datum.value} key={datum.value}>
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                </Link>
+                <Anchor
+                  onClick={() => history.push(datum.value)}
+                  key={datum.value}
+                  label={
+                    <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                      {datum.label}
+                    </Text>
+                  }
+                />
               )}
             </ListMenu>
             {currentUser && (

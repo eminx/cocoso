@@ -1,16 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import { message } from 'antd/lib';
-import {
-  Heading,
-  TextInput,
-  FormField,
-  Form,
-  Box,
-  Text,
-  Button
-} from 'grommet';
+import { Anchor, TextInput, FormField, Form, Box, Text, Button } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -101,11 +92,15 @@ class Settings extends PureComponent {
         leftContent={
           <ListMenu list={menuRoutes}>
             {datum => (
-              <Link to={datum.value} key={datum.value}>
-                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                  {datum.label}
-                </Text>
-              </Link>
+              <Anchor
+                onClick={() => history.push(datum.value)}
+                key={datum.value}
+                label={
+                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                    {datum.label}
+                  </Text>
+                }
+              />
             )}
           </ListMenu>
         }
