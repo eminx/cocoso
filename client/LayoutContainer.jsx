@@ -8,6 +8,7 @@ export const UserContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
+import AnchorLink from './UIComponents/AnchorLink';
 import { call } from './functions';
 
 const menu = [
@@ -29,7 +30,7 @@ const menu = [
   }
 ];
 
-const LayoutPage = ({ currentUser, userLoading, children }) => {
+const LayoutPage = ({ currentUser, userLoading, history, children }) => {
   // const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
   //   false
   // );
@@ -51,6 +52,8 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
     title: 'Cic Network'
   };
 
+  const push = history.push;
+
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
       <Box className="main-viewport" justify="center" fill>
@@ -58,13 +61,9 @@ const LayoutPage = ({ currentUser, userLoading, children }) => {
           <Header {...headerProps} />
           <Box pad="small" justify="center" direction="row">
             {menu.map(item => (
-              <Link to={item.route} key={item.label}>
-                <Box pad="small">
-                  <Anchor plain as="span">
-                    {item.label}
-                  </Anchor>
-                </Box>
-              </Link>
+              <Box pad="small" key={item.label}>
+                <Anchor onClick={() => push(item.route)} label={item.label} />
+              </Box>
             ))}
           </Box>
 

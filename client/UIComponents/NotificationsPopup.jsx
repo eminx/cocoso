@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Box, List, Stack, DropButton, Text, Heading } from 'grommet';
+import { Link, useHistory } from 'react-router-dom';
+import { Anchor, Box, List, Stack, DropButton, Text, Heading } from 'grommet';
 import { Notification } from 'grommet-icons';
+
+const history = useHistory();
 
 const NotificationsPopup = ({ notifications, count }) => {
   const [open, setOpen] = useState(false);
@@ -47,12 +49,17 @@ const NotificationList = ({ notifications }) => (
       >
         {item => (
           <Box>
-            <Link to={`/${item.context}/${item.contextId}`}>
-              <Stack anchor="top-right">
-                <Heading level={4}>{item.title}</Heading>
-                <Badge>{item.count}</Badge>
-              </Stack>
-            </Link>
+            <Anchor
+              onClick={() => history.push(`/${item.context}/${item.contextId}`)}
+              label={
+                <Stack anchor="top-right">
+                  <Box padding="small">
+                    <Heading level={4}>{item.title}</Heading>
+                  </Box>
+                  <Badge>{item.count}</Badge>
+                </Stack>
+              }
+            />
           </Box>
         )}
       </List>
