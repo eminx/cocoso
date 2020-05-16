@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col, message, Alert, Button } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
-import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
+import PublicationForm from '../../UIComponents/PublicationForm';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const successCreation = () =>
@@ -251,7 +251,7 @@ class EditPublication extends React.Component {
                 </div>
               )}
 
-            <CreatePublicationForm
+            <PublicationForm
               values={values}
               publicationData={publicationData}
               registerPublicationLocally={this.registerPublicationLocally}

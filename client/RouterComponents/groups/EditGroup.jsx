@@ -5,7 +5,7 @@ import { message, Alert } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 import { Box, Button } from 'grommet';
 
-import CreateGroupForm from '../../UIComponents/CreateGroupForm';
+import GroupForm from '../../UIComponents/GroupForm';
 import Template from '../../UIComponents/Template';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
@@ -257,7 +257,7 @@ class EditGroup extends React.Component {
           )
         }
       >
-        <CreateGroupForm
+        <GroupForm
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}

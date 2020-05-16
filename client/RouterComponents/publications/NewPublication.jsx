@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert } from 'antd/lib';
 
-import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
+import PublicationForm from '../../UIComponents/PublicationForm';
 
 const successCreation = () => {
   message.success('Your publication is successfully created', 6);
@@ -181,7 +181,7 @@ class NewPublication extends React.Component {
         <h1>Create a Publication</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
-            <CreatePublicationForm
+            <PublicationForm
               values={values}
               registerPublicationLocally={this.registerPublicationLocally}
               setUploadableImage={this.setUploadableImage}

@@ -21,7 +21,7 @@ const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
-class CreatePublicationForm extends React.Component {
+class PublicationForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
@@ -231,4 +231,4 @@ class CreatePublicationForm extends React.Component {
   }
 }
 
-export default Form.create()(CreatePublicationForm);
+export default Form.create()(PublicationForm);

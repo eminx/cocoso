@@ -10,7 +10,7 @@ const Field = ({ children, ...otherProps }) => (
   </FormField>
 );
 
-const CreateGroupForm = ({
+const GroupForm = ({
   uploadableImageLocal,
   setUploadableImage,
   formValues,
@@ -114,4 +114,4 @@ const CreateGroupForm = ({
   );
 };
 
-export default CreateGroupForm;
+export default GroupForm;

@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
 import { Button } from 'grommet';
 
-import CreatePageForm from '../../UIComponents/CreatePageForm';
+import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 import Loader from '../../UIComponents/Loader';
@@ -182,7 +182,7 @@ class EditPage extends React.Component {
           />
         }
       >
-        <CreatePageForm
+        <PageForm
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}

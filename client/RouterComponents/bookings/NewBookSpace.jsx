@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
 import { CheckBox, Box, Text, Heading } from 'grommet';
 
-import CreateBookingForm from '../../UIComponents/CreateBookingForm';
+import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
 
 const successCreation = () => {
@@ -237,7 +237,7 @@ class NewBookSpace extends React.Component {
           )}
         </Box>
 
-        <CreateBookingForm
+        <BookingForm
           setUploadableImage={this.setUploadableImage}
           uploadableImageLocal={uploadableImageLocal}
           places={places}

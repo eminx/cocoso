@@ -48,7 +48,7 @@ function Field({ label, children, ...otherProps }) {
   );
 }
 
-class CreateBookingForm extends PureComponent {
+class BookingForm extends PureComponent {
   addRecurrence = () => {
     const { datesAndTimes, setDatesAndTimes } = this.props;
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
@@ -353,4 +353,4 @@ class CreateBookingForm extends PureComponent {
   }
 }
 
-export default CreateBookingForm;
+export default BookingForm;

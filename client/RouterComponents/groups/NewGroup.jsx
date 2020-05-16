@@ -4,7 +4,7 @@ import { message, Alert } from 'antd/lib';
 
 import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
 
-import CreateGroupForm from '../../UIComponents/CreateGroupForm';
+import GroupForm from '../../UIComponents/GroupForm';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
@@ -206,7 +206,7 @@ class NewGroup extends React.Component {
           )}
         </FormField>
 
-        <CreateGroupForm
+        <GroupForm
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}

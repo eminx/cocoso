@@ -3,12 +3,7 @@ import { TextInput, FormField, Form, Box, Button } from 'grommet';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
-const CreatePageForm = ({
-  formValues,
-  onFormChange,
-  onQuillChange,
-  onSubmit
-}) => {
+const PageForm = ({ formValues, onFormChange, onQuillChange, onSubmit }) => {
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
@@ -33,4 +28,4 @@ const CreatePageForm = ({
   );
 };
 
-export default CreatePageForm;
+export default PageForm;

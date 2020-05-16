@@ -1,9 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
-import { Heading } from 'grommet';
 
-import CreatePageForm from '../../UIComponents/CreatePageForm';
+import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 
@@ -119,7 +118,7 @@ class NewPage extends React.Component {
 
     return (
       <Template heading="Create a New Page">
-        <CreatePageForm
+        <PageForm
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}

@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
 import { Box, Button, CheckBox, Text } from 'grommet';
 
-import CreateBookingForm from '../../UIComponents/CreateBookingForm';
+import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 
@@ -334,7 +334,7 @@ class EditBooking extends PureComponent {
         </Box>
 
         <Box>
-          <CreateBookingForm
+          <BookingForm
             imageUrl={gatheringData && gatheringData.imageUrl}
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}
