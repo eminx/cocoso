@@ -9,6 +9,7 @@ import GroupForm from '../../UIComponents/GroupForm';
 import Template from '../../UIComponents/Template';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { resizeImage, uploadImage } from '../../functions';
 
 const successUpdate = () =>
   message.success('Your group is successfully updated', 6);
@@ -110,15 +111,19 @@ class EditGroup extends React.Component {
     this.uploadImage();
   };
 
-  setUploadableImage = e => {
-    const theImageFile = e.file.originFileObj;
+  setUploadableImage = files => {
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const uploadableImage = files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
+    reader.readAsDataURL(uploadableImage);
     reader.addEventListener(
       'load',
       () => {
         this.setState({
-          uploadableImage: theImageFile,
+          uploadableImage,
           uploadableImageLocal: reader.result
         });
       },
@@ -126,23 +131,25 @@ class EditGroup extends React.Component {
     );
   };
 
-  uploadImage = () => {
+  uploadImage = async () => {
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('groupImageUpload');
-
-    upload.send(uploadableImage, (error, downloadUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-      } else {
-        this.setState(
-          {
-            uploadedImage: downloadUrl
-          },
-          this.updateGroup
-        );
-      }
-    });
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 500);
+      const uploadedImage = await uploadImage(resizedImage, 'groupImageUpload');
+      this.setState(
+        {
+          uploadedImage
+        },
+        () => this.updateGroup()
+      );
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false
+      });
+    }
   };
 
   updateGroup = () => {

@@ -7,6 +7,7 @@ import { Box, Button, CheckBox, Text } from 'grommet';
 import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { resizeImage, uploadImage } from '../../functions';
 
 const successEditMessage = isDeleted => {
   if (isDeleted) {
@@ -150,27 +151,28 @@ class EditBooking extends PureComponent {
     );
   };
 
-  uploadImage = () => {
+  uploadImage = async () => {
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('activityImageUpload');
-
-    upload.send(uploadableImage, (error, downloadUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-        message.error(error.reason);
-        this.setState({
-          isCreating: false
-        });
-      } else {
-        this.setState(
-          {
-            uploadedImage: downloadUrl
-          },
-          () => this.updateBooking()
-        );
-      }
-    });
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 500);
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'activityImageUpload'
+      );
+      this.setState(
+        {
+          uploadedImage
+        },
+        () => this.updateBooking()
+      );
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false
+      });
+    }
   };
 
   updateBooking = () => {
@@ -298,8 +300,8 @@ class EditBooking extends PureComponent {
     }
 
     const buttonLabel = isCreating
-      ? 'Creating your activity...'
-      : 'Confirm and Create';
+      ? 'Updating your activity...'
+      : 'Confirm and Update';
     const { title } = formValues;
     const isFormValid = formValues && title.length > 3;
 

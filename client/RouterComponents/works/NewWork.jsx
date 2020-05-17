@@ -5,10 +5,10 @@ import { message, Alert } from 'antd/lib';
 import { UserContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
-import { parseTitle } from '../../functions';
+import { parseTitle, call, resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {
-  message.success('New page is successfully created', 6);
+  message.success('New work is successfully created', 6);
 };
 
 class NewWork extends React.Component {
@@ -18,6 +18,7 @@ class NewWork extends React.Component {
       shortDescription: '',
       longDescription: ''
     },
+    uploadedImages: [],
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -49,45 +50,45 @@ class NewWork extends React.Component {
   };
 
   handleFileDrop = files => {
-    if (files.length !== 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-
     this.setState({ isUploading: true });
-    const closeLoader = () => this.setState({ isUploading: false });
-
-    const upload = new Slingshot.Upload('groupImageUpload');
-    files.forEach(file => {
+    files.forEach((file, index) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
-      const uploadableFile = new File([file], parsedName, {
-        type: file.type
+      resizeImage(file, 600, uri => {
+        const uploadableImage = dataURLtoFile(uri, parsedName);
+        uploadImage(uploadableImage, 'workImageUpload', (error, respond) => {
+          if (error) {
+            console.log('error!', error);
+            errorDialog(error.reason);
+            return;
+          }
+          this.setState(({ uploadedImages }) => ({
+            uploadedImages: [
+              ...uploadedImages,
+              {
+                url: respond,
+                name: parsedName
+              }
+            ]
+          }));
+        });
       });
-      upload.send(uploadableFile, (error, downloadUrl) => {
-        if (error) {
-          console.error('Error uploading:', error);
-          message.error(error.reason);
-          closeLoader();
-          return;
-        } else {
-          this.setState({
-            imageUrl: downloadUrl
-          });
-          closeLoader();
-        }
-      });
+      if (files.length === index + 1) {
+        this.createWork();
+      }
     });
   };
 
-  createWork = () => {
+  createWork = async () => {
     const { formValues, images } = this.state;
-    Meteor.call('createWork', formValues, images, (error, response) => {
-      if (error) {
-        message.error('Could not create work due to ', error.error);
-        return;
-      }
+    try {
+      const respond = await call('createWork', formValues, images);
+      this.setState({ newWorkId: respond });
       message.success('You work is successfully created');
-    });
+      this.setState({ isUploading: false });
+    } catch (error) {
+      message.error('Could not create work due to ', error.error);
+      this.setState({ isUploading: false });
+    }
   };
 
   removeWork = workId => {

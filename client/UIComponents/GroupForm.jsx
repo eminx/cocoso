@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import { Upload } from 'antd/lib';
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import { Form, FormField, Text, Box, TextInput, Image, Button } from 'grommet';
+import { Form, FormField, Text, Box, TextInput, Button } from 'grommet';
+import FileDropper from '../UIComponents/FileDropper';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
@@ -65,39 +65,12 @@ const GroupForm = ({
             )
           }
         >
-          <Box justify="center" direction="row">
-            <Upload
-              name="gathering"
-              action="/upload.do"
-              onChange={setUploadableImage}
-              required
-            >
-              {uploadableImageLocal ? (
-                <Box width="large" height="medium">
-                  <Image
-                    fit="contain"
-                    fill
-                    src={uploadableImageLocal}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Box>
-              ) : imageUrl ? (
-                <Box width="large" height="medium" alignSelf="center">
-                  <Image
-                    fit="contain"
-                    fill
-                    src={imageUrl}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Box>
-              ) : (
-                <Button
-                  plain
-                  hoverIndicator="light-1"
-                  label="Choose an image"
-                />
-              )}
-            </Upload>
+          <Box alignSelf="center">
+            <FileDropper
+              uploadableImageLocal={uploadableImageLocal}
+              imageUrl={imageUrl}
+              setUploadableImage={setUploadableImage}
+            />
           </Box>
         </Field>
 

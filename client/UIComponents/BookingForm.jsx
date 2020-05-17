@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import ReactQuill from 'react-quill';
-import ReactDropzone from 'react-dropzone';
+import { Icon, message } from 'antd/lib';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
-import { Row, Col, Icon, message } from 'antd/lib';
+import FileDropper from './FileDropper';
 
 import {
   Box,
@@ -21,14 +21,7 @@ import {
 } from 'grommet';
 import moment from 'moment';
 
-const compareForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD');
-  const dateB = moment(b.startDate, 'YYYY-MM-DD');
-  return dateA.diff(dateB);
-};
-
 const defaultCapacity = 40;
-
 const today = new Date().toISOString().substring(0, 10);
 
 let emptyDateAndTime = {
@@ -101,6 +94,7 @@ class BookingForm extends PureComponent {
           />
         ))}
         <Box
+          direction="row"
           justify="center"
           pad="small"
           margin="medium"
@@ -295,46 +289,11 @@ class BookingForm extends PureComponent {
               }
             >
               <Box alignSelf="center">
-                <ReactDropzone onDrop={setUploadableImage}>
-                  {({ getRootProps, getInputProps, isDragActive }) => (
-                    <Box
-                      {...getRootProps()}
-                      background="light-2"
-                      round="8px"
-                      width="large"
-                      height="medium"
-                    >
-                      {uploadableImageLocal ? (
-                        <Box width="large" height="medium">
-                          <Image
-                            fit="contain"
-                            fill
-                            src={uploadableImageLocal}
-                            style={{ cursor: 'pointer' }}
-                          />
-                        </Box>
-                      ) : imageUrl ? (
-                        <Box width="large" height="medium">
-                          <Image
-                            fit="contain"
-                            fill
-                            src={imageUrl}
-                            style={{ cursor: 'pointer' }}
-                          />
-                        </Box>
-                      ) : (
-                        <Box alignSelf="center" pad="large">
-                          <Button
-                            plain
-                            hoverIndicator="light-1"
-                            label="Drop an image or click to open the file picker"
-                          />
-                        </Box>
-                      )}
-                      <input {...getInputProps()} />
-                    </Box>
-                  )}
-                </ReactDropzone>
+                <FileDropper
+                  uploadableImageLocal={uploadableImageLocal}
+                  imageUrl={imageUrl}
+                  setUploadableImage={setUploadableImage}
+                />
               </Box>
             </Field>
           )}

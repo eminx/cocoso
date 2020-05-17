@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import Resizer from 'react-image-file-resizer';
 
 const getInitials = string => {
   var names = string.split(' '),
@@ -37,6 +38,18 @@ function includesSpecialCharacters(string) {
   }
 }
 
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+}
+
 const call = (method, ...parameters) =>
   new Promise((resolve, reject) => {
     Meteor.call(method, ...parameters, (error, respond) => {
@@ -45,6 +58,39 @@ const call = (method, ...parameters) =>
     });
   });
 
+const resizeImage = (image, desiredImageWidth) =>
+  new Promise((resolve, reject) => {
+    Resizer.imageFileResizer(
+      image,
+      desiredImageWidth,
+      400,
+      'JPEG',
+      95,
+      0,
+      uri => {
+        if (!uri) {
+          reject({ reason: 'image cannot be resized' });
+        }
+        const uploadableImage = dataURLtoFile(uri, image.name);
+        resolve(uploadableImage);
+      },
+      'base64'
+    );
+  });
+
+const uploadImage = (image, directory) =>
+  new Promise((resolve, reject) => {
+    const upload = slingshotUpload(directory);
+    upload.send(image, (error, downloadUrl) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(downloadUrl);
+    });
+  });
+
+const slingshotUpload = directory => new Slingshot.Upload(directory);
+
 export {
   getInitials,
   removeSpace,
@@ -52,5 +98,8 @@ export {
   parseTitle,
   emailIsValid,
   includesSpecialCharacters,
-  call
+  call,
+  resizeImage,
+  uploadImage,
+  dataURLtoFile
 };

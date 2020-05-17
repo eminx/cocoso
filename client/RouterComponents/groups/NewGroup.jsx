@@ -1,13 +1,13 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
-
 import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
 
 import GroupForm from '../../UIComponents/GroupForm';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
+import { resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {
   message.success('Your group is successfully created', 6);
@@ -74,15 +74,19 @@ class NewGroup extends React.Component {
     this.uploadImage();
   };
 
-  setUploadableImage = e => {
-    const theImageFile = e.file.originFileObj;
+  setUploadableImage = files => {
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const uploadableImage = files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
+    reader.readAsDataURL(uploadableImage);
     reader.addEventListener(
       'load',
       () => {
         this.setState({
-          uploadableImage: theImageFile,
+          uploadableImage,
           uploadableImageLocal: reader.result
         });
       },
@@ -90,36 +94,34 @@ class NewGroup extends React.Component {
     );
   };
 
-  uploadImage = () => {
+  uploadImage = async () => {
     const { uploadableImage } = this.state;
-    const upload = new Slingshot.Upload('groupImageUpload');
-
-    upload.send(uploadableImage, (error, imageUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-        message.error(error.reason);
-        this.setState({
-          isCreating: false
-        });
-      } else {
-        this.setState(
-          {
-            uploadedImageUrl: imageUrl
-          },
-          () => this.createGroup()
-        );
-      }
-    });
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 500);
+      const uploadedImage = await uploadImage(resizedImage, 'groupImageUpload');
+      this.setState(
+        {
+          uploadedImage
+        },
+        () => this.createGroup()
+      );
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false
+      });
+    }
   };
 
   createGroup = async () => {
-    const { formValues, uploadedImageUrl, isPrivate } = this.state;
+    const { formValues, uploadedImage, isPrivate } = this.state;
 
     try {
       const response = await call(
         'createGroup',
         formValues,
-        uploadedImageUrl,
+        uploadedImage,
         isPrivate
       );
       this.setState({

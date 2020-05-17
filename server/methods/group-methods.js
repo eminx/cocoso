@@ -55,7 +55,7 @@ Meteor.methods({
     check(formValues.capacity, Number);
 
     const host = getHost(this);
-
+    console.log(imageUrl);
     try {
       const add = Groups.insert(
         {

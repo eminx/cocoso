@@ -1,10 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { message, Alert } from 'antd/lib';
-import { CheckBox, Box, Text, Heading } from 'grommet';
+import { CheckBox, Box, Text } from 'grommet';
 
 import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
+import { resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {
   message.success('Your booking is successfully created', 6);
@@ -81,14 +82,14 @@ class NewBookSpace extends React.Component {
       message.error('Please drop only one file at a time.');
       return;
     }
-    const theImageFile = files[0];
+    const uploadableImage = files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
+    reader.readAsDataURL(uploadableImage);
     reader.addEventListener(
       'load',
       () => {
         this.setState({
-          uploadableImage: theImageFile,
+          uploadableImage,
           uploadableImageLocal: reader.result
         });
       },
@@ -96,29 +97,30 @@ class NewBookSpace extends React.Component {
     );
   };
 
-  uploadImage = () => {
+  uploadImage = async () => {
     this.setState({ isLoading: true });
 
     const { uploadableImage } = this.state;
 
-    const upload = new Slingshot.Upload('activityImageUpload');
-
-    upload.send(uploadableImage, (error, downloadUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-        message.error(error.reason);
-        this.setState({
-          isCreating: false
-        });
-      } else {
-        this.setState(
-          {
-            uploadedImage: downloadUrl
-          },
-          () => this.createBooking()
-        );
-      }
-    });
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 500);
+      const uploadedImage = await uploadImage(
+        resizedImage,
+        'activityImageUpload'
+      );
+      this.setState(
+        {
+          uploadedImage
+        },
+        () => this.createBooking()
+      );
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false
+      });
+    }
   };
 
   createBooking = () => {
