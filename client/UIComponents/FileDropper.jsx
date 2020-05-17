@@ -2,9 +2,20 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import { Box, Button, Image } from 'grommet';
 
-function FileDropper({ setUploadableImage, uploadableImageLocal, imageUrl }) {
+function FileDropper({ setUploadableImages, uploadableImageLocal, imageUrl }) {
+  const isImage = uploadableImageLocal || imageUrl;
+
+  let imageSet;
+  if (typeof isImage === 'string') {
+    imageSet = [isImage];
+  } else if (typeof isImage === 'object') {
+    imageSet = isImage;
+  }
+
+  console.log(imageSet);
+
   return (
-    <Dropzone onDrop={setUploadableImage}>
+    <Dropzone onDrop={setUploadableImages}>
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
@@ -13,14 +24,18 @@ function FileDropper({ setUploadableImage, uploadableImageLocal, imageUrl }) {
           width="large"
           height="medium"
         >
-          {uploadableImageLocal || imageUrl ? (
-            <Box width="large" height="medium">
-              <Image
-                fit="contain"
-                fill
-                src={uploadableImageLocal || imageUrl}
-                style={{ cursor: 'pointer' }}
-              />
+          {imageSet ? (
+            <Box>
+              {imageSet.map(image => (
+                <Box width="large" height="medium">
+                  <Image
+                    fit="contain"
+                    fill
+                    src={image}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </Box>
+              ))}
             </Box>
           ) : (
             <Box alignSelf="center" pad="large">

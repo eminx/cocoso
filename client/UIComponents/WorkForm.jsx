@@ -1,12 +1,42 @@
 import React from 'react';
-import { TextInput, TextArea, FormField, Form, Box, Button } from 'grommet';
+import {
+  TextInput,
+  TextArea,
+  Text,
+  FormField,
+  Form,
+  Box,
+  Button
+} from 'grommet';
 import ReactQuill from 'react-quill';
+import FileDropper from '../UIComponents/FileDropper';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
-const WorkForm = ({ formValues, onFormChange, onQuillChange, onSubmit }) => {
+const WorkForm = ({
+  formValues,
+  onFormChange,
+  onQuillChange,
+  onSubmit,
+  setUploadableImages,
+  uploadableImagesLocal,
+  imageUrl
+}) => {
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
+        <FormField
+          label="Image"
+          help={(uploadableImagesLocal || imageUrl) && <Text size="small" />}
+        >
+          <Box alignSelf="center">
+            <FileDropper
+              uploadableImageLocal={uploadableImagesLocal}
+              imageUrl={imageUrl}
+              setUploadableImages={setUploadableImages}
+            />
+          </Box>
+        </FormField>
+
         <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
           <TextInput
             plain={false}

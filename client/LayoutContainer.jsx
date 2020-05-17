@@ -42,7 +42,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
 
   useEffect(() => {
     getHost();
-  });
+  }, []);
 
   const settings = currentHost;
 
