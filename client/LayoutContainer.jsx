@@ -72,7 +72,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
           </Box>
 
           <Box>{children}</Box>
-          <FooterInfo settings={settings} />
+          {/* <FooterInfo settings={settings} /> */}
         </Box>
       </Box>
     </UserContext.Provider>

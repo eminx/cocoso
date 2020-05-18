@@ -19,6 +19,9 @@ const theme = {
   formField: {
     border: false
   },
+  textInput: {
+    backgroundColor: '#fff'
+  },
   list: {
     item: {
       border: false

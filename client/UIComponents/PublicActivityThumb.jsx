@@ -104,36 +104,31 @@ class PublicActivityThumb extends React.Component {
 
     return (
       <Box
-        pad={{ bottom: 'medium', right: 'medium', left: 'medium' }}
-        hoverIndicator={{ background: 'light-1' }}
-        onClick={() => null}
+        pad="medium"
+        hoverIndicator="light-1"
+        onClick={() => history.push(clickLink)}
       >
-        <Anchor
-          onClick={() => history.push(clickLink)}
-          label={
-            <Box>
-              <Box>
-                <Text size="large">
-                  {item.isGroup ? item.title : item.title}
-                </Text>
-                <Text weight={300}>
-                  {item.isGroup ? item.readingMaterial : item.subTitle}
-                </Text>
-              </Box>
+        <Box>
+          <Box pad={{ bottom: 'medium' }}>
+            <Text weight={600} size="large">
+              {item.isGroup ? item.title : item.title}
+            </Text>
+            <Text weight={300}>
+              {item.isGroup ? item.readingMaterial : item.subTitle}
+            </Text>
+          </Box>
 
-              <Box>
-                <LazyLoadImage
-                  alt={item.title}
-                  src={item.imageUrl}
-                  style={imageStyle}
-                  effect="black-and-white"
-                />
-              </Box>
+          <Box>
+            <LazyLoadImage
+              alt={item.title}
+              src={item.imageUrl}
+              style={imageStyle}
+              effect="black-and-white"
+            />
+          </Box>
 
-              <Box>{this.renderDates()}</Box>
-            </Box>
-          }
-        />
+          <Box>{this.renderDates()}</Box>
+        </Box>
       </Box>
     );
   }

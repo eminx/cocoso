@@ -3,15 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { message } from 'antd/lib';
-import {
-  Box,
-  Anchor,
-  Button,
-  Image,
-  Heading,
-  RadioButtonGroup,
-  Text
-} from 'grommet';
+import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
@@ -167,27 +159,24 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
 }
 
 const GroupItem = ({ group, history }) => (
-  <Box direction="row">
-    <Box
-      width="xsmall"
-      height="xsmall"
-      margin={{ right: 'small' }}
-      flex={{ grow: 0 }}
-    >
+  <Box
+    width="100%"
+    onClick={() => history.push(`/group/${group._id}`)}
+    hoverIndicator="light-1"
+    pad="small"
+    direction="row"
+    margin={{ bottom: 'medium' }}
+  >
+    <Box width="small" height="small" margin={{ right: 'small' }}>
       <Image fit="cover" fill src={group.imageUrl} />
     </Box>
     <Box width="100%">
       <Box>
-        <Text size="large" style={{ overflowWrap: 'anywhere' }}>
-          <Anchor
-            onClick={() => history.push(`/group/${group._id}`)}
-            label={group.title}
-          />
-        </Text>
+        <Heading level={3}>{group.title}</Heading>
         <Text weight={300}>{group.readingMaterial}</Text>
       </Box>
 
-      <Box flex={{ grow: 0 }} pad="small">
+      <Box pad="small">
         <Text size="small" textAlign="end">
           {group.adminUsername}
         </Text>

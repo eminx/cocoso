@@ -4,7 +4,7 @@ import { MoreVertical } from 'grommet-icons';
 
 function NiceList({ list, actionsDisabled, children, ...otherProps }) {
   return (
-    <List data={list} {...otherProps}>
+    <List pad="none" data={list} {...otherProps}>
       {listItem => (
         <ListItemWithActions
           listItem={listItem}
