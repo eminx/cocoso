@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Box, Heading, Text } from 'grommet';
+import { Box, Avatar, Heading, Text } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -57,13 +57,27 @@ class Work extends PureComponent {
           </Box>
         }
         rightContent={
-          <Box
-            pad={{
-              top: 'medium',
-              bottom: 'small'
-            }}
-          >
-            <Text>{work.additionalInfo}</Text>
+          <Box>
+            <Box
+              round
+              background="light-2"
+              direction="row"
+              justify="between"
+              align="center"
+            >
+              <Text margin={{ left: 'medium' }} weight="bold">
+                {work.authorUsername}
+              </Text>
+              <Avatar src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80" />
+            </Box>
+            <Box
+              pad={{
+                top: 'medium',
+                bottom: 'small'
+              }}
+            >
+              <Text>{work.additionalInfo}</Text>
+            </Box>
           </Box>
         }
       >

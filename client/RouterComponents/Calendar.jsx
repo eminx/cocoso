@@ -121,9 +121,7 @@ class Calendar extends React.PureComponent {
                 closeLoader();
               } else {
                 message.success(
-                  `${
-                    uploadableFile.name
-                  } is succesfully uploaded and assigned to manuals!`
+                  `${uploadableFile.name} is succesfully uploaded and assigned to manuals!`
                 );
                 closeLoader();
               }
@@ -263,7 +261,7 @@ class Calendar extends React.PureComponent {
           </div>
         </Row>
 
-        <Divider />
+        {/* <Divider />
 
         <Row>
           <h3 style={{ textAlign: 'center' }}>Manuals</h3>
@@ -319,7 +317,7 @@ class Calendar extends React.PureComponent {
               </NiceList>
             )}
           </Col>
-        </Row>
+        </Row> */}
 
         <Modal
           visible={Boolean(selectedBooking)}

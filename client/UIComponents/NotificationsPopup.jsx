@@ -42,7 +42,7 @@ const NotificationList = withRouter(({ notifications, history }) => (
       <List
         size="small"
         data={notifications}
-        // itemProps={{ pad: 'small' }}
+        itemProps={{ pad: 'small' }}
         pad="small"
       >
         {item => (
@@ -51,7 +51,7 @@ const NotificationList = withRouter(({ notifications, history }) => (
               onClick={() => history.push(`/${item.context}/${item.contextId}`)}
               label={
                 <Stack anchor="top-right">
-                  <Box padding="small">
+                  <Box padding="medium">
                     <Heading level={4}>{item.title}</Heading>
                   </Box>
                   <Badge>{item.count}</Badge>

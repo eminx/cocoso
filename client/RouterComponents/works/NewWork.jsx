@@ -120,9 +120,12 @@ class NewWork extends React.Component {
 
     try {
       const respond = await call('createWork', formValues, uploadedImages);
-      this.setState({ newWorkId: respond });
-      message.success('You work is successfully created');
-      this.setState({ isCreating: false });
+      this.setState({
+        newWorkId: respond,
+        isCreating: false,
+        isSuccess: true
+      });
+      message.success('Your work is successfully created');
     } catch (error) {
       message.error('Could not create work due to ', error.error);
       this.setState({ isCreating: false });
@@ -157,8 +160,7 @@ class NewWork extends React.Component {
     } = this.state;
 
     if (isSuccess && newWorkId) {
-      successCreation();
-      return <Redirect to={`/work/${newWorkId}`} />;
+      return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
     }
 
     const buttonLabel = isCreating

@@ -7,8 +7,8 @@ function Template({ leftContent, rightContent, heading, children }) {
     <Container fluid style={{ width: '100%' }}>
       <Row gutterWidth={12}>
         <Col lg={3}>{leftContent}</Col>
-        <Col lg={6} style={{ maxWidth: 600 }}>
-          <Box>
+        <Col lg={6}>
+          <Box style={{ maxWidth: 600, margin: '0 auto' }}>
             {heading && (
               <Box pad={{ top: 'small', bottom: 'small' }}>
                 <Heading level={3}>{heading}</Heading>

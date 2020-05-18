@@ -13,7 +13,7 @@ import { call } from './functions';
 const menu = [
   {
     label: 'Marketplace',
-    route: '/'
+    route: '/market'
   },
   {
     label: 'Calendar',
