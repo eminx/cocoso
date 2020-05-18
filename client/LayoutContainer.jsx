@@ -51,11 +51,15 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
     title: 'Cic Network'
   };
 
+  const pathname = history.location.pathname;
+  const isHeader = ['/', '/groups'].includes(pathname);
+
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
       <Box className="main-viewport" justify="center" fill>
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
-          <Header {...headerProps} />
+          {isHeader && <Header {...headerProps} />}
+
           <Box pad="small" justify="center" direction="row">
             {menu.map(item => (
               <Box pad="small" key={item.label}>

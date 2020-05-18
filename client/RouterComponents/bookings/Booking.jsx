@@ -1,15 +1,17 @@
 import React from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
+import { ScreenClassRender } from 'react-grid-system';
 import 'react-table/react-table.css';
 import { Divider, Input, message, Modal } from 'antd/lib';
 
 import {
   Accordion,
   AccordionPanel,
+  Anchor,
   Box,
+  Image,
   Form,
   FormField,
   TextInput,
@@ -21,7 +23,6 @@ import {
 
 import Chattery from '../../chattery';
 import FancyDate from '../../UIComponents/FancyDate';
-import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import { call } from '../../functions';
@@ -263,7 +264,7 @@ class Booking extends React.Component {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box>
+          <Box pad={{ bottom: 'medium' }}>
             {eventPast ? (
               <p>This event has past</p>
             ) : (
@@ -282,12 +283,14 @@ class Booking extends React.Component {
                     Capacity is full now.
                   </p>
                 ) : (
-                  <RsvpForm
-                    currentUser={currentUser}
-                    onSubmit={event =>
-                      this.handleRSVPSubmit(event, occurenceIndex)
-                    }
-                  />
+                  <Box pad="medium" background="light-1">
+                    <RsvpForm
+                      currentUser={currentUser}
+                      onSubmit={event =>
+                        this.handleRSVPSubmit(event, occurenceIndex)
+                      }
+                    />
+                  </Box>
                 )}
               </Box>
             )}
@@ -379,7 +382,13 @@ class Booking extends React.Component {
   };
 
   render() {
-    const { bookingData, isLoading, currentUser, chatData } = this.props;
+    const {
+      bookingData,
+      isLoading,
+      currentUser,
+      chatData,
+      history
+    } = this.props;
 
     if (!bookingData || isLoading) {
       return <Loader />;
@@ -390,20 +399,21 @@ class Booking extends React.Component {
     const messages = this.getChatMessages();
     const isRegisteredMember = this.isRegisteredMember();
 
-    const EditButton =
-      currentUser && bookingData && currentUser._id === bookingData.authorId ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: -12,
-            right: 36
-          }}
+    const EditButton = currentUser &&
+      bookingData &&
+      currentUser._id === bookingData.authorId && (
+        <Box
+          direction="row"
+          justify="center"
+          pad="small"
+          margin={{ top: 'large' }}
         >
-          <Link to={`/edit-booking/${bookingData._id}`}>Edit</Link>
-        </div>
-      ) : null;
+          <Button
+            onClick={() => history.push(`/edit-booking/${bookingData._id}`)}
+            label="Edit this Activity"
+          />
+        </Box>
+      );
 
     return (
       <Template
@@ -426,15 +436,53 @@ class Booking extends React.Component {
                 : 'Please click and open the date to RSVP'}
             </Paragraph>
             {this.renderDates()}
+            {EditButton}
           </Box>
         }
       >
-        {EditButton}
-        <CardArticle
-          item={bookingData}
-          isLoading={isLoading}
-          currentUser={currentUser}
+        <ScreenClassRender
+          render={screenClass => (
+            <Box width={screenClass === 'sm' ? 'medium' : 'large'}>
+              <Image fit="contain" fill src={bookingData.imageUrl} />
+            </Box>
+          )}
         />
+        <Box>
+          <div
+            style={{
+              whiteSpace: 'pre-line',
+              color: 'rgba(0,0,0, .85)'
+            }}
+            dangerouslySetInnerHTML={{
+              __html: bookingData.longDescription
+            }}
+          />
+        </Box>
+
+        {bookingData.practicalInfo && bookingData.practicalInfo.length > 0 && (
+          <Box>
+            <Heading level={4}>Practical information:</Heading>
+            <Text size="small">{bookingData.practicalInfo}</Text>
+          </Box>
+        )}
+
+        {currentUser &&
+          currentUser.isRegisteredMember &&
+          bookingData &&
+          bookingData.internalInfo && (
+            <Box>
+              <Heading level={4}>Internal information for members:</Heading>
+              <Text size="small">{bookingData.internalInfo}</Text>
+            </Box>
+          )}
+
+        <Box>
+          <Text>
+            {bookingData.room && bookingData.room + ', '} <br />
+            {bookingData.place}
+          </Text>
+          <Text size="small">{bookingData.address}</Text>
+        </Box>
 
         {bookingData.isPublicActivity &&
           messages &&

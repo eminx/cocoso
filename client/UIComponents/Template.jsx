@@ -6,10 +6,8 @@ function Template({ leftContent, rightContent, heading, children }) {
   return (
     <Container fluid style={{ width: '100%' }}>
       <Row gutterWidth={12}>
-        <Col md={4} lg={3}>
-          {leftContent}
-        </Col>
-        <Col md={8} lg={6}>
+        <Col lg={3}>{leftContent}</Col>
+        <Col lg={6}>
           <Box>
             {heading && (
               <Box pad={{ top: 'small', bottom: 'small' }}>

@@ -1,15 +1,17 @@
 import React from 'react';
 import {
+  Box,
+  Button,
   TextInput,
   TextArea,
   Text,
   FormField,
-  Form,
-  Box,
-  Button
+  Form
 } from 'grommet';
 import ReactQuill from 'react-quill';
+
 import FileDropper from '../UIComponents/FileDropper';
+import NiceSlider from '../UIComponents/NiceSlider';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
 const WorkForm = ({
@@ -19,21 +21,25 @@ const WorkForm = ({
   onSubmit,
   setUploadableImages,
   uploadableImagesLocal,
-  imageUrl
+  imageUrl,
+  isFormValid,
+  isButtonDisabled
 }) => {
+  const images =
+    uploadableImagesLocal && uploadableImagesLocal.length > 0
+      ? uploadableImagesLocal
+      : imageUrl;
+
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
         <FormField
-          label="Image"
+          label={`Images (${uploadableImagesLocal.length})`}
           help={(uploadableImagesLocal || imageUrl) && <Text size="small" />}
         >
-          <Box alignSelf="center">
-            <FileDropper
-              uploadableImageLocal={uploadableImagesLocal}
-              imageUrl={imageUrl}
-              setUploadableImages={setUploadableImages}
-            />
+          {images && <NiceSlider images={images} />}
+          <Box alignSelf="center" margin={{ top: 'medium' }}>
+            <FileDropper setUploadableImage={setUploadableImages} />
           </Box>
         </FormField>
 
@@ -51,7 +57,7 @@ const WorkForm = ({
         >
           <TextArea
             plain={false}
-            name="title"
+            name="shortDescription"
             placeholder="Sweet, Natural & Refreshing"
           />
         </FormField>
@@ -72,13 +78,18 @@ const WorkForm = ({
         >
           <TextArea
             plain={false}
-            name="title"
+            name="additionalInfo"
             placeholder="A bottle costs..."
           />
         </FormField>
 
         <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Confirm" />
+          <Button
+            type="submit"
+            primary
+            label="Confirm"
+            disabled={isButtonDisabled}
+          />
         </Box>
       </Form>
     </div>

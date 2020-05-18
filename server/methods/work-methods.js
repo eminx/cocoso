@@ -40,12 +40,11 @@ Meteor.methods({
 
       return work;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
 
-  createWork(newWork) {
+  createWork(values, images) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('You are not a member anyways!');
@@ -55,16 +54,17 @@ Meteor.methods({
 
     try {
       const newWorkId = Works.insert({
-        ...newWork,
+        ...values,
         host,
+        images,
         authorId: user._id,
+        authorAvatar: user.avatar || '',
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName
       });
       return newWorkId;
-    } catch (e) {
-      console.log(error);
+    } catch (error) {
       throw new Meteor.Error(error);
     }
   },

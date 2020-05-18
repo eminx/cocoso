@@ -16,7 +16,8 @@ class NewWork extends React.Component {
     formValues: {
       title: '',
       shortDescription: '',
-      longDescription: ''
+      longDescription: '',
+      additionalInfo: ''
     },
     uploadableImages: [],
     uploadableImagesLocal: [],
@@ -81,13 +82,44 @@ class NewWork extends React.Component {
     });
   };
 
-  createWork = async () => {
+  uploadImages = () => {
+    const { uploadableImages } = this.state;
     this.setState({
       isCreating: true
     });
-    const { formValues, images } = this.state;
+
     try {
-      const respond = await call('createWork', formValues, images);
+      uploadableImages.forEach(async (uploadableImage, index) => {
+        const resizedImage = await resizeImage(uploadableImage, 500);
+        const uploadedImage = await uploadImage(
+          resizedImage,
+          'workImageUpload'
+        );
+        this.setState(
+          ({ uploadedImages }) => ({
+            uploadedImages: [...uploadedImages, uploadedImage]
+          }),
+          this.createWork
+        );
+      });
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false,
+        isError: true
+      });
+    }
+  };
+
+  createWork = async () => {
+    const { uploadedImages, uploadableImages, formValues } = this.state;
+    if (uploadableImages.length !== uploadedImages.length) {
+      return;
+    }
+
+    try {
+      const respond = await call('createWork', formValues, uploadedImages);
       this.setState({ newWorkId: respond });
       message.success('You work is successfully created');
       this.setState({ isCreating: false });
@@ -130,14 +162,10 @@ class NewWork extends React.Component {
     }
 
     const buttonLabel = isCreating
-      ? 'Creating your group...'
-      : 'Confirm and Create Group';
-    const { title, description } = formValues;
-    const isFormValid =
-      formValues &&
-      title.length > 3 &&
-      description.length > 20 &&
-      uploadableImageLocal;
+      ? 'Creating your work...'
+      : 'Confirm and Create Work';
+    const { title } = formValues;
+    const isFormValid = formValues && title.length > 3 && uploadableImagesLocal;
 
     return (
       <Template heading="Create New Work">
@@ -145,7 +173,7 @@ class NewWork extends React.Component {
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
+          onSubmit={this.uploadImages}
           setUploadableImages={this.setUploadableImages}
           uploadableImagesLocal={uploadableImagesLocal}
           buttonLabel={buttonLabel}

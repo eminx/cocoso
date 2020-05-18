@@ -25,6 +25,26 @@ const GroupForm = ({
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
+        <Field
+          label="Image"
+          help={
+            (uploadableImageLocal || imageUrl) && (
+              <Text size="small">
+                If you want to replace it with another one, click on the image
+                to reopen the file picker
+              </Text>
+            )
+          }
+        >
+          <Box alignSelf="center">
+            <FileDropper
+              uploadableImageLocal={uploadableImageLocal}
+              imageUrl={imageUrl}
+              setUploadableImage={setUploadableImage}
+            />
+          </Box>
+        </Field>
+
         <Field label="Title">
           <TextInput
             plain={false}
@@ -52,26 +72,6 @@ const GroupForm = ({
 
         <Field label="Capacity">
           <TextInput plain={false} name="capacity" />
-        </Field>
-
-        <Field
-          label="Image"
-          help={
-            (uploadableImageLocal || imageUrl) && (
-              <Text size="small">
-                If you want to replace it with another one, click on the image
-                to reopen the file picker
-              </Text>
-            )
-          }
-        >
-          <Box alignSelf="center">
-            <FileDropper
-              uploadableImageLocal={uploadableImageLocal}
-              imageUrl={imageUrl}
-              setUploadableImage={setUploadableImage}
-            />
-          </Box>
         </Field>
 
         <Box direction="row" justify="end" pad="small">

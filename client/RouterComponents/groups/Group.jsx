@@ -135,7 +135,7 @@ class Group extends Component {
       <Box>
         {group.isPrivate && (
           <div style={{ textAlign: 'right' }}>
-            <Tooltip
+            {/* <Tooltip
               placement="topRight"
               trigger={['hover', 'click', 'focus']}
               title={
@@ -146,13 +146,13 @@ class Group extends Component {
               }
             >
               <em style={{ fontSize: 12 }}>This is a private group</em>
-            </Tooltip>
+            </Tooltip> */}
           </div>
         )}
         <Box>
-          <Text size="xlarge" style={{ overflowWrap: 'anywhere' }}>
+          <Heading level={3} style={{ overflowWrap: 'anywhere' }}>
             {group.title}
-          </Text>
+          </Heading>
           <Text weight={300}>{group.readingMaterial}</Text>
         </Box>
         <Box>
@@ -524,9 +524,7 @@ class Group extends Component {
                     } else {
                       console.log(respond);
                       message.success(
-                        `${
-                          uploadableFile.name
-                        } is succesfully uploaded and assigned to this group!`
+                        `${uploadableFile.name} is succesfully uploaded and assigned to this group!`
                       );
                       closeLoader();
                     }

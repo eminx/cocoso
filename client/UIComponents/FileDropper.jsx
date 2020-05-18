@@ -1,48 +1,41 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Box, Button, Image } from 'grommet';
+import { Box, Button, Image, Text } from 'grommet';
 
-function FileDropper({ setUploadableImages, uploadableImageLocal, imageUrl }) {
-  const isImage = uploadableImageLocal || imageUrl;
-
-  let imageSet;
-  if (typeof isImage === 'string') {
-    imageSet = [isImage];
-  } else if (typeof isImage === 'object') {
-    imageSet = isImage;
-  }
-
-  console.log(imageSet);
-
+const FileDropper = ({
+  setUploadableImage,
+  uploadableImageLocal,
+  imageUrl
+}) => {
   return (
-    <Dropzone onDrop={setUploadableImages}>
+    <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          background="light-2"
-          round="8px"
+          background={isDragActive ? 'dark-3' : 'light-2'}
           width="large"
           height="medium"
         >
-          {imageSet ? (
-            <Box>
-              {imageSet.map(image => (
-                <Box width="large" height="medium">
-                  <Image
-                    fit="contain"
-                    fill
-                    src={image}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Box>
-              ))}
-            </Box>
+          {uploadableImageLocal || imageUrl ? (
+            <Image
+              fit="contain"
+              fill
+              src={uploadableImageLocal || imageUrl}
+              style={{ cursor: 'pointer' }}
+            />
           ) : (
             <Box alignSelf="center" pad="large">
               <Button
                 plain
                 hoverIndicator="light-1"
-                label="Drop an image or click to open the file picker"
+                label={
+                  <Box alignSelf="center">
+                    <Text size="small" textAlign="center">
+                      Drop an image or images; or alternatively click to open
+                      the file picker
+                    </Text>
+                  </Box>
+                }
               />
             </Box>
           )}
@@ -51,6 +44,6 @@ function FileDropper({ setUploadableImages, uploadableImageLocal, imageUrl }) {
       )}
     </Dropzone>
   );
-}
+};
 
 export default FileDropper;
