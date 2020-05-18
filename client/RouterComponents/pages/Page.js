@@ -64,18 +64,6 @@ class Page extends PureComponent {
         heading={currentPage && currentPage.title}
         leftContent={
           <Box>
-            {currentUser && currentUser.isSuperAdmin && (
-              <Box pad="small" direction="row" justify="center">
-                <Link
-                  to="/new-page"
-                  key="new-page"
-                  style={{ marginBottom: 12 }}
-                >
-                  <Button primary label="New Page" />
-                </Link>
-              </Box>
-            )}
-
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
@@ -87,21 +75,28 @@ class Page extends PureComponent {
           currentPage &&
           currentUser &&
           currentUser.isSuperAdmin && (
-            <Box pad="small">
-              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-                {' '}
-                <Button label="Edit" as="span" />
+            <Box pad="small" direction="row" justify="center">
+              <Link to="/new-page" style={{ marginBottom: 12 }}>
+                <Button primary label="New Page" />
               </Link>
             </Box>
           )
         }
       >
         {currentPage && (
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentPage.longDescription
-            }}
-          />
+          <Box>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: currentPage.longDescription
+              }}
+            />
+
+            <Box pad="small" alignSelf="end">
+              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+                <Button size="small" label="Edit this page" />
+              </Link>
+            </Box>
+          </Box>
         )}
       </Template>
     );

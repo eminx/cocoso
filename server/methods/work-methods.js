@@ -61,7 +61,8 @@ Meteor.methods({
         authorAvatar: user.avatar || '',
         authorUsername: user.username,
         authorFirstName: user.firstName,
-        authorLastName: user.lastName
+        authorLastName: user.lastName,
+        creationDate: new Date()
       });
       return newWorkId;
     } catch (error) {

@@ -126,7 +126,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
   return (
     <Template
       heading="Groups"
-      leftContent={
+      rightContent={
         <Box pad="small" direction="row" justify="center">
           <Link to="/new-group">
             <Button as="span" primary label="New Group" />

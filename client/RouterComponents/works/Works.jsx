@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { message } from 'antd/lib';
-import { Heading, Box, Image, Text } from 'grommet';
+import { Heading, Anchor, Box, Image, Text } from 'grommet';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
+import ListMenu from '../../UIComponents/ListMenu';
+
+const menuRoutes = [
+  { label: 'Profile', value: '/my-profile' },
+  { label: 'Works', value: '/my-works' }
+];
 
 function Works({ history }) {
   const [works, setWorks] = useState([]);
@@ -31,8 +37,27 @@ function Works({ history }) {
     ]
   }));
 
+  const pathname = history && history.location.pathname;
+
   return (
-    <Template heading="My Works">
+    <Template
+      heading="My Works"
+      leftContent={
+        <ListMenu list={menuRoutes}>
+          {datum => (
+            <Anchor
+              onClick={() => history.push(datum.value)}
+              key={datum.value}
+              label={
+                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                  {datum.label}
+                </Text>
+              }
+            />
+          )}
+        </ListMenu>
+      }
+    >
       <NiceList list={myWorksWithActions} actionsDisabled>
         {work => <WorkItem work={work} history={history} />}
       </NiceList>
