@@ -82,7 +82,7 @@ class Work extends PureComponent {
         }
       >
         <NiceSlider images={work.images} />
-        <Box>
+        <Box pad={{ top: 'medium' }}>
           <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
         </Box>
       </Template>
