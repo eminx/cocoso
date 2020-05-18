@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { message } from 'antd/lib';
-import { Heading, Anchor, Box, Image, Text } from 'grommet';
+import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
+import Loader from '../../UIComponents/Loader';
 
 const menuRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -12,6 +13,7 @@ const menuRoutes = [
 
 function Works({ history }) {
   const [works, setWorks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Meteor.call('getMyWorks', (error, respond) => {
@@ -20,11 +22,12 @@ function Works({ history }) {
         return;
       }
       setWorks(respond);
+      setLoading(false);
     });
   }, []);
 
-  if (!works) {
-    return null;
+  if (loading || !works) {
+    return <Loader />;
   }
 
   const myWorksWithActions = works.map(work => ({
@@ -56,6 +59,15 @@ function Works({ history }) {
             />
           )}
         </ListMenu>
+      }
+      rightContent={
+        <Box pad="small" direction="row" justify="center">
+          <Button
+            primary
+            label="New Work"
+            onClick={() => history.push('/new-work')}
+          />
+        </Box>
       }
     >
       <NiceList list={myWorksWithActions} actionsDisabled>

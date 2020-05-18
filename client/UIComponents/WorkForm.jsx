@@ -22,6 +22,7 @@ const WorkForm = ({
   setUploadableImages,
   uploadableImagesLocal,
   imageUrl,
+  buttonLabel,
   isFormValid,
   isButtonDisabled
 }) => {
@@ -87,7 +88,7 @@ const WorkForm = ({
           <Button
             type="submit"
             primary
-            label="Confirm"
+            label={buttonLabel}
             disabled={isButtonDisabled}
           />
         </Box>

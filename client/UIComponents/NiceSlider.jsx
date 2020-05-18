@@ -32,7 +32,7 @@ const NiceSlider = ({ images }) => (
               key={image}
               alignSelf="center"
               width={screenClass === 'sm' ? 'medium' : 'large'}
-              // height={screenClass === 'sm' ? 'small' : 'medium'}
+              height={screenClass === 'sm' ? 'small' : 'medium'}
             >
               <Image fill fit="contain" src={image} />
             </Box>

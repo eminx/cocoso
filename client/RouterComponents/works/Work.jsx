@@ -22,8 +22,6 @@ class Work extends PureComponent {
     const workId = match.params.workId;
     const username = match.params.username;
 
-    console.log(match, workId, username);
-
     Meteor.call('getWork', workId, username, (error, respond) => {
       if (error) {
         console.log(error);

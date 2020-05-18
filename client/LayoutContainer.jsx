@@ -12,7 +12,7 @@ import { call } from './functions';
 
 const menu = [
   {
-    label: 'Home',
+    label: 'Marketplace',
     route: '/'
   },
   {
@@ -48,29 +48,15 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
 
   const headerProps = {
     currentUser,
+    history,
     title: 'Cic Network'
   };
-
-  const pathname = history.location.pathname;
-  const isHeader = ['/', '/groups'].includes(pathname);
 
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
       <Box className="main-viewport" justify="center" fill>
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
-          {isHeader && <Header {...headerProps} />}
-
-          <Box pad="small" justify="center" direction="row">
-            {menu.map(item => (
-              <Box pad="small" key={item.label}>
-                <Anchor
-                  onClick={() => history.push(item.route)}
-                  label={item.label}
-                />
-              </Box>
-            ))}
-          </Box>
-
+          <Header {...headerProps} />
           <Box>{children}</Box>
           {/* <FooterInfo settings={settings} /> */}
         </Box>
@@ -84,11 +70,12 @@ const boldBabe = {
   fontWeight: 700
 };
 
-const Header = ({ currentUser, title }) => {
+const Header = ({ currentUser, title, history }) => {
+  const pathname = history.location.pathname;
+
   return (
     <Box
       justify="between"
-      alignSelf="center"
       direction="row"
       pad={{
         right: 'medium',
@@ -96,15 +83,26 @@ const Header = ({ currentUser, title }) => {
         left: 'medium'
       }}
       fill="horizontal"
+      wrap
     >
-      <Box basis="150px" />
-      <Box justify="center">
-        <Heading level={1} style={{ marginBottom: 0 }}>
-          {title}
-        </Heading>
+      <Box basis="200px"></Box>
+      <Box
+        pad="small"
+        justify="center"
+        direction="row"
+        flex={{ shrink: 0 }}
+        alignSelf="center"
+      >
+        {menu.map(item => (
+          <Box pad="small" key={item.label}>
+            <Anchor
+              onClick={() => history.push(item.route)}
+              label={item.label}
+            />
+          </Box>
+        ))}
       </Box>
-
-      <Box basis="150px" justify="end" direction="row" alignContent="center">
+      <Box basis="200px" justify="end" direction="row" alignContent="center">
         {currentUser && (
           <NotificationsPopup notifications={currentUser.notifications} />
         )}

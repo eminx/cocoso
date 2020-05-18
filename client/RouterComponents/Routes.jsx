@@ -32,6 +32,7 @@ import UserContainer from './user/UserContainer';
 import Work from './works/Work';
 import Works from './works/Works';
 import NewWork from './works/NewWork';
+import Market from './Market';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -45,7 +46,7 @@ export default function() {
       <Switch>
         <LayoutContainer history={browserHistory}>
           <ScrollToTop>
-            <Route exact path="/" component={HomeContainer} />
+            <Route exact path="/program" component={HomeContainer} />
             <Route exact path="/calendar" component={CalendarContainer} />
 
             <Route
@@ -91,6 +92,7 @@ export default function() {
 
             <Route path="/my-works" component={Works} />
             <Route path="/new-work" component={NewWork} />
+            <Route path="/" component={Market} />
 
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />

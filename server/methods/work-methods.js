@@ -2,6 +2,19 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from './shared';
 
 Meteor.methods({
+  getAllWorks() {
+    const host = getHost(this);
+
+    try {
+      const works = Works.find({
+        host
+      }).fetch();
+      return works;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't add to Collection");
+    }
+  },
+
   getMyWorks() {
     const user = Meteor.user();
     if (!user) {
@@ -16,7 +29,7 @@ Meteor.methods({
       }).fetch();
       return works;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error, "Couldn't fetch works");
     }
   },
 

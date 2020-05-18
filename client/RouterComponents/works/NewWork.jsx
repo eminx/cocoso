@@ -5,7 +5,7 @@ import { message, Alert } from 'antd/lib';
 import { UserContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
-import { parseTitle, call, resizeImage, uploadImage } from '../../functions';
+import { call, resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {
   message.success('New work is successfully created', 6);
