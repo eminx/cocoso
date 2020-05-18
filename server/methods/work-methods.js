@@ -34,18 +34,10 @@ Meteor.methods({
   },
 
   getWork(workId, username) {
-    const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('Not allowed!');
-    }
     const host = getHost(this);
 
     try {
-      const work = Works.findOne({
-        host,
-        authorId: user._id,
-        _id: workId
-      });
+      const work = Works.findOne(workId);
 
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
