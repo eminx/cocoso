@@ -42,6 +42,7 @@ const Market = ({ history }) => {
         {sortedWorks.map(work => (
           <Box
             key={work._id}
+            width="medium"
             pad="medium"
             hoverIndicator="light-1"
             onClick={() =>
