@@ -32,6 +32,7 @@ import UserContainer from './user/UserContainer';
 import Work from './works/Work';
 import Works from './works/Works';
 import NewWork from './works/NewWork';
+import EditWork from './works/EditWork';
 import Market from './Market';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
@@ -91,6 +92,8 @@ export default function() {
             <Route path="/documents" component={DocumentsListContainer} />
 
             <Route path="/my-works" component={Works} />
+            <Route path="/:username/work/:workId" component={Work} />
+            <Route path="/:username/edit-work/:workId" component={EditWork} />
             <Route path="/new-work" component={NewWork} />
             <Route path="/market" component={Market} />
 
@@ -98,7 +101,6 @@ export default function() {
             <Route path="/admin/members" component={Members} />
 
             <Route path="/user/:id" component={UserContainer} />
-            <Route path="/:username/work/:workId" component={Work} />
 
             {/*<Route path="*" component={NotFoundPage}/>*/}
           </ScrollToTop>

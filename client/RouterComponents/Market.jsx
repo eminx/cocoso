@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Box, Text } from 'grommet';
 import Loader from '../UIComponents/Loader';
+import { call } from '../functions';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -20,15 +21,19 @@ const Market = ({ history }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Meteor.call('getAllWorks', (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-        return;
-      }
-      setWorks(respond);
-      setLoading(false);
-    });
+    getAllWorks();
   }, []);
+
+  const getAllWorks = async () => {
+    try {
+      const response = await call('getAllWorks');
+      setWorks(response);
+      setLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setLoading(false);
+    }
+  };
 
   if (loading || !works) {
     return <Loader />;
@@ -44,7 +49,7 @@ const Market = ({ history }) => {
             key={work._id}
             width="medium"
             pad="medium"
-            hoverIndicator="light-1"
+            // hoverIndicator="light-1"
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }

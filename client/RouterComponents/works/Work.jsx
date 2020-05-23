@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Box, Avatar, Heading, Text } from 'grommet';
+import { message } from 'antd';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
+import { call } from '../../functions';
 
 class Work extends PureComponent {
   state = {
@@ -16,22 +18,25 @@ class Work extends PureComponent {
     this.getWork();
   }
 
-  getWork = () => {
+  getWork = async () => {
     this.setState({ isLoading: true });
     const { match } = this.props;
+
     const workId = match.params.workId;
     const username = match.params.username;
 
-    Meteor.call('getWork', workId, username, (error, respond) => {
-      if (error) {
-        console.log(error);
-        return;
-      }
-      this.setState({
-        work: respond,
-        isLoading: false
-      });
+    // try {
+    const response = await call('getWork', workId, username);
+    this.setState({
+      work: response,
+      isLoading: false
     });
+    // } catch (error) {
+    //   message.error(error.reason);
+    //   this.setState({
+    //     isLoading: false
+    //   });
+    // }
   };
 
   render() {
@@ -50,7 +55,7 @@ class Work extends PureComponent {
       <Template
         leftContent={
           <Box pad={{ bottom: 'medium' }}>
-            <Heading pad="small" level={3}>
+            <Heading pad="small" level={2}>
               {work.title}
             </Heading>
             <Text>{work.shortDescription}</Text>

@@ -1022,7 +1022,7 @@ class CreateMeetingForm extends PureComponent {
               placeholder="Select room"
               name="room"
               options={places.map((part, i) => part.name)}
-              onChange={handlePlaceChange}
+              onChange={({ option }) => handlePlaceChange(option)}
             />
           ) : (
             <TextArea

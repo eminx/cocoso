@@ -11,7 +11,7 @@ const successCreation = () => {
   message.success('New work is successfully created', 6);
 };
 
-class NewWork extends PureComponent {
+class EditWork extends PureComponent {
   state = {
     formValues: {
       title: '',
@@ -26,8 +26,31 @@ class NewWork extends PureComponent {
     isCreating: false,
     isLoading: false,
     isSuccess: false,
-    isError: false,
-    newWorkId: null
+    isError: false
+  };
+
+  componentDidMount() {
+    this.getWork();
+  }
+
+  getWork = async () => {
+    this.setState({ isLoading: true });
+    const { match } = this.props;
+    const workId = match.params.workId;
+    const username = match.params.username;
+
+    try {
+      const response = await call('getWork', workId, username);
+      this.setState({
+        formValues: response,
+        uploadableImagesLocal: response.images
+      });
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({
+        isLoading: false
+      });
+    }
   };
 
   handleFormChange = value => {
@@ -111,14 +134,14 @@ class NewWork extends PureComponent {
     }
   };
 
-  createWork = async () => {
+  updateWork = async () => {
     const { uploadedImages, uploadableImages, formValues } = this.state;
     if (uploadableImages.length !== uploadedImages.length) {
       return;
     }
 
     try {
-      const respond = await call('createWork', formValues, uploadedImages);
+      const respond = await call('updateWork', formValues, uploadedImages);
       this.setState({
         newWorkId: respond,
         isCreating: false,
@@ -131,8 +154,15 @@ class NewWork extends PureComponent {
     }
   };
 
+  removeWork = workId => {
+    console.log(workId);
+  };
+
   render() {
     const { currentUser } = this.context;
+    const { match } = this.props;
+
+    const workId = match.id;
 
     if (!currentUser) {
       return (
@@ -147,7 +177,6 @@ class NewWork extends PureComponent {
 
     const {
       formValues,
-      isLoading,
       uploadableImagesLocal,
       isSuccess,
       newWorkId,
@@ -182,6 +211,6 @@ class NewWork extends PureComponent {
   }
 }
 
-NewWork.contextType = UserContext;
+EditWork.contextType = UserContext;
 
-export default NewWork;
+export default EditWork;
