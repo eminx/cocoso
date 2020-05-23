@@ -1,31 +1,54 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Text, Anchor } from 'grommet';
+import { Box, Select, Text, Anchor } from 'grommet';
 
 import ListMenu from '../UIComponents/ListMenu';
 
 import { parseTitle } from '../functions';
+import { ScreenClassRender } from 'react-grid-system';
 
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   return (
-    <ListMenu list={pageTitles}>
-      {title => (
-        <Anchor
-          onClick={() => history.push(`/page/${parseTitle(title)}`)}
-          label={
-            <Text
-              weight={
-                parseTitle(activePageTitle) === parseTitle(title)
-                  ? 'bold'
-                  : 'normal'
-              }
-            >
-              {title}
-            </Text>
-          }
-        />
-      )}
-    </ListMenu>
+    <Box margin={{ bottom: 'medium' }}>
+      <ScreenClassRender
+        render={screen =>
+          screen === 'xs' ? (
+            <Box width="small" alignSelf="center" margin={{ bottom: 'medium' }}>
+              <Select
+                size="small"
+                plain
+                placeholder="Pages..."
+                name="pages"
+                options={pageTitles}
+                value={activePageTitle}
+                onChange={({ option }) =>
+                  history.push(`/page/${parseTitle(option)}`)
+                }
+              />
+            </Box>
+          ) : (
+            <ListMenu list={pageTitles}>
+              {title => (
+                <Anchor
+                  onClick={() => history.push(`/page/${parseTitle(title)}`)}
+                  label={
+                    <Text
+                      weight={
+                        parseTitle(activePageTitle) === parseTitle(title)
+                          ? 'bold'
+                          : 'normal'
+                      }
+                    >
+                      {title}
+                    </Text>
+                  }
+                />
+              )}
+            </ListMenu>
+          )
+        }
+      />
+    </Box>
   );
 });
 
