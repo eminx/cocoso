@@ -4,7 +4,7 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import { ScreenClassRender } from 'react-grid-system';
 import 'react-table/react-table.css';
-import { Divider, message, Modal } from 'antd/lib';
+import { message } from 'antd/lib';
 
 import {
   Accordion,
@@ -27,13 +27,6 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
-
-function registrationSuccess() {
-  Modal.success({
-    title: 'You are set!',
-    content: 'You have just successfully registered your attendance. Welcome!'
-  });
-}
 
 class Booking extends React.Component {
   state = {
@@ -78,7 +71,9 @@ class Booking extends React.Component {
 
     try {
       await call('registerAttendance', bookingData._id, value, occurenceIndex);
-      registrationSuccess();
+      message.success(
+        'You have just successfully registered your attendance. Welcome!'
+      );
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -303,7 +298,6 @@ class Booking extends React.Component {
             )}
             {isRegisteredMember && (
               <Box>
-                <Divider />
                 <Heading level={5}>Attendees</Heading>
                 <span>Only visible to registered members</span>
                 <div
