@@ -37,7 +37,9 @@ const NotificationsPopup = ({ notifications }) => {
 const NotificationList = withRouter(({ notifications, history }) => (
   <Box>
     {notifications.length === 0 ? (
-      <Text size="small"> You don't have unread messages</Text>
+      <Box pad="small">
+        <Text size="small"> You don't have unread messages</Text>
+      </Box>
     ) : (
       <List
         size="small"

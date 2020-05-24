@@ -20,23 +20,20 @@ const WorkForm = ({
   onQuillChange,
   onSubmit,
   setUploadableImages,
-  uploadableImagesLocal,
+  images,
   imageUrl,
   buttonLabel,
   isFormValid,
   isButtonDisabled
 }) => {
-  const images =
-    uploadableImagesLocal && uploadableImagesLocal.length > 0
-      ? uploadableImagesLocal
-      : imageUrl;
+  const imagesOrImage = images && images.length > 0 ? images : imageUrl;
 
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
         <FormField
-          label={`Images (${uploadableImagesLocal.length})`}
-          help={(uploadableImagesLocal || imageUrl) && <Text size="small" />}
+          label={`Images (${images.length})`}
+          help={(images || imageUrl) && <Text size="small" />}
         >
           {images && <NiceSlider images={images} />}
           <Box alignSelf="center" margin={{ top: 'medium' }}>

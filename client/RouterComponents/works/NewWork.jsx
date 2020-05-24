@@ -172,7 +172,7 @@ class NewWork extends PureComponent {
           onQuillChange={this.handleQuillChange}
           onSubmit={this.uploadImages}
           setUploadableImages={this.setUploadableImages}
-          uploadableImagesLocal={uploadableImagesLocal}
+          images={uploadableImagesLocal}
           buttonLabel={buttonLabel}
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}

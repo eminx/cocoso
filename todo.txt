@@ -26,7 +26,7 @@ TODO:
 
 2-X Date&time pickers from Grommet everywhere (group and edit left now only)
 
-5- Resize images
+5-X Resize images
 
 3-X Divide my-profile into sections: 
   - Basic Info about me: full name, bio, city, external links, avatar

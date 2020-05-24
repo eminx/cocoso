@@ -27,24 +27,30 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
               />
             </Box>
           ) : (
-            <ListMenu list={pageTitles}>
-              {title => (
-                <Anchor
-                  onClick={() => history.push(`/page/${parseTitle(title)}`)}
-                  label={
-                    <Text
-                      weight={
-                        parseTitle(activePageTitle) === parseTitle(title)
-                          ? 'bold'
-                          : 'normal'
-                      }
-                    >
-                      {title}
-                    </Text>
-                  }
-                />
-              )}
-            </ListMenu>
+            <Box
+              width="small"
+              alignSelf={screen !== 'lg' ? 'center' : 'start'}
+              margin={{ bottom: 'medium' }}
+            >
+              <ListMenu list={pageTitles}>
+                {title => (
+                  <Anchor
+                    onClick={() => history.push(`/page/${parseTitle(title)}`)}
+                    label={
+                      <Text
+                        weight={
+                          parseTitle(activePageTitle) === parseTitle(title)
+                            ? 'bold'
+                            : 'normal'
+                        }
+                      >
+                        {title}
+                      </Text>
+                    }
+                  />
+                )}
+              </ListMenu>
+            </Box>
           )
         }
       />

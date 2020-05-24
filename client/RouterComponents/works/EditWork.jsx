@@ -7,10 +7,6 @@ import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
 import { call, resizeImage, uploadImage } from '../../functions';
 
-const successCreation = () => {
-  message.success('New work is successfully created', 6);
-};
-
 class EditWork extends PureComponent {
   state = {
     formValues: {
@@ -19,9 +15,8 @@ class EditWork extends PureComponent {
       longDescription: '',
       additionalInfo: ''
     },
-    uploadableImages: [],
-    uploadableImagesLocal: [],
-    uploadedImages: [],
+    images: [],
+    imagesReadyToSave: [],
     isLocalising: false,
     isCreating: false,
     isLoading: false,
@@ -43,7 +38,10 @@ class EditWork extends PureComponent {
       const response = await call('getWork', workId, username);
       this.setState({
         formValues: response,
-        uploadableImagesLocal: response.images
+        images: response.images.map(image => ({
+          src: image,
+          type: 'uploaded'
+        }))
       });
     } catch (error) {
       message.error(error.reason);
@@ -85,13 +83,18 @@ class EditWork extends PureComponent {
     files.forEach((uploadableImage, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(uploadableImage);
-      console.log(uploadableImage);
       reader.addEventListener(
         'load',
         () => {
-          this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-            uploadableImages: [...uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...uploadableImagesLocal, reader.result]
+          this.setState(({ images }) => ({
+            images: [
+              ...images,
+              {
+                resizableData: uploadableImage,
+                type: 'not-uploaded',
+                src: reader.result
+              }
+            ]
           }));
         },
         false
@@ -105,24 +108,34 @@ class EditWork extends PureComponent {
   };
 
   uploadImages = () => {
-    const { uploadableImages } = this.state;
+    const { images } = this.state;
     this.setState({
       isCreating: true
     });
 
+    const uploadableImages = images.map(image => image.type === 'not-uploaded');
+
+    if (uploadableImages.length === 0) {
+      this.updateWork();
+      return;
+    }
+
     try {
-      uploadableImages.forEach(async (uploadableImage, index) => {
-        const resizedImage = await resizeImage(uploadableImage, 500);
-        const uploadedImage = await uploadImage(
-          resizedImage,
-          'workImageUpload'
-        );
-        this.setState(
-          ({ uploadedImages }) => ({
-            uploadedImages: [...uploadedImages, uploadedImage]
-          }),
-          this.createWork
-        );
+      images.forEach(async (uploadableImage, index) => {
+        if (uploadableImage.type === 'uploaded') {
+          this.setImageAndContinue(uploadableImage.src, index);
+        } else {
+          const resizedImage = await resizeImage(
+            uploadableImage.resizableData,
+            500
+          );
+          const uploadedImage = await uploadImage(
+            resizedImage,
+            'workImageUpload'
+          );
+
+          this.setImageAndContinue(uploadedImage, index);
+        }
       });
     } catch (error) {
       console.error('Error uploading:', error);
@@ -134,20 +147,28 @@ class EditWork extends PureComponent {
     }
   };
 
-  updateWork = async () => {
-    const { uploadedImages, uploadableImages, formValues } = this.state;
-    if (uploadableImages.length !== uploadedImages.length) {
-      return;
+  setImageAndContinue = (uploadedImage, imageIndex) => {
+    const { images } = this.state;
+    this.setState(({ imagesReadyToSave }) => ({
+      imagesReadyToSave: [...imagesReadyToSave, uploadedImage]
+    }));
+    if (images.length === imageIndex + 1) {
+      this.updateWork();
     }
+  };
+
+  updateWork = async () => {
+    const { match } = this.props;
+    const workId = match.params.workId;
+    const { formValues, imagesReadyToSave } = this.state;
 
     try {
-      const respond = await call('updateWork', formValues, uploadedImages);
+      await call('updateWork', workId, formValues, imagesReadyToSave);
       this.setState({
-        newWorkId: respond,
         isCreating: false,
         isSuccess: true
       });
-      message.success('Your work is successfully created');
+      message.success('Your work is successfully updated');
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -161,47 +182,37 @@ class EditWork extends PureComponent {
   render() {
     const { currentUser } = this.context;
     const { match } = this.props;
-
-    const workId = match.id;
+    const workId = match.params.workId;
 
     if (!currentUser) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to create an account to create work"
-            type="error"
-          />
+          <Alert message="Not allowed" type="error" />
         </div>
       );
     }
 
-    const {
-      formValues,
-      uploadableImagesLocal,
-      isSuccess,
-      newWorkId,
-      isCreating
-    } = this.state;
+    const { formValues, images, isSuccess, isCreating } = this.state;
 
-    if (isSuccess && newWorkId) {
-      return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
+    if (isSuccess) {
+      return <Redirect to={`/${currentUser.username}/work/${workId}`} />;
     }
 
     const buttonLabel = isCreating
-      ? 'Creating your work...'
-      : 'Confirm and Create Work';
+      ? 'Updating your work...'
+      : 'Confirm and Update Work';
     const { title } = formValues;
-    const isFormValid = formValues && title.length > 3 && uploadableImagesLocal;
+    const isFormValid = formValues && title.length > 3 && images.length > 0;
 
     return (
-      <Template heading="Create New Work">
+      <Template heading="Update Work">
         <WorkForm
           formValues={formValues}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
           onSubmit={this.uploadImages}
           setUploadableImages={this.setUploadableImages}
-          uploadableImagesLocal={uploadableImagesLocal}
+          images={images.map(image => image.src)}
           buttonLabel={buttonLabel}
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}

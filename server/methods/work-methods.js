@@ -75,26 +75,21 @@ Meteor.methods({
     }
   },
 
-  updateWork(workId, formValues) {
+  updateWork(workId, values, images) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.longDescription, String);
-    // check(imageUrl, String);
-
     try {
       Works.update(workId, {
         $set: {
-          title: formValues.title,
-          longDescription: formValues.longDescription,
-          // imageUrl,
+          ...values,
+          images,
           latestUpdate: new Date()
         }
       });
-      return formValues.title;
+      return values.title;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }

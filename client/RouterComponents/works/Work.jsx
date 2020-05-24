@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Box, Avatar, Heading, Text } from 'grommet';
-import { message } from 'antd';
+import { Box, Button, Avatar, Heading, Text } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -40,6 +39,8 @@ class Work extends PureComponent {
   };
 
   render() {
+    const { currentUser } = this.context;
+    const { history, match } = this.props;
     const { work, isLoading } = this.state;
 
     if (!work || isLoading) {
@@ -50,6 +51,9 @@ class Work extends PureComponent {
       work.authorFirstName && work.authorLastName
         ? work.authorFirstName + ' ' + work.authorLastName
         : work.authorUsername;
+
+    const isOwner =
+      currentUser && currentUser.username === match.params.username;
 
     return (
       <Template
@@ -89,6 +93,19 @@ class Work extends PureComponent {
         <NiceSlider images={work.images} />
         <Box pad={{ top: 'medium' }}>
           <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
+        </Box>
+        <Box margin={{ top: 'large', bottom: 'large' }} justify="end">
+          {isOwner && (
+            <Button
+              size="small"
+              onClick={() =>
+                history.push(
+                  `/${currentUser.username}/edit-work/${match.params.workId}`
+                )
+              }
+              label="Edit this work"
+            />
+          )}
         </Box>
       </Template>
     );
