@@ -40,15 +40,13 @@ TODO:
 
 CAN DO WITHOUT FOR NOW but needs to be done:
 
-2- Replace Ant Design's Row/Col with another Grid solution. Try Grommet's Grid. Should work.
-2- Make the date time work with time zones: part of the host settings to global adjust maybe? Or auto register for every event and auto show when displayed? Better this way
+2-X Replace Ant Design's Row/Col with another Grid solution. Try Grommet's Grid. Should work.
 3- Make all relevant pages without pubsub and with method calls to fetch data. Don't forget to fetch data again if necessary
 2- Drop unnecessary components like containers etc. (after making method call solution when relevant or check what's the trend on Meteor) 
 3- Implement Social Signups (Start with Google, Facebook and Instagram)
 5- Eventually get rid off ant.design completely
-8- Create portfolio feature
-5- Fix the image resize problem and implement it
-5- Organise your menu and routes yourself? Especially needed for single-artist feature switch
+8-X Create portfolio feature
+5-X Fix the image resize problem and implement it
 5- Revisit the notifications
 3- Calendar settings: Calendar categories (bookables etc. I need a way to abstract calendar entries, categories bookables etc) Perhaps I should divide them since they can coexist? Like I booked the -MonSoon studio-, for a -Reiki- session.
 5- Schema validation on mongo
@@ -56,7 +54,9 @@ CAN DO WITHOUT FOR NOW but needs to be done:
 3- Implement custom AUTH like in Librella. Actually build some reusable components with hooks. Eh wait a bit. 
 5- Media: Images/Documents where you can see your uploaded documents and images etc. You can delete them here. Perhaps you can't upload there, because you have to be relevant to context no? I like this idea.
 5- I8TL
+
 8- Server side render
+
 
 adminhood:
 
