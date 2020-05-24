@@ -203,11 +203,16 @@ class Calendar extends React.PureComponent {
     }));
 
     return (
-      <div style={{ padding: 24 }}>
+      <Box pad="medium">
         {currentUser && currentUser.isRegisteredMember && (
-          <Box alignSelf="center">
+          <Box
+            direction="row"
+            justify="center"
+            width="100%"
+            margin={{ bottom: 'medium' }}
+          >
             <Link to="/new-booking">
-              <Button label="New Booking" />
+              <Button label="New Activity" />
             </Link>
           </Box>
         )}
@@ -376,7 +381,7 @@ class Calendar extends React.PureComponent {
             )}
           </Text>
         </ConfirmModal>
-      </div>
+      </Box>
     );
   }
 }
