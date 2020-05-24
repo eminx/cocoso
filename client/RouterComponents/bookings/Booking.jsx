@@ -4,7 +4,7 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import { ScreenClassRender } from 'react-grid-system';
 import 'react-table/react-table.css';
-import { Divider, Input, message, Modal } from 'antd/lib';
+import { Divider, message, Modal } from 'antd/lib';
 
 import {
   Accordion,
@@ -25,6 +25,7 @@ import Chattery from '../../chattery';
 import FancyDate from '../../UIComponents/FancyDate';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
 
 function registrationSuccess() {
@@ -150,10 +151,9 @@ class Booking extends React.Component {
       );
     } else {
       return (
-        <div>
-          <Input
+        <Box gap="medium">
+          <TextInput
             placeholder="Last name"
-            style={{ marginBottom: 24 }}
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
             onChange={e =>
               this.setState({
@@ -163,8 +163,9 @@ class Booking extends React.Component {
                 }
               })
             }
+            size="small"
           />
-          <Input
+          <TextInput
             placeholder="Email"
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
             onChange={e =>
@@ -175,8 +176,9 @@ class Booking extends React.Component {
                 }
               })
             }
+            size="small"
           />
-        </div>
+        </Box>
       );
     }
   };
@@ -185,11 +187,16 @@ class Booking extends React.Component {
     const { rsvpCancelModalInfo } = this.state;
     const { bookingData } = this.props;
 
+    const values = {
+      ...value,
+      numberOfPeople: Number(value.numberOfPeople)
+    };
+
     try {
       await call(
         'updateAttendance',
         bookingData._id,
-        value,
+        values,
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
@@ -499,21 +506,20 @@ class Booking extends React.Component {
             </Box>
           )}
 
-        <Modal
+        <ConfirmModal
+          visible={isRsvpCancelModalOn}
           title={
             rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
               ? 'Now please continue'
               : 'Please enter the details of your RSVP'
           }
-          footer={
-            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound && null
-          }
-          visible={isRsvpCancelModalOn}
-          onOk={this.findRsvpInfo}
+          onConfirm={this.findRsvpInfo}
           onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
+          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
+          onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
         >
           {this.renderCancelRsvpModalContent()}
-        </Modal>
+        </ConfirmModal>
       </Template>
     );
   }
@@ -543,20 +549,31 @@ function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
     <Form onSubmit={onSubmit}>
       {fields.map(field => (
         <FormField
+          name={field.name}
           key={field.name}
           label={<Text size="small">{field.label}</Text>}
         >
           <TextInput plain={false} name={field.name} />
         </FormField>
       ))}
-      <Button
-        type="submit"
-        size="small"
-        // disabled={hasErrors(getFieldsError())}
-        label={isUpdateMode ? 'Update' : 'Register'}
-      />
+      <Box margin={{ top: 'medium' }}>
+        <Button
+          type="submit"
+          size="small"
+          // disabled={hasErrors(getFieldsError())}
+          label={isUpdateMode ? 'Update' : 'Register'}
+          alignSelf="end"
+          margin={{ bottom: 'medium' }}
+        />
 
-      {isUpdateMode && <a onClick={onDelete}>Remove your registration</a>}
+        {isUpdateMode && (
+          <Text textAlign="center" size="small">
+            <Anchor color="status-critical" onClick={onDelete}>
+              Remove your registration
+            </Anchor>
+          </Text>
+        )}
+      </Box>
     </Form>
   );
 }

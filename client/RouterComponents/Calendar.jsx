@@ -2,11 +2,12 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import { Row, Col, Card, Divider, Tag, Modal, message } from 'antd/lib';
-import { Button } from 'grommet';
+import { Tag, message } from 'antd/lib';
+import { Box, List, Button, Text } from 'grommet';
+
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
-import NiceList from '../UIComponents/NiceList';
+import ConfirmModal from '../UIComponents/ConfirmModal';
 import colors from '../constants/colors';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -204,16 +205,14 @@ class Calendar extends React.PureComponent {
     return (
       <div style={{ padding: 24 }}>
         {currentUser && currentUser.isRegisteredMember && (
-          <Row gutter={24}>
-            <div style={centerStyle}>
-              <Link to="/new-booking">
-                <Button label="New Booking" />
-              </Link>
-            </div>
-          </Row>
+          <Box alignSelf="center">
+            <Link to="/new-booking">
+              <Button label="New Booking" />
+            </Link>
+          </Box>
         )}
 
-        <Row gutter={24}>
+        <div>
           <div
             style={{
               justifyContent: 'center',
@@ -259,7 +258,7 @@ class Calendar extends React.PureComponent {
               )}
             </div>
           </div>
-        </Row>
+        </div>
 
         {/* <Divider />
 
@@ -319,65 +318,64 @@ class Calendar extends React.PureComponent {
           </Col>
         </Row> */}
 
-        <Modal
+        <ConfirmModal
           visible={Boolean(selectedBooking)}
-          okText="Edit"
+          title={selectedBooking && selectedBooking.title}
+          confirmText="Edit"
           cancelText="Close"
-          okButtonProps={
+          onConfirm={this.handleEditBooking}
+          onCancel={this.handleCloseModal}
+          confirmButtonProps={
             (!this.isCreator() || selectedBooking.isGroup) && {
               style: { display: 'none' }
             }
           }
-          onOk={this.handleEditBooking}
-          onCancel={this.handleCloseModal}
-          title={
-            <div>
-              <h2>{selectedBooking && selectedBooking.title}</h2>{' '}
-              <h4>{this.getBookingTimes(selectedBooking)}</h4>
-            </div>
-          }
-          destroyOnClose
+          onClickOutside={this.handleCloseModal}
         >
-          <Row>
-            <Col span={12}>booked by: </Col>
-            <Col span={12}>
-              <b>{selectedBooking && selectedBooking.authorName}</b>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>space/equipment: </Col>
-            <Col span={12}>
-              <b>{selectedBooking && selectedBooking.room}</b>
-            </Col>
-          </Row>
-          <Row style={{ paddingTop: 12 }}>
-            <Row span={24}>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    selectedBooking &&
-                    selectedBooking.longDescription &&
-                    (selectedBooking.isPrivateGroup
-                      ? ''
-                      : selectedBooking.longDescription.slice(0, 120) + '...')
-                }}
-              />
-              {selectedBooking && selectedBooking.isPublicActivity && (
-                <Link
-                  to={
-                    (selectedBooking.isGroup ? '/group/' : '/event/') +
-                    selectedBooking._id
-                  }
-                >
-                  {' '}
-                  {!selectedBooking.isPrivateGroup &&
-                    `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
+          <Box
+            style={{ fontFamily: 'Courier, monospace' }}
+            background="light-1"
+            pad="small"
+            margin={{ top: 'small', bottom: 'small' }}
+          >
+            <div>
+              <Text weight="bold">
+                {selectedBooking && selectedBooking.authorName}
+              </Text>{' '}
+              <Text>booked</Text>{' '}
+              <Text weight="bold">
+                {selectedBooking && selectedBooking.room}
+              </Text>
+            </div>
+            <Text weight="light">{this.getBookingTimes(selectedBooking)}</Text>
+          </Box>
+
+          <Text size="small">
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  selectedBooking &&
+                  selectedBooking.longDescription &&
+                  (selectedBooking.isPrivateGroup
+                    ? ''
+                    : selectedBooking.longDescription.slice(0, 120) + '...')
+              }}
+            />
+            {selectedBooking && selectedBooking.isPublicActivity && (
+              <Link
+                to={
+                  (selectedBooking.isGroup ? '/group/' : '/event/') +
+                  selectedBooking._id
+                }
+              >
+                {' '}
+                {!selectedBooking.isPrivateGroup &&
+                  `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
                     page`}
-                </Link>
-              )}
-            </Row>
-          </Row>
-        </Modal>
+              </Link>
+            )}
+          </Text>
+        </ConfirmModal>
       </div>
     );
   }

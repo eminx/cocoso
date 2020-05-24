@@ -278,11 +278,11 @@ class EditGroup extends React.Component {
         />
 
         <ConfirmModal
-          title="Confirm Delete"
           visible={isDeleteModalOn}
+          title="Confirm Delete"
           onConfirm={this.deleteGroup}
           onCancel={this.hideDeleteModal}
-          okText="Yes, delete"
+          confirmText="Yes, delete"
         >
           Are you sure you want to delete this group?
         </ConfirmModal>
