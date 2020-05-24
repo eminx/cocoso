@@ -8,16 +8,22 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const iconBoxProps = {
   pad: 'small',
-  background: 'light-1',
-  hoverIndicator: 'light-3',
-  focusIndicator: true,
+  hoverIndicator: 'light-1',
   round: true
+};
+
+const arrowsContainerStyle = {
+  position: 'absolute',
+  width: '100%',
+  left: -30,
+  top: '50%',
+  transform: 'translateY(-50%)'
 };
 
 const NiceSlider = ({ images }) => (
   <ScreenClassRender
     render={screenClass => (
-      <Box>
+      <Box style={{ position: 'relative' }}>
         <Slider
           swipe
           autoplay
@@ -39,11 +45,20 @@ const NiceSlider = ({ images }) => (
           ))}
         </Slider>
 
-        <Box direction="row" justify="between" background="light-1" round>
+        <Box
+          direction="row"
+          justify="between"
+          round
+          style={arrowsContainerStyle}
+        >
           <Box {...iconBoxProps} onClick={() => this.slider.slickPrev()}>
             <Previous />
           </Box>
-          <Box {...iconBoxProps} onClick={() => this.slider.slickNext()}>
+          <Box
+            {...iconBoxProps}
+            style={{ position: 'absolute', right: -60 }}
+            onClick={() => this.slider.slickNext()}
+          >
             <Next />
           </Box>
         </Box>
