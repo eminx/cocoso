@@ -55,130 +55,130 @@
 }
 
 .rbc-calendar .rbc-event.category-0,
-.tags-container .ant-tag-magenta.checked {
+.tags-container .magenta.checked {
   background-color: rgb(127, 114, 167);
 }
-.tags-container .ant-tag-magenta {
+.tags-container .magenta {
   /* background-color: rgba(127, 114, 167, 0.3);1*/
   color: rgb(127, 114, 167);
   border: 1px solid rgb(127, 114, 167);
 }
 
-.tags-container .ant-tag-checkable-checked {
+.tags-container .checkable-checked {
   background-color: #ea3924;
 }
 
 .rbc-calendar .rbc-event.category-1,
-.tags-container .ant-tag-red.checked {
+.tags-container .red.checked {
   background-color: rgb(226, 89, 87);
 }
-.tags-container .ant-tag-red {
+.tags-container .red {
   background-color: rgba(226, 89, 87, 0.1);
   color: rgb(226, 89, 87);
   border: 1px solid rgb(226, 89, 87);
 }
 
 .rbc-calendar .rbc-event.category-2,
-.tags-container .ant-tag-volcano.checked {
+.tags-container .volcano.checked {
   background-color: rgb(89, 18, 38);
 }
-.tags-container .ant-tag-volcano {
+.tags-container .volcano {
   background-color: rgba(89, 18, 38, 0.1);
   color: rgb(89, 18, 38);
   border: 1px solid rgb(89, 18, 38);
 }
 
 .rbc-calendar .rbc-event.category-3,
-.tags-container .ant-tag-orange.checked {
+.tags-container .orange.checked {
   background-color: rgb(148, 227, 173);
 }
-.tags-container .ant-tag-orange {
+.tags-container .orange {
   background-color: rgba(148, 227, 173, 0.1);
   color: rgb(148, 227, 173);
   border: 1px solid rgb(148, 227, 173);
 }
 
 .rbc-calendar .rbc-event.category-4,
-.tags-container .ant-tag-gold.checked {
+.tags-container .gold.checked {
   background-color: rgb(246, 113, 26);
 }
-.tags-container .ant-tag-gold {
+.tags-container .gold {
   background-color: rgba(246, 113, 26, 0.1);
   color: rgb(246, 113, 26);
   border: 1px solid rgb(246, 113, 26);
 }
 
 .rbc-calendar .rbc-event.category-5,
-.tags-container .ant-tag-lime.checked {
+.tags-container .lime.checked {
   background-color: rgb(194, 195, 34);
 }
-.tags-container .ant-tag-lime {
+.tags-container .lime {
   background-color: rgba(194, 195, 34, 0.1);
   color: rgb(194, 195, 34);
   border: 1px solid rgb(194, 195, 34);
 }
 
 .rbc-calendar .rbc-event.category-6,
-.tags-container .ant-tag-green.checked {
+.tags-container .green.checked {
   background-color: rgb(111, 148, 98);
 }
-.tags-container .ant-tag-green {
+.tags-container .green {
   background-color: rgba(111, 148, 98, 0.1);
   color: rgb(111, 148, 98);
   border: 1px solid rgb(111, 148, 98);
 }
 
 .rbc-calendar .rbc-event.category-7,
-.tags-container .ant-tag-cyan.checked {
+.tags-container .cyan.checked {
   background-color: rgb(85, 152, 246);
 }
-.tags-container .ant-tag-cyan {
+.tags-container .cyan {
   background-color: rgba(85, 152, 246, 0.1);
   color: rgb(85, 152, 246);
   border: 1px solid rgb(85, 152, 246);
 }
 
 .rbc-calendar .rbc-event.category-8,
-.tags-container .ant-tag-blue.checked {
+.tags-container .blue.checked {
   background-color: rgb(93, 162, 152);
 }
-.tags-container .ant-tag-blue {
+.tags-container .blue {
   background-color: rgba(93, 162, 152, 0.1);
   color: rgb(93, 162, 152);
   border: 1px solid rgb(93, 162, 152);
 }
 
 .rbc-calendar .rbc-event.category-9,
-.tags-container .ant-tag-geekblue.checked {
+.tags-container .geekblue.checked {
   background-color: rgb(236, 166, 104);
 }
-.tags-container .ant-tag-geekblue {
+.tags-container .geekblue {
   background-color: rgba(236, 166, 104, 0.1);
   color: rgb(236, 166, 104);
   border: 1px solid rgb(236, 166, 104);
 }
 
 .rbc-calendar .rbc-event.category-10,
-.tags-container .ant-tag-purple.checked {
+.tags-container .purple.checked {
   background-color: rgb(81, 119, 148);
 }
-.tags-container .ant-tag-purple {
+.tags-container .purple {
   background-color: rgba(81, 119, 148, 0.1);
   color: rgb(81, 119, 148);
   border: 1px solid rgb(81, 119, 148);
 }
 
-.ant-tag-magenta.checked,
-.ant-tag-red.checked,
-.ant-tag-volcano.checked,
-.ant-tag-orange.checked,
-.ant-tag-gold.checked,
-.ant-tag-lime.checked,
-.ant-tag-green.checked,
-.ant-tag-cyan.checked,
-.ant-tag-blue.checked,
-.ant-tag-geekblue.checked,
-.ant-tag-purple.checked {
+.magenta.checked,
+.red.checked,
+.volcano.checked,
+.orange.checked,
+.gold.checked,
+.lime.checked,
+.green.checked,
+.cyan.checked,
+.blue.checked,
+.geekblue.checked,
+.purple.checked {
   color: #fff;
 }
 

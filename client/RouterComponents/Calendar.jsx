@@ -212,58 +212,48 @@ class Calendar extends React.PureComponent {
             margin={{ bottom: 'medium' }}
           >
             <Link to="/new-booking">
-              <Button label="New Activity" />
+              <Button size="small" label="New Activity" />
             </Link>
           </Box>
         )}
 
-        <div>
-          <div
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              marginBottom: 50
-            }}
+        <Box
+          direction="row"
+          justify="center"
+          align="center"
+          gap="small"
+          wrap
+          className="tags-container"
+          width="100%"
+          margin={{ bottom: 'medium' }}
+        >
+          <SimpleTag
+            checked={calendarFilter === 'All rooms'}
+            onClick={() => this.handleCalendarFilterChange('All rooms')}
+            key={'All rooms'}
           >
-            <div style={{ width: '100%' }}>
-              <div
-                className="tags-container"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap'
-                }}
-              >
-                <Tag.CheckableTag
-                  checked={calendarFilter === 'All rooms'}
-                  onChange={() => this.handleCalendarFilterChange('All rooms')}
-                  key={'All rooms'}
-                >
-                  {'All rooms'}
-                </Tag.CheckableTag>
-                {placesList.map((room, i) => (
-                  <Tag
-                    color={colors[i]}
-                    className={calendarFilter === room.name ? 'checked' : null}
-                    onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}
-                  >
-                    {room.name}
-                  </Tag>
-                ))}
-              </div>
+            {'All rooms'}
+          </SimpleTag>
+          {placesList.map((room, i) => (
+            <SimpleTag
+              color={colors[i]}
+              checked={calendarFilter === room.name}
+              onClick={() => this.handleCalendarFilterChange(room.name)}
+              key={room.name}
+            >
+              {room.name}
+            </SimpleTag>
+          ))}
+        </Box>
 
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <CalendarView
-                  bookings={filteredBookings}
-                  onSelect={this.handleSelectBooking}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <CalendarView
+            bookings={filteredBookings}
+            onSelect={this.handleSelectBooking}
+          />
+        )}
 
         {/* <Divider />
 
@@ -385,5 +375,17 @@ class Calendar extends React.PureComponent {
     );
   }
 }
+
+const SimpleTag = ({ checked, color, onClick, children, ...otherProps }) => (
+  <Button
+    size="xsmall"
+    plain
+    onClick={onClick}
+    label={children}
+    style={{ borderRadius: 0, padding: '0 4px', fontSize: 12, lineHeight: 1.5 }}
+    className={checked ? 'checked ' + color : color}
+    {...otherProps}
+  />
+);
 
 export default Calendar;

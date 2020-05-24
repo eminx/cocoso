@@ -27,7 +27,7 @@ const arrowsContainerStyle = {
 const NiceSlider = ({ images }) => (
   <ScreenClassRender
     render={screenClass => (
-      <Box style={{ position: 'relative' }} background="dark-1">
+      <Box style={{ position: 'relative' }} background="light-1">
         <Slider
           swipe
           autoplay
@@ -49,23 +49,29 @@ const NiceSlider = ({ images }) => (
           ))}
         </Slider>
 
-        <Box
-          direction="row"
-          justify="between"
-          round
-          style={arrowsContainerStyle}
-        >
-          <Box {...iconBoxProps} onClick={() => this.slider.slickPrev()}>
-            <Previous />
-          </Box>
+        {images.length > 1 && (
           <Box
-            {...iconBoxProps}
-            style={{ ...iconBoxProps.style, position: 'absolute', right: -12 }}
-            onClick={() => this.slider.slickNext()}
+            direction="row"
+            justify="between"
+            round
+            style={arrowsContainerStyle}
           >
-            <Next />
+            <Box {...iconBoxProps} onClick={() => this.slider.slickPrev()}>
+              <Previous />
+            </Box>
+            <Box
+              {...iconBoxProps}
+              style={{
+                ...iconBoxProps.style,
+                position: 'absolute',
+                right: -12
+              }}
+              onClick={() => this.slider.slickNext()}
+            >
+              <Next />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     )}
   />

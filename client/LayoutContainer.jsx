@@ -79,7 +79,6 @@ const Header = ({ currentUser, title, history }) => {
       direction="row"
       pad={{
         right: 'medium',
-        bottom: 'small',
         left: 'medium'
       }}
       fill="horizontal"
