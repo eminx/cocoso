@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect } from 'react';
 import { Box, Anchor, Heading, Paragraph, Footer } from 'grommet';
+import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 export const UserContext = React.createContext(null);
 
@@ -12,20 +13,20 @@ import { call } from './functions';
 const menu = [
   {
     label: 'Marketplace',
-    route: '/market'
+    route: '/market',
   },
   {
     label: 'Calendar',
-    route: '/calendar'
+    route: '/calendar',
   },
   {
     label: 'Groups',
-    route: '/groups'
+    route: '/groups',
   },
   {
     label: 'Info',
-    route: `/page/about`
-  }
+    route: `/page/about`,
+  },
 ];
 
 const LayoutPage = ({ currentUser, userLoading, history, children }) => {
@@ -48,7 +49,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
   const headerProps = {
     currentUser,
     history,
-    title: 'Cic Network'
+    title: 'Cic Network',
   };
 
   return (
@@ -66,47 +67,52 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
 
 const boldBabe = {
   textTransform: 'uppercase',
-  fontWeight: 700
+  fontWeight: 700,
 };
 
 const Header = ({ currentUser, title, history }) => {
-  const pathname = history.location.pathname;
+  const UserStuff = () => (
+    <Box justify="end" direction="row" alignContent="center">
+      {currentUser && (
+        <NotificationsPopup notifications={currentUser.notifications} />
+      )}
+      <UserPopup currentUser={currentUser} />
+    </Box>
+  );
 
   return (
-    <Box
-      justify="between"
-      direction="row"
-      pad={{
-        right: 'medium',
-        left: 'medium'
-      }}
-      fill="horizontal"
-      wrap
-    >
-      <Box basis="200px"></Box>
-      <Box
-        pad="small"
-        justify="center"
-        direction="row"
-        flex={{ shrink: 0 }}
-        alignSelf="center"
-      >
-        {menu.map(item => (
-          <Box pad="small" key={item.label}>
-            <Anchor
-              onClick={() => history.push(item.route)}
-              label={item.label}
-            />
-          </Box>
-        ))}
-      </Box>
-      <Box basis="200px" justify="end" direction="row" alignContent="center">
-        {currentUser && (
-          <NotificationsPopup notifications={currentUser.notifications} />
-        )}
-        <UserPopup currentUser={currentUser} />
-      </Box>
-    </Box>
+    <ScreenClassRender
+      render={(screenClass) => (
+        <Container fluid style={{ width: '100%' }}>
+          <Row>
+            <Col lg={3}>
+              {['xs', 'sm'].includes(screenClass) && <UserStuff />}
+            </Col>
+            <Col lg={6}>
+              <Box
+                pad="small"
+                justify="center"
+                direction="row"
+                flex={{ shrink: 0 }}
+                alignSelf="center"
+              >
+                {menu.map((item) => (
+                  <Box pad="small" key={item.label}>
+                    <Anchor
+                      onClick={() => history.push(item.route)}
+                      label={item.label}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </Col>
+            <Col lg={3}>
+              {['md', 'lg', 'xl'].includes(screenClass) && <UserStuff />}
+            </Col>
+          </Row>
+        </Container>
+      )}
+    />
   );
 };
 
@@ -127,13 +133,13 @@ const FooterInfo = ({ settings }) =>
     </Footer>
   );
 
-export default withTracker(props => {
+export default withTracker((props) => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
 
   return {
     currentUser,
-    userLoading
+    userLoading,
   };
 })(LayoutPage);
