@@ -38,6 +38,8 @@ TODO:
 
 3- Form validation and error communication
 
+3- Add admin/resources page
+
 CAN DO WITHOUT FOR NOW but needs to be done:
 
 2-X Replace Ant Design's Row/Col with another Grid solution. Try Grommet's Grid. Should work.
