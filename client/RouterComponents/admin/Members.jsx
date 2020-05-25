@@ -6,7 +6,7 @@ import {
   Text,
   Heading,
   RadioButtonGroup,
-  TextInput
+  TextInput,
 } from 'grommet';
 
 import Loader from '../../UIComponents/Loader';
@@ -17,7 +17,7 @@ import { message, Alert } from '../../UIComponents/message';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' }
+  { label: 'Members', value: '/admin/members' },
 ];
 
 const compareUsersByDate = (a, b) => {
@@ -28,7 +28,7 @@ const compareUsersByDate = (a, b) => {
 state = {
   sortBy: 'join-date',
   filter: 'all',
-  filterWord: ''
+  filterWord: '',
 };
 
 function Members({ history }) {
@@ -59,7 +59,7 @@ function Members({ history }) {
     return <Loader />;
   }
 
-  const toggleVerification = user => {
+  const toggleVerification = (user) => {
     if (user.isRegisteredMember) {
       Meteor.call('unVerifyMember', user._id, (error, response) => {
         if (error) {
@@ -100,7 +100,7 @@ function Members({ history }) {
 
   const usersFiltered =
     users &&
-    users.filter(user => {
+    users.filter((user) => {
       if (filter === 'all') {
         return true;
       } else if (filter === 'verified') {
@@ -110,7 +110,7 @@ function Members({ history }) {
       }
     });
 
-  const usersList = usersFiltered.map(user => ({
+  const usersList = usersFiltered.map((user) => ({
     ...user,
     actions: [
       {
@@ -118,38 +118,38 @@ function Members({ history }) {
           ? 'Remove user membership'
           : 'Verify this user',
         handleClick: () => toggleVerification(user),
-        isDisabled: user.isSuperAdmin
-      }
-    ]
+        isDisabled: user.isSuperAdmin,
+      },
+    ],
   }));
 
   const filterOptions = [
     {
       label: 'All',
-      value: 'all'
+      value: 'all',
     },
     {
       label: 'Verified',
-      value: 'verified'
+      value: 'verified',
     },
     {
       label: 'Unverified',
-      value: 'unverified'
-    }
+      value: 'unverified',
+    },
   ];
 
   const sortOptions = [
     {
       label: 'Date joined',
-      value: 'join-date'
+      value: 'join-date',
     },
     {
       label: 'Username',
-      value: 'username'
-    }
+      value: 'username',
+    },
   ];
 
-  const usersFilteredWithType = usersList.filter(user => {
+  const usersFilteredWithType = usersList.filter((user) => {
     return (
       user.username.toLowerCase().indexOf(filterWord.toLowerCase()) !== -1 ||
       user.emails[0].address.toLowerCase().indexOf(filterWord.toLowerCase()) !==
@@ -177,7 +177,7 @@ function Members({ history }) {
       heading="Members"
       leftContent={
         <ListMenu list={menuRoutes}>
-          {datum => (
+          {(datum) => (
             <Anchor
               onClick={() => history.push(datum.value)}
               key={datum.value}
@@ -202,7 +202,7 @@ function Members({ history }) {
             name="filter"
             options={filterOptions}
             value={filter}
-            onChange={event => setFilter(event.target.value)}
+            onChange={(event) => setFilter(event.target.value)}
             direction="row"
           />
         </Box>
@@ -211,7 +211,7 @@ function Members({ history }) {
             plain={false}
             placeholder="filter by username or email address..."
             value={filterWord}
-            onChange={event => setFilterWord(event.target.value)}
+            onChange={(event) => setFilterWord(event.target.value)}
             style={{ backgroundColor: 'white' }}
           />
         </Box>
@@ -225,7 +225,7 @@ function Members({ history }) {
           name="sort"
           options={sortOptions}
           value={sortBy}
-          onChange={event => setSortBy(event.target.value)}
+          onChange={(event) => setSortBy(event.target.value)}
           direction="row"
         />
       </Box>
@@ -236,8 +236,8 @@ function Members({ history }) {
         </Heading>
       </Box>
 
-      <NiceList list={usersSorted}>
-        {user => (
+      <NiceList list={usersSorted} border="horizontal" pad="small">
+        {(user) => (
           <div key={user.username}>
             <Text size="large" weight="bold">
               {user.username}
