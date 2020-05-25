@@ -1,12 +1,11 @@
 import React from 'react';
-import { Box, Text, Calendar, MaskedInput } from 'grommet';
-import { Icon, InputNumber } from 'antd/lib';
-
+import { Box, Text, Calendar, MaskedInput, TextInput } from 'grommet';
+import { FormTrash } from 'grommet-icons';
 const segmentPad = {
   top: 'xxsmall',
   left: 'xxsmall',
   right: 'xxsmall',
-  bottom: 'small'
+  bottom: 'small',
 };
 
 const DatesAndTimes = ({
@@ -17,7 +16,7 @@ const DatesAndTimes = ({
   handleCapacityChange,
   removeRecurrence,
   isNotDeletable,
-  isPublicActivity
+  isPublicActivity,
 }) => {
   const range = [recurrence.startDate, recurrence.endDate];
 
@@ -29,12 +28,12 @@ const DatesAndTimes = ({
     <Box pad="xsmall" margin={{ bottom: 'small' }}>
       {!isNotDeletable && (
         <Box
-          pad="small"
+          pad={{ top: 'small' }}
+          direction="row"
           justify="center"
           onClick={removeRecurrence}
-          hoverIndicator
         >
-          <Icon style={{ fontSize: 18, cursor: 'pointer' }} type="delete" />
+          <FormTrash style={{ fontSize: 18, cursor: 'pointer' }} />
         </Box>
       )}
       <Box direction="row" justify="around" wrap>
@@ -65,10 +64,8 @@ const DatesAndTimes = ({
           {isPublicActivity && (
             <Box pad="xxsmall">
               <Text size="small">Capacity</Text>
-              <InputNumber
-                min={1}
-                max={90}
-                placeholder={'Capacity'}
+              <TextInput
+                placeholder="Capacity"
                 value={recurrence.capacity}
                 onChange={handleCapacityChange}
               />
@@ -91,18 +88,18 @@ const TimePicker = ({ onChange, value, ...otherProps }) => (
           (v, k) => (k < 10 ? '0' : '') + k.toString()
         ),
         regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
-        placeholder: 'hh'
+        placeholder: 'hh',
       },
       { fixed: ':' },
       {
         length: 2,
         options: ['00', '15', '30', '45'],
         regexp: /^[0-5][0-9]$|^[0-9]$/,
-        placeholder: 'mm'
-      }
+        placeholder: 'mm',
+      },
     ]}
     value={value}
-    onChange={event => onChange(event.target.value)}
+    onChange={(event) => onChange(event.target.value)}
     {...otherProps}
   />
 );

@@ -30,13 +30,11 @@ import NewWork from './works/NewWork';
 import EditWork from './works/EditWork';
 import Market from './Market';
 
-import DocumentsListContainer from './documents/DocumentsListContainer';
-
 import ScrollToTop from './ScrollToTop';
 
 const browserHistory = createBrowserHistory();
 
-export default function() {
+export default function () {
   return (
     <Router history={browserHistory}>
       <Switch>
@@ -68,8 +66,6 @@ export default function() {
               history={browserHistory}
               component={ProfileContainer}
             />
-
-            <Route path="/documents" component={DocumentsListContainer} />
 
             <Route path="/my-works" component={Works} />
             <Route path="/:username/work/:workId" component={Work} />

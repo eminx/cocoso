@@ -18,6 +18,7 @@
     "indexof": "0.0.1",
     "meteor-node-stubs": "^0.4.1",
     "metro-babel7-plugin-react-transform": "^0.51.0",
+    "moment": "^2.26.0",
     "react": "^16.13.1",
     "react-big-calendar": "^0.17.0",
     "react-dom": "^16.13.1",

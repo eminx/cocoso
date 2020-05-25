@@ -10,8 +10,9 @@ import {
   Heading,
   Select,
   Button,
-  Text
+  Text,
 } from 'grommet';
+import { AddCircle } from 'grommet-icons';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
@@ -27,7 +28,7 @@ let emptyDateAndTime = {
   startTime: '',
   endTime: '',
   attendees: [],
-  capacity: defaultCapacity
+  capacity: defaultCapacity,
 };
 
 function Field({ label, children, ...otherProps }) {
@@ -46,7 +47,7 @@ class BookingForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  removeRecurrence = index => {
+  removeRecurrence = (index) => {
     const { datesAndTimes, setDatesAndTimes } = this.props;
     const newDatesAndTimes = [...datesAndTimes];
     newDatesAndTimes.splice(index, 1);
@@ -54,7 +55,7 @@ class BookingForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  addSpace = name => {
+  addSpace = (name) => {
     Meteor.call('addSpace', name, (err, res) => {
       if (err) {
         message.error(err.reason);
@@ -78,14 +79,14 @@ class BookingForm extends PureComponent {
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
-            handleDateChange={date => this.handleDateChange(date, index)}
-            handleStartTimeChange={time =>
+            handleDateChange={(date) => this.handleDateChange(date, index)}
+            handleStartTimeChange={(time) =>
               this.handleTimeChange(time, index, 'startTime')
             }
-            handleFinishTimeChange={time =>
+            handleFinishTimeChange={(time) =>
               this.handleTimeChange(time, index, 'endTime')
             }
-            handleCapacityChange={value =>
+            handleCapacityChange={(value) =>
               this.handleCapacityChange(value, index)
             }
           />
@@ -98,10 +99,7 @@ class BookingForm extends PureComponent {
           onClick={this.addRecurrence}
           hoverIndicator
         >
-          <Icon
-            style={{ fontSize: 48, cursor: 'pointer' }}
-            type="plus-circle"
-          />
+          <AddCircle style={{ fontSize: 48, cursor: 'pointer' }} />
         </Box>
       </div>
     );
@@ -142,7 +140,11 @@ class BookingForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  handleCapacityChange = (value, index) => {
+  handleCapacityChange = (event, index) => {
+    const value = Number(event.target.value);
+    if (typeof value !== 'number') {
+      return;
+    }
     const { datesAndTimes, setDatesAndTimes } = this.props;
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
@@ -167,10 +169,10 @@ class BookingForm extends PureComponent {
       onSubmit,
       isButtonDisabled,
       buttonLabel,
-      isFormValid
+      isFormValid,
     } = this.props;
 
-    const placeOptions = places && places.map(part => part.name);
+    const placeOptions = places && places.map((part) => part.name);
 
     if (!formValues) {
       return null;

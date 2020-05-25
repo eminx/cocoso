@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Avatar, Icon, Card, Radio, Button } from 'antd/lib';
+// import { List, Avatar, Icon, Card, Radio, Button } from 'antd/lib';
 import { Link } from 'react-router-dom';
 
 import BigCalendar from 'react-big-calendar';
@@ -24,14 +24,11 @@ const IconText = ({ type, text }) => (
 const footerIcons = [
   <IconText type="star-o" text="156" />,
   <IconText type="like-o" text="156" />,
-  <IconText type="message" text="2" />
+  <IconText type="message" text="2" />,
 ];
 
 function shortenDescription(str) {
-  return str
-    .split(/\s+/)
-    .slice(0, 20)
-    .join(' ');
+  return str.split(/\s+/).slice(0, 20).join(' ');
 }
 
 class BookingsList extends React.Component {
@@ -53,7 +50,7 @@ class BookingsList extends React.Component {
               <List.Item
                 key={item.title + i}
                 actions={[
-                  <Link to={`/booking/${item._id}`}>{readMoreButton}</Link>
+                  <Link to={`/booking/${item._id}`}>{readMoreButton}</Link>,
                 ]}
               >
                 <List.Item.Meta
