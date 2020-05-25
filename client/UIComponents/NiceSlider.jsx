@@ -12,8 +12,8 @@ const iconBoxProps = {
   // round: true,
   background: 'light-1',
   style: {
-    background: 'rgba(255, 255, 255, 0.8)'
-  }
+    background: 'rgba(255, 255, 255, 0.8)',
+  },
 };
 
 const arrowsContainerStyle = {
@@ -21,13 +21,13 @@ const arrowsContainerStyle = {
   width: '100%',
   left: -6,
   top: '50%',
-  transform: 'translateY(-50%)'
+  transform: 'translateY(-50%)',
 };
 
 const NiceSlider = ({ images }) => (
   <ScreenClassRender
-    render={screenClass => (
-      <Box style={{ position: 'relative' }} background="light-1">
+    render={(screenClass) => (
+      <Box style={{ position: 'relative' }}>
         <Slider
           swipe
           autoplay
@@ -35,9 +35,9 @@ const NiceSlider = ({ images }) => (
           infinite={false}
           arrows={false}
           fade={['lg', 'xl'].includes(screenClass)}
-          ref={component => (this.slider = component)}
+          ref={(component) => (this.slider = component)}
         >
-          {images.map(image => (
+          {images.map((image) => (
             <Box
               key={image}
               alignSelf="center"
@@ -64,7 +64,7 @@ const NiceSlider = ({ images }) => (
               style={{
                 ...iconBoxProps.style,
                 position: 'absolute',
-                right: -12
+                right: -12,
               }}
               onClick={() => this.slider.slickNext()}
             >
