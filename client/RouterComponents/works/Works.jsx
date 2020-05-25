@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { message } from 'antd/lib';
 import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
+import { message } from '../../UIComponents/message';
 
 const menuRoutes = [
   { label: 'Profile', value: '/my-profile' },

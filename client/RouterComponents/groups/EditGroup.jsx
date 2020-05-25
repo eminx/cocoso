@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { Link } from 'react-router-dom';
 import React from 'react';
-import { message, Alert } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Box, Button } from 'grommet';
 
 import GroupForm from '../../UIComponents/GroupForm';
@@ -10,6 +8,7 @@ import Template from '../../UIComponents/Template';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { resizeImage, uploadImage } from '../../functions';
+import { message, Alert } from '../../UIComponents/message';
 
 const successUpdate = () =>
   message.success('Your group is successfully updated', 6);

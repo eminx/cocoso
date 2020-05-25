@@ -5,6 +5,7 @@ import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
+import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
 const Work = ({ history, match }) => {

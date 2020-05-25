@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 import { Box, Button, CheckBox, Text } from 'grommet';
 
 import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { resizeImage, uploadImage } from '../../functions';
+import { message, Alert } from '../../UIComponents/message';
 
 const successEditMessage = isDeleted => {
   if (isDeleted) {

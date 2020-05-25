@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 import { CheckBox, Box, Text } from 'grommet';
 
 import BookingForm from '../../UIComponents/BookingForm';
 import Template from '../../UIComponents/Template';
+import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {

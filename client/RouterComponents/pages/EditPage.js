@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 import { Button } from 'grommet';
 
 import PageForm from '../../UIComponents/PageForm';
@@ -9,6 +8,7 @@ import Template from '../../UIComponents/Template';
 import { parseTitle } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { message, Alert } from '../../UIComponents/message';
 
 const contextName = Meteor.settings.public.contextName;
 

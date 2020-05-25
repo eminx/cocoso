@@ -1,15 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  List,
-  Card,
-  Radio,
-  Button,
-  IconButton,
-  Divider
-} from 'antd/lib';
+import { Row, Col, List, Card, Radio, Button } from 'antd/lib';
 
 import Loader from '../../UIComponents/Loader';
 

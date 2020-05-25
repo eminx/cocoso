@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Anchor, Heading, Paragraph, Footer } from 'grommet';
 
 export const UserContext = React.createContext(null);

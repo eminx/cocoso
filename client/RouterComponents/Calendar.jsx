@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import ReactDropzone from 'react-dropzone';
-import { Tag, message } from 'antd/lib';
-import { Box, List, Button, Text } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
+import { SimpleTag, message } from '../UIComponents/message';
 import colors from '../constants/colors';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -375,17 +374,5 @@ class Calendar extends React.PureComponent {
     );
   }
 }
-
-const SimpleTag = ({ checked, color, onClick, children, ...otherProps }) => (
-  <Button
-    size="xsmall"
-    plain
-    onClick={onClick}
-    label={children}
-    style={{ borderRadius: 0, padding: '0 4px', fontSize: 12, lineHeight: 1.5 }}
-    className={checked ? 'checked ' + color : color}
-    {...otherProps}
-  />
-);
 
 export default Calendar;

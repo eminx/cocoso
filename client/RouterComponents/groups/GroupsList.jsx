@@ -1,12 +1,13 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { message } from 'antd/lib';
 import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
+import { message } from '../../UIComponents/message';
 
 const filterOptions = [
   {

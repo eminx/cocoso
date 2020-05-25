@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { message } from 'antd/lib';
 import { Anchor, TextInput, FormField, Form, Box, Text, Button } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
+import message from '../../UIComponents/message';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },

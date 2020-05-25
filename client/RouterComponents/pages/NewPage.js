@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 
 import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
+import { message, Alert } from '../../UIComponents/message';
 import { parseTitle } from '../../functions';
 
 const successCreation = () => {
@@ -80,8 +80,8 @@ class NewPage extends React.Component {
     if (
       pageTitles &&
       value &&
-      (pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
-        pageData.title.toLowerCase() !== value.toLowerCase())
+      pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
+        pageData.title.toLowerCase() !== value.toLowerCase()
     ) {
       pageExists = true;
     }

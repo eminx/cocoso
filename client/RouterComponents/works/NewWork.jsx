@@ -1,15 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 
 import { UserContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
+import { message, Alert } from '../../UIComponents/message';
 import { call, resizeImage, uploadImage } from '../../functions';
-
-const successCreation = () => {
-  message.success('New work is successfully created', 6);
-};
 
 class NewWork extends PureComponent {
   state = {

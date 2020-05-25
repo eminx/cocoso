@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
-import { message } from 'antd/lib';
-
 import { Anchor, Text, Box, Button } from 'grommet';
 
 import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { message } from '../../UIComponents/message';
 
 const personalModel = {
   firstName: '',

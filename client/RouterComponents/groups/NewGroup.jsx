@@ -1,12 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Alert } from 'antd/lib';
 import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
 
 import GroupForm from '../../UIComponents/GroupForm';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
+import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
 
 const successCreation = () => {

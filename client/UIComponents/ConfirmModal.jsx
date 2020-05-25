@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layer, Heading, Text, Button, Box } from 'grommet';
+import { Layer, Heading, Button, Box } from 'grommet';
 
 const ConfirmModal = ({
   visible,

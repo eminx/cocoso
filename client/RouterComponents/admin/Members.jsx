@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { Alert, message } from 'antd/lib';
 import {
   Box,
   Anchor,
@@ -14,6 +13,7 @@ import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
+import { message, Alert } from '../../UIComponents/message';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },
@@ -59,7 +59,7 @@ function Members({ history }) {
     return <Loader />;
   }
 
-  toggleVerification = user => {
+  const toggleVerification = user => {
     if (user.isRegisteredMember) {
       Meteor.call('unVerifyMember', user._id, (error, response) => {
         if (error) {
@@ -117,7 +117,7 @@ function Members({ history }) {
         content: user.isRegisteredMember
           ? 'Remove user membership'
           : 'Verify this user',
-        handleClick: () => this.toggleVerification(user),
+        handleClick: () => toggleVerification(user),
         isDisabled: user.isSuperAdmin
       }
     ]

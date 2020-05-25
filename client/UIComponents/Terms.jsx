@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Divider } from 'antd/lib';
 
 const contextName = Meteor.settings.public.contextName;
 
@@ -43,7 +42,7 @@ const Terms = () => {
         For more information about how your personal information is handled, see
         our GDPR policy.
       </p>
-      <Divider />
+
       <h3>{contextName}'s data policy, GDPR</h3>
       <p>
         GDPR (General Data Protection Regulation) is an EU law that regulates
@@ -73,7 +72,7 @@ const Terms = () => {
         provide a password for your account. It is your responsibility to ensure
         this password is stored securely and is sufficiently robust.
       </p>
-      <Divider />
+
       <h3>Data storage</h3>
       <p>
         {contextName} uses cookies in your web browser for the sole purpose of
@@ -93,7 +92,6 @@ const Terms = () => {
         associated with your own account is difficult and we may not be able to
         provide that service on request.
       </p>
-      <Divider />
 
       <h3>Data sharing</h3>
       <p>
@@ -101,7 +99,6 @@ const Terms = () => {
         third party. We do not use any form of tracking, either on our own
         servers or via third parties.
       </p>
-      <Divider />
 
       <h3>Access outside the EU/EES</h3>
       <p>
@@ -109,7 +106,6 @@ const Terms = () => {
         accessible to third parties when accessed on a device outside the EU is
         not under the GDPR’s jurisdiction.
       </p>
-      <Divider />
 
       <h3>Requesting information about your personal information</h3>
       <p>
@@ -117,7 +113,6 @@ const Terms = () => {
         personal information—what we store, how it is used, and if you want to
         change or remove it.
       </p>
-      <Divider />
 
       <h3>Account deletion</h3>
       <p>
@@ -125,14 +120,12 @@ const Terms = () => {
         information associated with it. This can be accomplished by the “delete
         account” button on your user page, or by e-mailing us.
       </p>
-      <Divider />
 
       <h3>How long is information stored?</h3>
       <p>
         Your personal information will be stored as long as you have an active
         account. We will regularly remove long inactive accounts.
       </p>
-      <Divider />
 
       <p>
         Datainspektion regulates how organisations can handle personal

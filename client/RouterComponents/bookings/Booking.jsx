@@ -4,7 +4,6 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import { ScreenClassRender } from 'react-grid-system';
 import 'react-table/react-table.css';
-import { message } from 'antd/lib';
 
 import {
   Accordion,
@@ -27,6 +26,7 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
+import { message } from '../../UIComponents/message';
 
 class Booking extends React.Component {
   state = {

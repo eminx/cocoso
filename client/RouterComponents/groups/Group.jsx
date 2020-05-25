@@ -5,7 +5,6 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible } from 'react-grid-system';
 
-import { Tooltip, message } from 'antd/lib';
 import {
   Box,
   Layer,
@@ -34,6 +33,7 @@ import InviteManager from './InviteManager';
 import { TimePicker } from '../../UIComponents/DatesAndTimes';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { message } from '../../UIComponents/message';
 
 const publicSettings = Meteor.settings.public;
 const defaultMeetingRoom = 'Office';
@@ -948,7 +948,6 @@ const MeetingInfo = ({ meeting, isAttending, places }) => {
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
           <em>You're attending</em>
-          {/* <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} /> */}
         </div>
       )}
     </div>

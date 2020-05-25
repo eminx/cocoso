@@ -1,12 +1,8 @@
 import React from 'react';
-import { Tag, message } from 'antd/lib';
 import { Box, Heading, FormField, TextInput, Paragraph, Button } from 'grommet';
 
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
-
-const marginBottom = {
-  marginBottom: 12
-};
+import { message, SimpleTag } from '../../UIComponents/message';
 
 class InviteManager extends React.PureComponent {
   state = {
@@ -136,9 +132,9 @@ class InviteManager extends React.PureComponent {
         <Box pad={{ top: 'medium', bottom: 'medium' }}>
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
             {peopleInvited.map(person => (
-              <Tag key={person.email} color="green" style={{ margin: 6 }}>
+              <SimpleTag key={person.email} color="green" style={{ margin: 6 }}>
                 <b>{person.firstName}</b> | {person.email}
-              </Tag>
+              </SimpleTag>
             ))}
           </EmailsContainer>
         </Box>

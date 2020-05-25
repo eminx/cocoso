@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Box, Heading } from 'grommet';
+import { Button, Box } from 'grommet';
 
 import { UserContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';

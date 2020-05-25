@@ -1,12 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import ReactQuill from 'react-quill';
-import { Icon, message } from 'antd/lib';
-
-import { editorFormats, editorModules } from '../constants/quillConfig';
-import DatesAndTimes from './DatesAndTimes';
-import FileDropper from './FileDropper';
-
 import {
   Box,
   Form,
@@ -16,10 +10,13 @@ import {
   Heading,
   Select,
   Button,
-  Image,
   Text
 } from 'grommet';
-import moment from 'moment';
+
+import { editorFormats, editorModules } from '../constants/quillConfig';
+import DatesAndTimes from './DatesAndTimes';
+import FileDropper from './FileDropper';
+import { message } from './message';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
