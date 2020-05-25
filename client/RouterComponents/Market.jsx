@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Box, Text } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import Loader from '../UIComponents/Loader';
 import { call } from '../functions';
 
