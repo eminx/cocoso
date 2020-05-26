@@ -13,7 +13,7 @@ class EditWork extends PureComponent {
       title: '',
       shortDescription: '',
       longDescription: '',
-      additionalInfo: ''
+      additionalInfo: '',
     },
     images: [],
     imagesReadyToSave: [],
@@ -21,7 +21,7 @@ class EditWork extends PureComponent {
     isCreating: false,
     isLoading: false,
     isSuccess: false,
-    isError: false
+    isError: false,
   };
 
   componentDidMount() {
@@ -38,46 +38,47 @@ class EditWork extends PureComponent {
       const response = await call('getWork', workId, username);
       this.setState({
         formValues: response,
-        images: response.images.map(image => ({
+        images: response.images.map((image) => ({
           src: image,
-          type: 'uploaded'
-        }))
+          type: 'uploaded',
+        })),
       });
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
     }
   };
 
-  handleFormChange = value => {
+  handleFormChange = (value) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...value,
-      longDescription: formValues.longDescription
+      longDescription: formValues.longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  handleQuillChange = longDescription => {
+  handleQuillChange = (longDescription) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...formValues,
-      longDescription
+      longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  setUploadableImages = files => {
+  setUploadableImages = (files) => {
     this.setState({
-      isLocalising: true
+      isLocalising: true,
     });
 
     files.forEach((uploadableImage, index) => {
@@ -92,16 +93,16 @@ class EditWork extends PureComponent {
               {
                 resizableData: uploadableImage,
                 type: 'not-uploaded',
-                src: reader.result
-              }
-            ]
+                src: reader.result,
+              },
+            ],
           }));
         },
         false
       );
       if (files.length === index + 1) {
         this.setState({
-          isLocalising: false
+          isLocalising: false,
         });
       }
     });
@@ -110,20 +111,28 @@ class EditWork extends PureComponent {
   uploadImages = () => {
     const { images } = this.state;
     this.setState({
-      isCreating: true
+      isCreating: true,
     });
 
-    const uploadableImages = images.map(image => image.type === 'not-uploaded');
+    const uploadableImages = images.map(
+      (image) => image.type === 'not-uploaded'
+    );
 
     if (uploadableImages.length === 0) {
-      this.updateWork();
+      this.setState(
+        {
+          imagesReadyToSave: images.map((image) => image.src),
+        },
+        () => this.updateWork
+      );
       return;
     }
 
     try {
       images.forEach(async (uploadableImage, index) => {
+        const lastImage = images.length === index + 1;
         if (uploadableImage.type === 'uploaded') {
-          this.setImageAndContinue(uploadableImage.src, index);
+          this.setImageAndContinue(uploadableImage.src, lastImage);
         } else {
           const resizedImage = await resizeImage(
             uploadableImage.resizableData,
@@ -134,7 +143,7 @@ class EditWork extends PureComponent {
             'workImageUpload'
           );
 
-          this.setImageAndContinue(uploadedImage, index);
+          this.setImageAndContinue(uploadedImage, lastImage);
         }
       });
     } catch (error) {
@@ -142,17 +151,16 @@ class EditWork extends PureComponent {
       message.error(error.reason);
       this.setState({
         isCreating: false,
-        isError: true
+        isError: true,
       });
     }
   };
 
-  setImageAndContinue = (uploadedImage, imageIndex) => {
-    const { images } = this.state;
+  setImageAndContinue = (image, lastImage) => {
     this.setState(({ imagesReadyToSave }) => ({
-      imagesReadyToSave: [...imagesReadyToSave, uploadedImage]
+      imagesReadyToSave: [...imagesReadyToSave, image],
     }));
-    if (images.length === imageIndex + 1) {
+    if (lastImage) {
       this.updateWork();
     }
   };
@@ -166,7 +174,7 @@ class EditWork extends PureComponent {
       await call('updateWork', workId, formValues, imagesReadyToSave);
       this.setState({
         isCreating: false,
-        isSuccess: true
+        isSuccess: true,
       });
       message.success('Your work is successfully updated');
     } catch (error) {
@@ -175,7 +183,7 @@ class EditWork extends PureComponent {
     }
   };
 
-  removeWork = workId => {
+  removeWork = (workId) => {
     console.log(workId);
   };
 
@@ -212,7 +220,7 @@ class EditWork extends PureComponent {
           onQuillChange={this.handleQuillChange}
           onSubmit={this.uploadImages}
           setUploadableImages={this.setUploadableImages}
-          images={images.map(image => image.src)}
+          images={images.map((image) => image.src)}
           buttonLabel={buttonLabel}
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}

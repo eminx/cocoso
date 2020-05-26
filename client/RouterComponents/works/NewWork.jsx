@@ -13,7 +13,7 @@ class NewWork extends PureComponent {
       title: '',
       shortDescription: '',
       longDescription: '',
-      additionalInfo: ''
+      additionalInfo: '',
     },
     uploadableImages: [],
     uploadableImagesLocal: [],
@@ -23,55 +23,54 @@ class NewWork extends PureComponent {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newWorkId: null
+    newWorkId: null,
   };
 
-  handleFormChange = value => {
+  handleFormChange = (value) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...value,
-      longDescription: formValues.longDescription
+      longDescription: formValues.longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  handleQuillChange = longDescription => {
+  handleQuillChange = (longDescription) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...formValues,
-      longDescription
+      longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  setUploadableImages = files => {
+  setUploadableImages = (files) => {
     this.setState({
-      isLocalising: true
+      isLocalising: true,
     });
 
     files.forEach((uploadableImage, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(uploadableImage);
-      console.log(uploadableImage);
       reader.addEventListener(
         'load',
         () => {
           this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
             uploadableImages: [...uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...uploadableImagesLocal, reader.result]
+            uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
           }));
         },
         false
       );
       if (files.length === index + 1) {
         this.setState({
-          isLocalising: false
+          isLocalising: false,
         });
       }
     });
@@ -80,7 +79,7 @@ class NewWork extends PureComponent {
   uploadImages = () => {
     const { uploadableImages } = this.state;
     this.setState({
-      isCreating: true
+      isCreating: true,
     });
 
     try {
@@ -92,7 +91,7 @@ class NewWork extends PureComponent {
         );
         this.setState(
           ({ uploadedImages }) => ({
-            uploadedImages: [...uploadedImages, uploadedImage]
+            uploadedImages: [...uploadedImages, uploadedImage],
           }),
           this.createWork
         );
@@ -102,7 +101,7 @@ class NewWork extends PureComponent {
       message.error(error.reason);
       this.setState({
         isCreating: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -118,7 +117,7 @@ class NewWork extends PureComponent {
       this.setState({
         newWorkId: respond,
         isCreating: false,
-        isSuccess: true
+        isSuccess: true,
       });
       message.success('Your work is successfully created');
     } catch (error) {
@@ -147,7 +146,7 @@ class NewWork extends PureComponent {
       uploadableImagesLocal,
       isSuccess,
       newWorkId,
-      isCreating
+      isCreating,
     } = this.state;
 
     if (isSuccess && newWorkId) {

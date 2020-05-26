@@ -5,7 +5,7 @@ import {
   FormClose,
   StatusGood,
   StatusCritical,
-  StatusInfo
+  StatusInfo,
 } from 'grommet-icons';
 
 const toastTarget = document.getElementById('toast-target');
@@ -40,7 +40,9 @@ const Alert = ({ message, onClose, type }) => {
         {info && <StatusInfo />}
         {warning && <Alert color="status-warning" />}
 
-        <Text weight="bold">{message}</Text>
+        <Text weight="bold" style={{ fontFamily: 'sans' }}>
+          {message}
+        </Text>
       </Box>
       {onClose && (
         <Button
@@ -60,14 +62,14 @@ const message = {
 
   error: (text, duration = timeOutTime) => renderToast(text, duration, 'error'),
 
-  info: (text, duration = timeOutTime) => renderToast(text, duration, 'info')
+  info: (text, duration = timeOutTime) => renderToast(text, duration, 'info'),
 };
 
 const Toast = ({ text, onClose, type = 'info' }) => {
   const noteProps = {
     message: text,
     type,
-    onClose
+    onClose,
   };
 
   return (

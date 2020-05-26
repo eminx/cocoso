@@ -9,7 +9,7 @@ const colStyle = {
 
 function Template({ leftContent, rightContent, heading, children }) {
   return (
-    <Container fluid style={{ width: '100%' }}>
+    <Container fluid style={{ width: '100%', marginBottom: 100 }}>
       <Row gutterWidth={12}>
         <Col lg={3} style={colStyle}>
           {leftContent}
