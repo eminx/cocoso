@@ -114,16 +114,17 @@ class EditWork extends PureComponent {
       isCreating: true,
     });
 
-    const uploadableImages = images.map(
+    const isThereUploadable = images.some(
       (image) => image.type === 'not-uploaded'
     );
 
-    if (uploadableImages.length === 0) {
+    if (!isThereUploadable) {
+      const imageSet = images.map((image) => image.src);
       this.setState(
         {
-          imagesReadyToSave: images.map((image) => image.src),
+          imagesReadyToSave: imageSet,
         },
-        () => this.updateWork
+        this.updateWork
       );
       return;
     }

@@ -31,7 +31,7 @@ const Alert = ({ message, onClose, type }) => {
       justify="between"
       round="xsmall"
       elevation="medium"
-      pad="small"
+      pad={{ top: 'small', bottom: 'small', right: 'medium', left: 'medium' }}
       background="light-2"
     >
       <Box align="center" direction="row" gap="xsmall">
@@ -40,7 +40,7 @@ const Alert = ({ message, onClose, type }) => {
         {info && <StatusInfo />}
         {warning && <Alert color="status-warning" />}
 
-        <Text weight="bold" style={{ fontFamily: 'sans' }}>
+        <Text weight="bold" style={{ fontFamily: 'sans-serif' }}>
           {message}
         </Text>
       </Box>
