@@ -31,8 +31,8 @@ const NiceSlider = ({ images }) => (
         <Slider
           swipe
           autoplay
+          infinite
           dots={false}
-          infinite={false}
           arrows={false}
           fade={['lg', 'xl'].includes(screenClass)}
           ref={(component) => (this.slider = component)}

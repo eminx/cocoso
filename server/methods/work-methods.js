@@ -7,7 +7,7 @@ Meteor.methods({
 
     try {
       const works = Works.find({
-        host
+        host,
       }).fetch();
       return works;
     } catch (error) {
@@ -25,7 +25,7 @@ Meteor.methods({
     try {
       const works = Works.find({
         host,
-        authorId: user._id
+        authorId: user._id,
       }).fetch();
       return works;
     } catch (error) {
@@ -67,7 +67,7 @@ Meteor.methods({
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName,
-        creationDate: new Date()
+        creationDate: new Date(),
       });
       return newWorkId;
     } catch (error) {
@@ -80,14 +80,15 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
+    console.log(images);
 
     try {
       Works.update(workId, {
         $set: {
           ...values,
           images,
-          latestUpdate: new Date()
-        }
+          latestUpdate: new Date(),
+        },
       });
       return values.title;
     } catch (error) {
@@ -106,5 +107,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
-  }
+  },
 });

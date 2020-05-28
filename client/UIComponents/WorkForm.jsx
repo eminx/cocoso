@@ -54,6 +54,9 @@ const WorkForm = ({
                   onRemoveImage={() => onRemoveImage(index)}
                 />
               ))}
+              <Box alignSelf="center" margin={{ top: 'medium' }}>
+                <FileDropper setUploadableImage={setUploadableImages} />
+              </Box>
             </SortableContainer>
           ) : (
             <Box alignSelf="center" margin={{ top: 'medium' }}>
@@ -119,7 +122,7 @@ const thumbStyle = (backgroundImage) => ({
   flexBasis: 120,
   height: 80,
   margin: 8,
-  backgroundImage: `url('${backgroundImage}')`,
+  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   borderRadius: 5,
@@ -127,13 +130,11 @@ const thumbStyle = (backgroundImage) => ({
 });
 
 const thumbIconStyle = {
-  width: 24,
-  height: 24,
   float: 'right',
   margin: 2,
-  color: '#1b1b1b',
-  borderRadius: '50%',
-  backgroundColor: 'rgba(255, 255, 255, .3)',
+  padding: 4,
+  borderRadius: '2px',
+  backgroundColor: 'rgba(255, 255, 255, .8)',
   cursor: 'pointer',
 };
 
@@ -146,7 +147,12 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
 
   return (
     <div key={image} style={thumbStyle(image)}>
-      <Close style={thumbIconStyle} onClick={onRemoveClick} />
+      <Close
+        color="dark-1"
+        size="small"
+        style={thumbIconStyle}
+        onClick={onRemoveClick}
+      />
     </div>
   );
 });

@@ -23,10 +23,20 @@ class EditWork extends PureComponent {
     isLoading: false,
     isSuccess: false,
     isError: false,
+    lastImage: false,
   };
 
   componentDidMount() {
     this.getWork();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { lastImage } = this.state;
+    if (!prevState.lastImage && lastImage) {
+      console.log('right');
+      debugger;
+      this.updateWork();
+    }
   }
 
   getWork = async () => {
@@ -109,7 +119,7 @@ class EditWork extends PureComponent {
     });
   };
 
-  uploadImages = () => {
+  uploadImages = async () => {
     const { images } = this.state;
     this.setState({
       isCreating: true,
@@ -118,9 +128,10 @@ class EditWork extends PureComponent {
     const isThereUploadable = images.some(
       (image) => image.type === 'not-uploaded'
     );
-
+    console.log('isThereUploadable', isThereUploadable);
     if (!isThereUploadable) {
       const imageSet = images.map((image) => image.src);
+      console.log(imageSet);
       this.setState(
         {
           imagesReadyToSave: imageSet,
@@ -131,23 +142,31 @@ class EditWork extends PureComponent {
     }
 
     try {
-      images.forEach(async (uploadableImage, index) => {
-        const lastImage = images.length === index + 1;
-        if (uploadableImage.type === 'uploaded') {
-          this.setImageAndContinue(uploadableImage.src, lastImage);
-        } else {
-          const resizedImage = await resizeImage(
-            uploadableImage.resizableData,
-            500
-          );
-          const uploadedImage = await uploadImage(
-            resizedImage,
-            'workImageUpload'
-          );
+      await Promise.all(
+        images.map(async (uploadableImage, index) => {
+          console.log('started');
+          const lastImage = images.length === index + 1;
+          console.log('lastImage', lastImage);
+          if (uploadableImage.type === 'uploaded') {
+            console.log('uploaded');
+            this.setImageAndContinue(uploadableImage.src, lastImage);
+          } else {
+            console.log('not-uploaded');
+            console.log('process started');
+            const resizedImage = await resizeImage(
+              uploadableImage.resizableData,
+              500
+            );
+            const uploadedImage = await uploadImage(
+              resizedImage,
+              'workImageUpload'
+            );
+            console.log('process finished');
 
-          this.setImageAndContinue(uploadedImage, lastImage);
-        }
-      });
+            this.setImageAndContinue(uploadedImage, lastImage);
+          }
+        })
+      );
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -161,17 +180,15 @@ class EditWork extends PureComponent {
   setImageAndContinue = (image, lastImage) => {
     this.setState(({ imagesReadyToSave }) => ({
       imagesReadyToSave: [...imagesReadyToSave, image],
+      lastImage,
     }));
-    if (lastImage) {
-      this.updateWork();
-    }
   };
 
   updateWork = async () => {
     const { match } = this.props;
     const workId = match.params.workId;
     const { formValues, imagesReadyToSave } = this.state;
-
+    console.log(imagesReadyToSave);
     try {
       await call('updateWork', workId, formValues, imagesReadyToSave);
       this.setState({

@@ -5,7 +5,7 @@ import { Box, Button, Image, Text } from 'grommet';
 const FileDropper = ({
   setUploadableImage,
   uploadableImageLocal,
-  imageUrl
+  imageUrl,
 }) => {
   return (
     <Dropzone onDrop={setUploadableImage}>
@@ -13,8 +13,8 @@ const FileDropper = ({
         <Box
           {...getRootProps()}
           background={isDragActive ? 'dark-3' : 'light-2'}
-          width="large"
-          height="medium"
+          width="medium"
+          height="small"
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
