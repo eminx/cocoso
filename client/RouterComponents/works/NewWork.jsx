@@ -77,26 +77,24 @@ class NewWork extends PureComponent {
     });
   };
 
-  uploadImages = () => {
+  uploadImages = async () => {
     const { uploadableImages } = this.state;
     this.setState({
       isCreating: true,
     });
 
     try {
-      uploadableImages.forEach(async (uploadableImage, index) => {
-        const resizedImage = await resizeImage(uploadableImage, 500);
-        const uploadedImage = await uploadImage(
-          resizedImage,
-          'workImageUpload'
-        );
-        this.setState(
-          ({ uploadedImages }) => ({
-            uploadedImages: [...uploadedImages, uploadedImage],
-          }),
-          this.createWork
-        );
-      });
+      const imagesReadyToSave = await Promise.all(
+        uploadableImages.map(async (uploadableImage, index) => {
+          const resizedImage = await resizeImage(uploadableImage, 500);
+          const uploadedImage = await uploadImage(
+            resizedImage,
+            'workImageUpload'
+          );
+          return uploadedImage;
+        })
+      );
+      this.createWork(imagesReadyToSave);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -107,14 +105,10 @@ class NewWork extends PureComponent {
     }
   };
 
-  createWork = async () => {
-    const { uploadedImages, uploadableImages, formValues } = this.state;
-    if (uploadableImages.length !== uploadedImages.length) {
-      return;
-    }
-
+  createWork = async (imagesReadyToSave) => {
+    const { formValues } = this.state;
     try {
-      const respond = await call('createWork', formValues, uploadedImages);
+      const respond = await call('createWork', formValues, imagesReadyToSave);
       this.setState({
         newWorkId: respond,
         isCreating: false,

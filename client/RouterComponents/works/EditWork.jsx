@@ -17,26 +17,15 @@ class EditWork extends PureComponent {
       additionalInfo: '',
     },
     images: [],
-    imagesReadyToSave: [],
     isLocalising: false,
     isCreating: false,
     isLoading: false,
     isSuccess: false,
     isError: false,
-    lastImage: false,
   };
 
   componentDidMount() {
     this.getWork();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { lastImage } = this.state;
-    if (!prevState.lastImage && lastImage) {
-      console.log('right');
-      debugger;
-      this.updateWork();
-    }
   }
 
   getWork = async () => {
@@ -128,31 +117,18 @@ class EditWork extends PureComponent {
     const isThereUploadable = images.some(
       (image) => image.type === 'not-uploaded'
     );
-    console.log('isThereUploadable', isThereUploadable);
     if (!isThereUploadable) {
-      const imageSet = images.map((image) => image.src);
-      console.log(imageSet);
-      this.setState(
-        {
-          imagesReadyToSave: imageSet,
-        },
-        this.updateWork
-      );
+      const imagesReadyToSave = images.map((image) => image.src);
+      this.updateWork(imagesReadyToSave);
       return;
     }
 
     try {
-      await Promise.all(
+      const imagesReadyToSave = await Promise.all(
         images.map(async (uploadableImage, index) => {
-          console.log('started');
-          const lastImage = images.length === index + 1;
-          console.log('lastImage', lastImage);
           if (uploadableImage.type === 'uploaded') {
-            console.log('uploaded');
-            this.setImageAndContinue(uploadableImage.src, lastImage);
+            return uploadableImage.src;
           } else {
-            console.log('not-uploaded');
-            console.log('process started');
             const resizedImage = await resizeImage(
               uploadableImage.resizableData,
               500
@@ -161,12 +137,11 @@ class EditWork extends PureComponent {
               resizedImage,
               'workImageUpload'
             );
-            console.log('process finished');
-
-            this.setImageAndContinue(uploadedImage, lastImage);
+            return uploadedImage;
           }
         })
       );
+      this.updateWork(imagesReadyToSave);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -177,18 +152,10 @@ class EditWork extends PureComponent {
     }
   };
 
-  setImageAndContinue = (image, lastImage) => {
-    this.setState(({ imagesReadyToSave }) => ({
-      imagesReadyToSave: [...imagesReadyToSave, image],
-      lastImage,
-    }));
-  };
-
-  updateWork = async () => {
+  updateWork = async (imagesReadyToSave) => {
     const { match } = this.props;
     const workId = match.params.workId;
-    const { formValues, imagesReadyToSave } = this.state;
-    console.log(imagesReadyToSave);
+    const { formValues } = this.state;
     try {
       await call('updateWork', workId, formValues, imagesReadyToSave);
       this.setState({
