@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.2.0",
+    "array-move": "^2.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
@@ -31,6 +32,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-slick": "^0.26.1",
+    "react-sortable-hoc": "^1.11.0",
     "react-spinners": "^0.4.7",
     "react-table": "^6.8.6",
     "react-to-print": "^2.0.0-alpha-6",

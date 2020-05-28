@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
+import arrayMove from 'array-move';
 
 import { UserContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
@@ -126,6 +127,27 @@ class NewWork extends PureComponent {
     }
   };
 
+  handleRemoveImage = (workId) => {
+    console.log(workId);
+  };
+
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    console.log(oldIndex, newIndex);
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
+      uploadableImagesLocal: arrayMove(
+        uploadableImagesLocal,
+        oldIndex,
+        newIndex
+      ),
+      // unSavedImageChange: true,
+    }));
+  };
+
   render() {
     const { currentUser } = this.context;
 
@@ -171,6 +193,8 @@ class NewWork extends PureComponent {
           buttonLabel={buttonLabel}
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}
+          onSortImages={this.handleSortImages}
+          onRemoveImage={this.handleRemoveImage}
         />
       </Template>
     );

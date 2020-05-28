@@ -82,36 +82,40 @@ const Header = ({ currentUser, title, history }) => {
 
   return (
     <ScreenClassRender
-      render={(screenClass) => (
-        <Container fluid style={{ width: '100%' }}>
-          <Row>
-            <Col lg={3}>
-              {['xs', 'sm'].includes(screenClass) && <UserStuff />}
-            </Col>
-            <Col lg={6}>
-              <Box
-                pad="small"
-                justify="center"
-                direction="row"
-                flex={{ shrink: 0 }}
-                alignSelf="center"
-              >
-                {menu.map((item) => (
-                  <Box pad="small" key={item.label}>
-                    <Anchor
-                      onClick={() => history.push(item.route)}
-                      label={item.label}
-                    />
-                  </Box>
-                ))}
-              </Box>
-            </Col>
-            <Col lg={3}>
-              {['md', 'lg', 'xl'].includes(screenClass) && <UserStuff />}
-            </Col>
-          </Row>
-        </Container>
-      )}
+      render={(screenClass) => {
+        const large = ['lg', 'xl'].includes(screenClass);
+
+        return (
+          <Container fluid style={{ width: '100%' }}>
+            <Row>
+              <Col lg={large ? 3 : 0}>
+                <Box direction="row" justify="center">
+                  {!large && <UserStuff />}
+                </Box>
+              </Col>
+              <Col lg={6}>
+                <Box
+                  pad="small"
+                  justify="center"
+                  direction="row"
+                  flex={{ shrink: 0 }}
+                  alignSelf="center"
+                >
+                  {menu.map((item) => (
+                    <Box pad="small" key={item.label}>
+                      <Anchor
+                        onClick={() => history.push(item.route)}
+                        label={item.label}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Col>
+              <Col lg={3}>{large && <UserStuff />}</Col>
+            </Row>
+          </Container>
+        );
+      }}
     />
   );
 };

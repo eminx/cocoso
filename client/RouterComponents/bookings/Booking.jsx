@@ -17,7 +17,7 @@ import {
   Button,
   Heading,
   Paragraph,
-  Text
+  Text,
 } from 'grommet';
 
 import Chattery from '../../chattery';
@@ -32,10 +32,10 @@ class Booking extends React.Component {
   state = {
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
-    capacityGotFullByYou: false
+    capacityGotFullByYou: false,
   };
 
-  addNewChatMessage = message => {
+  addNewChatMessage = (message) => {
     Meteor.call(
       'addChatMessage',
       this.props.bookingData._id,
@@ -56,7 +56,7 @@ class Booking extends React.Component {
 
     if (chatData) {
       messages = [...chatData.messages];
-      messages.forEach(message => {
+      messages.forEach((message) => {
         if (message.senderId === currentUser._id) {
           message.isFromMe = true;
         }
@@ -80,7 +80,7 @@ class Booking extends React.Component {
     }
   };
 
-  openCancelRsvpModal = occurenceIndex => {
+  openCancelRsvpModal = (occurenceIndex) => {
     const { currentUser } = this.props;
 
     this.setState({
@@ -89,8 +89,8 @@ class Booking extends React.Component {
         occurenceIndex,
         email: currentUser ? currentUser.emails[0].address : '',
         lastName:
-          currentUser && currentUser.lastName ? currentUser.lastName : ''
-      }
+          currentUser && currentUser.lastName ? currentUser.lastName : '',
+      },
     });
   };
 
@@ -100,7 +100,7 @@ class Booking extends React.Component {
     const theOccurence =
       bookingData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
 
-    const attendeeFinder = attendee =>
+    const attendeeFinder = (attendee) =>
       attendee.lastName === rsvpCancelModalInfo.lastName &&
       attendee.email === rsvpCancelModalInfo.email;
 
@@ -120,8 +120,8 @@ class Booking extends React.Component {
         attendeeIndex: foundAttendeeIndex,
         isInfoFound: true,
         firstName: foundAttendee.firstName,
-        numberOfPeople: foundAttendee.numberOfPeople
-      }
+        numberOfPeople: foundAttendee.numberOfPeople,
+      },
     });
   };
 
@@ -134,14 +134,14 @@ class Booking extends React.Component {
     if (rsvpCancelModalInfo.isInfoFound) {
       const user = {
         ...rsvpCancelModalInfo,
-        emails: [{ address: rsvpCancelModalInfo.email }]
+        emails: [{ address: rsvpCancelModalInfo.email }],
       };
       return (
         <RsvpForm
           isUpdateMode
           onDelete={this.handleRemoveRSVP}
           currentUser={user}
-          onSubmit={event => this.handleChangeRSVPSubmit(event)}
+          onSubmit={(event) => this.handleChangeRSVPSubmit(event)}
         />
       );
     } else {
@@ -150,12 +150,12 @@ class Booking extends React.Component {
           <TextInput
             placeholder="Last name"
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
-            onChange={e =>
+            onChange={(e) =>
               this.setState({
                 rsvpCancelModalInfo: {
                   ...rsvpCancelModalInfo,
-                  lastName: e.target.value
-                }
+                  lastName: e.target.value,
+                },
               })
             }
             size="small"
@@ -163,12 +163,12 @@ class Booking extends React.Component {
           <TextInput
             placeholder="Email"
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
-            onChange={e =>
+            onChange={(e) =>
               this.setState({
                 rsvpCancelModalInfo: {
                   ...rsvpCancelModalInfo,
-                  email: e.target.value
-                }
+                  email: e.target.value,
+                },
               })
             }
             size="small"
@@ -184,7 +184,7 @@ class Booking extends React.Component {
 
     const values = {
       ...value,
-      numberOfPeople: Number(value.numberOfPeople)
+      numberOfPeople: Number(value.numberOfPeople),
     };
 
     try {
@@ -198,7 +198,7 @@ class Booking extends React.Component {
       message.success('You have successfully updated your RSVP');
       this.setState({
         rsvpCancelModalInfo: null,
-        isRsvpCancelModalOn: false
+        isRsvpCancelModalOn: false,
       });
     } catch (error) {
       console.log(error);
@@ -221,7 +221,7 @@ class Booking extends React.Component {
       message.success('You have successfully removed your RSVP');
       this.setState({
         rsvpCancelModalInfo: null,
-        isRsvpCancelModalOn: false
+        isRsvpCancelModalOn: false,
       });
     } catch (error) {
       console.log(error);
@@ -253,9 +253,9 @@ class Booking extends React.Component {
       );
     }
 
-    const getTotalNumber = occurence => {
+    const getTotalNumber = (occurence) => {
       let counter = 0;
-      occurence.attendees.forEach(attendee => {
+      occurence.attendees.forEach((attendee) => {
         counter += attendee.numberOfPeople;
       });
       return counter;
@@ -272,9 +272,11 @@ class Booking extends React.Component {
             ) : (
               <Box>
                 <Box direction="row" justify="end" margin={{ bottom: 'small' }}>
-                  <a onClick={() => this.openCancelRsvpModal(occurenceIndex)}>
+                  <Anchor
+                    onClick={() => this.openCancelRsvpModal(occurenceIndex)}
+                  >
                     Change/Cancel Existing RSVP
-                  </a>
+                  </Anchor>
                 </Box>
                 {occurence.capacity &&
                 occurence.attendees &&
@@ -288,7 +290,7 @@ class Booking extends React.Component {
                   <Box pad="medium" background="light-1">
                     <RsvpForm
                       currentUser={currentUser}
-                      onSubmit={event =>
+                      onSubmit={(event) =>
                         this.handleRSVPSubmit(event, occurenceIndex)
                       }
                     />
@@ -304,7 +306,7 @@ class Booking extends React.Component {
                   style={{
                     paddingBottom: 12,
                     display: 'flex',
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
                   }}
                 >
                   <ReactToPrint
@@ -315,7 +317,7 @@ class Booking extends React.Component {
                 </div>
                 <RsvpList
                   attendees={occurence.attendees}
-                  ref={element => (this.printableElement = element)}
+                  ref={(element) => (this.printableElement = element)}
                 />
               </Box>
             )}
@@ -354,13 +356,13 @@ class Booking extends React.Component {
     return currentUser && currentUser.isRegisteredMember;
   };
 
-  removeNotification = messageIndex => {
+  removeNotification = (messageIndex) => {
     const { bookingData, currentUser } = this.props;
-    const shouldRun = currentUser.notifications.find(notification => {
+    const shouldRun = currentUser.notifications.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
       }
-      return notification.unSeenIndexes.some(unSeenIndex => {
+      return notification.unSeenIndexes.some((unSeenIndex) => {
         return unSeenIndex === messageIndex;
       });
     });
@@ -388,7 +390,7 @@ class Booking extends React.Component {
       isLoading,
       currentUser,
       chatData,
-      history
+      history,
     } = this.props;
 
     if (!bookingData || isLoading) {
@@ -442,7 +444,7 @@ class Booking extends React.Component {
         }
       >
         <ScreenClassRender
-          render={screenClass => (
+          render={(screenClass) => (
             <Box width={screenClass === 'sm' ? 'medium' : 'large'}>
               <Image fit="contain" fill src={bookingData.imageUrl} />
             </Box>
@@ -452,10 +454,10 @@ class Booking extends React.Component {
           <div
             style={{
               whiteSpace: 'pre-line',
-              color: 'rgba(0,0,0, .85)'
+              color: 'rgba(0,0,0, .85)',
             }}
             dangerouslySetInnerHTML={{
-              __html: bookingData.longDescription
+              __html: bookingData.longDescription,
             }}
           />
         </Box>
@@ -522,26 +524,26 @@ class Booking extends React.Component {
 const fields = [
   {
     name: 'firstName',
-    label: 'First name'
+    label: 'First name',
   },
   {
     name: 'lastName',
-    label: 'Last name'
+    label: 'Last name',
   },
   {
     name: 'email',
-    label: 'Email address'
+    label: 'Email address',
   },
   {
     name: 'numberOfPeople',
-    label: 'Number of people'
-  }
+    label: 'Number of people',
+  },
 ];
 
 function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
     <Form onSubmit={onSubmit}>
-      {fields.map(field => (
+      {fields.map((field) => (
         <FormField
           name={field.name}
           key={field.name}
@@ -579,20 +581,20 @@ function RsvpList({ attendees }) {
       columns={[
         {
           Header: 'First name',
-          accessor: 'firstName'
+          accessor: 'firstName',
         },
         {
           Header: 'Last name',
-          accessor: 'lastName'
+          accessor: 'lastName',
         },
         {
           Header: 'People',
-          accessor: 'numberOfPeople'
+          accessor: 'numberOfPeople',
         },
         {
           Header: 'Email',
-          accessor: 'email'
-        }
+          accessor: 'email',
+        },
       ]}
     />
   );

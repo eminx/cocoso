@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
+import arrayMove from 'array-move';
 
 import { UserContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
@@ -184,8 +185,19 @@ class EditWork extends PureComponent {
     }
   };
 
-  removeWork = (workId) => {
+  handleRemoveImage = (workId) => {
     console.log(workId);
+  };
+
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ images }) => ({
+      images: arrayMove(images, oldIndex, newIndex),
+      // unSavedImageChange: true,
+    }));
   };
 
   render() {
@@ -225,6 +237,8 @@ class EditWork extends PureComponent {
           buttonLabel={buttonLabel}
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isCreating}
+          onSortImages={this.handleSortImages}
+          onRemoveImage={this.handleRemoveImage}
         />
       </Template>
     );

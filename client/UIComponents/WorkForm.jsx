@@ -6,9 +6,11 @@ import {
   TextArea,
   Text,
   FormField,
-  Form
+  Form,
 } from 'grommet';
+import { Close } from 'grommet-icons';
 import ReactQuill from 'react-quill';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import FileDropper from '../UIComponents/FileDropper';
 import NiceSlider from '../UIComponents/NiceSlider';
@@ -24,10 +26,10 @@ const WorkForm = ({
   imageUrl,
   buttonLabel,
   isFormValid,
-  isButtonDisabled
+  isButtonDisabled,
+  onSortImages,
+  onRemoveImage,
 }) => {
-  const imagesOrImage = images && images.length > 0 ? images : imageUrl;
-
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
@@ -36,9 +38,28 @@ const WorkForm = ({
           help={(images || imageUrl) && <Text size="small" />}
         >
           {images && <NiceSlider images={images} />}
-          <Box alignSelf="center" margin={{ top: 'medium' }}>
-            <FileDropper setUploadableImage={setUploadableImages} />
-          </Box>
+
+          {images && images.length > 0 ? (
+            <SortableContainer
+              onSortEnd={onSortImages}
+              axis="xy"
+              helperClass="sortableHelper"
+              pressDelay={250}
+            >
+              {images.map((image, index) => (
+                <SortableItem
+                  key={image}
+                  index={index}
+                  image={image}
+                  onRemoveImage={() => onRemoveImage(index)}
+                />
+              ))}
+            </SortableContainer>
+          ) : (
+            <Box alignSelf="center" margin={{ top: 'medium' }}>
+              <FileDropper setUploadableImage={setUploadableImages} />
+            </Box>
+          )}
         </FormField>
 
         <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
@@ -93,5 +114,49 @@ const WorkForm = ({
     </div>
   );
 };
+
+const thumbStyle = (backgroundImage) => ({
+  flexBasis: 120,
+  height: 80,
+  margin: 8,
+  backgroundImage: `url('${backgroundImage}')`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  borderRadius: 5,
+  border: '1px solid #fff',
+});
+
+const thumbIconStyle = {
+  width: 24,
+  height: 24,
+  float: 'right',
+  margin: 2,
+  color: '#1b1b1b',
+  borderRadius: '50%',
+  backgroundColor: 'rgba(255, 255, 255, .3)',
+  cursor: 'pointer',
+};
+
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
+  const onRemoveClick = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    onRemoveImage();
+  };
+
+  return (
+    <div key={image} style={thumbStyle(image)}>
+      <Close style={thumbIconStyle} onClick={onRemoveClick} />
+    </div>
+  );
+});
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return (
+    <Box direction="row" justify="center" wrap>
+      {children}
+    </Box>
+  );
+});
 
 export default WorkForm;

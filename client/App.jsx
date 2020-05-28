@@ -9,27 +9,24 @@ const theme = {
     font: {
       family: 'sans-serif',
       size: '15px',
-      height: '24px'
+      height: '24px',
     },
     colors: {
       brand: 'rgba(0,0,0, .75)',
-      focus: 'none'
-    }
+      focus: 'none',
+    },
   },
   formField: {
-    border: false
-  },
-  textInput: {
-    backgroundColor: '#fff'
+    border: false,
   },
   list: {
     item: {
-      border: false
-    }
-  }
+      border: false,
+    },
+  },
 };
 
-export default function() {
+export default function () {
   return (
     <Grommet theme={theme}>
       <Routes />
