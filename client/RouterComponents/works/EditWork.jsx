@@ -185,8 +185,11 @@ class EditWork extends PureComponent {
     }
   };
 
-  handleRemoveImage = (workId) => {
-    console.log(workId);
+  handleRemoveImage = (imageIndex) => {
+    this.setState(({ images }) => ({
+      images: images.filter((image, index) => imageIndex !== index),
+      // unSavedImageChange: true,
+    }));
   };
 
   handleSortImages = ({ oldIndex, newIndex }) => {

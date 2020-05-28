@@ -127,12 +127,19 @@ class NewWork extends PureComponent {
     }
   };
 
-  handleRemoveImage = (workId) => {
-    console.log(workId);
+  handleRemoveImage = (imageIndex) => {
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: uploadableImages.filter(
+        (image, index) => imageIndex !== index
+      ),
+      uploadableImagesLocal: uploadableImagesLocal.filter(
+        (image, index) => imageIndex !== index
+      ),
+      // unSavedImageChange: true,
+    }));
   };
 
   handleSortImages = ({ oldIndex, newIndex }) => {
-    console.log(oldIndex, newIndex);
     if (oldIndex === newIndex) {
       return;
     }
