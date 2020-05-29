@@ -44,7 +44,6 @@ const WorkForm = ({
               onSortEnd={onSortImages}
               axis="xy"
               helperClass="sortableHelper"
-              pressDelay={250}
             >
               {images.map((image, index) => (
                 <SortableItem
@@ -125,7 +124,7 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
   backgroundPosition: 'center',
   backgroundSize: 'cover',
-  borderRadius: 5,
+  borderRadius: 4,
   border: '1px solid #fff',
 });
 
@@ -133,7 +132,7 @@ const thumbIconStyle = {
   float: 'right',
   margin: 2,
   padding: 4,
-  borderRadius: '2px',
+  borderRadius: 4,
   backgroundColor: 'rgba(255, 255, 255, .8)',
   cursor: 'pointer',
 };
@@ -146,7 +145,7 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
   };
 
   return (
-    <div key={image} style={thumbStyle(image)}>
+    <div key={image} className="sortable-thumb" style={thumbStyle(image)}>
       <Close
         color="dark-1"
         size="small"

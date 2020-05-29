@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Box, Text } from 'grommet';
+import { Box, Text, Button } from 'grommet';
 import Loader from '../UIComponents/Loader';
 import { call } from '../functions';
 
@@ -13,7 +14,7 @@ const compareByDate = (a, b) => {
 const imageStyle = {
   width: 288,
   height: 180,
-  objectFit: 'cover'
+  objectFit: 'cover',
 };
 
 const Market = ({ history }) => {
@@ -41,10 +42,22 @@ const Market = ({ history }) => {
 
   const sortedWorks = works.sort(compareByDate);
 
+  const currentUser = Meteor.user();
+
   return (
     <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
+      <Box margin={{ bottom: 'medium' }} alignSelf="center">
+        <Link to={currentUser ? '/new-work' : '/my-profile'}>
+          <Button
+            as="span"
+            size="small"
+            label="Create Product or Service for Sale"
+          />
+        </Link>
+      </Box>
+
       <Box direction="row" wrap justify="center">
-        {sortedWorks.map(work => (
+        {sortedWorks.map((work) => (
           <Box
             key={work._id}
             width="medium"

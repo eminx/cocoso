@@ -18,7 +18,6 @@ class NewWork extends PureComponent {
     },
     uploadableImages: [],
     uploadableImagesLocal: [],
-    uploadedImages: [],
     isLocalising: false,
     isCreating: false,
     isLoading: false,

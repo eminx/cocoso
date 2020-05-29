@@ -80,7 +80,6 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-    console.log(images);
 
     try {
       Works.update(workId, {

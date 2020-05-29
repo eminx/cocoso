@@ -11,7 +11,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <ScreenClassRender
-        render={screen =>
+        render={(screen) =>
           screen === 'xs' ? (
             <Box width="small" alignSelf="center" margin={{ bottom: 'medium' }}>
               <Select
@@ -30,10 +30,10 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
             <Box
               width="small"
               alignSelf={screen !== 'lg' ? 'center' : 'start'}
-              margin={{ bottom: 'medium' }}
+              margin={{ top: 'xlarge', bottom: 'medium' }}
             >
               <ListMenu list={pageTitles}>
-                {title => (
+                {(title) => (
                   <Anchor
                     onClick={() => history.push(`/page/${parseTitle(title)}`)}
                     label={

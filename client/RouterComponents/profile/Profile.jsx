@@ -1,34 +1,34 @@
 import React, { Fragment } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
-import { Anchor, Text, Box, Button } from 'grommet';
+import { Anchor, Box, Button, Tabs, Tab, Text } from 'grommet';
 
 import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import { Login, Signup } from '../../account-manager/components';
 import { message } from '../../UIComponents/message';
 
 const personalModel = {
   firstName: '',
   lastName: '',
   bio: '',
-  city: ''
+  city: '',
 };
 
 const menuRoutes = [
-  { label: 'Profile', value: '/my-profile' },
-  { label: 'Works', value: 'my-works' }
+  { label: 'My Profile', value: '/my-profile' },
+  { label: 'My Market', value: 'my-works' },
 ];
 
 class Profile extends React.Component {
   state = {
     isDeleteModalOn: false,
     personal: personalModel,
-    bio: ''
+    bio: '',
   };
 
   componentDidMount() {
-    // this.getMyWorks();
     this.setInitialPersonalInfo();
   }
 
@@ -40,46 +40,33 @@ class Profile extends React.Component {
     this.setState({
       personal: {
         firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || ''
+        lastName: currentUser.lastName || '',
       },
-      bio: currentUser.bio || ''
+      bio: currentUser.bio || '',
     });
   };
 
-  getMyWorks = () => {
-    Meteor.call('getMyWorks', (error, respond) => {
-      if (error) {
-        console.log(error);
-        // message.error(error.reason);
-        return;
-      }
-      this.setState({
-        myWorks: respond
-      });
-    });
-  };
-
-  handleFormChange = formValues => {
+  handleFormChange = (formValues) => {
     this.setState({
-      personal: formValues
+      personal: formValues,
     });
   };
 
-  handleQuillChange = bio => {
+  handleQuillChange = (bio) => {
     this.setState({
-      bio
+      bio,
     });
   };
 
   handleSubmit = () => {
     const { personal, bio } = this.state;
     this.setState({
-      isSaving: true
+      isSaving: true,
     });
 
     const values = {
       ...personal,
-      bio
+      bio,
     };
     Meteor.call('saveUserInfo', values, (error, respond) => {
       if (error) {
@@ -88,7 +75,7 @@ class Profile extends React.Component {
       } else {
         message.success('Your data is successfully saved');
         this.setState({
-          isSaving: false
+          isSaving: false,
         });
       }
     });
@@ -115,11 +102,11 @@ class Profile extends React.Component {
 
     return (
       <Template
-        heading="Personal Information"
+        heading={currentUser ? 'Personal Info' : 'Join'}
         leftContent={
           <Fragment>
             <ListMenu list={menuRoutes}>
-              {datum => (
+              {(datum) => (
                 <Anchor
                   onClick={() => history.push(datum.value)}
                   key={datum.value}
@@ -148,7 +135,15 @@ class Profile extends React.Component {
             onSubmit={this.handleSubmit}
           />
         ) : (
-          <Box pad="medium">
+          <Box width="medium" alignSelf="center">
+            <Tabs alignSelf="start" justify="start" width="100%">
+              <Tab title="Signup">
+                <Signup />
+              </Tab>
+              <Tab title="Login">
+                <Login />
+              </Tab>
+            </Tabs>
             <Blaze template="loginButtons" />
           </Box>
         )}

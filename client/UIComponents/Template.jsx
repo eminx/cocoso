@@ -18,7 +18,7 @@ function Template({ leftContent, rightContent, heading, children }) {
           <Box>
             {heading && (
               <Box pad={{ top: 'small', bottom: 'small' }}>
-                <Heading level={3}>{heading}</Heading>
+                <Heading level={2}>{heading}</Heading>
               </Box>
             )}
             {children}

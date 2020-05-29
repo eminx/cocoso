@@ -12,16 +12,16 @@ import { message } from '../../UIComponents/message';
 const filterOptions = [
   {
     label: 'Active',
-    value: 'active'
+    value: 'active',
   },
   {
     label: 'My Groups',
-    value: 'my-groups'
+    value: 'my-groups',
   },
   {
     label: 'Archived',
-    value: 'archived'
-  }
+    value: 'archived',
+  },
 ];
 
 import { compareForSort } from '../../functions';
@@ -29,7 +29,7 @@ import { compareForSort } from '../../functions';
 function GroupsList({ isLoading, currentUser, groupsData, history }) {
   const [filterBy, setFilterBy] = useState('active');
 
-  archiveGroup = groupId => {
+  archiveGroup = (groupId) => {
     Meteor.call('archiveGroup', groupId, (error, respond) => {
       if (error) {
         message.error(error.error);
@@ -39,7 +39,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
     });
   };
 
-  unarchiveGroup = groupId => {
+  unarchiveGroup = (groupId) => {
     Meteor.call('unarchiveGroup', groupId, (error, respond) => {
       if (error) {
         message.error(error.reason);
@@ -53,12 +53,12 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
     if (!groupsData) {
       return [];
     }
-    const filteredGroups = groupsData.filter(group => {
+    const filteredGroups = groupsData.filter((group) => {
       if (filterBy === 'archived') {
         return group.isArchived === true;
       } else if (filterBy === 'my-groups') {
         return group.members.some(
-          member => member.memberId === currentUser._id
+          (member) => member.memberId === currentUser._id
         );
       } else {
         return !group.isArchived;
@@ -71,8 +71,8 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
     return filteredGroupsWithAccessFilter;
   };
 
-  parseOnlyAllowedGroups = futureGroups => {
-    const futureGroupsAllowed = futureGroups.filter(group => {
+  parseOnlyAllowedGroups = (futureGroups) => {
+    const futureGroupsAllowed = futureGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
       } else {
@@ -82,9 +82,9 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
         const currentUserId = currentUser._id;
         return (
           group.adminId === currentUserId ||
-          group.members.some(member => member.memberId === currentUserId) ||
+          group.members.some((member) => member.memberId === currentUserId) ||
           group.peopleInvited.some(
-            person => person.email === currentUser.emails[0].address
+            (person) => person.email === currentUser.emails[0].address
           )
         );
       }
@@ -93,7 +93,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
     return futureGroupsAllowed;
   };
 
-  handleSelectedFilter = event => {
+  handleSelectedFilter = (event) => {
     const value = event.target.value;
     if (!currentUser && value === 'my-groups') {
       message.destroy();
@@ -109,7 +109,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
 
   const groupsFilteredAndSorted = getFilteredGroups().sort(compareForSort);
 
-  const groupsList = groupsFilteredAndSorted.map(group => ({
+  const groupsList = groupsFilteredAndSorted.map((group) => ({
     ...group,
     actions: [
       {
@@ -119,23 +119,19 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
           : () => archiveGroup(group._id),
         isDisabled:
           !currentUser ||
-          (group.adminId !== currentUser._id && !currentUser.isSuperAdmin)
-      }
-    ]
+          (group.adminId !== currentUser._id && !currentUser.isSuperAdmin),
+      },
+    ],
   }));
 
   return (
-    <Template
-      heading="Groups"
-      rightContent={
-        <Box pad="small" direction="row" justify="center">
-          <Link to="/new-group">
-            <Button as="span" primary label="New Group" />
+    <Template heading="Groups">
+      <Box pad="small">
+        <Box margin={{ bottom: 'medium' }} alignSelf="center">
+          <Link to={currentUser ? '/new-group' : '/my-profile'}>
+            <Button as="span" size="small" label="Create New Group" />
           </Link>
         </Box>
-      }
-    >
-      <Box pad="small">
         <RadioButtonGroup
           name="filters"
           options={filterOptions}
@@ -152,7 +148,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
           actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
           border={false}
         >
-          {group => <GroupItem group={group} history={history} />}
+          {(group) => <GroupItem group={group} history={history} />}
         </NiceList>
       )}
     </Template>

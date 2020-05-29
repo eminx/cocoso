@@ -38,7 +38,8 @@ TODO:
 
 3- Form validation and error communication
 
-3- Add admin/resources 
+3- Add admin/resources feature to appear on public activity page
+
 
 CAN DO WITHOUT FOR NOW but needs to be done:
 
