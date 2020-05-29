@@ -5,12 +5,12 @@ import { UserSettings, UserNew } from 'grommet-icons';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
-  { label: 'Works', value: '/my-works' }
+  { label: 'Works', value: '/my-works' },
 ];
 
 export const adminRoutes = [
   { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' }
+  { label: 'Members', value: '/admin/members' },
 ];
 
 const UserPopup = withRouter(({ currentUser, history }) => {
@@ -20,9 +20,10 @@ const UserPopup = withRouter(({ currentUser, history }) => {
         <Anchor
           onClick={() => history.push('/my-profile')}
           label={
-            <Avatar size="medium">
-              <UserNew />
-            </Avatar>
+            <Box margin={{ top: 'small' }}>
+              {' '}
+              <Text>Login / Signup</Text>
+            </Box>
           }
         />
       </Box>

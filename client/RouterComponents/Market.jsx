@@ -48,11 +48,7 @@ const Market = ({ history }) => {
     <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         <Link to={currentUser ? '/new-work' : '/my-profile'}>
-          <Button
-            as="span"
-            size="small"
-            label="Create Product or Service for Sale"
-          />
+          <Button as="span" size="small" label="Create Your Market" />
         </Link>
       </Box>
 

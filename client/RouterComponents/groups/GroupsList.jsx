@@ -125,7 +125,7 @@ function GroupsList({ isLoading, currentUser, groupsData, history }) {
   }));
 
   return (
-    <Template heading="Groups">
+    <Template heading="Groups" titleCentered>
       <Box pad="small">
         <Box margin={{ bottom: 'medium' }} alignSelf="center">
           <Link to={currentUser ? '/new-group' : '/my-profile'}>

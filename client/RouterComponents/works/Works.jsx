@@ -9,8 +9,8 @@ import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 
 const menuRoutes = [
-  { label: 'My Profile', value: '/my-profile' },
   { label: 'My Market', value: '/my-works' },
+  { label: 'My Profile', value: '/my-profile' },
 ];
 
 function Works({ history }) {
@@ -47,7 +47,8 @@ function Works({ history }) {
 
   return (
     <Template
-      heading="My Works"
+      heading="My Market"
+      titleCentered
       leftContent={
         <ListMenu list={menuRoutes}>
           {(datum) => (

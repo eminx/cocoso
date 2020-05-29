@@ -17,8 +17,8 @@ const personalModel = {
 };
 
 const menuRoutes = [
-  { label: 'My Profile', value: '/my-profile' },
   { label: 'My Market', value: 'my-works' },
+  { label: 'My Profile', value: '/my-profile' },
 ];
 
 class Profile extends React.Component {
@@ -103,6 +103,7 @@ class Profile extends React.Component {
     return (
       <Template
         heading={currentUser ? 'Personal Info' : 'Join'}
+        titleCentered
         leftContent={
           <Fragment>
             <ListMenu list={menuRoutes}>
