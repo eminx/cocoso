@@ -83,7 +83,7 @@ function Works({ history }) {
       ) : (
         <Alert
           margin="medium"
-          message="You have to create an account to add work"
+          message="You have to create an account to launch your market"
         />
       )}
     </Template>

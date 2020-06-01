@@ -6,7 +6,7 @@ import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
-import { Login, Signup } from '../../account-manager/components';
+import { AuthContainer } from '../../account-manager';
 import { message } from '../../UIComponents/message';
 
 const personalModel = {
@@ -137,14 +137,7 @@ class Profile extends React.Component {
           />
         ) : (
           <Box width="medium" alignSelf="center">
-            <Tabs alignSelf="start" justify="start" width="100%">
-              <Tab title="Signup">
-                <Signup />
-              </Tab>
-              <Tab title="Login">
-                <Login />
-              </Tab>
-            </Tabs>
+            <AuthContainer />
             <Blaze template="loginButtons" />
           </Box>
         )}
