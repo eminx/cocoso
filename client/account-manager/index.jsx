@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'grommet';
 
-const Login = ({ value, onChange, disabled = true }) => {
+const Login = () => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => console.log(value)}>
@@ -35,7 +35,7 @@ const Login = ({ value, onChange, disabled = true }) => {
   );
 };
 
-const Signup = ({ value, onChange, disabled = true }) => {
+const Signup = () => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => console.log(value)}>
@@ -44,7 +44,7 @@ const Signup = ({ value, onChange, disabled = true }) => {
         </FormField>
 
         <FormField label="Email address">
-          <TextInput plain={false} name="email" placeholder="" />
+          <TextInput plain={false} type="email" name="email" placeholder="" />
         </FormField>
 
         <FormField label="Password">
@@ -64,7 +64,7 @@ const Signup = ({ value, onChange, disabled = true }) => {
   );
 };
 
-const PasswordRecovery = () => {
+const ForgotPassword = () => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => console.log(value)}>
@@ -96,13 +96,6 @@ const AuthContainer = () => {
           Have an account?{' '}
           <Anchor onClick={() => setMode('login')}>Login</Anchor>
         </SimpleText>
-        <SimpleText>
-          Forgot your password?
-          <br />
-          <Anchor onClick={() => setMode('recover')}>
-            Recover your password
-          </Anchor>
-        </SimpleText>
       </Box>
     );
   }
@@ -110,7 +103,7 @@ const AuthContainer = () => {
   if (mode === 'recover') {
     return (
       <Box>
-        <PasswordRecovery />
+        <ForgotPassword />
         <Box direction="row" justify="around">
           <SimpleText>
             <Anchor onClick={() => setMode('login')}>Login</Anchor>
@@ -130,14 +123,26 @@ const AuthContainer = () => {
         Don't have an account?{' '}
         <Anchor onClick={() => setMode('signup')}>Signup</Anchor>
       </SimpleText>
+      <SimpleText>
+        Forgot your password?
+        <br />
+        <Anchor onClick={() => setMode('recover')}>
+          Recover your password
+        </Anchor>
+      </SimpleText>
     </Box>
   );
 };
 
-const SimpleText = ({ children }) => (
-  <Text textAlign="center" margin={{ bottom: 'medium' }}>
+const SimpleText = ({ children, ...otherProps }) => (
+  <Text
+    textAlign="center"
+    margin={{ bottom: 'medium' }}
+    size="small"
+    {...otherProps}
+  >
     {children}
   </Text>
 );
 
-export { Login, Signup, PasswordRecovery, AuthContainer };
+export { Login, Signup, ForgotPassword, AuthContainer, SimpleText };

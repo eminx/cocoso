@@ -8,6 +8,7 @@ import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { AuthContainer } from '../../account-manager';
 import { message } from '../../UIComponents/message';
+import { userMenu } from '../../constants/general';
 
 const personalModel = {
   firstName: '',
@@ -15,11 +16,6 @@ const personalModel = {
   bio: '',
   city: '',
 };
-
-const menuRoutes = [
-  { label: 'My Market', value: 'my-works' },
-  { label: 'My Profile', value: '/my-profile' },
-];
 
 class Profile extends React.Component {
   state = {
@@ -106,7 +102,7 @@ class Profile extends React.Component {
         titleCentered
         leftContent={
           <Fragment>
-            <ListMenu list={menuRoutes}>
+            <ListMenu list={userMenu}>
               {(datum) => (
                 <Anchor
                   onClick={() => history.push(datum.value)}

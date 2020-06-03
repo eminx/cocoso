@@ -30,7 +30,12 @@ import NewWork from './works/NewWork';
 import EditWork from './works/EditWork';
 import Market from './Market';
 
+import SignupPage from '../account-manager/SignupPage';
+import LoginPage from '../account-manager/LoginPage';
+import ForgotPasswordPage from '../account-manager/ForgotPasswordPage';
+
 import ScrollToTop from './ScrollToTop';
+import NotFoundPage from './NotFoundPage';
 
 const browserHistory = createBrowserHistory();
 
@@ -78,7 +83,11 @@ export default function () {
 
             <Route path="/user/:id" component={UserContainer} />
 
-            {/*<Route path="*" component={NotFoundPage}/>*/}
+            <Route path="/signup" component={SignupPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/forgot-password" component={ForgotPasswordPage} />
+
+            <Route path="*" component={NotFoundPage} />
           </ScrollToTop>
         </LayoutContainer>
       </Switch>

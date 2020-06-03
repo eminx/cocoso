@@ -7,11 +7,7 @@ import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
-
-const menuRoutes = [
-  { label: 'My Market', value: '/my-works' },
-  { label: 'My Profile', value: '/my-profile' },
-];
+import { userMenu } from '../../constants/general';
 
 function Works({ history }) {
   const [works, setWorks] = useState([]);
@@ -50,7 +46,7 @@ function Works({ history }) {
       heading="My Market"
       titleCentered
       leftContent={
-        <ListMenu list={menuRoutes}>
+        <ListMenu list={userMenu}>
           {(datum) => (
             <Anchor
               onClick={() => history.push(datum.value)}

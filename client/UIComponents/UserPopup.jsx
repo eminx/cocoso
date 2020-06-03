@@ -18,7 +18,7 @@ const UserPopup = withRouter(({ currentUser, history }) => {
     return (
       <Box justify="center" pad="small">
         <Anchor
-          onClick={() => history.push('/my-profile')}
+          onClick={() => history.push('/signup')}
           label={
             <Box margin={{ top: 'small' }}>
               {' '}
