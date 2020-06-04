@@ -3,7 +3,7 @@ import React, { Component, PureComponent, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import { Visible } from 'react-grid-system';
+import { Visible, ScreenClassRender } from 'react-grid-system';
 
 import {
   Box,
@@ -23,6 +23,7 @@ import {
   Anchor,
   Text,
 } from 'grommet';
+
 import { FormPrevious, Close } from 'grommet-icons';
 
 import Chattery from '../../chattery';
@@ -720,26 +721,30 @@ class Group extends Component {
     return (
       <div>
         {this.getTitle(group, isAdmin)}
-
-        <Tabs alignSelf="start" justify="start">
-          <Tab title="Info">
-            <Box
-              width="large"
-              height="medium"
-              margin={{ top: 'small', bottom: 'small' }}
-            >
-              <Image src={group.imageUrl} fit="contain" fill />
-            </Box>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: group.description,
-              }}
-            />
-          </Tab>
-          <Tab title="Discussion">
-            <div>{chatData && this.renderDiscussion()}</div>
-          </Tab>
-        </Tabs>
+        <ScreenClassRender
+          render={(screenClass) => (
+            <Tabs alignSelf="start" justify="start">
+              <Tab title="Info">
+                <Box
+                  alignSelf="center"
+                  width={screenClass === 'xs' ? 'medium' : 'large'}
+                  height={screenClass === 'xs' ? 'small' : 'medium'}
+                  margin={{ top: 'small', bottom: 'small' }}
+                >
+                  <Image src={group.imageUrl} fit="contain" fill />
+                </Box>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: group.description,
+                  }}
+                />
+              </Tab>
+              <Tab title="Discussion">
+                <div>{chatData && this.renderDiscussion()}</div>
+              </Tab>
+            </Tabs>
+          )}
+        />
       </div>
     );
   };

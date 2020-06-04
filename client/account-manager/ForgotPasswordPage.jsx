@@ -21,7 +21,11 @@ const ForgotPasswordPage = ({ history }) => {
           It happens to all of us
         </Text>
         <ForgotPassword />
-        <Box direction="row" justify="around" margin="large">
+        <Box
+          direction="row"
+          justify="around"
+          margin={{ top: 'small', left: 'large', right: 'large' }}
+        >
           <SimpleText>
             <Anchor onClick={() => history.push('/login')}>Login</Anchor>
           </SimpleText>

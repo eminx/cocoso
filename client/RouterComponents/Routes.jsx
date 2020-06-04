@@ -87,7 +87,7 @@ export default function () {
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPasswordPage} />
 
-            <Route path="*" component={NotFoundPage} />
+            {/* <Route path="*" component={NotFoundPage} /> */}
           </ScrollToTop>
         </LayoutContainer>
       </Switch>

@@ -5,6 +5,7 @@ import { Anchor, Box, Heading } from 'grommet';
 import { UserContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
 import { Login, SimpleText } from './index';
+import { loginWithPassword } from './functions';
 
 const LoginPage = ({ history }) => {
   const { currentUser } = useContext(UserContext);
@@ -21,7 +22,13 @@ const LoginPage = ({ history }) => {
           Don't have an account?{' '}
           <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
         </SimpleText>
-        <Login />
+
+        <Login
+          onSubmit={(values) =>
+            loginWithPassword(values.username, values.password)
+          }
+        />
+
         <Box>
           <SimpleText>
             Forgot your password?

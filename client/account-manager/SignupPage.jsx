@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
 import { Anchor, Box, Heading } from 'grommet';
@@ -5,6 +6,7 @@ import { Anchor, Box, Heading } from 'grommet';
 import { UserContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
 import { Signup, SimpleText } from './index';
+import { createAccount } from './functions';
 
 const SignupPage = ({ history }) => {
   const { currentUser } = useContext(UserContext);
@@ -22,7 +24,7 @@ const SignupPage = ({ history }) => {
           <Anchor onClick={() => history.push('/login')}>Login</Anchor>
         </SimpleText>
 
-        <Signup />
+        <Signup onSubmit={createAccount} />
       </Box>
     </Template>
   );

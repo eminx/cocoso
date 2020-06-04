@@ -1,7 +1,22 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { getHost } from './shared';
 
 Meteor.methods({
+  createAccount(values, callback) {
+    console.log(values);
+    check(values.email, String);
+    check(values.username, String);
+    check(values.password, String);
+
+    try {
+      Accounts.createUser(values, callback);
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
   saveUserInfo(values) {
     const user = Meteor.user();
     if (!user) {
@@ -17,8 +32,8 @@ Meteor.methods({
         $set: {
           firstName: values.firstName,
           lastName: values.lastName,
-          bio: values.bio
-        }
+          bio: values.bio,
+        },
       });
     } catch (error) {
       console.log(error);
@@ -37,5 +52,5 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
-  }
+  },
 });

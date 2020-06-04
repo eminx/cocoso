@@ -10,10 +10,10 @@ import {
   TextInput,
 } from 'grommet';
 
-const Login = () => {
+const Login = ({ onSubmit }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => console.log(value)}>
+      <Form onSubmit={({ value }) => onSubmit(value)}>
         <FormField label="Username or Email address">
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>
@@ -35,10 +35,10 @@ const Login = () => {
   );
 };
 
-const Signup = () => {
+const Signup = ({ onSubmit }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => console.log(value)}>
+      <Form onSubmit={({ value }) => onSubmit(value)}>
         <FormField label="Username">
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>

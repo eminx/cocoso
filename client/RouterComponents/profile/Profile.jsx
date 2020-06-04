@@ -1,5 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Fragment } from 'react';
-import Blaze from 'meteor/gadicc:blaze-react-component';
+import { Redirect } from 'react-router-dom';
 import { Anchor, Box, Button, Tabs, Tab, Text } from 'grommet';
 
 import Personal from './Personal';
@@ -90,8 +91,17 @@ class Profile extends React.Component {
     }, 400);
   };
 
+  logout = () => {
+    Meteor.logout();
+  };
+
   render() {
     const { currentUser, history } = this.props;
+
+    if (!currentUser) {
+      return <Redirect to="/login" />;
+    }
+
     const { personal, bio, isDeleteModalOn } = this.state;
 
     const pathname = history && history.location.pathname;
@@ -115,11 +125,6 @@ class Profile extends React.Component {
                 />
               )}
             </ListMenu>
-            {currentUser && (
-              <Box pad="medium">
-                <Blaze template="loginButtons" />
-              </Box>
-            )}
           </Fragment>
         }
       >
@@ -139,10 +144,22 @@ class Profile extends React.Component {
         )}
 
         {currentUser && (
-          <Box alignSelf="center">
+          <Box alignSelf="center" margin="large">
+            <Button
+              onClick={() => this.logout()}
+              size="small"
+              label="Log out"
+            />
+          </Box>
+        )}
+
+        {currentUser && (
+          <Box alignSelf="center" margin="large">
             <Button
               onClick={() => this.setState({ isDeleteModalOn: true })}
               color="status-critical"
+              plain
+              size="small"
               label="Delete Account"
             />
           </Box>
