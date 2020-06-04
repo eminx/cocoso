@@ -14,11 +14,11 @@ const Login = ({ onSubmit }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => onSubmit(value)}>
-        <FormField label="Username or Email address">
+        <FormField label="Username or Email address" required>
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>
 
-        <FormField label="Password">
+        <FormField label="Password" required>
           <TextInput
             plain={false}
             name="password"
@@ -39,7 +39,15 @@ const Signup = ({ onSubmit }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => onSubmit(value)}>
-        <FormField label="Username">
+        <FormField
+          label="Username"
+          validate={[{}]}
+          help={
+            <Text color="dark-3" size="small">
+              minimum 4, only alphanumeric characters
+            </Text>
+          }
+        >
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>
 
@@ -47,7 +55,14 @@ const Signup = ({ onSubmit }) => {
           <TextInput plain={false} type="email" name="email" placeholder="" />
         </FormField>
 
-        <FormField label="Password">
+        <FormField
+          label="Password"
+          help={
+            <Text color="dark-3" size="small">
+              minimum 8 characters, with at least 1 special
+            </Text>
+          }
+        >
           <TextInput
             plain={false}
             name="password"
