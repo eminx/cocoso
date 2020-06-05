@@ -10,15 +10,18 @@ import {
   TextInput,
 } from 'grommet';
 
+import { emailIsValid } from '../functions';
+const regexUsername = /[^a-z0-9]+/g;
+
 const Login = ({ onSubmit }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form onSubmit={({ value }) => onSubmit(value)}>
-        <FormField label="Username or Email address" required>
+        <FormField label="Username or Email address">
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>
 
-        <FormField label="Password" required>
+        <FormField label="Password">
           <TextInput
             plain={false}
             name="password"
@@ -36,29 +39,45 @@ const Login = ({ onSubmit }) => {
 };
 
 const Signup = ({ onSubmit }) => {
-  const [value, setValue] = useState({});
-  let usernameError, emailError, passwordError;
-  const regexUsername = /[^a-z0-9]+/g;
+  const [errors, setErrors] = useState({});
+  // const [value, setValue] = useState({});
+  // const [touched, setTouched] = useState(false);
 
-  const { username, email, password } = value;
-  if (!username || username.length < 4) {
-    usernameError = 'At least 4 characters';
-  } else if (regexUsername.test(username)) {
-    usernameError = 'Only lowercase letters and numbers please';
-  }
-  if (!password || password.length < 8) {
-    passwordError = 'At least 8 characters';
-  }
-  if (!email || email.length === 0) {
-    emailError = 'Please type your email';
-  }
+  const handleSubmit = ({ value }) => {
+    const { username, email, password } = value;
+    let usernameError, emailError, passwordError;
+
+    if (!username || username.length < 4) {
+      usernameError = 'At least 4 characters';
+    } else if (regexUsername.test(username)) {
+      usernameError = 'Only lowercase-letters and numbers';
+    }
+    if (!email || email.length === 0) {
+      emailError = 'Please type your email';
+    } else if (!emailIsValid(email)) {
+      emailError = 'Email is not valid';
+    }
+    if (!password || password.length < 8) {
+      passwordError = 'At least 8 characters';
+    }
+
+    if (usernameError || emailError || passwordError) {
+      setErrors({
+        usernameError,
+        emailError,
+        passwordError,
+      });
+    } else {
+      onSubmit(value);
+    }
+  };
 
   return (
     <Box margin={{ bottom: 'medium' }}>
       <Form
-        value={value}
-        onChange={(nextValue) => setValue(nextValue)}
-        onSubmit={({ value }) => onSubmit(value)}
+        // value={value}
+        // onChange={(nextValue) => setValue(nextValue)}
+        onSubmit={handleSubmit}
       >
         <FormField
           label="Username"
@@ -70,7 +89,7 @@ const Signup = ({ onSubmit }) => {
           }
           error={
             <Text color="status-error" size="small">
-              {usernameError}
+              {errors.usernameError}
             </Text>
           }
         >
@@ -81,7 +100,7 @@ const Signup = ({ onSubmit }) => {
           label="Email address"
           error={
             <Text color="status-error" size="small">
-              {emailError}
+              {errors.emailError}
             </Text>
           }
         >
@@ -97,7 +116,7 @@ const Signup = ({ onSubmit }) => {
           }
           error={
             <Text color="status-error" size="small">
-              {passwordError}
+              {errors.passwordError}
             </Text>
           }
         >
@@ -113,7 +132,7 @@ const Signup = ({ onSubmit }) => {
           <Button
             type="submit"
             primary
-            disabled={usernameError || emailError || passwordError}
+            // disabled={usernameError || emailError || passwordError}
             label="Signup"
           />
         </Box>

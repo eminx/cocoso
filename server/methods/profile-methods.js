@@ -7,7 +7,6 @@ Meteor.methods({
     check(values.email, String);
     check(values.username, String);
     check(values.password, String);
-
     try {
       Accounts.createUser(values);
     } catch (error) {
