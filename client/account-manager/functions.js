@@ -11,7 +11,6 @@ async function createAccount(values) {
     await call('createAccount', values);
     loginWithPassword(values.username, values.password, true);
   } catch (error) {
-    console.log(error);
     message.error(error.error ? error.error.reason : error.reason);
   }
 }

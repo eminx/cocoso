@@ -3,14 +3,13 @@ import { Accounts } from 'meteor/accounts-base';
 import { getHost } from './shared';
 
 Meteor.methods({
-  createAccount(values, callback) {
-    console.log(values);
+  createAccount(values) {
     check(values.email, String);
     check(values.username, String);
     check(values.password, String);
 
     try {
-      Accounts.createUser(values, callback);
+      Accounts.createUser(values);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);

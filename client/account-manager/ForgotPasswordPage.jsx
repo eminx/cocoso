@@ -18,7 +18,7 @@ const ForgotPasswordPage = ({ history }) => {
       <Box width="medium" alignSelf="center">
         <Heading level={2}>Forgot Password</Heading>
         <Text size="large" margin={{ bottom: 'medium' }}>
-          It happens to all of us
+          Reset your password via a link sent to your email
         </Text>
         <ForgotPassword />
         <Box
