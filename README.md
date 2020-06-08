@@ -16,20 +16,20 @@ With Cocoso, you own your own data, at the individual and organisation level. Yo
 
 ### Public Activities (Events)
 
-Since Cocoso was primarily built for an artist run space that continuously hosted public stage performances for a limited audience who are required to register beforehand; creating and managing a public event was a number one requirement.
+Since Cocoso is primarily built for an artist run space that continuously hosts public stage performances for a limited audience who are required to register beforehand; creating and managing a public event was a number one requirement.
 
 There are a few components of public events that can be listed as below:
 
 - **Create/edit/delete content** with an image, title, description and further info; as well as a set of occurrences with optionally multiple dates (and times). By this way, admins do not need to create new entry for all occurrences
 - **RSVP registration:** People can easily register and receive an email with confirmation
 - **RSVP verification** : Admins can easily see who has signed up for each event under relevant occurrence section to verify attendees registration on arrival
-- **Auto-sync with Calendar**: Each occurrence automatically sync (see below)
+- **Auto-sync with Calendar**: Each occurrence automatically populates in the calendar as well (see below)
 
 ### Shared Resources
 
-It is possible to _list_ (by admins) a set of shared resources for them to be timely _claimed/booked_ by verified users. Every each booking is automatically displayed on the calendar. This is very similar to the widespread usage of Google & Outlook calendars in typical shared resource contexts like in company office.
+It is possible to _list_ (by admins) a set of shared resources for them to be timely _claimed/booked_ by verified users. Every each booking is automatically displayed on the calendar. This is very similar to the widespread usage of Google & Outlook calendars in typical shared resource contexts like in a e.g. company office.
 
-However, with Cocoso, the way this works is much more simplified. You make a booking and that's it. It's so far not possible to make calendar invites etc, because we think those become unnecessary automations turning working people into robots feeding machines and become dictated about how the digital systems work rather than digital systems helping people proceed in their works. We prefer that people talk to each other in work places.
+However, with Cocoso, the way this works is much more simplified. You make a booking and that's it. It's so far not possible to make calendar invites etc, because we think those become unnecessary automations turning working people into robots feeding machines and become dictated about how the digital systems work rather than digital systems helping people proceed in their workflows. We like to think that people talk to each other more in work places rather than work around tools to prevent that.
 
 ### Calendar
 
@@ -41,7 +41,7 @@ See Big Calendar: https://github.com/jquense/react-big-calendar
 
 ### Processes
 
-A process is a concept and a series of virtual or actual activities by a group of individuals to facilitate a purpose together and keep track of relevant information such as meeting date&time occurrences, documents, members, discussions etc.
+A process is a concept and a series of virtual or actual activities by a group of individuals to facilitate a _purposeful conceptual activity_ together and keep track of relevant information such as meeting date&time occurrences, documents, members, discussions etc.
 
 Maybe this explanation was too abstract?
 
@@ -53,21 +53,23 @@ All in one page.
 
 ### Members
 
-If you're admin of an organisation, you can find and filter through members of the organisation. You can verify or unverify them for being able to do certain activities such as creating activities in the program/calendar or creating a stream. Think of it like if you run a yoga studio, you'll have both your teachers and students in one platform. Then you will verify your teachers for them to be able to create their activities at the home page, whereas students can only participate to existing activities.
+If you're admin of an organisation, you can find and filter through members of the organisation. You can verify or unverify them for being able to do certain activities such as creating activities in the program/calendar or creating a process. Think of it like if you run a yoga studio, you'll have both your teachers and students in one platform. Then you will verify your teachers for them to be able to create their activities at the home page, whereas students can only participate to existing activities.
+
+So necessarily privileges can be meaningfully distributed amongst your community.
 
 ## Works
 
-A work is what an artist, researcher, designer, craftsperson or a reseller showcases their work with text, images, sound and/or video, categorised in whichever way they like. Its basically a special entry specifically bound to its creator. It is perfect for portfolio use case as well as marketplace.
+A work is what an artist, researcher, designer, craftsperson or a reseller showcases their work with. _A Work_ consists of text (title, description, further info etc), images, sound and/or video, categorised in whichever way they like. Its basically a special entry specifically bound to its creator. It is perfect for portfolio use case as well as marketplace.
 
-One can also create a work and save it privately for internal use and documentation. The primary purpose it was built was to enable artists and craftspeople to publish and communicate what they do with the rest of the world.
+One can also create a work and save it privately for internal use and documentation. The primary purpose it is built for is to enable artists and craftspeople to publish and communicate what they do with the rest of the world.
 
-Images that are uploaded are automatically resized on the client browser before they are uploaded to AWS S3 buckets.
+Images to be uploaded are automatically resized on the client browser before they are uploaded to AWS S3 buckets.
 
 ## Info / Static Pages
 
 This is a very simple page, basically. The simplest CMS you could ever think of...
 
-With this feature one can easily create a page only with a _title_ and _description_ (with rich text editing). Title becomes the slug with a little modification like `About Us` becoming `/page/about-us` and that's pretty much it. Each page is automatically added to navigation as just another static page.
+With this feature one can easily create a page only with a _title_ and a _description_ (with rich text editing). Title becomes the slug with a little modification like `About Us` becoming `/page/about-us` and that's pretty much it. Each page is automatically added to navigation as just another static page.
 
 ## Technology
 
@@ -83,11 +85,11 @@ Cocoso requires a MongoDB database to work with, since Meteor JS provides first 
 
 ### User Interface
 
-**ReactJS** has been the main user interface framework chosen to build the UI for Cocoso. ReactJS is probably the most widespread used client framework that is currently used worldwide, along with _VueJS_. It's been developed and actively maintained by a dedicated team at Facebook; but doesn't necessarily require any affiliation with them. Its licence is MIT licence.
+**ReactJS** has been the main user interface framework chosen to build the UI for Cocoso. ReactJS is probably the most widespread used client framework that is currently used worldwide, along with _VueJS_. It's been developed and actively maintained by a dedicated team at Facebook; but doesn't necessarily have any affiliation with them. Its licenced with MIT licence.
 
-**Grommet**, a UI library for easily building a reusing React-based UI components is chosen for Cocoso. From more than a dozen of different options, Grommet was chosen due to these reasons outlined below:
+**Grommet**, a UI library for easily building and reusing React-based UI components is chosen for Cocoso. From more than a dozen of different options, Grommet was chosen due to these reasons outlined below:
 
-- Extensive coverage of required component in place, with configurable and fairly simple usage
+- Extensive coverage of required components in place, with configurable and fairly simple usage
 - Easily customisable theme (styles) for every component or globally by a global theme configuration setting
 - Although developed by an internal team at Hewlett Packard, it does not dominantly feature any styles associated by its founding company or another unlike, for example, Google's Material Design
 - The design works pretty well for different devices; i.e. mobile, tablet, desktop
