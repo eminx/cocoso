@@ -13,14 +13,14 @@ import { parseTitle } from '../../functions';
 class Page extends PureComponent {
   state = {
     pages: null,
-    isLoading: true
+    isLoading: true,
   };
 
   componentDidMount() {
     Meteor.call('getPages', (error, respond) => {
       this.setState({
         pages: respond,
-        isLoading: false
+        isLoading: false,
       });
     });
   }
@@ -35,7 +35,7 @@ class Page extends PureComponent {
     const routeName = match.params.id;
 
     const currentPage = pages.find(
-      page => parseTitle(page.title) === parseTitle(routeName)
+      (page) => parseTitle(page.title) === parseTitle(routeName)
     );
     return currentPage;
   };
@@ -57,7 +57,7 @@ class Page extends PureComponent {
       return <Redirect to={`/page/${parseTitle(pages[0].title)}`} />;
     }
 
-    const pageTitles = pages && pages.map(page => page.title);
+    const pageTitles = pages && pages.map((page) => page.title);
 
     return (
       <Template
@@ -77,7 +77,7 @@ class Page extends PureComponent {
           currentUser.isSuperAdmin && (
             <Box pad="small" direction="row" justify="center">
               <Link to="/new-page" style={{ marginBottom: 12 }}>
-                <Button primary label="New Page" />
+                <Button size="small" label="New Page" />
               </Link>
             </Box>
           )
@@ -87,15 +87,17 @@ class Page extends PureComponent {
           <Box>
             <div
               dangerouslySetInnerHTML={{
-                __html: currentPage.longDescription
+                __html: currentPage.longDescription,
               }}
             />
 
-            <Box pad="small" alignSelf="end">
-              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-                <Button size="small" label="Edit this page" />
-              </Link>
-            </Box>
+            {currentUser && currentUser.isSuperAdmin && (
+              <Box pad="small" alignSelf="center">
+                <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+                  <Button size="small" label="Edit this page" />
+                </Link>
+              </Box>
+            )}
           </Box>
         )}
       </Template>

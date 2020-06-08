@@ -20,7 +20,7 @@ const menu = [
     route: '/calendar',
   },
   {
-    label: 'Groups',
+    label: 'Processes',
     route: '/groups',
   },
   {

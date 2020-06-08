@@ -24,7 +24,7 @@ class EditGroup extends React.Component {
       title: '',
       readingMaterial: '',
       description: '',
-      capacity: 12
+      capacity: 12,
     },
     isDeleteModalOn: false,
     isLoading: false,
@@ -33,7 +33,7 @@ class EditGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
   };
 
   componentDidMount() {
@@ -59,12 +59,12 @@ class EditGroup extends React.Component {
         title: group.title,
         readingMaterial: group.readingMaterial,
         description: group.description,
-        capacity: group.capacity
-      }
+        capacity: group.capacity,
+      },
     });
   };
 
-  handleFormChange = value => {
+  handleFormChange = (value) => {
     const { formValues } = this.state;
     let capacity = parseInt(value.capacity) || 2;
     if (capacity > 30) {
@@ -74,23 +74,23 @@ class EditGroup extends React.Component {
     const newFormValues = {
       ...value,
       capacity,
-      description: formValues.description
+      description: formValues.description,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  handleQuillChange = description => {
+  handleQuillChange = (description) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...formValues,
-      description
+      description,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
@@ -98,11 +98,10 @@ class EditGroup extends React.Component {
     const { uploadableImage } = this.state;
 
     this.setState({
-      isUpdating: true
+      isUpdating: true,
     });
 
     if (!uploadableImage) {
-      console.log('no uploadable image');
       this.updateGroup();
       return;
     }
@@ -110,7 +109,7 @@ class EditGroup extends React.Component {
     this.uploadImage();
   };
 
-  setUploadableImage = files => {
+  setUploadableImage = (files) => {
     if (files.length > 1) {
       message.error('Please drop only one file at a time.');
       return;
@@ -123,7 +122,7 @@ class EditGroup extends React.Component {
       () => {
         this.setState({
           uploadableImage,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
@@ -138,7 +137,7 @@ class EditGroup extends React.Component {
       const uploadedImage = await uploadImage(resizedImage, 'groupImageUpload');
       this.setState(
         {
-          uploadedImage
+          uploadedImage,
         },
         () => this.updateGroup()
       );
@@ -146,7 +145,7 @@ class EditGroup extends React.Component {
       console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
-        isCreating: false
+        isCreating: false,
       });
     }
   };
@@ -165,12 +164,12 @@ class EditGroup extends React.Component {
         if (error) {
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -186,13 +185,13 @@ class EditGroup extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         successDelete();
         this.setState({
           isLoading: false,
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -221,7 +220,7 @@ class EditGroup extends React.Component {
       formValues,
       isSuccess,
       uploadableImageLocal,
-      isUpdating
+      isUpdating,
     } = this.state;
 
     if (isSuccess) {
