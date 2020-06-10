@@ -1,8 +1,8 @@
-# **cocoso**: community cooperation software
+# **cocoso**: Community Cooperation Software
 
 ## Intro
 
-Cocoso is a web-based software that runs as a webapp on browsers. You can use it to build your own website; but also a platform for having users follow, participate and contribute to your activities. Whether it's for a festival, an association, non-profit, family, small or medium business, alternative school, yoga space, or a revolutionary artists collective, cocoso will probably work for you very well.
+Cocoso is a web-based software that runs as a webapp on browsers. You can use it to build and facilitate your web presence; but also a platform for having users follow, participate and contribute to your activities. Whether it's for a festival, an association, non-profit, family, small or medium business, alternative school, yoga space, or a revolutionary artists collective, Cocoso will probably work for you very well.
 
 It is built for the primary purpose of helping an open community of people cooperate with each other _better_, whether they are locally engaged with one another or cooperate remotely. It does so by featuring different digital tools for enabling individuals to timely utilise a set of common material resources as well as human.
 
@@ -14,9 +14,17 @@ With Cocoso, you own your own data, at the individual and organisation level. Yo
 
 ## Features
 
+### User Accounts
+
+Every user can easily create an account and continue their operations from there. This is built on top of Meteor's account system, which has proven to work very powerful.
+
+Accounts feature can easily be extended to have further information for each user such as an avatar, phone number, account number etc. Passwords are automatically encrypted in the database so system admins won't be able to track them.
+
+The way accounts work for the multi tenancy feature in Cocoso is each account is global, but can have different privileges in different spaces. This will allow users to have relation to each other in between spaces while keeping their privileges only in their own spaces. It is designed for autonomy in mind.
+
 ### Public Activities (Events)
 
-Since Cocoso is primarily built for an artist run space that continuously hosts public stage performances for a limited audience who are required to register beforehand; creating and managing a public event was a number one requirement.
+Since Cocoso is primarily built for an artist run space that continuously hosts public stage performances for a limited audience who are required to register beforehand; creating and managing a public event was the number one requirement.
 
 There are a few components of public events that can be listed as below:
 
@@ -30,6 +38,8 @@ There are a few components of public events that can be listed as below:
 It is possible to _list_ (by admins) a set of shared resources for them to be timely _claimed/booked_ by verified users. Every each booking is automatically displayed on the calendar. This is very similar to the widespread usage of Google & Outlook calendars in typical shared resource contexts like in a e.g. company office.
 
 However, with Cocoso, the way this works is much more simplified. You make a booking and that's it. It's so far not possible to make calendar invites etc, because we think those become unnecessary automations turning working people into robots feeding machines and become dictated about how the digital systems work rather than digital systems helping people proceed in their workflows. We like to think that people talk to each other more in work places rather than work around tools to prevent that.
+
+Resource Sharing and Calendar work with one another very tightly. Indeed Calendar is the visual language enabling Resource Sharing, as well as what's happening in the community.
 
 ### Calendar
 
@@ -57,7 +67,7 @@ If you're admin of an organisation, you can find and filter through members of t
 
 So necessarily privileges can be meaningfully distributed amongst your community.
 
-## Works
+### Works
 
 A work is what an artist, researcher, designer, craftsperson or a reseller showcases their work with. _A Work_ consists of text (title, description, further info etc), images, sound and/or video, categorised in whichever way they like. Its basically a special entry specifically bound to its creator. It is perfect for portfolio use case as well as marketplace.
 
@@ -65,7 +75,7 @@ One can also create a work and save it privately for internal use and documentat
 
 Images to be uploaded are automatically resized on the client browser before they are uploaded to AWS S3 buckets.
 
-## Info / Static Pages
+### Info / Static Pages
 
 This is a very simple page, basically. The simplest CMS you could ever think of...
 
@@ -73,9 +83,11 @@ With this feature one can easily create a page only with a _title_ and a _descri
 
 ## Technology
 
-### Server
+### Main Framework
 
-Cocoso is built on top of **Meteor JS**, which is an open source and free development environment that has been used for nearly 10 years so far. Meteor JS is actively built and maintained by Meteor Development Group (MDG), and it's a layer on top of **Node JS**. MDG is also the company behind an extremely used product called _Apollo_, which is a technology built for complementing another open source technology called _GraphQL_ developed and maintained by Facebook. The usage of both GraphQL and Apollo are extremely widespread nowadays.
+Cocoso is built using Meteor JS framework which is built on top of Node JS. Meteor is an open source and free development framework that has been used for nearly 10 years so far. It is actively being built and maintained by Meteor Development Group (MDG). Meteor works with MongoDB by default and it provides first class support for it on top of the DDP protocol featuring reactive programming super easily with Web Sockets. So MongoDB is the chosen database. Using Meteor, it is also relatively easy to create native apps by buit-in usage of Cordova, which runs on a web-view within a downloaded and installed app, and features customisations via plugins such as to enable push notifications and other relevant features that may be wished to have in a typical native app.
+
+MDG is also the group behind a widespread used product called _Apollo_, which is a technology built for complementing another open source technology called _GraphQL_ developed and maintained by Facebook. The usage of both GraphQL and Apollo are extremely widespread nowadays.
 
 The reason MeteorJS has been chosen is not only the values behind MDG are in line with that of ours; but also the technology they have built is so powerful and simple. Long before web apps were a trend and reactive programming was a thing (as in now); one could, with relatively little programming knowledge, easily create web apps that feature these characteristics using Meteor.
 
