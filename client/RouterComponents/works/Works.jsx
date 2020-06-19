@@ -1,119 +1,90 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
-
-import { UserContext } from '../../LayoutContainer';
-import NiceList from '../../UIComponents/NiceList';
-import Template from '../../UIComponents/Template';
-import ListMenu from '../../UIComponents/ListMenu';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Box, Text, Button } from 'grommet';
 import Loader from '../../UIComponents/Loader';
-import { message, Alert } from '../../UIComponents/message';
-import { userMenu } from '../../constants/general';
+import { call } from '../../functions';
 
-function Works({ history }) {
+const compareByDate = (a, b) => {
+  const dateA = new Date(a.creationDate);
+  const dateB = new Date(b.creationDate);
+  return dateB - dateA;
+};
+
+const imageStyle = {
+  width: 288,
+  height: 180,
+  objectFit: 'cover',
+};
+
+const Works = ({ history }) => {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
-    Meteor.call('getMyWorks', (error, respond) => {
-      if (error) {
-        setLoading(false);
-        return;
-      }
-      setWorks(respond);
-      setLoading(false);
-    });
+    getAllWorks();
   }, []);
+
+  const getAllWorks = async () => {
+    try {
+      const response = await call('getAllWorks');
+      setWorks(response);
+      setLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setLoading(false);
+    }
+  };
 
   if (loading || !works) {
     return <Loader />;
   }
 
-  const myWorksWithActions = works.map((work) => ({
-    ...work,
-    actions: [
-      {
-        content: 'Remove',
-        handleClick: () => this.removeWork(work._id),
-      },
-    ],
-  }));
+  const sortedWorks = works.sort(compareByDate);
 
-  const pathname = history && history.location.pathname;
+  const currentUser = Meteor.user();
 
   return (
-    <Template
-      heading="My Market"
-      titleCentered
-      leftContent={
-        <ListMenu list={userMenu}>
-          {(datum) => (
-            <Anchor
-              onClick={() => history.push(datum.value)}
-              key={datum.value}
-              label={
-                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                  {datum.label}
-                </Text>
-              }
-            />
-          )}
-        </ListMenu>
-      }
-      rightContent={
-        currentUser && (
-          <Box pad="small" direction="row" justify="center">
-            <Button
-              primary
-              label="New Work"
-              onClick={() => history.push('/new-work')}
-            />
-          </Box>
-        )
-      }
-    >
-      {currentUser && works ? (
-        <NiceList list={myWorksWithActions} actionsDisabled>
-          {(work) => <WorkItem work={work} history={history} />}
-        </NiceList>
-      ) : (
-        <Alert
-          margin="medium"
-          message="You have to create an account to launch your market"
-        />
-      )}
-    </Template>
-  );
-}
+    <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
+      <Box margin={{ bottom: 'medium' }} alignSelf="center">
+        <Link to={currentUser ? '/new-work' : '/my-profile'}>
+          <Button as="span" size="small" label="Create Your Market" />
+        </Link>
+      </Box>
 
-const WorkItem = ({ work, history }) => (
-  <Box
-    width="100%"
-    onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
-    hoverIndicator="light-1"
-    pad="small"
-    direction="row"
-    margin={{ bottom: 'medium' }}
-  >
-    <Box width="small" height="small" margin={{ right: 'small' }}>
-      <Image fit="cover" fill src={work.images && work.images[0]} />
-    </Box>
-    <Box width="100%" justify="between">
-      <Heading
-        level={3}
-        style={{ overflowWrap: 'anywhere' }}
-        margin={{ bottom: 'small' }}
-      >
-        {work.title}
-      </Heading>
-      <Text weight={300}>{work.shortDescription}</Text>
-      <Box>
-        <Text size="small" color="dark-3" textAlign="end">
-          {work.authorUsername}
-        </Text>
+      <Box direction="row" wrap justify="center">
+        {sortedWorks.map((work) => (
+          <Box
+            key={work._id}
+            width="medium"
+            pad="medium"
+            // hoverIndicator="light-1"
+            onClick={() =>
+              history.push(`/${work.authorUsername}/work/${work._id}`)
+            }
+          >
+            <Box>
+              <Box pad={{ bottom: 'medium' }}>
+                <Text weight={600} size="large">
+                  {work.title}
+                </Text>
+                <Text weight={300}>{work.shortDescription}</Text>
+              </Box>
+
+              <Box>
+                <LazyLoadImage
+                  alt={work.title}
+                  src={work.images && work.images[0]}
+                  style={imageStyle}
+                  effect="black-and-white"
+                />
+              </Box>
+            </Box>
+          </Box>
+        ))}
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default Works;

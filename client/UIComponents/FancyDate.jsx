@@ -7,7 +7,7 @@ const publicSettings = Meteor.settings.public;
 const fancyDateStyle = {
   color: '#030303',
   fontWeight: 700,
-  lineHeight: 1
+  lineHeight: 1,
 };
 
 const DateJust = ({ children, ...otherProps }) => {
@@ -17,20 +17,18 @@ const DateJust = ({ children, ...otherProps }) => {
         {moment(children).format('DD')}
       </div>
       <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(children)
-          .format('MMM')
-          .toUpperCase()}
+        {moment(children).format('MMM').toUpperCase()}
       </div>
     </div>
   );
 };
 
-const FancyDate = ({ occurence, places, ...otherProps }) => (
+const FancyDate = ({ occurence, resources, ...otherProps }) => (
   <div
     style={{
       display: 'flex',
       justifyContent: 'space-between',
-      paddingBottom: 12
+      paddingBottom: 12,
     }}
     {...otherProps}
   >
@@ -51,23 +49,23 @@ const FancyDate = ({ occurence, places, ...otherProps }) => (
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
       }}
     >
       <div>
         {occurence.startTime} – {occurence.endTime}
       </div>
-      {places && (
+      {resources && (
         <div
           style={{
             fontWeight: 300,
             maxWidth: 120,
             marginTop: 12,
-            textAlign: 'right'
+            textAlign: 'right',
           }}
         >
           <em>
-            {places.map(place => place.name).includes(occurence.room)
+            {resources.map((place) => place.name).includes(occurence.room)
               ? occurence.room + ', ' + publicSettings.contextName
               : occurence.room}
           </em>

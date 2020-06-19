@@ -7,7 +7,7 @@ import { Box } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-const getFirstFutureOccurence = occurence =>
+const getFirstFutureOccurence = (occurence) =>
   moment(occurence.endDate).isAfter(yesterday);
 
 const compareForSort = (a, b) => {
@@ -24,21 +24,21 @@ const compareForSort = (a, b) => {
 
 class Home extends React.Component {
   state = {
-    isUploading: false
+    isUploading: false,
   };
 
   getPublicActivities = () => {
-    const { bookingsList } = this.props;
-    if (!bookingsList) {
+    const { activitiesList } = this.props;
+    if (!activitiesList) {
       return null;
     }
 
-    const publicActivities = bookingsList.filter(
-      activity => activity.isPublicActivity === true
+    const publicActivities = activitiesList.filter(
+      (activity) => activity.isPublicActivity === true
     );
 
-    const futurePublicActivities = publicActivities.filter(activity =>
-      activity.datesAndTimes.some(date =>
+    const futurePublicActivities = publicActivities.filter((activity) =>
+      activity.datesAndTimes.some((date) =>
         moment(date.endDate).isAfter(yesterday)
       )
     );
@@ -46,11 +46,11 @@ class Home extends React.Component {
     return futurePublicActivities;
   };
 
-  parseOnlyAllowedGroups = futureGroups => {
+  parseOnlyAllowedProcesses = (futureProcesses) => {
     const { currentUser } = this.props;
 
-    const futureGroupsAllowed = futureGroups.filter(group => {
-      if (!group.isPrivate) {
+    const futureProcessesAllowed = futureProcesses.filter((process) => {
+      if (!process.isPrivate) {
         return true;
       } else {
         if (!currentUser) {
@@ -58,45 +58,45 @@ class Home extends React.Component {
         }
         const currentUserId = currentUser._id;
         return (
-          group.adminId === currentUserId ||
-          group.members.some(member => member.memberId === currentUserId) ||
-          group.peopleInvited.some(
-            person => person.email === currentUser.emails[0].address
+          process.adminId === currentUserId ||
+          process.members.some((member) => member.memberId === currentUserId) ||
+          process.peopleInvited.some(
+            (person) => person.email === currentUser.emails[0].address
           )
         );
       }
     });
 
-    return futureGroupsAllowed;
+    return futureProcessesAllowed;
   };
 
-  getGroupMeetings = () => {
-    const { groupsList } = this.props;
-    if (!groupsList) {
+  getProcessMeetings = () => {
+    const { processesList } = this.props;
+    if (!processesList) {
       return null;
     }
 
-    const futureGroups = groupsList.filter(group =>
-      group.meetings.some(meeting =>
+    const futureProcesses = processesList.filter((process) =>
+      process.meetings.some((meeting) =>
         moment(meeting.startDate).isAfter(yesterday)
       )
     );
 
-    const futureGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
-      futureGroups
+    const futureProcessesWithAccessFilter = this.parseOnlyAllowedProcesses(
+      futureProcesses
     );
 
-    return futureGroupsWithAccessFilter.map(group => ({
-      ...group,
-      datesAndTimes: group.meetings,
-      isGroup: true
+    return futureProcessesWithAccessFilter.map((process) => ({
+      ...process,
+      datesAndTimes: process.meetings,
+      isProcess: true,
     }));
   };
 
   getAllSorted = () => {
     const allActitivities = [
       ...this.getPublicActivities(),
-      ...this.getGroupMeetings()
+      ...this.getProcessMeetings(),
     ];
     return allActitivities.sort(compareForSort);
   };
@@ -113,7 +113,7 @@ class Home extends React.Component {
           <Loader />
         ) : (
           <Box direction="row" wrap justify="center">
-            {allSortedActivities.map(activity => (
+            {allSortedActivities.map((activity) => (
               <PublicActivityThumb
                 key={activity.title}
                 item={activity}

@@ -14,79 +14,79 @@ const yesterday = moment(new Date()).add(-1, 'days');
 class Calendar extends React.PureComponent {
   state = {
     mode: 'list',
-    editBooking: null,
+    editActivity: null,
     calendarFilter: 'All rooms',
-    selectedBooking: null
+    selectedActivity: null,
   };
 
-  handleModeChange = e => {
+  handleModeChange = (e) => {
     const mode = e.target.value;
     this.setState({ mode });
   };
 
-  handleSelectBooking = (booking, e) => {
+  handleSelectActivity = (activity, e) => {
     e.preventDefault();
     this.setState({
-      selectedBooking: booking
+      selectedActivity: activity,
     });
   };
 
-  handleCalendarFilterChange = value => {
+  handleCalendarFilterChange = (value) => {
     this.setState({
-      calendarFilter: value
+      calendarFilter: value,
     });
   };
 
   handleCloseModal = () => {
     this.setState({
-      selectedBooking: null
+      selectedActivity: null,
     });
   };
 
-  handleEditBooking = () => {
+  handleEditActivity = () => {
     this.setState({
-      editBooking: true
+      editActivity: true,
     });
   };
 
-  getBookingTimes = booking => {
-    if (!booking) {
+  getActivityTimes = (activity) => {
+    if (!activity) {
       return '';
     }
-    if (booking.startDate === booking.endDate) {
-      return `${booking.startTime}–${booking.endTime} ${moment(
-        booking.startDate
+    if (activity.startDate === activity.endDate) {
+      return `${activity.startTime}–${activity.endTime} ${moment(
+        activity.startDate
       ).format('DD MMMM')}`;
     }
     return (
-      moment(booking.startDate).format('DD MMM') +
+      moment(activity.startDate).format('DD MMM') +
       ' ' +
-      booking.startTime +
+      activity.startTime +
       ' – ' +
-      moment(booking.endDate).format('DD MMM') +
+      moment(activity.endDate).format('DD MMM') +
       ' ' +
-      booking.endTime
+      activity.endTime
     );
   };
 
   isCreator = () => {
     const { currentUser } = this.props;
-    const { selectedBooking } = this.state;
+    const { selectedActivity } = this.state;
 
-    if (!selectedBooking || !currentUser) {
+    if (!selectedActivity || !currentUser) {
       return false;
     }
 
     if (
-      selectedBooking &&
+      selectedActivity &&
       currentUser &&
-      currentUser.username === selectedBooking.authorName
+      currentUser.username === selectedActivity.authorName
     ) {
       return true;
     }
   };
 
-  handleDropDocument = files => {
+  handleDropDocument = (files) => {
     const { currentUser } = this.props;
     if (files.length > 1) {
       message.error('Please drop only one file at a time.');
@@ -97,11 +97,11 @@ class Calendar extends React.PureComponent {
 
     const closeLoader = () => this.setState({ isUploading: false });
 
-    const upload = new Slingshot.Upload('groupDocumentUpload');
-    files.forEach(file => {
+    const upload = new Slingshot.Upload('processDocumentUpload');
+    files.forEach((file) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {
-        type: file.type
+        type: file.type,
       });
       upload.send(uploadableFile, (error, downloadUrl) => {
         if (error) {
@@ -132,7 +132,7 @@ class Calendar extends React.PureComponent {
     });
   };
 
-  removeManual = documentId => {
+  removeManual = (documentId) => {
     const { currentUser } = this.props;
     if (!currentUser || !currentUser.isSuperAdmin) {
       return;
@@ -152,35 +152,35 @@ class Calendar extends React.PureComponent {
     const {
       isLoading,
       currentUser,
-      placesList,
+      resourcesList,
       allActivities,
-      manuals
+      manuals,
     } = this.props;
     const {
-      editBooking,
+      editActivity,
       calendarFilter,
-      selectedBooking,
-      isUploading
+      selectedActivity,
+      isUploading,
     } = this.state;
 
-    const futureBookings = [];
+    const futureActivities = [];
 
-    allActivities.filter(booking => {
-      if (moment(booking.endDate).isAfter(yesterday)) {
-        futureBookings.push(booking);
+    allActivities.filter((activity) => {
+      if (moment(activity.endDate).isAfter(yesterday)) {
+        futureActivities.push(activity);
       }
     });
 
-    let filteredBookings = allActivities;
+    let filteredActivities = allActivities;
 
     if (calendarFilter !== 'All rooms') {
-      filteredBookings = allActivities.filter(
-        booking => booking.room === calendarFilter
+      filteredActivities = allActivities.filter(
+        (activity) => activity.room === calendarFilter
       );
     }
 
-    if (editBooking) {
-      return <Redirect to={`/edit-booking/${selectedBooking._id}`} />;
+    if (editActivity) {
+      return <Redirect to={`/edit-activity/${selectedActivity._id}`} />;
     }
 
     const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
@@ -188,17 +188,17 @@ class Calendar extends React.PureComponent {
     const centerStyle = {
       display: 'flex',
       justifyContent: 'center',
-      marginBottom: 24
+      marginBottom: 24,
     };
 
-    const manualsList = manuals.map(manual => ({
+    const manualsList = manuals.map((manual) => ({
       ...manual,
       actions: [
         {
           content: 'Remove',
-          handleClick: () => this.removeManual(manual._id)
-        }
-      ]
+          handleClick: () => this.removeManual(manual._id),
+        },
+      ],
     }));
 
     return (
@@ -210,7 +210,7 @@ class Calendar extends React.PureComponent {
             width="100%"
             margin={{ bottom: 'medium' }}
           >
-            <Link to="/new-booking">
+            <Link to="/new-activity">
               <Button size="small" label="New Activity" />
             </Link>
           </Box>
@@ -233,7 +233,7 @@ class Calendar extends React.PureComponent {
           >
             {'All rooms'}
           </SimpleTag>
-          {placesList.map((room, i) => (
+          {resourcesList.map((room, i) => (
             <SimpleTag
               color={colors[i]}
               checked={calendarFilter === room.name}
@@ -249,8 +249,8 @@ class Calendar extends React.PureComponent {
           <Loader />
         ) : (
           <CalendarView
-            bookings={filteredBookings}
-            onSelect={this.handleSelectBooking}
+            activities={filteredActivities}
+            onSelect={this.handleSelectActivity}
           />
         )}
 
@@ -313,15 +313,15 @@ class Calendar extends React.PureComponent {
         </Row> */}
 
         <ConfirmModal
-          visible={Boolean(selectedBooking)}
-          title={selectedBooking && selectedBooking.title}
+          visible={Boolean(selectedActivity)}
+          title={selectedActivity && selectedActivity.title}
           confirmText="Edit"
           cancelText="Close"
-          onConfirm={this.handleEditBooking}
+          onConfirm={this.handleEditActivity}
           onCancel={this.handleCloseModal}
           confirmButtonProps={
-            (!this.isCreator() || selectedBooking.isGroup) && {
-              style: { display: 'none' }
+            (!this.isCreator() || selectedActivity.isProcess) && {
+              style: { display: 'none' },
             }
           }
           onClickOutside={this.handleCloseModal}
@@ -334,37 +334,41 @@ class Calendar extends React.PureComponent {
           >
             <div>
               <Text weight="bold">
-                {selectedBooking && selectedBooking.authorName}
+                {selectedActivity && selectedActivity.authorName}
               </Text>{' '}
               <Text>booked</Text>{' '}
               <Text weight="bold">
-                {selectedBooking && selectedBooking.room}
+                {selectedActivity && selectedActivity.room}
               </Text>
             </div>
-            <Text weight="light">{this.getBookingTimes(selectedBooking)}</Text>
+            <Text weight="light">
+              {this.getActivityTimes(selectedActivity)}
+            </Text>
           </Box>
 
           <Text size="small">
             <div
               dangerouslySetInnerHTML={{
                 __html:
-                  selectedBooking &&
-                  selectedBooking.longDescription &&
-                  (selectedBooking.isPrivateGroup
+                  selectedActivity &&
+                  selectedActivity.longDescription &&
+                  (selectedActivity.isPrivateProcess
                     ? ''
-                    : selectedBooking.longDescription.slice(0, 120) + '...')
+                    : selectedActivity.longDescription.slice(0, 120) + '...'),
               }}
             />
-            {selectedBooking && selectedBooking.isPublicActivity && (
+            {selectedActivity && selectedActivity.isPublicActivity && (
               <Link
                 to={
-                  (selectedBooking.isGroup ? '/group/' : '/event/') +
-                  selectedBooking._id
+                  (selectedActivity.isProcess ? '/process/' : '/event/') +
+                  selectedActivity._id
                 }
               >
                 {' '}
-                {!selectedBooking.isPrivateGroup &&
-                  `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
+                {!selectedActivity.isPrivateProcess &&
+                  `go to the ${
+                    selectedActivity.isProcess ? 'process ' : 'event '
+                  }
                     page`}
               </Link>
             )}

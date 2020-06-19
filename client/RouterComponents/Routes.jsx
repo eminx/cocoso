@@ -6,14 +6,14 @@ import LayoutContainer from '../LayoutContainer';
 // route components
 import HomeContainer from './HomeContainer';
 
-import BookingContainer from './bookings/BookingContainer';
-import NewBookSpaceContainer from './bookings/NewBookSpaceContainer';
-import EditBookingContainer from './bookings/EditBookingContainer';
+import ActivityContainer from './activities/ActivityContainer';
+import NewActivityContainer from './activities/NewActivityContainer';
+import EditActivityContainer from './activities/EditActivityContainer';
 
-import NewGroupContainer from './groups/NewGroupContainer';
-import EditGroupContainer from './groups/EditGroupContainer';
-import GroupsListContainer from './groups/GroupsListContainer';
-import GroupContainer from './groups/GroupContainer';
+import NewProcessContainer from './processes/NewProcessContainer';
+import EditProcessContainer from './processes/EditProcessContainer';
+import ProcessesListContainer from './processes/ProcessesListContainer';
+import ProcessContainer from './processes/ProcessContainer';
 
 import Page from './pages/Page';
 import NewPageContainer from './pages/NewPageContainer';
@@ -24,11 +24,12 @@ import Settings from './admin/Settings';
 import Members from './admin/Members';
 
 import UserContainer from './user/UserContainer';
-import Work from './works/Work';
+
 import Works from './works/Works';
+import Work from './works/Work';
+import MyWorks from './works/MyWorks';
 import NewWork from './works/NewWork';
 import EditWork from './works/EditWork';
-import Market from './Market';
 
 import SignupPage from '../account-manager/SignupPage';
 import LoginPage from '../account-manager/LoginPage';
@@ -50,17 +51,20 @@ export default function () {
 
             <Route
               exact
-              path="/new-booking"
-              component={NewBookSpaceContainer}
+              path="/new-activity"
+              component={NewActivityContainer}
             />
-            <Route path="/event/:id" component={BookingContainer} />
-            <Route path="/booking/:id" component={BookingContainer} />
-            <Route path="/edit-booking/:id/" component={EditBookingContainer} />
+            <Route path="/event/:id" component={ActivityContainer} />
+            <Route path="/activity/:id" component={ActivityContainer} />
+            <Route
+              path="/edit-activity/:id/"
+              component={EditActivityContainer}
+            />
 
-            <Route exact path="/new-group" component={NewGroupContainer} />
-            <Route path="/groups/" component={GroupsListContainer} />
-            <Route path="/group/:id" component={GroupContainer} />
-            <Route path="/edit-group/:id/" component={EditGroupContainer} />
+            <Route exact path="/new-process" component={NewProcessContainer} />
+            <Route path="/processes/" component={ProcessesListContainer} />
+            <Route path="/process/:id" component={ProcessContainer} />
+            <Route path="/edit-process/:id/" component={EditProcessContainer} />
 
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />
@@ -72,11 +76,11 @@ export default function () {
               component={ProfileContainer}
             />
 
-            <Route path="/my-works" component={Works} />
+            <Route path="/my-works" component={MyWorks} />
             <Route path="/:username/work/:workId" component={Work} />
             <Route path="/:username/edit-work/:workId" component={EditWork} />
             <Route path="/new-work" component={NewWork} />
-            <Route path="/market" component={Market} />
+            <Route path="/works" component={Works} />
 
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />

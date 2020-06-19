@@ -25,11 +25,6 @@ const compareUsersByDate = (a, b) => {
   const dateB = new Date(b.createdAt);
   return dateB - dateA;
 };
-state = {
-  sortBy: 'join-date',
-  filter: 'all',
-  filterWord: '',
-};
 
 function Members({ history }) {
   const [loading, setLoading] = useState(true);
@@ -150,10 +145,10 @@ function Members({ history }) {
   ];
 
   const usersFilteredWithType = usersList.filter((user) => {
+    const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
     return (
-      user.username.toLowerCase().indexOf(filterWord.toLowerCase()) !== -1 ||
-      user.emails[0].address.toLowerCase().indexOf(filterWord.toLowerCase()) !==
-        -1
+      user.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+      user.emails[0].address.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
     );
   });
 

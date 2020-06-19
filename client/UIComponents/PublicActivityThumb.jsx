@@ -10,11 +10,11 @@ const dateStyle = {
   fontWeight: 300,
   lineHeight: 1,
   fontSize: 20,
-  color: '#030303'
+  color: '#030303',
 };
 
 class PublicActivityThumb extends React.Component {
-  getEventTimes = event => {
+  getEventTimes = (event) => {
     if (!event) {
       return;
     }
@@ -38,7 +38,7 @@ class PublicActivityThumb extends React.Component {
     }
   };
 
-  renderDate = date => {
+  renderDate = (date) => {
     if (!date) {
       return;
     }
@@ -61,9 +61,7 @@ class PublicActivityThumb extends React.Component {
             <b>{moment(date.startDate).format('DD')}</b>
           </span>
           <span style={{ fontSize: 16 }}>
-            {moment(date.startDate)
-              .format('MMM')
-              .toUpperCase()}
+            {moment(date.startDate).format('MMM').toUpperCase()}
           </span>
         </div>
       </div>
@@ -72,7 +70,7 @@ class PublicActivityThumb extends React.Component {
 
   renderDates = () => {
     const { item } = this.props;
-    const futureDates = item.datesAndTimes.filter(date =>
+    const futureDates = item.datesAndTimes.filter((date) =>
       moment(date.startDate).isAfter(yesterday)
     );
     const remaining = futureDates.length - 3;
@@ -85,7 +83,7 @@ class PublicActivityThumb extends React.Component {
         margin={{ top: 'small' }}
         wrap
       >
-        {futureDates.slice(0, 3).map(date => this.renderDate(date))}
+        {futureDates.slice(0, 3).map((date) => this.renderDate(date))}
         {remaining > 0 && <div style={{ ...dateStyle }}>+ {remaining}</div>}
       </Box>
     );
@@ -97,10 +95,12 @@ class PublicActivityThumb extends React.Component {
     const imageStyle = {
       width: 288,
       height: 180,
-      objectFit: 'cover'
+      objectFit: 'cover',
     };
 
-    let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
+    let clickLink = item.isProcess
+      ? `/process/${item._id}`
+      : `/event/${item._id}`;
 
     return (
       <Box
@@ -111,10 +111,10 @@ class PublicActivityThumb extends React.Component {
         <Box>
           <Box pad={{ bottom: 'medium' }}>
             <Text weight={600} size="large">
-              {item.isGroup ? item.title : item.title}
+              {item.isProcess ? item.title : item.title}
             </Text>
             <Text weight={300}>
-              {item.isGroup ? item.readingMaterial : item.subTitle}
+              {item.isProcess ? item.readingMaterial : item.subTitle}
             </Text>
           </Box>
 

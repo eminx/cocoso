@@ -2,31 +2,31 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Calendar from './Calendar';
 import moment from 'moment';
 
-export default (CalendarContainer = withTracker(props => {
+export default CalendarContainer = withTracker((props) => {
   // here we can pull out the props.subID and change our Meteor subscription based on it
   // this is handled on the publication side of things
 
   // const handle = Meteor.subscribe('myDataSub', props.subID);
 
-  const bookings = Meteor.subscribe('gatherings');
-  const isLoading = !bookings.ready();
-  const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
+  const activities = Meteor.subscribe('activities');
+  const isLoading = !activities.ready();
+  const activitiesList = Activities ? Activities.find().fetch() : null;
   const currentUser = Meteor.user();
-  const placesSub = Meteor.subscribe('places');
-  const placesList = Places ? Places.find().fetch() : null;
-  const groupsSubscription = Meteor.subscribe('groups');
-  const groupsList = Groups ? Groups.find().fetch() : null;
+  const resourcesSub = Meteor.subscribe('resources');
+  const resourcesList = Resources ? Resources.find().fetch() : null;
+  const processesSubscription = Meteor.subscribe('processes');
+  const processesList = Processes ? Processes.find().fetch() : null;
 
   const manualsSubscription = Meteor.subscribe('manuals');
   const manuals = Documents ? Documents.find().fetch() : null;
 
   const allActivities = [];
-  if (bookingsList) {
-    bookingsList.forEach(booking => {
-      if (booking.datesAndTimes) {
-        booking.datesAndTimes.forEach(recurrence => {
+  if (activitiesList) {
+    activitiesList.forEach((activity) => {
+      if (activity.datesAndTimes) {
+        activity.datesAndTimes.forEach((recurrence) => {
           allActivities.push({
-            title: booking.title,
+            title: activity.title,
             start: moment(
               recurrence.startDate + recurrence.startTime,
               'YYYY-MM-DD HH:mm'
@@ -39,28 +39,28 @@ export default (CalendarContainer = withTracker(props => {
             startTime: recurrence.startTime,
             endDate: recurrence.endDate,
             endTime: recurrence.endTime,
-            authorName: booking.authorName,
-            room: booking.room,
-            longDescription: booking.longDescription,
+            authorName: activity.authorName,
+            room: activity.room,
+            longDescription: activity.longDescription,
             isMultipleDay:
               recurrence.isMultipleDay ||
               recurrence.startDate !== recurrence.endDate,
-            roomIndex: booking.roomIndex,
-            isPublicActivity: booking.isPublicActivity,
-            imageUrl: booking.imageUrl,
-            _id: booking._id
+            roomIndex: activity.roomIndex,
+            isPublicActivity: activity.isPublicActivity,
+            imageUrl: activity.imageUrl,
+            _id: activity._id,
           });
         });
       }
     });
   }
 
-  if (groupsList) {
-    groupsList.forEach(group => {
-      if (group.meetings) {
-        group.meetings.forEach(meeting => {
+  if (processesList) {
+    processesList.forEach((process) => {
+      if (process.meetings) {
+        process.meetings.forEach((meeting) => {
           allActivities.push({
-            title: group.title,
+            title: process.title,
             start: moment(
               meeting.startDate + meeting.startTime,
               'YYYY-MM-DD HH:mm'
@@ -73,16 +73,16 @@ export default (CalendarContainer = withTracker(props => {
             startTime: meeting.startTime,
             endDate: meeting.endDate,
             endTime: meeting.endTime,
-            authorName: group.adminUsername,
+            authorName: process.adminUsername,
             room: meeting.room,
-            longDescription: group.description,
+            longDescription: process.description,
             isMultipleDay: false,
             roomIndex: meeting.roomIndex,
             isPublicActivity: true,
-            imageUrl: group.imageUrl,
-            _id: group._id,
-            isGroup: true,
-            isPrivateGroup: group.isPrivate
+            imageUrl: process.imageUrl,
+            _id: process._id,
+            isProcess: true,
+            isPrivateProcess: process.isPrivate,
           });
         });
       }
@@ -93,7 +93,7 @@ export default (CalendarContainer = withTracker(props => {
     isLoading,
     allActivities,
     currentUser,
-    placesList,
-    manuals
+    resourcesList,
+    manuals,
   };
-})(Calendar));
+})(Calendar);

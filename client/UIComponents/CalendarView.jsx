@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BigCalendar from 'react-big-calendar';
 
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
+let allViews = Object.keys(BigCalendar.Views).map((k) => BigCalendar.Views[k]);
 
-const CalendarView = props => {
-  const { bookings } = props;
+const CalendarView = (props) => {
+  const { activities } = props;
 
   return (
     <div>
       <BigCalendar
-        eventPropGetter={event => ({
-          className: 'category-' + event.roomIndex
+        eventPropGetter={(event) => ({
+          className: 'category-' + event.roomIndex,
         })}
         onSelectEvent={props.onSelect}
-        events={bookings}
+        events={activities}
         defaultView="month"
         showMultiDayTimes
         step={60}
@@ -38,18 +38,20 @@ class CalendarToolbar extends React.Component {
     views: PropTypes.arrayOf(PropTypes.string).isRequired,
     label: PropTypes.node.isRequired,
     localizer: PropTypes.object,
-    onNavigate: PropTypes.func.isRequired
+    onNavigate: PropTypes.func.isRequired,
   };
 
   render() {
     let {
       localizer: { messages },
-      label
+      label,
     } = this.props;
 
     return (
       <div className="rbc-toolbar">
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+        <span className="rbc-btn-process">
+          {this.viewNamesProcess(messages)}
+        </span>
 
         <span
           className="rbc-toolbar-label"
@@ -58,7 +60,7 @@ class CalendarToolbar extends React.Component {
           {label}
         </span>
 
-        <span className="rbc-btn-group">
+        <span className="rbc-btn-process">
           <a onClick={this.navigate.bind(null, navigate.TODAY)}>
             {messages.today}
           </a>
@@ -81,20 +83,20 @@ class CalendarToolbar extends React.Component {
     );
   }
 
-  navigate = action => {
+  navigate = (action) => {
     this.props.onNavigate(action);
   };
 
-  view = view => {
+  view = (view) => {
     this.props.onView(view);
   };
 
-  viewNamesGroup(messages) {
+  viewNamesProcess(messages) {
     let viewNames = this.props.views;
     const view = this.props.view;
 
     if (viewNames.length > 1) {
-      return viewNames.map(name => (
+      return viewNames.map((name) => (
         <a
           type="button"
           key={name}

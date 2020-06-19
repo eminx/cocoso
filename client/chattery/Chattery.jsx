@@ -7,7 +7,7 @@ import { ChatteryWindow } from './ChatteryWindow';
 import { ChatteryInput } from './ChatteryInput';
 
 const noMemberText =
-  'If you want to participate to the discussion, please join the group.';
+  'If you want to participate to the discussion, please join the process.';
 
 class Chattery extends React.Component {
   render() {
@@ -16,7 +16,7 @@ class Chattery extends React.Component {
       onNewMessage,
       removeNotification,
       isMember,
-      meta
+      meta,
     } = this.props;
 
     return (
@@ -39,7 +39,7 @@ class Chattery extends React.Component {
 Chattery.propTypes = {
   messages: PropTypes.array.isRequired,
   onNewMessage: PropTypes.func.isRequired,
-  meta: PropTypes.object
+  meta: PropTypes.object,
 };
 
 export { Chattery };

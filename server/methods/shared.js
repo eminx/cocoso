@@ -1,8 +1,8 @@
-export const getRoomIndex = room => {
-  const placesList = Places.find().fetch();
-  if (placesList.length > 0) {
+export const getRoomIndex = (room) => {
+  const resourcesList = Resources.find().fetch();
+  if (resourcesList.length > 0) {
     let roomIndex;
-    placesList.forEach((place, i) => {
+    resourcesList.forEach((place, i) => {
       if (place.name === room) {
         roomIndex = i.toString();
       }
@@ -11,6 +11,6 @@ export const getRoomIndex = room => {
   }
 };
 
-export const getHost = self => self.connection.httpHeaders.host;
+export const getHost = (self) => self.connection.httpHeaders.host;
 
 export const siteUrl = Meteor.absoluteUrl();

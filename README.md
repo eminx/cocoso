@@ -37,7 +37,7 @@ There are a few components of public events that can be listed as below:
 
 It is possible to _list_ (by admins) a set of shared resources for them to be timely _claimed/booked_ by verified users. Every each booking is automatically displayed on the calendar. This is very similar to the widespread usage of Google & Outlook calendars in typical shared resource contexts like in a e.g. company office.
 
-However, with Cocoso, the way this works is much more simplified. You make a booking and that's it. It's so far not possible to make calendar invites etc, because we think those become unnecessary automations turning working people into robots feeding machines and become dictated about how the digital systems work rather than digital systems helping people proceed in their workflows. We like to think that people talk to each other more in work places rather than work around tools to prevent that.
+However, with Cocoso, the way this works is much more simplified. You make a booking and that's it. It's so far not possible to make calendar invites etc, because we think those become unnecessary automations turning working people into robots feeding machines and become dictated about how the digital systems work rather than digital systems helping people proceed in their workflows. We like to think that people talk to each other more in work resources rather than work around tools to prevent that.
 
 Resource Sharing and Calendar work with one another very tightly. Indeed Calendar is the visual language enabling Resource Sharing, as well as what's happening in the community.
 
@@ -85,7 +85,7 @@ With this feature one can easily create a page only with a _title_ and a _descri
 
 ### Main Framework
 
-Cocoso is built using Meteor JS framework which is built on top of Node JS. Meteor is an open source and free development framework that has been used for nearly 10 years so far. It is actively being built and maintained by Meteor Development Group (MDG). Meteor works with MongoDB by default and it provides first class support for it on top of the DDP protocol featuring reactive programming super easily with Web Sockets. So MongoDB is the chosen database. Using Meteor, it is also relatively easy to create native apps by buit-in usage of Cordova, which runs on a web-view within a downloaded and installed app, and features customisations via plugins such as to enable push notifications and other relevant features that may be wished to have in a typical native app.
+Cocoso is built using Meteor JS framework which is built on top of Node JS. Meteor is an open source and free development framework that has been used for nearly 10 years so far. It is actively being built and maintained by Meteor Development Process (MDG). Meteor works with MongoDB by default and it provides first class support for it on top of the DDP protocol featuring reactive programming super easily with Web Sockets. So MongoDB is the chosen database. Using Meteor, it is also relatively easy to create native apps by buit-in usage of Cordova, which runs on a web-view within a downloaded and installed app, and features customisations via plugins such as to enable push notifications and other relevant features that may be wished to have in a typical native app.
 
 MDG is also the group behind a widespread used product called _Apollo_, which is a technology built for complementing another open source technology called _GraphQL_ developed and maintained by Facebook. The usage of both GraphQL and Apollo are extremely widespread nowadays.
 

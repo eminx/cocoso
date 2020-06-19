@@ -3,29 +3,29 @@ import { getHost } from './shared';
 
 const s3Settings = Meteor.settings.AWSs3;
 
-Slingshot.fileRestrictions('groupImageUpload', {
+Slingshot.fileRestrictions('processImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024
+  maxSize: 5 * 3024 * 3024,
 });
 
 Slingshot.fileRestrictions('workImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024
+  maxSize: 5 * 3024 * 3024,
 });
 
-Slingshot.fileRestrictions('groupDocumentUpload', {
+Slingshot.fileRestrictions('processDocumentUpload', {
   allowedFileTypes: ['application/pdf', 'image/png', 'image/jpeg'],
-  maxSize: 5 * 1000 * 1000
+  maxSize: 5 * 1000 * 1000,
 });
 
 Slingshot.fileRestrictions('pageImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024
+  maxSize: 5 * 3024 * 3024,
 });
 
 Slingshot.fileRestrictions('activityImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024
+  maxSize: 5 * 3024 * 3024,
 });
 
 Slingshot.createDirective('workImageUpload', Slingshot.S3Storage, {
@@ -35,7 +35,7 @@ Slingshot.createDirective('workImageUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize: function() {
+  authorize: function () {
     if (!this.userId) {
       var message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -43,20 +43,20 @@ Slingshot.createDirective('workImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key: function(file) {
+  key: function (file) {
     var currentUser = Meteor.user();
     return currentUser.username + '/' + file.name;
-  }
+  },
 });
 
-Slingshot.createDirective('groupImageUpload', Slingshot.S3Storage, {
+Slingshot.createDirective('processImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketName,
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize: function() {
+  authorize: function () {
     if (!this.userId) {
       var message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -64,20 +64,20 @@ Slingshot.createDirective('groupImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key: function(file) {
+  key: function (file) {
     var currentUser = Meteor.user();
     return currentUser.username + '/' + file.name;
-  }
+  },
 });
 
-Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
+Slingshot.createDirective('processDocumentUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketReadingMaterials,
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize: function() {
+  authorize: function () {
     if (!this.userId) {
       var message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -85,10 +85,10 @@ Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key: function(file) {
+  key: function (file) {
     var currentUser = Meteor.user();
     return currentUser.username + '/' + file.name;
-  }
+  },
 });
 
 Slingshot.createDirective('pageImageUpload', Slingshot.S3Storage, {
@@ -98,7 +98,7 @@ Slingshot.createDirective('pageImageUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize: function() {
+  authorize: function () {
     if (!this.userId) {
       var message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -106,10 +106,10 @@ Slingshot.createDirective('pageImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key: function(file) {
+  key: function (file) {
     var currentUser = Meteor.user();
     return currentUser.username + '/' + file.name;
-  }
+  },
 });
 
 Slingshot.createDirective('activityImageUpload', Slingshot.S3Storage, {
@@ -119,7 +119,7 @@ Slingshot.createDirective('activityImageUpload', Slingshot.S3Storage, {
   acl: 'public-read',
   region: s3Settings.AWSRegion,
 
-  authorize: function() {
+  authorize: function () {
     if (!this.userId) {
       var message = 'Please login before posting images';
       throw new Meteor.Error('Login Required', message);
@@ -127,13 +127,13 @@ Slingshot.createDirective('activityImageUpload', Slingshot.S3Storage, {
     return true;
   },
 
-  key: function(file) {
+  key: function (file) {
     var currentUser = Meteor.user();
     return currentUser.username + '/' + file.name;
-  }
+  },
 });
 
-Meteor.publish('images', function() {
+Meteor.publish('images', function () {
   return Images.find(
     {},
     {
@@ -156,11 +156,11 @@ Meteor.methods({
           gatheringId: newGatheringId,
           imageurl: downloadUrl,
           time: timeStamp,
-          uploadedBy: currentUserId
+          uploadedBy: currentUserId,
         });
       } catch (e) {
         throw new Meteor.error(e);
       }
     }
-  }
+  },
 });

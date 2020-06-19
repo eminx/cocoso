@@ -7,13 +7,13 @@ const colStyle = {
   margin: '0 auto',
 };
 
-function Template({
+const Template = ({
   leftContent,
   rightContent,
   heading,
   titleCentered,
   children,
-}) {
+}) => {
   return (
     <Container fluid style={{ width: '100%', marginBottom: 100 }}>
       <Row gutterWidth={12}>
@@ -41,6 +41,6 @@ function Template({
       </Row>
     </Container>
   );
-}
+};
 
 export default Template;

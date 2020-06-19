@@ -12,8 +12,8 @@ import { call } from './functions';
 
 const menu = [
   {
-    label: 'Marketplace',
-    route: '/market',
+    label: 'Market',
+    route: '/works',
   },
   {
     label: 'Calendar',
@@ -21,7 +21,7 @@ const menu = [
   },
   {
     label: 'Processes',
-    route: '/groups',
+    route: '/processes',
   },
   {
     label: 'Info',

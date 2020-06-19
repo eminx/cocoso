@@ -5,8 +5,8 @@ const contextName = publicSettings.contextName;
 
 import { getHost } from './shared';
 
-const getVerifiedEmailText = username => {
-  return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study groups and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;
+const getVerifiedEmailText = (username) => {
+  return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;
 };
 
 Meteor.methods({
@@ -30,8 +30,8 @@ Meteor.methods({
     try {
       Meteor.users.update(memberId, {
         $set: {
-          isRegisteredMember: true
-        }
+          isRegisteredMember: true,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -58,14 +58,14 @@ Meteor.methods({
     try {
       Meteor.users.update(memberId, {
         $set: {
-          isRegisteredMember: false
-        }
+          isRegisteredMember: false,
+        },
       });
       Meteor.call(
         'sendEmail',
         memberId,
         `You are removed from ${contextName} as a verified member`,
-        `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${contextName}. You are, however, still welcome to participate to the events and groups here.\n\n For questions, please contact the admin.\n\nKind regards,\n${contextName} Team`
+        `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${contextName}. You are, however, still welcome to participate to the events and processes here.\n\n For questions, please contact the admin.\n\nKind regards,\n${contextName} Team`
       );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
@@ -96,12 +96,12 @@ Meteor.methods({
         { host },
         {
           $set: {
-            settings: newSettings
-          }
+            settings: newSettings,
+          },
         }
       );
     } catch (error) {
       throw new Meteor.Error(error);
     }
-  }
+  },
 });
