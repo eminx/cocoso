@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Box, Text, Button } from 'grommet';
+import { Box, Text, Button, Avatar } from 'grommet';
 import Loader from '../../UIComponents/Loader';
+import Tag from '../../UIComponents/Tag';
+import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
 const compareByDate = (a, b) => {
@@ -20,6 +22,7 @@ const imageStyle = {
 const Works = ({ history }) => {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categoryFilter, setCategoryFilter] = useState(null);
 
   useEffect(() => {
     getAllWorks();
@@ -40,9 +43,19 @@ const Works = ({ history }) => {
     return <Loader />;
   }
 
+  const currentUser = Meteor.user();
+
   const sortedWorks = works.sort(compareByDate);
 
-  const currentUser = Meteor.user();
+  const filteredWorks = categoryFilter
+    ? sortedWorks.filter((work) => work.category === categoryFilter)
+    : sortedWorks;
+
+  const categoriesAssignedToWorks = Array.from(
+    new Set(
+      works.map((work) => work.category).filter((cat) => cat && cat.length > 3)
+    )
+  );
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
@@ -52,8 +65,20 @@ const Works = ({ history }) => {
         </Link>
       </Box>
 
+      <Box direction="row" justify="center">
+        <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
+        {categoriesAssignedToWorks.map((cat) => (
+          <Tag
+            key={cat}
+            elevation="small"
+            label={cat}
+            onClick={() => setCategoryFilter(cat)}
+          />
+        ))}
+      </Box>
+
       <Box direction="row" wrap justify="center">
-        {sortedWorks.map((work) => (
+        {filteredWorks.map((work) => (
           <Box
             key={work._id}
             width="medium"
@@ -68,7 +93,15 @@ const Works = ({ history }) => {
                 <Text weight={600} size="large">
                   {work.title}
                 </Text>
-                <Text weight={300}>{work.shortDescription}</Text>
+                <Box direction="row">
+                  <Box flex={{ grow: 1 }}>
+                    <Text weight={300}>{work.shortDescription}</Text>
+                    <Box flex={{ grow: 0 }}>
+                      {work.category && <Tag label={work.category} />}
+                    </Box>
+                  </Box>
+                  <Avatar flex={{ grow: 0 }} />
+                </Box>
               </Box>
 
               <Box>

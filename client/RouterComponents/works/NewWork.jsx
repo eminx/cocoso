@@ -15,7 +15,9 @@ class NewWork extends PureComponent {
       shortDescription: '',
       longDescription: '',
       additionalInfo: '',
+      category: '',
     },
+    categories: [],
     uploadableImages: [],
     uploadableImagesLocal: [],
     isLocalising: false,
@@ -24,6 +26,17 @@ class NewWork extends PureComponent {
     isSuccess: false,
     isError: false,
     newWorkId: null,
+  };
+
+  componentDidMount() {
+    this.getCategories();
+  }
+
+  getCategories = async () => {
+    const categories = await call('getCategories');
+    this.setState({
+      categories,
+    });
   };
 
   handleFormChange = (value) => {
@@ -169,6 +182,7 @@ class NewWork extends PureComponent {
       isSuccess,
       newWorkId,
       isCreating,
+      categories,
     } = this.state;
 
     if (isSuccess && newWorkId) {
@@ -185,6 +199,7 @@ class NewWork extends PureComponent {
       <Template heading="Create New Work">
         <WorkForm
           formValues={formValues}
+          categories={categories}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
           onSubmit={this.uploadImages}

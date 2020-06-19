@@ -5,6 +5,7 @@ import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
+import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
@@ -50,6 +51,7 @@ const Work = ({ history, match }) => {
             {work.title}
           </Heading>
           <Text>{work.shortDescription}</Text>
+          {work.category && <Tag label={work.category} />}
         </Box>
       }
       rightContent={
@@ -69,7 +71,7 @@ const Work = ({ history, match }) => {
           <Box
             pad={{
               top: 'medium',
-              bottom: 'small'
+              bottom: 'small',
             }}
           >
             <Text>{work.additionalInfo}</Text>

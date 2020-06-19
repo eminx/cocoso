@@ -15,7 +15,9 @@ class EditWork extends PureComponent {
       shortDescription: '',
       longDescription: '',
       additionalInfo: '',
+      category: '',
     },
+    categories: [],
     images: [],
     isLocalising: false,
     isCreating: false,
@@ -26,7 +28,15 @@ class EditWork extends PureComponent {
 
   componentDidMount() {
     this.getWork();
+    this.getCategories();
   }
+
+  getCategories = async () => {
+    const categories = await call('getCategories');
+    this.setState({
+      categories,
+    });
+  };
 
   getWork = async () => {
     this.setState({ isLoading: true });
@@ -200,7 +210,13 @@ class EditWork extends PureComponent {
       );
     }
 
-    const { formValues, images, isSuccess, isCreating } = this.state;
+    const {
+      formValues,
+      images,
+      isSuccess,
+      isCreating,
+      categories,
+    } = this.state;
 
     if (isSuccess) {
       return <Redirect to={`/${currentUser.username}/work/${workId}`} />;
@@ -216,6 +232,7 @@ class EditWork extends PureComponent {
       <Template heading="Update Work">
         <WorkForm
           formValues={formValues}
+          categories={categories}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
           onSubmit={this.uploadImages}

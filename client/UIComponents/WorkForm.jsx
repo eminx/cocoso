@@ -7,6 +7,7 @@ import {
   Text,
   FormField,
   Form,
+  Select,
 } from 'grommet';
 import { Close } from 'grommet-icons';
 import ReactQuill from 'react-quill';
@@ -29,6 +30,7 @@ const WorkForm = ({
   isButtonDisabled,
   onSortImages,
   onRemoveImage,
+  categories,
 }) => {
   return (
     <div>
@@ -80,6 +82,17 @@ const WorkForm = ({
             plain={false}
             name="shortDescription"
             placeholder="Sweet, Natural & Refreshing"
+          />
+        </FormField>
+
+        <FormField
+          label="Category"
+          margin={{ bottom: 'medium', top: 'medium' }}
+          required
+        >
+          <Select
+            name="category"
+            options={categories.map((cat) => cat.label.toUpperCase())}
           />
         </FormField>
 

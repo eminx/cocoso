@@ -104,4 +104,48 @@ Meteor.methods({
       throw new Meteor.Error(error);
     }
   },
+
+  getCategories() {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    return Categories.find().fetch();
+  },
+
+  addNewCategory(category) {
+    const user = Meteor.user();
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    if (Categories.findOne({ label: category.toLowerCase() })) {
+      throw new Meteor.Error('Category already exists!');
+    }
+
+    try {
+      return Categories.insert({
+        label: category.toLowerCase(),
+        addedBy: user._id,
+        addedUsername: user.username,
+        addedDate: new Date(),
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  removeCategory(categoryId) {
+    const user = Meteor.user();
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    try {
+      Categories.remove(categoryId);
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
 });

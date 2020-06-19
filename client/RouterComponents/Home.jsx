@@ -105,7 +105,7 @@ class Home extends React.Component {
     const { isLoading, history } = this.props;
     const allSortedActivities = this.getAllSorted();
 
-    return <Redirect to="/market" />;
+    return <Redirect to="/works" />;
 
     return (
       <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
