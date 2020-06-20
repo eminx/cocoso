@@ -1,4 +1,6 @@
-# **cocoso**: Community Cooperation Software
+# Community Cooperation Software
+
+![image info](https://cocoso.infinitesimals.space/cocoso-logo.png)
 
 ## Intro
 
