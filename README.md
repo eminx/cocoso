@@ -1,6 +1,8 @@
 # Community Cooperation Software
 
-![image info](https://cocoso.infinitesimals.space/cocoso-logo.png)
+![Cocoso logo](https://cocoso.infinitesimals.space/cocoso-logo.png)
+
+[https://cocoso.infinitesimals.space/](https://cocoso.infinitesimals.space/)
 
 ## Intro
 
