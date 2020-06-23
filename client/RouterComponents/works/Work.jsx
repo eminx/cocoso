@@ -47,11 +47,13 @@ const Work = ({ history, match }) => {
     <Template
       leftContent={
         <Box pad={{ bottom: 'medium' }}>
+          {work.category && (
+            <Tag label={work.category.label} background={work.category.color} />
+          )}
           <Heading pad="small" level={2}>
             {work.title}
           </Heading>
           <Text>{work.shortDescription}</Text>
-          {work.category && <Tag label={work.category} />}
         </Box>
       }
       rightContent={

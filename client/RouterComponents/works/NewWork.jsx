@@ -118,7 +118,17 @@ class NewWork extends PureComponent {
   };
 
   createWork = async (imagesReadyToSave) => {
-    const { formValues } = this.state;
+    const { formValues, category } = this.state;
+
+    const selectedCategory = categories.find(
+      (category) => category === formValues.category
+    );
+    formValues.category = {
+      label: selectedCategory.label,
+      color: selectedCategory.color,
+      categoryId: selectedCategory._id,
+    };
+
     try {
       const respond = await call('createWork', formValues, imagesReadyToSave);
       this.setState({

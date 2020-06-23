@@ -197,9 +197,9 @@ const Settings = ({ history }) => {
             <Tag
               key={category.label}
               label={category.label.toUpperCase()}
+              background={category.color}
               removable
               onRemove={() => removeCategory(category._id)}
-              onClick={() => console.log('lkdns')}
             />
           ))}
         </Box>

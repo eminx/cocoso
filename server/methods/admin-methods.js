@@ -9,6 +9,19 @@ const getVerifiedEmailText = (username) => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;
 };
 
+const catColors = [
+  'hsla(10, 62%, 80%, 0.8)',
+  'hsla(46, 62%, 80%, 0.8)',
+  'hsla(82, 62%, 80%, 0.8)',
+  'hsla(118, 62%, 80%, 0.8)',
+  'hsla(154, 62%, 80%, 0.8)',
+  'hsla(190, 62%, 80%, 0.8)',
+  'hsla(226, 62%, 80%, 0.8)',
+  'hsla(262, 62%, 80%, 0.8)',
+  'hsla(298, 62%, 80%, 0.8)',
+  'hsla(334, 62%, 80%, 0.8)',
+];
+
 Meteor.methods({
   getUsers() {
     const user = Meteor.user();
@@ -124,9 +137,12 @@ Meteor.methods({
       throw new Meteor.Error('Category already exists!');
     }
 
+    const catLength = Categories.find().count();
+
     try {
       return Categories.insert({
         label: category.toLowerCase(),
+        color: catColors[catLength],
         addedBy: user._id,
         addedUsername: user.username,
         addedDate: new Date(),

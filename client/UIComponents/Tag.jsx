@@ -7,26 +7,31 @@ const Tag = ({
   onClick,
   removable = false,
   onRemove,
+  background = 'accent-4',
   ...otherProps
 }) => (
   <Box
-    background="accent-4"
+    background={background}
     alignSelf="start"
     direction="row"
     align="center"
-    round
-    pad={{ top: 'xsmall', bottom: 'xsmall', right: 'small', left: 'small' }}
+    round="2px"
+    pad="2px 4px"
     margin={{ top: 'small', right: 'small' }}
     gap="small"
     {...otherProps}
   >
     <Box onClick={onClick}>
-      <Text size="xsmall" weight="bold">
-        {label}
+      <Text size="12px" weight="bold" color="dark-1">
+        {label && label.toUpperCase()}
       </Text>
     </Box>
     {removable && (
-      <Button plain onClick={onRemove} icon={<Close size="xsmall" />} />
+      <Button
+        plain
+        onClick={onRemove}
+        icon={<Close color="dark-2" size="small" />}
+      />
     )}
   </Box>
 );

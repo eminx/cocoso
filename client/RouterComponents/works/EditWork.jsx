@@ -165,7 +165,18 @@ class EditWork extends PureComponent {
   updateWork = async (imagesReadyToSave) => {
     const { match } = this.props;
     const workId = match.params.workId;
-    const { formValues } = this.state;
+    const { formValues, categories } = this.state;
+
+    const selectedCategory = categories.find(
+      (category) => category.label === formValues.category.toLowerCase()
+    );
+
+    formValues.category = {
+      label: selectedCategory.label,
+      color: selectedCategory.color,
+      categoryId: selectedCategory._id,
+    };
+
     try {
       await call('updateWork', workId, formValues, imagesReadyToSave);
       this.setState({
@@ -226,7 +237,7 @@ class EditWork extends PureComponent {
       ? 'Updating your work...'
       : 'Confirm and Update Work';
     const { title } = formValues;
-    const isFormValid = formValues && title.length > 3 && images.length > 0;
+    const isFormValid = formValues && title.length > 3;
 
     return (
       <Template heading="Update Work">

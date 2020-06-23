@@ -19,6 +19,10 @@ const imageStyle = {
   objectFit: 'cover',
 };
 
+function getHSL(length, index, opacity = 1) {
+  return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
+}
+
 const Works = ({ history }) => {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,20 +52,16 @@ const Works = ({ history }) => {
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
-    ? sortedWorks.filter((work) => work.category === categoryFilter)
+    ? sortedWorks.filter((work) => work.category.label === categoryFilter)
     : sortedWorks;
 
-  const categoriesAssignedToWorks = Array.from(
-    new Set(
-      works.map((work) => work.category).filter((cat) => cat && cat.length > 3)
-    )
-  );
+  const categoriesAssignedToWorks = getCategories(works);
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         <Link to={currentUser ? '/new-work' : '/my-profile'}>
-          <Button as="span" size="small" label="Create Your Market" />
+          <Button as="span" size="small" label="Create Your Offer" />
         </Link>
       </Box>
 
@@ -69,10 +69,12 @@ const Works = ({ history }) => {
         <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
         {categoriesAssignedToWorks.map((cat) => (
           <Tag
-            key={cat}
-            elevation="small"
-            label={cat}
-            onClick={() => setCategoryFilter(cat)}
+            key={cat.label}
+            label={cat.label}
+            background={
+              cat.label === categoryFilter ? getOpacHSL(cat.color) : cat.color
+            }
+            onClick={() => setCategoryFilter(cat.label)}
           />
         ))}
       </Box>
@@ -83,41 +85,56 @@ const Works = ({ history }) => {
             key={work._id}
             width="medium"
             pad="medium"
-            // hoverIndicator="light-1"
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }
+            justify="stretch"
           >
             <Box>
-              <Box pad={{ bottom: 'medium' }}>
+              <Box pad={{ bottom: 'small' }}>
                 <Text weight={600} size="large">
                   {work.title}
                 </Text>
                 <Box direction="row">
-                  <Box flex={{ grow: 1 }}>
-                    <Text weight={300}>{work.shortDescription}</Text>
-                    <Box flex={{ grow: 0 }}>
-                      {work.category && <Tag label={work.category} />}
-                    </Box>
-                  </Box>
+                  {work.category && (
+                    <Tag
+                      label={work.category.label}
+                      background={work.category.color}
+                    />
+                  )}
                   <Avatar flex={{ grow: 0 }} />
                 </Box>
               </Box>
-
-              <Box>
-                <LazyLoadImage
-                  alt={work.title}
-                  src={work.images && work.images[0]}
-                  style={imageStyle}
-                  effect="black-and-white"
-                />
-              </Box>
+              {work.images && work.images[0] && (
+                <Box>
+                  <LazyLoadImage
+                    alt={work.title}
+                    src={work.images[0]}
+                    style={imageStyle}
+                    effect="black-and-white"
+                  />
+                </Box>
+              )}
+              <Text weight={300}>{work.shortDescription}</Text>
             </Box>
           </Box>
         ))}
       </Box>
     </Box>
   );
+};
+
+getCategories = (works) => {
+  const labels = Array.from(new Set(works.map((work) => work.category.label)));
+  const colors = Array.from(new Set(works.map((work) => work.category.color)));
+  return labels.map((label, i) => ({
+    label,
+    color: colors[i],
+  }));
+};
+
+getOpacHSL = (color) => {
+  return color.substr(0, color.length - 4) + '1)';
 };
 
 export default Works;
