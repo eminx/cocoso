@@ -88,7 +88,6 @@ const Toast = ({ text, onClose, type = 'info' }) => {
 
 const SimpleTag = ({ checked, color, onClick, children, ...otherProps }) => (
   <Button
-    size="xsmall"
     plain
     onClick={onClick}
     label={children}

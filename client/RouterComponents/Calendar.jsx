@@ -343,9 +343,7 @@ class Calendar extends React.PureComponent {
                 {selectedActivity && selectedActivity.room}
               </Text>
             </div>
-            <Text weight="light">
-              {this.getActivityTimes(selectedActivity)}
-            </Text>
+            <Text>{this.getActivityTimes(selectedActivity)}</Text>
           </Box>
 
           <Text size="small">

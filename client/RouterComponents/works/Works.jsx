@@ -52,7 +52,9 @@ const Works = ({ history }) => {
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
-    ? sortedWorks.filter((work) => work.category.label === categoryFilter)
+    ? sortedWorks.filter(
+        (work) => work.category && work.category.label === categoryFilter
+      )
     : sortedWorks;
 
   const categoriesAssignedToWorks = getCategories(works);
@@ -128,8 +130,12 @@ const Works = ({ history }) => {
 };
 
 getCategories = (works) => {
-  const labels = Array.from(new Set(works.map((work) => work.category.label)));
-  const colors = Array.from(new Set(works.map((work) => work.category.color)));
+  const labels = Array.from(
+    new Set(works.map((work) => work.category && work.category.label))
+  );
+  const colors = Array.from(
+    new Set(works.map((work) => work.category && work.category.color))
+  );
   return labels.map((label, i) => ({
     label,
     color: colors[i],
