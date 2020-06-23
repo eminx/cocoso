@@ -58,8 +58,8 @@ const Work = ({ history, match }) => {
           <Heading pad="small" level={2}>
             {work.title}
           </Heading>
-          <Box direction="row" align="start">
-            <Box flex={{ grow: 1 }}>
+          <Box direction="row" align="start" justify="between">
+            <Box pad={{ right: 'small' }} width="220px">
               {work.category && (
                 <Tag
                   label={work.category.label}
@@ -75,16 +75,17 @@ const Work = ({ history, match }) => {
         </Box>
       }
       rightContent={
-        <Box direction="row" pad="small" style={{ overflow: 'hidden' }}>
-          <Box
-            pad={{ left: 'small', right: 'small' }}
-            flex={{ grow: 1 }}
-            basis="80%"
-          >
+        <Box
+          direction="row"
+          pad="small"
+          justify="between"
+          style={{ overflow: 'hidden' }}
+        >
+          <Box pad={{ left: 'small', right: 'small' }} width="220px">
             <Heading level={4}>{work.additionalInfo}</Heading>
           </Box>
           <Hidden xs sm md lg>
-            <AvatarHolder basis="80%" />
+            <AvatarHolder />
           </Hidden>
         </Box>
       }
