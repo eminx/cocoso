@@ -92,15 +92,16 @@ const Works = ({ history }) => {
             <Box background="white" elevation="small" pad="medium" round="2px">
               <Box pad={{ bottom: 'small' }} direction="row" justify="between">
                 <Box>
-                  <Text weight={600} size="large">
-                    {work.title}
-                  </Text>
                   {work.category && (
                     <Tag
                       label={work.category.label}
                       background={work.category.color}
+                      margin={{ bottom: 'small' }}
                     />
                   )}
+                  <Text weight={600} size="large">
+                    {work.title}
+                  </Text>
                 </Box>
                 <Avatar flex={{ grow: 0 }} src={work.userAvatar} />
               </Box>
