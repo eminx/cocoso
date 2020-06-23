@@ -65,7 +65,7 @@ const Works = ({ history }) => {
         </Link>
       </Box>
 
-      <Box direction="row" justify="center">
+      <Box direction="row" justify="center" wrap>
         <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
         {categoriesAssignedToWorks.map((cat) => (
           <Tag
@@ -88,9 +88,8 @@ const Works = ({ history }) => {
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }
-            // justify="stretch"
           >
-            <Box>
+            <Box background="white" elevation="small" pad="medium" round="2px">
               <Box pad={{ bottom: 'small' }} direction="row" justify="between">
                 <Box>
                   <Text weight={600} size="large">

@@ -14,9 +14,10 @@ const FileDropper = ({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          background={isDragActive ? 'dark-3' : 'light-2'}
+          background={isDragActive ? 'dark-3' : 'white'}
           width="medium"
           height="small"
+          border={{ style: 'dashed', size: 'medium' }}
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (

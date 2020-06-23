@@ -54,7 +54,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
 
   return (
     <UserContext.Provider value={{ currentUser, userLoading, settings }}>
-      <Box className="main-viewport" justify="center" fill>
+      <Box className="main-viewport" justify="center" fill background="light-2">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
           <Box>{children}</Box>

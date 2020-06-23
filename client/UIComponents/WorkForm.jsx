@@ -35,37 +35,6 @@ const WorkForm = ({
   return (
     <div>
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
-        <FormField
-          label={`Images (${images.length})`}
-          help={(images || imageUrl) && <Text size="small" />}
-        >
-          {images && <NiceSlider images={images} />}
-
-          {images && images.length > 0 ? (
-            <SortableContainer
-              onSortEnd={onSortImages}
-              axis="xy"
-              helperClass="sortableHelper"
-            >
-              {images.map((image, index) => (
-                <SortableItem
-                  key={image}
-                  index={index}
-                  image={image}
-                  onRemoveImage={() => onRemoveImage(index)}
-                />
-              ))}
-              <Box alignSelf="center" margin={{ top: 'medium' }}>
-                <FileDropper setUploadableImage={setUploadableImages} />
-              </Box>
-            </SortableContainer>
-          ) : (
-            <Box alignSelf="center" margin={{ top: 'medium' }}>
-              <FileDropper setUploadableImage={setUploadableImages} />
-            </Box>
-          )}
-        </FormField>
-
         <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
           <TextInput
             plain={false}
@@ -115,6 +84,39 @@ const WorkForm = ({
             name="additionalInfo"
             placeholder="A bottle costs..."
           />
+        </FormField>
+
+        <FormField
+          label={`Images (${images.length})`}
+          help={(images || imageUrl) && <Text size="small" />}
+        >
+          <Box>
+            {images && <NiceSlider images={images} />}
+
+            {images && images.length > 0 ? (
+              <SortableContainer
+                onSortEnd={onSortImages}
+                axis="xy"
+                helperClass="sortableHelper"
+              >
+                {images.map((image, index) => (
+                  <SortableItem
+                    key={image}
+                    index={index}
+                    image={image}
+                    onRemoveImage={() => onRemoveImage(index)}
+                  />
+                ))}
+                <Box alignSelf="center" margin={{ top: 'medium' }}>
+                  <FileDropper setUploadableImage={setUploadableImages} />
+                </Box>
+              </SortableContainer>
+            ) : (
+              <Box alignSelf="center" margin={{ top: 'medium' }}>
+                <FileDropper setUploadableImage={setUploadableImages} />
+              </Box>
+            )}
+          </Box>
         </FormField>
 
         <Box direction="row" justify="end" pad="small">

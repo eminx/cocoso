@@ -57,46 +57,35 @@ const Work = ({ history, match }) => {
         </Box>
       }
       rightContent={
-        <Box>
-          <Box
-            round
-            background="light-2"
-            direction="row"
-            justify="between"
-            align="center"
-          >
-            <Text margin={{ left: 'medium' }} weight="bold">
-              {work.authorUsername}
-            </Text>
-            <Avatar src={work.userAvatar} />
-          </Box>
-          <Box
-            pad={{
-              top: 'medium',
-              bottom: 'small',
-            }}
-          >
+        <Box direction="row">
+          <Box pad={{ left: 'small', right: 'small' }} flex={{ grow: 1 }}>
             <Text>{work.additionalInfo}</Text>
+          </Box>
+          <Box alignSelf="end" align="center" flex={{ grow: 0 }}>
+            <Avatar src={work.userAvatar} />
+            <Text weight="bold">{work.authorUsername}</Text>
           </Box>
         </Box>
       }
     >
-      <NiceSlider images={work.images} />
-      <Box pad={{ top: 'medium' }}>
-        <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
-      </Box>
-      <Box margin={{ top: 'large', bottom: 'large' }} justify="end">
-        {isOwner && (
-          <Button
-            size="small"
-            onClick={() =>
-              history.push(
-                `/${currentUser.username}/edit-work/${match.params.workId}`
-              )
-            }
-            label="Edit this work"
-          />
-        )}
+      <Box pad="medium" elevation="small" background="white">
+        <NiceSlider images={work.images} />
+        <Box margin={{ top: 'medium' }}>
+          <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
+        </Box>
+        <Box margin={{ top: 'large', bottom: 'large' }} justify="end">
+          {isOwner && (
+            <Button
+              size="small"
+              onClick={() =>
+                history.push(
+                  `/${currentUser.username}/edit-work/${match.params.workId}`
+                )
+              }
+              label="Edit this work"
+            />
+          )}
+        </Box>
       </Box>
     </Template>
   );

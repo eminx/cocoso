@@ -186,13 +186,11 @@ function Members({ history }) {
         </ListMenu>
       }
     >
-      <Box
-        margin={{ bottom: 'large' }}
-        align="center"
-        background="light-1"
-        pad="small"
-      >
-        <Box flex={{ grow: 1 }} pad="small">
+      <Box align="center" pad="small">
+        <Text size="small" margin="small" weight="bold">
+          Filter
+        </Text>
+        <Box flex={{ grow: 1 }} margin={{ bottom: 'small' }}>
           <RadioButtonGroup
             name="filter"
             options={filterOptions}
@@ -204,7 +202,7 @@ function Members({ history }) {
         <Box flex={{ grow: 1 }}>
           <TextInput
             plain={false}
-            placeholder="filter by username or email address..."
+            placeholder="username or email"
             value={filterWord}
             onChange={(event) => setFilterWord(event.target.value)}
             style={{ backgroundColor: 'white' }}
@@ -212,9 +210,9 @@ function Members({ history }) {
         </Box>
       </Box>
 
-      <Box direction="row" alignSelf="center" justify="center">
-        <Text size="small" textAlign="center" margin="small">
-          sort by:
+      <Box align="center">
+        <Text size="small" margin="small" weight="bold">
+          Sort
         </Text>
         <RadioButtonGroup
           name="sort"
@@ -230,26 +228,27 @@ function Members({ history }) {
           {filter} members ({usersSorted.length}){' '}
         </Heading>
       </Box>
-
-      <NiceList list={usersSorted} border="horizontal" pad="small">
-        {(user) => (
-          <div key={user.username}>
-            <Text size="large" weight="bold">
-              {user.username}
-            </Text>
-            <Text as="div" size="small">
-              {user && user.emails ? user.emails[0].address : null}
-            </Text>
-            <Text
-              as="div"
-              size="xsmall"
-              style={{ fontSize: 10, color: '#aaa' }}
-            >
-              joined {moment(user.createdAt).format('Do MMM YYYY')}
-            </Text>
-          </div>
-        )}
-      </NiceList>
+      <Box pad="small" elevation="small" background="white">
+        <NiceList list={usersSorted} border="horizontal" pad="small">
+          {(user) => (
+            <div key={user.username}>
+              <Text size="large" weight="bold">
+                {user.username}
+              </Text>
+              <Text as="div" size="small">
+                {user && user.emails ? user.emails[0].address : null}
+              </Text>
+              <Text
+                as="div"
+                size="xsmall"
+                style={{ fontSize: 10, color: '#aaa' }}
+              >
+                joined {moment(user.createdAt).format('Do MMM YYYY')}
+              </Text>
+            </div>
+          )}
+        </NiceList>
+      </Box>
     </Template>
   );
 }

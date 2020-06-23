@@ -248,10 +248,12 @@ class Calendar extends React.PureComponent {
         {isLoading ? (
           <Loader />
         ) : (
-          <CalendarView
-            activities={filteredActivities}
-            onSelect={this.handleSelectActivity}
-          />
+          <Box pad="medium" elevation="small" background="white">
+            <CalendarView
+              activities={filteredActivities}
+              onSelect={this.handleSelectActivity}
+            />
+          </Box>
         )}
 
         {/* <Divider />

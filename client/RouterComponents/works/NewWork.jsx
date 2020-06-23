@@ -118,10 +118,10 @@ class NewWork extends PureComponent {
   };
 
   createWork = async (imagesReadyToSave) => {
-    const { formValues, category } = this.state;
+    const { formValues, categories } = this.state;
 
     const selectedCategory = categories.find(
-      (category) => category === formValues.category
+      (category) => category.label === formValues.category.toLowerCase()
     );
     formValues.category = {
       label: selectedCategory.label,
