@@ -17,18 +17,25 @@ const LoginPage = ({ history }) => {
   return (
     <Template>
       <Box width="medium" alignSelf="center">
-        <Heading level={2}>Login to Your Account</Heading>
+        <Heading level={2} textAlign="center">
+          Login to Your Account
+        </Heading>
         <SimpleText>
           Don't have an account?{' '}
           <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
         </SimpleText>
-
-        <Login
-          onSubmit={(values) =>
-            loginWithPassword(values.username, values.password)
-          }
-        />
-
+        <Box
+          pad="medium"
+          elevation="small"
+          background="white"
+          margin={{ bottom: 'medium' }}
+        >
+          <Login
+            onSubmit={(values) =>
+              loginWithPassword(values.username, values.password)
+            }
+          />
+        </Box>
         <Box>
           <SimpleText>
             Forgot your password?

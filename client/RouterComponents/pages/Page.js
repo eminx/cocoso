@@ -57,6 +57,10 @@ class Page extends PureComponent {
       return <Redirect to={`/page/${parseTitle(pages[0].title)}`} />;
     }
 
+    if (!currentPage) {
+      <Loader />;
+    }
+
     const pageTitles = pages && pages.map((page) => page.title);
 
     return (
@@ -83,21 +87,24 @@ class Page extends PureComponent {
           )
         }
       >
-        {currentPage && (
-          <Box>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: currentPage.longDescription,
-              }}
-            />
+        <Box
+          pad="medium"
+          elevation="small"
+          background="white"
+          margin={{ bottom: 'medium' }}
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: currentPage.longDescription,
+            }}
+          />
+        </Box>
 
-            {currentUser && currentUser.isSuperAdmin && (
-              <Box pad="small" alignSelf="center">
-                <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-                  <Button size="small" label="Edit this page" />
-                </Link>
-              </Box>
-            )}
+        {currentUser.isSuperAdmin && (
+          <Box pad="small" alignSelf="center">
+            <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+              <Button size="small" label="Edit this page" />
+            </Link>
           </Box>
         )}
       </Template>

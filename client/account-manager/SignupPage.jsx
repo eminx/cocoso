@@ -17,13 +17,21 @@ const SignupPage = ({ history }) => {
   return (
     <Template>
       <Box width="medium" alignSelf="center">
-        <Heading level={2}>Register New Account</Heading>
+        <Heading level={2} textAlign="center">
+          Register New Account
+        </Heading>
         <SimpleText>
           Have an account?{' '}
           <Anchor onClick={() => history.push('/login')}>Login</Anchor>
         </SimpleText>
-
-        <Signup onSubmit={createAccount} />
+        <Box
+          pad="medium"
+          elevation="small"
+          background="white"
+          margin={{ bottom: 'medium' }}
+        >
+          <Signup onSubmit={createAccount} />
+        </Box>
       </Box>
     </Template>
   );

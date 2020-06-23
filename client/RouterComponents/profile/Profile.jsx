@@ -191,7 +191,12 @@ class Profile extends React.Component {
           </Fragment>
         }
       >
-        {currentUser ? (
+        <Box
+          pad="medium"
+          elevation="small"
+          background="white"
+          margin={{ bottom: 'large' }}
+        >
           <Row>
             <Col sm={9}>
               <Personal
@@ -248,36 +253,24 @@ class Profile extends React.Component {
               </Box>
             </Col>
           </Row>
-        ) : (
-          <Box width="medium" alignSelf="center">
-            <AuthContainer />
-            <Blaze template="loginButtons" />
-          </Box>
-        )}
+        </Box>
 
-        {currentUser && (
-          <Box
-            direction="row"
-            justify="around"
-            margin={{ top: 'large' }}
-            background="light-3"
-            pad="medium"
-          >
-            <Button
-              onClick={() => this.logout()}
-              size="small"
-              label="Log out"
-            />
-            <Button
-              onClick={() => this.setState({ isDeleteModalOn: true })}
-              color="status-critical"
-              plain
-              size="small"
-              label="Delete Account"
-            />
-          </Box>
-        )}
-
+        <Box
+          direction="row"
+          justify="around"
+          margin={{ top: 'large' }}
+          background="light-4"
+          pad="medium"
+        >
+          <Button onClick={() => this.logout()} size="small" label="Log out" />
+          <Button
+            onClick={() => this.setState({ isDeleteModalOn: true })}
+            color="status-critical"
+            plain
+            size="small"
+            label="Delete Account"
+          />
+        </Box>
         <ConfirmModal
           visible={isDeleteModalOn}
           title="Are you sure?"

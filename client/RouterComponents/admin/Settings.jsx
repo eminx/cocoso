@@ -139,7 +139,12 @@ const Settings = ({ history }) => {
         </ListMenu>
       }
     >
-      <Box>
+      <Box
+        pad="medium"
+        elevation="small"
+        background="white"
+        margin={{ bottom: 'large' }}
+      >
         <Heading level={3}>Organisation</Heading>
         <Form
           value={localSettings}
@@ -189,7 +194,12 @@ const Settings = ({ history }) => {
         </Form>
       </Box>
 
-      <Box margin={{ bottom: 'large' }}>
+      <Box
+        pad="medium"
+        elevation="small"
+        background="white"
+        margin={{ bottom: 'large' }}
+      >
         <Heading level={3}>Categories</Heading>
         <Text>You can set categories here</Text>
         <Box pad="small" direction="row" gap="small" wrap justify="center">
@@ -221,7 +231,12 @@ const Settings = ({ history }) => {
         </Form>
       </Box>
 
-      <Box>
+      <Box
+        pad="medium"
+        elevation="small"
+        background="white"
+        margin={{ bottom: 'medium' }}
+      >
         <Heading level={3}>Wording</Heading>
         {/* <Form
           value={settings}
