@@ -80,44 +80,46 @@ const Works = ({ history }) => {
         ))}
       </Box>
 
-      <Box direction="row" wrap justify="between">
+      <Box direction="row" justify="center" pad="medium" gap="medium" wrap>
         {filteredWorks.map((work) => (
           <Box
             key={work._id}
-            width="medium"
+            basis="360px"
             pad="medium"
+            margin={{ bottom: 'medium' }}
+            background="white"
+            elevation="small"
+            round="2px"
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }
           >
-            <Box background="white" elevation="small" pad="medium" round="2px">
-              <Box pad={{ bottom: 'small' }} direction="row" justify="between">
-                <Box>
-                  {work.category && (
-                    <Tag
-                      label={work.category.label}
-                      background={work.category.color}
-                      margin={{ bottom: 'small' }}
-                    />
-                  )}
-                  <Text weight={600} size="large">
-                    {work.title}
-                  </Text>
-                </Box>
-                <Avatar flex={{ grow: 0 }} src={work.userAvatar} />
-              </Box>
-              {work.images && work.images[0] && (
-                <Box>
-                  <LazyLoadImage
-                    alt={work.title}
-                    src={work.images[0]}
-                    style={imageStyle}
-                    effect="black-and-white"
+            <Box pad={{ bottom: 'small' }} direction="row" justify="between">
+              <Box>
+                {work.category && (
+                  <Tag
+                    label={work.category.label}
+                    background={work.category.color}
+                    margin={{ bottom: 'small' }}
                   />
-                </Box>
-              )}
-              <Text weight={300}>{work.shortDescription}</Text>
+                )}
+                <Text weight={600} size="large">
+                  {work.title}
+                </Text>
+              </Box>
+              <Avatar flex={{ grow: 0 }} src={work.userAvatar} />
             </Box>
+            {work.images && work.images[0] && (
+              <Box>
+                <LazyLoadImage
+                  alt={work.title}
+                  src={work.images[0]}
+                  style={imageStyle}
+                  effect="black-and-white"
+                />
+              </Box>
+            )}
+            <Text weight={300}>{work.shortDescription}</Text>
           </Box>
         ))}
       </Box>
