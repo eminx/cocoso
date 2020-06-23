@@ -75,9 +75,9 @@ const Work = ({ history, match }) => {
         </Box>
       }
       rightContent={
-        <Box direction="row" pad="small">
+        <Box direction="row" pad="small" style={{ overflow: 'hidden' }}>
           <Box pad={{ left: 'small', right: 'small' }} flex={{ grow: 1 }}>
-            <Text>{work.additionalInfo}</Text>
+            <Heading level={4}>{work.additionalInfo}</Heading>
           </Box>
           <Hidden xs sm md lg>
             <AvatarHolder />
