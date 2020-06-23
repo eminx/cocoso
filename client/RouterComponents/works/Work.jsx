@@ -44,8 +44,8 @@ const Work = ({ history, match }) => {
 
   const isOwner = currentUser && currentUser.username === match.params.username;
 
-  const AvatarHolder = () => (
-    <Box alignSelf="end" align="center" flex={{ grow: 0 }}>
+  const AvatarHolder = (props) => (
+    <Box alignSelf="end" align="center" {...props}>
       <Avatar src={work.userAvatar} />
       <Text size="small">{work.authorUsername}</Text>
     </Box>
@@ -76,11 +76,15 @@ const Work = ({ history, match }) => {
       }
       rightContent={
         <Box direction="row" pad="small" style={{ overflow: 'hidden' }}>
-          <Box pad={{ left: 'small', right: 'small' }} flex={{ grow: 1 }}>
+          <Box
+            pad={{ left: 'small', right: 'small' }}
+            flex={{ grow: 1 }}
+            basis="80%"
+          >
             <Heading level={4}>{work.additionalInfo}</Heading>
           </Box>
           <Hidden xs sm md lg>
-            <AvatarHolder />
+            <AvatarHolder basis="80%" />
           </Hidden>
         </Box>
       }
