@@ -123,14 +123,18 @@ class NewWork extends PureComponent {
     const selectedCategory = categories.find(
       (category) => category.label === formValues.category.toLowerCase()
     );
-    formValues.category = {
-      label: selectedCategory.label,
-      color: selectedCategory.color,
-      categoryId: selectedCategory._id,
+
+    const newWork = {
+      ...formValues,
+      category: {
+        label: selectedCategory.label,
+        color: selectedCategory.color,
+        categoryId: selectedCategory._id,
+      },
     };
 
     try {
-      const respond = await call('createWork', formValues, imagesReadyToSave);
+      const respond = await call('createWork', newWork, imagesReadyToSave);
       this.setState({
         newWorkId: respond,
         isCreating: false,

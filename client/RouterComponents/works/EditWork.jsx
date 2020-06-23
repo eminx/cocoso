@@ -46,8 +46,15 @@ class EditWork extends PureComponent {
 
     try {
       const response = await call('getWork', workId, username);
+      const catLabel =
+        response.category &&
+        response.category.label &&
+        response.category.label.toUpperCase();
       this.setState({
-        formValues: response,
+        formValues: {
+          ...response,
+          category: catLabel,
+        },
         images: response.images.map((image) => ({
           src: image,
           type: 'uploaded',
@@ -63,14 +70,8 @@ class EditWork extends PureComponent {
   };
 
   handleFormChange = (value) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...value,
-      longDescription: formValues.longDescription,
-    };
-
     this.setState({
-      formValues: newFormValues,
+      formValues: value,
     });
   };
 
@@ -168,17 +169,20 @@ class EditWork extends PureComponent {
     const { formValues, categories } = this.state;
 
     const selectedCategory = categories.find(
-      (category) => category.label === formValues.category.label.toLowerCase()
+      (category) => category.label === formValues.category.toLowerCase()
     );
 
-    formValues.category = {
-      label: selectedCategory.label,
-      color: selectedCategory.color,
-      categoryId: selectedCategory._id,
+    const updatedWork = {
+      ...formValues,
+      category: {
+        label: selectedCategory.label,
+        color: selectedCategory.color,
+        categoryId: selectedCategory._id,
+      },
     };
 
     try {
-      await call('updateWork', workId, formValues, imagesReadyToSave);
+      await call('updateWork', workId, updatedWork, imagesReadyToSave);
       this.setState({
         isCreating: false,
         isSuccess: true,
@@ -239,15 +243,10 @@ class EditWork extends PureComponent {
     const { title } = formValues;
     const isFormValid = formValues && title.length > 3;
 
-    const formValuesCat = {
-      ...formValues,
-      category: formValues.category.label,
-    };
-
     return (
       <Template heading="Update Work">
         <WorkForm
-          formValues={formValuesCat}
+          formValues={formValues}
           categories={categories}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
