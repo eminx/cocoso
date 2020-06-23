@@ -1,7 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect } from 'react';
-import { Box, Anchor, Heading, Paragraph, Footer } from 'grommet';
+import { Link } from 'react-router-dom';
+import {
+  Box,
+  Anchor,
+  Heading,
+  Image,
+  Paragraph,
+  Footer,
+  Avatar,
+} from 'grommet';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 export const UserContext = React.createContext(null);
@@ -83,15 +92,30 @@ const Header = ({ currentUser, title, history }) => {
   return (
     <ScreenClassRender
       render={(screenClass) => {
-        const large = ['lg', 'xl'].includes(screenClass);
+        const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
         return (
           <Container fluid style={{ width: '100%' }}>
             <Row>
-              <Col lg={large ? 3 : 0}>
-                <Box direction="row" justify="center">
-                  {!large && <UserStuff />}
-                </Box>
+              <Col lg={3}>
+                <Link to="/">
+                  <Box
+                    direction="row"
+                    pad={{ top: 'xsmall' }}
+                    justify="between"
+                  >
+                    <Box width="60px" height="30px" margin="small">
+                      <Image
+                        fit="contain"
+                        src="https://xyrden.s3.eu-central-1.amazonaws.com/CIC-Logo.png"
+                        className="header-logo"
+                        elevation="medium"
+                      />
+                    </Box>
+
+                    {!large && <UserStuff />}
+                  </Box>
+                </Link>
               </Col>
               <Col lg={6}>
                 <Box

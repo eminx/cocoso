@@ -58,7 +58,7 @@ const Works = ({ history }) => {
   const categoriesAssignedToWorks = getCategories(works);
 
   return (
-    <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
+    <Box width="100%" margin={{ bottom: '50px' }}>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         <Link to={currentUser ? '/new-work' : '/my-profile'}>
           <Button as="span" size="small" label="Create Your Offer" />
@@ -74,12 +74,13 @@ const Works = ({ history }) => {
             background={
               cat.label === categoryFilter ? getOpacHSL(cat.color) : cat.color
             }
+            margin={{ bottom: 'small' }}
             onClick={() => setCategoryFilter(cat.label)}
           />
         ))}
       </Box>
 
-      <Box direction="row" wrap justify="center">
+      <Box direction="row" wrap justify="between">
         {filteredWorks.map((work) => (
           <Box
             key={work._id}
