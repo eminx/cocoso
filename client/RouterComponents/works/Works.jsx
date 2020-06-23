@@ -14,8 +14,8 @@ const compareByDate = (a, b) => {
 };
 
 const imageStyle = {
-  width: 288,
-  height: 180,
+  width: '100%',
+  height: 220,
   objectFit: 'cover',
 };
 
@@ -88,22 +88,22 @@ const Works = ({ history }) => {
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }
-            justify="stretch"
+            // justify="stretch"
           >
             <Box>
-              <Box pad={{ bottom: 'small' }}>
-                <Text weight={600} size="large">
-                  {work.title}
-                </Text>
-                <Box direction="row">
+              <Box pad={{ bottom: 'small' }} direction="row" justify="between">
+                <Box>
+                  <Text weight={600} size="large">
+                    {work.title}
+                  </Text>
                   {work.category && (
                     <Tag
                       label={work.category.label}
                       background={work.category.color}
                     />
                   )}
-                  <Avatar flex={{ grow: 0 }} />
                 </Box>
+                <Avatar flex={{ grow: 0 }} src={work.userAvatar} />
               </Box>
               {work.images && work.images[0] && (
                 <Box>

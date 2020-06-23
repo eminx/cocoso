@@ -67,6 +67,7 @@ Meteor.methods({
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName,
+        userAvatar: user.avatar.src,
         creationDate: new Date(),
       });
       return newWorkId;
@@ -86,6 +87,7 @@ Meteor.methods({
         $set: {
           ...values,
           images,
+          userAvatar: user.avatar.src,
           latestUpdate: new Date(),
         },
       });

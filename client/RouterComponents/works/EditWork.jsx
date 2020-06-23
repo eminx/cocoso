@@ -168,7 +168,7 @@ class EditWork extends PureComponent {
     const { formValues, categories } = this.state;
 
     const selectedCategory = categories.find(
-      (category) => category.label === formValues.category.toLowerCase()
+      (category) => category.label === formValues.category.label.toLowerCase()
     );
 
     formValues.category = {
@@ -239,10 +239,15 @@ class EditWork extends PureComponent {
     const { title } = formValues;
     const isFormValid = formValues && title.length > 3;
 
+    const formValuesCat = {
+      ...formValues,
+      category: formValues.category.label,
+    };
+
     return (
       <Template heading="Update Work">
         <WorkForm
-          formValues={formValues}
+          formValues={formValuesCat}
           categories={categories}
           onFormChange={this.handleFormChange}
           onQuillChange={this.handleQuillChange}
