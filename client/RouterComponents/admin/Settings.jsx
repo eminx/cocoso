@@ -210,6 +210,7 @@ const Settings = ({ history }) => {
               background={category.color}
               removable
               onRemove={() => removeCategory(category._id)}
+              margin={{ bottom: 'small' }}
             />
           ))}
         </Box>
