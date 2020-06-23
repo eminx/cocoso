@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, Avatar, Heading, Text } from 'grommet';
+import { Visible, Hidden } from 'react-grid-system';
 
 import { UserContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -43,17 +44,34 @@ const Work = ({ history, match }) => {
 
   const isOwner = currentUser && currentUser.username === match.params.username;
 
+  const AvatarHolder = () => (
+    <Box alignSelf="end" align="center" flex={{ grow: 0 }}>
+      <Avatar src={work.userAvatar} />
+      <Text size="small">{work.authorUsername}</Text>
+    </Box>
+  );
+
   return (
     <Template
       leftContent={
-        <Box pad={{ bottom: 'medium' }}>
-          {work.category && (
-            <Tag label={work.category.label} background={work.category.color} />
-          )}
+        <Box pad={{ bottom: 'medium', right: 'small' }}>
           <Heading pad="small" level={2}>
             {work.title}
           </Heading>
-          <Text>{work.shortDescription}</Text>
+          <Box direction="row" align="start">
+            <Box flex={{ grow: 1 }}>
+              {work.category && (
+                <Tag
+                  label={work.category.label}
+                  background={work.category.color}
+                />
+              )}
+              <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
+            </Box>
+            <Visible xs sm md lg>
+              <AvatarHolder />
+            </Visible>
+          </Box>
         </Box>
       }
       rightContent={
@@ -61,10 +79,9 @@ const Work = ({ history, match }) => {
           <Box pad={{ left: 'small', right: 'small' }} flex={{ grow: 1 }}>
             <Text>{work.additionalInfo}</Text>
           </Box>
-          <Box alignSelf="end" align="center" flex={{ grow: 0 }}>
-            <Avatar src={work.userAvatar} />
-            <Text weight="bold">{work.authorUsername}</Text>
-          </Box>
+          <Hidden xs sm md lg>
+            <AvatarHolder />
+          </Hidden>
         </Box>
       }
     >

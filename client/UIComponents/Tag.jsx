@@ -17,7 +17,6 @@ const Tag = ({
     align="center"
     round="2px"
     pad="2px 4px"
-    margin={{ top: 'small', right: 'small' }}
     gap="small"
     {...otherProps}
   >

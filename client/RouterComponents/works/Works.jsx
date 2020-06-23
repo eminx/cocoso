@@ -65,7 +65,7 @@ const Works = ({ history }) => {
         </Link>
       </Box>
 
-      <Box direction="row" justify="center" wrap>
+      <Box direction="row" justify="center" wrap gap="small">
         <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
         {categoriesAssignedToWorks.map((cat) => (
           <Tag
