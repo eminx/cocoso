@@ -6,6 +6,8 @@ const FileDropper = ({
   setUploadableImage,
   uploadableImageLocal,
   imageUrl,
+  label,
+  ...otherProps
 }) => {
   return (
     <Dropzone onDrop={setUploadableImage}>
@@ -15,6 +17,7 @@ const FileDropper = ({
           background={isDragActive ? 'dark-3' : 'light-2'}
           width="medium"
           height="small"
+          {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
@@ -24,15 +27,15 @@ const FileDropper = ({
               style={{ cursor: 'pointer' }}
             />
           ) : (
-            <Box alignSelf="center" pad="large">
+            <Box alignSelf="center" pad="medium">
               <Button
                 plain
                 hoverIndicator="light-1"
                 label={
                   <Box alignSelf="center">
-                    <Text size="small" textAlign="center">
-                      Drop an image or images; or alternatively click to open
-                      the file picker
+                    <Text size="xsmall" textAlign="center">
+                      {label ||
+                        'Drop an image or images; or alternatively click to open the file picker'}
                     </Text>
                   </Box>
                 }

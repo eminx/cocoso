@@ -39,6 +39,27 @@ Meteor.methods({
     }
   },
 
+  setAvatar(avatar) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      Meteor.users.update(user._id, {
+        $set: {
+          avatar: {
+            src: avatar,
+            date: new Date(),
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
   deleteAccount() {
     const userId = Meteor.userId();
     if (!userId) {
