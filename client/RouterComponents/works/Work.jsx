@@ -75,7 +75,7 @@ const Work = ({ history, match }) => {
         </Box>
       }
       rightContent={
-        <Box direction="row">
+        <Box direction="row" pad="small">
           <Box pad={{ left: 'small', right: 'small' }} flex={{ grow: 1 }}>
             <Text>{work.additionalInfo}</Text>
           </Box>

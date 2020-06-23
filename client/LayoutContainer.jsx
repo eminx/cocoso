@@ -99,12 +99,8 @@ const Header = ({ currentUser, title, history }) => {
             <Row>
               <Col lg={3}>
                 <Link to="/">
-                  <Box
-                    direction="row"
-                    pad={{ top: 'xsmall' }}
-                    justify="between"
-                  >
-                    <Box width="60px" height="30px" margin="small">
+                  <Box direction="row" justify="between" align="center">
+                    <Box width="60px" height="30px" margin={{ top: 'small' }}>
                       <Image
                         fit="contain"
                         src="https://xyrden.s3.eu-central-1.amazonaws.com/CIC-Logo.png"
