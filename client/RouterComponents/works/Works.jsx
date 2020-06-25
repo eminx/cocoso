@@ -67,7 +67,13 @@ const Works = ({ history }) => {
         </Link>
       </Box>
 
-      <Box direction="row" justify="center" wrap gap="small">
+      <Box
+        direction="row"
+        justify="center"
+        wrap
+        gap="small"
+        pad={{ left: 'small' }}
+      >
         <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
         {categoriesAssignedToWorks.map((cat) => (
           <Tag

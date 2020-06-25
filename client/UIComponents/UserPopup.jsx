@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
+import { UserSettings } from 'grommet-icons';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -87,10 +88,14 @@ const UserPopup = withRouter(({ currentUser, history }) => {
       }
     >
       <Box justify="center" pad="small">
-        <Avatar
-          src={currentUser.avatar && currentUser.avatar.src}
-          elevation={open ? 'large' : 'medium'}
-        />
+        {currentUser.avatar ? (
+          <Avatar
+            src={currentUser.avatar && currentUser.avatar.src}
+            elevation={open ? 'large' : 'medium'}
+          />
+        ) : (
+          <UserSettings />
+        )}
       </Box>
     </DropButton>
   );

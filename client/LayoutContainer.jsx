@@ -2,15 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Anchor,
-  Heading,
-  Image,
-  Paragraph,
-  Footer,
-  Avatar,
-} from 'grommet';
+import { Box, Anchor, Heading, Image, Paragraph, Footer } from 'grommet';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 export const UserContext = React.createContext(null);

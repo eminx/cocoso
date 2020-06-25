@@ -215,6 +215,7 @@ class Profile extends React.Component {
                   height="120px"
                   round
                   style={{ overflow: 'hidden' }}
+                  alignSelf="center"
                 >
                   <FileDropper
                     setUploadableImage={this.setUploadableAvatar}
