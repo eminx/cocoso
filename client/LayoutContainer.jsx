@@ -98,8 +98,8 @@ const Header = ({ currentUser, title, history }) => {
           <Container fluid style={{ width: '100%' }}>
             <Row>
               <Col lg={3}>
-                <Link to="/">
-                  <Box direction="row" justify="between" align="center">
+                <Box direction="row" justify="between" align="center">
+                  <Link to="/">
                     <Box width="60px" height="30px" margin={{ top: 'small' }}>
                       <Image
                         fit="contain"
@@ -108,10 +108,9 @@ const Header = ({ currentUser, title, history }) => {
                         elevation="medium"
                       />
                     </Box>
-
-                    {!large && <UserStuff />}
-                  </Box>
-                </Link>
+                  </Link>
+                  {!large && <UserStuff />}
+                </Box>
               </Col>
               <Col lg={6}>
                 <Box
