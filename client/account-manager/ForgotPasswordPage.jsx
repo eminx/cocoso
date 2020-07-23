@@ -4,10 +4,10 @@ import { Anchor, Box, Heading, Text } from 'grommet';
 
 import Template from '../UIComponents/Template';
 import { ForgotPassword, SimpleText } from './index';
-import { UserContext } from '../LayoutContainer';
+import { StateContext } from '../LayoutContainer';
 
 const ForgotPasswordPage = ({ history }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
     return <Redirect to="/my-profile" />;

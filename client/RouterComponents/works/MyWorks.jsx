@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
 
-import { UserContext } from '../../LayoutContainer';
+import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
@@ -12,7 +12,7 @@ import { userMenu } from '../../constants/general';
 function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(StateContext);
 
   useEffect(() => {
     Meteor.call('getMyWorks', (error, respond) => {

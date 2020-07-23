@@ -12,7 +12,7 @@ import {
 
 const pluralize = require('pluralize');
 
-import { UserContext } from '../../LayoutContainer';
+import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
@@ -34,7 +34,7 @@ const Settings = ({ history }) => {
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [formAltered, setFormAltered] = useState(false);
-  const { settings, currentUser } = useContext(UserContext);
+  const { settings, currentUser } = useContext(StateContext);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -338,6 +338,6 @@ const Settings = ({ history }) => {
   );
 };
 
-Settings.contextType = UserContext;
+Settings.contextType = StateContext;
 
 export default Settings;

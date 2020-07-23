@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Box } from 'grommet';
 
-import { UserContext } from '../../LayoutContainer';
+import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
@@ -112,6 +112,6 @@ class Page extends PureComponent {
   }
 }
 
-Page.contextType = UserContext;
+Page.contextType = StateContext;
 
 export default Page;

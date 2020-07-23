@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
 
-import { UserContext } from '../../LayoutContainer';
+import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
@@ -264,6 +264,6 @@ class EditWork extends PureComponent {
   }
 }
 
-EditWork.contextType = UserContext;
+EditWork.contextType = StateContext;
 
 export default EditWork;

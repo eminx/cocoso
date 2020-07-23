@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
 import { Anchor, Box, Heading } from 'grommet';
 
-import { UserContext } from '../LayoutContainer';
+import { StateContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
 import { Signup, SimpleText } from './index';
 import { createAccount } from './functions';
 
 const SignupPage = ({ history }) => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
     return <Redirect to="/my-profile" />;

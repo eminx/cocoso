@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Box, Anchor, Heading, Image, Paragraph, Footer } from 'grommet';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
-export const UserContext = React.createContext(null);
+export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
@@ -45,8 +45,6 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
     getHost();
   }, []);
 
-  const settings = currentHost;
-
   const headerProps = {
     currentUser,
     history,
@@ -54,7 +52,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ currentUser, userLoading, settings }}>
+    <StateContext.Provider value={{ currentUser, userLoading, currentHost }}>
       <Box className="main-viewport" justify="center" fill background="light-2">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
@@ -62,7 +60,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
           {/* <FooterInfo settings={settings} /> */}
         </Box>
       </Box>
-    </UserContext.Provider>
+    </StateContext.Provider>
   );
 };
 
@@ -131,18 +129,20 @@ const Header = ({ currentUser, title, history }) => {
   );
 };
 
-const FooterInfo = ({ settings }) =>
-  settings && (
+const FooterInfo = ({ currentHost }) =>
+  currentHost && (
     <Footer pad="medium" direction="row" justify="center">
       <Box alignSelf="center">
         <Heading level={4} style={boldBabe}>
-          {settings.name}
+          {currentHost.name}
         </Heading>
         <Paragraph>
-          {settings.address}, {settings.city}
+          {currentHost.address}, {currentHost.city}
         </Paragraph>
         <Paragraph>
-          <Anchor href={`mailto:${settings.email}`}>{settings.email}</Anchor>
+          <Anchor href={`mailto:${currentHost.email}`}>
+            {currentHost.email}
+          </Anchor>
         </Paragraph>
       </Box>
     </Footer>
@@ -156,5 +156,6 @@ export default withTracker((props) => {
   return {
     currentUser,
     userLoading,
+    currentHost,
   };
 })(LayoutPage);

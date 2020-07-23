@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, Avatar, Heading, Text } from 'grommet';
 import { Visible, Hidden } from 'react-grid-system';
 
-import { UserContext } from '../../LayoutContainer';
+import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
@@ -13,7 +13,7 @@ import { call } from '../../functions';
 const Work = ({ history, match }) => {
   const [work, setWork] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useContext(StateContext);
 
   useEffect(() => {
     getWork();
