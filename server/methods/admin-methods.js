@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+// import { Hosts } from '../../lib/collections';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
@@ -22,19 +23,34 @@ const catColors = [
   'hsla(334, 62%, 80%, 0.7)',
 ];
 
+const isHostAdmin = (host, userId) => {
+  console.log(host);
+  const currentHost = Hosts.findOne({ host: host });
+  return currentHost.admins.some((admin) => admin.id === userId);
+};
+
 Meteor.methods({
   getUsers() {
     const user = Meteor.user();
-    if (!user || !user.isSuperAdmin) {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+    console.log(currentHost, isAdmin, host);
+
+    if (!user.isSuperAdmin || !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
-
-    return Meteor.users.find().fetch();
+    console.log(currentHost);
+    return currentHost.members;
   },
 
   verifyMember(memberId) {
     const user = Meteor.user();
-    if (!user.isSuperAdmin) {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -42,16 +58,36 @@ Meteor.methods({
 
     try {
       Meteor.users.update(memberId, {
-        $set: {
-          isRegisteredMember: true,
+        $addToSet: {
+          memberships: {
+            host,
+            hostId: currentHost._id,
+            verifiedBy: {
+              id: user._id,
+              username: user.username,
+            },
+            role: 'contributor',
+            date: new Date(),
+          },
         },
       });
-      Meteor.call(
-        'sendEmail',
-        memberId,
-        `You are now a verified member at ${contextName}`,
-        getVerifiedEmailText(verifiedUser.username)
-      );
+      Hosts.update(currentHost._id, {
+        $addToSet: {
+          members: {
+            username: verifiedUser.username,
+            id: verifiedUser._id,
+            email: verifiedUser.emails[0].address,
+            role: 'contributor',
+            date: new Date(),
+          },
+        },
+      });
+      // Meteor.call(
+      //   'sendEmail',
+      //   memberId,
+      //   `You are now a verified member at ${contextName}`,
+      //   getVerifiedEmailText(verifiedUser.username)
+      // );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
@@ -59,27 +95,47 @@ Meteor.methods({
 
   unVerifyMember(memberId) {
     const user = Meteor.user();
-    if (!user.isSuperAdmin) {
+    const host = getHost(this);
+
+    const currentHost = Hosts.findOne({ host: host });
+    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
 
     const theOtherUser = Meteor.users.findOne(memberId);
-    if (theOtherUser.isSuperAdmin) {
-      throw new Meteor.Error('You can not unverify a super admin');
+    isMemberAdmin = currentHost.admins.some((admin) => admin.id === memberId);
+    if (theOtherUser.isSuperAdmin || isMemberAdmin) {
+      throw new Meteor.Error('You can not unverify an admin');
     }
 
     try {
-      Meteor.users.update(memberId, {
-        $set: {
-          isRegisteredMember: false,
-        },
-      });
-      Meteor.call(
-        'sendEmail',
-        memberId,
-        `You are removed from ${contextName} as a verified member`,
-        `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${contextName}. You are, however, still welcome to participate to the events and processes here.\n\n For questions, please contact the admin.\n\nKind regards,\n${contextName} Team`
+      Meteor.users.updateOne(
+        { _id: memberId, 'memberships.$.host': host },
+        {
+          $set: {
+            'memberships.$.role': 'participant',
+          },
+        }
       );
+      Hosts.updateOne(
+        { _id: currentHost._id, 'members.$.username': user.username },
+        {
+          $set: {
+            'members.$.role': 'participant',
+          },
+        }
+      );
+
+      // const currentHost = Hosts.findOne({ host });
+      // const hostName = currentHost.settings.name;
+      // Meteor.call(
+      //   'sendEmail',
+      //   memberId,
+      //   `You are removed from ${hostName} as a verified member`,
+      //   `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${currentHost.name}. You are, however, still welcome to participate to the events and processes here.\n\n For questions, please contact the admin.\n\nKind regards,\n${currentHost.name} Team`
+      // );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
@@ -129,7 +185,11 @@ Meteor.methods({
 
   addNewCategory(category) {
     const user = Meteor.user();
-    if (!user.isSuperAdmin) {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
 
@@ -141,6 +201,7 @@ Meteor.methods({
 
     try {
       return Categories.insert({
+        host: currentHost.host,
         label: category.toLowerCase(),
         color: catColors[catLength],
         addedBy: user._id,
@@ -154,7 +215,11 @@ Meteor.methods({
 
   removeCategory(categoryId) {
     const user = Meteor.user();
-    if (!user.isSuperAdmin) {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
 

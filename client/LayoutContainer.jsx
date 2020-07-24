@@ -156,6 +156,5 @@ export default withTracker((props) => {
   return {
     currentUser,
     userLoading,
-    currentHost,
   };
 })(LayoutPage);

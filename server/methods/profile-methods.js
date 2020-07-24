@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { getHost } from './shared';
+import { Hosts } from '../../lib/collections';
 
 Meteor.methods({
   createAccount(values) {
@@ -8,7 +9,42 @@ Meteor.methods({
     check(values.username, String);
     check(values.password, String);
     try {
-      Accounts.createUser(values);
+      const userId = Accounts.createUser(values);
+      const user = {
+        username: values.username,
+        email: values.email,
+        id: userId,
+      };
+      Meteor.call('addUserToHostAsParticipant', user);
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  addUserAsParticipant(user) {
+    check(user.email, String);
+    check(user.username, String);
+    check(user._id, String);
+
+    const host = getHost(this);
+
+    try {
+      Hosts.update(host._id, {
+        $addToSet: {
+          participants: user,
+        },
+      });
+
+      Meteor.users.update(user._id, {
+        $addToSet: {
+          participatingHosts: {
+            host,
+            hostId: host._id,
+            date: new Date(),
+          },
+        },
+      });
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);

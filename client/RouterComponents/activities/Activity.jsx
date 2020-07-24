@@ -20,6 +20,7 @@ import {
   Text,
 } from 'grommet';
 
+import { StateContext } from '../../LayoutContainer';
 import Chattery from '../../chattery';
 import FancyDate from '../../UIComponents/FancyDate';
 import Loader from '../../UIComponents/Loader';
@@ -345,15 +346,22 @@ class Activity extends React.Component {
   };
 
   isAdmin = () => {
-    const { currentUser, activityData } = this.props;
+    const { activityData } = this.props;
+    const { currentUser } = this.context;
     return (
       currentUser && activityData && currentUser._id === activityData.authorId
     );
   };
 
   isRegisteredMember = () => {
-    const { currentUser } = this.props;
-    return currentUser && currentUser.isRegisteredMember;
+    const { currentUser, currentHost } = this.context;
+
+    return (
+      currentUser &&
+      currentHost &&
+      currentHost.members &&
+      currentHost.members.some((member) => member.userId === currentUser._id)
+    );
   };
 
   removeNotification = (messageIndex) => {
@@ -520,6 +528,8 @@ class Activity extends React.Component {
     );
   }
 }
+
+Activity.contextType = StateContext;
 
 const fields = [
   {

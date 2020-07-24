@@ -14,6 +14,8 @@ import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
+import { StateContext } from '../../LayoutContainer';
+import { call } from '../../functions';
 
 const menuRoutes = [
   { label: 'Settings', value: '/admin/settings' },
@@ -33,17 +35,16 @@ function Members({ history }) {
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
-  const getAndSetUsers = () => {
+  const getAndSetUsers = async () => {
     setLoading(true);
-    Meteor.call('getUsers', (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-        setLoading(false);
-        return;
-      }
-      setUsers(respond);
+    try {
+      const users = await call('getUsers');
+      setUsers(users);
       setLoading(false);
-    });
+    } catch (error) {
+      message.error(error.reason);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -252,5 +253,7 @@ function Members({ history }) {
     </Template>
   );
 }
+
+Members.contextType = StateContext;
 
 export default Members;
