@@ -15,33 +15,83 @@ Meteor.methods({
         email: values.email,
         id: userId,
       };
-      Meteor.call('addUserToHostAsParticipant', user);
+      Meteor.call('setAsParticipant');
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
     }
   },
 
-  addUserAsParticipant(user) {
-    check(user.email, String);
-    check(user.username, String);
-    check(user._id, String);
-
+  setAsParticipant() {
     const host = getHost(this);
+    const user = Meteor.user();
+
+    const currentHost = Hosts.findOne({ host });
+
+    if (currentHost.members.some((member) => member.id === user._id)) {
+      throw new Meteor.Error('Host already does have you as a participant');
+    }
+
+    if (user.memberships.some((membership) => membership.host === host)) {
+      throw new Meteor.Error('You are already a participant');
+    }
 
     try {
       Hosts.update(host._id, {
         $addToSet: {
-          participants: user,
+          members: {
+            username: user.username,
+            id: user._id,
+            avatar: user.avatar,
+            date: new Date(),
+          },
         },
       });
 
       Meteor.users.update(user._id, {
         $addToSet: {
-          participatingHosts: {
+          memberships: {
             host,
             hostId: host._id,
             date: new Date(),
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  rmeoveAsParticipant() {
+    const host = getHost(this);
+    const user = Meteor.user();
+
+    const currentHost = Hosts.findOne({ host });
+
+    if (!currentHost.members.some((member) => member.id === user._id)) {
+      throw new Meteor.Error(
+        'Host already does not have you as a participant '
+      );
+    }
+
+    if (!user.memberships.some((membership) => membership.host === host)) {
+      throw new Meteor.Error('You are already not a participant');
+    }
+
+    try {
+      Hosts.update(host._id, {
+        $pull: {
+          members: {
+            username: user.username,
+          },
+        },
+      });
+
+      Meteor.users.update(user._id, {
+        $pull: {
+          memberships: {
+            host,
           },
         },
       });
