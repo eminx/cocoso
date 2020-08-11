@@ -44,7 +44,7 @@ Meteor.methods({
     return currentHost.members;
   },
 
-  verifyMember(memberId) {
+  verifyAsContributor(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
@@ -54,39 +54,50 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const verifiedUser = Meteor.users.findOne(memberId);
+    const member = Meteor.users.findOne(memberId);
+
+    if (
+      !member.memberships ||
+      !member.memberships.some((mShip) => mShip.host === host)
+    ) {
+      throw new Meteor.Error('User is not a participant');
+    }
 
     try {
-      Meteor.users.update(memberId, {
-        $addToSet: {
-          memberships: {
-            host,
-            hostId: currentHost._id,
+      Meteor.users.update(
+        {
+          _id: memberId,
+          'memberships.host': host,
+        },
+        {
+          $set: {
+            'memberships.$.role': 'contributor',
             verifiedBy: {
-              id: user._id,
               username: user.username,
+              userId: user._id,
+              date: new Date(),
             },
-            role: 'contributor',
-            date: new Date(),
           },
-        },
-      });
-      Hosts.update(currentHost._id, {
-        $addToSet: {
-          members: {
-            username: verifiedUser.username,
-            id: verifiedUser._id,
-            email: verifiedUser.emails[0].address,
-            role: 'contributor',
-            date: new Date(),
+        }
+      );
+      Hosts.update(
+        { _id: currentHost._id, 'members.id': memberId },
+        {
+          $set: {
+            'members.$.role': 'contributor',
+            verifiedBy: {
+              username: user.username,
+              userId: user._id,
+              date: new Date(),
+            },
           },
-        },
-      });
+        }
+      );
       // Meteor.call(
       //   'sendEmail',
       //   memberId,
       //   `You are now a verified member at ${contextName}`,
-      //   getVerifiedEmailText(verifiedUser.username)
+      //   getVerifiedEmailText(member.username)
       // );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
@@ -112,18 +123,28 @@ Meteor.methods({
 
     try {
       Meteor.users.updateOne(
-        { _id: memberId, 'memberships.$.host': host },
+        { _id: memberId, 'memberships.host': host },
         {
           $set: {
             'memberships.$.role': 'participant',
+            unVerifiedBy: {
+              username: user.username,
+              userId: user._id,
+              date: new Date(),
+            },
           },
         }
       );
       Hosts.updateOne(
-        { _id: currentHost._id, 'members.$.username': user.username },
+        { _id: currentHost._id, 'members.id': memberId },
         {
           $set: {
             'members.$.role': 'participant',
+            unVerifiedBy: {
+              username: user.username,
+              userId: user._id,
+              date: new Date(),
+            },
           },
         }
       );

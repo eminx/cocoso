@@ -68,7 +68,7 @@ function Members({ history }) {
         message.success('Verification removed');
       });
     } else {
-      Meteor.call('verifyMember', user._id, (error, response) => {
+      Meteor.call('verifyAsContributor', user._id, (error, response) => {
         if (error) {
           message.error(error.reason);
           console.log(error);
