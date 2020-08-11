@@ -99,7 +99,7 @@ Meteor.methods({
               processId: add,
               name: formValues.title,
               joinDate: new Date(),
-              meAdmin: true,
+              isAdmin: true,
             },
           },
         });

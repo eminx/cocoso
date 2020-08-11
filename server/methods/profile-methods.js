@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { getHost } from './shared';
-import { Hosts } from '../../lib/collections';
 
 Meteor.methods({
   createAccount(values) {
@@ -10,12 +9,7 @@ Meteor.methods({
     check(values.password, String);
     try {
       const userId = Accounts.createUser(values);
-      const user = {
-        username: values.username,
-        email: values.email,
-        id: userId,
-      };
-      Meteor.call('setAsParticipant');
+      return userId;
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
@@ -43,22 +37,27 @@ Meteor.methods({
     }
 
     try {
-      Hosts.update(host._id, {
-        $addToSet: {
-          members: {
-            username: user.username,
-            id: user._id,
-            avatar: user.avatar,
-            date: new Date(),
+      Hosts.update(
+        { host: host },
+        {
+          $addToSet: {
+            members: {
+              username: user.username,
+              id: user._id,
+              email: user.emails[0].address,
+              role: 'participant',
+              date: new Date(),
+            },
           },
-        },
-      });
+        }
+      );
 
       Meteor.users.update(user._id, {
         $addToSet: {
           memberships: {
             host,
             hostId: host._id,
+            role: 'participant',
             date: new Date(),
           },
         },
@@ -69,7 +68,7 @@ Meteor.methods({
     }
   },
 
-  rmeoveAsParticipant() {
+  removeAsParticipant() {
     const host = getHost(this);
     const user = Meteor.user();
 
@@ -86,7 +85,7 @@ Meteor.methods({
     }
 
     try {
-      Hosts.update(host._id, {
+      Hosts.update(currentHost._id, {
         $pull: {
           members: {
             username: user.username,

@@ -52,8 +52,8 @@ function Members({ history }) {
   }
 
   const toggleVerification = (user) => {
-    if (user.isRegisteredMember) {
-      Meteor.call('unVerifyMember', user._id, (error, response) => {
+    if (user.role === 'contributor') {
+      Meteor.call('unVerifyAsContributor', user.id, (error, response) => {
         if (error) {
           message.error(error.reason);
           console.log(error);
@@ -61,10 +61,12 @@ function Members({ history }) {
           return;
         }
         getAndSetUsers();
-        message.success('Verification removed');
+        message.success(
+          `${user.username} is now reverted back to being a participant`
+        );
       });
-    } else {
-      Meteor.call('verifyAsContributor', user._id, (error, response) => {
+    } else if (user.role === 'participant') {
+      Meteor.call('verifyAsContributor', user.id, (error, response) => {
         if (error) {
           message.error(error.reason);
           console.log(error);
@@ -72,7 +74,7 @@ function Members({ history }) {
           return;
         }
         getAndSetUsers();
-        message.success('User is now verified');
+        message.success(`${user.username} is now verified as a contributor`);
       });
     }
   };
@@ -95,10 +97,10 @@ function Members({ history }) {
     users.filter((user) => {
       if (filter === 'all') {
         return true;
-      } else if (filter === 'verified') {
-        return user.isRegisteredMember;
-      } else if (filter === 'unverified') {
-        return !Boolean(user.isRegisteredMember);
+      } else if (filter === 'participant') {
+        return user.role === 'participant';
+      } else if (filter === 'contributor') {
+        return user.role === 'contributor';
       }
     });
 
@@ -106,9 +108,10 @@ function Members({ history }) {
     ...user,
     actions: [
       {
-        content: user.isRegisteredMember
-          ? 'Remove user membership'
-          : 'Verify this user',
+        content:
+          user.role === 'contributor'
+            ? 'Revert back to participant role'
+            : 'Verify this user as a contributor',
         handleClick: () => toggleVerification(user),
         isDisabled: user.isSuperAdmin,
       },
@@ -121,12 +124,12 @@ function Members({ history }) {
       value: 'all',
     },
     {
-      label: 'Verified',
-      value: 'verified',
+      label: 'Participants',
+      value: 'participant',
     },
     {
-      label: 'Unverified',
-      value: 'unverified',
+      label: 'Contributors',
+      value: 'contributor',
     },
   ];
 
@@ -145,7 +148,7 @@ function Members({ history }) {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
     return (
       user.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-      user.emails[0].address.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
+      user.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
     );
   });
 
@@ -235,14 +238,17 @@ function Members({ history }) {
                 {user.username}
               </Text>
               <Text as="div" size="small">
-                {user && user.emails ? user.emails[0].address : null}
+                {user && user.email}
+              </Text>
+              <Text as="div" size="small">
+                {user.role}
               </Text>
               <Text
                 as="div"
                 size="xsmall"
                 style={{ fontSize: 10, color: '#aaa' }}
               >
-                joined {moment(user.createdAt).format('Do MMM YYYY')}
+                joined {moment(user.createdAt).format('Do MMM YYYY')} <br />
               </Text>
             </div>
           )}

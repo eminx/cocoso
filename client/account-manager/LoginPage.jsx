@@ -14,6 +14,10 @@ const LoginPage = ({ history }) => {
     return <Redirect to="/my-profile" />;
   }
 
+  const handleSubmit = (values) => {
+    loginWithPassword(values.username, values.password);
+  };
+
   return (
     <Template>
       <Box width="medium" alignSelf="center">
@@ -30,11 +34,7 @@ const LoginPage = ({ history }) => {
           background="white"
           margin={{ bottom: 'medium' }}
         >
-          <Login
-            onSubmit={(values) =>
-              loginWithPassword(values.username, values.password)
-            }
-          />
+          <Login onSubmit={handleSubmit} />
         </Box>
         <Box>
           <SimpleText>

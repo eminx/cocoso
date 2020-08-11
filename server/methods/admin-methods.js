@@ -24,7 +24,6 @@ const catColors = [
 ];
 
 const isHostAdmin = (host, userId) => {
-  console.log(host);
   const currentHost = Hosts.findOne({ host: host });
   return currentHost.admins.some((admin) => admin.id === userId);
 };
@@ -35,12 +34,10 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
     const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
-    console.log(currentHost, isAdmin, host);
 
     if (!user.isSuperAdmin || !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
-    console.log(currentHost);
     return currentHost.members;
   },
 
@@ -104,7 +101,7 @@ Meteor.methods({
     }
   },
 
-  unVerifyMember(memberId) {
+  unVerifyAsContributor(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
 
@@ -115,14 +112,14 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const theOtherUser = Meteor.users.findOne(memberId);
+    const member = Meteor.users.findOne(memberId);
     isMemberAdmin = currentHost.admins.some((admin) => admin.id === memberId);
-    if (theOtherUser.isSuperAdmin || isMemberAdmin) {
+    if (member.isSuperAdmin || isMemberAdmin) {
       throw new Meteor.Error('You can not unverify an admin');
     }
 
     try {
-      Meteor.users.updateOne(
+      Meteor.users.update(
         { _id: memberId, 'memberships.host': host },
         {
           $set: {
@@ -135,7 +132,7 @@ Meteor.methods({
           },
         }
       );
-      Hosts.updateOne(
+      Hosts.update(
         { _id: currentHost._id, 'members.id': memberId },
         {
           $set: {
