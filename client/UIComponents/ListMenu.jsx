@@ -6,7 +6,7 @@ function ListMenu({ list, children, ...otherProps }) {
     return null;
   }
   return (
-    <List data={list} {...otherProps} pad="none">
+    <List data={list} pad="none" {...otherProps}>
       {(item, index) => <Box pad="xsmall">{children(item)}</Box>}
     </List>
   );

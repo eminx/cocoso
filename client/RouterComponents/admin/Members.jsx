@@ -16,11 +16,7 @@ import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';
-
-const menuRoutes = [
-  { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' },
-];
+import { adminMenu } from '../../constants/general';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -172,19 +168,21 @@ function Members({ history }) {
     <Template
       heading="Members"
       leftContent={
-        <ListMenu list={menuRoutes}>
-          {(datum) => (
-            <Anchor
-              onClick={() => history.push(datum.value)}
-              key={datum.value}
-              label={
-                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                  {datum.label}
-                </Text>
-              }
-            />
-          )}
-        </ListMenu>
+        <Box pad="medium">
+          <ListMenu list={adminMenu}>
+            {(datum) => (
+              <Anchor
+                onClick={() => history.push(datum.value)}
+                key={datum.value}
+                label={
+                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                    {datum.label}
+                  </Text>
+                }
+              />
+            )}
+          </ListMenu>
+        </Box>
       }
     >
       <Box align="center" pad="small">

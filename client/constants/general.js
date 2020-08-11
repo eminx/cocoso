@@ -1,6 +1,11 @@
 const userMenu = [
-  { label: 'My Market', value: 'my-works' },
   { label: 'My Profile', value: '/my-profile' },
+  { label: 'My Offers', value: '/my-works' },
 ];
 
-export { userMenu };
+const adminMenu = [
+  { label: 'Settings', value: '/admin/settings' },
+  { label: 'Members', value: '/admin/members' },
+];
+
+export { userMenu, adminMenu };

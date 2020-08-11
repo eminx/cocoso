@@ -20,13 +20,9 @@ import { message, Alert } from '../../UIComponents/message';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import Tag from '../../UIComponents/Tag';
 import { call } from '../../functions';
+import { adminMenu } from '../../constants/general';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
-
-const menuRoutes = [
-  { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' },
-];
 
 const Settings = ({ history }) => {
   const [localSettings, setLocalSettings] = useState(null);
@@ -124,19 +120,21 @@ const Settings = ({ history }) => {
     <Template
       heading="Settings"
       leftContent={
-        <ListMenu list={menuRoutes}>
-          {(datum) => (
-            <Anchor
-              onClick={() => history.push(datum.value)}
-              key={datum.value}
-              label={
-                <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                  {datum.label}
-                </Text>
-              }
-            />
-          )}
-        </ListMenu>
+        <Box pad="medium">
+          <ListMenu list={adminMenu}>
+            {(datum) => (
+              <Anchor
+                onClick={() => history.push(datum.value)}
+                key={datum.value}
+                label={
+                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                    {datum.label}
+                  </Text>
+                }
+              />
+            )}
+          </ListMenu>
+        </Box>
       }
     >
       <Box

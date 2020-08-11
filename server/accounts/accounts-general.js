@@ -12,8 +12,7 @@ Accounts.onCreateUser((options, user) => {
   user.attending = [];
   user.processes = [];
   user.notifications = [];
-  console.log(user.emails[0].address, user.username);
-  console.log(contextName, publicSettings);
+  user.memberships = [];
   // Meteor.call(
   //   'sendEmail',
   //   user.emails[0].address,

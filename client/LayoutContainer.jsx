@@ -13,7 +13,7 @@ import { call } from './functions';
 
 const menu = [
   {
-    label: 'Market',
+    label: 'Offers',
     route: '/works',
   },
   {

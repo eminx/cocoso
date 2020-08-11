@@ -175,19 +175,23 @@ class Profile extends React.Component {
         titleCentered
         leftContent={
           <Fragment>
-            <ListMenu list={userMenu}>
-              {(datum) => (
-                <Anchor
-                  onClick={() => history.push(datum.value)}
-                  key={datum.value}
-                  label={
-                    <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                      {datum.label}
-                    </Text>
-                  }
-                />
-              )}
-            </ListMenu>
+            <Box pad="medium">
+              <ListMenu list={userMenu}>
+                {(datum) => (
+                  <Anchor
+                    onClick={() => history.push(datum.value)}
+                    key={datum.value}
+                    label={
+                      <Text
+                        weight={pathname === datum.value ? 'bold' : 'normal'}
+                      >
+                        {datum.label}
+                      </Text>
+                    }
+                  />
+                )}
+              </ListMenu>
+            </Box>
           </Fragment>
         }
       >
