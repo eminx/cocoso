@@ -53,7 +53,7 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
 
   return (
     <StateContext.Provider value={{ currentUser, userLoading, currentHost }}>
-      <Box className="main-viewport" justify="center" fill background="light-2">
+      <Box className="main-viewport" justify="center" fill background="#fdfff8">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
           <Box>{children}</Box>

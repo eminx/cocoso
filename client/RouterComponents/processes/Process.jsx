@@ -150,13 +150,13 @@ class Process extends Component {
             </Tooltip> */}
           </div>
         )}
-        <Box>
+        <Box pad="small">
           <Heading level={2} style={{ overflowWrap: 'anywhere' }}>
             {process.title}
           </Heading>
           <Text weight={300}>{process.readingMaterial}</Text>
         </Box>
-        <Box>
+        <Box pad="medium">
           {isAdmin ? (
             <Box alignSelf="end" direction="row">
               <Anchor
@@ -673,31 +673,33 @@ class Process extends Component {
         )}
 
         {isAdmin && (
-          <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
-            {({ getRootProps, getInputProps, isDragActive }) => (
-              <Box
-                width="medium"
-                height="small"
-                background="light-1"
-                round
-                justify="center"
-                pad="medium"
-                {...getRootProps()}
-              >
-                {isUploading ? (
-                  <div>
-                    <Loader />
-                    uploading
-                  </div>
-                ) : (
-                  <div>
-                    <b>Drop documents to upload</b>
-                  </div>
-                )}
-                <input {...getInputProps()} />
-              </Box>
-            )}
-          </ReactDropzone>
+          <Box pad="small">
+            <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
+              {({ getRootProps, getInputProps, isDragActive }) => (
+                <Box
+                  width="medium"
+                  height="small"
+                  background="light-1"
+                  round
+                  justify="center"
+                  pad="medium"
+                  {...getRootProps()}
+                >
+                  {isUploading ? (
+                    <div>
+                      <Loader />
+                      uploading
+                    </div>
+                  ) : (
+                    <div>
+                      <b>Drop documents to upload</b>
+                    </div>
+                  )}
+                  <input {...getInputProps()} />
+                </Box>
+              )}
+            </ReactDropzone>
+          </Box>
         )}
       </Fragment>
     );

@@ -88,15 +88,15 @@ const Works = ({ history }) => {
         ))}
       </Box>
 
-      <Box direction="row" justify="center" pad="medium" gap="medium" wrap>
+      <Box direction="row" justify="center" pad="medium" wrap>
         {filteredWorks.map((work) => (
           <Box
             key={work._id}
             basis="360px"
             pad="medium"
-            margin={{ bottom: 'medium' }}
+            margin="small"
             background="white"
-            elevation="small"
+            elevation="xsmall"
             round="2px"
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)

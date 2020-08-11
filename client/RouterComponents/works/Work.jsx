@@ -90,24 +90,30 @@ const Work = ({ history, match }) => {
         </Box>
       }
     >
-      <Box pad="medium" elevation="small" background="white">
+      <Box
+        pad="medium"
+        margin={{ top: 'medium' }}
+        elevation="xsmall"
+        background="white"
+      >
         <NiceSlider images={work.images} />
         <Box margin={{ top: 'medium' }}>
           <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
         </Box>
-        <Box margin={{ top: 'large', bottom: 'large' }} justify="end">
-          {isOwner && (
-            <Button
-              size="small"
-              onClick={() =>
-                history.push(
-                  `/${currentUser.username}/edit-work/${match.params.workId}`
-                )
-              }
-              label="Edit this work"
-            />
-          )}
-        </Box>
+      </Box>
+      <Box pad="medium">
+        {isOwner && (
+          <Button
+            alignSelf="center"
+            size="small"
+            onClick={() =>
+              history.push(
+                `/${currentUser.username}/edit-work/${match.params.workId}`
+              )
+            }
+            label="Edit this work"
+          />
+        )}
       </Box>
     </Template>
   );
