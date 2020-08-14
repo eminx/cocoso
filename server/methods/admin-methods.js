@@ -180,8 +180,6 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const host = getHost(this);
-
     try {
       Hosts.update(
         { host },
