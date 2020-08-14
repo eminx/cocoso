@@ -42,12 +42,11 @@ Meteor.publish('activities', function () {
 });
 
 Meteor.publish('processes', function () {
-  // const user = Meteor.user();
-  // if (user) {
+  const host = getHost(this);
   return Processes.find({
+    host,
     isPublished: true,
   });
-  // }
 });
 
 Meteor.publish('manuals', function () {
