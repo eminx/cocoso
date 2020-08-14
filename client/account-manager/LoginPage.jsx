@@ -41,7 +41,7 @@ const LoginPage = ({ history }) => {
             Forgot your password?
             <br />
             <Anchor onClick={() => history.push('/forgot-password')}>
-              Recover your password
+              Reset your password
             </Anchor>
           </SimpleText>
         </Box>
