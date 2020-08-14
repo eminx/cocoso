@@ -49,7 +49,7 @@ const Settings = ({ history }) => {
   };
 
   const handleFormChange = (newSettings) => {
-    setSettings(newSettings);
+    setLocalSettings(newSettings);
     setFormAltered(true);
   };
 

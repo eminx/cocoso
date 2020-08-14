@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Anchor, Heading, Image, Paragraph, Footer } from 'grommet';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
@@ -9,7 +9,6 @@ export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
-import { call } from './functions';
 
 const menu = [
   {
@@ -30,20 +29,17 @@ const menu = [
   },
 ];
 
-const LayoutPage = ({ currentUser, userLoading, history, children }) => {
+const LayoutPage = ({
+  currentUser,
+  currentHost,
+  userLoading,
+  hostLoading,
+  history,
+  children,
+}) => {
   // const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
   //   false
   // );
-  const [currentHost, setCurrentHost] = useState({});
-
-  const getHost = async () => {
-    const respond = await call('getHostSettings');
-    setCurrentHost(respond);
-  };
-
-  useEffect(() => {
-    getHost();
-  }, []);
 
   const headerProps = {
     currentUser,
@@ -51,9 +47,30 @@ const LayoutPage = ({ currentUser, userLoading, history, children }) => {
     title: 'Cic Network',
   };
 
+  const hostWithinUser =
+    currentUser &&
+    currentUser.memberships &&
+    currentUser.memberships.find(
+      (membership) => membership.host === location.host
+    );
+
+  const role = hostWithinUser && hostWithinUser.role;
+  const canCreateContent =
+    (role && role === 'admin') ||
+    role === 'contributor' ||
+    (currentUser && currentUser.isSuperAdmin);
+
   return (
-    <StateContext.Provider value={{ currentUser, userLoading, currentHost }}>
-      <Box className="main-viewport" justify="center" fill background="#fdfff8">
+    <StateContext.Provider
+      value={{
+        currentUser,
+        userLoading,
+        currentHost,
+        role,
+        canCreateContent,
+      }}
+    >
+      <Box className="main-viewport" justify="center" fill background="#eee">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
           <Box>{children}</Box>
@@ -153,8 +170,14 @@ export default withTracker((props) => {
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
 
+  const hostSub = Meteor.subscribe('currentHost');
+  const currentHost = Hosts ? Hosts.findOne() : null;
+  const hostLoading = !hostSub.ready();
+
   return {
     currentUser,
+    currentHost,
     userLoading,
+    hostLoading,
   };
 })(LayoutPage);

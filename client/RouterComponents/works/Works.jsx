@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Box, Text, Button, Avatar } from 'grommet';
+
+import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
@@ -27,6 +29,7 @@ const Works = ({ history }) => {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
+  const { currentUser, canCreateContent } = useContext(StateContext);
 
   useEffect(() => {
     getAllWorks();
@@ -47,8 +50,6 @@ const Works = ({ history }) => {
     return <Loader />;
   }
 
-  const currentUser = Meteor.user();
-
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
@@ -62,9 +63,11 @@ const Works = ({ history }) => {
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
-        <Link to={currentUser ? '/new-work' : '/my-profile'}>
-          <Button as="span" size="small" label="Create Your Offer" />
-        </Link>
+        {canCreateContent && (
+          <Link to={currentUser ? '/new-work' : '/my-profile'}>
+            <Button as="span" size="small" label="Create Your Offer" />
+          </Link>
+        )}
       </Box>
 
       <Box

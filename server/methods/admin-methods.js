@@ -33,7 +33,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin || !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -45,7 +45,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -106,7 +106,7 @@ Meteor.methods({
     const host = getHost(this);
 
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -174,7 +174,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -207,7 +207,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -237,7 +237,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const isAdmin = isUserAdmin(currentHost.members, user._id);
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
