@@ -8,7 +8,7 @@ Meteor.startup(() => {
       $set: {
         memberships: [
           {
-            host: 'cic.nodal.app',
+            host: 'www.nodal.app',
             hostId: '3Er9qxkYQGB9obsEF',
             role: 'contributor',
             date: new Date(),
@@ -18,7 +18,7 @@ Meteor.startup(() => {
     });
 
     Hosts.update('3Er9qxkYQGB9obsEF', {
-      $set: {
+      $push: {
         members: {
           id: user._id,
           email: user.emails[0].address,

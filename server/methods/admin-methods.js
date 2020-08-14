@@ -33,7 +33,9 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = currentHost.admins.some((admin) => admin.id === user._id);
+    const isAdmin = currentHost.members.some(
+      (member) => member.role === 'admin'
+    );
 
     if (!user.isSuperAdmin || !isAdmin) {
       throw new Meteor.Error('You are not allowed');
