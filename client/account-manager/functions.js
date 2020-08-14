@@ -16,12 +16,11 @@ async function createAccount(values) {
 }
 
 function loginWithPassword(username, password, isNewAccount) {
+  console.log(username, password);
   Meteor.loginWithPassword(username, password, (error, respond) => {
     if (error) {
-      if (error) {
-        reject(error);
-        message.error(error.reason);
-      }
+      console.log(error);
+      message.error(error.reason);
     }
     if (isNewAccount) {
       message.success('Your account is successfully created');

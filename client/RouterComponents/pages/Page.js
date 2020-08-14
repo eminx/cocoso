@@ -87,18 +87,20 @@ class Page extends PureComponent {
           )
         }
       >
-        <Box
-          pad="medium"
-          elevation="small"
-          background="white"
-          margin={{ bottom: 'medium' }}
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentPage.longDescription,
-            }}
-          />
-        </Box>
+        {currentPage && currentPage.longDescription && (
+          <Box
+            pad="medium"
+            elevation="small"
+            background="white"
+            margin={{ bottom: 'medium' }}
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: currentPage.longDescription,
+              }}
+            />
+          </Box>
+        )}
 
         {currentUser.isSuperAdmin && (
           <Box pad="small" alignSelf="center">
