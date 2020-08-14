@@ -57,15 +57,15 @@ class Page extends PureComponent {
       return <Redirect to={`/page/${parseTitle(pages[0].title)}`} />;
     }
 
-    if (!currentPage) {
-      <Loader />;
+    if (!currentPage || !currentPage.title || !currentPage.longDescription) {
+      return <Loader />;
     }
 
     const pageTitles = pages && pages.map((page) => page.title);
 
     return (
       <Template
-        heading={currentPage && currentPage.title}
+        heading={currentPage.title}
         leftContent={
           <Box>
             <PagesList
@@ -76,8 +76,6 @@ class Page extends PureComponent {
           </Box>
         }
         rightContent={
-          currentPage &&
-          currentUser &&
           currentUser.isSuperAdmin && (
             <Box pad="small" direction="row" justify="center">
               <Link to="/new-page" style={{ marginBottom: 12 }}>
@@ -87,20 +85,18 @@ class Page extends PureComponent {
           )
         }
       >
-        {currentPage && currentPage.longDescription && (
-          <Box
-            pad="medium"
-            elevation="small"
-            background="white"
-            margin={{ bottom: 'medium' }}
-          >
-            <div
-              dangerouslySetInnerHTML={{
-                __html: currentPage.longDescription,
-              }}
-            />
-          </Box>
-        )}
+        <Box
+          pad="medium"
+          elevation="small"
+          background="white"
+          margin={{ bottom: 'medium' }}
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: currentPage.longDescription,
+            }}
+          />
+        </Box>
 
         {currentUser.isSuperAdmin && (
           <Box pad="small" alignSelf="center">
