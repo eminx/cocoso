@@ -203,9 +203,7 @@ const AuthContainer = () => {
       <SimpleText>
         Forgot your password?
         <br />
-        <Anchor onClick={() => setMode('recover')}>
-          Recover your password
-        </Anchor>
+        <Anchor onClick={() => setMode('recover')}>Reset your password</Anchor>
       </SimpleText>
     </Box>
   );
