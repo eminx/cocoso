@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Anchor,
-  Heading,
-  TextInput,
-  FormField,
-  Form,
-  Box,
-  Text,
-  Button,
-} from 'grommet';
+import { Anchor, Heading, TextInput, Form, Box, Text, Button } from 'grommet';
 
 const pluralize = require('pluralize');
 
@@ -21,6 +12,7 @@ import ConfirmModal from '../../UIComponents/ConfirmModal';
 import Tag from '../../UIComponents/Tag';
 import { call } from '../../functions';
 import { adminMenu } from '../../constants/general';
+import SettingsForm from './SettingsForm';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -30,6 +22,7 @@ const Settings = ({ history }) => {
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [formAltered, setFormAltered] = useState(false);
+
   const { settings, currentUser } = useContext(StateContext);
 
   useEffect(() => {
@@ -144,52 +137,12 @@ const Settings = ({ history }) => {
         margin={{ bottom: 'large' }}
       >
         <Heading level={3}>Organisation</Heading>
-        <Form
+        <SettingsForm
           value={localSettings}
           onChange={handleFormChange}
           onSubmit={handleFormSubmit}
-        >
-          <FormField label="Name">
-            <TextInput
-              plain={false}
-              name="name"
-              placeholder="Sandy Art Space"
-            />
-          </FormField>
-
-          <FormField label="Email address">
-            <TextInput
-              plain={false}
-              name="email"
-              placeholder="contact@sandyartspace.net"
-            />
-          </FormField>
-
-          <FormField label="Address">
-            <TextInput
-              plain={false}
-              name="address"
-              placeholder="Karl Marx strasse 99"
-            />
-          </FormField>
-
-          <FormField label="City">
-            <TextInput plain={false} name="city" placeholder="Berlin" />
-          </FormField>
-
-          <FormField label="Country">
-            <TextInput plain={false} name="country" placeholder="Sri Lanka" />
-          </FormField>
-
-          <Box direction="row" justify="end" pad="small">
-            <Button
-              type="submit"
-              primary
-              label="Confirm"
-              disabled={!formAltered}
-            />
-          </Box>
-        </Form>
+          formAltered={formAltered}
+        />
       </Box>
 
       <Box

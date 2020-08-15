@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Anchor, Heading, Image, Paragraph, Footer } from 'grommet';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
+import Loader from './UIComponents/Loader';
 
 export const StateContext = React.createContext(null);
 
@@ -40,6 +41,10 @@ const LayoutPage = ({
   // const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
   //   false
   // );
+
+  if (!currentHost) {
+    return <Loader />;
+  }
 
   const headerProps = {
     currentUser,
