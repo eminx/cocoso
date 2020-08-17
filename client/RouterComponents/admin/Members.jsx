@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import {
   Box,
@@ -31,6 +31,8 @@ function Members({ history }) {
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
+  const { currentUser } = useContext(StateContext);
+
   const getAndSetUsers = async () => {
     setLoading(true);
     try {
@@ -38,7 +40,8 @@ function Members({ history }) {
       setUsers(users);
       setLoading(false);
     } catch (error) {
-      message.error(error.reason);
+      message.error(error.error);
+      console.log(error);
       setLoading(false);
     }
   };
@@ -78,8 +81,6 @@ function Members({ history }) {
       });
     }
   };
-
-  const currentUser = Meteor.user();
 
   if (!currentUser || !currentUser.isSuperAdmin) {
     return (
@@ -257,7 +258,5 @@ function Members({ history }) {
     </Template>
   );
 }
-
-Members.contextType = StateContext;
 
 export default Members;

@@ -76,6 +76,7 @@ class Page extends PureComponent {
           </Box>
         }
         rightContent={
+          currentUser &&
           currentUser.isSuperAdmin && (
             <Box pad="small" direction="row" justify="center">
               <Link to="/new-page" style={{ marginBottom: 12 }}>
@@ -98,7 +99,7 @@ class Page extends PureComponent {
           />
         </Box>
 
-        {currentUser.isSuperAdmin && (
+        {currentUser && currentUser.isSuperAdmin && (
           <Box pad="small" alignSelf="center">
             <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
               <Button size="small" label="Edit this page" />

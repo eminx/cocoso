@@ -25,6 +25,9 @@ const catColors = [
 
 const isUserAdmin = (members, userId) => {
   const user = members.find((member) => member.id === userId);
+  if (!user) {
+    return false;
+  }
   return user.role === 'admin';
 };
 
