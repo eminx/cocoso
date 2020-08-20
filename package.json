@@ -13,7 +13,7 @@
     "array-move": "^2.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "grommet": "^2.13.0",
     "grommet-icons": "^4.4.0",
     "indexof": "0.0.1",
