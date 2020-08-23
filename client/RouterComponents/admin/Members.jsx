@@ -147,6 +147,9 @@ function Members({ history }) {
 
   const usersFilteredWithType = usersList.filter((user) => {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
+    if (!user.username || !user.email) {
+      return false;
+    }
     return (
       user.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
       user.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
