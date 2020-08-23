@@ -57,7 +57,6 @@ Meteor.methods({
     if (
       !member.memberships ||
       !member.memberships.some((membership) => {
-        console.log(membership);
         return membership.host === host && membership.role === 'participant';
       })
     ) {
@@ -117,7 +116,7 @@ Meteor.methods({
     }
 
     const member = Meteor.users.findOne(memberId);
-    isMemberAdmin = currentHost.members.some((member) => member.r === memberId);
+    isMemberAdmin = isUserAdmin(currentHost.members, member._id);
     if (member.isSuperAdmin || isMemberAdmin) {
       throw new Meteor.Error('You can not unverify an admin');
     }
