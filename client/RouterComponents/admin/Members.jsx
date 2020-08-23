@@ -58,9 +58,8 @@ function Members({ history }) {
     if (user.role === 'contributor') {
       Meteor.call('unVerifyAsContributor', user.id, (error, response) => {
         if (error) {
-          message.error(error.reason);
+          message.error(error.error);
           console.log(error);
-          getAndSetUsers();
           return;
         }
         getAndSetUsers();

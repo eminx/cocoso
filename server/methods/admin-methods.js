@@ -24,11 +24,9 @@ const catColors = [
 ];
 
 const isUserAdmin = (members, userId) => {
-  const user = members.find((member) => member.id === userId);
-  if (!user) {
-    return false;
-  }
-  return user.role === 'admin';
+  return members.some(
+    (member) => member.id === userId && member.role === 'admin'
+  );
 };
 
 Meteor.methods({
@@ -58,7 +56,10 @@ Meteor.methods({
 
     if (
       !member.memberships ||
-      !member.memberships.some((mShip) => mShip.host === host)
+      !member.memberships.some((membership) => {
+        console.log(membership);
+        return membership.host === host && membership.role === 'participant';
+      })
     ) {
       throw new Meteor.Error('User is not a participant');
     }
