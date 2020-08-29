@@ -429,8 +429,8 @@ class Activity extends React.Component {
     return (
       <Template
         leftContent={
-          <Box pad={{ left: 'small' }}>
-            <Heading level={3}>{activityData.title}</Heading>
+          <Box pad="small">
+            <Heading level={2}>{activityData.title}</Heading>
             {activityData.subTitle && (
               <Heading level={4} style={{ fontWeight: 300 }}>
                 {activityData.subTitle}
@@ -439,7 +439,7 @@ class Activity extends React.Component {
           </Box>
         }
         rightContent={
-          <Box width="100%">
+          <Box width="100%" pad="small">
             <Heading level={4}>Dates</Heading>
             <Paragraph>
               {activityData.isActivitiesDisabled
@@ -451,64 +451,62 @@ class Activity extends React.Component {
           </Box>
         }
       >
-        <ScreenClassRender
-          render={(screenClass) => (
-            <Box width={screenClass === 'sm' ? 'medium' : 'large'}>
-              <Image fit="contain" fill src={activityData.imageUrl} />
-            </Box>
-          )}
-        />
         <Box>
-          <div
-            style={{
-              whiteSpace: 'pre-line',
-              color: 'rgba(0,0,0, .85)',
-            }}
-            dangerouslySetInnerHTML={{
-              __html: activityData.longDescription,
-            }}
-          />
+          <Image fit="contain" fill src={activityData.imageUrl} />
         </Box>
-
-        {activityData.practicalInfo && activityData.practicalInfo.length > 0 && (
+        <Box pad="small">
           <Box>
-            <Heading level={4}>Practical information:</Heading>
-            <Text size="small">{activityData.practicalInfo}</Text>
+            <div
+              style={{
+                whiteSpace: 'pre-line',
+                color: 'rgba(0,0,0, .85)',
+              }}
+              dangerouslySetInnerHTML={{
+                __html: activityData.longDescription,
+              }}
+            />
           </Box>
-        )}
 
-        {currentUser &&
-          currentUser.isRegisteredMember &&
-          activityData &&
-          activityData.internalInfo && (
+          {activityData.practicalInfo && activityData.practicalInfo.length > 0 && (
             <Box>
-              <Heading level={4}>Internal information for members:</Heading>
-              <Text size="small">{activityData.internalInfo}</Text>
+              <Heading level={4}>Practical information:</Heading>
+              <Text size="small">{activityData.practicalInfo}</Text>
             </Box>
           )}
 
-        <Box>
-          <Text>
-            {activityData.room && activityData.room + ', '} <br />
-            {activityData.place}
-          </Text>
-          <Text size="small">{activityData.address}</Text>
+          {currentUser &&
+            currentUser.isRegisteredMember &&
+            activityData &&
+            activityData.internalInfo && (
+              <Box>
+                <Heading level={4}>Internal information for members:</Heading>
+                <Text size="small">{activityData.internalInfo}</Text>
+              </Box>
+            )}
+
+          <Box>
+            <Text>
+              {activityData.room && activityData.room + ', '} <br />
+              {activityData.place}
+            </Text>
+            <Text size="small">{activityData.address}</Text>
+          </Box>
+
+          {activityData.isPublicActivity &&
+            messages &&
+            isRegisteredMember &&
+            chatData && (
+              <Box>
+                <Heading level={4}>Chat Section</Heading>
+                <Chattery
+                  messages={messages}
+                  onNewMessage={this.addNewChatMessage}
+                  removeNotification={this.removeNotification}
+                  isMember
+                />
+              </Box>
+            )}
         </Box>
-
-        {activityData.isPublicActivity &&
-          messages &&
-          isRegisteredMember &&
-          chatData && (
-            <Box>
-              <Heading level={4}>Chat Section</Heading>
-              <Chattery
-                messages={messages}
-                onNewMessage={this.addNewChatMessage}
-                removeNotification={this.removeNotification}
-                isMember
-              />
-            </Box>
-          )}
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}

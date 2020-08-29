@@ -5,8 +5,6 @@ import { Box, Heading } from 'grommet';
 const colStyle = {
   maxWidth: 600,
   margin: '0 auto',
-  paddingLeft: 0,
-  paddingRight: 0,
 };
 
 const Template = ({
@@ -17,7 +15,7 @@ const Template = ({
   children,
 }) => {
   return (
-    <Container fluid style={{ width: '100%', marginBottom: 100 }}>
+    <Container fluid style={{ width: '100%', marginBottom: 100, padding: 0 }}>
       <Row gutterWidth={12}>
         <Col lg={3} style={colStyle}>
           {leftContent}
@@ -25,7 +23,7 @@ const Template = ({
         <Col lg={6} style={colStyle}>
           <Box>
             {heading && (
-              <Box pad={{ top: 'small', bottom: 'small' }}>
+              <Box pad="small">
                 <Heading
                   level={2}
                   textAlign={titleCentered ? 'center' : 'start'}
@@ -38,7 +36,7 @@ const Template = ({
           </Box>
         </Col>
         <Col lg={3} style={colStyle}>
-          <Box margin={{ top: 'large' }}>{rightContent}</Box>
+          {rightContent}
         </Col>
       </Row>
     </Container>
