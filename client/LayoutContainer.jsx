@@ -71,7 +71,7 @@ const LayoutPage = ({
         canCreateContent,
       }}
     >
-      <Box className="main-viewport" justify="center" fill background="#eee">
+      <Box className="main-viewport" justify="center" fill background="#fdfff8">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
           <Box>{children}</Box>

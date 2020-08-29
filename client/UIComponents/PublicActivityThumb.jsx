@@ -43,13 +43,13 @@ class PublicActivityThumb extends React.Component {
       return;
     }
 
-    const isPastEvent = !moment(date.startDate).isAfter(yesterday);
+    // const isPastEvent = !moment(date.startDate).isAfter(yesterday);
 
-    if (isPastEvent) {
-      // dateStyle.color = '#aaa';
-    } else {
-      // dateStyle.color = '#fff';
-    }
+    // if (isPastEvent) {
+    // dateStyle.color = '#aaa';
+    // } else {
+    // dateStyle.color = '#fff';
+    // }
 
     return (
       <div

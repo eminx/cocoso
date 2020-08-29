@@ -54,10 +54,8 @@ const Work = ({ history, match }) => {
   return (
     <Template
       leftContent={
-        <Box pad={{ bottom: 'medium', right: 'small' }}>
-          <Heading pad="small" level={2}>
-            {work.title}
-          </Heading>
+        <Box pad="medium">
+          <Heading level={2}>{work.title}</Heading>
           <Box direction="row" align="start" justify="between">
             <Box pad={{ right: 'small' }} width="220px">
               {work.category && (
@@ -77,12 +75,19 @@ const Work = ({ history, match }) => {
       rightContent={
         <Box
           direction="row"
-          pad="small"
+          pad="medium"
           justify="between"
           style={{ overflow: 'hidden' }}
         >
-          <Box pad={{ left: 'small', right: 'small' }} width="220px">
-            <Heading level={4}>{work.additionalInfo}</Heading>
+          <Box width="100%">
+            <Hidden lg xl>
+              <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
+                {work.additionalInfo}
+              </Heading>
+            </Hidden>
+            <Visible lg xl>
+              <Heading level={4}>{work.additionalInfo}</Heading>
+            </Visible>
           </Box>
           <Hidden xs sm md lg>
             <AvatarHolder />

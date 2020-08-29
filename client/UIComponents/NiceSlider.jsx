@@ -8,13 +8,13 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const iconBoxProps = {
   pad: 'xsmall',
-  hoverIndicator: 'light-1',
+  hoverIndicator: 'dark-1',
 };
 
 const arrowsContainerStyle = {
   position: 'absolute',
   width: '100%',
-  left: -24,
+  left: -20,
   top: '50%',
   transform: 'translateY(-50%)',
 };
@@ -27,7 +27,7 @@ const NiceSlider = ({ images }) => (
           swipe
           autoplay
           infinite
-          dots={false}
+          dots
           arrows={false}
           fade={['lg', 'xl'].includes(screenClass)}
           ref={(component) => (this.slider = component)}
@@ -59,7 +59,7 @@ const NiceSlider = ({ images }) => (
               style={{
                 ...iconBoxProps.style,
                 position: 'absolute',
-                right: -48,
+                right: -40,
               }}
               onClick={() => this.slider.slickNext()}
             >

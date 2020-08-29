@@ -105,7 +105,7 @@ class Activities extends React.Component {
     const allSortedActivities = this.getAllSorted();
 
     return (
-      <Box width="100%" margin={{ bottom: '50px' }} pad="medium">
+      <Box width="100%" margin={{ bottom: '50px' }}>
         {isLoading ? (
           <Loader />
         ) : (

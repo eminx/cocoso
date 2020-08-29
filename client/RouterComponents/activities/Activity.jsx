@@ -246,7 +246,7 @@ class Activity extends React.Component {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box pad="small">
+            <Box>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -430,9 +430,11 @@ class Activity extends React.Component {
       <Template
         leftContent={
           <Box pad="small">
-            <Heading level={2}>{activityData.title}</Heading>
+            <Heading level={2} style={{ marginBottom: 0 }}>
+              {activityData.title}
+            </Heading>
             {activityData.subTitle && (
-              <Heading level={4} style={{ fontWeight: 300 }}>
+              <Heading level={4} style={{ marginTop: 0, fontWeight: 300 }}>
                 {activityData.subTitle}
               </Heading>
             )}
@@ -440,7 +442,9 @@ class Activity extends React.Component {
         }
         rightContent={
           <Box width="100%" pad="small">
-            <Heading level={4}>Dates</Heading>
+            <Heading style={{ marginTop: 0, marginBottom: 0 }} level={4}>
+              Dates
+            </Heading>
             <Paragraph>
               {activityData.isActivitiesDisabled
                 ? 'Activities are disabled. Please check the practical information.'
