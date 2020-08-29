@@ -1,8 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import Loader from '../UIComponents/Loader';
-import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
+import Loader from '../../UIComponents/Loader';
+import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
 import { Box } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -104,8 +103,6 @@ class Home extends React.Component {
   render() {
     const { isLoading, history } = this.props;
     const allSortedActivities = this.getAllSorted();
-
-    return <Redirect to="/works" />;
 
     return (
       <Box width="100%" margin={{ bottom: '50px' }} pad="medium">

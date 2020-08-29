@@ -1,8 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import Home from './Home';
-import moment from 'moment';
+import Activities from './Activities';
 
-export default HomeContainer = withTracker((props) => {
+export default ActivitiesContainer = withTracker((props) => {
   // here we can pull out the props.subID and change our Meteor subscription based on it
   // this is handled on the publication side of things
 
@@ -22,4 +21,4 @@ export default HomeContainer = withTracker((props) => {
     currentUser,
     processesList,
   };
-})(Home);
+})(Activities);
