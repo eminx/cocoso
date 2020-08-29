@@ -194,6 +194,7 @@ class NewActivity extends React.Component {
 
     const {
       formValues,
+      longDescription,
       isSuccess,
       isCreating,
       newActivityId,
@@ -232,7 +233,7 @@ class NewActivity extends React.Component {
             <Box flex={{ basis: 180 }} pad="small">
               <CheckBox
                 checked={isActivitiesDisabled}
-                label={<Text>activities disabled?</Text>}
+                label={<Text>RSVP disabled?</Text>}
                 onChange={this.handleDisableActivitiesSwitch}
               />
             </Box>
@@ -246,6 +247,7 @@ class NewActivity extends React.Component {
           isCreating={isCreating}
           isPublicActivity={isPublicActivity}
           formValues={formValues}
+          longDescription={longDescription}
           onFormValueChange={this.handleFormValueChange}
           onQuillChange={this.handleQuillChange}
           onSubmit={this.handleSubmit}

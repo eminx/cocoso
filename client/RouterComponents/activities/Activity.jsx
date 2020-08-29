@@ -246,7 +246,7 @@ class Activity extends React.Component {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box>
+            <Box key={occurence.startDate + occurence.startTime}>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -442,75 +442,79 @@ class Activity extends React.Component {
         }
         rightContent={
           <Box width="100%" pad="small">
-            <Heading style={{ marginTop: 0, marginBottom: 0 }} level={4}>
+            <Heading style={{ marginTop: 12, marginBottom: 0 }} level={4}>
               Dates
             </Heading>
-            <Paragraph>
+            <Text size="small">
               {activityData.isActivitiesDisabled
-                ? 'Activities are disabled. Please check the practical information.'
+                ? 'RSVP disabled. Please check the practical information.'
                 : 'Please click and open the date to RSVP'}
-            </Paragraph>
+            </Text>
             {this.renderDates()}
             {EditButton}
           </Box>
         }
       >
-        <Box>
+        <Box background="white" elevation="small">
           <Image fit="contain" fill src={activityData.imageUrl} />
-        </Box>
-        <Box pad="small">
-          <Box>
-            <div
-              style={{
-                whiteSpace: 'pre-line',
-                color: 'rgba(0,0,0, .85)',
-              }}
-              dangerouslySetInnerHTML={{
-                __html: activityData.longDescription,
-              }}
-            />
+          <Box pad="small">
+            <Box>
+              <div
+                style={{
+                  whiteSpace: 'pre-line',
+                  color: 'rgba(0,0,0, .85)',
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: activityData.longDescription,
+                }}
+              />
+            </Box>
           </Box>
 
-          {activityData.practicalInfo && activityData.practicalInfo.length > 0 && (
-            <Box>
-              <Heading level={4}>Practical information:</Heading>
-              <Text size="small">{activityData.practicalInfo}</Text>
+          {/* {activityData.practicalInfo &&
+              activityData.practicalInfo.length > 0 && (
+                <Box>
+                  <Heading level={4}>Practical information:</Heading>
+                  <Text size="small">{activityData.practicalInfo}</Text>
+                </Box>
+              )}
+
+            {currentUser &&
+              currentUser.isRegisteredMember &&
+              activityData &&
+              activityData.internalInfo && (
+                <Box>
+                  <Heading level={4}>Internal information for members:</Heading>
+                  <Text size="small">{activityData.internalInfo}</Text>
+                </Box>
+              )} */}
+        </Box>
+
+        <Box pad="small" margin={{ bottom: 'small' }}>
+          <Heading level={4} style={{ marginBottom: 0 }}>
+            Location Info
+          </Heading>
+          <Text size="small">
+            {/* {activityData.room && activityData.room + ', '} <br /> */}
+            {activityData.place}
+          </Text>
+          <Text size="small">{activityData.address}</Text>
+        </Box>
+
+        {activityData.isPublicActivity &&
+          messages &&
+          isRegisteredMember &&
+          chatData && (
+            <Box pad="small">
+              <Heading level={4}>Chat Section</Heading>
+              <Chattery
+                messages={messages}
+                onNewMessage={this.addNewChatMessage}
+                removeNotification={this.removeNotification}
+                isMember
+              />
             </Box>
           )}
-
-          {currentUser &&
-            currentUser.isRegisteredMember &&
-            activityData &&
-            activityData.internalInfo && (
-              <Box>
-                <Heading level={4}>Internal information for members:</Heading>
-                <Text size="small">{activityData.internalInfo}</Text>
-              </Box>
-            )}
-
-          <Box>
-            <Text>
-              {activityData.room && activityData.room + ', '} <br />
-              {activityData.place}
-            </Text>
-            <Text size="small">{activityData.address}</Text>
-          </Box>
-
-          {activityData.isPublicActivity &&
-            messages &&
-            isRegisteredMember &&
-            chatData && (
-              <Box>
-                <Heading level={4}>Chat Section</Heading>
-                <Chattery
-                  messages={messages}
-                  onNewMessage={this.addNewChatMessage}
-                  removeNotification={this.removeNotification}
-                  isMember
-                />
-              </Box>
-            )}
-        </Box>
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}
@@ -557,8 +561,8 @@ function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
     <Form onSubmit={onSubmit}>
       {fields.map((field) => (
         <FormField
-          name={field.name}
           key={field.name}
+          name={field.name}
           label={<Text size="small">{field.label}</Text>}
         >
           <TextInput plain={false} name={field.name} />

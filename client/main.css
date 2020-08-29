@@ -24,3 +24,8 @@ body {
   filter: grayscale(0);
   transition: 0.2s ease-in-out filter;
 }
+
+a {
+  color: rgba(0, 0, 0, 0.85);
+  text-decoration: none;
+}

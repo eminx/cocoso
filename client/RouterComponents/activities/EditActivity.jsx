@@ -279,6 +279,7 @@ class EditActivity extends PureComponent {
     const {
       isDeleteModalOn,
       formValues,
+      longDescription,
       isCreating,
       isSuccess,
       uploadableImageLocal,
@@ -328,7 +329,7 @@ class EditActivity extends PureComponent {
             <Box flex={{ basis: 180 }} pad="small">
               <CheckBox
                 checked={isActivitiesDisabled}
-                label={<Text>activities disabled?</Text>}
+                label={<Text>RSVP disabled?</Text>}
                 onChange={this.handleDisableActivitiesSwitch}
               />
             </Box>
@@ -344,6 +345,7 @@ class EditActivity extends PureComponent {
             isCreating={isCreating}
             isPublicActivity={isPublicActivity}
             formValues={formValues}
+            longDescription={longDescription}
             onFormValueChange={this.handleFormValueChange}
             onQuillChange={this.handleQuillChange}
             onSubmit={this.handleSubmit}

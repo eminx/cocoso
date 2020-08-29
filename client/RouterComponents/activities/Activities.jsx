@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
+
+import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
-import { Box } from 'grommet';
+import { Box, Button } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -21,13 +24,10 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-class Activities extends React.Component {
-  state = {
-    isUploading: false,
-  };
+function Activities({ activitiesList, processesList, isLoading }) {
+  const { currentUser, canCreateContent } = useContext(StateContext);
 
-  getPublicActivities = () => {
-    const { activitiesList } = this.props;
+  const getPublicActivities = () => {
     if (!activitiesList) {
       return null;
     }
@@ -45,9 +45,29 @@ class Activities extends React.Component {
     return futurePublicActivities;
   };
 
-  parseOnlyAllowedProcesses = (futureProcesses) => {
-    const { currentUser } = this.props;
+  const getProcessMeetings = () => {
+    if (!processesList) {
+      return null;
+    }
 
+    const futureProcesses = processesList.filter((process) =>
+      process.meetings.some((meeting) =>
+        moment(meeting.startDate).isAfter(yesterday)
+      )
+    );
+
+    const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(
+      futureProcesses
+    );
+
+    return futureProcessesWithAccessFilter.map((process) => ({
+      ...process,
+      datesAndTimes: process.meetings,
+      isProcess: true,
+    }));
+  };
+
+  const parseOnlyAllowedProcesses = (futureProcesses) => {
     const futureProcessesAllowed = futureProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;
@@ -69,59 +89,51 @@ class Activities extends React.Component {
     return futureProcessesAllowed;
   };
 
-  getProcessMeetings = () => {
-    const { processesList } = this.props;
-    if (!processesList) {
-      return null;
-    }
-
-    const futureProcesses = processesList.filter((process) =>
-      process.meetings.some((meeting) =>
-        moment(meeting.startDate).isAfter(yesterday)
-      )
-    );
-
-    const futureProcessesWithAccessFilter = this.parseOnlyAllowedProcesses(
-      futureProcesses
-    );
-
-    return futureProcessesWithAccessFilter.map((process) => ({
-      ...process,
-      datesAndTimes: process.meetings,
-      isProcess: true,
-    }));
-  };
-
-  getAllSorted = () => {
-    const allActitivities = [
-      ...this.getPublicActivities(),
-      ...this.getProcessMeetings(),
-    ];
+  const getAllSorted = () => {
+    const allActitivities = [...getPublicActivities(), ...getProcessMeetings()];
     return allActitivities.sort(compareForSort);
   };
 
-  render() {
-    const { isLoading, history } = this.props;
-    const allSortedActivities = this.getAllSorted();
+  const allSortedActivities = getAllSorted();
 
-    return (
-      <Box width="100%" margin={{ bottom: '50px' }}>
-        {isLoading ? (
-          <Loader />
-        ) : (
+  return (
+    <Box width="100%" margin={{ bottom: '50px' }}>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Box>
+          {canCreateContent && (
+            <Box
+              direction="row"
+              justify="center"
+              width="100%"
+              margin={{ bottom: 'medium' }}
+            >
+              <Link to="/new-activity">
+                <Button size="small" label="New Activity" />
+              </Link>
+            </Box>
+          )}
           <Box direction="row" wrap justify="center">
-            {allSortedActivities.map((activity) => (
-              <PublicActivityThumb
-                key={activity.title}
-                item={activity}
-                history={history}
-              />
-            ))}
+            {allSortedActivities.map((activity) => {
+              return (
+                <Link
+                  key={activity.title}
+                  to={
+                    activity.isProcess
+                      ? `/process/${activity._id}`
+                      : `/activity/${activity._id}`
+                  }
+                >
+                  <PublicActivityThumb item={activity} />
+                </Link>
+              );
+            })}
           </Box>
-        )}
-      </Box>
-    );
-  }
+        </Box>
+      )}
+    </Box>
+  );
 }
 
 export default Activities;

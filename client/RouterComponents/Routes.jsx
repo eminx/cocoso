@@ -46,7 +46,7 @@ export default function () {
       <Switch>
         <LayoutContainer history={browserHistory}>
           <ScrollToTop>
-            <Route exact path="/activities" component={ActivitiesContainer} />
+            <Route exact path="/" component={ActivitiesContainer} />
             <Route exact path="/calendar" component={CalendarContainer} />
 
             <Route

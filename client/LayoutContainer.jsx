@@ -14,7 +14,7 @@ import NotificationsPopup from './UIComponents/NotificationsPopup';
 const menu = [
   {
     label: 'Activities',
-    route: '/activities',
+    route: '/',
   },
   {
     label: 'Offers',

@@ -165,7 +165,9 @@ class ActivityForm extends PureComponent {
       isCreating,
       isPublicActivity,
       onFormValueChange,
+      onQuillChange,
       formValues,
+      longDescription,
       onSubmit,
       isButtonDisabled,
       buttonLabel,
@@ -179,7 +181,7 @@ class ActivityForm extends PureComponent {
     }
 
     return (
-      <Box>
+      <Box pad="medium">
         <Heading level={4}>Occurences</Heading>
 
         {this.renderDateTime()}
@@ -221,7 +223,8 @@ class ActivityForm extends PureComponent {
             <ReactQuill
               modules={editorModules}
               formats={editorFormats}
-              onChange={this.onQuillChange}
+              onChange={onQuillChange}
+              value={longDescription}
             />
           </Field>
 
@@ -245,7 +248,7 @@ class ActivityForm extends PureComponent {
             </Field>
           )}
 
-          {isPublicActivity && (
+          {/* {isPublicActivity && (
             <Field label="Practical Info" name="practicalInfo">
               <TextArea
                 plain={false}
@@ -273,7 +276,7 @@ class ActivityForm extends PureComponent {
               name="room"
               options={placeOptions}
             />
-          </Field>
+          </Field> */}
 
           {isPublicActivity && (
             <Field

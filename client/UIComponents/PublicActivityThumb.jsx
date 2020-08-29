@@ -90,7 +90,7 @@ class PublicActivityThumb extends React.Component {
   };
 
   render() {
-    const { item, history } = this.props;
+    const { item } = this.props;
 
     const imageStyle = {
       width: 288,
@@ -98,37 +98,27 @@ class PublicActivityThumb extends React.Component {
       objectFit: 'cover',
     };
 
-    let clickLink = item.isProcess
-      ? `/process/${item._id}`
-      : `/activity/${item._id}`;
-
     return (
-      <Box
-        pad="medium"
-        hoverIndicator="light-1"
-        onClick={() => history.push(clickLink)}
-      >
-        <Box>
-          <Box pad={{ bottom: 'medium' }}>
-            <Text weight={600} size="large">
-              {item.isProcess ? item.title : item.title}
-            </Text>
-            <Text weight={300}>
-              {item.isProcess ? item.readingMaterial : item.subTitle}
-            </Text>
-          </Box>
-
-          <Box>
-            <LazyLoadImage
-              alt={item.title}
-              src={item.imageUrl}
-              style={imageStyle}
-              effect="black-and-white"
-            />
-          </Box>
-
-          <Box>{this.renderDates()}</Box>
+      <Box pad="medium" background="white" elevation="small" margin="small">
+        <Box pad={{ bottom: 'medium' }}>
+          <Text weight={600} size="large">
+            {item.isProcess ? item.title : item.title}
+          </Text>
+          <Text weight={300}>
+            {item.isProcess ? item.readingMaterial : item.subTitle}
+          </Text>
         </Box>
+
+        <Box>
+          <LazyLoadImage
+            alt={item.title}
+            src={item.imageUrl}
+            style={imageStyle}
+            effect="black-and-white"
+          />
+        </Box>
+
+        <Box>{this.renderDates()}</Box>
       </Box>
     );
   }

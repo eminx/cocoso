@@ -95,14 +95,9 @@ const Work = ({ history, match }) => {
         </Box>
       }
     >
-      <Box
-        pad="medium"
-        margin={{ top: 'medium' }}
-        elevation="xsmall"
-        background="white"
-      >
+      <Box margin={{ top: 'medium' }} elevation="xsmall" background="white">
         <NiceSlider images={work.images} />
-        <Box margin={{ top: 'medium' }}>
+        <Box margin={{ top: 'medium' }} pad="medium">
           <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
         </Box>
       </Box>
