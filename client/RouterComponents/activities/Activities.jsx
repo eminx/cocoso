@@ -21,7 +21,7 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-class Home extends React.Component {
+class Activities extends React.Component {
   state = {
     isUploading: false,
   };
@@ -124,4 +124,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default Activities;

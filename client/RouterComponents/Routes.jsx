@@ -4,7 +4,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 import LayoutContainer from '../LayoutContainer';
 // route components
-import ActivitiesContainer from './ActivitiesContainer';
+import ActivitiesContainer from './activities/ActivitiesContainer';
 
 import ActivityContainer from './activities/ActivityContainer';
 import NewActivityContainer from './activities/NewActivityContainer';
@@ -46,7 +46,7 @@ export default function () {
       <Switch>
         <LayoutContainer history={browserHistory}>
           <ScrollToTop>
-            <Route exact path="/" component={ActivitiesContainer} />
+            <Route exact path="/activities" component={ActivitiesContainer} />
             <Route exact path="/calendar" component={CalendarContainer} />
 
             <Route

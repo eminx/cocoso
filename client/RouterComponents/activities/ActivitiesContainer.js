@@ -1,5 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import Activities from './Activities';
+import ActivitiesList from './Activities';
 
 export default ActivitiesContainer = withTracker((props) => {
   // here we can pull out the props.subID and change our Meteor subscription based on it
@@ -21,4 +21,4 @@ export default ActivitiesContainer = withTracker((props) => {
     currentUser,
     processesList,
   };
-})(Activities);
+})(ActivitiesList);

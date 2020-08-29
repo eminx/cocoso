@@ -100,7 +100,7 @@ class PublicActivityThumb extends React.Component {
 
     let clickLink = item.isProcess
       ? `/process/${item._id}`
-      : `/event/${item._id}`;
+      : `/activity/${item._id}`;
 
     return (
       <Box

@@ -13,16 +13,12 @@ import NotificationsPopup from './UIComponents/NotificationsPopup';
 
 const menu = [
   {
+    label: 'Activities',
+    route: '/activities',
+  },
+  {
     label: 'Offers',
     route: '/works',
-  },
-  {
-    label: 'Calendar',
-    route: '/calendar',
-  },
-  {
-    label: 'Processes',
-    route: '/processes',
   },
   {
     label: 'Info',
