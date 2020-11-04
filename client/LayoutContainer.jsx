@@ -2,7 +2,16 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Anchor, Heading, Image, Paragraph, Footer } from 'grommet';
+import {
+  Anchor,
+  Box,
+  Button,
+  Heading,
+  Image,
+  Paragraph,
+  Footer,
+} from 'grommet';
+import { FormPrevious } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import Loader from './UIComponents/Loader';
 
@@ -17,14 +26,36 @@ const menu = [
     route: '/',
   },
   {
-    label: 'Offers',
+    label: 'Calendar',
+    route: '/calendar',
+  },
+  {
+    label: 'Works',
     route: '/works',
+  },
+  {
+    label: 'Processes',
+    route: '/processes',
   },
   {
     label: 'Info',
     route: `/page/about`,
   },
 ];
+
+pathsWithMenu = menu.map((item) => item.route !== '/page/about' && item.route);
+
+const getGotoPath = (pathname) => {
+  const shortPath = pathname.substring(0, 3);
+  switch (shortPath) {
+    case '/pr':
+      return '/processes';
+    case '/wo':
+      return 'works';
+    default:
+      return '';
+  }
+};
 
 const LayoutPage = ({
   currentUser,
@@ -45,7 +76,7 @@ const LayoutPage = ({
   const headerProps = {
     currentUser,
     history,
-    title: 'Cic Network',
+    title: 'Fanus',
   };
 
   const hostWithinUser =
@@ -71,7 +102,7 @@ const LayoutPage = ({
         canCreateContent,
       }}
     >
-      <Box className="main-viewport" justify="center" fill background="#fdfff8">
+      <Box className="main-viewport" justify="center" fill background="light-1">
         <Box width={{ max: '1280px' }} alignSelf="center" fill>
           <Header {...headerProps} />
           <Box>{children}</Box>
@@ -97,6 +128,9 @@ const Header = ({ currentUser, title, history }) => {
     </Box>
   );
 
+  const pathname = location.pathname;
+  const gotoPath = getGotoPath(pathname);
+
   return (
     <ScreenClassRender
       render={(screenClass) => {
@@ -105,40 +139,56 @@ const Header = ({ currentUser, title, history }) => {
         return (
           <Container fluid style={{ width: '100%' }}>
             <Row>
-              <Col lg={3}>
-                <Box direction="row" justify="between" align="center">
-                  <Link to="/">
-                    <Box width="60px" height="30px" margin={{ top: 'small' }}>
-                      <Image
-                        fit="contain"
-                        src="https://xyrden.s3.eu-central-1.amazonaws.com/CIC-Logo.png"
-                        className="header-logo"
-                        elevation="medium"
+              <Col xs={3}>
+                <Box>
+                  {!pathsWithMenu.includes(pathname) ? (
+                    <Link to={gotoPath}>
+                      <Button
+                        gap="none"
+                        plain
+                        size="large"
+                        icon={<FormPrevious />}
+                        margin={{ top: 'small' }}
                       />
-                    </Box>
-                  </Link>
-                  {!large && <UserStuff />}
+                    </Link>
+                  ) : (
+                    <Link to="/">
+                      <Box width="60px" height="30px" margin={{ top: 'small' }}>
+                        <Image
+                          fit="contain"
+                          src=""
+                          className="header-logo"
+                          elevation="medium"
+                        />
+                      </Box>
+                    </Link>
+                  )}
                 </Box>
               </Col>
-              <Col lg={6}>
-                <Box
-                  pad="small"
-                  justify="center"
-                  direction="row"
-                  flex={{ shrink: 0 }}
-                  alignSelf="center"
-                >
-                  {menu.map((item) => (
-                    <Box pad="small" key={item.label}>
-                      <Anchor
-                        onClick={() => history.push(item.route)}
-                        label={item.label}
-                      />
-                    </Box>
-                  ))}
-                </Box>
+              <Col xs={6}>
+                {pathsWithMenu.includes(pathname) && (
+                  <Box
+                    pad="small"
+                    justify="center"
+                    direction="row"
+                    flex={{ shrink: 0 }}
+                    alignSelf="center"
+                    wrap
+                  >
+                    {menu.map((item) => (
+                      <Box pad="small" key={item.label}>
+                        <Anchor
+                          onClick={() => history.push(item.route)}
+                          label={item.label}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
+                )}
               </Col>
-              <Col lg={3}>{large && <UserStuff />}</Col>
+              <Col xs={3}>
+                <UserStuff />
+              </Col>
             </Row>
           </Container>
         );

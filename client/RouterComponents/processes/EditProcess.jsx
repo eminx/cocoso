@@ -231,9 +231,7 @@ class EditProcess extends React.Component {
       return <Redirect to={`/process/${process._id}`} />;
     }
 
-    const buttonLabel = isUpdating
-      ? 'Updating your process...'
-      : 'Confirm and Update Process';
+    const buttonLabel = isUpdating ? 'Updating...' : 'Confirm and Update';
 
     const { title, description } = formValues;
     const isFormValid =
@@ -252,18 +250,6 @@ class EditProcess extends React.Component {
             </Link>
           </Box>
         }
-        rightContent={
-          process.adminId === currentUser._id && (
-            <Box pad="small">
-              <Button
-                plain
-                color="status-critical"
-                label="Delete"
-                onClick={this.showDeleteModal}
-              />
-            </Box>
-          )
-        }
       >
         <ProcessForm
           formValues={formValues}
@@ -277,6 +263,23 @@ class EditProcess extends React.Component {
           isFormValid={isFormValid}
           isButtonDisabled={!isFormValid || isUpdating}
         />
+
+        {process.adminId === currentUser._id && (
+          <Box
+            pad="small"
+            direction="row"
+            justify="center"
+            margin={{ top: 'medium' }}
+          >
+            <Button
+              color="status-critical"
+              label="Delete"
+              onClick={this.showDeleteModal}
+              fill={false}
+              size="small"
+            />
+          </Box>
+        )}
 
         <ConfirmModal
           visible={isDeleteModalOn}

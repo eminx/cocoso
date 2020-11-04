@@ -46,7 +46,9 @@ const Work = ({ history, match }) => {
 
   const AvatarHolder = (props) => (
     <Box alignSelf="end" align="center" {...props}>
-      <Avatar src={work.userAvatar} />
+      <Box>
+        <Avatar elevation="medium" src={work.userAvatar} />
+      </Box>
       <Text size="small">{work.authorUsername}</Text>
     </Box>
   );
@@ -66,9 +68,11 @@ const Work = ({ history, match }) => {
               )}
               <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
             </Box>
-            <Visible xs sm md lg>
-              <AvatarHolder />
-            </Visible>
+            <Box flex={{ shrink: 0 }}>
+              <Visible xs sm md lg>
+                <AvatarHolder />
+              </Visible>
+            </Box>
           </Box>
         </Box>
       }
@@ -89,9 +93,11 @@ const Work = ({ history, match }) => {
               <Heading level={4}>{work.additionalInfo}</Heading>
             </Visible>
           </Box>
-          <Hidden xs sm md lg>
-            <AvatarHolder />
-          </Hidden>
+          <Box flex={{ shrink: 0 }}>
+            <Hidden xs sm md lg>
+              <AvatarHolder />
+            </Hidden>
+          </Box>
         </Box>
       }
     >
@@ -101,7 +107,7 @@ const Work = ({ history, match }) => {
           <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
         </Box>
       </Box>
-      <Box pad="medium">
+      <Box pad="medium" margin={{ top: 'medium' }}>
         {isOwner && (
           <Button
             alignSelf="center"

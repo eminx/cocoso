@@ -90,8 +90,8 @@ const UserPopup = withRouter(({ currentUser, history }) => {
       <Box justify="center" pad="small">
         {currentUser.avatar ? (
           <Avatar
+            size="36px"
             src={currentUser.avatar && currentUser.avatar.src}
-            elevation={open ? 'large' : 'medium'}
           />
         ) : (
           <UserSettings />

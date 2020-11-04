@@ -246,7 +246,11 @@ class Activity extends React.Component {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box key={occurence.startDate + occurence.startTime}>
+            <Box
+              key={occurence.startDate + occurence.startTime}
+              elevation="small"
+              background="white"
+            >
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -267,12 +271,16 @@ class Activity extends React.Component {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box pad={{ bottom: 'medium' }}>
+          <Box pad={{ bottom: 'medium' }} background="white" elevation="small">
             {eventPast ? (
               <p>This event has past</p>
             ) : (
               <Box>
-                <Box direction="row" justify="end" margin={{ bottom: 'small' }}>
+                <Box
+                  direction="row"
+                  justify="end"
+                  margin={{ bottom: 'small', right: 'medium' }}
+                >
                   <Anchor
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
@@ -333,7 +341,7 @@ class Activity extends React.Component {
           <AccordionPanel
             key={occurence.startDate + occurence.startTime}
             header={
-              <Box pad="small">
+              <Box pad="small" background="white">
                 <FancyDate occurence={occurence} />
               </Box>
             }
@@ -429,7 +437,7 @@ class Activity extends React.Component {
     return (
       <Template
         leftContent={
-          <Box pad="small">
+          <Box pad="medium">
             <Heading level={2} style={{ marginBottom: 0 }}>
               {activityData.title}
             </Heading>
@@ -441,7 +449,7 @@ class Activity extends React.Component {
           </Box>
         }
         rightContent={
-          <Box width="100%" pad="small">
+          <Box width="100%" pad="medium">
             <Heading style={{ marginTop: 12, marginBottom: 0 }} level={4}>
               Dates
             </Heading>
@@ -457,7 +465,7 @@ class Activity extends React.Component {
       >
         <Box background="white" elevation="small">
           <Image fit="contain" fill src={activityData.imageUrl} />
-          <Box pad="small">
+          <Box pad="medium">
             <Box>
               <div
                 style={{
@@ -490,9 +498,9 @@ class Activity extends React.Component {
               )} */}
         </Box>
 
-        <Box pad="small" margin={{ bottom: 'small' }}>
+        <Box pad="medium" margin={{ bottom: 'small' }}>
           <Heading level={4} style={{ marginBottom: 0 }}>
-            Location Info
+            Location
           </Heading>
           <Text size="small">
             {/* {activityData.room && activityData.room + ', '} <br /> */}
@@ -558,35 +566,38 @@ const fields = [
 
 function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
-    <Form onSubmit={onSubmit}>
-      {fields.map((field) => (
-        <FormField
-          key={field.name}
-          name={field.name}
-          label={<Text size="small">{field.label}</Text>}
-        >
-          <TextInput plain={false} name={field.name} />
-        </FormField>
-      ))}
-      <Box margin={{ top: 'medium' }}>
-        <Button
-          type="submit"
-          size="small"
-          // disabled={hasErrors(getFieldsError())}
-          label={isUpdateMode ? 'Update' : 'Register'}
-          alignSelf="end"
-          margin={{ bottom: 'medium' }}
-        />
+    <Box background="white" pad="medium">
+      <Form onSubmit={onSubmit}>
+        {fields.map((field) => (
+          <FormField
+            key={field.name}
+            size="small"
+            name={field.name}
+            label={<Text size="small">{field.label}</Text>}
+          >
+            <TextInput plain={false} name={field.name} />
+          </FormField>
+        ))}
+        <Box margin={{ top: 'medium' }}>
+          <Button
+            type="submit"
+            size="small"
+            // disabled={hasErrors(getFieldsError())}
+            label={isUpdateMode ? 'Update' : 'Register'}
+            alignSelf="end"
+            margin={{ bottom: 'medium' }}
+          />
 
-        {isUpdateMode && (
-          <Text textAlign="center" size="small">
-            <Anchor color="status-critical" onClick={onDelete}>
-              Remove your registration
-            </Anchor>
-          </Text>
-        )}
-      </Box>
-    </Form>
+          {isUpdateMode && (
+            <Text textAlign="center" size="small">
+              <Anchor color="status-critical" onClick={onDelete}>
+                Remove your registration
+              </Anchor>
+            </Text>
+          )}
+        </Box>
+      </Form>
+    </Box>
   );
 }
 

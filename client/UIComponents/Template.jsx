@@ -23,7 +23,7 @@ const Template = ({
         <Col lg={6} style={colStyle}>
           <Box>
             {heading && (
-              <Box pad="small">
+              <Box pad="medium">
                 <Heading
                   level={2}
                   textAlign={titleCentered ? 'center' : 'start'}

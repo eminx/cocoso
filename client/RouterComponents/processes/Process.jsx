@@ -150,7 +150,7 @@ class Process extends Component {
             </Tooltip> */}
           </div>
         )}
-        <Box pad="small">
+        <Box pad="medium">
           <Heading level={2} style={{ overflowWrap: 'anywhere' }}>
             {process.title}
           </Heading>
@@ -401,7 +401,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box pad="small">
+            <Box pad="small" background="white" elevation="small">
               <FancyDate occurence={meeting} resources={resources} />
             </Box>
           }
@@ -409,7 +409,7 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small">
+          <Box pad="small" background="white" elevation="small">
             <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
               <List data={meeting.attendees}>
@@ -624,7 +624,7 @@ class Process extends Component {
       }));
 
     return (
-      <Fragment>
+      <Box>
         {!isAdmin && (
           <Box justify="center" direction="row" margin={{ bottom: 'large' }}>
             <Button
@@ -701,7 +701,7 @@ class Process extends Component {
             </ReactDropzone>
           </Box>
         )}
-      </Fragment>
+      </Box>
     );
   };
 
@@ -743,14 +743,17 @@ class Process extends Component {
                   width={screenClass === 'xs' ? 'medium' : 'large'}
                   height={screenClass === 'xs' ? 'small' : 'medium'}
                   margin={{ top: 'small', bottom: 'small' }}
+                  pad={{top: 'medium'}}
                 >
                   <Image src={process.imageUrl} fit="contain" fill />
                 </Box>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: process.description,
-                  }}
-                />
+                <Box pad="medium">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: process.description,
+                    }}
+                  />
+                </Box>
               </Tab>
               <Tab title="Discussion">
                 <div>{chatData && this.renderDiscussion()}</div>
@@ -840,30 +843,19 @@ class Process extends Component {
 
     return (
       <div>
-        <Box pad="small">
-          <Anchor
-            onClick={() => history.push('/processes')}
-            label={
-              <Button
-                gap="none"
-                plain
-                label="Processes"
-                icon={<FormPrevious />}
-              />
-            }
-          />
-        </Box>
         <Template
           leftContent={
             <Visible lg xl>
-              {this.renderMembersAndDocuments()}
+              <Box pad="medium">
+                {this.renderMembersAndDocuments()}
+              </Box>
             </Visible>
           }
           rightContent={
-            <Box pad="small">
+            <Box pad="medium">
               <Heading level={4}>Dates</Heading>
 
-              <Text size="small" pad="small">
+              <Text size="small" pad="small" margin={{ bottom: 'medium' }}>
                 <em>
                   {process.meetings &&
                   process.meetings.filter((meeting) =>
@@ -909,7 +901,9 @@ class Process extends Component {
             </Box>
           }
         >
-          {this.renderProcessInfo()}
+          <Box background="white" elevation="small">
+            {this.renderProcessInfo()}
+          </Box>
           <Visible sm md>
             {this.renderMembersAndDocuments()}
           </Visible>
@@ -924,7 +918,7 @@ class Process extends Component {
         >
           <Text>
             Are you sure you want to
-            {isMember ? ' leave ' : ' join '}
+              {isMember ? ' leave ' : ' join '}
             this Process?
           </Text>
         </ConfirmModal>

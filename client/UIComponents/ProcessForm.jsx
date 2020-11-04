@@ -23,7 +23,7 @@ const ProcessForm = ({
   isButtonDisabled,
 }) => {
   return (
-    <div>
+    <Box background="white" pad="medium" elevation="small">
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
         <Field
           label="Image"
@@ -74,7 +74,7 @@ const ProcessForm = ({
           <TextInput plain={false} name="capacity" />
         </Field>
 
-        <Box direction="row" justify="end" pad="small">
+        <Box direction="row" justify="center" pad="medium">
           <Button
             type="submit"
             primary
@@ -83,7 +83,7 @@ const ProcessForm = ({
           />
         </Box>
       </Form>
-    </div>
+    </Box>
   );
 };
 
