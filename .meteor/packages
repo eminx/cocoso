@@ -24,8 +24,6 @@ underscore@1.0.10
 force-ssl@1.1.0
 email@2.0.0
 tracker
-reactive-var
-accounts-ui
-accounts-ui-unstyled
-jquery
 react-meteor-data
+accounts-ui
+jquery
