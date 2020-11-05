@@ -13,7 +13,7 @@ const theme = {
     },
     colors: {
       brand: 'rgba(0,0,0, .75)',
-      focus: 'rgba(0,0,0, .25)',
+      // focus: 'rgba(0,0,0, .25)',
     },
   },
   formField: {

@@ -47,13 +47,12 @@ pathsWithMenu = menu.map((item) => item.route !== '/page/about' && item.route);
 
 const getGotoPath = (pathname) => {
   const shortPath = pathname.substring(0, 3);
-  switch (shortPath) {
-    case '/pr':
-      return '/processes';
-    case '/wo':
-      return 'works';
-    default:
-      return '';
+  if (shortPath === '/pr') {
+    return '/processes';
+  } else if (pathname.includes('/work/')) {
+    return '/works';
+  } else {
+    return '/';
   }
 };
 
