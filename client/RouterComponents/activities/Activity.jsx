@@ -249,6 +249,8 @@ class Activity extends React.Component {
             <Box
               key={occurence.startDate + occurence.startTime}
               background="white"
+              pad="small"
+              margin={{ bottom: 'small' }}
             >
               <FancyDate occurence={occurence} />
             </Box>

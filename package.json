@@ -36,6 +36,7 @@
     "array-move": "^2.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "bcrypt": "^1.0.3",
     "bcryptjs": "^2.4.3",
     "grommet": "^2.15.2",
     "grommet-icons": "^4.5.0",
