@@ -16,15 +16,10 @@ export const adminRoutes = [
 const UserPopup = withRouter(({ currentUser, history }) => {
   if (!currentUser) {
     return (
-      <Box justify="center" pad="small">
+      <Box justify="center">
         <Anchor
           onClick={() => history.push('/signup')}
-          label={
-            <Box margin={{ top: 'small' }}>
-              {' '}
-              <Text>Login / Signup</Text>
-            </Box>
-          }
+          label={<Text size="small">Login / Signup</Text>}
         />
       </Box>
     );

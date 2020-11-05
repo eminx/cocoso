@@ -1,6 +1,6 @@
 const userMenu = [
   { label: 'My Profile', value: '/my-profile' },
-  { label: 'My Offers', value: '/my-works' },
+  { label: 'My Works', value: '/my-works' },
 ];
 
 const adminMenu = [

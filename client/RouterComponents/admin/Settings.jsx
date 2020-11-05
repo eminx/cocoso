@@ -238,7 +238,7 @@ const Settings = ({ history }) => {
                 </Text>
               }
             >
-              <TextInput plain={false} name="work" placeholder="offer" />
+              <TextInput plain={false} name="work" placeholder="work" />
             </FormField>
           </Box>
 

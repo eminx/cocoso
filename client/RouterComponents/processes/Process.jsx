@@ -172,7 +172,9 @@ class Process extends Component {
               )}
             </Box>
           ) : (
-            <Box alignSelf="end">{process.adminUsername}</Box>
+            <Box alignSelf="end" pad={{ right: 'medium' }}>
+              {process.adminUsername}
+            </Box>
           )}
         </Box>
       </Box>
@@ -743,7 +745,7 @@ class Process extends Component {
                   width={screenClass === 'xs' ? 'medium' : 'large'}
                   height={screenClass === 'xs' ? 'small' : 'medium'}
                   margin={{ top: 'small', bottom: 'small' }}
-                  pad={{top: 'medium'}}
+                  pad={{ top: 'medium' }}
                 >
                   <Image src={process.imageUrl} fit="contain" fill />
                 </Box>
@@ -846,9 +848,7 @@ class Process extends Component {
         <Template
           leftContent={
             <Visible lg xl>
-              <Box pad="medium">
-                {this.renderMembersAndDocuments()}
-              </Box>
+              <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
             </Visible>
           }
           rightContent={
@@ -901,9 +901,7 @@ class Process extends Component {
             </Box>
           }
         >
-          <Box background="white" elevation="small">
-            {this.renderProcessInfo()}
-          </Box>
+          <Box background="white">{this.renderProcessInfo()}</Box>
           <Visible sm md>
             {this.renderMembersAndDocuments()}
           </Visible>
@@ -918,7 +916,7 @@ class Process extends Component {
         >
           <Text>
             Are you sure you want to
-              {isMember ? ' leave ' : ' join '}
+            {isMember ? ' leave ' : ' join '}
             this Process?
           </Text>
         </ConfirmModal>

@@ -43,7 +43,7 @@ function Works({ history }) {
 
   return (
     <Template
-      heading="My Offers"
+      heading="My Works"
       titleCentered
       leftContent={
         <Box pad="medium">

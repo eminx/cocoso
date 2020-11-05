@@ -202,7 +202,7 @@ class Calendar extends React.PureComponent {
     }));
 
     return (
-      <Box pad="medium">
+      <Box>
         {currentUser && currentUser.isRegisteredMember && (
           <Box
             direction="row"
@@ -225,6 +225,7 @@ class Calendar extends React.PureComponent {
           className="tags-container"
           width="100%"
           margin={{ bottom: 'medium' }}
+          pad="medium"
         >
           <SimpleTag
             checked={calendarFilter === 'All rooms'}
@@ -248,7 +249,7 @@ class Calendar extends React.PureComponent {
         {isLoading ? (
           <Loader />
         ) : (
-          <Box pad="medium" elevation="small" background="white">
+          <Box background="white">
             <CalendarView
               activities={filteredActivities}
               onSelect={this.handleSelectActivity}

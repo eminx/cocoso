@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-
+import { Box } from 'grommet';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';

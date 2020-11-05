@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Box, Button, Avatar, Heading, Text } from 'grommet';
 import { Visible, Hidden } from 'react-grid-system';
 
@@ -54,60 +54,62 @@ const Work = ({ history, match }) => {
   );
 
   return (
-    <Template
-      leftContent={
-        <Box pad="medium">
-          <Heading level={2}>{work.title}</Heading>
-          <Box direction="row" align="start" justify="between">
-            <Box pad={{ right: 'small' }} width="220px">
-              {work.category && (
-                <Tag
-                  label={work.category.label}
-                  background={work.category.color}
-                />
-              )}
-              <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
+    <Fragment>
+      <Template
+        leftContent={
+          <Box pad="medium">
+            <Heading level={2}>{work.title}</Heading>
+            <Box direction="row" align="start" justify="between">
+              <Box pad={{ right: 'small' }} width="220px">
+                {work.category && (
+                  <Tag
+                    label={work.category.label}
+                    background={work.category.color}
+                  />
+                )}
+                <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
+              </Box>
+              <Box flex={{ shrink: 0 }}>
+                <Visible xs sm md lg>
+                  <AvatarHolder />
+                </Visible>
+              </Box>
             </Box>
-            <Box flex={{ shrink: 0 }}>
-              <Visible xs sm md lg>
-                <AvatarHolder />
+          </Box>
+        }
+        rightContent={
+          <Box
+            direction="row"
+            pad="medium"
+            justify="between"
+            style={{ overflow: 'hidden' }}
+          >
+            <Box width="100%">
+              <Hidden lg xl>
+                <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
+                  {work.additionalInfo}
+                </Heading>
+              </Hidden>
+              <Visible lg xl>
+                <Heading level={4}>{work.additionalInfo}</Heading>
               </Visible>
             </Box>
+            <Box flex={{ shrink: 0 }}>
+              <Hidden xs sm md lg>
+                <AvatarHolder />
+              </Hidden>
+            </Box>
+          </Box>
+        }
+      >
+        <Box margin={{ top: 'medium' }} background="white">
+          <NiceSlider images={work.images} />
+          <Box margin={{ top: 'medium' }} pad="medium">
+            <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
           </Box>
         </Box>
-      }
-      rightContent={
-        <Box
-          direction="row"
-          pad="medium"
-          justify="between"
-          style={{ overflow: 'hidden' }}
-        >
-          <Box width="100%">
-            <Hidden lg xl>
-              <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
-                {work.additionalInfo}
-              </Heading>
-            </Hidden>
-            <Visible lg xl>
-              <Heading level={4}>{work.additionalInfo}</Heading>
-            </Visible>
-          </Box>
-          <Box flex={{ shrink: 0 }}>
-            <Hidden xs sm md lg>
-              <AvatarHolder />
-            </Hidden>
-          </Box>
-        </Box>
-      }
-    >
-      <Box margin={{ top: 'medium' }} elevation="xsmall" background="white">
-        <NiceSlider images={work.images} />
-        <Box margin={{ top: 'medium' }} pad="medium">
-          <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
-        </Box>
-      </Box>
-      <Box pad="medium" margin={{ top: 'medium' }}>
+      </Template>
+      <Box margin={{ bottom: 'large' }}>
         {isOwner && (
           <Button
             alignSelf="center"
@@ -121,7 +123,7 @@ const Work = ({ history, match }) => {
           />
         )}
       </Box>
-    </Template>
+    </Fragment>
   );
 };
 

@@ -15,7 +15,7 @@ const Template = ({
   children,
 }) => {
   return (
-    <Container fluid style={{ width: '100%', marginBottom: 100, padding: 0 }}>
+    <Container fluid style={{ width: '100%', padding: 0 }}>
       <Row gutterWidth={12}>
         <Col lg={3} style={colStyle}>
           {leftContent}

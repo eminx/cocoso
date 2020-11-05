@@ -21,6 +21,12 @@ const imageStyle = {
   objectFit: 'cover',
 };
 
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+};
+
 function getHSL(length, index, opacity = 1) {
   return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
 }
@@ -65,7 +71,7 @@ const Works = ({ history }) => {
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" size="small" label="Create Your Offer" />
+            <Button as="span" size="small" label="Create Your Work" />
           </Link>
         )}
       </Box>
@@ -99,7 +105,6 @@ const Works = ({ history }) => {
             pad="medium"
             margin="small"
             background="white"
-            elevation="xsmall"
             round="2px"
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
@@ -114,7 +119,7 @@ const Works = ({ history }) => {
                     margin={{ bottom: 'small' }}
                   />
                 )}
-                <Text weight={600} size="large">
+                <Text weight={600} size="large" style={ellipsisStyle}>
                   {work.title}
                 </Text>
               </Box>
@@ -130,7 +135,9 @@ const Works = ({ history }) => {
                 />
               </Box>
             )}
-            <Text weight={300}>{work.shortDescription}</Text>
+            <Text weight={300} style={ellipsisStyle}>
+              {work.shortDescription}
+            </Text>
           </Box>
         ))}
       </Box>

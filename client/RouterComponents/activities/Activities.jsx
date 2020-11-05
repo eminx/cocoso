@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { Box, Button } from 'grommet';
+import { ScreenClassRender } from 'react-grid-system';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
-import { Box, Button } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -97,42 +98,49 @@ function Activities({ activitiesList, processesList, isLoading }) {
   const allSortedActivities = getAllSorted();
 
   return (
-    <Box width="100%" margin={{ bottom: '50px' }}>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Box>
-          {canCreateContent && (
-            <Box
-              direction="row"
-              justify="center"
-              width="100%"
-              margin={{ bottom: 'medium' }}
-            >
-              <Link to="/new-activity">
-                <Button size="small" label="New Activity" />
-              </Link>
+    <ScreenClassRender
+      render={(screenClass) => (
+        <Box width="100%" margin={{ bottom: '50px' }}>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Box>
+              {canCreateContent && (
+                <Box
+                  direction="row"
+                  justify="center"
+                  width="100%"
+                  margin={{ bottom: 'medium' }}
+                >
+                  <Link to="/new-activity">
+                    <Button size="small" label="New Activity" />
+                  </Link>
+                </Box>
+              )}
+              <Box direction="row" wrap justify="center">
+                {allSortedActivities.map((activity) => {
+                  return (
+                    <Link
+                      key={activity.title}
+                      to={
+                        activity.isProcess
+                          ? `/process/${activity._id}`
+                          : `/activity/${activity._id}`
+                      }
+                    >
+                      <PublicActivityThumb
+                        large={['lg', 'xl', 'xxl'].includes(screenClass)}
+                        item={activity}
+                      />
+                    </Link>
+                  );
+                })}
+              </Box>
             </Box>
           )}
-          <Box direction="row" wrap justify="center">
-            {allSortedActivities.map((activity) => {
-              return (
-                <Link
-                  key={activity.title}
-                  to={
-                    activity.isProcess
-                      ? `/process/${activity._id}`
-                      : `/activity/${activity._id}`
-                  }
-                >
-                  <PublicActivityThumb item={activity} />
-                </Link>
-              );
-            })}
-          </Box>
         </Box>
       )}
-    </Box>
+    />
   );
 }
 

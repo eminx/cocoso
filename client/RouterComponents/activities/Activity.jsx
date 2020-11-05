@@ -248,7 +248,6 @@ class Activity extends React.Component {
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
               key={occurence.startDate + occurence.startTime}
-              elevation="small"
               background="white"
             >
               <FancyDate occurence={occurence} />
@@ -271,7 +270,7 @@ class Activity extends React.Component {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box pad={{ bottom: 'medium' }} background="white" elevation="small">
+          <Box background="white">
             {eventPast ? (
               <p>This event has past</p>
             ) : (
@@ -282,11 +281,13 @@ class Activity extends React.Component {
                   margin={{ bottom: 'small', right: 'medium' }}
                 >
                   <Anchor
+                    size="small"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
                     Change/Cancel Existing RSVP
                   </Anchor>
                 </Box>
+
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
@@ -296,14 +297,12 @@ class Activity extends React.Component {
                     Capacity is full now.
                   </p>
                 ) : (
-                  <Box pad="medium" background="light-1">
-                    <RsvpForm
-                      currentUser={currentUser}
-                      onSubmit={(event) =>
-                        this.handleRSVPSubmit(event, occurenceIndex)
-                      }
-                    />
-                  </Box>
+                  <RsvpForm
+                    currentUser={currentUser}
+                    onSubmit={(event) =>
+                      this.handleRSVPSubmit(event, occurenceIndex)
+                    }
+                  />
                 )}
               </Box>
             )}
@@ -450,10 +449,10 @@ class Activity extends React.Component {
         }
         rightContent={
           <Box width="100%" pad="medium">
-            <Heading style={{ marginTop: 12, marginBottom: 0 }} level={4}>
+            <Heading margin={{ bottom: 'small' }} level={4}>
               Dates
             </Heading>
-            <Text size="small">
+            <Text size="small" margin={{ bottom: 'small' }}>
               {activityData.isActivitiesDisabled
                 ? 'RSVP disabled. Please check the practical information.'
                 : 'Please click and open the date to RSVP'}
@@ -463,8 +462,15 @@ class Activity extends React.Component {
           </Box>
         }
       >
-        <Box background="white" elevation="small">
-          <Image fit="contain" fill src={activityData.imageUrl} />
+        <Box background="white">
+          <Box background="dark-1">
+            <Image
+              fit="contain"
+              fill
+              src={activityData.imageUrl}
+              style={{ maxHeight: 400 }}
+            />
+          </Box>
           <Box pad="medium">
             <Box>
               <div
@@ -499,7 +505,7 @@ class Activity extends React.Component {
         </Box>
 
         <Box pad="medium" margin={{ bottom: 'small' }}>
-          <Heading level={4} style={{ marginBottom: 0 }}>
+          <Heading level={4} margin={{ bottom: 'small' }}>
             Location
           </Heading>
           <Text size="small">
@@ -566,7 +572,7 @@ const fields = [
 
 function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
-    <Box background="white" pad="medium">
+    <Box background="white" pad="small">
       <Form onSubmit={onSubmit}>
         {fields.map((field) => (
           <FormField

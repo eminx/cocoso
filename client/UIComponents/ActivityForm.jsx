@@ -181,7 +181,7 @@ class ActivityForm extends PureComponent {
     }
 
     return (
-      <Box pad="medium">
+      <Box pad="medium" background="white">
         <Heading level={4}>Occurences</Heading>
 
         {this.renderDateTime()}

@@ -33,7 +33,7 @@ const WorkForm = ({
   categories,
 }) => {
   return (
-    <div>
+    <Box pad="medium" background="white">
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
         <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
           <TextInput
@@ -128,7 +128,7 @@ const WorkForm = ({
           />
         </Box>
       </Form>
-    </div>
+    </Box>
   );
 };
 

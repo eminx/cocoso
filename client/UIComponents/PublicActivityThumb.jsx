@@ -13,8 +13,14 @@ const dateStyle = {
   color: '#030303',
 };
 
-class PublicActivityThumb extends React.Component {
-  getEventTimes = (event) => {
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+};
+
+function PublicActivityThumb({ item, large }) {
+  const getEventTimes = (event) => {
     if (!event) {
       return;
     }
@@ -38,7 +44,7 @@ class PublicActivityThumb extends React.Component {
     }
   };
 
-  renderDate = (date) => {
+  const renderDate = (date) => {
     if (!date) {
       return;
     }
@@ -68,14 +74,44 @@ class PublicActivityThumb extends React.Component {
     );
   };
 
-  renderDates = () => {
-    const { item } = this.props;
-    const futureDates = item.datesAndTimes.filter((date) =>
-      moment(date.startDate).isAfter(yesterday)
-    );
-    const remaining = futureDates.length - 3;
+  const futureDates = item.datesAndTimes.filter((date) =>
+    moment(date.startDate).isAfter(yesterday)
+  );
+  const remaining = futureDates.length - 3;
 
-    return (
+  const imageStyle = {
+    width: '100%',
+    maxWidth: 360,
+    height: 220,
+    objectFit: 'cover',
+  };
+
+  return (
+    <Box
+      pad="medium"
+      background="white"
+      width="100%"
+      margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
+      style={{ maxWidth: '384px' }}
+    >
+      <Box pad={{ bottom: 'medium' }}>
+        <Text weight={600} size="large" style={ellipsisStyle}>
+          {item.isProcess ? item.title : item.title}
+        </Text>
+        <Text weight={300} style={ellipsisStyle}>
+          {item.isProcess ? item.readingMaterial : item.subTitle}
+        </Text>
+      </Box>
+
+      <Box>
+        <LazyLoadImage
+          alt={item.title}
+          src={item.imageUrl}
+          style={imageStyle}
+          effect="black-and-white"
+        />
+      </Box>
+
       <Box
         direction="row"
         justify="end"
@@ -83,45 +119,11 @@ class PublicActivityThumb extends React.Component {
         margin={{ top: 'small' }}
         wrap
       >
-        {futureDates.slice(0, 3).map((date) => this.renderDate(date))}
+        {futureDates.slice(0, 3).map((date) => renderDate(date))}
         {remaining > 0 && <div style={{ ...dateStyle }}>+ {remaining}</div>}
       </Box>
-    );
-  };
-
-  render() {
-    const { item } = this.props;
-
-    const imageStyle = {
-      width: 288,
-      height: 180,
-      objectFit: 'cover',
-    };
-
-    return (
-      <Box pad="medium" background="white" elevation="small" margin="small">
-        <Box pad={{ bottom: 'medium' }}>
-          <Text weight={600} size="large">
-            {item.isProcess ? item.title : item.title}
-          </Text>
-          <Text weight={300}>
-            {item.isProcess ? item.readingMaterial : item.subTitle}
-          </Text>
-        </Box>
-
-        <Box>
-          <LazyLoadImage
-            alt={item.title}
-            src={item.imageUrl}
-            style={imageStyle}
-            effect="black-and-white"
-          />
-        </Box>
-
-        <Box>{this.renderDates()}</Box>
-      </Box>
-    );
-  }
+    </Box>
+  );
 }
 
 export default PublicActivityThumb;

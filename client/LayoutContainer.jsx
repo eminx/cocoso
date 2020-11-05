@@ -143,11 +143,9 @@ const Header = ({ currentUser, title, history }) => {
                   {!pathsWithMenu.includes(pathname) ? (
                     <Link to={gotoPath}>
                       <Button
-                        gap="none"
                         plain
-                        size="large"
-                        icon={<FormPrevious />}
-                        margin={{ top: 'small' }}
+                        icon={<FormPrevious size="large" />}
+                        style={{ transform: 'translateX(-16px)' }}
                       />
                     </Link>
                   ) : (

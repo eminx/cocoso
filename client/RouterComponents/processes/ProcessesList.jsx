@@ -134,14 +134,16 @@ const ProcessesList = ({ isLoading, currentUser, processes, history }) => {
             <Button as="span" size="small" label="Create New Process" />
           </Link>
         </Box>
-        <RadioButtonGroup
-          name="filters"
-          options={filterOptions}
-          value={filterBy}
-          onChange={handleSelectedFilter}
-          direction="row"
-          justify="center"
-        />
+        <Box pad="medium">
+          <RadioButtonGroup
+            name="filters"
+            options={filterOptions}
+            value={filterBy}
+            onChange={handleSelectedFilter}
+            direction="row"
+            justify="center"
+          />
+        </Box>
       </Box>
 
       {processesList && processesList.length > 0 && (
@@ -165,7 +167,6 @@ const ProcessItem = ({ process, history }) => (
     pad="small"
     direction="row"
     margin={{ bottom: 'medium' }}
-    elevation="small"
     background="white"
   >
     <Box width="small" height="small" margin={{ right: 'small' }}>
