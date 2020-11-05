@@ -30,7 +30,6 @@ const Alert = ({ message, onClose, type }) => {
       gap="small"
       justify="between"
       round="xsmall"
-      elevation="medium"
       pad={{ top: 'small', bottom: 'small', right: 'medium', left: 'medium' }}
       background="light-2"
     >

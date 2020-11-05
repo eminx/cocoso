@@ -151,12 +151,7 @@ const Header = ({ currentUser, title, history }) => {
                   ) : (
                     <Link to="/">
                       <Box width="60px" height="30px" margin={{ top: 'small' }}>
-                        <Image
-                          fit="contain"
-                          src=""
-                          className="header-logo"
-                          elevation="medium"
-                        />
+                        <Image fit="contain" src="" className="header-logo" />
                       </Box>
                     </Link>
                   )}

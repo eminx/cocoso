@@ -195,12 +195,7 @@ class Profile extends React.Component {
           </Fragment>
         }
       >
-        <Box
-          pad="medium"
-          elevation="small"
-          background="white"
-          margin={{ bottom: 'large' }}
-        >
+        <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
           <Row>
             <Col sm={9}>
               <Personal

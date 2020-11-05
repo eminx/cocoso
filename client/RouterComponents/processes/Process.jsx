@@ -403,7 +403,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box pad="small" background="white" elevation="small">
+            <Box pad="small" background="white">
               <FancyDate occurence={meeting} resources={resources} />
             </Box>
           }
@@ -411,7 +411,7 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small" background="white" elevation="small">
+          <Box pad="small" background="white">
             <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
               <List data={meeting.attendees}>

@@ -24,12 +24,7 @@ const SignupPage = ({ history }) => {
           Have an account?{' '}
           <Anchor onClick={() => history.push('/login')}>Login</Anchor>
         </SimpleText>
-        <Box
-          pad="medium"
-          elevation="small"
-          background="white"
-          margin={{ bottom: 'medium' }}
-        >
+        <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
           <Signup onSubmit={createAccount} />
         </Box>
       </Box>

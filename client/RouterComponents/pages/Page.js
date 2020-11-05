@@ -86,12 +86,7 @@ class Page extends PureComponent {
           )
         }
       >
-        <Box
-          pad="medium"
-          elevation="small"
-          background="white"
-          margin={{ bottom: 'medium' }}
-        >
+        <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
           <div
             dangerouslySetInnerHTML={{
               __html: currentPage.longDescription,

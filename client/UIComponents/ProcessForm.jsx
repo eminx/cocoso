@@ -23,7 +23,7 @@ const ProcessForm = ({
   isButtonDisabled,
 }) => {
   return (
-    <Box background="white" pad="medium" elevation="small">
+    <Box background="white" pad="medium">
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
         <Field
           label="Image"

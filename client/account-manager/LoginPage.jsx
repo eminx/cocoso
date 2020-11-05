@@ -28,12 +28,7 @@ const LoginPage = ({ history }) => {
           Don't have an account?{' '}
           <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
         </SimpleText>
-        <Box
-          pad="medium"
-          elevation="small"
-          background="white"
-          margin={{ bottom: 'medium' }}
-        >
+        <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
           <Login onSubmit={handleSubmit} />
         </Box>
         <Box>

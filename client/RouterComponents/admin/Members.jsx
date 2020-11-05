@@ -233,7 +233,7 @@ function Members({ history }) {
           {filter} members ({usersSorted.length}){' '}
         </Heading>
       </Box>
-      <Box pad="small" elevation="small" background="white">
+      <Box pad="small" background="white">
         <NiceList list={usersSorted} border="horizontal" pad="small">
           {(user) => (
             <div key={user.username}>

@@ -96,7 +96,6 @@ const WorkItem = ({ work, history }) => (
     pad="small"
     direction="row"
     margin={{ bottom: 'medium' }}
-    elevation="small"
     background="white"
   >
     <Box width="small" height="small" margin={{ right: 'small' }}>
