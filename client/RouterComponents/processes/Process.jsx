@@ -6,22 +6,22 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 
 import {
-  Box,
-  Layer,
-  List,
-  Calendar,
-  Tabs,
-  Tab,
-  Image,
-  Select,
-  CheckBox,
-  TextArea,
-  Heading,
-  Button,
   Accordion,
   AccordionPanel,
   Anchor,
+  Box,
+  Button,
+  Calendar,
+  CheckBox,
+  Heading,
+  Image,
+  Layer,
+  List,
+  Select,
+  Tabs,
+  Tab,
   Text,
+  TextArea,
 } from 'grommet';
 
 import { FormPrevious, Close } from 'grommet-icons';
@@ -431,9 +431,9 @@ class Process extends Component {
             )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <a onClick={() => this.deleteMeeting(meetingIndex)}>
+              <Anchor onClick={() => this.deleteMeeting(meetingIndex)}>
                 Delete this meeting
-              </a>
+              </Anchor>
             </div>
           </Box>
         </AccordionPanel>
@@ -675,25 +675,25 @@ class Process extends Component {
         )}
 
         {isAdmin && (
-          <Box pad="small">
+          <Box>
             <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Box
                   width="medium"
                   height="small"
-                  background="light-1"
-                  round
+                  background="white"
+                  round="4px"
                   justify="center"
                   pad="medium"
                   {...getRootProps()}
                 >
                   {isUploading ? (
-                    <div>
+                    <div style={{ textAlign: 'center' }}>
                       <Loader />
                       uploading
                     </div>
                   ) : (
-                    <div>
+                    <div style={{ textAlign: 'center' }}>
                       <b>Drop documents to upload</b>
                     </div>
                   )}
@@ -993,14 +993,7 @@ class CreateMeetingForm extends PureComponent {
     const { isLocal } = this.state;
 
     return (
-      <div
-        style={{
-          padding: 12,
-          backgroundColor: '#f8f8f8',
-          marginBottom: 12,
-          marginTop: 12,
-        }}
-      >
+      <Box pad="small" background="white" margin={{ vertical: 'small' }}>
         <h4>Add a Meeting</h4>
         <div style={{ marginBottom: 6 }}>
           <Calendar
@@ -1066,7 +1059,7 @@ class CreateMeetingForm extends PureComponent {
             disabled={buttonDisabled}
           />
         </div>
-      </div>
+      </Box>
     );
   }
 }
