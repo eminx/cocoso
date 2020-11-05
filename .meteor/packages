@@ -25,5 +25,3 @@ force-ssl@1.1.0
 email@2.0.0
 tracker
 react-meteor-data
-accounts-ui
-jquery

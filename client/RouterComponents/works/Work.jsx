@@ -109,7 +109,7 @@ const Work = ({ history, match }) => {
           </Box>
         </Box>
       </Template>
-      <Box margin={{ bottom: 'large' }}>
+      <Box margin={{ vertical: 'large' }}>
         {isOwner && (
           <Button
             alignSelf="center"
