@@ -6,10 +6,11 @@ import {
   Anchor,
   Box,
   Button,
+  Footer,
   Heading,
   Image,
   Paragraph,
-  Footer,
+  Text,
 } from 'grommet';
 import { FormPrevious } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
@@ -69,7 +70,7 @@ const LayoutPage = ({
   // );
 
   if (!currentHost) {
-    return <Loader />;
+    return <Text>Trying to retrieve host</Text>;
   }
 
   const headerProps = {

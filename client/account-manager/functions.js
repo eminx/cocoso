@@ -6,9 +6,9 @@ async function createAccount(values) {
   check(values.email, String);
   check(values.username, String);
   check(values.password, String);
-
   try {
     const userId = await call('createAccount', values);
+    console.log(values, userId);
     loginWithPassword(values.username, values.password, true);
   } catch (error) {
     message.error(error.error ? error.error.reason : error.reason);
@@ -16,6 +16,7 @@ async function createAccount(values) {
 }
 
 function loginWithPassword(username, password, isNewAccount) {
+  console.log(username, password);
   Meteor.loginWithPassword(username, password, (error, respond) => {
     if (error) {
       console.log(error);

@@ -43,7 +43,8 @@ const Signup = ({ onSubmit }) => {
   // const [value, setValue] = useState({});
   // const [touched, setTouched] = useState(false);
 
-  const handleSubmit = ({ value }) => {
+  const handleSubmit = (value) => {
+    console.log(value, 'handlesubmt');
     const { username, email, password } = value;
     let usernameError, emailError, passwordError;
 
@@ -77,7 +78,7 @@ const Signup = ({ onSubmit }) => {
       <Form
         // value={value}
         // onChange={(nextValue) => setValue(nextValue)}
-        onSubmit={handleSubmit}
+        onSubmit={({ value, touched }) => console.log(value, touched)}
       >
         <FormField
           label="Username"
@@ -131,7 +132,7 @@ const Signup = ({ onSubmit }) => {
         <Box direction="row" justify="end" pad="small">
           <Button
             type="submit"
-            primary
+            // primary
             // disabled={usernameError || emailError || passwordError}
             label="Signup"
           />
