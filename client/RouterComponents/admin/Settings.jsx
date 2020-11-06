@@ -47,7 +47,7 @@ const Settings = ({ history }) => {
   };
 
   const handleFormSubmit = async () => {
-    if (!currentUser || !) {
+    if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return;
     }
@@ -94,8 +94,7 @@ const Settings = ({ history }) => {
   }
 
   if (!currentUser || role !== 'admin') {
-    <Alert>You are not allowed to be here</Alert>;
-    return null;
+    return <Alert>You are not allowed to be here</Alert>;
   }
 
   const handleCategoryInputChange = (value) => {

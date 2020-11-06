@@ -157,7 +157,7 @@ class NewProcess extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
-            message="You have to become a registered member to create a process."
+            message="You have to become a contributor to create a process."
             type="error"
           />
         </div>

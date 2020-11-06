@@ -2,19 +2,18 @@ import { Meteor } from 'meteor/meteor';
 import React, { Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Anchor, Box, Button, Text, FormField } from 'grommet';
-import { Close } from 'grommet-icons';
 import { Row, Col } from 'react-grid-system';
 
 import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
-import { AuthContainer } from '../../account-manager';
 import { message } from '../../UIComponents/message';
 import { userMenu } from '../../constants/general';
 import { call, resizeImage, uploadImage } from '../../functions';
 import FileDropper from '../../UIComponents/FileDropper';
 import Loader from '../../UIComponents/Loader';
+import { StateContext } from '../../LayoutContainer';
 
 const personalModel = {
   firstName: '',
@@ -152,8 +151,19 @@ class Profile extends React.Component {
     Meteor.logout();
   };
 
+  setAsParticipant = async () => {
+    try {
+      await call('setAsParticipant');
+      message.success('You are successfully set as participant');
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
   render() {
     const { currentUser, history } = this.props;
+    const { role } = this.context;
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -195,6 +205,21 @@ class Profile extends React.Component {
           </Fragment>
         }
       >
+        <Box alignSelf="center" margin={{ bottom: 'medium' }} pad="small">
+          {['admin', 'contributor', 'participant'].includes(role) ? (
+            <Text textAlign="center">
+              You are part of this organisation with the <b>{role}</b> role
+            </Text>
+          ) : (
+            <Box>
+              <Text>You are not part of this organisation. </Text>
+              <Button secondary onClick={() => this.setAsParticipant()}>
+                Join as participant
+              </Button>
+            </Box>
+          )}
+        </Box>
+
         <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
           <Row>
             <Col sm={9}>
@@ -287,5 +312,7 @@ class Profile extends React.Component {
     );
   }
 }
+
+Profile.contextType = StateContext;
 
 export default Profile;

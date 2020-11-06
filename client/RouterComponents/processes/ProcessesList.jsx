@@ -31,7 +31,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
   const [filterBy, setFilterBy] = useState('active');
   const { canCreateContent, role } = useContext(StateContext);
 
-  archiveProcess = (processId) => {
+  const archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
       if (error) {
         message.error(error.error);
@@ -41,7 +41,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
     });
   };
 
-  unarchiveProcess = (processId) => {
+  const unarchiveProcess = (processId) => {
     Meteor.call('unarchiveProcess', processId, (error, respond) => {
       if (error) {
         message.error(error.reason);
@@ -51,7 +51,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
     });
   };
 
-  getFilteredProcesses = () => {
+  const getFilteredProcesses = () => {
     if (!processes) {
       return [];
     }
@@ -73,7 +73,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
     return filteredProcessesWithAccessFilter;
   };
 
-  parseOnlyAllowedProcesses = (futureProcesses) => {
+  const parseOnlyAllowedProcesses = (futureProcesses) => {
     const futureProcessesAllowed = futureProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;
@@ -95,7 +95,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
     return futureProcessesAllowed;
   };
 
-  handleSelectedFilter = (event) => {
+  const handleSelectedFilter = (event) => {
     const value = event.target.value;
     if (!currentUser && value === 'my-processes') {
       message.destroy();
@@ -131,17 +131,19 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
   return (
     <Template heading="Processes" titleCentered>
       <Box>
-        <Box margin={{ bottom: 'medium' }} alignSelf="center">
-          <Link to={currentUser ? '/new-process' : '/my-profile'}>
-            <Button
-              as="span"
-              size="small"
-              label="NEW"
-              primary
-              icon={<FormAdd />}
-            />
-          </Link>
-        </Box>
+        {canCreateContent && (
+          <Box margin={{ bottom: 'medium' }} alignSelf="center">
+            <Link to={currentUser ? '/new-process' : '/my-profile'}>
+              <Button
+                as="span"
+                size="small"
+                label="NEW"
+                primary
+                icon={<FormAdd />}
+              />
+            </Link>
+          </Box>
+        )}
         <Box pad="medium">
           <RadioButtonGroup
             name="filters"

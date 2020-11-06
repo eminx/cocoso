@@ -23,7 +23,7 @@ Meteor.methods({
         uploadedUsername: user.username,
         uploadedBy: user._id,
         uploadedByName: user.username,
-        creationDate: new Date()
+        creationDate: new Date(),
       });
       return theNewDocId;
     } catch (error) {
@@ -35,7 +35,7 @@ Meteor.methods({
   removeManual(documentId) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
-      throw new Meteor.Error(error, 'You do not have the priveleges');
+      throw new Meteor.Error(error, 'You do not have the privileges');
     }
 
     try {
@@ -44,5 +44,5 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error, "Couldn't delete the document");
     }
-  }
+  },
 });

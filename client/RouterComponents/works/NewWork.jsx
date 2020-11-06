@@ -182,7 +182,7 @@ class NewWork extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to create an account and become a contributor to create work in this host"
+            message="You have to become a contributor to create work"
             type="error"
           />
         </div>

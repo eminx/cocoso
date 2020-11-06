@@ -27,8 +27,6 @@ Meteor.methods({
     check(formValues.title, String);
     check(formValues.longDescription, String);
 
-    const host = getHost(this);
-
     try {
       Pages.insert({
         host,
