@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
 import { UserSettings } from 'grommet-icons';
+import { StateContext } from '../LayoutContainer';
 
 export const userRoutes = [
   { label: 'Profile', value: '/my-profile' },
@@ -26,6 +27,7 @@ const UserPopup = withRouter(({ currentUser, history }) => {
   }
 
   const [open, setOpen] = useState(false);
+  const { role } = useContext(StateContext);
 
   return (
     <DropButton
@@ -56,7 +58,7 @@ const UserPopup = withRouter(({ currentUser, history }) => {
               )}
             </List>
           </Box>
-          {currentUser.isSuperAdmin && (
+          {role === 'admin' && (
             <Box margin={{ top: 'medium' }}>
               <Text size="small" weight="bold">
                 Admin

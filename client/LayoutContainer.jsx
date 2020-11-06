@@ -93,10 +93,7 @@ const LayoutPage = ({
     );
 
   const role = hostWithinUser && hostWithinUser.role;
-  const canCreateContent =
-    (role && role === 'admin') ||
-    role === 'contributor' ||
-    (currentUser && currentUser.isSuperAdmin);
+  const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
   return (
     <StateContext.Provider

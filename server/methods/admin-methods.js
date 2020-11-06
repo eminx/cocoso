@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-// import { Hosts } from '../../lib/collections';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
 
-import { getHost } from './shared';
+import { getHost, isAdmin } from './shared';
 
 const getVerifiedEmailText = (username) => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;

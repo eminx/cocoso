@@ -5,6 +5,7 @@ import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { parseTitle } from '../../functions';
+import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
   message.success('New page is successfully created', 6);
@@ -14,41 +15,43 @@ class NewPage extends React.Component {
   state = {
     formValues: {
       title: '',
-      longDescription: ''
+      longDescription: '',
     },
     isLoading: false,
     isSuccess: false,
     isError: false,
-    newPageId: null
+    newPageId: null,
   };
 
-  handleFormChange = value => {
+  handleFormChange = (value) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...value,
-      longDescription: formValues.longDescription
+      longDescription: formValues.longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  handleQuillChange = longDescription => {
+  handleQuillChange = (longDescription) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...formValues,
-      longDescription
+      longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
   handleSubmit = () => {
     const { currentUser } = this.props;
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    const { role } = this.context;
+
+    if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return false;
     }
@@ -61,13 +64,13 @@ class NewPage extends React.Component {
         console.log('error', error);
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newPageId: parseTitle(result),
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -80,8 +83,8 @@ class NewPage extends React.Component {
     if (
       pageTitles &&
       value &&
-      pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
-        pageData.title.toLowerCase() !== value.toLowerCase()
+      pageTitles.some((title) => title.toLowerCase() === value.toLowerCase()) &&
+      pageData.title.toLowerCase() !== value.toLowerCase()
     ) {
       pageExists = true;
     }
@@ -97,8 +100,9 @@ class NewPage extends React.Component {
 
   render() {
     const { currentUser, pageTitles } = this.props;
+    const { role } = this.context;
 
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    if (!currentUser || role !== 'admin') {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
@@ -128,5 +132,7 @@ class NewPage extends React.Component {
     );
   }
 }
+
+NewPage.contextType = StateContext;
 
 export default NewPage;

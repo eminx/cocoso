@@ -9,8 +9,7 @@ import { parseTitle } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { message, Alert } from '../../UIComponents/message';
-
-const contextName = Meteor.settings.public.contextName;
+import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
   message.success('The page is successfully updated', 6);
@@ -22,7 +21,7 @@ class EditPage extends React.Component {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    isDeleteModalOn: false
+    isDeleteModalOn: false,
   };
 
   componentDidMount() {
@@ -46,40 +45,41 @@ class EditPage extends React.Component {
     this.setState({
       formValues: {
         title: pageData.title,
-        longDescription: pageData.longDescription
-      }
+        longDescription: pageData.longDescription,
+      },
     });
   };
 
-  handleFormChange = value => {
+  handleFormChange = (value) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...value,
-      longDescription: formValues.longDescription
+      longDescription: formValues.longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
-  handleQuillChange = longDescription => {
+  handleQuillChange = (longDescription) => {
     const { formValues } = this.state;
     const newFormValues = {
       ...formValues,
-      longDescription
+      longDescription,
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newFormValues,
     });
   };
 
   handleSubmit = () => {
     const { formValues } = this.state;
     const { currentUser, pageData } = this.props;
+    const { role } = this.context;
 
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    if (!currentUser || role !== 'admin') {
       message.error('You are not allowed');
       return false;
     }
@@ -88,13 +88,13 @@ class EditPage extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newPageTitle: parseTitle(respond),
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -102,7 +102,9 @@ class EditPage extends React.Component {
 
   handleDeletePage = () => {
     const { currentUser, pageData } = this.props;
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    const { role } = this.context;
+
+    if (!currentUser || role !== 'admin') {
       message.error('You are not allowed');
       return false;
     }
@@ -113,13 +115,13 @@ class EditPage extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newPageTitle: 'deleted',
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -130,8 +132,9 @@ class EditPage extends React.Component {
 
   render() {
     const { pageData, pageTitles, currentUser } = this.props;
+    const { currentHost, role } = this.context;
 
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    if (!currentUser || role !== 'admin') {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert message="You are not allowed." type="error" />
@@ -144,7 +147,7 @@ class EditPage extends React.Component {
       isLoading,
       isSuccess,
       newPageTitle,
-      isDeleteModalOn
+      isDeleteModalOn,
     } = this.state;
 
     if (!pageData || !formValues) {
@@ -154,7 +157,7 @@ class EditPage extends React.Component {
     if (isSuccess) {
       successCreation();
       if (newPageTitle === 'deleted') {
-        return <Redirect to={`/page/about-${contextName}`} />;
+        return <Redirect to={`/page/about-${parseTitle(currentHost.name)}`} />;
       } else {
         return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
       }
@@ -201,5 +204,7 @@ class EditPage extends React.Component {
     );
   }
 }
+
+EditPage.contextType = StateContext;
 
 export default EditPage;

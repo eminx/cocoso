@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from './shared';
+import { getHost, isAdmin } from './shared';
 
 Meteor.methods({
   getPages() {
@@ -7,7 +7,7 @@ Meteor.methods({
 
     try {
       return Pages.find({
-        host: host
+        host: host,
       }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
@@ -16,7 +16,11 @@ Meteor.methods({
 
   createPage(formValues) {
     const user = Meteor.user();
-    if (!user || !user.isSuperAdmin) {
+    const host = getHost(this);
+
+    const isAdmin = isAdmin(user, host);
+
+    if (!user || !isAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -33,7 +37,7 @@ Meteor.methods({
         title: formValues.title,
         longDescription: formValues.longDescription,
         isPublished: true,
-        creationDate: new Date()
+        creationDate: new Date(),
       });
       return formValues.title;
     } catch (error) {
@@ -43,13 +47,16 @@ Meteor.methods({
 
   updatePage(pageId, formValues) {
     const user = Meteor.user();
-    if (!user || !user.isSuperAdmin) {
+    const host = getHost(this);
+
+    const isAdmin = isAdmin(user, host);
+
+    if (!user || !isAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
     check(formValues.title, String);
     check(formValues.longDescription, String);
-    // check(imageUrl, String);
 
     try {
       Pages.update(pageId, {
@@ -57,8 +64,8 @@ Meteor.methods({
           title: formValues.title,
           longDescription: formValues.longDescription,
           // imageUrl,
-          latestUpdate: new Date()
-        }
+          latestUpdate: new Date(),
+        },
       });
       return formValues.title;
     } catch (error) {
@@ -68,8 +75,12 @@ Meteor.methods({
 
   deletePage(pageId) {
     const user = Meteor.user();
-    if (!user || !user.isSuperAdmin) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isAdmin = isAdmin(user, host);
+
+    if (!user || !isAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     try {
@@ -77,5 +88,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
-  }
+  },
 });

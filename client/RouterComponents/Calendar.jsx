@@ -90,6 +90,11 @@ class Calendar extends React.PureComponent {
 
   handleDropDocument = (files) => {
     const { currentUser } = this.props;
+    const { role } = this.context;
+    if (!currentUser || role !== 'admin') {
+      return;
+    }
+
     if (files.length > 1) {
       message.error('Please drop only one file at a time.');
       return;
@@ -136,7 +141,8 @@ class Calendar extends React.PureComponent {
 
   removeManual = (documentId) => {
     const { currentUser } = this.props;
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    const { role } = this.context;
+    if (!currentUser || role !== 'admin') {
       return;
     }
     Meteor.call('removeManual', documentId, (error, respond) => {
@@ -152,7 +158,7 @@ class Calendar extends React.PureComponent {
 
   render() {
     const { isLoading, currentUser, resourcesList, allActivities } = this.props;
-    const { canCreateContent } = this.context;
+    const { canCreateContent, role } = this.context;
     const {
       editActivity,
       calendarFilter,
@@ -258,7 +264,7 @@ class Calendar extends React.PureComponent {
         <Row>
           <h3 style={{ textAlign: 'center' }}>Manuals</h3>
           <Col md={8}>
-            {isSuperAdmin && (
+            {role === 'admin' && (
               <ReactDropzone onDrop={this.handleDropDocument}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <div
@@ -290,7 +296,7 @@ class Calendar extends React.PureComponent {
           </Col>
           <Col md={16} style={{ paddingLeft: 12, paddingRight: 12 }}>
             {manuals && manuals.length > 0 && (
-              <NiceList list={manualsList} actionsDisabled={!isSuperAdmin}>
+              <NiceList list={manualsList} >
                 {manual => (
                   <Card
                     key={manual.documentLabel}

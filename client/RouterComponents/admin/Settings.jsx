@@ -23,7 +23,7 @@ const Settings = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [formAltered, setFormAltered] = useState(false);
 
-  const { settings, currentUser } = useContext(StateContext);
+  const { settings, currentUser, role } = useContext(StateContext);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -47,7 +47,7 @@ const Settings = ({ history }) => {
   };
 
   const handleFormSubmit = async () => {
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    if (!currentUser || !) {
       message.error('This is not allowed');
       return;
     }
@@ -93,7 +93,7 @@ const Settings = ({ history }) => {
     return <Loader />;
   }
 
-  if (!currentUser || !currentUser.isSuperAdmin) {
+  if (!currentUser || role !== 'admin') {
     <Alert>You are not allowed to be here</Alert>;
     return null;
   }
