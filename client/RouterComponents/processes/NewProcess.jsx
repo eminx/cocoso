@@ -8,6 +8,7 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
+import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
   message.success('Your process is successfully created', 6);
@@ -150,8 +151,9 @@ class NewProcess extends React.Component {
 
   render() {
     const { currentUser } = this.props;
+    const { canCreateContent } = this.context;
 
-    if (!currentUser || !currentUser.isRegisteredMember) {
+    if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
@@ -175,10 +177,6 @@ class NewProcess extends React.Component {
     if (isLoading) {
       return <Loader />;
     }
-
-    // if (isCreating) {
-
-    // }
 
     if (isSuccess) {
       successCreation();
@@ -226,5 +224,7 @@ class NewProcess extends React.Component {
     );
   }
 }
+
+NewProcess.contextType = StateContext;
 
 export default NewProcess;

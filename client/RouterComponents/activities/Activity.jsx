@@ -233,12 +233,11 @@ class Activity extends React.Component {
   renderDates = () => {
     const { activityData, currentUser } = this.props;
     const { capacityGotFullByYou } = this.state;
+    const { canCreateContent } = this.context;
 
     if (!activityData) {
       return;
     }
-
-    const isRegisteredMember = this.isRegisteredMember();
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -308,7 +307,7 @@ class Activity extends React.Component {
                 )}
               </Box>
             )}
-            {isRegisteredMember && (
+            {canCreateContent && (
               <Box>
                 <Heading level={5}>Attendees</Heading>
                 <span>Only visible to registered members</span>
@@ -362,17 +361,6 @@ class Activity extends React.Component {
     );
   };
 
-  isRegisteredMember = () => {
-    const { currentUser, currentHost } = this.context;
-
-    return (
-      currentUser &&
-      currentHost &&
-      currentHost.members &&
-      currentHost.members.some((member) => member.userId === currentUser._id)
-    );
-  };
-
   removeNotification = (messageIndex) => {
     const { activityData, currentUser } = this.props;
     const shouldRun = currentUser.notifications.find((notification) => {
@@ -417,7 +405,6 @@ class Activity extends React.Component {
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
     const messages = this.getChatMessages();
-    const isRegisteredMember = this.isRegisteredMember();
 
     const EditButton = currentUser &&
       activityData &&
@@ -496,7 +483,7 @@ class Activity extends React.Component {
               )}
 
             {currentUser &&
-              currentUser.isRegisteredMember &&
+              canCreateContent &&
               activityData &&
               activityData.internalInfo && (
                 <Box>
@@ -517,20 +504,17 @@ class Activity extends React.Component {
           <Text size="small">{activityData.address}</Text>
         </Box>
 
-        {activityData.isPublicActivity &&
-          messages &&
-          isRegisteredMember &&
-          chatData && (
-            <Box pad="small">
-              <Heading level={4}>Chat Section</Heading>
-              <Chattery
-                messages={messages}
-                onNewMessage={this.addNewChatMessage}
-                removeNotification={this.removeNotification}
-                isMember
-              />
-            </Box>
-          )}
+        {activityData.isPublicActivity && messages && chatData && (
+          <Box pad="small">
+            <Heading level={4}>Chat Section</Heading>
+            <Chattery
+              messages={messages}
+              onNewMessage={this.addNewChatMessage}
+              removeNotification={this.removeNotification}
+              isMember
+            />
+          </Box>
+        )}
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}

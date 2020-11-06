@@ -6,6 +6,7 @@ import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
+import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
   message.success('Your activity is successfully created', 6);
@@ -180,8 +181,9 @@ class NewActivity extends React.Component {
 
   render() {
     const { currentUser, resources } = this.props;
+    const { canCreateContent } = this.context;
 
-    if (!currentUser || !currentUser.isRegisteredMember) {
+    if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
@@ -261,5 +263,7 @@ class NewActivity extends React.Component {
     );
   }
 }
+
+NewActivity.contextType = StateContext;
 
 export default NewActivity;

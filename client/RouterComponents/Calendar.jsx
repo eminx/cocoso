@@ -9,6 +9,7 @@ import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
 import { SimpleTag, message } from '../UIComponents/message';
 import colors from '../constants/colors';
+import { StateContext } from '../LayoutContainer';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -150,13 +151,8 @@ class Calendar extends React.PureComponent {
   };
 
   render() {
-    const {
-      isLoading,
-      currentUser,
-      resourcesList,
-      allActivities,
-      manuals,
-    } = this.props;
+    const { isLoading, currentUser, resourcesList, allActivities } = this.props;
+    const { canCreateContent } = this.context;
     const {
       editActivity,
       calendarFilter,
@@ -184,24 +180,6 @@ class Calendar extends React.PureComponent {
       return <Redirect to={`/edit-activity/${selectedActivity._id}`} />;
     }
 
-    const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
-
-    const centerStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-      marginBottom: 24,
-    };
-
-    const manualsList = manuals.map((manual) => ({
-      ...manual,
-      actions: [
-        {
-          content: 'Remove',
-          handleClick: () => this.removeManual(manual._id),
-        },
-      ],
-    }));
-
     return (
       <Box>
         <Box alignSelf="center">
@@ -210,7 +188,7 @@ class Calendar extends React.PureComponent {
           </Heading>
         </Box>
 
-        {currentUser && currentUser.isRegisteredMember && (
+        {currentUser && canCreateContent && (
           <Box
             direction="row"
             justify="center"
@@ -397,5 +375,7 @@ class Calendar extends React.PureComponent {
     );
   }
 }
+
+Calendar.contextType = StateContext;
 
 export default Calendar;

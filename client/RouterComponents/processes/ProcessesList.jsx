@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,8 @@ import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
+import { StateContext } from '../../LayoutContainer';
+import { compareForSort } from '../../functions';
 
 const filterOptions = [
   {
@@ -25,10 +27,9 @@ const filterOptions = [
   },
 ];
 
-import { compareForSort } from '../../functions';
-
-const ProcessesList = ({ isLoading, currentUser, processes, history }) => {
+function ProcessesList({ isLoading, currentUser, processes, history }) {
   const [filterBy, setFilterBy] = useState('active');
+  const { canCreateContent } = useContext(StateContext);
 
   archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
@@ -156,7 +157,7 @@ const ProcessesList = ({ isLoading, currentUser, processes, history }) => {
       {processesList && processesList.length > 0 && (
         <NiceList
           list={processesList.reverse()}
-          actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
+          actionsDisabled={!currentUser || !canCreateContent}
           border={false}
         >
           {(process) => <ProcessItem process={process} history={history} />}
@@ -164,7 +165,7 @@ const ProcessesList = ({ isLoading, currentUser, processes, history }) => {
       )}
     </Template>
   );
-};
+}
 
 const ProcessItem = ({ process, history }) => (
   <Box
