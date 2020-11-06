@@ -77,7 +77,6 @@ const Signup = ({ onSubmit }) => {
       <Form
         // value={value}
         // onChange={(nextValue) => setValue(nextValue)}
-        // onSubmit={({ value, touched }) => console.log(value, touched)}
         onSubmit={handleSubmit}
       >
         <FormField
