@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from './shared';
+import { getHost, isContributorOrAdmin } from './shared';
 
 Meteor.methods({
   createChat(contextName, contextId) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
-
-    const host = getHost(this);
 
     const theChat = Chats.insert({
       host,

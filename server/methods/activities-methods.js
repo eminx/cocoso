@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from './shared';
+import { getHost, isContributorOrAdmin, isParticipant } from './shared';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
@@ -26,7 +26,11 @@ const getRemovalText = (firstName, occurence, activityId) => {
 Meteor.methods({
   createActivity(formValues, uploadedImage) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -44,8 +48,6 @@ Meteor.methods({
     check(formValues.isPublicActivity, Boolean);
 
     const roomIndex = getRoomIndex(formValues.room);
-
-    const host = getHost(this);
 
     try {
       const add = Activities.insert(
@@ -90,7 +92,11 @@ Meteor.methods({
 
   updateActivity(formValues, activityId, imageUrl) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -135,9 +141,14 @@ Meteor.methods({
 
   deleteActivity(activityId) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
+
     const activityToDelete = Activities.findOne(activityId);
     if (activityToDelete.authorId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
@@ -151,6 +162,15 @@ Meteor.methods({
   },
 
   registerAttendance(activityId, values, occurenceIndex = 0) {
+    const user = Meteor.user();
+    const host = getHost(this);
+
+    const isParticipant = isParticipant(user, host);
+
+    if (!user || !isParticipant) {
+      throw new Meteor.Error('Please become a participant first');
+    }
+
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     values.registerDate = new Date();

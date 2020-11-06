@@ -1,5 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { getRoomIndex, siteUrl, getHost } from './shared';
+import {
+  getRoomIndex,
+  siteUrl,
+  getHost,
+  isContributorOrAdmin,
+  isParticipant,
+} from './shared';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
@@ -48,15 +54,19 @@ const compareForSort = (a, b) => {
 Meteor.methods({
   createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
+
     check(formValues.title, String);
     check(formValues.description, String);
     check(formValues.readingMaterial, String);
     check(formValues.capacity, Number);
 
-    const host = getHost(this);
     try {
       const add = Processes.insert(
         {
@@ -119,7 +129,11 @@ Meteor.methods({
 
   updateProcess(processId, formValues, imageUrl) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -150,9 +164,14 @@ Meteor.methods({
 
   deleteProcess(processId) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
+
     const processToDelete = Processes.findOne(processId);
     if (processToDelete.adminId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
@@ -167,8 +186,12 @@ Meteor.methods({
 
   joinProcess(processId) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isParticipant = isParticipant(user, host);
+
+    if (!user || !isParticipant) {
+      throw new Meteor.Error('Please become a participant at this host first!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -179,7 +202,6 @@ Meteor.methods({
             memberId: user._id,
             username: user.username,
             profileImage: user.profileImage || null,
-            isRegisteredMember: user.isRegisteredMember,
             joinDate: new Date(),
           },
         },
@@ -248,8 +270,12 @@ Meteor.methods({
 
   addProcessMeeting(newMeeting, processId) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -278,8 +304,12 @@ Meteor.methods({
 
   deleteMeeting(processId, meetingIndex) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -307,8 +337,12 @@ Meteor.methods({
 
   attendMeeting(processId, meetingIndex) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isParticipant = isParticipant(user, host);
+
+    if (!user || !isParticipant) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -397,8 +431,12 @@ Meteor.methods({
 
   addProcessDocument(document, processId) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -419,8 +457,12 @@ Meteor.methods({
 
   removeProcessDocument(documentName, processId) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -448,8 +490,12 @@ Meteor.methods({
 
   changeAdmin(processId, newAdminUsername) {
     const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('You are not allowed!');
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
@@ -459,9 +505,8 @@ Meteor.methods({
 
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
 
-    if (!newAdmin.isRegisteredMember) {
-      throw new Meteor.Error('This is not allowed!');
-      return;
+    if (!isContributorOrAdmin(newAdmin, host)) {
+      throw new Meteor.Error('The new admin must be a contributor');
     }
 
     try {
@@ -478,6 +523,14 @@ Meteor.methods({
 
   archiveProcess(processId) {
     const user = Meteor.user();
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
     const theProcess = Processes.findOne(processId);
     if (theProcess.adminId !== user._id && !user.isSuperAdmin) {
       throw new Meteor.Error('You do not have admin privileges!');
@@ -496,6 +549,14 @@ Meteor.methods({
 
   unarchiveProcess(processId) {
     const user = Meteor.user();
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
     const theProcess = Processes.findOne(processId);
     if (theProcess.adminId !== user._id && !user.isSuperAdmin) {
       throw new Meteor.Error('You are not admin!');
@@ -514,6 +575,14 @@ Meteor.methods({
 
   invitePersonToPrivateProcess(processId, person) {
     const user = Meteor.user();
+    const host = getHost(this);
+
+    const isContributorOrAdmin = isContributorOrAdmin(user, host);
+
+    if (!user || !isContributorOrAdmin) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
     const theProcess = Processes.findOne(processId);
     if (theProcess.adminId !== user._id && !user.isSuperAdmin) {
       throw new Meteor.Error('You are not admin!');
