@@ -31,7 +31,7 @@ function Members({ history }) {
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, currentHost, role } = useContext(StateContext);
 
   const getAndSetUsers = async () => {
     setLoading(true);
@@ -81,7 +81,7 @@ function Members({ history }) {
     }
   };
 
-  if (!currentUser || !currentUser.isSuperAdmin) {
+  if (!currentUser || role !== 'admin') {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert
@@ -113,7 +113,9 @@ function Members({ history }) {
             ? 'Revert back to participant role'
             : 'Verify this user as a contributor',
         handleClick: () => toggleVerification(user),
-        isDisabled: user.isSuperAdmin,
+        isDisabled: currentHost.members.some(
+          (member) => member._id === user._id && member.role === 'admin'
+        ),
       },
     ],
   }));

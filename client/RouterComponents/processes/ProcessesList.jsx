@@ -29,7 +29,7 @@ const filterOptions = [
 
 function ProcessesList({ isLoading, currentUser, processes, history }) {
   const [filterBy, setFilterBy] = useState('active');
-  const { canCreateContent } = useContext(StateContext);
+  const { canCreateContent, role } = useContext(StateContext);
 
   archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
