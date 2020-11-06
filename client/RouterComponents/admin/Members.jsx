@@ -54,34 +54,40 @@ function Members({ history }) {
     return <Loader />;
   }
 
-  const toggleVerification = (user) => {
-    if (user.role === 'contributor') {
-      Meteor.call('unVerifyAsContributor', user.id, (error, response) => {
-        if (error) {
-          message.error(error.error);
-          console.log(error);
-          return;
-        }
-        getAndSetUsers();
-        message.success(
-          `${user.username} is now reverted back to being a participant`
-        );
-      });
-    } else if (user.role === 'participant') {
-      Meteor.call('verifyAsContributor', user.id, (error, response) => {
-        if (error) {
-          message.error(error.reason);
-          console.log(error);
-          getAndSetUsers();
-          return;
-        }
-        getAndSetUsers();
-        message.success(`${user.username} is now verified as a contributor`);
-      });
+  const setAsParticipant = async (user) => {
+    try {
+      await call('setAsParticipant', user.id);
+      message.success(`${user.username} is now set back as a participant`);
+      getAndSetUsers();
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
     }
   };
 
-  if (!currentUser || role !== 'admin') {
+  const setAsContributor = async (user) => {
+    try {
+      await call('setAsContributor', user.id);
+      message.success(`${user.username} is now set as a contributor`);
+      getAndSetUsers();
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  const setAsAdmin = async (user) => {
+    try {
+      await call('setAsAdmin', user.id);
+      message.success(`${user.username} is now set as an admin`);
+      getAndSetUsers();
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  if (!currentUser || (role !== 'admin' && !currentUser.isSuperAdmin)) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert
@@ -101,6 +107,8 @@ function Members({ history }) {
         return user.role === 'participant';
       } else if (filter === 'contributor') {
         return user.role === 'contributor';
+      } else if (filter === 'admin') {
+        return user.role === 'admin';
       }
     });
 
@@ -108,14 +116,27 @@ function Members({ history }) {
     ...user,
     actions: [
       {
-        content:
-          user.role === 'contributor'
-            ? 'Revert back to participant role'
-            : 'Verify this user as a contributor',
-        handleClick: () => toggleVerification(user),
-        isDisabled: currentHost.members.some(
-          (member) => member._id === user._id && member.role === 'admin'
-        ),
+        content: 'Set as a Contributor',
+        handleClick: () => setAsContributor(user),
+        isDisabled:
+          (!['admin', 'contributor'].includes(role) ||
+            !['participant'].includes(user.role)) &&
+          !currentUser.isSuperAdmin,
+      },
+      {
+        content: 'Set as an Admin',
+        handleClick: () => setAsAdmin(user),
+        isDisabled:
+          (!['admin'].includes(role) ||
+            !['contributor', 'participant'].includes(user.role)) &&
+          !currentUser.isSuperAdmin,
+      },
+      {
+        content: 'Set back as a Participant',
+        handleClick: () => setAsParticipant(user),
+        isDisabled:
+          (!['admin'].includes(role) || !['contributor'].includes(user.role)) &&
+          !currentUser.isSuperAdmin,
       },
     ],
   }));
@@ -132,6 +153,10 @@ function Members({ history }) {
     {
       label: 'Contributors',
       value: 'contributor',
+    },
+    {
+      label: 'Admins',
+      value: 'admin',
     },
   ];
 

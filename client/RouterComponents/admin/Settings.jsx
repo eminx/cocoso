@@ -273,6 +273,4 @@ const Settings = ({ history }) => {
   );
 };
 
-Settings.contextType = StateContext;
-
 export default Settings;

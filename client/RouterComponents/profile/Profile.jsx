@@ -151,9 +151,9 @@ class Profile extends React.Component {
     Meteor.logout();
   };
 
-  setAsParticipant = async () => {
+  setSelfAsParticipant = async () => {
     try {
-      await call('setAsParticipant');
+      await call('setSelfAsParticipant');
       message.success('You are successfully set as participant');
     } catch (error) {
       console.error('Error uploading:', error);

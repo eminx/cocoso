@@ -35,13 +35,78 @@ Meteor.methods({
     const currentHost = Hosts.findOne({ host: host });
     const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
-    if (!user.isSuperAdmin || !isAdmin) {
+    if (!user.isSuperAdmin && !isAdmin) {
       throw new Meteor.Error('You are not allowed');
     }
     return currentHost.members;
   },
 
-  verifyAsContributor(memberId) {
+  setAsAdmin(memberId) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    const member = Meteor.users.findOne(memberId);
+
+    if (
+      !member.memberships ||
+      !member.memberships.some((membership) => {
+        return (
+          membership.host === host &&
+          ['contributor', 'participant'].includes(membership.role)
+        );
+      })
+    ) {
+      throw new Meteor.Error('User is not a participant or contributor');
+    }
+
+    try {
+      Meteor.users.update(
+        {
+          _id: memberId,
+          'memberships.host': host,
+        },
+        {
+          $set: {
+            'memberships.$.role': 'admin',
+            verifiedBy: {
+              username: user.username,
+              userId: user._id,
+              date: new Date(),
+            },
+          },
+        }
+      );
+      Hosts.update(
+        { _id: currentHost._id, 'members.id': memberId },
+        {
+          $set: {
+            'members.$.role': 'admin',
+            verifiedBy: {
+              username: user.username,
+              userId: user._id,
+              date: new Date(),
+            },
+          },
+        }
+      );
+      // Meteor.call(
+      //   'sendEmail',
+      //   memberId,
+      //   `You are now a verified member at ${contextName}`,
+      //   getVerifiedEmailText(member.username)
+      // );
+    } catch (error) {
+      throw new Meteor.Error(error, 'Did not work! :/');
+    }
+  },
+
+  setAsContributor(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
@@ -103,7 +168,7 @@ Meteor.methods({
     }
   },
 
-  unVerifyAsContributor(memberId) {
+  setAsParticipant(memberId) {
     const user = Meteor.user();
     const host = getHost(this);
 

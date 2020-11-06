@@ -16,7 +16,7 @@ Meteor.methods({
     }
   },
 
-  setAsParticipant() {
+  setSelfAsParticipant() {
     const host = getHost(this);
     const user = Meteor.user();
 
