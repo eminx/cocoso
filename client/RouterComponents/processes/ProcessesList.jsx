@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+import { FormAdd } from 'grommet-icons';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -128,10 +129,16 @@ const ProcessesList = ({ isLoading, currentUser, processes, history }) => {
 
   return (
     <Template heading="Processes" titleCentered>
-      <Box pad="small">
+      <Box>
         <Box margin={{ bottom: 'medium' }} alignSelf="center">
           <Link to={currentUser ? '/new-process' : '/my-profile'}>
-            <Button as="span" size="small" label="Create New Process" />
+            <Button
+              as="span"
+              size="small"
+              label="NEW"
+              primary
+              icon={<FormAdd />}
+            />
           </Link>
         </Box>
         <Box pad="medium">

@@ -27,16 +27,16 @@ const menu = [
     route: '/',
   },
   {
+    label: 'Processes',
+    route: '/processes',
+  },
+  {
     label: 'Calendar',
     route: '/calendar',
   },
   {
     label: 'Works',
     route: '/works',
-  },
-  {
-    label: 'Processes',
-    route: '/processes',
   },
   {
     label: 'Info',
@@ -69,8 +69,14 @@ const LayoutPage = ({
   //   false
   // );
 
-  if (!currentHost) {
-    return <Text>Trying to retrieve host</Text>;
+  if (hostLoading) {
+    return (
+      <Box width="100%">
+        <Box pad="medium" alignSelf="center">
+          <Text>Trying to retrieve the host...</Text>
+        </Box>
+      </Box>
+    );
   }
 
   const headerProps = {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Box, Text, Button, Avatar } from 'grommet';
+import { Avatar, Box, Button, Heading, Text } from 'grommet';
+import { FormAdd } from 'grommet-icons';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -68,10 +69,21 @@ const Works = ({ history }) => {
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
+      <Box alignSelf="center">
+        <Heading level={2} textAlign="center">
+          Works
+        </Heading>
+      </Box>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" size="small" label="Create Your Work" />
+            <Button
+              as="span"
+              size="small"
+              label="NEW"
+              primary
+              icon={<FormAdd />}
+            />
           </Link>
         )}
       </Box>

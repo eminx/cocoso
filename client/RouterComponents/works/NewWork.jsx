@@ -176,13 +176,13 @@ class NewWork extends PureComponent {
   };
 
   render() {
-    const { currentUser } = this.context;
+    const { currentUser, canCreateContent } = this.context;
 
-    if (!currentUser) {
+    if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to create an account to create work"
+            message="You have to create an account and become a contributor to create work in this host"
             type="error"
           />
         </div>

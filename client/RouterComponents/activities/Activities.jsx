@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Box, Button } from 'grommet';
+import { Box, Button, Heading } from 'grommet';
+import { FormAdd } from 'grommet-icons';
 import { ScreenClassRender } from 'react-grid-system';
 
 import { StateContext } from '../../LayoutContainer';
@@ -105,6 +106,11 @@ function Activities({ activitiesList, processesList, isLoading }) {
             <Loader />
           ) : (
             <Box>
+              <Box alignSelf="center">
+                <Heading level={2} textAlign="center">
+                  Activities
+                </Heading>
+              </Box>
               {canCreateContent && (
                 <Box
                   direction="row"
@@ -113,7 +119,13 @@ function Activities({ activitiesList, processesList, isLoading }) {
                   margin={{ bottom: 'medium' }}
                 >
                   <Link to="/new-activity">
-                    <Button size="small" label="New Activity" />
+                    <Button
+                      as="span"
+                      size="small"
+                      label="NEW"
+                      primary
+                      icon={<FormAdd />}
+                    />
                   </Link>
                 </Box>
               )}

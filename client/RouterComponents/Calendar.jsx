@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Box, Button, Text } from 'grommet';
+import { Box, Button, Heading, Text } from 'grommet';
+import { FormAdd } from 'grommet-icons';
 
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
@@ -15,7 +16,7 @@ class Calendar extends React.PureComponent {
   state = {
     mode: 'list',
     editActivity: null,
-    calendarFilter: 'All rooms',
+    calendarFilter: 'All',
     selectedActivity: null,
   };
 
@@ -173,7 +174,7 @@ class Calendar extends React.PureComponent {
 
     let filteredActivities = allActivities;
 
-    if (calendarFilter !== 'All rooms') {
+    if (calendarFilter !== 'All') {
       filteredActivities = allActivities.filter(
         (activity) => activity.room === calendarFilter
       );
@@ -203,59 +204,76 @@ class Calendar extends React.PureComponent {
 
     return (
       <Box>
+        <Box alignSelf="center">
+          <Heading level={2} textAlign="center">
+            Calendar
+          </Heading>
+        </Box>
+
         {currentUser && currentUser.isRegisteredMember && (
           <Box
             direction="row"
             justify="center"
             width="100%"
-            margin={{ bottom: 'medium' }}
+            margin={{ bottom: 'small' }}
           >
             <Link to="/new-activity">
-              <Button size="small" label="New Activity" />
+              <Button
+                as="span"
+                size="small"
+                label="NEW"
+                primary
+                icon={<FormAdd />}
+              />
             </Link>
           </Box>
         )}
 
         <Box
-          direction="row"
-          justify="center"
-          align="center"
-          gap="small"
-          wrap
-          className="tags-container"
-          width="100%"
-          margin={{ bottom: 'medium' }}
-          pad="medium"
+          background="white"
+          pad={{ top: 'small' }}
+          margin={{ bottom: 'large' }}
         >
-          <SimpleTag
-            checked={calendarFilter === 'All rooms'}
-            onClick={() => this.handleCalendarFilterChange('All rooms')}
-            key={'All rooms'}
+          <Box
+            direction="row"
+            justify="center"
+            align="center"
+            gap="small"
+            className="tags-container"
+            width="100%"
+            pad="small"
+            wrap
           >
-            {'All rooms'}
-          </SimpleTag>
-          {resourcesList.map((room, i) => (
             <SimpleTag
-              color={colors[i]}
-              checked={calendarFilter === room.name}
-              onClick={() => this.handleCalendarFilterChange(room.name)}
-              key={room.name}
+              checked={calendarFilter === 'All'}
+              onClick={() => this.handleCalendarFilterChange('All')}
+              key={'All'}
             >
-              {room.name}
+              {'All'}
             </SimpleTag>
-          ))}
-        </Box>
-
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Box background="white">
-            <CalendarView
-              activities={filteredActivities}
-              onSelect={this.handleSelectActivity}
-            />
+            {resourcesList.map((room, i) => (
+              <SimpleTag
+                color={colors[i]}
+                checked={calendarFilter === room.name}
+                onClick={() => this.handleCalendarFilterChange(room.name)}
+                key={room.name}
+              >
+                {room.name}
+              </SimpleTag>
+            ))}
           </Box>
-        )}
+
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Box>
+              <CalendarView
+                activities={filteredActivities}
+                onSelect={this.handleSelectActivity}
+              />
+            </Box>
+          )}
+        </Box>
 
         {/* <Divider />
 

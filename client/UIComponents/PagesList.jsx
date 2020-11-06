@@ -9,7 +9,7 @@ import { ScreenClassRender } from 'react-grid-system';
 
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   return (
-    <Box margin={{ bottom: 'medium' }}>
+    <Box>
       <ScreenClassRender
         render={(screen) =>
           screen === 'xs' ? (

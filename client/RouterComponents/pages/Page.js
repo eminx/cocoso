@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Box } from 'grommet';
+import { FormAdd } from 'grommet-icons';
 
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -41,7 +42,7 @@ class Page extends PureComponent {
   };
 
   render() {
-    const { currentUser } = this.context;
+    const { currentUser, role } = this.context;
     const { match } = this.props;
     const { pages, isLoading } = this.state;
 
@@ -73,17 +74,21 @@ class Page extends PureComponent {
               onChange={this.handlePageClick}
               activePageTitle={routeName}
             />
+
+            {currentUser && role === 'admin' && (
+              <Box pad="medium" direction="row" justify="center">
+                <Link to="/new-page">
+                  <Button
+                    as="span"
+                    size="small"
+                    label="NEW"
+                    primary
+                    icon={<FormAdd />}
+                  />
+                </Link>
+              </Box>
+            )}
           </Box>
-        }
-        rightContent={
-          currentUser &&
-          currentUser.isSuperAdmin && (
-            <Box pad="small" direction="row" justify="center">
-              <Link to="/new-page" style={{ marginBottom: 12 }}>
-                <Button size="small" label="New Page" />
-              </Link>
-            </Box>
-          )
         }
       >
         <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
@@ -94,7 +99,7 @@ class Page extends PureComponent {
           />
         </Box>
 
-        {currentUser && currentUser.isSuperAdmin && (
+        {currentUser && role === 'admin' && (
           <Box pad="small" alignSelf="center">
             <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
               <Button size="small" label="Edit this page" />
