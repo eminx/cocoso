@@ -31,7 +31,7 @@ const Alert = ({ message, onClose, type }) => {
       justify="between"
       round="xsmall"
       pad={{ top: 'small', bottom: 'small', right: 'medium', left: 'medium' }}
-      background="light-2"
+      background="dark-2"
     >
       <Box align="center" direction="row" gap="xsmall">
         {success && <StatusGood color="status-ok" />}
