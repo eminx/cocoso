@@ -285,7 +285,7 @@ Meteor.methods({
       throw new Meteor.Error('Category already exists!');
     }
 
-    const catLength = Categories.find({ host }).count();
+    const catLength = Categories.find({ host, type }).count();
 
     try {
       return Categories.insert({
