@@ -22,7 +22,7 @@ const formModel = {
   address: '',
   practicalInfo: '',
   internalInfo: '',
-  room: '',
+  resource: '',
 };
 
 const defaultCapacity = 40;

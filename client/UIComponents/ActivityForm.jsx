@@ -174,7 +174,8 @@ class ActivityForm extends PureComponent {
       isFormValid,
     } = this.props;
 
-    const placeOptions = resources && resources.map((part) => part.name);
+    const resourceOptions =
+      resources && resources.map((resource) => resource.label);
 
     if (!formValues) {
       return null;
@@ -266,17 +267,17 @@ class ActivityForm extends PureComponent {
                 placeholder="17th Street, Berlin..."
               />
             </Field>
-          )}
+          )}*/}
 
-          <Field label="Room/Equipment" name="room">
+          <Field label="Resource to book" name="resource">
             <Select
               size="small"
               plain={false}
               placeholder="Select room/equipment to book"
-              name="room"
-              options={placeOptions}
+              name="resource"
+              options={resourceOptions}
             />
-          </Field> */}
+          </Field>
 
           {isPublicActivity && (
             <Field

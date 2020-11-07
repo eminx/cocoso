@@ -4,7 +4,7 @@ import { getHost, isContributorOrAdmin, isParticipant } from './shared';
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
 
-import { getRoomIndex, siteUrl } from './shared';
+import { getResourceIndex, siteUrl } from './shared';
 
 const getRegistrationText = (
   firstName,
@@ -46,7 +46,7 @@ Meteor.methods({
     });
     check(formValues.isPublicActivity, Boolean);
 
-    const roomIndex = getRoomIndex(formValues.room);
+    const resourceIndex = getResourceIndex(formValues.resource, host);
 
     try {
       const add = Activities.insert(
@@ -64,7 +64,7 @@ Meteor.methods({
           address: formValues.address || null,
           capacity: formValues.capacity || 20,
           datesAndTimes: formValues.datesAndTimes,
-          roomIndex: roomIndex,
+          resourceIndex,
           imageUrl: uploadedImage || null,
           isSentForReview: false,
           isPublicActivity: formValues.isPublicActivity,
@@ -106,7 +106,7 @@ Meteor.methods({
       check(recurrence.endTime, String);
     });
 
-    const roomIndex = getRoomIndex(formValues.room);
+    const resourceIndex = getResourceIndex(formValues.room);
     const theG = Activities.findOne(activityId);
     if (user._id !== theG.authorId) {
       throw new Meteor.Error('You are not allowed!');
@@ -123,7 +123,7 @@ Meteor.methods({
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,
           address: formValues.address || null,
-          roomIndex: roomIndex,
+          resourceIndex: resourceIndex,
           datesAndTimes: formValues.datesAndTimes,
           isPublicActivity: formValues.isPublicActivity,
           isActivitiesDisabled: formValues.isActivitiesDisabled,

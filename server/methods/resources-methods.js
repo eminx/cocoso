@@ -5,7 +5,7 @@ Meteor.methods({
   getResources() {
     const host = getHost(this);
 
-    return Resources.find({ host }).fetch();
+    return Resources.find({ host }, { sort: { creationDate: 1 } }).fetch();
   },
 
   createResource(values) {
@@ -29,6 +29,7 @@ Meteor.methods({
     try {
       const newResourceId = Resources.insert({
         ...values,
+        resourceIndex: resources.length,
         host,
         authorId: user._id,
         authorAvatar: user.avatar || '',
@@ -48,6 +49,15 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
+    const resources = Resources.find({ host }).fetch();
+    if (resources.some((resource) => resource.label === values.label)) {
+      throw new Meteor.Error('There already is a resource with this name');
+    }
+    if (values.label.length < 3) {
+      throw new Meteor.Error(
+        'Resource name is too short. Minimum 3 letters required'
+      );
+    }
 
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');

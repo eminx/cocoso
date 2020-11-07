@@ -1,13 +1,12 @@
-export const getRoomIndex = (room) => {
-  const resourcesList = Resources.find().fetch();
-  if (resourcesList.length > 0) {
-    let roomIndex;
-    resourcesList.forEach((place, i) => {
-      if (place.name === room) {
-        roomIndex = i.toString();
-      }
-    });
-    return roomIndex;
+export const getResourceIndex = (resource, host) => {
+  const resources = Resources.find(
+    { host },
+    { sort: { creationDate: 1 } }
+  ).fetch();
+
+  if (resources.length > 0) {
+    const resItem = resources.find((res) => res.label === resource);
+    return resItem.resourceIndex.toString();
   }
 };
 

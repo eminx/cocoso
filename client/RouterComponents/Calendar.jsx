@@ -235,14 +235,14 @@ class Calendar extends React.PureComponent {
             >
               {'All'}
             </SimpleTag>
-            {resourcesList.map((room, i) => (
+            {resourcesList.map((resource, i) => (
               <SimpleTag
                 color={colors[i]}
-                checked={calendarFilter === room.name}
-                onClick={() => this.handleCalendarFilterChange(room.name)}
-                key={room.name}
+                checked={calendarFilter === resource.label}
+                onClick={() => this.handleCalendarFilterChange(resource.label)}
+                key={resource.label}
               >
-                {room.name}
+                {resource.label}
               </SimpleTag>
             ))}
           </Box>

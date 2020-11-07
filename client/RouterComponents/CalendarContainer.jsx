@@ -45,7 +45,7 @@ export default CalendarContainer = withTracker((props) => {
             isMultipleDay:
               recurrence.isMultipleDay ||
               recurrence.startDate !== recurrence.endDate,
-            roomIndex: activity.roomIndex,
+            resourceIndex: activity.resourceIndex,
             isPublicActivity: activity.isPublicActivity,
             imageUrl: activity.imageUrl,
             _id: activity._id,

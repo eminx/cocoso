@@ -11,7 +11,7 @@ const CalendarView = (props) => {
     <div>
       <BigCalendar
         eventPropGetter={(event) => ({
-          className: 'category-' + event.roomIndex,
+          className: 'category-' + event.resourceIndex,
         })}
         onSelectEvent={props.onSelect}
         events={activities}
