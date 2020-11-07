@@ -224,7 +224,7 @@ function Members({ history, members, isLoading }) {
         </Box>
       }
     >
-      <Box align="center" pad="small" margin={{ bottom: 'large' }}>
+      <Box align="center" pad="small">
         <Text size="small" margin="small" weight="bold">
           Filter
         </Text>
@@ -266,7 +266,7 @@ function Members({ history, members, isLoading }) {
           {filter} members ({membersSorted.length}){' '}
         </Heading>
       </Box>
-      <Box pad="small" background="white">
+      <Box pad="small" background="white" margin={{ bottom: 'large' }}>
         <NiceList list={membersSorted} border="horizontal" pad="small">
           {(member) => (
             <div key={member.username}>
