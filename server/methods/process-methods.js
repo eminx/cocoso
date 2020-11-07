@@ -279,7 +279,7 @@ Meteor.methods({
     }
 
     newMeeting.attendees = [];
-    newMeeting.roomIndex = getRoomIndex(newMeeting.room);
+    newMeeting.resourceIndex = getRoomIndex(newMeeting.resource);
     const meetings = [...theProcess.meetings, newMeeting];
     const sortedMeetings = meetings.sort(compareForSort);
 

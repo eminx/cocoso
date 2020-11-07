@@ -27,7 +27,7 @@ const formModel = {
   address: '',
   practicalInfo: '',
   internalInfo: '',
-  room: '',
+  resource: '',
 };
 
 class EditActivity extends PureComponent {
@@ -68,7 +68,7 @@ class EditActivity extends PureComponent {
       longDescription,
       place,
       address,
-      room,
+      resource,
       practicalInfo,
       internalInfo,
       isPublicActivity,
@@ -80,7 +80,7 @@ class EditActivity extends PureComponent {
       this.setState({
         formValues: {
           title,
-          room,
+          resource,
         },
         longDescription,
         isPublicActivity,
@@ -94,7 +94,7 @@ class EditActivity extends PureComponent {
           subTitle,
           place,
           address,
-          room,
+          resource,
           practicalInfo,
           internalInfo,
         },

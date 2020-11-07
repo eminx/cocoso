@@ -45,7 +45,6 @@ Meteor.methods({
       check(recurrence.endTime, String);
     });
     check(formValues.isPublicActivity, Boolean);
-
     const resourceIndex = getResourceIndex(formValues.resource, host);
 
     try {
@@ -57,7 +56,7 @@ Meteor.methods({
           title: formValues.title,
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
-          room: formValues.room || null,
+          resource: formValues.resource || null,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,
@@ -105,8 +104,7 @@ Meteor.methods({
       check(recurrence.startTime, String);
       check(recurrence.endTime, String);
     });
-
-    const resourceIndex = getResourceIndex(formValues.room);
+    const resourceIndex = getResourceIndex(formValues.resource, host);
     const theG = Activities.findOne(activityId);
     if (user._id !== theG.authorId) {
       throw new Meteor.Error('You are not allowed!');
@@ -118,7 +116,7 @@ Meteor.methods({
           title: formValues.title,
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
-          room: formValues.room || null,
+          resource: formValues.resource || null,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,

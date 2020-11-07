@@ -498,8 +498,8 @@ class Activity extends React.Component {
             Location
           </Heading>
           <Text size="small">
-            {/* {activityData.room && activityData.room + ', '} <br /> */}
-            {activityData.place}
+            {/* {activityData.room && activityData.resource + ', '} <br /> */}
+            {activityData.resource}
           </Text>
           <Text size="small">{activityData.address}</Text>
         </Box>

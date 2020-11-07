@@ -273,7 +273,7 @@ class ActivityForm extends PureComponent {
             <Select
               size="small"
               plain={false}
-              placeholder="Select room/equipment to book"
+              placeholder="Select resource to book"
               name="resource"
               options={resourceOptions}
             />

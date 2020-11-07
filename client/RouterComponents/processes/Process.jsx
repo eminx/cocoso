@@ -37,7 +37,7 @@ import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { message } from '../../UIComponents/message';
 
 const publicSettings = Meteor.settings.public;
-const defaultMeetingRoom = 'Office';
+const defaultMeetingResource = 'Office';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -46,7 +46,7 @@ class Process extends Component {
     modalOpen: false,
     redirectToLogin: false,
     newMeeting: {
-      room: defaultMeetingRoom,
+      resource: defaultMeetingresource,
     },
     isFormValid: false,
     isUploading: false,
@@ -275,7 +275,7 @@ class Process extends Component {
 
   handlePlaceChange = (place) => {
     const { newMeeting } = this.state;
-    newMeeting.room = place;
+    newMeeting.resource = place;
     this.setState({ newMeeting, isFormValid: this.isFormValid() });
   };
 
@@ -1015,8 +1015,8 @@ class CreateMeetingForm extends PureComponent {
             <Select
               size="small"
               plain={false}
-              placeholder="Select room"
-              name="room"
+              placeholder="Select resource"
+              name="resource"
               options={resources.map((part, i) => part.name)}
               onChange={({ option }) => handlePlaceChange(option)}
             />

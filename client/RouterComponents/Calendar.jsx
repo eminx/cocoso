@@ -178,7 +178,7 @@ class Calendar extends React.PureComponent {
 
     if (calendarFilter !== 'All') {
       filteredActivities = allActivities.filter(
-        (activity) => activity.room === calendarFilter
+        (activity) => activity.resource === calendarFilter
       );
     }
 
@@ -343,7 +343,7 @@ class Calendar extends React.PureComponent {
               </Text>{' '}
               <Text>booked</Text>{' '}
               <Text weight="bold">
-                {selectedActivity && selectedActivity.room}
+                {selectedActivity && selectedActivity.resource}
               </Text>
             </div>
             <Text>{this.getActivityTimes(selectedActivity)}</Text>
