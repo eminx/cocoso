@@ -90,9 +90,9 @@ function PublicActivityThumb({ item, large }) {
     <Box
       pad="medium"
       background="white"
-      width="100%"
+      width="320px"
       margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
-      style={{ maxWidth: '384px' }}
+      // style={{ maxWidth: '384px' }}
       className="hoverable"
     >
       <Box pad={{ bottom: 'medium' }}>
