@@ -63,7 +63,7 @@ Meteor.methods({
         host,
         images,
         authorId: user._id,
-        authorAvatar: user.avatar || '',
+        userAvatar: user.avatar && user.avatar.src,
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName,
