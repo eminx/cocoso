@@ -186,7 +186,11 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user || !isParticipant(user, currentHost)) {
+    if (
+      !user ||
+      (!isParticipant(user, currentHost) &&
+        !isContributorOrAdmin(user, currentHost))
+    ) {
       throw new Meteor.Error('Please become a participant at this host first!');
     }
 
@@ -334,7 +338,11 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user || !isParticipant(user, currentHost)) {
+    if (
+      !user ||
+      (!isParticipant(user, currentHost) &&
+        !isContributorOrAdmin(user, currentHost))
+    ) {
       throw new Meteor.Error('Not allowed!');
     }
 
