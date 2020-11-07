@@ -46,7 +46,7 @@ class Process extends Component {
     modalOpen: false,
     redirectToLogin: false,
     newMeeting: {
-      resource: defaultMeetingresource,
+      resource: defaultMeetingResource,
     },
     isFormValid: false,
     isUploading: false,
