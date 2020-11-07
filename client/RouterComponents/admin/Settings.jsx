@@ -140,8 +140,8 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Categories</Heading>
-        <Text>You can set categories here</Text>
+        <Heading level={3}>Work Categories</Heading>
+        <Text>You can set categories for work entries here</Text>
         <Box pad="small" direction="row" gap="small" wrap justify="center">
           {categories.map((category) => (
             <Tag

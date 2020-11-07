@@ -145,6 +145,7 @@ class NewActivity extends React.Component {
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
       if (error) {
         console.log('error', error);
+        message.error(error.reason);
         this.setState({
           isCreating: false,
           isError: true,
@@ -208,18 +209,14 @@ class NewActivity extends React.Component {
 
     if (isSuccess) {
       successCreation();
-      if (isPublicActivity) {
-        return <Redirect to={`/event/${newActivityId}`} />;
-      } else {
-        return <Redirect to={`/calendar`} />;
-      }
+      return <Redirect to={`/event/${newActivityId}`} />;
     }
 
     const buttonLabel = isCreating
       ? 'Creating your activity...'
       : 'Confirm and Create';
     const { title } = formValues;
-    const isFormValid = formValues && title.length > 3 && uploadableImageLocal;
+    const isFormValid = formValues && title.length > 3;
 
     return (
       <Template heading="Create a New Activity">

@@ -87,7 +87,10 @@ function Members({ history }) {
     }
   };
 
-  if (!currentUser || (role !== 'admin' && !currentUser.isSuperAdmin)) {
+  if (
+    !currentUser ||
+    (role !== 'admin' && role !== 'contributor' && !currentUser.isSuperAdmin)
+  ) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert

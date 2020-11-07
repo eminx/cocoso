@@ -67,11 +67,11 @@ Meteor.methods({
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName,
-        userAvatar: user.avatar.src,
         creationDate: new Date(),
       });
       return newWorkId;
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -87,7 +87,6 @@ Meteor.methods({
         $set: {
           ...values,
           images,
-          userAvatar: user.avatar.src,
           latestUpdate: new Date(),
         },
       });

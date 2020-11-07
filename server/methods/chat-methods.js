@@ -5,10 +5,9 @@ Meteor.methods({
   createChat(contextName, contextId) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isContributorOrAdmin = isContributorOrAdmin(user, host);
-
-    if (!user || !isContributorOrAdmin) {
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 

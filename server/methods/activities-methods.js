@@ -27,10 +27,9 @@ Meteor.methods({
   createActivity(formValues, uploadedImage) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isContributorOrAdmin = isContributorOrAdmin(user, host);
-
-    if (!user || !isContributorOrAdmin) {
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -93,10 +92,9 @@ Meteor.methods({
   updateActivity(formValues, activityId, imageUrl) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isContributorOrAdmin = isContributorOrAdmin(user, host);
-
-    if (!user || !isContributorOrAdmin) {
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -142,10 +140,9 @@ Meteor.methods({
   deleteActivity(activityId) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isContributorOrAdmin = isContributorOrAdmin(user, host);
-
-    if (!user || !isContributorOrAdmin) {
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -164,10 +161,9 @@ Meteor.methods({
   registerAttendance(activityId, values, occurenceIndex = 0) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isParticipant = isParticipant(user, host);
-
-    if (!user || !isParticipant) {
+    if (!user || !isParticipant(user, currentHost)) {
       throw new Meteor.Error('Please become a participant first');
     }
 

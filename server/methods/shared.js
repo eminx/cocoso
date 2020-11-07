@@ -19,7 +19,7 @@ export const isMember = (user, host) => {
   if (!user || !host) {
     return false;
   }
-  host.members.some((member) => member._id === user._id);
+  host.members.some((member) => member.id === user._id);
 };
 
 export const isParticipant = (user, host) => {
@@ -27,7 +27,7 @@ export const isParticipant = (user, host) => {
     return false;
   }
   return host.members.some(
-    (member) => member._id === user._id && member.role === 'participant'
+    (member) => member.id === user._id && member.role === 'participant'
   );
 };
 
@@ -36,7 +36,7 @@ export const isContributor = (user, host) => {
     return false;
   }
   return host.members.some(
-    (member) => member._id === user._id && member.role === 'contributor'
+    (member) => member.id === user._id && member.role === 'contributor'
   );
 };
 
@@ -45,7 +45,7 @@ export const isAdmin = (user, host) => {
     return false;
   }
   return host.members.some(
-    (member) => member._id === user._id && member.role === 'admin'
+    (member) => member.id === user._id && member.role === 'admin'
   );
 };
 
@@ -53,8 +53,9 @@ export const isContributorOrAdmin = (user, host) => {
   if (!user || !host) {
     return false;
   }
+
   return host.members.some(
     (member) =>
-      member._id === user._id && ['admin', 'contributor'].includes(member.role)
+      member.id === user._id && ['admin', 'contributor'].includes(member.role)
   );
 };

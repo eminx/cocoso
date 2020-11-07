@@ -105,7 +105,6 @@ class Process extends Component {
       (error, respond) => {
         if (error) {
           console.log('error', error);
-          message.destroy();
           message.error(error.error);
         }
       }
@@ -205,10 +204,8 @@ class Process extends Component {
 
     Meteor.call('joinProcess', process._id, (error, response) => {
       if (error) {
-        message.destroy();
         message.error(error.error);
       } else {
-        message.destroy();
         message.success('You are added to the process');
       }
     });
@@ -221,10 +218,8 @@ class Process extends Component {
 
     Meteor.call('leaveProcess', process._id, (error, response) => {
       if (error) {
-        message.destroy();
         message.error(error.error);
       } else {
-        message.destroy();
         message.info('You are removed from the process');
       }
     });
@@ -251,7 +246,6 @@ class Process extends Component {
       (error, respond) => {
         if (error) {
           console.log('error', error);
-          message.destroy();
           message.error(error.error);
         }
       }
@@ -297,10 +291,8 @@ class Process extends Component {
       (error, respond) => {
         if (error) {
           console.log('error', error);
-          message.destroy();
           message.error(error.error);
         } else {
-          message.destroy();
           message.success('Your process meeting is added!');
         }
       }
@@ -311,12 +303,10 @@ class Process extends Component {
     const { process, currentUser } = this.props;
 
     if (!currentUser) {
-      message.destroy();
       message.error('Please login and join the process to attend the meeting');
       return;
     }
     if (!this.isMember()) {
-      message.destroy();
       message.error('Please join the process to attend the meeting');
       return;
     }
@@ -333,10 +323,8 @@ class Process extends Component {
         (error, respond) => {
           if (error) {
             console.log('error', error);
-            message.destroy();
             message.error(error.error);
           } else {
-            message.destroy();
             message.success('Your are successfully removed from the list!');
           }
         }
@@ -349,10 +337,8 @@ class Process extends Component {
         (error, respond) => {
           if (error) {
             console.log('error', error);
-            message.destroy();
             message.error(error.error);
           } else {
-            message.destroy();
             message.success('Your attendance is successfully registered!');
           }
         }
@@ -719,7 +705,6 @@ class Process extends Component {
       (error, respond) => {
         if (error) {
           console.log('error', error);
-          message.destroy();
           message.error(error.error);
         } else {
           message.success('The manual is successfully removed');

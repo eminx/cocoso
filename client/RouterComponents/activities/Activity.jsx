@@ -308,7 +308,7 @@ class Activity extends React.Component {
               </Box>
             )}
             {canCreateContent && (
-              <Box>
+              <Box pad={{ horizontal: 'small' }}>
                 <Heading level={5}>Attendees</Heading>
                 <span>Only visible to registered members</span>
                 <div

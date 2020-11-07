@@ -6,6 +6,7 @@ const userMenu = [
 const adminMenu = [
   { label: 'Settings', value: '/admin/settings' },
   { label: 'Members', value: '/admin/members' },
+  { label: 'Resources', value: '/admin/resources' },
 ];
 
 export { userMenu, adminMenu };

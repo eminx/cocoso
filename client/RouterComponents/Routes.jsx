@@ -22,6 +22,7 @@ import EditPageContainer from './pages/EditPageContainer';
 import ProfileContainer from './profile/ProfileContainer';
 import Settings from './admin/Settings';
 import Members from './admin/Members';
+import Resources from './admin/Resources';
 
 import UserContainer from './user/UserContainer';
 
@@ -84,6 +85,7 @@ export default function () {
 
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />
+            <Route path="/admin/resources" component={Resources} />
 
             <Route path="/user/:id" component={UserContainer} />
 

@@ -17,10 +17,9 @@ Meteor.methods({
   createPage(formValues) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isAdmin = isAdmin(user, host);
-
-    if (!user || !isAdmin) {
+    if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -46,10 +45,9 @@ Meteor.methods({
   updatePage(pageId, formValues) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isAdmin = isAdmin(user, host);
-
-    if (!user || !isAdmin) {
+    if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -74,10 +72,9 @@ Meteor.methods({
   deletePage(pageId) {
     const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
-    const isAdmin = isAdmin(user, host);
-
-    if (!user || !isAdmin) {
+    if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 

@@ -17,7 +17,7 @@ import FileDropper from '../UIComponents/FileDropper';
 import NiceSlider from '../UIComponents/NiceSlider';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
-const WorkForm = ({
+function WorkForm({
   formValues,
   onFormChange,
   onQuillChange,
@@ -31,7 +31,7 @@ const WorkForm = ({
   onSortImages,
   onRemoveImage,
   categories,
-}) => {
+}) {
   return (
     <Box pad="medium" background="white">
       <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
@@ -57,7 +57,6 @@ const WorkForm = ({
         <FormField
           label="Category"
           margin={{ bottom: 'medium', top: 'medium' }}
-          required
         >
           <Select
             name="category"
@@ -130,7 +129,7 @@ const WorkForm = ({
       </Form>
     </Box>
   );
-};
+}
 
 const thumbStyle = (backgroundImage) => ({
   flexBasis: 120,
