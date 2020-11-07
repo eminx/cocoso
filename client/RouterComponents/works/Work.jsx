@@ -47,7 +47,10 @@ const Work = ({ history, match }) => {
   const AvatarHolder = (props) => (
     <Box alignSelf="end" align="center" {...props}>
       <Box>
-        <Avatar elevation="medium" src={work.userAvatar} />
+        <Avatar
+          elevation="medium"
+          src={work.authorAvatar && work.authorAvatar.src}
+        />
       </Box>
       <Text size="small">{work.authorUsername}</Text>
     </Box>

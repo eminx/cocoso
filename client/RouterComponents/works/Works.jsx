@@ -136,7 +136,10 @@ const Works = ({ history }) => {
                   {work.title}
                 </Text>
               </Box>
-              <Avatar flex={{ grow: 0 }} src={work.userAvatar} />
+              <Avatar
+                flex={{ grow: 0 }}
+                src={work.authorAvatar && work.authorAvatar.src}
+              />
             </Box>
             {work.images && work.images[0] && (
               <Box>
