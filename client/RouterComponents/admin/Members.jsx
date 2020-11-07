@@ -109,11 +109,11 @@ function Members({ history, members, isLoading }) {
       if (filter === 'all') {
         return true;
       } else if (filter === 'participant') {
-        return members.role === 'participant';
+        return member.role === 'participant';
       } else if (filter === 'contributor') {
-        return members.role === 'contributor';
+        return member.role === 'contributor';
       } else if (filter === 'admin') {
-        return members.role === 'admin';
+        return member.role === 'admin';
       }
     });
 
