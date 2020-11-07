@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
+import React, { useState, useContext } from 'react';
 import {
   Anchor,
   Box,
@@ -23,36 +25,14 @@ import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 
-function Resources({ history }) {
-  const [loading, setLoading] = useState(true);
-  const [resources, setResources] = useState([]);
+function ResourcesPage({ history, resources, isLoading }) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  // const [sortBy, setSortBy] = useState('join-date');
-  // const [filter, setFilter] = useState('all');
-  // const [filterWord, setFilterWord] = useState('');
   const { currentUser, currentHost, canCreateContent, role } = useContext(
     StateContext
   );
 
-  const getAndSetResources = async () => {
-    setLoading(true);
-    try {
-      const resources = await call('getResources');
-      setResources(resources);
-      setLoading(false);
-    } catch (error) {
-      message.error(error.error || error.reason);
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getAndSetResources();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -61,7 +41,10 @@ function Resources({ history }) {
       message.error('Resource name is too short. Minimum 3 letters required');
       return;
     }
-    if (resources.some((resource) => resource.label === modalContent.label)) {
+    if (
+      !modalContent.edit &&
+      resources.some((resource) => resource.label === modalContent.label)
+    ) {
       message.error('There already is a resource with this name');
       return;
     }
@@ -79,7 +62,6 @@ function Resources({ history }) {
       }
       setModalContent(null);
       setShowModal(false);
-      getAndSetResources();
     } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);
@@ -99,7 +81,6 @@ function Resources({ history }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      getAndSetResources();
       message.success('Resource successfully deleted');
     } catch (error) {
       message.error(error.error || error.reason);
@@ -242,4 +223,15 @@ function Resources({ history }) {
   );
 }
 
-export default Resources;
+export default ResourcesContainer = withTracker((props) => {
+  const resourcesSubscription = Meteor.subscribe('resources');
+  const resources = Resources.find().fetch();
+  const isLoading = !resourcesSubscription.ready();
+  const currentUser = Meteor.user();
+
+  return {
+    isLoading,
+    currentUser,
+    resources,
+  };
+})(ResourcesPage);

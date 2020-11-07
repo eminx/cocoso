@@ -50,7 +50,8 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const resources = Resources.find({ host }).fetch();
-    if (resources.some((resource) => resource.label === values.label)) {
+    const otherResources = resources.filter((res) => res._id !== resourceId);
+    if (otherResources.some((resource) => resource.label === values.label)) {
       throw new Meteor.Error('There already is a resource with this name');
     }
     if (values.label.length < 3) {
