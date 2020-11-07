@@ -15,7 +15,7 @@ Meteor.publish('activities', function () {
   const host = getHost(this);
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
-    return Activities.find();
+    return Activities.find({ host });
   } else if (user) {
     return Activities.find(
       {
