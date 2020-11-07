@@ -1017,7 +1017,7 @@ class CreateMeetingForm extends PureComponent {
               plain={false}
               placeholder="Select resource"
               name="resource"
-              options={resources.map((part, i) => part.name)}
+              options={resources.map((part, i) => part.label)}
               onChange={({ option }) => handlePlaceChange(option)}
             />
           ) : (

@@ -33,7 +33,6 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
     if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
@@ -262,14 +261,17 @@ Meteor.methods({
 
   getCategories() {
     const user = Meteor.user();
+    const host = getHost(this);
     if (!user) {
       throw new Meteor.Error('You are not allowed');
     }
 
-    return Categories.find().fetch();
+    return Categories.find({
+      host,
+    }).fetch();
   },
 
-  addNewCategory(category) {
+  addNewCategory(category, type) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -279,7 +281,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    if (Categories.findOne({ label: category.toLowerCase() })) {
+    if (Categories.findOne({ label: category.toLowerCase(), host })) {
       throw new Meteor.Error('Category already exists!');
     }
 
@@ -287,7 +289,8 @@ Meteor.methods({
 
     try {
       return Categories.insert({
-        host: currentHost.host,
+        host,
+        type,
         label: category.toLowerCase(),
         color: catColors[catLength],
         addedBy: user._id,

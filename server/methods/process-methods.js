@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import {
-  getRoomIndex,
+  getResourceIndex,
   siteUrl,
   getHost,
   isContributorOrAdmin,
@@ -279,7 +279,7 @@ Meteor.methods({
     }
 
     newMeeting.attendees = [];
-    newMeeting.resourceIndex = getRoomIndex(newMeeting.resource);
+    newMeeting.resourceIndex = getResourceIndex(newMeeting.resource, host);
     const meetings = [...theProcess.meetings, newMeeting];
     const sortedMeetings = meetings.sort(compareForSort);
 

@@ -70,7 +70,7 @@ const Settings = ({ history }) => {
 
   const addNewCategory = async () => {
     try {
-      await call('addNewCategory', categoryInput.toLowerCase());
+      await call('addNewCategory', categoryInput.toLowerCase(), 'work');
       getCategories();
       setCategoryInput('');
     } catch (error) {
