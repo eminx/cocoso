@@ -93,6 +93,7 @@ function PublicActivityThumb({ item, large }) {
       width="100%"
       margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
       style={{ maxWidth: '384px' }}
+      className="hoverable"
     >
       <Box pad={{ bottom: 'medium' }}>
         <Text weight={600} size="large" style={ellipsisStyle}>

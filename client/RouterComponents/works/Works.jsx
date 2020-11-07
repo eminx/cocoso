@@ -121,6 +121,7 @@ const Works = ({ history }) => {
             onClick={() =>
               history.push(`/${work.authorUsername}/work/${work._id}`)
             }
+            hoverIndicator="light-1"
           >
             <Box pad={{ bottom: 'small' }} direction="row" justify="between">
               <Box>
