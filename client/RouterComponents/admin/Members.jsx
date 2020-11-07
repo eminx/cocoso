@@ -299,7 +299,7 @@ export default MembersContainer = withTracker((props) => {
   const currentHost = Hosts.findOne();
   const isLoading = !membersSubscription.ready();
   const currentUser = Meteor.user();
-  const members = currentHost.members;
+  const members = currentHost.members.reverse();
 
   return {
     isLoading,
