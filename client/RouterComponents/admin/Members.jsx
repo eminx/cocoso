@@ -224,7 +224,7 @@ function Members({ history, members, isLoading }) {
         </Box>
       }
     >
-      <Box align="center" pad="small">
+      <Box align="center" pad="small" margin={{ bottom: 'large' }}>
         <Text size="small" margin="small" weight="bold">
           Filter
         </Text>
