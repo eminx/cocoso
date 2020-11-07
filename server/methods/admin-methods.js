@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
 
-import { getHost } from './shared';
+import { getHost, isContributorOrAdmin } from './shared';
 
 const getVerifiedEmailText = (username) => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${contextName}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${contextName} Team`;
@@ -35,7 +35,7 @@ Meteor.methods({
     const currentHost = Hosts.findOne({ host: host });
     const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
     }
     return currentHost.members;
@@ -110,9 +110,8 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
 
-    if (!user.isSuperAdmin && !isAdmin) {
+    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
     }
 
