@@ -73,7 +73,7 @@ const LayoutPage = ({
     return (
       <Box width="100%">
         <Box pad="medium" alignSelf="center">
-          <Text>Trying to retrieve the host...</Text>
+          <Text>Loading...</Text>
         </Box>
       </Box>
     );

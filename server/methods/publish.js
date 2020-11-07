@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from './shared';
+import { getHost, isContributorOrAdmin } from './shared';
 
 Meteor.publish('attendingEvents', function () {
   return Meteor.users.find(this.userId, {
@@ -12,12 +12,14 @@ Meteor.publish('attendingEvents', function () {
 });
 
 Meteor.publish('activities', function () {
+  const host = getHost(this);
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
     return Activities.find();
   } else if (user) {
     return Activities.find(
       {
+        host,
         $or: [
           {
             isPublished: true,
@@ -36,6 +38,7 @@ Meteor.publish('activities', function () {
     );
   } else {
     return Activities.find({
+      host,
       isPublished: true,
     });
   }
@@ -50,7 +53,9 @@ Meteor.publish('processes', function () {
 });
 
 Meteor.publish('manuals', function () {
+  const host = getHost(this);
   return Documents.find({
+    host,
     contextType: 'manual',
   });
 });
@@ -63,13 +68,16 @@ Meteor.publish('publications', function () {
 });
 
 Meteor.publish('gathering', function (id) {
+  const host = getHost(this);
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
     return Activities.find({
+      host,
       _id: id,
     });
   } else if (user) {
     return Activities.find({
+      host,
       _id: id,
       $or: [
         {
@@ -95,7 +103,9 @@ Meteor.publish('gathering', function (id) {
 });
 
 Meteor.publish('process', function (id) {
+  const host = getHost(this);
   return Processes.find({
+    host,
     _id: id,
   });
 });
@@ -107,11 +117,13 @@ Meteor.publish('publication', function (id) {
 });
 
 Meteor.publish('pages', function () {
-  return Pages.find();
+  const host = getHost(this);
+  return Pages.find({ host });
 });
 
 Meteor.publish('page', function (title) {
-  return Pages.find({ title });
+  const host = getHost(this);
+  return Pages.find({ host, title });
 });
 
 Meteor.publish('work', function (id) {
@@ -122,12 +134,15 @@ Meteor.publish('work', function (id) {
 
 Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
+  const host = getHost(this);
   return Works.find({
+    host,
     authorId: currentUserId,
   });
 });
 
 Meteor.publish('chat', function (contextId) {
+  const host = getHost(this);
   const user = Meteor.user();
   if (user) {
     return Chats.find({
@@ -137,7 +152,8 @@ Meteor.publish('chat', function (contextId) {
 });
 
 Meteor.publish('resources', function () {
-  return Resources.find();
+  const host = getHost(this);
+  return Resources.find({ host });
 });
 
 Meteor.publish('documents', function () {
@@ -161,4 +177,14 @@ Meteor.publish('me', function () {
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
   return Hosts.find({ host }, { fields: { settings: true } });
+});
+
+Meteor.publish('members', function () {
+  const user = Meteor.user();
+  const host = getHost(this);
+  const currentHost = Hosts.findOne({ host });
+
+  if (user.isSuperAdmin || isContributorOrAdmin(user, currentHost)) {
+    return Hosts.find({ host });
+  }
 });

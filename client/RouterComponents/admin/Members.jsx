@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import {
@@ -24,33 +26,33 @@ const compareUsersByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Members({ history }) {
+function Members({ history, members, isLoading }) {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
-  const { currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, role } = useContext(StateContext);
 
-  const getAndSetUsers = async () => {
-    setLoading(true);
-    try {
-      const users = await call('getUsers');
-      setUsers(users);
-      setLoading(false);
-    } catch (error) {
-      message.error(error.error);
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  // const getAndSetUsers = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const users = await call('getUsers');
+  //     setUsers(users);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     message.error(error.error);
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    getAndSetUsers();
-  }, []);
+  // useEffect(() => {
+  //   getAndSetUsers();
+  // }, []);
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -58,7 +60,7 @@ function Members({ history }) {
     try {
       await call('setAsParticipant', user.id);
       message.success(`${user.username} is now set back as a participant`);
-      getAndSetUsers();
+      // getAndSetUsers();
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -69,7 +71,7 @@ function Members({ history }) {
     try {
       await call('setAsContributor', user.id);
       message.success(`${user.username} is now set as a contributor`);
-      getAndSetUsers();
+      // getAndSetUsers();
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -80,7 +82,7 @@ function Members({ history }) {
     try {
       await call('setAsAdmin', user.id);
       message.success(`${user.username} is now set as an admin`);
-      getAndSetUsers();
+      // getAndSetUsers();
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -101,44 +103,45 @@ function Members({ history }) {
     );
   }
 
-  const usersFiltered =
-    users &&
-    users.filter((user) => {
+  const membersFiltered =
+    members &&
+    members.filter((member) => {
       if (filter === 'all') {
         return true;
       } else if (filter === 'participant') {
-        return user.role === 'participant';
+        return members.role === 'participant';
       } else if (filter === 'contributor') {
-        return user.role === 'contributor';
+        return members.role === 'contributor';
       } else if (filter === 'admin') {
-        return user.role === 'admin';
+        return members.role === 'admin';
       }
     });
 
-  const usersList = usersFiltered.map((user) => ({
-    ...user,
+  const membersList = membersFiltered.map((member) => ({
+    ...member,
     actions: [
       {
         content: 'Set as a Contributor',
-        handleClick: () => setAsContributor(user),
+        handleClick: () => setAsContributor(member),
         isDisabled:
-          (!['admin', 'contributor'].includes(role) ||
-            !['participant'].includes(user.role)) &&
+          (['admin', 'contributor'].includes(member.role) ||
+            ['participant'].includes(role)) &&
           !currentUser.isSuperAdmin,
       },
       {
         content: 'Set as an Admin',
-        handleClick: () => setAsAdmin(user),
+        handleClick: () => setAsAdmin(member),
         isDisabled:
-          (!['admin'].includes(role) ||
-            !['contributor', 'participant'].includes(user.role)) &&
+          (['admin'].includes(member.role) ||
+            ['contributor', 'participant'].includes(role)) &&
           !currentUser.isSuperAdmin,
       },
       {
         content: 'Set back as a Participant',
-        handleClick: () => setAsParticipant(user),
+        handleClick: () => setAsParticipant(member),
         isDisabled:
-          (!['admin'].includes(role) || !['contributor'].includes(user.role)) &&
+          (['admin'].includes(member.role) ||
+            ['contributor', 'participant'].includes(role)) &&
           !currentUser.isSuperAdmin,
       },
     ],
@@ -174,27 +177,27 @@ function Members({ history }) {
     },
   ];
 
-  const usersFilteredWithType = usersList.filter((user) => {
+  const membersFilteredWithType = membersList.filter((member) => {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
-    if (!user.username || !user.email) {
+    if (!member.username || !member.email) {
       return false;
     }
     return (
-      user.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-      user.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
+      member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+      member.email.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
     );
   });
 
-  let usersSorted;
+  let membersSorted;
   switch (sortBy) {
     case 'username':
-      usersSorted = usersFilteredWithType.sort((a, b) =>
+      membersSorted = membersFilteredWithType.sort((a, b) =>
         a.username.localeCompare(b.username)
       );
       break;
     case 'join-date':
     default:
-      usersSorted = usersFilteredWithType.sort(compareUsersByDate);
+      membersSorted = membersFilteredWithType.sort(compareUsersByDate);
       break;
   }
 
@@ -260,28 +263,28 @@ function Members({ history }) {
 
       <Box pad="medium">
         <Heading level={4} alignSelf="center">
-          {filter} members ({usersSorted.length}){' '}
+          {filter} members ({membersSorted.length}){' '}
         </Heading>
       </Box>
       <Box pad="small" background="white">
-        <NiceList list={usersSorted} border="horizontal" pad="small">
-          {(user) => (
-            <div key={user.username}>
+        <NiceList list={membersSorted} border="horizontal" pad="small">
+          {(member) => (
+            <div key={member.username}>
               <Text size="large" weight="bold">
-                {user.username}
+                {member.username}
               </Text>
               <Text as="div" size="small">
-                {user && user.email}
+                {member && member.email}
               </Text>
               <Text as="div" size="small">
-                {user.role}
+                {member.role}
               </Text>
               <Text
                 as="div"
                 size="xsmall"
                 style={{ fontSize: 10, color: '#aaa' }}
               >
-                joined {moment(user.createdAt).format('Do MMM YYYY')} <br />
+                joined {moment(member.createdAt).format('Do MMM YYYY')} <br />
               </Text>
             </div>
           )}
@@ -291,4 +294,16 @@ function Members({ history }) {
   );
 }
 
-export default Members;
+export default MembersContainer = withTracker((props) => {
+  const membersSubscription = Meteor.subscribe('members');
+  const currentHost = Hosts.findOne();
+  const isLoading = !membersSubscription.ready();
+  const currentUser = Meteor.user();
+  const members = currentHost.members;
+
+  return {
+    isLoading,
+    currentUser,
+    members,
+  };
+})(Members);
