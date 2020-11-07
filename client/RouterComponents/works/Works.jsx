@@ -175,7 +175,7 @@ getCategories = (works) => {
 };
 
 getOpacHSL = (color) => {
-  return color.substr(0, color.length - 4) + '1)';
+  return color ? color.substr(0, color.length - 4) + '1)' : null;
 };
 
 export default Works;
