@@ -266,7 +266,7 @@ class Process extends Component {
   handleDateAndTimeChange = (dateOrTime, entity) => {
     const { newMeeting } = this.state;
     const newerMeeting = { ...newMeeting };
-    newerMeeting[entity] = dateOrTime;
+    newerMeeting[entity] = dateOrTime.substring(0, 10);
 
     this.setState({
       newMeeting: newerMeeting,

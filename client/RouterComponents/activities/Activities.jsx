@@ -92,8 +92,8 @@ function Activities({ activitiesList, processesList, isLoading }) {
   };
 
   const getAllSorted = () => {
-    const allActitivities = [...getPublicActivities(), ...getProcessMeetings()];
-    return allActitivities.sort(compareForSort);
+    const allActivities = [...getPublicActivities(), ...getProcessMeetings()];
+    return allActivities.sort(compareForSort);
   };
 
   const allSortedActivities = getAllSorted();
