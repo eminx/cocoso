@@ -754,13 +754,15 @@ class Process extends Component {
     const isMember = this.isMember();
 
     return (
-      <div>
-        <Chattery
-          messages={messages}
-          onNewMessage={this.addNewChatMessage}
-          removeNotification={this.removeNotification}
-          isMember={isMember}
-        />
+      <Box pad="medium">
+        <Box background="light-2" border="dark-2">
+          <Chattery
+            messages={messages}
+            onNewMessage={this.addNewChatMessage}
+            removeNotification={this.removeNotification}
+            isMember={isMember}
+          />
+        </Box>
         {!isMember && (
           <div
             style={{
@@ -776,7 +778,7 @@ class Process extends Component {
             />
           </div>
         )}
-      </div>
+      </Box>
     );
   };
 

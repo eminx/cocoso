@@ -14,26 +14,23 @@
 }
 
 .chattery-inputform-container {
-  width: 100%;
   padding: 12px;
   background-color: #fff;
 }
 
 .chattery-inputform {
   display: flex;
-  align-items: center;
 }
 
 .chattery-input {
-  width: calc(100% - 60px);
   min-height: 96px;
   padding: 6px 10px;
   background-color: #fff;
   border: 1px solid #d1d1d1;
-  border-radius: 4px 0 0 4px;
-  /* border-right: none; */
+  border-radius: 4px;
   box-shadow: none;
   box-sizing: border-box;
+  flex-grow: 1;
 }
 
 .chattery-input:focus {
@@ -44,14 +41,14 @@
 .chattery-submitbutton {
   width: 60px;
   height: 38px;
+  margin-left: 8px;
   border: 1px solid #888;
-  border-radius: 0 4px 4px 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  border-radius: 4px;
   box-sizing: border-box;
   background-color: #fff;
   font-size: 14px;
   font-weight: 500;
+  flex-basis: 60px;
 }
 
 .talk-bubble-container {
@@ -79,7 +76,7 @@
   position: relative;
   width: 80%;
   height: auto;
-  background-color: #eee;
+  background-color: #fff;
 }
 .border {
   border: 8px solid #666;
@@ -113,7 +110,7 @@
   top: 0px;
   bottom: auto;
   border: 22px solid;
-  border-color: #eee transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
 }
 
 /* Right triangle, left side slightly down */
@@ -139,7 +136,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #eee #eee transparent transparent;
+  border-color: #fff #fff transparent transparent;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -165,7 +162,7 @@
   top: auto;
   bottom: -20px;
   border: 22px solid;
-  border-color: transparent transparent transparent #eee;
+  border-color: transparent transparent transparent #fff;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -191,7 +188,7 @@
   top: auto;
   bottom: -20px;
   border: 12px solid;
-  border-color: #eee transparent transparent #eee;
+  border-color: #fff transparent transparent #fff;
 }
 
 /*Right triangle, placed bottom right side slightly in*/
@@ -215,7 +212,7 @@
   right: 38px;
   bottom: -20px;
   border: 12px solid;
-  border-color: #eee #eee transparent transparent;
+  border-color: #fff #fff transparent transparent;
 }
 /*
 	left: -8px;
@@ -229,7 +226,7 @@
   top: auto;
 	bottom: -20px;
 	border: 22px solid;
-	border-color: transparent transparent transparent #eee;
+	border-color: transparent transparent transparent #fff;
 
 /*Right triangle, placed bottom right side slightly in*/
 .tri-right.border.btm-right:before {
@@ -252,7 +249,7 @@
   right: 0px;
   bottom: -20px;
   border: 12px solid;
-  border-color: #eee #eee transparent transparent;
+  border-color: #fff #fff transparent transparent;
 }
 
 /* Right triangle, right side slightly down*/
@@ -278,7 +275,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #eee transparent transparent #eee;
+  border-color: #fff transparent transparent #fff;
 }
 
 /* Right triangle placed top right flush. */
@@ -304,7 +301,7 @@
   top: 0px;
   bottom: auto;
   border: 20px solid;
-  border-color: #eee transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
 }
 
 /* talk bubble contents */
@@ -312,7 +309,7 @@
   color: #010101;
   padding: 0.5em 1em;
   text-align: left;
-  line-height: 1.5em;
+  line-height: 16px;
 }
 .talktext p {
   /* remove webkit p margins */
