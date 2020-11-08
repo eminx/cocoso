@@ -41,6 +41,7 @@
     "grommet-icons": "^4.5.0",
     "indexof": "0.0.1",
     "jquery": "^3.5.1",
+    "logdna": "^3.5.1",
     "meteor-node-stubs": "^0.4.1",
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "moment": "^2.26.0",

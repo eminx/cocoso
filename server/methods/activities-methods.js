@@ -1,5 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isContributorOrAdmin, isParticipant } from './shared';
+const Logger = require('logdna');
+import {
+  getHost,
+  isContributorOrAdmin,
+  isParticipant,
+  getLogdnaOptions,
+} from './shared';
 
 const publicSettings = Meteor.settings.public;
 const contextName = publicSettings.contextName;
@@ -77,13 +83,22 @@ Meteor.methods({
           }
           Meteor.call('createChat', formValues.title, add, (error, result) => {
             if (error) {
-              console.log('Chat is not created due to error: ', error);
+              Logger.createLogger(
+                `Chat is not created due to error: ${
+                  error.reason || error.error
+                }`
+              );
+              throw new Meteor.Error('Chat is not created');
             }
           });
         }
       );
       return add;
-    } catch (e) {
+    } catch (error) {
+      // Logger.createLogger(
+      //   `Activity could not be created due to: ${error.reason || error.error}`
+      // ),
+      getLogdnaOptions(this);
       throw new Meteor.Error(e, "Couldn't add to Collection");
     }
   },
@@ -131,6 +146,9 @@ Meteor.methods({
       });
       return activityId;
     } catch (error) {
+      // Logger.createLogger(
+      //   `Couldn't update activity due to: ${error.reason || error.error}`
+      // );
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -152,6 +170,9 @@ Meteor.methods({
     try {
       Activities.remove(activityId);
     } catch (error) {
+      // Logger.createLogger(
+      //   `Couldn't delete activity due to: ${error.reason || error.error}`
+      // );
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   },
@@ -192,8 +213,10 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      console.log(error);
-      throw new Meteor.Error(error, "Couldn't add to collection");
+      // Logger.createLogger(
+      //   `Couldn't register attendance due to: ${error.reason || error.error}`
+      // );
+      throw new Meteor.Error(error, "Couldn't register attendance");
     }
   },
 
@@ -227,8 +250,10 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      console.log(error);
-      throw new Meteor.Error(error, "Couldn't update document");
+      // Logger.createLogger(
+      //   `Couldn't update attendance due to: ${error.reason || error.error}`
+      // );
+      throw new Meteor.Error(error, "Couldn't update attendance");
     }
   },
 
@@ -258,7 +283,9 @@ Meteor.methods({
         getRemovalText(theNonAttendee.firstName, theOccurence, activityId)
       );
     } catch (error) {
-      console.log(error);
+      // Logger.createLogger(
+      //   `Couldn't remove attendance due to: ${error.reason || error.error}`
+      // );
       throw new Meteor.Error(error, "Couldn't update document");
     }
   },
