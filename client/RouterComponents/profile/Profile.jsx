@@ -221,7 +221,7 @@ class Profile extends React.Component {
         </Box>
 
         <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-          <Row>
+          <Row style={{ marginLeft: 0, marginRight: 0 }}>
             <Col sm={9}>
               <Personal
                 formValues={personal}

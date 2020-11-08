@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grommet } from 'grommet';
-
 import Routes from './RouterComponents/Routes';
+import { setConfiguration } from 'react-grid-system';
+setConfiguration({ maxScreenClass: 'xl' });
 
 const theme = {
   spacing: 12,

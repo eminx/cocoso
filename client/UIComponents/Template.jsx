@@ -16,24 +16,19 @@ const Template = ({
 }) => {
   return (
     <Container fluid style={{ width: '100%', padding: 0 }}>
-      <Row gutterWidth={12}>
+      <Row gutterWidth={12} style={{ marginLeft: 0, marginRight: 0 }}>
         <Col lg={3} style={colStyle}>
           {leftContent}
         </Col>
         <Col lg={6} style={colStyle}>
-          <Box>
-            {heading && (
-              <Box pad={{ horizontal: 'medium' }}>
-                <Heading
-                  level={2}
-                  textAlign={titleCentered ? 'center' : 'start'}
-                >
-                  {heading}
-                </Heading>
-              </Box>
-            )}
-            {children}
-          </Box>
+          {heading && (
+            <Box pad="medium">
+              <Heading level={2} textAlign={titleCentered ? 'center' : 'start'}>
+                {heading}
+              </Heading>
+            </Box>
+          )}
+          {children}
         </Col>
         <Col lg={3} style={colStyle}>
           {rightContent}

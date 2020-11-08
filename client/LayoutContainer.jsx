@@ -14,7 +14,6 @@ import {
 } from 'grommet';
 import { FormPrevious } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
-import Loader from './UIComponents/Loader';
 
 export const StateContext = React.createContext(null);
 
@@ -141,7 +140,7 @@ const Header = ({ currentUser, title, history }) => {
 
         return (
           <Container fluid style={{ width: '100%' }}>
-            <Row>
+            <Row style={{ marginLeft: 0, marginRight: 0 }}>
               <Col xs={3}>
                 <Box>
                   {!pathsWithMenu.includes(pathname) ? (
