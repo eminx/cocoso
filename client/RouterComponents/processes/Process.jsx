@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
+import renderHTML from 'react-render-html';
 
 import {
   Accordion,
@@ -735,11 +736,7 @@ class Process extends Component {
                   <Image src={process.imageUrl} fit="contain" fill />
                 </Box>
                 <Box pad="medium">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: process.description,
-                    }}
-                  />
+                  <div>{renderHTML(process.description)}</div>
                 </Box>
               </Tab>
               <Tab title="Discussion">

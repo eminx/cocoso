@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Box } from 'grommet';
 import { FormAdd } from 'grommet-icons';
+import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -92,11 +93,7 @@ class Page extends PureComponent {
         }
       >
         <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentPage.longDescription,
-            }}
-          />
+          <div>{renderHTML(currentPage.longDescription)}</div>
         </Box>
 
         {currentUser && role === 'admin' && (

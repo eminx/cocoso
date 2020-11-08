@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Box, Button, Heading, Text } from 'grommet';
 import { FormAdd } from 'grommet-icons';
+import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
@@ -350,16 +351,15 @@ class Calendar extends React.PureComponent {
           </Box>
 
           <Text size="small">
-            <div
-              dangerouslySetInnerHTML={{
-                __html:
-                  selectedActivity &&
-                  selectedActivity.longDescription &&
-                  (selectedActivity.isPrivateProcess
-                    ? ''
-                    : selectedActivity.longDescription.slice(0, 120) + '...'),
-              }}
-            />
+            <div>
+              {selectedActivity &&
+                selectedActivity.longDescription &&
+                (selectedActivity.isPrivateProcess
+                  ? ''
+                  : renderHTML(
+                      selectedActivity.longDescription.slice(0, 120) + '...'
+                    ))}
+            </div>
             {selectedActivity && selectedActivity.isPublicActivity && (
               <Link
                 to={

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
-import { ScreenClassRender } from 'react-grid-system';
+import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 
 import {
@@ -461,17 +461,14 @@ class Activity extends React.Component {
             />
           </Box>
           <Box pad="medium">
-            <Box>
-              <div
-                style={{
-                  whiteSpace: 'pre-line',
-                  color: 'rgba(0,0,0, .85)',
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: activityData.longDescription,
-                }}
-              />
-            </Box>
+            <div
+              style={{
+                whiteSpace: 'pre-line',
+                color: 'rgba(0,0,0, .85)',
+              }}
+            >
+              {renderHTML(activityData.longDescription)}
+            </div>
           </Box>
 
           {/* {activityData.practicalInfo &&
@@ -505,7 +502,7 @@ class Activity extends React.Component {
         </Box>
 
         {activityData.isPublicActivity && messages && chatData && (
-          <Box pad="small">
+          <Box pad="medium">
             <Heading level={4}>Chat Section</Heading>
             <Chattery
               messages={messages}

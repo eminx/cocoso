@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Box, Button, Avatar, Heading, Text } from 'grommet';
 import { Visible, Hidden } from 'react-grid-system';
+import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -108,7 +109,7 @@ const Work = ({ history, match }) => {
         <Box margin={{ top: 'medium' }} background="white">
           <NiceSlider images={work.images} />
           <Box margin={{ top: 'medium' }} pad="medium">
-            <div dangerouslySetInnerHTML={{ __html: work.longDescription }} />
+            <div>{renderHTML(work.longDescription)} </div>
           </Box>
         </Box>
       </Template>
