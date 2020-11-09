@@ -426,7 +426,10 @@ class Activity extends React.Component {
       <Template
         leftContent={
           <Box pad="medium">
-            <Heading level={2} style={{ marginBottom: 0 }}>
+            <Heading
+              level={2}
+              style={{ marginBottom: 0, lineBreak: 'anywhere' }}
+            >
               {activityData.title}
             </Heading>
             {activityData.subTitle && (

@@ -151,7 +151,10 @@ class Process extends Component {
           </div>
         )}
         <Box pad="medium">
-          <Heading level={2} style={{ overflowWrap: 'anywhere' }}>
+          <Heading
+            level={2}
+            style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
+          >
             {process.title}
           </Heading>
           <Text weight={300}>{process.readingMaterial}</Text>
