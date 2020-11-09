@@ -1,6 +1,7 @@
 .chattery-window-container {
   width: 100%;
   float: none;
+  background-color: #f2f2f2;
 }
 
 .chattery-window {

@@ -505,7 +505,7 @@ class Activity extends React.Component {
         </Box>
 
         {activityData.isPublicActivity && messages && chatData && (
-          <Box pad="medium" background="white">
+          <Box pad="medium" background="light-2" border="dark-2">
             <Heading level={4}>Chat Section</Heading>
             <Chattery
               messages={messages}
