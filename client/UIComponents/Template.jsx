@@ -5,6 +5,8 @@ import { Box, Heading } from 'grommet';
 const colStyle = {
   maxWidth: 600,
   margin: '0 auto',
+  paddingBottom: 24,
+  paddingLeft: 24,
 };
 
 const Template = ({
