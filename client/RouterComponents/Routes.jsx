@@ -42,6 +42,7 @@ import NotFoundPage from './NotFoundPage';
 const browserHistory = createBrowserHistory();
 
 export default function () {
+  console.log('Routes rendering');
   return (
     <Router history={browserHistory}>
       <Switch>

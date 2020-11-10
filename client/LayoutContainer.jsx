@@ -67,6 +67,7 @@ const LayoutPage = ({
   // const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
   //   false
   // );
+  console.log('Almost rendering layout');
 
   if (hostLoading) {
     return (
@@ -219,7 +220,7 @@ export default withTracker((props) => {
   const hostSub = Meteor.subscribe('currentHost');
   const currentHost = Hosts ? Hosts.findOne() : null;
   const hostLoading = !hostSub.ready();
-
+  console.log('Rendering layout');
   return {
     currentUser,
     currentHost,
