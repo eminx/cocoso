@@ -207,13 +207,14 @@ class Profile extends React.Component {
       >
         <Box alignSelf="center" margin={{ bottom: 'medium' }} pad="small">
           {['admin', 'contributor', 'participant'].includes(role) ? (
-            <Text textAlign="center">
-              You are part of this organisation with the <b>{role}</b> role
+            <Text textAlign="center" size="small">
+              You as <b>{currentUser.username}</b> are part of this organisation
+              with the <b>{role}</b> role
             </Text>
           ) : (
-            <Box>
+            <Box alignSelf="center">
               <Text>You are not part of this organisation. </Text>
-              <Button secondary onClick={() => this.setAsParticipant()}>
+              <Button onClick={() => this.setSelfAsParticipant()}>
                 Join as participant
               </Button>
             </Box>
@@ -304,8 +305,8 @@ class Profile extends React.Component {
           onCancel={() => this.setState({ isDeleteModalOn: false })}
         >
           <Text>
-            You are about to permanently delete your user information. This is
-            an irreversible action.
+            You are about to permanently delete your entire account and all data
+            associated with that. This is an irreversible action. Are you sure?
           </Text>
         </ConfirmModal>
       </Template>

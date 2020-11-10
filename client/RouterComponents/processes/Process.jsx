@@ -778,6 +778,7 @@ class Process extends Component {
               label="Join this process"
               primary
               onClick={this.openModal}
+              margin="medium"
             />
           </div>
         )}
