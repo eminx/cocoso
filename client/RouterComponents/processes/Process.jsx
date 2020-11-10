@@ -25,7 +25,7 @@ import {
   TextArea,
 } from 'grommet';
 
-import { FormPrevious, Close } from 'grommet-icons';
+import { Close } from 'grommet-icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -452,7 +452,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box pad="small">
+            <Box pad="small" background="white">
               <MeetingInfo
                 isSmallViewport
                 isAttending={isAttending}
@@ -466,7 +466,7 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small" justify="center" direction="row">
+          <Box pad="small" justify="center" direction="row" background="white">
             <Button
               size="small"
               label={isAttending ? 'Cannot make it' : 'Register attendance'}
@@ -949,7 +949,7 @@ class Process extends Component {
 
 const MeetingInfo = ({ meeting, isAttending, resources }) => {
   return (
-    <div>
+    <Box>
       <FancyDate occurence={meeting} resources={resources} />
 
       {isAttending && (
@@ -957,7 +957,7 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
           <em>You're attending</em>
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 
