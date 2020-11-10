@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Box } from 'grommet';
+import { Anchor, Button, Box } from 'grommet';
 import { FormAdd } from 'grommet-icons';
 import renderHTML from 'react-render-html';
 
@@ -96,13 +96,15 @@ class Page extends PureComponent {
           <div>{renderHTML(currentPage.longDescription)}</div>
         </Box>
 
-        {currentUser && role === 'admin' && (
-          <Box pad="small" alignSelf="center">
-            <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-              <Button size="small" label="Edit this page" />
-            </Link>
-          </Box>
-        )}
+        <Box>
+          {currentUser && role === 'admin' && (
+            <Box pad="medium" alignSelf="center">
+              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+                <Anchor as="span" size="small" label="Edit this page" />
+              </Link>
+            </Box>
+          )}
+        </Box>
       </Template>
     );
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
@@ -16,7 +17,6 @@ import {
   TextInput,
   Button,
   Heading,
-  Paragraph,
   Text,
 } from 'grommet';
 
@@ -409,16 +409,10 @@ class Activity extends React.Component {
     const EditButton = currentUser &&
       activityData &&
       currentUser._id === activityData.authorId && (
-        <Box
-          direction="row"
-          justify="center"
-          pad="small"
-          margin={{ top: 'large' }}
-        >
-          <Button
-            onClick={() => history.push(`/edit-activity/${activityData._id}`)}
-            label="Edit this Activity"
-          />
+        <Box direction="row" justify="center" margin="medium">
+          <Link to={`/edit-activity/${activityData._id}`}>
+            <Anchor as="span">Edit this Activity</Anchor>
+          </Link>
         </Box>
       );
 

@@ -20,25 +20,27 @@ const LoginPage = ({ history }) => {
 
   return (
     <Template>
-      <Box width="medium" alignSelf="center">
-        <Heading level={2} textAlign="center">
-          Login to Your Account
-        </Heading>
-        <SimpleText>
-          Don't have an account?{' '}
-          <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
-        </SimpleText>
-        <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-          <Login onSubmit={handleSubmit} />
-        </Box>
-        <Box>
+      <Box>
+        <Box width="medium" alignSelf="center">
+          <Heading level={2} textAlign="center">
+            Login to Your Account
+          </Heading>
           <SimpleText>
-            Forgot your password?
-            <br />
-            <Anchor onClick={() => history.push('/forgot-password')}>
-              Reset your password
-            </Anchor>
+            Don't have an account?{' '}
+            <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
           </SimpleText>
+          <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
+            <Login onSubmit={handleSubmit} />
+          </Box>
+          <Box>
+            <SimpleText>
+              Forgot your password?
+              <br />
+              <Anchor onClick={() => history.push('/forgot-password')}>
+                Reset your password
+              </Anchor>
+            </SimpleText>
+          </Box>
         </Box>
       </Box>
     </Template>
