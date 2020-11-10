@@ -26,7 +26,7 @@ const SignupPage = ({ history }) => {
             <Anchor onClick={() => history.push('/login')}>Login</Anchor>
           </SimpleText>
           <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-            <Signup onSubmit={createAccount} />
+            <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
         </Box>
       </Box>

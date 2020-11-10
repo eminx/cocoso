@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Anchor,
-  Box,
-  Button,
-  Heading,
-  Form,
-  FormField,
-  Text,
-  TextInput,
-} from 'grommet';
+import { Anchor, Box, Button, Form, FormField, Text, TextInput } from 'grommet';
 
 import { emailIsValid } from '../functions';
 const regexUsername = /[^a-z0-9]+/g;
@@ -50,6 +41,7 @@ const Signup = ({ onSubmit }) => {
     if (!username || username.length < 4) {
       usernameError = 'At least 4 characters';
     } else if (regexUsername.test(username)) {
+      console.log(regexUsername.test(username));
       usernameError = 'Only lowercase-letters and numbers';
     }
     if (!email || email.length === 0) {
@@ -68,57 +60,36 @@ const Signup = ({ onSubmit }) => {
         passwordError,
       });
     } else {
-      onSubmit(value);
+      onSubmit(value, usernameError, emailError, passwordError);
     }
   };
 
   return (
     <Box margin={{ bottom: 'medium' }}>
-      <Form
-        // value={value}
-        // onChange={(nextValue) => setValue(nextValue)}
-        onSubmit={handleSubmit}
-      >
+      <Form onSubmit={handleSubmit}>
         <FormField
           label="Username"
-          // validate={{ regexp: regexUsername }}
           help={
-            <Text color="dark-3" size="small">
+            <Notice>
               minimum 4 characters, only lowercase letters and numbers
-            </Text>
+            </Notice>
           }
-          error={
-            <Text color="status-error" size="small">
-              {errors.usernameError}
-            </Text>
-          }
+          error={<Notice isError>{errors.usernameError}</Notice>}
         >
           <TextInput plain={false} name="username" placeholder="" />
         </FormField>
 
         <FormField
           label="Email address"
-          error={
-            <Text color="status-error" size="small">
-              {errors.emailError}
-            </Text>
-          }
+          error={<Notice isError>{errors.emailError}</Notice>}
         >
           <TextInput plain={false} type="email" name="email" placeholder="" />
         </FormField>
 
         <FormField
           label="Password"
-          help={
-            <Text color="dark-3" size="small">
-              minimum 8 characters, with at least 1 special
-            </Text>
-          }
-          error={
-            <Text color="status-error" size="small">
-              {errors.passwordError}
-            </Text>
-          }
+          help={<Notice>minimum 8 characters</Notice>}
+          error={<Notice isError>{errors.passwordError}</Notice>}
         >
           <TextInput
             plain={false}
@@ -140,6 +111,12 @@ const Signup = ({ onSubmit }) => {
     </Box>
   );
 };
+
+const Notice = ({ isError, children }) => (
+  <Text color={isError ? 'status-error' : 'dark-3'} size="small">
+    {children}
+  </Text>
+);
 
 const ForgotPassword = () => {
   return (
