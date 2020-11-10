@@ -28,7 +28,6 @@ const theme = {
 };
 
 export default function () {
-  console.log('App is loading routes');
   return (
     <Grommet theme={theme}>
       <Routes />

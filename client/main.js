@@ -8,6 +8,5 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-quill/dist/quill.snow.css';
 
 Meteor.startup(() => {
-  console.log('Meteor started up');
   render(<App />, document.getElementById('render-target'));
 });
