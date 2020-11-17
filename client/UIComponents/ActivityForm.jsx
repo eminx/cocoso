@@ -89,6 +89,7 @@ class ActivityForm extends PureComponent {
             handleCapacityChange={(value) =>
               this.handleCapacityChange(value, index)
             }
+            noAnimate={index === 0}
           />
         ))}
         <Box

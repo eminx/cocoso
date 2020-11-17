@@ -17,6 +17,7 @@ const DatesAndTimes = ({
   removeRecurrence,
   isNotDeletable,
   isPublicActivity,
+  noAnimate,
 }) => {
   const range = [recurrence.startDate, recurrence.endDate];
 
@@ -25,15 +26,21 @@ const DatesAndTimes = ({
   }
 
   return (
-    <Box pad="xsmall" margin={{ bottom: 'small' }}>
+    <Box
+      pad="xsmall"
+      margin={{ bottom: 'small' }}
+      animation={noAnimate ? null : 'slideUp'}
+    >
       {!isNotDeletable && (
-        <Box
-          pad={{ top: 'small' }}
-          direction="row"
-          justify="center"
-          onClick={removeRecurrence}
-        >
-          <FormTrash style={{ fontSize: 18, cursor: 'pointer' }} />
+        <Box>
+          <Box
+            alignSelf="center"
+            pad="small"
+            onClick={removeRecurrence}
+            hoverIndicator={{ background: 'light-1' }}
+          >
+            <FormTrash style={{ fontSize: 18, cursor: 'pointer' }} />
+          </Box>
         </Box>
       )}
       <Box direction="row" justify="around" wrap>
