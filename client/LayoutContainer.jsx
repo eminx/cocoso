@@ -165,7 +165,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         return (
           <Container fluid style={{ width: '100%' }}>
             <Row style={{ marginLeft: 0, marginRight: 0 }} align="center">
-              <Col xs={3}>
+              <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Box>
                   {!pathsWithMenu.includes(pathname) ? (
                     <Link to={gotoPath}>
@@ -197,7 +197,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                   <Menu large={large} history={history} />
                 )}
               </Col>
-              <Col xs={3}>
+              <Col xs={3} style={{ paddingRight: 0 }}>
                 <UserStuff />
               </Col>
             </Row>
@@ -264,8 +264,12 @@ const MenuContent = ({ large, history, closeMenu }) => {
       wrap
     >
       {menu.map((item) => (
-        <Box pad="small" key={item.label}>
-          <Anchor onClick={() => handleClick(item)} label={item.label} />
+        <Box pad={{ vertical: 'small', horizontal: 'medium' }} key={item.label}>
+          <Anchor
+            onClick={() => handleClick(item)}
+            label={item.label.toUpperCase()}
+            size="small"
+          />
         </Box>
       ))}
     </Box>
