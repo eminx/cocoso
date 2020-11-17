@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Anchor,
   Box,
   Button,
+  DropButton,
   Footer,
   Heading,
   Image,
   Paragraph,
   Text,
 } from 'grommet';
-import { FormPrevious } from 'grommet-icons';
+import { FormPrevious, Down } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 export const StateContext = React.createContext(null);
@@ -169,25 +170,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                   )}
                 </Box>
               </Col>
-              <Col xs={6}>
+              <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
                 {pathsWithMenu.includes(pathname) && (
-                  <Box
-                    pad="small"
-                    justify="center"
-                    direction="row"
-                    flex={{ shrink: 0 }}
-                    alignSelf="center"
-                    wrap
-                  >
-                    {menu.map((item) => (
-                      <Box pad="small" key={item.label}>
-                        <Anchor
-                          onClick={() => history.push(item.route)}
-                          label={item.label}
-                        />
-                      </Box>
-                    ))}
-                  </Box>
+                  <Menu large={large} history={history} />
                 )}
               </Col>
               <Col xs={3}>
@@ -198,6 +183,70 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         );
       }}
     />
+  );
+};
+
+const Menu = ({ large, history }) => {
+  const [open, setOpen] = useState(false);
+
+  const menuProps = {
+    large,
+    history,
+  };
+
+  if (large) {
+    return <MenuContent {...menuProps} />;
+  }
+
+  const pathname = history.location.pathname;
+  const currentPage = menu.find(
+    (item) =>
+      item.label.toLowerCase() ===
+      pathname.substring(1, pathname.length).toLowerCase()
+  );
+
+  return (
+    <DropButton
+      label={
+        <Box direction="row" gap="small" align="center">
+          <Text>{(currentPage && currentPage.label) || 'Menu'}</Text>
+          <Down size="small" />
+        </Box>
+      }
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      alignSelf="center"
+      dropContent={
+        <MenuContent {...menuProps} closeMenu={() => setOpen(false)} />
+      }
+      dropProps={{ align: { top: 'bottom' } }}
+      plain
+    />
+  );
+};
+
+const MenuContent = ({ large, history, closeMenu }) => {
+  const handleClick = (item) => {
+    closeMenu();
+    history.push(item.route);
+  };
+
+  return (
+    <Box
+      pad="small"
+      justify={large ? 'center' : 'start'}
+      direction={large ? 'row' : 'column'}
+      flex={{ shrink: 0 }}
+      alignSelf="center"
+      wrap
+    >
+      {menu.map((item) => (
+        <Box pad="small" key={item.label}>
+          <Anchor onClick={() => handleClick(item)} label={item.label} />
+        </Box>
+      ))}
+    </Box>
   );
 };
 
