@@ -13,8 +13,8 @@ const theme = {
       height: '24px',
     },
     colors: {
-      brand: 'rgba(0,0,0, .75)',
-      focus: 'rgba(0,0,0, .25)',
+      brand: 'orange',
+      focus: 'orange',
     },
   },
   formField: {

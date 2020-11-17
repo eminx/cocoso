@@ -318,4 +318,27 @@ Meteor.methods({
       throw new Meteor.Error(error);
     }
   },
+
+  assignHostLogo(image) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+    try {
+      Hosts.update(
+        { host },
+        {
+          $set: {
+            logo: image,
+          },
+        }
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
 });

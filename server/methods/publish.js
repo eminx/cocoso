@@ -176,7 +176,7 @@ Meteor.publish('me', function () {
 
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
-  return Hosts.find({ host }, { fields: { settings: true } });
+  return Hosts.find({ host }, { fields: { settings: true, logo: true } });
 });
 
 Meteor.publish('members', function () {

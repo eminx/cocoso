@@ -10,9 +10,10 @@ import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import Tag from '../../UIComponents/Tag';
-import { call } from '../../functions';
+import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
+import FileDropper from '../../UIComponents/FileDropper';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -22,8 +23,10 @@ const Settings = ({ history }) => {
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [formAltered, setFormAltered] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [localImage, setLocalImage] = useState(null);
 
-  const { settings, currentUser, role } = useContext(StateContext);
+  const { settings, currentUser, currentHost, role } = useContext(StateContext);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -106,6 +109,40 @@ const Settings = ({ history }) => {
     }
   };
 
+  const setUploadableImage = (files) => {
+    setUploading(true);
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        setLocalImage({
+          uploadableImage,
+          uploadableImageLocal: reader.result,
+        });
+      },
+      false
+    );
+  };
+
+  const uploadLogo = async () => {
+    try {
+      const resizedImage = await resizeImage(localImage.uploadableImage, 500);
+      const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
+      await call('assignHostLogo', uploadedImage);
+      message.success('Your logo is successfully set');
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      setUploading(false);
+    }
+  };
+
   const pathname = history && history.location.pathname;
 
   return (
@@ -129,6 +166,23 @@ const Settings = ({ history }) => {
         </Box>
       }
     >
+      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+        <Heading level={3}>Logo</Heading>
+        <Text margin={{ bottom: 'medium' }}>Upload Your Logo</Text>
+        <Box width="small" alignSelf="center">
+          <FileDropper
+            uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+            imageUrl={currentHost && currentHost.logo}
+            setUploadableImage={setUploadableImage}
+          />
+        </Box>
+        {localImage && localImage.uploadableImageLocal && (
+          <Box alignSelf="center" pad="medium">
+            <Button onClick={() => uploadLogo()} label="Confirm" />
+          </Box>
+        )}
+      </Box>
+
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Organisation</Heading>
         <SettingsForm

@@ -80,6 +80,7 @@ const LayoutPage = ({
 
   const headerProps = {
     currentUser,
+    currentHost,
     history,
     title: 'Fanus',
   };
@@ -120,7 +121,7 @@ const boldBabe = {
   fontWeight: 700,
 };
 
-const Header = ({ currentUser, title, history }) => {
+const Header = ({ currentUser, currentHost, title, history }) => {
   const UserStuff = () => (
     <Box justify="end" direction="row" alignContent="center">
       {currentUser && (
@@ -140,7 +141,7 @@ const Header = ({ currentUser, title, history }) => {
 
         return (
           <Container fluid style={{ width: '100%' }}>
-            <Row style={{ marginLeft: 0, marginRight: 0 }}>
+            <Row style={{ marginLeft: 0, marginRight: 0 }} align="center">
               <Col xs={3}>
                 <Box>
                   {!pathsWithMenu.includes(pathname) ? (
@@ -153,8 +154,16 @@ const Header = ({ currentUser, title, history }) => {
                     </Link>
                   ) : (
                     <Link to="/">
-                      <Box width="60px" height="30px" margin={{ top: 'small' }}>
-                        <Image fit="contain" src="" className="header-logo" />
+                      <Box
+                        width="120px"
+                        height="80px"
+                        margin={{ top: 'small' }}
+                      >
+                        <Image
+                          fit="contain"
+                          src={currentHost && currentHost.logo}
+                          className="header-logo"
+                        />
                       </Box>
                     </Link>
                   )}
