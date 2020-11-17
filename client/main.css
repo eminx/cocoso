@@ -16,13 +16,13 @@ body {
 }
 
 .header-logo {
-  filter: grayscale(1);
-  transition: 0.2s ease-in-out filter;
+  /* filter: grayscale(1); */
+  /* transition: 0.2s ease-in-out filter; */
 }
 
 .header-logo:hover {
-  filter: grayscale(0);
-  transition: 0.2s ease-in-out filter;
+  /* filter: grayscale(0); */
+  /* transition: 0.2s ease-in-out filter; */
 }
 
 a {

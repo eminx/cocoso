@@ -85,7 +85,6 @@ const LayoutPage = ({
     currentHost &&
     currentHost.settings.mainColor &&
     currentHost.settings.mainColor.hsl;
-  console.log(hsl);
   const customTheme = {
     ...theme,
   };
@@ -249,7 +248,7 @@ const Menu = ({ large, history }) => {
 
 const MenuContent = ({ large, history, closeMenu }) => {
   const handleClick = (item) => {
-    closeMenu();
+    !large && closeMenu();
     history.push(item.route);
   };
 
