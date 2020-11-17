@@ -10,6 +10,7 @@ import {
   Footer,
   Heading,
   Image,
+  Grommet,
   Paragraph,
   Text,
 } from 'grommet';
@@ -20,6 +21,7 @@ export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import NotificationsPopup from './UIComponents/NotificationsPopup';
+import theme from './constants/theme';
 
 const menu = [
   {
@@ -79,6 +81,18 @@ const LayoutPage = ({
     );
   }
 
+  const hsl =
+    currentHost &&
+    currentHost.settings.mainColor &&
+    currentHost.settings.mainColor.hsl;
+  console.log(hsl);
+  const customTheme = {
+    ...theme,
+  };
+  customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
+    100 * hsl.l
+  }%)`;
+
   const headerProps = {
     currentUser,
     currentHost,
@@ -97,23 +111,30 @@ const LayoutPage = ({
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
   return (
-    <StateContext.Provider
-      value={{
-        currentUser,
-        userLoading,
-        currentHost,
-        role,
-        canCreateContent,
-      }}
-    >
-      <Box className="main-viewport" justify="center" fill background="light-2">
-        <Box width={{ max: '1280px' }} alignSelf="center" fill>
-          <Header {...headerProps} />
-          <Box>{children}</Box>
-          {/* <FooterInfo settings={settings} /> */}
+    <Grommet theme={customTheme}>
+      <StateContext.Provider
+        value={{
+          currentUser,
+          userLoading,
+          currentHost,
+          role,
+          canCreateContent,
+        }}
+      >
+        <Box
+          className="main-viewport"
+          justify="center"
+          fill
+          background="light-2"
+        >
+          <Box width={{ max: '1280px' }} alignSelf="center" fill>
+            <Header {...headerProps} />
+            <Box>{children}</Box>
+            {/* <FooterInfo settings={settings} /> */}
+          </Box>
         </Box>
-      </Box>
-    </StateContext.Provider>
+      </StateContext.Provider>
+    </Grommet>
   );
 };
 

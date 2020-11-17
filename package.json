@@ -48,6 +48,7 @@
     "pluralize": "^8.0.0",
     "react": "^17.0.1",
     "react-big-calendar": "^0.17.0",
+    "react-color": "^2.19.3",
     "react-dom": "^16.13.1",
     "react-dropzone": "^9.0.0",
     "react-grid-system": "^7.1.1",

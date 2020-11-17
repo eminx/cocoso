@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Anchor, Heading, TextInput, Form, Box, Text, Button } from 'grommet';
+import { HuePicker } from 'react-color';
 
 const pluralize = require('pluralize');
 
@@ -17,6 +18,15 @@ import FileDropper from '../../UIComponents/FileDropper';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
+const colorModel = {
+  hsl: {
+    h: 0,
+    s: 0.8,
+    l: 0.2,
+    a: 1,
+  },
+};
+
 const Settings = ({ history }) => {
   const [localSettings, setLocalSettings] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -25,13 +35,17 @@ const Settings = ({ history }) => {
   const [formAltered, setFormAltered] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
+  const [mainColor, setMainColor] = useState(colorModel);
 
-  const { settings, currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, currentHost, role } = useContext(StateContext);
 
   useEffect(() => {
-    setLocalSettings(settings);
+    currentHost && setLocalSettings(currentHost.settings);
     getCategories();
     setLoading(false);
+    currentHost &&
+      currentHost.settings.mainColor &&
+      setMainColor(currentHost.settings.mainColor);
   }, []);
 
   const getCategories = async () => {
@@ -143,7 +157,29 @@ const Settings = ({ history }) => {
     }
   };
 
+  const confirmMainColor = async () => {
+    try {
+      await call('setMainColor', mainColor);
+      message.success('Main color is successfully set');
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  const handleSetMainColor = (color) => {
+    const newMainColor = {
+      hsl: {
+        h: color.hsl.h.toFixed(0),
+        s: 0.8,
+        l: 0.35,
+      },
+    };
+    setMainColor(newMainColor);
+  };
+
   const pathname = history && history.location.pathname;
+  const settings = currentHost && currentHost.settings;
 
   return (
     <Template
@@ -184,7 +220,35 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+        <Heading level={3}>Main Color</Heading>
+        <Text margin={{ bottom: 'medium' }}>
+          Pick the Main Color for Your Web Presence
+        </Text>
+        <Box direction="row" justify="between" align="center">
+          <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
+          <Box
+            flex={{ grow: 0 }}
+            width="50px"
+            height="50px"
+            background={`hsl(${mainColor.hsl.h}, 80%, 35%)`}
+            style={{ borderRadius: '50%' }}
+          />
+        </Box>
+
+        <Box alignSelf="center" pad="medium">
+          <Button
+            disabled={settings && mainColor === settings.mainColor}
+            onClick={() => confirmMainColor()}
+            label="Confirm"
+          />
+        </Box>
+      </Box>
+
+      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Organisation</Heading>
+        <Text margin={{ bottom: 'medium' }}>
+          Add/Edit Information About your Organisation
+        </Text>
         <SettingsForm
           value={localSettings}
           onChange={handleFormChange}
