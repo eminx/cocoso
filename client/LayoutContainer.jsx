@@ -241,7 +241,9 @@ const Menu = ({ large, history }) => {
       onOpen={() => setOpen(true)}
       alignSelf="center"
       dropContent={
-        <MenuContent {...menuProps} closeMenu={() => setOpen(false)} />
+        <Box width="small" pad="small">
+          <MenuContent {...menuProps} closeMenu={() => setOpen(false)} />
+        </Box>
       }
       dropProps={{ align: { top: 'bottom' } }}
       plain
@@ -262,9 +264,8 @@ const MenuContent = ({ large, history, closeMenu }) => {
       direction={large ? 'row' : 'column'}
       flex={{ shrink: 0 }}
       alignSelf="center"
-      width="small"
       wrap
-      gap={!large && 'small'}
+      gap={large ? 'none' : 'small'}
     >
       {menu.map((item) => (
         <Box pad="small" key={item.label}>
