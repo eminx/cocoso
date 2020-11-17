@@ -12,6 +12,7 @@ export const userRoutes = [
 export const adminRoutes = [
   { label: 'Settings', value: '/admin/settings' },
   { label: 'Members', value: '/admin/members' },
+  { label: 'Resources', value: '/admin/resources' },
 ];
 
 const UserPopup = withRouter(({ currentUser, history }) => {
