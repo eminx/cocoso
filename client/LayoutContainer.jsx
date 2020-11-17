@@ -88,11 +88,12 @@ const LayoutPage = ({
   const customTheme = {
     ...theme,
   };
-  customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
-    100 * hsl.l
-  }%)`;
-
-  customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+  if (hsl) {
+    customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
+      100 * hsl.l
+    }%)`;
+    customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+  }
 
   const headerProps = {
     currentUser,
@@ -261,10 +262,12 @@ const MenuContent = ({ large, history, closeMenu }) => {
       direction={large ? 'row' : 'column'}
       flex={{ shrink: 0 }}
       alignSelf="center"
+      width="small"
       wrap
+      gap={!large && 'small'}
     >
       {menu.map((item) => (
-        <Box pad={{ vertical: 'small', horizontal: 'medium' }} key={item.label}>
+        <Box pad="small" key={item.label}>
           <Anchor
             onClick={() => handleClick(item)}
             label={item.label.toUpperCase()}
