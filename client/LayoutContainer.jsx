@@ -92,6 +92,8 @@ const LayoutPage = ({
     100 * hsl.l
   }%)`;
 
+  customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+
   const headerProps = {
     currentUser,
     currentHost,
