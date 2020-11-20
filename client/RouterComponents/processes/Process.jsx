@@ -758,7 +758,7 @@ class Process extends Component {
 
     return (
       <Box pad="medium">
-        <Box background="light-2" border="dark-2">
+        <Box background="light-2">
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}
@@ -986,6 +986,11 @@ class CreateMeetingForm extends PureComponent {
         <div style={{ marginBottom: 6 }}>
           <Calendar
             size="small"
+            date={
+              newMeeting.startDate
+                ? newMeeting.startDate + 'T00:00:00.000Z'
+                : new Date().toISOString()
+            }
             onSelect={handleDateChange}
             firstDayOfWeek={1}
           />
