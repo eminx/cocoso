@@ -5,6 +5,8 @@ import {
   isContributorOrAdmin,
   isParticipant,
   getLogdnaOptions,
+  isAdmin,
+  isMember,
 } from './shared';
 
 const publicSettings = Meteor.settings.public;
@@ -182,7 +184,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user || !isParticipant(user, currentHost)) {
+    if (!user || !isMember(user, currentHost)) {
       throw new Meteor.Error('Please become a participant first');
     }
 
