@@ -158,6 +158,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   const pathname = location.pathname;
   const gotoPath = getGotoPath(pathname);
 
+  const isPage = pathname.substring(0, 5) === '/page';
+  const isMenuPage = isPage || pathsWithMenu.includes(pathname);
+
   return (
     <ScreenClassRender
       render={(screenClass) => {
@@ -168,36 +171,19 @@ const Header = ({ currentUser, currentHost, title, history }) => {
             <Row style={{ marginLeft: 0, marginRight: 0 }} align="center">
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Box>
-                  {!pathsWithMenu.includes(pathname) &&
-                  pathname.substring(0, 5) !== '/page' ? (
-                    <Link to={gotoPath}>
-                      <Button
-                        plain
-                        icon={<FormPrevious size="large" />}
-                        style={{ transform: 'translateX(-16px)' }}
+                  <Link to="/">
+                    <Box width="120px" height="80px" margin={{ top: 'small' }}>
+                      <Image
+                        fit="contain"
+                        src={currentHost && currentHost.logo}
+                        className="header-logo"
                       />
-                    </Link>
-                  ) : (
-                    <Link to="/">
-                      <Box
-                        width="120px"
-                        height="80px"
-                        margin={{ top: 'small' }}
-                      >
-                        <Image
-                          fit="contain"
-                          src={currentHost && currentHost.logo}
-                          className="header-logo"
-                        />
-                      </Box>
-                    </Link>
-                  )}
+                    </Box>
+                  </Link>
                 </Box>
               </Col>
               <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
-                {pathsWithMenu.includes(pathname) && (
-                  <Menu large={large} history={history} />
-                )}
+                <Menu large={large} history={history} />
               </Col>
               <Col xs={3} style={{ paddingRight: 0 }}>
                 <UserStuff />
