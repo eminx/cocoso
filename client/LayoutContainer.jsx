@@ -168,7 +168,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
             <Row style={{ marginLeft: 0, marginRight: 0 }} align="center">
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Box>
-                  {!pathsWithMenu.includes(pathname) ||
+                  {!pathsWithMenu.includes(pathname) &&
                   pathname.substring(0, 5) !== '/page' ? (
                     <Link to={gotoPath}>
                       <Button
