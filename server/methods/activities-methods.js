@@ -180,14 +180,6 @@ Meteor.methods({
   },
 
   registerAttendance(activityId, values, occurenceIndex = 0) {
-    const user = Meteor.user();
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-
-    if (!user || !isMember(user, currentHost)) {
-      throw new Meteor.Error('Please become a participant first');
-    }
-
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     values.registerDate = new Date();
