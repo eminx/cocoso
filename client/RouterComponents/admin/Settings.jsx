@@ -59,8 +59,8 @@ const Settings = ({ history }) => {
   };
 
   const handleFormChange = (newSettings) => {
-    setLocalSettings(newSettings);
     setFormAltered(true);
+    setLocalSettings(newSettings);
   };
 
   const handleFormSubmit = async () => {
