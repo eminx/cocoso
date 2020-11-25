@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Heading, TextInput, Form, Box, Text, Button } from 'grommet';
+import {
+  Anchor,
+  Heading,
+  TextInput,
+  Form,
+  FormField,
+  Box,
+  Text,
+  Button,
+  CheckBoxGroup,
+} from 'grommet';
 import { HuePicker } from 'react-color';
 
 const pluralize = require('pluralize');
@@ -26,6 +36,8 @@ const colorModel = {
     a: 1,
   },
 };
+
+menuItems = ['activities', 'calendar', 'processes', 'works', 'info'];
 
 const Settings = ({ history }) => {
   const [localSettings, setLocalSettings] = useState(null);
@@ -184,6 +196,10 @@ const Settings = ({ history }) => {
   const pathname = history && history.location.pathname;
   const settings = currentHost && currentHost.settings;
 
+  const handleMenuItemCheck = ({ value, option }) => {
+    console.log(value, option);
+  };
+
   return (
     <Template
       heading="Settings"
@@ -248,6 +264,31 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+        <Heading level={3}>Menu</Heading>
+        <Box margin={{ bottom: 'large' }}>
+          <Text weight="bold">Visibility</Text>
+          <Text margin={{ bottom: 'medium' }} size="small">
+            Check/uncheck items to compose the main menu
+          </Text>
+
+          <Form>
+            <CheckBoxGroup
+              options={menuItems.map((item) => item.toUpperCase())}
+              onChange={handleMenuItemCheck}
+              value={currentHost && currentHost.menuItems}
+            />
+          </Form>
+        </Box>
+
+        <Box margin={{ bottom: 'large' }}>
+          <Text weight="bold">Order</Text>
+          <Text margin={{ bottom: 'medium' }} size="small">
+            Reorder items if you want to change the menu display order
+          </Text>
+        </Box>
+      </Box>
+
+      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Organisation</Heading>
         <Text margin={{ bottom: 'medium' }}>
           Add/Edit Information About your Organisation
@@ -294,7 +335,6 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-        <Heading level={3}>Wording</Heading>
         {/* <Form
           value={settings}
           onChange={this.handleFormChange}
