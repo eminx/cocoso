@@ -63,7 +63,7 @@ function Members({ history, members, isLoading }) {
       // getAndSetUsers();
     } catch (error) {
       console.log(error);
-      message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -71,21 +71,9 @@ function Members({ history, members, isLoading }) {
     try {
       await call('setAsContributor', user.id);
       message.success(`${user.username} is now set as a contributor`);
-      // getAndSetUsers();
     } catch (error) {
       console.log(error);
-      message.error(error.reason);
-    }
-  };
-
-  const setAsAdmin = async (user) => {
-    try {
-      await call('setAsAdmin', user.id);
-      message.success(`${user.username} is now set as an admin`);
-      // getAndSetUsers();
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
+      message.error(error.reason || error.error);
     }
   };
 
@@ -124,25 +112,14 @@ function Members({ history, members, isLoading }) {
         content: 'Set as a Contributor',
         handleClick: () => setAsContributor(member),
         isDisabled:
-          (['admin', 'contributor'].includes(member.role) ||
-            ['participant'].includes(role)) &&
-          !currentUser.isSuperAdmin,
+          ['admin', 'contributor'].includes(member.role) ||
+          !['admin', 'contributor'].includes(role),
       },
       {
-        content: 'Set as an Admin',
-        handleClick: () => setAsAdmin(member),
-        isDisabled:
-          (['admin'].includes(member.role) ||
-            ['contributor', 'participant'].includes(role)) &&
-          !currentUser.isSuperAdmin,
-      },
-      {
-        content: 'Set back as a Participant',
+        content: 'Revert back as a Participant',
         handleClick: () => setAsParticipant(member),
         isDisabled:
-          (['admin'].includes(member.role) ||
-            ['contributor', 'participant'].includes(role)) &&
-          !currentUser.isSuperAdmin,
+          !['contributor'].includes(member.role) || !['admin'].includes(role),
       },
     ],
   }));
