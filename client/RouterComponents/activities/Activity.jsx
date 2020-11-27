@@ -421,8 +421,9 @@ class Activity extends React.Component {
         leftContent={
           <Box pad="medium">
             <Heading
-              level={2}
+              level={3}
               style={{ marginBottom: 0, lineBreak: 'anywhere' }}
+              size="small"
             >
               {activityData.title}
             </Heading>
@@ -435,7 +436,7 @@ class Activity extends React.Component {
         }
         rightContent={
           <Box width="100%" pad="medium">
-            <Heading margin={{ bottom: 'small' }} level={4}>
+            <Heading margin={{ bottom: 'small' }} level={5}>
               Dates
             </Heading>
             <Text size="small" margin={{ bottom: 'small' }}>
@@ -488,7 +489,7 @@ class Activity extends React.Component {
         </Box>
 
         <Box pad="medium" margin={{ bottom: 'small' }}>
-          <Heading level={4} margin={{ bottom: 'small' }}>
+          <Heading level={5} margin={{ bottom: 'small' }}>
             Location
           </Heading>
           <Text size="small">

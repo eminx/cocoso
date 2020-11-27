@@ -62,7 +62,9 @@ const Work = ({ history, match }) => {
       <Template
         leftContent={
           <Box pad="medium">
-            <Heading level={2}>{work.title}</Heading>
+            <Heading level={3} size="small">
+              {work.title}
+            </Heading>
             <Box direction="row" align="start" justify="between">
               <Box pad={{ right: 'small' }} width="220px">
                 {work.category && (

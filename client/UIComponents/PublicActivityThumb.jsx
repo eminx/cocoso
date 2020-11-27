@@ -96,7 +96,7 @@ function PublicActivityThumb({ item, large }) {
       className="hoverable"
     >
       <Box pad={{ bottom: 'medium' }}>
-        <Text weight={600} size="large" style={ellipsisStyle}>
+        <Text weight={600} style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
         </Text>
         <Text weight={300} style={ellipsisStyle}>

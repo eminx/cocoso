@@ -107,9 +107,9 @@ function Activities({ activitiesList, processesList, isLoading }) {
           ) : (
             <Box>
               <Box alignSelf="center">
-                <Heading level={2} textAlign="center">
+                {/* <Heading level={2} textAlign="center">
                   Activities
-                </Heading>
+                </Heading> */}
               </Box>
               {canCreateContent && (
                 <Box

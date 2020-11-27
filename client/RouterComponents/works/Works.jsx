@@ -70,9 +70,9 @@ const Works = ({ history }) => {
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
       <Box alignSelf="center">
-        <Heading level={2} textAlign="center">
+        {/* <Heading level={2} textAlign="center">
           Works
-        </Heading>
+        </Heading> */}
       </Box>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
@@ -132,7 +132,7 @@ const Works = ({ history }) => {
                     margin={{ bottom: 'small' }}
                   />
                 )}
-                <Text weight={600} size="large" style={ellipsisStyle}>
+                <Text weight={600} style={ellipsisStyle}>
                   {work.title}
                 </Text>
               </Box>

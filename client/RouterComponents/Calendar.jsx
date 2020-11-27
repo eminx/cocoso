@@ -190,9 +190,9 @@ class Calendar extends React.PureComponent {
     return (
       <Box>
         <Box alignSelf="center">
-          <Heading level={2} textAlign="center">
+          {/* <Heading level={2} textAlign="center">
             Calendar
-          </Heading>
+          </Heading> */}
         </Box>
 
         {currentUser && canCreateContent && (

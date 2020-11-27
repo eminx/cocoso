@@ -129,7 +129,7 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
   }));
 
   return (
-    <Template heading="Processes" titleCentered>
+    <Template>
       <Box>
         {canCreateContent && (
           <Box margin={{ bottom: 'medium' }} alignSelf="center">

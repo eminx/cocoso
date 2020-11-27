@@ -152,8 +152,9 @@ class Process extends Component {
         )}
         <Box pad="medium">
           <Heading
-            level={2}
+            level={3}
             style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
+            size="small"
           >
             {process.title}
           </Heading>
@@ -629,7 +630,7 @@ class Process extends Component {
 
         {currentUser && process && process.members && (
           <Fragment>
-            <Heading level={4}>Members</Heading>
+            <Heading level={5}>Members</Heading>
             <Box margin={{ bottom: 'medium' }}>
               <NiceList list={membersList} actionsDisabled={!isAdmin}>
                 {(member) => (
@@ -647,7 +648,7 @@ class Process extends Component {
           </Fragment>
         )}
 
-        <Heading level={4}>Documents</Heading>
+        <Heading level={5}>Documents</Heading>
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList list={documentsList} actionsDisabled={!isAdmin}>
             {(document) => (
@@ -728,7 +729,7 @@ class Process extends Component {
         <ScreenClassRender
           render={(screenClass) => (
             <Tabs alignSelf="start" justify="start">
-              <Tab title="Info">
+              <Tab title="Info" style={{ marginLeft: 12 }}>
                 <Box
                   alignSelf="center"
                   width={screenClass === 'xs' ? 'medium' : 'large'}
@@ -742,7 +743,7 @@ class Process extends Component {
                   <div>{renderHTML(process.description)}</div>
                 </Box>
               </Tab>
-              <Tab title="Discussion">
+              <Tab title="Discussion" style={{ marginLeft: 12 }}>
                 <div>{chatData && this.renderDiscussion()}</div>
               </Tab>
             </Tabs>
@@ -841,7 +842,7 @@ class Process extends Component {
           }
           rightContent={
             <Box pad="medium">
-              <Heading level={4}>Dates</Heading>
+              <Heading level={5}>Dates</Heading>
 
               <Text size="small" pad="small" margin={{ bottom: 'medium' }}>
                 <em>
@@ -930,7 +931,7 @@ class Process extends Component {
           <Layer full="vertical" position="right">
             <Box fill style={{ maxWidth: '378px' }} pad="medium">
               <Box direction="row" align="start" justify="between">
-                <Heading level={3}>Manage Access</Heading>
+                <Heading level={5}>Manage Access</Heading>
                 <Button
                   flex={{ grow: 0 }}
                   icon={<Close />}
