@@ -420,11 +420,7 @@ class Activity extends React.Component {
       <Template
         leftContent={
           <Box pad="medium">
-            <Heading
-              level={3}
-              style={{ marginBottom: 0, lineBreak: 'anywhere' }}
-              size="small"
-            >
+            <Heading level={3} style={{ marginBottom: 0 }} size="small">
               {activityData.title}
             </Heading>
             {activityData.subTitle && (
