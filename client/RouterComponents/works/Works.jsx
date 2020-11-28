@@ -132,7 +132,7 @@ const Works = ({ history }) => {
                     margin={{ bottom: 'small' }}
                   />
                 )}
-                <Text weight={600} style={ellipsisStyle}>
+                <Text weight={600} style={ellipsisStyle} size="large">
                   {work.title}
                 </Text>
               </Box>

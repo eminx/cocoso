@@ -1,9 +1,42 @@
 import { Meteor } from 'meteor/meteor';
 
+const menu = [
+  {
+    label: 'activities',
+    name: 'activities',
+    isVisible: true,
+    isHomePage: true,
+  },
+  {
+    label: 'calendar',
+    name: 'calendar',
+    isVisible: true,
+    isHomePage: false,
+  },
+  {
+    label: 'processes',
+    name: 'processes',
+    isVisible: true,
+    isHomePage: false,
+  },
+  {
+    label: 'works',
+    name: 'works',
+    isVisible: true,
+    isHomePage: false,
+  },
+  {
+    label: 'info',
+    name: 'info',
+    isVisible: true,
+    isHomePage: true,
+  },
+];
+
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
-  // Meteor.users.find().forEach((user) => {
+  // Hosts.find().forEach((host) => {
   //   Meteor.users.update(user._id, {
   //     $set: {
   //       memberships: [
@@ -16,17 +49,15 @@ Meteor.startup(() => {
   //       ],
   //     },
   //   });
-
-  //   Hosts.update('3Er9qxkYQGB9obsEF', {
-  //     $push: {
-  //       members: {
-  //         id: user._id,
-  //         email: user.emails[0].address,
-  //         role: 'contributor',
-  //         date: new Date(),
-  //       },
+  // const existingSettings = host.settings;
+  // Hosts.update(host._id, {
+  //   $set: {
+  //     settings: {
+  //       ...existingSettings,
+  //       menu: menu,
   //     },
-  //   });
+  //   },
+  // });
   // });
 
   process.env.MAIL_URL =

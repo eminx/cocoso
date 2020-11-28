@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { Box, Anchor, Text } from 'grommet';
+import { Anchor, Heading, Box, Text } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -96,7 +96,7 @@ function PublicActivityThumb({ item, large }) {
       className="hoverable"
     >
       <Box pad={{ bottom: 'medium' }}>
-        <Text weight={600} style={ellipsisStyle}>
+        <Text size="large" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
         </Text>
         <Text weight={300} style={ellipsisStyle}>
