@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
   Anchor,
-  Heading,
-  TextInput,
+  Box,
+  Button,
+  CheckBox,
   Form,
   FormField,
-  Box,
+  Heading,
   Text,
-  Button,
-  CheckBoxGroup,
+  TextInput,
 } from 'grommet';
 import { HuePicker } from 'react-color';
 
@@ -37,6 +37,23 @@ const colorModel = {
   },
 };
 
+const getMenuPlaceHolder = (item) => {
+  switch (item) {
+    case 'activities':
+      return 'bookings';
+    case 'calendar':
+      return 'program';
+    case 'processes':
+      return 'workshops';
+    case 'works':
+      return 'offers';
+    case 'info':
+      return 'about';
+    default:
+      return '';
+  }
+};
+
 menuItems = ['activities', 'calendar', 'processes', 'works', 'info'];
 
 const Settings = ({ history }) => {
@@ -48,6 +65,7 @@ const Settings = ({ history }) => {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const [mainColor, setMainColor] = useState(colorModel);
+  const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
@@ -55,10 +73,20 @@ const Settings = ({ history }) => {
     currentHost && setLocalSettings(currentHost.settings);
     getCategories();
     setLoading(false);
+    currentHost.settings && handleSetActiveMenu();
     currentHost &&
       currentHost.settings.mainColor &&
       setMainColor(currentHost.settings.mainColor);
   }, []);
+
+  const handleSetActiveMenu = (key, label) => {
+    const newActiveMenu = {};
+    currentHost.settings.menu.forEach((item) => {
+      newActiveMenu[item.name] = item.label.toUpperCase();
+    });
+
+    setActiveMenu(newActiveMenu);
+  };
 
   const getCategories = async () => {
     try {
@@ -193,12 +221,29 @@ const Settings = ({ history }) => {
     setMainColor(newMainColor);
   };
 
+  const handleMenuItemCheck = (changedItemIndex, value) => {
+    const newMenu = localSettings.menu.map((item, index) => {
+      if (changedItemIndex === index) {
+        return {
+          ...item,
+          isVisible: value,
+        };
+      }
+      return item;
+    });
+    setLocalSettings({ ...localSettings, menu: newMenu });
+  };
+
+  const handleChangeActiveMenu = (value) => {
+    setActiveMenu(value);
+  };
+
+  const handleMenuSave = ({ value }) => {
+    console.log(value);
+  };
+
   const pathname = history && history.location.pathname;
   const settings = currentHost && currentHost.settings;
-
-  const handleMenuItemCheck = ({ value, option }) => {
-    console.log(value, option);
-  };
 
   return (
     <Template
@@ -272,11 +317,21 @@ const Settings = ({ history }) => {
           </Text>
 
           <Form>
-            <CheckBoxGroup
-              options={menuItems.map((item) => item.toUpperCase())}
-              onChange={handleMenuItemCheck}
-              value={currentHost && currentHost.menuItems}
-            />
+            {localSettings.menu.map((item, index) => (
+              <Box key={item.name} margin={{ bottom: 'small' }}>
+                <CheckBox
+                  checked={item.isVisible}
+                  label={item.label.toUpperCase()}
+                  onChange={(event) =>
+                    handleMenuItemCheck(index, event.target.checked)
+                  }
+                />
+              </Box>
+            ))}
+
+            <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
+              <Button type="submit" label="Confirm" />
+            </Box>
           </Form>
         </Box>
 
@@ -285,6 +340,35 @@ const Settings = ({ history }) => {
           <Text margin={{ bottom: 'medium' }} size="small">
             Reorder items if you want to change the menu display order
           </Text>
+
+          <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
+            <Button type="submit" label="Confirm" />
+          </Box>
+        </Box>
+
+        <Box margin={{ bottom: 'large' }}>
+          <Text weight="bold">Labels</Text>
+          <Text margin={{ bottom: 'medium' }} size="small">
+            Type a name if you want to replace labels of the menu items. Note
+            that only one word is allowed.
+          </Text>
+          {activeMenu && (
+            <Form
+              value={activeMenu}
+              onChange={(value) => handleChangeActiveMenu(value)}
+              onSubmit={() => handleMenuSave()}
+            >
+              {localSettings.menu
+                .filter((ite) => ite.isVisible)
+                .map((item) => (
+                  <LabelChangableItem key={item.name} name={item.name} />
+                ))}
+
+              <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
+                <Button type="submit" label="Confirm" />
+              </Box>
+            </Form>
+          )}
         </Box>
       </Box>
 
@@ -334,103 +418,23 @@ const Settings = ({ history }) => {
         </Form>
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-        {/* <Form
-          value={settings}
-          onChange={this.handleFormChange}
-          onSubmit={this.handleFormSubmit}
-        >
-          <Box width="medium" margin={{ bottom: 'medium' }}>
-            <FormField
-              label="Process"
-              size="small"
-              help={
-                <Text size="small">
-                  Type a name if you want to replace{' '}
-                  <b>
-                    <code>process</code>
-                  </b>{' '}
-                  with something else. Note that only one word is allowed
-                </Text>
-              }
-            >
-              <TextInput plain={false} name="process" placeholder="group" />
-            </FormField>
-
-            <Text size="small" margin={{ left: 'small' }}>
-              {settings.process && (
-                <span>
-                  <b>
-                    <code>{pluralize(settings.process)}</code>
-                  </b>{' '}
-                  will be plural version
-                </span>
-              )}
-            </Text>
-          </Box>
-
-          <Box width="medium" margin={{ bottom: 'medium' }}>
-            <FormField
-              label="Work"
-              size="small"
-              help={
-                <Text size="small">
-                  Type a name if you want to replace{' '}
-                  <b>
-                    <code>work</code>
-                  </b>{' '}
-                  with something else. Note that only one word is allowed
-                </Text>
-              }
-            >
-              <TextInput plain={false} name="work" placeholder="work" />
-            </FormField>
-          </Box>
-
-          <Box width="medium" margin={{ bottom: 'medium' }}>
-            <FormField
-              label="Info"
-              size="small"
-              help={
-                <Text size="small">
-                  Type a name if you want to replace{' '}
-                  <b>
-                    <code>Info</code>
-                  </b>{' '}
-                  with something else. Note that only one word is allowed
-                </Text>
-              }
-            >
-              <TextInput plain={false} name="info" placeholder="About" />
-            </FormField>
-
-            <Text size="small" margin={{ left: 'small' }}>
-              {settings.info && (
-                <span>
-                  <b>
-                    <code>{pluralize(settings.info)}</code>
-                  </b>{' '}
-                  will be plural version
-                </span>
-              )}
-            </Text>
-          </Box>
-
-          <Box direction="row" justify="end" pad="small">
-            <Button type="submit" primary label="Confirm" />
-          </Box>
-        </Form> */}
-      </Box>
-
-      {/* <ConfirmModal
-        visible={isDeleteModalOn}
-        onConfirm={this.handleRemoveCategory}
-        onCancel={this.closeDeleteModal}
-        title="Confirm Delete"
-      >
-        Are you sure you want to delete this category?
-      </ConfirmModal> */}
+      <Box pad="medium" background="white" margin={{ bottom: 'medium' }}></Box>
     </Template>
+  );
+};
+
+const LabelChangableItem = ({ name }) => {
+  return (
+    <Box width="medium">
+      <FormField name={name} label={name.toUpperCase()} size="small">
+        <TextInput
+          plain={false}
+          name={name}
+          size="small"
+          placeholder={getMenuPlaceHolder(name).toUpperCase()}
+        />
+      </FormField>
+    </Box>
   );
 };
 
