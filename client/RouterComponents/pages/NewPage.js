@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { Box } from 'grommet';
 
 import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
@@ -122,12 +123,14 @@ class NewPage extends React.Component {
 
     return (
       <Template heading="Create a New Page">
-        <PageForm
-          formValues={formValues}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-        />
+        <Box pad="medium" background="white">
+          <PageForm
+            formValues={formValues}
+            onFormChange={this.handleFormChange}
+            onQuillChange={this.handleQuillChange}
+            onSubmit={this.handleSubmit}
+          />
+        </Box>
       </Template>
     );
   }

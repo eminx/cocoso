@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PureComponent, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
@@ -160,27 +160,20 @@ class Process extends Component {
           </Heading>
           <Text weight={300}>{process.readingMaterial}</Text>
         </Box>
-        <Box pad="medium">
-          {isAdmin ? (
-            <Box alignSelf="end" direction="row">
-              <Anchor
-                onClick={() => history.push(`/edit-process/${process._id}`)}
-                label="Edit"
-              />
-              {process.isPrivate && (
-                <Anchor
-                  onClick={this.handleOpenInviteManager}
-                  style={{ marginLeft: 12 }}
-                  label="Manage Access"
-                />
-              )}
-            </Box>
-          ) : (
-            <Box alignSelf="end" pad={{ right: 'medium' }}>
-              {process.adminUsername}
-            </Box>
-          )}
-        </Box>
+
+        {isAdmin && process.isPrivate ? (
+          <Box alignSelf="end" direction="row" pad="medium">
+            <Anchor
+              onClick={this.handleOpenInviteManager}
+              style={{ marginLeft: 12 }}
+              label="Manage Access"
+            />
+          </Box>
+        ) : (
+          <Box alignSelf="end" pad={{ right: 'medium' }}>
+            {process.adminUsername}
+          </Box>
+        )}
       </Box>
     );
   };
@@ -894,6 +887,17 @@ class Process extends Component {
           <Visible sm md>
             {this.renderMembersAndDocuments()}
           </Visible>
+
+          <Box
+            direction="row"
+            justify="center"
+            pad="medium"
+            margin={{ bottom: 'large' }}
+          >
+            <Link to={`/edit-process/${process._id}`}>
+              <Anchor label="Edit this Process" />
+            </Link>
+          </Box>
         </Template>
         <ConfirmModal
           visible={modalOpen}
@@ -1034,7 +1038,6 @@ class CreateMeetingForm extends PureComponent {
               placeholder="Location"
               onChange={(event) => handlePlaceChange(event.target.value)}
               size="small"
-              // style={{ width: 200 }}
             />
           )}
         </div>

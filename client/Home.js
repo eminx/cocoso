@@ -1,6 +1,5 @@
-import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 import Activities from './RouterComponents/activities/ActivitiesContainer';
 import ProcessesList from './RouterComponents/processes/ProcessesListContainer';

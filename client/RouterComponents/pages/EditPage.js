@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button } from 'grommet';
+import { Box, Button } from 'grommet';
 
 import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
@@ -176,30 +176,33 @@ class EditPage extends React.Component {
             />
           </Link>
         }
-        rightContent={
-          <Button
-            plain
-            color="status-critical"
-            onClick={this.openDeleteModal}
-            label="Delete this page"
-          />
-        }
       >
-        <PageForm
-          formValues={formValues}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-        />
+        <Box background="white" pad="medium">
+          <PageForm
+            formValues={formValues}
+            onFormChange={this.handleFormChange}
+            onQuillChange={this.handleQuillChange}
+            onSubmit={this.handleSubmit}
+          />
 
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          onConfirm={this.handleDeletePage}
-          onCancel={this.closeDeleteModal}
-          title="Confirm Delete"
-        >
-          Are you sure you want to delete this page?
-        </ConfirmModal>
+          <Box direction="row" justify="center" pad="medium">
+            <Button
+              plain
+              color="status-critical"
+              onClick={this.openDeleteModal}
+              label="Delete this page"
+            />
+          </Box>
+
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            onConfirm={this.handleDeletePage}
+            onCancel={this.closeDeleteModal}
+            title="Confirm Delete"
+          >
+            Are you sure you want to delete this page?
+          </ConfirmModal>
+        </Box>
       </Template>
     );
   }

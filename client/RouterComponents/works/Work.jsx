@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { Box, Button, Avatar, Heading, Text } from 'grommet';
+import { Link } from 'react-router-dom';
+import { Anchor, Box, Avatar, Heading, Text } from 'grommet';
 import { Visible, Hidden } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
@@ -115,18 +116,22 @@ const Work = ({ history, match }) => {
           </Box>
         </Box>
       </Template>
-      <Box margin={{ vertical: 'large' }}>
+      <Box
+        margin={{ top: 'medium', bottom: 'large' }}
+        direction="row"
+        justify="center"
+      >
         {isOwner && (
-          <Button
-            alignSelf="center"
-            size="small"
-            onClick={() =>
-              history.push(
-                `/${currentUser.username}/edit-work/${match.params.workId}`
-              )
-            }
-            label="Edit this work"
-          />
+          <Link
+            to={`/${currentUser.username}/edit-work/${match.params.workId}`}
+          >
+            <Anchor
+              as="span"
+              alignSelf="center"
+              size="small"
+              label="Edit this Work"
+            />
+          </Link>
         )}
       </Box>
     </Fragment>

@@ -441,7 +441,6 @@ class Activity extends React.Component {
                 : 'Please click and open the date to RSVP'}
             </Text>
             {this.renderDates()}
-            {EditButton}
           </Box>
         }
       >
@@ -506,6 +505,8 @@ class Activity extends React.Component {
             />
           </Box>
         )}
+
+        {EditButton}
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}

@@ -75,21 +75,23 @@ class Page extends PureComponent {
               onChange={this.handlePageClick}
               activePageTitle={routeName}
             />
-
-            {currentUser && role === 'admin' && (
-              <Box pad="medium" direction="row" justify="center">
-                <Link to="/new-page">
-                  <Button
-                    as="span"
-                    size="small"
-                    label="NEW"
-                    primary
-                    icon={<FormAdd />}
-                  />
-                </Link>
-              </Box>
-            )}
           </Box>
+        }
+        rightContent={
+          currentUser &&
+          role === 'admin' && (
+            <Box pad="medium" direction="row" justify="center">
+              <Link to="/new-page">
+                <Button
+                  as="span"
+                  size="small"
+                  label="NEW"
+                  primary
+                  icon={<FormAdd />}
+                />
+              </Link>
+            </Box>
+          )
         }
       >
         <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
