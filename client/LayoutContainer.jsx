@@ -237,9 +237,8 @@ const Menu = ({ currentHost, large, history }) => {
   const pathname = history.location.pathname;
   const currentPage = menu.find((item) => {
     return (
-      item.name.toLowerCase() === 'info' ||
       item.name.toLowerCase() ===
-        pathname.substring(1, pathname.length).toLowerCase()
+      pathname.substring(1, pathname.length).toLowerCase()
     );
   });
 
