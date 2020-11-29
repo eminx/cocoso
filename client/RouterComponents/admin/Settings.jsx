@@ -7,10 +7,13 @@ import {
   Form,
   FormField,
   Heading,
+  List,
   Text,
   TextInput,
 } from 'grommet';
 import { HuePicker } from 'react-color';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 const pluralize = require('pluralize');
 
@@ -19,7 +22,6 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
 import Tag from '../../UIComponents/Tag';
 import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
@@ -230,6 +232,13 @@ const Settings = ({ history }) => {
     setActiveMenu(value);
   };
 
+  const onSortMenuEnd = ({ oldIndex, newIndex }) => {
+    setLocalSettings({
+      ...localSettings,
+      menu: arrayMove(localSettings.menu, oldIndex, newIndex),
+    });
+  };
+
   const handleMenuSave = () => {
     const newMenu = localSettings.menu.map((item) => ({
       ...item,
@@ -328,17 +337,19 @@ const Settings = ({ history }) => {
           </Text>
 
           <Form onSubmit={() => handleMenuSave()}>
-            {localSettings.menu.map((item, index) => (
-              <Box key={item.name} margin={{ bottom: 'small' }}>
-                <CheckBox
-                  checked={item.isVisible}
-                  label={item.label.toUpperCase()}
-                  onChange={(event) =>
-                    handleMenuItemCheck(index, event.target.checked)
-                  }
-                />
-              </Box>
-            ))}
+            {localSettings &&
+              localSettings.menu &&
+              localSettings.menu.map((item, index) => (
+                <Box key={item.name} margin={{ bottom: 'small' }}>
+                  <CheckBox
+                    checked={item.isVisible}
+                    label={item.label.toUpperCase()}
+                    onChange={(event) =>
+                      handleMenuItemCheck(index, event.target.checked)
+                    }
+                  />
+                </Box>
+              ))}
 
             <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
               <Button type="submit" label="Confirm" />
@@ -351,7 +362,24 @@ const Settings = ({ history }) => {
           <Text margin={{ bottom: 'medium' }} size="small">
             Reorder items if you want to change the menu display order
           </Text>
-
+          <Box>
+            {localSettings && localSettings.menu && (
+              <SortableContainer
+                onSortEnd={onSortMenuEnd}
+                helperClass="sortableHelper"
+              >
+                {localSettings.menu
+                  .filter((item) => item.isVisible)
+                  .map((value, index) => (
+                    <SortableItem
+                      key={`item-${value.name}`}
+                      index={index}
+                      value={value.label}
+                    />
+                  ))}
+              </SortableContainer>
+            )}
+          </Box>
           <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
             <Button type="submit" label="Confirm" />
           </Box>
@@ -433,6 +461,22 @@ const Settings = ({ history }) => {
     </Template>
   );
 };
+
+const SortableItem = sortableElement(({ value }) => (
+  <Box
+    key={value}
+    className="sortable-thumb"
+    pad="small"
+    margin={{ bottom: 'small' }}
+    background="light-1"
+  >
+    {value}
+  </Box>
+));
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <Box>{children}</Box>;
+});
 
 const LabelChangableItem = ({ name }) => {
   return (
