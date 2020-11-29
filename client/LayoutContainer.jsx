@@ -219,10 +219,12 @@ const Menu = ({ currentHost, large, history }) => {
 
   const menu = currentHost.settings.menu;
 
-  const menuItems = menu.map((item, index) => ({
-    ...item,
-    route: getRoute(item, index),
-  }));
+  const menuItems = menu
+    .filter((item) => item.isVisible)
+    .map((item, index) => ({
+      ...item,
+      route: getRoute(item, index),
+    }));
 
   const menuProps = {
     large,
