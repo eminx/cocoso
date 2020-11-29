@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   Anchor,
   Box,
@@ -8,6 +8,8 @@ import {
   FormField,
   Heading,
   List,
+  Tabs,
+  Tab,
   Text,
   TextInput,
 } from 'grommet';
@@ -231,6 +233,14 @@ const Settings = ({ history }) => {
 
   const handleChangeActiveMenu = (value) => {
     setActiveMenu(value);
+    const newMenu = localSettings.menu.map((item) => {
+      return {
+        ...item,
+        label: value[item.name],
+      };
+    });
+
+    setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
   const onSortMenuEnd = ({ oldIndex, newIndex }) => {
@@ -240,18 +250,7 @@ const Settings = ({ history }) => {
     });
   };
 
-  const handleMenuSave = () => {
-    const newMenu = localSettings.menu.map((item) => ({
-      ...item,
-      label: activeMenu[item.name],
-    }));
-
-    setLocalSettings({ ...localSettings, menu: newMenu });
-
-    saveSettings();
-  };
-
-  const saveSettings = async () => {
+  const handleMenuSave = async () => {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
@@ -344,90 +343,106 @@ const Settings = ({ history }) => {
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Menu</Heading>
-        <Box margin={{ bottom: 'large' }}>
-          <Text weight="bold">Visibility</Text>
-          <Text margin={{ bottom: 'medium' }} size="small">
-            Check/uncheck items to compose the main menu
-          </Text>
+        <Tabs>
+          <Tab title="Visibility">
+            <Box margin={{ bottom: 'large' }}>
+              <Text weight="bold">Visibility</Text>
+              <Text margin={{ bottom: 'medium' }} size="small">
+                Check/uncheck items to compose the main menu
+              </Text>
 
-          <Form onSubmit={() => handleMenuSave()}>
-            {localSettings &&
-              localSettings.menu &&
-              localSettings.menu.map((item, index) => (
-                <Box key={item.name} margin={{ bottom: 'small' }}>
-                  <CheckBox
-                    checked={item.isVisible}
-                    label={item.label.toUpperCase()}
-                    onChange={(event) =>
-                      handleMenuItemCheck(index, event.target.checked)
-                    }
-                  />
-                </Box>
-              ))}
-
-            {/* <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
-              <Button type="submit" label="Confirm" />
-            </Box> */}
-          </Form>
-        </Box>
-
-        <Box margin={{ bottom: 'large' }}>
-          <Text weight="bold">Labels</Text>
-          <Text margin={{ bottom: 'medium' }} size="small">
-            Type a name if you want to replace labels of the menu items. Note
-            that only one word is allowed.
-          </Text>
-          {activeMenu && (
-            <Form
-              value={activeMenu}
-              onChange={(value) => handleChangeActiveMenu(value)}
-              onSubmit={() => handleMenuSave()}
-            >
-              {localSettings.menu
-                .filter((ite) => ite.isVisible)
-                .map((item) => (
-                  <LabelChangableItem key={item.name} name={item.name} />
-                ))}
-
-              {/* <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
-                <Button type="submit" label="Confirm" />
-              </Box> */}
-            </Form>
-          )}
-        </Box>
-
-        <Box margin={{ bottom: 'large' }}>
-          <Text weight="bold">Order</Text>
-          <Text margin={{ bottom: 'medium' }} size="small">
-            Reorder items by dragging up and down, if you want to change the
-            menu display order
-          </Text>
-          <Box>
-            {localSettings && localSettings.menu && (
-              <SortableContainer
-                onSortEnd={onSortMenuEnd}
-                helperClass="sortableHelper"
-              >
-                {localSettings.menu
-                  .filter((item) => item.isVisible)
-                  .map((value, index) => (
-                    <SortableItem
-                      key={`item-${value.name}`}
-                      index={index}
-                      value={value.label}
-                    />
+              <Form onSubmit={() => handleMenuSave()}>
+                {localSettings &&
+                  localSettings.menu &&
+                  localSettings.menu.map((item, index) => (
+                    <Box key={item.name} margin={{ bottom: 'small' }}>
+                      <CheckBox
+                        checked={item.isVisible}
+                        label={item.label.toUpperCase()}
+                        onChange={(event) =>
+                          handleMenuItemCheck(index, event.target.checked)
+                        }
+                      />
+                    </Box>
                   ))}
-              </SortableContainer>
-            )}
-          </Box>
-          <Box direction="row" justify="end" pad={{ vertical: 'small' }}>
-            <Button
-              onClick={() => handleMenuSave()}
-              type="submit"
-              label="Confirm"
-            />
-          </Box>
-        </Box>
+
+                <Box
+                  direction="row"
+                  justify="start"
+                  pad={{ vertical: 'small' }}
+                >
+                  <Button type="submit" label="Confirm" />
+                </Box>
+              </Form>
+            </Box>
+          </Tab>
+
+          <Tab title="Labels">
+            <Box margin={{ bottom: 'large' }}>
+              <Text weight="bold">Labels</Text>
+              <Text margin={{ bottom: 'medium' }} size="small">
+                Type a name if you want to replace labels of the menu items.
+                Note that only one word is allowed.
+              </Text>
+              {activeMenu && (
+                <Form
+                  value={activeMenu}
+                  onChange={(value) => handleChangeActiveMenu(value)}
+                  onSubmit={() => handleMenuSave()}
+                >
+                  {localSettings.menu
+                    .filter((ite) => ite.isVisible)
+                    .map((item) => (
+                      <LabelChangableItem key={item.name} name={item.name} />
+                    ))}
+
+                  <Box
+                    direction="row"
+                    justify="start"
+                    pad={{ vertical: 'small' }}
+                  >
+                    <Button type="submit" label="Confirm" />
+                  </Box>
+                </Form>
+              )}
+            </Box>
+          </Tab>
+
+          <Tab title="Order">
+            <Box margin={{ bottom: 'large' }}>
+              <Text weight="bold">Order</Text>
+              <Text margin={{ bottom: 'medium' }} size="small">
+                Reorder items by dragging up and down, if you want to change the
+                menu display order
+              </Text>
+              <Box>
+                {localSettings && localSettings.menu && (
+                  <SortableContainer
+                    onSortEnd={onSortMenuEnd}
+                    helperClass="sortableHelper"
+                  >
+                    {localSettings.menu
+                      .filter((item) => item.isVisible)
+                      .map((value, index) => (
+                        <SortableItem
+                          key={`item-${value.name}`}
+                          index={index}
+                          value={value.label}
+                        />
+                      ))}
+                  </SortableContainer>
+                )}
+              </Box>
+              <Box direction="row" justify="end" pad={{ vertical: 'small' }}>
+                <Button
+                  onClick={() => handleMenuSave()}
+                  type="submit"
+                  label="Confirm"
+                />
+              </Box>
+            </Box>
+          </Tab>
+        </Tabs>
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
