@@ -2,7 +2,7 @@ const theme = {
   spacing: 12,
   global: {
     font: {
-      family: 'sans-serif;',
+      family: "'Sarabun', sans-serif;",
       size: '15px',
       height: '24px',
     },

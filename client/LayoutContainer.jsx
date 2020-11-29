@@ -124,6 +124,9 @@ const LayoutPage = ({
 
   return (
     <Grommet theme={customTheme}>
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&family=Inknut+Antiqua:wght@700&display=swap');
+      `}</style>
       <StateContext.Provider
         value={{
           currentUser,
