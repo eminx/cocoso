@@ -36,17 +36,17 @@ const menu = [
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
-  Hosts.find().forEach((host) => {
-    const existingSettings = host.settings;
-    Hosts.update(host._id, {
-      $set: {
-        settings: {
-          ...existingSettings,
-          menu: menu,
-        },
-      },
-    });
-  });
+  // Hosts.find().forEach((host) => {
+  //   const existingSettings = host.settings;
+  //   Hosts.update(host._id, {
+  //     $set: {
+  //       settings: {
+  //         ...existingSettings,
+  //         menu: menu,
+  //       },
+  //     },
+  //   });
+  // });
 
   process.env.MAIL_URL =
     'smtps://' +
