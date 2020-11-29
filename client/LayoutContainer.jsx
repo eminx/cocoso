@@ -231,22 +231,28 @@ const Menu = ({ currentHost, large, history }) => {
     history,
   };
 
-  if (large) {
-    return <MenuContent items={menuItems} {...menuProps} />;
-  }
-
   const pathname = history.location.pathname;
-  const currentPage = menu.find(
-    (item) =>
-      item.label.toLowerCase() ===
-      pathname.substring(1, pathname.length).toLowerCase()
-  );
+  const currentPage = menu.find((item) => {
+    return (
+      item.name.toLowerCase() === 'info' ||
+      item.name.toLowerCase() ===
+        pathname.substring(1, pathname.length).toLowerCase()
+    );
+  });
+
+  if (large) {
+    return (
+      <MenuContent currentPage={currentPage} items={menuItems} {...menuProps} />
+    );
+  }
 
   return (
     <DropButton
       label={
         <Box direction="row" gap="small" align="center">
-          <Text>{(currentPage && currentPage.label) || 'Menu'}</Text>
+          <Anchor as="span">
+            {(currentPage && currentPage.label) || 'Menu'}
+          </Anchor>
           <Down size="small" />
         </Box>
       }
@@ -269,7 +275,7 @@ const Menu = ({ currentHost, large, history }) => {
   );
 };
 
-const MenuContent = ({ items, large, history, closeMenu }) => {
+const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
   if (!items) {
     return null;
   }
@@ -277,6 +283,16 @@ const MenuContent = ({ items, large, history, closeMenu }) => {
   const handleClick = (item) => {
     !large && closeMenu();
     history.push(item.route);
+  };
+
+  const isCurrentPage = (label) => {
+    if (!currentPage) {
+      return false;
+    }
+    if (currentPage.label === 'info') {
+      return label.substring(0, 5) === '/page';
+    }
+    return currentPage && currentPage.label === label;
   };
 
   return (
@@ -295,6 +311,9 @@ const MenuContent = ({ items, large, history, closeMenu }) => {
             onClick={() => handleClick(item)}
             label={item.label.toUpperCase()}
             size="small"
+            style={{
+              borderBottom: isCurrentPage(item.label) ? '1px solid' : 'none',
+            }}
           />
         </Box>
       ))}
