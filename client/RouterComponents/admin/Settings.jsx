@@ -103,7 +103,7 @@ const Settings = ({ history }) => {
     setLocalSettings(newSettings);
   };
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = () => {
     if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return;
@@ -114,15 +114,7 @@ const Settings = ({ history }) => {
       return;
     }
 
-    setLoading(true);
-    try {
-      await call('updateHostSettings', localSettings);
-      message.success('Settings are successfully saved');
-      setLoading(false);
-    } catch (error) {
-      message.error(error.reason);
-      setLoading(false);
-    }
+    saveSettings();
   };
 
   const addNewCategory = async () => {
@@ -238,8 +230,27 @@ const Settings = ({ history }) => {
     setActiveMenu(value);
   };
 
-  const handleMenuSave = ({ value }) => {
-    console.log(value);
+  const handleMenuSave = () => {
+    const newMenu = localSettings.menu.map((item) => ({
+      ...item,
+      label: activeMenu[item.name],
+    }));
+
+    setLocalSettings({ ...localSettings, menu: newMenu });
+
+    saveSettings();
+  };
+
+  const saveSettings = async () => {
+    setLoading(true);
+    try {
+      await call('updateHostSettings', localSettings);
+      message.success('Settings are successfully saved');
+      setLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setLoading(false);
+    }
   };
 
   const pathname = history && history.location.pathname;
@@ -316,7 +327,7 @@ const Settings = ({ history }) => {
             Check/uncheck items to compose the main menu
           </Text>
 
-          <Form>
+          <Form onSubmit={() => handleMenuSave()}>
             {localSettings.menu.map((item, index) => (
               <Box key={item.name} margin={{ bottom: 'small' }}>
                 <CheckBox
