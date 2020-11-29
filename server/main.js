@@ -36,29 +36,17 @@ const menu = [
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
-  // Hosts.find().forEach((host) => {
-  //   Meteor.users.update(user._id, {
-  //     $set: {
-  //       memberships: [
-  //         {
-  //           host: 'www.nodal.app',
-  //           hostId: '3Er9qxkYQGB9obsEF',
-  //           role: 'contributor',
-  //           date: new Date(),
-  //         },
-  //       ],
-  //     },
-  //   });
-  // const existingSettings = host.settings;
-  // Hosts.update(host._id, {
-  //   $set: {
-  //     settings: {
-  //       ...existingSettings,
-  //       menu: menu,
-  //     },
-  //   },
-  // });
-  // });
+  Hosts.find().forEach((host) => {
+    const existingSettings = host.settings;
+    Hosts.update(host._id, {
+      $set: {
+        settings: {
+          ...existingSettings,
+          menu: menu,
+        },
+      },
+    });
+  });
 
   process.env.MAIL_URL =
     'smtps://' +
