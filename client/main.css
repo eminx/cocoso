@@ -10,6 +10,7 @@ body {
 .sortableHelper {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   font-family: 'sans-serif';
+  cursor: grab;
 }
 
 .sortable-thumb:hover {

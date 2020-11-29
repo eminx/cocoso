@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
 } from 'grommet';
+import { Drag } from 'grommet-icons';
 import { HuePicker } from 'react-color';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -304,6 +305,19 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+        <Heading level={3}>Organisation</Heading>
+        <Text margin={{ bottom: 'medium' }}>
+          Add/Edit Information About your Organisation
+        </Text>
+        <SettingsForm
+          value={localSettings}
+          onChange={handleFormChange}
+          onSubmit={handleFormSubmit}
+          formAltered={formAltered}
+        />
+      </Box>
+
+      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Main Color</Heading>
         <Text margin={{ bottom: 'medium' }}>
           Pick the Main Color for Your Web Presence
@@ -351,38 +365,10 @@ const Settings = ({ history }) => {
                 </Box>
               ))}
 
-            <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
+            {/* <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
               <Button type="submit" label="Confirm" />
-            </Box>
+            </Box> */}
           </Form>
-        </Box>
-
-        <Box margin={{ bottom: 'large' }}>
-          <Text weight="bold">Order</Text>
-          <Text margin={{ bottom: 'medium' }} size="small">
-            Reorder items if you want to change the menu display order
-          </Text>
-          <Box>
-            {localSettings && localSettings.menu && (
-              <SortableContainer
-                onSortEnd={onSortMenuEnd}
-                helperClass="sortableHelper"
-              >
-                {localSettings.menu
-                  .filter((item) => item.isVisible)
-                  .map((value, index) => (
-                    <SortableItem
-                      key={`item-${value.name}`}
-                      index={index}
-                      value={value.label}
-                    />
-                  ))}
-              </SortableContainer>
-            )}
-          </Box>
-          <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
-            <Button type="submit" label="Confirm" />
-          </Box>
         </Box>
 
         <Box margin={{ bottom: 'large' }}>
@@ -403,25 +389,45 @@ const Settings = ({ history }) => {
                   <LabelChangableItem key={item.name} name={item.name} />
                 ))}
 
-              <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
+              {/* <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
                 <Button type="submit" label="Confirm" />
-              </Box>
+              </Box> */}
             </Form>
           )}
         </Box>
-      </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Organisation</Heading>
-        <Text margin={{ bottom: 'medium' }}>
-          Add/Edit Information About your Organisation
-        </Text>
-        <SettingsForm
-          value={localSettings}
-          onChange={handleFormChange}
-          onSubmit={handleFormSubmit}
-          formAltered={formAltered}
-        />
+        <Box margin={{ bottom: 'large' }}>
+          <Text weight="bold">Order</Text>
+          <Text margin={{ bottom: 'medium' }} size="small">
+            Reorder items by dragging up and down, if you want to change the
+            menu display order
+          </Text>
+          <Box>
+            {localSettings && localSettings.menu && (
+              <SortableContainer
+                onSortEnd={onSortMenuEnd}
+                helperClass="sortableHelper"
+              >
+                {localSettings.menu
+                  .filter((item) => item.isVisible)
+                  .map((value, index) => (
+                    <SortableItem
+                      key={`item-${value.name}`}
+                      index={index}
+                      value={value.label}
+                    />
+                  ))}
+              </SortableContainer>
+            )}
+          </Box>
+          <Box direction="row" justify="end" pad={{ vertical: 'small' }}>
+            <Button
+              onClick={() => handleMenuSave()}
+              type="submit"
+              label="Confirm"
+            />
+          </Box>
+        </Box>
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
@@ -469,8 +475,9 @@ const SortableItem = sortableElement(({ value }) => (
     pad="small"
     margin={{ bottom: 'small' }}
     background="light-1"
+    direction="row"
   >
-    {value}
+    <Drag /> {value}
   </Box>
 ));
 
