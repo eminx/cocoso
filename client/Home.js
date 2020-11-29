@@ -13,7 +13,6 @@ import { StateContext } from './LayoutContainer';
 const getHomeRoute = (currentHost) => {
   const menu = currentHost && currentHost.settings && currentHost.settings.menu;
   if (!menu || !menu[0]) {
-    console.log('wtf');
     return null;
   }
 
@@ -38,12 +37,16 @@ function Home() {
 
   const menu = currentHost && currentHost.settings && currentHost.settings.menu;
   if (!menu || !menu[0]) {
-    console.log('wtf');
     return 'loading...';
   }
 
-  const path = menu[0].name;
-  console.log(`/${path}`);
+  const visibleMenu = menu.filter((item) => item.isVisible);
+
+  const path = visibleMenu[0].name;
+
+  if (!path) {
+    return <Redirect to="/activities" />;
+  }
 
   if (path === 'info') {
     return <Redirect to="/page/about" />;
