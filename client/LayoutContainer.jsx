@@ -46,6 +46,16 @@ const menu = [
   },
 ];
 
+const getRoute = (item, index) => {
+  if (index === 0) {
+    return '/';
+  }
+  if (item.name === 'info') {
+    return '/page/about';
+  }
+  return `/${item.name}`;
+};
+
 pathsWithMenu = menu.map((item) => item.route !== '/page/about' && item.route);
 
 const getGotoPath = (pathname) => {
@@ -183,7 +193,11 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                 </Box>
               </Col>
               <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Menu large={large} history={history} />
+                <Menu
+                  currentHost={currentHost}
+                  large={large}
+                  history={history}
+                />
               </Col>
               <Col xs={3} style={{ paddingRight: 0 }}>
                 <UserStuff />
@@ -196,8 +210,19 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   );
 };
 
-const Menu = ({ large, history }) => {
+const Menu = ({ currentHost, large, history }) => {
   const [open, setOpen] = useState(false);
+
+  if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
+    return null;
+  }
+
+  const menu = currentHost.settings.menu;
+
+  const menuItems = menu.map((item, index) => ({
+    ...item,
+    route: getRoute(item, index),
+  }));
 
   const menuProps = {
     large,
@@ -205,7 +230,7 @@ const Menu = ({ large, history }) => {
   };
 
   if (large) {
-    return <MenuContent {...menuProps} />;
+    return <MenuContent items={menuItems} {...menuProps} />;
   }
 
   const pathname = history.location.pathname;
@@ -229,7 +254,11 @@ const Menu = ({ large, history }) => {
       alignSelf="center"
       dropContent={
         <Box width="small" pad="small">
-          <MenuContent {...menuProps} closeMenu={() => setOpen(false)} />
+          <MenuContent
+            {...menuProps}
+            items={menuItems}
+            closeMenu={() => setOpen(false)}
+          />
         </Box>
       }
       dropProps={{ align: { top: 'bottom' } }}
@@ -238,7 +267,11 @@ const Menu = ({ large, history }) => {
   );
 };
 
-const MenuContent = ({ large, history, closeMenu }) => {
+const MenuContent = ({ items, large, history, closeMenu }) => {
+  if (!items) {
+    return null;
+  }
+
   const handleClick = (item) => {
     !large && closeMenu();
     history.push(item.route);
@@ -254,7 +287,7 @@ const MenuContent = ({ large, history, closeMenu }) => {
       wrap
       gap={large ? 'none' : 'small'}
     >
-      {menu.map((item) => (
+      {items.map((item) => (
         <Box pad="small" key={item.label}>
           <Anchor
             onClick={() => handleClick(item)}
