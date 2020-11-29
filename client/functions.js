@@ -1,12 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
 
-import Activities from './RouterComponents/activities/ActivitiesContainer';
-import ProcessesList from './RouterComponents/processes/ProcessesListContainer';
-import Calendar from './RouterComponents/CalendarContainer';
-import Works from './RouterComponents/works/Works';
-import Page from './RouterComponents/pages/Page';
-
 const getInitials = (string) => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
@@ -97,28 +91,6 @@ const uploadImage = (image, directory) =>
 
 const slingshotUpload = (directory) => new Slingshot.Upload(directory);
 
-const getHomeRoute = (currentHost) => {
-  const menu = currentHost && currentHost.settings && currentHost.settings.menu;
-  if (!menu || !menu[0]) {
-    return null;
-  }
-
-  switch (menu[0].name) {
-    case 'activities':
-      return Activities;
-    case 'processes':
-      return ProcessesList;
-    case 'calendar':
-      return Calendar;
-    case 'works':
-      return Works;
-    case 'info':
-      return Page;
-    default:
-      return null;
-  }
-};
-
 export {
   getInitials,
   removeSpace,
@@ -130,5 +102,4 @@ export {
   resizeImage,
   uploadImage,
   dataURLtoFile,
-  getHomeRoute,
 };

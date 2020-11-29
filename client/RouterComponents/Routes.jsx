@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
+import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 // route components
 import ActivitiesContainer from './activities/ActivitiesContainer';
@@ -47,9 +48,10 @@ export default function () {
       <Switch>
         <LayoutContainer history={browserHistory}>
           <ScrollToTop>
-            <Route exact path="/" component={ActivitiesContainer} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/calendar" component={CalendarContainer} />
 
+            <Route exact path="/activities" component={ActivitiesContainer} />
             <Route
               exact
               path="/new-activity"
