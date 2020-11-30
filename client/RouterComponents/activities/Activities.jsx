@@ -26,7 +26,7 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-function Activities({ activitiesList, processesList, isLoading }) {
+function Activities({ activitiesList, processesList, isLoading, history }) {
   const { currentUser, canCreateContent } = useContext(StateContext);
 
   const getPublicActivities = () => {
@@ -132,19 +132,12 @@ function Activities({ activitiesList, processesList, isLoading }) {
               <Box direction="row" wrap justify="center">
                 {allSortedActivities.map((activity) => {
                   return (
-                    <Link
+                    <PublicActivityThumb
                       key={activity.title}
-                      to={
-                        activity.isProcess
-                          ? `/process/${activity._id}`
-                          : `/activity/${activity._id}`
-                      }
-                    >
-                      <PublicActivityThumb
-                        large={['lg', 'xl', 'xxl'].includes(screenClass)}
-                        item={activity}
-                      />
-                    </Link>
+                      large={['lg', 'xl', 'xxl'].includes(screenClass)}
+                      item={activity}
+                      history={history}
+                    />
                   );
                 })}
               </Box>

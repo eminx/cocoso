@@ -102,8 +102,13 @@ const LayoutPage = ({
     customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
       100 * hsl.l
     }%)`;
+    customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
+      100 * hsl.s
+    }%, 95%)`;
     customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
   }
+  // complementary color is calculated:
+  const cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
 
   const headerProps = {
     currentUser,
@@ -126,6 +131,23 @@ const LayoutPage = ({
     <Grommet theme={customTheme}>
       <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&family=Inknut+Antiqua:wght@700&display=swap');
+        body {
+          background-image: -moz-linear-gradient(
+            0deg,
+            hsl(${cHue}, 80%, 80%),
+            hsl(${cHue}, 80%, 95%)
+          );
+          background-image: -webkit-linear-gradient(
+            0deg,
+            hsl(${cHue}, 80%, 80%),
+            hsl(${cHue}, 80%, 95%)
+          );
+          background-image: linear-gradient(
+            0deg,
+            hsl(${cHue}, 80%, 99%),
+            hsl(${cHue}, 80%, 90%)
+          );
+        }
       `}</style>
       <StateContext.Provider
         value={{
@@ -136,12 +158,7 @@ const LayoutPage = ({
           canCreateContent,
         }}
       >
-        <Box
-          className="main-viewport"
-          justify="center"
-          fill
-          background="light-2"
-        >
+        <Box className="main-viewport" justify="center" fill>
           <Box width={{ max: '1280px' }} alignSelf="center" fill>
             <Header {...headerProps} />
             <Box>{children}</Box>

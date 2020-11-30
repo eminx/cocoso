@@ -318,8 +318,9 @@ const Settings = ({ history }) => {
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <Heading level={3}>Main Color</Heading>
-        <Text margin={{ bottom: 'medium' }}>
-          Pick the Main Color for Your Web Presence
+        <Text>Pick the Main Color for Your Web Presence</Text>
+        <Text margin={{ bottom: 'medium' }} size="small">
+          Background color will be accordingly set with its complementary color.
         </Text>
         <Box direction="row" justify="between" align="center">
           <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />

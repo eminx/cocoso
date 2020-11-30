@@ -178,6 +178,7 @@ const ProcessItem = ({ process, history }) => (
     direction="row"
     margin={{ bottom: 'medium' }}
     background="white"
+    hoverIndicator="brand-light"
   >
     <Box width="small" height="small" margin={{ right: 'small' }}>
       <Image fit="cover" fill src={process.imageUrl} />

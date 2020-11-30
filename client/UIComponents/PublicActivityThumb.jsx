@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { Anchor, Heading, Box, Text } from 'grommet';
+import { Box, Text } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -19,7 +19,7 @@ const ellipsisStyle = {
   textOverflow: 'ellipsis',
 };
 
-function PublicActivityThumb({ item, large }) {
+function PublicActivityThumb({ item, large, history }) {
   const getEventTimes = (event) => {
     if (!event) {
       return;
@@ -92,8 +92,12 @@ function PublicActivityThumb({ item, large }) {
       background="white"
       width="320px"
       margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
-      // style={{ maxWidth: '384px' }}
-      className="hoverable"
+      hoverIndicator="brand-light"
+      onClick={() =>
+        history.push(
+          item.isProcess ? `/process/${item._id}` : `/activity/${item._id}`
+        )
+      }
     >
       <Box pad={{ bottom: 'medium' }}>
         <Text size="large" weight="bold" style={ellipsisStyle}>
