@@ -33,6 +33,8 @@ import MyWorks from './works/MyWorks';
 import NewWork from './works/NewWork';
 import EditWork from './works/EditWork';
 
+import MembersPublic from './members/MembersPublic';
+
 import SignupPage from '../account-manager/SignupPage';
 import LoginPage from '../account-manager/LoginPage';
 import ForgotPasswordPage from '../account-manager/ForgotPasswordPage';
@@ -68,6 +70,8 @@ export default function () {
             <Route path="/processes/" component={ProcessesListContainer} />
             <Route path="/process/:id" component={ProcessContainer} />
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
+
+            <Route path="/members" component={MembersPublic} />
 
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />

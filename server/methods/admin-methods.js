@@ -34,15 +34,19 @@ const isUserAdmin = (members, userId) => {
 };
 
 Meteor.methods({
-  getUsers() {
-    const user = Meteor.user();
+  getHostMembers() {
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
 
-    if (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost)) {
-      throw new Meteor.Error('You are not allowed');
-    }
-    return currentHost.members;
+    const members = currentHost.members.map((member) => {
+      const user = Meteor.users.findOne(member.id);
+      const avatarSrc = user && user.avatar && user.avatar.src;
+      return {
+        ...member,
+        avatarSrc,
+      };
+    });
+    return members;
   },
 
   setAsAdmin(memberId) {
@@ -120,7 +124,6 @@ Meteor.methods({
     }
 
     const member = Meteor.users.findOne(memberId);
-
     if (
       !member.memberships ||
       !member.memberships.some((membership) => {

@@ -188,3 +188,18 @@ Meteor.publish('members', function () {
     return Hosts.find({ host });
   }
 });
+
+Meteor.publish('membersForPublic', function () {
+  const host = getHost(this);
+
+  return Meteor.users.find(
+    { 'memberships.host': host },
+    {
+      fields: {
+        _id: true,
+        username: true,
+        avatar: true,
+      },
+    }
+  );
+});

@@ -17,6 +17,8 @@ import {
 import { FormPrevious, Down } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
+import { ChakraProvider } from '@chakra-ui/react';
+
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
@@ -129,43 +131,46 @@ const LayoutPage = ({
 
   return (
     <Grommet theme={customTheme}>
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&family=Inknut+Antiqua:wght@700&display=swap');
-        body {
-          background-image: -moz-linear-gradient(
-            0deg,
-            hsl(${cHue}, 80%, 80%),
-            hsl(${cHue}, 80%, 95%)
-          );
-          background-image: -webkit-linear-gradient(
-            0deg,
-            hsl(${cHue}, 80%, 80%),
-            hsl(${cHue}, 80%, 95%)
-          );
-          background-image: linear-gradient(
-            0deg,
-            hsl(${cHue}, 80%, 99%),
-            hsl(${cHue}, 80%, 90%)
-          );
-        }
-      `}</style>
-      <StateContext.Provider
-        value={{
-          currentUser,
-          userLoading,
-          currentHost,
-          role,
-          canCreateContent,
-        }}
-      >
-        <Box className="main-viewport" justify="center" fill>
-          <Box width={{ max: '1280px' }} alignSelf="center" fill>
-            <Header {...headerProps} />
-            <Box>{children}</Box>
-            {/* <FooterInfo settings={settings} /> */}
+      <ChakraProvider>
+        <style jsx>{`
+          @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&family=Inknut+Antiqua:wght@700&display=swap');
+          body {
+            background-repeat: no-repeat;
+            background-image: -moz-linear-gradient(
+              0deg,
+              hsl(${cHue}, 80%, 80%),
+              hsl(${cHue}, 80%, 95%)
+            );
+            background-image: -webkit-linear-gradient(
+              0deg,
+              hsl(${cHue}, 80%, 80%),
+              hsl(${cHue}, 80%, 95%)
+            );
+            background-image: linear-gradient(
+              0deg,
+              hsl(${cHue}, 80%, 99%),
+              hsl(${cHue}, 80%, 90%)
+            );
+          }
+        `}</style>
+        <StateContext.Provider
+          value={{
+            currentUser,
+            userLoading,
+            currentHost,
+            role,
+            canCreateContent,
+          }}
+        >
+          <Box className="main-viewport" justify="center" fill>
+            <Box width={{ max: '1280px' }} alignSelf="center" fill>
+              <Header {...headerProps} />
+              <Box>{children}</Box>
+              {/* <FooterInfo settings={settings} /> */}
+            </Box>
           </Box>
-        </Box>
-      </StateContext.Provider>
+        </StateContext.Provider>
+      </ChakraProvider>
     </Grommet>
   );
 };

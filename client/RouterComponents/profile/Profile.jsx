@@ -113,7 +113,7 @@ class Profile extends React.Component {
     });
 
     try {
-      const resizedAvatar = await resizeImage(uploadableAvatar, 100);
+      const resizedAvatar = await resizeImage(uploadableAvatar, 300);
       const uploadedAvatar = await uploadImage(
         resizedAvatar,
         'avatarImageUpload'
