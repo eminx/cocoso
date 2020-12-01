@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { Box, Heading } from 'grommet';
 
 const colStyle = {
-  maxWidth: 600,
+  maxWidth: 588,
   margin: '0 auto',
 };
 

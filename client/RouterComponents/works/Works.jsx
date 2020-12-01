@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Avatar, Box, Button, Heading, Text } from 'grommet';
+import { Avatar, Box, Button, Text } from 'grommet';
 import { FormAdd } from 'grommet-icons';
 
 import { StateContext } from '../../LayoutContainer';
@@ -69,11 +69,6 @@ const Works = ({ history }) => {
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
-      <Box alignSelf="center">
-        {/* <Heading level={2} textAlign="center">
-          Works
-        </Heading> */}
-      </Box>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
@@ -110,56 +105,61 @@ const Works = ({ history }) => {
       </Box>
 
       <Box direction="row" justify="center" pad="medium" wrap>
-        {filteredWorks.map((work) => (
-          <Box
-            key={work._id}
-            basis="360px"
-            pad="medium"
-            margin="small"
-            background="white"
-            round="2px"
-            onClick={() =>
-              history.push(`/${work.authorUsername}/work/${work._id}`)
-            }
-            hoverIndicator="brand-light"
-          >
-            <Box pad={{ bottom: 'small' }} direction="row" justify="between">
-              <Box>
-                {work.category && (
-                  <Tag
-                    label={work.category.label}
-                    background={work.category.color}
-                    margin={{ bottom: 'small' }}
-                  />
-                )}
-                <Text weight={600} style={ellipsisStyle} size="large">
-                  {work.title}
-                </Text>
-              </Box>
-              <Avatar
-                flex={{ grow: 0 }}
-                src={work.authorAvatar && work.authorAvatar.src}
-              />
-            </Box>
-            {work.images && work.images[0] && (
-              <Box>
-                <LazyLoadImage
-                  alt={work.title}
-                  src={work.images[0]}
-                  style={imageStyle}
-                  effect="black-and-white"
-                />
-              </Box>
-            )}
-            <Text weight={300} style={ellipsisStyle}>
-              {work.shortDescription}
-            </Text>
-          </Box>
+        {filteredWorks.map((work, index) => (
+          <Work work={work} history={history} />
         ))}
       </Box>
     </Box>
   );
 };
+
+function Work({ work, history }) {
+  return (
+    <Box
+      key={work._id}
+      onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
+      basis="360px"
+      margin="small"
+      round="3px"
+      hoverIndicator="brand-light"
+      style={{ background: 'rgba(255, 255, 255, .6)' }}
+    >
+      <Box pad="small" direction="row" justify="between">
+        <Box>
+          {work.category && (
+            <Tag
+              label={work.category.label}
+              background={work.category.color}
+              margin={{ bottom: 'xxsmall' }}
+            />
+          )}
+          <Text weight={600} style={ellipsisStyle} size="large">
+            {work.title}
+          </Text>
+        </Box>
+        <Avatar
+          flex={{ grow: 0 }}
+          src={work.authorAvatar && work.authorAvatar.src}
+        />
+      </Box>
+      {work.images && work.images[0] && (
+        <Box>
+          <LazyLoadImage
+            alt={work.title}
+            src={work.images[0]}
+            style={imageStyle}
+            effect="black-and-white"
+          />
+        </Box>
+      )}
+      <Box pad="small">
+        <Text weight={300} style={ellipsisStyle}>
+          {work.shortDescription}
+        </Text>
+      </Box>
+    </Box>
+  );
+}
 
 getCategories = (works) => {
   const labels = Array.from(
