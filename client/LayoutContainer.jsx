@@ -183,9 +183,9 @@ const boldBabe = {
 const Header = ({ currentUser, currentHost, title, history }) => {
   const UserStuff = () => (
     <Box justify="end" direction="row" alignContent="center">
-      {currentUser && (
+      {/* {currentUser && (
         <NotificationsPopup notifications={currentUser.notifications} />
-      )}
+      )} */}
       <UserPopup currentUser={currentUser} />
     </Box>
   );
