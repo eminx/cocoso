@@ -93,7 +93,9 @@ function MemberPublic({
         </Heading>
       )}
       {memberWorks && memberWorks.length > 0 ? (
-        memberWorks.map((work, index) => <Work work={work} history={history} />)
+        memberWorks.map((work, index) => (
+          <Work key={work._id} work={work} history={history} />
+        ))
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">
           <Heading level={4} margin="small">
