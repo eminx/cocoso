@@ -94,14 +94,9 @@ function PublicMembers({ history }) {
         pad="small"
       >*/}
       {members.map((member) => (
-        <Link to={`/member/${member.username}`} key={member.id}>
+        <Link to={`/@${member.username}`} key={member.id}>
           <Box align="center" margin="small">
-            <Avatar
-              elevation="small"
-              name={member.username}
-              src={member.avatarSrc}
-              size="xl"
-            />
+            <Avatar name={member.username} src={member.avatarSrc} size="xl" />
             <Anchor as="div">
               <Text>{member.username}</Text>
             </Anchor>

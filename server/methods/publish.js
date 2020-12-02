@@ -110,12 +110,6 @@ Meteor.publish('process', function (id) {
   });
 });
 
-Meteor.publish('publication', function (id) {
-  return Publications.find({
-    _id: id,
-  });
-});
-
 Meteor.publish('pages', function () {
   const host = getHost(this);
   return Pages.find({ host });
@@ -202,4 +196,20 @@ Meteor.publish('membersForPublic', function () {
       },
     }
   );
+});
+
+Meteor.publish('memberAtHost', function (username) {
+  const host = getHost(this);
+  return Meteor.users.find({
+    username,
+    'memberships.host': host,
+  });
+});
+
+Meteor.publish('memberWorksAtHost', function (username) {
+  const host = getHost(this);
+  return Works.find({
+    authorUsername: username,
+    host,
+  });
 });

@@ -25,8 +25,6 @@ import Settings from './admin/Settings';
 import Members from './admin/Members';
 import Resources from './admin/Resources';
 
-import UserContainer from './user/UserContainer';
-
 import Works from './works/Works';
 import Work from './works/Work';
 import MyWorks from './works/MyWorks';
@@ -34,6 +32,7 @@ import NewWork from './works/NewWork';
 import EditWork from './works/EditWork';
 
 import MembersPublic from './members/MembersPublic';
+import Member from './members/Member';
 
 import SignupPage from '../account-manager/SignupPage';
 import LoginPage from '../account-manager/LoginPage';
@@ -73,6 +72,7 @@ export default function () {
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
 
             <Route path="/members" component={MembersPublic} />
+            <Route path="/@:username" component={Member} />
 
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />
@@ -93,8 +93,6 @@ export default function () {
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />
             <Route path="/admin/resources" component={Resources} />
-
-            <Route path="/user/:id" component={UserContainer} />
 
             <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={LoginPage} />
