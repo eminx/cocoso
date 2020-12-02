@@ -193,6 +193,8 @@ Meteor.publish('membersForPublic', function () {
         _id: true,
         username: true,
         avatar: true,
+        firstName: true,
+        lastName: true,
       },
     }
   );

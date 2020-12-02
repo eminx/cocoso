@@ -9,6 +9,15 @@ import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';
 
+const getFullName = (member) => {
+  const { firstName, lastName } = member;
+  if (firstName && lastName) {
+    return firstName + ' ' + lastName;
+  } else {
+    return firstName || lastName || '';
+  }
+};
+
 function PublicMembers({ history }) {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
@@ -98,9 +107,13 @@ function PublicMembers({ history }) {
           <Box align="center" margin="small">
             <Avatar name={member.username} src={member.avatarSrc} size="xl" />
             <Anchor as="div">
-              <Text>{member.username}</Text>
+              <Text as="div" style={{ maxWidth: 96, wordBreak: 'break-all' }}>
+                {member.username}
+              </Text>
             </Anchor>
-            <Text size="small">{member.role}</Text>
+            <Text as="div" size="small">
+              {getFullName(member)}
+            </Text>
           </Box>
         </Link>
       ))}

@@ -13,6 +13,8 @@ Meteor.methods({
       return {
         ...member,
         avatarSrc,
+        firstName: user.firstName,
+        lastName: user.lastName,
       };
     });
     return members;

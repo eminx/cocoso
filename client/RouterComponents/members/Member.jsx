@@ -12,6 +12,15 @@ import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
+const getFullName = (member) => {
+  const { firstName, lastName } = member;
+  if (firstName && lastName) {
+    return firstName + ' ' + lastName;
+  } else {
+    return firstName || lastName || '';
+  }
+};
+
 function MemberPublic({
   isLoading,
   member,
@@ -67,11 +76,8 @@ function MemberPublic({
             <Text weight="bold" size="large">
               {member.username}
             </Text>
-            <Text>
-              {member.firstName &&
-                member.lastName &&
-                member.firstName + ' ' + member.lastName}
-            </Text>
+            <Text>{getFullName(member)}</Text>
+
             {member.bio && (
               <Paragraph size="small" margin="small">
                 {renderHTML(member.bio)}
