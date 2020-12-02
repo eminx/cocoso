@@ -21,7 +21,7 @@ const arrowsContainerStyle = {
 const NiceSlider = ({ images }) => (
   <ScreenClassRender
     render={(screenClass) => (
-      <Box style={{ position: 'relative' }}>
+      <Box style={{ position: 'relative' }} background="dark-1">
         <Slider
           swipe
           autoplay
