@@ -54,11 +54,12 @@ function MemberPublic({
     worksItem.label &&
     worksItem.label[0].toUpperCase() + worksItem.label.substr(1).toLowerCase();
 
+  console.log('memberWorks', memberWorks);
   return (
     <Template
       leftContent={
         member && (
-          <Box align="center" margin="small" style={{}}>
+          <Box align="center" margin="medium">
             <Avatar
               name={member.username}
               src={member.avatar && member.avatar.src}
@@ -118,7 +119,7 @@ export default Member = withTracker(({ match, history }) => {
   const currentUser = Meteor.user();
   const member = Meteor.users.findOne({ username });
   const memberWorks = Works.find({ authorUsername: username }).fetch();
-
+  console.log('memberWorks initial:', memberWorks);
   return {
     isLoading,
     currentUser,
