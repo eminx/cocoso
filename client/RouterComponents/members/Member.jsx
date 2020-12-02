@@ -54,7 +54,6 @@ function MemberPublic({
     worksItem.label &&
     worksItem.label[0].toUpperCase() + worksItem.label.substr(1).toLowerCase();
 
-  console.log('memberWorks', memberWorks);
   return (
     <Template
       leftContent={
@@ -73,9 +72,11 @@ function MemberPublic({
                 member.lastName &&
                 member.firstName + ' ' + member.lastName}
             </Text>
-            <Paragraph size="small" margin="small">
-              {renderHTML(member.bio)}
-            </Paragraph>
+            {member.bio && (
+              <Paragraph size="small" margin="small">
+                {renderHTML(member.bio)}
+              </Paragraph>
+            )}
           </Box>
         )
       }
@@ -85,9 +86,7 @@ function MemberPublic({
           {worksLabel} by {member.username}
         </Heading>
       )}
-      {memberWorks &&
-      typeof memberWorks !== 'undefined' &&
-      memberWorks.length > 0 ? (
+      {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => <Work work={work} history={history} />)
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">
@@ -121,7 +120,6 @@ export default Member = withTracker(({ match, history }) => {
   const currentUser = Meteor.user();
   const member = Meteor.users.findOne({ username });
   const memberWorks = Works.find({ authorUsername: username }).fetch();
-  console.log('memberWorks initial:', memberWorks);
   return {
     isLoading,
     currentUser,
