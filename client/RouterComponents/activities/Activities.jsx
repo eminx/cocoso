@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Box, Button, Heading } from 'grommet';
-import { FormAdd } from 'grommet-icons';
 import { ScreenClassRender } from 'react-grid-system';
 
 import { StateContext } from '../../LayoutContainer';
@@ -119,13 +118,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
                   margin={{ bottom: 'medium' }}
                 >
                   <Link to="/new-activity">
-                    <Button
-                      as="span"
-                      size="small"
-                      label="NEW"
-                      primary
-                      icon={<FormAdd />}
-                    />
+                    <Button as="span" size="small" label="NEW" />
                   </Link>
                 </Box>
               )}

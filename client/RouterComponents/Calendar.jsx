@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Box, Button, Heading, Text } from 'grommet';
-import { FormAdd } from 'grommet-icons';
 import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
@@ -203,13 +202,7 @@ class Calendar extends React.PureComponent {
             margin={{ bottom: 'small' }}
           >
             <Link to="/new-activity">
-              <Button
-                as="span"
-                size="small"
-                label="NEW"
-                primary
-                icon={<FormAdd />}
-              />
+              <Button as="span" size="small" label="NEW" />
             </Link>
           </Box>
         )}

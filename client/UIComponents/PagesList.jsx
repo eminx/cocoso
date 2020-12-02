@@ -30,7 +30,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
             <Box
               width="small"
               alignSelf={screen !== 'lg' ? 'center' : 'start'}
-              margin={{ bottom: 'medium' }}
+              margin={{ top: 'large', bottom: 'medium' }}
             >
               <ListMenu list={pageTitles}>
                 {(title) => (

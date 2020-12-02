@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Anchor, Button, Box } from 'grommet';
-import { FormAdd } from 'grommet-icons';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
@@ -82,13 +81,7 @@ class Page extends PureComponent {
           role === 'admin' && (
             <Box pad="medium" direction="row" justify="center">
               <Link to="/new-page">
-                <Button
-                  as="span"
-                  size="small"
-                  label="NEW"
-                  primary
-                  icon={<FormAdd />}
-                />
+                <Button as="span" size="small" label="NEW" />
               </Link>
             </Box>
           )
