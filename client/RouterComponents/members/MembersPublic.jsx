@@ -94,7 +94,7 @@ function PublicMembers({ history }) {
       style={{ maxWidth: 960 }}
       direction="row"
       wrap
-      gap="medium"
+      gap={{ bottom: 'medium', horizontal: 'small' }}
     >
       {/* <GridList
         actionsDisabled={!currentUser || role === 'participant'}
@@ -104,16 +104,16 @@ function PublicMembers({ history }) {
       >*/}
       {members.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
-          <Box align="center" margin="small">
+          <Box
+            align="center"
+            margin="small"
+            style={{ width: 128, wordBreak: 'break-all', textAlign: 'center' }}
+          >
             <Avatar name={member.username} src={member.avatarSrc} size="xl" />
-            <Anchor as="div">
-              <Text as="div" style={{ maxWidth: 96, wordBreak: 'break-all' }}>
-                {member.username}
-              </Text>
+            <Anchor>
+              <Text size="small">{member.username}</Text>
             </Anchor>
-            <Text as="div" size="small">
-              {getFullName(member)}
-            </Text>
+            <Text size="small">{getFullName(member)}</Text>
           </Box>
         </Link>
       ))}
