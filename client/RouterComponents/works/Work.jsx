@@ -90,7 +90,7 @@ const Work = ({ history, match }) => {
             pad="medium"
             justify="between"
             style={{ overflow: 'hidden' }}
-            align="center"
+            align="start"
           >
             <Box width="100%">
               <Hidden lg xl>
