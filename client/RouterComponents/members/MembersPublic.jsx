@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Text } from 'grommet';
+import { Link } from 'react-router-dom';
+import { Anchor, Box, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
 import { GridList } from '../../UIComponents/NiceList';
-import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';
@@ -58,24 +58,24 @@ function PublicMembers({ history }) {
     }
   };
 
-  const membersList = members.map((member) => ({
-    ...member,
-    actions: [
-      {
-        content: 'Set as a Contributor',
-        handleClick: () => setAsContributor(member),
-        isDisabled:
-          ['admin', 'contributor'].includes(member.role) ||
-          !['admin', 'contributor'].includes(role),
-      },
-      {
-        content: 'Revert back as a Participant',
-        handleClick: () => setAsParticipant(member),
-        isDisabled:
-          !['contributor'].includes(member.role) || !['admin'].includes(role),
-      },
-    ],
-  }));
+  // const membersList = members.map((member) => ({
+  //   ...member,
+  //   actions: [
+  //     {
+  //       content: 'Set as a Contributor',
+  //       handleClick: () => setAsContributor(member),
+  //       isDisabled:
+  //         ['admin', 'contributor'].includes(member.role) ||
+  //         !['admin', 'contributor'].includes(role),
+  //     },
+  //     {
+  //       content: 'Revert back as a Participant',
+  //       handleClick: () => setAsParticipant(member),
+  //       isDisabled:
+  //         !['contributor'].includes(member.role) || !['admin'].includes(role),
+  //     },
+  //   ],
+  // }));
 
   return (
     <Box
@@ -83,20 +83,33 @@ function PublicMembers({ history }) {
       margin={{ bottom: 'large' }}
       alignSelf="center"
       style={{ maxWidth: 960 }}
+      direction="row"
+      wrap
+      gap="medium"
     >
-      <GridList
+      {/* <GridList
         actionsDisabled={!currentUser || role === 'participant'}
         list={membersList}
         border="horizontal"
         pad="small"
-      >
-        {(member) => (
+      >*/}
+      {members.map((member) => (
+        <Link to={`/member/${member.username}`} key={member.id}>
           <Box align="center" margin="small">
-            <Avatar name={member.username} src={member.avatarSrc} size="xl" />
-            <Text>{member.username}</Text>
+            <Avatar
+              elevation="small"
+              name={member.username}
+              src={member.avatarSrc}
+              size="xl"
+            />
+            <Anchor as="div">
+              <Text>{member.username}</Text>
+            </Anchor>
+            <Text size="small">{member.role}</Text>
           </Box>
-        )}
-      </GridList>
+        </Link>
+      ))}
+      {/* </GridList> */}
     </Box>
   );
 }

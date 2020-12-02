@@ -34,21 +34,6 @@ const isUserAdmin = (members, userId) => {
 };
 
 Meteor.methods({
-  getHostMembers() {
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host: host });
-
-    const members = currentHost.members.map((member) => {
-      const user = Meteor.users.findOne(member.id);
-      const avatarSrc = user && user.avatar && user.avatar.src;
-      return {
-        ...member,
-        avatarSrc,
-      };
-    });
-    return members;
-  },
-
   setAsAdmin(memberId) {
     const user = Meteor.user();
     const host = getHost(this);

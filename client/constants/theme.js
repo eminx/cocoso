@@ -10,6 +10,11 @@ const theme = {
       focus: 'orange',
     },
   },
+  avatar: {
+    text: {
+      fontWeight: 700,
+    },
+  },
   formField: {
     border: false,
   },

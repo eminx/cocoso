@@ -3,6 +3,20 @@ import { Accounts } from 'meteor/accounts-base';
 import { getHost } from './shared';
 
 Meteor.methods({
+  getHostMembers() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+
+    const members = currentHost.members.map((member) => {
+      const user = Meteor.users.findOne(member.id);
+      const avatarSrc = user && user.avatar && user.avatar.src;
+      return {
+        ...member,
+        avatarSrc,
+      };
+    });
+    return members;
+  },
   createAccount(values) {
     check(values.email, String);
     check(values.username, String);
