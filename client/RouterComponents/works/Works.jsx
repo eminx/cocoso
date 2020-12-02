@@ -76,8 +76,8 @@ const Works = ({ history }) => {
               as="span"
               size="small"
               label="NEW"
-              primary
-              icon={<FormAdd />}
+              // primary
+              // icon={<FormAdd />}
             />
           </Link>
         )}

@@ -106,8 +106,10 @@ function WorkForm({
                     onRemoveImage={() => onRemoveImage(index)}
                   />
                 ))}
-                <Box alignSelf="center" margin={{ top: 'medium' }}>
-                  <FileDropper setUploadableImage={setUploadableImages} />
+                <Box width="100%">
+                  <Box alignSelf="center" margin={{ top: 'medium' }}>
+                    <FileDropper setUploadableImage={setUploadableImages} />
+                  </Box>
                 </Box>
               </SortableContainer>
             ) : (

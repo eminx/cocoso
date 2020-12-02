@@ -22,7 +22,10 @@ const Template = ({
         </Col>
         <Col lg={6} style={colStyle}>
           {heading && (
-            <Box pad={{ left: titleCentered ? 'none' : 'medium' }}>
+            <Box
+              pad={{ left: titleCentered ? 'none' : 'medium' }}
+              margin={{ bottom: 'medium' }}
+            >
               <Heading
                 level={3}
                 textAlign={titleCentered ? 'center' : 'start'}

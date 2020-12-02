@@ -38,6 +38,7 @@ import MembersPublic from './members/MembersPublic';
 import SignupPage from '../account-manager/SignupPage';
 import LoginPage from '../account-manager/LoginPage';
 import ForgotPasswordPage from '../account-manager/ForgotPasswordPage';
+import ResetPasswordPage from '../account-manager/ResetPasswordPage';
 
 import ScrollToTop from './ScrollToTop';
 import NotFoundPage from './NotFoundPage';
@@ -98,6 +99,10 @@ export default function () {
             <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/forgot-password" component={ForgotPasswordPage} />
+            <Route
+              path="/reset-password/:token"
+              component={ResetPasswordPage}
+            />
 
             {/* <Route path="*" component={NotFoundPage} /> */}
           </ScrollToTop>

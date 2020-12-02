@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Box } from 'grommet';
+import { Box, Button } from 'grommet';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call, resizeImage, uploadImage } from '../../functions';
 
 class EditWork extends PureComponent {
@@ -24,6 +25,7 @@ class EditWork extends PureComponent {
     isLoading: false,
     isSuccess: false,
     isError: false,
+    isDeleteModalOn: false,
   };
 
   componentDidMount() {
@@ -167,6 +169,11 @@ class EditWork extends PureComponent {
     const { match } = this.props;
     const workId = match.params.workId;
     const { formValues, categories } = this.state;
+    const { currentUser } = this.context;
+
+    if (formValues.authorId !== currentUser._id) {
+      return;
+    }
 
     const selectedCategory = categories.find(
       (category) => category.label === formValues.category.toLowerCase()
@@ -212,6 +219,34 @@ class EditWork extends PureComponent {
     }));
   };
 
+  handleDeleteWork = async () => {
+    const { match, history } = this.props;
+    const workId = match.params.workId;
+    const { currentUser } = this.context;
+    const { formValues } = this.state;
+
+    if (formValues.authorId !== currentUser._id) {
+      return;
+    }
+
+    this.setState({ isLoading: true });
+
+    try {
+      await call('deleteWork', workId);
+      this.setState({
+        isLoading: false,
+      });
+      history.push('/my-works');
+      message.success('Your work is successfully deleted');
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({ isLoading: false });
+    }
+  };
+
+  closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
+  openDeleteModal = () => this.setState({ isDeleteModalOn: true });
+
   render() {
     const { currentUser } = this.context;
     const { match } = this.props;
@@ -231,6 +266,7 @@ class EditWork extends PureComponent {
       isSuccess,
       isCreating,
       categories,
+      isDeleteModalOn,
     } = this.state;
 
     if (isSuccess) {
@@ -244,7 +280,7 @@ class EditWork extends PureComponent {
     const isFormValid = formValues && title.length > 3;
 
     return (
-      <Template heading="Update Work">
+      <Template>
         <WorkForm
           formValues={formValues}
           categories={categories}
@@ -259,6 +295,24 @@ class EditWork extends PureComponent {
           onSortImages={this.handleSortImages}
           onRemoveImage={this.handleRemoveImage}
         />
+
+        <Box direction="row" justify="center" pad="medium">
+          <Button
+            plain
+            color="status-critical"
+            onClick={this.openDeleteModal}
+            label="Delete this page"
+          />
+        </Box>
+
+        <ConfirmModal
+          visible={isDeleteModalOn}
+          onConfirm={this.handleDeleteWork}
+          onCancel={this.closeDeleteModal}
+          title="Confirm Delete"
+        >
+          Are you sure you want to delete this page?
+        </ConfirmModal>
       </Template>
     );
   }

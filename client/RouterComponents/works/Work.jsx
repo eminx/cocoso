@@ -63,7 +63,7 @@ const Work = ({ history, match }) => {
       <Template
         leftContent={
           <Box pad="medium">
-            <Heading level={3} size="small">
+            <Heading level={3} size="small" margin={{ bottom: 'small' }}>
               {work.title}
             </Heading>
             <Box direction="row" align="start" justify="between">
@@ -90,6 +90,7 @@ const Work = ({ history, match }) => {
             pad="medium"
             justify="between"
             style={{ overflow: 'hidden' }}
+            align="center"
           >
             <Box width="100%">
               <Hidden lg xl>

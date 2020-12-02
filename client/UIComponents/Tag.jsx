@@ -21,7 +21,7 @@ const Tag = ({
     {...otherProps}
   >
     <Box onClick={onClick}>
-      <Text size="12px" weight="bold" color="dark-1">
+      <Text size="14px" weight="bold" color="dark-1">
         {label && label.toUpperCase()}
       </Text>
     </Box>

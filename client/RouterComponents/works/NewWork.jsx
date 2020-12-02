@@ -210,7 +210,7 @@ class NewWork extends PureComponent {
     const isFormValid = formValues && title.length > 3 && uploadableImagesLocal;
 
     return (
-      <Template heading="Create New Work">
+      <Template>
         <WorkForm
           formValues={formValues}
           categories={categories}

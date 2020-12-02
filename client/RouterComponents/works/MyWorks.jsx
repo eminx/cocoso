@@ -29,7 +29,7 @@ function Works({ history }) {
     return <Loader />;
   }
 
-  const myWorksWithActions = works.map((work) => ({
+  const myWorksWithActions = works.reverse().map((work) => ({
     ...work,
     actions: [
       {

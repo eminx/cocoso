@@ -153,8 +153,7 @@ const Settings = ({ history }) => {
 
   const handleCategoryInputChange = (value) => {
     if (specialCh.test(value)) {
-      message.error('Special characters not allowed', 2);
-      return;
+      message.error('Special characters, except dash (-), are not allowed');
     } else {
       setCategoryInput(value.toUpperCase());
     }

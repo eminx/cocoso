@@ -79,10 +79,6 @@ const LayoutPage = ({
   history,
   children,
 }) => {
-  // const [isNotificationPopoverOpen, setIsNotificationPopoverOpen] = useState(
-  //   false
-  // );
-
   if (hostLoading) {
     return (
       <Box width="100%">

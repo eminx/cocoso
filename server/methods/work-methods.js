@@ -97,8 +97,14 @@ Meteor.methods({
   },
 
   deleteWork(workId) {
-    const user = Meteor.user();
-    if (!user) {
+    const userId = Meteor.userId();
+
+    if (!userId) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const work = Works.findOne(workId);
+    if (work.authorId !== userId) {
       throw new Meteor.Error('You are not allowed!');
     }
 
