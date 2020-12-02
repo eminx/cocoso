@@ -1,9 +1,10 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Heading, Image, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
 
+import { StateContext } from '../../LayoutContainer';
 import Work from '../../UIComponents/Work';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
@@ -20,6 +21,7 @@ function MemberPublic({
   if (!member || isLoading) {
     return <Loader />;
   }
+  const { currentHost } = useContext(StateContext);
 
   const setAsParticipant = async (user) => {
     try {
@@ -40,6 +42,16 @@ function MemberPublic({
       message.error(error.reason || error.error);
     }
   };
+
+  const worksItem =
+    currentHost &&
+    currentHost.settings.menu &&
+    currentHost.settings.menu.find((item) => item.name === 'works');
+
+  const worksLabel =
+    worksItem &&
+    worksItem.label &&
+    worksItem.label[0].toUpperCase() + worksItem.label.substr(1).toLowerCase();
 
   return (
     <Template
@@ -64,19 +76,26 @@ function MemberPublic({
         )
       }
     >
+      {worksLabel && member && (
+        <Heading level={3} margin="medium">
+          {worksLabel} by {member.username}
+        </Heading>
+      )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => <Work work={work} history={history} />)
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">
-          <Heading level={3}>Nothing published just yet</Heading>
-          <Box width="medium" height="medium" direction="row" align="center">
+          <Heading level={4} margin="small">
+            Nothing published just yet
+          </Heading>
+          <Box direction="row" align="center">
             <Image
               fit="contain"
               src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif"
             />
           </Box>
           <Text margin="small">
-            <b>{member.username}</b> have not been so active so far
+            <b>{member.username}</b> have not been very active so far
           </Text>
         </Box>
       )}
