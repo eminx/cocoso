@@ -1,8 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Heading, Image, Text } from 'grommet';
+import { Box, Heading, Image, Paragraph, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
+import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import Work from '../../UIComponents/Work';
@@ -71,7 +72,9 @@ function MemberPublic({
                 member.lastName &&
                 member.firstName + ' ' + member.lastName}
             </Text>
-            <Text size="small">{member.bio}</Text>
+            <Paragraph size="small" margin="small">
+              {renderHTML(member.bio)}
+            </Paragraph>
           </Box>
         )
       }
