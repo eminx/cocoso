@@ -273,9 +273,7 @@ class EditWork extends PureComponent {
       return <Redirect to={`/${currentUser.username}/work/${workId}`} />;
     }
 
-    const buttonLabel = isCreating
-      ? 'Updating your work...'
-      : 'Confirm and Update Work';
+    const buttonLabel = isCreating ? 'Updating...' : 'Confirm and Update';
     const { title } = formValues;
     const isFormValid = formValues && title.length > 3;
 
@@ -301,7 +299,7 @@ class EditWork extends PureComponent {
             plain
             color="status-critical"
             onClick={this.openDeleteModal}
-            label="Delete this page"
+            label="Delete"
           />
         </Box>
 
@@ -311,7 +309,7 @@ class EditWork extends PureComponent {
           onCancel={this.closeDeleteModal}
           title="Confirm Delete"
         >
-          Are you sure you want to delete this page?
+          Are you sure you want to delete this item?
         </ConfirmModal>
       </Template>
     );

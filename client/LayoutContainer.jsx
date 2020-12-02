@@ -131,6 +131,7 @@ const LayoutPage = ({
         <style jsx>{`
           @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&family=Inknut+Antiqua:wght@700&display=swap');
           body {
+            min-height: 101vh;
             background-repeat: no-repeat;
             background-image: -moz-linear-gradient(
               0deg,
