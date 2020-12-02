@@ -115,6 +115,7 @@ Meteor.methods({
   },
 
   setAsContributor(memberId) {
+    console.log(memberId);
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
@@ -125,12 +126,15 @@ Meteor.methods({
 
     const member = Meteor.users.findOne(memberId);
     if (
+      !member ||
       !member.memberships ||
       !member.memberships.some((membership) => {
         return membership.host === host && membership.role === 'participant';
       })
     ) {
-      throw new Meteor.Error('User is not a participant');
+      throw new Meteor.Error(
+        'Some error occured... Sorry, your inquiry could not be done'
+      );
     }
 
     try {

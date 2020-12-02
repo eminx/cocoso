@@ -96,6 +96,9 @@ const Signup = ({ onSubmit }) => {
             placeholder=""
             type="password"
           />
+          <Notice margin={{ left: 'small', top: 'small' }}>
+            Your password is encrypted in the database.
+          </Notice>
         </FormField>
 
         <Box direction="row" justify="end" pad="small">
@@ -111,8 +114,12 @@ const Signup = ({ onSubmit }) => {
   );
 };
 
-const Notice = ({ isError, children }) => (
-  <Text color={isError ? 'status-error' : 'dark-3'} size="small">
+const Notice = ({ isError, children, ...otherProps }) => (
+  <Text
+    color={isError ? 'status-error' : 'dark-3'}
+    size="small"
+    {...otherProps}
+  >
     {children}
   </Text>
 );
