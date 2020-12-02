@@ -41,7 +41,6 @@ const Signup = ({ onSubmit }) => {
     if (!username || username.length < 4) {
       usernameError = 'At least 4 characters';
     } else if (regexUsername.test(username)) {
-      console.log(regexUsername.test(username));
       usernameError = 'Only lowercase-letters and numbers';
     }
     if (!email || email.length === 0) {
@@ -118,10 +117,10 @@ const Notice = ({ isError, children }) => (
   </Text>
 );
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ onForgotPassword }) => {
   return (
     <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => console.log(value)}>
+      <Form onSubmit={({ value }) => onForgotPassword(value)}>
         <FormField
           label="Type your email please"
           margin={{ bottom: 'medium', top: 'medium' }}
@@ -137,10 +136,45 @@ const ForgotPassword = () => {
   );
 };
 
+const ResetPassword = ({ onResetPassword }) => {
+  const [passwordError, setPasswordError] = useState(null);
+
+  const handleSubmit = (value) => {
+    const { password } = value;
+    if (password.length < 8) {
+      setPasswordError('minimum 8 characters');
+    } else {
+      onResetPassword(password);
+    }
+  };
+
+  return (
+    <Box margin={{ bottom: 'medium' }}>
+      <Form onSubmit={({ value }) => handleSubmit(value)}>
+        <FormField
+          label="Password"
+          margin={{ bottom: 'medium', top: 'medium' }}
+          help={<Notice>minimum 8 characters</Notice>}
+          error={<Notice isError>{passwordError}</Notice>}
+        >
+          <TextInput
+            plain={false}
+            type="password"
+            name="password"
+            placeholder=""
+          />
+        </FormField>
+
+        <Box direction="row" justify="end" pad="small">
+          <Button type="submit" primary label="Reset Password" />
+        </Box>
+      </Form>
+    </Box>
+  );
+};
+
 const AuthContainer = () => {
   const [mode, setMode] = useState('signup');
-  // const [signup, setSignup] = useState(true);
-  // const [recover, setRecover]
 
   if (mode === 'signup') {
     return (
@@ -197,4 +231,11 @@ const SimpleText = ({ children, ...otherProps }) => (
   </Text>
 );
 
-export { Login, Signup, ForgotPassword, AuthContainer, SimpleText };
+export {
+  Login,
+  Signup,
+  ForgotPassword,
+  ResetPassword,
+  AuthContainer,
+  SimpleText,
+};

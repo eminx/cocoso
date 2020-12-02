@@ -1,24 +1,22 @@
-import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Anchor, Box, Heading, Text } from 'grommet';
 
 import Template from '../UIComponents/Template';
-import { ForgotPassword, SimpleText } from './index';
+import { ResetPassword, SimpleText } from './index';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../functions';
 import { message } from '../UIComponents/message';
 
-const ForgotPasswordPage = ({ history }) => {
-  const [emailSent, setEmailSent] = useState(false);
+const ResetPasswordPage = ({ history, match }) => {
   const { currentUser } = useContext(StateContext);
+  const { token } = match.params;
 
-  const handleForgotPassword = async (email) => {
+  const handleResetPassword = async (password) => {
     try {
-      await call('forgotPassword', email);
-      message.success(
-        'Please check your email and see if you received a link to reset your password'
-      );
-      setEmailSent(true);
+      await call('resetPassword', token, password);
+      message.success('Your password is successfully reset. Now you can login');
+      history.push('/login');
     } catch (error) {
       message.error(error.reason);
     }
@@ -31,15 +29,11 @@ const ForgotPasswordPage = ({ history }) => {
   return (
     <Template>
       <Box width="medium" alignSelf="center">
-        <Heading level={2}>Forgot Password</Heading>
+        <Heading level={2}>Reset Your Password</Heading>
         <Text size="large" margin={{ bottom: 'medium' }}>
-          Reset your password via a link sent to your email
+          Type your desired password
         </Text>
-        {emailSent ? (
-          <Text>Reset link is sent to your email.</Text>
-        ) : (
-          <ForgotPassword onForgotPassword={handleForgotPassword} />
-        )}
+        <ResetPassword onResetPassword={handleResetPassword} />
         <Box
           direction="row"
           justify="around"
@@ -57,4 +51,4 @@ const ForgotPasswordPage = ({ history }) => {
   );
 };
 
-export default ForgotPasswordPage;
+export default ResetPasswordPage;
