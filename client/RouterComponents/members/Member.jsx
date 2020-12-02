@@ -1,16 +1,15 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Heading, Image, Paragraph, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
-import Work from '../../UIComponents/Work';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
+import WorkThumb from '../../UIComponents/WorkThumb';
 
 const getFullName = (member) => {
   const { firstName, lastName } = member;
@@ -94,7 +93,7 @@ function MemberPublic({
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
-          <Work key={work._id} work={work} history={history} />
+          <WorkThumb key={work._id} work={work} history={history} />
         ))
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">

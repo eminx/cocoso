@@ -15,7 +15,7 @@ const ellipsisStyle = {
   textOverflow: 'ellipsis',
 };
 
-function Work({ work, history }) {
+function WorkThumb({ work, history }) {
   return (
     <Box
       key={work._id}
@@ -63,4 +63,4 @@ function Work({ work, history }) {
   );
 }
 
-export default Work;
+export default WorkThumb;

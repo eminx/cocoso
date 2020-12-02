@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button } from 'grommet';
-import { FormAdd } from 'grommet-icons';
 
-import Work from '../../UIComponents/Work';
+import WorkThumb from '../../UIComponents/WorkThumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Tag from '../../UIComponents/Tag';
@@ -94,7 +93,7 @@ const Works = ({ history }) => {
 
       <Box direction="row" justify="center" pad="medium" wrap>
         {filteredWorks.map((work, index) => (
-          <Work key={work._id} work={work} history={history} />
+          <WorkThumb key={work._id} work={work} history={history} />
         ))}
       </Box>
     </Box>
