@@ -72,10 +72,10 @@ function MemberPublic({
               src={member.avatar && member.avatar.src}
               size="2xl"
             />
-            <Text weight="bold" size="large">
+            <Text weight="bold" size="large" textAlign="center">
               {member.username}
             </Text>
-            <Text>{getFullName(member)}</Text>
+            <Text textAlign="center">{getFullName(member)}</Text>
 
             {member.bio && (
               <Paragraph size="small" margin="small">
