@@ -243,10 +243,14 @@ const Settings = ({ history }) => {
   };
 
   const onSortMenuEnd = ({ oldIndex, newIndex }) => {
-    setLocalSettings({
+    const { menu } = localSettings;
+    const visibleItems = menu.filter((item) => item.isVisible);
+    const invisibleItems = menu.filter((item) => !item.isVisible);
+    const newSettings = {
       ...localSettings,
-      menu: arrayMove(localSettings.menu, oldIndex, newIndex),
-    });
+      menu: [...arrayMove(visibleItems, oldIndex, newIndex), ...invisibleItems],
+    };
+    setLocalSettings(newSettings);
   };
 
   const handleMenuSave = async () => {
@@ -358,7 +362,7 @@ const Settings = ({ history }) => {
                     <Box key={item.name} margin={{ bottom: 'small' }}>
                       <CheckBox
                         checked={item.isVisible}
-                        label={item.label.toUpperCase()}
+                        label={item.label}
                         onChange={(event) =>
                           handleMenuItemCheck(index, event.target.checked)
                         }
@@ -508,7 +512,7 @@ const LabelChangableItem = ({ name }) => {
           plain={false}
           name={name}
           size="small"
-          placeholder={getMenuPlaceHolder(name).toUpperCase()}
+          placeholder={getMenuPlaceHolder(name)}
         />
       </FormField>
     </Box>
