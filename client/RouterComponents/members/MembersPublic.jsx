@@ -4,7 +4,6 @@ import { Anchor, Box, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
-import { GridList } from '../../UIComponents/NiceList';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';
@@ -16,6 +15,14 @@ const getFullName = (member) => {
   } else {
     return firstName || lastName || '';
   }
+};
+
+const overflowStyle = {
+  width: 128,
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  textAlign: 'center',
 };
 
 function PublicMembers({ history }) {
@@ -104,16 +111,16 @@ function PublicMembers({ history }) {
       >*/}
       {members.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
-          <Box
-            align="center"
-            margin="small"
-            style={{ width: 128, wordBreak: 'break-all', textAlign: 'center' }}
-          >
+          <Box align="center" margin="small">
             <Avatar name={member.username} src={member.avatarSrc} size="xl" />
-            <Anchor>
-              <Text size="small">{member.username}</Text>
+            <Anchor as="div">
+              <Text as="div" size="small" style={overflowStyle}>
+                {member.username}
+              </Text>
             </Anchor>
-            <Text size="small">{getFullName(member)}</Text>
+            <Text as="div" size="small" style={overflowStyle}>
+              {getFullName(member)}
+            </Text>
           </Box>
         </Link>
       ))}

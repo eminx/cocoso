@@ -1,38 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-const menu = [
-  {
-    label: 'activities',
-    name: 'activities',
-    isVisible: true,
-  },
-  {
-    label: 'calendar',
-    name: 'calendar',
-    isVisible: true,
-  },
-  {
-    label: 'processes',
-    name: 'processes',
-    isVisible: true,
-  },
-  {
-    label: 'works',
-    name: 'works',
-    isVisible: true,
-  },
-  {
-    label: 'members',
-    name: 'members',
-    isVisible: true,
-  },
-  {
-    label: 'info',
-    name: 'info',
-    isVisible: true,
-  },
-];
-
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
