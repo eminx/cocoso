@@ -36,15 +36,6 @@ const menu = [
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
-  Hosts.find().forEach((host) => {
-    console.log(host);
-    Hosts.update(host._id, {
-      $push: {
-        'settings.menu': menu[4],
-      },
-    });
-  });
-
   process.env.MAIL_URL =
     'smtps://' +
     encodeURIComponent(smtp.userName) +

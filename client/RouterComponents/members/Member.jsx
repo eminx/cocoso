@@ -85,7 +85,9 @@ function MemberPublic({
           {worksLabel} by {member.username}
         </Heading>
       )}
-      {memberWorks && memberWorks.length > 0 ? (
+      {memberWorks &&
+      typeof memberWorks !== 'undefined' &&
+      memberWorks.length > 0 ? (
         memberWorks.map((work, index) => <Work work={work} history={history} />)
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">
