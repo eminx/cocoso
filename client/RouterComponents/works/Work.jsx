@@ -47,15 +47,19 @@ const Work = ({ history, match }) => {
   const isOwner = currentUser && currentUser.username === match.params.username;
 
   const AvatarHolder = (props) => (
-    <Box alignSelf="end" align="center" {...props}>
-      <Box>
-        <Avatar
-          elevation="medium"
-          src={work.authorAvatar && work.authorAvatar.src}
-        />
+    <Link to={`/@${work.authorUsername}`}>
+      <Box alignSelf="end" align="center" {...props}>
+        <Box>
+          <Avatar
+            elevation="medium"
+            src={work.authorAvatar && work.authorAvatar.src}
+          />
+        </Box>
+        <Anchor href={`/@${work.authorUsername}`}>
+          <Text size="small">{work.authorUsername}</Text>
+        </Anchor>
       </Box>
-      <Text size="small">{work.authorUsername}</Text>
-    </Box>
+    </Link>
   );
 
   return (
