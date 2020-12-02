@@ -94,7 +94,7 @@ const Works = ({ history }) => {
 
       <Box direction="row" justify="center" pad="medium" wrap>
         {filteredWorks.map((work, index) => (
-          <Work work={work} history={history} />
+          <Work key={work._id} work={work} history={history} />
         ))}
       </Box>
     </Box>
