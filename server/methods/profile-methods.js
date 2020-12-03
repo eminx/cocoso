@@ -10,12 +10,14 @@ Meteor.methods({
     const members = currentHost.members.map((member) => {
       const user = Meteor.users.findOne(member.id);
       const avatarSrc = user && user.avatar && user.avatar.src;
-      return {
-        ...member,
-        avatarSrc,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      };
+      if (user) {
+        return {
+          ...member,
+          avatarSrc,
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+        };
+      }
     });
     return members;
   },
