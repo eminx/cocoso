@@ -52,27 +52,27 @@ function PublicMembers({ history }) {
     return <Loader />;
   }
 
-  const setAsParticipant = async (user) => {
-    try {
-      await call('setAsParticipant', user.id);
-      message.success(`${user.username} is now set back as a participant`);
-      getAndSetMembers();
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
-    }
-  };
+  // const setAsParticipant = async (user) => {
+  //   try {
+  //     await call('setAsParticipant', user.id);
+  //     message.success(`${user.username} is now set back as a participant`);
+  //     getAndSetMembers();
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
 
-  const setAsContributor = async (user) => {
-    try {
-      await call('setAsContributor', user.id);
-      message.success(`${user.username} is now set as a contributor`);
-      getAndSetMembers();
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
-    }
-  };
+  // const setAsContributor = async (user) => {
+  //   try {
+  //     await call('setAsContributor', user.id);
+  //     message.success(`${user.username} is now set as a contributor`);
+  //     getAndSetMembers();
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
 
   // const membersList = members.map((member) => ({
   //   ...member,
@@ -92,6 +92,10 @@ function PublicMembers({ history }) {
   //     },
   //   ],
   // }));
+  console.log(members);
+  const validMembers = members.map(
+    (member) => member !== null && member !== 'null'
+  );
 
   return (
     <Box
@@ -109,7 +113,7 @@ function PublicMembers({ history }) {
         border="horizontal"
         pad="small"
       >*/}
-      {members.map((member) => (
+      {validMembers.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
           <Box align="center" margin="small">
             <Avatar name={member.username} src={member.avatarSrc} size="xl" />
