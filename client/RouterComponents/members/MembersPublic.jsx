@@ -92,10 +92,6 @@ function PublicMembers({ history }) {
   //     },
   //   ],
   // }));
-  console.log(members);
-  const validMembers = members.map(
-    (member) => member !== null && member !== 'null'
-  );
 
   return (
     <Box
@@ -113,7 +109,7 @@ function PublicMembers({ history }) {
         border="horizontal"
         pad="small"
       >*/}
-      {validMembers.map((member) => (
+      {members.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
           <Box align="center" margin="small">
             <Avatar name={member.username} src={member.avatarSrc} size="xl" />

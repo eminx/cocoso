@@ -6,7 +6,6 @@ Meteor.methods({
   getHostMembers() {
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host: host });
-
     const members = currentHost.members.map((member) => {
       const user = Meteor.users.findOne(member.id);
       const avatarSrc = user && user.avatar && user.avatar.src;
@@ -19,7 +18,8 @@ Meteor.methods({
         };
       }
     });
-    return members;
+    const validMembers = members.filter((member) => member && member.id);
+    return validMembers;
   },
   createAccount(values) {
     check(values.email, String);
@@ -175,6 +175,9 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
+      // Hosts.find({ 'members.id': userId }).forEach((host) => {
+      //   Hosts.update(host._id, { $pull: { 'members.id': userId } });
+      // });
       Meteor.users.remove(userId);
     } catch (error) {
       console.log(error);
