@@ -1,4 +1,4 @@
-import React, { PureComponent, useState } from 'react';
+import React, { useState } from 'react';
 import { Anchor, Box, Button, Form, FormField, Text, TextInput } from 'grommet';
 
 import { emailIsValid } from '../functions';
@@ -29,34 +29,14 @@ const Login = ({ onSubmit }) => {
   );
 };
 
-class Signup extends PureComponent {
-  state = {
-    usernameError: null,
-    emailError: null,
-    passwordError: null,
-  };
+const Signup = ({ onSubmit }) => {
+  const [errors, setErrors] = useState({});
+  // const [value, setValue] = useState({});
+  // const [touched, setTouched] = useState(false);
 
-  handleSubmit = (value) => {
-    const { onSubmit } = this.props;
-    const { usernameError, emailError, passwordError } = this.state;
-    if (usernameError || emailError || passwordError) {
-      return;
-    }
-    console.log(
-      'submitting...',
-      value,
-      usernameError,
-      emailError,
-      passwordError
-    );
-    // onSubmit(value);
-  };
-
-  checkErrors = ({ value, touched }) => {
+  const handleSubmit = ({ value, touched }) => {
     const { username, email, password } = value;
-    let usernameError = true,
-      emailError = true,
-      passwordError = true;
+    let usernameError, emailError, passwordError;
 
     if (!username || username.length < 4) {
       usernameError = 'At least 4 characters';
@@ -72,69 +52,62 @@ class Signup extends PureComponent {
       passwordError = 'At least 8 characters';
     }
 
-    this.setState(
-      {
+    if (usernameError || emailError || passwordError) {
+      setErrors({
         usernameError,
         emailError,
         passwordError,
-      },
-      () => this.handleSubmit(value)
-    );
+      });
+    } else {
+      onSubmit(value, usernameError, emailError, passwordError);
+    }
   };
 
-  render() {
-    const { usernameError, emailError, passwordError } = this.state;
-
-    return (
-      <Box margin={{ bottom: 'medium' }}>
-        <Form
-          onSubmit={({ value, touched }) =>
-            this.checkErrors({ value, touched })
-          }
-        >
-          <FormField
-            label="Username"
-            help={
-              <Notice>
-                minimum 4 characters, only lowercase letters and numbers
-              </Notice>
-            }
-            error={<Notice isError>{usernameError}</Notice>}
-          >
-            <TextInput plain={false} name="username" placeholder="" />
-          </FormField>
-
-          <FormField
-            label="Email address"
-            error={<Notice isError>{emailError}</Notice>}
-          >
-            <TextInput plain={false} type="email" name="email" placeholder="" />
-          </FormField>
-
-          <FormField
-            label="Password"
-            help={<Notice>minimum 8 characters</Notice>}
-            error={<Notice isError>{passwordError}</Notice>}
-          >
-            <TextInput
-              plain={false}
-              name="password"
-              placeholder=""
-              type="password"
-            />
-            <Notice margin={{ left: 'small', top: 'small' }}>
-              Your password is encrypted in the database.
+  return (
+    <Box margin={{ bottom: 'medium' }}>
+      <Form onSubmit={handleSubmit}>
+        <FormField
+          label="Username"
+          help={
+            <Notice>
+              minimum 4 characters, only lowercase letters and numbers
             </Notice>
-          </FormField>
+          }
+          error={<Notice isError>{errors.usernameError}</Notice>}
+        >
+          <TextInput plain={false} name="username" placeholder="" />
+        </FormField>
 
-          <Box direction="row" justify="end" pad="small">
-            <Button type="submit" primary label="Signup" />
-          </Box>
-        </Form>
-      </Box>
-    );
-  }
-}
+        <FormField
+          label="Email address"
+          error={<Notice isError>{errors.emailError}</Notice>}
+        >
+          <TextInput plain={false} type="email" name="email" placeholder="" />
+        </FormField>
+
+        <FormField
+          label="Password"
+          help={<Notice>minimum 8 characters</Notice>}
+          error={<Notice isError>{errors.passwordError}</Notice>}
+        >
+          <TextInput
+            plain={false}
+            name="password"
+            placeholder=""
+            type="password"
+          />
+          <Notice margin={{ left: 'small', top: 'small' }}>
+            Your password is encrypted in the database.
+          </Notice>
+        </FormField>
+
+        <Box direction="row" justify="end" pad="small">
+          <Button type="submit" primary label="Signup" />
+        </Box>
+      </Form>
+    </Box>
+  );
+};
 
 const Notice = ({ isError, children, ...otherProps }) => (
   <Text
