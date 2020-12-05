@@ -733,7 +733,9 @@ class Process extends Component {
                   <Image src={process.imageUrl} fit="contain" fill />
                 </Box>
                 <Box pad="medium">
-                  <div>{renderHTML(process.description)}</div>
+                  <div className="text-content">
+                    {renderHTML(process.description)}
+                  </div>
                 </Box>
               </Tab>
               <Tab title="Discussion" style={{ marginLeft: 12 }}>

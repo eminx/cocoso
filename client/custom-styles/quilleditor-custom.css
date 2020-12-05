@@ -13,8 +13,18 @@
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+
 .quill > .ql-container.ql-snow {
   border-color: rgba(0, 0, 0, 0.33);
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+.text-content p {
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+.text-content li {
+  margin: 0.5em 1em;
 }

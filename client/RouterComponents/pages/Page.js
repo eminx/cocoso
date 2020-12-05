@@ -88,7 +88,9 @@ class Page extends PureComponent {
         }
       >
         <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-          <div>{renderHTML(currentPage.longDescription)}</div>
+          <div className="text-content">
+            {renderHTML(currentPage.longDescription)}
+          </div>
         </Box>
 
         <Box>

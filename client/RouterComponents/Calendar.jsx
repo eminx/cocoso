@@ -344,7 +344,7 @@ class Calendar extends React.PureComponent {
           </Box>
 
           <Text size="small">
-            <div>
+            <div className="text-content">
               {selectedActivity &&
                 selectedActivity.longDescription &&
                 (selectedActivity.isPrivateProcess

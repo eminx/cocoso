@@ -1,9 +1,15 @@
 @import './bigcalendar-custom.css';
 @import './quilleditor-custom.css';
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&display=swap');
 
 body {
   min-height: 101vh;
   margin: 0;
+}
+
+.main-viewport {
+  height: 100%;
+  background-repeat: no-repeat;
 }
 
 .sortableHelper {
@@ -27,7 +33,7 @@ body {
 }
 
 a {
-  color: rgba(0, 0, 0, 0.85);
+  color: #06c;
   text-decoration: none;
 }
 

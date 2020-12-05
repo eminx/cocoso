@@ -90,7 +90,13 @@ const SimpleTag = ({ checked, color, onClick, children, ...otherProps }) => (
     plain
     onClick={onClick}
     label={children}
-    style={{ borderRadius: 0, padding: '0 4px', fontSize: 12, lineHeight: 1.5 }}
+    style={{
+      borderRadius: 0,
+      padding: '0 4px',
+      fontSize: 12,
+      lineHeight: 1.5,
+      marginBottom: 6,
+    }}
     className={checked ? 'checked ' + color : color}
     {...otherProps}
   />

@@ -459,6 +459,7 @@ class Activity extends React.Component {
                 whiteSpace: 'pre-line',
                 color: 'rgba(0,0,0, .85)',
               }}
+              className="text-content"
             >
               {renderHTML(activityData.longDescription)}
             </div>

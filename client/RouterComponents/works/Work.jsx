@@ -117,7 +117,9 @@ const Work = ({ history, match }) => {
         <Box margin={{ top: 'medium' }} background="white">
           <NiceSlider images={work.images} />
           <Box margin={{ top: 'medium' }} pad="medium">
-            <div>{renderHTML(work.longDescription)} </div>
+            <div className="text-content">
+              {renderHTML(work.longDescription)}{' '}
+            </div>
           </Box>
         </Box>
       </Template>
