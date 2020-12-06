@@ -66,7 +66,7 @@ function MemberPublic({
     <Template
       leftContent={
         member && (
-          <Box align="center" margin="medium">
+          <Box align="center" margin="medium" className="text-content">
             <Avatar
               name={member.username}
               src={member.avatar && member.avatar.src}
