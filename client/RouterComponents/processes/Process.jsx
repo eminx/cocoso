@@ -889,17 +889,18 @@ class Process extends Component {
           <Visible sm md>
             {this.renderMembersAndDocuments()}
           </Visible>
-
-          <Box
-            direction="row"
-            justify="center"
-            pad="medium"
-            margin={{ bottom: 'large' }}
-          >
-            <Link to={`/edit-process/${process._id}`}>
-              <Anchor label="Edit this Process" />
-            </Link>
-          </Box>
+          {isAdmin && (
+            <Box
+              direction="row"
+              justify="center"
+              pad="medium"
+              margin={{ bottom: 'large' }}
+            >
+              <Link to={`/edit-process/${process._id}`}>
+                <Anchor label="Edit this Process" />
+              </Link>
+            </Box>
+          )}
         </Template>
         <ConfirmModal
           visible={modalOpen}
