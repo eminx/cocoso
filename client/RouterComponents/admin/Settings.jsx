@@ -74,6 +74,10 @@ const Settings = ({ history }) => {
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
+  if (!currentUser || role !== 'admin') {
+    return <Alert>You are not allowed to be here</Alert>;
+  }
+
   useEffect(() => {
     currentHost && setLocalSettings(currentHost.settings);
     getCategories();
@@ -93,16 +97,6 @@ const Settings = ({ history }) => {
     setActiveMenu(newActiveMenu);
   };
 
-  const getCategories = async () => {
-    try {
-      const latestCategories = await call('getCategories');
-      setCategories(latestCategories);
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
-    }
-  };
-
   const handleFormChange = (newSettings) => {
     setFormAltered(true);
     setLocalSettings(newSettings);
@@ -120,6 +114,16 @@ const Settings = ({ history }) => {
     }
 
     saveSettings();
+  };
+
+  const getCategories = async () => {
+    try {
+      const latestCategories = await call('getCategories');
+      setCategories(latestCategories);
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    }
   };
 
   const addNewCategory = async () => {
@@ -145,10 +149,6 @@ const Settings = ({ history }) => {
 
   if (loading) {
     return <Loader />;
-  }
-
-  if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed to be here</Alert>;
   }
 
   const handleCategoryInputChange = (value) => {

@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Anchor, Box, Avatar, Heading, Text } from 'grommet';
+import { Anchor, Box, Heading, Text } from 'grommet';
+import { Avatar } from '@chakra-ui/react';
 import { Visible, Hidden } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
