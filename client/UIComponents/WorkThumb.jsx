@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar, Box, Text } from 'grommet';
+import { Box, Text } from 'grommet';
+import { Avatar } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Tag from './Tag';
 
