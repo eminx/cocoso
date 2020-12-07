@@ -18,7 +18,7 @@ export const isMember = (user, host) => {
   if (!user || !host) {
     return false;
   }
-  host.members.some((member) => member.id === user._id);
+  return host.members.some((member) => member.id === user._id);
 };
 
 export const isParticipant = (user, host) => {
