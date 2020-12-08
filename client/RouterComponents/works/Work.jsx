@@ -67,21 +67,21 @@ const Work = ({ history, match }) => {
     <Fragment>
       <Template
         leftContent={
-          <Box pad="medium">
-            <Heading level={3} size="small" margin={{ bottom: 'small' }}>
-              {work.title}
-            </Heading>
+          <Box pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}>
             <Box direction="row" align="start" justify="between">
-              <Box pad={{ right: 'small' }} width="220px">
+              <Box pad={{ right: 'small' }} flex={{ grow: 1 }}>
+                <Text weight={600} margin={{ bottom: 'xsmall' }} size="large">
+                  {work.title}
+                </Text>
                 {work.category && (
                   <Tag
                     label={work.category.label}
                     background={work.category.color}
                   />
                 )}
-                <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
+                <Text margin={{ top: 'small' }}>{work.shortDescription}</Text>
               </Box>
-              <Box flex={{ shrink: 0 }}>
+              <Box flex={{ shrink: 0, grow: 0 }}>
                 <Visible xs sm md lg>
                   <AvatarHolder />
                 </Visible>
@@ -97,7 +97,7 @@ const Work = ({ history, match }) => {
             style={{ overflow: 'hidden' }}
             align="start"
           >
-            <Box width="100%">
+            <Box width="100%" pad={{ top: 'small' }}>
               <Hidden lg xl>
                 <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
                   {work.additionalInfo}
