@@ -98,7 +98,7 @@ class NewWork extends PureComponent {
     try {
       const imagesReadyToSave = await Promise.all(
         uploadableImages.map(async (uploadableImage, index) => {
-          const resizedImage = await resizeImage(uploadableImage, 800);
+          const resizedImage = await resizeImage(uploadableImage, 1200);
           const uploadedImage = await uploadImage(
             resizedImage,
             'workImageUpload'

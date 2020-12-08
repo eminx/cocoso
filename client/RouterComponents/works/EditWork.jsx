@@ -144,7 +144,7 @@ class EditWork extends PureComponent {
           } else {
             const resizedImage = await resizeImage(
               uploadableImage.resizableData,
-              500
+              1200
             );
             const uploadedImage = await uploadImage(
               resizedImage,
