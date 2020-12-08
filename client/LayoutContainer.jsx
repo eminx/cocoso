@@ -8,13 +8,18 @@ import {
   Button,
   DropButton,
   Footer,
-  Heading,
-  Image,
   Grommet,
+  Heading,
+  FormField,
+  Image,
+  Layer,
   Paragraph,
+  Select,
   Text,
+  TextInput,
+  TextArea,
 } from 'grommet';
-import { FormPrevious, Down } from 'grommet-icons';
+import { Close, Down } from 'grommet-icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 import { ChakraProvider } from '@chakra-ui/react';
@@ -91,14 +96,16 @@ const getBackgroundStyle = (cHue) => {
   };
 };
 
-const LayoutPage = ({
+function LayoutPage({
   currentUser,
   currentHost,
   userLoading,
   hostLoading,
   history,
   children,
-}) => {
+}) {
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
   if (hostLoading) {
     return (
       <Box width="100%">
@@ -167,13 +174,76 @@ const LayoutPage = ({
               <Header {...headerProps} />
               <Box>{children}</Box>
               {/* <FooterInfo settings={settings} /> */}
+
+              <Footer justify="center">
+                <Box pad="large">
+                  <Anchor onClick={() => setShowFeedbackModal(true)}>
+                    Give Feedback
+                  </Anchor>
+                </Box>
+
+                {showFeedbackModal && (
+                  <Layer
+                    position="bottom"
+                    full="vertical"
+                    modal
+                    onClickOutside={() => setShowFeedbackModal(false)}
+                    onEsc={() => setShowFeedbackModal(false)}
+                    animation="fadeIn"
+                  >
+                    <Box pad="medium" width="large">
+                      <Box direction="row" justify="between">
+                        <Heading level={2} margin="none">
+                          Give Feedback
+                        </Heading>
+                        <Button
+                          icon={<Close />}
+                          onClick={() => setShowFeedbackModal(false)}
+                        />
+                      </Box>
+                      <form
+                        action="https://formspree.io/f/xdopweon"
+                        method="POST"
+                      >
+                        <FormField label="Your email address">
+                          <TextInput type="email" name="_replyto" />
+                        </FormField>
+
+                        {/* <FormField label="Subject (Bug/Suggestion/Complain)">
+                          <TextInput type="text" name="subject" />
+                        </FormField> */}
+
+                        <FormField label="Subject">
+                          <Select
+                            type="text"
+                            name="subject"
+                            options={['Bug', 'Suggestion', 'Complement']}
+                          />
+                        </FormField>
+
+                        <FormField label="Details">
+                          <TextArea name="text" name="message" />
+                        </FormField>
+
+                        <Box
+                          direction="row"
+                          justify="end"
+                          pad={{ top: 'large' }}
+                        >
+                          <Button type="submit" label="Send" />
+                        </Box>
+                      </form>
+                    </Box>
+                  </Layer>
+                )}
+              </Footer>
             </Box>
           </Box>
         </StateContext.Provider>
       </ChakraProvider>
     </Grommet>
   );
-};
+}
 
 const boldBabe = {
   textTransform: 'uppercase',
