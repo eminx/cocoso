@@ -9,7 +9,16 @@ Meteor.methods({
       const works = Works.find({
         host,
       }).fetch();
-      return works;
+
+      const worksWithAvatars = works.map((work) => {
+        const author = Meteor.users.findOne(work.authorId);
+        return {
+          ...work,
+          authorAvatar: author.avatar || authorAvatar || null,
+        };
+      });
+
+      return worksWithAvatars;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
@@ -43,7 +52,12 @@ Meteor.methods({
         throw new Meteor.Error('Not allowed!');
       }
 
-      return work;
+      const author = Meteor.users.findOne(work.authorId);
+
+      return {
+        ...work,
+        authorAvatar: author.avatar || authorAvatar || null,
+      };
     } catch (error) {
       throw new Meteor.Error(error);
     }

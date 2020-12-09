@@ -69,7 +69,7 @@ const Work = ({ history, match }) => {
         leftContent={
           <Box pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}>
             <Box direction="row" align="start" justify="between">
-              <Box pad={{ right: 'small' }} flex={{ grow: 1 }}>
+              <Box pad={{ right: 'small' }}>
                 <Text weight={600} margin={{ bottom: 'xsmall' }} size="large">
                   {work.title}
                 </Text>
