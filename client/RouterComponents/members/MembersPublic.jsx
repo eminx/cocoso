@@ -95,20 +95,15 @@ function PublicMembers({ history }) {
 
   return (
     <Box
-      pad="small"
-      margin={{ bottom: 'large' }}
-      alignSelf="center"
-      style={{ maxWidth: 960 }}
       direction="row"
+      alignSelf="center"
+      justify="center"
       wrap
+      margin={{ bottom: 'large' }}
+      pad="small"
       gap={{ bottom: 'medium', horizontal: 'small' }}
+      style={{ maxWidth: 960 }}
     >
-      {/* <GridList
-        actionsDisabled={!currentUser || role === 'participant'}
-        list={membersList}
-        border="horizontal"
-        pad="small"
-      >*/}
       {members.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
           <Box align="center" margin="small">

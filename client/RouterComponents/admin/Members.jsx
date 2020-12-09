@@ -27,30 +27,11 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members({ history, members, isLoading }) {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
 
   const { currentUser, role } = useContext(StateContext);
-
-  // const getAndSetUsers = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const users = await call('getUsers');
-  //     setUsers(users);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     message.error(error.error);
-  //     console.log(error);
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getAndSetUsers();
-  // }, []);
 
   if (isLoading) {
     return <Loader />;
