@@ -217,7 +217,7 @@ function LayoutPage({
                           <Select
                             type="text"
                             name="subject"
-                            options={['Bug', 'Suggestion', 'Complement']}
+                            options={['Bug', 'Suggestion', 'Compliment']}
                           />
                         </FormField>
 
