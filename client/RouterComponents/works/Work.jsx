@@ -53,7 +53,8 @@ const Work = ({ history, match }) => {
         <Box>
           <Avatar
             elevation="medium"
-            src={work.authorAvatar && work.authorAvatar.src}
+            src={work.authorAvatar ? work.authorAvatar.src : null}
+            name={work.authorUsername}
           />
         </Box>
         <Anchor href={`/@${work.authorUsername}`}>
