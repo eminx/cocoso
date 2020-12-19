@@ -14,7 +14,7 @@ Meteor.methods({
         const author = Meteor.users.findOne(work.authorId);
         return {
           ...work,
-          authorAvatar: author.avatar || authorAvatar || null,
+          authorAvatar: author.avatar || null,
         };
       });
 

@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Anchor, Box, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
 import { message } from '../../UIComponents/message';
-import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';
+
+const compareByDate = (a, b) => {
+  const dateA = new Date(a.createdAt);
+  const dateB = new Date(b.createdAt);
+  return dateB - dateA;
+};
 
 const getFullName = (member) => {
   const { firstName, lastName } = member;
@@ -29,13 +34,12 @@ function PublicMembers({ history }) {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
 
-  const { currentUser, role } = useContext(StateContext);
-
   const getAndSetMembers = async () => {
     setLoading(true);
     try {
       const members = await call('getHostMembers');
-      setMembers(members);
+      const sortedMembers = members.sort(compareByDate);
+      setMembers(sortedMembers);
       setLoading(false);
     } catch (error) {
       message.error(error.error);
@@ -119,7 +123,6 @@ function PublicMembers({ history }) {
           </Box>
         </Link>
       ))}
-      {/* </GridList> */}
     </Box>
   );
 }
