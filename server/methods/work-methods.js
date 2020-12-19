@@ -56,7 +56,7 @@ Meteor.methods({
 
       return {
         ...work,
-        authorAvatar: author.avatar || authorAvatar || null,
+        authorAvatar: author.avatar || null,
       };
     } catch (error) {
       throw new Meteor.Error(error);
