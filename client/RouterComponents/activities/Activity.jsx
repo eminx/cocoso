@@ -261,7 +261,7 @@ class Activity extends React.Component {
     const getTotalNumber = (occurence) => {
       let counter = 0;
       occurence.attendees.forEach((attendee) => {
-        counter += attendee.numberOfPeople;
+        counter += Number(attendee.numberOfPeople);
       });
       return counter;
     };

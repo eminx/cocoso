@@ -183,10 +183,15 @@ Meteor.methods({
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     values.registerDate = new Date();
+    const rsvpValues = {
+      ...values,
+      numberOfPeople: Number(values.numberOfPeople),
+      registerDate: new Date(),
+    };
     if (occurences[occurenceIndex].attendees) {
-      occurences[occurenceIndex].attendees.push(values);
+      occurences[occurenceIndex].attendees.push(rsvpValues);
     } else {
-      occurences[occurenceIndex].attendees = [values];
+      occurences[occurenceIndex].attendees = [rsvpValues];
     }
 
     try {
