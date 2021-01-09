@@ -1,7 +1,16 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext } from 'react';
-import { Box, Heading, Image, Paragraph, Text } from 'grommet';
-import { Avatar } from '@chakra-ui/react';
+import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import {
+  Avatar,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
@@ -31,6 +40,7 @@ function MemberPublic({
     return <Loader />;
   }
   const { currentHost } = useContext(StateContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const setAsParticipant = async (user) => {
     try {
@@ -78,9 +88,13 @@ function MemberPublic({
             <Text textAlign="center">{getFullName(member)}</Text>
 
             {member.bio && (
-              <Paragraph size="small" margin="small">
-                {renderHTML(member.bio)}
-              </Paragraph>
+              <Box margin={{ top: 'small' }}>{renderHTML(member.bio)}</Box>
+            )}
+
+            {member.contactInfo && (
+              <Anchor onClick={onOpen} as="button" margin={{ top: 'medium' }}>
+                Contact
+              </Anchor>
             )}
           </Box>
         )
@@ -111,6 +125,18 @@ function MemberPublic({
           </Text>
         </Box>
       )}
+      <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{getFullName(member)}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box className="text-content" margin={{ bottom: 'medium' }}>
+              {renderHTML(member.contactInfo)}
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Template>
   );
 }
