@@ -6,9 +6,11 @@ import { editorFormats, editorModules } from '../../constants/quillConfig';
 const Personal = ({
   formValues,
   bio,
-  onQuillChange,
+  contactInfo,
+  onBioChange,
+  onContactInfoChange,
   onFormChange,
-  onSubmit
+  onSubmit,
 }) => {
   return (
     <Box>
@@ -26,7 +28,16 @@ const Personal = ({
             value={bio}
             modules={editorModules}
             formats={editorFormats}
-            onChange={onQuillChange}
+            onChange={onBioChange}
+          />
+        </FormField>
+
+        <FormField label="contact info" name="contactInfo">
+          <ReactQuill
+            value={contactInfo}
+            modules={editorModules}
+            formats={editorFormats}
+            onChange={onContactInfoChange}
           />
         </FormField>
 

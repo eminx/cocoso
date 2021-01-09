@@ -133,6 +133,7 @@ Meteor.methods({
     check(values.firstName, String);
     check(values.lastName, String);
     check(values.bio, String);
+    check(values.contactInfo, String);
 
     try {
       Meteor.users.update(user._id, {
@@ -140,6 +141,7 @@ Meteor.methods({
           firstName: values.firstName,
           lastName: values.lastName,
           bio: values.bio,
+          contactInfo: values.contactInfo,
         },
       });
     } catch (error) {

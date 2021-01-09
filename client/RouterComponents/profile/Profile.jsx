@@ -18,8 +18,6 @@ import { StateContext } from '../../LayoutContainer';
 const personalModel = {
   firstName: '',
   lastName: '',
-  bio: '',
-  city: '',
 };
 
 class Profile extends React.Component {
@@ -46,6 +44,7 @@ class Profile extends React.Component {
         lastName: currentUser.lastName || '',
       },
       bio: currentUser.bio || '',
+      contactInfo: currentUser.contactInfo || '',
     });
   };
 
@@ -55,14 +54,8 @@ class Profile extends React.Component {
     });
   };
 
-  handleQuillChange = (bio) => {
-    this.setState({
-      bio,
-    });
-  };
-
   handleSubmit = () => {
-    const { personal, bio } = this.state;
+    const { personal, bio, contactInfo } = this.state;
     this.setState({
       isSaving: true,
     });
@@ -70,6 +63,7 @@ class Profile extends React.Component {
     const values = {
       ...personal,
       bio,
+      contactInfo,
     };
     Meteor.call('saveUserInfo', values, (error, respond) => {
       if (error) {
@@ -172,6 +166,7 @@ class Profile extends React.Component {
     const {
       personal,
       bio,
+      contactInfo,
       isDeleteModalOn,
       uploadableAvatarLocal,
       isUploading,
@@ -227,7 +222,11 @@ class Profile extends React.Component {
               <Personal
                 formValues={personal}
                 bio={bio}
-                onQuillChange={this.handleQuillChange}
+                contactInfo={contactInfo}
+                onBioChange={(bio) => this.setState({ bio })}
+                onContactInfoChange={(contactInfo) =>
+                  this.setState({ contactInfo })
+                }
                 onFormChange={this.handleFormChange}
                 onSubmit={this.handleSubmit}
               />
