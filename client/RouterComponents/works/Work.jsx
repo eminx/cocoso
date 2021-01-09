@@ -59,6 +59,10 @@ const Work = ({ history, match }) => {
 
     try {
       const info = await call('getUserContactInfo', work.authorUsername);
+      if (!info) {
+        setAuthorContactInfo('No contact info is registered for this user');
+        return;
+      }
       setAuthorContactInfo(info);
     } catch (error) {
       console.log(error);

@@ -138,7 +138,9 @@ function MemberPublic({
           <ModalCloseButton />
           <ModalBody>
             <Box className="text-content" margin={{ bottom: 'medium' }}>
-              {renderHTML(member.contactInfo)}
+              {member.contactInfo
+                ? renderHTML(member.contactInfo)
+                : 'No contact info registered for this user'}
             </Box>
           </ModalBody>
         </ModalContent>
