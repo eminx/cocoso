@@ -157,7 +157,11 @@ function MemberPublic({
       >
         <ModalOverlay />
         <ModalContent>
-          <ChakraImage src={member.avatar.src} alt={member.username} />
+          <ChakraImage
+            src={member.avatar.src}
+            alt={member.username}
+            fit="contain"
+          />
         </ModalContent>
       </Modal>
     </Template>
