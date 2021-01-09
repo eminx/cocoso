@@ -1,8 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Anchor, Box, Heading, Image, Text } from 'grommet';
 import {
   Avatar,
+  Image as ChakraImage,
   Modal,
   ModalBody,
   ModalContent,
@@ -40,6 +41,7 @@ function MemberPublic({
     return <Loader />;
   }
   const { currentHost } = useContext(StateContext);
+  const [avatarModal, setAvatarModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const setAsParticipant = async (user) => {
@@ -81,6 +83,8 @@ function MemberPublic({
               name={member.username}
               src={member.avatar && member.avatar.src}
               size="2xl"
+              onClick={() => setAvatarModal(true)}
+              style={{ cursor: 'pointer' }}
             />
             <Text weight="bold" size="large" textAlign="center">
               {member.username}
@@ -141,6 +145,19 @@ function MemberPublic({
                 : 'No contact info registered for this user'}
             </Box>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={avatarModal}
+        onClose={() => setAvatarModal(false)}
+        onOpen={() => setAvatarModal(false)}
+        size="xs"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ChakraImage src={member.avatar.src} alt={member.username} />
         </ModalContent>
       </Modal>
     </Template>
