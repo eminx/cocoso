@@ -170,6 +170,7 @@ Meteor.publish('me', function () {
 
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
+  console.log(host);
   return Hosts.find({ host }, { fields: { settings: true, logo: true } });
 });
 
