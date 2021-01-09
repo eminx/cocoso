@@ -77,6 +77,9 @@ const getGotoPath = (pathname) => {
 };
 
 const getBackgroundStyle = (cHue) => {
+  if (!cHue) {
+    return '#fff';
+  }
   return {
     backgroundImage: `-moz-linear-gradient(
     0deg,
@@ -120,6 +123,7 @@ function LayoutPage({
     currentHost &&
     currentHost.settings.mainColor &&
     currentHost.settings.mainColor.hsl;
+  let cHue;
   const customTheme = {
     ...theme,
   };
@@ -131,9 +135,10 @@ function LayoutPage({
       100 * hsl.s
     }%, 95%)`;
     customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+
+    // complementary color is calculated:
+    cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
   }
-  // complementary color is calculated:
-  const cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
 
   const headerProps = {
     currentUser,
