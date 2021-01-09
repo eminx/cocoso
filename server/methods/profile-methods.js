@@ -171,6 +171,15 @@ Meteor.methods({
     }
   },
 
+  getUserContactInfo(username) {
+    try {
+      const user = Meteor.users.findOne({ username });
+      return user.contactInfo || '';
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't retrieve the contact info");
+    }
+  },
+
   deleteAccount() {
     const userId = Meteor.userId();
     if (!userId) {

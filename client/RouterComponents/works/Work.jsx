@@ -1,7 +1,16 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Anchor, Box, Heading, Text } from 'grommet';
-import { Avatar } from '@chakra-ui/react';
+import { Anchor, Button, Box, Heading, Text } from 'grommet';
+import {
+  Avatar,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Visible, Hidden } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
@@ -15,8 +24,10 @@ import { call } from '../../functions';
 
 const Work = ({ history, match }) => {
   const [work, setWork] = useState(null);
+  const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getWork();
@@ -39,6 +50,21 @@ const Work = ({ history, match }) => {
   if (!work || loading) {
     return <Loader />;
   }
+
+  const handleOpenModal = async () => {
+    onOpen();
+    if (authorContactInfo) {
+      return;
+    }
+
+    try {
+      const info = await call('getUserContactInfo', work.authorUsername);
+      setAuthorContactInfo(info);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
 
   const author =
     work.authorFirstName && work.authorLastName
@@ -91,28 +117,42 @@ const Work = ({ history, match }) => {
           </Box>
         }
         rightContent={
-          <Box
-            direction="row"
-            pad="medium"
-            justify="between"
-            style={{ overflow: 'hidden' }}
-            align="start"
-          >
-            <Box width="100%" pad={{ top: 'small' }}>
-              <Hidden lg xl>
-                <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
-                  {work.additionalInfo}
-                </Heading>
-              </Hidden>
-              <Visible lg xl>
-                <Heading level={4}>{work.additionalInfo}</Heading>
-              </Visible>
+          <Box>
+            <Box
+              direction="row"
+              pad="medium"
+              justify="between"
+              style={{ overflow: 'hidden' }}
+              align="start"
+            >
+              <Box width="100%" pad={{ top: 'small' }}>
+                <Hidden lg xl>
+                  <Heading
+                    level={4}
+                    textAlign="center"
+                    style={{ marginTop: 0 }}
+                  >
+                    {work.additionalInfo}
+                  </Heading>
+                </Hidden>
+                <Visible lg xl>
+                  <Heading level={4}>{work.additionalInfo}</Heading>
+                </Visible>
+              </Box>
+              <Box flex={{ shrink: 0 }}>
+                <Hidden xs sm md lg>
+                  <AvatarHolder />
+                </Hidden>
+              </Box>
             </Box>
-            <Box flex={{ shrink: 0 }}>
-              <Hidden xs sm md lg>
-                <AvatarHolder />
-              </Hidden>
-            </Box>
+
+            <Button
+              onClick={handleOpenModal}
+              alignSelf="center"
+              secondary
+              size="small"
+              label={`Contact ${work.authorUsername}`}
+            />
           </Box>
         }
       >
@@ -143,6 +183,25 @@ const Work = ({ history, match }) => {
           </Link>
         )}
       </Box>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpen={handleOpenModal}
+        size="sm"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{author}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box className="text-content" margin={{ bottom: 'medium' }}>
+              {authorContactInfo ? renderHTML(authorContactInfo) : 'Loading...'}
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Fragment>
   );
 };

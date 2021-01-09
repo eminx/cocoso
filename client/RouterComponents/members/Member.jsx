@@ -125,7 +125,13 @@ function MemberPublic({
           </Text>
         </Box>
       )}
-      <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpen={onOpen}
+        size="sm"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getFullName(member)}</ModalHeader>
