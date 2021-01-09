@@ -78,7 +78,9 @@ const getGotoPath = (pathname) => {
 
 const getBackgroundStyle = (cHue) => {
   if (!cHue) {
-    return '#fff';
+    return {
+      backgroundColor: '#fff',
+    };
   }
   return {
     backgroundImage: `-moz-linear-gradient(
