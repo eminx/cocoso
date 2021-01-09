@@ -91,11 +91,9 @@ function MemberPublic({
               <Box margin={{ top: 'small' }}>{renderHTML(member.bio)}</Box>
             )}
 
-            {member.contactInfo && (
-              <Anchor onClick={onOpen} as="button" margin={{ top: 'medium' }}>
-                Contact
-              </Anchor>
-            )}
+            <Anchor onClick={onOpen} as="button" margin={{ top: 'medium' }}>
+              Contact
+            </Anchor>
           </Box>
         )
       }
