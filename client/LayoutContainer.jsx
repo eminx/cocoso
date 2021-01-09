@@ -111,7 +111,7 @@ function LayoutPage({
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
-  if (hostLoading) {
+  if (hostLoading || !currentHost) {
     return (
       <Box width="100%">
         <Box pad="medium" alignSelf="center">
@@ -122,7 +122,7 @@ function LayoutPage({
   }
 
   const hsl =
-    currentHost &&
+    currentHost.settings &&
     currentHost.settings.mainColor &&
     currentHost.settings.mainColor.hsl;
   let cHue;
