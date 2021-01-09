@@ -450,8 +450,6 @@ export default withTracker((props) => {
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
 
-  console.log(currentHost);
-
   return {
     currentUser,
     currentHost,
