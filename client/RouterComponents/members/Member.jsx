@@ -74,6 +74,8 @@ function MemberPublic({
     worksItem.label &&
     worksItem.label[0].toUpperCase() + worksItem.label.substr(1).toLowerCase();
 
+  const avatarExists = member.avatar && member.avatar.src;
+
   return (
     <Template
       leftContent={
@@ -83,8 +85,8 @@ function MemberPublic({
               name={member.username}
               src={member.avatar && member.avatar.src}
               size="2xl"
-              onClick={() => setAvatarModal(true)}
-              style={{ cursor: 'pointer' }}
+              onClick={avatarExists ? () => setAvatarModal(true) : null}
+              style={{ cursor: avatarExists ? 'pointer' : 'default' }}
             />
             <Text weight="bold" size="large" textAlign="center">
               {member.username}
@@ -148,22 +150,24 @@ function MemberPublic({
         </ModalContent>
       </Modal>
 
-      <Modal
-        isOpen={avatarModal}
-        onClose={() => setAvatarModal(false)}
-        onOpen={() => setAvatarModal(false)}
-        size="xs"
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ChakraImage
-            src={member.avatar.src}
-            alt={member.username}
-            fit="contain"
-          />
-        </ModalContent>
-      </Modal>
+      {avatarExists && (
+        <Modal
+          isOpen={avatarModal}
+          onClose={() => setAvatarModal(false)}
+          onOpen={() => setAvatarModal(false)}
+          size="xs"
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ChakraImage
+              src={member.avatar.src}
+              alt={member.username}
+              fit="contain"
+            />
+          </ModalContent>
+        </Modal>
+      )}
     </Template>
   );
 }
