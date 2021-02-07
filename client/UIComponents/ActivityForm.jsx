@@ -12,7 +12,7 @@ import {
   Button,
   Text,
 } from 'grommet';
-import { AddCircle } from 'grommet-icons';
+import { AddCircle } from 'grommet-icons/icons/AddCircle';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';

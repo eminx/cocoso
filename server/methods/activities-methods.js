@@ -1,10 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-const Logger = require('logdna');
 import {
   getHost,
   isContributorOrAdmin,
   isParticipant,
-  getLogdnaOptions,
   isAdmin,
   isMember,
 } from './shared';
@@ -97,10 +95,6 @@ Meteor.methods({
       );
       return add;
     } catch (error) {
-      // Logger.createLogger(
-      //   `Activity could not be created due to: ${error.reason || error.error}`
-      // ),
-      getLogdnaOptions(this);
       throw new Meteor.Error(e, "Couldn't add to Collection");
     }
   },

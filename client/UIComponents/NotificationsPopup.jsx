@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Anchor, Box, List, Stack, DropButton, Text, Heading } from 'grommet';
-import { Notification } from 'grommet-icons';
+import { Notification } from 'grommet-icons/icons/Notification';
 
 const NotificationsPopup = ({ notifications }) => {
   const [open, setOpen] = useState(false);
@@ -11,7 +11,7 @@ const NotificationsPopup = ({ notifications }) => {
 
   let notificationsCounter = 0;
   if (notifications && notifications.length > 0) {
-    notifications.forEach(notification => {
+    notifications.forEach((notification) => {
       notificationsCounter += notification.count;
     });
   }
@@ -47,7 +47,7 @@ const NotificationList = withRouter(({ notifications, history }) => (
         itemProps={{ pad: 'small' }}
         pad="small"
       >
-        {item => (
+        {(item) => (
           <Box>
             <Anchor
               onClick={() => history.push(`/${item.context}/${item.contextId}`)}

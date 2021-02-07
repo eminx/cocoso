@@ -9,7 +9,7 @@ import {
   Form,
   Select,
 } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Close } from 'grommet-icons/icons/Close';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 

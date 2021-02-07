@@ -13,7 +13,7 @@ import {
   Text,
   TextInput,
 } from 'grommet';
-import { Drag } from 'grommet-icons';
+import { Drag } from 'grommet-icons/icons/Drag';
 import { HuePicker } from 'react-color';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';

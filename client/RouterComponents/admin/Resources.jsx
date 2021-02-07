@@ -13,7 +13,7 @@ import {
   TextArea,
   TextInput,
 } from 'grommet';
-import { FormAdd } from 'grommet-icons';
+import { FormAdd } from 'grommet-icons/icons/FormAdd';
 import moment from 'moment';
 
 import NiceList from '../../UIComponents/NiceList';

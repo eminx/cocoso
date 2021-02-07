@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, Calendar, MaskedInput, TextInput } from 'grommet';
-import { FormTrash } from 'grommet-icons';
+import { FormTrash } from 'grommet-icons/icons/FormTrash';
 const segmentPad = {
   top: 'xxsmall',
   left: 'xxsmall',

@@ -1,7 +1,8 @@
 import React from 'react';
 import Slider from 'react-slick';
 import { Box, Image } from 'grommet';
-import { Previous, Next } from 'grommet-icons';
+import { Previous } from 'grommet-icons/icons/Previous';
+import { Next } from 'grommet-icons/icons/Next';
 import { ScreenClassRender } from 'react-grid-system';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';

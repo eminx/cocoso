@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, List, Box } from 'grommet';
-import { MoreVertical } from 'grommet-icons';
+import { MoreVertical } from 'grommet-icons/icons/MoreVertical';
 import { Wrap, WrapItem } from '@chakra-ui/react';
 
 function NiceList({ list, actionsDisabled, children, ...otherProps }) {

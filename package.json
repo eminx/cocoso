@@ -1,5 +1,5 @@
 {
-  "name": "fanus",
+  "name": "cocoso",
   "private": true,
   "description": "![Cocoso logo](https://cocoso.infinitesimals.space/cocoso-logo.png)",
   "version": "0.1.0",
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/eminx/cocoso#readme",
   "scripts": {
     "start": "meteor run --settings settings.json",
-    "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy.meteor.com meteor deploy try.fanus.app --settings settings.json"
+    "analyze": "meteor run --settings settings.json --extra-packages bundle-visualizer --production"
   },
   "theme": {
     "primary-color": "orange"
@@ -45,7 +45,6 @@
     "grommet-icons": "^4.5.0",
     "indexof": "0.0.1",
     "jquery": "^3.5.1",
-    "logdna": "^3.5.1",
     "meteor-node-stubs": "^0.4.1",
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "moment": "^2.26.0",

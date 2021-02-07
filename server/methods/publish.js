@@ -11,95 +11,60 @@ Meteor.publish('attendingEvents', function () {
   });
 });
 
-Meteor.publish('activities', function () {
+Meteor.publish('activities', function (onlyPublic = false) {
   const host = getHost(this);
-  const user = Meteor.user();
-  if (user && user.isSuperAdmin) {
-    return Activities.find({ host });
-  } else if (user) {
+  const fields = {
+    title: 1,
+    datesAndTimes: 1,
+    roomIndex: 1,
+    room: 1,
+    place: 1,
+    isPublicActivity: 1,
+    authorName: 1,
+  };
+  const publicFields = {
+    title: 1,
+    subTitle: 1,
+    imageUrl: 1,
+    datesAndTimes: 1,
+    isPublicActivity: 1,
+  };
+
+  // Activities._ensureIndex({ host, isPublished: true });
+
+  if (onlyPublic) {
     return Activities.find(
       {
         host,
-        $or: [
-          {
-            isPublished: true,
-          },
-          {
-            authorId: user._id,
-          },
-        ],
+        isPublished: true,
+        isPublicActivity: true,
       },
-      {
-        fields: {
-          isSentForReview: 0,
-          phoneNumber: 0,
-        },
-      }
+      { fields: publicFields }
     );
   } else {
-    return Activities.find({
-      host,
-      isPublished: true,
-    });
+    return Activities.find({ host, isPublished: true }, { fields });
   }
 });
 
 Meteor.publish('processes', function () {
   const host = getHost(this);
-  return Processes.find({
-    host,
-    isPublished: true,
-  });
-});
-
-Meteor.publish('manuals', function () {
-  const host = getHost(this);
-  return Documents.find({
-    host,
-    contextType: 'manual',
-  });
-});
-
-Meteor.publish('publications', function () {
-  return Publications.find({
-    isPublished: true,
-  });
-  // }
-});
-
-Meteor.publish('gathering', function (id) {
-  const host = getHost(this);
-  const user = Meteor.user();
-  if (user && user.isSuperAdmin) {
-    return Activities.find({
+  // Processes._ensureIndex({ host, isPublished: true });
+  return Processes.find(
+    {
       host,
-      _id: id,
-    });
-  } else if (user) {
-    return Activities.find({
-      host,
-      _id: id,
-      $or: [
-        {
-          isPublished: true,
-        },
-        {
-          authorId: user._id,
-        },
-      ],
-    });
-  } else {
-    return Activities.find({
-      _id: id,
       isPublished: true,
-    });
-  }
-  /*, {
-    fields: {
-    	isSentForReview: 0,
-    	phoneNumber: 0
+    },
+    {
+      fields: {
+        title: 1,
+        readingMaterial: 1,
+        imageUrl: 1,
+        meetings: 1,
+        adminUsername: 1,
+      },
+      sort: { creationDate: 1 },
     }
-  })*/
+  );
 });
 
 Meteor.publish('process', function (id) {
@@ -129,6 +94,7 @@ Meteor.publish('work', function (id) {
 Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
   const host = getHost(this);
+  // Works._ensureIndex({ host, authorId: currentUserId });
   return Works.find({
     host,
     authorId: currentUserId,
@@ -147,18 +113,12 @@ Meteor.publish('chat', function (contextId) {
 
 Meteor.publish('resources', function () {
   const host = getHost(this);
+  // Resources._ensureIndex({ host });
   return Resources.find({ host });
 });
 
 Meteor.publish('documents', function () {
   return Documents.find();
-});
-
-Meteor.publish('users', function () {
-  const user = Meteor.user();
-  if (user && user.isSuperAdmin) {
-    return Meteor.users.find();
-  }
 });
 
 Meteor.publish('me', function () {
@@ -185,7 +145,7 @@ Meteor.publish('members', function () {
 
 Meteor.publish('membersForPublic', function () {
   const host = getHost(this);
-
+  // Meteor.users._ensureIndex({ 'memberships.host': host });
   return Meteor.users.find(
     { 'memberships.host': host },
     {

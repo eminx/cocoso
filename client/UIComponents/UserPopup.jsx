@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
-import { UserSettings } from 'grommet-icons';
+import { UserSettings } from 'grommet-icons/icons/UserSettings';
 import { StateContext } from '../LayoutContainer';
 
 export const userRoutes = [

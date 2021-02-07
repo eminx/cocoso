@@ -10,7 +10,7 @@ export default ActivitiesContainer = withTracker((props) => {
   const processesSubscription = Meteor.subscribe('processes');
   const processesList = Processes ? Processes.find().fetch() : null;
 
-  const activities = Meteor.subscribe('activities');
+  const activities = Meteor.subscribe('activities', true);
   const isLoading = !activities.ready();
   const activitiesList = Activities ? Activities.find().fetch() : null;
   const currentUser = Meteor.user();

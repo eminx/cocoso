@@ -58,14 +58,3 @@ export const isContributorOrAdmin = (user, host) => {
       member.id === user._id && ['admin', 'contributor'].includes(member.role)
   );
 };
-
-const logdnaOptions = {
-  app: 'Fanus/Cocoso',
-  env: 'Heroku Production',
-  tags: ['logging', 'fanus', 'meteor'], // Tags can also be provided in comma-separated string format: 'logging,nodejs,logdna'
-};
-export const getLogdnaOptions = (self) => {
-  logdnaOptions.hostname = getHost(self);
-  logdnaOptions.ip = connection.httpHeaders['x-forwarded-for'];
-  return logdnaOptions;
-};

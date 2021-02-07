@@ -25,7 +25,7 @@ import {
   TextArea,
 } from 'grommet';
 
-import { Close } from 'grommet-icons';
+import { Close } from 'grommet-icons/icons/Close';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';

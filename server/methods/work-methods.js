@@ -4,7 +4,7 @@ import { getHost } from './shared';
 Meteor.methods({
   getAllWorks() {
     const host = getHost(this);
-
+    // Works._ensureIndex({ host });
     try {
       const works = Works.find({
         host,

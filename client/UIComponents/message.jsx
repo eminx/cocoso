@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { Box, Button, Layer, Text } from 'grommet';
-import {
-  FormClose,
-  StatusGood,
-  StatusCritical,
-  StatusInfo,
-} from 'grommet-icons';
+import { FormClose } from 'grommet-icons/icons/FormClose';
+import { StatusGood } from 'grommet-icons/icons/StatusGood';
+import { StatusCritical } from 'grommet-icons/icons/StatusCritical';
+import { StatusInfo } from 'grommet-icons/icons/StatusInfo';
 
 const toastTarget = document.getElementById('toast-target');
 const removeNode = () => unmountComponentAtNode(toastTarget);

@@ -19,7 +19,8 @@ import {
   TextInput,
   TextArea,
 } from 'grommet';
-import { Close, Down } from 'grommet-icons';
+import { Close } from 'grommet-icons/icons/Close';
+import { Down } from 'grommet-icons/icons/Down';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 
 import { ChakraProvider } from '@chakra-ui/react';

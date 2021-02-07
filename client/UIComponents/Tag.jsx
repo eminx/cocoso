@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Text } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Close } from 'grommet-icons/icons/Close';
 
 const Tag = ({
   label,
