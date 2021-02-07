@@ -224,7 +224,7 @@ function ResourcesPage({ history, resources, isLoading }) {
 }
 
 export default ResourcesContainer = withTracker((props) => {
-  const resourcesSubscription = Meteor.subscribe('resources');
+  const resourcesSubscription = Meteor.subscribeLite('resources');
   const resources = Resources.find().fetch();
   const isLoading = !resourcesSubscription.ready();
   const currentUser = Meteor.user();

@@ -3,7 +3,7 @@ import EditProcess from './EditProcess';
 
 export default EditProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;
-  const processSubscription = Meteor.subscribe('process', processId);
+  const processSubscription = Meteor.subscribeLite('process', processId);
   const isLoading = !processSubscription.ready();
   const process = Processes ? Processes.findOne({ _id: processId }) : null;
   const currentUser = Meteor.user();

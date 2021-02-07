@@ -3,18 +3,18 @@ import EditPage from './EditPage';
 
 import { parseTitle } from '../../functions';
 
-export default (EditPageContainer = withTracker(props => {
+export default EditPageContainer = withTracker((props) => {
   const pageId = props.match.params.id;
-  const pagesSubscription = Meteor.subscribe('pages');
+  const pagesSubscription = Meteor.subscribeLite('pages');
   const isLoading = !pagesSubscription.ready();
   const pages = Pages ? Pages.find().fetch() : [];
 
   const pageData =
     pages.length > 0
-      ? pages.find(page => parseTitle(page.title) === pageId)
+      ? pages.find((page) => parseTitle(page.title) === pageId)
       : null;
 
-  const pageTitles = pages ? pages.map(page => page.title) : [];
+  const pageTitles = pages ? pages.map((page) => page.title) : [];
 
   const currentUser = Meteor.user();
 
@@ -22,6 +22,6 @@ export default (EditPageContainer = withTracker(props => {
     isLoading,
     pageData,
     pageTitles,
-    currentUser
+    currentUser,
   };
-})(EditPage));
+})(EditPage);

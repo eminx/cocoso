@@ -3,8 +3,8 @@ import EditActivity from './EditActivity';
 
 export default EditActivityContainer = withTracker((props) => {
   const gatheringId = props.match.params.id;
-  const gathering = Meteor.subscribe('gathering', gatheringId);
-  const resourcesSub = Meteor.subscribe('resources');
+  const gathering = Meteor.subscribeLite('gathering', gatheringId);
+  const resourcesSub = Meteor.subscribeLite('resources');
   const resources = Resources ? Resources.find().fetch() : null;
   const gatheringData = Activities
     ? Activities.findOne({ _id: gatheringId })

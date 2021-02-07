@@ -5,10 +5,10 @@ export default NewActivityContainer = withTracker((props) => {
   //here we can pull out the props.subID and change our Meteor subscription based on it
   //this is handled on the publication side of things
 
-  const calendarList = Meteor.subscribe('calendarView', props.id);
+  const calendarList = Meteor.subscribeLite('calendarView', props.id);
   const isLoading = !calendarList.ready();
-  const resourcesSub = Meteor.subscribe('resources');
-  const meSub = Meteor.subscribe('me');
+  const resourcesSub = Meteor.subscribeLite('resources');
+  const meSub = Meteor.subscribeLite('me');
   const resources = Resources ? Resources.find().fetch() : null;
   const currentUser = Meteor.user();
   return {
