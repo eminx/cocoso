@@ -281,7 +281,10 @@ const Header = ({ currentUser, currentHost, title, history }) => {
 
         return (
           <Container fluid style={{ width: '100%' }}>
-            <Row style={{ marginLeft: 0, marginRight: 0 }} align="center">
+            <Row
+              style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
+              align="center"
+            >
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Box>
                   <Link to="/">
