@@ -3,7 +3,7 @@ import Activity from './Activity';
 
 export default ActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;
-  const activity = Meteor.subscribeLite('gathering', activityId);
+  const activity = Meteor.subscribeLite('activity', activityId);
 
   const isLoading = !activity.ready();
   const activityData = Activities
