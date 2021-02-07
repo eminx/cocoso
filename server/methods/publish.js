@@ -47,21 +47,29 @@ Meteor.publishLite('activities', function (onlyPublic = false) {
 });
 
 Meteor.publishLite('processes', function () {
+  const userId = Meteor.userId();
   const host = getHost(this);
   // Processes._ensureIndex({ host, isPublished: true });
+
+  const fields = {
+    title: 1,
+    readingMaterial: 1,
+    imageUrl: 1,
+    meetings: 1,
+    adminUsername: 1,
+    adminId: 1,
+  };
+  if (userId) {
+    (fields.members = 1), (fields.peopleInvited = 1);
+  }
+
   return Processes.find(
     {
       host,
       isPublished: true,
     },
     {
-      fields: {
-        title: 1,
-        readingMaterial: 1,
-        imageUrl: 1,
-        meetings: 1,
-        adminUsername: 1,
-      },
+      fields,
       sort: { creationDate: 1 },
     }
   );
