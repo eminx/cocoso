@@ -2,19 +2,17 @@ import { withTracker } from 'meteor/react-meteor-data';
 import EditActivity from './EditActivity';
 
 export default EditActivityContainer = withTracker((props) => {
-  const gatheringId = props.match.params.id;
-  const gathering = Meteor.subscribeLite('gathering', gatheringId);
+  const activityId = props.match.params.id;
+  const activitySub = Meteor.subscribeLite('activity', activityId);
   const resourcesSub = Meteor.subscribeLite('resources');
   const resources = Resources ? Resources.find().fetch() : null;
-  const gatheringData = Activities
-    ? Activities.findOne({ _id: gatheringId })
-    : null;
+  const activity = Activities ? Activities.findOne({ _id: activityId }) : null;
   const currentUser = Meteor.user();
-  const isLoading = !gathering.ready() || resourcesSub.ready();
+  const isLoading = !activitySub.ready() || !resourcesSub.ready();
 
   return {
     isLoading,
-    gatheringData,
+    activity,
     currentUser,
     resources,
   };

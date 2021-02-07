@@ -75,6 +75,14 @@ Meteor.publishLite('processes', function () {
   );
 });
 
+Meteor.publishLite('activity', function (id) {
+  const host = getHost(this);
+  return Activities.find({
+    host,
+    _id: id,
+  });
+});
+
 Meteor.publishLite('process', function (id) {
   const host = getHost(this);
   return Processes.find({

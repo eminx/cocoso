@@ -52,14 +52,14 @@ class EditActivity extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.gatheringData && this.props.gatheringData) {
+    if (!prevProps.activity && this.props.activity) {
       this.setInitialData();
     }
   }
 
   setInitialData = () => {
-    const { gatheringData } = this.props;
-    if (!gatheringData) {
+    const { activity } = this.props;
+    if (!activity) {
       return;
     }
     const {
@@ -74,7 +74,7 @@ class EditActivity extends PureComponent {
       isPublicActivity,
       isActivitiesDisabled,
       datesAndTimes,
-    } = gatheringData;
+    } = activity;
 
     if (!isPublicActivity) {
       this.setState({
@@ -176,7 +176,7 @@ class EditActivity extends PureComponent {
   };
 
   updateActivity = () => {
-    const { gatheringData } = this.props;
+    const { activity } = this.props;
     const {
       formValues,
       isPublicActivity,
@@ -194,12 +194,12 @@ class EditActivity extends PureComponent {
       longDescription,
     };
 
-    const imageUrl = uploadedImage || gatheringData.imageUrl;
+    const imageUrl = uploadedImage || activity.imageUrl;
 
     Meteor.call(
       'updateActivity',
       values,
-      gatheringData._id,
+      activity._id,
       imageUrl,
       (error, respond) => {
         if (error) {
@@ -221,7 +221,7 @@ class EditActivity extends PureComponent {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteActivity = () => {
-    const activityId = this.props.gatheringData._id;
+    const activityId = this.props.activity._id;
 
     Meteor.call('deleteActivity', activityId, (error, respond) => {
       if (error) {
@@ -259,7 +259,7 @@ class EditActivity extends PureComponent {
   };
 
   render() {
-    const { gatheringData, currentUser, resources } = this.props;
+    const { activity, currentUser, resources } = this.props;
 
     if (!currentUser) {
       return (
@@ -272,7 +272,7 @@ class EditActivity extends PureComponent {
       );
     }
 
-    if (!gatheringData) {
+    if (!activity) {
       return null;
     }
 
@@ -294,7 +294,7 @@ class EditActivity extends PureComponent {
         return <Redirect to="/calendar" />;
       }
       if (isPublicActivity) {
-        return <Redirect to={`/event/${gatheringData._id}`} />;
+        return <Redirect to={`/event/${activity._id}`} />;
       } else {
         return <Redirect to="/calendar" />;
       }
@@ -311,8 +311,8 @@ class EditActivity extends PureComponent {
         heading="Edit Activity"
         leftContent={
           <Box margin={{ bottom: 12 }}>
-            <Link to={`/event/${gatheringData._id}`}>
-              <Button label={gatheringData.title} plain />
+            <Link to={`/event/${activity._id}`}>
+              <Button label={activity.title} plain />
             </Link>
           </Box>
         }
@@ -338,7 +338,7 @@ class EditActivity extends PureComponent {
 
         <Box>
           <ActivityForm
-            imageUrl={gatheringData && gatheringData.imageUrl}
+            imageUrl={activity && activity.imageUrl}
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}
             resources={resources}
@@ -358,7 +358,7 @@ class EditActivity extends PureComponent {
         </Box>
 
         <Box pad="medium" justify="end" pad="small">
-          {gatheringData.authorId === currentUser._id && (
+          {activity.authorId === currentUser._id && (
             <Button onClick={this.showDeleteModal} label="Delete" />
           )}
         </Box>
