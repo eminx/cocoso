@@ -91,7 +91,7 @@ class NewHost extends PureComponent {
     }
 
     return (
-      <Template heading="Create a New Page">
+      <Template heading="Create a New Host">
         <Box pad="medium" background="white">
           <NewHostForm
             formValues={formValues}
