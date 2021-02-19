@@ -39,6 +39,8 @@ import LoginPage from '../account-manager/LoginPage';
 import ForgotPasswordPage from '../account-manager/ForgotPasswordPage';
 import ResetPasswordPage from '../account-manager/ResetPasswordPage';
 
+import NewHost from './hosts/NewHost';
+
 import ScrollToTop from './ScrollToTop';
 import NotFoundPage from './NotFoundPage';
 
@@ -103,6 +105,9 @@ export default function () {
             />
 
             {/* <Route path="*" component={NotFoundPage} /> */}
+
+            {/* Super admin only! */}
+            <Route path="/new-host" component={NewHost} />
           </ScrollToTop>
         </LayoutContainer>
       </Switch>

@@ -58,8 +58,6 @@ class NewPage extends React.Component {
     }
     const { formValues } = this.state;
 
-    console.log(formValues);
-
     Meteor.call('createPage', formValues, (error, result) => {
       if (error) {
         console.log('error', error);
