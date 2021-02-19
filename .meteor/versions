@@ -44,7 +44,6 @@ launch-screen@1.2.0
 livedata@1.0.18
 localstorage@1.2.0
 logging@1.2.0
-maestroqadev:pub-sub-lite@1.0.1
 meteor@1.9.3
 meteor-base@1.4.0
 minifier-css@1.5.3

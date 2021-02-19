@@ -446,11 +446,11 @@ const FooterInfo = ({ currentHost }) =>
   );
 
 export default withTracker((props) => {
-  const hostSub = Meteor.subscribeLite('currentHost');
+  const hostSub = Meteor.subscribe('currentHost');
   const currentHost = Hosts ? Hosts.findOne() : null;
   const hostLoading = !hostSub.ready();
 
-  const meSub = Meteor.subscribeLite('me');
+  const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
   const userLoading = !meSub.ready();
 

@@ -253,7 +253,7 @@ function Members({ history, members, isLoading }) {
 }
 
 export default MembersContainer = withTracker((props) => {
-  const membersSubscription = Meteor.subscribeLite('members');
+  const membersSubscription = Meteor.subscribe('members');
   const currentHost = Hosts.findOne();
   const isLoading = !membersSubscription.ready();
   const currentUser = Meteor.user();

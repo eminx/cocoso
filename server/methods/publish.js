@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost, isContributorOrAdmin } from './shared';
 
-Meteor.publishLite('attendingEvents', function () {
+Meteor.publish('attendingEvents', function () {
   return Meteor.users.find(this.userId, {
     fields: {
       attending: 1,
@@ -11,7 +11,7 @@ Meteor.publishLite('attendingEvents', function () {
   });
 });
 
-Meteor.publishLite('activities', function (onlyPublic = false) {
+Meteor.publish('activities', function (onlyPublic = false) {
   const host = getHost(this);
   const fields = {
     title: 1,
@@ -46,7 +46,7 @@ Meteor.publishLite('activities', function (onlyPublic = false) {
   }
 });
 
-Meteor.publishLite('processes', function () {
+Meteor.publish('processes', function () {
   const userId = Meteor.userId();
   const host = getHost(this);
   // Processes._ensureIndex({ host, isPublished: true });
@@ -75,7 +75,7 @@ Meteor.publishLite('processes', function () {
   );
 });
 
-Meteor.publishLite('activity', function (id) {
+Meteor.publish('activity', function (id) {
   const host = getHost(this);
   return Activities.find({
     host,
@@ -83,7 +83,7 @@ Meteor.publishLite('activity', function (id) {
   });
 });
 
-Meteor.publishLite('process', function (id) {
+Meteor.publish('process', function (id) {
   const host = getHost(this);
   return Processes.find({
     host,
@@ -91,23 +91,23 @@ Meteor.publishLite('process', function (id) {
   });
 });
 
-Meteor.publishLite('pages', function () {
+Meteor.publish('pages', function () {
   const host = getHost(this);
   return Pages.find({ host });
 });
 
-Meteor.publishLite('page', function (title) {
+Meteor.publish('page', function (title) {
   const host = getHost(this);
   return Pages.find({ host, title });
 });
 
-Meteor.publishLite('work', function (id) {
+Meteor.publish('work', function (id) {
   return Works.find({
     _id: id,
   });
 });
 
-Meteor.publishLite('myworks', function () {
+Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
   const host = getHost(this);
   // Works._ensureIndex({ host, authorId: currentUserId });
@@ -117,7 +117,7 @@ Meteor.publishLite('myworks', function () {
   });
 });
 
-Meteor.publishLite('chat', function (contextId) {
+Meteor.publish('chat', function (contextId) {
   const host = getHost(this);
   const user = Meteor.user();
   if (user) {
@@ -127,29 +127,29 @@ Meteor.publishLite('chat', function (contextId) {
   }
 });
 
-Meteor.publishLite('resources', function () {
+Meteor.publish('resources', function () {
   const host = getHost(this);
   // Resources._ensureIndex({ host });
   return Resources.find({ host });
 });
 
-Meteor.publishLite('documents', function () {
+Meteor.publish('documents', function () {
   return Documents.find();
 });
 
-Meteor.publishLite('me', function () {
+Meteor.publish('me', function () {
   const userId = Meteor.userId();
   if (userId) {
     return Meteor.users.find(userId);
   }
 });
 
-Meteor.publishLite('currentHost', function () {
+Meteor.publish('currentHost', function () {
   const host = getHost(this);
   return Hosts.find({ host }, { fields: { settings: true, logo: true } });
 });
 
-Meteor.publishLite('members', function () {
+Meteor.publish('members', function () {
   const user = Meteor.user();
   const host = getHost(this);
   const currentHost = Hosts.findOne({ host });
@@ -159,7 +159,7 @@ Meteor.publishLite('members', function () {
   }
 });
 
-Meteor.publishLite('membersForPublic', function () {
+Meteor.publish('membersForPublic', function () {
   const host = getHost(this);
   // Meteor.users._ensureIndex({ 'memberships.host': host });
   return Meteor.users.find(
@@ -176,7 +176,7 @@ Meteor.publishLite('membersForPublic', function () {
   );
 });
 
-Meteor.publishLite('memberAtHost', function (username) {
+Meteor.publish('memberAtHost', function (username) {
   const host = getHost(this);
   return Meteor.users.find({
     username,
@@ -184,7 +184,7 @@ Meteor.publishLite('memberAtHost', function (username) {
   });
 });
 
-Meteor.publishLite('memberWorksAtHost', function (username) {
+Meteor.publish('memberWorksAtHost', function (username) {
   const host = getHost(this);
   return Works.find({
     authorUsername: username,

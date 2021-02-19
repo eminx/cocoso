@@ -5,7 +5,7 @@ import { parseTitle } from '../../functions';
 
 export default EditPageContainer = withTracker((props) => {
   const pageId = props.match.params.id;
-  const pagesSubscription = Meteor.subscribeLite('pages');
+  const pagesSubscription = Meteor.subscribe('pages');
   const isLoading = !pagesSubscription.ready();
   const pages = Pages ? Pages.find().fetch() : [];
 

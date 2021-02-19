@@ -5,12 +5,12 @@ export default ActivitiesContainer = withTracker((props) => {
   // here we can pull out the props.subID and change our Meteor subscription based on it
   // this is handled on the publication side of things
 
-  // const handle = Meteor.subscribeLite('myDataSub', props.subID);
+  // const handle = Meteor.subscribe('myDataSub', props.subID);
 
-  const processesSubscription = Meteor.subscribeLite('processes');
+  const processesSubscription = Meteor.subscribe('processes');
   const processesList = Processes ? Processes.find().fetch() : null;
 
-  const activities = Meteor.subscribeLite('activities', true);
+  const activities = Meteor.subscribe('activities', true);
   const isLoading = !activities.ready();
   const activitiesList = Activities ? Activities.find().fetch() : null;
   const currentUser = Meteor.user();

@@ -3,7 +3,7 @@ import Activity from './Activity';
 
 export default ActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;
-  const activity = Meteor.subscribeLite('activity', activityId);
+  const activity = Meteor.subscribe('activity', activityId);
 
   const isLoading = !activity.ready();
   const activityData = Activities
@@ -11,7 +11,7 @@ export default ActivityContainer = withTracker((props) => {
     : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribeLite('chat', activityId);
+  const chatSubscription = Meteor.subscribe('chat', activityId);
   const chatData = Chats ? Chats.findOne({ contextId: activityId }) : null;
 
   return {
