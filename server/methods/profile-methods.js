@@ -74,7 +74,7 @@ Meteor.methods({
         $addToSet: {
           memberships: {
             host,
-            hostId: host._id,
+            hostId: currentHost._id,
             role: 'participant',
             date: new Date(),
           },
