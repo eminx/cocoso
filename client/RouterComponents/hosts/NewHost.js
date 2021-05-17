@@ -51,18 +51,12 @@ class NewHost extends PureComponent {
     });
 
     const values = {
-      host: formValues.host,
-      settings: {
-        name: formValues.name,
-        email: formValues.email,
-        address: formValues.address,
-        city: formValues.city,
-        country: formValues.country,
-      },
+      ...formValues,
+      aboutTitle: `About ${formValues.name}`,
     };
 
     try {
-      await call('createNewHost', values, formValues.about);
+      await call('createNewHost', values);
       successCreation();
     } catch (error) {
       console.log(error);

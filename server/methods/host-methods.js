@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { defaultMenu, defaultMainColor } from '../../lib/constants';
 
 Meteor.methods({
-  async createNewHost(values, aboutHost) {
+  async createNewHost(values) {
     const currentUser = Meteor.user();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
@@ -22,7 +22,14 @@ Meteor.methods({
       parsedValues.settings.menu = defaultMenu;
 
       const hostId = await Hosts.insert({
-        ...values,
+        host: values.host,
+        email: values.email,
+        settings: {
+          name: values.name,
+          address: values.address,
+          city: values.city,
+          country: values.country,
+        },
         members: [
           {
             username: currentUser.username,
@@ -49,13 +56,11 @@ Meteor.methods({
         host: values.host,
         authorId: currentUser._id,
         authorName: currentUser.username,
-        title: values.name,
-        longDescription: aboutHost,
+        title: values.aboutTitle,
+        longDescription: values.about,
         isPublished: true,
         creationDate: new Date(),
       });
-
-      console.log(Hosts.findOne(hostId));
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
