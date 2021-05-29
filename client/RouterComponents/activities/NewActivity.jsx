@@ -216,7 +216,7 @@ class NewActivity extends React.Component {
       ? 'Creating your activity...'
       : 'Confirm and Create';
     const { title } = formValues;
-    const isFormValid = formValues && title.length > 3;
+    const isFormValid = formValues && formValues.resource && title.length > 3;
 
     return (
       <Template heading="Create a New Activity">

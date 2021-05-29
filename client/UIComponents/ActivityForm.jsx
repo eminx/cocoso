@@ -120,6 +120,8 @@ class ActivityForm extends PureComponent {
   };
 
   handleDateChange = (dateOrRange, recurrenceIndex) => {
+    console.log(dateOrRange, recurrenceIndex);
+
     const { datesAndTimes, setDatesAndTimes } = this.props;
 
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
@@ -184,11 +186,6 @@ class ActivityForm extends PureComponent {
 
     return (
       <Box pad="medium" background="white">
-        <Heading level={4}>Occurences</Heading>
-
-        {this.renderDateTime()}
-
-        <Heading level={4}>Details</Heading>
         <Form
           onSubmit={onSubmit}
           value={formValues}
@@ -196,6 +193,22 @@ class ActivityForm extends PureComponent {
           // errors={{ name: ['message', '<Box>...</Box>'] }}
           validate="blur"
         >
+          <Heading level={4}>Resource</Heading>
+          <Field name="resource" required>
+            <Select
+              size="small"
+              plain={false}
+              placeholder="Select resource to book"
+              name="resource"
+              options={resourceOptions}
+            />
+          </Field>
+
+          <Heading level={4}>Occurences</Heading>
+
+          {this.renderDateTime()}
+
+          <Heading level={4}>Details</Heading>
           <Field
             label="Title"
             name="title"
@@ -249,36 +262,6 @@ class ActivityForm extends PureComponent {
               />
             </Field>
           )}
-
-          {/* {isPublicActivity && (
-            <Field label="Practical Info" name="practicalInfo">
-              <TextArea
-                plain={false}
-                name="practicalInfo"
-                placeholder="17th Street, Berlin..."
-              />
-            </Field>
-          )}
-
-          {isPublicActivity && (
-            <Field label="Internal Info" name="internalInfo">
-              <TextArea
-                plain={false}
-                name="internalInfo"
-                placeholder="17th Street, Berlin..."
-              />
-            </Field>
-          )}*/}
-
-          <Field label="Resource to book" name="resource">
-            <Select
-              size="small"
-              plain={false}
-              placeholder="Select resource to book"
-              name="resource"
-              options={resourceOptions}
-            />
-          </Field>
 
           {isPublicActivity && (
             <Field

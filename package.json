@@ -41,7 +41,7 @@
     "babel-runtime": "^6.26.0",
     "bcrypt": "^5.0.0",
     "framer-motion": "^3.3.0",
-    "grommet": "^2.15.2",
+    "grommet": "^2.17.2",
     "grommet-icons": "^4.5.0",
     "indexof": "0.0.1",
     "meteor-node-stubs": "^0.4.1",

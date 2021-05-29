@@ -107,6 +107,7 @@ const TimePicker = ({ onChange, value, ...otherProps }) => (
     ]}
     value={value}
     onChange={(event) => onChange(event.target.value)}
+    dropHeight="small"
     {...otherProps}
   />
 );
