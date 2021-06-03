@@ -20,7 +20,7 @@ const Template = ({
         <Col lg={3} style={colStyle}>
           {leftContent}
         </Col>
-        <Col lg={6} style={colStyle}>
+        <Col lg={6} style={{ ...colStyle, paddingLeft: 0, paddingRight: 0 }}>
           {heading && (
             <Box
               pad={{ left: titleCentered ? 'none' : 'medium' }}

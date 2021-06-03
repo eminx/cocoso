@@ -217,10 +217,6 @@ function LayoutPage({
                           <TextInput type="email" name="_replyto" />
                         </FormField>
 
-                        {/* <FormField label="Subject (Bug/Suggestion/Complain)">
-                          <TextInput type="text" name="subject" />
-                        </FormField> */}
-
                         <FormField label="Subject">
                           <Select
                             type="text"
@@ -280,7 +276,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
         return (
-          <Container fluid style={{ width: '100%' }}>
+          <Container fluid style={{ width: '100%', padding: 0 }}>
             <Row
               style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
               align="center"
