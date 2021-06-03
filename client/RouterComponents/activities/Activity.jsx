@@ -390,13 +390,8 @@ class Activity extends React.Component {
   };
 
   render() {
-    const {
-      activityData,
-      isLoading,
-      currentUser,
-      chatData,
-      history,
-    } = this.props;
+    const { activityData, isLoading, currentUser, chatData, history } =
+      this.props;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -464,34 +459,13 @@ class Activity extends React.Component {
               {renderHTML(activityData.longDescription)}
             </div>
           </Box>
-
-          {/* {activityData.practicalInfo &&
-              activityData.practicalInfo.length > 0 && (
-                <Box>
-                  <Heading level={4}>Practical information:</Heading>
-                  <Text size="small">{activityData.practicalInfo}</Text>
-                </Box>
-              )}
-
-            {currentUser &&
-              canCreateContent &&
-              activityData &&
-              activityData.internalInfo && (
-                <Box>
-                  <Heading level={4}>Internal information for members:</Heading>
-                  <Text size="small">{activityData.internalInfo}</Text>
-                </Box>
-              )} */}
         </Box>
 
         <Box pad="medium" margin={{ bottom: 'small' }}>
           <Heading level={5} margin={{ bottom: 'small' }}>
             Location
           </Heading>
-          <Text size="small">
-            {/* {activityData.room && activityData.resource + ', '} <br /> */}
-            {activityData.resource}
-          </Text>
+          <Text size="small">{activityData.resource}</Text>
           <Text size="small">{activityData.address}</Text>
         </Box>
 

@@ -34,6 +34,7 @@ const emptyDateAndTime = {
   endTime: '',
   attendees: [],
   capacity: defaultCapacity,
+  isRange: false,
 };
 
 class NewActivity extends React.Component {

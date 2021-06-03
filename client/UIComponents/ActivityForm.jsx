@@ -89,6 +89,7 @@ class ActivityForm extends PureComponent {
             handleCapacityChange={(value) =>
               this.handleCapacityChange(value, index)
             }
+            handleRangeSwitch={(event) => this.handleRangeSwitch(event, index)}
             noAnimate={index === 0}
           />
         ))}
@@ -121,21 +122,23 @@ class ActivityForm extends PureComponent {
 
   handleDateChange = (dateOrRange, recurrenceIndex) => {
     console.log(dateOrRange, recurrenceIndex);
-
     const { datesAndTimes, setDatesAndTimes } = this.props;
 
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex === index) {
-        if (typeof dateOrRange === 'string') {
-          if (dateOrRange === item.startDate) {
-            item.startDate = item.endDate;
-          } else if (dateOrRange === item.endDate) {
-            item.endDate = item.startDate;
-          }
-        } else if (typeof dateOrRange === 'object') {
-          item.startDate = dateOrRange[0][0].substring(0, 10);
-          item.endDate = dateOrRange[0][1].substring(0, 10);
-        }
+      if (recurrenceIndex !== index) {
+        return;
+      }
+      const recurrence = datesAndTimes[recurrenceIndex];
+      if (recurrence.isRange) {
+        console.log('is range', dateOrRange, typeof theRange[1]);
+        const theRange = dateOrRange[0];
+        item.startDate = theRange[0] && theRange[0].substring(0, 10);
+        item.endDate = theRange[1] && theRange[1].substring(0, 10);
+      } else {
+        console.log('is date', dateOrRange);
+        item.startDate = dateOrRange.substring(0, 10);
+        item.endDate = dateOrRange.substring(0, 10);
+        item.endDate = item.startDate;
       }
       return item;
     });
@@ -143,15 +146,28 @@ class ActivityForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  handleCapacityChange = (event, index) => {
+  handleCapacityChange = (event, recurrenceIndex) => {
     const value = Number(event.target.value);
     if (typeof value !== 'number') {
       return;
     }
     const { datesAndTimes, setDatesAndTimes } = this.props;
-    const newDatesAndTimes = datesAndTimes.map((item, i) => {
-      if (index === i) {
+    const newDatesAndTimes = datesAndTimes.map((item, index) => {
+      if (recurrenceIndex === index) {
         item.capacity = value;
+      }
+      return item;
+    });
+
+    setDatesAndTimes(newDatesAndTimes);
+  };
+
+  handleRangeSwitch = (event, recurrenceIndex) => {
+    const value = event.target.checked;
+    const { datesAndTimes, setDatesAndTimes } = this.props;
+    const newDatesAndTimes = datesAndTimes.map((item, index) => {
+      if (recurrenceIndex === index) {
+        item.isRange = value;
       }
       return item;
     });

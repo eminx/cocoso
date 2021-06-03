@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Calendar, MaskedInput, TextInput } from 'grommet';
+import { Box, Calendar, CheckBox, MaskedInput, Text, TextInput } from 'grommet';
 import { FormTrash } from 'grommet-icons/icons/FormTrash';
 const segmentPad = {
   top: 'xxsmall',
@@ -14,16 +14,20 @@ const DatesAndTimes = ({
   handleStartTimeChange,
   handleFinishTimeChange,
   handleCapacityChange,
+  handleRangeSwitch,
   removeRecurrence,
   isNotDeletable,
   isPublicActivity,
   noAnimate,
 }) => {
-  const range = [recurrence.startDate, recurrence.endDate];
-
   if (!recurrence) {
     return null;
   }
+
+  console.log(recurrence);
+
+  const isRange = recurrence.isRange;
+  const range = isRange && [recurrence.startDate, recurrence.endDate];
 
   return (
     <Box
@@ -45,16 +49,31 @@ const DatesAndTimes = ({
       )}
       <Box direction="row" justify="around" wrap>
         <Box pad="xsmall">
-          <Calendar
-            size="small"
-            dates={[range]}
-            onSelect={handleDateChange}
-            firstDayOfWeek={1}
-            range
+          <CheckBox
+            checked={isRange}
+            label={<Text>Multiple Days?</Text>}
+            onChange={handleRangeSwitch}
+            pad={{ vertical: 'small' }}
           />
+          {isRange ? (
+            <Calendar
+              size="small"
+              dates={[range]}
+              onSelect={handleDateChange}
+              firstDayOfWeek={1}
+              range="array"
+            />
+          ) : (
+            <Calendar
+              size="small"
+              date={recurrence.startDate}
+              onSelect={handleDateChange}
+              firstDayOfWeek={1}
+            />
+          )}
         </Box>
         <Box pad="xsmall" justify="around" flex={{ grow: 0 }} basis="180px">
-          <Box pad={segmentPad}>
+          <Box pad={segmentPad} margin={{ top: 'medium' }}>
             <Text size="small">Start time</Text>
             <TimePicker
               value={recurrence.startTime}
