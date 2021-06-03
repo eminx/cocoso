@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, CheckBox, Text } from 'grommet';
+import { Anchor, Box, Button, CheckBox, Text } from 'grommet';
+import { FormPrevious } from 'grommet-icons';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
@@ -310,11 +311,15 @@ class EditActivity extends PureComponent {
       <Template
         heading="Edit Activity"
         leftContent={
-          <Box margin={{ bottom: 12 }}>
-            <Link to={`/event/${activity._id}`}>
-              <Button label={activity.title} plain />
-            </Link>
-          </Box>
+          <Link to={`/event/${activity._id}`}>
+            <Box margin={{ bottom: 12 }} pad="small">
+              <Anchor
+                icon={<FormPrevious />}
+                label={activity.title}
+                size="medium"
+              />
+            </Box>
+          </Link>
         }
       >
         <Box margin={{ bottom: 'medium' }}>

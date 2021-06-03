@@ -63,7 +63,7 @@ const ProcessForm = ({
 
         <Field label="Description">
           <ReactQuill
-            value={formValues.description}
+            value={formValues.description || ''}
             modules={editorModules}
             formats={editorFormats}
             onChange={onQuillChange}

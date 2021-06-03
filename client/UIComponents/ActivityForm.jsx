@@ -254,7 +254,7 @@ class ActivityForm extends PureComponent {
               modules={editorModules}
               formats={editorFormats}
               onChange={onQuillChange}
-              value={longDescription}
+              value={longDescription || ''}
             />
           </Field>
 

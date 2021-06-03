@@ -8,11 +8,17 @@ import {
   TextInput,
 } from 'grommet';
 import { FormTrash } from 'grommet-icons/icons/FormTrash';
-const segmentPad = {
-  top: 'xxsmall',
-  left: 'xxsmall',
-  right: 'xxsmall',
-  bottom: 'small',
+
+const dateInputProps = {
+  format: 'yyyy-mm-dd',
+  daysOfWeek: true,
+  calendarProps: {
+    firstDayOfWeek: 1,
+    size: 'small',
+  },
+  style: {
+    background: 'white',
+  },
 };
 
 const DatesAndTimes = ({
@@ -35,7 +41,7 @@ const DatesAndTimes = ({
 
   return (
     <Box
-      pad="xsmall"
+      pad="small"
       margin={{ bottom: 'small' }}
       animation={noAnimate ? null : 'slideUp'}
       background="light-1"
@@ -65,7 +71,7 @@ const DatesAndTimes = ({
           <Box>
             <Text size="small">{isRange ? 'Start Day' : 'Day'}</Text>
             <DateInput
-              format="yyyy-mm-dd"
+              {...dateInputProps}
               value={recurrence.startDate}
               onChange={({ value }) => {
                 handleDateChange(value);
@@ -77,7 +83,7 @@ const DatesAndTimes = ({
             <Box margin={{ top: 'medium' }}>
               <Text size="small">End Day</Text>
               <DateInput
-                format="yyyy-mm-dd"
+                {...dateInputProps}
                 value={recurrence.endDate}
                 onChange={({ value }) => {
                   handleDateChange(value, 'isEndDate');
@@ -98,6 +104,9 @@ const DatesAndTimes = ({
             <TimePicker
               value={recurrence.startTime}
               onChange={handleStartTimeChange}
+              style={{
+                background: 'white',
+              }}
             />
           </Box>
           <Box margin={{ top: 'medium' }}>
@@ -105,6 +114,9 @@ const DatesAndTimes = ({
             <TimePicker
               value={recurrence.endTime}
               onChange={handleFinishTimeChange}
+              style={{
+                background: 'white',
+              }}
             />
           </Box>
           {isPublicActivity && (

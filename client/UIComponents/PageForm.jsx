@@ -13,7 +13,7 @@ const PageForm = ({ formValues, onFormChange, onQuillChange, onSubmit }) => {
 
         <FormField label="Description" margin={{ bottom: 'medium' }}>
           <ReactQuill
-            value={formValues.longDescription}
+            value={formValues.longDescription || ''}
             modules={editorModules}
             formats={editorFormats}
             onChange={onQuillChange}
