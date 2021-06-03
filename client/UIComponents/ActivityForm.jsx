@@ -79,7 +79,9 @@ class ActivityForm extends PureComponent {
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
-            handleDateChange={(date) => this.handleDateChange(date, index)}
+            handleDateChange={(date, isEndDate) =>
+              this.handleDateChange(date, isEndDate, index)
+            }
             handleStartTimeChange={(time) =>
               this.handleTimeChange(time, index, 'startTime')
             }
@@ -120,25 +122,22 @@ class ActivityForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  handleDateChange = (dateOrRange, recurrenceIndex) => {
-    console.log(dateOrRange, recurrenceIndex);
+  handleDateChange = (isoDate, isEndDate, recurrenceIndex) => {
+    const date = isoDate.substring(0, 10);
     const { datesAndTimes, setDatesAndTimes } = this.props;
-
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex !== index) {
-        return;
-      }
-      const recurrence = datesAndTimes[recurrenceIndex];
-      if (recurrence.isRange) {
-        console.log('is range', dateOrRange, typeof theRange[1]);
-        const theRange = dateOrRange[0];
-        item.startDate = theRange[0] && theRange[0].substring(0, 10);
-        item.endDate = theRange[1] && theRange[1].substring(0, 10);
-      } else {
-        console.log('is date', dateOrRange);
-        item.startDate = dateOrRange.substring(0, 10);
-        item.endDate = dateOrRange.substring(0, 10);
-        item.endDate = item.startDate;
+      if (recurrenceIndex === index) {
+        const recurrence = datesAndTimes[recurrenceIndex];
+        if (recurrence.isRange) {
+          if (isEndDate) {
+            item.endDate = date;
+          } else {
+            item.startDate = date;
+          }
+        } else {
+          item.startDate = date;
+          item.endDate = date;
+        }
       }
       return item;
     });

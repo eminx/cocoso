@@ -1,5 +1,12 @@
 import React from 'react';
-import { Box, Calendar, CheckBox, MaskedInput, Text, TextInput } from 'grommet';
+import {
+  Box,
+  CheckBox,
+  DateInput,
+  MaskedInput,
+  Text,
+  TextInput,
+} from 'grommet';
 import { FormTrash } from 'grommet-icons/icons/FormTrash';
 const segmentPad = {
   top: 'xxsmall',
@@ -24,16 +31,14 @@ const DatesAndTimes = ({
     return null;
   }
 
-  console.log(recurrence);
-
   const isRange = recurrence.isRange;
-  const range = isRange && [recurrence.startDate, recurrence.endDate];
 
   return (
     <Box
       pad="xsmall"
       margin={{ bottom: 'small' }}
       animation={noAnimate ? null : 'slideUp'}
+      background="light-1"
     >
       {!isNotDeletable && (
         <Box>
@@ -47,40 +52,55 @@ const DatesAndTimes = ({
           </Box>
         </Box>
       )}
+      <Box direction="row" justify="center">
+        <CheckBox
+          checked={isRange}
+          label={<Text>Multiple Days?</Text>}
+          onChange={handleRangeSwitch}
+          pad={{ vertical: 'small' }}
+        />
+      </Box>
       <Box direction="row" justify="around" wrap>
-        <Box pad="xsmall">
-          <CheckBox
-            checked={isRange}
-            label={<Text>Multiple Days?</Text>}
-            onChange={handleRangeSwitch}
-            pad={{ vertical: 'small' }}
-          />
-          {isRange ? (
-            <Calendar
-              size="small"
-              dates={[range]}
-              onSelect={handleDateChange}
-              firstDayOfWeek={1}
-              range="array"
+        <Box pad="xsmall" margin={{ bottom: 'medium' }}>
+          <Box>
+            <Text size="small">{isRange ? 'Start Day' : 'Day'}</Text>
+            <DateInput
+              format="yyyy-mm-dd"
+              value={recurrence.startDate}
+              onChange={({ value }) => {
+                handleDateChange(value);
+              }}
             />
-          ) : (
-            <Calendar
-              size="small"
-              date={recurrence.startDate}
-              onSelect={handleDateChange}
-              firstDayOfWeek={1}
-            />
+          </Box>
+
+          {isRange && (
+            <Box margin={{ top: 'medium' }}>
+              <Text size="small">End Day</Text>
+              <DateInput
+                format="yyyy-mm-dd"
+                value={recurrence.endDate}
+                onChange={({ value }) => {
+                  handleDateChange(value, 'isEndDate');
+                }}
+              />
+            </Box>
           )}
         </Box>
-        <Box pad="xsmall" justify="around" flex={{ grow: 0 }} basis="180px">
-          <Box pad={segmentPad} margin={{ top: 'medium' }}>
+        <Box
+          pad="xsmall"
+          margin={{ bottom: 'medium' }}
+          justify="around"
+          flex={{ grow: 0 }}
+          basis="180px"
+        >
+          <Box>
             <Text size="small">Start time</Text>
             <TimePicker
               value={recurrence.startTime}
               onChange={handleStartTimeChange}
             />
           </Box>
-          <Box pad={segmentPad}>
+          <Box margin={{ top: 'medium' }}>
             <Text size="small">Finish time</Text>
             <TimePicker
               value={recurrence.endTime}
