@@ -22,13 +22,11 @@ const sideNote =
   "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping activities.";
 
 const formModel = {
+  resource: '',
   title: '',
   subTitle: '',
   place: '',
   address: '',
-  practicalInfo: '',
-  internalInfo: '',
-  resource: '',
 };
 
 class EditActivity extends PureComponent {

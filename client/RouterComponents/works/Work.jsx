@@ -134,6 +134,7 @@ const Work = ({ history, match }) => {
                   <Heading
                     level={4}
                     textAlign="center"
+                    alignSelf="center"
                     style={{ marginTop: 0 }}
                   >
                     {work.additionalInfo}
@@ -149,14 +150,15 @@ const Work = ({ history, match }) => {
                 </Hidden>
               </Box>
             </Box>
-
-            <Button
-              onClick={handleOpenModal}
-              alignSelf="center"
-              secondary
-              size="small"
-              label={`Contact ${work.authorUsername}`}
-            />
+            <Box pad="medium">
+              <Button
+                onClick={handleOpenModal}
+                alignSelf="center"
+                secondary
+                size="small"
+                label={`Contact ${work.authorUsername}`}
+              />
+            </Box>
           </Box>
         }
       >
