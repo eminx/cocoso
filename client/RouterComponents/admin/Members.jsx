@@ -242,7 +242,7 @@ function Members({ history, members, isLoading }) {
                 size="xsmall"
                 style={{ fontSize: 10, color: '#aaa' }}
               >
-                joined {moment(member.createdAt).format('Do MMM YYYY')} <br />
+                joined {moment(member.date).format('Do MMM YYYY')} <br />
               </Text>
             </div>
           )}
