@@ -49,6 +49,7 @@ class NewActivity extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     isPublicActivity: false,
+    isExclusiveActivity: true,
     isRegistrationDisabled: false,
     isCreating: false,
   };
@@ -241,7 +242,7 @@ class NewActivity extends React.Component {
           <Box flex={{ basis: 180 }} pad="small">
             <CheckBox
               checked={isPublicActivity}
-              label={<Text>public event?</Text>}
+              label={<Text>Public Event?</Text>}
               onChange={this.handlePublicActivitySwitch}
             />
           </Box>
@@ -249,7 +250,7 @@ class NewActivity extends React.Component {
             <CheckBox
               checked={isPublicActivity || isExclusiveActivity}
               disabled={isPublicActivity}
-              label={<Text>Exclusive Activity (others cannot book)</Text>}
+              label={<Text>Exclusive Activity (Others cannot book)</Text>}
               onChange={this.handleExclusiveSwitch}
             />
           </Box>

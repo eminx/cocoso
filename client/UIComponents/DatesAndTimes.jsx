@@ -81,7 +81,7 @@ const DatesAndTimes = ({
 
           {isRange && (
             <Box margin={{ top: 'medium' }}>
-              <Text size="small">End Day</Text>
+              <Text size="small">Finish Day</Text>
               <DateInput
                 {...dateInputProps}
                 value={recurrence.endDate}
@@ -120,12 +120,15 @@ const DatesAndTimes = ({
             />
           </Box>
           {isPublicActivity && (
-            <Box pad="xxsmall">
+            <Box margin={{ top: 'medium' }} pad="xxsmall">
               <Text size="small">Capacity</Text>
               <TextInput
                 placeholder="Capacity"
                 value={recurrence.capacity}
                 onChange={handleCapacityChange}
+                style={{
+                  background: 'white',
+                }}
               />
             </Box>
           )}
