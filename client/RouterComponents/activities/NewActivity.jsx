@@ -49,7 +49,7 @@ class NewActivity extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     isPublicActivity: false,
-    isActivitiesDisabled: false,
+    isRegistrationDisabled: false,
     isCreating: false,
   };
 
@@ -131,14 +131,14 @@ class NewActivity extends React.Component {
       longDescription,
       datesAndTimes,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       uploadedImage,
     } = this.state;
 
     const values = {
       ...formValues,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       datesAndTimes,
       longDescription,
     };
@@ -165,13 +165,28 @@ class NewActivity extends React.Component {
     const value = event.target.checked;
     this.setState({
       isPublicActivity: value,
+      isExclusiveActivity: true,
     });
   };
 
-  handleDisableActivitiesSwitch = (event) => {
+  handleExclusiveSwitch = (event) => {
+    const value = event.target.checked;
+    const { isPublicActivity } = this.state;
+    if (isPublicActivity) {
+      this.setState({
+        isExclusiveActivity: true,
+      });
+      return;
+    }
+    this.setState({
+      isExclusiveActivity: value,
+    });
+  };
+
+  handleRegistrationSwitch = (event) => {
     const value = event.target.checked;
     this.setState({
-      isActivitiesDisabled: value,
+      isRegistrationDisabled: value,
     });
   };
 
@@ -204,7 +219,8 @@ class NewActivity extends React.Component {
       newActivityId,
       uploadableImageLocal,
       isPublicActivity,
-      isActivitiesDisabled,
+      isExclusiveActivity,
+      isRegistrationDisabled,
       datesAndTimes,
     } = this.state;
 
@@ -229,12 +245,20 @@ class NewActivity extends React.Component {
               onChange={this.handlePublicActivitySwitch}
             />
           </Box>
+          <Box flex={{ basis: 180 }} pad="small">
+            <CheckBox
+              checked={isPublicActivity || isExclusiveActivity}
+              disabled={isPublicActivity}
+              label={<Text>Exclusive Activity (others cannot book)</Text>}
+              onChange={this.handleExclusiveSwitch}
+            />
+          </Box>
           {isPublicActivity && (
             <Box flex={{ basis: 180 }} pad="small">
               <CheckBox
-                checked={isActivitiesDisabled}
+                checked={isRegistrationDisabled}
                 label={<Text>RSVP disabled?</Text>}
-                onChange={this.handleDisableActivitiesSwitch}
+                onChange={this.handleRegistrationSwitch}
               />
             </Box>
           )}
