@@ -5,6 +5,7 @@ import {
   Anchor,
   Box,
   Button,
+  CheckBox,
   Form,
   FormField,
   Heading,
@@ -20,17 +21,27 @@ import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
+import Tag from '../../UIComponents/Tag';
 import { message, Alert } from '../../UIComponents/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 
+const rModel = (r) => ({
+  label: r.label,
+  value: r._id,
+});
+
 function ResourcesPage({ history, resources, isLoading }) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const { currentUser, currentHost, canCreateContent, role } = useContext(
-    StateContext
+  const [isCombo, setIsCombo] = useState(false);
+  const [resourcesForCombo, setResourcesForCombo] = useState(
+    resources.map(rModel)
   );
+  const [comboInput, setComboInput] = useState('');
+  const { currentUser, currentHost, canCreateContent, role } =
+    useContext(StateContext);
 
   if (isLoading) {
     return <Loader />;
@@ -108,6 +119,26 @@ function ResourcesPage({ history, resources, isLoading }) {
     ],
   }));
 
+  const handleComboResourceSelection = ({ event, suggestion }) => {
+    setComboInput('');
+    setResourcesForCombo([...resourcesForCombo, suggestion]);
+  };
+
+  const removeResourceForCombo = (res) => {
+    const newResources = resourcesForCombo.filter(
+      (resource) => res.label !== resource.label
+    );
+    setResourcesForCombo(newResources);
+  };
+
+  const suggestions = resources.filter((res, index) => {
+    return (
+      !resourcesForCombo.some((reso) => reso.label === res.label) &&
+      (comboInput === '' ||
+        res.label.toLowerCase().includes(comboInput.toLowerCase()))
+    );
+  });
+
   return (
     <Template
       heading="Resources"
@@ -175,31 +206,82 @@ function ResourcesPage({ history, resources, isLoading }) {
             onEsc={() => setShowModal(false)}
             onClickOutside={() => setShowModal(false)}
           >
+            <Heading level={3} margin={{ top: 'medium', left: 'medium' }}>
+              New Resource
+            </Heading>
+
             <Box width="medium" pad="medium">
               <Form
                 value={modalContent}
                 onChange={(nextValue) => setModalContent(nextValue)}
                 onSubmit={handleSubmit}
               >
-                <FormField
-                  label="Name"
-                  margin={{ bottom: 'medium', top: 'medium' }}
-                >
+                <FormField margin={{ bottom: 'medium' }}>
+                  <CheckBox
+                    checked={isCombo}
+                    label="Combo Resource"
+                    onChange={(event) => setIsCombo(event.target.checked)}
+                  />
+                </FormField>
+                {isCombo && (
+                  <Box>
+                    <Text size="small">
+                      You can select multiple resource to create a combo
+                      resource
+                    </Text>
+                    <Box
+                      direction="row"
+                      gap="small"
+                      justify="center"
+                      pad="small"
+                      wrap
+                    >
+                      {resourcesForCombo.map((res) => (
+                        <Tag
+                          key={res}
+                          label={res.label.toUpperCase()}
+                          margin={{ bottom: 'small' }}
+                          removable
+                          onRemove={() => removeResourceForCombo(res)}
+                        />
+                      ))}
+                    </Box>
+                    <Box
+                      alignSelf="center"
+                      direction="row"
+                      gap="small"
+                      width="medium"
+                    >
+                      <TextInput
+                        placeholder="Select Resources"
+                        size="small"
+                        suggestions={suggestions}
+                        value={comboInput}
+                        onChange={(event) => {
+                          setComboInput(event.target.value);
+                        }}
+                        onSuggestionSelect={handleComboResourceSelection}
+                      />
+                      <Button size="small" type="submit" label="Add" />
+                    </Box>
+                  </Box>
+                )}
+
+                <FormField label="Name" margin={{ top: 'medium' }}>
                   <TextInput
-                    plain={false}
                     name="label"
-                    placeholder="Sound studio..."
+                    placeholder="Sound Studio"
+                    plain={false}
+                    size="small"
                   />
                 </FormField>
 
-                <FormField
-                  label="Description"
-                  margin={{ bottom: 'medium', top: 'medium' }}
-                >
+                <FormField label="Description">
                   <TextArea
-                    plain={false}
                     name="description"
                     placeholder="Using studio requires care..."
+                    plain={false}
+                    size="small"
                   />
                 </FormField>
 
