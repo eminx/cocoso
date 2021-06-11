@@ -37,7 +37,7 @@ function ResourcesPage({ history, resources, isLoading }) {
   const [modalContent, setModalContent] = useState(null);
   const [isCombo, setIsCombo] = useState(false);
   const [resourcesForCombo, setResourcesForCombo] = useState(
-    resources.map(rModel)
+    resources.map(rModel).filter((res) => !res.isCombo)
   );
   const [comboInput, setComboInput] = useState('');
   const { currentUser, currentHost, canCreateContent, role } =
@@ -48,7 +48,7 @@ function ResourcesPage({ history, resources, isLoading }) {
   }
 
   const handleSubmit = async () => {
-    if (modalContent.label.length < 3) {
+    if (!modalContent.label || modalContent.label.length < 3) {
       message.error('Resource name is too short. Minimum 3 letters required');
       return;
     }
@@ -68,11 +68,16 @@ function ResourcesPage({ history, resources, isLoading }) {
         await call('updateResource', modalContent.id, value);
         message.success('Resource successfully updated');
       } else {
-        await call('createResource', modalContent);
+        const resourceValues = { ...modalContent };
+        if (modalContent.isCombo) {
+          resourceValues.resourcesForCombo = resourcesForCombo;
+        }
+        await call('createResource', resourceValues);
         message.success('Resource successfully added');
       }
       setModalContent(null);
       setShowModal(false);
+      setResourcesForCombo([]);
     } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);
@@ -84,6 +89,7 @@ function ResourcesPage({ history, resources, isLoading }) {
     setModalContent({
       label: resource.label,
       description: resource.description,
+      hourlyFee: resource.hourlyFee,
       id: resource._id,
       edit: true,
     });
@@ -220,11 +226,12 @@ function ResourcesPage({ history, resources, isLoading }) {
                   <CheckBox
                     checked={isCombo}
                     label="Combo Resource"
+                    name="isCombo"
                     onChange={(event) => setIsCombo(event.target.checked)}
                   />
                 </FormField>
                 {isCombo && (
-                  <Box>
+                  <Box background="light-1" pad="small">
                     <Text size="small">
                       You can select multiple resource to create a combo
                       resource
@@ -233,7 +240,7 @@ function ResourcesPage({ history, resources, isLoading }) {
                       direction="row"
                       gap="small"
                       justify="center"
-                      pad="small"
+                      pad={{ top: 'small' }}
                       wrap
                     >
                       {resourcesForCombo.map((res) => (
@@ -255,6 +262,7 @@ function ResourcesPage({ history, resources, isLoading }) {
                       <TextInput
                         placeholder="Select Resources"
                         size="small"
+                        style={{ backgroundColor: 'white' }}
                         suggestions={suggestions}
                         value={comboInput}
                         onChange={(event) => {
@@ -262,12 +270,14 @@ function ResourcesPage({ history, resources, isLoading }) {
                         }}
                         onSuggestionSelect={handleComboResourceSelection}
                       />
-                      <Button size="small" type="submit" label="Add" />
                     </Box>
                   </Box>
                 )}
 
-                <FormField label="Name" margin={{ top: 'medium' }}>
+                <FormField
+                  label="Name"
+                  margin={{ top: 'medium', bottom: 'small' }}
+                >
                   <TextInput
                     name="label"
                     placeholder="Sound Studio"
@@ -285,8 +295,17 @@ function ResourcesPage({ history, resources, isLoading }) {
                   />
                 </FormField>
 
+                <FormField label="Hourly fee">
+                  <TextInput name="hourlyFee" placeholder="100" size="small" />
+                </FormField>
+
                 <Box direction="row" justify="end" pad="small">
-                  <Button type="submit" primary label="Confirm" />
+                  <Button
+                    disabled={isCombo ? resourcesForCombo.length < 2 : false}
+                    label="Confirm"
+                    primary
+                    type="submit"
+                  />
                 </Box>
               </Form>
               <Box direction="row" justify="center" pad="small">

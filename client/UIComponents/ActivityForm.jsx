@@ -79,6 +79,9 @@ class ActivityForm extends PureComponent {
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
+            handleCapacityChange={(value) =>
+              this.handleCapacityChange(value, index)
+            }
             handleDateChange={(date, isEndDate) =>
               this.handleDateChange(date, isEndDate, index)
             }
@@ -87,9 +90,6 @@ class ActivityForm extends PureComponent {
             }
             handleFinishTimeChange={(time) =>
               this.handleTimeChange(time, index, 'endTime')
-            }
-            handleCapacityChange={(value) =>
-              this.handleCapacityChange(value, index)
             }
             handleRangeSwitch={(event) => this.handleRangeSwitch(event, index)}
             noAnimate={index === 0}
