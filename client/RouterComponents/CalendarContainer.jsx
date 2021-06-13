@@ -17,7 +17,6 @@ export default CalendarContainer = withTracker((props) => {
   const processesSubscription = Meteor.subscribe('processes');
   const processesList = Processes ? Processes.find().fetch() : null;
 
-  const manualsSubscription = Meteor.subscribe('manuals');
   const manuals = Documents ? Documents.find().fetch() : null;
 
   const allActivities = [];
@@ -25,31 +24,64 @@ export default CalendarContainer = withTracker((props) => {
     activitiesList.forEach((activity) => {
       if (activity.datesAndTimes) {
         activity.datesAndTimes.forEach((recurrence) => {
-          allActivities.push({
-            title: activity.title,
-            start: moment(
-              recurrence.startDate + recurrence.startTime,
-              'YYYY-MM-DD HH:mm'
-            ).toDate(),
-            end: moment(
-              recurrence.endDate + recurrence.endTime,
-              'YYYY-MM-DD HH:mm'
-            ).toDate(),
-            startDate: recurrence.startDate,
-            startTime: recurrence.startTime,
-            endDate: recurrence.endDate,
-            endTime: recurrence.endTime,
-            authorName: activity.authorName,
-            longDescription: activity.longDescription,
-            isMultipleDay:
-              recurrence.isMultipleDay ||
-              recurrence.startDate !== recurrence.endDate,
-            resource: activity.resource,
-            resourceIndex: activity.resourceIndex,
-            isPublicActivity: activity.isPublicActivity,
-            imageUrl: activity.imageUrl,
-            _id: activity._id,
-          });
+          const theResource = resourcesList.find(
+            (res) => res.label === activity.resource
+          );
+          if (theResource && theResource.isCombo) {
+            theResource.resourcesForCombo.forEach((resourceForCombo) => {
+              allActivities.push({
+                title: activity.title,
+                start: moment(
+                  recurrence.startDate + recurrence.startTime,
+                  'YYYY-MM-DD HH:mm'
+                ).toDate(),
+                end: moment(
+                  recurrence.endDate + recurrence.endTime,
+                  'YYYY-MM-DD HH:mm'
+                ).toDate(),
+                startDate: recurrence.startDate,
+                startTime: recurrence.startTime,
+                endDate: recurrence.endDate,
+                endTime: recurrence.endTime,
+                authorName: activity.authorName,
+                longDescription: activity.longDescription,
+                isMultipleDay:
+                  recurrence.isMultipleDay ||
+                  recurrence.startDate !== recurrence.endDate,
+                resource: resourceForCombo.label,
+                // resourceIndex: activity.resourceIndex,
+                isPublicActivity: activity.isPublicActivity,
+                imageUrl: activity.imageUrl,
+                _id: activity._id,
+              });
+            });
+          } else {
+            allActivities.push({
+              title: activity.title,
+              start: moment(
+                recurrence.startDate + recurrence.startTime,
+                'YYYY-MM-DD HH:mm'
+              ).toDate(),
+              end: moment(
+                recurrence.endDate + recurrence.endTime,
+                'YYYY-MM-DD HH:mm'
+              ).toDate(),
+              startDate: recurrence.startDate,
+              startTime: recurrence.startTime,
+              endDate: recurrence.endDate,
+              endTime: recurrence.endTime,
+              authorName: activity.authorName,
+              longDescription: activity.longDescription,
+              isMultipleDay:
+                recurrence.isMultipleDay ||
+                recurrence.startDate !== recurrence.endDate,
+              resource: activity.resource,
+              resourceIndex: activity.resourceIndex,
+              isPublicActivity: activity.isPublicActivity,
+              imageUrl: activity.imageUrl,
+              _id: activity._id,
+            });
+          }
         });
       }
     });

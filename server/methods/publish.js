@@ -38,11 +38,11 @@ Meteor.publish('activities', function (onlyPublic = false) {
         host,
         isPublished: true,
         isPublicActivity: true,
-      },
-      { fields: publicFields }
+      }
+      // { fields: publicFields }
     );
   } else {
-    return Activities.find({ host, isPublished: true }, { fields });
+    return Activities.find({ host, isPublished: true });
   }
 });
 

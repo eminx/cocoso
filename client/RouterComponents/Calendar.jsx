@@ -159,12 +159,8 @@ class Calendar extends React.PureComponent {
   render() {
     const { isLoading, currentUser, resourcesList, allActivities } = this.props;
     const { canCreateContent, role } = this.context;
-    const {
-      editActivity,
-      calendarFilter,
-      selectedActivity,
-      isUploading,
-    } = this.state;
+    const { editActivity, calendarFilter, selectedActivity, isUploading } =
+      this.state;
 
     const futureActivities = [];
 
@@ -186,14 +182,12 @@ class Calendar extends React.PureComponent {
       return <Redirect to={`/edit-activity/${selectedActivity._id}`} />;
     }
 
+    const nonComboResources = resourcesList.filter(
+      (resource) => !resource.isCombo
+    );
+
     return (
       <Box>
-        <Box alignSelf="center">
-          {/* <Heading level={2} textAlign="center">
-            Calendar
-          </Heading> */}
-        </Box>
-
         {currentUser && canCreateContent && (
           <Box
             direction="row"
@@ -229,7 +223,7 @@ class Calendar extends React.PureComponent {
             >
               {'All'}
             </SimpleTag>
-            {resourcesList.map((resource, i) => (
+            {nonComboResources.map((resource, i) => (
               <SimpleTag
                 color={colors[i]}
                 checked={calendarFilter === resource.label}
