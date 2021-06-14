@@ -190,8 +190,17 @@ function ResourcesPage({ history, resources, isLoading }) {
         <NiceList list={resourcesWithActions} border="horizontal" pad="small">
           {(resource) => (
             <div key={resource.label}>
+              {resource.isCombo && (
+                <Box>
+                  <Tag label="COMBO" size="small" />
+                </Box>
+              )}
               <Text size="large" weight="bold" margin={{ bottom: 'medium' }}>
-                {resource && resource.label}
+                {resource.isCombo ? (
+                  <ResourcesForCombo resource={resource} />
+                ) : (
+                  resource.label
+                )}
               </Text>
 
               <Text as="div">{resource && resource.description}</Text>
@@ -323,6 +332,23 @@ function ResourcesPage({ history, resources, isLoading }) {
     </Template>
   );
 }
+
+const ResourcesForCombo = ({ resource }) => {
+  if (!resource) {
+    return null;
+  }
+  const resourcesForCombo = resource.resourcesForCombo;
+  const length = resource.resourcesForCombo.length;
+  return (
+    <span>
+      {resource.label} [
+      {resourcesForCombo.map((res, i) => (
+        <Text key={res.label}>{res.label + (i < length - 1 ? ' + ' : '')}</Text>
+      ))}
+      ]
+    </span>
+  );
+};
 
 export default ResourcesContainer = withTracker((props) => {
   const resourcesSubscription = Meteor.subscribe('resources');
