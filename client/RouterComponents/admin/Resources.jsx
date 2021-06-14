@@ -22,6 +22,7 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Tag from '../../UIComponents/Tag';
+import ResourcesForCombo from '../../UIComponents/ResourcesForCombo';
 import { message, Alert } from '../../UIComponents/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
@@ -332,23 +333,6 @@ function ResourcesPage({ history, resources, isLoading }) {
     </Template>
   );
 }
-
-const ResourcesForCombo = ({ resource }) => {
-  if (!resource) {
-    return null;
-  }
-  const resourcesForCombo = resource.resourcesForCombo;
-  const length = resource.resourcesForCombo.length;
-  return (
-    <span>
-      {resource.label} [
-      {resourcesForCombo.map((res, i) => (
-        <Text key={res.label}>{res.label + (i < length - 1 ? ' + ' : '')}</Text>
-      ))}
-      ]
-    </span>
-  );
-};
 
 export default ResourcesContainer = withTracker((props) => {
   const resourcesSubscription = Meteor.subscribe('resources');

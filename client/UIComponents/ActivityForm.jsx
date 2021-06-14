@@ -193,7 +193,20 @@ class ActivityForm extends PureComponent {
     } = this.props;
 
     const resourceOptions =
-      resources && resources.map((resource) => resource.label);
+      resources &&
+      resources.map((resource, i) => {
+        const resourcesForCombo = resource && resource.resourcesForCombo;
+        if (resource.isCombo) {
+          return (
+            resource.label +
+            ': [' +
+            resourcesForCombo.map((res, index) => res.label) +
+            ']'
+          );
+        } else {
+          return resource.label;
+        }
+      });
 
     if (!formValues) {
       return null;
