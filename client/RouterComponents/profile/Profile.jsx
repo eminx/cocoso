@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Anchor, Box, Button, Text, FormField } from 'grommet';
-import { Row, Col } from 'react-grid-system';
+import { Anchor, Box, Button, Heading, Text } from 'grommet';
 
 import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
@@ -217,67 +216,73 @@ class Profile extends React.Component {
         </Box>
 
         <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-          <Row style={{ marginLeft: 0, marginRight: 0 }}>
-            <Col sm={9}>
-              <Personal
-                formValues={personal}
-                bio={bio}
-                contactInfo={contactInfo}
-                onBioChange={(bio) => this.setState({ bio })}
-                onContactInfoChange={(contactInfo) =>
-                  this.setState({ contactInfo })
+          <Box margin={{ bottom: 'large' }}>
+            <Heading level={3} margin={{ bottom: 'medium' }} textAlign="center">
+              Avatar
+            </Heading>
+            <Box
+              width="120px"
+              height="120px"
+              round
+              style={{ overflow: 'hidden' }}
+              alignSelf="center"
+            >
+              <FileDropper
+                imageUrl={
+                  uploadableAvatarLocal ||
+                  (currentUser.avatar && currentUser.avatar.src)
                 }
-                onFormChange={this.handleFormChange}
-                onSubmit={this.handleSubmit}
+                label="Click/Drag to upload"
+                round
+                setUploadableImage={this.setUploadableAvatar}
               />
-            </Col>
-            <Col sm={3}>
-              <Box margin={{ bottom: 'medium' }}>
-                <FormField label="Avatar" />
-                <Box
-                  width="120px"
-                  height="120px"
-                  round
-                  style={{ overflow: 'hidden' }}
-                  alignSelf="center"
-                >
-                  <FileDropper
-                    setUploadableImage={this.setUploadableAvatar}
-                    imageUrl={
-                      uploadableAvatarLocal ||
-                      (currentUser.avatar && currentUser.avatar.src)
-                    }
-                    label="Click/Drag to upload"
-                  />
-                </Box>
-                {uploadableAvatarLocal && (
-                  <Box align="center" gap="small">
-                    <Button
-                      onClick={() =>
-                        this.setState({
-                          uploadableAvatar: null,
-                          uploadableAvatarLocal: null,
-                        })
-                      }
-                      color="status-critical"
-                      margin={{ top: 'small' }}
-                      size="small"
-                      label="Remove"
-                      plain
-                    />
+            </Box>
+            {uploadableAvatarLocal && (
+              <Box align="center" gap="small">
+                <Button
+                  onClick={() =>
+                    this.setState({
+                      uploadableAvatar: null,
+                      uploadableAvatarLocal: null,
+                    })
+                  }
+                  color="status-critical"
+                  margin={{ top: 'small' }}
+                  size="small"
+                  label="Remove"
+                  plain
+                />
 
-                    <Button
-                      onClick={() => this.uploadAvatar()}
-                      label="Confirm & Upload"
-                      size="small"
-                      disabled={isUploading}
-                    />
-                    {isUploading && <Loader />}
-                  </Box>
-                )}
+                <Button
+                  onClick={() => this.uploadAvatar()}
+                  label="Confirm & Upload"
+                  size="small"
+                  disabled={isUploading}
+                />
+                {isUploading && <Loader />}
               </Box>
-            </Col>
-          </Row>
+            )}
+          </Box>
+          <Box>
+            <Heading
+              level={3}
+              margin={{ bottom: 'small', top: 'medium' }}
+              textAlign="center"
+            >
+              Personal Info
+            </Heading>
+            <Personal
+              bio={bio}
+              contactInfo={contactInfo}
+              formValues={personal}
+              onBioChange={(bio) => this.setState({ bio })}
+              onContactInfoChange={(contactInfo) =>
+                this.setState({ contactInfo })
+              }
+              onFormChange={this.handleFormChange}
+              onSubmit={this.handleSubmit}
+            />
+          </Box>
         </Box>
 
         <Box

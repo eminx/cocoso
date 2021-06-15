@@ -7,6 +7,7 @@ const FileDropper = ({
   uploadableImageLocal,
   imageUrl,
   label,
+  round = false,
   ...otherProps
 }) => {
   return (
@@ -14,15 +15,17 @@ const FileDropper = ({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          background={isDragActive ? 'dark-3' : 'white'}
-          width="medium"
+          background={isDragActive ? 'dark-3' : 'dark-1'}
+          border={{ size: 'xsmall' }}
+          elevation="medium"
           height="small"
-          border={{ style: 'dashed', size: 'medium' }}
+          style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
+          width="medium"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
-              fit="contain"
+              fit="cover"
               fill
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}
