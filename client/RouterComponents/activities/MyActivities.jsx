@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
+import { Anchor, Box, Button, Heading, Image, Tab, Tabs, Text } from 'grommet';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../UIComponents/NiceList';
@@ -75,9 +75,35 @@ function Activities({ history }) {
       }
     >
       {currentUser && activities ? (
-        <NiceList list={activities} actionsDisabled>
-          {(act) => <ActivityItem act={act} history={history} />}
-        </NiceList>
+        <Tabs>
+          <Tab title="All">
+            <Box pad="medium">
+              <NiceList list={activities} actionsDisabled>
+                {(act) => <ActivityItem act={act} history={history} />}
+              </NiceList>
+            </Box>
+          </Tab>
+          <Tab title="Public">
+            <Box pad="medium">
+              <NiceList
+                list={activities.filter((act) => act.isPublicActivity)}
+                actionsDisabled
+              >
+                {(act) => <ActivityItem act={act} history={history} />}
+              </NiceList>
+            </Box>
+          </Tab>
+          <Tab title="Private">
+            <Box pad="medium">
+              <NiceList
+                list={activities.filter((act) => !act.isPublicActivity)}
+                actionsDisabled
+              >
+                {(act) => <ActivityItem act={act} history={history} />}
+              </NiceList>
+            </Box>
+          </Tab>
+        </Tabs>
       ) : (
         <Alert
           margin="medium"
@@ -91,16 +117,18 @@ function Activities({ history }) {
 const ActivityItem = ({ act, history }) => (
   <Box
     width="100%"
-    onClick={() => history.push(`/${act.authorUsername}/work/${act._id}`)}
+    onClick={() => history.push(`/activity/${act._id}`)}
     hoverIndicator="light-1"
     pad="small"
     direction="row"
     margin={{ bottom: 'medium' }}
     background="white"
   >
-    <Box width="small" height="small" margin={{ right: 'small' }}>
-      <Image fit="cover" fill src={act.images && act.images[0]} />
-    </Box>
+    {act.isPublicActivity && (
+      <Box width="small" height="small" margin={{ right: 'small' }}>
+        <Image fit="cover" fill src={act.imageUrl} />
+      </Box>
+    )}
     <Box width="100%" justify="between">
       <Heading
         level={3}
@@ -109,11 +137,9 @@ const ActivityItem = ({ act, history }) => (
       >
         {act.title}
       </Heading>
-      <Text weight={300}>{act.shortDescription}</Text>
-      <Box>
-        <Text size="small" color="dark-3" textAlign="end">
-          {act.authorUsername}
-        </Text>
+      <Text weight={300}>{act.subTitle}</Text>
+      <Box pad={{ vertical: 'medium' }}>
+        <Text>{act.datesAndTimes.length} occurences</Text>
       </Box>
     </Box>
   </Box>

@@ -440,25 +440,30 @@ class Activity extends React.Component {
         }
       >
         <Box background="white">
-          <Box background="dark-1">
-            <Image
-              fit="contain"
-              fill
-              src={activityData.imageUrl}
-              style={{ maxHeight: 400 }}
-            />
-          </Box>
-          <Box pad="medium">
-            <div
-              style={{
-                whiteSpace: 'pre-line',
-                color: 'rgba(0,0,0, .85)',
-              }}
-              className="text-content"
-            >
-              {renderHTML(activityData.longDescription)}
-            </div>
-          </Box>
+          {activityData.isPublicActivity && (
+            <Box background="dark-1">
+              <Image
+                fit="contain"
+                fill
+                src={activityData.imageUrl}
+                style={{ maxHeight: 400 }}
+              />
+            </Box>
+          )}
+
+          {activityData.longDescription && (
+            <Box pad="medium">
+              <div
+                style={{
+                  whiteSpace: 'pre-line',
+                  color: 'rgba(0,0,0, .85)',
+                }}
+                className="text-content"
+              >
+                {renderHTML(activityData.longDescription)}
+              </div>
+            </Box>
+          )}
         </Box>
 
         <Box pad="medium" margin={{ bottom: 'small' }}>

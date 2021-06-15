@@ -8,6 +8,7 @@ import LayoutContainer from '../LayoutContainer';
 import ActivitiesContainer from './activities/ActivitiesContainer';
 
 import ActivityContainer from './activities/ActivityContainer';
+import MyActivities from './activities/MyActivities';
 import NewActivityContainer from './activities/NewActivityContainer';
 import EditActivityContainer from './activities/EditActivityContainer';
 
@@ -56,6 +57,7 @@ export default function () {
             <Route exact path="/calendar" component={CalendarContainer} />
 
             <Route exact path="/activities" component={ActivitiesContainer} />
+            <Route exact path="/my-activities" component={MyActivities} />
             <Route
               exact
               path="/new-activity"

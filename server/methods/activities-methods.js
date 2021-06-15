@@ -30,6 +30,24 @@ const getRemovalText = (firstName, occurence, activityId) => {
 };
 
 Meteor.methods({
+  getMyActivities() {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const host = getHost(this);
+
+    try {
+      const activities = Activities.find({
+        host,
+        authorId: user._id,
+      }).fetch();
+      return activities;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch works");
+    }
+  },
+
   createActivity(formValues, uploadedImage) {
     const user = Meteor.user();
     const host = getHost(this);
