@@ -228,8 +228,21 @@ class ActivityForm extends PureComponent {
               plain={false}
               placeholder="Select resource to book"
               name="resource"
-              options={resourceOptions}
-            />
+              options={resources}
+            >
+              {(option, index, options, { active, disabled, selected }) =>
+                option.isCombo ? (
+                  <Text>
+                    {option.label +
+                      ': [' +
+                      option.resourcesForCombo.map((res, i) => res.label) +
+                      ']'}
+                  </Text>
+                ) : (
+                  <Text>{option.label}</Text>
+                )
+              }
+            </Select>
           </Field>
 
           <Heading level={4}>Occurences</Heading>

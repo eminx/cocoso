@@ -1,5 +1,6 @@
 const userMenu = [
   { label: 'My Profile', value: '/my-profile' },
+  { label: 'My Activities', value: '/my-activities' },
   { label: 'My Works', value: '/my-works' },
 ];
 

@@ -51,7 +51,7 @@ Meteor.methods({
       check(recurrence.endTime, String);
     });
     check(formValues.isPublicActivity, Boolean);
-    const resourceIndex = getResourceIndex(formValues.resource, host);
+    const resourceIndex = formValues.resource.resourceIndex;
 
     try {
       const add = Activities.insert(
@@ -62,14 +62,14 @@ Meteor.methods({
           title: formValues.title,
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
-          resource: formValues.resource || null,
+          resource: formValues.resource.label || null,
+          resourceIndex,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,
           address: formValues.address || null,
           capacity: formValues.capacity || 20,
           datesAndTimes: formValues.datesAndTimes,
-          resourceIndex,
           imageUrl: uploadedImage || null,
           isSentForReview: false,
           isPublicActivity: formValues.isPublicActivity,

@@ -13,7 +13,12 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const resources = Resources.find({ host }).fetch();
-    if (resources.some((resource) => resource.label === values.label)) {
+    if (
+      resources.some(
+        (resource) =>
+          resource.label.toLowerCase() === values.label.toLowerCase()
+      )
+    ) {
       throw new Meteor.Error('There already is a resource with this name');
     }
     if (values.label.length < 3) {

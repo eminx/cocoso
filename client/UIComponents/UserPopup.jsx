@@ -3,17 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
 import { UserSettings } from 'grommet-icons/icons/UserSettings';
 import { StateContext } from '../LayoutContainer';
-
-export const userRoutes = [
-  { label: 'Profile', value: '/my-profile' },
-  { label: 'Works', value: '/my-works' },
-];
-
-export const adminRoutes = [
-  { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' },
-  { label: 'Resources', value: '/admin/resources' },
-];
+import { userMenu, adminMenu } from '../constants/general';
 
 const UserPopup = withRouter(({ currentUser, history }) => {
   if (!currentUser) {
@@ -40,9 +30,9 @@ const UserPopup = withRouter(({ currentUser, history }) => {
         <Box pad="medium" width="small">
           <Box>
             <Text size="small" weight="bold">
-              User
+              My
             </Text>
-            <List data={userRoutes} border={false} pad="small">
+            <List data={userMenu} border={false} pad="small">
               {(datum, index) => (
                 <Anchor
                   onClick={() => history.push(datum.value)}
@@ -64,7 +54,7 @@ const UserPopup = withRouter(({ currentUser, history }) => {
               <Text size="small" weight="bold">
                 Admin
               </Text>
-              <List data={adminRoutes} border={false} pad="small">
+              <List data={adminMenu} border={false} pad="small">
                 {(datum, index) => (
                   <Anchor
                     onClick={() => history.push(datum.value)}

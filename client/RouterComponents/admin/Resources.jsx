@@ -140,6 +140,7 @@ function ResourcesPage({ history, resources, isLoading }) {
 
   const suggestions = resources.filter((res, index) => {
     return (
+      !res.isCombo &&
       !resourcesForCombo.some((reso) => reso.label === res.label) &&
       (comboInput === '' ||
         res.label.toLowerCase().includes(comboInput.toLowerCase()))
@@ -243,7 +244,7 @@ function ResourcesPage({ history, resources, isLoading }) {
                 {isCombo && (
                   <Box background="light-1" pad="small">
                     <Text size="small">
-                      You can select multiple resource to create a combo
+                      Please select multiple resources to create a combo
                       resource
                     </Text>
                     <Box
@@ -306,7 +307,12 @@ function ResourcesPage({ history, resources, isLoading }) {
                 </FormField>
 
                 <FormField label="Hourly fee">
-                  <TextInput name="hourlyFee" placeholder="100" size="small" />
+                  <TextInput
+                    name="hourlyFee"
+                    placeholder="100"
+                    size="small"
+                    type="number"
+                  />
                 </FormField>
 
                 <Box direction="row" justify="end" pad="small">

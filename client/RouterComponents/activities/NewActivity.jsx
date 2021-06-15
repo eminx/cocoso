@@ -138,11 +138,14 @@ class NewActivity extends React.Component {
 
     const values = {
       ...formValues,
+      resource: formValues.resource,
       isPublicActivity,
       isRegistrationDisabled,
       datesAndTimes,
       longDescription,
     };
+
+    console.log(values);
 
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
       if (error) {
