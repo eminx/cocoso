@@ -133,7 +133,8 @@ Meteor.methods({
       check(recurrence.startTime, String);
       check(recurrence.endTime, String);
     });
-    const resourceIndex = getResourceIndex(formValues.resource, host);
+    // const resourceIndex = getResourceIndex(formValues.resource, host);
+    const resourceIndex = formValues.resource.resourceIndex;
     const theG = Activities.findOne(activityId);
     if (user._id !== theG.authorId) {
       throw new Meteor.Error('You are not allowed!');
@@ -145,7 +146,7 @@ Meteor.methods({
           title: formValues.title,
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
-          resource: formValues.resource || null,
+          resource: formValues.resource.label || null,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,

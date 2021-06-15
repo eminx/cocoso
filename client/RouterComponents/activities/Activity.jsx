@@ -25,6 +25,7 @@ import Chattery from '../../chattery';
 import FancyDate from '../../UIComponents/FancyDate';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
+import Tag from '../../UIComponents/Tag';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
 import { message } from '../../UIComponents/message';
@@ -273,7 +274,9 @@ class Activity extends React.Component {
         return (
           <Box background="white">
             {eventPast ? (
-              <p>This event has past</p>
+              <Box pad={{ vertical: 'medium', horizontal: 'small' }}>
+                <Text color="status-critical">This event has past</Text>
+              </Box>
             ) : (
               <Box>
                 <Box
@@ -468,11 +471,18 @@ class Activity extends React.Component {
 
         <Box pad="medium" margin={{ bottom: 'small' }}>
           <Heading level={5} margin={{ bottom: 'small' }}>
-            Location
+            Resource
           </Heading>
-          <Text size="small">{activityData.resource}</Text>
-          <Text size="small">{activityData.address}</Text>
+          <Tag label={activityData.resource} />
         </Box>
+        {activityData.address && (
+          <Box pad="medium" margin={{ bottom: 'small' }}>
+            <Heading level={5} margin={{ bottom: 'small' }}>
+              Address
+            </Heading>
+            <Text size="small">{activityData.address}</Text>
+          </Box>
+        )}
 
         {activityData.isPublicActivity && messages && chatData && (
           <Box pad="medium" background="light-2" border="dark-2">

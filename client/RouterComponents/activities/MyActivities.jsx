@@ -7,6 +7,7 @@ import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
+import Tag from '../../UIComponents/Tag';
 import { userMenu } from '../../constants/general';
 
 function Activities({ history }) {
@@ -136,9 +137,10 @@ const ActivityItem = ({ act, history }) => (
       >
         {act.title}
       </Heading>
+      <Tag label={act.resource} />
       <Text weight={300}>{act.subTitle}</Text>
       <Box pad={{ vertical: 'medium' }}>
-        <Text>{act.datesAndTimes.length} occurences</Text>
+        <Text weight="bold">{act.datesAndTimes.length} occurences</Text>
       </Box>
     </Box>
   </Box>

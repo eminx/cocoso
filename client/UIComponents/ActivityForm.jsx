@@ -192,22 +192,6 @@ class ActivityForm extends PureComponent {
       isFormValid,
     } = this.props;
 
-    const resourceOptions =
-      resources &&
-      resources.map((resource, i) => {
-        const resourcesForCombo = resource && resource.resourcesForCombo;
-        if (resource.isCombo) {
-          return (
-            resource.label +
-            ': [' +
-            resourcesForCombo.map((res, index) => res.label) +
-            ']'
-          );
-        } else {
-          return resource.label;
-        }
-      });
-
     if (!formValues) {
       return null;
     }
@@ -248,91 +232,92 @@ class ActivityForm extends PureComponent {
           <Heading level={4}>Occurences</Heading>
 
           {this.renderDateTime()}
-
-          <Heading level={4}>Details</Heading>
-          <Field
-            label="Title"
-            name="title"
-            required
-            // help="This is typicaly title of your event"
-            // validate={(fieldValue, formValue) => console.log(fieldValue)}
-          >
-            <TextInput
-              plain={false}
-              name="title"
-              placeholder="give it a title"
-              required
-            />
-          </Field>
-
-          {isPublicActivity && (
-            <Field label="Subtitle" name="subTitle">
-              <TextInput
-                plain={false}
-                name="subTitle"
-                placeholder="give it a subtitle (artist name etc.)"
-              />
-            </Field>
-          )}
-
-          <Field label="Description">
-            <ReactQuill
-              modules={editorModules}
-              formats={editorFormats}
-              onChange={onQuillChange}
-              value={longDescription || ''}
-            />
-          </Field>
-
-          {isPublicActivity && (
-            <Field label="Place" name="place">
-              <TextInput
-                plain={false}
-                name="place"
-                placeholder="Artistosphere"
-              />
-            </Field>
-          )}
-
-          {isPublicActivity && (
-            <Field label="Address" name="address">
-              <TextArea
-                plain={false}
-                name="address"
-                placeholder="17th Street, Berlin..."
-              />
-            </Field>
-          )}
-
-          {isPublicActivity && (
+          <Box pad={{ top: 'large' }}>
+            <Heading level={4}>Details</Heading>
             <Field
-              label="Image"
-              help={
-                (uploadableImageLocal || imageUrl) && (
-                  <Text size="small">
-                    If you want to replace it with another one, click on the
-                    image to reopen the file picker
-                  </Text>
-                )
-              }
+              label="Title"
+              name="title"
+              required
+              // help="This is typicaly title of your event"
+              // validate={(fieldValue, formValue) => console.log(fieldValue)}
             >
-              <Box alignSelf="center">
-                <FileDropper
-                  uploadableImageLocal={uploadableImageLocal}
-                  imageUrl={imageUrl}
-                  setUploadableImage={setUploadableImage}
-                />
-              </Box>
+              <TextInput
+                plain={false}
+                name="title"
+                placeholder="give it a title"
+                required
+              />
             </Field>
-          )}
 
-          <Box direction="row" justify="end" pad="small">
-            <Button
-              type="submit"
-              primary
-              disabled={isButtonDisabled}
-              label={buttonLabel}
-            />
+            {isPublicActivity && (
+              <Field label="Subtitle" name="subTitle">
+                <TextInput
+                  plain={false}
+                  name="subTitle"
+                  placeholder="give it a subtitle (artist name etc.)"
+                />
+              </Field>
+            )}
+
+            <Field label="Description">
+              <ReactQuill
+                modules={editorModules}
+                formats={editorFormats}
+                onChange={onQuillChange}
+                value={longDescription || ''}
+              />
+            </Field>
+
+            {isPublicActivity && (
+              <Field label="Place" name="place">
+                <TextInput
+                  plain={false}
+                  name="place"
+                  placeholder="Artistosphere"
+                />
+              </Field>
+            )}
+
+            {isPublicActivity && (
+              <Field label="Address" name="address">
+                <TextArea
+                  plain={false}
+                  name="address"
+                  placeholder="17th Street, Berlin..."
+                />
+              </Field>
+            )}
+
+            {isPublicActivity && (
+              <Field
+                label="Image"
+                help={
+                  (uploadableImageLocal || imageUrl) && (
+                    <Text size="small">
+                      If you want to replace it with another one, click on the
+                      image to reopen the file picker
+                    </Text>
+                  )
+                }
+              >
+                <Box alignSelf="center">
+                  <FileDropper
+                    uploadableImageLocal={uploadableImageLocal}
+                    imageUrl={imageUrl}
+                    setUploadableImage={setUploadableImage}
+                  />
+                </Box>
+              </Field>
+            )}
+
+            <Box direction="row" justify="end" pad="small">
+              <Button
+                type="submit"
+                primary
+                disabled={isButtonDisabled}
+                label={buttonLabel}
+              />
+            </Box>
           </Box>
         </Form>
       </Box>

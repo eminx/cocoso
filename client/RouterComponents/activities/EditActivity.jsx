@@ -79,7 +79,9 @@ class EditActivity extends PureComponent {
       this.setState({
         formValues: {
           title,
-          resource,
+          resource: {
+            label: resource,
+          },
         },
         longDescription,
         isPublicActivity,
@@ -93,7 +95,9 @@ class EditActivity extends PureComponent {
           subTitle,
           place,
           address,
-          resource,
+          resource: {
+            label: resource,
+          },
           practicalInfo,
           internalInfo,
         },
