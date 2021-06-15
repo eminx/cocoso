@@ -12,7 +12,7 @@ import { userMenu } from '../../constants/general';
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, canCreateContent } = useContext(StateContext);
 
   useEffect(() => {
     Meteor.call('getMyActivities', (error, respond) => {
@@ -62,18 +62,17 @@ function Activities({ history }) {
           </ListMenu>
         </Box>
       }
-      rightContent={
-        currentUser && (
-          <Box pad="small" direction="row" justify="center">
-            <Button
-              primary
-              label="New Activity"
-              onClick={() => history.push('/new-activity')}
-            />
-          </Box>
-        )
-      }
     >
+      {currentUser && canCreateContent && (
+        <Box pad="small" direction="row" justify="center">
+          <Button
+            primary
+            label="NEW"
+            onClick={() => history.push('/new-activity')}
+          />
+        </Box>
+      )}
+
       {currentUser && activities ? (
         <Tabs>
           <Tab title="All">

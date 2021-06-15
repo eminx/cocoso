@@ -25,11 +25,13 @@ const Template = ({
             <Box
               pad={{ left: titleCentered ? 'none' : 'medium' }}
               margin={{ bottom: 'medium' }}
+              // direction="row"
             >
               <Heading
+                alignSelf="center"
                 level={3}
-                textAlign={titleCentered ? 'center' : 'start'}
                 size="small"
+                textAlign={titleCentered ? 'center' : 'start'}
               >
                 {heading}
               </Heading>
