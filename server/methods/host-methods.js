@@ -14,21 +14,16 @@ Meteor.methods({
     }
 
     try {
-      const parsedValues = {
-        ...values,
-      };
-
-      parsedValues.settings.mainColor = defaultMainColor;
-      parsedValues.settings.menu = defaultMenu;
-
       const hostId = await Hosts.insert({
         host: values.host,
         email: values.email,
         settings: {
-          name: values.name,
           address: values.address,
           city: values.city,
           country: values.country,
+          mainColor: defaultMainColor,
+          menu: defaultMenu,
+          name: values.name,
         },
         members: [
           {
@@ -41,6 +36,16 @@ Meteor.methods({
         ],
       });
 
+      await Pages.insert({
+        host: values.host,
+        authorId: currentUser._id,
+        authorName: currentUser.username,
+        title: `About ${values.name}`,
+        longDescription: values.about,
+        isPublished: true,
+        creationDate: new Date(),
+      });
+
       await Meteor.users.update(currentUser._id, {
         $push: {
           memberships: {
@@ -50,16 +55,6 @@ Meteor.methods({
             date: new Date(),
           },
         },
-      });
-
-      await Pages.insert({
-        host: values.host,
-        authorId: currentUser._id,
-        authorName: currentUser.username,
-        title: values.aboutTitle,
-        longDescription: values.about,
-        isPublished: true,
-        creationDate: new Date(),
       });
     } catch (error) {
       console.log(error);
