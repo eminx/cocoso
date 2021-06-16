@@ -11,7 +11,7 @@ const Template = ({
   leftContent,
   rightContent,
   heading,
-  titleCentered,
+  titleCentered = true,
   children,
 }) => {
   return (

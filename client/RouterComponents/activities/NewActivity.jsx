@@ -145,8 +145,6 @@ class NewActivity extends React.Component {
       longDescription,
     };
 
-    console.log(values);
-
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
       if (error) {
         console.log('error', error);

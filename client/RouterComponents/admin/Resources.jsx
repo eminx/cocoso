@@ -178,8 +178,6 @@ function ResourcesPage({ history, resources, isLoading }) {
           <Button
             size="small"
             label="NEW"
-            primary
-            icon={<FormAdd />}
             onClick={() => {
               setShowModal(true);
               setModalContent(null);

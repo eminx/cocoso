@@ -81,6 +81,7 @@ Meteor.methods({
           subTitle: formValues.subTitle || null,
           longDescription: formValues.longDescription,
           resource: formValues.resource.label || null,
+          resourceHourlyFee: formValues.resource.hourlyFee,
           resourceIndex,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
