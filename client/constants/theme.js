@@ -18,6 +18,13 @@ const theme = {
   formField: {
     border: false,
   },
+  layer: {
+    container: {
+      extend: (props) => ({
+        overflow: 'scroll',
+      }),
+    },
+  },
   list: {
     item: {
       border: false,
