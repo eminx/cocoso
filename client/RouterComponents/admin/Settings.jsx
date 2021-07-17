@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import ReactQuill from 'react-quill';
+import { editorFormats, editorModules } from '../../constants/quillConfig';
 import {
   Anchor,
   Box,
@@ -12,13 +14,12 @@ import {
   Tab,
   Text,
   TextInput,
+  TextArea,
 } from 'grommet';
 import { Drag } from 'grommet-icons/icons/Drag';
 import { HuePicker } from 'react-color';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-
-const pluralize = require('pluralize');
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -41,6 +42,12 @@ const colorModel = {
     a: 1,
   },
 };
+
+const Field = ({ children, ...otherProps }) => (
+  <FormField {...otherProps} margin={{ bottom: 'medium' }}>
+    {children}
+  </FormField>
+);
 
 const getMenuPlaceHolder = (item) => {
   switch (item) {
@@ -482,7 +489,45 @@ const Settings = ({ history }) => {
         </Form>
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'medium' }}></Box>
+      <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
+        <Heading level={3}>Emails</Heading>
+        <Box>
+          <Heading level={4}>Welcome Email</Heading>
+          <Form onSubmit={() => setWelcomeEmail()}>
+            <Field label="Subject">
+              <TextInput name="subject" placeholder="Welcome" size="medium" />
+            </Field>
+            <Field label="Appeal">
+              <Box
+                direction="row"
+                gap="small"
+                width="medium"
+                align="center"
+                justify="start"
+              >
+                <Box style={{ width: 120 }}>
+                  <TextInput
+                    name="appeal"
+                    placeholder="Dear"
+                    plain={false}
+                    size="small"
+                  />
+                </Box>
+                <Text weight="bold">@username</Text>
+              </Box>
+            </Field>
+
+            <Field label="Body">
+              <ReactQuill
+                // value={formValues.description || ''}
+                modules={editorModules}
+                formats={editorFormats}
+                // onChange={onQuillChange}
+              />
+            </Field>
+          </Form>
+        </Box>
+      </Box>
     </Template>
   );
 };

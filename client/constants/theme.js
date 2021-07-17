@@ -18,6 +18,11 @@ const theme = {
   formField: {
     border: false,
   },
+  heading: {
+    extend: (props) => ({
+      marginBottom: 12,
+    }),
+  },
   layer: {
     container: {
       extend: (props) => ({
