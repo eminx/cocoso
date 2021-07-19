@@ -14,6 +14,7 @@ import {
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
+import { StateContext } from '../../LayoutContainer';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
@@ -32,6 +33,12 @@ const defaultEmails = {
 export default function Emails() {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState(defaultEmails);
+
+  const { currentUser, currentHost, role } = useContext(StateContext);
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>You are not allowed</Alert>;
+  }
 
   useEffect(() => {
     const getEmails = async () => {

@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../../constants/quillConfig';
 import {
   Anchor,
   Box,
@@ -14,10 +12,7 @@ import {
   Text,
   TextInput,
 } from 'grommet';
-import { Drag } from 'grommet-icons/icons/Drag';
 import { HuePicker } from 'react-color';
-import { sortableContainer, sortableElement } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -30,6 +25,7 @@ import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../UIComponents/FileDropper';
 import Emails from './Emails';
+import Menu from './Menu';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -39,37 +35,6 @@ const colorModel = {
     s: 0.8,
     l: 0.2,
     a: 1,
-  },
-};
-
-const Field = ({ children, ...otherProps }) => (
-  <FormField {...otherProps} margin={{ bottom: 'medium' }}>
-    {children}
-  </FormField>
-);
-
-const getMenuPlaceHolder = (item) => {
-  switch (item) {
-    case 'activities':
-      return 'bookings';
-    case 'calendar':
-      return 'program';
-    case 'processes':
-      return 'workshops';
-    case 'works':
-      return 'offers';
-    case 'info':
-      return 'about';
-    default:
-      return '';
-  }
-};
-
-const defaultEmails = {
-  welcomeEmail: {
-    subject: '',
-    appeal: '',
-    body: '',
   },
 };
 
@@ -83,7 +48,6 @@ const Settings = ({ history }) => {
   const [localImage, setLocalImage] = useState(null);
   const [mainColor, setMainColor] = useState(colorModel);
   const [activeMenu, setActiveMenu] = useState(null);
-  const [emails, setEmails] = useState(defaultEmails);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
@@ -92,37 +56,16 @@ const Settings = ({ history }) => {
   }
 
   useEffect(() => {
-    const getEmails = async () => {
-      try {
-        const emails = await call('getEmails');
-        setEmails(emails);
-      } catch (error) {
-        message(error.reason);
-        console.log(error);
-      }
-    };
-
     if (!currentHost) {
       return;
     }
     setLocalSettings(currentHost.settings);
     getCategories();
-    currentHost.settings && handleSetActiveMenu();
     currentHost.settings &&
       currentHost.settings.mainColor &&
       setMainColor(currentHost.settings.mainColor);
-    getEmails();
     setLoading(false);
   }, []);
-
-  const handleSetActiveMenu = (key, label) => {
-    const newActiveMenu = {};
-    currentHost.settings.menu.forEach((item) => {
-      newActiveMenu[item.name] = item.label.toUpperCase();
-    });
-
-    setActiveMenu(newActiveMenu);
-  };
 
   const handleFormChange = (newSettings) => {
     setFormAltered(true);
@@ -244,78 +187,6 @@ const Settings = ({ history }) => {
     setMainColor(newMainColor);
   };
 
-  const handleMenuItemCheck = (changedItemIndex, value) => {
-    const newMenu = localSettings.menu.map((item, index) => {
-      if (changedItemIndex === index) {
-        return {
-          ...item,
-          isVisible: value,
-        };
-      }
-      return item;
-    });
-    setLocalSettings({ ...localSettings, menu: newMenu });
-  };
-
-  const handleChangeActiveMenu = (value) => {
-    setActiveMenu(value);
-    const newMenu = localSettings.menu.map((item) => {
-      return {
-        ...item,
-        label: value[item.name],
-      };
-    });
-
-    setLocalSettings({ ...localSettings, menu: newMenu });
-  };
-
-  const onSortMenuEnd = ({ oldIndex, newIndex }) => {
-    const { menu } = localSettings;
-    const visibleItems = menu.filter((item) => item.isVisible);
-    const invisibleItems = menu.filter((item) => !item.isVisible);
-    const newSettings = {
-      ...localSettings,
-      menu: [...arrayMove(visibleItems, oldIndex, newIndex), ...invisibleItems],
-    };
-    setLocalSettings(newSettings);
-  };
-
-  const handleMenuSave = async () => {
-    setLoading(true);
-    try {
-      await call('updateHostSettings', localSettings);
-      message.success('Settings are successfully saved');
-    } catch (error) {
-      message.error(error.reason);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleWelcomeEmailChange = (value) => {
-    const newWelcomeEmail = {
-      ...value,
-      body: emails.welcomeEmail.body,
-    };
-    setEmails({ ...emails, welcomeEmail: newWelcomeEmail });
-  };
-
-  const handleWelcomeEmailBodyChange = (body) => {
-    setEmails({ ...emails, welcomeEmail: { ...emails.welcomeEmail, body } });
-  };
-
-  const updateWelcomeEmail = async ({ value }) => {
-    setLoading(true);
-    try {
-      await call('updateWelcomeEmail', value);
-      message.success('Welcome email is successfully updated');
-    } catch (error) {
-      message.error(error.reason || error.error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const pathname = history && history.location.pathname;
   const settings = currentHost && currentHost.settings;
 
@@ -397,107 +268,7 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Menu</Heading>
-        <Tabs>
-          <Tab title="Visibility">
-            <Box margin={{ bottom: 'large' }}>
-              <Text weight="bold">Visibility</Text>
-              <Text margin={{ bottom: 'medium' }} size="small">
-                Check/uncheck items to compose the main menu
-              </Text>
-
-              <Form onSubmit={() => handleMenuSave()}>
-                {localSettings &&
-                  localSettings.menu &&
-                  localSettings.menu.map((item, index) => (
-                    <Box key={item.name} margin={{ bottom: 'small' }}>
-                      <CheckBox
-                        checked={item.isVisible}
-                        label={item.label}
-                        onChange={(event) =>
-                          handleMenuItemCheck(index, event.target.checked)
-                        }
-                      />
-                    </Box>
-                  ))}
-
-                <Box
-                  direction="row"
-                  justify="start"
-                  pad={{ vertical: 'small' }}
-                >
-                  <Button type="submit" label="Confirm" />
-                </Box>
-              </Form>
-            </Box>
-          </Tab>
-
-          <Tab title="Labels">
-            <Box margin={{ bottom: 'large' }}>
-              <Text weight="bold">Labels</Text>
-              <Text margin={{ bottom: 'medium' }} size="small">
-                Type a name if you want to replace labels of the menu items.
-                Note that only one word is allowed.
-              </Text>
-              {activeMenu && (
-                <Form
-                  value={activeMenu}
-                  onChange={(value) => handleChangeActiveMenu(value)}
-                  onSubmit={() => handleMenuSave()}
-                >
-                  {localSettings.menu
-                    .filter((ite) => ite.isVisible)
-                    .map((item) => (
-                      <LabelChangableItem key={item.name} name={item.name} />
-                    ))}
-
-                  <Box
-                    direction="row"
-                    justify="start"
-                    pad={{ vertical: 'small' }}
-                  >
-                    <Button type="submit" label="Confirm" />
-                  </Box>
-                </Form>
-              )}
-            </Box>
-          </Tab>
-
-          <Tab title="Order">
-            <Box margin={{ bottom: 'large' }}>
-              <Text weight="bold">Order</Text>
-              <Text margin={{ bottom: 'medium' }} size="small">
-                Reorder items by dragging up and down, if you want to change the
-                menu display order
-              </Text>
-              <Box>
-                {localSettings && localSettings.menu && (
-                  <SortableContainer
-                    onSortEnd={onSortMenuEnd}
-                    helperClass="sortableHelper"
-                  >
-                    {localSettings.menu
-                      .filter((item) => item.isVisible)
-                      .map((value, index) => (
-                        <SortableItem
-                          key={`item-${value.name}`}
-                          index={index}
-                          value={value.label}
-                        />
-                      ))}
-                  </SortableContainer>
-                )}
-              </Box>
-              <Box direction="row" justify="end" pad={{ vertical: 'small' }}>
-                <Button
-                  onClick={() => handleMenuSave()}
-                  type="submit"
-                  label="Confirm"
-                />
-              </Box>
-            </Box>
-          </Tab>
-        </Tabs>
+        <Menu />
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
@@ -539,35 +310,5 @@ const Settings = ({ history }) => {
     </Template>
   );
 };
-
-const SortableItem = sortableElement(({ value }) => (
-  <Box
-    key={value}
-    className="sortable-thumb"
-    pad="small"
-    margin={{ bottom: 'small' }}
-    background="light-1"
-    direction="row"
-  >
-    <Drag /> {value}
-  </Box>
-));
-
-const SortableContainer = sortableContainer(({ children }) => (
-  <Box>{children}</Box>
-));
-
-const LabelChangableItem = ({ name }) => (
-  <Box width="medium">
-    <FormField name={name} label={name.toUpperCase()} size="small">
-      <TextInput
-        plain={false}
-        name={name}
-        size="small"
-        placeholder={getMenuPlaceHolder(name)}
-      />
-    </FormField>
-  </Box>
-);
 
 export default Settings;
