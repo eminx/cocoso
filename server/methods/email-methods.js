@@ -25,11 +25,13 @@ Meteor.methods({
       toEmail = Meteor.users.findOne({ username: id }).emails[0].address;
     }
 
+    this.unblock();
+
     const data = {
       from: fromEmail,
       to: toEmail,
       subject: subjectEmail,
-      text: textEmail,
+      html: textEmail,
     };
 
     Email.send(data);
