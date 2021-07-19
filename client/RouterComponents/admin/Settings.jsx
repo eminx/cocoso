@@ -9,12 +9,10 @@ import {
   Form,
   FormField,
   Heading,
-  List,
   Tabs,
   Tab,
   Text,
   TextInput,
-  TextArea,
 } from 'grommet';
 import { Drag } from 'grommet-icons/icons/Drag';
 import { HuePicker } from 'react-color';
@@ -31,6 +29,7 @@ import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../UIComponents/FileDropper';
+import Emails from './Emails';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -66,7 +65,13 @@ const getMenuPlaceHolder = (item) => {
   }
 };
 
-menuItems = ['activities', 'calendar', 'processes', 'works', 'info'];
+const defaultEmails = {
+  welcomeEmail: {
+    subject: '',
+    appeal: '',
+    body: '',
+  },
+};
 
 const Settings = ({ history }) => {
   const [localSettings, setLocalSettings] = useState(null);
@@ -78,6 +83,7 @@ const Settings = ({ history }) => {
   const [localImage, setLocalImage] = useState(null);
   const [mainColor, setMainColor] = useState(colorModel);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [emails, setEmails] = useState(defaultEmails);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
@@ -86,13 +92,27 @@ const Settings = ({ history }) => {
   }
 
   useEffect(() => {
-    currentHost && setLocalSettings(currentHost.settings);
+    const getEmails = async () => {
+      try {
+        const emails = await call('getEmails');
+        setEmails(emails);
+      } catch (error) {
+        message(error.reason);
+        console.log(error);
+      }
+    };
+
+    if (!currentHost) {
+      return;
+    }
+    setLocalSettings(currentHost.settings);
     getCategories();
-    setLoading(false);
     currentHost.settings && handleSetActiveMenu();
-    currentHost &&
+    currentHost.settings &&
       currentHost.settings.mainColor &&
       setMainColor(currentHost.settings.mainColor);
+    getEmails();
+    setLoading(false);
   }, []);
 
   const handleSetActiveMenu = (key, label) => {
@@ -265,9 +285,33 @@ const Settings = ({ history }) => {
     try {
       await call('updateHostSettings', localSettings);
       message.success('Settings are successfully saved');
-      setLoading(false);
     } catch (error) {
       message.error(error.reason);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleWelcomeEmailChange = (value) => {
+    const newWelcomeEmail = {
+      ...value,
+      body: emails.welcomeEmail.body,
+    };
+    setEmails({ ...emails, welcomeEmail: newWelcomeEmail });
+  };
+
+  const handleWelcomeEmailBodyChange = (body) => {
+    setEmails({ ...emails, welcomeEmail: { ...emails.welcomeEmail, body } });
+  };
+
+  const updateWelcomeEmail = async ({ value }) => {
+    setLoading(true);
+    try {
+      await call('updateWelcomeEmail', value);
+      message.success('Welcome email is successfully updated');
+    } catch (error) {
+      message.error(error.reason || error.error);
+    } finally {
       setLoading(false);
     }
   };
@@ -490,43 +534,7 @@ const Settings = ({ history }) => {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-        <Heading level={3}>Emails</Heading>
-        <Box>
-          <Heading level={4}>Welcome Email</Heading>
-          <Form onSubmit={() => setWelcomeEmail()}>
-            <Field label="Subject">
-              <TextInput name="subject" placeholder="Welcome" size="medium" />
-            </Field>
-            <Field label="Appeal">
-              <Box
-                direction="row"
-                gap="small"
-                width="medium"
-                align="center"
-                justify="start"
-              >
-                <Box style={{ width: 120 }}>
-                  <TextInput
-                    name="appeal"
-                    placeholder="Dear"
-                    plain={false}
-                    size="small"
-                  />
-                </Box>
-                <Text weight="bold">@username</Text>
-              </Box>
-            </Field>
-
-            <Field label="Body">
-              <ReactQuill
-                // value={formValues.description || ''}
-                modules={editorModules}
-                formats={editorFormats}
-                // onChange={onQuillChange}
-              />
-            </Field>
-          </Form>
-        </Box>
+        <Emails />
       </Box>
     </Template>
   );
@@ -545,23 +553,21 @@ const SortableItem = sortableElement(({ value }) => (
   </Box>
 ));
 
-const SortableContainer = sortableContainer(({ children }) => {
-  return <Box>{children}</Box>;
-});
+const SortableContainer = sortableContainer(({ children }) => (
+  <Box>{children}</Box>
+));
 
-const LabelChangableItem = ({ name }) => {
-  return (
-    <Box width="medium">
-      <FormField name={name} label={name.toUpperCase()} size="small">
-        <TextInput
-          plain={false}
-          name={name}
-          size="small"
-          placeholder={getMenuPlaceHolder(name)}
-        />
-      </FormField>
-    </Box>
-  );
-};
+const LabelChangableItem = ({ name }) => (
+  <Box width="medium">
+    <FormField name={name} label={name.toUpperCase()} size="small">
+      <TextInput
+        plain={false}
+        name={name}
+        size="small"
+        placeholder={getMenuPlaceHolder(name)}
+      />
+    </FormField>
+  </Box>
+);
 
 export default Settings;

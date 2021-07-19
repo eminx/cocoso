@@ -221,12 +221,19 @@ Meteor.methods({
     }
   },
 
-  getHostSettings() {
+  getEmails() {
+    const user = Meteor.user();
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
 
     try {
       const currentHost = Hosts.findOne({ host });
-      return currentHost.settings;
+      return currentHost.emails;
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -362,6 +369,35 @@ Meteor.methods({
         {
           $set: {
             settings: newSettings,
+          },
+        }
+      );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  updateWelcomeEmail(value) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    const emails = {
+      ...currentHost.emails,
+      welcomeEmail: value,
+    };
+
+    try {
+      Hosts.update(
+        { host },
+        {
+          $set: {
+            emails,
           },
         }
       );
