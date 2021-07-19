@@ -310,14 +310,11 @@ Meteor.methods({
         getUnregistrationEmailBody(
           theNonAttendee.firstName,
           theOccurence,
-          activityId
-        ),
-        hostName
+          activityId,
+          hostName
+        )
       );
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't remove attendance due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't update document");
     }
   },
