@@ -7,26 +7,29 @@ import {
   isMember,
 } from './shared';
 
-const publicSettings = Meteor.settings.public;
-const contextName = publicSettings.contextName;
-
 import { getResourceIndex, siteUrl } from './shared';
 
-const getRegistrationText = (
+const getRegistrationEmailBody = (
   firstName,
   numberOfPeople,
   occurence,
-  activityId
+  activityId,
+  hostName
 ) => {
   return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully signed up for this event.\nYou have registered to come ${numberOfPeople} ${
     numberOfPeople === 1 ? 'person' : 'people'
   } in total for the event on ${occurence.startDate} at ${
     occurence.startTime
-  }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${activityId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\n${contextName} Team`;
+  }.\nMay there be any changes to that, please go to this link to change your RSVP: ${siteUrl}event/${activityId}.\nThen by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.\nWe look forward to your participation.\n\n${hostName} Team`;
 };
 
-const getRemovalText = (firstName, occurence, activityId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully removed your registration from this event.\nYou have previously registered to attend the event on ${occurence.startDate} at ${occurence.startTime}, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${activityId}.\n\nKind regards,\n${contextName} Team`;
+const getUnregistrationEmailBody = (
+  firstName,
+  occurence,
+  activityId,
+  hostName
+) => {
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully removed your registration from this event.\nYou have previously registered to attend the event on ${occurence.startDate} at ${occurence.startTime}, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${activityId}.\n\nKind regards,\n${hostName} Team`;
 };
 
 Meteor.methods({
@@ -205,6 +208,10 @@ Meteor.methods({
       occurences[occurenceIndex].attendees = [rsvpValues];
     }
 
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const hostName = currentHost.settings.name;
+
     try {
       Activities.update(activityId, {
         $set: {
@@ -214,12 +221,13 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         values.email,
-        `Your registration for "${theActivity.title}" at ${contextName}`,
-        getRegistrationText(
+        `Your registration for "${theActivity.title}" at ${hostName}`,
+        getRegistrationEmailBody(
           values.firstName,
           values.numberOfPeople,
           occurences[occurenceIndex],
-          activityId
+          activityId,
+          hostName
         )
       );
     } catch (error) {
@@ -242,6 +250,10 @@ Meteor.methods({
     const occurences = [...theActivity.datesAndTimes];
     occurences[occurenceIndex].attendees[attendeeIndex] = values;
 
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const hostName = currentHost.settings.name;
+
     try {
       Activities.update(activityId, {
         $set: {
@@ -251,12 +263,13 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         values.email,
-        `Update to your registration for "${theActivity.title}" at ${contextName}`,
-        getRegistrationText(
+        `Update to your registration for "${theActivity.title}" at ${hostName}`,
+        getRegistrationEmailBody(
           values.firstName,
           values.numberOfPeople,
           occurences[occurenceIndex],
-          activityId
+          activityId,
+          hostName
         )
       );
     } catch (error) {
@@ -280,6 +293,10 @@ Meteor.methods({
 
     occurences[occurenceIndex].attendees.splice(attendeeIndex, 1);
 
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const hostName = currentHost.settings.name;
+
     try {
       Activities.update(activityId, {
         $set: {
@@ -289,8 +306,13 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         theNonAttendee.email,
-        `Update to your registration for "${theActivity.title}" at ${contextName}`,
-        getRemovalText(theNonAttendee.firstName, theOccurence, activityId)
+        `Update to your registration for "${theActivity.title}" at ${hostName}`,
+        getUnregistrationEmailBody(
+          theNonAttendee.firstName,
+          theOccurence,
+          activityId
+        ),
+        hostName
       );
     } catch (error) {
       // Logger.createLogger(
