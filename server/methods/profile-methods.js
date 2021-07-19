@@ -21,12 +21,17 @@ Meteor.methods({
     const validMembers = members.filter((member) => member && member.id);
     return validMembers;
   },
+
   createAccount(values) {
     check(values.email, String);
     check(values.username, String);
     check(values.password, String);
+
     try {
       const userId = Accounts.createUser(values);
+      if (userId) {
+        Meteor.call('sendWelcomeEmail', userId);
+      }
       return userId;
     } catch (error) {
       console.log(error);
@@ -35,9 +40,8 @@ Meteor.methods({
   },
 
   setSelfAsParticipant() {
-    const host = getHost(this);
     const user = Meteor.user();
-
+    const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
     if (
