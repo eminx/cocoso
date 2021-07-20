@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../../constants/quillConfig';
 import {
   Box,
   Button,
@@ -11,6 +10,8 @@ import {
   TextInput,
 } from 'grommet';
 
+import { editorFormats, editorModules } from '../../constants/quillConfig';
+import { defaultEmails } from '../../../lib/constants';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
@@ -21,14 +22,6 @@ const Field = ({ children, ...otherProps }) => (
     {children}
   </FormField>
 );
-
-const defaultEmails = {
-  welcomeEmail: {
-    subject: '',
-    appeal: '',
-    body: '',
-  },
-};
 
 export default function Emails() {
   const [loading, setLoading] = useState(true);
@@ -55,6 +48,10 @@ export default function Emails() {
 
     getEmails();
   }, []);
+
+  if (!emails) {
+    return null;
+  }
 
   const handleWelcomeEmailChange = (value) => {
     const newWelcomeEmail = {

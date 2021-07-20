@@ -1,6 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-import { defaultMenu, defaultMainColor } from '../../lib/constants';
+import {
+  defaultMenu,
+  defaultMainColor,
+  defaultEmails,
+} from '../../lib/constants';
 
 Meteor.methods({
   async createNewHost(values) {
@@ -34,6 +38,7 @@ Meteor.methods({
             date: new Date(),
           },
         ],
+        emails: defaultEmails,
       });
 
       await Pages.insert({
@@ -46,7 +51,7 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      await Meteor.users.update(currentUser._id, {
+      Meteor.users.update(currentUser._id, {
         $push: {
           memberships: {
             host: values.host,
