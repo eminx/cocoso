@@ -38,7 +38,7 @@ const colorModel = {
   },
 };
 
-const Settings = ({ history }) => {
+export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryInput, setCategoryInput] = useState('');
@@ -309,6 +309,4 @@ const Settings = ({ history }) => {
       </Box>
     </Template>
   );
-};
-
-export default Settings;
+}

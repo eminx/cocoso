@@ -15,8 +15,8 @@ const FileDropper = ({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          background={isDragActive ? 'dark-3' : 'dark-1'}
-          border={{ size: 'xsmall' }}
+          background={isDragActive ? 'light-3' : 'light-1'}
+          border={{ size: 'xsmall', style: 'dashed' }}
           elevation="medium"
           height="small"
           style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
