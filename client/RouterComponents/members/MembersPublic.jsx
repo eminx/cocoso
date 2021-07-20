@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Anchor, Box, Text } from 'grommet';
 import { Avatar } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
+import { StateContext } from '../../LayoutContainer';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -30,9 +32,12 @@ const overflowStyle = {
   textAlign: 'center',
 };
 
+const publicSettings = Meteor.settings.public;
+
 function PublicMembers({ history }) {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
+  const { currentHost } = useContext(StateContext);
 
   const getAndSetMembers = async () => {
     setLoading(true);
@@ -108,6 +113,9 @@ function PublicMembers({ history }) {
       gap={{ bottom: 'medium', horizontal: 'small' }}
       style={{ maxWidth: 960 }}
     >
+      <Helmet>
+        <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
       {members.map((member) => (
         <Link to={`/@${member.username}`} key={member.id}>
           <Box align="center" margin="small">

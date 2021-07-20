@@ -1,13 +1,16 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { Box, Button, Heading } from 'grommet';
+import { Box, Button } from 'grommet';
 import { ScreenClassRender } from 'react-grid-system';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
 
+const publicSettings = Meteor.settings.public;
 const yesterday = moment(new Date()).add(-1, 'days');
 
 const getFirstFutureOccurence = (occurence) =>
@@ -26,7 +29,8 @@ const compareForSort = (a, b) => {
 };
 
 function Activities({ activitiesList, processesList, isLoading, history }) {
-  const { currentUser, canCreateContent } = useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } =
+    useContext(StateContext);
 
   const getPublicActivities = () => {
     if (!activitiesList) {
@@ -57,9 +61,8 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
       )
     );
 
-    const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(
-      futureProcesses
-    );
+    const futureProcessesWithAccessFilter =
+      parseOnlyAllowedProcesses(futureProcesses);
 
     return futureProcessesWithAccessFilter.map((process) => ({
       ...process,
@@ -105,11 +108,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
             <Loader />
           ) : (
             <Box>
-              <Box alignSelf="center">
-                {/* <Heading level={2} textAlign="center">
-                  Activities
-                </Heading> */}
-              </Box>
+              <Helmet>
+                <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+              </Helmet>
               {canCreateContent && (
                 <Box
                   direction="row"

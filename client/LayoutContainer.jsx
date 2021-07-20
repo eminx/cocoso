@@ -28,7 +28,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
-import NotificationsPopup from './UIComponents/NotificationsPopup';
 import theme from './constants/theme';
 
 const menu = [

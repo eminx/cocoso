@@ -1,4 +1,5 @@
-import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactToPrint from 'react-to-print';
@@ -30,7 +31,7 @@ import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
 import { message } from '../../UIComponents/message';
 
-class Activity extends React.Component {
+class Activity extends PureComponent {
   state = {
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,

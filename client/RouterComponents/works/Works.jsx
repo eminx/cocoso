@@ -1,6 +1,8 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button } from 'grommet';
+import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
 import { StateContext } from '../../LayoutContainer';
@@ -8,6 +10,8 @@ import Loader from '../../UIComponents/Loader';
 import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
+
+const publicSettings = Meteor.settings.public;
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -19,11 +23,12 @@ function getHSL(length, index, opacity = 1) {
   return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
 }
 
-const Works = ({ history }) => {
+export default function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
-  const { currentUser, canCreateContent } = useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } =
+    useContext(StateContext);
 
   useEffect(() => {
     getAllWorks();
@@ -56,6 +61,9 @@ const Works = ({ history }) => {
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
+      <Helmet>
+        <title>{`Works | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
@@ -98,7 +106,7 @@ const Works = ({ history }) => {
       </Box>
     </Box>
   );
-};
+}
 
 getCategories = (works) => {
   const labels = Array.from(
@@ -116,5 +124,3 @@ getCategories = (works) => {
 getOpacHSL = (color) => {
   return color ? color.substr(0, color.length - 4) + '1)' : null;
 };
-
-export default Works;

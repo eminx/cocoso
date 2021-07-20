@@ -1,11 +1,11 @@
-import React from 'react';
-// import { List, Avatar, Icon, Card, Radio, Button } from 'antd/lib';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 BigCalendar.momentLocalizer(moment);
+
+import { StateContext } from '../LayoutContainer';
 
 const avatarSrc =
   'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png';
@@ -31,45 +31,41 @@ function shortenDescription(str) {
   return str.split(/\s+/).slice(0, 20).join(' ');
 }
 
-class ActivitiesList extends React.Component {
-  state = {};
+function ActivitiesList(props) {
+  const readMoreButton = <Button>Read more</Button>;
+  const { activities } = props;
+  const activitiesSorted = activities.sort(sortDates);
 
-  render() {
-    const readMoreButton = <Button>Read more</Button>;
-    const { activities, images } = this.props;
-    const activitiesSorted = activities.sort(sortDates);
-
-    return (
-      <div>
-        <List
-          itemLayout="vertical"
-          size="large"
-          dataSource={activitiesSorted}
-          renderItem={(item, i) => (
-            <Card>
-              <List.Item
-                key={item.title + i}
-                actions={[
-                  <Link to={`/activity/${item._id}`}>{readMoreButton}</Link>,
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={<Avatar src={avatarSrc} />}
-                  title={
-                    <Link to={`/activity/${item._id}`}>
-                      <h2>{item.title}</h2>
-                    </Link>
-                  }
-                  description={item.shortDescription}
-                />
-                {/*shortenDescription(item.longDescription) + '...'*/}
-              </List.Item>
-            </Card>
-          )}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <List
+        itemLayout="vertical"
+        size="large"
+        dataSource={activitiesSorted}
+        renderItem={(item, i) => (
+          <Card>
+            <List.Item
+              key={item.title + i}
+              actions={[
+                <Link to={`/activity/${item._id}`}>{readMoreButton}</Link>,
+              ]}
+            >
+              <List.Item.Meta
+                avatar={<Avatar src={avatarSrc} />}
+                title={
+                  <Link to={`/activity/${item._id}`}>
+                    <h2>{item.title}</h2>
+                  </Link>
+                }
+                description={item.shortDescription}
+              />
+              {/*shortenDescription(item.longDescription) + '...'*/}
+            </List.Item>
+          </Card>
+        )}
+      />
+    </div>
+  );
 }
 
 export default ActivitiesList;

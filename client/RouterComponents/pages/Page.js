@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Anchor, Button, Box } from 'grommet';
 import renderHTML from 'react-render-html';
+import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../UIComponents/PagesList';
@@ -10,6 +11,8 @@ import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 
 import { parseTitle } from '../../functions';
+
+const publicSettings = Meteor.settings.public;
 
 class Page extends PureComponent {
   state = {
@@ -42,7 +45,7 @@ class Page extends PureComponent {
   };
 
   render() {
-    const { currentUser, role } = this.context;
+    const { currentUser, currentHost, role } = this.context;
     const { match } = this.props;
     const { pages, isLoading } = this.state;
 
@@ -87,6 +90,10 @@ class Page extends PureComponent {
           )
         }
       >
+        <Helmet>
+          <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        </Helmet>
+
         <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
           <div className="text-content">
             {renderHTML(currentPage.longDescription)}

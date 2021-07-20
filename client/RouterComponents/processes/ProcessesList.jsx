@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
 import { Meteor } from 'meteor/meteor';
+import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -10,6 +11,8 @@ import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../functions';
+
+const publicSettings = Meteor.settings.public;
 
 const filterOptions = [
   {
@@ -26,9 +29,14 @@ const filterOptions = [
   },
 ];
 
-function ProcessesList({ isLoading, currentUser, processes, history }) {
+export default function ProcessesList({
+  isLoading,
+  currentUser,
+  processes,
+  history,
+}) {
   const [filterBy, setFilterBy] = useState('active');
-  const { canCreateContent, role } = useContext(StateContext);
+  const { canCreateContent, currentHost } = useContext(StateContext);
 
   const archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
@@ -66,9 +74,8 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
       }
     });
 
-    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(
-      filteredProcesses
-    );
+    const filteredProcessesWithAccessFilter =
+      parseOnlyAllowedProcesses(filteredProcesses);
     return filteredProcessesWithAccessFilter;
   };
 
@@ -108,9 +115,8 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
     return <Loader />;
   }
 
-  const processesFilteredAndSorted = getFilteredProcesses().sort(
-    compareForSort
-  );
+  const processesFilteredAndSorted =
+    getFilteredProcesses().sort(compareForSort);
 
   const processesList = processesFilteredAndSorted.map((process) => ({
     ...process,
@@ -129,6 +135,9 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
 
   return (
     <Template>
+      <Helmet>
+        <title>{`Processes | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
       <Box>
         {canCreateContent && (
           <Box margin={{ bottom: 'medium' }} alignSelf="center">
@@ -162,36 +171,36 @@ function ProcessesList({ isLoading, currentUser, processes, history }) {
   );
 }
 
-const ProcessItem = ({ process, history }) => (
-  <Box
-    width="100%"
-    onClick={() => history.push(`/process/${process._id}`)}
-    hoverIndicator="light-1"
-    pad="small"
-    direction="row"
-    margin={{ bottom: 'medium' }}
-    background="white"
-    hoverIndicator="brand-light"
-  >
-    <Box width="small" height="small" margin={{ right: 'small' }}>
-      <Image fit="cover" fill src={process.imageUrl} />
-    </Box>
-    <Box width="100%">
-      <Box>
-        <Heading level={3}>{process.title}</Heading>
-        <Text weight={300}>{process.readingMaterial}</Text>
+function ProcessItem({ process, history }) {
+  return (
+    <Box
+      width="100%"
+      onClick={() => history.push(`/process/${process._id}`)}
+      hoverIndicator="light-1"
+      pad="small"
+      direction="row"
+      margin={{ bottom: 'medium' }}
+      background="white"
+      hoverIndicator="brand-light"
+    >
+      <Box width="small" height="small" margin={{ right: 'small' }}>
+        <Image fit="cover" fill src={process.imageUrl} />
       </Box>
+      <Box width="100%">
+        <Box>
+          <Heading level={3}>{process.title}</Heading>
+          <Text weight={300}>{process.readingMaterial}</Text>
+        </Box>
 
-      <Box pad="small">
-        <Text size="small" textAlign="end">
-          {process.adminUsername}
-        </Text>
-        <Text size="xsmall" textAlign="end">
-          {moment(process.creationDate).format('Do MMM YYYY')}
-        </Text>
+        <Box pad="small">
+          <Text size="small" textAlign="end">
+            {process.adminUsername}
+          </Text>
+          <Text size="xsmall" textAlign="end">
+            {moment(process.creationDate).format('Do MMM YYYY')}
+          </Text>
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
-
-export default ProcessesList;
+  );
+}

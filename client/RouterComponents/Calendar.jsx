@@ -1,8 +1,10 @@
-import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Box, Button, Heading, Text } from 'grommet';
 import renderHTML from 'react-render-html';
+import { Helmet } from 'react-helmet';
 
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
@@ -11,9 +13,10 @@ import { SimpleTag, message } from '../UIComponents/message';
 import colors from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
 
+const publicSettings = Meteor.settings.public;
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Calendar extends React.PureComponent {
+class Calendar extends PureComponent {
   state = {
     mode: 'list',
     editActivity: null,
@@ -158,7 +161,7 @@ class Calendar extends React.PureComponent {
 
   render() {
     const { isLoading, currentUser, resourcesList, allActivities } = this.props;
-    const { canCreateContent, role } = this.context;
+    const { canCreateContent, currentHost, role } = this.context;
     const { editActivity, calendarFilter, selectedActivity, isUploading } =
       this.state;
 
@@ -188,6 +191,9 @@ class Calendar extends React.PureComponent {
 
     return (
       <Box>
+        <Helmet>
+          <title>{`Activity Calendar | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        </Helmet>
         {currentUser && canCreateContent && (
           <Box
             direction="row"
