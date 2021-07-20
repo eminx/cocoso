@@ -20,7 +20,7 @@ Meteor.methods({
 
       return worksWithAvatars;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+      throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },
 
