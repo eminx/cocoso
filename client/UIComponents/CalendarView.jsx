@@ -1,20 +1,27 @@
 import React from 'react';
-import BigCalendar from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import 'moment/locale/en-gb';
-BigCalendar.momentLocalizer(moment);
+
+moment.locale('en-GB', {
+  week: {
+    dow: 1, //Monday is the first day of the week.
+  },
+});
+
+const localizer = momentLocalizer(moment);
 
 function CalendarView(props) {
   const { activities } = props;
 
   return (
     <div>
-      <BigCalendar
+      <Calendar
+        localizer={localizer}
+        events={activities}
         eventPropGetter={(event) => ({
           className: 'category-' + event.resourceIndex,
         })}
         onSelectEvent={props.onSelect}
-        events={activities}
         defaultView="month"
         showMultiDayTimes
         step={60}
