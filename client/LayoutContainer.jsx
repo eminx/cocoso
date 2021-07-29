@@ -22,6 +22,7 @@ import {
 import { Close } from 'grommet-icons/icons/Close';
 import { Down } from 'grommet-icons/icons/Down';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
+import { Helmet } from 'react-helmet';
 
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -29,6 +30,8 @@ export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import theme from './constants/theme';
+
+const publicSettings = Meteor.settings.public;
 
 const menu = [
   {
@@ -161,6 +164,11 @@ function LayoutPage({
 
   return (
     <Grommet theme={customTheme}>
+      {publicSettings.faviconUrl && (
+        <Helmet>
+          <link rel="icon" href={publicSettings.faviconUrl} />
+        </Helmet>
+      )}
       <ChakraProvider>
         <StateContext.Provider
           value={{
@@ -283,7 +291,11 @@ const Header = ({ currentUser, currentHost, title, history }) => {
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Box>
                   <Link to="/">
-                    <Box width="120px" height="60px" margin={{ top: 'small' }}>
+                    <Box
+                      width="120px"
+                      height="60px"
+                      margin={{ top: 'small', left: 'small' }}
+                    >
                       <Image
                         fit="contain"
                         src={currentHost && currentHost.logo}
