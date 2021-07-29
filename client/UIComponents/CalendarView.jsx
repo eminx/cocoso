@@ -1,7 +1,10 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import 'moment/locale/en-gb';
+BigCalendar.momentLocalizer(moment);
 
-const CalendarView = (props) => {
+function CalendarView(props) {
   const { activities } = props;
 
   return (
@@ -19,12 +22,9 @@ const CalendarView = (props) => {
         popup
         popupOffset={30}
         allDayAccessor="isMultipleDay"
-        // components={{
-        //   toolbar: CalendarToolbar
-        // }}
       />
     </div>
   );
-};
+}
 
 export default CalendarView;
