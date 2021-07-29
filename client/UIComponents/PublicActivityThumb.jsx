@@ -20,30 +20,6 @@ const ellipsisStyle = {
 };
 
 function PublicActivityThumb({ item, large, history }) {
-  const getEventTimes = (event) => {
-    if (!event) {
-      return;
-    }
-
-    if (event.isMultipleDay || event.isFullDay) {
-      return (
-        moment(event.startDate).format('Do MMM') +
-        ' ' +
-        event.startTime +
-        ' – ' +
-        moment(event.endDate).format('Do MMM') +
-        ' ' +
-        event.endTime
-      );
-    } else if (event.startTime) {
-      return `${event.startTime}–${event.endTime} ${moment(
-        event.startDate
-      ).format('DD MMMM')}`;
-    } else {
-      return '';
-    }
-  };
-
   const renderDate = (date) => {
     if (!date) {
       return;
@@ -88,9 +64,8 @@ function PublicActivityThumb({ item, large, history }) {
 
   return (
     <Box
-      pad="medium"
-      background="white"
       width="320px"
+      background={{ color: 'rgba(255, 255, 255, 0.7)' }}
       margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
       hoverIndicator="brand-light"
       onClick={() =>
@@ -99,7 +74,7 @@ function PublicActivityThumb({ item, large, history }) {
         )
       }
     >
-      <Box pad={{ bottom: 'medium' }}>
+      <Box pad="small">
         <Text size="large" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
         </Text>
@@ -123,6 +98,7 @@ function PublicActivityThumb({ item, large, history }) {
         alignItems="center"
         margin={{ top: 'small' }}
         wrap
+        pad="small"
       >
         {futureDates.slice(0, 3).map((date) => renderDate(date))}
         {remaining > 0 && <div style={{ ...dateStyle }}>+ {remaining}</div>}
