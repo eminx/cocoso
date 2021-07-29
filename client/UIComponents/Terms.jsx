@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
-const contextName = Meteor.settings.public.contextName;
+const publicSettings = Meteor.settings.public;
 
 const Terms = () => {
   return (
     <div>
-      <h3>{contextName} user agreement</h3>
+      <h3>{publicSettings.name} user agreement</h3>
       <p>
         With an account, you are a member and can join any one or all of our
         study process’s online forums free of charge. If you join a study
@@ -18,21 +18,22 @@ const Terms = () => {
       </p>
       <p>
         As a member you will also receive running notifications about things
-        happening at {contextName}, and can sign yourself up (RSVP) for events
-        with a simple click. Your username will be visible for staff members in
-        the list of attendees.
+        happening at {publicSettings.name}, and can sign yourself up (RSVP) for
+        events with a simple click. Your username will be visible for staff
+        members in the list of attendees.
       </p>
       <p>
         The discussions for each study process are visible to all members of
-        {contextName}. These discussions are kept for the duration of the
-        process and will be archived, but can be erased if the process wishes.
+        {publicSettings.name}. These discussions are kept for the duration of
+        the process and will be archived, but can be erased if the process
+        wishes.
       </p>
       <p>
-        {contextName} expects all members to keep respectful and supportive
-        language when communicating. We want to ensure a friendly and welcoming
-        environment, while encouraging critical thinking and constructive
-        dialogue. Members who go against these simple rules run the risk of
-        having their membership removed.
+        {publicSettings.name} expects all members to keep respectful and
+        supportive language when communicating. We want to ensure a friendly and
+        welcoming environment, while encouraging critical thinking and
+        constructive dialogue. Members who go against these simple rules run the
+        risk of having their membership removed.
       </p>
       <p>
         Your personal information will never be shared with any external party.
@@ -43,7 +44,7 @@ const Terms = () => {
         our GDPR policy.
       </p>
 
-      <h3>{contextName}'s data policy, GDPR</h3>
+      <h3>{publicSettings.name}'s data policy, GDPR</h3>
       <p>
         GDPR (General Data Protection Regulation) is an EU law that regulates
         how you as a user own your personal information and how you have the
@@ -56,29 +57,30 @@ const Terms = () => {
       </p>
       <h4>What data we collect, how we store it, and why</h4>
       <p>
-        {contextName} collects only two pieces of information: a username and an
-        e-mail address. Your e-mail address is considered personal information.
-        The name you choose does not have to be your legal name, so if you
-        choose to use your legal name you do so at your own discretion. This
-        name will be displayed on the website only to other members: in the
-        member list of processes you have joined; when sending discussion
-        messages; and in the RSVP list when attending events (this latter
-        visible only to staff).
+        {publicSettings.name} collects only two pieces of information: a
+        username and an e-mail address. Your e-mail address is considered
+        personal information. The name you choose does not have to be your legal
+        name, so if you choose to use your legal name you do so at your own
+        discretion. This name will be displayed on the website only to other
+        members: in the member list of processes you have joined; when sending
+        discussion messages; and in the RSVP list when attending events (this
+        latter visible only to staff).
       </p>
       <p>
-        We use your e-mail address to send you notifications. {contextName}{' '}
-        collects this information when you sign up for an account, as well as
-        when you change your account information. To login you will be asked to
-        provide a password for your account. It is your responsibility to ensure
-        this password is stored securely and is sufficiently robust.
+        We use your e-mail address to send you notifications.{' '}
+        {publicSettings.name} collects this information when you sign up for an
+        account, as well as when you change your account information. To login
+        you will be asked to provide a password for your account. It is your
+        responsibility to ensure this password is stored securely and is
+        sufficiently robust.
       </p>
 
       <h3>Data storage</h3>
       <p>
-        {contextName} uses cookies in your web browser for the sole purpose of
-        storing your password. Your password is encrypted in our database, so
-        there is no way we can access or read it. Your connection to{' '}
-        {contextName} is also encrypted using SSL (HTTPS).
+        {publicSettings.name} uses cookies in your web browser for the sole
+        purpose of storing your password. Your password is encrypted in our
+        database, so there is no way we can access or read it. Your connection
+        to {publicSettings.name} is also encrypted using SSL (HTTPS).
       </p>
       <p>
         The list of e-mail addresses is secure and can be accessed only by the
@@ -109,9 +111,9 @@ const Terms = () => {
 
       <h3>Requesting information about your personal information</h3>
       <p>
-        You can contact {contextName} via e-mail to request anything about your
-        personal information—what we store, how it is used, and if you want to
-        change or remove it.
+        You can contact {publicSettings.name} via e-mail to request anything
+        about your personal information—what we store, how it is used, and if
+        you want to change or remove it.
       </p>
 
       <h3>Account deletion</h3>

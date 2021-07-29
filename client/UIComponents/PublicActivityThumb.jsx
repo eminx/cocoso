@@ -65,7 +65,7 @@ function PublicActivityThumb({ item, large, history }) {
   return (
     <Box
       width="320px"
-      background={{ color: 'rgba(255, 255, 255, 0.7)' }}
+      background={{ color: 'rgba(255, 255, 255, 0.6)' }}
       margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
       hoverIndicator="brand-light"
       onClick={() =>

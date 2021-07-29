@@ -1021,7 +1021,7 @@ class CreateMeetingForm extends PureComponent {
         <div style={{ marginBottom: 6 }}>
           <CheckBox
             checked={isLocal}
-            label={`At ${publicSettings.contextName}?`}
+            label={`At ${publicSettings.name}?`}
             onChange={() => this.setState({ isLocal: event.target.checked })}
           />
         </div>

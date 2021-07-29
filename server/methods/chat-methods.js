@@ -13,7 +13,7 @@ Meteor.methods({
 
     const theChat = Chats.insert({
       host,
-      contextName: contextName,
+      contextName,
       contextId: contextId,
       createdBy: {
         userId: user._id,

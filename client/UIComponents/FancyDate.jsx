@@ -66,7 +66,7 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         >
           <em>
             {resources.map((place) => place.label).includes(occurence.resource)
-              ? occurence.resource + ', ' + publicSettings.contextName
+              ? occurence.resource + ', ' + publicSettings.name
               : occurence.resource}
           </em>
         </div>
