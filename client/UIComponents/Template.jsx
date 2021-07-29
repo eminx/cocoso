@@ -1,6 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import { Box, Heading } from 'grommet';
+import { Helmet } from 'react-helmet';
+
+const publicSettings = Meteor.settings.public;
 
 const colStyle = {
   maxWidth: 588,
@@ -12,11 +16,13 @@ function Template({
   leftContent,
   rightContent,
   titleCentered = true,
-
   children,
 }) {
   return (
     <Container fluid style={{ width: '100%', padding: 0, marginBottom: 24 }}>
+      <Helmet>
+        <title>{heading || publicSettings.name}</title>
+      </Helmet>
       <Row gutterWidth={12} style={{ marginLeft: 0, marginRight: 0 }}>
         <Col lg={3} style={colStyle}>
           {leftContent}
