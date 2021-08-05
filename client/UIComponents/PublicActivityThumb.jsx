@@ -66,7 +66,7 @@ function PublicActivityThumb({ item, large, history }) {
     <Box
       width="320px"
       background={{ color: 'rgba(255, 255, 255, 0.6)' }}
-      margin={{ vertical: 'small', horizontal: large ? 'small' : 'none' }}
+      margin="small"
       hoverIndicator="brand-light"
       onClick={() =>
         history.push(
@@ -101,7 +101,7 @@ function PublicActivityThumb({ item, large, history }) {
         pad="small"
       >
         {futureDates.slice(0, 3).map((date) => renderDate(date))}
-        {remaining > 0 && <div style={{ ...dateStyle }}>+ {remaining}</div>}
+        {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
       </Box>
     </Box>
   );

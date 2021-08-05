@@ -11,7 +11,7 @@ import Loader from '../../UIComponents/Loader';
 import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
 
 const publicSettings = Meteor.settings.public;
-const yesterday = moment(new Date()).add(-1, 'days');
+const yesterday = moment().add(-1, 'days');
 
 const getFirstFutureOccurence = (occurence) =>
   moment(occurence.endDate).isAfter(yesterday);
