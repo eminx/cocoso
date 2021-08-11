@@ -18,14 +18,14 @@ const FileDropper = ({
           background={isDragActive ? 'light-3' : 'light-1'}
           border={{ size: 'xsmall', style: 'dashed' }}
           elevation="medium"
-          height="small"
+          // height="small"
           style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
           width="medium"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
-              fit="cover"
+              fit="contain"
               fill
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}

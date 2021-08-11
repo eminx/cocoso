@@ -54,20 +54,22 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const resources = Resources.find({ host }).fetch();
-    const otherResources = resources.filter((res) => res._id !== resourceId);
-    if (otherResources.some((resource) => resource.label === values.label)) {
+    const labelAlreadyExists = Resources.findOne({
+      _id: !resourceId,
+      host,
+      label: values.label,
+    });
+
+    if (labelAlreadyExists) {
       throw new Meteor.Error('There already is a resource with this name');
-    }
-    if (values.label.length < 3) {
+    } else if (values.label.length < 3) {
       throw new Meteor.Error(
         'Resource name is too short. Minimum 3 letters required'
       );
-    }
-
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    } else if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed');
     }
+
     try {
       Resources.update(resourceId, {
         $set: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'grommet';
 
-const ResourcesForCombo = ({ resource }) => {
+function ResourcesForCombo({ resource }) {
   if (!resource) {
     return null;
   }
@@ -11,11 +11,11 @@ const ResourcesForCombo = ({ resource }) => {
     <span>
       {resource.label} [
       {resourcesForCombo.map((res, i) => (
-        <Text key={res.label}>{res.label + (i < length - 1 ? ' + ' : '')}</Text>
+        <Text key={res._id}>{res.label + (i < length - 1 ? ' + ' : '')}</Text>
       ))}
       ]
     </span>
   );
-};
+}
 
 export default ResourcesForCombo;

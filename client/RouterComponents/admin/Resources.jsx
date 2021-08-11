@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Anchor,
   Box,
@@ -27,26 +27,43 @@ import { message, Alert } from '../../UIComponents/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
+import ResourceForm from '../../UIComponents/ResourceForm';
 
 const rModel = (r) => ({
   label: r.label,
   value: r._id,
 });
 
+const emptyResource = {
+  label: '',
+  description: '',
+  isCombo: false,
+  resourcesForCombo: [],
+};
+
 function ResourcesPage({ history, resources, isLoading }) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [isCombo, setIsCombo] = useState(false);
-  const [resourcesForCombo, setResourcesForCombo] = useState(
-    resources.map(rModel).filter((res) => !res.isCombo)
-  );
   const [comboInput, setComboInput] = useState('');
   const { currentUser, currentHost, canCreateContent, role } =
     useContext(StateContext);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // useEffect(() => {
+  //   if (!modalContent) {
+  //     return;
+  //   }
+  //   if (modalContent.isCombo && modalContent.res) {
+  //     modalContent.resourcesForCombo = resources
+  //       .map(rModel)
+  //       .filter((res) => !res.isCombo);
+  //   } else {
+  //     modalContent.resourcesForCombo = null;
+  //   }
+  // }, [modalContent.isCombo]);
+
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   const handleSubmit = async () => {
     if (!modalContent.label || modalContent.label.length < 3) {
@@ -62,23 +79,26 @@ function ResourcesPage({ history, resources, isLoading }) {
     }
     try {
       if (modalContent.edit) {
-        const value = {
+        const values = {
           label: modalContent.label,
           description: modalContent.description,
+          isCombo: Boolean(modalContent.isCombo),
+          resourcesForCombo: modalContent.resourcesForCombo,
         };
-        await call('updateResource', modalContent.id, value);
+        await call('updateResource', modalContent.id, values);
         message.success('Resource successfully updated');
       } else {
-        const resourceValues = { ...modalContent };
-        if (modalContent.isCombo) {
-          resourceValues.resourcesForCombo = resourcesForCombo;
-        }
-        await call('createResource', resourceValues);
+        const values = {
+          label: modalContent.label,
+          description: modalContent.description,
+          isCombo: Boolean(modalContent.isCombo),
+          resourcesForCombo: modalContent.resourcesForCombo,
+        };
+        await call('createResource', values);
         message.success('Resource successfully added');
       }
       setModalContent(null);
       setShowModal(false);
-      setResourcesForCombo([]);
     } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);
@@ -90,7 +110,8 @@ function ResourcesPage({ history, resources, isLoading }) {
     setModalContent({
       label: resource.label,
       description: resource.description,
-      hourlyFee: resource.hourlyFee,
+      isCombo: resource.isCombo,
+      resourcesForCombo: resource.resourcesForCombo,
       id: resource._id,
       edit: true,
     });
@@ -128,24 +149,40 @@ function ResourcesPage({ history, resources, isLoading }) {
 
   const handleComboResourceSelection = ({ event, suggestion }) => {
     setComboInput('');
-    setResourcesForCombo([...resourcesForCombo, suggestion]);
+    setModalContent({
+      ...modalContent,
+      resourcesForCombo: [...modalContent.resourcesForCombo, suggestion],
+    });
   };
 
   const removeResourceForCombo = (res) => {
-    const newResources = resourcesForCombo.filter(
-      (resource) => res.label !== resource.label
-    );
-    setResourcesForCombo(newResources);
+    const newResourcesForCombo =
+      modalContent &&
+      modalContent.resourcesForCombo.filter(
+        (resource) => res.label !== resource.label
+      );
+    setModalContent({
+      ...modalContent,
+      resourcesForCombo: newResourcesForCombo,
+    });
   };
 
-  const suggestions = resources.filter((res, index) => {
-    return (
-      !res.isCombo &&
-      !resourcesForCombo.some((reso) => reso.label === res.label) &&
-      (comboInput === '' ||
-        res.label.toLowerCase().includes(comboInput.toLowerCase()))
-    );
-  });
+  const suggestions = () => {
+    if (!modalContent || !modalContent.isCombo) {
+      return null;
+    }
+
+    return resources.filter((res, index) => {
+      return (
+        !res.isCombo &&
+        !modalContent.resourcesForCombo.some(
+          (reso) => reso.label === res.label
+        ) &&
+        (comboInput === '' ||
+          res.label.toLowerCase().includes(comboInput.toLowerCase()))
+      );
+    });
+  };
 
   return (
     <Template
@@ -180,7 +217,7 @@ function ResourcesPage({ history, resources, isLoading }) {
             label="NEW"
             onClick={() => {
               setShowModal(true);
-              setModalContent(null);
+              setModalContent(emptyResource);
             }}
           />
         </Box>
@@ -221,116 +258,16 @@ function ResourcesPage({ history, resources, isLoading }) {
             onEsc={() => setShowModal(false)}
             onClickOutside={() => setShowModal(false)}
           >
-            <Heading level={3} margin={{ top: 'medium', left: 'medium' }}>
-              New Resource
-            </Heading>
-
-            <Box width="medium" pad="medium">
-              <Form
-                value={modalContent}
-                onChange={(nextValue) => setModalContent(nextValue)}
-                onSubmit={handleSubmit}
-              >
-                <FormField margin={{ bottom: 'medium' }}>
-                  <CheckBox
-                    checked={isCombo}
-                    label="Combo Resource"
-                    name="isCombo"
-                    onChange={(event) => setIsCombo(event.target.checked)}
-                  />
-                </FormField>
-                {isCombo && (
-                  <Box background="light-1" pad="small">
-                    <Text size="small">
-                      Please select multiple resources to create a combo
-                      resource
-                    </Text>
-                    <Box
-                      direction="row"
-                      gap="small"
-                      justify="center"
-                      pad={{ top: 'small' }}
-                      wrap
-                    >
-                      {resourcesForCombo.map((res) => (
-                        <Tag
-                          key={res}
-                          label={res.label.toUpperCase()}
-                          margin={{ bottom: 'small' }}
-                          removable
-                          onRemove={() => removeResourceForCombo(res)}
-                        />
-                      ))}
-                    </Box>
-                    <Box
-                      alignSelf="center"
-                      direction="row"
-                      gap="small"
-                      width="medium"
-                    >
-                      <TextInput
-                        placeholder="Select Resources"
-                        size="small"
-                        style={{ backgroundColor: 'white' }}
-                        suggestions={suggestions}
-                        value={comboInput}
-                        onChange={(event) => {
-                          setComboInput(event.target.value);
-                        }}
-                        onSuggestionSelect={handleComboResourceSelection}
-                      />
-                    </Box>
-                  </Box>
-                )}
-
-                <FormField
-                  label="Name"
-                  margin={{ top: 'medium', bottom: 'small' }}
-                >
-                  <TextInput
-                    name="label"
-                    placeholder="Sound Studio"
-                    plain={false}
-                    size="small"
-                  />
-                </FormField>
-
-                <FormField label="Description">
-                  <TextArea
-                    name="description"
-                    placeholder="Using studio requires care..."
-                    plain={false}
-                    size="small"
-                  />
-                </FormField>
-
-                <FormField label="Hourly fee">
-                  <TextInput
-                    name="hourlyFee"
-                    placeholder="100"
-                    size="small"
-                    type="number"
-                  />
-                </FormField>
-
-                <Box direction="row" justify="end" pad="small">
-                  <Button
-                    disabled={isCombo ? resourcesForCombo.length < 2 : false}
-                    label="Confirm"
-                    primary
-                    type="submit"
-                  />
-                </Box>
-              </Form>
-              <Box direction="row" justify="center" pad="small">
-                <Button
-                  secondary
-                  label="close"
-                  size="small"
-                  onClick={() => setShowModal(false)}
-                />
-              </Box>
-            </Box>
+            <ResourceForm
+              content={modalContent}
+              setContent={setModalContent}
+              suggestions={suggestions()}
+              comboInput={comboInput}
+              setComboInput={setComboInput}
+              onSuggestionSelect={handleComboResourceSelection}
+              removeResourceForCombo={removeResourceForCombo}
+              onSubmit={handleSubmit}
+            />
           </Layer>
         )}
       </Box>
