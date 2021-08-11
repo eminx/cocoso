@@ -193,6 +193,8 @@ function Members({ history, members, isLoading }) {
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
             direction="row"
+            justify="center"
+            wrap
           />
         </Box>
         <Box flex={{ grow: 1 }}>
@@ -216,6 +218,8 @@ function Members({ history, members, isLoading }) {
           value={sortBy}
           onChange={(event) => setSortBy(event.target.value)}
           direction="row"
+          justify="center"
+          wrap
         />
       </Box>
 
