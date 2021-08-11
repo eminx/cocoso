@@ -34,6 +34,7 @@ Meteor.methods({
     try {
       const newResourceId = Resources.insert({
         ...values,
+        labelLowerCase: values.label.toLowerCase(),
         resourceIndex: resources.length,
         host,
         authorId: user._id,
@@ -55,9 +56,9 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const labelAlreadyExists = Resources.findOne({
-      _id: !resourceId,
       host,
-      label: values.label,
+      _id: { $ne: resourceId },
+      labelLowerCase: values.label.toLowerCase(),
     });
 
     if (labelAlreadyExists) {
@@ -74,6 +75,7 @@ Meteor.methods({
       Resources.update(resourceId, {
         $set: {
           ...values,
+          labelLowerCase: values.label.toLowerCase(),
           updatedBy: user.username,
           latestUpdate: new Date(),
         },
