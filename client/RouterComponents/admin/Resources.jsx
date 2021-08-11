@@ -1,38 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useState, useContext } from 'react';
-import {
-  Anchor,
-  Box,
-  Button,
-  CheckBox,
-  Form,
-  FormField,
-  Heading,
-  Layer,
-  Text,
-  TextArea,
-  TextInput,
-} from 'grommet';
-import { FormAdd } from 'grommet-icons/icons/FormAdd';
+import React, { useState, useContext } from 'react';
+import { Anchor, Box, Button, Layer, Text } from 'grommet';
 import moment from 'moment';
 
 import NiceList from '../../UIComponents/NiceList';
-import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
-import Tag from '../../UIComponents/Tag';
 import ResourcesForCombo from '../../UIComponents/ResourcesForCombo';
-import { message, Alert } from '../../UIComponents/message';
+import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../UIComponents/ResourceForm';
-
-const rModel = (r) => ({
-  label: r.label,
-  value: r._id,
-});
 
 const emptyResource = {
   label: '',
@@ -47,23 +27,6 @@ function ResourcesPage({ history, resources, isLoading }) {
   const [comboInput, setComboInput] = useState('');
   const { currentUser, currentHost, canCreateContent, role } =
     useContext(StateContext);
-
-  // useEffect(() => {
-  //   if (!modalContent) {
-  //     return;
-  //   }
-  //   if (modalContent.isCombo && modalContent.res) {
-  //     modalContent.resourcesForCombo = resources
-  //       .map(rModel)
-  //       .filter((res) => !res.isCombo);
-  //   } else {
-  //     modalContent.resourcesForCombo = null;
-  //   }
-  // }, [modalContent.isCombo]);
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
 
   const handleSubmit = async () => {
     if (!modalContent.label || modalContent.label.length < 3) {
@@ -226,13 +189,8 @@ function ResourcesPage({ history, resources, isLoading }) {
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
         <NiceList list={resourcesWithActions} border="horizontal" pad="small">
           {(resource) => (
-            <div key={resource.label}>
-              {resource.isCombo && (
-                <Box>
-                  <Tag label="COMBO" size="small" />
-                </Box>
-              )}
-              <Text size="large" weight="bold" margin={{ bottom: 'medium' }}>
+            <Box key={resource.label}>
+              <Text size="large" weight="bold">
                 {resource.isCombo ? (
                   <ResourcesForCombo resource={resource} />
                 ) : (
@@ -240,7 +198,9 @@ function ResourcesPage({ history, resources, isLoading }) {
                 )}
               </Text>
 
-              <Text as="div">{resource && resource.description}</Text>
+              <Text as="div" margin={{ vertical: 'medium' }}>
+                {resource && resource.description}
+              </Text>
               <Box pad={{ vertical: 'small' }}>
                 <Text as="div" style={{ fontSize: 12 }}>
                   added by {resource && resource.authorUsername}
@@ -249,7 +209,7 @@ function ResourcesPage({ history, resources, isLoading }) {
                   {moment(resource.creationDate).format('Do MMM YYYY')} <br />
                 </Text>
               </Box>
-            </div>
+            </Box>
           )}
         </NiceList>
 

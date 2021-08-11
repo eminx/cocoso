@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from 'grommet';
+import { Box, Text } from 'grommet';
+import Tag from './Tag';
 
 function ResourcesForCombo({ resource }) {
   if (!resource) {
@@ -9,9 +10,14 @@ function ResourcesForCombo({ resource }) {
   const length = resource.resourcesForCombo.length;
   return (
     <span>
-      {resource.label} [
+      {resource.label}
+      <br />
+      <Tag label="COMBO" size="xsmall" />
+      {' ['}
       {resourcesForCombo.map((res, i) => (
-        <Text key={res._id}>{res.label + (i < length - 1 ? ' + ' : '')}</Text>
+        <Text size="small" weight="normal" key={res._id}>
+          {res.label + (i < length - 1 ? ' + ' : '')}
+        </Text>
       ))}
       ]
     </span>

@@ -18,10 +18,11 @@ const Tag = ({
     round="2px"
     pad="2px 4px"
     gap="small"
+    style={{ display: 'inline-block' }}
     {...otherProps}
   >
     <Box onClick={onClick}>
-      <Text size="14px" weight="bold" color="dark-1">
+      <Text size={otherProps.size || '14px'} weight="bold" color="dark-1">
         {label && label.toUpperCase()}
       </Text>
     </Box>
