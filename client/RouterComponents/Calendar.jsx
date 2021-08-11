@@ -253,64 +253,6 @@ class Calendar extends PureComponent {
           )}
         </Box>
 
-        {/* <Divider />
-
-        <Row>
-          <h3 style={{ textAlign: 'center' }}>Manuals</h3>
-          <Col md={8}>
-            {role === 'admin' && (
-              <ReactDropzone onDrop={this.handleDropDocument}>
-                {({ getRootProps, getInputProps, isDragActive }) => (
-                  <div
-                    {...getRootProps()}
-                    style={{
-                      width: '100%',
-                      height: 200,
-                      background: isDragActive ? '#ea3924' : '#fff5f4cc',
-                      padding: 24,
-                      border: '1px dashed #ea3924',
-                      textAlign: 'center'
-                    }}
-                  >
-                    {isUploading ? (
-                      <div>
-                        <Loader />
-                        uploading
-                      </div>
-                    ) : (
-                      <div>
-                        <b>Drop documents to upload</b>
-                      </div>
-                    )}
-                    <input {...getInputProps()} />
-                  </div>
-                )}
-              </ReactDropzone>
-            )}
-          </Col>
-          <Col md={16} style={{ paddingLeft: 12, paddingRight: 12 }}>
-            {manuals && manuals.length > 0 && (
-              <NiceList list={manualsList} >
-                {manual => (
-                  <Card
-                    key={manual.documentLabel}
-                    title={
-                      <h4>
-                        <a href={manual.documentUrl} target="_blank">
-                          {manual.documentLabel}
-                        </a>
-                      </h4>
-                    }
-                    bordered={false}
-                    style={{ width: '100%', marginBottom: 0 }}
-                    className="empty-card-body"
-                  />
-                )}
-              </NiceList>
-            )}
-          </Col>
-        </Row> */}
-
         <ConfirmModal
           visible={Boolean(selectedActivity)}
           title={selectedActivity && selectedActivity.title}

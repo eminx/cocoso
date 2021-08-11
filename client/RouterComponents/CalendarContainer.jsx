@@ -49,7 +49,7 @@ export default CalendarContainer = withTracker((props) => {
                   recurrence.isMultipleDay ||
                   recurrence.startDate !== recurrence.endDate,
                 resource: resourceForCombo.label,
-                // resourceIndex: activity.resourceIndex,
+                resourceIndex: activity.resourceIndex,
                 isPublicActivity: activity.isPublicActivity,
                 imageUrl: activity.imageUrl,
                 _id: activity._id,
