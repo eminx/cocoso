@@ -214,18 +214,20 @@ class ActivityForm extends PureComponent {
               name="resource"
               options={resources}
             >
-              {(option, index, options, { active, disabled, selected }) =>
-                option.isCombo ? (
-                  <Text>
-                    {option.label +
-                      ': [' +
-                      option.resourcesForCombo.map((res, i) => res.label) +
-                      ']'}
-                  </Text>
-                ) : (
-                  <Text>{option.label}</Text>
-                )
-              }
+              {(option, index, options, { active, disabled, selected }) => (
+                <Box pad="small">
+                  {option.isCombo ? (
+                    <Text>
+                      {option.label +
+                        ': [' +
+                        option.resourcesForCombo.map((res, i) => res.label) +
+                        ']'}
+                    </Text>
+                  ) : (
+                    <Text>{option.label}</Text>
+                  )}
+                </Box>
+              )}
             </Select>
           </Field>
 

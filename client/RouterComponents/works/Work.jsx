@@ -180,12 +180,7 @@ const Work = ({ history, match }) => {
           <Link
             to={`/${currentUser.username}/edit-work/${match.params.workId}`}
           >
-            <Anchor
-              as="span"
-              alignSelf="center"
-              size="small"
-              label="Edit this Work"
-            />
+            <Anchor as="span" alignSelf="center" size="small" label="Edit" />
           </Link>
         )}
       </Box>
