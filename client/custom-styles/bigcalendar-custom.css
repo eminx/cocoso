@@ -54,7 +54,7 @@
   border-radius: 0;
 }
 
-.rbc-calendar .rbc-event.category-0,
+.rbc-event.category-0,
 .tags-container .magenta.checked {
   background-color: rgb(127, 114, 167);
 }
@@ -68,7 +68,7 @@
   background-color: #ea3924;
 }
 
-.rbc-calendar .rbc-event.category-1,
+.rbc-event.category-1,
 .tags-container .red.checked {
   background-color: rgb(226, 89, 87);
 }
@@ -78,7 +78,7 @@
   border: 1px solid rgb(226, 89, 87);
 }
 
-.rbc-calendar .rbc-event.category-2,
+.rbc-event.category-2,
 .tags-container .volcano.checked {
   background-color: rgb(89, 18, 38);
 }
@@ -88,7 +88,7 @@
   border: 1px solid rgb(89, 18, 38);
 }
 
-.rbc-calendar .rbc-event.category-3,
+.rbc-event.category-3,
 .tags-container .orange.checked {
   background-color: rgb(148, 227, 173);
 }
@@ -98,7 +98,7 @@
   border: 1px solid rgb(148, 227, 173);
 }
 
-.rbc-calendar .rbc-event.category-4,
+.rbc-event.category-4,
 .tags-container .gold.checked {
   background-color: rgb(246, 113, 26);
 }
@@ -108,7 +108,7 @@
   border: 1px solid rgb(246, 113, 26);
 }
 
-.rbc-calendar .rbc-event.category-5,
+.rbc-event.category-5,
 .tags-container .lime.checked {
   background-color: rgb(194, 195, 34);
 }
@@ -118,7 +118,7 @@
   border: 1px solid rgb(194, 195, 34);
 }
 
-.rbc-calendar .rbc-event.category-6,
+.rbc-event.category-6,
 .tags-container .green.checked {
   background-color: rgb(111, 148, 98);
 }
@@ -128,7 +128,7 @@
   border: 1px solid rgb(111, 148, 98);
 }
 
-.rbc-calendar .rbc-event.category-7,
+.rbc-event.category-7,
 .tags-container .cyan.checked {
   background-color: rgb(85, 152, 246);
 }
@@ -138,7 +138,7 @@
   border: 1px solid rgb(85, 152, 246);
 }
 
-.rbc-calendar .rbc-event.category-8,
+.rbc-event.category-8,
 .tags-container .blue.checked {
   background-color: rgb(93, 162, 152);
 }
@@ -148,7 +148,7 @@
   border: 1px solid rgb(93, 162, 152);
 }
 
-.rbc-calendar .rbc-event.category-9,
+.rbc-event.category-9,
 .tags-container .geekblue.checked {
   background-color: rgb(236, 166, 104);
 }
@@ -158,7 +158,7 @@
   border: 1px solid rgb(236, 166, 104);
 }
 
-.rbc-calendar .rbc-event.category-10,
+.rbc-event.category-10,
 .tags-container .purple.checked {
   background-color: rgb(81, 119, 148);
 }
