@@ -5,6 +5,7 @@ import { Close } from 'grommet-icons/icons/Close';
 const Tag = ({
   label = '',
   background = 'accent-4',
+  gradientBackground = null,
   filterColor,
   checkable = false,
   checked = false,
@@ -14,12 +15,17 @@ const Tag = ({
   ...otherProps
 }) => (
   <Box
-    background={!checkable ? 'accent-4' : checked ? filterColor : 'white'}
+    background={
+      !checkable
+        ? 'accent-4'
+        : checked
+        ? gradientBackground || filterColor
+        : 'white'
+    }
     alignSelf="start"
     direction="row"
     align="center"
     round="2px"
-    // pad="2px 4px"
     gap="small"
     {...otherProps}
   >

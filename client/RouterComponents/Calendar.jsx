@@ -11,7 +11,7 @@ import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
 import { SimpleTag, message } from '../UIComponents/message';
 import Tag from '../UIComponents/Tag';
-import colors, { getHslValuesFromLength } from '../constants/colors';
+import { getHslValuesFromLength } from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
 
 const publicSettings = Meteor.settings.public;
@@ -185,13 +185,36 @@ class Calendar extends PureComponent {
     const nonComboResources = resourcesList.filter(
       (resource) => !resource.isCombo
     );
-    const comboResources = resourcesList.filter((resource) => resource.isCombo);
 
     const hslValues = getHslValuesFromLength(nonComboResources.length);
     const nonComboResourcesWithColor = nonComboResources.map((res, i) => ({
       ...res,
       color: hslValues[i],
     }));
+
+    const comboResources = resourcesList.filter((resource) => resource.isCombo);
+    const comboResourcesWithColor = comboResources.map((res, i) => {
+      const colors = [];
+      res.resourcesForCombo.forEach((resCo, i) => {
+        const resWithColor = nonComboResourcesWithColor.find(
+          (nRes) => resCo.label === nRes.label
+        );
+        if (!resWithColor) {
+          return;
+        }
+        colors.push(resWithColor.color);
+      });
+      let color = 'linear-gradient(to right, ';
+      colors.forEach((c, i) => {
+        color += c;
+        if (i < colors.length - 1) {
+          color += ', ';
+        } else {
+          color += ')';
+        }
+      });
+      return { ...res, color };
+    });
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
       const resource = nonComboResourcesWithColor.find(
@@ -228,30 +251,53 @@ class Calendar extends PureComponent {
           pad={{ top: 'small' }}
           margin={{ bottom: 'large' }}
         >
+          <Tag
+            alignSelf="center"
+            checkable
+            key="All"
+            label="All"
+            filterColor="#484848"
+            checked={calendarFilter === 'All'}
+            margin={{ bottom: 'small' }}
+            onClick={() => this.handleCalendarFilterChange('All')}
+          />
+
           <Box
             direction="row"
             justify="center"
             align="center"
-            gap="small"
             className="tags-container"
             width="100%"
-            pad="small"
+            pad={{ horizontal: 'small', bottom: 'small' }}
+            gap="small"
             wrap
           >
-            <Tag
-              checkable
-              key="All"
-              label="All"
-              filterColor="#484848"
-              checked={calendarFilter === 'All'}
-              onClick={() => this.handleCalendarFilterChange('All')}
-            />
-            {nonComboResources.map((resource, i) => (
+            {nonComboResourcesWithColor.map((resource, i) => (
+              <Tag
+                key={resource.label}
+                checkable
+                label={resource.label}
+                filterColor={resource.color}
+                checked={calendarFilter === resource.label}
+                onClick={() => this.handleCalendarFilterChange(resource.label)}
+              />
+            ))}
+          </Box>
+
+          <Box
+            direction="row"
+            justify="center"
+            pad={{ horizontal: 'small' }}
+            gap="small"
+            margin={{ bottom: 'medium' }}
+          >
+            {comboResourcesWithColor.map((resource, i) => (
               <Tag
                 checkable
                 key={resource.label}
                 label={resource.label}
-                filterColor={hslValues[i]}
+                filterColor={'#2d2d2d'}
+                gradientBackground={resource.color}
                 checked={calendarFilter === resource.label}
                 onClick={() => this.handleCalendarFilterChange(resource.label)}
               />
