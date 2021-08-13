@@ -10,7 +10,8 @@ import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
 import { SimpleTag, message } from '../UIComponents/message';
-import colors from '../constants/colors';
+import Tag from '../UIComponents/Tag';
+import colors, { getHslValuesFromLength } from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
 
 const publicSettings = Meteor.settings.public;
@@ -173,13 +174,9 @@ class Calendar extends PureComponent {
       }
     });
 
-    let filteredActivities = allActivities;
-
-    if (calendarFilter !== 'All') {
-      filteredActivities = allActivities.filter(
-        (activity) => activity.resource === calendarFilter
-      );
-    }
+    const filteredActivities = allActivities.filter((activity) => {
+      return calendarFilter === 'All' || activity.resource === calendarFilter;
+    });
 
     if (editActivity) {
       return <Redirect to={`/edit-activity/${selectedActivity._id}`} />;
@@ -188,6 +185,25 @@ class Calendar extends PureComponent {
     const nonComboResources = resourcesList.filter(
       (resource) => !resource.isCombo
     );
+    const comboResources = resourcesList.filter((resource) => resource.isCombo);
+
+    const hslValues = getHslValuesFromLength(nonComboResources.length);
+    const nonComboResourcesWithColor = nonComboResources.map((res, i) => ({
+      ...res,
+      color: hslValues[i],
+    }));
+
+    const allFilteredActsWithColors = filteredActivities.map((act, i) => {
+      const resource = nonComboResourcesWithColor.find(
+        (res) => res.label === act.resource
+      );
+      const resourceColor = (resource && resource.color) || '#484848';
+
+      return {
+        ...act,
+        resourceColor,
+      };
+    });
 
     return (
       <Box>
@@ -222,22 +238,23 @@ class Calendar extends PureComponent {
             pad="small"
             wrap
           >
-            <SimpleTag
+            <Tag
+              checkable
+              key="All"
+              label="All"
+              filterColor="#484848"
               checked={calendarFilter === 'All'}
               onClick={() => this.handleCalendarFilterChange('All')}
-              key={'All'}
-            >
-              {'All'}
-            </SimpleTag>
+            />
             {nonComboResources.map((resource, i) => (
-              <SimpleTag
-                color={colors[i]}
+              <Tag
+                checkable
+                key={resource.label}
+                label={resource.label}
+                filterColor={hslValues[i]}
                 checked={calendarFilter === resource.label}
                 onClick={() => this.handleCalendarFilterChange(resource.label)}
-                key={resource.label}
-              >
-                {resource.label}
-              </SimpleTag>
+              />
             ))}
           </Box>
 
@@ -246,7 +263,7 @@ class Calendar extends PureComponent {
           ) : (
             <Box>
               <CalendarView
-                activities={filteredActivities}
+                activities={allFilteredActsWithColors}
                 onSelect={this.handleSelectActivity}
               />
             </Box>

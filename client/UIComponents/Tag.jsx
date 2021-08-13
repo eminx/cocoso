@@ -3,34 +3,48 @@ import { Box, Button, Text } from 'grommet';
 import { Close } from 'grommet-icons/icons/Close';
 
 const Tag = ({
-  label,
-  onClick,
-  removable = false,
-  onRemove,
+  label = '',
   background = 'accent-4',
+  filterColor,
+  checkable = false,
+  checked = false,
+  removable = false,
+  onClick,
+  onRemove,
   ...otherProps
 }) => (
   <Box
-    background={background}
+    background={!checkable ? 'accent-4' : checked ? filterColor : 'white'}
     alignSelf="start"
     direction="row"
     align="center"
     round="2px"
-    pad="2px 4px"
+    // pad="2px 4px"
     gap="small"
-    style={{ display: 'inline-block' }}
     {...otherProps}
   >
-    <Box onClick={onClick}>
-      <Text size={otherProps.size || '14px'} weight="bold" color="dark-1">
-        {label && label.toUpperCase()}
+    <Box
+      onClick={onClick}
+      focusIndicator={false}
+      pad="1px 4px"
+      style={{
+        border: checkable ? `2px solid ${filterColor}` : 'none',
+      }}
+    >
+      <Text
+        size={otherProps.size || '14px'}
+        weight="bold"
+        color={checked ? 'white' : filterColor}
+      >
+        {checkable ? label : label.toUpperCase()}
       </Text>
     </Box>
     {removable && (
       <Button
         plain
-        onClick={onRemove}
         icon={<Close color="dark-2" size="small" />}
+        margin={{ right: '4px' }}
+        onClick={onRemove}
       />
     )}
   </Box>

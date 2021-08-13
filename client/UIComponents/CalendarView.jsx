@@ -19,7 +19,8 @@ function CalendarView(props) {
         localizer={localizer}
         events={activities}
         eventPropGetter={(event) => ({
-          className: 'category-' + event.resourceIndex,
+          // className: 'category-' + event.resourceIndex,
+          style: { backgroundColor: event.resourceColor },
         })}
         onSelectEvent={props.onSelect}
         defaultView="month"
