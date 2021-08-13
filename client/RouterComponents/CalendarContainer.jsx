@@ -51,6 +51,8 @@ export default CalendarContainer = withTracker((props) => {
                 resource: resourceForCombo.label,
                 resourceIndex: resourceForCombo.resourceIndex,
                 isPublicActivity: activity.isPublicActivity,
+                isWithComboResource: true,
+                comboResource: activity.resource,
                 imageUrl: activity.imageUrl,
                 _id: activity._id,
               });
@@ -78,6 +80,7 @@ export default CalendarContainer = withTracker((props) => {
               resource: activity.resource,
               resourceIndex: activity.resourceIndex,
               isPublicActivity: activity.isPublicActivity,
+              isWithComboResource: false,
               imageUrl: activity.imageUrl,
               _id: activity._id,
             });

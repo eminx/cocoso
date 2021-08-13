@@ -175,7 +175,11 @@ class Calendar extends PureComponent {
     });
 
     const filteredActivities = allActivities.filter((activity) => {
-      return calendarFilter === 'All' || activity.resource === calendarFilter;
+      if (!activity.isWithComboResource) {
+        return calendarFilter === 'All' || activity.resource === calendarFilter;
+      }
+
+      return activity.comboResource === calendarFilter;
     });
 
     if (editActivity) {
@@ -251,17 +255,6 @@ class Calendar extends PureComponent {
           pad={{ top: 'small' }}
           margin={{ bottom: 'large' }}
         >
-          <Tag
-            alignSelf="center"
-            checkable
-            key="All"
-            label="All"
-            filterColor="#484848"
-            checked={calendarFilter === 'All'}
-            margin={{ bottom: 'small' }}
-            onClick={() => this.handleCalendarFilterChange('All')}
-          />
-
           <Box
             direction="row"
             justify="center"
@@ -272,6 +265,17 @@ class Calendar extends PureComponent {
             gap="small"
             wrap
           >
+            <Tag
+              alignSelf="center"
+              checkable
+              key="All"
+              label="All"
+              filterColor="#484848"
+              checked={calendarFilter === 'All'}
+              // margin={{ bottom: 'small' }}
+              onClick={() => this.handleCalendarFilterChange('All')}
+            />
+
             {nonComboResourcesWithColor.map((resource, i) => (
               <Tag
                 key={resource.label}

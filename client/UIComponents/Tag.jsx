@@ -39,7 +39,7 @@ const Tag = ({
     >
       <Text
         size={otherProps.size || '14px'}
-        weight="bold"
+        weight={checkable ? 'normal' : 'bold'}
         color={checked ? 'white' : filterColor}
       >
         {checkable ? label : label.toUpperCase()}
