@@ -4,7 +4,6 @@ import { Close } from 'grommet-icons/icons/Close';
 
 const Tag = ({
   label = '',
-  background = 'accent-4',
   gradientBackground = null,
   filterColor,
   checkable = false,
@@ -19,22 +18,32 @@ const Tag = ({
       !checkable
         ? 'accent-4'
         : checked
-        ? gradientBackground || filterColor
-        : 'white'
+        ? gradientBackground
+          ? gradientBackground
+          : filterColor
+        : gradientBackground || 'white'
     }
     alignSelf="start"
     direction="row"
     align="center"
     round="2px"
     gap="small"
+    pad={gradientBackground && checkable ? '2px' : '0'}
+    style={{
+      border:
+        gradientBackground && checkable
+          ? 'none'
+          : `2px solid ${filterColor || '#484848'}`,
+    }}
     {...otherProps}
   >
     <Box
       onClick={onClick}
       focusIndicator={false}
-      pad="1px 4px"
+      pad="2px 5px"
       style={{
-        border: checkable ? `2px solid ${filterColor}` : 'none',
+        border: !checkable ? 'none' : checked ? 'none' : 'white',
+        background: checkable && checked ? 'none' : 'white',
       }}
     >
       <Text
