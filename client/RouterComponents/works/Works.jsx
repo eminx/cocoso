@@ -20,10 +20,6 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function getHSL(length, index, opacity = 1) {
-  return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
-}
-
 export default function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,12 +49,29 @@ export default function Works({ history }) {
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
-    ? sortedWorks.filter(
-        (work) => work.category && work.category.label === categoryFilter
-      )
+    ? sortedWorks.filter((work) => {
+        return (
+          work.category && work.category.label === categoryFilter.toLowerCase()
+        );
+      })
     : sortedWorks;
 
-  const categoriesAssignedToWorks = getCategories(works);
+  const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
+
+  const worksWithCategoryColors = filteredWorks.map((work, index) => {
+    const category = categoriesAssignedToWorks.find((category) => {
+      return (
+        category.label &&
+        category.label ===
+          (work.category && work.category.label && work.category.label)
+      );
+    });
+    const categoryColor = category && category.color;
+    return {
+      ...work,
+      categoryColor,
+    };
+  });
 
   return (
     <Box width="100%" margin={{ bottom: '50px' }}>
@@ -80,14 +93,18 @@ export default function Works({ history }) {
         gap="small"
         pad={{ left: 'small' }}
       >
-        <Tag label="ALL" onClick={() => setCategoryFilter(null)} />
+        <Tag
+          label="ALL"
+          checkable={categoryFilter === null}
+          onClick={() => setCategoryFilter(null)}
+        />
         {categoriesAssignedToWorks.map((cat) => (
           <Tag
             key={cat.label}
             checkable
             checked={categoryFilter === cat.label}
             filterColor={cat.color}
-            label={cat.label}
+            label={cat.label && cat.label.toUpperCase()}
             margin={{ bottom: 'small' }}
             onClick={() => setCategoryFilter(cat.label)}
           />
@@ -95,7 +112,7 @@ export default function Works({ history }) {
       </Box>
 
       <Box direction="row" justify="center" pad="medium" wrap>
-        {filteredWorks.map((work, index) => (
+        {worksWithCategoryColors.map((work, index) => (
           <WorkThumb key={work._id} work={work} history={history} />
         ))}
       </Box>
@@ -103,18 +120,14 @@ export default function Works({ history }) {
   );
 }
 
-getCategories = (works) => {
+getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(
     new Set(works.map((work) => work.category && work.category.label))
   );
 
   const hslValues = getHslValuesFromLength(labels.length);
   return labels.map((label, i) => ({
-    label: label && label.toUpperCase(),
+    label,
     color: hslValues[i],
   }));
-};
-
-getOpacHSL = (color) => {
-  return color ? color.substr(0, color.length - 4) + '1)' : null;
 };

@@ -32,7 +32,7 @@ function WorkThumb({ work, history }) {
           {work.category && (
             <Tag
               label={work.category.label}
-              background={work.category.color}
+              filterColor={work.categoryColor}
               margin={{ bottom: 'xxsmall' }}
             />
           )}
