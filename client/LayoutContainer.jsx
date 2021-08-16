@@ -424,7 +424,7 @@ const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
             label={item.label.toUpperCase()}
             size="small"
             style={{
-              borderBottom: isCurrentPage(item.label) ? '1px solid' : 'none',
+              borderBottom: isCurrentPage(item.label) ? '2px solid' : 'none',
             }}
           />
         </Box>
