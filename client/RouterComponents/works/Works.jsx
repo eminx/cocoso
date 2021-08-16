@@ -10,6 +10,7 @@ import Loader from '../../UIComponents/Loader';
 import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
+import { getHslValuesFromLength } from '../../constants/colors';
 
 const publicSettings = Meteor.settings.public;
 
@@ -67,13 +68,7 @@ export default function Works({ history }) {
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button
-              as="span"
-              size="small"
-              label="NEW"
-              // primary
-              // icon={<FormAdd />}
-            />
+            <Button as="span" size="small" label="NEW" />
           </Link>
         )}
       </Box>
@@ -89,10 +84,10 @@ export default function Works({ history }) {
         {categoriesAssignedToWorks.map((cat) => (
           <Tag
             key={cat.label}
+            checkable
+            checked={categoryFilter === cat.label}
+            filterColor={cat.color}
             label={cat.label}
-            background={
-              cat.label === categoryFilter ? getOpacHSL(cat.color) : cat.color
-            }
             margin={{ bottom: 'small' }}
             onClick={() => setCategoryFilter(cat.label)}
           />
@@ -112,12 +107,11 @@ getCategories = (works) => {
   const labels = Array.from(
     new Set(works.map((work) => work.category && work.category.label))
   );
-  const colors = Array.from(
-    new Set(works.map((work) => work.category && work.category.color))
-  );
+
+  const hslValues = getHslValuesFromLength(labels.length);
   return labels.map((label, i) => ({
-    label,
-    color: colors[i],
+    label: label && label.toUpperCase(),
+    color: hslValues[i],
   }));
 };
 

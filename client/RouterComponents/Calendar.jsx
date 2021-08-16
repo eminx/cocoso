@@ -2,14 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Box, Button, Heading, Text } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
-import { SimpleTag, message } from '../UIComponents/message';
+import { message } from '../UIComponents/message';
 import Tag from '../UIComponents/Tag';
 import { getHslValuesFromLength } from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
@@ -272,7 +272,6 @@ class Calendar extends PureComponent {
               label="All"
               filterColor="#484848"
               checked={calendarFilter === 'All'}
-              // margin={{ bottom: 'small' }}
               onClick={() => this.handleCalendarFilterChange('All')}
             />
 
