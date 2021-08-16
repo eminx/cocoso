@@ -401,9 +401,6 @@ const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
     if (!currentPage) {
       return false;
     }
-    if (currentPage.label === 'info') {
-      return label.substring(0, 5) === '/page';
-    }
     return currentPage && currentPage.label === label;
   };
 

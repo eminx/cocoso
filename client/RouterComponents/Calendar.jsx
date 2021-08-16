@@ -166,20 +166,12 @@ class Calendar extends PureComponent {
     const { editActivity, calendarFilter, selectedActivity, isUploading } =
       this.state;
 
-    const futureActivities = [];
-
-    allActivities.filter((activity) => {
-      if (moment(activity.endDate).isAfter(yesterday)) {
-        futureActivities.push(activity);
-      }
-    });
-
     const filteredActivities = allActivities.filter((activity) => {
-      if (!activity.isWithComboResource) {
-        return calendarFilter === 'All' || activity.resource === calendarFilter;
-      }
-
-      return activity.comboResource === calendarFilter;
+      return (
+        calendarFilter === 'All' ||
+        activity.resource === calendarFilter ||
+        activity.comboResource === calendarFilter
+      );
     });
 
     if (editActivity) {
