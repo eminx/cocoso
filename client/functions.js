@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
+import moment from 'moment';
 
 const getInitials = (string) => {
   var names = string.split(' '),
@@ -91,6 +92,88 @@ const uploadImage = (image, directory) =>
 
 const slingshotUpload = (directory) => new Slingshot.Upload(directory);
 
+const parseActsWithResources = (activitiesList, resourcesList) => {
+  if (!activitiesList || !resourcesList) {
+    return;
+  }
+  const allActivities = [];
+  activitiesList.forEach((activity) => {
+    if (!activity.datesAndTimes) {
+      return;
+    }
+    activity.datesAndTimes.forEach((recurrence) => {
+      const theResource = resourcesList.find(
+        (res) => res.label === activity.resource
+      );
+      if (theResource && theResource.isCombo) {
+        theResource.resourcesForCombo.forEach((resourceForCombo) => {
+          allActivities.push({
+            title: activity.title,
+            start: moment(
+              recurrence.startDate + recurrence.startTime,
+              'YYYY-MM-DD HH:mm'
+            ).toDate(),
+            end: moment(
+              recurrence.endDate + recurrence.endTime,
+              'YYYY-MM-DD HH:mm'
+            ).toDate(),
+            startDate: recurrence.startDate,
+            startTime: recurrence.startTime,
+            endDate: recurrence.endDate,
+            endTime: recurrence.endTime,
+            authorName: activity.authorName,
+            longDescription: activity.longDescription,
+            isMultipleDay:
+              recurrence.isMultipleDay ||
+              recurrence.startDate !== recurrence.endDate,
+            resource: resourceForCombo.label,
+            resourceIndex: resourceForCombo.resourceIndex,
+            isPublicActivity: activity.isPublicActivity,
+            isWithComboResource: true,
+            comboResource: activity.resource,
+            imageUrl: activity.imageUrl,
+            _id: activity._id,
+          });
+        });
+      } else {
+        allActivities.push({
+          title: activity.title,
+          start: moment(
+            recurrence.startDate + recurrence.startTime,
+            'YYYY-MM-DD HH:mm'
+          ).toDate(),
+          end: moment(
+            recurrence.endDate + recurrence.endTime,
+            'YYYY-MM-DD HH:mm'
+          ).toDate(),
+          startDate: recurrence.startDate,
+          startTime: recurrence.startTime,
+          endDate: recurrence.endDate,
+          endTime: recurrence.endTime,
+          authorName: activity.authorName,
+          longDescription: activity.longDescription,
+          isMultipleDay:
+            recurrence.isMultipleDay ||
+            recurrence.startDate !== recurrence.endDate,
+          resource: activity.resource,
+          resourceIndex: activity.resourceIndex,
+          isPublicActivity: activity.isPublicActivity,
+          isWithComboResource: false,
+          imageUrl: activity.imageUrl,
+          _id: activity._id,
+        });
+      }
+    });
+  });
+
+  return allActivities;
+};
+
+function isResourceOccupied(occurence, start, end) {
+  const dateTimeFormat = 'M/DD/YYYY hh:mm';
+  moment(occurence.dateTime, dateTimeFormat).isBetween(start, end);
+}
+
 export {
   getInitials,
   removeSpace,
@@ -102,4 +185,5 @@ export {
   resizeImage,
   uploadImage,
   dataURLtoFile,
+  parseActsWithResources,
 };

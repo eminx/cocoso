@@ -9,13 +9,11 @@ import { Helmet } from 'react-helmet';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import ConfirmModal from '../UIComponents/ConfirmModal';
-import { message } from '../UIComponents/message';
 import Tag from '../UIComponents/Tag';
 import { getHslValuesFromLength } from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
 
 const publicSettings = Meteor.settings.public;
-const yesterday = moment(new Date()).add(-1, 'days');
 
 class Calendar extends PureComponent {
   state = {
@@ -90,74 +88,6 @@ class Calendar extends PureComponent {
     ) {
       return true;
     }
-  };
-
-  handleDropDocument = (files) => {
-    const { currentUser } = this.props;
-    const { role } = this.context;
-    if (!currentUser || role !== 'admin') {
-      return;
-    }
-
-    if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-
-    this.setState({ isUploading: true });
-
-    const closeLoader = () => this.setState({ isUploading: false });
-
-    const upload = new Slingshot.Upload('processDocumentUpload');
-    files.forEach((file) => {
-      const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
-      const uploadableFile = new File([file], parsedName, {
-        type: file.type,
-      });
-      upload.send(uploadableFile, (error, downloadUrl) => {
-        if (error) {
-          message.error(error.reason);
-          closeLoader();
-          return;
-        } else {
-          Meteor.call(
-            'createDocument',
-            uploadableFile.name,
-            downloadUrl,
-            'manual',
-            currentUser.username,
-            (error, respond) => {
-              if (error) {
-                message.error(error);
-                closeLoader();
-              } else {
-                message.success(
-                  `${uploadableFile.name} is succesfully uploaded and assigned to manuals!`
-                );
-                closeLoader();
-              }
-            }
-          );
-        }
-      });
-    });
-  };
-
-  removeManual = (documentId) => {
-    const { currentUser } = this.props;
-    const { role } = this.context;
-    if (!currentUser || role !== 'admin') {
-      return;
-    }
-    Meteor.call('removeManual', documentId, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-        message.destroy();
-        message.error(error.error);
-      } else {
-        message.success('The manual is successfully removed');
-      }
-    });
   };
 
   render() {

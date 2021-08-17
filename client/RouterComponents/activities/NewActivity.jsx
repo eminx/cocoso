@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { CheckBox, Box, Text } from 'grommet';
+import moment from 'moment';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
+import { parseActsWithResources } from '../../functions';
 
 const successCreation = () => {
   message.success('Your activity is successfully created', 6);
 };
-
-const sideNote =
-  "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping activities.";
 
 const formModel = {
   title: '',
@@ -37,11 +36,12 @@ const emptyDateAndTime = {
   isRange: false,
 };
 
-class NewActivity extends React.Component {
+class NewActivity extends PureComponent {
   state = {
     formValues: { ...formModel },
     longDescription: '',
     datesAndTimes: [{ ...emptyDateAndTime }],
+    conflict: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -192,9 +192,50 @@ class NewActivity extends React.Component {
     });
   };
 
-  setDatesAndTimes = (datesAndTimes) => {
+  setDatesAndTimes = (selectedOccurences) => {
     this.setState({
-      datesAndTimes,
+      datesAndTimes: selectedOccurences,
+    });
+
+    const { allOccurences } = this.props;
+    const { formValues } = this.state;
+    const selectedResource = formValues.resource;
+    const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+
+    const allOccurencesWithSelectedResource = allOccurences.filter(
+      (occurence) => {
+        return occurence.resource === selectedResource.label;
+      }
+    );
+
+    allOccurencesWithSelectedResource.some((occurence) => {
+      const conflictingSelectedOccurence = selectedOccurences.find(
+        (selectedOccurence) => {
+          const start = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
+          const end = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
+          return (
+            moment(
+              `${occurence.startDate} ${occurence.startTime}`,
+              dateTimeFormat
+            ).isBetween(start, end, undefined, '[]') ||
+            moment(
+              `${occurence.startDate} ${occurence.startTime}`,
+              dateTimeFormat
+            ).isBetween(start, end, undefined, '[]')
+          );
+        }
+      );
+      console.log(conflictingSelectedOccurence);
+      if (conflictingSelectedOccurence) {
+        this.setState({
+          conflict: {
+            selectedOccurence: conflictingSelectedOccurence,
+            existingOccurence: occurence,
+            resource: selectedResource,
+          },
+        });
+        return true;
+      }
     });
   };
 
