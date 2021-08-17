@@ -103,7 +103,7 @@ const DatesAndTimes = ({
           basis="180px"
         >
           <Box>
-            <Text size="small">Start time</Text>
+            <Text size="small">Start time (hh:mm)</Text>
             <TimePicker
               value={recurrence.startTime}
               onChange={handleStartTimeChange}
@@ -113,7 +113,7 @@ const DatesAndTimes = ({
             />
           </Box>
           <Box margin={{ top: 'medium' }}>
-            <Text size="small">Finish time</Text>
+            <Text size="small">Finish time (hh:mm)</Text>
             <TimePicker
               value={recurrence.endTime}
               onChange={handleFinishTimeChange}
@@ -165,7 +165,7 @@ const TimePicker = ({ onChange, value, ...otherProps }) => (
     size="medium"
     mask={[
       {
-        length: [1, 2],
+        length: [2],
         options: Array.from(
           { length: 24 },
           (v, k) => (k < 10 ? '0' : '') + k.toString()

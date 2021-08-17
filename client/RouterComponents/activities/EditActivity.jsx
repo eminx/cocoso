@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Anchor, Box, Button, CheckBox, Text } from 'grommet';
+import { Anchor, Box, CheckBox, Text } from 'grommet';
 import { FormPrevious } from 'grommet-icons';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
@@ -364,9 +364,11 @@ class EditActivity extends PureComponent {
           />
         </Box>
 
-        <Box pad="medium" justify="end" pad="small">
+        <Box pad="small" direction="row" justify="center">
           {activity.authorId === currentUser._id && (
-            <Button onClick={this.showDeleteModal} label="Delete" />
+            <Anchor color="status-critical" onClick={this.showDeleteModal}>
+              Delete
+            </Anchor>
           )}
         </Box>
 

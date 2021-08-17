@@ -205,7 +205,7 @@ class ActivityForm extends PureComponent {
           // errors={{ name: ['message', '<Box>...</Box>'] }}
           validate="blur"
         >
-          <Heading level={4}>Resource</Heading>
+          <Heading level={4}>Resource*</Heading>
           <Field name="resource" required>
             <Select
               size="small"
@@ -231,13 +231,13 @@ class ActivityForm extends PureComponent {
             </Select>
           </Field>
 
-          <Heading level={4}>Occurences</Heading>
+          <Heading level={4}>Occurences*</Heading>
 
           {this.renderDateTime()}
           <Box pad={{ top: 'large' }}>
             <Heading level={4}>Details</Heading>
             <Field
-              label="Title"
+              label="Title*"
               name="title"
               required
               // help="This is typicaly title of your event"

@@ -62,7 +62,6 @@ class NewActivity extends PureComponent {
     });
 
     if (oldFormValues.resource.label !== formValues.resource.label) {
-      console.log(oldFormValues.resource.label, formValues.resource.label);
       this.validateBookings(datesAndTimes, formValues.resource);
     }
   };
@@ -211,8 +210,6 @@ class NewActivity extends PureComponent {
   validateBookings = (selectedOccurences, selectedResource) => {
     const { allOccurences } = this.props;
     const dateTimeFormat = 'YYYY-MM-DD HH:mm';
-
-    console.log(selectedResource);
 
     const allOccurencesWithSelectedResource = allOccurences.filter(
       (occurence) => {
