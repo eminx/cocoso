@@ -8,7 +8,6 @@ import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
-import { parseActsWithResources } from '../../functions';
 
 const successCreation = () => {
   message.success('Your activity is successfully created', 6);
@@ -34,6 +33,7 @@ const emptyDateAndTime = {
   attendees: [],
   capacity: defaultCapacity,
   isRange: false,
+  conflict: null,
 };
 
 class NewActivity extends PureComponent {
@@ -41,7 +41,6 @@ class NewActivity extends PureComponent {
     formValues: { ...formModel },
     longDescription: '',
     datesAndTimes: [{ ...emptyDateAndTime }],
-    conflict: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -55,9 +54,17 @@ class NewActivity extends PureComponent {
   };
 
   handleFormValueChange = (formValues) => {
+    const { datesAndTimes } = this.state;
+    const oldFormValues = this.state.formValues;
+
     this.setState({
       formValues,
     });
+
+    if (oldFormValues.resource.label !== formValues.resource.label) {
+      console.log(oldFormValues.resource.label, formValues.resource.label);
+      this.validateBookings(datesAndTimes, formValues.resource);
+    }
   };
 
   handleQuillChange = (longDescription) => {
@@ -193,14 +200,19 @@ class NewActivity extends PureComponent {
   };
 
   setDatesAndTimes = (selectedOccurences) => {
+    const { formValues } = this.state;
     this.setState({
       datesAndTimes: selectedOccurences,
     });
 
+    this.validateBookings(selectedOccurences, formValues.resource);
+  };
+
+  validateBookings = (selectedOccurences, selectedResource) => {
     const { allOccurences } = this.props;
-    const { formValues } = this.state;
-    const selectedResource = formValues.resource;
     const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+
+    console.log(selectedResource);
 
     const allOccurencesWithSelectedResource = allOccurences.filter(
       (occurence) => {
@@ -208,35 +220,53 @@ class NewActivity extends PureComponent {
       }
     );
 
-    allOccurencesWithSelectedResource.some((occurence) => {
-      const conflictingSelectedOccurence = selectedOccurences.find(
-        (selectedOccurence) => {
-          const start = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
-          const end = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
+    const newSelectedOccurences = [];
+    selectedOccurences.forEach((selectedOccurence) => {
+      const occurenceWithConflict = allOccurencesWithSelectedResource.find(
+        (occurence) => {
+          const selectedStart = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
+          const selectedEnd = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
+          const existingStart = `${occurence.startDate} ${occurence.startTime}`;
+          const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
           return (
-            moment(
-              `${occurence.startDate} ${occurence.startTime}`,
-              dateTimeFormat
-            ).isBetween(start, end, undefined, '[]') ||
-            moment(
-              `${occurence.startDate} ${occurence.startTime}`,
-              dateTimeFormat
-            ).isBetween(start, end, undefined, '[]')
+            moment(selectedStart, dateTimeFormat).isBetween(
+              existingStart,
+              existingEnd
+            ) ||
+            moment(selectedEnd, dateTimeFormat).isBetween(
+              existingStart,
+              existingEnd
+            )
           );
         }
       );
-      console.log(conflictingSelectedOccurence);
-      if (conflictingSelectedOccurence) {
-        this.setState({
+      if (occurenceWithConflict) {
+        newSelectedOccurences.push({
+          ...selectedOccurence,
           conflict: {
-            selectedOccurence: conflictingSelectedOccurence,
-            existingOccurence: occurence,
-            resource: selectedResource,
+            ...occurenceWithConflict,
           },
         });
-        return true;
+      } else {
+        newSelectedOccurences.push({
+          ...selectedOccurence,
+          conflict: null,
+        });
       }
     });
+    this.setState({
+      datesAndTimes: newSelectedOccurences,
+    });
+  };
+
+  isFormValid = () => {
+    const { formValues, datesAndTimes } = this.state;
+    const { title } = formValues;
+    const isValuesOK = formValues && formValues.resource && title.length > 3;
+    const isConflict = datesAndTimes.some((occurence) =>
+      Boolean(occurence.conflict)
+    );
+    return isValuesOK && !isConflict;
   };
 
   render() {
@@ -275,8 +305,8 @@ class NewActivity extends PureComponent {
     const buttonLabel = isCreating
       ? 'Creating your activity...'
       : 'Confirm and Create';
-    const { title } = formValues;
-    const isFormValid = formValues && formValues.resource && title.length > 3;
+
+    const isFormValid = this.isFormValid();
 
     return (
       <Template heading="Create a New Activity">

@@ -45,6 +45,9 @@ const DatesAndTimes = ({
       margin={{ bottom: 'small' }}
       animation={noAnimate ? null : 'slideUp'}
       background="light-1"
+      border={
+        recurrence.conflict ? { color: 'status-critical', size: 'small' } : null
+      }
     >
       {!isNotDeletable && (
         <Box>
@@ -134,6 +137,25 @@ const DatesAndTimes = ({
           )}
         </Box>
       </Box>
+      {recurrence.conflict && (
+        <Text size="small" textAlign="center" weight="bold">
+          There's already a booking for this resource at this date & time:{' '}
+          <br />
+          <Text color="status-critical" margin="medium">
+            <code>
+              {recurrence.conflict.startDate === recurrence.conflict.endDate
+                ? recurrence.conflict.startDate
+                : recurrence.conflict.startDate +
+                  '-' +
+                  recurrence.conflict.endDate}
+              {', '}
+              {recurrence.conflict.startTime +
+                ' – ' +
+                recurrence.conflict.endTime}
+            </code>
+          </Text>
+        </Text>
+      )}
     </Box>
   );
 };
