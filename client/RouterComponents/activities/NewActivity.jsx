@@ -270,8 +270,9 @@ class NewActivity extends PureComponent {
       Boolean(occurence.conflict)
     );
 
+    const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some((dateTime) => {
-      return dateTime.startTime.length !== 5 && dateTime.endTime.length !== 5;
+      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
     });
 
     return isValuesOK && !isTimesInValid && !isConflict;
