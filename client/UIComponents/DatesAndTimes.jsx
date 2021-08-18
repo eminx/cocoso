@@ -19,6 +19,7 @@ const dateInputProps = {
   style: {
     background: 'white',
   },
+  size: 'small',
 };
 
 const DatesAndTimes = ({
@@ -103,7 +104,7 @@ const DatesAndTimes = ({
           basis="180px"
         >
           <Box>
-            <Text size="small">Start time (hh:mm)</Text>
+            <Text size="small">Start time</Text>
             <TimePicker
               value={recurrence.startTime}
               onChange={handleStartTimeChange}
@@ -113,7 +114,7 @@ const DatesAndTimes = ({
             />
           </Box>
           <Box margin={{ top: 'medium' }}>
-            <Text size="small">Finish time (hh:mm)</Text>
+            <Text size="small">Finish time</Text>
             <TimePicker
               value={recurrence.endTime}
               onChange={handleFinishTimeChange}
@@ -162,7 +163,7 @@ const DatesAndTimes = ({
 
 const TimePicker = ({ onChange, value, ...otherProps }) => (
   <MaskedInput
-    size="medium"
+    size="small"
     mask={[
       {
         length: [2],
@@ -171,14 +172,14 @@ const TimePicker = ({ onChange, value, ...otherProps }) => (
           (v, k) => (k < 10 ? '0' : '') + k.toString()
         ),
         regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
-        placeholder: 'hh',
+        placeholder: 'HH',
       },
       { fixed: ':' },
       {
-        length: 2,
+        length: [2],
         options: ['00', '15', '30', '45'],
         regexp: /^[0-5][0-9]$|^[0-9]$/,
-        placeholder: 'mm',
+        placeholder: 'MM',
       },
     ]}
     value={value}
