@@ -8,6 +8,7 @@ import {
   TextInput,
 } from 'grommet';
 import { FormTrash } from 'grommet-icons/icons/FormTrash';
+import { useState } from 'react';
 
 const dateInputProps = {
   format: 'yyyy-mm-dd',
@@ -161,33 +162,53 @@ const DatesAndTimes = ({
   );
 };
 
-const TimePicker = ({ onChange, value, ...otherProps }) => (
-  <MaskedInput
-    size="small"
-    mask={[
-      {
-        length: [2],
-        options: Array.from(
-          { length: 24 },
-          (v, k) => (k < 10 ? '0' : '') + k.toString()
-        ),
-        regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
-        placeholder: 'HH',
-      },
-      { fixed: ':' },
-      {
-        length: [2],
-        options: ['00', '15', '30', '45'],
-        regexp: /^[0-5][0-9]$|^[0-9]$/,
-        placeholder: 'MM',
-      },
-    ]}
-    value={value}
-    onChange={(event) => onChange(event.target.value)}
-    dropHeight="small"
-    {...otherProps}
-  />
-);
+const TimePicker = ({ onChange, value, ...otherProps }) => {
+  const [error, setError] = useState(false);
+
+  const handleBlur = () => {
+    if (value.length < 5) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  };
+  return (
+    <div>
+      <MaskedInput
+        size="small"
+        mask={[
+          {
+            length: 2,
+            options: Array.from(
+              { length: 24 },
+              (v, k) => (k < 10 ? '0' : '') + k.toString()
+            ),
+            regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
+            placeholder: 'HH',
+          },
+          { fixed: ':' },
+          {
+            length: 2,
+            options: ['00', '15', '30', '45'],
+            regexp: /^[0-5][0-9]$|^[0-9]$/,
+            placeholder: 'MM',
+          },
+        ]}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        dropHeight="small"
+        onBlur={handleBlur}
+        style={error ? { border: '1px solid red' } : {}}
+        {...otherProps}
+      />
+      {error && (
+        <Text size="small" color="status-critical">
+          Please enter the time in full HH:MM format
+        </Text>
+      )}
+    </div>
+  );
+};
 
 export { TimePicker };
 
