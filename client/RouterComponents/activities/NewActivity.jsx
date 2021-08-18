@@ -269,7 +269,12 @@ class NewActivity extends PureComponent {
     const isConflict = datesAndTimes.some((occurence) =>
       Boolean(occurence.conflict)
     );
-    return isValuesOK && !isConflict;
+
+    const isTimesInValid = datesAndTimes.some((dateTime) => {
+      return dateTime.startTime.length !== 5 && dateTime.endTime.length !== 5;
+    });
+
+    return isValuesOK && !isTimesInValid && !isConflict;
   };
 
   render() {
