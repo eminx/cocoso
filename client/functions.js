@@ -135,7 +135,7 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
             _id: activity._id,
           });
         });
-      } else {
+      } else if (theResource) {
         allActivities.push({
           title: activity.title,
           start: moment(

@@ -213,6 +213,12 @@ class NewActivity extends PureComponent {
 
     const allOccurencesWithSelectedResource = allOccurences.filter(
       (occurence) => {
+        if (selectedResource.isCombo) {
+          return selectedResource.resourcesForCombo.some((resourceForCombo) => {
+            console.log(resourceForCombo.label, occurence.resource);
+            return resourceForCombo.label === occurence.resource;
+          });
+        }
         return occurence.resource === selectedResource.label;
       }
     );
