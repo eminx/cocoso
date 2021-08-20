@@ -36,6 +36,7 @@
     "@chakra-ui/react": "^1.0.1",
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
+    "@loadable/component": "^5.15.0",
     "array-move": "^2.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
