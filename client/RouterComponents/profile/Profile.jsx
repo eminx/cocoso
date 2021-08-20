@@ -234,6 +234,8 @@ class Profile extends React.Component {
                 }
                 label="Click/Drag to upload"
                 round
+                height="100%"
+                imageFit="cover"
                 setUploadableImage={this.setUploadableAvatar}
               />
             </Box>

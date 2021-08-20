@@ -8,6 +8,7 @@ const FileDropper = ({
   imageUrl,
   label,
   round = false,
+  imageFit = 'contain',
   ...otherProps
 }) => {
   return (
@@ -18,14 +19,13 @@ const FileDropper = ({
           background={isDragActive ? 'light-3' : 'light-1'}
           border={{ size: 'xsmall', style: 'dashed' }}
           elevation="medium"
-          // height="small"
           style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
           width="medium"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
-              fit="contain"
+              fit={imageFit}
               fill
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}
