@@ -8,6 +8,9 @@ import LayoutContainer from '../LayoutContainer';
 
 // ROUTES
 
+// Calendar
+const CalendarContainer = loadable(() => import('./CalendarContainer'));
+
 // Activities
 const ActivitiesContainer = loadable(() =>
   import('./activities/ActivitiesContainer')
@@ -65,7 +68,7 @@ const Settings = loadable(() => import('./admin/Settings'));
 const Members = loadable(() => import('./admin/Members'));
 const Resources = loadable(() => import('./admin/Resources'));
 
-// suepradmin
+// superadmin
 const NewHost = loadable(() => import('./hosts/NewHost'));
 
 import ScrollToTop from './ScrollToTop';
