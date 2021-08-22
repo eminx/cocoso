@@ -110,7 +110,6 @@ function PublicMembers({ history }) {
       wrap
       margin={{ bottom: 'large' }}
       pad="small"
-      gap={{ bottom: 'medium', horizontal: 'small' }}
       style={{ maxWidth: 960 }}
     >
       <Helmet>

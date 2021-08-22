@@ -71,7 +71,6 @@ const Resources = loadable(() => import('./admin/Resources'));
 // superadmin
 const NewHost = loadable(() => import('./hosts/NewHost'));
 
-import ScrollToTop from './ScrollToTop';
 import NotFoundPage from './NotFoundPage';
 
 const browserHistory = createBrowserHistory();
@@ -81,67 +80,126 @@ export default function () {
     <Router history={browserHistory}>
       <Switch>
         <LayoutContainer history={browserHistory}>
-          <ScrollToTop>
-            <Route exact path="/" component={Home} />
-            {/* <Suspense fallback={<div>Loading...</div>}> */}
-            <Route exact path="/calendar" component={CalendarContainer} />
+          <Route exact path="/" component={Home} />
 
-            <Route exact path="/activities" component={ActivitiesContainer} />
-            <Route exact path="/my-activities" component={MyActivities} />
-            <Route
-              exact
-              path="/new-activity"
-              component={NewActivityContainer}
-            />
-            <Route path="/event/:id" component={ActivityContainer} />
-            <Route path="/activity/:id" component={ActivityContainer} />
-            <Route
-              path="/edit-activity/:id/"
-              component={EditActivityContainer}
-            />
+          <Route
+            exact
+            path="/calendar"
+            component={(props) => <CalendarContainer {...props} />}
+          />
 
-            <Route exact path="/new-process" component={NewProcessContainer} />
-            <Route path="/processes/" component={ProcessesListContainer} />
-            <Route path="/process/:id" component={ProcessContainer} />
-            <Route path="/edit-process/:id/" component={EditProcessContainer} />
+          <Route
+            exact
+            path="/activities"
+            render={(props) => <ActivitiesContainer {...props} />}
+          />
+          <Route
+            exact
+            path="/my-activities"
+            render={(props) => <MyActivities {...props} />}
+          />
+          <Route
+            exact
+            path="/new-activity"
+            render={(props) => <NewActivityContainer {...props} />}
+          />
+          <Route
+            path="/event/:id"
+            render={(props) => <ActivityContainer {...props} />}
+          />
+          <Route
+            path="/activity/:id"
+            render={(props) => <ActivityContainer {...props} />}
+          />
+          <Route
+            path="/edit-activity/:id/"
+            render={(props) => <EditActivityContainer {...props} />}
+          />
 
-            <Route path="/members" component={MembersPublic} />
-            <Route path="/@:username" component={MemberPublic} />
+          <Route
+            exact
+            path="/new-process"
+            render={(props) => <NewProcessContainer {...props} />}
+          />
+          <Route
+            path="/processes/"
+            render={(props) => <ProcessesListContainer {...props} />}
+          />
+          <Route
+            path="/process/:id"
+            render={(props) => <ProcessContainer {...props} />}
+          />
+          <Route
+            path="/edit-process/:id/"
+            render={(props) => <EditProcessContainer {...props} />}
+          />
 
-            <Route exact path="/new-page" component={NewPageContainer} />
-            <Route path="/page/:id" component={Page} />
-            <Route path="/edit-page/:id/" component={EditPageContainer} />
+          <Route
+            path="/members"
+            render={(props) => <MembersPublic {...props} />}
+          />
+          <Route
+            path="/@:username"
+            render={(props) => <MemberPublic {...props} />}
+          />
 
-            <Route
-              path="/my-profile/"
-              history={browserHistory}
-              component={ProfileContainer}
-            />
+          <Route
+            exact
+            path="/new-page"
+            render={(props) => <NewPageContainer {...props} />}
+          />
+          <Route path="/page/:id" render={(props) => <Page {...props} />} />
+          <Route
+            path="/edit-page/:id/"
+            render={(props) => <EditPageContainer {...props} />}
+          />
 
-            <Route path="/my-works" component={MyWorks} />
-            <Route path="/:username/work/:workId" component={Work} />
-            <Route path="/:username/edit-work/:workId" component={EditWork} />
-            <Route path="/new-work" component={NewWork} />
-            <Route path="/works" component={Works} />
+          <Route
+            path="/my-profile/"
+            history={browserHistory}
+            render={(props) => <ProfileContainer {...props} />}
+          />
 
-            <Route path="/admin/settings" component={Settings} />
-            <Route path="/admin/members" component={Members} />
-            <Route path="/admin/resources" component={Resources} />
+          <Route path="/my-works" render={(props) => <MyWorks {...props} />} />
+          <Route
+            path="/:username/work/:workId"
+            render={(props) => <Work {...props} />}
+          />
+          <Route
+            path="/:username/edit-work/:workId"
+            render={(props) => <EditWork {...props} />}
+          />
+          <Route path="/new-work" render={(props) => <NewWork {...props} />} />
+          <Route path="/works" render={(props) => <Works {...props} />} />
 
-            <Route path="/signup" component={SignupPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/forgot-password" component={ForgotPasswordPage} />
-            <Route
-              path="/reset-password/:token"
-              component={ResetPasswordPage}
-            />
+          <Route
+            path="/admin/settings"
+            render={(props) => <Settings {...props} />}
+          />
+          <Route
+            path="/admin/members"
+            render={(props) => <Members {...props} />}
+          />
+          <Route
+            path="/admin/resources"
+            render={(props) => <Resources {...props} />}
+          />
 
-            {/* <Route path="*" component={NotFoundPage} /> */}
+          <Route path="/signup" render={(props) => <SignupPage {...props} />} />
+          <Route path="/login" render={(props) => <LoginPage {...props} />} />
+          <Route
+            path="/forgot-password"
+            render={(props) => <ForgotPasswordPage {...props} />}
+          />
+          <Route
+            path="/reset-password/:token"
+            render={(props) => <ResetPasswordPage {...props} />}
+          />
 
-            {/* Super admin only! */}
-            <Route path="/new-host" component={NewHost} />
-            {/* </Suspense> */}
-          </ScrollToTop>
+          {/* <Route path="*" component={NotFoundPage} /> */}
+
+          {/* Super admin only! */}
+          <Route path="/new-host" render={(props) => <NewHost {...props} />} />
         </LayoutContainer>
       </Switch>
     </Router>

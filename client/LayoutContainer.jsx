@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Anchor,
@@ -113,6 +113,14 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [history]);
+
+  if (currentUser) {
+    import 'react-quill/dist/quill.snow.css';
+  }
 
   if (hostLoading || !currentHost) {
     return (
