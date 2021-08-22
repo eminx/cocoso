@@ -8,10 +8,10 @@ import { userMenu, adminMenu } from '../constants/general';
 const UserPopup = withRouter(({ currentUser, history }) => {
   if (!currentUser) {
     return (
-      <Box justify="center">
+      <Box justify="center" pad={{ horizontal: 'xsmall' }}>
         <Anchor
-          onClick={() => history.push('/signup')}
-          label={<Text size="small">Login / Signup</Text>}
+          onClick={() => history.push('/login')}
+          label={<Text size="small">Login</Text>}
         />
       </Box>
     );
