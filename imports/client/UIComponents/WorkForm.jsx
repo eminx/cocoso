@@ -137,30 +137,23 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
-const thumbIconStyle = {
-  padding: 8,
-  borderRadius: 4,
-  backgroundColor: 'rgba(255, 255, 255, .3)',
-  zIndex: 99,
-};
-
 const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
   return (
     <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
       <Button
         alignSelf="end"
-        onClick={onRemoveImage}
+        className="sortable-thumb-icon"
+        color="dark-1"
+        hoverIndicator
         icon={
           <Trash
             color="light-1"
             size="small"
-            style={{ zIndex: 99, pointerEvents: 'none' }}
+            style={{ pointerEvents: 'none' }}
           />
         }
-        color="dark-1"
         size="small"
-        hoverIndicator
-        style={thumbIconStyle}
+        onClick={onRemoveImage}
       />
     </Box>
   );
