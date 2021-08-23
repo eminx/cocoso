@@ -1,16 +1,6 @@
 import React from 'react';
-import { PulseLoader } from 'react-spinners';
+import { Progress } from '@chakra-ui/react';
 
-const loaderStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  margin: 24
-};
-
-const Loader = () => (
-  <div style={loaderStyle}>
-    <PulseLoader color="#020202" loading />
-  </div>
-);
+const Loader = () => <Progress size="xs" colorScheme="pink" isIndeterminate />;
 
 export default Loader;

@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import { Progress } from '@chakra-ui/react';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
@@ -82,7 +83,9 @@ export default function () {
     <Router history={browserHistory}>
       <Switch>
         <LayoutContainer history={browserHistory}>
-          <Suspense fallback={<div>loading the page...</div>}>
+          <Suspense
+            fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}
+          >
             <Route exact path="/" component={Home} />
 
             <Route exact path="/calendar" component={CalendarContainer} />
