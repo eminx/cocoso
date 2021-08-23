@@ -9,7 +9,7 @@ import {
   Form,
   Select,
 } from 'grommet';
-import { Close } from 'grommet-icons/icons/Close';
+import { Trash } from 'grommet-icons/icons/Trash';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
@@ -134,41 +134,35 @@ function WorkForm({
 }
 
 const thumbStyle = (backgroundImage) => ({
-  flexBasis: 120,
-  height: 80,
-  margin: 8,
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  borderRadius: 4,
-  border: '1px solid #fff',
 });
 
 const thumbIconStyle = {
-  float: 'right',
-  margin: 2,
-  padding: 4,
+  padding: 8,
   borderRadius: 4,
-  backgroundColor: 'rgba(255, 255, 255, .8)',
-  cursor: 'pointer',
+  backgroundColor: 'rgba(255, 255, 255, .3)',
+  zIndex: 99,
 };
 
 const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  const onRemoveClick = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    onRemoveImage();
-  };
-
   return (
-    <div key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <Close
+    <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
+      <Button
+        alignSelf="end"
+        onClick={onRemoveImage}
+        icon={
+          <Trash
+            color="light-1"
+            size="small"
+            style={{ zIndex: 99, pointerEvents: 'none' }}
+          />
+        }
         color="dark-1"
         size="small"
+        hoverIndicator
         style={thumbIconStyle}
-        onClick={onRemoveClick}
       />
-    </div>
+    </Box>
   );
 });
 
