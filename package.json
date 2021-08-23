@@ -45,7 +45,7 @@
     "grommet": "^2.17.2",
     "grommet-icons": "^4.5.0",
     "indexof": "0.0.1",
-    "meteor-node-stubs": "^0.4.1",
+    "meteor-node-stubs": "^1.1.0",
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "moment": "^2.26.0",
     "pluralize": "^8.0.0",
