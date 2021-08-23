@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box, Button } from 'grommet';
 import { StateContext } from '../../LayoutContainer';

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Anchor, Button, Box, Heading, Text } from 'grommet';
 import {
   Avatar,
@@ -22,21 +22,19 @@ import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
-const Work = ({ history, match }) => {
+function Work() {
   const [work, setWork] = useState(null);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { username, workId } = useParams();
 
   useEffect(() => {
     getWork();
   }, []);
 
   const getWork = async () => {
-    const workId = match.params.workId;
-    const username = match.params.username;
-
     try {
       const response = await call('getWork', workId, username);
       setWork(response);
@@ -75,7 +73,7 @@ const Work = ({ history, match }) => {
       ? work.authorFirstName + ' ' + work.authorLastName
       : work.authorUsername;
 
-  const isOwner = currentUser && currentUser.username === match.params.username;
+  const isOwner = currentUser && currentUser.username === username;
 
   const AvatarHolder = (props) => (
     <Link to={`/@${work.authorUsername}`}>
@@ -177,9 +175,7 @@ const Work = ({ history, match }) => {
         justify="center"
       >
         {isOwner && (
-          <Link
-            to={`/${currentUser.username}/edit-work/${match.params.workId}`}
-          >
+          <Link to={`/${currentUser.username}/edit-work/${workId}`}>
             <Anchor as="span" alignSelf="center" size="small" label="Edit" />
           </Link>
         )}
@@ -205,6 +201,6 @@ const Work = ({ history, match }) => {
       </Modal>
     </Fragment>
   );
-};
+}
 
 export default Work;
