@@ -1,5 +1,5 @@
-@import './bigcalendar-custom.css';
-@import './quilleditor-custom.css';
+@import '../imports/client/custom-styles/bigcalendar-custom.css';
+@import '../imports/client/custom-styles/quilleditor-custom.css';
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&display=swap');
 
 body {

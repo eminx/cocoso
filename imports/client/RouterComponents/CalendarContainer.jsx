@@ -4,12 +4,7 @@ import moment from 'moment';
 
 import { parseActsWithResources } from '../functions';
 
-export default CalendarContainer = withTracker((props) => {
-  // here we can pull out the props.subID and change our Meteor subscription based on it
-  // this is handled on the publication side of things
-
-  // const handle = Meteor.subscribe('myDataSub', props.subID);
-
+const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');
   const isLoading = !activities.ready();
   const activitiesList = Activities ? Activities.find().fetch() : null;
@@ -65,3 +60,5 @@ export default CalendarContainer = withTracker((props) => {
     manuals,
   };
 })(Calendar);
+
+export default CalendarContainer;

@@ -11,7 +11,7 @@ import {
 } from 'grommet';
 
 import { editorFormats, editorModules } from '../../constants/quillConfig';
-import { defaultEmails } from '../../../lib/constants';
+import { defaultEmails } from '../../../../lib/constants';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';

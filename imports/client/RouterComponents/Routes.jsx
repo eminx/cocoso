@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import loadable from '@loadable/component';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
@@ -9,67 +8,55 @@ import LayoutContainer from '../LayoutContainer';
 // ROUTES
 
 // Calendar
-const CalendarContainer = loadable(() => import('./CalendarContainer'));
+const CalendarContainer = require('./CalendarContainer');
 
 // Activities
-const ActivitiesContainer = loadable(() =>
-  import('./activities/ActivitiesContainer')
-);
-const ActivityContainer = loadable(() =>
-  import('./activities/ActivityContainer')
-);
-const MyActivities = loadable(() => import('./activities/MyActivities'));
-const NewActivityContainer = loadable(() =>
-  import('./activities/NewActivityContainer')
-);
-const EditActivityContainer = loadable(() =>
-  import('./activities/EditActivityContainer')
-);
+const ActivitiesContainer = require('./activities/ActivitiesContainer');
+
+const ActivityContainer = require('./activities/ActivityContainer');
+const MyActivities = require('./activities/MyActivities');
+const NewActivityContainer = require('./activities/NewActivityContainer');
+
+const EditActivityContainer = require('./activities/EditActivityContainer');
 
 // Processes
-const NewProcessContainer = loadable(() =>
-  import('./processes/NewProcessContainer')
-);
-const EditProcessContainer = loadable(() =>
-  import('./processes/EditProcessContainer')
-);
-const ProcessesListContainer = loadable(() =>
-  import('./processes/ProcessesListContainer')
-);
-const ProcessContainer = loadable(() => import('./processes/ProcessContainer'));
+const NewProcessContainer = require('./processes/NewProcessContainer');
+
+const EditProcessContainer = require('./processes/EditProcessContainer');
+
+const ProcessesListContainer = require('./processes/ProcessesListContainer');
+
+const ProcessContainer = require('./processes/ProcessContainer');
 
 // Pages
-const Page = loadable(() => import('./pages/Page'));
-const NewPageContainer = loadable(() => import('./pages/NewPageContainer'));
-const EditPageContainer = loadable(() => import('./pages/EditPageContainer'));
+const Page = require('./pages/Page');
+const NewPageContainer = require('./pages/NewPageContainer');
+const EditPageContainer = require('./pages/EditPageContainer');
 
 // Works
-const Works = loadable(() => import('./works/Works'));
-const Work = loadable(() => import('./works/Work'));
-const MyWorks = loadable(() => import('./works/MyWorks'));
-const NewWork = loadable(() => import('./works/NewWork'));
-const EditWork = loadable(() => import('./works/EditWork'));
+const Works = require('./works/Works');
+const Work = require('./works/Work');
+const MyWorks = require('./works/MyWorks');
+const NewWork = require('./works/NewWork');
+const EditWork = require('./works/EditWork');
 
 // Members
-const ProfileContainer = loadable(() => import('./profile/ProfileContainer'));
-const MembersPublic = loadable(() => import('./members/MembersPublic'));
-const MemberPublic = loadable(() => import('./members/Member'));
-const SignupPage = loadable(() => import('../account-manager/SignupPage'));
-const LoginPage = loadable(() => import('../account-manager/LoginPage'));
-const ForgotPasswordPage = loadable(() =>
-  import('../account-manager/ForgotPasswordPage')
-);
-const ResetPasswordPage = loadable(() =>
-  import('../account-manager/ResetPasswordPage')
-);
+const ProfileContainer = require('./profile/ProfileContainer');
+const MembersPublic = require('./members/MembersPublic');
+const MemberPublic = require('./members/Member');
+const SignupPage = require('../account-manager/SignupPage');
+const LoginPage = require('../account-manager/LoginPage');
+const ForgotPasswordPage = require('../account-manager/ForgotPasswordPage');
+
+const ResetPasswordPage = require('../account-manager/ResetPasswordPage');
 
 // admin
-const Settings = loadable(() => import('./admin/Settings'));
-const Members = loadable(() => import('./admin/Members'));
-const Resources = loadable(() => import('./admin/Resources'));
+const Settings = require('./admin/Settings');
+const Members = require('./admin/Members');
+const Resources = require('./admin/Resources');
 
 // superadmin
-const NewHost = loadable(() => import('./hosts/NewHost'));
+const NewHost = require('./hosts/NewHost');
 
 import NotFoundPage from './NotFoundPage';
 
@@ -80,6 +67,7 @@ export default function () {
     <Router history={browserHistory}>
       <Switch>
         <LayoutContainer history={browserHistory}>
+          {/* <Suspense fallback={<div>loading the page...</div>}> */}
           <Route exact path="/" component={Home} />
 
           <Route
@@ -200,6 +188,7 @@ export default function () {
 
           {/* Super admin only! */}
           <Route path="/new-host" render={(props) => <NewHost {...props} />} />
+          {/* </Suspense> */}
         </LayoutContainer>
       </Switch>
     </Router>
