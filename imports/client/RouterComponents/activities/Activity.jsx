@@ -22,7 +22,7 @@ import {
 } from 'grommet';
 
 import { StateContext } from '../../LayoutContainer';
-import Chattery from '../../chattery';
+// import Chattery from '../../UIComponents/chattery/Chattery';
 import FancyDate from '../../UIComponents/FancyDate';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
@@ -485,7 +485,7 @@ class Activity extends PureComponent {
           </Box>
         )}
 
-        {activityData.isPublicActivity && messages && chatData && (
+        {/* {activityData.isPublicActivity && messages && chatData && (
           <Box pad="medium" background="light-2" border="dark-2">
             <Heading level={4}>Chat Section</Heading>
             <Chattery
@@ -495,7 +495,7 @@ class Activity extends PureComponent {
               isMember
             />
           </Box>
-        )}
+        )} */}
 
         {EditButton}
 

@@ -20,7 +20,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-export default function Works({ history }) {
+function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
@@ -131,3 +131,5 @@ getCategoriesAssignedToWorks = (works) => {
     color: hslValues[i],
   }));
 };
+
+export default Works;

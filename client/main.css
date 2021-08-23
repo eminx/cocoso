@@ -1,4 +1,3 @@
-@import '../imports/client/custom-styles/bigcalendar-custom.css';
 @import '../imports/client/custom-styles/quilleditor-custom.css';
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500;800&display=swap');
 
@@ -22,15 +21,15 @@ body {
   cursor: grab;
 }
 
-.header-logo {
-  /* filter: grayscale(1); */
-  /* transition: 0.2s ease-in-out filter; */
+/* .header-logo {
+  filter: grayscale(1);
+  transition: 0.2s ease-in-out filter;
 }
 
 .header-logo:hover {
-  /* filter: grayscale(0); */
-  /* transition: 0.2s ease-in-out filter; */
-}
+  filter: grayscale(0);
+  transition: 0.2s ease-in-out filter;
+} */
 
 a,
 .text-content a {

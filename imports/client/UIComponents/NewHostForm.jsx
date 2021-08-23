@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, TextArea, FormField, Form, Box, Button } from 'grommet';
-import { hostFields } from '../../lib/constants';
+import { hostFields } from '../../../lib/constants';
 
 function Field(props) {
   return (

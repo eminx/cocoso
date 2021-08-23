@@ -1,17 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Anchor,
-  Box,
-  Button,
-  CheckBox,
-  Form,
-  FormField,
-  Heading,
-  Tabs,
-  Tab,
-  Text,
-  TextInput,
-} from 'grommet';
+import { Anchor, Box, Button, Form, Heading, Text, TextInput } from 'grommet';
 import { HuePicker } from 'react-color';
 
 import { StateContext } from '../../LayoutContainer';

@@ -11,7 +11,7 @@ class ChatteryBubble extends React.Component {
     }
   }
 
-  parseDate = theDate => {
+  parseDate = (theDate) => {
     const isToday = moment(theDate).isSame(moment(), 'd');
     const isYesterday = moment(theDate).isSame(moment().add(-1, 'days'), 'd');
     const isThisYear = moment(theDate).isSame(moment(), 'y');
@@ -27,7 +27,7 @@ class ChatteryBubble extends React.Component {
     }
   };
 
-  removeNotification = isVisible => {
+  removeNotification = (isVisible) => {
     const { isFromMe, removeNotification } = this.props;
     if (isVisible && !isFromMe) {
       removeNotification();
@@ -35,13 +35,8 @@ class ChatteryBubble extends React.Component {
   };
 
   render() {
-    const {
-      senderUsername,
-      createdDate,
-      isFromMe,
-      isSeen,
-      children
-    } = this.props;
+    const { senderUsername, createdDate, isFromMe, isSeen, children } =
+      this.props;
     let bubbleClass = 'talk-bubble tri-right round ';
     let bubbleClassContainer = 'talk-bubble-container ';
     if (isFromMe) {
@@ -79,7 +74,7 @@ ChatteryBubble.propTypes = {
   children: PropTypes.string.isRequired,
   createdDate: PropTypes.instanceOf(Date),
   sender: PropTypes.string,
-  isSeen: PropTypes.bool
+  isSeen: PropTypes.bool,
 };
 
 export { ChatteryBubble };

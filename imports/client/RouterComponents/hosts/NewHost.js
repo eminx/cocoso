@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Box } from 'grommet';
 
 import Template from '../../UIComponents/Template';
 import NewHostForm from '../../UIComponents/NewHostForm';
 import { message, Alert } from '../../UIComponents/message';
 import Loader from '../../UIComponents/Loader';
-import { call, parseTitle } from '../../functions';
-import { hostFields } from '../../../lib/constants';
+import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {

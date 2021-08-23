@@ -8,55 +8,55 @@ import LayoutContainer from '../LayoutContainer';
 // ROUTES
 
 // Calendar
-const CalendarContainer = require('./CalendarContainer');
+import CalendarContainer from './CalendarContainer';
 
 // Activities
-const ActivitiesContainer = require('./activities/ActivitiesContainer');
+import ActivitiesContainer from './activities/ActivitiesContainer';
 
-const ActivityContainer = require('./activities/ActivityContainer');
-const MyActivities = require('./activities/MyActivities');
-const NewActivityContainer = require('./activities/NewActivityContainer');
+import ActivityContainer from './activities/ActivityContainer';
+import MyActivities from './activities/MyActivities';
+import NewActivityContainer from './activities/NewActivityContainer';
 
-const EditActivityContainer = require('./activities/EditActivityContainer');
+import EditActivityContainer from './activities/EditActivityContainer';
 
 // Processes
-const NewProcessContainer = require('./processes/NewProcessContainer');
+import NewProcessContainer from './processes/NewProcessContainer';
 
-const EditProcessContainer = require('./processes/EditProcessContainer');
+import EditProcessContainer from './processes/EditProcessContainer';
 
-const ProcessesListContainer = require('./processes/ProcessesListContainer');
+import ProcessesListContainer from './processes/ProcessesListContainer';
 
-const ProcessContainer = require('./processes/ProcessContainer');
+import ProcessContainer from './processes/ProcessContainer';
 
 // Pages
-const Page = require('./pages/Page');
-const NewPageContainer = require('./pages/NewPageContainer');
-const EditPageContainer = require('./pages/EditPageContainer');
+import Page from './pages/Page';
+import NewPageContainer from './pages/NewPageContainer';
+import EditPageContainer from './pages/EditPageContainer';
 
 // Works
-const Works = require('./works/Works');
-const Work = require('./works/Work');
-const MyWorks = require('./works/MyWorks');
-const NewWork = require('./works/NewWork');
-const EditWork = require('./works/EditWork');
+import Works from './works/Works';
+import Work from './works/Work';
+import MyWorks from './works/MyWorks';
+import NewWork from './works/NewWork';
+import EditWork from './works/EditWork';
 
 // Members
-const ProfileContainer = require('./profile/ProfileContainer');
-const MembersPublic = require('./members/MembersPublic');
-const MemberPublic = require('./members/Member');
-const SignupPage = require('../account-manager/SignupPage');
-const LoginPage = require('../account-manager/LoginPage');
-const ForgotPasswordPage = require('../account-manager/ForgotPasswordPage');
+import ProfileContainer from './profile/ProfileContainer';
+import MembersPublic from './members/MembersPublic';
+import MemberPublic from './members/Member';
+import SignupPage from '../account-manager/SignupPage';
+import LoginPage from '../account-manager/LoginPage';
+import ForgotPasswordPage from '../account-manager/ForgotPasswordPage';
 
-const ResetPasswordPage = require('../account-manager/ResetPasswordPage');
+import ResetPasswordPage from '../account-manager/ResetPasswordPage';
 
 // admin
-const Settings = require('./admin/Settings');
-const Members = require('./admin/Members');
-const Resources = require('./admin/Resources');
+import Settings from './admin/Settings';
+import Members from './admin/Members';
+import Resources from './admin/Resources';
 
 // superadmin
-const NewHost = require('./hosts/NewHost');
+import NewHost from './hosts/NewHost';
 
 import NotFoundPage from './NotFoundPage';
 
@@ -70,124 +70,52 @@ export default function () {
           {/* <Suspense fallback={<div>loading the page...</div>}> */}
           <Route exact path="/" component={Home} />
 
-          <Route
-            exact
-            path="/calendar"
-            component={(props) => <CalendarContainer {...props} />}
-          />
+          <Route exact path="/calendar" component={CalendarContainer} />
 
-          <Route
-            exact
-            path="/activities"
-            render={(props) => <ActivitiesContainer {...props} />}
-          />
-          <Route
-            exact
-            path="/my-activities"
-            render={(props) => <MyActivities {...props} />}
-          />
-          <Route
-            exact
-            path="/new-activity"
-            render={(props) => <NewActivityContainer {...props} />}
-          />
-          <Route
-            path="/event/:id"
-            render={(props) => <ActivityContainer {...props} />}
-          />
-          <Route
-            path="/activity/:id"
-            render={(props) => <ActivityContainer {...props} />}
-          />
-          <Route
-            path="/edit-activity/:id/"
-            render={(props) => <EditActivityContainer {...props} />}
-          />
+          <Route exact path="/activities" component={ActivitiesContainer} />
+          <Route exact path="/my-activities" component={MyActivities} />
+          <Route exact path="/new-activity" component={NewActivityContainer} />
+          <Route path="/event/:id" component={ActivityContainer} />
+          <Route path="/activity/:id" component={ActivityContainer} />
+          <Route path="/edit-activity/:id/" component={EditActivityContainer} />
 
-          <Route
-            exact
-            path="/new-process"
-            render={(props) => <NewProcessContainer {...props} />}
-          />
-          <Route
-            path="/processes/"
-            render={(props) => <ProcessesListContainer {...props} />}
-          />
-          <Route
-            path="/process/:id"
-            render={(props) => <ProcessContainer {...props} />}
-          />
-          <Route
-            path="/edit-process/:id/"
-            render={(props) => <EditProcessContainer {...props} />}
-          />
+          <Route exact path="/new-process" component={NewProcessContainer} />
+          <Route path="/processes/" component={ProcessesListContainer} />
+          <Route path="/process/:id" component={ProcessContainer} />
+          <Route path="/edit-process/:id/" component={EditProcessContainer} />
 
-          <Route
-            path="/members"
-            render={(props) => <MembersPublic {...props} />}
-          />
-          <Route
-            path="/@:username"
-            render={(props) => <MemberPublic {...props} />}
-          />
+          <Route path="/members" component={MembersPublic} />
+          <Route path="/@:username" component={MemberPublic} />
 
-          <Route
-            exact
-            path="/new-page"
-            render={(props) => <NewPageContainer {...props} />}
-          />
-          <Route path="/page/:id" render={(props) => <Page {...props} />} />
-          <Route
-            path="/edit-page/:id/"
-            render={(props) => <EditPageContainer {...props} />}
-          />
+          <Route exact path="/new-page" component={NewPageContainer} />
+          <Route path="/page/:id" component={Page} />
+          <Route path="/edit-page/:id/" component={EditPageContainer} />
 
           <Route
             path="/my-profile/"
             history={browserHistory}
-            render={(props) => <ProfileContainer {...props} />}
+            component={ProfileContainer}
           />
 
-          <Route path="/my-works" render={(props) => <MyWorks {...props} />} />
-          <Route
-            path="/:username/work/:workId"
-            render={(props) => <Work {...props} />}
-          />
-          <Route
-            path="/:username/edit-work/:workId"
-            render={(props) => <EditWork {...props} />}
-          />
-          <Route path="/new-work" render={(props) => <NewWork {...props} />} />
-          <Route path="/works" render={(props) => <Works {...props} />} />
+          <Route path="/my-works" component={MyWorks} />
+          <Route path="/:username/work/:workId" component={Work} />
+          <Route path="/:username/edit-work/:workId" component={EditWork} />
+          <Route path="/new-work" component={NewWork} />
+          <Route path="/works" component={Works} />
 
-          <Route
-            path="/admin/settings"
-            render={(props) => <Settings {...props} />}
-          />
-          <Route
-            path="/admin/members"
-            render={(props) => <Members {...props} />}
-          />
-          <Route
-            path="/admin/resources"
-            render={(props) => <Resources {...props} />}
-          />
+          <Route path="/admin/settings" component={Settings} />
+          <Route path="/admin/members" component={Members} />
+          <Route path="/admin/resources" component={Resources} />
 
-          <Route path="/signup" render={(props) => <SignupPage {...props} />} />
-          <Route path="/login" render={(props) => <LoginPage {...props} />} />
-          <Route
-            path="/forgot-password"
-            render={(props) => <ForgotPasswordPage {...props} />}
-          />
-          <Route
-            path="/reset-password/:token"
-            render={(props) => <ResetPasswordPage {...props} />}
-          />
+          <Route path="/signup" component={SignupPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/forgot-password" component={ForgotPasswordPage} />
+          <Route path="/reset-password/:token" component={ResetPasswordPage} />
 
           {/* <Route path="*" component={NotFoundPage} /> */}
 
           {/* Super admin only! */}
-          <Route path="/new-host" render={(props) => <NewHost {...props} />} />
+          <Route path="/new-host" component={NewHost} />
           {/* </Suspense> */}
         </LayoutContainer>
       </Switch>
