@@ -17,6 +17,16 @@ body {
   cursor: grab;
 }
 
+.sortable-thumb {
+  flex-basis: 120px;
+  height: 80px;
+  margin: 8px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 4px;
+  border: 1px solid #fff;
+}
+
 .sortable-thumb:hover {
   cursor: grab;
 }
