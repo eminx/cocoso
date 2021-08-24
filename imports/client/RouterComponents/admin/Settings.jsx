@@ -140,11 +140,8 @@ export default function Settings({ history }) {
 
   const uploadLogo = async () => {
     try {
-      // const resizedImage = await resizeImage(localImage.uploadableImage, 500);
-      const uploadedImage = await uploadImage(
-        localImage.uploadableImage,
-        'hostLogoUpload'
-      );
+      const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
+      const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
       message.success('Your logo is successfully set');
     } catch (error) {

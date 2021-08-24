@@ -155,20 +155,36 @@ Meteor.methods({
   },
 
   setAvatar(avatar) {
-    const user = Meteor.user();
-    if (!user) {
+    const userId = Meteor.userId();
+    if (!userId) {
       throw new Meteor.Error('Not allowed!');
     }
 
+    const newAvatar = {
+      src: avatar,
+      date: new Date(),
+    };
+
     try {
-      Meteor.users.update(user._id, {
+      Meteor.users.update(userId, {
         $set: {
-          avatar: {
-            src: avatar,
-            date: new Date(),
-          },
+          avatar: newAvatar,
         },
       });
+
+      Works.update(
+        {
+          authorId: userId,
+        },
+        {
+          $set: {
+            authorAvatar: newAvatar,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);

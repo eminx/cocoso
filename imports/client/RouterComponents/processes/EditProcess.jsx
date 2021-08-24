@@ -133,7 +133,7 @@ class EditProcess extends React.Component {
     const { uploadableImage } = this.state;
 
     try {
-      const resizedImage = await resizeImage(uploadableImage, 500);
+      const resizedImage = await resizeImage(uploadableImage, 1200);
       const uploadedImage = await uploadImage(
         resizedImage,
         'processImageUpload'

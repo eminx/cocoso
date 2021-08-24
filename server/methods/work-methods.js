@@ -4,21 +4,12 @@ import { getHost } from './shared';
 Meteor.methods({
   getAllWorks() {
     const host = getHost(this);
-    // Works._ensureIndex({ host });
     try {
       const works = Works.find({
         host,
       }).fetch();
 
-      const worksWithAvatars = works.map((work) => {
-        const author = Meteor.users.findOne(work.authorId);
-        return {
-          ...work,
-          authorAvatar: author.avatar || null,
-        };
-      });
-
-      return worksWithAvatars;
+      return works;
     } catch (error) {
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
@@ -46,17 +37,14 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      const work = Works.findOne(workId);
+      const work = Works.findOne({ _id: workId, host });
 
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }
 
-      const author = Meteor.users.findOne(work.authorId);
-
       return {
         ...work,
-        authorAvatar: author.avatar || null,
       };
     } catch (error) {
       throw new Meteor.Error(error);

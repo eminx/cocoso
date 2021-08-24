@@ -98,7 +98,7 @@ class NewProcess extends React.Component {
   uploadImage = async () => {
     const { uploadableImage } = this.state;
     try {
-      const resizedImage = await resizeImage(uploadableImage, 500);
+      const resizedImage = await resizeImage(uploadableImage, 1200);
       const uploadedImage = await uploadImage(
         resizedImage,
         'processImageUpload'
