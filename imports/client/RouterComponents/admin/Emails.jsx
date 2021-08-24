@@ -24,7 +24,7 @@ const Field = ({ children, ...otherProps }) => (
 );
 
 export default function Emails() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [emails, setEmails] = useState(defaultEmails);
 
   const { currentUser, role } = useContext(StateContext);
@@ -45,7 +45,6 @@ export default function Emails() {
         setLoading(false);
       }
     };
-
     getEmails();
   }, []);
 
@@ -53,23 +52,31 @@ export default function Emails() {
     return null;
   }
 
-  const handleWelcomeEmailChange = (value) => {
-    const newWelcomeEmail = {
+  const handleChange = (emailIndex, value) => {
+    const newEmails = [...emails];
+    newEmails[emailIndex] = {
       ...value,
-      body: emails.welcomeEmail.body,
+      body: emails[emailIndex].body,
     };
-    setEmails({ ...emails, welcomeEmail: newWelcomeEmail });
+
+    setEmails(newEmails);
   };
 
-  const handleWelcomeEmailBodyChange = (body) => {
-    setEmails({ ...emails, welcomeEmail: { ...emails.welcomeEmail, body } });
+  const handleBodyChange = (emailIndex, value) => {
+    const newEmails = [...emails];
+    newEmails[emailIndex] = {
+      ...emails[emailIndex],
+      body: value,
+    };
+
+    setEmails(newEmails);
   };
 
-  const updateWelcomeEmail = async ({ value }) => {
+  const handleSubmit = async (emailIndex) => {
     setLoading(true);
     try {
-      await call('updateWelcomeEmail', value);
-      message.success('Welcome email is successfully updated');
+      await call('updateEmail', emailIndex, emails[emailIndex]);
+      message.success('Email is successfully updated');
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
@@ -81,54 +88,59 @@ export default function Emails() {
     return <Loader />;
   }
 
+  console.log(emails);
+
   return (
     <Box>
       <Heading level={3}>Emails</Heading>
-      <Box>
-        <Heading level={4}>Welcome Email</Heading>
-        <Form
-          value={emails.welcomeEmail}
-          onChange={handleWelcomeEmailChange}
-          onSubmit={updateWelcomeEmail}
-        >
-          <Field label="Subject">
-            <TextInput name="subject" placeholder="Welcome" size="medium" />
-          </Field>
-          <Field label="Appeal">
-            <Box
-              direction="row"
-              gap="small"
-              width="medium"
-              align="center"
-              justify="start"
+      {emails &&
+        emails.map((email, index) => (
+          <Box>
+            <Heading level={4}>{email.title}</Heading>
+            <Form
+              value={email}
+              onChange={(value) => handleChange(index, value)}
+              onSubmit={() => handleSubmit(index)}
             >
-              <Box style={{ width: 120 }}>
-                <TextInput
-                  name="appeal"
-                  placeholder="Dear"
-                  plain={false}
-                  size="small"
+              <Field label="Subject">
+                <TextInput name="subject" placeholder="Welcome" size="medium" />
+              </Field>
+              <Field label="Appeal">
+                <Box
+                  direction="row"
+                  gap="small"
+                  width="medium"
+                  align="center"
+                  justify="start"
+                >
+                  <Box style={{ width: 120 }}>
+                    <TextInput
+                      name="appeal"
+                      placeholder="Dear"
+                      plain={false}
+                      size="small"
+                    />
+                  </Box>
+                  <Text weight="bold">@username</Text>
+                </Box>
+              </Field>
+
+              <Field label="Body">
+                <ReactQuill
+                  value={email && email.body}
+                  formats={editorFormats}
+                  modules={editorModules}
+                  name="body"
+                  onChange={(value) => handleBodyChange(index, value)}
                 />
+              </Field>
+
+              <Box direction="row" justify="end" pad="small">
+                <Button type="submit" primary label="Confirm" />
               </Box>
-              <Text weight="bold">@username</Text>
-            </Box>
-          </Field>
-
-          <Field label="Body">
-            <ReactQuill
-              value={emails.welcomeEmail && emails.welcomeEmail.body}
-              formats={editorFormats}
-              name="body"
-              modules={editorModules}
-              onChange={handleWelcomeEmailBodyChange}
-            />
-          </Field>
-
-          <Box direction="row" justify="end" pad="small">
-            <Button type="submit" primary label="Confirm" />
+            </Form>
           </Box>
-        </Form>
-      </Box>
+        ))}
     </Box>
   );
 }

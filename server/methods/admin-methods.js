@@ -376,7 +376,8 @@ Meteor.methods({
     }
   },
 
-  updateWelcomeEmail(value) {
+  updateEmail(emailIndex, email) {
+    console.log('ohoho');
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -386,17 +387,18 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const emails = {
+    const newEmails = {
       ...currentHost.emails,
-      welcomeEmail: value,
     };
+
+    newEmails[emailIndex] = email;
 
     try {
       Hosts.update(
         { host },
         {
           $set: {
-            emails,
+            emails: newEmails,
           },
         }
       );
