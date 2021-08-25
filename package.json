@@ -1,7 +1,7 @@
 {
   "name": "cocoso",
   "private": true,
-  "description": "![Cocoso logo](https://cocoso.infinitesimals.space/cocoso-logo.png)",
+  "description": "![Cocoso logo](https://www.cocoso.info/cocoso-logo.png)",
   "version": "0.1.0",
   "main": "server/main.js",
   "directories": {
@@ -42,7 +42,7 @@
     "babel-runtime": "^6.26.0",
     "bcrypt": "^5.0.0",
     "framer-motion": "^3.3.0",
-    "grommet": "^2.17.4",
+    "grommet": "^2.17.2",
     "grommet-icons": "^4.6.0",
     "indexof": "0.0.1",
     "meteor-node-stubs": "^1.1.0",
