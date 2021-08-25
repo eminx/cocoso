@@ -120,6 +120,7 @@ function LayoutPage({
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
+    import './custom-styles/quilleditor-custom.css';
   }
 
   if (hostLoading || !currentHost) {
