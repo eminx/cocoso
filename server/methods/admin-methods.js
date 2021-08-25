@@ -220,24 +220,6 @@ Meteor.methods({
     }
   },
 
-  getEmails() {
-    const user = Meteor.user();
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
-
-    if (!user.isSuperAdmin && !isAdmin) {
-      throw new Meteor.Error('You are not allowed');
-    }
-
-    try {
-      const currentHost = Hosts.findOne({ host });
-      return currentHost.emails;
-    } catch (error) {
-      throw new Meteor.Error(error);
-    }
-  },
-
   updateHostSettings(newSettings) {
     const user = Meteor.user();
     const host = getHost(this);
@@ -376,8 +358,7 @@ Meteor.methods({
     }
   },
 
-  updateEmail(emailIndex, email) {
-    console.log('ohoho');
+  getEmails() {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -387,11 +368,28 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
 
-    const newEmails = {
-      ...currentHost.emails,
-    };
+    try {
+      const currentHost = Hosts.findOne({ host });
+      return currentHost.emails;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  updateEmail(emailIndex, email) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, user._id);
+
+    if (!user.isSuperAdmin && !isAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    const newEmails = [...currentHost.emails];
 
     newEmails[emailIndex] = email;
+    console.log(newEmails[emailIndex], email);
 
     try {
       Hosts.update(

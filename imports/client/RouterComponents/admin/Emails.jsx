@@ -11,7 +11,6 @@ import {
 } from 'grommet';
 
 import { editorFormats, editorModules } from '../../constants/quillConfig';
-import { defaultEmails } from '../../../../lib/constants';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
@@ -25,7 +24,7 @@ const Field = ({ children, ...otherProps }) => (
 
 export default function Emails() {
   const [loading, setLoading] = useState(false);
-  const [emails, setEmails] = useState(defaultEmails);
+  const [emails, setEmails] = useState([]);
 
   const { currentUser, role } = useContext(StateContext);
 
@@ -36,8 +35,8 @@ export default function Emails() {
   useEffect(() => {
     const getEmails = async () => {
       try {
-        const emails = await call('getEmails');
-        setEmails(emails);
+        const savedEmails = await call('getEmails');
+        setEmails(savedEmails.map((email) => ({ ...email, isAltered: false })));
       } catch (error) {
         console.log(error);
         message.error(error.reason);
@@ -57,6 +56,7 @@ export default function Emails() {
     newEmails[emailIndex] = {
       ...value,
       body: emails[emailIndex].body,
+      isAltered: true,
     };
 
     setEmails(newEmails);
@@ -67,6 +67,7 @@ export default function Emails() {
     newEmails[emailIndex] = {
       ...emails[emailIndex],
       body: value,
+      isAltered: true,
     };
 
     setEmails(newEmails);
@@ -74,8 +75,14 @@ export default function Emails() {
 
   const handleSubmit = async (emailIndex) => {
     setLoading(true);
+    const email = { ...emails[emailIndex] };
+    delete email.isAltered;
+
     try {
-      await call('updateEmail', emailIndex, emails[emailIndex]);
+      await call('updateEmail', emailIndex, email);
+      const newEmails = [...emails];
+      newEmails[emailIndex].isAltered = false;
+      setEmails(newEmails);
       message.success('Email is successfully updated');
     } catch (error) {
       message.error(error.reason || error.error);
@@ -88,24 +95,22 @@ export default function Emails() {
     return <Loader />;
   }
 
-  console.log(emails);
-
   return (
     <Box>
       <Heading level={3}>Emails</Heading>
       {emails &&
         emails.map((email, index) => (
-          <Box>
+          <Box key={email.title}>
             <Heading level={4}>{email.title}</Heading>
             <Form
               value={email}
               onChange={(value) => handleChange(index, value)}
               onSubmit={() => handleSubmit(index)}
             >
-              <Field label="Subject">
+              <Field label="Subject" name="subject">
                 <TextInput name="subject" placeholder="Welcome" size="medium" />
               </Field>
-              <Field label="Appeal">
+              <Field label="Appeal" name="appeal">
                 <Box
                   direction="row"
                   gap="small"
@@ -125,7 +130,7 @@ export default function Emails() {
                 </Box>
               </Field>
 
-              <Field label="Body">
+              <Field label="Body" name="body">
                 <ReactQuill
                   value={email && email.body}
                   formats={editorFormats}
@@ -136,7 +141,12 @@ export default function Emails() {
               </Field>
 
               <Box direction="row" justify="end" pad="small">
-                <Button type="submit" primary label="Confirm" />
+                <Button
+                  disabled={email && !email.isAltered}
+                  type="submit"
+                  primary
+                  label="Confirm"
+                />
               </Box>
             </Form>
           </Box>
