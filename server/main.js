@@ -26,6 +26,9 @@ Meteor.startup(() => {
       $set: {
         emails: defaultEmails,
       },
+    },
+    {
+      multi: true,
     }
   );
 });

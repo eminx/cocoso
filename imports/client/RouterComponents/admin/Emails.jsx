@@ -15,6 +15,7 @@ import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
+import { defaultEmails } from '../../../../lib/constants';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
@@ -22,8 +23,8 @@ const Field = ({ children, ...otherProps }) => (
   </FormField>
 );
 
-export default function Emails() {
-  const [loading, setLoading] = useState(false);
+function Emails() {
+  const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
 
   const { currentUser, role } = useContext(StateContext);
@@ -33,19 +34,26 @@ export default function Emails() {
   }
 
   useEffect(() => {
-    const getEmails = async () => {
-      try {
-        const savedEmails = await call('getEmails');
-        setEmails(savedEmails.map((email) => ({ ...email, isAltered: false })));
-      } catch (error) {
-        console.log(error);
-        message.error(error.reason);
-      } finally {
-        setLoading(false);
-      }
-    };
     getEmails();
   }, []);
+
+  const getEmails = async () => {
+    try {
+      const savedEmails = await call('getEmails');
+      if (savedEmails) {
+        const savedEmailsUnaltered = savedEmails.map((email) => ({
+          ...email,
+          isAltered: false,
+        }));
+        setEmails(savedEmailsUnaltered);
+      }
+      setLoading(false);
+    } catch (error) {
+      setEmails(defaultEmails);
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   if (!emails) {
     return null;
@@ -154,3 +162,5 @@ export default function Emails() {
     </Box>
   );
 }
+
+export default Emails;
