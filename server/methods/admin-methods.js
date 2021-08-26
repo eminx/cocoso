@@ -87,12 +87,7 @@ Meteor.methods({
           },
         }
       );
-      // Meteor.call(
-      //   'sendEmail',
-      //   memberId,
-      //   `You are now a verified member at ${publicSettings.name}`,
-      //   getVerifiedEmailText(member.username)
-      // );
+      Meteor.call('sendNewAdminEmail', memberId);
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
@@ -150,12 +145,7 @@ Meteor.methods({
           },
         }
       );
-      // Meteor.call(
-      //   'sendEmail',
-      //   memberId,
-      //   `You are now a verified member at ${publicSettings.name}`,
-      //   getVerifiedEmailText(member.username)
-      // );
+      Meteor.call('sendNewContributorEmail', memberId);
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');
     }
