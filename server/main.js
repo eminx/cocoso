@@ -19,16 +19,4 @@ Meteor.startup(() => {
     url = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${url}`;
   };
-
-  Hosts.update(
-    {},
-    {
-      $set: {
-        emails: defaultEmails,
-      },
-    },
-    {
-      multi: true,
-    }
-  );
 });
