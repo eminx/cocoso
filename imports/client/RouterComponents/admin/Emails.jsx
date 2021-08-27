@@ -130,7 +130,6 @@ function Emails({ history }) {
         </Box>
       }
     >
-      <Heading level={3}>Emails</Heading>
       {emails &&
         emails.map((email, index) => (
           <Box
@@ -139,7 +138,7 @@ function Emails({ history }) {
             background="white"
             margin={{ bottom: 'medium' }}
           >
-            <Heading level={4}>{email.title}</Heading>
+            <Heading level={3}>{email.title}</Heading>
             <Form
               value={email}
               onChange={(value) => handleChange(index, value)}
