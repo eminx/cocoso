@@ -8,6 +8,7 @@ const adminMenu = [
   { label: 'Settings', value: '/admin/settings' },
   { label: 'Members', value: '/admin/members' },
   { label: 'Resources', value: '/admin/resources' },
+  { label: 'Emails', value: '/admin/emails' },
 ];
 
 export { userMenu, adminMenu };

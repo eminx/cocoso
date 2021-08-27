@@ -12,7 +12,6 @@ import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../UIComponents/FileDropper';
-import Emails from './Emails';
 import Menu from './Menu';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
@@ -287,10 +286,6 @@ export default function Settings({ history }) {
             </Box>
           </Box>
         </Form>
-      </Box>
-
-      <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
-        <Emails />
       </Box>
     </Template>
   );

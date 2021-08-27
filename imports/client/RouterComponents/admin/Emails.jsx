@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactQuill from 'react-quill';
 import {
+  Anchor,
   Box,
   Button,
   Form,
@@ -10,12 +11,15 @@ import {
   TextInput,
 } from 'grommet';
 
+import Template from '../../UIComponents/Template';
+import ListMenu from '../../UIComponents/ListMenu';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import { defaultEmails } from '../../../../lib/constants';
+import { adminMenu } from '../../constants/general';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
@@ -23,7 +27,7 @@ const Field = ({ children, ...otherProps }) => (
   </FormField>
 );
 
-function Emails() {
+function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
 
@@ -103,12 +107,38 @@ function Emails() {
     return <Loader />;
   }
 
+  const pathname = history && history.location.pathname;
+
   return (
-    <Box>
+    <Template
+      heading="Emails"
+      leftContent={
+        <Box pad="medium">
+          <ListMenu list={adminMenu}>
+            {(datum) => (
+              <Anchor
+                onClick={() => history.push(datum.value)}
+                key={datum.value}
+                label={
+                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
+                    {datum.label}
+                  </Text>
+                }
+              />
+            )}
+          </ListMenu>
+        </Box>
+      }
+    >
       <Heading level={3}>Emails</Heading>
       {emails &&
         emails.map((email, index) => (
-          <Box key={email.title}>
+          <Box
+            key={email.title}
+            pad="medium"
+            background="white"
+            margin={{ bottom: 'medium' }}
+          >
             <Heading level={4}>{email.title}</Heading>
             <Form
               value={email}
@@ -159,7 +189,7 @@ function Emails() {
             </Form>
           </Box>
         ))}
-    </Box>
+    </Template>
   );
 }
 

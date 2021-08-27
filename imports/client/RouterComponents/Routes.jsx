@@ -70,6 +70,7 @@ const ResetPasswordPage = lazy(() =>
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
 const Resources = lazy(() => import('./admin/Resources'));
+const Emails = lazy(() => import('./admin/Emails'));
 
 // superadmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
@@ -131,6 +132,7 @@ export default function () {
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />
             <Route path="/admin/resources" component={Resources} />
+            <Route path="/admin/emails" component={Emails} />
 
             <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={LoginPage} />
