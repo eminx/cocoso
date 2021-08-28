@@ -33,13 +33,13 @@ function Emails({ history }) {
 
   const { currentUser, role } = useContext(StateContext);
 
-  if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed</Alert>;
-  }
-
   useEffect(() => {
     getEmails();
   }, []);
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>You are not allowed</Alert>;
+  }
 
   const getEmails = async () => {
     try {
