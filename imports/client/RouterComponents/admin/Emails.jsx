@@ -30,16 +30,11 @@ const Field = ({ children, ...otherProps }) => (
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
-
   const { currentUser, role } = useContext(StateContext);
 
   useEffect(() => {
     getEmails();
   }, []);
-
-  if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed</Alert>;
-  }
 
   const getEmails = async () => {
     try {
@@ -59,8 +54,16 @@ function Emails({ history }) {
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>You are not allowed</Alert>;
+  }
+
   if (!emails) {
-    return null;
+    return 'no data';
   }
 
   const handleChange = (emailIndex, value) => {
@@ -102,10 +105,6 @@ function Emails({ history }) {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   const pathname = history && history.location.pathname;
 
