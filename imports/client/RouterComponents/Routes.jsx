@@ -142,7 +142,7 @@ export default function () {
               component={ResetPasswordPage}
             />
 
-            {/* <Route path="*" component={NotFoundPage} /> */}
+            <Route path="*" component={NotFoundPage} />
 
             {/* Super admin only! */}
             <Route path="/new-host" component={NewHost} />

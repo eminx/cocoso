@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Button, Form, Heading, Text, TextInput } from 'grommet';
+import { Anchor, Box, Button, Form, Text, TextInput } from 'grommet';
+import { Heading } from '@chakra-ui/react';
 import { HuePicker } from 'react-color';
 
 import { StateContext } from '../../LayoutContainer';
@@ -196,7 +197,9 @@ export default function Settings({ history }) {
       }
     >
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Logo</Heading>
+        <Heading as="h3" size="lg">
+          Logo
+        </Heading>
         <Text margin={{ bottom: 'medium' }}>Upload Your Logo</Text>
         <Box width="small" alignSelf="center">
           <FileDropper
@@ -213,7 +216,9 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Organisation</Heading>
+        <Heading as="h3" size="lg">
+          Organisation
+        </Heading>
         <Text margin={{ bottom: 'medium' }}>
           Add/Edit Information About your Organisation
         </Text>
@@ -226,7 +231,9 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Main Color</Heading>
+        <Heading as="h3" size="lg">
+          Main Color
+        </Heading>
         <Text>Pick the Main Color for Your Web Presence</Text>
         <Text margin={{ bottom: 'medium' }} size="small">
           Background color will be accordingly set with its complementary color.
@@ -256,7 +263,9 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Work Categories</Heading>
+        <Heading as="h3" size="lg">
+          Work Categories
+        </Heading>
         <Text>You can set categories for work entries here</Text>
         <Box pad="small" direction="row" gap="small" wrap justify="center">
           {categories.map((category) => (

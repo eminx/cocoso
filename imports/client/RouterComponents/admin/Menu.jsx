@@ -5,12 +5,12 @@ import {
   CheckBox,
   Form,
   FormField,
-  Heading,
   Tabs,
   Tab,
   Text,
   TextInput,
 } from 'grommet';
+import { Heading } from '@chakra-ui/react';
 import { Drag } from 'grommet-icons/icons/Drag';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -120,7 +120,9 @@ export default function Menu() {
 
   return (
     <Box>
-      <Heading level={3}>Menu</Heading>
+      <Heading as="h3" size="lg">
+        Menu
+      </Heading>
       <Tabs>
         <Tab title="Visibility">
           <Box margin={{ bottom: 'large' }}>

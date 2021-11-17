@@ -10,7 +10,7 @@ const NotFoundPage = ({ history }) => {
           404
         </Text>
         <Text textAlign="center" weight="bold">
-          Page could not be found
+          Page could not be found dear
         </Text>
       </Box>
     </Template>
