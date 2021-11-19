@@ -508,7 +508,6 @@ class Process extends Component {
                 console.log(error);
                 closeLoader();
               } else {
-                console.log(respond);
                 Meteor.call(
                   'addProcessDocument',
                   { name: uploadableFile.name, downloadUrl },
@@ -519,7 +518,6 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      console.log(respond);
                       message.success(
                         `${uploadableFile.name} is succesfully uploaded and assigned to this process!`
                       );
