@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Heading, Image, Text } from 'grommet';
 import {
   Avatar,
@@ -112,7 +113,9 @@ function MemberPublic({
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
-          <WorkThumb key={work._id} work={work} history={history} />
+          <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
+            <WorkThumb work={work} />
+          </Link>
         ))
       ) : (
         <Box width="100%" background="dark-1" pad="small" align="center">

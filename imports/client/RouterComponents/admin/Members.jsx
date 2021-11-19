@@ -180,7 +180,9 @@ function Members({ history, members, isLoading }) {
           <Center>
             <TabList>
               {filterOptions.map((item) => (
-                <Tab onClick={() => setFilter(item.value)}>{item.label}</Tab>
+                <Tab key={item.label} onClick={() => setFilter(item.value)}>
+                  {item.label}
+                </Tab>
               ))}
             </TabList>
           </Center>

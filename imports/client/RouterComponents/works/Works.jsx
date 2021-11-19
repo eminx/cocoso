@@ -117,7 +117,9 @@ function Works({ history }) {
         <Wrap>
           {worksWithCategoryColors.map((work, index) => (
             <WrapItem key={work._id}>
-              <WorkThumb work={work} history={history} />
+              <Link to={`/${work.authorUsername}/work/${work._id}`}>
+                <WorkThumb work={work} />
+              </Link>
             </WrapItem>
           ))}
         </Wrap>

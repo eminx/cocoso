@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Tag from './Tag';
 
@@ -9,25 +9,19 @@ const imageStyle = {
   objectFit: 'cover',
 };
 
-const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-};
-
-function WorkThumb({ work, history }) {
+function WorkThumb({ work }) {
   return (
     <Box
       key={work._id}
-      m="1"
+      m="2"
+      p="2"
       style={{
         background: 'rgba(255, 255, 255, .6)',
         borderRadius: 3,
         flexBasis: '360px',
       }}
-      onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
     >
-      <Flex p="1" direction="row" justify="space-between">
+      <Flex direction="row" justify="space-between" mb="2">
         <div>
           {work.category && (
             <Tag
@@ -36,9 +30,9 @@ function WorkThumb({ work, history }) {
               margin={{ bottom: 'xxsmall' }}
             />
           )}
-          <Text fontWeight="bold" isTruncated fontSize="md">
+          <Heading my="2" fontWeight="bold" size="md" isTruncated>
             {work.title}
-          </Text>
+          </Heading>
         </div>
         <Avatar
           name={work.authorUsername}
