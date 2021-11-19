@@ -1,14 +1,17 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Anchor, Button, Box, Heading, Text } from 'grommet';
+import { Anchor, Box } from 'grommet';
 import {
   Avatar,
+  Button,
+  Heading,
   Modal,
   ModalBody,
   ModalContent,
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Visible, Hidden } from 'react-grid-system';
@@ -85,9 +88,14 @@ function Work() {
             name={work.authorUsername}
           />
         </Box>
-        <Anchor href={`/@${work.authorUsername}`}>
-          <Text size="small">{work.authorUsername}</Text>
-        </Anchor>
+        <Button
+          as="a"
+          variant="link"
+          colorScheme="teal"
+          href={`/@${work.authorUsername}`}
+        >
+          <Text fontSize="sm">{work.authorUsername}</Text>
+        </Button>
       </Box>
     </Link>
   );
@@ -99,16 +107,16 @@ function Work() {
           <Box pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}>
             <Box direction="row" align="start" justify="between">
               <Box pad={{ right: 'small' }}>
-                <Text weight={600} margin={{ bottom: 'xsmall' }} size="large">
+                <Heading as="h3" size="lg" mb={2}>
                   {work.title}
-                </Text>
+                </Heading>
                 {work.category && (
                   <Tag
                     label={work.category.label}
                     background={work.category.color}
                   />
                 )}
-                <Text margin={{ top: 'small' }}>{work.shortDescription}</Text>
+                <Text>{work.shortDescription}</Text>
               </Box>
               <Box flex={{ shrink: 0, grow: 0 }}>
                 <Visible xs sm md lg>
@@ -129,17 +137,12 @@ function Work() {
             >
               <Box width="100%" pad={{ top: 'small' }}>
                 <Hidden lg xl>
-                  <Heading
-                    level={4}
-                    textAlign="center"
-                    alignSelf="center"
-                    style={{ marginTop: 0 }}
-                  >
+                  <Heading as="h4" textAlign="center" alignSelf="center">
                     {work.additionalInfo}
                   </Heading>
                 </Hidden>
                 <Visible lg xl>
-                  <Heading level={4}>{work.additionalInfo}</Heading>
+                  <Heading as="h4">{work.additionalInfo}</Heading>
                 </Visible>
               </Box>
               <Box flex={{ shrink: 0 }}>
@@ -149,13 +152,9 @@ function Work() {
               </Box>
             </Box>
             <Box pad="medium">
-              <Button
-                onClick={handleOpenModal}
-                alignSelf="center"
-                secondary
-                size="small"
-                label={`Contact ${work.authorUsername}`}
-              />
+              <Button onClick={handleOpenModal} variant="outline">
+                {`Contact ${work.authorUsername}`}
+              </Button>
             </Box>
           </Box>
         }
@@ -176,7 +175,9 @@ function Work() {
       >
         {isOwner && (
           <Link to={`/${currentUser.username}/edit-work/${workId}`}>
-            <Anchor as="span" alignSelf="center" size="small" label="Edit" />
+            <Button size="sm" variant="ghost">
+              Edit
+            </Button>
           </Link>
         )}
       </Box>

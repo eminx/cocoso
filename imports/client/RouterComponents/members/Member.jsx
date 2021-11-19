@@ -1,8 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext, useState } from 'react';
-import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import { Box, Heading, Image, Text } from 'grommet';
 import {
   Avatar,
+  Button,
   Image as ChakraImage,
   Modal,
   ModalBody,
@@ -97,9 +98,9 @@ function MemberPublic({
               <Box margin={{ top: 'small' }}>{renderHTML(member.bio)}</Box>
             )}
 
-            <Anchor onClick={onOpen} as="button" margin={{ top: 'medium' }}>
+            <Button variant="ghost" mt={2} onClick={onOpen}>
               Contact
-            </Anchor>
+            </Button>
           </Box>
         )
       }

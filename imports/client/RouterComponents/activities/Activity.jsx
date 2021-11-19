@@ -7,19 +7,26 @@ import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 
+import { Form, FormField, TextInput } from 'grommet';
+
 import {
   Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  Anchor,
   Box,
-  Image,
-  Form,
-  FormField,
-  TextInput,
   Button,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Image,
+  Input,
+  Stack,
   Text,
-} from 'grommet';
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 // import Chattery from '../../UIComponents/chattery/Chattery';
@@ -149,33 +156,38 @@ class Activity extends PureComponent {
       );
     } else {
       return (
-        <Box gap="medium">
-          <TextInput
-            placeholder="Last name"
-            value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
-            onChange={(e) =>
-              this.setState({
-                rsvpCancelModalInfo: {
-                  ...rsvpCancelModalInfo,
-                  lastName: e.target.value,
-                },
-              })
-            }
-            size="small"
-          />
-          <TextInput
-            placeholder="Email"
-            value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
-            onChange={(e) =>
-              this.setState({
-                rsvpCancelModalInfo: {
-                  ...rsvpCancelModalInfo,
-                  email: e.target.value,
-                },
-              })
-            }
-            size="small"
-          />
+        <Box>
+          <FormControl id="lastname" mb="3" size="sm">
+            <FormLabel>Last name</FormLabel>
+            <Input
+              value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
+              onChange={(e) =>
+                this.setState({
+                  rsvpCancelModalInfo: {
+                    ...rsvpCancelModalInfo,
+                    lastName: e.target.value,
+                  },
+                })
+              }
+              // size="sm"
+            />
+          </FormControl>
+
+          <FormControl id="email" size="sm">
+            <FormLabel>Email</FormLabel>
+            <Input
+              value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
+              onChange={(e) =>
+                this.setState({
+                  rsvpCancelModalInfo: {
+                    ...rsvpCancelModalInfo,
+                    email: e.target.value,
+                  },
+                })
+              }
+              // size="sm"
+            />
+          </FormControl>
         </Box>
       );
     }
@@ -248,10 +260,10 @@ class Activity extends PureComponent {
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
+              bg="white"
               key={occurence.startDate + occurence.startTime}
-              background="white"
-              pad="small"
-              margin={{ bottom: 'small' }}
+              p="2"
+              mb="2"
             >
               <FancyDate occurence={occurence} />
             </Box>
@@ -273,25 +285,22 @@ class Activity extends PureComponent {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box background="white">
+          <Box bg="white">
             {eventPast ? (
-              <Box pad={{ vertical: 'medium', horizontal: 'small' }}>
-                <Text color="status-critical">This event has past</Text>
+              <Box p="2">
+                <Text color="gray">This event has past</Text>
               </Box>
             ) : (
               <Box>
-                <Box
-                  direction="row"
-                  justify="end"
-                  margin={{ bottom: 'small', right: 'medium' }}
-                >
-                  <Anchor
-                    size="small"
+                <Center m="2">
+                  <Button
+                    size="sm"
+                    variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
                     Change/Cancel Existing RSVP
-                  </Anchor>
-                </Box>
+                  </Button>
+                </Center>
 
                 {occurence.capacity &&
                 occurence.attendees &&
@@ -312,8 +321,10 @@ class Activity extends PureComponent {
               </Box>
             )}
             {canCreateContent && (
-              <Box pad={{ horizontal: 'small' }}>
-                <Heading level={5}>Attendees</Heading>
+              <Box px="1">
+                <Heading mb="1" as="h5" size="md">
+                  Attendees
+                </Heading>
                 <span>Only visible to registered members</span>
                 <div
                   style={{
@@ -323,7 +334,7 @@ class Activity extends PureComponent {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button size="small" label="Print" />}
+                    trigger={() => <Button size="sm">Print</Button>}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -340,18 +351,19 @@ class Activity extends PureComponent {
     };
 
     return (
-      <Accordion animate multiple={false}>
+      <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <AccordionPanel
-            key={occurence.startDate + occurence.startTime}
-            header={
-              <Box pad="small" background="white">
+          <AccordionItem mb="2" bg="white">
+            <AccordionButton>
+              <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
-            }
-          >
-            {conditionalRender(occurence, occurenceIndex)}
-          </AccordionPanel>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel>
+              {conditionalRender(occurence, occurenceIndex)}
+            </AccordionPanel>
+          </AccordionItem>
         ))}
       </Accordion>
     );
@@ -408,33 +420,35 @@ class Activity extends PureComponent {
     const EditButton = currentUser &&
       activityData &&
       currentUser._id === activityData.authorId && (
-        <Box direction="row" justify="center" margin="medium">
+        <Center m="2">
           <Link to={`/edit-activity/${activityData._id}`}>
-            <Anchor as="span">Edit this Activity</Anchor>
+            <Button variant="ghost" as="span">
+              Edit
+            </Button>
           </Link>
-        </Box>
+        </Center>
       );
 
     return (
       <Template
         leftContent={
-          <Box pad="medium">
-            <Heading level={3} style={{ marginBottom: 0 }} size="small">
+          <Box p="2">
+            <Heading as="h3" size="lg">
               {activityData.title}
             </Heading>
             {activityData.subTitle && (
-              <Heading level={4} style={{ marginTop: 0, fontWeight: 300 }}>
+              <Heading as="h4" size="md" fontWeight="light">
                 {activityData.subTitle}
               </Heading>
             )}
           </Box>
         }
         rightContent={
-          <Box width="100%" pad="medium">
-            <Heading margin={{ bottom: 'small' }} level={5}>
+          <Box width="100%" p="2">
+            <Heading mb="1" as="h5" size="md">
               Dates
             </Heading>
-            <Text size="small" margin={{ bottom: 'small' }}>
+            <Text size="sm" mb="1">
               {activityData.isActivitiesDisabled
                 ? 'RSVP disabled. Please check the practical information.'
                 : 'Please click and open the date to RSVP'}
@@ -443,20 +457,20 @@ class Activity extends PureComponent {
           </Box>
         }
       >
-        <Box background="white">
+        <Box bg="white" mb="4">
           {activityData.isPublicActivity && (
-            <Box background="dark-1">
+            <Box bg="gray.900">
               <Image
                 fit="contain"
-                fill
                 src={activityData.imageUrl}
-                style={{ maxHeight: 400 }}
+                // style={{ maxHeight: 400 }}
+                htmlHeight={400}
               />
             </Box>
           )}
 
           {activityData.longDescription && (
-            <Box pad="medium">
+            <Box p="2">
               <div
                 style={{
                   whiteSpace: 'pre-line',
@@ -470,24 +484,26 @@ class Activity extends PureComponent {
           )}
         </Box>
 
-        <Box pad="medium" margin={{ bottom: 'small' }}>
-          <Heading level={5} margin={{ bottom: 'small' }}>
+        <Box p="2" mb="1">
+          <Heading mb="1" as="h5" size="md">
             Resource
           </Heading>
-          <Tag label={activityData.resource} />
+          <Stack>
+            <Tag label={activityData.resource} />
+          </Stack>
         </Box>
         {activityData.address && (
-          <Box pad="medium" margin={{ bottom: 'small' }}>
-            <Heading level={5} margin={{ bottom: 'small' }}>
+          <Box pad="2" mb="1">
+            <Heading mb="1" as="h5" size="md">
               Address
             </Heading>
-            <Text size="small">{activityData.address}</Text>
+            <Text size="sm">{activityData.address}</Text>
           </Box>
         )}
 
         {/* {activityData.isPublicActivity && messages && chatData && (
           <Box pad="medium" background="light-2" border="dark-2">
-            <Heading level={4}>Chat Section</Heading>
+            <Heading mb="1" as="h5" size="md">Chat Section</Heading>
             <Chattery
               messages={messages}
               onNewMessage={this.addNewChatMessage}
@@ -541,36 +557,38 @@ const fields = [
 
 function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
-    <Box background="white" pad="small">
+    <Box bg="white" p="1">
       <Form onSubmit={onSubmit}>
         {fields.map((field) => (
           <FormField
             key={field.name}
             size="small"
             name={field.name}
-            label={<Text size="small">{field.label}</Text>}
+            label={<Text size="sm">{field.label}</Text>}
           >
             <TextInput plain={false} name={field.name} />
           </FormField>
         ))}
-        <Box margin={{ top: 'medium' }}>
+        <Flex mt="2" mb="3" justify="space-between">
           <Button
+            size="sm"
             type="submit"
-            size="small"
             // disabled={hasErrors(getFieldsError())}
-            label={isUpdateMode ? 'Update' : 'Register'}
-            alignSelf="end"
-            margin={{ bottom: 'medium' }}
-          />
+          >
+            {isUpdateMode ? 'Update' : 'Register'}
+          </Button>
 
           {isUpdateMode && (
-            <Text textAlign="center" size="small">
-              <Anchor color="status-critical" onClick={onDelete}>
-                Remove your registration
-              </Anchor>
-            </Text>
+            <Button
+              colorScheme="red"
+              size="sm"
+              variant="ghost"
+              onClick={onDelete}
+            >
+              Remove your registration
+            </Button>
           )}
-        </Box>
+        </Flex>
       </Form>
     </Box>
   );

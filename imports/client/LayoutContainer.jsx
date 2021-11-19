@@ -19,6 +19,7 @@ import {
   TextInput,
   TextArea,
 } from 'grommet';
+import { extendTheme } from '@chakra-ui/react';
 import { Close } from 'grommet-icons/icons/Close';
 import { Down } from 'grommet-icons/icons/Down';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
@@ -104,6 +105,13 @@ const getBackgroundStyle = (cHue) => {
   };
 };
 
+const chakraTheme = extendTheme({
+  fonts: {
+    heading: 'Sarabun, sans-serif',
+    body: 'Sarabun, sans-serif',
+  },
+});
+
 function LayoutPage({
   currentUser,
   currentHost,
@@ -178,7 +186,7 @@ function LayoutPage({
           <link rel="icon" href={publicSettings.faviconUrl} />
         </Helmet>
       )}
-      <ChakraProvider>
+      <ChakraProvider theme={chakraTheme}>
         <StateContext.Provider
           value={{
             currentUser,

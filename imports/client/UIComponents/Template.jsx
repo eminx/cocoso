@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import { Box, Heading } from 'grommet';
+import { Box } from 'grommet';
+import { Heading } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 const publicSettings = Meteor.settings.public;
@@ -34,9 +35,9 @@ function Template({
               margin={{ bottom: 'medium' }}
             >
               <Heading
-                alignSelf="center"
-                level={3}
-                size="small"
+                // alignSelf="center"
+                as="h3"
+                size="lg"
                 textAlign={titleCentered ? 'center' : 'start'}
               >
                 {heading}
