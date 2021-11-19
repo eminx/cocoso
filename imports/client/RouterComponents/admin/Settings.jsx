@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Button, Form, Text, TextInput } from 'grommet';
-import { Heading } from '@chakra-ui/react';
+import { Box, Button, Form, TextInput } from 'grommet';
+import { Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { HuePicker } from 'react-color';
 
 import { StateContext } from '../../LayoutContainer';
@@ -180,27 +180,15 @@ export default function Settings({ history }) {
       heading="Settings"
       leftContent={
         <Box pad="medium">
-          <ListMenu list={adminMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+          <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="md">
           Logo
         </Heading>
-        <Text margin={{ bottom: 'medium' }}>Upload Your Logo</Text>
+        <Text mb="3">Upload Your Logo</Text>
         <Box width="small" alignSelf="center">
           <FileDropper
             uploadableImageLocal={localImage && localImage.uploadableImageLocal}
@@ -216,12 +204,10 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="md">
           Organisation
         </Heading>
-        <Text margin={{ bottom: 'medium' }}>
-          Add/Edit Information About your Organisation
-        </Text>
+        <Text mb="3">Add/Edit Information About your Organisation</Text>
         <SettingsForm
           value={localSettings}
           onChange={handleFormChange}
@@ -231,13 +217,10 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="md">
           Main Color
         </Heading>
-        <Text>Pick the Main Color for Your Web Presence</Text>
-        <Text margin={{ bottom: 'medium' }} size="small">
-          Background color will be accordingly set with its complementary color.
-        </Text>
+        <Text mb="3">Pick the Main Color for Your Web Presence</Text>
         <Box direction="row" justify="between" align="center">
           <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
           <Box
@@ -248,6 +231,9 @@ export default function Settings({ history }) {
             style={{ borderRadius: '50%' }}
           />
         </Box>
+        <Text>
+          Background color will be accordingly set with its complementary color.
+        </Text>
 
         <Box alignSelf="center" pad="medium">
           <Button
@@ -263,10 +249,10 @@ export default function Settings({ history }) {
       </Box>
 
       <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="md">
           Work Categories
         </Heading>
-        <Text>You can set categories for work entries here</Text>
+        <Text mb="3">You can set categories for work entries here</Text>
         <Box pad="small" direction="row" gap="small" wrap justify="center">
           {categories.map((category) => (
             <Tag

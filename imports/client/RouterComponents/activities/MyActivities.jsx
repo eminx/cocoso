@@ -7,6 +7,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Center,
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
@@ -56,19 +57,7 @@ function Activities({ history }) {
       titleCentered
       leftContent={
         <Box pad="medium">
-          <ListMenu list={userMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+          <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }
     >
@@ -76,8 +65,9 @@ function Activities({ history }) {
         <Box pad="small" direction="row" justify="center">
           <Button
             colorScheme="green"
-            variant="solid"
+            variant="outline"
             onClick={() => history.push('/new-activity')}
+            mb="4"
           >
             NEW
           </Button>
@@ -86,11 +76,13 @@ function Activities({ history }) {
 
       {currentUser && activities ? (
         <Tabs variant="soft-rounded" colorScheme="green">
-          <TabList>
-            <Tab>All</Tab>
-            <Tab>Public</Tab>
-            <Tab>Private</Tab>
-          </TabList>
+          <Center>
+            <TabList>
+              <Tab>All</Tab>
+              <Tab>Public</Tab>
+              <Tab>Private</Tab>
+            </TabList>
+          </Center>
 
           <TabPanels>
             <TabPanel>

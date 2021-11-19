@@ -120,7 +120,7 @@ export default function Menu() {
 
   return (
     <Box>
-      <Heading as="h3" size="lg">
+      <Heading as="h3" size="md">
         Menu
       </Heading>
       <Tabs>

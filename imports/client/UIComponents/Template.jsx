@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Container, Row, Col } from 'react-grid-system';
-import { Box } from 'grommet';
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 const publicSettings = Meteor.settings.public;
@@ -30,14 +29,10 @@ function Template({
         </Col>
         <Col lg={6} style={{ ...colStyle, paddingLeft: 0, paddingRight: 0 }}>
           {heading && (
-            <Box
-              pad={{ left: titleCentered ? 'none' : 'medium' }}
-              margin={{ bottom: 'medium' }}
-            >
+            <Box pl={titleCentered ? '0' : '2'} mb="2">
               <Heading
-                // alignSelf="center"
                 as="h3"
-                size="lg"
+                size="md"
                 textAlign={titleCentered ? 'center' : 'start'}
               >
                 {heading}

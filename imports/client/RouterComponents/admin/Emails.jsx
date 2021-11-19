@@ -113,19 +113,7 @@ function Emails({ history }) {
       heading="Emails"
       leftContent={
         <Box pad="medium">
-          <ListMenu list={adminMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+          <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
