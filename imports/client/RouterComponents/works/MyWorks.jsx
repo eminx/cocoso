@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Heading, Anchor, Box, Button, Image, Text } from 'grommet';
+import { Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../UIComponents/NiceList';
@@ -46,19 +55,21 @@ function Works({ history }) {
       heading="My Works"
       titleCentered
       leftContent={
-        <Box pad="medium">
+        <Box p="4">
           <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }
       rightContent={
         currentUser && (
-          <Box pad="small" direction="row" justify="center">
+          <Center p="2">
             <Button
-              primary
-              label="New Work"
+              colorScheme="green"
+              variant="outline"
               onClick={() => history.push('/new-work')}
-            />
-          </Box>
+            >
+              NEW
+            </Button>
+          </Center>
         )
       }
     >
@@ -77,34 +88,23 @@ function Works({ history }) {
 }
 
 const WorkItem = ({ work, history }) => (
-  <Box
-    width="100%"
-    onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
-    hoverIndicator="light-1"
-    pad="small"
-    direction="row"
-    margin={{ bottom: 'medium' }}
-    background="white"
-  >
-    <Box width="small" height="small" margin={{ right: 'small' }}>
-      <Image fit="cover" fill src={work.images && work.images[0]} />
-    </Box>
-    <Box width="100%" justify="between">
-      <Heading
-        level={3}
-        style={{ overflowWrap: 'anywhere' }}
-        margin={{ bottom: 'small' }}
-      >
-        {work.title}
-      </Heading>
-      <Text weight={300}>{work.shortDescription}</Text>
-      <Box>
-        <Text size="small" color="dark-3" textAlign="end">
-          {work.authorUsername}
-        </Text>
+  <Link to={`/${work.authorUsername}/work/${work._id}`}>
+    <Flex w="100%" p="2" bg="white">
+      <Box mr="4">
+        <Image
+          boxSize="180px"
+          objectFit="cover"
+          src={work.images && work.images[0]}
+        />
       </Box>
-    </Box>
-  </Box>
+      <Box>
+        <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
+          {work.title}
+        </Heading>
+        <Text fontWeight="light">{work.shortDescription}</Text>
+      </Box>
+    </Flex>
+  </Link>
 );
 
 export default Works;

@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Button, Form, TextInput } from 'grommet';
-import { Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { Form } from 'grommet';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Input,
+  HStack,
+  Text,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { HuePicker } from 'react-color';
 
 import { StateContext } from '../../LayoutContainer';
@@ -179,31 +190,31 @@ export default function Settings({ history }) {
     <Template
       heading="Settings"
       leftContent={
-        <Box pad="medium">
+        <Box p="2">
           <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+      <Box p="4" bg="white" mb="8">
         <Heading as="h3" size="md">
           Logo
         </Heading>
         <Text mb="3">Upload Your Logo</Text>
-        <Box width="small" alignSelf="center">
+        <Center w="sm" alignSelf="center">
           <FileDropper
             uploadableImageLocal={localImage && localImage.uploadableImageLocal}
             imageUrl={currentHost && currentHost.logo}
             setUploadableImage={setUploadableImage}
           />
-        </Box>
+        </Center>
         {localImage && localImage.uploadableImageLocal && (
-          <Box alignSelf="center" pad="medium">
+          <Center p="2">
             <Button onClick={() => uploadLogo()} label="Confirm" />
-          </Box>
+          </Center>
         )}
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+      <Box p="4" bg="white" mb="8">
         <Heading as="h3" size="md">
           Organisation
         </Heading>
@@ -216,70 +227,67 @@ export default function Settings({ history }) {
         />
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+      <Box p="4" bg="white" mb="8">
         <Heading as="h3" size="md">
           Main Color
         </Heading>
         <Text mb="3">Pick the Main Color for Your Web Presence</Text>
         <Box direction="row" justify="between" align="center">
           <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
-          <Box
-            flex={{ grow: 0 }}
-            width="50px"
-            height="50px"
-            background={`hsl(${mainColor.hsl.h}, 80%, 35%)`}
-            style={{ borderRadius: '50%' }}
-          />
         </Box>
         <Text>
           Background color will be accordingly set with its complementary color.
         </Text>
 
-        <Box alignSelf="center" pad="medium">
+        <Center p="2">
           <Button
-            disabled={settings && mainColor === settings.mainColor}
+            isDisabled={settings && mainColor === settings.mainColor}
             onClick={() => confirmMainColor()}
-            label="Confirm"
-          />
-        </Box>
+          >
+            Confirm
+          </Button>
+        </Center>
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+      <Box p="4" bg="white" mb="8">
         <Menu />
       </Box>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
+      <Box p="4" bg="white" mb="8">
         <Heading as="h3" size="md">
           Work Categories
         </Heading>
         <Text mb="3">You can set categories for work entries here</Text>
-        <Box pad="small" direction="row" gap="small" wrap justify="center">
-          {categories.map((category) => (
-            <Tag
-              key={category.label}
-              label={category.label.toUpperCase()}
-              background={category.color}
-              removable
-              onRemove={() => removeCategory(category._id)}
-              margin={{ bottom: 'small' }}
-            />
-          ))}
-        </Box>
+        <Center>
+          <Wrap p="1">
+            {categories.map((category) => (
+              <WrapItem>
+                <Tag
+                  key={category.label}
+                  label={category.label.toUpperCase()}
+                  background={category.color}
+                  removable
+                  onRemove={() => removeCategory(category._id)}
+                  margin={{ bottom: 'small' }}
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
+        </Center>
         <Form onSubmit={() => addNewCategory()}>
-          <Box>
-            <Box direction="row" gap="small" width="medium" alignSelf="center">
-              <TextInput
-                size="small"
-                plain={false}
-                value={categoryInput}
+          <Center>
+            <HStack w="xs">
+              <Input
+                size="sm"
                 placeholder="PAJAMAS"
+                value={categoryInput}
                 onChange={(event) =>
                   handleCategoryInputChange(event.target.value)
                 }
               />
-              <Button type="submit" label="Add" />
-            </Box>
-          </Box>
+              <Button type="submit">Add</Button>
+            </HStack>
+          </Center>
         </Form>
       </Box>
     </Template>

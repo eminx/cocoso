@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
-import { Anchor, Box, Button, Layer, Text } from 'grommet';
+import { Layer } from 'grommet';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 import moment from 'moment';
 
 import NiceList from '../../UIComponents/NiceList';
@@ -151,34 +152,31 @@ function ResourcesPage({ history, resources, isLoading }) {
     <Template
       heading="Resources"
       leftContent={
-        <Box pad="medium">
+        <Box p="2">
           <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
       {canCreateContent && (
-        <Box
-          direction="row"
-          justify="center"
-          width="100%"
-          margin={{ bottom: 'medium' }}
-        >
+        <Center w="100%" mb="4">
           <Button
-            size="small"
-            label="NEW"
+            colorScheme="green"
+            variant="outline"
             onClick={() => {
               setShowModal(true);
               setModalContent(emptyResource);
             }}
-          />
-        </Box>
+          >
+            NEW
+          </Button>
+        </Center>
       )}
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <NiceList list={resourcesWithActions} border="horizontal" pad="small">
+      <Box p="4" mb="8">
+        <NiceList list={resourcesWithActions}>
           {(resource) => (
-            <Box key={resource.label}>
-              <Text size="large" weight="bold">
+            <Box p="4" bg="white" mb="2" key={resource.label}>
+              <Text fontSize="lg" fontWeight="bold">
                 {resource.isCombo ? (
                   <ResourcesForCombo resource={resource} />
                 ) : (
@@ -186,14 +184,12 @@ function ResourcesPage({ history, resources, isLoading }) {
                 )}
               </Text>
 
-              <Text as="div" margin={{ vertical: 'medium' }}>
+              <Text as="div" my="2">
                 {resource && resource.description}
               </Text>
-              <Box pad={{ vertical: 'small' }}>
-                <Text as="div" style={{ fontSize: 12 }}>
-                  added by {resource && resource.authorUsername}
-                </Text>
-                <Text as="div" style={{ fontSize: 12 }}>
+              <Box py="2">
+                <Text as="div" fontSize="xs">
+                  added by {resource && resource.authorUsername} on{' '}
                   {moment(resource.creationDate).format('Do MMM YYYY')} <br />
                 </Text>
               </Box>

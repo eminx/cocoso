@@ -200,15 +200,15 @@ function Members({ history, members, isLoading }) {
           <TabPanels>
             {filterOptions.map((item) =>
               item.value === filter ? (
-                <TabPanel key={item.value} p="1" bg="white" mb="3">
+                <TabPanel key={item.value} p="1" mb="3">
                   <NiceList
                     list={membersSorted}
                     border="horizontal"
                     pad="small"
                   >
                     {(member) => (
-                      <div key={member.username}>
-                        <Text fontSize="large" fontWeight="bold">
+                      <Box key={member.username} p="4">
+                        <Text fontSize="lg" fontWeight="bold">
                           {member.username}
                         </Text>
                         <Text>{member && member.email}</Text>
@@ -217,7 +217,7 @@ function Members({ history, members, isLoading }) {
                           joined {moment(member.date).format('Do MMM YYYY')}{' '}
                           <br />
                         </Text>
-                      </div>
+                      </Box>
                     )}
                   </NiceList>
                 </TabPanel>
