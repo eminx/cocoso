@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box } from 'grommet';
-import { Button } from '@chakra-ui/react';
+import { Box, Button, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
@@ -75,11 +74,12 @@ function Works({ history }) {
   });
 
   return (
-    <Box width="100%" margin={{ bottom: '50px' }}>
+    <Box width="100%" mb="100px">
       <Helmet>
         <title>{`Works | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      <Box margin={{ bottom: 'medium' }} alignSelf="center">
+
+      <Center mb="4">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
             <Button as="span" colorScheme="green" variant="outline">
@@ -87,38 +87,41 @@ function Works({ history }) {
             </Button>
           </Link>
         )}
-      </Box>
+      </Center>
 
-      <Box
-        direction="row"
-        justify="center"
-        wrap
-        gap="small"
-        pad={{ left: 'small' }}
-      >
-        <Tag
-          label="ALL"
-          checkable={categoryFilter === null}
-          onClick={() => setCategoryFilter(null)}
-        />
-        {categoriesAssignedToWorks.map((cat) => (
-          <Tag
-            key={cat.label}
-            checkable
-            checked={categoryFilter === cat.label}
-            filterColor={cat.color}
-            label={cat.label && cat.label.toUpperCase()}
-            margin={{ bottom: 'small' }}
-            onClick={() => setCategoryFilter(cat.label)}
-          />
-        ))}
-      </Box>
+      <Center>
+        <Wrap pl="1">
+          <WrapItem>
+            <Tag
+              label="ALL"
+              checkable={categoryFilter === null}
+              onClick={() => setCategoryFilter(null)}
+            />
+          </WrapItem>
+          {categoriesAssignedToWorks.map((cat) => (
+            <WrapItem key={cat.label}>
+              <Tag
+                checkable
+                checked={categoryFilter === cat.label}
+                filterColor={cat.color}
+                label={cat.label && cat.label.toUpperCase()}
+                margin={{ bottom: 'small' }}
+                onClick={() => setCategoryFilter(cat.label)}
+              />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
 
-      <Box direction="row" justify="center" pad="medium" wrap>
-        {worksWithCategoryColors.map((work, index) => (
-          <WorkThumb key={work._id} work={work} history={history} />
-        ))}
-      </Box>
+      <Center>
+        <Wrap>
+          {worksWithCategoryColors.map((work, index) => (
+            <WrapItem key={work._id}>
+              <WorkThumb work={work} history={history} />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
     </Box>
   );
 }

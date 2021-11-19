@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Anchor, Box, Text } from 'grommet';
-import { Avatar } from '@chakra-ui/react';
+import { Avatar, Box, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
@@ -22,14 +21,6 @@ const getFullName = (member) => {
   } else {
     return firstName || lastName || '';
   }
-};
-
-const overflowStyle = {
-  width: 128,
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  textAlign: 'center',
 };
 
 const publicSettings = Meteor.settings.public;
@@ -103,33 +94,35 @@ function PublicMembers({ history }) {
   // }));
 
   return (
-    <Box
-      direction="row"
-      alignSelf="center"
-      justify="center"
-      wrap
-      margin={{ bottom: 'large' }}
-      pad="small"
-      style={{ maxWidth: 960 }}
-    >
+    <Box mb="3" p="1">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      {members.map((member) => (
-        <Link to={`/@${member.username}`} key={member.id}>
-          <Box align="center" margin="small">
-            <Avatar name={member.username} src={member.avatarSrc} size="xl" />
-            <Anchor as="div">
-              <Text as="div" size="small" style={overflowStyle}>
-                {member.username}
-              </Text>
-            </Anchor>
-            <Text as="div" size="small" style={overflowStyle}>
-              {getFullName(member)}
-            </Text>
-          </Box>
-        </Link>
-      ))}
+      <Center>
+        <Wrap>
+          {members.map((member) => (
+            <WrapItem key={member.id}>
+              <Link to={`/@${member.username}`}>
+                <Box m="1">
+                  <Avatar
+                    name={member.username}
+                    src={member.avatarSrc}
+                    size="2xl"
+                  />
+                  <Center>
+                    <Text fontWeight="bold" fontSize="lg" isTruncated>
+                      {member.username}
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text isTruncated>{getFullName(member)}</Text>
+                  </Center>
+                </Box>
+              </Link>
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
     </Box>
   );
 }

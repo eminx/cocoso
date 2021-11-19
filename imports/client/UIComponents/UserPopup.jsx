@@ -49,14 +49,19 @@ const UserPopup = withRouter(({ currentUser, history }) => {
             </MenuItem>
           ))}
         </MenuGroup>
-        <MenuDivider />
-        <MenuGroup title="Admin">
-          {adminMenu.map((item) => (
-            <MenuItem key={item.label} onClick={() => history.push(item.value)}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </MenuGroup>
+        {role === 'admin' && <MenuDivider />}
+        {role === 'admin' && (
+          <MenuGroup title="Admin">
+            {adminMenu.map((item) => (
+              <MenuItem
+                key={item.label}
+                onClick={() => history.push(item.value)}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
+          </MenuGroup>
+        )}
       </MenuList>
     </Menu>
   );

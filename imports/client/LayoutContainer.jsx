@@ -21,6 +21,7 @@ import {
 
 import {
   Box as CBox,
+  Button as CButton,
   HStack,
   Menu as CMenu,
   MenuButton,
@@ -215,15 +216,16 @@ function LayoutPage({
           >
             <Box width={{ max: '1280px' }} alignSelf="center" fill>
               <Header {...headerProps} />
-              <Box>{children}</Box>
+              <Box style={{ minHeight: '100vh' }}>{children}</Box>
               {/* <FooterInfo settings={settings} /> */}
 
-              <Footer justify="center">
-                <Box pad="large">
-                  <Anchor onClick={() => setShowFeedbackModal(true)}>
-                    Give Feedback
-                  </Anchor>
-                </Box>
+              <Footer background="light-3" justify="center" pad="medium">
+                <CButton
+                  variant="ghost"
+                  onClick={() => setShowFeedbackModal(true)}
+                >
+                  Give Feedback
+                </CButton>
 
                 {showFeedbackModal && (
                   <Layer

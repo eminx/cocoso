@@ -3,9 +3,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { Box } from 'grommet';
-import { Button } from '@chakra-ui/react';
 import { ScreenClassRender } from 'react-grid-system';
+import { Box, Button, Center, Wrap, WrapItem } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -104,7 +103,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
   return (
     <ScreenClassRender
       render={(screenClass) => (
-        <Box width="100%" margin={{ bottom: '50px' }}>
+        <Box width="100%" mb="50px">
           {isLoading ? (
             <Loader />
           ) : (
@@ -113,31 +112,27 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
                 <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
               </Helmet>
               {canCreateContent && (
-                <Box
-                  direction="row"
-                  justify="center"
-                  width="100%"
-                  margin={{ bottom: 'medium' }}
-                >
+                <Center mb="3">
                   <Link to="/new-activity">
                     <Button as="span" colorScheme="green" variant="outline">
                       NEW
                     </Button>
                   </Link>
-                </Box>
+                </Center>
               )}
-              <Box direction="row" wrap justify="center">
-                {allSortedActivities.map((activity) => {
-                  return (
-                    <PublicActivityThumb
-                      key={activity.title}
-                      large={['lg', 'xl', 'xxl'].includes(screenClass)}
-                      item={activity}
-                      history={history}
-                    />
-                  );
-                })}
-              </Box>
+              <Center>
+                <Wrap>
+                  {allSortedActivities.map((activity) => (
+                    <WrapItem key={activity.title}>
+                      <PublicActivityThumb
+                        large={['lg', 'xl', 'xxl'].includes(screenClass)}
+                        item={activity}
+                        history={history}
+                      />
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </Center>
             </Box>
           )}
         </Box>

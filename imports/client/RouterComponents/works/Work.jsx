@@ -89,9 +89,9 @@ function Work() {
           />
         </Box>
         <Button
-          as="a"
+          as="span"
           variant="link"
-          colorScheme="teal"
+          colorScheme="gray.800"
           href={`/@${work.authorUsername}`}
         >
           <Text fontSize="sm">{work.authorUsername}</Text>

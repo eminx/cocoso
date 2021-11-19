@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { Box, Text } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -63,47 +64,34 @@ function PublicActivityThumb({ item, large, history }) {
   };
 
   return (
-    <Box
-      width="320px"
-      background={{ color: 'rgba(255, 255, 255, 0.6)' }}
-      margin="small"
-      hoverIndicator="brand-light"
-      onClick={() =>
-        history.push(
-          item.isProcess ? `/process/${item._id}` : `/activity/${item._id}`
-        )
-      }
+    <Link
+      to={item.isProcess ? `/process/${item._id}` : `/activity/${item._id}`}
     >
-      <Box pad="small">
-        <Text size="large" weight="bold" style={ellipsisStyle}>
-          {item.isProcess ? item.title : item.title}
-        </Text>
-        <Text weight={300} style={ellipsisStyle}>
-          {item.isProcess ? item.readingMaterial : item.subTitle}
-        </Text>
-      </Box>
+      <Box width="320px" bg="rgba(255, 255, 255, 0.6)" m="1" p="2">
+        <Box p="1">
+          <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
+            {item.isProcess ? item.title : item.title}
+          </Heading>
+          <Text fontWeight={300} style={ellipsisStyle}>
+            {item.isProcess ? item.readingMaterial : item.subTitle}
+          </Text>
+        </Box>
 
-      <Box>
-        <LazyLoadImage
-          alt={item.title}
-          src={item.imageUrl}
-          style={imageStyle}
-          effect="black-and-white"
-        />
-      </Box>
+        <Box>
+          <LazyLoadImage
+            alt={item.title}
+            src={item.imageUrl}
+            style={imageStyle}
+            effect="black-and-white"
+          />
+        </Box>
 
-      <Box
-        direction="row"
-        justify="end"
-        alignItems="center"
-        margin={{ top: 'small' }}
-        wrap
-        pad="small"
-      >
-        {futureDates.slice(0, 3).map((date) => renderDate(date))}
-        {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
+        <Flex direction="row" justify="end" align="center" mt="1" wrap p="1">
+          {futureDates.slice(0, 3).map((date) => renderDate(date))}
+          {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
+        </Flex>
       </Box>
-    </Box>
+    </Link>
   );
 }
 
