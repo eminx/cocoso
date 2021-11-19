@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Anchor, Avatar, Box, Button, Text } from 'grommet';
 import {
+  Avatar,
+  Box,
+  Button,
   Menu,
   MenuButton,
   MenuDivider,
@@ -9,18 +11,21 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import { UserSettings } from 'grommet-icons/icons/UserSettings';
+
 import { StateContext } from '../LayoutContainer';
 import { userMenu, adminMenu } from '../constants/general';
 
 const UserPopup = withRouter(({ currentUser, history }) => {
   if (!currentUser) {
     return (
-      <Box justify="center" pad={{ horizontal: 'xsmall' }}>
-        <Anchor
+      <Box px="1">
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => history.push('/login')}
-          label={<Text size="small">Login</Text>}
-        />
+        >
+          Login
+        </Button>
       </Box>
     );
   }
@@ -29,15 +34,12 @@ const UserPopup = withRouter(({ currentUser, history }) => {
 
   return (
     <Menu>
-      <MenuButton as={Button} colorScheme="pink">
-        {currentUser && currentUser.avatar ? (
-          <Avatar
-            size="36px"
-            src={currentUser.avatar && currentUser.avatar.src}
-          />
-        ) : (
-          <UserSettings />
-        )}
+      <MenuButton>
+        <Avatar
+          mr="2"
+          size="sm"
+          src={currentUser.avatar && currentUser.avatar.src}
+        />
       </MenuButton>
       <MenuList>
         <MenuGroup title="My">

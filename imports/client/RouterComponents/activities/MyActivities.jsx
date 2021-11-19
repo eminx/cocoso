@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Button, Heading, Image, Tab, Tabs, Text } from 'grommet';
+import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import {
+  Button,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../UIComponents/NiceList';
@@ -67,42 +75,46 @@ function Activities({ history }) {
       {currentUser && canCreateContent && (
         <Box pad="small" direction="row" justify="center">
           <Button
-            primary
-            label="NEW"
+            colorScheme="green"
+            variant="solid"
             onClick={() => history.push('/new-activity')}
-          />
+          >
+            NEW
+          </Button>
         </Box>
       )}
 
       {currentUser && activities ? (
-        <Tabs>
-          <Tab title="All">
-            <Box pad="medium">
+        <Tabs variant="soft-rounded" colorScheme="green">
+          <TabList>
+            <Tab>All</Tab>
+            <Tab>Public</Tab>
+            <Tab>Private</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
               <NiceList list={activities} actionsDisabled>
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
-            </Box>
-          </Tab>
-          <Tab title="Public">
-            <Box pad="medium">
+            </TabPanel>
+            <TabPanel>
               <NiceList
                 list={activities.filter((act) => act.isPublicActivity)}
                 actionsDisabled
               >
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
-            </Box>
-          </Tab>
-          <Tab title="Private">
-            <Box pad="medium">
+            </TabPanel>
+            <TabPanel>
               <NiceList
                 list={activities.filter((act) => !act.isPublicActivity)}
                 actionsDisabled
               >
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
-            </Box>
-          </Tab>
+            </TabPanel>
+          </TabPanels>
         </Tabs>
       ) : (
         <Alert

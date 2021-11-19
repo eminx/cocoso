@@ -15,13 +15,24 @@ import {
   Layer,
   Paragraph,
   Select,
-  Text,
   TextInput,
   TextArea,
 } from 'grommet';
-import { extendTheme } from '@chakra-ui/react';
+
+import {
+  Box as CBox,
+  HStack,
+  Menu as CMenu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+  extendTheme,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+
 import { Close } from 'grommet-icons/icons/Close';
-import { Down } from 'grommet-icons/icons/Down';
+
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
 
@@ -341,8 +352,6 @@ const Header = ({ currentUser, currentHost, title, history }) => {
 };
 
 const Menu = ({ currentHost, large, history }) => {
-  const [open, setOpen] = useState(false);
-
   if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
     return null;
   }
@@ -356,11 +365,6 @@ const Menu = ({ currentHost, large, history }) => {
       route: getRoute(item, index),
     }));
 
-  const menuProps = {
-    large,
-    history,
-  };
-
   const pathname = history.location.pathname;
   const currentPage = menu.find((item) => {
     return (
@@ -369,48 +373,7 @@ const Menu = ({ currentHost, large, history }) => {
     );
   });
 
-  if (large) {
-    return (
-      <MenuContent currentPage={currentPage} items={menuItems} {...menuProps} />
-    );
-  }
-
-  return (
-    <DropButton
-      label={
-        <Box direction="row" gap="small" align="center">
-          <Anchor as="span">
-            {(currentPage && currentPage.label) || 'Menu'}
-          </Anchor>
-          <Down size="small" />
-        </Box>
-      }
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      alignSelf="center"
-      dropContent={
-        <Box width="small" pad="small">
-          <MenuContent
-            {...menuProps}
-            items={menuItems}
-            closeMenu={() => setOpen(false)}
-          />
-        </Box>
-      }
-      dropProps={{ align: { top: 'bottom' } }}
-      plain
-    />
-  );
-};
-
-const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
-  if (!items) {
-    return null;
-  }
-
   const handleClick = (item) => {
-    !large && closeMenu();
     history.push(item.route);
   };
 
@@ -421,29 +384,41 @@ const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
     return currentPage && currentPage.label === label;
   };
 
+  if (large) {
+    return (
+      <HStack>
+        {menuItems.map((item) => (
+          <CBox as="button" key={item.label} onClick={() => handleClick(item)}>
+            <Text
+              m="1"
+              style={{
+                borderBottom: isCurrentPage(item.label) ? '1px solid' : 'none',
+              }}
+            >
+              {item.label}
+            </Text>
+          </CBox>
+        ))}
+      </HStack>
+    );
+  }
+
   return (
-    <Box
-      pad="small"
-      justify={large ? 'center' : 'start'}
-      direction={large ? 'row' : 'column'}
-      flex={{ shrink: 0 }}
-      alignSelf="center"
-      wrap
-      gap={large ? 'none' : 'small'}
-    >
-      {items.map((item) => (
-        <Box pad="small" key={item.label}>
-          <Anchor
-            onClick={() => handleClick(item)}
-            label={item.label.toUpperCase()}
-            size="small"
-            style={{
-              borderBottom: isCurrentPage(item.label) ? '2px solid' : 'none',
-            }}
-          />
-        </Box>
-      ))}
-    </Box>
+    <CMenu closeOnSelect>
+      <MenuButton>
+        <HStack>
+          <Text>{(currentPage && currentPage.label) || 'Menu'}</Text>
+          <ChevronDownIcon />
+        </HStack>
+      </MenuButton>
+      <MenuList>
+        {menuItems.map((item) => (
+          <MenuItem key={item.label} onClick={() => handleClick(item)}>
+            {item.label}
+          </MenuItem>
+        ))}
+      </MenuList>
+    </CMenu>
   );
 };
 

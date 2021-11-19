@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Box, Button, Text } from 'grommet';
+import { Box, Text } from 'grommet';
+import { Button } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -167,7 +168,9 @@ class Calendar extends PureComponent {
             margin={{ bottom: 'small' }}
           >
             <Link to="/new-activity">
-              <Button as="span" size="small" label="NEW" />
+              <Button as="span" colorScheme="green" variant="solid">
+                NEW
+              </Button>
             </Link>
           </Box>
         )}

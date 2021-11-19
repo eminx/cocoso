@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button } from 'grommet';
+import { Box } from 'grommet';
+import { Button } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
@@ -81,7 +82,9 @@ function Works({ history }) {
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" size="small" label="NEW" />
+            <Button as="span" colorScheme="green" variant="solid">
+              NEW
+            </Button>
           </Link>
         )}
       </Box>
