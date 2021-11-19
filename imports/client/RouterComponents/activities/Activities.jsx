@@ -3,7 +3,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { Box, Button } from 'grommet';
+import { Box } from 'grommet';
+import { Button } from '@chakra-ui/react';
 import { ScreenClassRender } from 'react-grid-system';
 
 import { StateContext } from '../../LayoutContainer';
@@ -119,7 +120,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
                   margin={{ bottom: 'medium' }}
                 >
                   <Link to="/new-activity">
-                    <Button as="span" size="small" label="NEW" />
+                    <Button as="span" colorScheme="green" variant="outline">
+                      NEW
+                    </Button>
                   </Link>
                 </Box>
               )}

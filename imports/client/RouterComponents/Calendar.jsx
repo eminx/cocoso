@@ -168,7 +168,7 @@ class Calendar extends PureComponent {
             margin={{ bottom: 'small' }}
           >
             <Link to="/new-activity">
-              <Button as="span" colorScheme="green" variant="solid">
+              <Button as="span" colorScheme="green" variant="outline">
                 NEW
               </Button>
             </Link>

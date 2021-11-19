@@ -82,7 +82,7 @@ function Works({ history }) {
       <Box margin={{ bottom: 'medium' }} alignSelf="center">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" colorScheme="green" variant="solid">
+            <Button as="span" colorScheme="green" variant="outline">
               NEW
             </Button>
           </Link>

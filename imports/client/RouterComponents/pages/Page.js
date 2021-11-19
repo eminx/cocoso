@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Anchor, Button, Box } from 'grommet';
+import { Box, Button, Center } from '@chakra-ui/react'
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -71,22 +71,22 @@ class Page extends PureComponent {
       <Template
         heading={currentPage.title}
         leftContent={
-          <Box>
-            <PagesList
-              pageTitles={pageTitles}
-              onChange={this.handlePageClick}
-              activePageTitle={routeName}
-            />
-          </Box>
+          <PagesList
+            pageTitles={pageTitles}
+            onChange={this.handlePageClick}
+            activePageTitle={routeName}
+          />
         }
         rightContent={
           currentUser &&
           role === 'admin' && (
-            <Box pad="medium" direction="row" justify="center">
+            <Center p="2">
               <Link to="/new-page">
-                <Button as="span" size="small" label="NEW" />
+              <Button as="span" colorScheme="green" variant="outline">
+                NEW
+              </Button>
               </Link>
-            </Box>
+            </Center>
           )
         }
       >
@@ -94,7 +94,7 @@ class Page extends PureComponent {
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
 
-        <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
+        <Box bg="white" mb="2" p="2">
           <div className="text-content">
             {renderHTML(currentPage.longDescription)}
           </div>
@@ -102,11 +102,11 @@ class Page extends PureComponent {
 
         <Box>
           {currentUser && role === 'admin' && (
-            <Box pad="medium" alignSelf="center">
+            <Center p="2">
               <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-                <Anchor as="span" size="small" label="Edit this page" />
+                <Button as="span" variant="ghost" size="sm">Edit</Button>
               </Link>
-            </Box>
+              </Center>
           )}
         </Box>
       </Template>

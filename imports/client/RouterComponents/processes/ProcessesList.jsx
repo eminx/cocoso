@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+import { Box, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+import { Button } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
@@ -142,7 +143,9 @@ export default function ProcessesList({
         {canCreateContent && (
           <Box margin={{ bottom: 'medium' }} alignSelf="center">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button as="span" size="small" label="NEW" />
+              <Button as="span" colorScheme="green" variant="outline">
+                NEW
+              </Button>
             </Link>
           </Box>
         )}
