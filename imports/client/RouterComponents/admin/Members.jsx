@@ -2,14 +2,19 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
+
 import {
   Box,
-  Anchor,
-  Text,
+  Center,
+  Input,
   Heading,
-  RadioButtonGroup,
-  TextInput,
-} from 'grommet';
+  Tabs,
+  Tab,
+  TabPanel,
+  TabPanels,
+  TabList,
+  Text,
+} from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -165,81 +170,64 @@ function Members({ history, members, isLoading }) {
     <Template
       heading="Members"
       leftContent={
-        <Box pad="medium">
+        <Box p="2">
           <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
-      <Box align="center" pad="small">
-        <Text size="small" margin="small" weight="bold">
-          Filter
-        </Text>
-        <Box flex={{ grow: 1 }} margin={{ bottom: 'small' }}>
-          <RadioButtonGroup
-            name="filter"
-            options={filterOptions}
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-            direction="row"
-            justify="center"
-            wrap
-          />
-        </Box>
-        <Box flex={{ grow: 1 }}>
-          <TextInput
-            plain={false}
-            placeholder="username or email"
-            value={filterWord}
-            onChange={(event) => setFilterWord(event.target.value)}
-            style={{ backgroundColor: 'white' }}
-          />
-        </Box>
-      </Box>
+      <Center p="1">
+        <Tabs variant="soft-rounded" colorScheme="green" w="100%">
+          <Center>
+            <TabList>
+              {filterOptions.map((item) => (
+                <Tab onClick={() => setFilter(item.value)}>{item.label}</Tab>
+              ))}
+            </TabList>
+          </Center>
 
-      <Box align="center">
-        <Text size="small" margin="small" weight="bold">
-          Sort
-        </Text>
-        <RadioButtonGroup
-          name="sort"
-          options={sortOptions}
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value)}
-          direction="row"
-          justify="center"
-          wrap
-        />
-      </Box>
+          <Center p="2">
+            <Box w="sm">
+              <Input
+                bg="white"
+                placeholder="username or email"
+                size="sm"
+                value={filterWord}
+                onChange={(event) => setFilterWord(event.target.value)}
+              />
+            </Box>
+          </Center>
 
-      <Box pad="medium">
-        <Heading level={4} alignSelf="center">
-          {filter} members ({membersSorted.length}){' '}
-        </Heading>
-      </Box>
-      <Box pad="small" background="white" margin={{ bottom: 'large' }}>
-        <NiceList list={membersSorted} border="horizontal" pad="small">
-          {(member) => (
-            <div key={member.username}>
-              <Text size="large" weight="bold">
-                {member.username}
-              </Text>
-              <Text as="div" size="small">
-                {member && member.email}
-              </Text>
-              <Text as="div" size="small">
-                {member.role}
-              </Text>
-              <Text
-                as="div"
-                size="xsmall"
-                style={{ fontSize: 10, color: '#aaa' }}
-              >
-                joined {moment(member.date).format('Do MMM YYYY')} <br />
-              </Text>
-            </div>
-          )}
-        </NiceList>
-      </Box>
+          <TabPanels>
+            {filterOptions.map((item) =>
+              item.value === filter ? (
+                <TabPanel key={item.value} p="1" bg="white" mb="3">
+                  <NiceList
+                    list={membersSorted}
+                    border="horizontal"
+                    pad="small"
+                  >
+                    {(member) => (
+                      <div key={member.username}>
+                        <Text fontSize="large" fontWeight="bold">
+                          {member.username}
+                        </Text>
+                        <Text>{member && member.email}</Text>
+                        <Text fontStyle="italic">{member.role}</Text>
+                        <Text fontSize="xs" color="gray.500">
+                          joined {moment(member.date).format('Do MMM YYYY')}{' '}
+                          <br />
+                        </Text>
+                      </div>
+                    )}
+                  </NiceList>
+                </TabPanel>
+              ) : (
+                <TabPanel />
+              )
+            )}
+          </TabPanels>
+        </Tabs>
+      </Center>
     </Template>
   );
 }
