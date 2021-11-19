@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Box, Text } from 'grommet';
-import { Button } from '@chakra-ui/react';
+
+import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -161,76 +161,63 @@ class Calendar extends PureComponent {
           <title>{`Activity Calendar | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
         {currentUser && canCreateContent && (
-          <Box
-            direction="row"
-            justify="center"
-            width="100%"
-            margin={{ bottom: 'small' }}
-          >
+          <Center mb="3">
             <Link to="/new-activity">
               <Button as="span" colorScheme="green" variant="outline">
                 NEW
               </Button>
             </Link>
-          </Box>
+          </Center>
         )}
 
-        <Box
-          background="white"
-          pad={{ top: 'small' }}
-          margin={{ bottom: 'large' }}
-        >
-          <Box
-            direction="row"
-            justify="center"
-            align="center"
-            className="tags-container"
-            width="100%"
-            pad={{ horizontal: 'small', bottom: 'small' }}
-            gap="small"
-            wrap
-          >
-            <Tag
-              alignSelf="center"
-              checkable
-              key="All"
-              label="All"
-              filterColor="#484848"
-              checked={calendarFilter === 'All'}
-              onClick={() => this.handleCalendarFilterChange('All')}
-            />
+        <Box bg="white" pt="1" mb="3">
+          <Center p="1">
+            <Wrap className="tags-container" px="1" pb="1">
+              <WrapItem>
+                <Tag
+                  alignSelf="center"
+                  checkable
+                  key="All"
+                  label="All"
+                  filterColor="#484848"
+                  checked={calendarFilter === 'All'}
+                  onClick={() => this.handleCalendarFilterChange('All')}
+                />
+              </WrapItem>
+              {nonComboResourcesWithColor.map((resource, i) => (
+                <WrapItem key={resource.label}>
+                  <Tag
+                    checkable
+                    label={resource.label}
+                    filterColor={resource.color}
+                    checked={calendarFilter === resource.label}
+                    onClick={() =>
+                      this.handleCalendarFilterChange(resource.label)
+                    }
+                  />
+                </WrapItem>
+              ))}
+            </Wrap>
+          </Center>
 
-            {nonComboResourcesWithColor.map((resource, i) => (
-              <Tag
-                key={resource.label}
-                checkable
-                label={resource.label}
-                filterColor={resource.color}
-                checked={calendarFilter === resource.label}
-                onClick={() => this.handleCalendarFilterChange(resource.label)}
-              />
-            ))}
-          </Box>
-
-          <Box
-            direction="row"
-            justify="center"
-            pad={{ horizontal: 'small' }}
-            gap="small"
-            margin={{ bottom: 'medium' }}
-          >
-            {comboResourcesWithColor.map((resource, i) => (
-              <Tag
-                checkable
-                key={resource.label}
-                label={resource.label}
-                filterColor={'#2d2d2d'}
-                gradientBackground={resource.color}
-                checked={calendarFilter === resource.label}
-                onClick={() => this.handleCalendarFilterChange(resource.label)}
-              />
-            ))}
-          </Box>
+          <Center>
+            <Wrap mb="2" px="1">
+              {comboResourcesWithColor.map((resource, i) => (
+                <WrapItem key={resource.label}>
+                  <Tag
+                    checkable
+                    label={resource.label}
+                    filterColor={'#2d2d2d'}
+                    gradientBackground={resource.color}
+                    checked={calendarFilter === resource.label}
+                    onClick={() =>
+                      this.handleCalendarFilterChange(resource.label)
+                    }
+                  />
+                </WrapItem>
+              ))}
+            </Wrap>
+          </Center>
 
           {isLoading ? (
             <Loader />
@@ -259,24 +246,24 @@ class Calendar extends PureComponent {
           onClickOutside={this.handleCloseModal}
         >
           <Box
+            bg="light-1"
             style={{ fontFamily: 'Courier, monospace' }}
-            background="light-1"
-            pad="small"
-            margin={{ top: 'small', bottom: 'small' }}
+            p="1"
+            my="1"
           >
             <div>
-              <Text weight="bold">
+              <Text fontWeight="bold">
                 {selectedActivity && selectedActivity.authorName}
               </Text>{' '}
               <Text>booked</Text>{' '}
-              <Text weight="bold">
+              <Text fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
               </Text>
             </div>
             <Text>{this.getActivityTimes(selectedActivity)}</Text>
           </Box>
 
-          <Text size="small">
+          <Text fontSize="sm">
             <div className="text-content">
               {selectedActivity &&
                 selectedActivity.longDescription &&
