@@ -100,15 +100,13 @@ class Page extends PureComponent {
           </div>
         </Box>
 
-        <Box>
-          {currentUser && role === 'admin' && (
-            <Center p="2">
-              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-                <Button as="span" variant="ghost" size="sm">Edit</Button>
-              </Link>
-              </Center>
-          )}
-        </Box>
+        {currentUser && role === 'admin' && (
+          <Center p="2">
+            <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+              <Button as="span" variant="ghost" size="sm">Edit</Button>
+            </Link>
+            </Center>
+        )}
       </Template>
     );
   }

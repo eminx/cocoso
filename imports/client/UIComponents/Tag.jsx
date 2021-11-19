@@ -13,55 +13,57 @@ const Tag = ({
   onRemove,
   ...otherProps
 }) => (
-  <Box
-    background={
-      !checkable
-        ? 'accent-4'
-        : checked
-        ? gradientBackground
-          ? gradientBackground
-          : filterColor
-        : gradientBackground || 'white'
-    }
-    alignSelf="start"
-    direction="row"
-    align="center"
-    round="2px"
-    gap="small"
-    pad={gradientBackground && checkable ? '2px' : '0'}
-    style={{
-      border:
-        gradientBackground && checkable
-          ? 'none'
-          : `2px solid ${filterColor || '#484848'}`,
-    }}
-    {...otherProps}
-  >
+  <Box>
     <Box
-      onClick={onClick}
-      focusIndicator={false}
-      pad="2px 5px"
+      background={
+        !checkable
+          ? 'accent-4'
+          : checked
+          ? gradientBackground
+            ? gradientBackground
+            : filterColor
+          : gradientBackground || 'white'
+      }
+      alignSelf="start"
+      direction="row"
+      align="center"
+      round="2px"
+      gap="small"
+      pad={gradientBackground && checkable ? '2px' : '0'}
       style={{
-        border: !checkable ? 'none' : checked ? 'none' : 'white',
-        background: checkable && checked ? 'none' : 'white',
+        border:
+          gradientBackground && checkable
+            ? 'none'
+            : `2px solid ${filterColor || '#484848'}`,
       }}
+      {...otherProps}
     >
-      <Text
-        size={otherProps.size || '14px'}
-        weight={checkable ? 'normal' : 'bold'}
-        color={checked ? 'white' : filterColor}
+      <Box
+        onClick={onClick}
+        focusIndicator={false}
+        pad="2px 5px"
+        style={{
+          border: !checkable ? 'none' : checked ? 'none' : 'white',
+          background: checkable && checked ? 'none' : 'white',
+        }}
       >
-        {checkable ? label : label.toUpperCase()}
-      </Text>
+        <Text
+          size={otherProps.size || '14px'}
+          weight={checkable ? 'normal' : 'bold'}
+          color={checked ? 'white' : filterColor}
+        >
+          {checkable ? label : label.toUpperCase()}
+        </Text>
+      </Box>
+      {removable && (
+        <Button
+          plain
+          icon={<Close color="dark-2" size="small" />}
+          margin={{ right: '4px' }}
+          onClick={onRemove}
+        />
+      )}
     </Box>
-    {removable && (
-      <Button
-        plain
-        icon={<Close color="dark-2" size="small" />}
-        margin={{ right: '4px' }}
-        onClick={onRemove}
-      />
-    )}
   </Box>
 );
 

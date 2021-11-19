@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from 'grommet';
+import { Text } from '@chakra-ui/react';
 import Tag from './Tag';
 
 function ResourcesForCombo({ resource }) {
@@ -15,7 +15,7 @@ function ResourcesForCombo({ resource }) {
       <Tag label="COMBO" size="xsmall" />
       {' ['}
       {resourcesForCombo.map((res, i) => (
-        <Text size="small" weight="normal" key={res._id}>
+        <Text fontSize="sm" key={res._id}>
           {res.label + (i < length - 1 ? ' + ' : '')}
         </Text>
       ))}

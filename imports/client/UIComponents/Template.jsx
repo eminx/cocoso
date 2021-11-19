@@ -32,6 +32,7 @@ function Template({
             <Box pl={titleCentered ? '0' : '2'} mb="2">
               <Heading
                 as="h3"
+                mb="4"
                 size="md"
                 textAlign={titleCentered ? 'center' : 'start'}
               >

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Text } from 'grommet';
-import { Avatar } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Tag from './Tag';
 
@@ -20,15 +19,16 @@ function WorkThumb({ work, history }) {
   return (
     <Box
       key={work._id}
+      m="1"
+      style={{
+        background: 'rgba(255, 255, 255, .6)',
+        borderRadius: 3,
+        flexBasis: '360px',
+      }}
       onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
-      basis="360px"
-      margin="small"
-      round="3px"
-      hoverIndicator="brand-light"
-      style={{ background: 'rgba(255, 255, 255, .6)' }}
     >
-      <Box pad="small" direction="row" justify="between">
-        <Box>
+      <Flex p="1" direction="row" justify="space-between">
+        <div>
           {work.category && (
             <Tag
               label={work.category.label}
@@ -36,16 +36,15 @@ function WorkThumb({ work, history }) {
               margin={{ bottom: 'xxsmall' }}
             />
           )}
-          <Text weight={600} style={ellipsisStyle} size="large">
+          <Text fontWeight="bold" isTruncated fontSize="md">
             {work.title}
           </Text>
-        </Box>
+        </div>
         <Avatar
-          flex={{ grow: 0 }}
-          src={work.authorAvatar ? work.authorAvatar.src : null}
           name={work.authorUsername}
+          src={work.authorAvatar ? work.authorAvatar.src : null}
         />
-      </Box>
+      </Flex>
       {work.images && work.images[0] && (
         <Box>
           <LazyLoadImage
@@ -56,8 +55,8 @@ function WorkThumb({ work, history }) {
           />
         </Box>
       )}
-      <Box pad="small">
-        <Text weight={300} style={ellipsisStyle}>
+      <Box p="1">
+        <Text fontWeight="light" isTruncated>
           {work.shortDescription}
         </Text>
       </Box>
