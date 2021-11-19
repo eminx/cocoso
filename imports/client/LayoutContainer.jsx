@@ -3,17 +3,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Anchor,
-  Box,
-  Button,
-  DropButton,
   Footer,
   Grommet,
-  Heading,
   FormField,
-  Image,
-  Layer,
-  Paragraph,
   Select,
   TextInput,
   TextArea,
@@ -22,17 +14,26 @@ import {
 import {
   Box as CBox,
   Button as CButton,
+  Center,
+  Flex,
   HStack,
+  Image,
   Menu as CMenu,
   MenuButton,
   MenuList,
   MenuItem,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalCloseButton,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   extendTheme,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-
-import { Close } from 'grommet-icons/icons/Close';
 
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
@@ -133,6 +134,7 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -145,11 +147,11 @@ function LayoutPage({
 
   if (hostLoading || !currentHost) {
     return (
-      <Box width="100%">
-        <Box pad="medium" alignSelf="center">
+      <CBox width="100%">
+        <Center p="1">
           <Text>Loading...</Text>
-        </Box>
-      </Box>
+        </Center>
+      </CBox>
     );
   }
 
@@ -208,16 +210,10 @@ function LayoutPage({
             canCreateContent,
           }}
         >
-          <Box
-            className="main-viewport"
-            justify="center"
-            style={getBackgroundStyle(cHue)}
-            fill
-          >
-            <Box width={{ max: '1280px' }} alignSelf="center" fill>
+          <Center className="main-viewport" style={getBackgroundStyle(cHue)}>
+            <CBox width="1280px">
               <Header {...headerProps} />
-              <Box style={{ minHeight: '100vh' }}>{children}</Box>
-              {/* <FooterInfo settings={settings} /> */}
+              <CBox style={{ minHeight: '100vh' }}>{children}</CBox>
 
               <Footer background="light-3" justify="center" pad="medium">
                 <CButton
@@ -227,29 +223,19 @@ function LayoutPage({
                   Give Feedback
                 </CButton>
 
-                {showFeedbackModal && (
-                  <Layer
-                    position="bottom"
-                    full="vertical"
-                    modal
-                    onClickOutside={() => setShowFeedbackModal(false)}
-                    onEsc={() => setShowFeedbackModal(false)}
-                    animation="fadeIn"
-                  >
-                    <Box pad="medium" width="large">
-                      <Box direction="row" justify="between">
-                        <Heading level={2} margin="none">
-                          Give Feedback
-                        </Heading>
-                        <Button
-                          icon={<Close />}
-                          onClick={() => setShowFeedbackModal(false)}
-                        />
-                      </Box>
-                      <form
-                        action="https://formspree.io/f/xdopweon"
-                        method="POST"
-                      >
+                <Modal
+                  isOpen={showFeedbackModal}
+                  onClose={() => setShowFeedbackModal(false)}
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Give Feedback</ModalHeader>
+                    <ModalCloseButton />
+                    <form
+                      action="https://formspree.io/f/xdopweon"
+                      method="POST"
+                    >
+                      <ModalBody>
                         <FormField label="Your email address">
                           <TextInput type="email" name="_replyto" />
                         </FormField>
@@ -265,40 +251,30 @@ function LayoutPage({
                         <FormField label="Details">
                           <TextArea name="text" name="message" />
                         </FormField>
-
-                        <Box
-                          direction="row"
-                          justify="end"
-                          pad={{ top: 'large' }}
-                        >
-                          <Button type="submit" label="Send" />
-                        </Box>
-                      </form>
-                    </Box>
-                  </Layer>
-                )}
+                      </ModalBody>
+                      <ModalFooter>
+                        <CButton mr={3} onClick={onClose}>
+                          Close
+                        </CButton>
+                        <CButton colorScheme="blue" type="submit">
+                          Send
+                        </CButton>
+                      </ModalFooter>
+                    </form>
+                  </ModalContent>
+                </Modal>
               </Footer>
-            </Box>
-          </Box>
+            </CBox>
+          </Center>
         </StateContext.Provider>
       </ChakraProvider>
     </Grommet>
   );
 }
 
-const boldBabe = {
-  textTransform: 'uppercase',
-  fontWeight: 700,
-};
-
 const Header = ({ currentUser, currentHost, title, history }) => {
   const UserStuff = () => (
-    <Box justify="end" direction="row" alignContent="center">
-      {/* {currentUser && (
-        <NotificationsPopup notifications={currentUser.notifications} />
-      )} */}
-      <UserPopup currentUser={currentUser} />
-    </Box>
+    <NotificationsPopup notifications={currentUser.notifications} />
   );
 
   const pathname = location.pathname;
@@ -319,21 +295,15 @@ const Header = ({ currentUser, currentHost, title, history }) => {
               align="center"
             >
               <Col xs={3} style={{ paddingLeft: 0 }}>
-                <Box>
-                  <Link to="/">
-                    <Box
-                      width="120px"
-                      height="60px"
-                      margin={{ top: 'small', left: 'small' }}
-                    >
-                      <Image
-                        fit="contain"
-                        src={currentHost && currentHost.logo}
-                        className="header-logo"
-                      />
-                    </Box>
-                  </Link>
-                </Box>
+                <Link to="/">
+                  <CBox w="120px" h="60px" mt="1" ml="1">
+                    <Image
+                      fit="contain"
+                      src={currentHost && currentHost.logo}
+                      className="header-logo"
+                    />
+                  </CBox>
+                </Link>
               </Col>
               <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
                 <Menu
@@ -343,7 +313,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                 />
               </Col>
               <Col xs={3} style={{ paddingRight: 0 }}>
-                <UserStuff />
+                <Flex justify="flex-end">
+                  <UserPopup currentUser={currentUser} />
+                </Flex>
               </Col>
             </Row>
           </Container>
@@ -423,25 +395,6 @@ const Menu = ({ currentHost, large, history }) => {
     </CMenu>
   );
 };
-
-const FooterInfo = ({ currentHost }) =>
-  currentHost && (
-    <Footer pad="medium" direction="row" justify="center">
-      <Box alignSelf="center">
-        <Heading level={4} style={boldBabe}>
-          {currentHost.name}
-        </Heading>
-        <Paragraph>
-          {currentHost.address}, {currentHost.city}
-        </Paragraph>
-        <Paragraph>
-          <Anchor href={`mailto:${currentHost.email}`}>
-            {currentHost.email}
-          </Anchor>
-        </Paragraph>
-      </Box>
-    </Footer>
-  );
 
 export default withTracker((props) => {
   const hostSub = Meteor.subscribe('currentHost');
