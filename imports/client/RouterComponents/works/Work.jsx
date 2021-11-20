@@ -24,7 +24,6 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
-import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 

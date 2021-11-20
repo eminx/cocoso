@@ -32,12 +32,12 @@ function NiceList({ list, actionsDisabled, children, ...otherProps }) {
 
 function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
   return (
-    <Flex bg="white" justify="space-between">
+    <Flex justify="space-between">
       <Box w="100%">{renderChildren(listItem)}</Box>
       <Box>
         {!actionsDisabled && (
-          <Menu direction="ltr">
-            <MenuButton p="2">
+          <Menu placement="bottom-end">
+            <MenuButton>
               <ChevronDownIcon boxSize="6" />
             </MenuButton>
             <MenuList>

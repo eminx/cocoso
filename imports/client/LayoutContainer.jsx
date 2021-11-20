@@ -378,7 +378,7 @@ const Menu = ({ currentHost, large, history }) => {
   }
 
   return (
-    <CMenu closeOnSelect>
+    <CMenu placement="bottom" closeOnSelect>
       <MenuButton>
         <HStack>
           <Text>{(currentPage && currentPage.label) || 'Menu'}</Text>
