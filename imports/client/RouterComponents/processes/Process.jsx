@@ -27,7 +27,7 @@ import {
 
 import { Close } from 'grommet-icons/icons/Close';
 
-// import Chattery from '../../UIComponents/chattery/Chattery';
+import Chattery from '../../UIComponents/chattery/Chattery.jsx';
 import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
 import NiceList from '../../UIComponents/NiceList';
@@ -754,14 +754,14 @@ class Process extends Component {
 
     return (
       <Box pad="medium">
-        {/* <Box background="light-2">
+        <Box background="light-2">
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}
             removeNotification={this.removeNotification}
             isMember={isMember}
           />
-        </Box> */}
+        </Box>
         {!isMember && (
           <div
             style={{
@@ -886,7 +886,7 @@ class Process extends Component {
           }
         >
           <Box background="white">{this.renderProcessInfo()}</Box>
-          <Visible sm md>
+          <Visible xs sm md>
             {this.renderMembersAndDocuments()}
           </Visible>
           {isAdmin && (
