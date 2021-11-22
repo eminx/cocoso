@@ -188,12 +188,13 @@ class Calendar extends PureComponent {
             wrap
           >
             <Tag
+              key="All"
               alignSelf="center"
               checkable
-              key="All"
-              label="All"
-              filterColor="#484848"
               checked={calendarFilter === 'All'}
+              filterColor="#484848"
+              label="All"
+              margin={{ bottom: 'small' }}
               onClick={() => this.handleCalendarFilterChange('All')}
             />
 
