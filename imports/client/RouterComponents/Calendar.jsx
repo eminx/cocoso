@@ -194,7 +194,7 @@ class Calendar extends PureComponent {
               checked={calendarFilter === 'All'}
               filterColor="#484848"
               label="All"
-              margin={{ bottom: 'small' }}
+              margin={{ bottom: 'xsmall' }}
               onClick={() => this.handleCalendarFilterChange('All')}
             />
 
