@@ -12,7 +12,6 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { MoreVertical } from 'grommet-icons/icons/MoreVertical';
 
 function NiceList({ list, actionsDisabled, children, ...otherProps }) {
   return (
@@ -58,43 +57,5 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
     </Flex>
   );
 }
-
-function GridList({ list, actionsDisabled, children, ...otherProps }) {
-  return (
-    <Wrap spacing={[4, 5]}>
-      {list.map((item) => (
-        <WrapItem key={item.username} m={[3, 4]}>
-          <Flex>
-            <Box>{children(item)}</Box>
-            <Box>
-              {!actionsDisabled && (
-                <Menu
-                  icon={<MoreVertical size="18px" style={{ marginTop: -6 }} />}
-                  items={
-                    item.actions &&
-                    item.actions.map((action) => ({
-                      label: action.content,
-                      onClick: action.isDisabled ? null : action.handleClick,
-                      style: action.isDisabled
-                        ? {
-                            color: '#ccc',
-                            cursor: 'not-allowed',
-                          }
-                        : null,
-                    }))
-                  }
-                  background="light-1"
-                  dropAlign={{ top: 'bottom', right: 'right' }}
-                />
-              )}
-            </Box>
-          </Flex>
-        </WrapItem>
-      ))}
-    </Wrap>
-  );
-}
-
-export { GridList };
 
 export default NiceList;

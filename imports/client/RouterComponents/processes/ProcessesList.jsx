@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Box, Image, Heading, RadioButtonGroup, Text } from 'grommet';
-import { Button } from '@chakra-ui/react';
+import { RadioButtonGroup } from 'grommet';
+import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
@@ -149,7 +149,7 @@ export default function ProcessesList({
             </Link>
           </Box>
         )}
-        <Box pad="medium">
+        <Box p="4">
           <RadioButtonGroup
             name="filters"
             options={filterOptions}
@@ -176,34 +176,31 @@ export default function ProcessesList({
 
 function ProcessItem({ process, history }) {
   return (
-    <Box
-      width="100%"
+    <Flex
+      bg="white"
+      mb="4"
+      p="2"
+      w="100%"
       onClick={() => history.push(`/process/${process._id}`)}
-      hoverIndicator="light-1"
-      pad="small"
-      direction="row"
-      margin={{ bottom: 'medium' }}
-      background="white"
-      hoverIndicator="brand-light"
     >
-      <Box width="small" height="small" margin={{ right: 'small' }}>
-        <Image fit="cover" fill src={process.imageUrl} />
+      <Box mr="2">
+        <Image w="sm" fit="cover" src={process.imageUrl} />
       </Box>
-      <Box width="100%">
+      <Box w="100%">
         <Box>
-          <Heading level={3}>{process.title}</Heading>
-          <Text weight={300}>{process.readingMaterial}</Text>
+          <Heading size="lg">{process.title}</Heading>
+          <Text fontSize="lg" fontWeight="light">
+            {process.readingMaterial}
+          </Text>
         </Box>
 
-        <Box pad="small">
-          <Text size="small" textAlign="end">
-            {process.adminUsername}
-          </Text>
-          <Text size="xsmall" textAlign="end">
+        <Box p="2">
+          <Text textAlign="right">{process.adminUsername}</Text>
+          <Text fontSize="sm" textAlign="right">
             {moment(process.creationDate).format('Do MMM YYYY')}
           </Text>
         </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 }
