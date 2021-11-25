@@ -281,7 +281,6 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   const gotoPath = getGotoPath(pathname);
 
   const isPage = pathname.substring(0, 5) === '/page';
-  const isMenuPage = isPage || pathsWithMenu.includes(pathname);
 
   return (
     <ScreenClassRender
@@ -340,22 +339,17 @@ const Menu = ({ currentHost, large, history }) => {
     }));
 
   const pathname = history.location.pathname;
-  const currentPage = menu.find((item) => {
-    return (
-      item.name.toLowerCase() ===
-      pathname.substring(1, pathname.length).toLowerCase()
-    );
-  });
 
   const handleClick = (item) => {
     history.push(item.route);
   };
 
   const isCurrentPage = (label) => {
-    if (!currentPage) {
-      return false;
+    console.log(label, pathname);
+    if (label === 'info') {
+      return pathname.substring(0, 5) === '/page';
     }
-    return currentPage && currentPage.label === label;
+    return label === pathname.substring(1, pathname.length);
   };
 
   if (large) {
@@ -365,8 +359,7 @@ const Menu = ({ currentHost, large, history }) => {
           <CBox as="button" key={item.label} onClick={() => handleClick(item)}>
             <Text
               m="1"
-              borderBottom={isCurrentPage(item.label) ? '1px solid' : 'none'}
-              fontWeight="bold"
+              fontWeight={isCurrentPage(item.label) ? 'bold' : 'normal'}
               textTransform="capitalize"
             >
               {item.label}
