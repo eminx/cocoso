@@ -50,9 +50,7 @@ function WorkThumb({ work }) {
         </Box>
       )}
       <Box p="1">
-        <Text fontWeight="light" isTruncated>
-          {work.shortDescription}
-        </Text>
+        <Text fontWeight="light">{work.shortDescription}</Text>
       </Box>
     </Box>
   );

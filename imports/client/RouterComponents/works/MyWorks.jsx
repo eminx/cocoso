@@ -92,7 +92,8 @@ const WorkItem = ({ work, history }) => (
     <Flex w="100%" p="2" bg="white">
       <Box mr="4">
         <Image
-          boxSize="180px"
+          boxSize="140px"
+          h="180px"
           objectFit="cover"
           src={work.images && work.images[0]}
         />

@@ -365,9 +365,9 @@ const Menu = ({ currentHost, large, history }) => {
           <CBox as="button" key={item.label} onClick={() => handleClick(item)}>
             <Text
               m="1"
-              style={{
-                borderBottom: isCurrentPage(item.label) ? '1px solid' : 'none',
-              }}
+              borderBottom={isCurrentPage(item.label) ? '1px solid' : 'none'}
+              fontWeight="bold"
+              textTransform="capitalize"
             >
               {item.label}
             </Text>
