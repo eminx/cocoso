@@ -64,8 +64,8 @@ const resizeImage = (image, desiredImageWidth) =>
     Resizer.imageFileResizer(
       image,
       desiredImageWidth,
-      800,
-      'JPEG',
+      400,
+      'JPEG|PNG',
       95,
       0,
       (uri) => {

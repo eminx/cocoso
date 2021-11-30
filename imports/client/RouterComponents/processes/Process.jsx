@@ -651,7 +651,7 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Text size="small" pad="small">
+          <Text size="small" pad="small" margin={{ bottom: 'small' }}>
             <em>No document assigned</em>
           </Text>
         )}
@@ -834,7 +834,7 @@ class Process extends Component {
             </Visible>
           }
           rightContent={
-            <Box pad="medium">
+            <Box pad="small">
               <Heading level={5}>Dates</Heading>
 
               <Text size="small" pad="small" margin={{ bottom: 'medium' }}>
@@ -884,8 +884,8 @@ class Process extends Component {
           }
         >
           <Box background="white">{this.renderProcessInfo()}</Box>
-          <Visible sm md>
-            {this.renderMembersAndDocuments()}
+          <Visible xs sm md>
+            <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
           </Visible>
           {isAdmin && (
             <Box
