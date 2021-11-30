@@ -65,7 +65,7 @@ const resizeImage = (image, desiredImageWidth) =>
       image,
       desiredImageWidth,
       400,
-      'JPEG',
+      'JPEG|PNG',
       95,
       0,
       (uri) => {
