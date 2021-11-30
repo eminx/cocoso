@@ -200,16 +200,20 @@ export default function Settings({ history }) {
           Logo
         </Heading>
         <Text mb="3">Upload Your Logo</Text>
-        <Center w="sm" alignSelf="center">
-          <FileDropper
-            uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-            imageUrl={currentHost && currentHost.logo}
-            setUploadableImage={setUploadableImage}
-          />
+        <Center p="3">
+          <Box w="120px" h="60px">
+            <FileDropper
+              uploadableImageLocal={
+                localImage && localImage.uploadableImageLocal
+              }
+              imageUrl={currentHost && currentHost.logo}
+              setUploadableImage={setUploadableImage}
+            />
+          </Box>
         </Center>
         {localImage && localImage.uploadableImageLocal && (
           <Center p="2">
-            <Button onClick={() => uploadLogo()} label="Confirm" />
+            <Button onClick={() => uploadLogo()}>Confirm</Button>
           </Center>
         )}
       </Box>

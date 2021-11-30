@@ -187,7 +187,7 @@ function Members({ history, members, isLoading }) {
             </TabList>
           </Center>
 
-          <Center p="2">
+          <Center p="4">
             <Box w="sm">
               <Input
                 bg="white"

@@ -288,7 +288,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
         return (
-          <Container fluid style={{ width: '100%', padding: 0 }}>
+          <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
             <Row
               style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
               align="center"
@@ -345,7 +345,6 @@ const Menu = ({ currentHost, large, history }) => {
   };
 
   const isCurrentPage = (label) => {
-    console.log(label, pathname);
     if (label === 'info') {
       return pathname.substring(0, 5) === '/page';
     }
