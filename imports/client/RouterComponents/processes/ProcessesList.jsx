@@ -3,7 +3,20 @@ import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { RadioButtonGroup } from 'grommet';
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Image,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Text,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
@@ -116,23 +129,26 @@ export default function ProcessesList({
     return <Loader />;
   }
 
-  const processesFilteredAndSorted =
-    getFilteredProcesses().sort(compareForSort);
+  const renderResults = () => {
+    const processesFilteredAndSorted =
+      getFilteredProcesses().sort(compareForSort);
+    const processesList = processesFilteredAndSorted.map((process) => ({
+      ...process,
+      actions: [
+        {
+          content: process.isArchived ? 'Unarchive' : 'Archive',
+          handleClick: process.isArchived
+            ? () => unarchiveProcess(process._id)
+            : () => archiveProcess(process._id),
+          isDisabled:
+            !currentUser ||
+            (process.adminId !== currentUser._id && !currentUser.isSuperAdmin),
+        },
+      ],
+    }));
 
-  const processesList = processesFilteredAndSorted.map((process) => ({
-    ...process,
-    actions: [
-      {
-        content: process.isArchived ? 'Unarchive' : 'Archive',
-        handleClick: process.isArchived
-          ? () => unarchiveProcess(process._id)
-          : () => archiveProcess(process._id),
-        isDisabled:
-          !currentUser ||
-          (process.adminId !== currentUser._id && !currentUser.isSuperAdmin),
-      },
-    ],
-  }));
+    return processesList;
+  };
 
   return (
     <Template>
@@ -141,15 +157,32 @@ export default function ProcessesList({
       </Helmet>
       <Box>
         {canCreateContent && (
-          <Box margin={{ bottom: 'medium' }} alignSelf="center">
+          <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
               <Button as="span" colorScheme="green" variant="outline">
                 NEW
               </Button>
             </Link>
-          </Box>
+          </Center>
         )}
         <Box p="4">
+          <Tabs
+            variant="soft-rounded"
+            colorScheme="green"
+            onChange={(index) => setFilterBy()}
+          >
+            <TabList>
+              {filterOptions.map((option) => (
+                <Tab key={option.value}>{option.label}</Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {filterOptions.map((option) => (
+                <TabPanel key={option.value}></TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
+
           <RadioButtonGroup
             name="filters"
             options={filterOptions}
@@ -161,15 +194,13 @@ export default function ProcessesList({
         </Box>
       </Box>
 
-      {processesList && processesList.length > 0 && (
-        <NiceList
-          list={processesList.reverse()}
-          actionsDisabled={!currentUser || !canCreateContent}
-          border={false}
-        >
-          {(process) => <ProcessItem process={process} history={history} />}
-        </NiceList>
-      )}
+      <NiceList
+        list={renderResults().reverse()}
+        actionsDisabled={!currentUser || !canCreateContent}
+        border={false}
+      >
+        {(process) => <ProcessItem process={process} history={history} />}
+      </NiceList>
     </Template>
   );
 }
