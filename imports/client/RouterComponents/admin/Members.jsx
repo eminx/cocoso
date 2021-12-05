@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import moment from 'moment';
 
 import {
   Box,
   Center,
   Input,
-  Heading,
   Tabs,
   Tab,
   TabPanel,
   TabPanels,
   TabList,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
@@ -32,6 +32,7 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members({ history, members, isLoading }) {
+  const toast = useToast();
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
@@ -45,21 +46,32 @@ function Members({ history, members, isLoading }) {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      message.success(`${user.username} is now set back as a participant`);
-      // getAndSetUsers();
+      toast({
+        title: `${user.username} is now set back as a participant`,
+        status: 'success',
+      });
     } catch (error) {
       console.log(error);
-      message.error(error.reason || error.error);
+      toast({
+        title: error.reason || error.error,
+        status: 'error',
+      });
     }
   };
 
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      message.success(`${user.username} is now set as a contributor`);
+      toast({
+        title: `${user.username} is now set as a contributor`,
+        status: 'success',
+      });
     } catch (error) {
       console.log(error);
-      message.error(error.reason || error.error);
+      toast({
+        title: error.reason || error.error,
+        status: 'error',
+      });
     }
   };
 
