@@ -42,6 +42,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^5.0.0",
+    "chakra-formik-experiment": "^0.2.0",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.0",
     "framer-motion": "^3.3.0",

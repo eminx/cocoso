@@ -8,12 +8,10 @@ import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 import { Formik, Form } from 'formik';
 import {
-  InputControl,
-  NumberInputControl,
-  SubmitButton,
-} from 'formik-chakra-ui';
-
-// import { Form, FormField, TextInput } from 'grommet';
+  FieldControl,
+  InputFormik,
+  NumberInputFormik,
+} from 'chakra-formik-experiment';
 
 import {
   Accordion,
@@ -24,14 +22,15 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
   Image,
   Input,
-  NumberInput,
   NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -302,7 +301,7 @@ class Activity extends PureComponent {
                 <Center m="2">
                   <Button
                     colorScheme="red"
-                    size="sm"
+                    size="xs"
                     variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
@@ -366,7 +365,7 @@ class Activity extends PureComponent {
             mb="2"
             bg="white"
           >
-            <AccordionButton _expanded={{ bg: 'tomato', color: 'white' }}>
+            <AccordionButton _expanded={{ bg: 'Teal 500', color: 'white' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
@@ -561,10 +560,10 @@ const fields = [
     name: 'email',
     label: 'Email address',
   },
-  {
-    name: 'numberOfPeople',
-    label: 'Number of people',
-  },
+  // {
+  //   name: 'numberOfPeople',
+  //   label: 'Number of people',
+  // },
 ];
 
 const initialValues = {
@@ -580,24 +579,26 @@ function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         <Form>
           <Stack spacing={2}>
-            <InputControl
-              name="firstName"
-              label={<Text fontSize="sm">First Name</Text>}
-            />
-            <InputControl
-              name="lastName"
-              label={<Text fontSize="sm">Last Name</Text>}
-            />
-            <InputControl
-              name="email"
-              label={<Text fontSize="sm">Email Address</Text>}
-            />
-            <NumberInputControl
-              min={1}
-              max={4}
-              name="numberOfPeople"
-              label={<Text fontSize="sm">Number of Attendees</Text>}
-            />
+            {fields.map((field) => (
+              <FieldControl key={field.name} name={field.name} size="sm">
+                <FormLabel mb="0">
+                  <Text fontSize="sm">{field.label}</Text>
+                </FormLabel>
+                <InputFormik size="sm" />
+              </FieldControl>
+            ))}
+            <FieldControl name="numberOfPeople" size="sm">
+              <NumberInputFormik min={1} max={4} size="sm">
+                <FormLabel mb="0">
+                  <Text fontSize="sm">Number of Attendees</Text>
+                </FormLabel>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInputFormik>
+            </FieldControl>
             <Box pt="2" w="100%">
               <Button colorScheme="green" size="sm" type="submit" w="100%">
                 {isUpdateMode ? 'Update' : 'Register'}
