@@ -281,7 +281,6 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   const gotoPath = getGotoPath(pathname);
 
   const isPage = pathname.substring(0, 5) === '/page';
-  const isMenuPage = isPage || pathsWithMenu.includes(pathname);
 
   return (
     <ScreenClassRender
@@ -289,7 +288,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
         return (
-          <Container fluid style={{ width: '100%', padding: 0 }}>
+          <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
             <Row
               style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
               align="center"
@@ -340,22 +339,16 @@ const Menu = ({ currentHost, large, history }) => {
     }));
 
   const pathname = history.location.pathname;
-  const currentPage = menu.find((item) => {
-    return (
-      item.name.toLowerCase() ===
-      pathname.substring(1, pathname.length).toLowerCase()
-    );
-  });
 
   const handleClick = (item) => {
     history.push(item.route);
   };
 
   const isCurrentPage = (label) => {
-    if (!currentPage) {
-      return false;
+    if (label === 'info') {
+      return pathname.substring(0, 5) === '/page';
     }
-    return currentPage && currentPage.label === label;
+    return label === pathname.substring(1, pathname.length);
   };
 
   if (large) {
@@ -365,9 +358,8 @@ const Menu = ({ currentHost, large, history }) => {
           <CBox as="button" key={item.label} onClick={() => handleClick(item)}>
             <Text
               m="1"
-              style={{
-                borderBottom: isCurrentPage(item.label) ? '1px solid' : 'none',
-              }}
+              fontWeight={isCurrentPage(item.label) ? 'bold' : 'normal'}
+              textTransform="capitalize"
             >
               {item.label}
             </Text>
