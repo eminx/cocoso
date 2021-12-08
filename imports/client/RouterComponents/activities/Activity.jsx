@@ -6,8 +6,14 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
+import { Formik, Form } from 'formik';
+import {
+  InputControl,
+  NumberInputControl,
+  SubmitButton,
+} from 'formik-chakra-ui';
 
-import { Form, FormField, TextInput } from 'grommet';
+// import { Form, FormField, TextInput } from 'grommet';
 
 import {
   Accordion,
@@ -24,6 +30,8 @@ import {
   Heading,
   Image,
   Input,
+  NumberInput,
+  NumberInputField,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -76,11 +84,15 @@ class Activity extends PureComponent {
     return messages;
   };
 
-  handleRSVPSubmit = async ({ value, touched }, occurenceIndex) => {
+  handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData } = this.props;
-
     try {
-      await call('registerAttendance', activityData._id, value, occurenceIndex);
+      await call(
+        'registerAttendance',
+        activityData._id,
+        values,
+        occurenceIndex
+      );
       message.success(
         'You have just successfully registered your attendance. Welcome!'
       );
@@ -151,7 +163,7 @@ class Activity extends PureComponent {
           isUpdateMode
           onDelete={this.handleRemoveRSVP}
           currentUser={user}
-          onSubmit={(event) => this.handleChangeRSVPSubmit(event)}
+          onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
         />
       );
     } else {
@@ -193,14 +205,9 @@ class Activity extends PureComponent {
     }
   };
 
-  handleChangeRSVPSubmit = async ({ value, touched }) => {
+  handleChangeRSVPSubmit = async (values) => {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData } = this.props;
-
-    const values = {
-      ...value,
-      numberOfPeople: Number(value.numberOfPeople),
-    };
 
     try {
       await call(
@@ -294,6 +301,7 @@ class Activity extends PureComponent {
               <Box>
                 <Center m="2">
                   <Button
+                    colorScheme="red"
                     size="sm"
                     variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
@@ -313,8 +321,8 @@ class Activity extends PureComponent {
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
-                    onSubmit={(event) =>
-                      this.handleRSVPSubmit(event, occurenceIndex)
+                    onSubmit={(values) =>
+                      this.handleRSVPSubmit(values, occurenceIndex)
                     }
                   />
                 )}
@@ -353,8 +361,12 @@ class Activity extends PureComponent {
     return (
       <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <AccordionItem mb="2" bg="white">
-            <AccordionButton>
+          <AccordionItem
+            key={occurence.startDate + occurence.startTime}
+            mb="2"
+            bg="white"
+          >
+            <AccordionButton _expanded={{ bg: 'tomato', color: 'white' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
@@ -555,41 +567,55 @@ const fields = [
   },
 ];
 
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  numberOfPeople: 1,
+};
+
 function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
   return (
-    <Box bg="white" p="1">
-      <Form onSubmit={onSubmit}>
-        {fields.map((field) => (
-          <FormField
-            key={field.name}
-            size="small"
-            name={field.name}
-            label={<Text size="sm">{field.label}</Text>}
-          >
-            <TextInput plain={false} name={field.name} />
-          </FormField>
-        ))}
-        <Flex mt="2" mb="3" justify="space-between">
-          <Button
-            size="sm"
-            type="submit"
-            // disabled={hasErrors(getFieldsError())}
-          >
-            {isUpdateMode ? 'Update' : 'Register'}
-          </Button>
-
-          {isUpdateMode && (
-            <Button
-              colorScheme="red"
-              size="sm"
-              variant="ghost"
-              onClick={onDelete}
-            >
-              Remove your registration
-            </Button>
-          )}
-        </Flex>
-      </Form>
+    <Box bg="white" p="1" mb="4">
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Form>
+          <Stack spacing={2}>
+            <InputControl
+              name="firstName"
+              label={<Text fontSize="sm">First Name</Text>}
+            />
+            <InputControl
+              name="lastName"
+              label={<Text fontSize="sm">Last Name</Text>}
+            />
+            <InputControl
+              name="email"
+              label={<Text fontSize="sm">Email Address</Text>}
+            />
+            <NumberInputControl
+              min={1}
+              max={4}
+              name="numberOfPeople"
+              label={<Text fontSize="sm">Number of Attendees</Text>}
+            />
+            <Box pt="2" w="100%">
+              <Button colorScheme="green" size="sm" type="submit" w="100%">
+                {isUpdateMode ? 'Update' : 'Register'}
+              </Button>
+            </Box>
+            {isUpdateMode && (
+              <Button
+                colorScheme="red"
+                size="sm"
+                variant="ghost"
+                onClick={onDelete}
+              >
+                Remove your registration
+              </Button>
+            )}
+          </Stack>
+        </Form>
+      </Formik>
     </Box>
   );
 }

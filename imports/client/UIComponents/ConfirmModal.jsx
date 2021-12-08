@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { Layer, Heading, Button, Box } from 'grommet';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from '@chakra-ui/react';
 
-const ConfirmModal = ({
+function ConfirmModal({
   visible,
   title,
   onConfirm,
@@ -13,45 +21,43 @@ const ConfirmModal = ({
   hideFooter,
   children,
   ...otherProps
-}) => {
-  if (!visible) {
-    return null;
-  }
+}) {
+  const cancelRef = useRef();
+
   return (
-    <Layer position="center" {...otherProps}>
-      <Box pad="medium" gap="small" width="medium">
-        <Heading level={3} margin="none">
-          {title}
-        </Heading>
+    <AlertDialog
+      isOpen={visible}
+      leastDestructiveRef={cancelRef}
+      onClose={onCancel}
+      {...otherProps}
+    >
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            {title}
+          </AlertDialogHeader>
 
-        {children}
+          <AlertDialogBody>{children}</AlertDialogBody>
 
-        {!hideFooter && (
-          <Box
-            as="footer"
-            gap="small"
-            direction="row"
-            align="center"
-            justify="end"
-            pad={{ top: 'medium', bottom: 'small' }}
-          >
-            <Button
-              label={cancelText || 'Cancel'}
-              onClick={onCancel}
-              size="small"
-            />
-            <Button
-              {...confirmButtonProps}
-              label={confirmText || 'Confirm'}
-              onClick={onConfirm}
-              primary
-              size="small"
-            />
-          </Box>
-        )}
-      </Box>
-    </Layer>
+          {!hideFooter && (
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onCancel}>
+                {cancelText || 'Cancel'}
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={onConfirm}
+                ml={3}
+                {...confirmButtonProps}
+              >
+                {confirmText || 'Confirm'}
+              </Button>
+            </AlertDialogFooter>
+          )}
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
   );
-};
+}
 
 export default ConfirmModal;

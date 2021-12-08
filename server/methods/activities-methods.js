@@ -191,7 +191,6 @@ Meteor.methods({
   registerAttendance(activityId, values, occurenceIndex = 0) {
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
-    values.registerDate = new Date();
     const rsvpValues = {
       ...values,
       numberOfPeople: Number(values.numberOfPeople),
@@ -227,6 +226,7 @@ Meteor.methods({
         )
       );
     } catch (error) {
+      console.log(error)
       // Logger.createLogger(
       //   `Couldn't register attendance due to: ${error.reason || error.error}`
       // );
