@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
-import { Layer } from 'grommet';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
 import moment from 'moment';
 
@@ -14,6 +13,7 @@ import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../UIComponents/ResourceForm';
+import ConfirmModal from '../../UIComponents/ConfirmModal';
 
 const emptyResource = {
   label: '',
@@ -197,23 +197,22 @@ function ResourcesPage({ history, resources, isLoading }) {
           )}
         </NiceList>
 
-        {showModal && (
-          <Layer
-            onEsc={() => setShowModal(false)}
-            onClickOutside={() => setShowModal(false)}
-          >
-            <ResourceForm
-              content={modalContent}
-              setContent={setModalContent}
-              suggestions={suggestions()}
-              comboInput={comboInput}
-              setComboInput={setComboInput}
-              onSuggestionSelect={handleComboResourceSelection}
-              removeResourceForCombo={removeResourceForCombo}
-              onSubmit={handleSubmit}
-            />
-          </Layer>
-        )}
+        <ConfirmModal
+          hideFooter
+          visible={showModal}
+          onCancel={() => setShowModal(false)}
+        >
+          <ResourceForm
+            content={modalContent}
+            setContent={setModalContent}
+            suggestions={suggestions()}
+            comboInput={comboInput}
+            setComboInput={setComboInput}
+            onSuggestionSelect={handleComboResourceSelection}
+            removeResourceForCombo={removeResourceForCombo}
+            onSubmit={handleSubmit}
+          />
+        </ConfirmModal>
       </Box>
     </Template>
   );

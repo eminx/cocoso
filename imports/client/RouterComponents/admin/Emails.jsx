@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactQuill from 'react-quill';
 import {
-  Anchor,
   Box,
   Button,
   Form,

@@ -75,7 +75,14 @@ function Works({ history }) {
     >
       {currentUser && works ? (
         <NiceList list={myWorksWithActions} actionsDisabled>
-          {(work) => <WorkItem work={work} history={history} />}
+          {(work) => (
+            <Link
+              key={work._id}
+              to={`/${work.authorUsername}/work/${work._id}`}
+            >
+              <WorkItem work={work} history={history} />
+            </Link>
+          )}
         </NiceList>
       ) : (
         <Alert
@@ -87,25 +94,23 @@ function Works({ history }) {
   );
 }
 
-const WorkItem = ({ work, history }) => (
-  <Link to={`/${work.authorUsername}/work/${work._id}`}>
-    <Flex w="100%" p="2" bg="white">
-      <Box mr="4">
-        <Image
-          boxSize="140px"
-          h="180px"
-          objectFit="cover"
-          src={work.images && work.images[0]}
-        />
-      </Box>
-      <Box>
-        <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
-          {work.title}
-        </Heading>
-        <Text fontWeight="light">{work.shortDescription}</Text>
-      </Box>
-    </Flex>
-  </Link>
+const WorkItem = ({ work }) => (
+  <Flex w="100%" p="2" bg="white">
+    <Box mr="4">
+      <Image
+        boxSize="140px"
+        h="180px"
+        objectFit="cover"
+        src={work.images && work.images[0]}
+      />
+    </Box>
+    <Box>
+      <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
+        {work.title}
+      </Heading>
+      <Text fontWeight="light">{work.shortDescription}</Text>
+    </Box>
+  </Flex>
 );
 
 export default Works;

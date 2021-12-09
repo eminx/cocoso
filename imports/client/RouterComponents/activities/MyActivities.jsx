@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import { Link } from 'react-router-dom';
+
 import {
+  Box,
   Button,
+  Center,
+  Heading,
+  HStack,
+  Image,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
-  Center,
+  Text,
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
@@ -15,7 +21,7 @@ import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
-import { message, Alert } from '../../UIComponents/message';
+import { Alert } from '../../UIComponents/message';
 import Tag from '../../UIComponents/Tag';
 import { userMenu } from '../../constants/general';
 
@@ -56,13 +62,13 @@ function Activities({ history }) {
       heading="My Activities"
       titleCentered
       leftContent={
-        <Box pad="medium">
+        <Box p="">
           <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }
     >
       {currentUser && canCreateContent && (
-        <Box pad="small" direction="row" justify="center">
+        <Center>
           <Button
             colorScheme="green"
             variant="outline"
@@ -71,7 +77,7 @@ function Activities({ history }) {
           >
             NEW
           </Button>
-        </Box>
+        </Center>
       )}
 
       {currentUser && activities ? (
@@ -87,7 +93,11 @@ function Activities({ history }) {
           <TabPanels>
             <TabPanel>
               <NiceList list={activities} actionsDisabled>
-                {(act) => <ActivityItem act={act} history={history} />}
+                {(act) => (
+                  <Link to={`/activity/${act._id}`}>
+                    <ActivityItem act={act} />
+                  </Link>
+                )}
               </NiceList>
             </TabPanel>
             <TabPanel>
@@ -95,7 +105,11 @@ function Activities({ history }) {
                 list={activities.filter((act) => act.isPublicActivity)}
                 actionsDisabled
               >
-                {(act) => <ActivityItem act={act} history={history} />}
+                {(act) => (
+                  <Link to={`/activity/${act._id}`}>
+                    <ActivityItem act={act} history={history} />
+                  </Link>
+                )}
               </NiceList>
             </TabPanel>
             <TabPanel>
@@ -118,36 +132,24 @@ function Activities({ history }) {
   );
 }
 
-const ActivityItem = ({ act, history }) => (
-  <Box
-    width="100%"
-    onClick={() => history.push(`/activity/${act._id}`)}
-    hoverIndicator="light-1"
-    pad="small"
-    direction="row"
-    margin={{ bottom: 'medium' }}
-    background="white"
-  >
+const ActivityItem = ({ act }) => (
+  <HStack bg="white" m="2" p="3" w="100%">
     {act.isPublicActivity && (
       <Box width="small" height="small" margin={{ right: 'small' }}>
-        <Image fit="cover" fill src={act.imageUrl} />
+        <Image fit="cover" w="xs" fill src={act.imageUrl} />
       </Box>
     )}
-    <Box width="100%" justify="between">
-      <Heading
-        level={3}
-        style={{ overflowWrap: 'anywhere' }}
-        margin={{ bottom: 'small' }}
-      >
+    <Box w="100%">
+      <Heading size="lg" style={{ overflowWrap: 'anywhere' }} mb="1">
         {act.title}
       </Heading>
       <Tag label={act.resource} />
-      <Text weight={300}>{act.subTitle}</Text>
-      <Box pad={{ vertical: 'medium' }}>
-        <Text weight="bold">{act.datesAndTimes.length} occurences</Text>
-      </Box>
+      <Text fontWeight="light">{act.subTitle}</Text>
+      <Text fontStyle="italic" p="1" textAlign="right">
+        {act.datesAndTimes.length} occurences
+      </Text>
     </Box>
-  </Box>
+  </HStack>
 );
 
 export default Activities;

@@ -114,11 +114,11 @@ function Works({ history }) {
       </Center>
 
       <Center>
-        <Wrap>
+        <Wrap spacing="3">
           {worksWithCategoryColors.map((work, index) => (
-            <WrapItem flexBasis="360px" key={work._id}>
+            <WrapItem flexBasis="360px" flexGrow={1} key={work._id}>
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
-                <WorkThumb work={work} />
+                <WorkThumb key={work._id} work={work} />
               </Link>
             </WrapItem>
           ))}

@@ -29,6 +29,7 @@ function ConfirmModal({
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       onClose={onCancel}
+      onOverlayClick={onCancel}
       {...otherProps}
     >
       <AlertDialogOverlay>

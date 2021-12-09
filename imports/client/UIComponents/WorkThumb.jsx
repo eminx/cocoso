@@ -11,16 +11,7 @@ const imageStyle = {
 
 function WorkThumb({ work }) {
   return (
-    <Box
-      key={work._id}
-      m="2"
-      p="2"
-      style={{
-        background: 'rgba(255, 255, 255, .6)',
-        borderRadius: 3,
-        flexBasis: '360px',
-      }}
-    >
+    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} p="3">
       <Flex direction="row" justify="space-between" mb="2">
         <div>
           {work.category && (

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { RadioButtonGroup } from 'grommet';
+
 import {
   Box,
   Button,
@@ -49,7 +49,7 @@ export default function ProcessesList({
   processes,
   history,
 }) {
-  const [filterBy, setFilterBy] = useState('active');
+  const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
   const archiveProcess = (processId) => {
@@ -77,9 +77,9 @@ export default function ProcessesList({
       return [];
     }
     const filteredProcesses = processes.filter((process) => {
-      if (filterBy === 'archived') {
+      if (filterBy === 2) {
         return process.isArchived === true;
-      } else if (filterBy === 'my-processes') {
+      } else if (filterBy === 1) {
         return process.members.some(
           (member) => member.memberId === currentUser._id
         );
@@ -114,20 +114,6 @@ export default function ProcessesList({
 
     return futureProcessesAllowed;
   };
-
-  const handleSelectedFilter = (event) => {
-    const value = event.target.value;
-    if (!currentUser && value === 'my-processes') {
-      message.destroy();
-      message.error('You need an account for filtering your processes');
-      return;
-    }
-    setFilterBy(value);
-  };
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const renderResults = () => {
     const processesFilteredAndSorted =
@@ -169,38 +155,35 @@ export default function ProcessesList({
           <Tabs
             variant="soft-rounded"
             colorScheme="green"
-            onChange={(index) => setFilterBy()}
+            onChange={(index) => setFilterBy(index)}
           >
-            <TabList>
-              {filterOptions.map((option) => (
-                <Tab key={option.value}>{option.label}</Tab>
-              ))}
-            </TabList>
+            <Center>
+              <TabList>
+                {filterOptions.map((option) => (
+                  <Tab key={option.value}>{option.label}</Tab>
+                ))}
+              </TabList>
+            </Center>
             <TabPanels>
               {filterOptions.map((option) => (
-                <TabPanel key={option.value}></TabPanel>
+                <TabPanel key={option.value}>
+                  {
+                    <NiceList
+                      list={renderResults().reverse()}
+                      actionsDisabled={!currentUser || !canCreateContent}
+                      border={false}
+                    >
+                      {(process) => (
+                        <ProcessItem process={process} history={history} />
+                      )}
+                    </NiceList>
+                  }
+                </TabPanel>
               ))}
             </TabPanels>
           </Tabs>
-
-          <RadioButtonGroup
-            name="filters"
-            options={filterOptions}
-            value={filterBy}
-            onChange={handleSelectedFilter}
-            direction="row"
-            justify="center"
-          />
         </Box>
       </Box>
-
-      <NiceList
-        list={renderResults().reverse()}
-        actionsDisabled={!currentUser || !canCreateContent}
-        border={false}
-      >
-        {(process) => <ProcessItem process={process} history={history} />}
-      </NiceList>
     </Template>
   );
 }
@@ -213,6 +196,7 @@ function ProcessItem({ process, history }) {
       p="2"
       w="100%"
       onClick={() => history.push(`/process/${process._id}`)}
+      __hover={{ cursor: 'pointer' }}
     >
       <Box mr="2">
         <Image w="sm" fit="cover" src={process.imageUrl} />
