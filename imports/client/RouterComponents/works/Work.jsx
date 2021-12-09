@@ -15,6 +15,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Visible, Hidden } from 'react-grid-system';
@@ -82,23 +83,16 @@ function Work() {
 
   const AvatarHolder = (props) => (
     <Link to={`/@${work.authorUsername}`}>
-      <Box {...props}>
-        <Box>
-          <Avatar
-            elevation="medium"
-            src={work.authorAvatar ? work.authorAvatar.src : null}
-            name={work.authorUsername}
-          />
-        </Box>
-        <Button
-          as="span"
-          variant="link"
-          colorScheme="gray.800"
-          href={`/@${work.authorUsername}`}
-        >
+      <VStack justify="center" {...props}>
+        <Avatar
+          elevation="medium"
+          src={work.authorAvatar ? work.authorAvatar.src : null}
+          name={work.authorUsername}
+        />
+        <Button as="span" variant="link" href={`/@${work.authorUsername}`}>
           <Text fontSize="sm">{work.authorUsername}</Text>
         </Button>
-      </Box>
+      </VStack>
     </Link>
   );
 
@@ -151,7 +145,7 @@ function Work() {
               </Box>
             </Flex>
             <Center p="2" mt="4">
-              <Button onClick={handleOpenModal} variant="outline">
+              <Button onClick={handleOpenModal} variant="ghost">
                 {`Contact ${work.authorUsername}`}
               </Button>
             </Center>

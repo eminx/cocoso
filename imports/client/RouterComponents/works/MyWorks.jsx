@@ -55,7 +55,7 @@ function Works({ history }) {
       heading="My Works"
       titleCentered
       leftContent={
-        <Box p="4">
+        <Box p="2">
           <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }

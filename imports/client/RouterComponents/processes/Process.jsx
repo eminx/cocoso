@@ -10,7 +10,6 @@ import {
   Accordion,
   AccordionPanel,
   Anchor,
-  Box,
   Button,
   Calendar,
   CheckBox,
@@ -19,11 +18,21 @@ import {
   Layer,
   List,
   Select,
-  Tabs,
-  Tab,
   Text,
   TextArea,
 } from 'grommet';
+
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+} from '@chakra-ui/react';
 
 import { Close } from 'grommet-icons/icons/Close';
 
@@ -133,7 +142,7 @@ class Process extends Component {
     const { history } = this.props;
 
     return (
-      <Box>
+      <Flex>
         {process.isPrivate && (
           <div style={{ textAlign: 'right' }}>
             {/* <Tooltip
@@ -150,7 +159,7 @@ class Process extends Component {
             </Tooltip> */}
           </div>
         )}
-        <Box pad="medium">
+        <Box flexGrow={1} mb="2" p="4">
           <Heading
             level={3}
             style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
@@ -162,7 +171,7 @@ class Process extends Component {
         </Box>
 
         {isAdmin && process.isPrivate ? (
-          <Box alignSelf="end" direction="row" pad="medium">
+          <Box alignSelf="end" direction="row" p="4">
             <Anchor
               onClick={this.handleOpenInviteManager}
               style={{ marginLeft: 12 }}
@@ -170,11 +179,11 @@ class Process extends Component {
             />
           </Box>
         ) : (
-          <Box alignSelf="end" pad={{ right: 'medium' }}>
+          <Box alignSelf="end" p="4">
             {process.adminUsername}
           </Box>
         )}
-      </Box>
+      </Flex>
     );
   };
 
@@ -387,7 +396,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box pad="small" background="white">
+            <Box px="2" py="3" background="white">
               <FancyDate occurence={meeting} resources={resources} />
             </Box>
           }
@@ -395,19 +404,12 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small" background="white">
+          <Box p="4" background="white">
             <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
               <List data={meeting.attendees}>
                 {(attendee) => (
-                  <Box
-                    key={attendee.memberUsername}
-                    style={{
-                      position: 'relative',
-                      paddingTop: 6,
-                      paddingBottom: 6,
-                    }}
-                  >
+                  <Box key={attendee.memberUsername}>
                     {attendee.memberUsername}
                   </Box>
                 )}
@@ -446,7 +448,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box pad="small" background="white">
+            <Box px="2" py="3" bg="white">
               <MeetingInfo
                 isSmallViewport
                 isAttending={isAttending}
@@ -460,13 +462,13 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small" justify="center" direction="row" background="white">
+          <Center p="2" bg="white">
             <Button
               size="small"
               label={isAttending ? 'Cannot make it' : 'Register attendance'}
               onClick={() => this.toggleAttendance(meetingIndex)}
             />
-          </Box>
+          </Center>
         </AccordionPanel>
       );
     });
@@ -610,19 +612,19 @@ class Process extends Component {
     return (
       <Box>
         {!isAdmin && (
-          <Box justify="center" direction="row" margin={{ bottom: 'large' }}>
+          <Center mb="6">
             <Button
               label={isMember ? 'Leave process' : 'Join process'}
               primary={!isMember}
               onClick={this.openModal}
             />
-          </Box>
+          </Center>
         )}
 
         {currentUser && process && process.members && (
           <Fragment>
             <Heading level={5}>Members</Heading>
-            <Box margin={{ bottom: 'medium' }}>
+            <Box mb="4">
               <NiceList list={membersList} actionsDisabled={!isAdmin}>
                 {(member) => (
                   <span
@@ -651,22 +653,21 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Text size="small" pad="small" margin={{ bottom: 'small' }}>
+          <Text size="small" pad="2" margin={{ bottom: 'small' }}>
             <em>No document assigned</em>
           </Text>
         )}
 
         {isAdmin && (
-          <Box>
+          <Center p="2">
             <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Box
-                  width="medium"
-                  height="small"
-                  background="white"
-                  round="4px"
-                  justify="center"
-                  pad="medium"
+                  bg="white"
+                  cursor="grab"
+                  h="180px"
+                  p="4"
+                  w="240px"
                   {...getRootProps()}
                 >
                   {isUploading ? (
@@ -683,7 +684,7 @@ class Process extends Component {
                 </Box>
               )}
             </ReactDropzone>
-          </Box>
+          </Center>
         )}
       </Box>
     );
@@ -719,26 +720,26 @@ class Process extends Component {
         {this.getTitle(process, isAdmin)}
         <ScreenClassRender
           render={(screenClass) => (
-            <Tabs alignSelf="start" justify="start">
-              <Tab title="Info" style={{ marginLeft: 12 }}>
-                <Box
-                  alignSelf="center"
-                  width={screenClass === 'xs' ? 'medium' : 'large'}
-                  height={screenClass === 'xs' ? 'small' : 'medium'}
-                  margin={{ top: 'small', bottom: 'small' }}
-                  pad={{ top: 'medium' }}
-                >
-                  <Image src={process.imageUrl} fit="contain" fill />
-                </Box>
-                <Box pad="medium">
-                  <div className="text-content">
-                    {renderHTML(process.description)}
-                  </div>
-                </Box>
-              </Tab>
-              <Tab title="Discussion" style={{ marginLeft: 12 }}>
-                <div>{chatData && this.renderDiscussion()}</div>
-              </Tab>
+            <Tabs variant="soft-rounded" colorScheme="green">
+              <TabList pl="4">
+                <Tab>Info</Tab>
+                <Tab>Discussion</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Box>
+                    <Image src={process.imageUrl} fit="contain" fill />
+                  </Box>
+                  <Box p="4">
+                    <div className="text-content">
+                      {renderHTML(process.description)}
+                    </div>
+                  </Box>
+                </TabPanel>
+                <TabPanel>
+                  <div>{chatData && this.renderDiscussion()}</div>
+                </TabPanel>
+              </TabPanels>
             </Tabs>
           )}
         />
@@ -751,7 +752,7 @@ class Process extends Component {
     const isMember = this.isMember();
 
     return (
-      <Box pad="medium">
+      <Box p="4">
         <Box background="light-2">
           <Chattery
             messages={messages}
@@ -830,14 +831,14 @@ class Process extends Component {
         <Template
           leftContent={
             <Visible lg xl>
-              <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
+              <Box p="4">{this.renderMembersAndDocuments()}</Box>
             </Visible>
           }
           rightContent={
-            <Box pad="small">
+            <Box p="2">
               <Heading level={5}>Dates</Heading>
 
-              <Text size="small" pad="small" margin={{ bottom: 'medium' }}>
+              <Text size="small" pad="2" margin={{ bottom: 'medium' }}>
                 <em>
                   {process.meetings &&
                   process.meetings.filter((meeting) =>
@@ -885,19 +886,14 @@ class Process extends Component {
         >
           <Box background="white">{this.renderProcessInfo()}</Box>
           <Visible xs sm md>
-            <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
+            <Box p="4">{this.renderMembersAndDocuments()}</Box>
           </Visible>
           {isAdmin && (
-            <Box
-              direction="row"
-              justify="center"
-              pad="medium"
-              margin={{ bottom: 'large' }}
-            >
+            <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
                 <Anchor label="Edit this Process" />
               </Link>
-            </Box>
+            </Center>
           )}
         </Template>
         <ConfirmModal
@@ -934,7 +930,7 @@ class Process extends Component {
 
         {process && process.isPrivate && inviteManagerOpen && (
           <Layer full="vertical" position="right">
-            <Box fill style={{ maxWidth: '378px' }} pad="medium">
+            <Box fill style={{ maxWidth: '378px' }} p="4">
               <Box direction="row" align="start" justify="between">
                 <Heading level={5}>Manage Access</Heading>
                 <Button
@@ -955,7 +951,7 @@ class Process extends Component {
 
 const MeetingInfo = ({ meeting, isAttending, resources }) => {
   return (
-    <Box>
+    <Box p="4">
       <FancyDate occurence={meeting} resources={resources} />
 
       {isAttending && (
@@ -987,7 +983,7 @@ class CreateMeetingForm extends PureComponent {
     const { isLocal } = this.state;
 
     return (
-      <Box pad="small" background="white" margin={{ vertical: 'small' }}>
+      <Box p="2" background="white" my="2">
         <h4>Add a Meeting</h4>
         <div style={{ marginBottom: 6 }}>
           <Calendar
@@ -1001,20 +997,21 @@ class CreateMeetingForm extends PureComponent {
             firstDayOfWeek={1}
           />
         </div>
+        <HStack spacing="2">
+          <div style={{ marginBottom: 6 }}>
+            <TimePicker
+              value={newMeeting.startTime}
+              onChange={handleStartTimeChange}
+            />
+          </div>
 
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.startTime}
-            onChange={handleStartTimeChange}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.endTime}
-            onChange={handleFinishTimeChange}
-          />
-        </div>
+          <div style={{ marginBottom: 6 }}>
+            <TimePicker
+              value={newMeeting.endTime}
+              onChange={handleFinishTimeChange}
+            />
+          </div>
+        </HStack>
 
         <div style={{ marginBottom: 6 }}>
           <CheckBox

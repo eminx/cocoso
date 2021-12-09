@@ -1,7 +1,16 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Anchor, Box, Button, Heading, Text } from 'grommet';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  VStack,
+  Text,
+} from '@chakra-ui/react';
 
 import Personal from './Personal';
 import ListMenu from '../../UIComponents/ListMenu';
@@ -11,7 +20,7 @@ import { message } from '../../UIComponents/message';
 import { userMenu } from '../../constants/general';
 import { call, resizeImage, uploadImage } from '../../functions';
 import FileDropper from '../../UIComponents/FileDropper';
-import Loader from '../../UIComponents/Loader';
+// import Loader from '../../UIComponents/Loader';
 import { StateContext } from '../../LayoutContainer';
 
 const personalModel = {
@@ -178,85 +187,82 @@ class Profile extends React.Component {
         heading={currentUser ? 'Personal Info' : 'Join'}
         titleCentered
         leftContent={
-          <Fragment>
-            <Box pad="medium">
-              <ListMenu pathname={pathname} list={userMenu} />
-            </Box>
-          </Fragment>
+          <Box p="2">
+            <ListMenu pathname={pathname} list={userMenu} />
+          </Box>
         }
       >
-        <Box alignSelf="center" margin={{ bottom: 'medium' }} pad="small">
+        <Center mb="2" pad="1">
           {['admin', 'contributor', 'participant'].includes(role) ? (
-            <Text textAlign="center" size="small">
+            <Text textAlign="center" fontSize="sm">
               You as <b>{currentUser.username}</b> are part of this organisation
               with the <b>{role}</b> role
             </Text>
           ) : (
-            <Box alignSelf="center">
+            <Box>
               <Text>You are not part of this organisation. </Text>
               <Button onClick={() => this.setSelfAsParticipant()}>
                 Join as participant
               </Button>
             </Box>
           )}
-        </Box>
+        </Center>
 
-        <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-          <Box margin={{ bottom: 'large' }}>
-            <Heading level={3} margin={{ bottom: 'medium' }} textAlign="center">
+        <Center bg="white" p="4" mb="4">
+          <Box mb="4">
+            <Heading size="md" mb="2" textAlign="center">
               Avatar
             </Heading>
-            <Box
-              width="120px"
-              height="120px"
-              round
-              style={{ overflow: 'hidden' }}
-              alignSelf="center"
-            >
-              <FileDropper
-                imageUrl={
-                  uploadableAvatarLocal ||
-                  (currentUser.avatar && currentUser.avatar.src)
-                }
-                label="Click/Drag to upload"
-                round
-                height="100%"
-                imageFit="cover"
-                setUploadableImage={this.setUploadableAvatar}
-              />
-            </Box>
+            <Center style={{ overflow: 'hidden' }}>
+              <Box w="120px" h="120px">
+                <FileDropper
+                  imageUrl={
+                    uploadableAvatarLocal ||
+                    (currentUser.avatar && currentUser.avatar.src)
+                  }
+                  label="Click/Drag to upload"
+                  round
+                  height="100%"
+                  imageFit="cover"
+                  setUploadableImage={this.setUploadableAvatar}
+                />
+              </Box>
+            </Center>
             {uploadableAvatarLocal && (
-              <Box align="center" gap="small">
+              <HStack spacing="2" p="4">
                 <Button
+                  colorScheme="red"
+                  margin={{ top: 'small' }}
+                  size="sm"
+                  variant="ghost"
                   onClick={() =>
                     this.setState({
                       uploadableAvatar: null,
                       uploadableAvatarLocal: null,
                     })
                   }
-                  color="status-critical"
-                  margin={{ top: 'small' }}
-                  size="small"
-                  label="Remove"
-                  plain
-                />
+                >
+                  Remove
+                </Button>
 
                 <Button
+                  colorScheme="green"
+                  isDisabled={isUploading}
+                  isLoading={isUploading}
+                  size="sm"
+                  variant="solid"
                   onClick={() => this.uploadAvatar()}
-                  label="Confirm & Upload"
-                  size="small"
-                  disabled={isUploading}
-                />
-                {isUploading && <Loader />}
-              </Box>
+                >
+                  Confirm
+                </Button>
+              </HStack>
             )}
           </Box>
+        </Center>
+
+        <Box bg="white" p="4">
           <Box>
-            <Heading
-              level={3}
-              margin={{ bottom: 'small', top: 'medium' }}
-              textAlign="center"
-            >
+            <Heading mb="1" mt="2" size="md" textAlign="center">
               Personal Info
             </Heading>
             <Personal
@@ -273,22 +279,21 @@ class Profile extends React.Component {
           </Box>
         </Box>
 
-        <Box
-          direction="row"
-          justify="around"
-          margin={{ top: 'large' }}
-          background="light-4"
-          pad="medium"
-        >
-          <Button onClick={() => this.logout()} size="small" label="Log out" />
-          <Button
-            onClick={() => this.setState({ isDeleteModalOn: true })}
-            color="status-critical"
-            plain
-            size="small"
-            label="Delete Account"
-          />
-        </Box>
+        <Center>
+          <VStack spacing="4" mt="4" p="4">
+            <Button variant="outline" onClick={() => this.logout()}>
+              Log out
+            </Button>
+            <Button
+              colorScheme="red"
+              size="sm"
+              onClick={() => this.setState({ isDeleteModalOn: true })}
+            >
+              Delete Account
+            </Button>
+          </VStack>
+        </Center>
+
         <ConfirmModal
           visible={isDeleteModalOn}
           title="Are you sure?"

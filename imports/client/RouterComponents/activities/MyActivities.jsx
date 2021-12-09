@@ -62,7 +62,7 @@ function Activities({ history }) {
       heading="My Activities"
       titleCentered
       leftContent={
-        <Box p="">
+        <Box p="2">
           <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }
