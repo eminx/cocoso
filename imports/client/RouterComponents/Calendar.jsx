@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 
 import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -252,11 +253,11 @@ class Calendar extends PureComponent {
             my="1"
           >
             <div>
-              <Text fontWeight="bold">
+              <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.authorName}
               </Text>{' '}
-              <Text>booked</Text>{' '}
-              <Text fontWeight="bold">
+              <Text as="span">booked</Text>{' '}
+              <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
               </Text>
             </div>
@@ -273,6 +274,9 @@ class Calendar extends PureComponent {
                       selectedActivity.longDescription.slice(0, 120) + '...'
                     ))}
             </div>
+          </Text>
+
+          <Center>
             {selectedActivity && selectedActivity.isPublicActivity && (
               <Link
                 to={
@@ -280,15 +284,20 @@ class Calendar extends PureComponent {
                   selectedActivity._id
                 }
               >
-                {' '}
-                {!selectedActivity.isPrivateProcess &&
-                  `go to the ${
-                    selectedActivity.isProcess ? 'process ' : 'event '
-                  }
-                    page`}
+                <Button
+                  as="span"
+                  my="2"
+                  rightIcon={<ArrowForwardIcon />}
+                  variant="ghost"
+                >
+                  {' '}
+                  {!selectedActivity.isPrivateProcess &&
+                    `${selectedActivity.isProcess ? 'Process ' : 'Event '}
+                    Page`}
+                </Button>
               </Link>
             )}
-          </Text>
+          </Center>
         </ConfirmModal>
       </Box>
     );

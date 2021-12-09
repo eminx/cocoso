@@ -20,7 +20,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Works({ history }) {
+function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);

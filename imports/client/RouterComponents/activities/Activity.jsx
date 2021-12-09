@@ -592,10 +592,10 @@ function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
                 <FormLabel mb="0">
                   <Text fontSize="sm">Number of Attendees</Text>
                 </FormLabel>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
+                <NumberInputField size="sm" />
+                <NumberInputStepper size="sm">
+                  <NumberIncrementStepper size="sm" />
+                  <NumberDecrementStepper size="sm" />
                 </NumberInputStepper>
               </NumberInputFormik>
             </FieldControl>

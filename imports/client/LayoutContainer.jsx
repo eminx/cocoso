@@ -373,7 +373,7 @@ const Menu = ({ currentHost, large, history }) => {
     <CMenu placement="bottom" closeOnSelect>
       <MenuButton>
         <HStack>
-          <Text>{(currentPage && currentPage.label) || 'Menu'}</Text>
+          <Text>Menu</Text>
           <ChevronDownIcon />
         </HStack>
       </MenuButton>

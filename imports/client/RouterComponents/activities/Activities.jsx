@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { ScreenClassRender } from 'react-grid-system';
 import { Box, Button, Center, Wrap, WrapItem } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
@@ -100,44 +99,48 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
 
   const allSortedActivities = getAllSorted();
 
+  if (isLoading) {
+    return (
+      <Box width="100%" mb="50px">
+        <Loader />
+      </Box>
+    );
+  }
+
   return (
-    <ScreenClassRender
-      render={(screenClass) => (
-        <Box width="100%" mb="50px">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Box>
-              <Helmet>
-                <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-              </Helmet>
-              {canCreateContent && (
-                <Center mb="3">
-                  <Link to="/new-activity">
-                    <Button as="span" colorScheme="green" variant="outline">
-                      NEW
-                    </Button>
-                  </Link>
-                </Center>
-              )}
-              <Center>
-                <Wrap>
-                  {allSortedActivities.map((activity) => (
-                    <WrapItem key={activity.title}>
-                      <PublicActivityThumb
-                        large={['lg', 'xl', 'xxl'].includes(screenClass)}
-                        item={activity}
-                        history={history}
-                      />
-                    </WrapItem>
-                  ))}
-                </Wrap>
-              </Center>
-            </Box>
-          )}
-        </Box>
-      )}
-    />
+    <Box width="100%" mb="100px">
+      <Helmet>
+        <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
+
+      <Center mb="3">
+        {canCreateContent && (
+          <Link to="/new-activity">
+            <Button as="span" colorScheme="green" variant="outline">
+              NEW
+            </Button>
+          </Link>
+        )}
+      </Center>
+
+      <Center>
+        <Wrap spacing="3">
+          {allSortedActivities.map((activity) => (
+            <WrapItem flexBasis="360px" flexGrow={1} key={activity.title}>
+              <Link
+                to={
+                  activity.isProcess
+                    ? `/process/${activity._id}`
+                    : `/activity/${activity._id}`
+                }
+              >
+                <PublicActivityThumb item={activity} />
+              </Link>
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
+    </Box>
   );
 }
 

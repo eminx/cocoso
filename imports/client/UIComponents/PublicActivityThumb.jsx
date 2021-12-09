@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -20,7 +19,7 @@ const ellipsisStyle = {
   textOverflow: 'ellipsis',
 };
 
-function PublicActivityThumb({ item, large, history }) {
+function PublicActivityThumb({ item }) {
   const renderDate = (date) => {
     if (!date) {
       return;
@@ -58,40 +57,36 @@ function PublicActivityThumb({ item, large, history }) {
 
   const imageStyle = {
     width: '100%',
-    maxWidth: 360,
+    // maxWidth: 360,
     height: 220,
     objectFit: 'cover',
   };
 
   return (
-    <Link
-      to={item.isProcess ? `/process/${item._id}` : `/activity/${item._id}`}
-    >
-      <Box width="320px" bg="rgba(255, 255, 255, 0.6)" m="1" p="2">
-        <Box p="1">
-          <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
-            {item.isProcess ? item.title : item.title}
-          </Heading>
-          <Text fontWeight={300} style={ellipsisStyle}>
-            {item.isProcess ? item.readingMaterial : item.subTitle}
-          </Text>
-        </Box>
-
-        <Box>
-          <LazyLoadImage
-            alt={item.title}
-            src={item.imageUrl}
-            style={imageStyle}
-            effect="black-and-white"
-          />
-        </Box>
-
-        <Flex direction="row" justify="end" align="center" mt="1" wrap p="1">
-          {futureDates.slice(0, 3).map((date) => renderDate(date))}
-          {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
-        </Flex>
+    <Box bg="rgba(255, 255, 255, 0.6)" p="2">
+      <Box p="1">
+        <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
+          {item.isProcess ? item.title : item.title}
+        </Heading>
+        <Text fontWeight={300} style={ellipsisStyle}>
+          {item.isProcess ? item.readingMaterial : item.subTitle}
+        </Text>
       </Box>
-    </Link>
+
+      <Box>
+        <LazyLoadImage
+          alt={item.title}
+          src={item.imageUrl}
+          style={imageStyle}
+          effect="black-and-white"
+        />
+      </Box>
+
+      <Flex direction="row" justify="end" align="center" mt="1" wrap p="1">
+        {futureDates.slice(0, 3).map((date) => renderDate(date))}
+        {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
+      </Flex>
+    </Box>
   );
 }
 
