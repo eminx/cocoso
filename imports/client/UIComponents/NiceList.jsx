@@ -13,11 +13,12 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
-function NiceList({ list, actionsDisabled, children, ...otherProps }) {
+function NiceList({ actionsDisabled, itemBg, list, children, ...otherProps }) {
   return (
     <List spacing={4} {...otherProps}>
       {list.map((listItem) => (
-        <ListItem key={listItem.label}>
+        <ListItem key={listItem.label} bg={itemBg}>
+          {' '}
           <ListItemWithActions
             listItem={listItem}
             actionsDisabled={actionsDisabled}

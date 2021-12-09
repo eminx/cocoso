@@ -6,6 +6,7 @@ import moment from 'moment';
 import {
   Box,
   Center,
+  Heading,
   Input,
   Tabs,
   Tab,
@@ -219,12 +220,13 @@ function Members({ history, members, isLoading }) {
                     list={membersSorted}
                     border="horizontal"
                     pad="small"
+                    itemBg="white"
                   >
                     {(member) => (
-                      <Box key={member.username} p="4">
-                        <Text fontSize="lg" fontWeight="bold">
+                      <Box key={member.username} p="2">
+                        <Heading size="md" fontWeight="bold">
                           {member.username}
-                        </Text>
+                        </Heading>
                         <Text>{member && member.email}</Text>
                         <Text fontStyle="italic">{member.role}</Text>
                         <Text fontSize="xs" color="gray.500">

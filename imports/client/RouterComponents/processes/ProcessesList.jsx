@@ -43,12 +43,7 @@ const filterOptions = [
   },
 ];
 
-export default function ProcessesList({
-  isLoading,
-  currentUser,
-  processes,
-  history,
-}) {
+export default function ProcessesList({ isLoading, currentUser, processes }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -169,12 +164,15 @@ export default function ProcessesList({
                 <TabPanel key={option.value}>
                   {
                     <NiceList
-                      list={renderResults().reverse()}
                       actionsDisabled={!currentUser || !canCreateContent}
                       border={false}
+                      itemBg="white"
+                      list={renderResults().reverse()}
                     >
                       {(process) => (
-                        <ProcessItem process={process} history={history} />
+                        <Link to={`/process/${process._id}`}>
+                          <ProcessItem process={process} />
+                        </Link>
                       )}
                     </NiceList>
                   }
@@ -188,16 +186,9 @@ export default function ProcessesList({
   );
 }
 
-function ProcessItem({ process, history }) {
+function ProcessItem({ process }) {
   return (
-    <Flex
-      bg="white"
-      mb="4"
-      p="2"
-      w="100%"
-      onClick={() => history.push(`/process/${process._id}`)}
-      __hover={{ cursor: 'pointer' }}
-    >
+    <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
       <Box mr="2">
         <Image w="sm" fit="cover" src={process.imageUrl} />
       </Box>

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 
 import NiceList from '../../UIComponents/NiceList';
@@ -173,16 +173,16 @@ function ResourcesPage({ history, resources, isLoading }) {
       )}
 
       <Box p="4" mb="8">
-        <NiceList list={resourcesWithActions}>
+        <NiceList itemBg="white" list={resourcesWithActions}>
           {(resource) => (
-            <Box p="4" bg="white" mb="2" key={resource.label}>
-              <Text fontSize="lg" fontWeight="bold">
+            <Box bg="white" mb="2" p="2" key={resource.label}>
+              <Heading size="md" fontWeight="bold">
                 {resource.isCombo ? (
                   <ResourcesForCombo resource={resource} />
                 ) : (
                   resource.label
                 )}
-              </Text>
+              </Heading>
 
               <Text as="div" my="2">
                 {resource && resource.description}
