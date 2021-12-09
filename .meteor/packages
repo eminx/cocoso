@@ -23,7 +23,7 @@ service-configuration@1.0.11
 email@2.0.0
 tracker@1.2.0
 react-meteor-data
-force-ssl@1.1.0
 appcache
 hot-module-replacement
 dev-error-overlay
+force-ssl-custom
