@@ -25,6 +25,7 @@ Meteor.methods({
           address: values.address,
           city: values.city,
           country: values.country,
+          email: values.email,
           mainColor: defaultMainColor,
           menu: defaultMenu,
           name: values.name,
