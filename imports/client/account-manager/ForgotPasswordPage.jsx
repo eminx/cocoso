@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, Heading, HWrap, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, HStack, Text } from '@chakra-ui/react';
 
 import Template from '../UIComponents/Template';
 import { ForgotPassword, SimpleText } from './index';
@@ -31,19 +31,26 @@ function ForgotPasswordPage() {
   return (
     <Template>
       <Center>
-        <Box w="sm">
-          <Heading size="md">Forgot Password</Heading>
-          <Text fontSize="lg" mb="4">
-            Reset your password via a link sent to your email
-          </Text>
+        <Box w="xs">
+          <Heading px="4" size="md" textAlign="center">
+            Reset Password
+          </Heading>
+          <Center pt="4" px="4">
+            <Text mb="4" textAlign="center">
+              If you forgot your password, reset it via a link sent to your
+              email.
+            </Text>
+          </Center>
 
-          {emailSent ? (
-            <Text>Reset link is sent to your email.</Text>
-          ) : (
-            <ForgotPassword onForgotPassword={handleForgotPassword} />
-          )}
+          <Box bg="white" p="4">
+            {emailSent ? (
+              <Text>Reset link is sent to your email.</Text>
+            ) : (
+              <ForgotPassword onForgotPassword={handleForgotPassword} />
+            )}
+          </Box>
 
-          <HWrap justify="space-around" mt="2" mx="6">
+          <HStack justify="space-around" mt="4">
             <SimpleText>
               <Link to="/login">
                 <Button variant="link">Login</Button>
@@ -54,7 +61,7 @@ function ForgotPasswordPage() {
                 <Button variant="link">Signup</Button>
               </Link>
             </SimpleText>
-          </HWrap>
+          </HStack>
         </Box>
       </Center>
     </Template>
