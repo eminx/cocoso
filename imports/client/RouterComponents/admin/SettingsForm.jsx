@@ -1,46 +1,44 @@
 import React from 'react';
-import { Box, Button, Form, FormField, TextInput } from 'grommet';
+import { Form, Formik } from 'formik';
+import { Box, Button, Stack } from '@chakra-ui/react';
+import { FieldControl, InputFormik } from 'chakra-formik-experiment';
 
 const SettingsForm = (props) => {
   return (
-    <Form {...props}>
-      <FormField label="Name">
-        <TextInput plain={false} name="name" placeholder="Sandy Art Space" />
-      </FormField>
+    <Formik {...props}>
+      <Form>
+        <Stack spacing={2}>
+          <FieldControl label="Name" name="name">
+            <InputFormik placeholder="Sandy Art Space" />
+          </FieldControl>
 
-      <FormField label="Email address">
-        <TextInput
-          plain={false}
-          name="email"
-          placeholder="contact@sandyartspace.net"
-        />
-      </FormField>
+          <FieldControl label="Email address" name="email">
+            <InputFormik placeholder="contact@sandyartspace.net" />
+          </FieldControl>
 
-      <FormField label="Address">
-        <TextInput
-          plain={false}
-          name="address"
-          placeholder="Karl Marx strasse 99"
-        />
-      </FormField>
+          <FieldControl label="Address" name="address">
+            <InputFormik placeholder="Karl Marx strasse 99" />
+          </FieldControl>
 
-      <FormField label="City">
-        <TextInput plain={false} name="city" placeholder="Berlin" />
-      </FormField>
+          <FieldControl label="City" name="city">
+            <InputFormik placeholder="Berlin" />
+          </FieldControl>
 
-      <FormField label="Country">
-        <TextInput plain={false} name="country" placeholder="Sri Lanka" />
-      </FormField>
+          <FieldControl label="Country" name="country">
+            <InputFormik placeholder="Sri Lanka" />
+          </FieldControl>
 
-      <Box direction="row" justify="end" pad="small">
-        <Button
-          type="submit"
-          primary
-          label="Confirm"
-          disabled={!props.formAltered}
-        />
-      </Box>
-    </Form>
+          <Box>
+            <Button
+              // isDisabled={!props.formAltered}
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </Box>
+        </Stack>
+      </Form>
+    </Formik>
   );
 };
 

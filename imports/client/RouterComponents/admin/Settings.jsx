@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Form } from 'grommet';
 import {
   Box,
   Button,
@@ -94,7 +93,8 @@ export default function Settings({ history }) {
     }
   };
 
-  const addNewCategory = async () => {
+  const addNewCategory = async (event) => {
+    event.preventDefault();
     try {
       await call('addNewCategory', categoryInput.toLowerCase(), 'work');
       getCategories();
@@ -223,7 +223,7 @@ export default function Settings({ history }) {
         </Heading>
         <Text mb="3">Add/Edit Information About your Organisation</Text>
         <SettingsForm
-          value={localSettings}
+          initialValues={localSettings}
           onChange={handleFormChange}
           onSubmit={handleFormSubmit}
           formAltered={formAltered}
@@ -235,9 +235,9 @@ export default function Settings({ history }) {
           Main Color
         </Heading>
         <Text mb="3">Pick the Main Color for Your Web Presence</Text>
-        <Box direction="row" justify="between" align="center">
+        <Center>
           <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
-        </Box>
+        </Center>
         <Text>
           Background color will be accordingly set with its complementary color.
         </Text>
@@ -262,21 +262,20 @@ export default function Settings({ history }) {
         </Heading>
         <Text mb="3">You can set categories for work entries here</Text>
         <Center>
-          <Wrap p="1">
+          <Wrap p="1" spacing="2" mb="2">
             {categories.map((category) => (
               <WrapItem key={category.label}>
                 <Tag
-                  label={category.label.toUpperCase()}
                   background={category.color}
+                  label={category.label.toUpperCase()}
                   removable
                   onRemove={() => removeCategory(category._id)}
-                  margin={{ bottom: 'small' }}
                 />
               </WrapItem>
             ))}
           </Wrap>
         </Center>
-        <Form onSubmit={() => addNewCategory()}>
+        <form onSubmit={addNewCategory}>
           <Center>
             <HStack w="xs">
               <Input
@@ -290,7 +289,7 @@ export default function Settings({ history }) {
               <Button type="submit">Add</Button>
             </HStack>
           </Center>
-        </Form>
+        </form>
       </Box>
     </Template>
   );
