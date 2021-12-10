@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Heading,
   Input,
   HStack,
@@ -201,7 +200,7 @@ export default function Settings({ history }) {
         </Heading>
         <Text mb="3">Upload Your Logo</Text>
         <Center p="3">
-          <Box w="120px" h="60px">
+          <Box>
             <FileDropper
               uploadableImageLocal={
                 localImage && localImage.uploadableImageLocal
@@ -265,9 +264,8 @@ export default function Settings({ history }) {
         <Center>
           <Wrap p="1">
             {categories.map((category) => (
-              <WrapItem>
+              <WrapItem key={category.label}>
                 <Tag
-                  key={category.label}
                   label={category.label.toUpperCase()}
                   background={category.color}
                   removable
