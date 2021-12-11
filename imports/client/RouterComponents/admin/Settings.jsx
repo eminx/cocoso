@@ -65,22 +65,30 @@ export default function Settings({ history }) {
   }, []);
 
   const handleFormChange = (newSettings) => {
+    console.log(newSettings);
     setFormAltered(true);
     setLocalSettings(newSettings);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async (values) => {
+    console.log(values);
     if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return;
     }
 
-    if (!formAltered) {
-      message.info('You have not changed any value');
-      return;
-    }
+    // if (!formAltered) {
+    //   message.info('You have not changed any value');
+    //   return;
+    // }
 
-    saveSettings();
+    try {
+      call('updateHostSettings', values);
+      message.success('Settings successfully updated');
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    }
   };
 
   const getCategories = async () => {
@@ -224,7 +232,7 @@ export default function Settings({ history }) {
         <Text mb="3">Add/Edit Information About your Organisation</Text>
         <SettingsForm
           initialValues={localSettings}
-          onChange={handleFormChange}
+          // onChange={handleFormChange}
           onSubmit={handleFormSubmit}
           formAltered={formAltered}
         />

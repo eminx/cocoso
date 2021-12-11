@@ -1,45 +1,37 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
-import { Box, Button, Stack } from '@chakra-ui/react';
-import { FieldControl, InputFormik } from 'chakra-formik-experiment';
+import { Box, Button, Input, Stack } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 
-const SettingsForm = (props) => {
+import FormField from '../../UIComponents/FormField';
+
+function SettingsForm({ initialValues, onSubmit }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: initialValues,
+  });
+  const { isDirty } = formState;
+
   return (
-    <Formik {...props}>
-      <Form>
-        <Stack spacing={2}>
-          <FieldControl label="Name" name="name">
-            <InputFormik placeholder="Sandy Art Space" />
-          </FieldControl>
-
-          <FieldControl label="Email address" name="email">
-            <InputFormik placeholder="contact@sandyartspace.net" />
-          </FieldControl>
-
-          <FieldControl label="Address" name="address">
-            <InputFormik placeholder="Karl Marx strasse 99" />
-          </FieldControl>
-
-          <FieldControl label="City" name="city">
-            <InputFormik placeholder="Berlin" />
-          </FieldControl>
-
-          <FieldControl label="Country" name="country">
-            <InputFormik placeholder="Sri Lanka" />
-          </FieldControl>
-
-          <Box>
-            <Button
-              // isDisabled={!props.formAltered}
-              type="submit"
-            >
-              Confirm
-            </Button>
-          </Box>
-        </Stack>
-      </Form>
-    </Formik>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))} className="form">
+      <Stack spacing={2}>
+        <FormField label="Name" name="name" />
+        <FormField label="Email" name="email" type="email" />
+        <FormField label="Address">
+          <Input {...register('address')} />
+        </FormField>
+        <FormField label="City">
+          <Input {...register('city')} />
+        </FormField>
+        <FormField label="Country">
+          <Input {...register('country')} />
+        </FormField>
+        <Box>
+          <Button isDisabled={!isDirty} type="submit">
+            Confirm
+          </Button>
+        </Box>
+      </Stack>
+    </form>
   );
-};
+}
 
 export default SettingsForm;

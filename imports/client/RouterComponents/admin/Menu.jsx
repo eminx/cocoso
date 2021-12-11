@@ -83,6 +83,8 @@ export default function Menu() {
   };
 
   const handleChangeActiveMenu = (value) => {
+    console.log(value);
+    return;
     setActiveMenu(value);
     const newMenu = localSettings.menu.map((item) => {
       return {
@@ -116,12 +118,28 @@ export default function Menu() {
     return { ...localSettings, menu: newMenu };
   };
 
-  const handleMenuSave = async (values) => {
-    const newSettings = getNewSettings(values);
+  // const handleMenuSave = async (values) => {
+  //   const newSettings = getNewSettings(values);
 
+  //   setLoading(true);
+  //   try {
+  //     await call('updateHostSettings', newSettings);
+  //     message.success('Settings are successfully saved');
+  //   } catch (error) {
+  //     message.error(error.reason);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // if (loading) {
+  //   return <Loader />;
+  // }
+
+  const handleMenuSave = async () => {
     setLoading(true);
     try {
-      await call('updateHostSettings', newSettings);
+      await call('updateHostSettings', localSettings);
       message.success('Settings are successfully saved');
     } catch (error) {
       message.error(error.reason);
@@ -130,9 +148,9 @@ export default function Menu() {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  const handleHandleChange = (e, v) => {
+    console.log(e, v);
+  };
 
   return (
     <Box>
@@ -183,28 +201,35 @@ export default function Menu() {
               that only one word is allowed.
             </Text>
             {activeMenu && (
-              <Formik initialValues={activeMenu} onSubmit={handleMenuSave}>
-                <Form>
-                  <VStack align="flex-start" spacing="2">
-                    {localSettings.menu
-                      .filter((ite) => ite.isVisible)
-                      .map((item) => (
-                        <FieldControl
-                          key={item.name}
-                          label={item.name}
-                          name={item.name}
-                        >
-                          <InputFormik
-                            placeholder={getMenuPlaceHolder(item.name)}
-                          />
-                        </FieldControl>
-                      ))}
+              <Formik
+                value={activeMenu}
+                onBlur={handleChangeActiveMenu}
+                onSubmit={handleMenuSave}
+              >
+                {(handleChange) => (
+                  <Form>
+                    <VStack align="flex-start" spacing="2">
+                      {localSettings.menu
+                        .filter((ite) => ite.isVisible)
+                        .map((item) => (
+                          <FieldControl
+                            key={item.name}
+                            label={item.name}
+                            name={item.name}
+                          >
+                            <InputFormik
+                              placeholder={getMenuPlaceHolder(item.name)}
+                              onChange={handleChange}
+                            />
+                          </FieldControl>
+                        ))}
 
-                    <Box>
-                      <Button type="submit">Confirm</Button>
-                    </Box>
-                  </VStack>
-                </Form>
+                      <Box>
+                        <Button type="submit">Confirm</Button>
+                      </Box>
+                    </VStack>
+                  </Form>
+                )}
               </Formik>
             )}
           </TabPanel>
@@ -234,7 +259,9 @@ export default function Menu() {
               )}
             </Box>
             <Box>
-              <Button type="submit">Confirm</Button>
+              <Button onClick={handleMenuSave} type="submit">
+                Confirm
+              </Button>
             </Box>
           </TabPanel>
         </TabPanels>
