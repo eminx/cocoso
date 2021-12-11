@@ -212,9 +212,9 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
 }
 
 const SortableItem = sortableElement(({ value }) => (
-  <Box className="sortable-thumb" mb="2">
-    <Drag /> {value}
-  </Box>
+  <Flex align="center" bg="gray.100" cursor="move" mb="2" p="2">
+    <Drag /> <Box pl="2">{value}</Box>
+  </Flex>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => (

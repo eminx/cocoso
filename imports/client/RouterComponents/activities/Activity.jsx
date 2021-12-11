@@ -385,7 +385,7 @@ class Activity extends PureComponent {
             mb="2"
             bg="white"
           >
-            <AccordionButton _expanded={{ bg: 'Teal 500', color: 'white' }}>
+            <AccordionButton _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>

@@ -16,7 +16,6 @@ const timeOutTime = 5000;
 
 const Alert = ({ type = 'error', isClosable, children }) => {
   const success = type === 'success';
-  const error = type === 'error';
   const info = type === 'info';
   const warning = type === 'warning';
 

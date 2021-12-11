@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Heading, FormField, TextInput, Paragraph, Button } from 'grommet';
+import { Tag } from '@chakra-ui/react';
 
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
 import { message, SimpleTag } from '../../UIComponents/message';
@@ -132,9 +133,9 @@ class InviteManager extends React.PureComponent {
         <Box pad={{ top: 'medium', bottom: 'medium' }}>
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
             {peopleInvited.map((person) => (
-              <SimpleTag key={person.email} color="green" style={{ margin: 6 }}>
+              <Tag key={person.email}>
                 <b>{person.firstName}</b> | {person.email}
-              </SimpleTag>
+              </Tag>
             ))}
           </EmailsContainer>
         </Box>
