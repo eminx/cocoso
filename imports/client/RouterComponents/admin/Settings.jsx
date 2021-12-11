@@ -187,6 +187,10 @@ export default function Settings({ history }) {
   const pathname = history && history.location.pathname;
   const settings = currentHost && currentHost.settings;
 
+  const isImage =
+    (localImage && localImage.uploadableImageLocal) ||
+    (currentHost && currentHost.logo);
+
   return (
     <Template
       heading="Settings"
@@ -196,7 +200,7 @@ export default function Settings({ history }) {
         </Box>
       }
     >
-      <Box p="4" bg="white" mb="8">
+      <Box p="6" bg="white" mb="8">
         <Heading as="h3" size="md">
           Logo
         </Heading>
@@ -209,6 +213,8 @@ export default function Settings({ history }) {
               }
               imageUrl={currentHost && currentHost.logo}
               setUploadableImage={setUploadableImage}
+              width={isImage && '120px'}
+              height={isImage && '80px'}
             />
           </Box>
         </Center>
@@ -219,7 +225,7 @@ export default function Settings({ history }) {
         )}
       </Box>
 
-      <Box p="4" bg="white" mb="8">
+      <Box p="6" bg="white" mb="8">
         <Heading as="h3" size="md">
           Organisation
         </Heading>
@@ -231,7 +237,7 @@ export default function Settings({ history }) {
         />
       </Box>
 
-      <Box p="4" bg="white" mb="8">
+      <Box p="6" bg="white" mb="8">
         <Heading as="h3" size="md">
           Main Color
         </Heading>
@@ -253,11 +259,11 @@ export default function Settings({ history }) {
         </Center>
       </Box>
 
-      <Box p="4" bg="white" mb="8">
+      <Box p="6" bg="white" mb="8">
         <Menu />
       </Box>
 
-      <Box p="4" bg="white" mb="8">
+      <Box p="6" bg="white" mb="8">
         <Heading as="h3" size="md">
           Work Categories
         </Heading>

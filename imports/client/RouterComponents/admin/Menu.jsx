@@ -16,6 +16,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
+import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/table';
+
 import { Drag } from 'grommet-icons/icons/Drag';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -148,7 +150,6 @@ export default function Menu() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {/* <Text fontWeight="bold">Composition</Text> */}
             <Text mb="4" fontSize="sm">
               Check/uncheck items for visibility, and label them as you prefer
               in order to compose the menu
@@ -202,17 +203,17 @@ export default function Menu() {
 
 function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
   return (
-    <table style={{ width: '100%' }}>
-      <thead>
-        <tr>
-          <th>Visibility</th>
-          <th>Labels</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table variant="simple" w="100%">
+      <Thead>
+        <Tr>
+          <Th>Visibility</Th>
+          <Th>Labels</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
         {menu.map((item, index) => (
-          <tr key={item.name}>
-            <td>
+          <Tr key={item.name}>
+            <Td>
               <Center>
                 <Checkbox
                   isChecked={item.isVisible}
@@ -221,8 +222,8 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
                   }
                 />
               </Center>
-            </td>
-            <td>
+            </Td>
+            <Td>
               <FormField>
                 <Input
                   isDisabled={!item.isVisible}
@@ -232,11 +233,11 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
                   }
                 />
               </FormField>
-            </td>
-          </tr>
+            </Td>
+          </Tr>
         ))}
-      </tbody>
-    </table>
+      </Tbody>
+    </Table>
   );
 }
 

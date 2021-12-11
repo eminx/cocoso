@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Input, Stack } from '@chakra-ui/react';
+import { Button, Flex, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import FormField from '../../UIComponents/FormField';
@@ -29,11 +29,11 @@ function SettingsForm({ initialValues, onSubmit }) {
         <FormField label="Country">
           <Input {...register('country')} />
         </FormField>
-        <Box>
+        <Flex justify="flex-end" my="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             Confirm
           </Button>
-        </Box>
+        </Flex>
       </Stack>
     </form>
   );
