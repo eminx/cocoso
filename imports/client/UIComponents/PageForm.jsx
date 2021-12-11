@@ -1,29 +1,51 @@
 import React from 'react';
-import { TextInput, FormField, Form, Box, Button } from 'grommet';
+import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../constants/quillConfig';
+import { Controller, useForm } from 'react-hook-form';
 
-const PageForm = ({ formValues, onFormChange, onQuillChange, onSubmit }) => {
+import { editorFormats, editorModules } from '../constants/quillConfig';
+import FormField from '../UIComponents/FormField';
+
+const PageForm = ({ defaultValues, onSubmit }) => {
+  const { control, formState, handleSubmit, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
+
   return (
     <div>
-      <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
-        <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
-          <TextInput plain={false} name="title" placeholder="Contributing" />
-        </FormField>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
+          <FormField label="Title">
+            <Input {...register('title')} placeholder="Contributing" />
+          </FormField>
 
-        <FormField label="Description" margin={{ bottom: 'medium' }}>
-          <ReactQuill
-            value={formValues.longDescription || ''}
-            modules={editorModules}
-            formats={editorFormats}
-            onChange={onQuillChange}
-          />
-        </FormField>
+          <FormField label="Description">
+            <Controller
+              control={control}
+              name="longDescription"
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  formats={editorFormats}
+                  modules={editorModules}
+                  placeholder="Contibuting guidelines are..."
+                />
+              )}
+            />
+          </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Confirm" />
-        </Box>
-      </Form>
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button
+              isDisabled={!isDirty}
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
     </div>
   );
 };

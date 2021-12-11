@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import ReactQuill from 'react-quill';
 import {
   Box,
   Button,
@@ -10,6 +9,7 @@ import {
   InputRightAddon,
   VStack,
 } from '@chakra-ui/react';
+import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
 import Template from '../../UIComponents/Template';
@@ -119,6 +119,8 @@ function EmailForm({ defaultValues, onSubmit }) {
 
           <FormField label="Body">
             <Controller
+              control={control}
+              name="body"
               render={({ field }) => (
                 <ReactQuill
                   {...field}
@@ -126,8 +128,6 @@ function EmailForm({ defaultValues, onSubmit }) {
                   modules={editorModules}
                 />
               )}
-              control={control}
-              name="body"
             />
           </FormField>
 
