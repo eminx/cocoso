@@ -183,7 +183,7 @@ function Members({ history, members, isLoading }) {
     <Template
       heading="Members"
       leftContent={
-        <Box p="2">
+        <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
