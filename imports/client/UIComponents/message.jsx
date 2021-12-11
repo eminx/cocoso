@@ -1,103 +1,69 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { Box, Button, Layer, Text } from 'grommet';
-import { FormClose } from 'grommet-icons/icons/FormClose';
-import { StatusGood } from 'grommet-icons/icons/StatusGood';
-import { StatusCritical } from 'grommet-icons/icons/StatusCritical';
-import { StatusInfo } from 'grommet-icons/icons/StatusInfo';
+import {
+  Alert as CAlert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
+  Center,
+  CloseButton,
+  createStandaloneToast,
+} from '@chakra-ui/react';
 
-const toastTarget = document.getElementById('toast-target');
-const removeNode = () => unmountComponentAtNode(toastTarget);
-const timeOutTime = 6000;
+import { chakraTheme } from '../constants/theme';
 
-const renderToast = (text, duration, type) => {
-  render(<Toast type={type} text={text} onClose={removeNode} />, toastTarget);
-  setTimeout(removeNode, duration);
-};
+const timeOutTime = 5000;
 
-const Alert = ({ message, onClose, type }) => {
+const Alert = ({ type = 'error', isClosable, children }) => {
   const success = type === 'success';
   const error = type === 'error';
   const info = type === 'info';
   const warning = type === 'warning';
 
   return (
-    <Box
-      align="center"
-      direction="row"
-      gap="small"
-      justify="between"
-      round="xsmall"
-      pad={{ top: 'small', bottom: 'small', right: 'medium', left: 'medium' }}
-      background="dark-2"
-    >
-      <Box align="center" direction="row" gap="xsmall">
-        {success && <StatusGood color="status-ok" />}
-        {error && <StatusCritical color="status-critical" />}
-        {info && <StatusInfo />}
-        {warning && <Alert color="status-warning" />}
-
-        <Text weight="bold" style={{ fontFamily: 'sans-serif' }}>
-          {message}
-        </Text>
+    <Center w="100%">
+      <Box>
+        <CAlert status={type}>
+          <AlertIcon />
+          <Box flex="1">
+            <AlertTitle>
+              {success
+                ? 'Success!'
+                : info
+                ? 'Info'
+                : warning
+                ? 'Warning'
+                : 'Error'}
+            </AlertTitle>
+            <AlertDescription display="block">{children}</AlertDescription>
+          </Box>
+          {isClosable && (
+            <CloseButton position="absolute" right="8px" top="8px" />
+          )}
+        </CAlert>
       </Box>
-      {onClose && (
-        <Button
-          focusIndicator={false}
-          icon={<FormClose />}
-          plain
-          onClick={onClose}
-        />
-      )}
-    </Box>
+    </Center>
   );
+};
+
+const toast = createStandaloneToast({ theme: chakraTheme });
+
+const renderToast = (status, text, duration) => {
+  toast({
+    description: text,
+    duration: duration || timeOutTime,
+    isClosable: true,
+    position: 'top',
+    status: status,
+  });
 };
 
 const message = {
-  success: (text, duration = timeOutTime) =>
-    renderToast(text, duration, 'success'),
+  success: (text, duration) => renderToast('success', text, duration),
 
-  error: (text, duration = timeOutTime) => renderToast(text, duration, 'error'),
+  error: (text, duration = timeOutTime) => renderToast('error', text, duration),
 
-  info: (text, duration = timeOutTime) => renderToast(text, duration, 'info'),
+  info: (text, duration = timeOutTime) => renderToast('info', text, duration),
 };
 
-const Toast = ({ text, onClose, type = 'info' }) => {
-  const noteProps = {
-    message: text,
-    type,
-    onClose,
-  };
-
-  return (
-    <Layer
-      position="top"
-      modal={false}
-      margin={{ vertical: 'medium', horizontal: 'small' }}
-      onEsc={onClose}
-      responsive={false}
-      plain
-    >
-      <Alert {...noteProps} />
-    </Layer>
-  );
-};
-
-const SimpleTag = ({ checked, color, onClick, children, ...otherProps }) => (
-  <Button
-    plain
-    onClick={onClick}
-    label={children}
-    style={{
-      borderRadius: 0,
-      padding: '0 4px',
-      fontSize: 12,
-      lineHeight: 1.5,
-      marginBottom: 6,
-    }}
-    className={checked ? 'checked ' + color : color}
-    {...otherProps}
-  />
-);
-
-export { message, Alert, SimpleTag };
+export { message, Alert };

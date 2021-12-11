@@ -30,7 +30,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  extendTheme,
   useDisclosure,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
@@ -43,7 +42,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
-import theme from './constants/theme';
+import theme, { chakraTheme } from './constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
@@ -117,13 +116,6 @@ const getBackgroundStyle = (cHue) => {
   )`,
   };
 };
-
-const chakraTheme = extendTheme({
-  fonts: {
-    heading: 'Sarabun, sans-serif',
-    body: 'Sarabun, sans-serif',
-  },
-});
 
 function LayoutPage({
   currentUser,
