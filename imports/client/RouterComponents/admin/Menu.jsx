@@ -3,20 +3,18 @@ import {
   Box,
   Button,
   Center,
-  Checkbox,
   Flex,
   Heading,
   Input,
+  Switch,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
   Text,
-  VStack,
 } from '@chakra-ui/react';
-
-import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/table';
+import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
 
 import { Drag } from 'grommet-icons/icons/Drag';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -27,23 +25,6 @@ import Loader from '../../UIComponents/Loader';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../UIComponents/FormField';
-
-const getMenuPlaceHolder = (item) => {
-  switch (item) {
-    case 'activities':
-      return 'bookings';
-    case 'calendar':
-      return 'program';
-    case 'processes':
-      return 'workshops';
-    case 'works':
-      return 'offers';
-    case 'info':
-      return 'about';
-    default:
-      return '';
-  }
-};
 
 export default function Menu() {
   const [loading, setLoading] = useState(true);
@@ -111,17 +92,6 @@ export default function Menu() {
     setLocalSettings(newSettings);
   };
 
-  getNewSettings = (values) => {
-    const newMenu = localSettings.menu.map((item) => {
-      return {
-        ...item,
-        label: value[item.name],
-      };
-    });
-
-    return { ...localSettings, menu: newMenu };
-  };
-
   const handleMenuSave = async () => {
     setLoading(true);
     try {
@@ -135,7 +105,7 @@ export default function Menu() {
   };
 
   if (!localSettings || !localSettings.menu || !activeMenu) {
-    return null;
+    return <Loader />;
   }
 
   return (
@@ -206,7 +176,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
     <Table variant="simple" w="100%">
       <Thead>
         <Tr>
-          <Th>Visibility</Th>
+          <Th style={{ width: 120 }}>Visibility</Th>
           <Th>Labels</Th>
         </Tr>
       </Thead>
@@ -215,7 +185,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
           <Tr key={item.name}>
             <Td>
               <Center>
-                <Checkbox
+                <Switch
                   isChecked={item.isVisible}
                   onChange={(event) =>
                     handleMenuItemCheck(index, event.target.checked)

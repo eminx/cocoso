@@ -20,7 +20,6 @@ const FileDropper = ({
           border={{ size: 'xsmall', style: 'dashed' }}
           elevation="medium"
           style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
-          // width="medium"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
