@@ -71,16 +71,10 @@ export default function Settings({ history }) {
   };
 
   const handleFormSubmit = async (values) => {
-    console.log(values);
     if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return;
     }
-
-    // if (!formAltered) {
-    //   message.info('You have not changed any value');
-    //   return;
-    // }
 
     try {
       call('updateHostSettings', values);
@@ -234,7 +228,6 @@ export default function Settings({ history }) {
           initialValues={localSettings}
           // onChange={handleFormChange}
           onSubmit={handleFormSubmit}
-          formAltered={formAltered}
         />
       </Box>
 

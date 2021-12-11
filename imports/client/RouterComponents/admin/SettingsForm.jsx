@@ -8,13 +8,18 @@ function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
     defaultValues: initialValues,
   });
-  const { isDirty } = formState;
+
+  const { isDirty, isSubmitting } = formState;
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))} className="form">
-      <Stack spacing={2}>
-        <FormField label="Name" name="name" />
-        <FormField label="Email" name="email" type="email" />
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Stack spacing="4">
+        <FormField label="Name">
+          <Input {...register('name')} />
+        </FormField>
+        <FormField label="Email">
+          <Input type="email" {...register('email')} />
+        </FormField>
         <FormField label="Address">
           <Input {...register('address')} />
         </FormField>
@@ -25,7 +30,7 @@ function SettingsForm({ initialValues, onSubmit }) {
           <Input {...register('country')} />
         </FormField>
         <Box>
-          <Button isDisabled={!isDirty} type="submit">
+          <Button isDisabled={!isDirty || isSubmitting} type="submit">
             Confirm
           </Button>
         </Box>
