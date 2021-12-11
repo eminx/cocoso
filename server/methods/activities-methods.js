@@ -189,6 +189,13 @@ Meteor.methods({
   },
 
   registerAttendance(activityId, values, occurenceIndex = 0) {
+    check(activityId, String);
+    check(occurenceIndex, Number);
+    check(values.firstName, String);
+    check(values.lastName, String);
+    check(values.email, String);
+    check(values.numberOfPeople, Number);
+    
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     const rsvpValues = {

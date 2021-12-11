@@ -130,7 +130,7 @@ export default function Menu() {
               handleMenuItemLabelChange={handleMenuItemLabelChange}
             />
 
-            <Flex justify="flex-end" my="4">
+            <Flex justify="flex-end" py="4">
               <Button onClick={handleMenuSave}>Confirm</Button>
             </Flex>
           </TabPanel>

@@ -6,12 +6,7 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
-import { Formik, Form } from 'formik';
-import {
-  FieldControl,
-  InputFormik,
-  NumberInputFormik,
-} from 'chakra-formik-experiment';
+import { useForm } from 'react-hook-form';
 
 import {
   Accordion,
@@ -27,10 +22,8 @@ import {
   Heading,
   Image,
   Input,
+  NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -44,6 +37,7 @@ import Tag from '../../UIComponents/Tag';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
 import { message } from '../../UIComponents/message';
+import FormField from '../../UIComponents/FormField';
 
 class Activity extends PureComponent {
   state = {
@@ -85,11 +79,15 @@ class Activity extends PureComponent {
 
   handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData } = this.props;
+    const parsedValues = {
+      ...values,
+      numberOfPeople: values.numberOfPeople,
+    };
     try {
       await call(
         'registerAttendance',
         activityData._id,
-        values,
+        parsedValues,
         occurenceIndex
       );
       message.success(
@@ -153,15 +151,14 @@ class Activity extends PureComponent {
     }
 
     if (rsvpCancelModalInfo.isInfoFound) {
-      const user = {
+      const defaultValues = {
         ...rsvpCancelModalInfo,
-        emails: [{ address: rsvpCancelModalInfo.email }],
       };
       return (
         <RsvpForm
           isUpdateMode
           onDelete={this.handleRemoveRSVP}
-          currentUser={user}
+          defaultValues={defaultValues}
           onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
         />
       );
@@ -208,11 +205,16 @@ class Activity extends PureComponent {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData } = this.props;
 
+    const parsedValues = {
+      ...values,
+      numberOfPeople: Number(values.numberOfPeople),
+    };
+
     try {
       await call(
         'updateAttendance',
         activityData._id,
-        values,
+        parsedValues,
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
@@ -286,6 +288,12 @@ class Activity extends PureComponent {
       return counter;
     };
 
+    const defaultRsvpValues = {
+      firstName: currentUser ? currentUser.firstName : '',
+      lastName: currentUser ? currentUser.lastName : '',
+      email: currentUser ? currentUser.emails[0].address : '',
+      numberOfPeople: 1,
+    };
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
@@ -319,7 +327,7 @@ class Activity extends PureComponent {
                   </p>
                 ) : (
                   <RsvpForm
-                    currentUser={currentUser}
+                    defaultValues={defaultRsvpValues}
                     onSubmit={(values) =>
                       this.handleRSVPSubmit(values, occurenceIndex)
                     }
@@ -573,50 +581,52 @@ const initialValues = {
   numberOfPeople: 1,
 };
 
-function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
+function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
   return (
-    <Box bg="white" p="1" mb="4">
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        <Form>
-          <Stack spacing={2}>
-            {fields.map((field) => (
-              <FieldControl key={field.name} name={field.name} size="sm">
-                <FormLabel mb="0">
-                  <Text fontSize="sm">{field.label}</Text>
-                </FormLabel>
-                <InputFormik size="sm" />
-              </FieldControl>
-            ))}
-            <FieldControl name="numberOfPeople" size="sm">
-              <NumberInputFormik min={1} max={4} size="sm">
-                <FormLabel mb="0">
-                  <Text fontSize="sm">Number of Attendees</Text>
-                </FormLabel>
-                <NumberInputField size="sm" />
-                <NumberInputStepper size="sm">
-                  <NumberIncrementStepper size="sm" />
-                  <NumberDecrementStepper size="sm" />
-                </NumberInputStepper>
-              </NumberInputFormik>
-            </FieldControl>
-            <Box pt="2" w="100%">
-              <Button colorScheme="green" size="sm" type="submit" w="100%">
-                {isUpdateMode ? 'Update' : 'Register'}
-              </Button>
-            </Box>
-            {isUpdateMode && (
-              <Button
-                colorScheme="red"
-                size="sm"
-                variant="ghost"
-                onClick={onDelete}
-              >
-                Remove your registration
-              </Button>
-            )}
-          </Stack>
-        </Form>
-      </Formik>
+    <Box bg="white" p="1" mb="8">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Stack spacing={2}>
+          {fields.map((field) => (
+            <FormField key={field.name} label={field.label}>
+              <Input {...register(field.name)} size="sm" />
+            </FormField>
+          ))}
+          <FormField label="Number of Attendees">
+            <NumberInput size="sm">
+              <NumberInputField {...register('numberOfPeople')} />
+            </NumberInput>
+          </FormField>
+          <Box pt="2" w="100%">
+            <Button
+              colorScheme="green"
+              isDisabled={isUpdateMode && !isDirty}
+              isLoading={isSubmitting}
+              loadingText="Submitting"
+              size="sm"
+              type="submit"
+              w="100%"
+            >
+              {isUpdateMode ? 'Update' : 'Register'}
+            </Button>
+          </Box>
+          {isUpdateMode && (
+            <Button
+              colorScheme="red"
+              size="sm"
+              variant="ghost"
+              onClick={onDelete}
+            >
+              Remove your registration
+            </Button>
+          )}
+        </Stack>
+      </form>
     </Box>
   );
 }

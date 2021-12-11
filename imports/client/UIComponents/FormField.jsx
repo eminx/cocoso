@@ -14,8 +14,8 @@ function FormField({
   ...otherProps
 }) {
   return (
-    <FormControl {...otherProps}>
-      <FormLabel>{label}</FormLabel>
+    <FormControl {...otherProps} size="sm">
+      <FormLabel mb="1">{label}</FormLabel>
       {children}
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}

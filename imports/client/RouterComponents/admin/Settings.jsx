@@ -3,9 +3,10 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
-  Input,
   HStack,
+  Input,
   Text,
   Wrap,
   WrapItem,
@@ -232,7 +233,6 @@ export default function Settings({ history }) {
         <Text mb="3">Add/Edit Information About your Organisation</Text>
         <SettingsForm
           initialValues={localSettings}
-          // onChange={handleFormChange}
           onSubmit={handleFormSubmit}
         />
       </Box>
@@ -249,14 +249,14 @@ export default function Settings({ history }) {
           Background color will be accordingly set with its complementary color.
         </Text>
 
-        <Center p="2">
+        <Flex justify="flex-end" py="4">
           <Button
             isDisabled={settings && mainColor === settings.mainColor}
             onClick={() => confirmMainColor()}
           >
             Confirm
           </Button>
-        </Center>
+        </Flex>
       </Box>
 
       <Box p="6" bg="white" mb="8">

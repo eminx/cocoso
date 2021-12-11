@@ -29,7 +29,7 @@ function SettingsForm({ initialValues, onSubmit }) {
         <FormField label="Country">
           <Input {...register('country')} />
         </FormField>
-        <Flex justify="flex-end" my="4">
+        <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             Confirm
           </Button>
