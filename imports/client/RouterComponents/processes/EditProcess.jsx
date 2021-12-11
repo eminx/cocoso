@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button } from 'grommet';
+import { Box, Button } from '@chakra-ui/react';
 
 import ProcessForm from '../../UIComponents/ProcessForm';
 import Template from '../../UIComponents/Template';
@@ -244,9 +244,11 @@ class EditProcess extends React.Component {
       <Template
         heading="Edit your Process"
         leftContent={
-          <Box pad="small">
+          <Box p="2">
             <Link to={`/process/${process._id}`}>
-              <Button plain label={process.title} />
+              <Button as="span" variant="link">
+                {process.title}
+              </Button>
             </Link>
           </Box>
         }
@@ -265,19 +267,10 @@ class EditProcess extends React.Component {
         />
 
         {process.adminId === currentUser._id && (
-          <Box
-            pad="small"
-            direction="row"
-            justify="center"
-            margin={{ top: 'medium' }}
-          >
-            <Button
-              color="status-critical"
-              label="Delete"
-              onClick={this.showDeleteModal}
-              fill={false}
-              size="small"
-            />
+          <Box p="2" direction="row" justify="center" mt="4">
+            <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
+              Delete
+            </Button>
           </Box>
         )}
 

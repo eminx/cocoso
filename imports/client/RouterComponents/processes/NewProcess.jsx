@@ -1,6 +1,20 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Box, CheckBox, Paragraph, Text, FormField } from 'grommet';
+import {
+  Box,
+  Flex,
+  FormControl,
+  FormLabel,
+  Popover,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Switch,
+  Text,
+} from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
 
 import ProcessForm from '../../UIComponents/ProcessForm';
 import { call } from '../../functions';
@@ -17,7 +31,7 @@ const successCreation = () => {
 const privateParagraph1 =
     "Private processes are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.",
   privateParagraph2 =
-    "You will be able to manage the invites after you'll have created the process.";
+    'You will be able to manage the invites after you create the process.';
 
 class NewProcess extends React.Component {
   state = {
@@ -195,19 +209,36 @@ class NewProcess extends React.Component {
 
     return (
       <Template heading="Create a New Process">
-        <FormField>
-          <CheckBox
-            checked={isPrivate}
-            label={<Text>Private process? (invite-only)</Text>}
-            onChange={this.handlePrivateProcessSwitch}
-          />
-          {isPrivate && (
-            <Box margin={{ top: 'small' }}>
-              <Paragraph size="small">{privateParagraph1}</Paragraph>
-              <Paragraph size="small">{privateParagraph2}</Paragraph>
-            </Box>
-          )}
-        </FormField>
+        <Box p="6" w="xs">
+          <Popover trigger="hover">
+            <PopoverTrigger>
+              <FormControl alignItems="center" display="flex" w="auto">
+                <Switch
+                  id="email-alerts"
+                  isChecked={isPrivate}
+                  size="lg"
+                  onChange={this.handlePrivateProcessSwitch}
+                />
+                <FormLabel htmlFor="email-alerts" ml="2" mb="0">
+                  <Flex align="center">
+                    <Text fontWeight="bold">Private (invite-only)</Text>
+                    <InfoIcon ml="2" />
+                  </Flex>
+                </FormLabel>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverCloseButton />
+              <PopoverHeader fontWeight="bold">Private Processes</PopoverHeader>
+              <PopoverBody>
+                <Text fontSize="md" mb="2">
+                  {privateParagraph1}
+                </Text>
+                <Text fontSize="md">{privateParagraph2}</Text>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Box>
 
         <ProcessForm
           formValues={formValues}
