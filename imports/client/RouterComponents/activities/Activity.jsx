@@ -321,11 +321,11 @@ class Activity extends PureComponent {
                 <Center m="2">
                   <Button
                     colorScheme="red"
-                    size="xs"
+                    size="sm"
                     variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
-                    Change/Cancel Existing Registration
+                    Change/cancel existing registration
                   </Button>
                 </Center>
 
@@ -349,7 +349,7 @@ class Activity extends PureComponent {
             )}
             {canCreateContent && (
               <Box px="1">
-                <Heading mb="1" as="h5" size="md">
+                <Heading mb="1" as="h4" size="sm">
                   Attendees
                 </Heading>
                 <span>Only visible to registered members</span>
@@ -392,9 +392,7 @@ class Activity extends PureComponent {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              <Heading textAlign="center" size="sm">
-                Register
-              </Heading>
+              <Heading size="sm">Register</Heading>
               {conditionalRender(occurence, occurenceIndex)}
             </AccordionPanel>
           </AccordionItem>
