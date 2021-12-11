@@ -147,11 +147,7 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
           </Center>
         )}
         <Box p="4">
-          <Tabs
-            variant="soft-rounded"
-            colorScheme="green"
-            onChange={(index) => setFilterBy(index)}
-          >
+          <Tabs onChange={(index) => setFilterBy(index)}>
             <Center>
               <TabList>
                 {filterOptions.map((option) => (

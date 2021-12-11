@@ -189,9 +189,9 @@ function Members({ history, members, isLoading }) {
       }
     >
       <Center p="1">
-        <Tabs variant="soft-rounded" colorScheme="green" w="100%">
+        <Tabs w="100%">
           <Center>
-            <TabList>
+            <TabList flexWrap="wrap">
               {filterOptions.map((item) => (
                 <Tab key={item.label} onClick={() => setFilter(item.value)}>
                   {item.label}
@@ -201,11 +201,10 @@ function Members({ history, members, isLoading }) {
           </Center>
 
           <Center p="4">
-            <Box w="sm">
+            <Box>
               <Input
                 bg="white"
                 placeholder="username or email"
-                size="sm"
                 value={filterWord}
                 onChange={(event) => setFilterWord(event.target.value)}
               />
@@ -216,14 +215,9 @@ function Members({ history, members, isLoading }) {
             {filterOptions.map((item) =>
               item.value === filter ? (
                 <TabPanel key={item.value} p="1" mb="3">
-                  <NiceList
-                    list={membersSorted}
-                    border="horizontal"
-                    pad="small"
-                    itemBg="white"
-                  >
+                  <NiceList list={membersSorted} itemBg="white">
                     {(member) => (
-                      <Box key={member.username} p="2">
+                      <Box key={member.username}>
                         <Heading size="md" fontWeight="bold">
                           {member.username}
                         </Heading>

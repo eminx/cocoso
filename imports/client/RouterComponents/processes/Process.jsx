@@ -396,7 +396,7 @@ class Process extends Component {
         <AccordionPanel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <Box px="2" py="3" background="white">
+            <Box p="4" background="white">
               <FancyDate occurence={meeting} resources={resources} />
             </Box>
           }
@@ -720,7 +720,7 @@ class Process extends Component {
         {this.getTitle(process, isAdmin)}
         <ScreenClassRender
           render={(screenClass) => (
-            <Tabs variant="soft-rounded" colorScheme="green">
+            <Tabs variant="enclosed">
               <TabList pl="4">
                 <Tab>Info</Tab>
                 <Tab>Discussion</Tab>

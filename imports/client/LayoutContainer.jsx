@@ -164,9 +164,9 @@ function LayoutPage({
     ...theme,
   };
   if (hsl) {
-    customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
-      100 * hsl.l
-    }%)`;
+    const themeColor = `hsl(${hsl.h}, ${100 * hsl.s}%, ${100 * hsl.l}%)`;
+    customTheme.global.colors.brand = themeColor;
+    chakraTheme.colors.brand = themeColor;
     customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
       100 * hsl.s
     }%, 95%)`;

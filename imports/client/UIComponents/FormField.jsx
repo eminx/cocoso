@@ -17,8 +17,8 @@ function FormField({
     <FormControl {...otherProps}>
       <FormLabel>{label}</FormLabel>
       {children}
-      <FormHelperText>{helperText}</FormHelperText>
-      <FormErrorMessage>{errorMessage}</FormErrorMessage>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
 }

@@ -94,7 +94,7 @@ class Page extends PureComponent {
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
 
-        <Box bg="white" mb="2" p="2">
+        <Box bg="white" mb="2" py="4" px="6">
           <div className="text-content">
             {renderHTML(currentPage.longDescription)}
           </div>

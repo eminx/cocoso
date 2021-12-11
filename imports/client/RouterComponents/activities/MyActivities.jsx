@@ -81,7 +81,7 @@ function Activities({ history }) {
       )}
 
       {currentUser && activities ? (
-        <Tabs variant="soft-rounded" colorScheme="green">
+        <Tabs>
           <Center>
             <TabList>
               <Tab>All</Tab>

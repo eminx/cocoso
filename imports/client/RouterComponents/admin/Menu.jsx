@@ -2,8 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Button,
+  Center,
   Checkbox,
+  Flex,
   Heading,
+  Input,
   Tabs,
   Tab,
   TabList,
@@ -12,8 +15,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import { FieldControl, InputFormik } from 'chakra-formik-experiment';
+
 import { Drag } from 'grommet-icons/icons/Drag';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -22,6 +24,7 @@ import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
+import FormField from '../../UIComponents/FormField';
 
 const getMenuPlaceHolder = (item) => {
   switch (item) {
@@ -82,17 +85,16 @@ export default function Menu() {
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
-  const handleChangeActiveMenu = (value) => {
-    console.log(value);
-    return;
-    setActiveMenu(value);
-    const newMenu = localSettings.menu.map((item) => {
-      return {
-        ...item,
-        label: value[item.name],
-      };
+  const handleMenuItemLabelChange = (changedItemIndex, value) => {
+    const newMenu = localSettings.menu.map((item, index) => {
+      if (changedItemIndex === index) {
+        return {
+          ...item,
+          label: value,
+        };
+      }
+      return item;
     });
-
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
@@ -118,24 +120,6 @@ export default function Menu() {
     return { ...localSettings, menu: newMenu };
   };
 
-  // const handleMenuSave = async (values) => {
-  //   const newSettings = getNewSettings(values);
-
-  //   setLoading(true);
-  //   try {
-  //     await call('updateHostSettings', newSettings);
-  //     message.success('Settings are successfully saved');
-  //   } catch (error) {
-  //     message.error(error.reason);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // if (loading) {
-  //   return <Loader />;
-  // }
-
   const handleMenuSave = async () => {
     setLoading(true);
     try {
@@ -148,9 +132,9 @@ export default function Menu() {
     }
   };
 
-  const handleHandleChange = (e, v) => {
-    console.log(e, v);
-  };
+  if (!localSettings || !localSettings.menu || !activeMenu) {
+    return null;
+  }
 
   return (
     <Box>
@@ -159,83 +143,28 @@ export default function Menu() {
       </Heading>
       <Tabs>
         <TabList>
-          <Tab>Visibility</Tab>
-          <Tab>Labels</Tab>
+          <Tab>Visibility & Labels</Tab>
           <Tab>Order</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Text fontWeight="bold">Visibility</Text>
+            {/* <Text fontWeight="bold">Composition</Text> */}
             <Text mb="4" fontSize="sm">
-              Check/uncheck items to compose the main menu
+              Check/uncheck items for visibility, and label them as you prefer
+              in order to compose the menu
             </Text>
+            <MenuTable
+              menu={localSettings.menu}
+              handleMenuItemCheck={handleMenuItemCheck}
+              handleMenuItemLabelChange={handleMenuItemLabelChange}
+            />
 
-            <Formik initialValues={activeMenu} onSubmit={handleMenuSave}>
-              <Form>
-                {localSettings &&
-                  localSettings.menu &&
-                  localSettings.menu.map((item, index) => (
-                    <Box key={item.name} mb="2">
-                      <Checkbox
-                        isChecked={item.isVisible}
-                        onChange={(event) =>
-                          handleMenuItemCheck(index, event.target.checked)
-                        }
-                      >
-                        {item.label}
-                      </Checkbox>
-                    </Box>
-                  ))}
-
-                <Box>
-                  <Button type="submit">Confirm</Button>
-                </Box>
-              </Form>
-            </Formik>
+            <Flex justify="flex-end" my="4">
+              <Button onClick={handleMenuSave}>Confirm</Button>
+            </Flex>
           </TabPanel>
 
           <TabPanel>
-            <Text fontWeight="bold">Labels</Text>
-            <Text mb="4" fontSize="sm">
-              Type a name if you want to replace labels of the menu items. Note
-              that only one word is allowed.
-            </Text>
-            {activeMenu && (
-              <Formik
-                value={activeMenu}
-                onBlur={handleChangeActiveMenu}
-                onSubmit={handleMenuSave}
-              >
-                {(handleChange) => (
-                  <Form>
-                    <VStack align="flex-start" spacing="2">
-                      {localSettings.menu
-                        .filter((ite) => ite.isVisible)
-                        .map((item) => (
-                          <FieldControl
-                            key={item.name}
-                            label={item.name}
-                            name={item.name}
-                          >
-                            <InputFormik
-                              placeholder={getMenuPlaceHolder(item.name)}
-                              onChange={handleChange}
-                            />
-                          </FieldControl>
-                        ))}
-
-                      <Box>
-                        <Button type="submit">Confirm</Button>
-                      </Box>
-                    </VStack>
-                  </Form>
-                )}
-              </Formik>
-            )}
-          </TabPanel>
-
-          <TabPanel>
-            <Text fontWeight="bold">Order</Text>
             <Text mb="4" size="sm">
               Reorder items by dragging up and down, if you want to change the
               menu display order
@@ -258,15 +187,56 @@ export default function Menu() {
                 </SortableContainer>
               )}
             </Box>
-            <Box>
+
+            <Flex justify="flex-end" my="4">
               <Button onClick={handleMenuSave} type="submit">
                 Confirm
               </Button>
-            </Box>
+            </Flex>
           </TabPanel>
         </TabPanels>
       </Tabs>
     </Box>
+  );
+}
+
+function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
+  return (
+    <table style={{ width: '100%' }}>
+      <thead>
+        <tr>
+          <th>Visibility</th>
+          <th>Labels</th>
+        </tr>
+      </thead>
+      <tbody>
+        {menu.map((item, index) => (
+          <tr key={item.name}>
+            <td>
+              <Center>
+                <Checkbox
+                  isChecked={item.isVisible}
+                  onChange={(event) =>
+                    handleMenuItemCheck(index, event.target.checked)
+                  }
+                />
+              </Center>
+            </td>
+            <td>
+              <FormField>
+                <Input
+                  isDisabled={!item.isVisible}
+                  value={item.label}
+                  onChange={(e) =>
+                    handleMenuItemLabelChange(index, e.target.value)
+                  }
+                />
+              </FormField>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
