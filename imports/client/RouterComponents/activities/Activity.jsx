@@ -79,6 +79,18 @@ class Activity extends PureComponent {
 
   handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData } = this.props;
+
+    const isEmailAlreadyRegistered = activityData.datesAndTimes[
+      occurenceIndex
+    ].attendees.some(
+      (attendee) => attendee.email.toLowerCase() === values.email.toLowerCase()
+    );
+
+    if (isEmailAlreadyRegistered) {
+      message.error('Email already registered. Please update instead.');
+      return;
+    }
+
     const parsedValues = {
       ...values,
       numberOfPeople: values.numberOfPeople,
@@ -241,7 +253,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.attendeeIndex,
         rsvpCancelModalInfo.email
       );
-      message.success('You have successfully removed your RSVP');
+      message.success('You have successfully removed your registration');
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -313,7 +325,7 @@ class Activity extends PureComponent {
                     variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
-                    Change/Cancel Existing RSVP
+                    Change/Cancel Existing Registration
                   </Button>
                 </Center>
 
@@ -380,6 +392,9 @@ class Activity extends PureComponent {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
+              <Heading textAlign="center" size="sm">
+                Register
+              </Heading>
               {conditionalRender(occurence, occurenceIndex)}
             </AccordionPanel>
           </AccordionItem>
