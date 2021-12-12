@@ -74,7 +74,7 @@ function Works({ history }) {
       }
     >
       {currentUser && works ? (
-        <NiceList list={myWorksWithActions} actionsDisabled>
+        <NiceList actionsDisabled list={myWorksWithActions}>
           {(work) => (
             <Link
               key={work._id}

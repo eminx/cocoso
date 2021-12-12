@@ -158,20 +158,18 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  {
-                    <NiceList
-                      actionsDisabled={!currentUser || !canCreateContent}
-                      border={false}
-                      itemBg="white"
-                      list={renderResults().reverse()}
-                    >
-                      {(process) => (
-                        <Link to={`/process/${process._id}`}>
-                          <ProcessItem process={process} />
-                        </Link>
-                      )}
-                    </NiceList>
-                  }
+                  <NiceList
+                    actionsDisabled={!currentUser || !canCreateContent}
+                    border={false}
+                    itemBg="white"
+                    list={renderResults().reverse()}
+                  >
+                    {(process) => (
+                      <Link to={`/process/${process._id}`}>
+                        <ProcessItem process={process} />
+                      </Link>
+                    )}
+                  </NiceList>
                 </TabPanel>
               ))}
             </TabPanels>

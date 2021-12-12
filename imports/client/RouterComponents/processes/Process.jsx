@@ -625,7 +625,11 @@ class Process extends Component {
           <Fragment>
             <Heading level={5}>Members</Heading>
             <Box mb="4">
-              <NiceList list={membersList} actionsDisabled={!isAdmin}>
+              <NiceList
+                actionsDisabled={!isAdmin}
+                keySelector="username"
+                list={membersList}
+              >
                 {(member) => (
                   <span
                     style={{
@@ -643,7 +647,11 @@ class Process extends Component {
 
         <Heading level={5}>Documents</Heading>
         {process && process.documents && process.documents.length > 0 ? (
-          <NiceList list={documentsList} actionsDisabled={!isAdmin}>
+          <NiceList
+            actionsDisabled={!isAdmin}
+            keySelector="downloadUrl"
+            list={documentsList}
+          >
             {(document) => (
               <div style={{ width: '100%' }}>
                 <a href={document.downloadUrl} target="_blank">

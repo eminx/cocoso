@@ -75,8 +75,6 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-pathsWithMenu = menu.map((item) => item.route !== '/page/about' && item.route);
-
 const getGotoPath = (pathname) => {
   const shortPath = pathname.substring(0, 3);
   if (shortPath === '/pr') {
@@ -345,21 +343,29 @@ const Menu = ({ currentHost, large, history }) => {
     history.push(item.route);
   };
 
-  const isCurrentPage = (label) => {
-    if (label === 'info') {
+  const isCurrentPage = (name) => {
+    if (name === 'info') {
       return pathname.substring(0, 5) === '/page';
     }
-    return label === pathname.substring(1, pathname.length);
+    return name === pathname.substring(1, pathname.length);
   };
+
+  const activeMenuItem = menuItems.find((item) => {
+    return isCurrentPage(item.name);
+  });
 
   if (large) {
     return (
       <HStack>
         {menuItems.map((item) => (
-          <Box as="button" key={item.label} onClick={() => handleClick(item)}>
+          <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
+              borderBottom={
+                activeMenuItem && activeMenuItem.label === item.label
+                  ? '1px solid #010101'
+                  : 'none'
+              }
               m="1"
-              fontWeight={isCurrentPage(item.label) ? 'bold' : 'normal'}
               textTransform="capitalize"
             >
               {item.label}
@@ -374,7 +380,9 @@ const Menu = ({ currentHost, large, history }) => {
     <CMenu placement="bottom" closeOnSelect>
       <MenuButton>
         <HStack>
-          <Text>Menu</Text>
+          <Text textTransform="capitalize">
+            {activeMenuItem ? activeMenuItem.label : 'Menu'}
+          </Text>
           <ChevronDownIcon />
         </HStack>
       </MenuButton>

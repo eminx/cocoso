@@ -193,7 +193,7 @@ function Members({ history, members, isLoading }) {
           <Center>
             <TabList flexWrap="wrap">
               {filterOptions.map((item) => (
-                <Tab key={item.label} onClick={() => setFilter(item.value)}>
+                <Tab key={item.value} onClick={() => setFilter(item.value)}>
                   {item.label}
                 </Tab>
               ))}
@@ -212,10 +212,14 @@ function Members({ history, members, isLoading }) {
           </Center>
 
           <TabPanels>
-            {filterOptions.map((item) =>
+            {filterOptions.map((item, index) =>
               item.value === filter ? (
                 <TabPanel key={item.value} p="1" mb="3">
-                  <NiceList list={membersSorted} itemBg="white">
+                  <NiceList
+                    itemBg="white"
+                    keySelector="email"
+                    list={membersSorted}
+                  >
                     {(member) => (
                       <Box key={member.username}>
                         <Heading size="md" fontWeight="bold">
@@ -232,7 +236,7 @@ function Members({ history, members, isLoading }) {
                   </NiceList>
                 </TabPanel>
               ) : (
-                <TabPanel />
+                <TabPanel key={index} />
               )
             )}
           </TabPanels>

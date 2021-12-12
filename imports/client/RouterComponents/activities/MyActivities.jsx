@@ -92,7 +92,7 @@ function Activities({ history }) {
 
           <TabPanels>
             <TabPanel>
-              <NiceList list={activities} actionsDisabled>
+              <NiceList actionsDisabled list={activities}>
                 {(act) => (
                   <Link to={`/activity/${act._id}`}>
                     <ActivityItem act={act} />
@@ -102,8 +102,8 @@ function Activities({ history }) {
             </TabPanel>
             <TabPanel>
               <NiceList
-                list={activities.filter((act) => act.isPublicActivity)}
                 actionsDisabled
+                list={activities.filter((act) => act.isPublicActivity)}
               >
                 {(act) => (
                   <Link to={`/activity/${act._id}`}>
@@ -114,8 +114,8 @@ function Activities({ history }) {
             </TabPanel>
             <TabPanel>
               <NiceList
-                list={activities.filter((act) => !act.isPublicActivity)}
                 actionsDisabled
+                list={activities.filter((act) => !act.isPublicActivity)}
               >
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
