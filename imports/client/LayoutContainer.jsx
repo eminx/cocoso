@@ -2,22 +2,17 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Footer,
-  Grommet,
-  FormField,
-  Select,
-  TextInput,
-  TextArea,
-} from 'grommet';
+import { Grommet } from 'grommet';
 
 import {
-  Box as CBox,
-  Button as CButton,
+  Box,
+  Button,
   Center,
+  ChakraProvider,
   Flex,
   HStack,
   Image,
+  Input,
   Menu as CMenu,
   MenuButton,
   MenuList,
@@ -29,20 +24,21 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Text,
+  Textarea,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
-
-import { ChakraProvider } from '@chakra-ui/react';
 
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import theme, { chakraTheme } from './constants/theme';
+import FormField from './UIComponents/FormField';
 
 const publicSettings = Meteor.settings.public;
 
@@ -139,11 +135,11 @@ function LayoutPage({
 
   if (hostLoading || !currentHost) {
     return (
-      <CBox width="100%">
+      <Box width="100%">
         <Center p="1">
           <Text>Loading...</Text>
         </Center>
-      </CBox>
+      </Box>
     );
   }
 
@@ -203,17 +199,19 @@ function LayoutPage({
           }}
         >
           <Center className="main-viewport" style={getBackgroundStyle(cHue)}>
-            <CBox width="1280px">
+            <Box maxWidth="1400px" w="100%">
               <Header {...headerProps} />
-              <CBox style={{ minHeight: '100vh' }}>{children}</CBox>
+              <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-              <Footer background="light-3" justify="center" pad="medium">
-                <CButton
-                  variant="ghost"
-                  onClick={() => setShowFeedbackModal(true)}
-                >
-                  Give Feedback
-                </CButton>
+              <Flex bg="gray.100" justify="center" p="6">
+                <Center>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowFeedbackModal(true)}
+                  >
+                    Give Feedback
+                  </Button>
+                </Center>
 
                 <Modal
                   isOpen={showFeedbackModal}
@@ -228,35 +226,41 @@ function LayoutPage({
                       method="POST"
                     >
                       <ModalBody>
-                        <FormField label="Your email address">
-                          <TextInput type="email" name="_replyto" />
-                        </FormField>
+                        <VStack spacing="6">
+                          <FormField label="Your email address">
+                            <Input type="email" name="_replyto" />
+                          </FormField>
 
-                        <FormField label="Subject">
-                          <Select
-                            type="text"
-                            name="subject"
-                            options={['Bug', 'Suggestion', 'Compliment']}
-                          />
-                        </FormField>
+                          <FormField label="Subject">
+                            <Select name="subject">
+                              {['Suggestion', 'Bug', 'Compliment'].map(
+                                (option) => (
+                                  <option key={option} value={option}>
+                                    {option}
+                                  </option>
+                                )
+                              )}
+                            </Select>
+                          </FormField>
 
-                        <FormField label="Details">
-                          <TextArea name="text" name="message" />
-                        </FormField>
+                          <FormField label="Details">
+                            <Textarea name="text" name="message" />
+                          </FormField>
+                        </VStack>
                       </ModalBody>
                       <ModalFooter>
-                        <CButton mr={3} onClick={onClose}>
+                        <Button mr={3} onClick={onClose}>
                           Close
-                        </CButton>
-                        <CButton colorScheme="blue" type="submit">
+                        </Button>
+                        <Button colorScheme="blue" type="submit">
                           Send
-                        </CButton>
+                        </Button>
                       </ModalFooter>
                     </form>
                   </ModalContent>
                 </Modal>
-              </Footer>
-            </CBox>
+              </Flex>
+            </Box>
           </Center>
         </StateContext.Provider>
       </ChakraProvider>
@@ -282,18 +286,23 @@ const Header = ({ currentUser, currentHost, title, history }) => {
         return (
           <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
             <Row
-              style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 12,
+                alignItems: 'center',
+              }}
               align="center"
             >
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Link to="/">
-                  <CBox w="120px" h="60px" mt="1" ml="1">
+                  <Box w="120px" h="60px" mt="2" ml="1">
                     <Image
                       fit="contain"
                       src={currentHost && currentHost.logo}
                       className="header-logo"
                     />
-                  </CBox>
+                  </Box>
                 </Link>
               </Col>
               <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -347,7 +356,7 @@ const Menu = ({ currentHost, large, history }) => {
     return (
       <HStack>
         {menuItems.map((item) => (
-          <CBox as="button" key={item.label} onClick={() => handleClick(item)}>
+          <Box as="button" key={item.label} onClick={() => handleClick(item)}>
             <Text
               m="1"
               fontWeight={isCurrentPage(item.label) ? 'bold' : 'normal'}
@@ -355,7 +364,7 @@ const Menu = ({ currentHost, large, history }) => {
             >
               {item.label}
             </Text>
-          </CBox>
+          </Box>
         ))}
       </HStack>
     );

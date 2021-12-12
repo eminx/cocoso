@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Box, Button } from 'grommet';
+import { Button, Center } from '@chakra-ui/react';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
@@ -294,14 +294,16 @@ class EditWork extends PureComponent {
           onRemoveImage={this.handleRemoveImage}
         />
 
-        <Box direction="row" justify="center" pad="medium">
+        <Center p="4">
           <Button
-            plain
-            color="status-critical"
+            colorScheme="red"
+            size="sm"
+            variant="ghost"
             onClick={this.openDeleteModal}
-            label="Delete"
-          />
-        </Box>
+          >
+            Delete
+          </Button>
+        </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
