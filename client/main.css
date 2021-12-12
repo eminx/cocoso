@@ -17,20 +17,6 @@ body {
   cursor: grab;
 }
 
-.sortable-thumb {
-  flex-basis: 120px;
-  padding: 12px;
-  background-color: #eee;
-  background-position: center;
-  background-size: cover;
-  border-radius: 4px;
-  border: 1px solid #fff;
-}
-
-.sortable-thumb:hover {
-  cursor: grab;
-}
-
 .sortable-thumb-icon {
   padding: 8px;
   border-radius: 4px;

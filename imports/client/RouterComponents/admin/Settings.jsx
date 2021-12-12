@@ -259,11 +259,11 @@ export default function Settings({ history }) {
         </Flex>
       </Box>
 
-      <Box p="6" bg="white" mb="8">
+      <Box bg="whiteAlpha.900" p="6" mb="8">
         <Menu />
       </Box>
 
-      <Box p="6" bg="white" mb="8">
+      <Box p="6" mb="8">
         <Heading as="h3" size="md">
           Work Categories
         </Heading>

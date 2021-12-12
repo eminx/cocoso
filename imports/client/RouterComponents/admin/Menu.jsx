@@ -173,10 +173,10 @@ export default function Menu() {
 
 function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
   return (
-    <Table variant="simple" w="100%">
+    <Table size="sm" variant="simple" w="100%">
       <Thead>
         <Tr>
-          <Th style={{ width: 120 }}>Visibility</Th>
+          <Th w="100px">Visibility</Th>
           <Th>Labels</Th>
         </Tr>
       </Thead>
@@ -212,7 +212,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
 }
 
 const SortableItem = sortableElement(({ value }) => (
-  <Flex align="center" bg="gray.100" cursor="move" mb="2" p="2">
+  <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
     <Drag /> <Box pl="2">{value}</Box>
   </Flex>
 ));
