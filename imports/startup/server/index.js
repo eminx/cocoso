@@ -1,5 +1,5 @@
-import { Meteor } from 'meteor/meteor';
 import './api';
+import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
