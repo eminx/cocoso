@@ -44,8 +44,10 @@ packages/                      # used for local packages
 
 ## Steps
 
-- Reorganize Folder Structue
-
-- Update imports
+- Common Structure
+  - Reorganize Folder Structue
+  - Update imports
+  - Test on Localhost
 
 - Reorganize API Structure
+- Reorganize UI Structure
