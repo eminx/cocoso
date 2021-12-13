@@ -1,6 +1,6 @@
 # COCOSO || SKELETON
 
-This branch is to update folder and javascript structure according to meteor guide 
+This branch is to update folder and javascript structure according to meteor guide  
 https://guide.meteor.com/structure.html#javascript-structure
 
 
