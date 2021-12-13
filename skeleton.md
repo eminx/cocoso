@@ -1,8 +1,10 @@
-#COCOSO || SKELETON
+# COCOSO || SKELETON
 
-This branch is to update folder and javascript structure according to meteor guide
+This branch is to update folder and javascript structure according to meteor guide 
 https://guide.meteor.com/structure.html#javascript-structure
 
+
+```
 imports/
   startup/
     client/
@@ -40,6 +42,7 @@ server/
 private/                       # only accessible from server code and can be loaded via the Assets API
 
 packages/                      # used for local packages
+```
 
 
 ## Completed Steps
