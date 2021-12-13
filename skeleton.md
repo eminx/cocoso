@@ -42,12 +42,12 @@ private/                       # only accessible from server code and can be loa
 packages/                      # used for local packages
 
 
-## Steps
-
+## Completed Steps
 - Common Structure
   - Reorganize Folder Structue
   - Update imports
   - Test on Localhost
 
-- Reorganize API Structure
-- Reorganize UI Structure
+## Next Steps
+- API Structure
+- UI Structure
