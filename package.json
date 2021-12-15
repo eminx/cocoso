@@ -68,6 +68,7 @@
     "react-table": "^6.8.6",
     "react-to-print": "^2.0.0-alpha-6",
     "react-visibility-sensor": "^5.0.2",
+    "simpl-schema": "^1.12.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1"
   },
