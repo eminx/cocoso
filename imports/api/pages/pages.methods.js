@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isAdmin } from './shared';
+import { getHost, isAdmin } from '../@/shared';
+import Pages from './page';
 
 Meteor.methods({
   getPages() {
@@ -23,8 +24,8 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.longDescription, String);
+    // check(formValues.title, String);
+    // check(formValues.longDescription, String);
 
     try {
       Pages.insert({
