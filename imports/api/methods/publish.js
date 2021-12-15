@@ -91,15 +91,7 @@ Meteor.publish('process', function (id) {
   });
 });
 
-Meteor.publish('pages', function () {
-  const host = getHost(this);
-  return Pages.find({ host });
-});
 
-Meteor.publish('page', function (title) {
-  const host = getHost(this);
-  return Pages.find({ host, title });
-});
 
 Meteor.publish('work', function (id) {
   return Works.find({
