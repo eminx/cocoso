@@ -1,13 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import Hosts from '../../@hosts/host';
+import { getHost } from '../@/shared';
+import Hosts from '../@hosts/host';
+import { isContributorOrAdmin } from './user.roles';
+
 const publicSettings = Meteor.settings.public;
-
-import {
-  getHost,
-  isContributorOrAdmin,
-  isContributor,
-} from '../shared';
-
 const getVerifiedEmailText = (username) => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${publicSettings.name}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${publicSettings.name} Team`;
 };
