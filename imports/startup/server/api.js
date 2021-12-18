@@ -6,6 +6,8 @@ import '../../api/@hosts/host.methods';
 import '../../api/@hosts/host.publications';
 
 import '../../api/@users/user';
+import '../../api/@users/user.roles';
+import '../../api/@users/user.admin';
 import '../../api/@users/user.methods';
 import '../../api/@users/user.publications';
 
@@ -24,7 +26,7 @@ import '../../api/works/work.publications';
 /* old */
 // import '../../api/@/methods/accounts-general';
 import '../../api/@/methods/activities-methods';
-import '../../api/@/methods/admin-methods';
+// import '../../api/@users/user.admin';
 import '../../api/@/methods/chat-methods';
 import '../../api/@/methods/document-methods';
 import '../../api/@/methods/process-methods';

@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isAdmin } from '../@/shared';
+import { getHost } from '../@/shared';
+import { isAdmin } from '../@users/user.roles';
+
 import Pages from './page';
 import Hosts from '../@hosts/host';
 Meteor.methods({
