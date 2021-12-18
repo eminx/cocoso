@@ -96,7 +96,3 @@ Meteor.publish('resources', function () {
   // Resources._ensureIndex({ host });
   return Resources.find({ host });
 });
-
-Meteor.publish('documents', function () {
-  return Documents.find();
-});

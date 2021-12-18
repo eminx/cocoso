@@ -1,6 +1,9 @@
+import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-export const documentSchema = new SimpleSchema({
+const Documents = new Mongo.Collection('documents');
+
+const documentSchema = new SimpleSchema({
   // _id: {type: String},
   host: {type: String},
   contextType: {type: String},
@@ -11,3 +14,6 @@ export const documentSchema = new SimpleSchema({
   uploadedByName: {type: String},
   creationDate: {type: Date},
 });
+
+Documents.attachSchema(documentSchema);
+export default Documents;

@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import { parseActsWithResources } from '../functions';
 
+import Documents from '../../api/documents/document';
+
 const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');
   const isLoading = !activities.ready();
