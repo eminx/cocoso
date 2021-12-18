@@ -71,4 +71,23 @@ Meteor.methods({
       throw new Meteor.Error(error);
     }
   },
+  
+  getHostMembers() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+    const members = currentHost.members.map((member) => {
+      const user = Meteor.users.findOne(member.id);
+      const avatarSrc = user && user.avatar && user.avatar.src;
+      if (user) {
+        return {
+          ...member,
+          avatarSrc,
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+        };
+      }
+    });
+    const validMembers = members.filter((member) => member && member.id);
+    return validMembers;
+  },
 });
