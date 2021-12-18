@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost, isContributorOrAdmin } from '../shared';
+import Hosts from '../../@hosts/host';
 
 Meteor.methods({
   createChat(contextName, contextId) {

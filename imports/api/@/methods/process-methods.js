@@ -7,7 +7,7 @@ import {
   isParticipant,
   isMember,
 } from '../shared';
-
+import Hosts from '../../@hosts/host';
 const publicSettings = Meteor.settings.public;
 
 const getProcessJoinText = (firstName, processTitle, processId) => {

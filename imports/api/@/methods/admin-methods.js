@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-
+import Hosts from '../../@hosts/host';
 const publicSettings = Meteor.settings.public;
 
 import {

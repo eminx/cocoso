@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../@/shared';
 import Categories from './category';
-
+import Hosts from '../@hosts/host';
 const catColors = [
   'hsla(10, 62%, 80%, 0.7)',
   'hsla(46, 62%, 80%, 0.7)',

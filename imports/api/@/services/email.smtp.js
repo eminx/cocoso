@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
 import { getHost } from '../shared';
-
+import Hosts from '../../@hosts/host';
 const publicSettings = Meteor.settings.public;
 
 function isValidEmail(email) {
