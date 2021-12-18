@@ -1,6 +1,9 @@
+import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-export const processSchema = new SimpleSchema({
+const Processes = new Mongo.Collection('processes');
+
+const processSchema = new SimpleSchema({
   // _id: {type: String},
   host: {type: String},
 
@@ -45,3 +48,7 @@ export const processSchema = new SimpleSchema({
 
   creationDate: {type: Date},
 });
+
+// Processes.attachSchema(processSchema);
+
+export default Processes;
