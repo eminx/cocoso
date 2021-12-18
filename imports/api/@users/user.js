@@ -5,6 +5,7 @@ import { Schemas } from '../@/schemas';
 // Ensuring every user has an email address, should be in server-side code
 Accounts.validateNewUser((user) => {
   new SimpleSchema({
+
     _id: { type: String, regEx: SimpleSchema.RegEx.Id },
     emails: { type: Array },
     'emails.$': { type: Object },
@@ -13,10 +14,16 @@ Accounts.validateNewUser((user) => {
     username: { type: String, min: 3, max: 21 },
     createdAt: { type: Date },
     services: { type: Object, blackbox: true },
-    memberships: { type: Array, defaultValue: [] },
-    notifications: { type: Array, defaultValue: [] },
-    attending: { type: Array, defaultValue: [] },
-    processes: { type: Array, defaultValue: [] },
+
+    memberships: { type: Array, optional: true },
+    'memberships.$': new SimpleSchema(SchemasUser.memberships),
+    notifications: { type: Array, optional: true },
+    'notifications.$': new SimpleSchema(SchemasUser.notifications),
+    attending: { type: Array, optional: true },
+    'attending.$': new SimpleSchema(SchemasUser.groups) ,
+    processes: { type: Array, optional: true },
+    'processes.$': new SimpleSchema(SchemasUser.processes),
+
   }).validate(user);
   // Return true to allow user creation to proceed
   return true;
