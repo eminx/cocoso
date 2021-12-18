@@ -9,21 +9,21 @@ import '../../api/categories/category';
 import '../../api/categories/categories.methods';
 
 
-
-
-
-// import '../../api/methods/shared';
+/* old */
 import '../../api/accounts/accounts-general';
 import '../../api/methods/activities-methods';
 import '../../api/methods/admin-methods';
 import '../../api/methods/chat-methods';
 import '../../api/methods/document-methods';
-import '../../api/methods/email-methods';
 import '../../api/methods/host-methods';
-import '../../api/methods/image-upload';
 // import '../../api/methods/page-methods';
 import '../../api/methods/process-methods';
 import '../../api/methods/profile-methods';
 import '../../api/methods/resources-methods';
 import '../../api/methods/work-methods';
+/* old */
+
+
+import '../../api/@/services/email.smtp';
+import '../../api/@/services/aws.slingshot';
 import '../../api/@/publish';
