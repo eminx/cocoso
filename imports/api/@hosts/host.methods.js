@@ -4,7 +4,10 @@ import {
   defaultMenu,
   defaultMainColor,
   defaultEmails,
-} from '../../../ui/constants/general';
+} from '../../ui/constants/general';
+
+import Hosts from './host';
+import Pages from '../pages/page';
 
 Meteor.methods({
   async createNewHost(values) {
@@ -22,13 +25,13 @@ Meteor.methods({
         host: values.host,
         email: values.email,
         settings: {
+          name: values.name,
+          email: values.email,
           address: values.address,
           city: values.city,
           country: values.country,
-          email: values.email,
           mainColor: defaultMainColor,
           menu: defaultMenu,
-          name: values.name,
         },
         members: [
           {
@@ -40,6 +43,7 @@ Meteor.methods({
           },
         ],
         emails: defaultEmails,
+        createdAt: new Date()
       });
 
       await Pages.insert({

@@ -30,6 +30,7 @@ export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
 import theme from './constants/theme';
+import Hosts from '../api/@hosts/host';
 
 const publicSettings = Meteor.settings.public;
 
