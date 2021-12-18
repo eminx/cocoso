@@ -81,22 +81,6 @@ Meteor.publish('process', function (id) {
   });
 });
 
-Meteor.publish('work', function (id) {
-  return Works.find({
-    _id: id,
-  });
-});
-
-Meteor.publish('myworks', function () {
-  const currentUserId = Meteor.userId();
-  const host = getHost(this);
-  // Works._ensureIndex({ host, authorId: currentUserId });
-  return Works.find({
-    host,
-    authorId: currentUserId,
-  });
-});
-
 Meteor.publish('chat', function (contextId) {
   const host = getHost(this);
   const user = Meteor.user();
@@ -115,12 +99,4 @@ Meteor.publish('resources', function () {
 
 Meteor.publish('documents', function () {
   return Documents.find();
-});
-
-Meteor.publish('memberWorksAtHost', function (username) {
-  const host = getHost(this);
-  return Works.find({
-    authorUsername: username,
-    host,
-  });
 });
