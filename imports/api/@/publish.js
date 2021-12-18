@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isContributorOrAdmin } from './shared';
+import { getHost } from './shared';
 
 Meteor.publish('activities', function (onlyPublic = false) {
   const host = getHost(this);
