@@ -1,26 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { getHost } from '../shared';
+import SimpleSchema from 'simpl-schema';
+
+import { getHost } from '../@/shared';
+import Hosts from '../@hosts/host';
+import { SchemasUser } from './user';
 
 Meteor.methods({
-  getHostMembers() {
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host: host });
-    const members = currentHost.members.map((member) => {
-      const user = Meteor.users.findOne(member.id);
-      const avatarSrc = user && user.avatar && user.avatar.src;
-      if (user) {
-        return {
-          ...member,
-          avatarSrc,
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-        };
-      }
-    });
-    const validMembers = members.filter((member) => member && member.id);
-    return validMembers;
-  },
 
   createAccount(values) {
     check(values.email, String);
@@ -134,10 +120,11 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    check(values.firstName, String);
-    check(values.lastName, String);
-    check(values.bio, String);
-    check(values.contactInfo, String);
+    // check(values.firstName, String);
+    // check(values.lastName, String);
+    // check(values.bio, String);
+    // check(values.contactInfo, String);
+    new SimpleSchema(SchemasUser.profile).validate(values);
 
     try {
       Meteor.users.update(user._id, {
@@ -164,6 +151,7 @@ Meteor.methods({
       src: avatar,
       date: new Date(),
     };
+    new SimpleSchema(SchemasUser.avatar).validate(newAvatar);
 
     try {
       Meteor.users.update(userId, {

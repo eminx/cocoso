@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { avatarSchema } from './user'
+import { avatarSchema } from '../../@users/user'
 
 export const workSchema = new SimpleSchema({
   // _id: {type: String},
