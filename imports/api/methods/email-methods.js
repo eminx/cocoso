@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
-import { getHost } from './shared';
+import { getHost } from '../@/shared';
 
 const publicSettings = Meteor.settings.public;
 

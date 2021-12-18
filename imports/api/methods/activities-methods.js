@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isContributorOrAdmin } from './shared';
+import { getHost, isContributorOrAdmin } from '../@/shared';
 
 const getRegistrationEmailBody = (
   firstName,

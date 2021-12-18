@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { getHost } from './shared';
+import { getHost } from '../@/shared';
 
 Meteor.methods({
   getHostMembers() {

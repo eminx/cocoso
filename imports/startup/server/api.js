@@ -8,14 +8,11 @@ import '../../api/pages/server/pages.publications';
 import '../../api/categories/category';
 import '../../api/categories/categories.methods';
 
-// import '../../api/works/work';
-// import '../../api/works/works.methods';
-// import '../../api/works/server/works.publications';
 
 
 
 
-import '../../api/methods/shared';
+// import '../../api/methods/shared';
 import '../../api/accounts/accounts-general';
 import '../../api/methods/activities-methods';
 import '../../api/methods/admin-methods';
@@ -29,4 +26,4 @@ import '../../api/methods/process-methods';
 import '../../api/methods/profile-methods';
 import '../../api/methods/resources-methods';
 import '../../api/methods/work-methods';
-import '../../api/methods/publish';
+import '../../api/@/publish';
