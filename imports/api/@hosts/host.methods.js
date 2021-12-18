@@ -1,13 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-
+import { getHost } from '../@/shared';
+import Hosts from './host';
+import Pages from '../pages/page';
 import {
   defaultMenu,
   defaultMainColor,
   defaultEmails,
 } from '../../ui/constants/general';
-
-import Hosts from './host';
-import Pages from '../pages/page';
 
 Meteor.methods({
   async createNewHost(values) {
