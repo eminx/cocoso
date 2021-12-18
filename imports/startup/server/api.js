@@ -10,17 +10,16 @@ import '../../api/categories/categories.methods';
 
 
 /* old */
-import '../../api/methods/accounts-general';
-import '../../api/methods/activities-methods';
-import '../../api/methods/admin-methods';
-import '../../api/methods/chat-methods';
-import '../../api/methods/document-methods';
-import '../../api/methods/host-methods';
-// import '../../api/methods/page-methods';
-import '../../api/methods/process-methods';
-import '../../api/methods/profile-methods';
-import '../../api/methods/resources-methods';
-import '../../api/methods/work-methods';
+import '../../api/@/methods/host-methods';
+import '../../api/@/methods/accounts-general';
+import '../../api/@/methods/activities-methods';
+import '../../api/@/methods/admin-methods';
+import '../../api/@/methods/chat-methods';
+import '../../api/@/methods/document-methods';
+import '../../api/@/methods/process-methods';
+import '../../api/@/methods/profile-methods';
+import '../../api/@/methods/resources-methods';
+import '../../api/@/methods/work-methods';
 /* old */
 
 

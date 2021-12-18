@@ -6,7 +6,7 @@ import {
   isContributorOrAdmin,
   isParticipant,
   isMember,
-} from '../@/shared';
+} from '../shared';
 
 const publicSettings = Meteor.settings.public;
 
