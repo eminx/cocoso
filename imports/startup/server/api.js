@@ -10,7 +10,7 @@ import '../../api/categories/categories.methods';
 
 
 /* old */
-import '../../api/accounts/accounts-general';
+import '../../api/methods/accounts-general';
 import '../../api/methods/activities-methods';
 import '../../api/methods/admin-methods';
 import '../../api/methods/chat-methods';
