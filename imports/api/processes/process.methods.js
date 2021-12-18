@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, siteUrl, getResourceIndex } from '../shared';
-import { isContributorOrAdmin, isMember } from '../../@users/user.roles';
-import Hosts from '../../@hosts/host';
+import { getHost, siteUrl, getResourceIndex } from '../@/shared';
+import { isContributorOrAdmin, isMember } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Processes from './process';
+
 const publicSettings = Meteor.settings.public;
 
 const getProcessJoinText = (firstName, processTitle, processId) => {

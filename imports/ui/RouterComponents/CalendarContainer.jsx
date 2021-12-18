@@ -3,7 +3,7 @@ import Calendar from './Calendar';
 import moment from 'moment';
 
 import { parseActsWithResources } from '../functions';
-
+import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';
 
 const CalendarContainer = withTracker((props) => {

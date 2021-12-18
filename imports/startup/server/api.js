@@ -22,6 +22,10 @@ import '../../api/works/work';
 import '../../api/works/work.methods';
 import '../../api/works/work.publications';
 
+import '../../api/processes/process';
+import '../../api/processes/process.methods';
+import '../../api/processes/process.publications';
+
 import '../../api/documents/document';
 import '../../api/documents/document.methods';
 import '../../api/documents/document.publications';
@@ -29,8 +33,6 @@ import '../../api/documents/document.publications';
 /* old */
 import '../../api/@/methods/activities-methods';
 import '../../api/@/methods/chat-methods';
-// import '../../api/@/methods/document-methods';
-import '../../api/@/methods/process-methods';
 import '../../api/@/methods/resources-methods';
 /* old */
 

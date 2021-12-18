@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Process from './Process';
+import Processes from '../../../api/processes/process';
 
 export default ProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;
