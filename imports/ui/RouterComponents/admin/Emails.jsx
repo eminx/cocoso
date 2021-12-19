@@ -18,8 +18,7 @@ import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
-import { defaultEmails } from '../../../../lib/constants';
-import { adminMenu } from '../../constants/general';
+import { defaultEmails, adminMenu } from '../../constants/general';
 
 const Field = ({ children, ...otherProps }) => (
   <FormField {...otherProps} margin={{ bottom: 'medium' }}>
