@@ -48,7 +48,7 @@ const compareForSort = (a, b) => {
 };
 
 Meteor.methods({
-  createProcess(formValues, imageUrl, isPrivate = false) {
+  async createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -57,35 +57,35 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.description, String);
-    check(formValues.readingMaterial, String);
-    check(formValues.capacity, Number);
+    // check(formValues.title, String);
+    // check(formValues.description, String);
+    // check(formValues.readingMaterial, String);
+    // check(formValues.capacity, Number);
 
     try {
-      const add = Processes.insert(
+      const add = await Processes.insert(
         {
           host,
           adminId: user._id,
           adminUsername: user.username,
+          title: formValues.title,
+          description: formValues.description,
+          readingMaterial: formValues.readingMaterial,
+          imageUrl,
+          capacity: formValues.capacity || 20,
           members: [
             {
               memberId: user._id,
               username: user.username,
-              profileImage: user.profileImage || null,
+              // profileImage: user.profileImage || "",
               joinDate: new Date(),
             },
           ],
-          documents: [],
-          meetings: [],
-          title: formValues.title,
-          description: formValues.description,
-          readingMaterial: formValues.readingMaterial,
-          capacity: formValues.capacity || 20,
-          imageUrl,
+          // documents: [],
+          // meetings: [],
+          // peopleInvited: [],
           isPublished: true,
           isPrivate: isPrivate,
-          peopleInvited: [],
           creationDate: new Date(),
         },
         () => {
