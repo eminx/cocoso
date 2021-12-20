@@ -1,56 +1,54 @@
-# COCOSO || SKELETON
+# COCOSO || SKELETON-API
 
-This branch is to update folder and javascript structure according to meteor guide  
+This branch is to update API/SERVER folder and javascript structure according to meteor guide  
 https://guide.meteor.com/structure.html#javascript-structure
 
 
 ```
 imports/
-  startup/
-    client/
-      index.js                 # import client startup through a single index entry point
-      routes.js                # set up all routes in the app
-      useraccounts-configuration.js # configure login templates
-    server/
-      fixtures.js              # fill the DB with example data on startup
-      index.js                 # import server startup through a single index entry point
-
   api/
+    @/                         # new shared folder
+      shared.js
+      schemas.js
+      services/                # 3rd party services like MAIL & AWS 
+
     lists/                     # a unit of domain logic
+      list.js                  # definition of the Lists collection with schemas
+      list.methods.js          # methods related to lists
+      list.publications.js     # all list-related publications
+
+    startup/
       server/
-        publications.js        # all list-related publications
-        publications.tests.js  # tests for the list publications
-      lists.js                 # definition of the Lists collection
-      lists.tests.js           # tests for the behavior of that collection
-      methods.js               # methods related to lists
-      methods.tests.js         # tests for those methods
+        api.js                # server imports
 
-  ui/
-    components/                # all reusable components in the application
-                               # can be split by domain if there are many
-    layouts/                   # wrapper components for behaviour and visuals
-    pages/                     # entry points for rendering used by the router
+    ui/
+      ListContainer.js        # container files wit trackers
 
-client/
-  main.js                      # client entry point, imports all client code
-
-public/                        # served as-is to the client. referencing these assets, do not include public/
-
-server/
-  main.js                      # server entry point, imports all server code
-
-private/                       # only accessible from server code and can be loaded via the Assets API
-
-packages/                      # used for local packages
 ```
+## What changed ?
 
+All collections in lib folder collections file are seperated in to unit domain logic
+In UI folder some jsx files like
+LayoutContainer, Calender ... imports updated
+All ...Container.js withTrackers imports updated
+
+All methods passed to related folder
+All publishes are seperated to related files
+
+@ is new sharedd folder
+email, aws services, 3rd party commeon services are in shared folder
+user role checks like isAdmin, isMember etc moved to user.roles.js under @users folder
 
 ## Completed Steps
-- Common Structure
+- API Structure
   - Reorganize Folder Structue
   - Update imports
   - Test on Localhost
 
+
+
 ## Next Steps
-- API Structure
 - UI Structure
+
+## Past Steps
+- Common Structure
