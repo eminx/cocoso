@@ -39,6 +39,15 @@ All publishes are seperated to related files
 email, aws services, 3rd party commeon services are in shared folder
 user role checks like isAdmin, isMember etc moved to user.roles.js under @users folder
 
+localhost tests for all collections and creating editing deleting collections with schema implementations.
+
+## What more ?
+
+Detailed optimisation on Schemas and more tests...
+
+Seperating Emails from methods to ther of files;
+  for example; Activity Mails will be in activities/activity.mails.js and will be imported to where it needs ....
+
 ## Completed Steps
 - API Structure
   - Reorganize Folder Structue
