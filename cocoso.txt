@@ -1,9 +1,0 @@
-COCOSO
-
-- Only contributors can create content -> Check it for the whole app and add to context
-- Contributors can make contributor and admins can make contributor and admin
-- Change all the "isRegisteredMember" to superAdmin/admin/contributor
-- Make feature toggle for different features: Calendar, Processes, Works etc.
-- Make the wording changeable for those
-- Logo uploadable for host
-

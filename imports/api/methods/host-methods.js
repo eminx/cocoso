@@ -4,7 +4,7 @@ import {
   defaultMenu,
   defaultMainColor,
   defaultEmails,
-} from '../../lib/constants';
+} from '../../ui/constants/general';
 
 Meteor.methods({
   async createNewHost(values) {

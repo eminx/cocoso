@@ -19,9 +19,8 @@ import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
-import { defaultEmails } from '../../../../lib/constants';
-import { adminMenu } from '../../constants/general';
 import FormField from '../../UIComponents/FormField';
+import { defaultEmails, adminMenu } from '../../constants/general';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
