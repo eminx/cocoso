@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../shared';
-import { isContributorOrAdmin } from '../../@users/user.roles';
+import { getHost } from '../@/shared';
+import { isContributorOrAdmin } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Activities from './activity';
 
-import Hosts from '../../@hosts/host';
 const getRegistrationEmailBody = (
   firstName,
   numberOfPeople,
@@ -60,14 +61,14 @@ Meteor.methods({
       throw new Meteor.Error('Image is required for public activities');
     }
 
-    check(formValues.title, String);
-    formValues.datesAndTimes.forEach((recurrence) => {
-      check(recurrence.startDate, String);
-      check(recurrence.endDate, String);
-      check(recurrence.startTime, String);
-      check(recurrence.endTime, String);
-    });
-    check(formValues.isPublicActivity, Boolean);
+    // check(formValues.title, String);
+    // formValues.datesAndTimes.forEach((recurrence) => {
+    //   check(recurrence.startDate, String);
+    //   check(recurrence.endDate, String);
+    //   check(recurrence.startTime, String);
+    //   check(recurrence.endTime, String);
+    // });
+    // check(formValues.isPublicActivity, Boolean);
     const resourceIndex = formValues.resource.resourceIndex;
 
     try {
@@ -113,7 +114,7 @@ Meteor.methods({
       );
       return add;
     } catch (error) {
-      throw new Meteor.Error(e, "Couldn't add to Collection");
+      throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
 

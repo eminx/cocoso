@@ -1,6 +1,9 @@
 import '../../api/@/shared';
 import '../../api/@/schemas';
 
+import '../../api/@/services/email.smtp';
+import '../../api/@/services/aws.slingshot';
+
 import '../../api/@hosts/host';
 import '../../api/@hosts/host.methods';
 import '../../api/@hosts/host.publications';
@@ -38,10 +41,6 @@ import '../../api/resources/resource';
 import '../../api/resources/resource.methods';
 import '../../api/resources/resource.publications';
 
-/* old */
-import '../../api/@/methods/activities-methods';
-/* old */
-
-import '../../api/@/services/email.smtp';
-import '../../api/@/services/aws.slingshot';
-import '../../api/@/publish';
+import '../../api/activities/activity';
+import '../../api/activities/activity.methods';
+import '../../api/activities/activity.publications';
