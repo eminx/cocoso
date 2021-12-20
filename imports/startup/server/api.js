@@ -12,11 +12,11 @@ import '../../api/@users/user.methods';
 import '../../api/@users/user.publications';
 
 import '../../api/pages/page';
-import '../../api/pages/pages.methods';
-import '../../api/pages/pages.publications';
+import '../../api/pages/page.methods';
+import '../../api/pages/page.publications';
 
 import '../../api/categories/category';
-import '../../api/categories/categories.methods';
+import '../../api/categories/category.methods';
 
 import '../../api/works/work';
 import '../../api/works/work.methods';
