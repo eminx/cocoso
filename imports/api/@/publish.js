@@ -46,16 +46,6 @@ Meteor.publish('activity', function (id) {
   });
 });
 
-Meteor.publish('chat', function (contextId) {
-  const host = getHost(this);
-  const user = Meteor.user();
-  if (user) {
-    return Chats.find({
-      contextId: contextId,
-    });
-  }
-});
-
 Meteor.publish('resources', function () {
   const host = getHost(this);
   // Resources._ensureIndex({ host });

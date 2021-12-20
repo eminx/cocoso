@@ -1,7 +1,11 @@
+import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { Schemas } from '../@/schemas';
 
-export const chatSchema = new SimpleSchema({
-  // _id: {type: String},
+const Chats = new Mongo.Collection('chats');
+
+Schemas.Chats = new SimpleSchema({
+  _id: {type: String},
   host: {type: String},
 
   contextId: {type: String},
@@ -11,7 +15,7 @@ export const chatSchema = new SimpleSchema({
   'createdBy.userId': {type: String},
   'createdBy.username': {type: String},
 
-  messages: {type: Array},
+  messages: {type: Array, optional: true},
   'messages.$': {type: Object},
   'messages.$.senderId': {type: String},
   'messages.$.senderUsername': {type: String},
@@ -19,5 +23,9 @@ export const chatSchema = new SimpleSchema({
   'messages.$.createdDate': {type: Date},
 
   isNotificationOn: {type: Boolean},
-  lastMessageBy: {type: Date},
+  lastMessageBy: {type: Date, optional:true},
 });
+
+Chats.attachSchema(Schemas.Chats);
+
+export default Chats;

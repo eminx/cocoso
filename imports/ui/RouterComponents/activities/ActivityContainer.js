@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Activity from './Activity';
+import Chats from '../../../api/chats/chat';
 
 export default ActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;

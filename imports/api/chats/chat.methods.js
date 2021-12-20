@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../shared';
-import { isContributorOrAdmin } from '../../@users/user.roles';
-import Hosts from '../../@hosts/host';
-import Processes from '../../processes/process';
+import { getHost } from '../@/shared';
+import { isContributorOrAdmin } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Processes from '../processes/process';
+import Chats from './chat';
 
 Meteor.methods({
   createChat(contextName, contextId) {

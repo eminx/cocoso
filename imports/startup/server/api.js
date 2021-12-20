@@ -26,13 +26,16 @@ import '../../api/processes/process';
 import '../../api/processes/process.methods';
 import '../../api/processes/process.publications';
 
+import '../../api/chats/chat';
+import '../../api/chats/chat.methods';
+import '../../api/chats/chat.publications';
+
 import '../../api/documents/document';
 import '../../api/documents/document.methods';
 import '../../api/documents/document.publications';
 
 /* old */
 import '../../api/@/methods/activities-methods';
-import '../../api/@/methods/chat-methods';
 import '../../api/@/methods/resources-methods';
 /* old */
 
