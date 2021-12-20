@@ -55,10 +55,14 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
       return null;
     }
 
-    const futureProcesses = processesList.filter((process) =>
-      process.meetings.some((meeting) =>
-        moment(meeting.startDate).isAfter(yesterday)
-      )
+    const futureProcesses = processesList.filter((process) => {
+      if (process.meeting && process.meeting.some) {
+        return process.meetings.some((meeting) =>
+          moment(meeting.startDate).isAfter(yesterday)
+        )
+      }
+    }
+
     );
 
     const futureProcessesWithAccessFilter =
