@@ -34,9 +34,12 @@ import '../../api/documents/document';
 import '../../api/documents/document.methods';
 import '../../api/documents/document.publications';
 
+import '../../api/resources/resource';
+import '../../api/resources/resource.methods';
+import '../../api/resources/resource.publications';
+
 /* old */
 import '../../api/@/methods/activities-methods';
-import '../../api/@/methods/resources-methods';
 /* old */
 
 import '../../api/@/services/email.smtp';

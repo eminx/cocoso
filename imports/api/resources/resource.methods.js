@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../shared';
-import { isContributorOrAdmin } from '../../@users/user.roles';
-import Hosts from '../../@hosts/host';
+import { getHost } from '../@/shared';
+import { isContributorOrAdmin } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Resources from './resource';
+
 Meteor.methods({
   getResources() {
     const host = getHost(this);
@@ -33,6 +35,12 @@ Meteor.methods({
     }
 
     try {
+      // const values = {
+      //   label: modalContent.label,
+      //   description: modalContent.description,
+      //   isCombo: Boolean(modalContent.isCombo),
+      //   resourcesForCombo: modalContent.resourcesForCombo,
+      // };
       const newResourceId = Resources.insert({
         ...values,
         labelLowerCase: values.label.toLowerCase(),

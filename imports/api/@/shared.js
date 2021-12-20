@@ -3,6 +3,7 @@ const getHost = (self) => self.connection.httpHeaders.host;
 const siteUrl = Meteor.absoluteUrl();
 
 const getResourceIndex = (resource, host) => {
+  import Resources from "../resources/resource";
   const resources = Resources.find(
     { host },
     { sort: { creationDate: 1 } }

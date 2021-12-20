@@ -2,6 +2,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Process from './Process';
 import Processes from '../../../api/processes/process';
 import Chats from '../../../api/chats/chat';
+import Resources from '../../../api/resources/resource';
 
 export default ProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;

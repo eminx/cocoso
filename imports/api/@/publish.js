@@ -36,18 +36,10 @@ Meteor.publish('activities', function (onlyPublic = false) {
   }
 });
 
-
-
 Meteor.publish('activity', function (id) {
   const host = getHost(this);
   return Activities.find({
     host,
     _id: id,
   });
-});
-
-Meteor.publish('resources', function () {
-  const host = getHost(this);
-  // Resources._ensureIndex({ host });
-  return Resources.find({ host });
 });

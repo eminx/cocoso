@@ -13,6 +13,7 @@ import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../UIComponents/ResourceForm';
+import Resources from '../../../api/resources/resource';
 
 const emptyResource = {
   label: '',

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { parseActsWithResources } from '../functions';
 import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';
+import Resources from '../../api/resources/resource';
 
 const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');

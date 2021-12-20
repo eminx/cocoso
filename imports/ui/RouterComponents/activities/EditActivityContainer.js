@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import EditActivity from './EditActivity';
+import Resources from '../../../api/resources/resource';
 
 export default EditActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;
