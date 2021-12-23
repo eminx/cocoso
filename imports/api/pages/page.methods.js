@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+
 import { getHost } from '../@/shared';
+import Hosts from '../@hosts/host';
+import Pages from './page';
 import { isAdmin } from '../@users/user.roles';
 
-import Pages from './page';
-import Hosts from '../@hosts/host';
 Meteor.methods({
   getPages() {
     const host = getHost(this);
