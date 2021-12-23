@@ -93,7 +93,7 @@ class Activity extends PureComponent {
 
     const parsedValues = {
       ...values,
-      numberOfPeople: values.numberOfPeople,
+      numberOfPeople: Number(values.numberOfPeople),
     };
     try {
       await call(

@@ -100,7 +100,7 @@ class NewPage extends PureComponent {
 
     return (
       <Template heading="Create a New Page">
-        <Box p="6" bg="white">
+        <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>
       </Template>

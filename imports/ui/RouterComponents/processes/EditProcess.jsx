@@ -3,20 +3,13 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Button } from '@chakra-ui/react';
 
+import { call } from '../../functions';
 import ProcessForm from '../../UIComponents/ProcessForm';
 import Template from '../../UIComponents/Template';
 import Loader from '../../UIComponents/Loader';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { resizeImage, uploadImage } from '../../functions';
 import { message, Alert } from '../../UIComponents/message';
-
-const successUpdate = () =>
-  message.success('Your process is successfully updated', 6);
-
-const successDelete = () =>
-  message.success('The process is successfully deleted', 4);
-
-const sideNote = 'This page is dedicated to create processes';
 
 class EditProcess extends React.Component {
   state = {
@@ -27,78 +20,23 @@ class EditProcess extends React.Component {
       capacity: 12,
     },
     isDeleteModalOn: false,
-    isLoading: false,
     isSuccess: false,
-    isError: false,
-    newProcessId: null,
     uploadedImage: null,
     uploadableImage: null,
     uploadableImageLocal: null,
   };
 
-  componentDidMount() {
-    if (this.props.process) {
-      this.setFormValues();
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.process && this.props.process) {
-      this.setFormValues();
-    }
-  }
-
-  setFormValues = () => {
-    const { process } = this.props;
-
-    if (!process || !process.title || !process.description) {
-      return;
-    }
-    this.setState({
-      formValues: {
-        title: process.title,
-        readingMaterial: process.readingMaterial,
-        description: process.description,
-        capacity: process.capacity,
-      },
-    });
-  };
-
-  handleFormChange = (value) => {
-    const { formValues } = this.state;
-    let capacity = parseInt(value.capacity) || 2;
-    if (capacity > 30) {
-      capacity = 30;
-    }
-
-    const newFormValues = {
-      ...value,
-      capacity,
-      description: formValues.description,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleQuillChange = (description) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      description,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { uploadableImage } = this.state;
+
+    const parsedValues = {
+      ...values,
+      capacity: Number(values.capacity),
+    };
 
     this.setState({
       isUpdating: true,
+      formValues: parsedValues,
     });
 
     if (!uploadableImage) {
@@ -153,51 +91,35 @@ class EditProcess extends React.Component {
     }
   };
 
-  updateProcess = () => {
+  updateProcess = async () => {
     const { process } = this.props;
     const { formValues, uploadedImage } = this.state;
     const imageUrl = uploadedImage || process.imageUrl;
 
-    Meteor.call(
-      'updateProcess',
-      process._id,
-      formValues,
-      imageUrl,
-      (error, result) => {
-        if (error) {
-          this.setState({
-            isLoading: false,
-            isError: true,
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            isSuccess: true,
-          });
-        }
-      }
-    );
+    try {
+      await call('updateProcess', process._id, formValues, imageUrl);
+      message.success('Process successfully updated');
+      this.setState({
+        isSuccess: true,
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.error || error.reason);
+    }
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
-  deleteProcess = () => {
+  deleteProcess = async () => {
     const processId = this.props.process._id;
-    Meteor.call('deleteProcess', processId, (error, respond) => {
-      if (error) {
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        successDelete();
-        this.setState({
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
-    });
+    try {
+      await call('deleteProcess', processId);
+      message.success('Process successfully deleted');
+    } catch (error) {
+      console.log(error);
+      message.error(error.error || error.reason);
+    }
   };
 
   render() {
@@ -227,7 +149,6 @@ class EditProcess extends React.Component {
     } = this.state;
 
     if (isSuccess) {
-      successUpdate();
       return <Redirect to={`/process/${process._id}`} />;
     }
 
@@ -253,18 +174,15 @@ class EditProcess extends React.Component {
           </Box>
         }
       >
-        <ProcessForm
-          formValues={formValues}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-          setUploadableImage={this.setUploadableImage}
-          uploadableImageLocal={uploadableImageLocal}
-          imageUrl={process && process.imageUrl}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isUpdating}
-        />
+        <Box bg="white" p="6">
+          <ProcessForm
+            defaultValues={process}
+            imageUrl={process && process.imageUrl}
+            onSubmit={this.handleSubmit}
+            setUploadableImage={this.setUploadableImage}
+            uploadableImageLocal={uploadableImageLocal}
+          />
+        </Box>
 
         {process.adminId === currentUser._id && (
           <Box p="2" direction="row" justify="center" mt="4">

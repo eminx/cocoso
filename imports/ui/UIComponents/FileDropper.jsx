@@ -30,7 +30,7 @@ const FileDropper = ({
               style={{ cursor: 'pointer' }}
             />
           ) : (
-            <Box alignSelf="center" pad="medium">
+            <Box alignSelf="center" pad="medium" height="small">
               <Button
                 plain
                 hoverIndicator="light-1"

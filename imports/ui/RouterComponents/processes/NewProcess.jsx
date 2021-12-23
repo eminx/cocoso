@@ -82,11 +82,18 @@ class NewProcess extends React.Component {
     });
   };
 
-  handleSubmit = () => {
-    this.setState({
-      isCreating: true,
-    });
-    this.uploadImage();
+  handleSubmit = (values) => {
+    const parsedValues = {
+      ...values,
+      capacity: Number(values.capacity),
+    };
+    this.setState(
+      {
+        isCreating: true,
+        formValues: parsedValues,
+      },
+      this.uploadImage
+    );
   };
 
   setUploadableImage = (files) => {
@@ -209,10 +216,10 @@ class NewProcess extends React.Component {
 
     return (
       <Template heading="Create a New Process">
-        <Box p="6" w="xs">
+        <Box bg="white" p="6">
           <Popover trigger="hover">
             <PopoverTrigger>
-              <FormControl alignItems="center" display="flex" w="auto">
+              <FormControl alignItems="center" display="flex" w="auto" mb="4">
                 <Switch
                   id="email-alerts"
                   isChecked={isPrivate}
@@ -238,19 +245,14 @@ class NewProcess extends React.Component {
               </PopoverBody>
             </PopoverContent>
           </Popover>
-        </Box>
 
-        <ProcessForm
-          formValues={formValues}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-          setUploadableImage={this.setUploadableImage}
-          uploadableImageLocal={uploadableImageLocal}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isCreating}
-        />
+          <ProcessForm
+            defaultValues={formValues}
+            onSubmit={this.handleSubmit}
+            setUploadableImage={this.setUploadableImage}
+            uploadableImageLocal={uploadableImageLocal}
+          />
+        </Box>
       </Template>
     );
   }
