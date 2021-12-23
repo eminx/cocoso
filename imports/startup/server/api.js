@@ -1,7 +1,7 @@
 import '../../api/@/shared';
 import '../../api/@/schemas';
 
-import '../../api/@/services/email.smtp';
+import '../../api/@/services/mails/mail.smtp';
 import '../../api/@/services/aws.slingshot';
 
 import '../../api/@hosts/host';
