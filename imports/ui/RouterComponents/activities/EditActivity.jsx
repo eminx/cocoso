@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Anchor, Box, CheckBox, Text } from 'grommet';
-import { FormPrevious } from 'grommet-icons';
+import { Box, Button, Center, IconButton, VStack } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import FormSwitch from '../../UIComponents/FormSwitch';
+import Loader from '../../UIComponents/Loader';
 import { resizeImage, uploadImage } from '../../functions';
 import { message, Alert } from '../../UIComponents/message';
 
@@ -17,9 +19,6 @@ const successEditMessage = (isDeleted) => {
     message.success('Your activity is successfully updated', 6);
   }
 };
-
-const sideNote =
-  "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping activities.";
 
 const formModel = {
   resource: '',
@@ -38,7 +37,7 @@ class EditActivity extends PureComponent {
     uploadableImageLocal: null,
     uploadedImage: null,
     isPublicActivity: false,
-    isActivitiesDisabled: false,
+    isRegistrationDisabled: false,
     datesAndTimes: [],
     isLoading: false,
     isSuccess: false,
@@ -71,7 +70,7 @@ class EditActivity extends PureComponent {
       practicalInfo,
       internalInfo,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       datesAndTimes,
     } = activity;
 
@@ -85,7 +84,7 @@ class EditActivity extends PureComponent {
         },
         longDescription,
         isPublicActivity,
-        isActivitiesDisabled,
+        isRegistrationDisabled,
         datesAndTimes: [...datesAndTimes],
       });
     } else {
@@ -103,7 +102,7 @@ class EditActivity extends PureComponent {
         },
         longDescription,
         isPublicActivity,
-        isActivitiesDisabled,
+        isRegistrationDisabled,
         datesAndTimes: [...datesAndTimes],
       });
     }
@@ -183,7 +182,7 @@ class EditActivity extends PureComponent {
     const {
       formValues,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       uploadedImage,
       datesAndTimes,
       longDescription,
@@ -192,7 +191,7 @@ class EditActivity extends PureComponent {
     const values = {
       ...formValues,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       datesAndTimes,
       longDescription,
     };
@@ -248,10 +247,10 @@ class EditActivity extends PureComponent {
     });
   };
 
-  handleDisableActivitiesSwitch = (event) => {
+  handleRegistrationSwitch = (event) => {
     const value = event.target.checked;
     this.setState({
-      isActivitiesDisabled: value,
+      isRegistrationDisabled: value,
     });
   };
 
@@ -264,31 +263,27 @@ class EditActivity extends PureComponent {
   render() {
     const { activity, currentUser, resources } = this.props;
 
-    if (!currentUser) {
+    if (!currentUser || !activity) {
+      return <Loader />;
+    }
+
+    if (activity.authorId !== currentUser._id) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to signin to create a activity."
-            type="error"
-          />
+          <Alert message="You are not allowed" type="error" />
         </div>
       );
     }
 
-    if (!activity) {
-      return null;
-    }
-
     const {
-      isDeleteModalOn,
+      datesAndTimes,
       formValues,
-      longDescription,
+      isDeleteModalOn,
+      isPublicActivity,
+      isRegistrationDisabled,
+      uploadableImageLocal,
       isCreating,
       isSuccess,
-      uploadableImageLocal,
-      isPublicActivity,
-      isActivitiesDisabled,
-      datesAndTimes,
     } = this.state;
 
     if (isSuccess) {
@@ -313,64 +308,57 @@ class EditActivity extends PureComponent {
       <Template
         heading="Edit Activity"
         leftContent={
-          <Link to={`/event/${activity._id}`}>
-            <Box margin={{ bottom: 12 }} pad="small">
-              <Anchor
-                icon={<FormPrevious />}
-                label={activity.title}
-                size="medium"
+          <Box p="2">
+            <Link to={`/event/${activity._id}`}>
+              <IconButton
+                as="span"
+                aria-label="Back"
+                icon={<ArrowBackIcon />}
               />
-            </Box>
-          </Link>
+            </Link>
+          </Box>
         }
       >
-        <Box margin={{ bottom: 'medium' }}>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity}
-              label={<Text>public event?</Text>}
-              onChange={this.handlePublicActivitySwitch}
-            />
-          </Box>
-          {isPublicActivity && (
-            <Box flex={{ basis: 180 }} pad="small">
-              <CheckBox
-                checked={isActivitiesDisabled}
-                label={<Text>RSVP disabled?</Text>}
-                onChange={this.handleDisableActivitiesSwitch}
+        <Box bg="white" p="8">
+          <Box mb="8">
+            <VStack spacing="2">
+              <FormSwitch
+                isChecked={isPublicActivity}
+                label="Public Event"
+                onChange={this.handlePublicActivitySwitch}
               />
-            </Box>
-          )}
-        </Box>
 
-        <Box>
+              {isPublicActivity && (
+                <FormSwitch
+                  isChecked={isRegistrationDisabled}
+                  label="RSVP disabled"
+                  onChange={this.handleRegistrationSwitch}
+                />
+              )}
+            </VStack>
+          </Box>
+
           <ActivityForm
+            datesAndTimes={datesAndTimes}
+            defaultValues={activity}
             imageUrl={activity && activity.imageUrl}
-            setUploadableImage={this.setUploadableImage}
-            uploadableImageLocal={uploadableImageLocal}
-            resources={resources}
-            isCreating={isCreating}
             isPublicActivity={isPublicActivity}
-            formValues={formValues}
-            longDescription={longDescription}
-            onFormValueChange={this.handleFormValueChange}
-            onQuillChange={this.handleQuillChange}
+            resources={resources}
+            uploadableImageLocal={uploadableImageLocal}
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
-            datesAndTimes={datesAndTimes}
-            buttonLabel={buttonLabel}
-            isFormValid={isFormValid}
+            setUploadableImage={this.setUploadableImage}
             isButtonDisabled={!isFormValid || isCreating}
+            isCreating={isCreating}
+            isFormValid={isFormValid}
           />
         </Box>
 
-        <Box pad="small" direction="row" justify="center">
-          {activity.authorId === currentUser._id && (
-            <Anchor color="status-critical" onClick={this.showDeleteModal}>
-              Delete
-            </Anchor>
-          )}
-        </Box>
+        <Center>
+          <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
+            Delete
+          </Button>
+        </Center>
 
         <ConfirmModal
           title="Confirm"

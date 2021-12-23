@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import { Box, FormControl, FormLabel, Switch, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
+import FormSwitch from '../../UIComponents/FormSwitch';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 
@@ -329,39 +330,22 @@ class NewActivity extends PureComponent {
           </Box>
 
           <ActivityForm
-            setUploadableImage={this.setUploadableImage}
-            uploadableImageLocal={uploadableImageLocal}
-            resources={resources}
-            isCreating={isCreating}
-            isPublicActivity={isPublicActivity}
+            datesAndTimes={datesAndTimes}
             defaultValues={formValues}
+            isPublicActivity={isPublicActivity}
+            resources={resources}
+            uploadableImageLocal={uploadableImageLocal}
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
-            datesAndTimes={datesAndTimes}
-            buttonLabel={buttonLabel}
-            isFormValid={isFormValid}
+            setUploadableImage={this.setUploadableImage}
             isButtonDisabled={!isFormValid || isCreating}
+            isCreating={isCreating}
+            isFormValid={isFormValid}
           />
         </Box>
       </Template>
     );
   }
-}
-
-function FormSwitch({ isChecked, isDisabled = false, label, onChange }) {
-  return (
-    <FormControl display="flex" alignItems="center">
-      <Switch
-        id={label}
-        isChecked={isChecked}
-        isDisabled={isDisabled}
-        onChange={onChange}
-      />
-      <FormLabel htmlFor={label} mb="0" ml="4">
-        {label}
-      </FormLabel>
-    </FormControl>
-  );
 }
 
 NewActivity.contextType = StateContext;

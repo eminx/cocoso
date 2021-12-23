@@ -26,7 +26,6 @@ const ProcessForm = ({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
-  console.log(isSubmitting);
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
