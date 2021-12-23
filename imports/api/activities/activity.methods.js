@@ -5,7 +5,6 @@ import Hosts from '../@hosts/host';
 import Activities from './activity';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
-
 Meteor.methods({
   getMyActivities() {
     const user = Meteor.user();
