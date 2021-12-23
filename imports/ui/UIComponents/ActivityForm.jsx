@@ -6,13 +6,14 @@ import {
   Center,
   Flex,
   Heading,
+  IconButton,
   Input,
   Select,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
-import { AddCircle } from 'grommet-icons/icons/AddCircle';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
@@ -84,16 +85,9 @@ function ActivityForm({
             noAnimate={index === 0}
           />
         ))}
-        <Box
-          direction="row"
-          justify="center"
-          pad="small"
-          margin="medium"
-          onClick={addRecurrence}
-          hoverIndicator
-        >
-          <AddCircle style={{ fontSize: 48, cursor: 'pointer' }} />
-        </Box>
+        <Center p="6">
+          <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
+        </Center>
       </div>
     );
   };
@@ -169,9 +163,14 @@ function ActivityForm({
             <Select
               {...register('resource', { required: true })}
               placeholder="Select resource to book"
+              variant="filled"
             >
               {resources.map((option, index) => (
-                <option>
+                <option
+                  key={option._id}
+                  selected={option.label === defaultValues.resource}
+                  value={option._id}
+                >
                   {option.isCombo
                     ? option.label +
                       ': [' +

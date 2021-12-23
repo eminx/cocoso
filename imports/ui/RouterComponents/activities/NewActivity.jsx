@@ -40,7 +40,6 @@ const emptyDateAndTime = {
 class NewActivity extends PureComponent {
   state = {
     formValues: { ...formModel },
-    longDescription: '',
     datesAndTimes: [{ ...emptyDateAndTime }],
     isLoading: false,
     isSuccess: false,
@@ -117,22 +116,26 @@ class NewActivity extends PureComponent {
   };
 
   createActivity = () => {
+    const { resources } = this.props;
+
     const {
       formValues,
-      longDescription,
       datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
     } = this.state;
 
+    const resource = resources.find(
+      (resource) => resource._id === formValues.resource
+    );
+
     const values = {
       ...formValues,
-      resource: formValues.resource,
+      datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
-      datesAndTimes,
-      longDescription,
+      resource,
     };
 
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {

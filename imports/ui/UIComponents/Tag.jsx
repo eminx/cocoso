@@ -52,7 +52,7 @@ const Tag = ({
           weight={checkable ? 'normal' : 'bold'}
           color={checked ? 'white' : filterColor}
         >
-          {checkable ? label : label.toUpperCase()}
+          {checkable ? label : label && label.toUpperCase()}
         </Text>
       </Box>
       {removable && (

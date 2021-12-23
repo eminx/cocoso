@@ -30,19 +30,19 @@ const formModel = {
 
 class EditActivity extends PureComponent {
   state = {
-    isDeleteModalOn: false,
+    datesAndTimes: [],
     formValues: formModel,
+    isDeleteModalOn: false,
+    isPublicActivity: false,
+    isCreating: false,
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    isRegistrationDisabled: false,
     longDescription: '',
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
-    isPublicActivity: false,
-    isRegistrationDisabled: false,
-    datesAndTimes: [],
-    isLoading: false,
-    isSuccess: false,
-    isError: false,
-    isCreating: false,
   };
 
   componentDidMount() {
@@ -60,52 +60,11 @@ class EditActivity extends PureComponent {
     if (!activity) {
       return;
     }
-    const {
-      title,
-      subTitle,
-      longDescription,
-      place,
-      address,
-      resource,
-      practicalInfo,
-      internalInfo,
-      isPublicActivity,
-      isRegistrationDisabled,
-      datesAndTimes,
-    } = activity;
+    const { datesAndTimes } = activity;
 
-    if (!isPublicActivity) {
-      this.setState({
-        formValues: {
-          title,
-          resource: {
-            label: resource,
-          },
-        },
-        longDescription,
-        isPublicActivity,
-        isRegistrationDisabled,
-        datesAndTimes: [...datesAndTimes],
-      });
-    } else {
-      this.setState({
-        formValues: {
-          title,
-          subTitle,
-          place,
-          address,
-          resource: {
-            label: resource,
-          },
-          practicalInfo,
-          internalInfo,
-        },
-        longDescription,
-        isPublicActivity,
-        isRegistrationDisabled,
-        datesAndTimes: [...datesAndTimes],
-      });
-    }
+    this.setState({
+      datesAndTimes: [...datesAndTimes],
+    });
   };
 
   handleFormValueChange = (formValues) => {
@@ -178,22 +137,25 @@ class EditActivity extends PureComponent {
   };
 
   updateActivity = () => {
-    const { activity } = this.props;
+    const { activity, resources } = this.props;
     const {
       formValues,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
       datesAndTimes,
-      longDescription,
     } = this.state;
+
+    const resource = resources.find(
+      (resource) => resource._id === formValues.resource
+    );
 
     const values = {
       ...formValues,
+      datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
-      datesAndTimes,
-      longDescription,
+      resource,
     };
 
     const imageUrl = uploadedImage || activity.imageUrl;
