@@ -1,26 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import { getHost } from '../@/shared';
-import Categories from './category';
 import Hosts from '../@hosts/host';
-const catColors = [
-  'hsla(10, 62%, 80%, 0.7)',
-  'hsla(46, 62%, 80%, 0.7)',
-  'hsla(82, 62%, 80%, 0.7)',
-  'hsla(118, 62%, 80%, 0.7)',
-  'hsla(154, 62%, 80%, 0.7)',
-  'hsla(190, 62%, 80%, 0.7)',
-  'hsla(226, 62%, 80%, 0.7)',
-  'hsla(262, 62%, 80%, 0.7)',
-  'hsla(298, 62%, 80%, 0.7)',
-  'hsla(334, 62%, 80%, 0.7)',
-];
-
-const isUserAdmin = (members, userId) => {
-  return members.some(
-    (member) => member.id === userId && member.role === 'admin'
-  );
-};
-
+import Categories from './category';
+import { catColors, isUserAdmin } from './category.helpers';
 
 Meteor.methods({
   getCategories() {
