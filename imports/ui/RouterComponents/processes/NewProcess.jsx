@@ -221,7 +221,6 @@ class NewProcess extends React.Component {
             <PopoverTrigger>
               <FormControl alignItems="center" display="flex" w="auto" mb="4">
                 <Switch
-                  id="email-alerts"
                   isChecked={isPrivate}
                   size="lg"
                   onChange={this.handlePrivateProcessSwitch}

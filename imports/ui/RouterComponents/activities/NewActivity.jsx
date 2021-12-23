@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { CheckBox, Box, Text } from 'grommet';
 import moment from 'moment';
+import { Box, FormControl, FormLabel, Switch, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
@@ -53,37 +53,20 @@ class NewActivity extends PureComponent {
     isCreating: false,
   };
 
-  handleFormValueChange = (formValues) => {
-    const { datesAndTimes } = this.state;
-    const oldFormValues = this.state.formValues;
-
-    this.setState({
-      formValues,
-    });
-
-    if (oldFormValues.resource.label !== formValues.resource.label) {
-      this.validateBookings(datesAndTimes, formValues.resource);
-    }
-  };
-
-  handleQuillChange = (longDescription) => {
-    this.setState({
-      longDescription,
-    });
-  };
-
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { isPublicActivity } = this.state;
 
-    if (isPublicActivity) {
-      this.uploadImage();
-    } else {
-      this.createActivity();
-    }
+    const runCallback = isPublicActivity
+      ? this.uploadImage
+      : this.createActivity;
 
-    this.setState({
-      isCreating: true,
-    });
+    this.setState(
+      {
+        isCreating: true,
+        formValues: values,
+      },
+      runCallback
+    );
   };
 
   setUploadableImage = (files) => {
@@ -319,53 +302,66 @@ class NewActivity extends PureComponent {
 
     return (
       <Template heading="Create a New Activity">
-        <Box margin={{ bottom: 'medium' }}>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity}
-              label={<Text>Public Event?</Text>}
-              onChange={this.handlePublicActivitySwitch}
-            />
-          </Box>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity || isExclusiveActivity}
-              disabled={isPublicActivity}
-              label={<Text>Exclusive Activity (Others cannot book)</Text>}
-              onChange={this.handleExclusiveSwitch}
-            />
-          </Box>
-          {isPublicActivity && (
-            <Box flex={{ basis: 180 }} pad="small">
-              <CheckBox
-                checked={isRegistrationDisabled}
-                label={<Text>RSVP disabled?</Text>}
-                onChange={this.handleRegistrationSwitch}
+        <Box bg="white" p="8">
+          <Box mb="8">
+            <VStack spacing="2">
+              <FormSwitch
+                isChecked={isPublicActivity}
+                label="Public Event"
+                onChange={this.handlePublicActivitySwitch}
               />
-            </Box>
-          )}
-        </Box>
 
-        <ActivityForm
-          setUploadableImage={this.setUploadableImage}
-          uploadableImageLocal={uploadableImageLocal}
-          resources={resources}
-          isCreating={isCreating}
-          isPublicActivity={isPublicActivity}
-          formValues={formValues}
-          longDescription={longDescription}
-          onFormValueChange={this.handleFormValueChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-          setDatesAndTimes={this.setDatesAndTimes}
-          datesAndTimes={datesAndTimes}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isCreating}
-        />
+              <FormSwitch
+                isChecked={isPublicActivity || isExclusiveActivity}
+                isDisabled={isPublicActivity}
+                label="Exclusive Activity (Others cannot book)"
+                onChange={this.handleExclusiveSwitch}
+              />
+
+              {isPublicActivity && (
+                <FormSwitch
+                  isChecked={isRegistrationDisabled}
+                  label="RSVP disabled"
+                  onChange={this.handleRegistrationSwitch}
+                />
+              )}
+            </VStack>
+          </Box>
+
+          <ActivityForm
+            setUploadableImage={this.setUploadableImage}
+            uploadableImageLocal={uploadableImageLocal}
+            resources={resources}
+            isCreating={isCreating}
+            isPublicActivity={isPublicActivity}
+            defaultValues={formValues}
+            onSubmit={this.handleSubmit}
+            setDatesAndTimes={this.setDatesAndTimes}
+            datesAndTimes={datesAndTimes}
+            buttonLabel={buttonLabel}
+            isFormValid={isFormValid}
+            isButtonDisabled={!isFormValid || isCreating}
+          />
+        </Box>
       </Template>
     );
   }
+}
+
+function FormSwitch({ isChecked, isDisabled = false, label, onChange }) {
+  return (
+    <FormControl display="flex" alignItems="center">
+      <Switch
+        id={label}
+        isChecked={isChecked}
+        isDisabled={isDisabled}
+        onChange={onChange}
+      />
+      <FormLabel htmlFor={label} mb="0" ml="4">
+        {label}
+      </FormLabel>
+    </FormControl>
+  );
 }
 
 NewActivity.contextType = StateContext;

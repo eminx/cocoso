@@ -1,7 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Center } from '@chakra-ui/react';
 
 import { call } from '../../functions';
 import ProcessForm from '../../UIComponents/ProcessForm';
@@ -185,11 +184,11 @@ class EditProcess extends React.Component {
         </Box>
 
         {process.adminId === currentUser._id && (
-          <Box p="2" direction="row" justify="center" mt="4">
+          <Center>
             <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
               Delete
             </Button>
-          </Box>
+          </Center>
         )}
 
         <ConfirmModal

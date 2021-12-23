@@ -17,13 +17,17 @@ const PageForm = ({ defaultValues, onSubmit }) => {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormField label="Title">
-            <Input {...register('title')} placeholder="Contributing" />
+            <Input
+              {...register('title', { required: true })}
+              placeholder="Contributing"
+            />
           </FormField>
 
           <FormField label="Description">
             <Controller
               control={control}
               name="longDescription"
+              rules={{ required: true }}
               render={({ field }) => (
                 <ReactQuill
                   {...field}

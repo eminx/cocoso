@@ -899,7 +899,7 @@ class Process extends Component {
           {isAdmin && (
             <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
-                <Anchor label="Edit this Process" />
+                <Anchor label="Edit" />
               </Link>
             </Center>
           )}
