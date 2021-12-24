@@ -8,9 +8,21 @@ const CustomValidators = {
 
 const Schemas = {};
 
+Schemas.Id = {
+  type: String, 
+  regEx: SimpleSchema.RegEx.Id
+};
 Schemas.Host = {
   type: String, 
   regEx: CustomValidators.RegEx.Hostname
+};
+Schemas.Email = {
+  type: String, 
+  regEx: SimpleSchema.RegEx.Email
+};
+Schemas.Src = {
+  type: String, 
+  regEx: SimpleSchema.RegEx.Url
 };
 Schemas.Avatar = {
   src: {
