@@ -6,10 +6,10 @@ const Activities = new Mongo.Collection('activities');
 const datesAndTimesSchema = new SimpleSchema({
   attendees: {type: Array, optional: true},
   'attendees.$': {type: new SimpleSchema({
-    email: {type: String},
+    email: Schemas.Email,
     firstName: {type: String},
     lastName: {type: String},
-    numberOfPeople: {type: String},
+    numberOfPeople: {type: SimpleSchema.Integer},
     registerDate: {type: Date},
   }), optional: true},
   startDate: {type: String},
@@ -22,17 +22,18 @@ const datesAndTimesSchema = new SimpleSchema({
 });
 
 const activitySchema = new SimpleSchema({
-  // _id: {type: String},
-  host: {type: String},
-  authorId: {type: String},
+  _id: Schemas.Id,
+  host: Schemas.Host,
+
+  authorId: Schemas.Id,
   authorName: {type: String},
 
   title: {type: String},
   subTitle: {type: String, optional: true},
   longDescription: {type: String},
-  imageUrl: {type: String, optional: true},
+  imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
-  resourceId: {type: String, optional: true},
+  resourceId: {type: String, regEx: SimpleSchema.RegEx.Id, optional: true},
   resource: {type: String, optional: true},
   resourceIndex: {type: SimpleSchema.Integer, optional: true},
   // resourceHourlyFee: {type: String, optional: true}, //undefined
