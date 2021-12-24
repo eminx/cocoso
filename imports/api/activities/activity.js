@@ -26,7 +26,7 @@ const SchemasActivity  = {
 
 Schemas.Activity = new SimpleSchema({
   _id: Schemas.Id,
-  host: Schemas.Host,
+  host: Schemas.Hostname,
 
   authorId: Schemas.Id,
   authorName: {type: String},

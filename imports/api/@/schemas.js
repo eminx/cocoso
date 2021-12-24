@@ -6,31 +6,33 @@ const CustomValidators = {
   }
 };
 
-const Schemas = {};
-
-Schemas.Id = {
-  type: String, 
-  regEx: SimpleSchema.RegEx.Id
-};
-Schemas.Host = {
-  type: String, 
-  regEx: CustomValidators.RegEx.Hostname
-};
-Schemas.Email = {
-  type: String, 
-  regEx: SimpleSchema.RegEx.Email
-};
-Schemas.Src = {
-  type: String, 
-  regEx: SimpleSchema.RegEx.Url
-};
-Schemas.Avatar = {
-  src: {
+const Schemas = {
+  Id: {
+    type: String, 
+    regEx: SimpleSchema.RegEx.Id
+  },
+  Hostname: {
+    type: String, 
+    regEx: CustomValidators.RegEx.Hostname
+  },
+  Email: {
+    type: String, 
+    regEx: SimpleSchema.RegEx.Email
+  },
+  Src: {
     type: String, 
     regEx: SimpleSchema.RegEx.Url
   },
-  date: {type: Date},
+  Avatar: {
+    src: {
+      type: String, 
+      regEx: SimpleSchema.RegEx.Url
+    },
+    date: {type: Date},
+  },
 };
+
+
 
 
 export { Schemas, CustomValidators };

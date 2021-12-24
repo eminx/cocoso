@@ -11,7 +11,7 @@ const SchemasUser = {
   },
   avatar: Schemas.Avatar,
   memberships: {
-    host: Schemas.Host,
+    host: Schemas.Hostname,
     role: {type: String},
     date: {type: Date},
   },

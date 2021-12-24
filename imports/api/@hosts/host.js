@@ -21,7 +21,7 @@ const SchemasHost = {
 
 Schemas.Host = new SimpleSchema({
   _id: Schemas.Id,
-  host: Schemas.Host,
+  host: Schemas.Hostname,
 
   email: Schemas.Email,
   logo: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
