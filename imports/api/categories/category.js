@@ -1,11 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Schemas, CustomValidators } from '../@/schemas';
+import { Schemas } from '../@/schemas';
 
 const Categories = new Mongo.Collection('categories');
 
 Schemas.Category = new SimpleSchema({
-  // _id: {type: String, regEx: SimpleSchema.RegEx.Id},
+  _id: Schemas.Id,
   host: Schemas.Host,
   addedBy: {
     type: String, 
