@@ -1,55 +1,53 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { Schemas } from '../@/schemas';
 
 const Hosts = new Mongo.Collection('hosts');
 
-const menuSchema = new SimpleSchema({
-  label: {type: String},
-  name: {type: String},
-  isVisible: {type: Boolean},
-  isHomePage: {type: Boolean},
-});
+const SchemasHost = {
+  menu: {
+    label: {type: String},
+    name: {type: String},
+    isVisible: {type: Boolean},
+    isHomePage: {type: Boolean},
+  },
+  emailTemplate: { 
+    title: {type: String},
+    subject: {type: String},
+    appeal: {type: String},
+    body: {type: String},
+  }
+};
 
-const hlsSchema = new SimpleSchema({
-  h: {type: String},
-  l: {type: SimpleSchema.Integer},
-  s: {type: SimpleSchema.Integer},
-});
+Schemas.Host = new SimpleSchema({
+  _id: Schemas.Id,
+  host: Schemas.Host,
 
-const emailTemplateSchema = new SimpleSchema({ 
-  title: {type: String},
-  subject: {type: String},
-  appeal: {type: String},
-  body: {type: String},
-});
-
-const hostSchema = new SimpleSchema({
-  // _id: {type: String},
-  createdAt: {type: Date},
-  host: {type: String},
-  email: {type: String},
-  
-  emails: {type: Array},
-  'emails.$': {type: emailTemplateSchema},
-  // logo: {type: String},
+  email: Schemas.Email,
+  logo: {type: Schemas.Src, optional: true},
 
   settings: {type: Object},
   'settings.name': {type: String},
-  'settings.email': {type: String},
+  'settings.email': Schemas.Email,
   'settings.address': {type: String},
   'settings.city': {type: String},
   'settings.country': {type: String},
   'settings.menu': {type: Array},
-  'settings.menu.$': {type: menuSchema},
+  'settings.menu.$': new SimpleSchema(SchemasHost.menu),
   'settings.mainColor': {type: Object, optional:true },
 
   members: {type: Array},
   'members.$': {type: Object},
-  'members.$.id': {type: String},
+  'members.$.id': Schemas.Id,
   'members.$.username': {type: String},
-  'members.$.email': {type: String},
+  'members.$.email': Schemas.Email,
   'members.$.role': {type: String},
   'members.$.date': {type: Date},
+
+  emails: {type: Array},
+  'emails.$': new SimpleSchema(SchemasHost.emailTemplate),
+
+  createdAt: {type: Date},
 
   // registeredBy: {type: Object},
   // 'verifiedBy.username': {type: String},
@@ -68,5 +66,6 @@ const hostSchema = new SimpleSchema({
 
 });
 
-Hosts.attachSchema(hostSchema);
+Hosts.attachSchema(Schemas.Host);
+
 export default Hosts;

@@ -2,10 +2,41 @@ import { Accounts } from 'meteor/accounts-base';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../@/schemas';
 
+const SchemasUser = {
+  profile: {
+    firstName: {type: String},
+    lastName: {type: String},
+    bio: {type: String, optional: true},
+    contactInfo: {type: String, optional: true},
+  },
+  avatar: Schemas.Avatar,
+  memberships: {
+    host: Schemas.Host,
+    role: {type: String},
+    date: {type: Date},
+  },
+  notifications: {
+    contextId: Schemas.Id,
+    context: {type: String},
+    count: {type: SimpleSchema.Integer},
+  },
+  groups: {
+    groupId: Schemas.Id,
+    name: {type: String},
+    meAdmin: {type: Boolean},
+    joinDate: {type: Date},
+  },
+  processes: {
+    processId: Schemas.Id,
+    name: {type: String},
+    isAdmin: {type: Boolean},
+    joinDate: {type: Date},
+  },
+};
+
 // Ensuring every user has an email address, should be in server-side code
 Accounts.validateNewUser((user) => {
   new SimpleSchema({
-
     _id: { type: String, regEx: SimpleSchema.RegEx.Id },
     emails: { type: Array },
     'emails.$': { type: Object },
@@ -23,43 +54,9 @@ Accounts.validateNewUser((user) => {
     'attending.$': new SimpleSchema(SchemasUser.groups) ,
     processes: { type: Array, optional: true },
     'processes.$': new SimpleSchema(SchemasUser.processes),
-
   }).validate(user);
   // Return true to allow user creation to proceed
   return true;
 });
-
-const SchemasUser = {
-  profile: {
-    firstName: {type: String},
-    lastName: {type: String},
-    bio: {type: String, optional: true},
-    contactInfo: {type: String, optional: true},
-  },
-  avatar: Schemas.Avatar,
-  memberships: {
-    host: {type: String},
-    role: {type: String},
-    date: {type: Date},
-  },
-  notifications: {
-    context: {type: String},
-    contextId: {type: String},
-    count: {type: SimpleSchema.Integer},
-  },
-  groups: {
-    groupId: {type: String},
-    joinDate: {type: Date},
-    meAdmin: {type: Boolean},
-    name: {type: String},
-  },
-  processes: {
-    isAdmin: {type: Boolean},
-    joinDate: {type: Date},
-    name: {type: String},
-    processId: {type: String},
-  },
-};
-
 
 export { SchemasUser };
