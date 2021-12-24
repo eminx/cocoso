@@ -4,10 +4,11 @@ import { Schemas } from '../@/schemas';
 
 const Works = new Mongo.Collection('works');
 
-const workSchema = new SimpleSchema({
-  // _id: {type: String},
-  host: Schemas.Host,
-  authorId: {type: String},
+Schemas.Work = new SimpleSchema({
+  _id: Schemas.Id,
+  host: Schemas.Hostname,
+
+  authorId: Schemas.Id,
   authorUsername: {type: String},
 
   authorFirstName: {type: String},
@@ -21,17 +22,17 @@ const workSchema = new SimpleSchema({
   additionalInfo: {type: String, defaultValue: ""},
 
   images: {type: Array, optional: true},
-  'images.$': {type: String},
+  'images.$': Schemas.Src,
 
   category: {type: Object, optional: true},
+  'category.categoryId': Schemas.Id,
   'category.label': {type: String},
   'category.color': {type: String},
-  'category.categoryId': {type: String},
 
   creationDate: {type: Date},
   latestUpdate: {type: Date, optional: true},
 });
 
-Works.attachSchema(workSchema);
+Works.attachSchema(Schemas.Work );
 
 export default Works;

@@ -9,7 +9,7 @@ const SchemasUser = {
     bio: {type: String, optional: true},
     contactInfo: {type: String, optional: true},
   },
-  avatar: Schemas.Avatar,
+  avatar: new SimpleSchema(Schemas.Avatar),
   memberships: {
     host: Schemas.Hostname,
     role: {type: String},

@@ -5,9 +5,10 @@ import { Schemas } from '../@/schemas';
 const Resources = new Mongo.Collection('resources');
 
 Schemas.Resources = new SimpleSchema({
-  _id: {type: String},
-  host: {type: String},
-  authorId: {type: String},
+  _id: Schemas.Id,
+  host: Schemas.Hostname,
+  
+  authorId: Schemas.Id,
   authorUsername: {type: String},
   authorFirstName: {type: String},
   authorLastName: {type: String},
@@ -22,9 +23,10 @@ Schemas.Resources = new SimpleSchema({
   resourceIndex: {type: SimpleSchema.Integer, optional: true},
   resourcesForCombo: {type: Array, optional: true},
   'resourcesForCombo.$': new SimpleSchema({
-    _id: {type: String},
-    host: {type: String},
-    authorId: {type: String},
+    _id: Schemas.Id,
+    host: Schemas.Hostname,
+    
+    authorId: Schemas.Id,
     authorUsername: {type: String},
     authorFirstName: {type: String},
     authorLastName: {type: String},

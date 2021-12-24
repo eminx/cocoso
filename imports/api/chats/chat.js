@@ -23,7 +23,7 @@ Schemas.Chats = new SimpleSchema({
   'messages.$.createdDate': {type: Date},
 
   isNotificationOn: {type: Boolean},
-  lastMessageBy: {type: Date, optional:true},
+  lastMessageBy: {type: String, regEx: SimpleSchema.RegEx.Id, optional:true},
 });
 
 Chats.attachSchema(Schemas.Chats);
