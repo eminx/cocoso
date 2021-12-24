@@ -24,7 +24,7 @@ Schemas.Host = new SimpleSchema({
   host: Schemas.Host,
 
   email: Schemas.Email,
-  logo: {type: Schemas.Src, optional: true},
+  logo: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
   settings: {type: Object},
   'settings.name': {type: String},
