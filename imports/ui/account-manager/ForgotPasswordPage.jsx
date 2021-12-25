@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Text } from '@chakra-ui/react';
 
 import Template from '../UIComponents/Template';
-import { ForgotPassword, SimpleText } from './index';
+import { ForgotPassword } from './index';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../functions';
 import { message } from '../UIComponents/message';
@@ -50,18 +50,18 @@ function ForgotPasswordPage() {
             )}
           </Box>
 
-          <HStack justify="space-around" mt="4">
-            <SimpleText>
-              <Link to="/login">
-                <Button variant="link">Login</Button>
-              </Link>
-            </SimpleText>
-            <SimpleText>
-              <Link to="/signup">
-                <Button variant="link">Signup</Button>
-              </Link>
-            </SimpleText>
-          </HStack>
+          <Flex justify="space-around" mt="4">
+            <Link to="/login">
+              <Button as="span" variant="link">
+                Login
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button as="span" variant="link">
+                Signup
+              </Button>
+            </Link>
+          </Flex>
         </Box>
       </Center>
     </Template>

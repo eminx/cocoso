@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
-import { Box, Image } from 'grommet';
-import { Previous } from 'grommet-icons/icons/Previous';
-import { Next } from 'grommet-icons/icons/Next';
+import { Box, Center, Flex, IconButton, Image } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { ScreenClassRender } from 'react-grid-system';
 import FsLightbox from 'fslightbox-react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const iconBoxProps = {
-  pad: 'xsmall',
+  p: '2',
 };
 
 const arrowsContainerStyle = {
@@ -26,7 +25,7 @@ function NiceSlider({ images }) {
   return (
     <ScreenClassRender
       render={(screenClass) => (
-        <Box style={{ position: 'relative' }} background="dark-1">
+        <Box bg="gray.900" position="relative">
           <Slider
             swipe
             autoplay
@@ -37,28 +36,30 @@ function NiceSlider({ images }) {
             ref={(component) => (this.slider = component)}
           >
             {images.map((image) => (
-              <Box
-                key={image}
-                alignSelf="center"
-                height={screenClass === 'xs' ? 'small' : 'medium'}
-                width={screenClass === 'xs' ? 'medium' : 'large'}
-                onClick={() => setToggler(!toggler)}
-              >
-                <Image fill fit="contain" src={image} />
-              </Box>
+              <Center key={image} width="100%">
+                <Image
+                  w="auto"
+                  h={screenClass === 'xs' ? '200px' : 'sm'}
+                  fit="contain"
+                  src={image}
+                  style={{ cursor: 'pointer', margin: '0 auto' }}
+                  onClick={() => setToggler(!toggler)}
+                />
+              </Center>
             ))}
           </Slider>
 
           {images.length > 1 && (
-            <Box
-              direction="row"
-              justify="between"
-              round
-              style={arrowsContainerStyle}
-            >
-              <Box {...iconBoxProps} onClick={() => this.slider.slickPrev()}>
-                <Previous />
+            <Flex justify="space-between" style={arrowsContainerStyle}>
+              <Box {...iconBoxProps}>
+                <IconButton
+                  aria-label="Slide back"
+                  bg="rgba(255, 255, 255, 0.5)"
+                  icon={<ArrowBackIcon />}
+                  onClick={() => this.slider.slickPrev()}
+                />
               </Box>
+
               <Box
                 {...iconBoxProps}
                 style={{
@@ -66,11 +67,15 @@ function NiceSlider({ images }) {
                   position: 'absolute',
                   right: 0,
                 }}
-                onClick={() => this.slider.slickNext()}
               >
-                <Next />
+                <IconButton
+                  aria-label="Slide forward"
+                  bg="rgba(255, 255, 255, 0.5)"
+                  icon={<ArrowForwardIcon />}
+                  onClick={() => this.slider.slickNext()}
+                />
               </Box>
-            </Box>
+            </Flex>
           )}
 
           <FsLightbox
