@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
   Box,
@@ -19,77 +19,27 @@ import { message } from '../../UIComponents/message';
 import { userMenu } from '../../constants/general';
 import { call, resizeImage, uploadImage } from '../../functions';
 import FileDropper from '../../UIComponents/FileDropper';
-// import Loader from '../../UIComponents/Loader';
 import { StateContext } from '../../LayoutContainer';
 
-const personalModel = {
-  firstName: '',
-  lastName: '',
-};
-
-class Profile extends React.Component {
+class Profile extends PureComponent {
   state = {
     isDeleteModalOn: false,
-    personal: personalModel,
-    bio: '',
+    isUploading: false,
     uploadableAvatarLocal: null,
     uploadableAvatar: null,
   };
 
-  componentDidMount() {
-    this.setInitialPersonalInfo();
-  }
-
-  setInitialPersonalInfo = () => {
-    const { currentUser } = this.props;
-    if (!currentUser) {
-      return;
+  handleSubmit = async (values) => {
+    try {
+      await call('saveUserInfo', values);
+      message.success('Your data is successfully saved');
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
     }
-    this.setState({
-      personal: {
-        firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || '',
-      },
-      bio: currentUser.bio || '',
-      contactInfo: currentUser.contactInfo || '',
-    });
-  };
-
-  handleFormChange = (formValues) => {
-    this.setState({
-      personal: formValues,
-    });
-  };
-
-  handleSubmit = () => {
-    const { personal, bio, contactInfo } = this.state;
-    this.setState({
-      isSaving: true,
-    });
-
-    const values = {
-      ...personal,
-      bio,
-      contactInfo,
-    };
-    Meteor.call('saveUserInfo', values, (error, respond) => {
-      if (error) {
-        console.log(error);
-        message.error(error.reason);
-      } else {
-        message.success('Your data is successfully saved');
-        this.setState({
-          isSaving: false,
-        });
-      }
-    });
   };
 
   setUploadableAvatar = (files) => {
-    this.setState({
-      isLocalising: true,
-    });
-
     const uploadableAvatar = files[0];
 
     const reader = new FileReader();
@@ -100,7 +50,6 @@ class Profile extends React.Component {
         this.setState({
           uploadableAvatar,
           uploadableAvatarLocal: reader.result,
-          isLocalising: false,
         });
       },
       false
@@ -109,6 +58,7 @@ class Profile extends React.Component {
 
   uploadAvatar = async () => {
     const { uploadableAvatar } = this.state;
+
     this.setState({
       isUploading: true,
     });
@@ -125,27 +75,25 @@ class Profile extends React.Component {
       });
       message.success('Your avatar is successfully set');
     } catch (error) {
+      this.setState({
+        isUploading: false,
+      });
       console.error('Error uploading:', error);
       message.error(error.reason);
-      this.setState({
-        isCreating: false,
-        isUploading: false,
-        isError: true,
-      });
     }
   };
 
-  deleteAccount = () => {
-    Meteor.call('deleteAccount', (error, respond) => {
-      if (error) {
-        console.log(error);
-        message.error(error.reason);
-        return;
-      }
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 400);
+  deleteAccount = async () => {
+    try {
+      await call('deleteAccount');
+      message.success('Your account is deleted');
+      setTimeout(() => {
+        window.location.reload();
+      }, 400);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
   };
 
   logout = () => {
@@ -170,14 +118,7 @@ class Profile extends React.Component {
       return <Redirect to="/login" />;
     }
 
-    const {
-      personal,
-      bio,
-      contactInfo,
-      isDeleteModalOn,
-      uploadableAvatarLocal,
-      isUploading,
-    } = this.state;
+    const { isDeleteModalOn, uploadableAvatarLocal, isUploading } = this.state;
 
     const pathname = history && history.location.pathname;
 
@@ -265,14 +206,7 @@ class Profile extends React.Component {
               Personal Info
             </Heading>
             <Personal
-              bio={bio}
-              contactInfo={contactInfo}
-              formValues={personal}
-              onBioChange={(bio) => this.setState({ bio })}
-              onContactInfoChange={(contactInfo) =>
-                this.setState({ contactInfo })
-              }
-              onFormChange={this.handleFormChange}
+              defaultValues={currentUser}
               onSubmit={this.handleSubmit}
             />
           </Box>
