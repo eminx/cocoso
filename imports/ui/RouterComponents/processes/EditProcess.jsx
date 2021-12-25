@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center } from '@chakra-ui/react';
+import { Box, Button, Center, IconButton } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import { call } from '../../functions';
 import ProcessForm from '../../UIComponents/ProcessForm';
@@ -166,9 +167,11 @@ class EditProcess extends React.Component {
         leftContent={
           <Box p="2">
             <Link to={`/process/${process._id}`}>
-              <Button as="span" variant="link">
-                {process.title}
-              </Button>
+              <IconButton
+                as="span"
+                aria-label="Back"
+                icon={<ArrowBackIcon />}
+              />
             </Link>
           </Box>
         }

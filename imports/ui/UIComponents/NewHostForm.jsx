@@ -1,30 +1,40 @@
 import React from 'react';
-import { TextInput, TextArea, FormField, Form, Box, Button } from 'grommet';
+import { useForm } from 'react-hook-form';
+import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
 import { hostFields } from '../constants/general';
+import FormField from './FormField';
 
-function Field(props) {
-  return (
-    <FormField label={props.label}>
-      {props.textArea ? (
-        <TextArea {...props} />
-      ) : (
-        <TextInput {...props} plain={false} />
-      )}
-    </FormField>
-  );
-}
+function NewHostForm({ defaultValues, onSubmit }) {
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
 
-function NewHostForm({ formValues, onFormChange, onSubmit }) {
   return (
     <div>
-      <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
-        {hostFields.map((field) => (
-          <Field {...field} margin={{ bottom: 'medium', top: 'medium' }} />
-        ))}
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Confirm" />
-        </Box>
-      </Form>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
+          {hostFields.map((props) => (
+            <FormField key={props.name} label={props.label}>
+              {props.textArea ? (
+                <Textarea {...props} {...register(props.name)} />
+              ) : (
+                <Input {...props} {...register(props.name)} />
+              )}
+            </FormField>
+          ))}
+
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button
+              isDisabled={!isDirty}
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
     </div>
   );
 }
