@@ -1,49 +1,53 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Box, Button, Image, Text } from 'grommet';
+import { Box, Button, Center, Image, Text } from '@chakra-ui/react';
 
 const FileDropper = ({
-  setUploadableImage,
-  uploadableImageLocal,
+  height = '100%',
+  imageFit = 'contain',
   imageUrl,
   label,
   round = false,
-  imageFit = 'contain',
+  uploadableImageLocal,
+  setUploadableImage,
   ...otherProps
 }) => {
+  const containerStyle = {
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    cursor: 'pointer',
+  };
+
+  if (round) {
+    containerStyle.borderRadius = '50%';
+    containerStyle.overflow = 'hidden';
+  }
+
   return (
     <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          background={isDragActive ? 'light-3' : 'light-1'}
-          border={{ size: 'xsmall', style: 'dashed' }}
-          elevation="medium"
-          style={round ? { borderRadius: '50%', overflow: 'hidden' } : null}
+          bg={isDragActive ? 'gray.300' : 'gray.100'}
+          h={height}
+          style={containerStyle}
+          w="xs"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
               fit={imageFit}
-              fill
+              width="100%"
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}
             />
           ) : (
-            <Box alignSelf="center" pad="medium" height="small">
-              <Button
-                plain
-                hoverIndicator="light-1"
-                label={
-                  <Box alignSelf="center">
-                    <Text size="xsmall" textAlign="center">
-                      {label ||
-                        'Drop an image or images; or alternatively click to open the file picker'}
-                    </Text>
-                  </Box>
-                }
-              />
-            </Box>
+            <Center p="8">
+              <Text textAlign="center" fontSize="sm">
+                Drop an image or images; or alternatively click to open the file
+                picker
+              </Text>
+            </Center>
           )}
           <input {...getInputProps()} />
         </Box>
