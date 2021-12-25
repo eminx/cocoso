@@ -1,3 +1,4 @@
+import { siteUrl } from '../@/shared';
 const publicSettings = Meteor.settings.public;
 
 const getProcessJoinText = (

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost, getResourceIndex } from '../@/shared';
-import { isContributorOrAdmin, isMember } from '../@users/user.roles';
+import { isAdmin, isContributorOrAdmin, isMember } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Processes from './process';
 import {

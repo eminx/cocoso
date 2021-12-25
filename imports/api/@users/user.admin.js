@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../@/shared';
 import Hosts from '../@hosts/host';
-import { isContributorOrAdmin } from './user.roles';
+import { isContributorOrAdmin, isContributor } from './user.roles';
 
 const publicSettings = Meteor.settings.public;
 const getVerifiedEmailText = (username) => {
