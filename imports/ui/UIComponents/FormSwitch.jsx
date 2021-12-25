@@ -1,15 +1,10 @@
 import React from 'react';
 import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 
-function FormSwitch({ isChecked, isDisabled = false, label, onChange }) {
+function FormSwitch({ label, ...otherProps }) {
   return (
     <FormControl display="flex" alignItems="center">
-      <Switch
-        id={label}
-        isChecked={isChecked}
-        isDisabled={isDisabled}
-        onChange={onChange}
-      />
+      <Switch id={label} {...otherProps} />
       <FormLabel htmlFor={label} mb="0" ml="4">
         {label}
       </FormLabel>

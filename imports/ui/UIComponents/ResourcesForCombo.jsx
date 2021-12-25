@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
-import Tag from './Tag';
+import { Flex, Tag, Text } from '@chakra-ui/react';
 
 function ResourcesForCombo({ resource }) {
   if (!resource) {
@@ -10,11 +9,10 @@ function ResourcesForCombo({ resource }) {
   const length = resource.resourcesForCombo.length;
   return (
     <span>
-      {resource.label}
-      <br />
-      <Box py="1">
-        <Tag label="COMBO" size="xsmall" />
-      </Box>
+      <Flex mb="2">
+        <Text mr="2">{resource.label}</Text>
+        <Tag size="sm">COMBO</Tag>
+      </Flex>
       {' ['}
       {resourcesForCombo.map((res, i) => (
         <Text as="span" fontSize="sm" key={res._id}>

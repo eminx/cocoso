@@ -15,7 +15,7 @@ import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../UIComponents/ResourceForm';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 
-const emptyResource = {
+const resourceModel = {
   label: '',
   description: '',
   isCombo: false,
@@ -24,45 +24,39 @@ const emptyResource = {
 
 function ResourcesPage({ history, resources, isLoading }) {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState(null);
-  const [comboInput, setComboInput] = useState('');
-  const { currentUser, currentHost, canCreateContent, role } =
-    useContext(StateContext);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [defaultValues, setDefaultValues] = useState(resourceModel);
+  const [resourcesForCombo, setResourcesForCombo] = useState([]);
+  const { currentUser, canCreateContent, role } = useContext(StateContext);
 
-  const handleSubmit = async () => {
-    if (!modalContent.label || modalContent.label.length < 3) {
+  const handleSubmit = async (values) => {
+    if (!values.label || values.label.length < 3) {
       message.error('Resource name is too short. Minimum 3 letters required');
       return;
     }
     if (
-      !modalContent.edit &&
-      resources.some((resource) => resource.label === modalContent.label)
+      !isEditMode &&
+      resources.some(
+        (resource) =>
+          resource.label.toLowerCase() === defaultValues.label.toLowerCase()
+      )
     ) {
       message.error('There already is a resource with this name');
       return;
     }
     try {
-      if (modalContent.edit) {
-        const values = {
-          label: modalContent.label,
-          description: modalContent.description,
-          isCombo: Boolean(modalContent.isCombo),
-          resourcesForCombo: modalContent.resourcesForCombo,
-        };
-        await call('updateResource', modalContent.id, values);
+      if (isEditMode) {
+        await call('updateResource', values.id, values);
         message.success('Resource successfully updated');
       } else {
-        const values = {
-          label: modalContent.label,
-          description: modalContent.description,
-          isCombo: Boolean(modalContent.isCombo),
-          resourcesForCombo: modalContent.resourcesForCombo,
+        const parsedValues = {
+          ...values,
+          resourcesForCombo,
         };
-        await call('createResource', values);
+        await call('createResource', parsedValues);
         message.success('Resource successfully added');
       }
-      setModalContent(null);
-      setShowModal(false);
+      closeModal();
     } catch (error) {
       console.log(error);
       message.error(error.reason || error.error);
@@ -70,15 +64,16 @@ function ResourcesPage({ history, resources, isLoading }) {
   };
 
   const initiateEditDialog = (resource) => {
-    setShowModal(true);
-    setModalContent({
+    setDefaultValues({
       label: resource.label,
       description: resource.description,
       isCombo: resource.isCombo,
       resourcesForCombo: resource.resourcesForCombo,
       id: resource._id,
-      edit: true,
     });
+    setResourcesForCombo(resource.resourcesForCombo);
+    setIsEditMode(true);
+    setShowModal(true);
   };
 
   const deleteResource = async (resourceId) => {
@@ -111,41 +106,32 @@ function ResourcesPage({ history, resources, isLoading }) {
     ],
   }));
 
-  const handleComboResourceSelection = ({ event, suggestion }) => {
-    setComboInput('');
-    setModalContent({
-      ...modalContent,
-      resourcesForCombo: [...modalContent.resourcesForCombo, suggestion],
-    });
+  const handleAddResourceForCombo = ({ target }) => {
+    const { value } = target;
+    const selectedResource = resources.find((r) => r._id === value);
+    setResourcesForCombo([...resourcesForCombo, selectedResource]);
   };
 
-  const removeResourceForCombo = (res) => {
-    const newResourcesForCombo =
-      modalContent &&
-      modalContent.resourcesForCombo.filter(
-        (resource) => res.label !== resource.label
-      );
-    setModalContent({
-      ...modalContent,
-      resourcesForCombo: newResourcesForCombo,
-    });
+  const handleRemoveResourceForCombo = (res) => {
+    const newResourcesForCombo = resourcesForCombo.filter(
+      (resource) => res.label !== resource.label
+    );
+    setResourcesForCombo(newResourcesForCombo);
   };
 
-  const suggestions = () => {
-    if (!modalContent || !modalContent.isCombo) {
-      return null;
-    }
-
+  const getSuggestions = () => {
     return resources.filter((res, index) => {
       return (
-        !res.isCombo &&
-        !modalContent.resourcesForCombo.some(
-          (reso) => reso.label === res.label
-        ) &&
-        (comboInput === '' ||
-          res.label.toLowerCase().includes(comboInput.toLowerCase()))
+        !res.isCombo && !resourcesForCombo.some((r) => r.label === res.label)
       );
     });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setIsEditMode(false);
+    setDefaultValues(resourceModel);
+    setResourcesForCombo([]);
   };
 
   return (
@@ -164,7 +150,6 @@ function ResourcesPage({ history, resources, isLoading }) {
             variant="outline"
             onClick={() => {
               setShowModal(true);
-              setModalContent(emptyResource);
             }}
           >
             NEW
@@ -200,17 +185,16 @@ function ResourcesPage({ history, resources, isLoading }) {
         <ConfirmModal
           hideFooter
           visible={showModal}
-          onCancel={() => setShowModal(false)}
+          onCancel={() => closeModal()}
         >
           <ResourceForm
-            content={modalContent}
-            setContent={setModalContent}
-            suggestions={suggestions()}
-            comboInput={comboInput}
-            setComboInput={setComboInput}
-            onSuggestionSelect={handleComboResourceSelection}
-            removeResourceForCombo={removeResourceForCombo}
+            defaultValues={defaultValues}
+            isEditMode={isEditMode}
+            resourcesForCombo={resourcesForCombo}
+            suggestions={getSuggestions()}
             onSubmit={handleSubmit}
+            onAddResourceForCombo={handleAddResourceForCombo}
+            onRemoveResourceForCombo={handleRemoveResourceForCombo}
           />
         </ConfirmModal>
       </Box>
@@ -220,7 +204,7 @@ function ResourcesPage({ history, resources, isLoading }) {
 
 export default ResourcesContainer = withTracker((props) => {
   const resourcesSubscription = Meteor.subscribe('resources');
-  const resources = Resources.find().fetch();
+  const resources = Resources.find().fetch().reverse();
   const isLoading = !resourcesSubscription.ready();
   const currentUser = Meteor.user();
 
