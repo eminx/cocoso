@@ -247,7 +247,10 @@ function LayoutPage({
                         </VStack>
                       </ModalBody>
                       <ModalFooter>
-                        <Button mr={3} onClick={onClose}>
+                        <Button
+                          mr={3}
+                          onClick={() => setShowFeedbackModal(false)}
+                        >
                           Close
                         </Button>
                         <Button colorScheme="blue" type="submit">
