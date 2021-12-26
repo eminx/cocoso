@@ -54,18 +54,20 @@ class NewActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
+    console.log(values);
     const { isPublicActivity } = this.state;
-
-    const runCallback = isPublicActivity
-      ? this.uploadImage
-      : this.createActivity;
-
     this.setState(
       {
         isCreating: true,
         formValues: values,
       },
-      runCallback
+      () => {
+        if (isPublicActivity) {
+          this.uploadImage();
+        } else {
+          this.createActivity();
+        }
+      }
     );
   };
 
@@ -116,6 +118,7 @@ class NewActivity extends PureComponent {
   };
 
   createActivity = () => {
+    console.log('create fires');
     const { resources } = this.props;
 
     const {
@@ -137,6 +140,8 @@ class NewActivity extends PureComponent {
       isRegistrationDisabled,
       resource,
     };
+
+    console.log('geldi');
 
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
       if (error) {

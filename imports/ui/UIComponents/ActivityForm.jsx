@@ -223,7 +223,6 @@ function ActivityForm({
               <Controller
                 control={control}
                 name="longDescription"
-                rules={{ required: true }}
                 render={({ field }) => (
                   <ReactQuill
                     {...field}
