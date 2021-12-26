@@ -49,20 +49,20 @@ Schemas.Host = new SimpleSchema({
 
   createdAt: {type: Date},
 
-  // registeredBy: {type: Object},
-  // 'verifiedBy.username': {type: String},
-  // 'verifiedBy.userId': {type: String},
-  // 'verifiedBy.date': {type: Date},
+  registeredBy: {type: Object},
+  'verifiedBy.username': {type: String},
+  'verifiedBy.userId': {type: String},
+  'verifiedBy.date': {type: Date},
 
-  // verifiedBy: {type: Object},
-  // 'verifiedBy.username': {type: String},
-  // 'verifiedBy.userId': {type: String},
-  // 'verifiedBy.date': {type: Date},
+  verifiedBy: {type: Object},
+  'verifiedBy.username': {type: String},
+  'verifiedBy.userId': {type: String},
+  'verifiedBy.date': {type: Date},
 
-  // unVerifiedBy: {type: Object},
-  // 'unVerifiedBy.username': {type: String},
-  // 'unVerifiedBy.userId': {type: String},
-  // 'unVerifiedBy.date': {type: Date},
+  unVerifiedBy: {type: Object},
+  'unVerifiedBy.username': {type: String},
+  'unVerifiedBy.userId': {type: String},
+  'unVerifiedBy.date': {type: Date},
 
 });
 
