@@ -55,8 +55,8 @@ Schemas.Processes = new SimpleSchema({
   'documents.$': new SimpleSchema(SchemasProcesses.documents),
   meetings: { type: Array, defaultValue: [] },
   'meetings.$': { type: new SimpleSchema(SchemasProcesses.meetings), optional: true },
-  peopleInvited: { type: Array, optional: true },
-  'peopleInvited.$': new SimpleSchema(SchemasProcesses.peopleInvited),
+  peopleInvited: { type: Array, defaultValue: [] },
+  'peopleInvited.$': { type: new SimpleSchema(SchemasProcesses.peopleInvited), optional: true },
 
   isPublished: { type: Boolean },
   isPrivate: { type: Boolean },
