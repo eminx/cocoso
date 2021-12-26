@@ -39,7 +39,6 @@ const ProcessForm = ({
           >
             <Center>
               <FileDropper
-                height={120}
                 imageUrl={imageUrl}
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={uploadableImageLocal}

@@ -1,6 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, Flex, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link as CLink,
+  Text,
+} from '@chakra-ui/react';
 
 import Template from '../UIComponents/Template';
 import { ForgotPassword } from './index';
@@ -52,14 +59,10 @@ function ForgotPasswordPage() {
 
           <Flex justify="space-around" mt="4">
             <Link to="/login">
-              <Button as="span" variant="link">
-                Login
-              </Button>
+              <CLink as="span">Login</CLink>
             </Link>
             <Link to="/signup">
-              <Button as="span" variant="link">
-                Signup
-              </Button>
+              <CLink as="span">Signup</CLink>
             </Link>
           </Flex>
         </Box>
