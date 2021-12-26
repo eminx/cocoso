@@ -1,10 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import SimpleSchema from 'simpl-schema';
-
 import { getHost } from '../@/shared';
 import Hosts from '../@hosts/host';
-import { SchemasUser } from './user';
 
 Meteor.methods({
 
@@ -124,7 +121,6 @@ Meteor.methods({
     // check(values.lastName, String);
     // check(values.bio, String);
     // check(values.contactInfo, String);
-    new SimpleSchema(SchemasUser.profile).validate(values);
 
     try {
       Meteor.users.update(user._id, {
@@ -151,7 +147,6 @@ Meteor.methods({
       src: avatar,
       date: new Date(),
     };
-    new SimpleSchema(SchemasUser.avatar).validate(newAvatar);
 
     try {
       Meteor.users.update(userId, {
