@@ -25,6 +25,12 @@ imports/
       ListContainer.js        # container files wit trackers
 
 ```
+## Last Notes
+Test in depth
+all schemas, collections and sub-documents under collections
+specially user and process collections and host, activity, resource coollections
+looks all working ...
+
 ## What changed ?
 
 All collections in lib folder collections file are seperated in to unit domain logic
