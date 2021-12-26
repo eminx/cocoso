@@ -64,6 +64,8 @@ class EditActivity extends PureComponent {
 
     this.setState({
       datesAndTimes: [...datesAndTimes],
+      isPublicActivity: activity.isPublicActivity,
+      isRegistrationDisabled: activity.isRegistrationDisabled,
     });
   };
 
@@ -79,17 +81,21 @@ class EditActivity extends PureComponent {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { isPublicActivity, uploadableImage } = this.state;
-    this.setState({
-      isCreating: true,
-    });
-
-    if (isPublicActivity && uploadableImage) {
-      this.uploadImage();
-    } else {
-      this.updateActivity();
-    }
+    this.setState(
+      {
+        isCreating: true,
+        formValues: values,
+      },
+      () => {
+        if (isPublicActivity && uploadableImage) {
+          this.uploadImage();
+        } else {
+          this.updateActivity();
+        }
+      }
+    );
   };
 
   setUploadableImage = (files) => {
@@ -147,7 +153,7 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     const resource = resources.find(
-      (resource) => resource._id === formValues.resource
+      (resource) => resource.label === formValues.resource
     );
 
     const values = {

@@ -165,20 +165,22 @@ function ActivityForm({
               placeholder="Select resource to book"
               variant="filled"
             >
-              {resources.map((option, index) => (
-                <option
-                  key={option._id}
-                  selected={option.label === defaultValues.resource}
-                  value={option._id}
-                >
-                  {option.isCombo
-                    ? option.label +
-                      ': [' +
-                      option.resourcesForCombo.map((res, i) => res.label) +
-                      ']'
-                    : option.label}
-                </option>
-              ))}
+              {resources.map((option, index) => {
+                return (
+                  <option
+                    key={option._id}
+                    selected={option.label === defaultValues.resource}
+                    value={option.label}
+                  >
+                    {option.isCombo
+                      ? option.label +
+                        ': [' +
+                        option.resourcesForCombo.map((res, i) => res.label) +
+                        ']'
+                      : option.label}
+                  </option>
+                );
+              })}
             </Select>
           </FormField>
         </Box>

@@ -275,7 +275,7 @@ class Activity extends PureComponent {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
-    if (activityData.isActivitiesDisabled) {
+    if (activityData.isRegistrationDisabled) {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
@@ -481,7 +481,7 @@ class Activity extends PureComponent {
               Dates
             </Heading>
             <Text size="sm" mb="1">
-              {activityData.isActivitiesDisabled
+              {activityData.isRegistrationDisabled
                 ? 'RSVP disabled. Please check the practical information.'
                 : 'Please click and open the date to RSVP'}
             </Text>
@@ -525,7 +525,7 @@ class Activity extends PureComponent {
           </Stack>
         </Box>
         {activityData.address && (
-          <Box pad="2" mb="1">
+          <Box p="2" mb="1">
             <Heading mb="1" as="h5" size="md">
               Address
             </Heading>
