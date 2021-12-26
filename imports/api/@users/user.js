@@ -48,8 +48,8 @@ Accounts.validateNewUser((user) => {
 
     memberships: { type: Array, optional: true },
     'memberships.$': new SimpleSchema(SchemasUser.memberships),
-    notifications: { type: Array, optional: true },
-    'notifications.$': new SimpleSchema(SchemasUser.notifications),
+    notifications: { type: Array, defaultValue: [] },
+    'notifications.$': { type: new SimpleSchema(SchemasUser.notifications), optional: true },
     attending: { type: Array, optional: true },
     'attending.$': new SimpleSchema(SchemasUser.groups) ,
     processes: { type: Array, optional: true },
