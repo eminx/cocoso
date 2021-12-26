@@ -276,7 +276,7 @@ class EditActivity extends PureComponent {
       <Template
         heading="Edit Activity"
         leftContent={
-          <Box p="2">
+          <Box pb="2">
             <Link to={`/event/${activity._id}`}>
               <IconButton
                 as="span"

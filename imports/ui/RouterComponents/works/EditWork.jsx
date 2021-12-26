@@ -1,23 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Button, Center } from '@chakra-ui/react';
+import { Box, Button, Center, IconButton } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call, resizeImage, uploadImage } from '../../functions';
+import Loader from '../../UIComponents/Loader';
 
 class EditWork extends PureComponent {
   state = {
-    formValues: {
-      title: '',
-      shortDescription: '',
-      longDescription: '',
-      additionalInfo: '',
-      category: '',
-    },
     categories: [],
     images: [],
     isLocalising: false,
@@ -26,6 +22,7 @@ class EditWork extends PureComponent {
     isSuccess: false,
     isError: false,
     isDeleteModalOn: false,
+    values: null,
   };
 
   componentDidMount() {
@@ -53,7 +50,7 @@ class EditWork extends PureComponent {
         response.category.label &&
         response.category.label.toUpperCase();
       this.setState({
-        formValues: {
+        values: {
           ...response,
           category: catLabel,
         },
@@ -61,6 +58,7 @@ class EditWork extends PureComponent {
           src: image,
           type: 'uploaded',
         })),
+        isLoading: false,
       });
     } catch (error) {
       console.log(error);
@@ -69,24 +67,6 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
     }
-  };
-
-  handleFormChange = (value) => {
-    this.setState({
-      formValues: value,
-    });
-  };
-
-  handleQuillChange = (longDescription) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      longDescription,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
   };
 
   setUploadableImages = (files) => {
@@ -121,9 +101,10 @@ class EditWork extends PureComponent {
     });
   };
 
-  uploadImages = async () => {
+  uploadImages = async (formValues) => {
     const { images } = this.state;
     this.setState({
+      values: formValues,
       isCreating: true,
     });
 
@@ -168,19 +149,19 @@ class EditWork extends PureComponent {
   updateWork = async (imagesReadyToSave) => {
     const { match } = this.props;
     const workId = match.params.workId;
-    const { formValues, categories } = this.state;
+    const { values, categories } = this.state;
     const { currentUser } = this.context;
 
-    if (formValues.authorId !== currentUser._id) {
+    if (values.authorId !== currentUser._id) {
       return;
     }
 
     const selectedCategory = categories.find(
-      (category) => category.label === formValues.category.toLowerCase()
+      (category) => category._id === values.category
     );
 
-    const updatedWork = {
-      ...formValues,
+    const parsedValues = {
+      ...values,
       category: {
         label: selectedCategory.label,
         color: selectedCategory.color,
@@ -189,7 +170,7 @@ class EditWork extends PureComponent {
     };
 
     try {
-      await call('updateWork', workId, updatedWork, imagesReadyToSave);
+      await call('updateWork', workId, parsedValues, imagesReadyToSave);
       this.setState({
         isCreating: false,
         isSuccess: true,
@@ -223,9 +204,9 @@ class EditWork extends PureComponent {
     const { match, history } = this.props;
     const workId = match.params.workId;
     const { currentUser } = this.context;
-    const { formValues } = this.state;
+    const { values } = this.state;
 
-    if (formValues.authorId !== currentUser._id) {
+    if (values.authorId !== currentUser._id) {
       return;
     }
 
@@ -251,6 +232,15 @@ class EditWork extends PureComponent {
     const { currentUser } = this.context;
     const { match } = this.props;
     const workId = match.params.workId;
+    const {
+      categories,
+      images,
+      isCreating,
+      isLoading,
+      isSuccess,
+      isDeleteModalOn,
+      values,
+    } = this.state;
 
     if (!currentUser) {
       return (
@@ -260,39 +250,40 @@ class EditWork extends PureComponent {
       );
     }
 
-    const {
-      formValues,
-      images,
-      isSuccess,
-      isCreating,
-      categories,
-      isDeleteModalOn,
-    } = this.state;
-
-    if (isSuccess) {
-      return <Redirect to={`/${currentUser.username}/work/${workId}`} />;
+    if (isLoading || !values) {
+      return <Loader />;
     }
 
-    const buttonLabel = isCreating ? 'Updating...' : 'Confirm and Update';
-    const { title } = formValues;
-    const isFormValid = formValues && title.length > 3;
+    const workRoute = `/${currentUser.username}/work/${workId}`;
+    if (isSuccess) {
+      return <Redirect to={workRoute} />;
+    }
 
     return (
-      <Template>
-        <WorkForm
-          formValues={formValues}
-          categories={categories}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.uploadImages}
-          setUploadableImages={this.setUploadableImages}
-          images={images.map((image) => image.src)}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isCreating}
-          onSortImages={this.handleSortImages}
-          onRemoveImage={this.handleRemoveImage}
-        />
+      <Template
+        leftContent={
+          <Box pb="2">
+            <Link to={workRoute}>
+              <IconButton
+                as="span"
+                aria-label="Back"
+                icon={<ArrowBackIcon />}
+              />
+            </Link>
+          </Box>
+        }
+      >
+        <Box bg="white" p="6">
+          <WorkForm
+            categories={categories}
+            defaultValues={values}
+            images={images.map((image) => image.src)}
+            onRemoveImage={this.handleRemoveImage}
+            onSortImages={this.handleSortImages}
+            onSubmit={this.uploadImages}
+            setUploadableImages={this.setUploadableImages}
+          />
+        </Box>
 
         <Center p="4">
           <Button

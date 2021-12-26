@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
+import { Box } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../UIComponents/WorkForm';
@@ -8,15 +9,16 @@ import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { call, resizeImage, uploadImage } from '../../functions';
 
+const formModel = {
+  title: '',
+  shortDescription: '',
+  longDescription: '',
+  additionalInfo: '',
+  category: '',
+};
+
 class NewWork extends PureComponent {
   state = {
-    formValues: {
-      title: '',
-      shortDescription: '',
-      longDescription: '',
-      additionalInfo: '',
-      category: '',
-    },
     categories: [],
     uploadableImages: [],
     uploadableImagesLocal: [],
@@ -26,6 +28,7 @@ class NewWork extends PureComponent {
     isSuccess: false,
     isError: false,
     newWorkId: null,
+    values: formModel,
   };
 
   componentDidMount() {
@@ -36,30 +39,6 @@ class NewWork extends PureComponent {
     const categories = await call('getCategories');
     this.setState({
       categories,
-    });
-  };
-
-  handleFormChange = (value) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...value,
-      longDescription: formValues.longDescription,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleQuillChange = (longDescription) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      longDescription,
-    };
-
-    this.setState({
-      formValues: newFormValues,
     });
   };
 
@@ -89,9 +68,10 @@ class NewWork extends PureComponent {
     });
   };
 
-  uploadImages = async () => {
+  uploadImages = async (formValues) => {
     const { uploadableImages } = this.state;
     this.setState({
+      values: formValues,
       isCreating: true,
     });
 
@@ -118,14 +98,14 @@ class NewWork extends PureComponent {
   };
 
   createWork = async (imagesReadyToSave) => {
-    const { formValues, categories } = this.state;
+    const { values, categories } = this.state;
 
     const selectedCategory = categories.find(
-      (category) => category.label === formValues.category.toLowerCase()
+      (category) => category._id === values.category
     );
 
-    const newWork = {
-      ...formValues,
+    const parsedValues = {
+      ...values,
       category: {
         label: selectedCategory.label,
         color: selectedCategory.color,
@@ -134,7 +114,7 @@ class NewWork extends PureComponent {
     };
 
     try {
-      const respond = await call('createWork', newWork, imagesReadyToSave);
+      const respond = await call('createWork', parsedValues, imagesReadyToSave);
       this.setState({
         newWorkId: respond,
         isCreating: false,
@@ -190,8 +170,6 @@ class NewWork extends PureComponent {
     }
 
     const {
-      formValues,
-      isLoading,
       uploadableImagesLocal,
       isSuccess,
       newWorkId,
@@ -203,28 +181,19 @@ class NewWork extends PureComponent {
       return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
     }
 
-    const buttonLabel = isCreating
-      ? 'Creating your work...'
-      : 'Confirm and Create Work';
-    const { title } = formValues;
-    const isFormValid = formValues && title.length > 3 && uploadableImagesLocal;
-
     return (
       <Template>
-        <WorkForm
-          formValues={formValues}
-          categories={categories}
-          onFormChange={this.handleFormChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.uploadImages}
-          setUploadableImages={this.setUploadableImages}
-          images={uploadableImagesLocal}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isCreating}
-          onSortImages={this.handleSortImages}
-          onRemoveImage={this.handleRemoveImage}
-        />
+        <Box bg="white" p="6">
+          <WorkForm
+            categories={categories}
+            defaultValues={formModel}
+            images={uploadableImagesLocal}
+            onRemoveImage={this.handleRemoveImage}
+            onSortImages={this.handleSortImages}
+            onSubmit={this.uploadImages}
+            setUploadableImages={this.setUploadableImages}
+          />
+        </Box>
       </Template>
     );
   }

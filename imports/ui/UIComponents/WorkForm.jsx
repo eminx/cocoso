@@ -1,135 +1,139 @@
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
   Button,
-  TextInput,
-  TextArea,
-  Text,
-  FormField,
-  Form,
+  Center,
+  Flex,
+  IconButton,
+  Input,
+  Textarea,
   Select,
-} from 'grommet';
-import { Trash } from 'grommet-icons/icons/Trash';
+  VStack,
+  Wrap,
+} from '@chakra-ui/react';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
+import FormField from './FormField';
 import FileDropper from '../UIComponents/FileDropper';
 import NiceSlider from '../UIComponents/NiceSlider';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
 function WorkForm({
-  formValues,
-  onFormChange,
-  onQuillChange,
+  categories,
+  defaultValues,
+  images,
+  onRemoveImage,
+  onSortImages,
   onSubmit,
   setUploadableImages,
-  images,
-  imageUrl,
-  buttonLabel,
-  isFormValid,
-  isButtonDisabled,
-  onSortImages,
-  onRemoveImage,
-  categories,
 }) {
+  const { control, formState, handleSubmit, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
+
   return (
-    <Box pad="medium" background="white">
-      <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
-        <FormField label="Title" margin={{ bottom: 'medium', top: 'medium' }}>
-          <TextInput
-            plain={false}
-            name="title"
-            placeholder="Mango Juice in Bottles..."
-          />
-        </FormField>
+    <div>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
+          <FormField label="Title">
+            <Input
+              {...register('title')}
+              placeholder="Mango Juice in Bottles..."
+            />
+          </FormField>
 
-        <FormField
-          label="Short description"
-          margin={{ bottom: 'medium', top: 'medium' }}
-        >
-          <TextArea
-            plain={false}
-            name="shortDescription"
-            placeholder="Sweet, Natural & Refreshing"
-          />
-        </FormField>
+          <FormField label="Short description">
+            <Textarea
+              {...register('shortDescription')}
+              placeholder="Sweet, Natural & Refreshing"
+            />
+          </FormField>
 
-        <FormField
-          label="Category"
-          margin={{ bottom: 'medium', top: 'medium' }}
-        >
-          <Select
-            name="category"
-            options={categories.map((cat) => cat.label.toUpperCase())}
-          />
-        </FormField>
+          <FormField label="Category">
+            <Select {...register('category')} placeholder="Choose option">
+              {categories.map((cat) => (
+                <option
+                  key={cat.label}
+                  selected={
+                    cat.label.toLowerCase() ===
+                    defaultValues.category.toLowerCase()
+                  }
+                  value={cat._id}
+                >
+                  {cat.label.toUpperCase()}
+                </option>
+              ))}
+            </Select>
+          </FormField>
 
-        <FormField label="Description" margin={{ bottom: 'medium' }}>
-          <ReactQuill
-            value={formValues.longDescription}
-            modules={editorModules}
-            formats={editorFormats}
-            onChange={onQuillChange}
-            placeholder="My Mango juice is handpicked from the trees and..."
-          />
-        </FormField>
+          <FormField label="Description">
+            <Controller
+              control={control}
+              name="longDescription"
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  formats={editorFormats}
+                  modules={editorModules}
+                  placeholder="My Mango juice is handpicked from the trees and..."
+                />
+              )}
+            />
+          </FormField>
 
-        <FormField
-          label="Additional info"
-          margin={{ bottom: 'medium', top: 'medium' }}
-        >
-          <TextArea
-            plain={false}
-            name="additionalInfo"
-            placeholder="A bottle costs..."
-          />
-        </FormField>
+          <FormField label="Additional info">
+            <Textarea
+              {...register('additionalInfo')}
+              placeholder="A bottle costs..."
+            />
+          </FormField>
 
-        <FormField
-          label={`Images (${images.length})`}
-          help={(images || imageUrl) && <Text size="small" />}
-        >
-          <Box>
-            {images && <NiceSlider images={images} />}
+          <FormField label={`Images (${images.length})`}>
+            <Box>
+              {images && <NiceSlider images={images} />}
 
-            {images && images.length > 0 ? (
-              <SortableContainer
-                onSortEnd={onSortImages}
-                axis="xy"
-                helperClass="sortableHelper"
-              >
-                {images.map((image, index) => (
-                  <SortableItem
-                    key={image}
-                    index={index}
-                    image={image}
-                    onRemoveImage={() => onRemoveImage(index)}
-                  />
-                ))}
-                <Box width="100%">
-                  <Box alignSelf="center" margin={{ top: 'medium' }}>
+              {images && images.length > 0 ? (
+                <SortableContainer
+                  onSortEnd={onSortImages}
+                  axis="xy"
+                  helperClass="sortableHelper"
+                >
+                  {images.map((image, index) => (
+                    <SortableItem
+                      key={image}
+                      index={index}
+                      image={image}
+                      onRemoveImage={() => onRemoveImage(index)}
+                    />
+                  ))}
+                  <Center w="100%">
                     <FileDropper setUploadableImage={setUploadableImages} />
-                  </Box>
-                </Box>
-              </SortableContainer>
-            ) : (
-              <Box alignSelf="center" margin={{ top: 'medium' }}>
-                <FileDropper setUploadableImage={setUploadableImages} />
-              </Box>
-            )}
-          </Box>
-        </FormField>
+                  </Center>
+                </SortableContainer>
+              ) : (
+                <Center>
+                  <FileDropper setUploadableImage={setUploadableImages} />
+                </Center>
+              )}
+            </Box>
+          </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button
-            type="submit"
-            primary
-            label={buttonLabel}
-            disabled={isButtonDisabled}
-          />
-        </Box>
-      </Form>
-    </Box>
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button
+              isDisabled={!isDirty}
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 }
 
@@ -140,20 +144,13 @@ const thumbStyle = (backgroundImage) => ({
 const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
   return (
     <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <Button
-        alignSelf="end"
+      <IconButton
         className="sortable-thumb-icon"
-        color="dark-1"
-        hoverIndicator
-        icon={
-          <Trash
-            color="light-1"
-            size="small"
-            style={{ pointerEvents: 'none' }}
-          />
-        }
-        size="small"
+        colorScheme="gray.900"
+        icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+        size="xs"
         onClick={onRemoveImage}
+        style={{ position: 'absolute', top: 4, right: 4 }}
       />
     </Box>
   );
@@ -161,9 +158,9 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
 
 const SortableContainer = sortableContainer(({ children }) => {
   return (
-    <Box direction="row" justify="center" wrap>
-      {children}
-    </Box>
+    <Center w="100%">
+      <Wrap py="2">{children}</Wrap>
+    </Center>
   );
 });
 
