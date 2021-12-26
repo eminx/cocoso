@@ -153,7 +153,7 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     const resource = resources.find(
-      (resource) => resource.label === formValues.resource
+      (resource) => resource._id === formValues.resource
     );
 
     const values = {

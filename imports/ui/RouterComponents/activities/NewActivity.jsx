@@ -54,7 +54,6 @@ class NewActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    console.log(values);
     const { isPublicActivity } = this.state;
     this.setState(
       {
@@ -118,7 +117,6 @@ class NewActivity extends PureComponent {
   };
 
   createActivity = () => {
-    console.log('create fires');
     const { resources } = this.props;
 
     const {

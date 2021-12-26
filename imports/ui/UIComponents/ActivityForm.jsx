@@ -169,8 +169,8 @@ function ActivityForm({
                 return (
                   <option
                     key={option._id}
-                    selected={option.label === defaultValues.resource}
-                    value={option.label}
+                    selected={option._id === defaultValues.resourceId}
+                    value={option._id}
                   >
                     {option.isCombo
                       ? option.label +
