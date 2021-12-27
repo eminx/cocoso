@@ -8,8 +8,6 @@ import {
   MenuItem,
   MenuButton,
   MenuList,
-  Wrap,
-  WrapItem,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
@@ -19,10 +17,11 @@ function NiceList({
   keySelector = '_id',
   list,
   children,
+  spacing = '4',
   ...otherProps
 }) {
   return (
-    <List spacing={4} {...otherProps}>
+    <List spacing={spacing} {...otherProps}>
       {list.map((listItem) => (
         <ListItem key={listItem[keySelector]} bg={itemBg} pl="4" pr="2" py="2">
           {' '}

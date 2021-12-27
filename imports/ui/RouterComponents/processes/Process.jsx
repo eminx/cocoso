@@ -6,7 +6,7 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
-import { Calendar, List } from 'grommet';
+import { Calendar } from 'grommet';
 
 import {
   Accordion,
@@ -23,6 +23,7 @@ import {
   HStack,
   Image,
   Link as CLink,
+  List,
   Select,
   Switch,
   Tabs,
@@ -426,10 +427,16 @@ class Process extends Component {
           .includes(currentUser._id);
 
       return (
-        <AccordionPanel
+        <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          header={
-            <Box px="2" py="3" bg="white">
+          bg="white"
+          mb="2"
+          style={{
+            display: isFutureMeeting(meeting) ? 'block' : 'none',
+          }}
+        >
+          <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
                 isAttending={isAttending}
@@ -438,19 +445,20 @@ class Process extends Component {
                 resources={resources}
               />
             </Box>
-          }
-          style={{
-            display: isFutureMeeting(meeting) ? 'block' : 'none',
-          }}
-        >
-          <Center p="2" bg="white">
-            <Button
-              size="small"
-              label={isAttending ? 'Cannot make it' : 'Register attendance'}
-              onClick={() => this.toggleAttendance(meetingIndex)}
-            />
-          </Center>
-        </AccordionPanel>
+          </AccordionButton>
+
+          <AccordionPanel>
+            <Center p="2" bg="white">
+              <Button
+                size="sm"
+                colorScheme={isAttending ? 'gray' : 'green'}
+                onClick={() => this.toggleAttendance(meetingIndex)}
+              >
+                {isAttending ? 'Cannot make it' : 'Register attendance'}
+              </Button>
+            </Center>
+          </AccordionPanel>
+        </AccordionItem>
       );
     });
   };
@@ -595,21 +603,25 @@ class Process extends Component {
         {!isAdmin && (
           <Center mb="6">
             <Button
-              label={isMember ? 'Leave process' : 'Join process'}
-              primary={!isMember}
+              colorScheme={isMember ? 'gray' : 'green'}
               onClick={this.openModal}
-            />
+            >
+              {isMember ? 'Leave process' : 'Join process'}
+            </Button>
           </Center>
         )}
 
-        {currentUser && process && process.members && (
-          <Fragment>
-            <Heading size="sm">Members</Heading>
-            <Box mb="4">
+        {process?.members && (
+          <Box mb="8">
+            <Heading mb="2" size="sm">
+              Members
+            </Heading>
+            <Box mb="4" bg="white">
               <NiceList
                 actionsDisabled={!isAdmin}
                 keySelector="username"
                 list={membersList}
+                spacing="0"
               >
                 {(member) => (
                   <span
@@ -623,10 +635,12 @@ class Process extends Component {
                 )}
               </NiceList>
             </Box>
-          </Fragment>
+          </Box>
         )}
 
-        <Heading size="sm">Documents</Heading>
+        <Heading mb="2" size="sm">
+          Documents
+        </Heading>
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList
             actionsDisabled={!isAdmin}
@@ -931,7 +945,7 @@ class Process extends Component {
 
 const MeetingInfo = ({ meeting, isAttending, resources }) => {
   return (
-    <Box p="4">
+    <Box>
       <FancyDate occurence={meeting} resources={resources} />
 
       {isAttending && (
