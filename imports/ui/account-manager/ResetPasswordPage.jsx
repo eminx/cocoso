@@ -19,7 +19,7 @@ const ResetPasswordPage = ({ history, match }) => {
   const { currentUser } = useContext(StateContext);
   const { token } = match.params;
 
-  const handleResetPassword = async (password) => {
+  const handleResetPassword = async ({ password }) => {
     try {
       await call('resetPassword', token, password);
       message.success('Your password is successfully reset. Now you can login');

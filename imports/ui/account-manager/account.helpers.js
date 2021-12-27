@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 // REGEX
-const regexPassword = '^[a-zA-Z0-9]{3,30}$';
+const regexPassword = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
 
 // DEFAULT VALUES
 const loginModel = {

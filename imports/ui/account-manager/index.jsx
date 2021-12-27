@@ -156,7 +156,7 @@ const ResetPassword = ({ onResetPassword }) => {
       <VStack spacing="6">
         <FormField
           errorMessage={errors.password?.message}
-          helperText="Minimum 8 characters"
+          helperText="Minimum 8 characters, including at least one letter and number"
           isInvalid={errors.password}
           label="Password"
         >
