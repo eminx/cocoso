@@ -7,14 +7,15 @@ import {
 } from '@chakra-ui/react';
 
 function FormField({
-  helperText,
-  errorMessage,
-  label,
   children,
+  errorMessage,
+  helperText,
+  label,
+  size = 'sm',
   ...otherProps
 }) {
   return (
-    <FormControl size="sm" {...otherProps}>
+    <FormControl {...otherProps}>
       <FormLabel mb="1">{label}</FormLabel>
       {children}
       {helperText && <FormHelperText>{helperText}</FormHelperText>}

@@ -37,11 +37,15 @@ const ResetPasswordPage = ({ history, match }) => {
     <Template>
       <Center>
         <Box w="xs">
-          <Heading>Reset Your Password</Heading>
-          <Text fontSize="lg" mb="6">
-            Type your desired password
+          <Heading size="md" textAlign="center" mb="4">
+            Reset Your Password
+          </Heading>
+          <Text fontSize="lg" mb="6" textAlign="center">
+            Create your desired password
           </Text>
-          <ResetPassword onResetPassword={handleResetPassword} />
+          <Box p="6" bg="white" mb="4">
+            <ResetPassword onResetPassword={handleResetPassword} />
+          </Box>
           <Flex justify="space-around" mt="4">
             <Link to="/login">
               <CLink as="span">Login</CLink>

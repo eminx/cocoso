@@ -39,7 +39,7 @@ function ForgotPasswordPage() {
     <Template>
       <Center>
         <Box w="xs">
-          <Heading px="4" size="md" textAlign="center">
+          <Heading size="md" textAlign="center">
             Reset Password
           </Heading>
           <Center pt="4" px="4">
@@ -49,7 +49,7 @@ function ForgotPasswordPage() {
             </Text>
           </Center>
 
-          <Box bg="white" p="4">
+          <Box bg="white" p="6">
             {emailSent ? (
               <Text>Reset link is sent to your email.</Text>
             ) : (

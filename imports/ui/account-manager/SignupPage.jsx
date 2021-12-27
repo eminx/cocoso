@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, Heading } from '@chakra-ui/react';
+import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
-import { Signup, SimpleText } from './index';
+import { Signup } from './index';
 import { createAccount } from './functions';
 
 function SignupPage() {
@@ -17,22 +17,21 @@ function SignupPage() {
   return (
     <Template>
       <Center>
-        <Box w="xs">
+        <Box>
           <Heading size="md" textAlign="center">
             Register New Account
           </Heading>
-          <Center pt="4">
-            <SimpleText>
-              Have an account?
-              <br />
+          <Center pt="4" mb="4">
+            <Text>
+              Have an account?{' '}
               <Link to="/login">
-                <Button as="span" variant="link">
-                  Login
-                </Button>
+                <CLink as="span">
+                  <b>Login</b>
+                </CLink>
               </Link>
-            </SimpleText>
+            </Text>
           </Center>
-          <Box p="4" bg="white" mb="4">
+          <Box p="6" bg="white" mb="4">
             <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
         </Box>

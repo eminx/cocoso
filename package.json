@@ -38,6 +38,7 @@
     "@chakra-ui/table": "^1.3.1",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
+    "@hookform/resolvers": "^2.8.5",
     "@loadable/component": "^5.15.0",
     "array-move": "^2.2.2",
     "babel-polyfill": "^6.26.0",
@@ -48,6 +49,7 @@
     "grommet": "^2.17.2",
     "grommet-icons": "^4.6.0",
     "indexof": "0.0.1",
+    "joi": "^17.5.0",
     "meteor-node-stubs": "^1.1.0",
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "moment": "^2.26.0",
@@ -74,8 +76,7 @@
     "react-visibility-sensor": "^5.0.2",
     "save": "^2.4.0",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^5.2.1",
-    "yup": "^0.32.11"
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/helper-module-imports": "^7.0.0",

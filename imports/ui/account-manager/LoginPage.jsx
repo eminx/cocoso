@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, Heading } from '@chakra-ui/react';
+import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
-import { Login, SimpleText } from './index';
+import { Login } from './index';
 import { loginWithPassword } from './functions';
 
 function LoginPage() {
@@ -25,26 +25,29 @@ function LoginPage() {
           <Heading size="md" textAlign="center">
             Login to Your Account
           </Heading>
-          <Center pt="4">
-            <SimpleText>
-              Don't have an account?
-              <br />
+          <Center pt="4" mb="4">
+            <Text>
+              Don't have an account?{' '}
               <Link to="/signup">
-                <Button variant="link">Signup</Button>
+                <CLink as="span">
+                  <b>Signup</b>
+                </CLink>
               </Link>
-            </SimpleText>
+            </Text>
           </Center>
-          <Box p="4" bg="white" mb="4">
+          <Box p="6" bg="white" mb="4">
             <Login onSubmit={handleSubmit} />
           </Box>
           <Center>
-            <SimpleText>
+            <Text>
               Forgot your password?
               <br />
               <Link to="/forgot-password">
-                <Button variant="link">Reset your password</Button>
+                <CLink as="span">
+                  <b>Reset your password</b>
+                </CLink>
               </Link>
-            </SimpleText>
+            </Text>
           </Center>
         </Box>
       </Center>
