@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Component, PureComponent, Fragment } from 'react';
+import React, { Component, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
@@ -398,11 +398,15 @@ class Process extends Component {
                 ))}
               </List>
             )}
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <CLink onClick={() => this.deleteMeeting(meetingIndex)}>
+            <Center py="2" mt="2">
+              <Button
+                size="xs"
+                colorScheme="red"
+                onClick={() => this.deleteMeeting(meetingIndex)}
+              >
                 Delete this meeting
-              </CLink>
-            </div>
+              </Button>
+            </Center>
           </AccordionPanel>
         </AccordionItem>
       ))
@@ -957,105 +961,91 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
   );
 };
 
-class CreateMeetingForm extends PureComponent {
-  state = {
-    isLocal: true,
-  };
+function CreateMeetingForm({
+  newMeeting,
+  handleDateChange,
+  handleStartTimeChange,
+  handleFinishTimeChange,
+  resources,
+  handlePlaceChange,
+  handleSubmit,
+  buttonDisabled,
+}) {
+  const [isLocal, setIsLocal] = useState(true);
 
-  render() {
-    const {
-      newMeeting,
-      handleDateChange,
-      handleStartTimeChange,
-      handleFinishTimeChange,
-      resources,
-      handlePlaceChange,
-      handleSubmit,
-      buttonDisabled,
-    } = this.props;
-
-    const { isLocal } = this.state;
-
-    return (
-      <Box p="2" bg="white" my="2">
-        <h4>Add a Meeting</h4>
+  return (
+    <Box p="2" bg="white" my="2">
+      <h4>Add a Meeting</h4>
+      <div style={{ marginBottom: 6 }}>
+        <Calendar
+          size="small"
+          date={
+            newMeeting.startDate
+              ? newMeeting.startDate + 'T00:00:00.000Z'
+              : new Date().toISOString()
+          }
+          onSelect={handleDateChange}
+          firstDayOfWeek={1}
+        />
+      </div>
+      <HStack spacing="2">
         <div style={{ marginBottom: 6 }}>
-          <Calendar
-            size="small"
-            date={
-              newMeeting.startDate
-                ? newMeeting.startDate + 'T00:00:00.000Z'
-                : new Date().toISOString()
-            }
-            onSelect={handleDateChange}
-            firstDayOfWeek={1}
+          <TimePicker
+            value={newMeeting.startTime}
+            onChange={handleStartTimeChange}
           />
         </div>
-        <HStack spacing="2">
-          <div style={{ marginBottom: 6 }}>
-            <TimePicker
-              value={newMeeting.startTime}
-              onChange={handleStartTimeChange}
-            />
-          </div>
 
-          <div style={{ marginBottom: 6 }}>
-            <TimePicker
-              value={newMeeting.endTime}
-              onChange={handleFinishTimeChange}
-            />
-          </div>
-        </HStack>
-
-        <FormControl display="flex" alignItems="center" mb="2" mt="4">
-          <Switch
-            id="is-local-switch"
-            isChecked={isLocal}
-            onChange={(event) =>
-              this.setState({ isLocal: event.target.checked })
-            }
+        <div style={{ marginBottom: 6 }}>
+          <TimePicker
+            value={newMeeting.endTime}
+            onChange={handleFinishTimeChange}
           />
-          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-            {`At ${publicSettings.name}?`}
-          </FormLabel>
-        </FormControl>
+        </div>
+      </HStack>
 
-        {isLocal ? (
-          <Select
-            size="sm"
-            placeholder="Select resource"
-            name="resource"
-            onChange={({ target: { value } }) => handlePlaceChange(value)}
-          >
-            {resources.map((part, i) => (
-              <option key={part.label}>{part.label}</option>
-            ))}
-          </Select>
-        ) : (
-          <Textarea
-            placeholder="Location"
-            size="sm"
-            onChange={(event) => handlePlaceChange(event.target.value)}
-          />
-        )}
+      <FormControl display="flex" alignItems="center" mb="2" mt="4">
+        <Switch
+          id="is-local-switch"
+          isChecked={isLocal}
+          onChange={({ target: { checked } }) => setIsLocal(checked)}
+        />
+        <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+          {`At ${publicSettings.name}?`}
+        </FormLabel>
+      </FormControl>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: 0,
-          }}
+      {isLocal ? (
+        <Select
+          size="sm"
+          placeholder="Select resource"
+          name="resource"
+          onChange={({ target: { value } }) => handlePlaceChange(value)}
         >
-          <Button
-            label="Add"
-            type="submit"
-            onClick={handleSubmit}
-            disabled={buttonDisabled}
-          />
-        </div>
-      </Box>
-    );
-  }
+          {resources.map((part, i) => (
+            <option key={part.label}>{part.label}</option>
+          ))}
+        </Select>
+      ) : (
+        <Textarea
+          placeholder="Location"
+          size="sm"
+          onChange={(event) => handlePlaceChange(event.target.value)}
+        />
+      )}
+
+      <Flex justify="flex-end" my="4">
+        <Button
+          colorScheme="green"
+          disabled={buttonDisabled}
+          size="sm"
+          onClick={handleSubmit}
+        >
+          Add Meeting
+        </Button>
+      </Flex>
+    </Box>
+  );
 }
 
 export default Process;
