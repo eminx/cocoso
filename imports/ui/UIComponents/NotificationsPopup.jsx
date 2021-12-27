@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Anchor, Box, List, Stack, DropButton, Text, Heading } from 'grommet';
-import { Notification } from 'grommet-icons/icons/Notification';
+import React from 'react';
+import {
+  AvatarBadge,
+  Box,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+} from '@chakra-ui/react';
+import { BellIcon } from '@chakra-ui/icons';
 
-const NotificationsPopup = ({ notifications }) => {
-  const [open, setOpen] = useState(false);
+function NotificationsPopup({ notifications }) {
   if (!notifications) {
     return null;
   }
@@ -17,59 +24,47 @@ const NotificationsPopup = ({ notifications }) => {
   }
 
   return (
-    <DropButton
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      dropAlign={{ right: 'right', top: 'bottom' }}
-      dropContent={<NotificationList notifications={notifications} />}
-    >
-      <Stack anchor="top-right">
-        <Box justify="center" pad="small">
-          <Notification />
+    <Menu>
+      <MenuButton
+        as={IconButton}
+        aria-label="Options"
+        icon={
+          notificationsCounter === 0 ? (
+            <BellIcon />
+          ) : (
+            <BellIcon>
+              <AvatarBadge
+                borderColor="papayawhip"
+                bg="tomato"
+                boxSize=".25em"
+              />
+            </BellIcon>
+          )
+        }
+      />
+      {notifications.length === 0 ? (
+        <Box p="2">
+          <Text fontSize="sm"> You don't have unread messages</Text>
         </Box>
-        {notificationsCounter !== 0 && <Badge>{notificationsCounter}</Badge>}
-      </Stack>
-    </DropButton>
-  );
-};
-
-const NotificationList = withRouter(({ notifications, history }) => (
-  <Box>
-    {notifications.length === 0 ? (
-      <Box pad="small">
-        <Text size="small"> You don't have unread messages</Text>
-      </Box>
-    ) : (
-      <List
-        size="small"
-        data={notifications}
-        itemProps={{ pad: 'small' }}
-        pad="small"
-      >
-        {(item) => (
-          <Box>
-            <Anchor
+      ) : (
+        <MenuList>
+          {notifications.map((item) => (
+            <MenuItem
+              key={item.title}
               onClick={() => history.push(`/${item.context}/${item.contextId}`)}
-              label={
-                <Stack anchor="top-right">
-                  <Box padding="medium">
-                    <Heading level={4}>{item.title}</Heading>
-                  </Box>
-                  <Badge>{item.count}</Badge>
-                </Stack>
-              }
-            />
-          </Box>
-        )}
-      </List>
-    )}
-  </Box>
-));
+            >
+              {item.title} <Badge>{item.count}</Badge>
+            </MenuItem>
+          ))}
+        </MenuList>
+      )}
+    </Menu>
+  );
+}
 
 const Badge = ({ children }) => (
-  <Box background="brand" pad={{ horizontal: 'xsmall' }} round>
-    <Text size="small">{children}</Text>
+  <Box bg="tomato" py="2" borderRadius="50%">
+    <Code size="sm">{children}</Code>
   </Box>
 );
 

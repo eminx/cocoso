@@ -6,36 +6,35 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
-import {
-  Accordion,
-  AccordionPanel,
-  Anchor,
-  Button,
-  Calendar,
-  CheckBox,
-  Heading,
-  Image,
-  Layer,
-  List,
-  Select,
-  Text,
-  TextArea,
-} from 'grommet';
+import { Calendar, List } from 'grommet';
 
 import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
   Box,
+  Button,
   Center,
   Flex,
+  FormControl,
+  FormLabel,
+  Heading,
   HStack,
+  Image,
+  Link as CLink,
+  Select,
+  Switch,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
+  Text,
+  Textarea,
 } from '@chakra-ui/react';
 
-import { Close } from 'grommet-icons/icons/Close';
-
+import Drawer from '../../UIComponents/Drawer.jsx';
 import Chattery from '../../UIComponents/chattery/Chattery.jsx';
 import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
@@ -161,23 +160,21 @@ class Process extends Component {
         )}
         <Box flexGrow={1} mb="2" p="4">
           <Heading
-            level={3}
+            mb="2"
+            size="lg"
             style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
-            size="small"
           >
             {process.title}
           </Heading>
-          <Text weight={300}>{process.readingMaterial}</Text>
+          <Text fontWeight="light">{process.readingMaterial}</Text>
         </Box>
 
         {isAdmin && process.isPrivate ? (
-          <Box alignSelf="end" direction="row" p="4">
-            <Anchor
-              onClick={this.handleOpenInviteManager}
-              style={{ marginLeft: 12 }}
-              label="Manage Access"
-            />
-          </Box>
+          <Flex align="flex-end" direction="row" p="4">
+            <CLink onClick={this.handleOpenInviteManager} ml="4">
+              Manage Access
+            </CLink>
+          </Flex>
         ) : (
           <Box alignSelf="end" p="4">
             {process.adminUsername}
@@ -185,23 +182,6 @@ class Process extends Component {
         )}
       </Flex>
     );
-  };
-
-  getExtra = (process, isAdmin) => {
-    const { history } = this.props;
-
-    if (isAdmin) {
-      return (
-        <Box alignSelf>
-          <Anchor
-            onClick={() => history.push(`/edit-process/${process._id}`)}
-            label="Edit"
-          />
-        </Box>
-      );
-    } else {
-      return <div>{process.adminUsername}</div>;
-    }
   };
 
   joinProcess = () => {
@@ -393,36 +373,37 @@ class Process extends Component {
     return (
       process &&
       process.meetings.map((meeting, meetingIndex) => (
-        <AccordionPanel
+        <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          header={
-            <Box p="4" background="white">
-              <FancyDate occurence={meeting} resources={resources} />
-            </Box>
-          }
+          bg="white"
+          mb="2"
           style={{
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box p="4" background="white">
-            <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
+          <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <Box flex="1" textAlign="left">
+              <FancyDate occurence={meeting} resources={resources} />
+            </Box>
+          </AccordionButton>
+          <AccordionPanel>
+            <Heading size="sm">Attendees</Heading>
             {meeting.attendees && (
-              <List data={meeting.attendees}>
-                {(attendee) => (
+              <List>
+                {meeting.attendees.map((attendee) => (
                   <Box key={attendee.memberUsername}>
                     {attendee.memberUsername}
                   </Box>
-                )}
+                ))}
               </List>
             )}
-
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Anchor onClick={() => this.deleteMeeting(meetingIndex)}>
+              <CLink onClick={() => this.deleteMeeting(meetingIndex)}>
                 Delete this meeting
-              </Anchor>
+              </CLink>
             </div>
-          </Box>
-        </AccordionPanel>
+          </AccordionPanel>
+        </AccordionItem>
       ))
     );
   };
@@ -623,7 +604,7 @@ class Process extends Component {
 
         {currentUser && process && process.members && (
           <Fragment>
-            <Heading level={5}>Members</Heading>
+            <Heading size="sm">Members</Heading>
             <Box mb="4">
               <NiceList
                 actionsDisabled={!isAdmin}
@@ -645,7 +626,7 @@ class Process extends Component {
           </Fragment>
         )}
 
-        <Heading level={5}>Documents</Heading>
+        <Heading size="sm">Documents</Heading>
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList
             actionsDisabled={!isAdmin}
@@ -738,7 +719,7 @@ class Process extends Component {
                   <Box>
                     <Image src={process.imageUrl} fit="contain" fill />
                   </Box>
-                  <Box p="4">
+                  <Box pt="4">
                     <div className="text-content">
                       {renderHTML(process.description)}
                     </div>
@@ -844,9 +825,9 @@ class Process extends Component {
           }
           rightContent={
             <Box p="2">
-              <Heading level={5}>Dates</Heading>
+              <Heading size="sm">Dates</Heading>
 
-              <Text size="small" pad="2" margin={{ bottom: 'medium' }}>
+              <Text fontSize="sm" mb="4">
                 <em>
                   {process.meetings &&
                   process.meetings.filter((meeting) =>
@@ -859,15 +840,11 @@ class Process extends Component {
                 </em>
               </Text>
 
-              {process.meetings && isAdmin ? (
-                <div>
-                  <Accordion animate multiple={false}>
-                    {this.renderDates()}
-                  </Accordion>
-                </div>
-              ) : (
-                <Accordion>{this.renderMeetings()}</Accordion>
-              )}
+              <Accordion allowToggle>
+                {process.meetings && isAdmin
+                  ? this.renderDates()
+                  : this.renderMeetings()}
+              </Accordion>
 
               {isAdmin && (
                 <div>
@@ -892,14 +869,16 @@ class Process extends Component {
             </Box>
           }
         >
-          <Box background="white">{this.renderProcessInfo()}</Box>
+          <Box bg="white">{this.renderProcessInfo()}</Box>
           <Visible xs sm md>
             <Box p="4">{this.renderMembersAndDocuments()}</Box>
           </Visible>
           {isAdmin && (
             <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
-                <Anchor label="Edit" />
+                <Button as="span" variant="ghost">
+                  Edit
+                </Button>
               </Link>
             </Center>
           )}
@@ -936,21 +915,14 @@ class Process extends Component {
           </Text>
         </ConfirmModal>
 
-        {process && process.isPrivate && inviteManagerOpen && (
-          <Layer full="vertical" position="right">
-            <Box fill style={{ maxWidth: '378px' }} p="4">
-              <Box direction="row" align="start" justify="between">
-                <Heading level={5}>Manage Access</Heading>
-                <Button
-                  flex={{ grow: 0 }}
-                  icon={<Close />}
-                  onClick={this.handleCloseInviteManager}
-                  plain
-                />
-              </Box>
-              <InviteManager process={process} />
-            </Box>
-          </Layer>
+        {process && process.isPrivate && (
+          <Drawer
+            title="Manage Access"
+            isOpen={inviteManagerOpen}
+            onClose={this.handleCloseInviteManager}
+          >
+            <InviteManager process={process} />
+          </Drawer>
         )}
       </div>
     );
@@ -991,7 +963,7 @@ class CreateMeetingForm extends PureComponent {
     const { isLocal } = this.state;
 
     return (
-      <Box p="2" background="white" my="2">
+      <Box p="2" bg="white" my="2">
         <h4>Add a Meeting</h4>
         <div style={{ marginBottom: 6 }}>
           <Calendar
@@ -1021,32 +993,37 @@ class CreateMeetingForm extends PureComponent {
           </div>
         </HStack>
 
-        <div style={{ marginBottom: 6 }}>
-          <CheckBox
-            checked={isLocal}
-            label={`At ${publicSettings.name}?`}
-            onChange={() => this.setState({ isLocal: event.target.checked })}
+        <FormControl display="flex" alignItems="center" mb="2" mt="4">
+          <Switch
+            id="is-local-switch"
+            isChecked={isLocal}
+            onChange={(event) =>
+              this.setState({ isLocal: event.target.checked })
+            }
           />
-        </div>
+          <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+            {`At ${publicSettings.name}?`}
+          </FormLabel>
+        </FormControl>
 
-        <div style={{ marginBottom: 6 }}>
-          {isLocal ? (
-            <Select
-              size="small"
-              plain={false}
-              placeholder="Select resource"
-              name="resource"
-              options={resources.map((part, i) => part.label)}
-              onChange={({ option }) => handlePlaceChange(option)}
-            />
-          ) : (
-            <TextArea
-              placeholder="Location"
-              onChange={(event) => handlePlaceChange(event.target.value)}
-              size="small"
-            />
-          )}
-        </div>
+        {isLocal ? (
+          <Select
+            size="sm"
+            placeholder="Select resource"
+            name="resource"
+            onChange={({ target: { value } }) => handlePlaceChange(value)}
+          >
+            {resources.map((part, i) => (
+              <option key={part.label}>{part.label}</option>
+            ))}
+          </Select>
+        ) : (
+          <Textarea
+            placeholder="Location"
+            size="sm"
+            onChange={(event) => handlePlaceChange(event.target.value)}
+          />
+        )}
 
         <div
           style={{

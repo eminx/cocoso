@@ -382,8 +382,8 @@ class Activity extends PureComponent {
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
           <AccordionItem
             key={occurence.startDate + occurence.startTime}
-            mb="2"
             bg="white"
+            mb="2"
           >
             <AccordionButton _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
