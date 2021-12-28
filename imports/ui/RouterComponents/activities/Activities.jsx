@@ -120,7 +120,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
-      <Center mb="3">
+      <Center mb="4">
         {canCreateContent && (
           <Link to="/new-activity">
             <Button as="span" colorScheme="green" variant="outline">
@@ -130,8 +130,8 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         )}
       </Center>
 
-      <Center>
-        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3}>
+      <Center px="2">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
           {allSortedActivities.map((activity) => (
             <Box key={activity.title}>
               <Link

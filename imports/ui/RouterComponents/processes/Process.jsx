@@ -886,7 +886,9 @@ class Process extends Component {
             </Box>
           }
         >
-          <Box bg="white">{this.renderProcessInfo()}</Box>
+          <Box bg="white" mb="4">
+            {this.renderProcessInfo()}
+          </Box>
           <Visible xs sm md>
             <Box p="4">{this.renderMembersAndDocuments()}</Box>
           </Visible>

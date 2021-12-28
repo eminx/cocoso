@@ -120,10 +120,10 @@ function Works() {
         </Wrap>
       </Center>
 
-      <Center>
-        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3}>
+      <Center px="2">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
           {worksWithCategoryColors.map((work, index) => (
-            <Box key={work._id}>
+            <Box key={work._id} w="100%">
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
                 <WorkThumb work={work} />
               </Link>

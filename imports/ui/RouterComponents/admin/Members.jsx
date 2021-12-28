@@ -221,7 +221,7 @@ function Members({ history, members, isLoading }) {
                     list={membersSorted}
                   >
                     {(member) => (
-                      <Box key={member.username}>
+                      <Box key={member.username} p="2">
                         <Heading size="md" fontWeight="bold">
                           {member.username}
                         </Heading>

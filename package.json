@@ -46,8 +46,6 @@
     "bcrypt": "^5.0.0",
     "framer-motion": "^5.4.5",
     "fslightbox-react": "^1.6.2-2",
-    "grommet": "^2.17.2",
-    "grommet-icons": "^4.6.0",
     "indexof": "0.0.1",
     "joi": "^17.5.0",
     "meteor-node-stubs": "^1.1.0",
@@ -75,9 +73,7 @@
     "react-table": "^6.8.6",
     "react-to-print": "^2.0.0-alpha-6",
     "react-visibility-sensor": "^5.0.2",
-    "save": "^2.4.0",
-    "slick-carousel": "^1.8.1",
-    "styled-components": "^5.2.1"
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@babel/helper-module-imports": "^7.0.0",
