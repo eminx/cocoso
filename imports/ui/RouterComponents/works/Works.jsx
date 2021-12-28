@@ -1,7 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Center, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  SimpleGrid,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
@@ -89,7 +96,7 @@ function Works() {
         )}
       </Center>
 
-      <Center>
+      <Center mb="2">
         <Wrap pl="1">
           <WrapItem>
             <Tag
@@ -114,15 +121,15 @@ function Works() {
       </Center>
 
       <Center>
-        <Wrap spacing="3">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3}>
           {worksWithCategoryColors.map((work, index) => (
-            <WrapItem flexBasis="360px" flexGrow={1} key={work._id}>
+            <Box key={work._id}>
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
                 <WorkThumb key={work._id} work={work} />
               </Link>
-            </WrapItem>
+            </Box>
           ))}
-        </Wrap>
+        </SimpleGrid>
       </Center>
     </Box>
   );

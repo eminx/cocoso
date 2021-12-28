@@ -154,7 +154,7 @@ function Work() {
       >
         <Box mt="2" bg="white">
           <NiceSlider images={work.images} />
-          <Box mt="2" p="2">
+          <Box mt="2" p="4">
             <div className="text-content">
               {renderHTML(work.longDescription)}{' '}
             </div>
@@ -162,7 +162,7 @@ function Work() {
         </Box>
       </Template>
 
-      <Center my="2" margin={{ top: 'medium', bottom: 'large' }}>
+      <Center my="2">
         {isOwner && (
           <Link to={`/${currentUser.username}/edit-work/${workId}`}>
             <Button size="sm" variant="ghost">

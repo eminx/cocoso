@@ -11,7 +11,7 @@ const imageStyle = {
 
 function WorkThumb({ work }) {
   return (
-    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} p="3">
+    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} p="4">
       <Flex direction="row" justify="space-between" mb="2">
         <div>
           {work.category && (
@@ -37,6 +37,7 @@ function WorkThumb({ work }) {
             src={work.images[0]}
             style={imageStyle}
             effect="black-and-white"
+            width="100%"
           />
         </Box>
       )}

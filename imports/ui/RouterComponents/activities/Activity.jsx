@@ -502,7 +502,7 @@ class Activity extends PureComponent {
           )}
 
           {activityData.longDescription && (
-            <Box p="2">
+            <Box p="4">
               <div
                 style={{
                   whiteSpace: 'pre-line',

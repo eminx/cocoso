@@ -58,12 +58,12 @@ function PublicActivityThumb({ item }) {
   const imageStyle = {
     width: '100%',
     // maxWidth: 360,
-    height: 220,
+    height: 260,
     objectFit: 'cover',
   };
 
   return (
-    <Box bg="rgba(255, 255, 255, 0.6)" p="2">
+    <Box bg="rgba(255, 255, 255, 0.6)" p="2" w="100%">
       <Box p="1">
         <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
@@ -73,12 +73,13 @@ function PublicActivityThumb({ item }) {
         </Text>
       </Box>
 
-      <Box>
+      <Box w="100%">
         <LazyLoadImage
           alt={item.title}
           src={item.imageUrl}
           style={imageStyle}
           effect="black-and-white"
+          width="100%"
         />
       </Box>
 

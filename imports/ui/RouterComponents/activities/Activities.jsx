@@ -3,7 +3,14 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { Box, Button, Center, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  SimpleGrid,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -124,9 +131,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
       </Center>
 
       <Center>
-        <Wrap spacing="3">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3}>
           {allSortedActivities.map((activity) => (
-            <WrapItem flexBasis="360px" flexGrow={1} key={activity.title}>
+            <Box key={activity.title}>
               <Link
                 to={
                   activity.isProcess
@@ -136,9 +143,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
               >
                 <PublicActivityThumb item={activity} />
               </Link>
-            </WrapItem>
+            </Box>
           ))}
-        </Wrap>
+        </SimpleGrid>
       </Center>
     </Box>
   );

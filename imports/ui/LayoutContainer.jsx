@@ -301,7 +301,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
             >
               <Col xs={3} style={{ paddingLeft: 0 }}>
                 <Link to="/">
-                  <Box w="120px" h="60px" mt="2" ml="1">
+                  <Box w="120px" h="60px" mt="4" ml="3">
                     <Image
                       fit="contain"
                       src={currentHost && currentHost.logo}
