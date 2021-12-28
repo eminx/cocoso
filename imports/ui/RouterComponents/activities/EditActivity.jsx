@@ -153,7 +153,9 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     const resource = resources.find(
-      (resource) => resource._id === formValues.resource
+      (resource) =>
+        resource._id === formValues.resource ||
+        resource._id === formValues.resourceId
     );
 
     const values = {
@@ -245,13 +247,11 @@ class EditActivity extends PureComponent {
 
     const {
       datesAndTimes,
-      formValues,
       isDeleteModalOn,
       isPublicActivity,
       isRegistrationDisabled,
-      uploadableImageLocal,
-      isCreating,
       isSuccess,
+      uploadableImageLocal,
     } = this.state;
 
     if (isSuccess) {
@@ -259,18 +259,8 @@ class EditActivity extends PureComponent {
       if (isDeleteModalOn) {
         return <Redirect to="/calendar" />;
       }
-      if (isPublicActivity) {
-        return <Redirect to={`/event/${activity._id}`} />;
-      } else {
-        return <Redirect to="/calendar" />;
-      }
+      return <Redirect to={`/activity/${activity._id}`} />;
     }
-
-    const buttonLabel = isCreating
-      ? 'Updating your activity...'
-      : 'Confirm and Update';
-    const { title } = formValues;
-    const isFormValid = formValues && title.length > 3;
 
     return (
       <Template
@@ -316,13 +306,10 @@ class EditActivity extends PureComponent {
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
             setUploadableImage={this.setUploadableImage}
-            isButtonDisabled={!isFormValid || isCreating}
-            isCreating={isCreating}
-            isFormValid={isFormValid}
           />
         </Box>
 
-        <Center>
+        <Center mt="4">
           <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
             Delete
           </Button>

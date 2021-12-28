@@ -3,6 +3,12 @@ import RDC from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Input } from '@chakra-ui/react';
 
+// ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
+// {
+//   date: '2020-01-01',
+//   time: '18:00'
+// }
+
 function DatePicker({ value, onChange, onlyTime = false, noTime = true }) {
   const [selectedDate, setSelectedDate] = useState();
 

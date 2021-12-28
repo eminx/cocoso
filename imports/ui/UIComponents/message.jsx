@@ -58,11 +58,13 @@ const renderToast = (status, text, duration) => {
 };
 
 const message = {
-  success: (text, duration) => renderToast('success', text, duration),
+  success: (text, duration) => renderToast('success', text, duration * 1000),
 
-  error: (text, duration = timeOutTime) => renderToast('error', text, duration),
+  error: (text, duration = timeOutTime) =>
+    renderToast('error', text, duration * 1000),
 
-  info: (text, duration = timeOutTime) => renderToast('info', text, duration),
+  info: (text, duration = timeOutTime) =>
+    renderToast('info', text, duration * 1000),
 };
 
 export { message, Alert };

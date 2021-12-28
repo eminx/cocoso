@@ -61,63 +61,10 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const renderDateTime = () => {
-    return (
-      <div style={{ marginBottom: 12 }}>
-        {datesAndTimes.map((recurrence, index) => (
-          <DatesAndTimes
-            key={index}
-            isPublicActivity={isPublicActivity}
-            recurrence={recurrence}
-            removeRecurrence={() => removeRecurrence(index)}
-            isNotDeletable={index === 0}
-            handleCapacityChange={(value) => handleCapacityChange(value, index)}
-            handleDateChange={(date, isEndDate) =>
-              handleDateChange(date, isEndDate, index)
-            }
-            handleStartTimeChange={(time) =>
-              handleTimeChange(time, index, 'startTime')
-            }
-            handleFinishTimeChange={(time) =>
-              handleTimeChange(time, index, 'endTime')
-            }
-            handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
-            noAnimate={index === 0}
-          />
-        ))}
-        <Center p="6" border="1px solid #ccc">
-          <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
-        </Center>
-      </div>
-    );
-  };
-
-  const handleTimeChange = (time, recurrenceIndex, startOrFinishTime) => {
+  const handleDateChange = (time, recurrenceIndex, entity) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === recurrenceIndex) {
-        item[startOrFinishTime] = time;
-      }
-      return item;
-    });
-
-    setDatesAndTimes(newDatesAndTimes);
-  };
-
-  const handleDateChange = (isoDate, isEndDate, recurrenceIndex) => {
-    const date = isoDate.substring(0, 10);
-    const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex === index) {
-        const recurrence = datesAndTimes[recurrenceIndex];
-        if (recurrence.isRange) {
-          if (isEndDate) {
-            item.endDate = date;
-          } else {
-            item.startDate = date;
-          }
-        } else {
-          item.startDate = date;
-          item.endDate = date;
-        }
+        item[entity] = time;
       }
       return item;
     });
@@ -185,7 +132,41 @@ function ActivityForm({
           <Heading mb="4" size="md">
             Occurences*
           </Heading>
-          {renderDateTime()}
+
+          <Box mb="4">
+            {datesAndTimes.map((recurrence, index) => (
+              <DatesAndTimes
+                key={index}
+                isPublicActivity={isPublicActivity}
+                recurrence={recurrence}
+                removeRecurrence={() => removeRecurrence(index)}
+                isNotDeletable={index === 0}
+                handleCapacityChange={(value) =>
+                  handleCapacityChange(value, index)
+                }
+                handleStartDateChange={(date) =>
+                  handleDateChange(date, index, 'startDate')
+                }
+                handleEndDateChange={(date) =>
+                  handleDateChange(date, index, 'endDate')
+                }
+                handleStartTimeChange={(time) =>
+                  handleDateChange(time, index, 'startTime')
+                }
+                handleEndTimeChange={(time) =>
+                  handleDateChange(time, index, 'endTime')
+                }
+                handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
+              />
+            ))}
+            <Center p="6" border="1px solid #ccc">
+              <IconButton
+                size="lg"
+                onClick={addRecurrence}
+                icon={<AddIcon />}
+              />
+            </Center>
+          </Box>
         </Box>
 
         <Box mb="8">
@@ -197,7 +178,6 @@ function ActivityForm({
             <FormField
               label="Title"
               helperText="This is typicaly title of your event"
-              // validate={(fieldValue, formValue) => console.log(fieldValue)}
             >
               <Input
                 {...register('title', { required: true })}
@@ -267,7 +247,7 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button isLoading={isSubmitting} type="submit">
             Confirm
           </Button>
         </Flex>

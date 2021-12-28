@@ -18,9 +18,10 @@ import DatePicker from './DatePicker';
 
 const DatesAndTimes = ({
   recurrence,
-  handleDateChange,
+  handleStartDateChange,
+  handleEndDateChange,
   handleStartTimeChange,
-  handleFinishTimeChange,
+  handleEndTimeChange,
   handleCapacityChange,
   handleRangeSwitch,
   removeRecurrence,
@@ -32,6 +33,16 @@ const DatesAndTimes = ({
   }
 
   const isRange = recurrence.isRange;
+
+  const startDate = {
+    date: recurrence.startDate,
+    time: recurrence.startTime,
+  };
+
+  const endDate = {
+    date: recurrence.endDate,
+    time: recurrence.endTime,
+  };
 
   return (
     <Box
@@ -52,7 +63,7 @@ const DatesAndTimes = ({
       <Center>
         <FormControl w="auto" alignItems="center" display="flex">
           <Switch
-            checked={isRange}
+            isChecked={isRange}
             id="is-multipledays-switch"
             onChange={handleRangeSwitch}
             py="2"
@@ -69,8 +80,8 @@ const DatesAndTimes = ({
             <Text fontSize="sm">{isRange ? 'Start Day' : 'Day'}</Text>
             <DatePicker
               noTime
-              value={recurrence.startDate}
-              onChange={handleDateChange}
+              value={startDate}
+              onChange={handleStartDateChange}
             />
           </Box>
 
@@ -79,8 +90,8 @@ const DatesAndTimes = ({
               <Text fontSize="sm">Finish Day</Text>
               <DatePicker
                 noTime
-                value={recurrence.endDate}
-                onChange={handleDateChange}
+                value={endDate}
+                onChange={handleEndDateChange}
               />
             </Box>
           )}
@@ -98,7 +109,7 @@ const DatesAndTimes = ({
             <Text fontSize="sm">Start time</Text>
             <DatePicker
               onlyTime
-              value={recurrence.startTime}
+              value={startDate}
               onChange={handleStartTimeChange}
             />
           </Box>
@@ -107,8 +118,8 @@ const DatesAndTimes = ({
             <Text fontSize="sm">Finish time</Text>
             <DatePicker
               onlyTime
-              value={recurrence.endTime}
-              onChange={handleFinishTimeChange}
+              value={endDate}
+              onChange={handleEndTimeChange}
             />
           </Box>
 
