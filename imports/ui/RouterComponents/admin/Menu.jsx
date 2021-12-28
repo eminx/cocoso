@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
 
-import { Drag } from 'grommet-icons/icons/Drag';
+import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
@@ -104,7 +104,7 @@ export default function Menu() {
     }
   };
 
-  if (!localSettings || !localSettings.menu || !activeMenu) {
+  if (loading || !localSettings || !localSettings.menu || !activeMenu) {
     return <Loader />;
   }
 
@@ -113,7 +113,7 @@ export default function Menu() {
       <Heading as="h3" size="md">
         Menu
       </Heading>
-      <Tabs>
+      <Tabs align="center">
         <TabList>
           <Tab>Visibility & Labels</Tab>
           <Tab>Order</Tab>
@@ -213,7 +213,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
 
 const SortableItem = sortableElement(({ value }) => (
   <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
-    <Drag /> <Box pl="2">{value}</Box>
+    <DragHandleIcon /> <Box pl="2">{value}</Box>
   </Flex>
 ));
 

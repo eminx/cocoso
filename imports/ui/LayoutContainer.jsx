@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grommet } from 'grommet';
 
 import {
   Box,
@@ -25,9 +24,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  Spinner,
   Text,
   Textarea,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
@@ -124,7 +123,6 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -137,11 +135,19 @@ function LayoutPage({
 
   if (hostLoading || !currentHost) {
     return (
-      <Box width="100%">
-        <Center p="1">
-          <Text>Loading...</Text>
-        </Center>
-      </Box>
+      <ChakraProvider>
+        <Box w="100%" h="100vh">
+          <Center h="100%">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Center>
+        </Box>
+      </ChakraProvider>
     );
   }
 
@@ -184,92 +190,87 @@ function LayoutPage({
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
   return (
-    <Grommet theme={customTheme}>
+    <ChakraProvider theme={chakraTheme}>
       {publicSettings.faviconUrl && (
         <Helmet>
           <link rel="icon" href={publicSettings.faviconUrl} />
         </Helmet>
       )}
-      <ChakraProvider theme={chakraTheme}>
-        <StateContext.Provider
-          value={{
-            currentUser,
-            userLoading,
-            currentHost,
-            role,
-            canCreateContent,
-          }}
-        >
-          <Center className="main-viewport" style={getBackgroundStyle(cHue)}>
-            <Box maxWidth="1400px" w="100%">
-              <Header {...headerProps} />
-              <Box style={{ minHeight: '100vh' }}>{children}</Box>
+      <StateContext.Provider
+        value={{
+          currentUser,
+          userLoading,
+          currentHost,
+          role,
+          canCreateContent,
+        }}
+      >
+        <Center className="main-viewport" style={getBackgroundStyle(cHue)}>
+          <Box maxWidth="1400px" w="100%">
+            <Header {...headerProps} />
+            <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-              <Flex bg="gray.100" justify="center" p="6">
-                <Center>
-                  <Button
-                    variant="ghost"
-                    onClick={() => setShowFeedbackModal(true)}
-                  >
-                    Give Feedback
-                  </Button>
-                </Center>
-
-                <Modal
-                  isOpen={showFeedbackModal}
-                  onClose={() => setShowFeedbackModal(false)}
+            <Flex bg="gray.100" justify="center" p="6">
+              <Center>
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowFeedbackModal(true)}
                 >
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>Give Feedback</ModalHeader>
-                    <ModalCloseButton />
-                    <form
-                      action="https://formspree.io/f/xdopweon"
-                      method="POST"
-                    >
-                      <ModalBody>
-                        <VStack spacing="6">
-                          <FormField label="Your email address">
-                            <Input type="email" name="_replyto" />
-                          </FormField>
+                  Give Feedback
+                </Button>
+              </Center>
 
-                          <FormField label="Subject">
-                            <Select name="subject">
-                              {['Suggestion', 'Bug', 'Compliment'].map(
-                                (option) => (
-                                  <option key={option} value={option}>
-                                    {option}
-                                  </option>
-                                )
-                              )}
-                            </Select>
-                          </FormField>
+              <Modal
+                isOpen={showFeedbackModal}
+                onClose={() => setShowFeedbackModal(false)}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Give Feedback</ModalHeader>
+                  <ModalCloseButton />
+                  <form action="https://formspree.io/f/xdopweon" method="POST">
+                    <ModalBody>
+                      <VStack spacing="6">
+                        <FormField label="Your email address">
+                          <Input type="email" name="_replyto" />
+                        </FormField>
 
-                          <FormField label="Details">
-                            <Textarea name="text" name="message" />
-                          </FormField>
-                        </VStack>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          mr={3}
-                          onClick={() => setShowFeedbackModal(false)}
-                        >
-                          Close
-                        </Button>
-                        <Button colorScheme="blue" type="submit">
-                          Send
-                        </Button>
-                      </ModalFooter>
-                    </form>
-                  </ModalContent>
-                </Modal>
-              </Flex>
-            </Box>
-          </Center>
-        </StateContext.Provider>
-      </ChakraProvider>
-    </Grommet>
+                        <FormField label="Subject">
+                          <Select name="subject">
+                            {['Suggestion', 'Bug', 'Compliment'].map(
+                              (option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              )
+                            )}
+                          </Select>
+                        </FormField>
+
+                        <FormField label="Details">
+                          <Textarea name="text" name="message" />
+                        </FormField>
+                      </VStack>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        mr={3}
+                        onClick={() => setShowFeedbackModal(false)}
+                      >
+                        Close
+                      </Button>
+                      <Button colorScheme="blue" type="submit">
+                        Send
+                      </Button>
+                    </ModalFooter>
+                  </form>
+                </ModalContent>
+              </Modal>
+            </Flex>
+          </Box>
+        </Center>
+      </StateContext.Provider>
+    </ChakraProvider>
   );
 }
 

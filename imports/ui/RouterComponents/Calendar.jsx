@@ -172,8 +172,8 @@ class Calendar extends PureComponent {
         )}
 
         <Box bg="white" pt="1" mb="3">
-          <Center p="1">
-            <Wrap className="tags-container" px="1" pb="1">
+          <Center p="2">
+            <Wrap justify="center" px="1" pb="1">
               <WrapItem>
                 <Tag
                   alignSelf="center"
@@ -202,7 +202,7 @@ class Calendar extends PureComponent {
           </Center>
 
           <Center>
-            <Wrap mb="2" px="1">
+            <Wrap justify="center" mb="2" px="1">
               {comboResourcesWithColor.map((resource, i) => (
                 <WrapItem key={resource.label}>
                   <Tag

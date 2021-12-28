@@ -7,18 +7,24 @@ import {
   Heading,
   HStack,
   Input,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanel,
+  TabPanels,
+  Tag,
+  TagCloseButton,
+  TagLabel,
   Text,
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
-import { HuePicker } from 'react-color';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
-import Tag from '../../UIComponents/Tag';
 import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
@@ -201,43 +207,56 @@ export default function Settings({ history }) {
         </Box>
       }
     >
-      <Box p="6" bg="white" mb="8">
-        <Heading as="h3" size="md">
-          Logo
-        </Heading>
-        <Text mb="3">Upload Your Logo</Text>
-        <Center p="3">
-          <Box>
-            <FileDropper
-              uploadableImageLocal={
-                localImage && localImage.uploadableImageLocal
-              }
-              imageUrl={currentHost && currentHost.logo}
-              setUploadableImage={setUploadableImage}
-              width={isImage && '120px'}
-              height={isImage && '80px'}
-            />
-          </Box>
-        </Center>
-        {localImage && localImage.uploadableImageLocal && (
-          <Center p="2">
-            <Button onClick={() => uploadLogo()}>Confirm</Button>
-          </Center>
-        )}
-      </Box>
+      <Tabs align="center">
+        <TabList>
+          <Tab>Logo</Tab>
+          <Tab>Org.Info</Tab>
+          <Tab>Menu</Tab>
+          <Tab>Categories</Tab>
+        </TabList>
 
-      <Box p="6" bg="white" mb="8">
-        <Heading as="h3" size="md">
-          Organisation
-        </Heading>
-        <Text mb="3">Add/Edit Information About your Organisation</Text>
-        <SettingsForm
-          initialValues={localSettings}
-          onSubmit={handleFormSubmit}
-        />
-      </Box>
+        <TabPanels>
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Logo
+              </Heading>
+              <Text mb="3">Upload Your Logo</Text>
+              <Center p="3">
+                <Box>
+                  <FileDropper
+                    uploadableImageLocal={
+                      localImage && localImage.uploadableImageLocal
+                    }
+                    imageUrl={currentHost && currentHost.logo}
+                    setUploadableImage={setUploadableImage}
+                    width={isImage && '120px'}
+                    height={isImage && '80px'}
+                  />
+                </Box>
+              </Center>
+              {localImage && localImage.uploadableImageLocal && (
+                <Center p="2">
+                  <Button onClick={() => uploadLogo()}>Confirm</Button>
+                </Center>
+              )}
+            </AlphaContainer>
+          </TabPanel>
 
-      <Box p="6" bg="white" mb="8">
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Organisation
+              </Heading>
+              <Text mb="3">Add/Edit Information About your Organisation</Text>
+              <SettingsForm
+                initialValues={localSettings}
+                onSubmit={handleFormSubmit}
+              />
+            </AlphaContainer>
+          </TabPanel>
+
+          {/* <AlphaContainer>
         <Heading as="h3" size="md">
           Main Color
         </Heading>
@@ -257,47 +276,63 @@ export default function Settings({ history }) {
             Confirm
           </Button>
         </Flex>
-      </Box>
+        </AlphaContainer> */}
 
-      <Box bg="whiteAlpha.900" p="6" mb="8">
-        <Menu />
-      </Box>
+          <TabPanel>
+            <AlphaContainer>
+              <Menu />
+            </AlphaContainer>
+          </TabPanel>
 
-      <Box p="6" mb="8">
-        <Heading as="h3" size="md">
-          Work Categories
-        </Heading>
-        <Text mb="3">You can set categories for work entries here</Text>
-        <Center>
-          <Wrap p="1" spacing="2" mb="2">
-            {categories.map((category) => (
-              <WrapItem key={category.label}>
-                <Tag
-                  background={category.color}
-                  label={category.label.toUpperCase()}
-                  removable
-                  onRemove={() => removeCategory(category._id)}
-                />
-              </WrapItem>
-            ))}
-          </Wrap>
-        </Center>
-        <form onSubmit={addNewCategory}>
-          <Center>
-            <HStack w="xs">
-              <Input
-                size="sm"
-                placeholder="PAJAMAS"
-                value={categoryInput}
-                onChange={(event) =>
-                  handleCategoryInputChange(event.target.value)
-                }
-              />
-              <Button type="submit">Add</Button>
-            </HStack>
-          </Center>
-        </form>
-      </Box>
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Work Categories
+              </Heading>
+              <Text mb="3">You can set categories for work entries here</Text>
+              <Center>
+                <Wrap p="1" spacing="2" mb="2">
+                  {categories.map((category) => (
+                    <WrapItem key={category.label}>
+                      <Tag colorScheme="messenger">
+                        <TagLabel fontWeight="bold">
+                          {category.label.toUpperCase()}
+                        </TagLabel>
+                        <TagCloseButton
+                          onClick={() => removeCategory(category._id)}
+                        />
+                      </Tag>
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </Center>
+              <form onSubmit={addNewCategory}>
+                <Center>
+                  <HStack>
+                    <Input
+                      placeholder="PAJAMAS"
+                      mt="2"
+                      value={categoryInput}
+                      onChange={(event) =>
+                        handleCategoryInputChange(event.target.value)
+                      }
+                    />
+                    <Button type="submit">Add</Button>
+                  </HStack>
+                </Center>
+              </form>
+            </AlphaContainer>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Template>
+  );
+}
+
+function AlphaContainer({ title, children }) {
+  return (
+    <Box bg="white" mb="8" p="6">
+      {children}
+    </Box>
   );
 }

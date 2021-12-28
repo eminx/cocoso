@@ -125,7 +125,7 @@ function Works() {
           {worksWithCategoryColors.map((work, index) => (
             <Box key={work._id}>
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
-                <WorkThumb key={work._id} work={work} />
+                <WorkThumb work={work} />
               </Link>
             </Box>
           ))}
