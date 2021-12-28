@@ -17,6 +17,7 @@ import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
 import { message, Alert } from '../../UIComponents/message';
 import { userMenu } from '../../constants/general';
+import WorkThumb from '../../UIComponents/WorkThumb';
 
 function Works({ history }) {
   const [works, setWorks] = useState([]);
@@ -80,7 +81,7 @@ function Works({ history }) {
               key={work._id}
               to={`/${work.authorUsername}/work/${work._id}`}
             >
-              <WorkItem work={work} history={history} />
+              <WorkThumb work={work} />
             </Link>
           )}
         </NiceList>
@@ -95,7 +96,7 @@ function Works({ history }) {
 }
 
 const WorkItem = ({ work }) => (
-  <Flex w="100%" p="2" bg="white">
+  <Flex bg="white" p="2" w="100%">
     <Box mr="4">
       <Image
         boxSize="140px"

@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Heading,
@@ -114,7 +115,9 @@ function MemberPublic({
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
           <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
-            <WorkThumb work={work} />
+            <Box mb="4">
+              <WorkThumb work={work} />
+            </Box>
           </Link>
         ))
       ) : (

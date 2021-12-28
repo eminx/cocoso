@@ -1,7 +1,6 @@
 import React from 'react';
-import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Avatar, Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import Tag from './Tag';
 
 const imageStyle = {
   width: '100%',
@@ -11,20 +10,18 @@ const imageStyle = {
 
 function WorkThumb({ work }) {
   return (
-    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} p="4">
-      <Flex direction="row" justify="space-between" mb="2">
-        <div>
-          {work.category && (
-            <Tag
-              label={work.category.label}
-              filterColor={work.categoryColor}
-              margin={{ bottom: 'xxsmall' }}
-            />
-          )}
+    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} px="4" py="2">
+      <Flex align="center" justify="space-between" mb="2">
+        <Box>
           <Heading my="2" fontWeight="bold" size="md" isTruncated>
             {work.title}
           </Heading>
-        </div>
+          {work.category && (
+            <Badge variant="outline" color="gray.800" fontSize="md" mb="2">
+              {work.category.label}
+            </Badge>
+          )}
+        </Box>
         <Avatar
           name={work.authorUsername}
           src={work.authorAvatar ? work.authorAvatar.src : null}

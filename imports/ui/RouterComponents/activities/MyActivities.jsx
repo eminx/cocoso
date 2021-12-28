@@ -13,6 +13,8 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Tag,
+  TagLabel,
   Text,
 } from '@chakra-ui/react';
 
@@ -22,7 +24,6 @@ import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
 import { Alert } from '../../UIComponents/message';
-import Tag from '../../UIComponents/Tag';
 import { userMenu } from '../../constants/general';
 
 function Activities({ history }) {
@@ -36,7 +37,7 @@ function Activities({ history }) {
         setLoading(false);
         return;
       }
-      setActivities(respond);
+      setActivities(respond.reverse());
       setLoading(false);
     });
   }, []);
@@ -133,17 +134,19 @@ function Activities({ history }) {
 }
 
 const ActivityItem = ({ act }) => (
-  <HStack bg="white" m="2" p="3" w="100%">
+  <HStack align="flex-start" bg="white" p="3" w="100%">
     {act.isPublicActivity && (
-      <Box width="small" height="small" margin={{ right: 'small' }}>
+      <Box p="2">
         <Image fit="cover" w="xs" fill src={act.imageUrl} />
       </Box>
     )}
     <Box w="100%">
-      <Heading size="lg" style={{ overflowWrap: 'anywhere' }} mb="1">
+      <Heading mb="2" overflowWrap="anywhere" size="md">
         {act.title}
       </Heading>
-      <Tag label={act.resource} />
+      <Tag>
+        <TagLabel>{act.resource}</TagLabel>
+      </Tag>
       <Text fontWeight="light">{act.subTitle}</Text>
       <Text fontStyle="italic" p="1" textAlign="right">
         {act.datesAndTimes.length} occurences

@@ -103,13 +103,15 @@ function Work() {
           <Box pt="2" pb="1" px="2">
             <Flex justify="space-between">
               <Box>
-                <Heading as="h3" size="lg" mb={2}>
+                <Heading as="h2" size="lg" mb={1}>
                   {work.title}
                 </Heading>
+                <Text mb="4">{work.shortDescription}</Text>
                 {work.category && (
-                  <Badge fontSize="md">{work.category.label}</Badge>
+                  <Badge variant="outline" color="gray.800" fontSize="md">
+                    {work.category.label}
+                  </Badge>
                 )}
-                <Text>{work.shortDescription}</Text>
               </Box>
               <Box>
                 <Visible xs sm md>

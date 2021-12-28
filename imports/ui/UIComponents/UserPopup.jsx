@@ -35,7 +35,7 @@ function UserPopup({ currentUser }) {
       <MenuButton>
         <Avatar
           mr="2"
-          size="sm"
+          showBorder
           src={currentUser.avatar && currentUser.avatar.src}
         />
       </MenuButton>

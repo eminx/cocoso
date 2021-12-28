@@ -25,7 +25,7 @@ const getFullName = (member) => {
 
 const publicSettings = Meteor.settings.public;
 
-function PublicMembers({ history }) {
+function PublicMembers() {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
   const { currentHost } = useContext(StateContext);
@@ -106,8 +106,9 @@ function PublicMembers({ history }) {
                 <Box m="1">
                   <Avatar
                     name={member.username}
-                    src={member.avatarSrc}
+                    showBorder
                     size="2xl"
+                    src={member.avatarSrc}
                   />
                   <Center>
                     <Text fontWeight="bold" fontSize="lg" isTruncated>

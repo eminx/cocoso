@@ -96,8 +96,8 @@ function Works() {
         )}
       </Center>
 
-      <Center mb="2">
-        <Wrap pl="1">
+      <Center mb="4">
+        <Wrap pl="2">
           <WrapItem>
             <Tag
               label="ALL"
