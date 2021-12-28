@@ -5,8 +5,8 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
-
-import { Calendar } from 'grommet';
+import { formatDate } from '../../functions.js';
+import DatePicker from '../../UIComponents/DatePicker.jsx';
 
 import {
   Accordion,
@@ -253,7 +253,7 @@ class Process extends Component {
   handleDateAndTimeChange = (dateOrTime, entity) => {
     const { newMeeting } = this.state;
     const newerMeeting = { ...newMeeting };
-    newerMeeting[entity] = dateOrTime.substring(0, 10);
+    newerMeeting[entity] = dateOrTime;
 
     this.setState({
       newMeeting: newerMeeting,
@@ -867,7 +867,6 @@ class Process extends Component {
               {isAdmin && (
                 <div>
                   <CreateMeetingForm
-                    newMeeting={newMeeting}
                     handleDateChange={(date) =>
                       this.handleDateAndTimeChange(date, 'startDate')
                     }
@@ -962,7 +961,6 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
 };
 
 function CreateMeetingForm({
-  newMeeting,
   handleDateChange,
   handleStartTimeChange,
   handleFinishTimeChange,
@@ -975,36 +973,18 @@ function CreateMeetingForm({
 
   return (
     <Box p="2" bg="white" my="2">
-      <h4>Add a Meeting</h4>
-      <div style={{ marginBottom: 6 }}>
-        <Calendar
-          size="small"
-          date={
-            newMeeting.startDate
-              ? newMeeting.startDate + 'T00:00:00.000Z'
-              : new Date().toISOString()
-          }
-          onSelect={handleDateChange}
-          firstDayOfWeek={1}
-        />
-      </div>
-      <HStack spacing="2">
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.startTime}
-            onChange={handleStartTimeChange}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.endTime}
-            onChange={handleFinishTimeChange}
-          />
-        </div>
+      <Heading ml="2" mt="2" size="xs">
+        Add a Meeting
+      </Heading>
+      <Box py="4">
+        <DatePicker noTime onChange={handleDateChange} />
+      </Box>
+      <HStack spacing="2" mb="6">
+        <DatePicker onlyTime onChange={handleStartTimeChange} />
+        <DatePicker onlyTime onChange={handleFinishTimeChange} />
       </HStack>
 
-      <FormControl display="flex" alignItems="center" mb="2" mt="4">
+      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch
           id="is-local-switch"
           isChecked={isLocal}

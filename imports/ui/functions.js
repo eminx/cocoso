@@ -174,6 +174,18 @@ function isResourceOccupied(occurence, start, end) {
   moment(occurence.dateTime, dateTimeFormat).isBetween(start, end);
 }
 
+function appendLeadingZeroes(n){
+  if(n <= 9){
+    return "0" + n;
+  }
+  return n
+}
+
+function formatDate(date) {
+  const formattedDate = appendLeadingZeroes(date.getFullYear()) + "-" + appendLeadingZeroes(date.getMonth() + 1) + "-" + appendLeadingZeroes(date.getDate())
+  return formattedDate;
+}
+
 export {
   getInitials,
   removeSpace,
@@ -186,4 +198,5 @@ export {
   uploadImage,
   dataURLtoFile,
   parseActsWithResources,
+  formatDate,
 };
