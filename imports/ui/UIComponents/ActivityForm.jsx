@@ -85,7 +85,7 @@ function ActivityForm({
             noAnimate={index === 0}
           />
         ))}
-        <Center p="6">
+        <Center p="6" border="1px solid #ccc">
           <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
         </Center>
       </div>
@@ -125,14 +125,10 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const handleCapacityChange = (event, recurrenceIndex) => {
-    const value = Number(event.target.value);
-    if (typeof value !== 'number') {
-      return;
-    }
+  const handleCapacityChange = (value, recurrenceIndex) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (recurrenceIndex === index) {
-        item.capacity = value;
+        item.capacity = Number(value);
       }
       return item;
     });
