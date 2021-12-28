@@ -87,6 +87,10 @@ const getGotoPath = (pathname) => {
 };
 
 const getBackgroundStyle = (cHue) => {
+  return {
+    backgroundColor: 'rgba(0, 0, 0, .08)',
+  };
+
   if (!cHue) {
     return {
       backgroundColor: '#fff',

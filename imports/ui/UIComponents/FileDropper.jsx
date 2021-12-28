@@ -31,13 +31,14 @@ const FileDropper = ({
           bg={isDragActive ? 'gray.300' : 'gray.100'}
           h={height}
           style={containerStyle}
-          w="xs"
+          // w="xs"
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (
             <Image
               fit={imageFit}
               width="100%"
+              height="100%"
               src={uploadableImageLocal || imageUrl}
               style={{ cursor: 'pointer' }}
             />
