@@ -238,11 +238,7 @@ class EditActivity extends PureComponent {
     }
 
     if (activity.authorId !== currentUser._id) {
-      return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert message="You are not allowed" type="error" />
-        </div>
-      );
+      return <Alert message="You are not allowed" />;
     }
 
     const {
@@ -309,8 +305,13 @@ class EditActivity extends PureComponent {
           />
         </Box>
 
-        <Center mt="4">
-          <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
+        <Center p="4">
+          <Button
+            colorScheme="red"
+            size="sm"
+            variant="ghost"
+            onClick={this.showDeleteModal}
+          >
             Delete
           </Button>
         </Center>

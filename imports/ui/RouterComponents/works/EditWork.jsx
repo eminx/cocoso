@@ -225,8 +225,8 @@ class EditWork extends PureComponent {
     }
   };
 
-  closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
-  openDeleteModal = () => this.setState({ isDeleteModalOn: true });
+  hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
+  showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   render() {
     const { currentUser } = this.context;
@@ -243,15 +243,15 @@ class EditWork extends PureComponent {
     } = this.state;
 
     if (!currentUser) {
-      return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert message="Not allowed" type="error" />
-        </div>
-      );
+      return <Alert message="Not allowed" />;
     }
 
     if (isLoading || !values) {
       return <Loader />;
+    }
+
+    if (currentUser._id !== values.authorId) {
+      return <Alert message="Not allowed" />;
     }
 
     const workRoute = `/${currentUser.username}/work/${workId}`;
@@ -290,7 +290,7 @@ class EditWork extends PureComponent {
             colorScheme="red"
             size="sm"
             variant="ghost"
-            onClick={this.openDeleteModal}
+            onClick={this.showDeleteModal}
           >
             Delete
           </Button>
@@ -299,7 +299,7 @@ class EditWork extends PureComponent {
         <ConfirmModal
           visible={isDeleteModalOn}
           onConfirm={this.handleDeleteWork}
-          onCancel={this.closeDeleteModal}
+          onCancel={this.hideDeleteModal}
           title="Confirm Delete"
         >
           Are you sure you want to delete this item?

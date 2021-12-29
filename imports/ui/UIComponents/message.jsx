@@ -14,7 +14,13 @@ import { chakraTheme } from '../constants/theme';
 
 const timeOutTime = 5000;
 
-const Alert = ({ type = 'error', isClosable, children }) => {
+const Alert = ({
+  children,
+  isClosable,
+  message,
+  type = 'error',
+  ...otherProps
+}) => {
   const success = type === 'success';
   const info = type === 'info';
   const warning = type === 'warning';
@@ -22,7 +28,7 @@ const Alert = ({ type = 'error', isClosable, children }) => {
   return (
     <Center w="100%">
       <Box>
-        <CAlert status={type}>
+        <CAlert status={type} {...otherProps}>
           <AlertIcon />
           <Box flex="1">
             <AlertTitle>
@@ -34,7 +40,9 @@ const Alert = ({ type = 'error', isClosable, children }) => {
                 ? 'Warning'
                 : 'Error'}
             </AlertTitle>
-            <AlertDescription display="block">{children}</AlertDescription>
+            <AlertDescription display="block">
+              {children || message}
+            </AlertDescription>
           </Box>
           {isClosable && (
             <CloseButton position="absolute" right="8px" top="8px" />

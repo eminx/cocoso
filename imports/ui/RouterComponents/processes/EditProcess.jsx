@@ -131,13 +131,12 @@ class EditProcess extends React.Component {
 
     if (!currentUser) {
       return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to become a registered member to create a process."
-            type="error"
-          />
-        </div>
+        <Alert message="You have to become a registered member to create a process." />
       );
+    }
+
+    if (process.adminId !== currentUser._id) {
+      return <Alert message="You are not allowed!" />;
     }
 
     const {
@@ -152,14 +151,12 @@ class EditProcess extends React.Component {
       return <Redirect to={`/process/${process._id}`} />;
     }
 
-    const buttonLabel = isUpdating ? 'Updating...' : 'Confirm and Update';
-
     const { title, description } = formValues;
-    const isFormValid =
-      formValues &&
-      title.length > 3 &&
-      description.length > 20 &&
-      (uploadableImageLocal || process.imageUrl);
+    // const isFormValid =
+    //   formValues &&
+    //   title.length > 3 &&
+    //   description.length > 20 &&
+    //   (uploadableImageLocal || process.imageUrl);
 
     return (
       <Template
@@ -186,13 +183,16 @@ class EditProcess extends React.Component {
           />
         </Box>
 
-        {process.adminId === currentUser._id && (
-          <Center>
-            <Button colorScheme="red" size="sm" onClick={this.showDeleteModal}>
-              Delete
-            </Button>
-          </Center>
-        )}
+        <Center p="4">
+          <Button
+            colorScheme="red"
+            size="sm"
+            variant="ghost"
+            onClick={this.showDeleteModal}
+          >
+            Delete
+          </Button>
+        </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
