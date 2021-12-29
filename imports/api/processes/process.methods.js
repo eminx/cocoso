@@ -15,7 +15,7 @@ import { compareForSort } from './process.helpers';
 const publicSettings = Meteor.settings.public;
 
 Meteor.methods({
-  async createProcess(formValues, imageUrl, isPrivate = false) {
+  createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -30,7 +30,7 @@ Meteor.methods({
     // check(formValues.capacity, Number);
 
     try {
-      const add = await Processes.insert(
+      const add = Processes.insert(
         {
           host,
           adminId: user._id,
