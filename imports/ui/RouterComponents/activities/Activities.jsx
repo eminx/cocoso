@@ -56,14 +56,10 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
     }
 
     const futureProcesses = processesList.filter((process) => {
-      if (process.meeting && process.meeting.some) {
-        return process.meetings.some((meeting) =>
-          moment(meeting.startDate).isAfter(yesterday)
-        )
-      }
-    }
-
-    );
+      return process.meetings?.some((meeting) =>
+        moment(meeting.startDate).isAfter(yesterday)
+      );
+    });
 
     const futureProcessesWithAccessFilter =
       parseOnlyAllowedProcesses(futureProcesses);
