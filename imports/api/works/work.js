@@ -33,6 +33,6 @@ Schemas.Work = new SimpleSchema({
   latestUpdate: {type: Date, optional: true},
 });
 
-Works.attachSchema(Schemas.Work );
+Works.attachSchema(Schemas.Work);
 
 export default Works;
