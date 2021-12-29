@@ -1,17 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Email } from 'meteor/email';
-import { getHost } from './shared';
+import { getHost } from '../../shared';
+import Hosts from '../../../@hosts/host';
+import {
+  isValidEmail,
+  getEmailBody
+} from './mail.helpers';
 
 const publicSettings = Meteor.settings.public;
-
-function isValidEmail(email) {
-  var re = /\S+@\S+\.\S+/;
-  return re.test(email);
-}
-
-getEmailBody = (email, username) => {
-  return `${email.appeal} ${username},\n${email.body}`;
-};
 
 Meteor.methods({
   sendEmail(id, subjectEmail, textEmail, isNewUser) {

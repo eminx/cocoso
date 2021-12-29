@@ -1,6 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import ActivitiesList from './Activities';
 
+import Processes from '../../../api/processes/process';
+import Activities from '../../../api/activities/activity';  
+
 export default ActivitiesContainer = withTracker((props) => {
   const processesSubscription = Meteor.subscribe('processes');
   const processesList = Processes ? Processes.find().fetch() : null;

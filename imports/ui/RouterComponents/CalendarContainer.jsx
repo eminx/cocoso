@@ -1,8 +1,12 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Calendar from './Calendar';
 import moment from 'moment';
-
 import { parseActsWithResources } from '../functions';
+
+import Processes from '../../api/processes/process';
+import Documents from '../../api/documents/document';
+import Resources from '../../api/resources/resource';
+import Activities from '../../api/activities/activity'; 
 
 const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');

@@ -1,26 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { getHost } from './shared';
+import { getHost } from '../@/shared';
+import Hosts from '../@hosts/host';
 
 Meteor.methods({
-  getHostMembers() {
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host: host });
-    const members = currentHost.members.map((member) => {
-      const user = Meteor.users.findOne(member.id);
-      const avatarSrc = user && user.avatar && user.avatar.src;
-      if (user) {
-        return {
-          ...member,
-          avatarSrc,
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-        };
-      }
-    });
-    const validMembers = members.filter((member) => member && member.id);
-    return validMembers;
-  },
 
   createAccount(values) {
     check(values.email, String);
@@ -133,11 +116,6 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-
-    check(values.firstName, String);
-    check(values.lastName, String);
-    check(values.bio, String);
-    check(values.contactInfo, String);
 
     try {
       Meteor.users.update(user._id, {

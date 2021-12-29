@@ -1,5 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import NewPage from './NewPage';
+import Pages from '../../../api/pages/page';
 
 export default NewPageContainer = withTracker((props) => {
   const meSub = Meteor.subscribe('me');

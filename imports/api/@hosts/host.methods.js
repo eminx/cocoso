@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-
+import { getHost } from '../@/shared';
+import Hosts from './host';
+import Pages from '../pages/page';
 import {
   defaultMenu,
   defaultMainColor,
@@ -22,13 +24,13 @@ Meteor.methods({
         host: values.host,
         email: values.email,
         settings: {
+          name: values.name,
+          email: values.email,
           address: values.address,
           city: values.city,
           country: values.country,
-          email: values.email,
           mainColor: defaultMainColor,
           menu: defaultMenu,
-          name: values.name,
         },
         members: [
           {
@@ -40,6 +42,7 @@ Meteor.methods({
           },
         ],
         emails: defaultEmails,
+        createdAt: new Date()
       });
 
       await Pages.insert({
@@ -66,5 +69,24 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
+  },
+  
+  getHostMembers() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host: host });
+    const members = currentHost.members.map((member) => {
+      const user = Meteor.users.findOne(member.id);
+      const avatarSrc = user && user.avatar && user.avatar.src;
+      if (user) {
+        return {
+          ...member,
+          avatarSrc,
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+        };
+      }
+    });
+    const validMembers = members.filter((member) => member && member.id);
+    return validMembers;
   },
 });
