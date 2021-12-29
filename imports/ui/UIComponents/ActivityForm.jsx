@@ -61,10 +61,13 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const handleDateChange = (time, recurrenceIndex, entity) => {
+  const handleDateChange = (date, recurrenceIndex, entity) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === recurrenceIndex) {
-        item[entity] = time;
+        item[entity] = date;
+        if (entity === 'startDate' && !item.isRange) {
+          item['endDate'] = date;
+        }
       }
       return item;
     });
