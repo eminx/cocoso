@@ -520,9 +520,7 @@ class Activity extends PureComponent {
           <Heading mb="1" as="h5" size="md">
             Resource
           </Heading>
-          <Stack>
-            <Tag label={activityData.resource} />
-          </Stack>
+          <Tag label={activityData.resource} />
         </Box>
         {activityData.address && (
           <Box p="2" mb="1">
