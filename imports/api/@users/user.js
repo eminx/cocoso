@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../@/schemas';
 
-Schemas.AccontBase = {
+Schemas.AccountBase = {
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
   emails: { type: Array },
   'emails.$': { type: Object },
@@ -14,7 +14,7 @@ Schemas.AccontBase = {
   services: { type: Object, blackbox: true },
 };
 Schemas.User = new SimpleSchema({
-  ...Schemas.AccontBase, 
+  ...Schemas.AccountBase, 
   ...{
     firstName: { type: String },
     lastName: { type: String },
@@ -68,7 +68,7 @@ Schemas.User = new SimpleSchema({
 
 // Ensuring every user has an email address, should be in server-side code
 Accounts.validateNewUser((user) => {
-  new SimpleSchema(Schemas.AccontBase).validate(user);
+  new SimpleSchema(Schemas.AccountBase).validate(user);
   // Return true to allow user creation to proceed
   return true;
 });
