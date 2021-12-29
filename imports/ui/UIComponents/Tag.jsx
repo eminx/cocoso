@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
 const Tag = ({
@@ -30,9 +30,7 @@ const Tag = ({
   };
 
   return (
-    <Box
-      align="center"
-      alignSelf="start"
+    <Flex
       background={getBackground()}
       border={
         gradientBackground && checkable
@@ -40,7 +38,7 @@ const Tag = ({
           : `2px solid ${filterColor || '#484848'}`
       }
       borderRadius="2px"
-      flexDirection="row"
+      display="inline-block"
       p={gradientBackground && checkable ? '2px' : '0'}
       {...otherProps}
     >
@@ -53,6 +51,7 @@ const Tag = ({
         onClick={onClick}
       >
         <Text
+          as="span"
           color={checked ? 'white' : filterColor}
           fontSize={otherProps.size || '14px'}
           fontWeight={checkable ? 'normal' : 'bold'}
@@ -63,7 +62,7 @@ const Tag = ({
       {removable && (
         <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />
       )}
-    </Box>
+    </Flex>
   );
 };
 
