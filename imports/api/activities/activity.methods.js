@@ -1,30 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isContributorOrAdmin } from './shared';
-
-const getRegistrationEmailBody = (
-  firstName,
-  numberOfPeople,
-  occurence,
-  activityId,
-  hostName,
-  host
-) => {
-  return `<p>Hi ${firstName},</p><p>This is a confirmation email to inform you that you have successfully signed up for this event.</p><p>You have registered to come ${numberOfPeople} ${
-    numberOfPeople === 1 ? 'person' : 'people'
-  } in total for the event on ${occurence.startDate} at ${
-    occurence.startTime
-  }.</p><p>May there be any changes to that, please go to this link to change your RSVP: https://${host}/event/${activityId}.<br />Then by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.</p><p>We look forward to your participation.<br />${hostName} Team</p>`;
-};
-
-const getUnregistrationEmailBody = (
-  firstName,
-  occurence,
-  activityId,
-  hostName,
-  host
-) => {
-  return `<p>Hi ${firstName},</p><p>This is a confirmation email to inform you that you have successfully removed your registration from this event.</p><p>You have previously registered to attend the event on ${occurence.startDate} at ${occurence.startTime}, which you just signed out of.</p><p>If you want to RSVP again, you can do so here at the event page: https://${host}/event/${activityId}.</p><p>Kind regards,<br />${hostName} Team</p>`;
-};
+import { getHost } from '../@/shared';
+import { isContributorOrAdmin } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Activities from './activity';
+import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
   getMyActivities() {
@@ -58,14 +37,6 @@ Meteor.methods({
       throw new Meteor.Error('Image is required for public activities');
     }
 
-    check(formValues.title, String);
-    formValues.datesAndTimes.forEach((recurrence) => {
-      check(recurrence.startDate, String);
-      check(recurrence.endDate, String);
-      check(recurrence.startTime, String);
-      check(recurrence.endTime, String);
-    });
-    check(formValues.isPublicActivity, Boolean);
     const resourceIndex = formValues.resource.resourceIndex;
 
     try {
@@ -111,7 +82,7 @@ Meteor.methods({
       );
       return add;
     } catch (error) {
-      throw new Meteor.Error(e, "Couldn't add to Collection");
+      throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
 
@@ -123,15 +94,7 @@ Meteor.methods({
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
-
-    check(formValues.title, String);
-    formValues.datesAndTimes.forEach((recurrence) => {
-      check(recurrence.startDate, String);
-      check(recurrence.endDate, String);
-      check(recurrence.startTime, String);
-      check(recurrence.endTime, String);
-    });
-    // const resourceIndex = getResourceIndex(formValues.resource, host);
+    
     const resourceIndex = formValues.resource.resourceIndex;
     const theG = Activities.findOne(activityId);
     if (user._id !== theG.authorId) {
@@ -160,9 +123,6 @@ Meteor.methods({
       });
       return activityId;
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't update activity due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -233,22 +193,11 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      console.log(error)
-      // Logger.createLogger(
-      //   `Couldn't register attendance due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't register attendance");
     }
   },
 
   updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
-    check(activityId, String);
-    check(occurenceIndex, Number);
-    check(values.firstName, String);
-    check(values.lastName, String);
-    check(values.email, String);
-    check(values.numberOfPeople, Number);
-
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     occurences[occurenceIndex].attendees[attendeeIndex] = values;
@@ -277,19 +226,11 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't update attendance due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't update attendance");
     }
   },
 
   removeAttendance(activityId, occurenceIndex, attendeeIndex, email) {
-    check(activityId, String);
-    check(occurenceIndex, Number);
-    check(attendeeIndex, Number);
-    check(email, String);
-
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     const theOccurence = occurences[occurenceIndex];

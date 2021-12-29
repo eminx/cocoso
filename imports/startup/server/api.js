@@ -1,15 +1,46 @@
-import '../../api/accounts/accounts-general';
-import '../../api/methods/activities-methods';
-import '../../api/methods/admin-methods';
-import '../../api/methods/chat-methods';
-import '../../api/methods/document-methods';
-import '../../api/methods/email-methods';
-import '../../api/methods/host-methods';
-import '../../api/methods/image-upload';
-import '../../api/methods/page-methods';
-import '../../api/methods/process-methods';
-import '../../api/methods/profile-methods';
-import '../../api/methods/publish';
-import '../../api/methods/resources-methods';
-import '../../api/methods/shared';
-import '../../api/methods/work-methods';
+import '../../api/@/shared';
+import '../../api/@/schemas';
+
+import '../../api/@/services/mails/mail.smtp';
+import '../../api/@/services/aws.slingshot';
+
+import '../../api/@hosts/host';
+import '../../api/@hosts/host.methods';
+import '../../api/@hosts/host.publications';
+
+import '../../api/@users/user';
+import '../../api/@users/user.roles';
+import '../../api/@users/user.admin';
+import '../../api/@users/user.methods';
+import '../../api/@users/user.publications';
+
+import '../../api/pages/page';
+import '../../api/pages/page.methods';
+import '../../api/pages/page.publications';
+
+import '../../api/categories/category';
+import '../../api/categories/category.methods';
+
+import '../../api/works/work';
+import '../../api/works/work.methods';
+import '../../api/works/work.publications';
+
+import '../../api/processes/process';
+import '../../api/processes/process.methods';
+import '../../api/processes/process.publications';
+
+import '../../api/chats/chat';
+import '../../api/chats/chat.methods';
+import '../../api/chats/chat.publications';
+
+import '../../api/documents/document';
+import '../../api/documents/document.methods';
+import '../../api/documents/document.publications';
+
+import '../../api/resources/resource';
+import '../../api/resources/resource.methods';
+import '../../api/resources/resource.publications';
+
+import '../../api/activities/activity';
+import '../../api/activities/activity.methods';
+import '../../api/activities/activity.publications';

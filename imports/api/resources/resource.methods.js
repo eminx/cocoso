@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isContributorOrAdmin } from './shared';
+import { getHost } from '../@/shared';
+import { isContributorOrAdmin } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Resources from './resource';
 
 Meteor.methods({
   getResources() {

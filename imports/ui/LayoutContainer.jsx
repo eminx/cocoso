@@ -36,8 +36,9 @@ import { Helmet } from 'react-helmet';
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
-import theme, { chakraTheme } from './constants/theme';
 import FormField from './UIComponents/FormField';
+import Hosts from '../api/@hosts/host';
+import { chakraTheme } from './constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
@@ -151,26 +152,26 @@ function LayoutPage({
     );
   }
 
-  const hsl =
-    currentHost.settings &&
-    currentHost.settings.mainColor &&
-    currentHost.settings.mainColor.hsl;
-  let cHue;
-  const customTheme = {
-    ...theme,
-  };
-  if (hsl) {
-    const themeColor = `hsl(${hsl.h}, ${100 * hsl.s}%, ${100 * hsl.l}%)`;
-    customTheme.global.colors.brand = themeColor;
-    chakraTheme.colors.brand = themeColor;
-    customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
-      100 * hsl.s
-    }%, 95%)`;
-    customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+  // const hsl =
+  //   currentHost.settings &&
+  //   currentHost.settings.mainColor &&
+  //   currentHost.settings.mainColor.hsl;
+  // let cHue;
+  // const customTheme = {
+  //   ...theme,
+  // };
+  // if (hsl) {
+  //   const themeColor = `hsl(${hsl.h}, ${100 * hsl.s}%, ${100 * hsl.l}%)`;
+  //   customTheme.global.colors.brand = themeColor;
+  //   chakraTheme.colors.brand = themeColor;
+  //   customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
+  //     100 * hsl.s
+  //   }%, 95%)`;
+  //   customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
 
-    // complementary color is calculated:
-    cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
-  }
+  //   // complementary color is calculated:
+  //   cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
+  // }
 
   const headerProps = {
     currentUser,
@@ -205,7 +206,7 @@ function LayoutPage({
           canCreateContent,
         }}
       >
-        <Center className="main-viewport" style={getBackgroundStyle(cHue)}>
+        <Center className="main-viewport" style={getBackgroundStyle()}>
           <Box maxWidth="1400px" w="100%">
             <Header {...headerProps} />
             <Box style={{ minHeight: '100vh' }}>{children}</Box>

@@ -14,6 +14,7 @@ import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../UIComponents/ResourceForm';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import Resources from '../../../api/resources/resource';
 
 const resourceModel = {
   label: '',

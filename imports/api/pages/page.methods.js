@@ -1,5 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, isAdmin } from './shared';
+
+import { getHost } from '../@/shared';
+import Hosts from '../@hosts/host';
+import Pages from './page';
+import { isAdmin } from '../@users/user.roles';
 
 Meteor.methods({
   getPages() {
@@ -22,9 +26,6 @@ Meteor.methods({
     if (!user || !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
-
-    check(formValues.title, String);
-    check(formValues.longDescription, String);
 
     try {
       Pages.insert({

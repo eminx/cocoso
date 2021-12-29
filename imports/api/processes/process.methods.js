@@ -1,55 +1,18 @@
 import { Meteor } from 'meteor/meteor';
+import { getHost, getResourceIndex } from '../@/shared';
+import { isAdmin, isContributorOrAdmin, isMember } from '../@users/user.roles';
+import Hosts from '../@hosts/host';
+import Processes from './process';
 import {
-  getResourceIndex,
-  siteUrl,
-  getHost,
-  isContributorOrAdmin,
-  isParticipant,
-  isMember,
-} from './shared';
+  getProcessJoinText,
+  getProcessLeaveText,
+  getMeetingAttendText,
+  getMeetingUnattendText,
+  getInviteToPrivateProcessText,
+} from './process.mails';
+import { compareForSort } from './process.helpers';
 
 const publicSettings = Meteor.settings.public;
-
-const getProcessJoinText = (firstName, processTitle, processId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully joined the process called "${processTitle}".\n\nWe are very excited to have you participate this little school we have founded and look forward to learning with you.\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at the process page: ${siteUrl}process/${processId}.\n\nWe look forward to your participation.\n${publicSettings.name} Team`;
-};
-
-const getProcessLeaveText = (firstName, processTitle, processId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully left the study process called "${processTitle}".\nIf you want to join the process again, you can do so here at the process page: ${siteUrl}process/${processId}.\n\nKind regards,\n${publicSettings.name} Team`;
-};
-
-const getMeetingAttendText = (
-  firstName,
-  occurence,
-  processTitle,
-  processId
-) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study process called "${processTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the process page: ${siteUrl}process/${processId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${publicSettings.name} Team`;
-};
-
-const getMeetingUnattendText = (
-  firstName,
-  occurence,
-  processTitle,
-  processId
-) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study process called "${processTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the process page: ${siteUrl}process/${processId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${publicSettings.name} Team`;
-};
-
-const getInviteToPrivateProcessText = (
-  firstName,
-  processTitle,
-  processId,
-  processAdmin
-) => {
-  return `Hi ${firstName},\n\nThis is an email to invite you to a private process entitled ${processTitle} created by ${processAdmin}.\n\nIf you wish to accept this invite and join the process, simply go to the process page and click the "Join" button: ${siteUrl}process/${processId}.\n\nPlease bear in mind that you have to have an account at the ${publicSettings.name} App, or create one, with this email address to which you received this email.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\n${publicSettings.name} Team`;
-};
-
-const compareForSort = (a, b) => {
-  const dateA = new Date(a.endDate);
-  const dateB = new Date(b.endDate);
-  return dateA - dateB;
-};
 
 Meteor.methods({
   createProcess(formValues, imageUrl, isPrivate = false) {
@@ -61,35 +24,27 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    check(formValues.title, String);
-    check(formValues.description, String);
-    check(formValues.readingMaterial, String);
-    check(formValues.capacity, Number);
-
     try {
       const add = Processes.insert(
         {
           host,
           adminId: user._id,
           adminUsername: user.username,
+          title: formValues.title,
+          description: formValues.description,
+          readingMaterial: formValues.readingMaterial,
+          imageUrl,
+          capacity: formValues.capacity || 20,
           members: [
             {
               memberId: user._id,
               username: user.username,
-              profileImage: user.profileImage || null,
+              // profileImage: user.profileImage || "",
               joinDate: new Date(),
             },
           ],
-          documents: [],
-          meetings: [],
-          title: formValues.title,
-          description: formValues.description,
-          readingMaterial: formValues.readingMaterial,
-          capacity: formValues.capacity || 20,
-          imageUrl,
           isPublished: true,
           isPrivate: isPrivate,
-          peopleInvited: [],
           creationDate: new Date(),
         },
         () => {

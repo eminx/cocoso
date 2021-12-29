@@ -25,6 +25,7 @@ import Template from '../../UIComponents/Template';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 import WorkThumb from '../../UIComponents/WorkThumb';
+import Works from '../../../api/works/work';
 
 const getFullName = (member) => {
   const { firstName, lastName } = member;
