@@ -12,7 +12,7 @@ Schemas.Activity = new SimpleSchema({
   authorName: {type: String},
 
   title: {type: String},
-  subTitle: {type: String, optional: true},
+  subTitle: {type: String, optional: true, custom: () => {if(this.field('isPublicActivity').value) return SimpleSchema.ErrorTypes.REQUIRED}},
   longDescription: {type: String},
   imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
@@ -21,7 +21,7 @@ Schemas.Activity = new SimpleSchema({
   resourceIndex: {type: SimpleSchema.Integer, optional: true},
   // resourceHourlyFee: {type: String, optional: true}, //undefined
 
-  address: {type: Boolean, optional: true},
+  address: {type: String, optional: true},
   capacity: {type: SimpleSchema.Integer},
   place: {type: String, optional: true},
   room: {type: String, optional: true}, //undefined
