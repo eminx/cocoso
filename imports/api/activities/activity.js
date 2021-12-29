@@ -12,7 +12,13 @@ Schemas.Activity = new SimpleSchema({
   authorName: {type: String},
 
   title: {type: String},
-  subTitle: {type: String, optional: true, custom: () => {if(this.field('isPublicActivity').value) return SimpleSchema.ErrorTypes.REQUIRED}},
+  subTitle: {type: String, optional: true, custom: 
+    () => {
+      if (this.field('isPublicActivity').value) {
+        return SimpleSchema.ErrorTypes.REQUIRED
+      }
+    },
+  },
   longDescription: {type: String},
   imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 

@@ -27,9 +27,6 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    // check(formValues.title, String);
-    // check(formValues.longDescription, String);
-
     try {
       Pages.insert({
         host,

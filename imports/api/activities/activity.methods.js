@@ -37,14 +37,6 @@ Meteor.methods({
       throw new Meteor.Error('Image is required for public activities');
     }
 
-    // check(formValues.title, String);
-    // formValues.datesAndTimes.forEach((recurrence) => {
-    //   check(recurrence.startDate, String);
-    //   check(recurrence.endDate, String);
-    //   check(recurrence.startTime, String);
-    //   check(recurrence.endTime, String);
-    // });
-    // check(formValues.isPublicActivity, Boolean);
     const resourceIndex = formValues.resource.resourceIndex;
 
     try {
@@ -102,15 +94,7 @@ Meteor.methods({
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
-
-    check(formValues.title, String);
-    formValues.datesAndTimes.forEach((recurrence) => {
-      check(recurrence.startDate, String);
-      check(recurrence.endDate, String);
-      check(recurrence.startTime, String);
-      check(recurrence.endTime, String);
-    });
-    // const resourceIndex = getResourceIndex(formValues.resource, host);
+    
     const resourceIndex = formValues.resource.resourceIndex;
     const theG = Activities.findOne(activityId);
     if (user._id !== theG.authorId) {
@@ -139,9 +123,6 @@ Meteor.methods({
       });
       return activityId;
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't update activity due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -206,21 +187,11 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't register attendance due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't register attendance");
     }
   },
 
   updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
-    check(activityId, String);
-    check(occurenceIndex, Number);
-    check(values.firstName, String);
-    check(values.lastName, String);
-    check(values.email, String);
-    check(values.numberOfPeople, Number);
-
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     occurences[occurenceIndex].attendees[attendeeIndex] = values;
@@ -249,19 +220,11 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      // Logger.createLogger(
-      //   `Couldn't update attendance due to: ${error.reason || error.error}`
-      // );
       throw new Meteor.Error(error, "Couldn't update attendance");
     }
   },
 
   removeAttendance(activityId, occurenceIndex, attendeeIndex, email) {
-    check(activityId, String);
-    check(occurenceIndex, Number);
-    check(attendeeIndex, Number);
-    check(email, String);
-
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     const theOccurence = occurences[occurenceIndex];

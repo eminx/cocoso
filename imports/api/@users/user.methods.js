@@ -117,11 +117,6 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    // check(values.firstName, String);
-    // check(values.lastName, String);
-    // check(values.bio, String);
-    // check(values.contactInfo, String);
-
     try {
       Meteor.users.update(user._id, {
         $set: {

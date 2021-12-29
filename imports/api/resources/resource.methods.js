@@ -35,12 +35,6 @@ Meteor.methods({
     }
 
     try {
-      // const values = {
-      //   label: modalContent.label,
-      //   description: modalContent.description,
-      //   isCombo: Boolean(modalContent.isCombo),
-      //   resourcesForCombo: modalContent.resourcesForCombo,
-      // };
       const newResourceId = Resources.insert({
         ...values,
         labelLowerCase: values.label.toLowerCase(),

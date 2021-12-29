@@ -24,11 +24,6 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    // check(formValues.title, String);
-    // check(formValues.description, String);
-    // check(formValues.readingMaterial, String);
-    // check(formValues.capacity, Number);
-
     try {
       const add = Processes.insert(
         {
@@ -48,9 +43,6 @@ Meteor.methods({
               joinDate: new Date(),
             },
           ],
-          // documents: [],
-          // meetings: [],
-          // peopleInvited: [],
           isPublished: true,
           isPrivate: isPrivate,
           creationDate: new Date(),
