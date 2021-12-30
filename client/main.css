@@ -42,15 +42,9 @@ body {
   z-index: 99;
 }
 
-/* .header-logo {
-  filter: grayscale(1);
-  transition: 0.2s ease-in-out filter;
+.header-logo {
+  height: 80px;
 }
-
-.header-logo:hover {
-  filter: grayscale(0);
-  transition: 0.2s ease-in-out filter;
-} */
 
 a,
 .text-content a {
