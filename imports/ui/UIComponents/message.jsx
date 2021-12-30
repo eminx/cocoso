@@ -12,7 +12,7 @@ import {
 
 import { chakraTheme } from '../constants/theme';
 
-const timeOutTime = 5000;
+const timeOutTime = 5;
 
 const Alert = ({
   children,
