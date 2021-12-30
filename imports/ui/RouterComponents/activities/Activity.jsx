@@ -272,9 +272,21 @@ class Activity extends PureComponent {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
-    if (activityData.isRegistrationDisabled) {
+    <Text size="sm" mb="1">
+      {activityData.isRegistrationDisabled
+        ? 'RSVP disabled. Please check the practical information.'
+        : 'Please click and open the date to RSVP'}
+    </Text>;
+
+    if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
+          {activityData.isRegistrationDisabled &&
+            activityData.isPublicActivity && (
+              <Text size="sm" mb="1">
+                Registrations are disabled.
+              </Text>
+            )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
               bg="white"
@@ -474,14 +486,9 @@ class Activity extends PureComponent {
         }
         rightContent={
           <Box width="100%" p="2">
-            <Heading mb="1" as="h5" size="md">
+            <Heading mb="2" as="h5" size="md">
               Dates
             </Heading>
-            <Text size="sm" mb="1">
-              {activityData.isRegistrationDisabled
-                ? 'RSVP disabled. Please check the practical information.'
-                : 'Please click and open the date to RSVP'}
-            </Text>
             {this.renderDates()}
           </Box>
         }
@@ -514,14 +521,14 @@ class Activity extends PureComponent {
         </Box>
 
         <Box p="2" mb="1">
-          <Heading mb="1" as="h5" size="md">
+          <Heading mb="2" as="h5" size="md">
             Resource
           </Heading>
           <Tag label={activityData.resource} />
         </Box>
         {activityData.address && (
           <Box p="2" mb="1">
-            <Heading mb="1" as="h5" size="md">
+            <Heading mb="2" as="h5" size="md">
               Address
             </Heading>
             <Text size="sm">{activityData.address}</Text>
