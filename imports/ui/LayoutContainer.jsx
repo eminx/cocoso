@@ -286,49 +286,54 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   const isPage = pathname.substring(0, 5) === '/page';
 
   return (
-    <ScreenClassRender
-      render={(screenClass) => {
-        const large = ['lg', 'xl', 'xxl'].includes(screenClass);
+    <Box mb="8">
+      <ScreenClassRender
+        render={(screenClass) => {
+          const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
-        return (
-          <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
-            <Row
-              style={{
-                marginLeft: 0,
-                marginRight: 0,
-                marginBottom: 12,
-                alignItems: 'center',
-              }}
-              align="center"
-            >
-              <Col xs={3} style={{ paddingLeft: 0 }}>
-                <Link to="/">
-                  <Box w="120px" h="60px" mt="4" ml="3">
-                    <Image
-                      fit="contain"
-                      src={currentHost && currentHost.logo}
-                      className="header-logo"
-                    />
-                  </Box>
-                </Link>
-              </Col>
-              <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Menu
-                  currentHost={currentHost}
-                  large={large}
-                  history={history}
-                />
-              </Col>
-              <Col xs={3} style={{ paddingRight: 0 }}>
-                <Flex justify="flex-end">
-                  <UserPopup currentUser={currentUser} />
-                </Flex>
-              </Col>
-            </Row>
-          </Container>
-        );
-      }}
-    />
+          return (
+            <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
+              <Row
+                style={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 12,
+                  alignItems: 'center',
+                }}
+                alignItems="center"
+              >
+                <Col xs={3} style={{ paddingLeft: 0 }}>
+                  <Link to="/">
+                    <Box w="120px" h="60px" ml="3">
+                      <Image
+                        fit="contain"
+                        src={currentHost && currentHost.logo}
+                        className="header-logo"
+                      />
+                    </Box>
+                  </Link>
+                </Col>
+                <Col
+                  xs={6}
+                  style={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <Menu
+                    currentHost={currentHost}
+                    large={large}
+                    history={history}
+                  />
+                </Col>
+                <Col xs={3} style={{ paddingRight: 0 }}>
+                  <Flex justify="flex-end">
+                    <UserPopup currentUser={currentUser} />
+                  </Flex>
+                </Col>
+              </Row>
+            </Container>
+          );
+        }}
+      />
+    </Box>
   );
 };
 
