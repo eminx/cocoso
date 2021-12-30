@@ -994,8 +994,16 @@ function CreateMeetingForm({
         <DatePicker noTime onChange={handleDateChange} />
       </Box>
       <HStack spacing="2" mb="6">
-        <DatePicker onlyTime onChange={handleStartTimeChange} />
-        <DatePicker onlyTime onChange={handleFinishTimeChange} />
+        <DatePicker
+          onlyTime
+          placeholder="Start time"
+          onChange={handleStartTimeChange}
+        />
+        <DatePicker
+          onlyTime
+          placeholder="Finish time"
+          onChange={handleFinishTimeChange}
+        />
       </HStack>
 
       <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">

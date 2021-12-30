@@ -461,7 +461,7 @@ Meteor.methods({
 
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
 
-    if (!isContributorOrAdmin(newAdmin, host)) {
+    if (!isContributorOrAdmin(newAdmin, currentHost)) {
       throw new Meteor.Error('The new admin must be a contributor');
     }
 

@@ -9,7 +9,13 @@ import { Input } from '@chakra-ui/react';
 //   time: '18:00'
 // }
 
-function DatePicker({ value, onChange, onlyTime = false, noTime = true }) {
+function DatePicker({
+  value,
+  onChange,
+  onlyTime = false,
+  noTime = true,
+  placeholder,
+}) {
   const [selectedDate, setSelectedDate] = useState();
 
   useEffect(() => {
@@ -40,7 +46,8 @@ function DatePicker({ value, onChange, onlyTime = false, noTime = true }) {
         onlyTime ? 'HH:mm' : noTime ? 'yyyy-MM-dd' : 'yyyy-MM-dd  HH:mm'
       }
       placeholderText={
-        onlyTime ? 'Select Time' : noTime ? 'Select Day' : 'Select Day & Time'
+        placeholder ||
+        (onlyTime ? 'Select Time' : noTime ? 'Select Day' : 'Select Day & Time')
       }
       selected={selectedDate}
       showTimeSelect={onlyTime || !noTime}
