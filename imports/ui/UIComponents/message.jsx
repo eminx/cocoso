@@ -58,7 +58,7 @@ const toast = createStandaloneToast({ theme: chakraTheme });
 const renderToast = (status, text, duration) => {
   toast({
     description: text,
-    duration: duration || timeOutTime,
+    duration: (duration || timeOutTime) * 1000,
     isClosable: true,
     position: 'top',
     status: status,
@@ -68,11 +68,9 @@ const renderToast = (status, text, duration) => {
 const message = {
   success: (text, duration) => renderToast('success', text, duration * 1000),
 
-  error: (text, duration = timeOutTime) =>
-    renderToast('error', text, duration * 1000),
+  error: (text, duration) => renderToast('error', text, duration),
 
-  info: (text, duration = timeOutTime) =>
-    renderToast('info', text, duration * 1000),
+  info: (text, duration = timeOutTime) => renderToast('info', text, duration),
 };
 
 export { message, Alert };
