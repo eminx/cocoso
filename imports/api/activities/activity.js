@@ -59,8 +59,7 @@ Schemas.Activity = new SimpleSchema({
 
   isSentForReview: {type: Boolean},
   isPublicActivity: {type: Boolean, optional: true},
-  // isBookingsDisabled: {type: Boolean, optional: true}, //undefined
-  isActivitiesDisabled: {type: Boolean, optional: true},
+  isRegistrationDisabled: {type: Boolean, optional: true}, //undefined
   isPublished: {type: Boolean},
 
   latestUpdate: {type: Date, optional: true},
