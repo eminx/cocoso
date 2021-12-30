@@ -91,6 +91,9 @@ function ActivityForm({
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (recurrenceIndex === index) {
         item.isRange = value;
+        if (!value) {
+          item.endDate = item.startDate;
+        }
       }
       return item;
     });

@@ -11,7 +11,7 @@ import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
-  message.success('Your activity is successfully created', 6);
+  message.success('Your activity is successfully created');
 };
 
 const formModel = {
@@ -118,7 +118,6 @@ class NewActivity extends PureComponent {
 
   createActivity = () => {
     const { resources } = this.props;
-
     const {
       formValues,
       datesAndTimes,
@@ -127,19 +126,27 @@ class NewActivity extends PureComponent {
       uploadedImage,
     } = this.state;
 
+    const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
+      startDate: item.startDate,
+      endDate: item.endDate,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      isRange: item.isRange,
+      capacity: item.capacity,
+      attendees: [],
+    }));
+
     const resource = resources.find(
       (resource) => resource._id === formValues.resource
     );
 
     const values = {
       ...formValues,
-      datesAndTimes,
+      datesAndTimes: datesAndTimesNoConflict,
       isPublicActivity,
       isRegistrationDisabled,
       resource,
     };
-
-    console.log('geldi');
 
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
       if (error) {

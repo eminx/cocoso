@@ -12,14 +12,8 @@ Schemas.Activity = new SimpleSchema({
   authorName: {type: String},
 
   title: {type: String},
-  subTitle: {type: String, optional: true, custom: 
-    () => {
-      if (this.field('isPublicActivity').value) {
-        return SimpleSchema.ErrorTypes.REQUIRED
-      }
-    },
-  },
-  longDescription: {type: String},
+  subTitle: {type: String, optional: true},
+  longDescription: {type: String, optional: true},
   imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
   resourceId: {type: String, regEx: SimpleSchema.RegEx.Id, optional: true},
@@ -40,7 +34,7 @@ Schemas.Activity = new SimpleSchema({
     endDate: {type: String},
     endTime: {type: String},
     capacity: {type: SimpleSchema.Integer},
-    isRange: {type: Boolean},
+    isRange: {type: Boolean, optional: true},
     conflict: {type: String, optional: true},
 
     attendees: {type: Array, optional: true},
@@ -48,7 +42,7 @@ Schemas.Activity = new SimpleSchema({
       email: Schemas.Email,
       firstName: {type: String},
       lastName: {type: String},
-      numberOfPeople: {type: SimpleSchema.Integer},
+      numberOfPeople: {type: Number},
       registerDate: {type: Date},
     }), optional: true},
     

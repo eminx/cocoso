@@ -25,7 +25,7 @@ import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
-  message.success('Your process is successfully created', 6);
+  message.success('Your process is successfully created');
 };
 
 const privateParagraph1 =

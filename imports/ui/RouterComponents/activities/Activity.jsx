@@ -91,15 +91,11 @@ class Activity extends PureComponent {
       return;
     }
 
-    const parsedValues = {
-      ...values,
-      numberOfPeople: Number(values.numberOfPeople),
-    };
     try {
       await call(
         'registerAttendance',
         activityData._id,
-        parsedValues,
+        values,
         occurenceIndex
       );
       message.success(
@@ -205,7 +201,6 @@ class Activity extends PureComponent {
                   },
                 })
               }
-              // size="sm"
             />
           </FormControl>
         </Box>
@@ -218,7 +213,9 @@ class Activity extends PureComponent {
     const { activityData } = this.props;
 
     const parsedValues = {
-      ...values,
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
       numberOfPeople: Number(values.numberOfPeople),
     };
 

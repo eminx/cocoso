@@ -14,9 +14,9 @@ import { message, Alert } from '../../UIComponents/message';
 
 const successEditMessage = (isDeleted) => {
   if (isDeleted) {
-    message.success('The activity is successfully deleted', 4);
+    message.success('The activity is successfully deleted');
   } else {
-    message.success('Your activity is successfully updated', 6);
+    message.success('Your activity is successfully updated');
   }
 };
 
@@ -175,6 +175,7 @@ class EditActivity extends PureComponent {
       imageUrl,
       (error, respond) => {
         if (error) {
+          console.log(error);
           this.setState({
             isLoading: false,
             isError: true,
