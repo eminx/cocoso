@@ -186,9 +186,21 @@ class Process extends Component {
   };
 
   joinProcess = () => {
-    const { process } = this.props;
-
+    const { process, currentUser } = this.props;
     this.closeModal();
+
+    if (!process || !currentUser) {
+      return;
+    }
+
+    const alreadyMember = process.members.some((m) => {
+      return m.memberId === currentUser._id;
+    });
+
+    if (alreadyMember) {
+      message.error('You are already a member!');
+      return;
+    }
 
     Meteor.call('joinProcess', process._id, (error, response) => {
       if (error) {

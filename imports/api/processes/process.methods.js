@@ -140,14 +140,23 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-
+    
     if (!user || !isMember(user, currentHost)) {
       throw new Meteor.Error(
         'Please sign up to become a participant at this host first!'
       );
     }
-
+      
     const theProcess = Processes.findOne(processId);
+
+    const alreadyMember = theProcess.members.some(m => {
+      return m.memberId === user._id;
+    })
+
+    if (alreadyMember) {
+      throw new Meteor.Error('You are already a member');
+    }
+
     try {
       Processes.update(theProcess._id, {
         $addToSet: {
