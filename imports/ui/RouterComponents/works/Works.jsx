@@ -97,7 +97,7 @@ function Works() {
       </Center>
 
       <Center mb="4">
-        <Wrap pl="2">
+        <Wrap pl="2" justify="center">
           <WrapItem>
             <Tag
               label="ALL"
