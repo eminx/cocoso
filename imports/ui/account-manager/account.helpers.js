@@ -46,4 +46,4 @@ export {
   usernameSchema, 
   emailSchema, 
   passwordSchema,
-}
+};

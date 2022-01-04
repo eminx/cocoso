@@ -42,7 +42,7 @@ Schemas.Activity = new SimpleSchema({
       email: Schemas.Email,
       firstName: {type: String},
       lastName: {type: String},
-      numberOfPeople: {type: Number},
+      numberOfPeople: {type: SimpleSchema.Integer},
       registerDate: {type: Date},
     }), optional: true},
     

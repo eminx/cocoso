@@ -14,7 +14,7 @@ export default EditPageContainer = withTracker((props) => {
       ? pages.find((page) => parseTitle(page.title) === pageId)
       : null;
 
-  const pageTitles = pages ? pages.map((page) => page.title) : []
+  const pageTitles = pages ? pages.map((page) => page.title) : [];
 
   const currentUser = Meteor.user();
 
