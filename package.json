@@ -41,8 +41,6 @@
     "@hookform/resolvers": "^2.8.5",
     "@loadable/component": "^5.15.0",
     "array-move": "^2.2.2",
-    "babel-polyfill": "^6.26.0",
-    "babel-runtime": "^6.26.0",
     "bcrypt": "^5.0.0",
     "framer-motion": "^5.4.5",
     "fslightbox-react": "^1.6.2-2",
