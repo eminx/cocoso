@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Button, Heading, Image, Tab, Tabs, Text } from 'grommet';
+import { Link } from 'react-router-dom';
+
+import {
+  Box,
+  Button,
+  Center,
+  Heading,
+  HStack,
+  Image,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Tag,
+  TagLabel,
+  Text,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../UIComponents/NiceList';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import Loader from '../../UIComponents/Loader';
-import { message, Alert } from '../../UIComponents/message';
-import Tag from '../../UIComponents/Tag';
+import { Alert } from '../../UIComponents/message';
 import { userMenu } from '../../constants/general';
 
 function Activities({ history }) {
@@ -21,7 +37,7 @@ function Activities({ history }) {
         setLoading(false);
         return;
       }
-      setActivities(respond);
+      setActivities(respond.reverse());
       setLoading(false);
     });
   }, []);
@@ -47,62 +63,65 @@ function Activities({ history }) {
       heading="My Activities"
       titleCentered
       leftContent={
-        <Box pad="medium">
-          <ListMenu list={userMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+        <Box p="2">
+          <ListMenu pathname={pathname} list={userMenu} />
         </Box>
       }
     >
       {currentUser && canCreateContent && (
-        <Box pad="small" direction="row" justify="center">
+        <Center>
           <Button
-            primary
-            label="NEW"
+            colorScheme="green"
+            variant="outline"
             onClick={() => history.push('/new-activity')}
-          />
-        </Box>
+            mb="4"
+          >
+            NEW
+          </Button>
+        </Center>
       )}
 
       {currentUser && activities ? (
         <Tabs>
-          <Tab title="All">
-            <Box pad="medium">
-              <NiceList list={activities} actionsDisabled>
-                {(act) => <ActivityItem act={act} history={history} />}
+          <Center>
+            <TabList>
+              <Tab>All</Tab>
+              <Tab>Public</Tab>
+              <Tab>Private</Tab>
+            </TabList>
+          </Center>
+
+          <TabPanels>
+            <TabPanel>
+              <NiceList actionsDisabled list={activities}>
+                {(act) => (
+                  <Link to={`/activity/${act._id}`}>
+                    <ActivityItem act={act} />
+                  </Link>
+                )}
               </NiceList>
-            </Box>
-          </Tab>
-          <Tab title="Public">
-            <Box pad="medium">
+            </TabPanel>
+            <TabPanel>
               <NiceList
+                actionsDisabled
                 list={activities.filter((act) => act.isPublicActivity)}
-                actionsDisabled
               >
-                {(act) => <ActivityItem act={act} history={history} />}
+                {(act) => (
+                  <Link to={`/activity/${act._id}`}>
+                    <ActivityItem act={act} history={history} />
+                  </Link>
+                )}
               </NiceList>
-            </Box>
-          </Tab>
-          <Tab title="Private">
-            <Box pad="medium">
+            </TabPanel>
+            <TabPanel>
               <NiceList
-                list={activities.filter((act) => !act.isPublicActivity)}
                 actionsDisabled
+                list={activities.filter((act) => !act.isPublicActivity)}
               >
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
-            </Box>
-          </Tab>
+            </TabPanel>
+          </TabPanels>
         </Tabs>
       ) : (
         <Alert
@@ -114,36 +133,26 @@ function Activities({ history }) {
   );
 }
 
-const ActivityItem = ({ act, history }) => (
-  <Box
-    width="100%"
-    onClick={() => history.push(`/activity/${act._id}`)}
-    hoverIndicator="light-1"
-    pad="small"
-    direction="row"
-    margin={{ bottom: 'medium' }}
-    background="white"
-  >
+const ActivityItem = ({ act }) => (
+  <HStack align="flex-start" bg="white" p="3" w="100%">
     {act.isPublicActivity && (
-      <Box width="small" height="small" margin={{ right: 'small' }}>
-        <Image fit="cover" fill src={act.imageUrl} />
+      <Box p="2">
+        <Image fit="cover" w="xs" fill src={act.imageUrl} />
       </Box>
     )}
-    <Box width="100%" justify="between">
-      <Heading
-        level={3}
-        style={{ overflowWrap: 'anywhere' }}
-        margin={{ bottom: 'small' }}
-      >
+    <Box w="100%">
+      <Heading mb="2" overflowWrap="anywhere" size="md">
         {act.title}
       </Heading>
-      <Tag label={act.resource} />
-      <Text weight={300}>{act.subTitle}</Text>
-      <Box pad={{ vertical: 'medium' }}>
-        <Text weight="bold">{act.datesAndTimes.length} occurences</Text>
-      </Box>
+      <Tag>
+        <TagLabel>{act.resource}</TagLabel>
+      </Tag>
+      <Text fontWeight="light">{act.subTitle}</Text>
+      <Text fontStyle="italic" p="1" textAlign="right">
+        {act.datesAndTimes.length} occurences
+      </Text>
     </Box>
-  </Box>
+  </HStack>
 );
 
 export default Activities;

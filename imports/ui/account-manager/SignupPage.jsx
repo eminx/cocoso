@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router';
-import { Anchor, Box, Heading } from 'grommet';
+import { Link, Redirect } from 'react-router-dom';
+import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
-import { Signup, SimpleText } from './index';
+import { Signup } from './index';
 import { createAccount } from './functions';
 
-const SignupPage = ({ history }) => {
+function SignupPage() {
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
@@ -16,22 +16,28 @@ const SignupPage = ({ history }) => {
 
   return (
     <Template>
-      <Box>
-        <Box width="medium" alignSelf="center">
-          <Heading level={2} textAlign="center">
+      <Center>
+        <Box>
+          <Heading size="md" textAlign="center">
             Register New Account
           </Heading>
-          <SimpleText>
-            Have an account?{' '}
-            <Anchor onClick={() => history.push('/login')}>Login</Anchor>
-          </SimpleText>
-          <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
+          <Center pt="4" mb="4">
+            <Text>
+              Have an account?{' '}
+              <Link to="/login">
+                <CLink as="span">
+                  <b>Login</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+          <Box p="6" bg="white" mb="4">
             <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
         </Box>
-      </Box>
+      </Center>
     </Template>
   );
-};
+}
 
 export default SignupPage;

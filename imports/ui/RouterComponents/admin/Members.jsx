@@ -1,15 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import moment from 'moment';
+
 import {
   Box,
-  Anchor,
-  Text,
+  Center,
   Heading,
-  RadioButtonGroup,
-  TextInput,
-} from 'grommet';
+  Input,
+  Tabs,
+  Tab,
+  TabPanel,
+  TabPanels,
+  TabList,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -27,6 +33,7 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members({ history, members, isLoading }) {
+  const toast = useToast();
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
@@ -40,21 +47,32 @@ function Members({ history, members, isLoading }) {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      message.success(`${user.username} is now set back as a participant`);
-      // getAndSetUsers();
+      toast({
+        title: `${user.username} is now set back as a participant`,
+        status: 'success',
+      });
     } catch (error) {
       console.log(error);
-      message.error(error.reason || error.error);
+      toast({
+        title: error.reason || error.error,
+        status: 'error',
+      });
     }
   };
 
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      message.success(`${user.username} is now set as a contributor`);
+      toast({
+        title: `${user.username} is now set as a contributor`,
+        status: 'success',
+      });
     } catch (error) {
       console.log(error);
-      message.error(error.reason || error.error);
+      toast({
+        title: error.reason || error.error,
+        status: 'error',
+      });
     }
   };
 
@@ -165,93 +183,65 @@ function Members({ history, members, isLoading }) {
     <Template
       heading="Members"
       leftContent={
-        <Box pad="medium">
-          <ListMenu list={adminMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+        <Box p="4">
+          <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
-      <Box align="center" pad="small">
-        <Text size="small" margin="small" weight="bold">
-          Filter
-        </Text>
-        <Box flex={{ grow: 1 }} margin={{ bottom: 'small' }}>
-          <RadioButtonGroup
-            name="filter"
-            options={filterOptions}
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-            direction="row"
-            justify="center"
-            wrap
-          />
-        </Box>
-        <Box flex={{ grow: 1 }}>
-          <TextInput
-            plain={false}
-            placeholder="username or email"
-            value={filterWord}
-            onChange={(event) => setFilterWord(event.target.value)}
-            style={{ backgroundColor: 'white' }}
-          />
-        </Box>
-      </Box>
+      <Center p="1">
+        <Tabs w="100%">
+          <Center>
+            <TabList flexWrap="wrap">
+              {filterOptions.map((item) => (
+                <Tab key={item.value} onClick={() => setFilter(item.value)}>
+                  {item.label}
+                </Tab>
+              ))}
+            </TabList>
+          </Center>
 
-      <Box align="center">
-        <Text size="small" margin="small" weight="bold">
-          Sort
-        </Text>
-        <RadioButtonGroup
-          name="sort"
-          options={sortOptions}
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value)}
-          direction="row"
-          justify="center"
-          wrap
-        />
-      </Box>
+          <Center p="4">
+            <Box>
+              <Input
+                bg="white"
+                placeholder="username or email"
+                value={filterWord}
+                onChange={(event) => setFilterWord(event.target.value)}
+              />
+            </Box>
+          </Center>
 
-      <Box pad="medium">
-        <Heading level={4} alignSelf="center">
-          {filter} members ({membersSorted.length}){' '}
-        </Heading>
-      </Box>
-      <Box pad="small" background="white" margin={{ bottom: 'large' }}>
-        <NiceList list={membersSorted} border="horizontal" pad="small">
-          {(member) => (
-            <div key={member.username}>
-              <Text size="large" weight="bold">
-                {member.username}
-              </Text>
-              <Text as="div" size="small">
-                {member && member.email}
-              </Text>
-              <Text as="div" size="small">
-                {member.role}
-              </Text>
-              <Text
-                as="div"
-                size="xsmall"
-                style={{ fontSize: 10, color: '#aaa' }}
-              >
-                joined {moment(member.date).format('Do MMM YYYY')} <br />
-              </Text>
-            </div>
-          )}
-        </NiceList>
-      </Box>
+          <TabPanels>
+            {filterOptions.map((item, index) =>
+              item.value === filter ? (
+                <TabPanel key={item.value} p="1" mb="3">
+                  <NiceList
+                    itemBg="white"
+                    keySelector="email"
+                    list={membersSorted}
+                  >
+                    {(member) => (
+                      <Box key={member.username} p="2">
+                        <Heading size="md" fontWeight="bold">
+                          {member.username}
+                        </Heading>
+                        <Text>{member && member.email}</Text>
+                        <Text fontStyle="italic">{member.role}</Text>
+                        <Text fontSize="xs" color="gray.500">
+                          joined {moment(member.date).format('Do MMM YYYY')}{' '}
+                          <br />
+                        </Text>
+                      </Box>
+                    )}
+                  </NiceList>
+                </TabPanel>
+              ) : (
+                <TabPanel key={index} />
+              )
+            )}
+          </TabPanels>
+        </Tabs>
+      </Center>
     </Template>
   );
 }

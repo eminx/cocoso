@@ -1,9 +1,16 @@
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Anchor, Box, Heading, Text } from 'grommet';
+import { Link, Redirect } from 'react-router-dom';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Link as CLink,
+  Text,
+} from '@chakra-ui/react';
 
 import Template from '../UIComponents/Template';
-import { ResetPassword, SimpleText } from './index';
+import { ResetPassword } from './index';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../functions';
 import { message } from '../UIComponents/message';
@@ -12,7 +19,7 @@ const ResetPasswordPage = ({ history, match }) => {
   const { currentUser } = useContext(StateContext);
   const { token } = match.params;
 
-  const handleResetPassword = async (password) => {
+  const handleResetPassword = async ({ password }) => {
     try {
       await call('resetPassword', token, password);
       message.success('Your password is successfully reset. Now you can login');
@@ -28,25 +35,27 @@ const ResetPasswordPage = ({ history, match }) => {
 
   return (
     <Template>
-      <Box width="medium" alignSelf="center">
-        <Heading level={2}>Reset Your Password</Heading>
-        <Text size="large" margin={{ bottom: 'medium' }}>
-          Type your desired password
-        </Text>
-        <ResetPassword onResetPassword={handleResetPassword} />
-        <Box
-          direction="row"
-          justify="around"
-          margin={{ top: 'small', left: 'large', right: 'large' }}
-        >
-          <SimpleText>
-            <Anchor onClick={() => history.push('/login')}>Login</Anchor>
-          </SimpleText>
-          <SimpleText>
-            <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
-          </SimpleText>
+      <Center>
+        <Box w="xs">
+          <Heading size="md" textAlign="center" mb="4">
+            Reset Your Password
+          </Heading>
+          <Text fontSize="lg" mb="6" textAlign="center">
+            Create your desired password
+          </Text>
+          <Box p="6" bg="white" mb="4">
+            <ResetPassword onResetPassword={handleResetPassword} />
+          </Box>
+          <Flex justify="space-around" mt="4">
+            <Link to="/login">
+              <CLink as="span">Login</CLink>
+            </Link>
+            <Link to="/signup">
+              <CLink as="span">Signup</CLink>
+            </Link>
+          </Flex>
         </Box>
-      </Box>
+      </Center>
     </Template>
   );
 };

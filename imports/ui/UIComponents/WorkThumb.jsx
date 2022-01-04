@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Text } from 'grommet';
-import { Avatar } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 import Tag from './Tag';
 
 const imageStyle = {
@@ -10,42 +10,27 @@ const imageStyle = {
   objectFit: 'cover',
 };
 
-const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-};
-
-function WorkThumb({ work, history }) {
+function WorkThumb({ work }) {
   return (
-    <Box
-      key={work._id}
-      onClick={() => history.push(`/${work.authorUsername}/work/${work._id}`)}
-      basis="360px"
-      margin="small"
-      round="3px"
-      hoverIndicator="brand-light"
-      style={{ background: 'rgba(255, 255, 255, .6)' }}
-    >
-      <Box pad="small" direction="row" justify="between">
-        <Box>
+    <Box bg="rgba(255, 255, 255, .6)" borderRadius={3} px="4" py="2">
+      <Flex align="center" justify="space-between" mb="2">
+        <Box pr="2">
+          <Heading my="2" fontWeight="bold" size="md" noOfLines={1}>
+            {work.title}
+          </Heading>
           {work.category && (
             <Tag
-              label={work.category.label}
               filterColor={work.categoryColor}
-              margin={{ bottom: 'xxsmall' }}
+              label={work.category.label}
+              mb="1"
             />
           )}
-          <Text weight={600} style={ellipsisStyle} size="large">
-            {work.title}
-          </Text>
         </Box>
         <Avatar
-          flex={{ grow: 0 }}
-          src={work.authorAvatar ? work.authorAvatar.src : null}
           name={work.authorUsername}
+          src={work.authorAvatar ? work.authorAvatar.src : null}
         />
-      </Box>
+      </Flex>
       {work.images && work.images[0] && (
         <Box>
           <LazyLoadImage
@@ -53,13 +38,12 @@ function WorkThumb({ work, history }) {
             src={work.images[0]}
             style={imageStyle}
             effect="black-and-white"
+            width="100%"
           />
         </Box>
       )}
-      <Box pad="small">
-        <Text weight={300} style={ellipsisStyle}>
-          {work.shortDescription}
-        </Text>
+      <Box p="1">
+        <Text fontWeight="light">{work.shortDescription}</Text>
       </Box>
     </Box>
   );

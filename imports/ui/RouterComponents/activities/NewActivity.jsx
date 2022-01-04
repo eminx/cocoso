@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { CheckBox, Box, Text } from 'grommet';
 import moment from 'moment';
+import { Box, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
+import FormSwitch from '../../UIComponents/FormSwitch';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
-  message.success('Your activity is successfully created', 6);
+  message.success('Your activity is successfully created');
 };
 
 const formModel = {
@@ -39,7 +40,6 @@ const emptyDateAndTime = {
 class NewActivity extends PureComponent {
   state = {
     formValues: { ...formModel },
-    longDescription: '',
     datesAndTimes: [{ ...emptyDateAndTime }],
     isLoading: false,
     isSuccess: false,
@@ -53,37 +53,21 @@ class NewActivity extends PureComponent {
     isCreating: false,
   };
 
-  handleFormValueChange = (formValues) => {
-    const { datesAndTimes } = this.state;
-    const oldFormValues = this.state.formValues;
-
-    this.setState({
-      formValues,
-    });
-
-    if (oldFormValues.resource.label !== formValues.resource.label) {
-      this.validateBookings(datesAndTimes, formValues.resource);
-    }
-  };
-
-  handleQuillChange = (longDescription) => {
-    this.setState({
-      longDescription,
-    });
-  };
-
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { isPublicActivity } = this.state;
-
-    if (isPublicActivity) {
-      this.uploadImage();
-    } else {
-      this.createActivity();
-    }
-
-    this.setState({
-      isCreating: true,
-    });
+    this.setState(
+      {
+        isCreating: true,
+        formValues: values,
+      },
+      () => {
+        if (isPublicActivity) {
+          this.uploadImage();
+        } else {
+          this.createActivity();
+        }
+      }
+    );
   };
 
   setUploadableImage = (files) => {
@@ -133,22 +117,35 @@ class NewActivity extends PureComponent {
   };
 
   createActivity = () => {
+    const { resources } = this.props;
     const {
       formValues,
-      longDescription,
       datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
     } = this.state;
 
+    const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
+      startDate: item.startDate,
+      endDate: item.endDate,
+      startTime: item.startTime,
+      endTime: item.endTime,
+      isRange: item.isRange,
+      capacity: item.capacity,
+      attendees: [],
+    }));
+
+    const resource = resources.find(
+      (resource) => resource._id === formValues.resource
+    );
+
     const values = {
       ...formValues,
-      resource: formValues.resource,
+      datesAndTimes: datesAndTimesNoConflict,
       isPublicActivity,
       isRegistrationDisabled,
-      datesAndTimes,
-      longDescription,
+      resource,
     };
 
     Meteor.call('createActivity', values, uploadedImage, (error, result) => {
@@ -319,50 +316,46 @@ class NewActivity extends PureComponent {
 
     return (
       <Template heading="Create a New Activity">
-        <Box margin={{ bottom: 'medium' }}>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity}
-              label={<Text>Public Event?</Text>}
-              onChange={this.handlePublicActivitySwitch}
-            />
-          </Box>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity || isExclusiveActivity}
-              disabled={isPublicActivity}
-              label={<Text>Exclusive Activity (Others cannot book)</Text>}
-              onChange={this.handleExclusiveSwitch}
-            />
-          </Box>
-          {isPublicActivity && (
-            <Box flex={{ basis: 180 }} pad="small">
-              <CheckBox
-                checked={isRegistrationDisabled}
-                label={<Text>RSVP disabled?</Text>}
-                onChange={this.handleRegistrationSwitch}
+        <Box bg="white" p="8">
+          <Box mb="8">
+            <VStack spacing="2">
+              <FormSwitch
+                isChecked={isPublicActivity}
+                label="Public Event"
+                onChange={this.handlePublicActivitySwitch}
               />
-            </Box>
-          )}
-        </Box>
 
-        <ActivityForm
-          setUploadableImage={this.setUploadableImage}
-          uploadableImageLocal={uploadableImageLocal}
-          resources={resources}
-          isCreating={isCreating}
-          isPublicActivity={isPublicActivity}
-          formValues={formValues}
-          longDescription={longDescription}
-          onFormValueChange={this.handleFormValueChange}
-          onQuillChange={this.handleQuillChange}
-          onSubmit={this.handleSubmit}
-          setDatesAndTimes={this.setDatesAndTimes}
-          datesAndTimes={datesAndTimes}
-          buttonLabel={buttonLabel}
-          isFormValid={isFormValid}
-          isButtonDisabled={!isFormValid || isCreating}
-        />
+              <FormSwitch
+                isChecked={isPublicActivity || isExclusiveActivity}
+                isDisabled={isPublicActivity}
+                label="Exclusive Activity (Others cannot book)"
+                onChange={this.handleExclusiveSwitch}
+              />
+
+              {isPublicActivity && (
+                <FormSwitch
+                  isChecked={isRegistrationDisabled}
+                  label="RSVP disabled"
+                  onChange={this.handleRegistrationSwitch}
+                />
+              )}
+            </VStack>
+          </Box>
+
+          <ActivityForm
+            datesAndTimes={datesAndTimes}
+            defaultValues={formValues}
+            isPublicActivity={isPublicActivity}
+            resources={resources}
+            uploadableImageLocal={uploadableImageLocal}
+            onSubmit={this.handleSubmit}
+            setDatesAndTimes={this.setDatesAndTimes}
+            setUploadableImage={this.setUploadableImage}
+            isButtonDisabled={!isFormValid || isCreating}
+            isCreating={isCreating}
+            isFormValid={isFormValid}
+          />
+        </Box>
       </Template>
     );
   }

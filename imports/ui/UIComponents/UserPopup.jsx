@@ -1,92 +1,65 @@
-import React, { useState, useContext } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Box, Anchor, Avatar, DropButton, List, Text } from 'grommet';
-import { UserSettings } from 'grommet-icons/icons/UserSettings';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  Avatar,
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react';
+
 import { StateContext } from '../LayoutContainer';
 import { userMenu, adminMenu } from '../constants/general';
 
-const UserPopup = withRouter(({ currentUser, history }) => {
+function UserPopup({ currentUser }) {
   if (!currentUser) {
     return (
-      <Box justify="center" pad={{ horizontal: 'xsmall' }}>
-        <Anchor
-          onClick={() => history.push('/login')}
-          label={<Text size="small">Login</Text>}
-        />
+      <Box px="1">
+        <Link to="/login">
+          <Button as="span" size="sm" variant="ghost">
+            Login
+          </Button>
+        </Link>
       </Box>
     );
   }
 
-  const [open, setOpen] = useState(false);
   const { role } = useContext(StateContext);
 
   return (
-    <DropButton
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      dropAlign={{ right: 'right', top: 'bottom' }}
-      dropContent={
-        <Box pad="medium" width="small">
-          <Box>
-            <Text size="small" weight="bold">
-              My
-            </Text>
-            <List data={userMenu} border={false} pad="small">
-              {(datum, index) => (
-                <Anchor
-                  onClick={() => history.push(datum.value)}
-                  label={
-                    <Text
-                      margin={{ bottom: 'medium' }}
-                      textAlign="end"
-                      color="dark-2"
-                    >
-                      {datum.label}
-                    </Text>
-                  }
-                />
-              )}
-            </List>
-          </Box>
-          {role === 'admin' && (
-            <Box margin={{ top: 'medium' }}>
-              <Text size="small" weight="bold">
-                Admin
-              </Text>
-              <List data={adminMenu} border={false} pad="small">
-                {(datum, index) => (
-                  <Anchor
-                    onClick={() => history.push(datum.value)}
-                    label={
-                      <Text
-                        margin={{ bottom: 'medium' }}
-                        textAlign="end"
-                        color="dark-2"
-                      >
-                        {datum.label}
-                      </Text>
-                    }
-                  />
-                )}
-              </List>
-            </Box>
-          )}
-        </Box>
-      }
-    >
-      <Box justify="center" pad="small">
-        {currentUser.avatar ? (
-          <Avatar
-            size="36px"
-            src={currentUser.avatar && currentUser.avatar.src}
-          />
-        ) : (
-          <UserSettings />
+    <Menu>
+      <MenuButton>
+        <Avatar
+          mr="2"
+          showBorder
+          src={currentUser.avatar && currentUser.avatar.src}
+        />
+      </MenuButton>
+      <MenuList>
+        <MenuGroup title="My">
+          {userMenu.map((item) => (
+            <Link key={item.label} to={item.value}>
+              <MenuItem>{item.label}</MenuItem>
+            </Link>
+          ))}
+        </MenuGroup>
+        {role === 'admin' && <MenuDivider />}
+        {role === 'admin' && (
+          <MenuGroup title="Admin">
+            {adminMenu.map((item) => (
+              <Link key={item.label} to={item.value}>
+                <MenuItem>{item.label}</MenuItem>
+              </Link>
+            ))}
+          </MenuGroup>
         )}
-      </Box>
-    </DropButton>
+      </MenuList>
+    </Menu>
   );
-});
+}
 
 export default UserPopup;

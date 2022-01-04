@@ -37,51 +37,43 @@ Meteor.methods({
       throw new Meteor.Error('Image is required for public activities');
     }
 
-    const resourceIndex = formValues.resource.resourceIndex;
-
     try {
-      const add = Activities.insert(
-        {
-          host,
-          authorId: user._id,
-          authorName: user.username,
-          title: formValues.title,
-          subTitle: formValues.subTitle || null,
-          longDescription: formValues.longDescription,
-          resource: formValues.resource.label || null,
-          resourceId: formValues.resource._id,
-          resourceIndex,
-          place: formValues.place || null,
-          practicalInfo: formValues.practicalInfo || null,
-          internalInfo: formValues.internalInfo || null,
-          address: formValues.address || null,
-          capacity: formValues.capacity || 20,
-          datesAndTimes: formValues.datesAndTimes,
-          imageUrl: uploadedImage || null,
-          isSentForReview: false,
-          isPublicActivity: formValues.isPublicActivity,
-          isActivitiesDisabled: formValues.isActivitiesDisabled,
-          isPublished: true,
-          creationDate: new Date(),
-        },
-        () => {
-          if (!formValues.isPublicActivity) {
-            return;
-          }
-          Meteor.call('createChat', formValues.title, add, (error, result) => {
-            if (error) {
-              Logger.createLogger(
-                `Chat is not created due to error: ${
-                  error.reason || error.error
-                }`
-              );
-              throw new Meteor.Error('Chat is not created');
-            }
-          });
-        }
-      );
+      const add = Activities.insert({
+        host: host,
+        authorId: user._id,
+        authorName: user.username,
+        title: formValues.title,
+        subTitle: formValues.subTitle || null,
+        longDescription: formValues.longDescription,
+        resource: formValues.resource.label || null,
+        resourceId: formValues.resource._id,
+        resourceIndex: formValues.resource.resourceIndex,
+        place: formValues.place || null,
+        practicalInfo: formValues.practicalInfo || null,
+        internalInfo: formValues.internalInfo || null,
+        address: formValues.address || null,
+        capacity: formValues.capacity || 20,
+        datesAndTimes: formValues.datesAndTimes,
+        imageUrl: uploadedImage || null,
+        isSentForReview: false,
+        isPublicActivity: formValues.isPublicActivity,
+        isRegistrationDisabled: formValues.isRegistrationDisabled,
+        isPublished: true,
+        creationDate: new Date(),
+      });
+      // () => {
+      //   if (!formValues.isPublicActivity) {
+      //     return;
+      //   }
+      //   Meteor.call('createChat', formValues.title, add, (error, result) => {
+      //     if (error) {
+      //       throw new Meteor.Error('Chat is not created');
+      //     }
+      //   });
+      // }
       return add;
     } catch (error) {
+      console.log(error)
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -109,20 +101,21 @@ Meteor.methods({
           longDescription: formValues.longDescription,
           resource: formValues.resource.label || null,
           resourceId: formValues.resource._id,
+          resourceIndex: resourceIndex,
           place: formValues.place || null,
           practicalInfo: formValues.practicalInfo || null,
           internalInfo: formValues.internalInfo || null,
           address: formValues.address || null,
-          resourceIndex: resourceIndex,
           datesAndTimes: formValues.datesAndTimes,
           isPublicActivity: formValues.isPublicActivity,
-          isActivitiesDisabled: formValues.isActivitiesDisabled,
+          isRegistrationDisabled: formValues.isRegistrationDisabled,
           imageUrl,
           latestUpdate: new Date(),
         },
       });
       return activityId;
     } catch (error) {
+      console.log(error)
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -150,27 +143,22 @@ Meteor.methods({
 
   registerAttendance(activityId, values, occurenceIndex = 0) {
     const theActivity = Activities.findOne(activityId);
-    const occurences = [...theActivity.datesAndTimes];
-    values.registerDate = new Date();
     const rsvpValues = {
       ...values,
-      numberOfPeople: Number(values.numberOfPeople),
       registerDate: new Date(),
     };
-    if (occurences[occurenceIndex].attendees) {
-      occurences[occurenceIndex].attendees.push(rsvpValues);
-    } else {
-      occurences[occurenceIndex].attendees = [rsvpValues];
-    }
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;
 
+    const field = `datesAndTimes.${occurenceIndex}.attendees`;
+    const occurence = theActivity.datesAndTimes[occurenceIndex];
+
     try {
       Activities.update(activityId, {
-        $set: {
-          datesAndTimes: occurences,
+        $push: {
+          [field]: rsvpValues,
         },
       });
       Meteor.call(
@@ -180,7 +168,7 @@ Meteor.methods({
         getRegistrationEmailBody(
           values.firstName,
           values.numberOfPeople,
-          occurences[occurenceIndex],
+          occurence,
           activityId,
           hostName,
           host
@@ -193,17 +181,22 @@ Meteor.methods({
 
   updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
     const theActivity = Activities.findOne(activityId);
-    const occurences = [...theActivity.datesAndTimes];
-    occurences[occurenceIndex].attendees[attendeeIndex] = values;
+    const rsvpValues = {
+      ...values,
+      registerDate: new Date(),
+    };
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;
 
+    const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
+    const occurence = theActivity.datesAndTimes[occurenceIndex];
+
     try {
       Activities.update(activityId, {
         $set: {
-          datesAndTimes: occurences,
+          [field]: rsvpValues,
         },
       });
       Meteor.call(
@@ -213,13 +206,14 @@ Meteor.methods({
         getRegistrationEmailBody(
           values.firstName,
           values.numberOfPeople,
-          occurences[occurenceIndex],
+          occurence,
           activityId,
           hostName,
           host
         )
       );
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't update attendance");
     }
   },

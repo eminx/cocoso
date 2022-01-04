@@ -301,7 +301,6 @@ Meteor.methods({
     const newEmails = [...currentHost.emails];
 
     newEmails[emailIndex] = email;
-    console.log(newEmails[emailIndex], email);
 
     try {
       Hosts.update(

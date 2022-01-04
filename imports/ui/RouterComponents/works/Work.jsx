@@ -1,14 +1,21 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Anchor, Button, Box, Heading, Text } from 'grommet';
 import {
   Avatar,
+  Badge,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
   Modal,
   ModalBody,
   ModalContent,
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
+  Text,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Visible, Hidden } from 'react-grid-system';
@@ -18,7 +25,6 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import NiceSlider from '../../UIComponents/NiceSlider';
-import Tag from '../../UIComponents/Tag';
 import { message } from '../../UIComponents/message';
 import { call } from '../../functions';
 
@@ -77,18 +83,16 @@ function Work() {
 
   const AvatarHolder = (props) => (
     <Link to={`/@${work.authorUsername}`}>
-      <Box alignSelf="end" align="center" {...props}>
-        <Box>
-          <Avatar
-            elevation="medium"
-            src={work.authorAvatar ? work.authorAvatar.src : null}
-            name={work.authorUsername}
-          />
-        </Box>
-        <Anchor href={`/@${work.authorUsername}`}>
-          <Text size="small">{work.authorUsername}</Text>
-        </Anchor>
-      </Box>
+      <VStack justify="center" {...props}>
+        <Avatar
+          elevation="medium"
+          src={work.authorAvatar ? work.authorAvatar.src : null}
+          name={work.authorUsername}
+        />
+        <Button as="span" variant="link" href={`/@${work.authorUsername}`}>
+          <Text fontSize="sm">{work.authorUsername}</Text>
+        </Button>
+      </VStack>
     </Link>
   );
 
@@ -96,90 +100,79 @@ function Work() {
     <Fragment>
       <Template
         leftContent={
-          <Box pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}>
-            <Box direction="row" align="start" justify="between">
-              <Box pad={{ right: 'small' }}>
-                <Text weight={600} margin={{ bottom: 'xsmall' }} size="large">
+          <Box pt="2" pb="1" px="2">
+            <Flex justify="space-between">
+              <Box>
+                <Heading as="h2" size="lg" mb={1}>
                   {work.title}
-                </Text>
+                </Heading>
+                <Text mb="4">{work.shortDescription}</Text>
                 {work.category && (
-                  <Tag
-                    label={work.category.label}
-                    background={work.category.color}
-                  />
+                  <Badge variant="outline" color="gray.800" fontSize="md">
+                    {work.category.label}
+                  </Badge>
                 )}
-                <Text margin={{ top: 'small' }}>{work.shortDescription}</Text>
               </Box>
-              <Box flex={{ shrink: 0, grow: 0 }}>
-                <Visible xs sm md lg>
+              <Box>
+                <Visible xs sm md>
                   <AvatarHolder />
                 </Visible>
               </Box>
-            </Box>
+            </Flex>
           </Box>
         }
         rightContent={
           <Box>
-            <Box
+            <Flex
+              align="center"
               direction="row"
-              pad="medium"
-              justify="between"
+              justify="space-between"
+              p="2"
               style={{ overflow: 'hidden' }}
-              align="start"
             >
-              <Box width="100%" pad={{ top: 'small' }}>
+              <Box w="100%" pt="1">
                 <Hidden lg xl>
-                  <Heading
-                    level={4}
-                    textAlign="center"
-                    alignSelf="center"
-                    style={{ marginTop: 0 }}
-                  >
+                  <Text fontSize="lg" textAlign="center" ml="2">
                     {work.additionalInfo}
-                  </Heading>
+                  </Text>
                 </Hidden>
                 <Visible lg xl>
-                  <Heading level={4}>{work.additionalInfo}</Heading>
+                  <Text fontSize="lg">{work.additionalInfo}</Text>
                 </Visible>
               </Box>
-              <Box flex={{ shrink: 0 }}>
-                <Hidden xs sm md lg>
+              <Box>
+                <Hidden xs sm md>
                   <AvatarHolder />
                 </Hidden>
               </Box>
-            </Box>
-            <Box pad="medium">
-              <Button
-                onClick={handleOpenModal}
-                alignSelf="center"
-                secondary
-                size="small"
-                label={`Contact ${work.authorUsername}`}
-              />
-            </Box>
+            </Flex>
+            <Center p="2" mt="4">
+              <Button onClick={handleOpenModal} variant="ghost">
+                {`Contact ${work.authorUsername}`}
+              </Button>
+            </Center>
           </Box>
         }
       >
-        <Box margin={{ top: 'medium' }} background="white">
+        <Box mt="2" bg="white">
           <NiceSlider images={work.images} />
-          <Box margin={{ top: 'medium' }} pad="medium">
+          <Box mt="2" p="4">
             <div className="text-content">
               {renderHTML(work.longDescription)}{' '}
             </div>
           </Box>
         </Box>
       </Template>
-      <Box
-        margin={{ top: 'medium', bottom: 'large' }}
-        direction="row"
-        justify="center"
-      >
+
+      <Center my="2">
         {isOwner && (
           <Link to={`/${currentUser.username}/edit-work/${workId}`}>
-            <Anchor as="span" alignSelf="center" size="small" label="Edit" />
+            <Button size="sm" variant="ghost">
+              Edit
+            </Button>
           </Link>
         )}
-      </Box>
+      </Center>
 
       <Modal
         isOpen={isOpen}
@@ -193,7 +186,7 @@ function Work() {
           <ModalHeader>{author}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box className="text-content" margin={{ bottom: 'medium' }}>
+            <Box className="text-content" mb="2">
               {authorContactInfo ? renderHTML(authorContactInfo) : 'Loading...'}
             </Box>
           </ModalBody>

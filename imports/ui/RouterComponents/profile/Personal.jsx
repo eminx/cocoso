@@ -1,51 +1,72 @@
 import React from 'react';
-import { Box, Form, FormField, TextInput, Button } from 'grommet';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
+
+import FormField from '../../UIComponents/FormField';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
 
-const Personal = ({
-  formValues,
-  bio,
-  contactInfo,
-  onBioChange,
-  onContactInfoChange,
-  onFormChange,
-  onSubmit,
-}) => {
+const Personal = ({ defaultValues, onSubmit }) => {
+  const { control, formState, handleSubmit, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
+
   return (
-    <Box>
-      <Form onSubmit={onSubmit} value={formValues} onChange={onFormChange}>
-        <FormField label="first name" name="firstName">
-          <TextInput plain={false} name="firstName" placeholder="" />
-        </FormField>
+    <div>
+      <form
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+        defaultValues={defaultValues}
+      >
+        <VStack spacing="6">
+          <FormField label="First name">
+            <Input {...register('firstName')} placeholder="" />
+          </FormField>
 
-        <FormField label="last name" name="lastName">
-          <TextInput plain={false} name="lastName" placeholder="" />
-        </FormField>
+          <FormField label="Last name">
+            <Input {...register('lastName')} placeholder="" />
+          </FormField>
 
-        <FormField label="bio" name="bio">
-          <ReactQuill
-            value={bio}
-            modules={editorModules}
-            formats={editorFormats}
-            onChange={onBioChange}
-          />
-        </FormField>
+          <FormField label="Bio">
+            <Controller
+              control={control}
+              name="bio"
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  formats={editorFormats}
+                  modules={editorModules}
+                />
+              )}
+            />
+          </FormField>
 
-        <FormField label="contact info" name="contactInfo">
-          <ReactQuill
-            value={contactInfo}
-            modules={editorModules}
-            formats={editorFormats}
-            onChange={onContactInfoChange}
-          />
-        </FormField>
+          <FormField label="Contact Info">
+            <Controller
+              control={control}
+              name="contactInfo"
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  formats={editorFormats}
+                  modules={editorModules}
+                />
+              )}
+            />
+          </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Confirm" />
-        </Box>
-      </Form>
-    </Box>
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button
+              isDisabled={!isDirty}
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 };
 

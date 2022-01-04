@@ -2,35 +2,43 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
-  Anchor,
   Box,
   Button,
-  DropButton,
-  Footer,
-  Grommet,
-  Heading,
-  FormField,
+  Center,
+  ChakraProvider,
+  Flex,
+  HStack,
   Image,
-  Layer,
-  Paragraph,
+  Input,
+  Menu as CMenu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalCloseButton,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
+  Spinner,
   Text,
-  TextInput,
-  TextArea,
-} from 'grommet';
-import { Close } from 'grommet-icons/icons/Close';
-import { Down } from 'grommet-icons/icons/Down';
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
-
-import { ChakraProvider } from '@chakra-ui/react';
 
 export const StateContext = React.createContext(null);
 
 import UserPopup from './UIComponents/UserPopup';
-import theme from './constants/theme';
+import FormField from './UIComponents/FormField';
 import Hosts from '../api/@hosts/host';
+import { chakraTheme } from './constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
@@ -67,8 +75,6 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-pathsWithMenu = menu.map((item) => item.route !== '/page/about' && item.route);
-
 const getGotoPath = (pathname) => {
   const shortPath = pathname.substring(0, 3);
   if (shortPath === '/pr') {
@@ -81,6 +87,10 @@ const getGotoPath = (pathname) => {
 };
 
 const getBackgroundStyle = (cHue) => {
+  return {
+    backgroundColor: 'rgba(0, 0, 0, .08)',
+  };
+
   if (!cHue) {
     return {
       backgroundColor: '#fff',
@@ -126,34 +136,42 @@ function LayoutPage({
 
   if (hostLoading || !currentHost) {
     return (
-      <Box width="100%">
-        <Box pad="medium" alignSelf="center">
-          <Text>Loading...</Text>
+      <ChakraProvider>
+        <Box w="100%" h="100vh">
+          <Center h="100%">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Center>
         </Box>
-      </Box>
+      </ChakraProvider>
     );
   }
 
-  const hsl =
-    currentHost.settings &&
-    currentHost.settings.mainColor &&
-    currentHost.settings.mainColor.hsl;
-  let cHue;
-  const customTheme = {
-    ...theme,
-  };
-  if (hsl) {
-    customTheme.global.colors.brand = `hsl(${hsl.h}, ${100 * hsl.s}%, ${
-      100 * hsl.l
-    }%)`;
-    customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
-      100 * hsl.s
-    }%, 95%)`;
-    customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
+  // const hsl =
+  //   currentHost.settings &&
+  //   currentHost.settings.mainColor &&
+  //   currentHost.settings.mainColor.hsl;
+  // let cHue;
+  // const customTheme = {
+  //   ...theme,
+  // };
+  // if (hsl) {
+  //   const themeColor = `hsl(${hsl.h}, ${100 * hsl.s}%, ${100 * hsl.l}%)`;
+  //   customTheme.global.colors.brand = themeColor;
+  //   chakraTheme.colors.brand = themeColor;
+  //   customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
+  //     100 * hsl.s
+  //   }%, 95%)`;
+  //   customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
 
-    // complementary color is calculated:
-    cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
-  }
+  //   // complementary color is calculated:
+  //   cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
+  // }
 
   const headerProps = {
     currentUser,
@@ -173,139 +191,120 @@ function LayoutPage({
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
   return (
-    <Grommet theme={customTheme}>
+    <ChakraProvider theme={chakraTheme}>
       {publicSettings.faviconUrl && (
         <Helmet>
           <link rel="icon" href={publicSettings.faviconUrl} />
         </Helmet>
       )}
-      <ChakraProvider>
-        <StateContext.Provider
-          value={{
-            currentUser,
-            userLoading,
-            currentHost,
-            role,
-            canCreateContent,
-          }}
-        >
-          <Box
-            className="main-viewport"
-            justify="center"
-            style={getBackgroundStyle(cHue)}
-            fill
-          >
-            <Box width={{ max: '1280px' }} alignSelf="center" fill>
-              <Header {...headerProps} />
-              <Box>{children}</Box>
-              {/* <FooterInfo settings={settings} /> */}
+      <StateContext.Provider
+        value={{
+          currentUser,
+          userLoading,
+          currentHost,
+          role,
+          canCreateContent,
+        }}
+      >
+        <Center className="main-viewport" style={getBackgroundStyle()}>
+          <Box maxWidth="1400px" w="100%">
+            <Header {...headerProps} />
+            <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-              <Footer justify="center">
-                <Box pad="large">
-                  <Anchor onClick={() => setShowFeedbackModal(true)}>
-                    Give Feedback
-                  </Anchor>
-                </Box>
+            <Flex bg="gray.100" justify="center" p="6">
+              <Center>
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowFeedbackModal(true)}
+                >
+                  Give Feedback
+                </Button>
+              </Center>
 
-                {showFeedbackModal && (
-                  <Layer
-                    position="bottom"
-                    full="vertical"
-                    modal
-                    onClickOutside={() => setShowFeedbackModal(false)}
-                    onEsc={() => setShowFeedbackModal(false)}
-                    animation="fadeIn"
-                  >
-                    <Box pad="medium" width="large">
-                      <Box direction="row" justify="between">
-                        <Heading level={2} margin="none">
-                          Give Feedback
-                        </Heading>
-                        <Button
-                          icon={<Close />}
-                          onClick={() => setShowFeedbackModal(false)}
-                        />
-                      </Box>
-                      <form
-                        action="https://formspree.io/f/xdopweon"
-                        method="POST"
-                      >
+              <Modal
+                isOpen={showFeedbackModal}
+                onClose={() => setShowFeedbackModal(false)}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Give Feedback</ModalHeader>
+                  <ModalCloseButton />
+                  <form action="https://formspree.io/f/xdopweon" method="POST">
+                    <ModalBody>
+                      <VStack spacing="6">
                         <FormField label="Your email address">
-                          <TextInput type="email" name="_replyto" />
+                          <Input type="email" name="_replyto" />
                         </FormField>
 
                         <FormField label="Subject">
-                          <Select
-                            type="text"
-                            name="subject"
-                            options={['Bug', 'Suggestion', 'Compliment']}
-                          />
+                          <Select name="subject">
+                            {['Suggestion', 'Bug', 'Compliment'].map(
+                              (option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              )
+                            )}
+                          </Select>
                         </FormField>
 
                         <FormField label="Details">
-                          <TextArea name="text" name="message" />
+                          <Textarea name="text" name="message" />
                         </FormField>
-
-                        <Box
-                          direction="row"
-                          justify="end"
-                          pad={{ top: 'large' }}
-                        >
-                          <Button type="submit" label="Send" />
-                        </Box>
-                      </form>
-                    </Box>
-                  </Layer>
-                )}
-              </Footer>
-            </Box>
+                      </VStack>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        mr={3}
+                        onClick={() => setShowFeedbackModal(false)}
+                      >
+                        Close
+                      </Button>
+                      <Button colorScheme="blue" type="submit">
+                        Send
+                      </Button>
+                    </ModalFooter>
+                  </form>
+                </ModalContent>
+              </Modal>
+            </Flex>
           </Box>
-        </StateContext.Provider>
-      </ChakraProvider>
-    </Grommet>
+        </Center>
+      </StateContext.Provider>
+    </ChakraProvider>
   );
 }
 
-const boldBabe = {
-  textTransform: 'uppercase',
-  fontWeight: 700,
-};
-
 const Header = ({ currentUser, currentHost, title, history }) => {
   const UserStuff = () => (
-    <Box justify="end" direction="row" alignContent="center">
-      {/* {currentUser && (
-        <NotificationsPopup notifications={currentUser.notifications} />
-      )} */}
-      <UserPopup currentUser={currentUser} />
-    </Box>
+    <NotificationsPopup notifications={currentUser.notifications} />
   );
 
   const pathname = location.pathname;
   const gotoPath = getGotoPath(pathname);
 
   const isPage = pathname.substring(0, 5) === '/page';
-  const isMenuPage = isPage || pathsWithMenu.includes(pathname);
 
   return (
-    <ScreenClassRender
-      render={(screenClass) => {
-        const large = ['lg', 'xl', 'xxl'].includes(screenClass);
+    <Box mb="8">
+      <ScreenClassRender
+        render={(screenClass) => {
+          const large = ['lg', 'xl', 'xxl'].includes(screenClass);
 
-        return (
-          <Container fluid style={{ width: '100%', padding: 0 }}>
-            <Row
-              style={{ marginLeft: 0, marginRight: 0, marginBottom: 12 }}
-              align="center"
-            >
-              <Col xs={3} style={{ paddingLeft: 0 }}>
-                <Box>
+          return (
+            <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
+              <Row
+                style={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 12,
+                  alignItems: 'center',
+                }}
+                alignItems="center"
+              >
+                <Col xs={3} style={{ paddingLeft: 0 }}>
                   <Link to="/">
-                    <Box
-                      width="120px"
-                      height="60px"
-                      margin={{ top: 'small', left: 'small' }}
-                    >
+                    <Box w="120px" h="60px" ml="3">
                       <Image
                         fit="contain"
                         src={currentHost && currentHost.logo}
@@ -313,29 +312,32 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                       />
                     </Box>
                   </Link>
-                </Box>
-              </Col>
-              <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Menu
-                  currentHost={currentHost}
-                  large={large}
-                  history={history}
-                />
-              </Col>
-              <Col xs={3} style={{ paddingRight: 0 }}>
-                <UserStuff />
-              </Col>
-            </Row>
-          </Container>
-        );
-      }}
-    />
+                </Col>
+                <Col
+                  xs={6}
+                  style={{ display: 'flex', justifyContent: 'center' }}
+                >
+                  <Menu
+                    currentHost={currentHost}
+                    large={large}
+                    history={history}
+                  />
+                </Col>
+                <Col xs={3} style={{ paddingRight: 0 }}>
+                  <Flex justify="flex-end">
+                    <UserPopup currentUser={currentUser} />
+                  </Flex>
+                </Col>
+              </Row>
+            </Container>
+          );
+        }}
+      />
+    </Box>
   );
 };
 
 const Menu = ({ currentHost, large, history }) => {
-  const [open, setOpen] = useState(false);
-
   if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
     return null;
   }
@@ -349,115 +351,65 @@ const Menu = ({ currentHost, large, history }) => {
       route: getRoute(item, index),
     }));
 
-  const menuProps = {
-    large,
-    history,
+  const pathname = history.location.pathname;
+
+  const handleClick = (item) => {
+    history.push(item.route);
   };
 
-  const pathname = history.location.pathname;
-  const currentPage = menu.find((item) => {
-    return (
-      item.name.toLowerCase() ===
-      pathname.substring(1, pathname.length).toLowerCase()
-    );
+  const isCurrentPage = (name) => {
+    if (name === 'info') {
+      return pathname.substring(0, 5) === '/page';
+    }
+    return name === pathname.substring(1, pathname.length);
+  };
+
+  const activeMenuItem = menuItems.find((item) => {
+    return isCurrentPage(item.name);
   });
 
   if (large) {
     return (
-      <MenuContent currentPage={currentPage} items={menuItems} {...menuProps} />
+      <HStack>
+        {menuItems.map((item) => (
+          <Box as="button" key={item.name} onClick={() => handleClick(item)}>
+            <Text
+              borderBottom={
+                activeMenuItem && activeMenuItem.label === item.label
+                  ? '1px solid #010101'
+                  : 'none'
+              }
+              m="1"
+              textTransform="capitalize"
+            >
+              {item.label}
+            </Text>
+          </Box>
+        ))}
+      </HStack>
     );
   }
 
   return (
-    <DropButton
-      label={
-        <Box direction="row" gap="small" align="center">
-          <Anchor as="span">
-            {(currentPage && currentPage.label) || 'Menu'}
-          </Anchor>
-          <Down size="small" />
-        </Box>
-      }
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      alignSelf="center"
-      dropContent={
-        <Box width="small" pad="small">
-          <MenuContent
-            {...menuProps}
-            items={menuItems}
-            closeMenu={() => setOpen(false)}
-          />
-        </Box>
-      }
-      dropProps={{ align: { top: 'bottom' } }}
-      plain
-    />
+    <CMenu placement="bottom" closeOnSelect>
+      <MenuButton>
+        <HStack>
+          <Text textTransform="capitalize">
+            {activeMenuItem ? activeMenuItem.label : 'Menu'}
+          </Text>
+          <ChevronDownIcon />
+        </HStack>
+      </MenuButton>
+      <MenuList>
+        {menuItems.map((item) => (
+          <MenuItem key={item.label} onClick={() => handleClick(item)}>
+            {item.label}
+          </MenuItem>
+        ))}
+      </MenuList>
+    </CMenu>
   );
 };
-
-const MenuContent = ({ items, large, history, closeMenu, currentPage }) => {
-  if (!items) {
-    return null;
-  }
-
-  const handleClick = (item) => {
-    !large && closeMenu();
-    history.push(item.route);
-  };
-
-  const isCurrentPage = (label) => {
-    if (!currentPage) {
-      return false;
-    }
-    return currentPage && currentPage.label === label;
-  };
-
-  return (
-    <Box
-      pad="small"
-      justify={large ? 'center' : 'start'}
-      direction={large ? 'row' : 'column'}
-      flex={{ shrink: 0 }}
-      alignSelf="center"
-      wrap
-      gap={large ? 'none' : 'small'}
-    >
-      {items.map((item) => (
-        <Box pad="small" key={item.label}>
-          <Anchor
-            onClick={() => handleClick(item)}
-            label={item.label.toUpperCase()}
-            size="small"
-            style={{
-              borderBottom: isCurrentPage(item.label) ? '2px solid' : 'none',
-            }}
-          />
-        </Box>
-      ))}
-    </Box>
-  );
-};
-
-const FooterInfo = ({ currentHost }) =>
-  currentHost && (
-    <Footer pad="medium" direction="row" justify="center">
-      <Box alignSelf="center">
-        <Heading level={4} style={boldBabe}>
-          {currentHost.name}
-        </Heading>
-        <Paragraph>
-          {currentHost.address}, {currentHost.city}
-        </Paragraph>
-        <Paragraph>
-          <Anchor href={`mailto:${currentHost.email}`}>
-            {currentHost.email}
-          </Anchor>
-        </Paragraph>
-      </Box>
-    </Footer>
-  );
 
 export default withTracker((props) => {
   const hostSub = Meteor.subscribe('currentHost');

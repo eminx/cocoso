@@ -1,15 +1,20 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext, useState } from 'react';
-import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import { Link } from 'react-router-dom';
 import {
   Avatar,
-  Image as ChakraImage,
+  Badge,
+  Box,
+  Button,
+  Heading,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
@@ -81,7 +86,7 @@ function MemberPublic({
     <Template
       leftContent={
         member && (
-          <Box align="center" margin="medium" className="text-content">
+          <Box align="center" m="4" className="text-content">
             <Avatar
               name={member.username}
               src={member.avatar && member.avatar.src}
@@ -89,33 +94,35 @@ function MemberPublic({
               onClick={avatarExists ? () => setAvatarModal(true) : null}
               style={{ cursor: avatarExists ? 'pointer' : 'default' }}
             />
-            <Text weight="bold" size="large" textAlign="center">
+            <Text fontWeight="bold" size="lg" textAlign="center">
               {member.username}
             </Text>
             <Text textAlign="center">{getFullName(member)}</Text>
 
-            {member.bio && (
-              <Box margin={{ top: 'small' }}>{renderHTML(member.bio)}</Box>
-            )}
+            {member.bio && <Box mt="2">{renderHTML(member.bio)}</Box>}
 
-            <Anchor onClick={onOpen} as="button" margin={{ top: 'medium' }}>
+            <Button variant="ghost" mt={2} onClick={onOpen}>
               Contact
-            </Anchor>
+            </Button>
           </Box>
         )
       }
     >
       {worksLabel && member && (
-        <Heading level={3} margin="medium">
+        <Heading size="md" m="4">
           {worksLabel} by {member.username}
         </Heading>
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
-          <WorkThumb key={work._id} work={work} history={history} />
+          <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
+            <Box mb="4">
+              <WorkThumb work={work} />
+            </Box>
+          </Link>
         ))
       ) : (
-        <Box width="100%" background="dark-1" pad="small" align="center">
+        <Box w="100%" bg="gray.600" p="2" align="center">
           <Heading level={4} margin="small">
             Nothing published just yet
           </Heading>
@@ -125,7 +132,7 @@ function MemberPublic({
               src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif"
             />
           </Box>
-          <Text margin="small">
+          <Text m="2">
             <b>{member.username}</b> have not been very active so far
           </Text>
         </Box>
@@ -161,7 +168,7 @@ function MemberPublic({
         >
           <ModalOverlay />
           <ModalContent>
-            <ChakraImage
+            <Image
               src={member.avatar.src}
               alt={member.username}
               fit="contain"

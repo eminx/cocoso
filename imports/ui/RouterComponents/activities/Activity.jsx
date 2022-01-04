@@ -6,20 +6,27 @@ import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
+import { useForm } from 'react-hook-form';
 
 import {
   Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  Anchor,
   Box,
-  Image,
-  Form,
-  FormField,
-  TextInput,
   Button,
+  Center,
+  FormControl,
+  FormLabel,
   Heading,
+  Image,
+  Input,
+  NumberInput,
+  NumberInputField,
+  Stack,
   Text,
-} from 'grommet';
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 // import Chattery from '../../UIComponents/chattery/Chattery';
@@ -30,6 +37,7 @@ import Tag from '../../UIComponents/Tag';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
 import { call } from '../../functions';
 import { message } from '../../UIComponents/message';
+import FormField from '../../UIComponents/FormField';
 
 class Activity extends PureComponent {
   state = {
@@ -69,11 +77,27 @@ class Activity extends PureComponent {
     return messages;
   };
 
-  handleRSVPSubmit = async ({ value, touched }, occurenceIndex) => {
+  handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData } = this.props;
 
+    const isEmailAlreadyRegistered = activityData.datesAndTimes[
+      occurenceIndex
+    ].attendees.some(
+      (attendee) => attendee.email.toLowerCase() === values.email.toLowerCase()
+    );
+
+    if (isEmailAlreadyRegistered) {
+      message.error('Email already registered. Please update instead.');
+      return;
+    }
+
     try {
-      await call('registerAttendance', activityData._id, value, occurenceIndex);
+      await call(
+        'registerAttendance',
+        activityData._id,
+        values,
+        occurenceIndex
+      );
       message.success(
         'You have just successfully registered your attendance. Welcome!'
       );
@@ -135,66 +159,71 @@ class Activity extends PureComponent {
     }
 
     if (rsvpCancelModalInfo.isInfoFound) {
-      const user = {
+      const defaultValues = {
         ...rsvpCancelModalInfo,
-        emails: [{ address: rsvpCancelModalInfo.email }],
       };
       return (
         <RsvpForm
           isUpdateMode
           onDelete={this.handleRemoveRSVP}
-          currentUser={user}
-          onSubmit={(event) => this.handleChangeRSVPSubmit(event)}
+          defaultValues={defaultValues}
+          onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
         />
       );
     } else {
       return (
-        <Box gap="medium">
-          <TextInput
-            placeholder="Last name"
-            value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
-            onChange={(e) =>
-              this.setState({
-                rsvpCancelModalInfo: {
-                  ...rsvpCancelModalInfo,
-                  lastName: e.target.value,
-                },
-              })
-            }
-            size="small"
-          />
-          <TextInput
-            placeholder="Email"
-            value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
-            onChange={(e) =>
-              this.setState({
-                rsvpCancelModalInfo: {
-                  ...rsvpCancelModalInfo,
-                  email: e.target.value,
-                },
-              })
-            }
-            size="small"
-          />
+        <Box>
+          <FormControl id="lastname" mb="3" size="sm">
+            <FormLabel>Last name</FormLabel>
+            <Input
+              value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
+              onChange={(e) =>
+                this.setState({
+                  rsvpCancelModalInfo: {
+                    ...rsvpCancelModalInfo,
+                    lastName: e.target.value,
+                  },
+                })
+              }
+              // size="sm"
+            />
+          </FormControl>
+
+          <FormControl id="email" size="sm">
+            <FormLabel>Email</FormLabel>
+            <Input
+              value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
+              onChange={(e) =>
+                this.setState({
+                  rsvpCancelModalInfo: {
+                    ...rsvpCancelModalInfo,
+                    email: e.target.value,
+                  },
+                })
+              }
+            />
+          </FormControl>
         </Box>
       );
     }
   };
 
-  handleChangeRSVPSubmit = async ({ value, touched }) => {
+  handleChangeRSVPSubmit = async (values) => {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData } = this.props;
 
-    const values = {
-      ...value,
-      numberOfPeople: Number(value.numberOfPeople),
+    const parsedValues = {
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      numberOfPeople: Number(values.numberOfPeople),
     };
 
     try {
       await call(
         'updateAttendance',
         activityData._id,
-        values,
+        parsedValues,
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
@@ -221,7 +250,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.attendeeIndex,
         rsvpCancelModalInfo.email
       );
-      message.success('You have successfully removed your RSVP');
+      message.success('You have successfully removed your registration');
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -243,15 +272,27 @@ class Activity extends PureComponent {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
-    if (activityData.isActivitiesDisabled) {
+    <Text size="sm" mb="1">
+      {activityData.isRegistrationDisabled
+        ? 'RSVP disabled. Please check the practical information.'
+        : 'Please click and open the date to RSVP'}
+    </Text>;
+
+    if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
+          {activityData.isRegistrationDisabled &&
+            activityData.isPublicActivity && (
+              <Text size="sm" mb="1">
+                Registrations are disabled.
+              </Text>
+            )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
+              bg="white"
               key={occurence.startDate + occurence.startTime}
-              background="white"
-              pad="small"
-              margin={{ bottom: 'small' }}
+              p="2"
+              mb="2"
             >
               <FancyDate occurence={occurence} />
             </Box>
@@ -268,30 +309,34 @@ class Activity extends PureComponent {
       return counter;
     };
 
+    const defaultRsvpValues = {
+      firstName: currentUser ? currentUser.firstName : '',
+      lastName: currentUser ? currentUser.lastName : '',
+      email: currentUser ? currentUser.emails[0].address : '',
+      numberOfPeople: 1,
+    };
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box background="white">
+          <Box bg="white">
             {eventPast ? (
-              <Box pad={{ vertical: 'medium', horizontal: 'small' }}>
-                <Text color="status-critical">This event has past</Text>
+              <Box p="2">
+                <Text color="gray">This event has past</Text>
               </Box>
             ) : (
               <Box>
-                <Box
-                  direction="row"
-                  justify="end"
-                  margin={{ bottom: 'small', right: 'medium' }}
-                >
-                  <Anchor
-                    size="small"
+                <Center m="2">
+                  <Button
+                    colorScheme="red"
+                    size="sm"
+                    variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
-                    Change/Cancel Existing RSVP
-                  </Anchor>
-                </Box>
+                    Change/cancel existing registration
+                  </Button>
+                </Center>
 
                 {occurence.capacity &&
                 occurence.attendees &&
@@ -303,17 +348,19 @@ class Activity extends PureComponent {
                   </p>
                 ) : (
                   <RsvpForm
-                    currentUser={currentUser}
-                    onSubmit={(event) =>
-                      this.handleRSVPSubmit(event, occurenceIndex)
+                    defaultValues={defaultRsvpValues}
+                    onSubmit={(values) =>
+                      this.handleRSVPSubmit(values, occurenceIndex)
                     }
                   />
                 )}
               </Box>
             )}
             {canCreateContent && (
-              <Box pad={{ horizontal: 'small' }}>
-                <Heading level={5}>Attendees</Heading>
+              <Box px="1">
+                <Heading mb="1" as="h4" size="sm">
+                  Attendees
+                </Heading>
                 <span>Only visible to registered members</span>
                 <div
                   style={{
@@ -323,7 +370,7 @@ class Activity extends PureComponent {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button size="small" label="Print" />}
+                    trigger={() => <Button size="sm">Print</Button>}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -340,18 +387,24 @@ class Activity extends PureComponent {
     };
 
     return (
-      <Accordion animate multiple={false}>
+      <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <AccordionPanel
+          <AccordionItem
             key={occurence.startDate + occurence.startTime}
-            header={
-              <Box pad="small" background="white">
+            bg="white"
+            mb="2"
+          >
+            <AccordionButton _expanded={{ bg: 'green.100' }}>
+              <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
-            }
-          >
-            {conditionalRender(occurence, occurenceIndex)}
-          </AccordionPanel>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel>
+              <Heading size="sm">Register</Heading>
+              {conditionalRender(occurence, occurenceIndex)}
+            </AccordionPanel>
+          </AccordionItem>
         ))}
       </Accordion>
     );
@@ -408,55 +461,52 @@ class Activity extends PureComponent {
     const EditButton = currentUser &&
       activityData &&
       currentUser._id === activityData.authorId && (
-        <Box direction="row" justify="center" margin="medium">
+        <Center m="2">
           <Link to={`/edit-activity/${activityData._id}`}>
-            <Anchor as="span">Edit this Activity</Anchor>
+            <Button variant="ghost" as="span">
+              Edit
+            </Button>
           </Link>
-        </Box>
+        </Center>
       );
 
     return (
       <Template
         leftContent={
-          <Box pad="medium">
-            <Heading level={3} style={{ marginBottom: 0 }} size="small">
+          <Box p="2">
+            <Heading as="h3" size="lg">
               {activityData.title}
             </Heading>
             {activityData.subTitle && (
-              <Heading level={4} style={{ marginTop: 0, fontWeight: 300 }}>
+              <Heading as="h4" size="md" fontWeight="light">
                 {activityData.subTitle}
               </Heading>
             )}
           </Box>
         }
         rightContent={
-          <Box width="100%" pad="medium">
-            <Heading margin={{ bottom: 'small' }} level={5}>
+          <Box width="100%" p="2">
+            <Heading mb="2" as="h5" size="md">
               Dates
             </Heading>
-            <Text size="small" margin={{ bottom: 'small' }}>
-              {activityData.isActivitiesDisabled
-                ? 'RSVP disabled. Please check the practical information.'
-                : 'Please click and open the date to RSVP'}
-            </Text>
             {this.renderDates()}
           </Box>
         }
       >
-        <Box background="white">
+        <Box bg="white" mb="4">
           {activityData.isPublicActivity && (
-            <Box background="dark-1">
+            <Box bg="gray.900">
               <Image
                 fit="contain"
-                fill
                 src={activityData.imageUrl}
-                style={{ maxHeight: 400 }}
+                // style={{ maxHeight: 400 }}
+                htmlHeight={400}
               />
             </Box>
           )}
 
           {activityData.longDescription && (
-            <Box pad="medium">
+            <Box p="4">
               <div
                 style={{
                   whiteSpace: 'pre-line',
@@ -470,24 +520,24 @@ class Activity extends PureComponent {
           )}
         </Box>
 
-        <Box pad="medium" margin={{ bottom: 'small' }}>
-          <Heading level={5} margin={{ bottom: 'small' }}>
+        <Box p="2" mb="1">
+          <Heading mb="2" as="h5" size="md">
             Resource
           </Heading>
           <Tag label={activityData.resource} />
         </Box>
         {activityData.address && (
-          <Box pad="medium" margin={{ bottom: 'small' }}>
-            <Heading level={5} margin={{ bottom: 'small' }}>
+          <Box p="2" mb="1">
+            <Heading mb="2" as="h5" size="md">
               Address
             </Heading>
-            <Text size="small">{activityData.address}</Text>
+            <Text size="sm">{activityData.address}</Text>
           </Box>
         )}
 
         {/* {activityData.isPublicActivity && messages && chatData && (
           <Box pad="medium" background="light-2" border="dark-2">
-            <Heading level={4}>Chat Section</Heading>
+            <Heading mb="1" as="h5" size="md">Chat Section</Heading>
             <Chattery
               messages={messages}
               onNewMessage={this.addNewChatMessage}
@@ -533,45 +583,65 @@ const fields = [
     name: 'email',
     label: 'Email address',
   },
-  {
-    name: 'numberOfPeople',
-    label: 'Number of people',
-  },
+  // {
+  //   name: 'numberOfPeople',
+  //   label: 'Number of people',
+  // },
 ];
 
-function RsvpForm({ isUpdateMode, currentUser, onSubmit, onDelete }) {
-  return (
-    <Box background="white" pad="small">
-      <Form onSubmit={onSubmit}>
-        {fields.map((field) => (
-          <FormField
-            key={field.name}
-            size="small"
-            name={field.name}
-            label={<Text size="small">{field.label}</Text>}
-          >
-            <TextInput plain={false} name={field.name} />
-          </FormField>
-        ))}
-        <Box margin={{ top: 'medium' }}>
-          <Button
-            type="submit"
-            size="small"
-            // disabled={hasErrors(getFieldsError())}
-            label={isUpdateMode ? 'Update' : 'Register'}
-            alignSelf="end"
-            margin={{ bottom: 'medium' }}
-          />
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  numberOfPeople: 1,
+};
 
+function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
+  return (
+    <Box bg="white" p="1" mb="8">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Stack spacing={2}>
+          {fields.map((field) => (
+            <FormField key={field.name} label={field.label}>
+              <Input {...register(field.name)} size="sm" />
+            </FormField>
+          ))}
+          <FormField label="Number of Attendees">
+            <NumberInput size="sm">
+              <NumberInputField {...register('numberOfPeople')} />
+            </NumberInput>
+          </FormField>
+          <Box pt="2" w="100%">
+            <Button
+              colorScheme="green"
+              isDisabled={isUpdateMode && !isDirty}
+              isLoading={isSubmitting}
+              loadingText="Submitting"
+              size="sm"
+              type="submit"
+              w="100%"
+            >
+              {isUpdateMode ? 'Update' : 'Register'}
+            </Button>
+          </Box>
           {isUpdateMode && (
-            <Text textAlign="center" size="small">
-              <Anchor color="status-critical" onClick={onDelete}>
-                Remove your registration
-              </Anchor>
-            </Text>
+            <Button
+              colorScheme="red"
+              size="sm"
+              variant="ghost"
+              onClick={onDelete}
+            >
+              Remove your registration
+            </Button>
           )}
-        </Box>
-      </Form>
+        </Stack>
+      </form>
     </Box>
   );
 }

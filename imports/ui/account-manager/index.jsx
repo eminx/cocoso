@@ -1,177 +1,175 @@
 import React, { useState } from 'react';
-import { Anchor, Box, Button, Form, FormField, Text, TextInput } from 'grommet';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+const Joi = require('joi');
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
-import { emailIsValid } from '../functions';
-const regexUsername = /[^a-z0-9]+/g;
+import FormField from '../UIComponents/FormField';
+import {
+  loginModel,
+  signupModel,
+  forgotPasswordModel,
+  resetPasswordModel,
+  usernameSchema,
+  emailSchema,
+  passwordSchema,
+} from './account.helpers';
 
 const Login = ({ onSubmit }) => {
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues: loginModel,
+  });
+  const { isDirty, isSubmitting } = formState;
+
   return (
-    <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => onSubmit(value)}>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <VStack spacing="6">
         <FormField label="Username or Email address">
-          <TextInput plain={false} name="username" placeholder="" />
+          <Input {...register('username')} />
         </FormField>
 
         <FormField label="Password">
-          <TextInput
-            plain={false}
-            name="password"
-            placeholder=""
-            type="password"
-          />
+          <Input {...register('password')} type="password" />
         </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Login" />
-        </Box>
-      </Form>
-    </Box>
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            Confirm
+          </Button>
+        </Flex>
+      </VStack>
+    </form>
   );
 };
 
 const Signup = ({ onSubmit }) => {
-  const [errors, setErrors] = useState({});
-  // const [value, setValue] = useState({});
-  // const [touched, setTouched] = useState(false);
+  const schema = Joi.object({
+    ...usernameSchema,
+    ...emailSchema,
+    ...passwordSchema,
+  });
 
-  const handleSubmit = ({ value, touched }) => {
-    const { username, email, password } = value;
-    let usernameError, emailError, passwordError;
-
-    if (!username || username.length < 4) {
-      usernameError = 'At least 4 characters';
-    } else if (regexUsername.test(username)) {
-      usernameError = 'Only lowercase-letters and numbers';
-    }
-    if (!email || email.length === 0) {
-      emailError = 'Please type your email';
-    } else if (!emailIsValid(email)) {
-      emailError = 'Email is not valid';
-    }
-    if (!password || password.length < 8) {
-      passwordError = 'At least 8 characters';
-    }
-
-    if (usernameError || emailError || passwordError) {
-      setErrors({
-        usernameError,
-        emailError,
-        passwordError,
-      });
-    } else {
-      onSubmit(value, usernameError, emailError, passwordError);
-    }
-  };
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues: signupModel,
+    resolver: joiResolver(schema),
+  });
+  const { errors, isDirty, isSubmitting } = formState;
 
   return (
-    <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <VStack spacing="6">
         <FormField
+          errorMessage={errors.username?.message}
+          helperText="Minimum 4 characters, only lowercase letters and numbers"
+          isInvalid={errors.username}
           label="Username"
-          help={
-            <Notice>
-              minimum 4 characters, only lowercase letters and numbers
-            </Notice>
-          }
-          error={<Notice isError>{errors.usernameError}</Notice>}
         >
-          <TextInput plain={false} name="username" placeholder="" />
+          <Input {...register('username')} />
         </FormField>
 
         <FormField
+          errorMessage={errors.email?.message}
+          isInvalid={errors.email}
           label="Email address"
-          error={<Notice isError>{errors.emailError}</Notice>}
         >
-          <TextInput plain={false} type="email" name="email" placeholder="" />
+          <Input {...register('email')} type="email" />
         </FormField>
 
         <FormField
+          errorMessage={errors.password?.message}
+          helperText="Notice>minimum 8 characters"
+          isInvalid={errors.password}
           label="Password"
-          help={<Notice>minimum 8 characters</Notice>}
-          error={<Notice isError>{errors.passwordError}</Notice>}
         >
-          <TextInput
-            plain={false}
-            name="password"
-            placeholder=""
-            type="password"
-          />
-          <Notice margin={{ left: 'small', top: 'small' }}>
-            Your password is encrypted in the database.
-          </Notice>
+          <Input {...register('password')} type="password" />
         </FormField>
+        <Center>
+          <Text fontSize="xs" textAlign="center">
+            Your password is encrypted in the database.
+          </Text>
+        </Center>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Signup" />
-        </Box>
-      </Form>
-    </Box>
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            Confirm
+          </Button>
+        </Flex>
+      </VStack>
+    </form>
   );
 };
 
-const Notice = ({ isError, children, ...otherProps }) => (
-  <Text
-    color={isError ? 'status-error' : 'dark-3'}
-    size="small"
-    {...otherProps}
-  >
-    {children}
-  </Text>
-);
-
 const ForgotPassword = ({ onForgotPassword }) => {
+  const schema = Joi.object({
+    ...emailSchema,
+  });
+
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues: forgotPasswordModel,
+    resolver: joiResolver(schema),
+  });
+  const { errors, isDirty, isSubmitting } = formState;
+
   return (
-    <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => onForgotPassword(value)}>
+    <form onSubmit={handleSubmit((data) => onForgotPassword(data))}>
+      <VStack spacing="6">
         <FormField
+          errorMessage={errors.email?.message}
+          isInvalid={errors.email}
           label="Type your email please"
-          margin={{ bottom: 'medium', top: 'medium' }}
         >
-          <TextInput plain={false} type="email" name="email" placeholder="" />
+          <Input {...register('email')} type="email" />
         </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Send reset link" />
-        </Box>
-      </Form>
-    </Box>
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            Confirm
+          </Button>
+        </Flex>
+      </VStack>
+    </form>
   );
 };
 
 const ResetPassword = ({ onResetPassword }) => {
-  const [passwordError, setPasswordError] = useState(null);
+  const schema = Joi.object({
+    ...passwordSchema,
+  });
 
-  const handleSubmit = (value) => {
-    const { password } = value;
-    if (password.length < 8) {
-      setPasswordError('minimum 8 characters');
-    } else {
-      onResetPassword(password);
-    }
-  };
+  const { formState, handleSubmit, register } = useForm({
+    defaultValues: resetPasswordModel,
+    resolver: joiResolver(schema),
+  });
+  const { errors, isDirty, isSubmitting } = formState;
 
   return (
-    <Box margin={{ bottom: 'medium' }}>
-      <Form onSubmit={({ value }) => handleSubmit(value)}>
+    <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
+      <VStack spacing="6">
         <FormField
+          errorMessage={errors.password?.message}
+          helperText="Minimum 8 characters, including at least one letter and number"
+          isInvalid={errors.password}
           label="Password"
-          margin={{ bottom: 'medium', top: 'medium' }}
-          help={<Notice>minimum 8 characters</Notice>}
-          error={<Notice isError>{passwordError}</Notice>}
         >
-          <TextInput
-            plain={false}
-            type="password"
-            name="password"
-            placeholder=""
-          />
+          <Input {...register('password')} type="password" />
         </FormField>
 
-        <Box direction="row" justify="end" pad="small">
-          <Button type="submit" primary label="Reset Password" />
-        </Box>
-      </Form>
-    </Box>
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            Confirm
+          </Button>
+        </Flex>
+      </VStack>
+    </form>
   );
 };
 
@@ -182,10 +180,10 @@ const AuthContainer = () => {
     return (
       <Box>
         <Signup />
-        <SimpleText>
-          Have an account?{' '}
-          <Anchor onClick={() => setMode('login')}>Login</Anchor>
-        </SimpleText>
+        <Center>
+          <Text>Have an account?</Text>
+          <Link onClick={() => setMode('login')}>Login</Link>
+        </Center>
       </Box>
     );
   }
@@ -194,14 +192,10 @@ const AuthContainer = () => {
     return (
       <Box>
         <ForgotPassword />
-        <Box direction="row" justify="around">
-          <SimpleText>
-            <Anchor onClick={() => setMode('login')}>Login</Anchor>
-          </SimpleText>
-          <SimpleText>
-            <Anchor onClick={() => setMode('signup')}>Signup</Anchor>
-          </SimpleText>
-        </Box>
+        <Flex justify="space-around">
+          <Link onClick={() => setMode('login')}>Login</Link>
+          <Link onClick={() => setMode('signup')}>Signup</Link>
+        </Flex>
       </Box>
     );
   }
@@ -209,35 +203,16 @@ const AuthContainer = () => {
   return (
     <Box>
       <Login />
-      <SimpleText>
-        Don't have an account?{' '}
-        <Anchor onClick={() => setMode('signup')}>Signup</Anchor>
-      </SimpleText>
-      <SimpleText>
-        Forgot your password?
-        <br />
-        <Anchor onClick={() => setMode('recover')}>Reset your password</Anchor>
-      </SimpleText>
+      <Center mb="8">
+        <Heading>Don't have an account?</Heading>
+        <Link onClick={() => setMode('signup')}>Signup</Link>
+      </Center>
+      <Center>
+        <Heading>Forgot your password?</Heading>
+        <Link onClick={() => setMode('recover')}>Reset your password</Link>
+      </Center>
     </Box>
   );
 };
 
-const SimpleText = ({ children, ...otherProps }) => (
-  <Text
-    textAlign="center"
-    margin={{ bottom: 'medium' }}
-    size="small"
-    {...otherProps}
-  >
-    {children}
-  </Text>
-);
-
-export {
-  Login,
-  Signup,
-  ForgotPassword,
-  ResetPassword,
-  AuthContainer,
-  SimpleText,
-};
+export { Login, Signup, ForgotPassword, ResetPassword, AuthContainer };

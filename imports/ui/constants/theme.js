@@ -1,3 +1,5 @@
+import { extendTheme } from "@chakra-ui/react";
+
 const theme = {
   spacing: 12,
   global: {
@@ -37,4 +39,19 @@ const theme = {
   },
 };
 
+const chakraTheme = extendTheme({
+  components: {
+    // Input: {
+    //   defaultProps: {
+    //     variant: 'filled',
+    //   },
+    // },
+  },
+  fonts: {
+    heading: 'Sarabun, sans-serif',
+    body: 'Sarabun, sans-serif',
+  },
+});
+
+export { chakraTheme };
 export default theme;

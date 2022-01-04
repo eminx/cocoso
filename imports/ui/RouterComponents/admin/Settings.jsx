@@ -1,13 +1,30 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Anchor, Box, Button, Form, Heading, Text, TextInput } from 'grommet';
-import { HuePicker } from 'react-color';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanel,
+  TabPanels,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Text,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
 import Template from '../../UIComponents/Template';
 import ListMenu from '../../UIComponents/ListMenu';
 import { message, Alert } from '../../UIComponents/message';
-import Tag from '../../UIComponents/Tag';
 import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
@@ -55,22 +72,24 @@ export default function Settings({ history }) {
   }, []);
 
   const handleFormChange = (newSettings) => {
+    console.log(newSettings);
     setFormAltered(true);
     setLocalSettings(newSettings);
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async (values) => {
     if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return;
     }
 
-    if (!formAltered) {
-      message.info('You have not changed any value');
-      return;
+    try {
+      call('updateHostSettings', values);
+      message.success('Settings successfully updated');
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
     }
-
-    saveSettings();
   };
 
   const getCategories = async () => {
@@ -83,7 +102,8 @@ export default function Settings({ history }) {
     }
   };
 
-  const addNewCategory = async () => {
+  const addNewCategory = async (event) => {
+    event.preventDefault();
     try {
       await call('addNewCategory', categoryInput.toLowerCase(), 'work');
       getCategories();
@@ -174,119 +194,145 @@ export default function Settings({ history }) {
   const pathname = history && history.location.pathname;
   const settings = currentHost && currentHost.settings;
 
+  const isImage =
+    (localImage && localImage.uploadableImageLocal) ||
+    (currentHost && currentHost.logo);
+
   return (
     <Template
       heading="Settings"
       leftContent={
-        <Box pad="medium">
-          <ListMenu list={adminMenu}>
-            {(datum) => (
-              <Anchor
-                onClick={() => history.push(datum.value)}
-                key={datum.value}
-                label={
-                  <Text weight={pathname === datum.value ? 'bold' : 'normal'}>
-                    {datum.label}
-                  </Text>
-                }
-              />
-            )}
-          </ListMenu>
+        <Box p="4">
+          <ListMenu pathname={pathname} list={adminMenu} />
         </Box>
       }
     >
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Logo</Heading>
-        <Text margin={{ bottom: 'medium' }}>Upload Your Logo</Text>
-        <Box width="small" alignSelf="center">
-          <FileDropper
-            uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-            imageUrl={currentHost && currentHost.logo}
-            setUploadableImage={setUploadableImage}
-          />
-        </Box>
-        {localImage && localImage.uploadableImageLocal && (
-          <Box alignSelf="center" pad="medium">
-            <Button onClick={() => uploadLogo()} label="Confirm" />
-          </Box>
-        )}
-      </Box>
+      <Tabs align="center">
+        <TabList>
+          <Tab>Logo</Tab>
+          <Tab>Org.Info</Tab>
+          <Tab>Menu</Tab>
+          <Tab>Categories</Tab>
+        </TabList>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Organisation</Heading>
-        <Text margin={{ bottom: 'medium' }}>
-          Add/Edit Information About your Organisation
-        </Text>
-        <SettingsForm
-          value={localSettings}
-          onChange={handleFormChange}
-          onSubmit={handleFormSubmit}
-          formAltered={formAltered}
-        />
-      </Box>
+        <TabPanels>
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Logo
+              </Heading>
+              <Text mb="3">Upload Your Logo</Text>
+              <Center p="3">
+                <Box>
+                  <FileDropper
+                    uploadableImageLocal={
+                      localImage && localImage.uploadableImageLocal
+                    }
+                    imageUrl={currentHost && currentHost.logo}
+                    setUploadableImage={setUploadableImage}
+                    width={isImage && '120px'}
+                    height={isImage && '80px'}
+                  />
+                </Box>
+              </Center>
+              {localImage && localImage.uploadableImageLocal && (
+                <Center p="2">
+                  <Button onClick={() => uploadLogo()}>Confirm</Button>
+                </Center>
+              )}
+            </AlphaContainer>
+          </TabPanel>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Main Color</Heading>
-        <Text>Pick the Main Color for Your Web Presence</Text>
-        <Text margin={{ bottom: 'medium' }} size="small">
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Organisation
+              </Heading>
+              <Text mb="3">Add/Edit Information About your Organisation</Text>
+              <SettingsForm
+                initialValues={localSettings}
+                onSubmit={handleFormSubmit}
+              />
+            </AlphaContainer>
+          </TabPanel>
+
+          {/* <AlphaContainer>
+        <Heading as="h3" size="md">
+          Main Color
+        </Heading>
+        <Text mb="3">Pick the Main Color for Your Web Presence</Text>
+        <Center>
+          <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
+        </Center>
+        <Text>
           Background color will be accordingly set with its complementary color.
         </Text>
-        <Box direction="row" justify="between" align="center">
-          <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
-          <Box
-            flex={{ grow: 0 }}
-            width="50px"
-            height="50px"
-            background={`hsl(${mainColor.hsl.h}, 80%, 35%)`}
-            style={{ borderRadius: '50%' }}
-          />
-        </Box>
 
-        <Box alignSelf="center" pad="medium">
+        <Flex justify="flex-end" py="4">
           <Button
-            disabled={settings && mainColor === settings.mainColor}
+            isDisabled={settings && mainColor === settings.mainColor}
             onClick={() => confirmMainColor()}
-            label="Confirm"
-          />
-        </Box>
-      </Box>
+          >
+            Confirm
+          </Button>
+        </Flex>
+        </AlphaContainer> */}
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Menu />
-      </Box>
+          <TabPanel>
+            <AlphaContainer>
+              <Menu />
+            </AlphaContainer>
+          </TabPanel>
 
-      <Box pad="medium" background="white" margin={{ bottom: 'large' }}>
-        <Heading level={3}>Work Categories</Heading>
-        <Text>You can set categories for work entries here</Text>
-        <Box pad="small" direction="row" gap="small" wrap justify="center">
-          {categories.map((category) => (
-            <Tag
-              key={category.label}
-              label={category.label.toUpperCase()}
-              background={category.color}
-              removable
-              onRemove={() => removeCategory(category._id)}
-              margin={{ bottom: 'small' }}
-            />
-          ))}
-        </Box>
-        <Form onSubmit={() => addNewCategory()}>
-          <Box>
-            <Box direction="row" gap="small" width="medium" alignSelf="center">
-              <TextInput
-                size="small"
-                plain={false}
-                value={categoryInput}
-                placeholder="PAJAMAS"
-                onChange={(event) =>
-                  handleCategoryInputChange(event.target.value)
-                }
-              />
-              <Button type="submit" label="Add" />
-            </Box>
-          </Box>
-        </Form>
-      </Box>
+          <TabPanel>
+            <AlphaContainer>
+              <Heading as="h3" size="md">
+                Work Categories
+              </Heading>
+              <Text mb="3">You can set categories for work entries here</Text>
+              <Center>
+                <Wrap p="1" spacing="2" mb="2">
+                  {categories.map((category) => (
+                    <WrapItem key={category.label}>
+                      <Tag colorScheme="messenger">
+                        <TagLabel fontWeight="bold">
+                          {category.label.toUpperCase()}
+                        </TagLabel>
+                        <TagCloseButton
+                          onClick={() => removeCategory(category._id)}
+                        />
+                      </Tag>
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </Center>
+              <form onSubmit={addNewCategory}>
+                <Center>
+                  <HStack>
+                    <Input
+                      placeholder="PAJAMAS"
+                      mt="2"
+                      value={categoryInput}
+                      onChange={(event) =>
+                        handleCategoryInputChange(event.target.value)
+                      }
+                    />
+                    <Button type="submit">Add</Button>
+                  </HStack>
+                </Center>
+              </form>
+            </AlphaContainer>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Template>
+  );
+}
+
+function AlphaContainer({ title, children }) {
+  return (
+    <Box bg="white" mb="8" p="6">
+      {children}
+    </Box>
   );
 }

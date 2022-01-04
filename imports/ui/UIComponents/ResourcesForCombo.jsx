@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Text } from 'grommet';
-import Tag from './Tag';
+import { Flex, Tag, Text } from '@chakra-ui/react';
 
 function ResourcesForCombo({ resource }) {
   if (!resource) {
@@ -10,12 +9,13 @@ function ResourcesForCombo({ resource }) {
   const length = resource.resourcesForCombo.length;
   return (
     <span>
-      {resource.label}
-      <br />
-      <Tag label="COMBO" size="xsmall" />
+      <Flex mb="2">
+        <Text mr="2">{resource.label}</Text>
+        <Tag size="sm">COMBO</Tag>
+      </Flex>
       {' ['}
       {resourcesForCombo.map((res, i) => (
-        <Text size="small" weight="normal" key={res._id}>
+        <Text as="span" fontSize="sm" key={res._id}>
           {res.label + (i < length - 1 ? ' + ' : '')}
         </Text>
       ))}

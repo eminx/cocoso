@@ -2,7 +2,21 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Box, Button, Image, Heading, RadioButtonGroup, Text } from 'grommet';
+
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Image,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Text,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../UIComponents/Loader';
@@ -29,13 +43,8 @@ const filterOptions = [
   },
 ];
 
-export default function ProcessesList({
-  isLoading,
-  currentUser,
-  processes,
-  history,
-}) {
-  const [filterBy, setFilterBy] = useState('active');
+export default function ProcessesList({ isLoading, currentUser, processes }) {
+  const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
   const archiveProcess = (processId) => {
@@ -62,12 +71,14 @@ export default function ProcessesList({
     if (!processes) {
       return [];
     }
+
     const filteredProcesses = processes.filter((process) => {
-      if (filterBy === 'archived') {
+      if (filterBy === 2) {
         return process.isArchived === true;
-      } else if (filterBy === 'my-processes') {
-        return process.members.some(
-          (member) => member.memberId === currentUser._id
+      } else if (filterBy === 1) {
+        return (
+          currentUser &&
+          process.members.some((member) => member.memberId === currentUser._id)
         );
       } else {
         return !process.isArchived;
@@ -101,37 +112,26 @@ export default function ProcessesList({
     return futureProcessesAllowed;
   };
 
-  const handleSelectedFilter = (event) => {
-    const value = event.target.value;
-    if (!currentUser && value === 'my-processes') {
-      message.destroy();
-      message.error('You need an account for filtering your processes');
-      return;
-    }
-    setFilterBy(value);
+  const renderResults = () => {
+    const processesFilteredAndSorted =
+      getFilteredProcesses().sort(compareForSort);
+    const processesList = processesFilteredAndSorted.map((process) => ({
+      ...process,
+      actions: [
+        {
+          content: process.isArchived ? 'Unarchive' : 'Archive',
+          handleClick: process.isArchived
+            ? () => unarchiveProcess(process._id)
+            : () => archiveProcess(process._id),
+          isDisabled:
+            !currentUser ||
+            (process.adminId !== currentUser._id && !currentUser.isSuperAdmin),
+        },
+      ],
+    }));
+
+    return processesList;
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  const processesFilteredAndSorted =
-    getFilteredProcesses().sort(compareForSort);
-
-  const processesList = processesFilteredAndSorted.map((process) => ({
-    ...process,
-    actions: [
-      {
-        content: process.isArchived ? 'Unarchive' : 'Archive',
-        handleClick: process.isArchived
-          ? () => unarchiveProcess(process._id)
-          : () => archiveProcess(process._id),
-        isDisabled:
-          !currentUser ||
-          (process.adminId !== currentUser._id && !currentUser.isSuperAdmin),
-      },
-    ],
-  }));
 
   return (
     <Template>
@@ -140,67 +140,69 @@ export default function ProcessesList({
       </Helmet>
       <Box>
         {canCreateContent && (
-          <Box margin={{ bottom: 'medium' }} alignSelf="center">
+          <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button as="span" size="small" label="NEW" />
+              <Button as="span" colorScheme="green" variant="outline">
+                NEW
+              </Button>
             </Link>
-          </Box>
+          </Center>
         )}
-        <Box pad="medium">
-          <RadioButtonGroup
-            name="filters"
-            options={filterOptions}
-            value={filterBy}
-            onChange={handleSelectedFilter}
-            direction="row"
-            justify="center"
-          />
+        <Box p="4">
+          <Tabs onChange={(index) => setFilterBy(index)}>
+            <Center>
+              <TabList>
+                {filterOptions.map((option) => (
+                  <Tab key={option.value}>{option.label}</Tab>
+                ))}
+              </TabList>
+            </Center>
+            <TabPanels>
+              {filterOptions.map((option) => (
+                <TabPanel key={option.value}>
+                  <NiceList
+                    actionsDisabled={!currentUser || !canCreateContent}
+                    border={false}
+                    itemBg="white"
+                    list={renderResults().reverse()}
+                  >
+                    {(process) => (
+                      <Link to={`/process/${process._id}`}>
+                        <ProcessItem process={process} />
+                      </Link>
+                    )}
+                  </NiceList>
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
         </Box>
       </Box>
-
-      {processesList && processesList.length > 0 && (
-        <NiceList
-          list={processesList.reverse()}
-          actionsDisabled={!currentUser || !canCreateContent}
-          border={false}
-        >
-          {(process) => <ProcessItem process={process} history={history} />}
-        </NiceList>
-      )}
     </Template>
   );
 }
 
-function ProcessItem({ process, history }) {
+function ProcessItem({ process }) {
   return (
-    <Box
-      width="100%"
-      onClick={() => history.push(`/process/${process._id}`)}
-      hoverIndicator="light-1"
-      pad="small"
-      direction="row"
-      margin={{ bottom: 'medium' }}
-      background="white"
-      hoverIndicator="brand-light"
-    >
-      <Box width="small" height="small" margin={{ right: 'small' }}>
-        <Image fit="cover" fill src={process.imageUrl} />
+    <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
+      <Box mr="2">
+        <Image w="sm" fit="cover" src={process.imageUrl} />
       </Box>
-      <Box width="100%">
+      <Box w="100%">
         <Box>
-          <Heading level={3}>{process.title}</Heading>
-          <Text weight={300}>{process.readingMaterial}</Text>
+          <Heading size="lg">{process.title}</Heading>
+          <Text fontSize="lg" fontWeight="light">
+            {process.readingMaterial}
+          </Text>
         </Box>
 
-        <Box pad="small">
-          <Text size="small" textAlign="end">
-            {process.adminUsername}
-          </Text>
-          <Text size="xsmall" textAlign="end">
+        <Box p="2">
+          <Text textAlign="right">{process.adminUsername}</Text>
+          <Text fontSize="sm" textAlign="right">
             {moment(process.creationDate).format('Do MMM YYYY')}
           </Text>
         </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 }

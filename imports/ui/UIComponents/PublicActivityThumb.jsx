@@ -1,8 +1,8 @@
 import React from 'react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { Box, Text } from 'grommet';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -19,7 +19,7 @@ const ellipsisStyle = {
   textOverflow: 'ellipsis',
 };
 
-function PublicActivityThumb({ item, large, history }) {
+function PublicActivityThumb({ item }) {
   const renderDate = (date) => {
     if (!date) {
       return;
@@ -57,52 +57,36 @@ function PublicActivityThumb({ item, large, history }) {
 
   const imageStyle = {
     width: '100%',
-    maxWidth: 360,
-    height: 220,
+    // maxWidth: 360,
+    height: 260,
     objectFit: 'cover',
   };
 
   return (
-    <Box
-      width="320px"
-      background={{ color: 'rgba(255, 255, 255, 0.6)' }}
-      margin="small"
-      hoverIndicator="brand-light"
-      onClick={() =>
-        history.push(
-          item.isProcess ? `/process/${item._id}` : `/activity/${item._id}`
-        )
-      }
-    >
-      <Box pad="small">
-        <Text size="large" weight="bold" style={ellipsisStyle}>
+    <Box bg="rgba(255, 255, 255, 0.6)" p="2" w="100%">
+      <Box p="1">
+        <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
-        </Text>
-        <Text weight={300} style={ellipsisStyle}>
+        </Heading>
+        <Text fontWeight={300} style={ellipsisStyle}>
           {item.isProcess ? item.readingMaterial : item.subTitle}
         </Text>
       </Box>
 
-      <Box>
+      <Box w="100%">
         <LazyLoadImage
           alt={item.title}
           src={item.imageUrl}
           style={imageStyle}
           effect="black-and-white"
+          width="100%"
         />
       </Box>
 
-      <Box
-        direction="row"
-        justify="end"
-        alignItems="center"
-        margin={{ top: 'small' }}
-        wrap
-        pad="small"
-      >
+      <Flex direction="row" justify="end" align="center" mt="1" wrap p="1">
         {futureDates.slice(0, 3).map((date) => renderDate(date))}
         {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
-      </Box>
+      </Flex>
     </Box>
   );
 }

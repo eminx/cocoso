@@ -1,16 +1,16 @@
 import React from 'react';
-import { Box, Heading, Text } from 'grommet';
+import { Box, Text } from '@chakra-ui/react';
 import Template from '../UIComponents/Template';
 
 const NotFoundPage = ({ history }) => {
   return (
     <Template>
-      <Box margin="large" pad="medium">
-        <Text textAlign="center" size="xxlarge" margin="medium">
+      <Box m="4" p="2">
+        <Text textAlign="center" size="large" margin="2">
           404
         </Text>
-        <Text textAlign="center" weight="bold">
-          Page could not be found
+        <Text textAlign="center" fontWeight="bold">
+          Page could not be found dear
         </Text>
       </Box>
     </Template>

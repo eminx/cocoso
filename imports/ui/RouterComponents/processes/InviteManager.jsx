@@ -1,10 +1,19 @@
-import React from 'react';
-import { Box, Heading, FormField, TextInput, Paragraph, Button } from 'grommet';
+import React, { PureComponent } from 'react';
+import {
+  Box,
+  Button,
+  Heading,
+  Input,
+  Tag,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
+import FormField from '../../UIComponents/FormField';
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
-import { message, SimpleTag } from '../../UIComponents/message';
+import { message } from '../../UIComponents/message';
 
-class InviteManager extends React.PureComponent {
+class InviteManager extends PureComponent {
   state = {
     emailInput: '',
     firstNameInput: '',
@@ -99,53 +108,50 @@ class InviteManager extends React.PureComponent {
     const peopleInvited = process.peopleInvited;
 
     return (
-      <React.Fragment>
-        <Box pad={{ top: 'medium', bottom: 'medium' }}>
-          <Paragraph>
+      <Box>
+        <VStack py="6">
+          <Text>
             Please add data for the person you want to invite to the process
-          </Paragraph>
+          </Text>
           <FormField label="email">
-            <TextInput
-              plain={false}
+            <Input
               onChange={this.handleEmailInputChange}
-              value={emailInput}
               placeholder="samuel@skogen.pm"
+              value={emailInput}
             />
           </FormField>
 
           <FormField label="first name">
-            <TextInput
-              plain={false}
+            <Input
               onChange={this.handleFirstNameInputChange}
-              value={firstNameInput}
               placeholder="Samuel"
+              value={firstNameInput}
             />
           </FormField>
 
-          <Button
-            margin={{ top: 'small' }}
-            label="Send Invite"
-            onClick={this.handleSendInvite}
-          />
-        </Box>
+          <Button onClick={this.handleSendInvite}>Send Invite</Button>
+        </VStack>
 
-        <Box pad={{ top: 'medium', bottom: 'medium' }}>
+        <Box py="6">
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
             {peopleInvited.map((person) => (
-              <SimpleTag key={person.email} color="green" style={{ margin: 6 }}>
-                <b>{person.firstName}</b> | {person.email}
-              </SimpleTag>
+              <Tag key={person.email}>
+                <Text fontWeight="bold" mr="1">
+                  {person.firstName}
+                </Text>
+                {person.email}
+              </Tag>
             ))}
           </EmailsContainer>
         </Box>
-      </React.Fragment>
+      </Box>
     );
   }
 }
 
 const EmailsContainer = (props) => (
-  <Box pad="small" background="light-1" round="4px">
-    <Heading level={4}>
+  <Box>
+    <Heading size="md" mb="4">
       {props.title} ({props.count})
     </Heading>
     <Box>{props.children}</Box>

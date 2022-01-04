@@ -3,8 +3,14 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
-import { Box, Button } from 'grommet';
-import { ScreenClassRender } from 'react-grid-system';
+import {
+  Box,
+  Button,
+  Center,
+  SimpleGrid,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../UIComponents/Loader';
@@ -100,46 +106,48 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
 
   const allSortedActivities = getAllSorted();
 
+  if (isLoading) {
+    return (
+      <Box width="100%" mb="50px">
+        <Loader />
+      </Box>
+    );
+  }
+
   return (
-    <ScreenClassRender
-      render={(screenClass) => (
-        <Box width="100%" margin={{ bottom: '50px' }}>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Box>
-              <Helmet>
-                <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-              </Helmet>
-              {canCreateContent && (
-                <Box
-                  direction="row"
-                  justify="center"
-                  width="100%"
-                  margin={{ bottom: 'medium' }}
-                >
-                  <Link to="/new-activity">
-                    <Button as="span" size="small" label="NEW" />
-                  </Link>
-                </Box>
-              )}
-              <Box direction="row" wrap justify="center">
-                {allSortedActivities.map((activity) => {
-                  return (
-                    <PublicActivityThumb
-                      key={activity.title}
-                      large={['lg', 'xl', 'xxl'].includes(screenClass)}
-                      item={activity}
-                      history={history}
-                    />
-                  );
-                })}
-              </Box>
+    <Box width="100%" mb="100px">
+      <Helmet>
+        <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
+
+      <Center mb="4">
+        {canCreateContent && (
+          <Link to="/new-activity">
+            <Button as="span" colorScheme="green" variant="outline">
+              NEW
+            </Button>
+          </Link>
+        )}
+      </Center>
+
+      <Center px="2">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+          {allSortedActivities.map((activity) => (
+            <Box key={activity.title}>
+              <Link
+                to={
+                  activity.isProcess
+                    ? `/process/${activity._id}`
+                    : `/activity/${activity._id}`
+                }
+              >
+                <PublicActivityThumb item={activity} />
+              </Link>
             </Box>
-          )}
-        </Box>
-      )}
-    />
+          ))}
+        </SimpleGrid>
+      </Center>
+    </Box>
   );
 }
 

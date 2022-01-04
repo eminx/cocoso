@@ -1,78 +1,58 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Box } from 'grommet';
+import { Box } from '@chakra-ui/react';
 
 import PageForm from '../../UIComponents/PageForm';
 import Template from '../../UIComponents/Template';
 import { message, Alert } from '../../UIComponents/message';
 import { parseTitle } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
+import { call } from '../../functions';
 
-const successCreation = () => {
-  message.success('New page is successfully created', 6);
-};
-
-class NewPage extends React.Component {
+class NewPage extends PureComponent {
   state = {
     formValues: {
       title: '',
       longDescription: '',
     },
-    isLoading: false,
     isSuccess: false,
     isError: false,
     newPageId: null,
   };
 
-  handleFormChange = (value) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...value,
-      longDescription: formValues.longDescription,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleQuillChange = (longDescription) => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      longDescription,
-    };
-
-    this.setState({
-      formValues: newFormValues,
-    });
-  };
-
-  handleSubmit = () => {
-    const { currentUser } = this.props;
+  handleSubmit = async (values) => {
+    const { currentUser, pageTitles } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       message.error('This is not allowed');
       return false;
     }
-    const { formValues } = this.state;
 
-    Meteor.call('createPage', formValues, (error, result) => {
-      if (error) {
-        console.log('error', error);
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          newPageId: parseTitle(result),
-          isSuccess: true,
-        });
-      }
-    });
+    if (
+      pageTitles &&
+      values &&
+      pageTitles.some(
+        (title) => title.toLowerCase() === values.title.toLowerCase()
+      )
+    ) {
+      message.error('A page with this title already exists');
+      return;
+    }
+
+    try {
+      const result = await call('createPage', values);
+      message.success('New page successfully created');
+      this.setState({
+        newPageId: parseTitle(result),
+        isSuccess: true,
+      });
+    } catch (error) {
+      console.log('error', error);
+      this.setState({
+        isError: true,
+      });
+    }
   };
 
   validateTitle = (rule, value, callback) => {
@@ -98,7 +78,7 @@ class NewPage extends React.Component {
   };
 
   render() {
-    const { currentUser, pageTitles } = this.props;
+    const { currentUser } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
@@ -112,22 +92,16 @@ class NewPage extends React.Component {
       );
     }
 
-    const { formValues, isLoading, isSuccess, newPageId } = this.state;
+    const { formValues, isSuccess, newPageId } = this.state;
 
     if (isSuccess && newPageId) {
-      successCreation();
       return <Redirect to={`/page/${newPageId}`} />;
     }
 
     return (
       <Template heading="Create a New Page">
-        <Box pad="medium" background="white">
-          <PageForm
-            formValues={formValues}
-            onFormChange={this.handleFormChange}
-            onQuillChange={this.handleQuillChange}
-            onSubmit={this.handleSubmit}
-          />
+        <Box bg="white" p="6">
+          <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>
       </Template>
     );

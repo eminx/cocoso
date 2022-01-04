@@ -9,14 +9,12 @@ const getResourceIndex = (resource, host) => {
     { sort: { creationDate: 1 } }
   ).fetch();
 
-  console.log(resource);
-
   if (resources.length > 0) {
     const resItem = resources.find((res) => res.label === resource);
-    if (resItem.isCombo) {
+    if (resItem?.isCombo) {
       return '99';
     }
-    return resItem.resourceIndex.toString();
+    return resItem?.resourceIndex.toString();
   }
 };
 

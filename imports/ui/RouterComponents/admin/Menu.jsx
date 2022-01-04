@@ -2,16 +2,21 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Button,
-  CheckBox,
-  Form,
-  FormField,
+  Center,
+  Flex,
   Heading,
+  Input,
+  Switch,
   Tabs,
   Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
   Text,
-  TextInput,
-} from 'grommet';
-import { Drag } from 'grommet-icons/icons/Drag';
+} from '@chakra-ui/react';
+import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
+
+import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
@@ -19,23 +24,7 @@ import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';
 import { message } from '../../UIComponents/message';
 import { StateContext } from '../../LayoutContainer';
-
-const getMenuPlaceHolder = (item) => {
-  switch (item) {
-    case 'activities':
-      return 'bookings';
-    case 'calendar':
-      return 'program';
-    case 'processes':
-      return 'workshops';
-    case 'works':
-      return 'offers';
-    case 'info':
-      return 'about';
-    default:
-      return '';
-  }
-};
+import FormField from '../../UIComponents/FormField';
 
 export default function Menu() {
   const [loading, setLoading] = useState(true);
@@ -60,7 +49,7 @@ export default function Menu() {
   const handleSetActiveMenu = (key, label) => {
     const newActiveMenu = {};
     currentHost.settings.menu.forEach((item) => {
-      newActiveMenu[item.name] = item.label.toUpperCase();
+      newActiveMenu[item.name] = item.label;
     });
 
     setActiveMenu(newActiveMenu);
@@ -79,15 +68,16 @@ export default function Menu() {
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
-  const handleChangeActiveMenu = (value) => {
-    setActiveMenu(value);
-    const newMenu = localSettings.menu.map((item) => {
-      return {
-        ...item,
-        label: value[item.name],
-      };
+  const handleMenuItemLabelChange = (changedItemIndex, value) => {
+    const newMenu = localSettings.menu.map((item, index) => {
+      if (changedItemIndex === index) {
+        return {
+          ...item,
+          label: value,
+        };
+      }
+      return item;
     });
-
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
@@ -114,78 +104,39 @@ export default function Menu() {
     }
   };
 
-  if (loading) {
+  if (loading || !localSettings || !localSettings.menu || !activeMenu) {
     return <Loader />;
   }
 
   return (
     <Box>
-      <Heading level={3}>Menu</Heading>
-      <Tabs>
-        <Tab title="Visibility">
-          <Box margin={{ bottom: 'large' }}>
-            <Text weight="bold">Visibility</Text>
-            <Text margin={{ bottom: 'medium' }} size="small">
-              Check/uncheck items to compose the main menu
+      <Heading as="h3" size="md">
+        Menu
+      </Heading>
+      <Tabs align="center">
+        <TabList>
+          <Tab>Visibility & Labels</Tab>
+          <Tab>Order</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Text mb="4" fontSize="sm">
+              Check/uncheck items for visibility, and label them as you prefer
+              in order to compose the menu
             </Text>
+            <MenuTable
+              menu={localSettings.menu}
+              handleMenuItemCheck={handleMenuItemCheck}
+              handleMenuItemLabelChange={handleMenuItemLabelChange}
+            />
 
-            <Form onSubmit={() => handleMenuSave()}>
-              {localSettings &&
-                localSettings.menu &&
-                localSettings.menu.map((item, index) => (
-                  <Box key={item.name} margin={{ bottom: 'small' }}>
-                    <CheckBox
-                      checked={item.isVisible}
-                      label={item.label}
-                      onChange={(event) =>
-                        handleMenuItemCheck(index, event.target.checked)
-                      }
-                    />
-                  </Box>
-                ))}
+            <Flex justify="flex-end" py="4">
+              <Button onClick={handleMenuSave}>Confirm</Button>
+            </Flex>
+          </TabPanel>
 
-              <Box direction="row" justify="start" pad={{ vertical: 'small' }}>
-                <Button type="submit" label="Confirm" />
-              </Box>
-            </Form>
-          </Box>
-        </Tab>
-
-        <Tab title="Labels">
-          <Box margin={{ bottom: 'large' }}>
-            <Text weight="bold">Labels</Text>
-            <Text margin={{ bottom: 'medium' }} size="small">
-              Type a name if you want to replace labels of the menu items. Note
-              that only one word is allowed.
-            </Text>
-            {activeMenu && (
-              <Form
-                value={activeMenu}
-                onChange={(value) => handleChangeActiveMenu(value)}
-                onSubmit={() => handleMenuSave()}
-              >
-                {localSettings.menu
-                  .filter((ite) => ite.isVisible)
-                  .map((item) => (
-                    <LabelChangableItem key={item.name} name={item.name} />
-                  ))}
-
-                <Box
-                  direction="row"
-                  justify="start"
-                  pad={{ vertical: 'small' }}
-                >
-                  <Button type="submit" label="Confirm" />
-                </Box>
-              </Form>
-            )}
-          </Box>
-        </Tab>
-
-        <Tab title="Order">
-          <Box margin={{ bottom: 'large' }}>
-            <Text weight="bold">Order</Text>
-            <Text margin={{ bottom: 'medium' }} size="small">
+          <TabPanel>
+            <Text mb="4" size="sm">
               Reorder items by dragging up and down, if you want to change the
               menu display order
             </Text>
@@ -207,42 +158,65 @@ export default function Menu() {
                 </SortableContainer>
               )}
             </Box>
-            <Box direction="row" justify="end" pad={{ vertical: 'small' }}>
-              <Button onClick={handleMenuSave} type="submit" label="Confirm" />
-            </Box>
-          </Box>
-        </Tab>
+
+            <Flex justify="flex-end" my="4">
+              <Button onClick={handleMenuSave} type="submit">
+                Confirm
+              </Button>
+            </Flex>
+          </TabPanel>
+        </TabPanels>
       </Tabs>
     </Box>
   );
 }
 
+function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
+  return (
+    <Table size="sm" variant="simple" w="100%">
+      <Thead>
+        <Tr>
+          <Th w="100px">Visibility</Th>
+          <Th>Labels</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {menu.map((item, index) => (
+          <Tr key={item.name}>
+            <Td>
+              <Center>
+                <Switch
+                  isChecked={item.isVisible}
+                  onChange={(event) =>
+                    handleMenuItemCheck(index, event.target.checked)
+                  }
+                />
+              </Center>
+            </Td>
+            <Td>
+              <FormField>
+                <Input
+                  isDisabled={!item.isVisible}
+                  value={item.label}
+                  onChange={(e) =>
+                    handleMenuItemLabelChange(index, e.target.value)
+                  }
+                />
+              </FormField>
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+}
+
 const SortableItem = sortableElement(({ value }) => (
-  <Box
-    key={value}
-    className="sortable-thumb"
-    pad="small"
-    margin={{ bottom: 'small' }}
-    background="light-1"
-    direction="row"
-  >
-    <Drag /> {value}
-  </Box>
+  <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
+    <DragHandleIcon /> <Box pl="2">{value}</Box>
+  </Flex>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => (
   <Box>{children}</Box>
 ));
-
-const LabelChangableItem = ({ name }) => (
-  <Box width="medium">
-    <FormField name={name} label={name.toUpperCase()} size="small">
-      <TextInput
-        plain={false}
-        name={name}
-        size="small"
-        placeholder={getMenuPlaceHolder(name)}
-      />
-    </FormField>
-  </Box>
-);

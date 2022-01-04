@@ -1,25 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Anchor, Box, CheckBox, Text } from 'grommet';
-import { FormPrevious } from 'grommet-icons';
+import { Box, Button, Center, IconButton, VStack } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import ActivityForm from '../../UIComponents/ActivityForm';
 import Template from '../../UIComponents/Template';
 import ConfirmModal from '../../UIComponents/ConfirmModal';
+import FormSwitch from '../../UIComponents/FormSwitch';
+import Loader from '../../UIComponents/Loader';
 import { resizeImage, uploadImage } from '../../functions';
 import { message, Alert } from '../../UIComponents/message';
 
 const successEditMessage = (isDeleted) => {
   if (isDeleted) {
-    message.success('The activity is successfully deleted', 4);
+    message.success('The activity is successfully deleted');
   } else {
-    message.success('Your activity is successfully updated', 6);
+    message.success('Your activity is successfully updated');
   }
 };
-
-const sideNote =
-  "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping activities.";
 
 const formModel = {
   resource: '',
@@ -31,19 +30,19 @@ const formModel = {
 
 class EditActivity extends PureComponent {
   state = {
-    isDeleteModalOn: false,
+    datesAndTimes: [],
     formValues: formModel,
+    isDeleteModalOn: false,
+    isPublicActivity: false,
+    isCreating: false,
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    isRegistrationDisabled: false,
     longDescription: '',
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
-    isPublicActivity: false,
-    isActivitiesDisabled: false,
-    datesAndTimes: [],
-    isLoading: false,
-    isSuccess: false,
-    isError: false,
-    isCreating: false,
   };
 
   componentDidMount() {
@@ -61,52 +60,13 @@ class EditActivity extends PureComponent {
     if (!activity) {
       return;
     }
-    const {
-      title,
-      subTitle,
-      longDescription,
-      place,
-      address,
-      resource,
-      practicalInfo,
-      internalInfo,
-      isPublicActivity,
-      isActivitiesDisabled,
-      datesAndTimes,
-    } = activity;
+    const { datesAndTimes } = activity;
 
-    if (!isPublicActivity) {
-      this.setState({
-        formValues: {
-          title,
-          resource: {
-            label: resource,
-          },
-        },
-        longDescription,
-        isPublicActivity,
-        isActivitiesDisabled,
-        datesAndTimes: [...datesAndTimes],
-      });
-    } else {
-      this.setState({
-        formValues: {
-          title,
-          subTitle,
-          place,
-          address,
-          resource: {
-            label: resource,
-          },
-          practicalInfo,
-          internalInfo,
-        },
-        longDescription,
-        isPublicActivity,
-        isActivitiesDisabled,
-        datesAndTimes: [...datesAndTimes],
-      });
-    }
+    this.setState({
+      datesAndTimes: [...datesAndTimes],
+      isPublicActivity: activity.isPublicActivity,
+      isRegistrationDisabled: activity.isRegistrationDisabled,
+    });
   };
 
   handleFormValueChange = (formValues) => {
@@ -121,17 +81,21 @@ class EditActivity extends PureComponent {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { isPublicActivity, uploadableImage } = this.state;
-    this.setState({
-      isCreating: true,
-    });
-
-    if (isPublicActivity && uploadableImage) {
-      this.uploadImage();
-    } else {
-      this.updateActivity();
-    }
+    this.setState(
+      {
+        isCreating: true,
+        formValues: values,
+      },
+      () => {
+        if (isPublicActivity && uploadableImage) {
+          this.uploadImage();
+        } else {
+          this.updateActivity();
+        }
+      }
+    );
   };
 
   setUploadableImage = (files) => {
@@ -179,22 +143,27 @@ class EditActivity extends PureComponent {
   };
 
   updateActivity = () => {
-    const { activity } = this.props;
+    const { activity, resources } = this.props;
     const {
       formValues,
       isPublicActivity,
-      isActivitiesDisabled,
+      isRegistrationDisabled,
       uploadedImage,
       datesAndTimes,
-      longDescription,
     } = this.state;
+
+    const resource = resources.find(
+      (resource) =>
+        resource._id === formValues.resource ||
+        resource._id === formValues.resourceId
+    );
 
     const values = {
       ...formValues,
-      isPublicActivity,
-      isActivitiesDisabled,
       datesAndTimes,
-      longDescription,
+      isPublicActivity,
+      isRegistrationDisabled,
+      resource,
     };
 
     const imageUrl = uploadedImage || activity.imageUrl;
@@ -206,6 +175,7 @@ class EditActivity extends PureComponent {
       imageUrl,
       (error, respond) => {
         if (error) {
+          console.log(error);
           this.setState({
             isLoading: false,
             isError: true,
@@ -248,10 +218,10 @@ class EditActivity extends PureComponent {
     });
   };
 
-  handleDisableActivitiesSwitch = (event) => {
+  handleRegistrationSwitch = (event) => {
     const value = event.target.checked;
     this.setState({
-      isActivitiesDisabled: value,
+      isRegistrationDisabled: value,
     });
   };
 
@@ -264,31 +234,21 @@ class EditActivity extends PureComponent {
   render() {
     const { activity, currentUser, resources } = this.props;
 
-    if (!currentUser) {
-      return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to signin to create a activity."
-            type="error"
-          />
-        </div>
-      );
+    if (!currentUser || !activity) {
+      return <Loader />;
     }
 
-    if (!activity) {
-      return null;
+    if (activity.authorId !== currentUser._id) {
+      return <Alert message="You are not allowed" />;
     }
 
     const {
+      datesAndTimes,
       isDeleteModalOn,
-      formValues,
-      longDescription,
-      isCreating,
+      isPublicActivity,
+      isRegistrationDisabled,
       isSuccess,
       uploadableImageLocal,
-      isPublicActivity,
-      isActivitiesDisabled,
-      datesAndTimes,
     } = this.state;
 
     if (isSuccess) {
@@ -296,81 +256,66 @@ class EditActivity extends PureComponent {
       if (isDeleteModalOn) {
         return <Redirect to="/calendar" />;
       }
-      if (isPublicActivity) {
-        return <Redirect to={`/event/${activity._id}`} />;
-      } else {
-        return <Redirect to="/calendar" />;
-      }
+      return <Redirect to={`/activity/${activity._id}`} />;
     }
-
-    const buttonLabel = isCreating
-      ? 'Updating your activity...'
-      : 'Confirm and Update';
-    const { title } = formValues;
-    const isFormValid = formValues && title.length > 3;
 
     return (
       <Template
         heading="Edit Activity"
         leftContent={
-          <Link to={`/event/${activity._id}`}>
-            <Box margin={{ bottom: 12 }} pad="small">
-              <Anchor
-                icon={<FormPrevious />}
-                label={activity.title}
-                size="medium"
+          <Box pb="2">
+            <Link to={`/event/${activity._id}`}>
+              <IconButton
+                as="span"
+                aria-label="Back"
+                icon={<ArrowBackIcon />}
               />
-            </Box>
-          </Link>
+            </Link>
+          </Box>
         }
       >
-        <Box margin={{ bottom: 'medium' }}>
-          <Box flex={{ basis: 180 }} pad="small">
-            <CheckBox
-              checked={isPublicActivity}
-              label={<Text>public event?</Text>}
-              onChange={this.handlePublicActivitySwitch}
-            />
-          </Box>
-          {isPublicActivity && (
-            <Box flex={{ basis: 180 }} pad="small">
-              <CheckBox
-                checked={isActivitiesDisabled}
-                label={<Text>RSVP disabled?</Text>}
-                onChange={this.handleDisableActivitiesSwitch}
+        <Box bg="white" p="8">
+          <Box mb="8">
+            <VStack spacing="2">
+              <FormSwitch
+                isChecked={isPublicActivity}
+                label="Public Event"
+                onChange={this.handlePublicActivitySwitch}
               />
-            </Box>
-          )}
-        </Box>
 
-        <Box>
+              {isPublicActivity && (
+                <FormSwitch
+                  isChecked={isRegistrationDisabled}
+                  label="RSVP disabled"
+                  onChange={this.handleRegistrationSwitch}
+                />
+              )}
+            </VStack>
+          </Box>
+
           <ActivityForm
+            datesAndTimes={datesAndTimes}
+            defaultValues={activity}
             imageUrl={activity && activity.imageUrl}
-            setUploadableImage={this.setUploadableImage}
-            uploadableImageLocal={uploadableImageLocal}
-            resources={resources}
-            isCreating={isCreating}
             isPublicActivity={isPublicActivity}
-            formValues={formValues}
-            longDescription={longDescription}
-            onFormValueChange={this.handleFormValueChange}
-            onQuillChange={this.handleQuillChange}
+            resources={resources}
+            uploadableImageLocal={uploadableImageLocal}
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
-            datesAndTimes={datesAndTimes}
-            buttonLabel={buttonLabel}
-            isFormValid={isFormValid}
-            isButtonDisabled={!isFormValid || isCreating}
+            setUploadableImage={this.setUploadableImage}
           />
         </Box>
 
-        <Box pad="small" direction="row" justify="center">
-          {activity.authorId === currentUser._id && (
-            <Anchor color="status-critical" onClick={this.showDeleteModal}>
-              Delete
-            </Anchor>
-          )}
-        </Box>
+        <Center p="4">
+          <Button
+            colorScheme="red"
+            size="sm"
+            variant="ghost"
+            onClick={this.showDeleteModal}
+          >
+            Delete
+          </Button>
+        </Center>
 
         <ConfirmModal
           title="Confirm"

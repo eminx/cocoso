@@ -1,32 +1,41 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Component, PureComponent, Fragment } from 'react';
+import React, { Component, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
+import { formatDate } from '../../functions.js';
+import DatePicker from '../../UIComponents/DatePicker.jsx';
 
 import {
   Accordion,
+  AccordionButton,
+  AccordionItem,
   AccordionPanel,
-  Anchor,
   Box,
   Button,
-  Calendar,
-  CheckBox,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  HStack,
   Image,
-  Layer,
+  Link as CLink,
   List,
   Select,
+  Switch,
   Tabs,
   Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
   Text,
-  TextArea,
-} from 'grommet';
+  Textarea,
+} from '@chakra-ui/react';
 
-import { Close } from 'grommet-icons/icons/Close';
-
+import Drawer from '../../UIComponents/Drawer.jsx';
 import Chattery from '../../UIComponents/chattery/Chattery.jsx';
 import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
@@ -133,7 +142,7 @@ class Process extends Component {
     const { history } = this.props;
 
     return (
-      <Box>
+      <Flex>
         {process.isPrivate && (
           <div style={{ textAlign: 'right' }}>
             {/* <Tooltip
@@ -150,55 +159,48 @@ class Process extends Component {
             </Tooltip> */}
           </div>
         )}
-        <Box pad="medium">
+        <Box flexGrow={1} mb="2" p="4">
           <Heading
-            level={3}
+            mb="2"
+            size="lg"
             style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
-            size="small"
           >
             {process.title}
           </Heading>
-          <Text weight={300}>{process.readingMaterial}</Text>
+          <Text fontWeight="light">{process.readingMaterial}</Text>
         </Box>
 
         {isAdmin && process.isPrivate ? (
-          <Box alignSelf="end" direction="row" pad="medium">
-            <Anchor
-              onClick={this.handleOpenInviteManager}
-              style={{ marginLeft: 12 }}
-              label="Manage Access"
-            />
-          </Box>
+          <Flex align="flex-end" direction="row" p="4">
+            <CLink onClick={this.handleOpenInviteManager} ml="4">
+              Manage Access
+            </CLink>
+          </Flex>
         ) : (
-          <Box alignSelf="end" pad={{ right: 'medium' }}>
+          <Box alignSelf="end" p="4">
             {process.adminUsername}
           </Box>
         )}
-      </Box>
+      </Flex>
     );
   };
 
-  getExtra = (process, isAdmin) => {
-    const { history } = this.props;
-
-    if (isAdmin) {
-      return (
-        <Box alignSelf>
-          <Anchor
-            onClick={() => history.push(`/edit-process/${process._id}`)}
-            label="Edit"
-          />
-        </Box>
-      );
-    } else {
-      return <div>{process.adminUsername}</div>;
-    }
-  };
-
   joinProcess = () => {
-    const { process } = this.props;
-
+    const { process, currentUser } = this.props;
     this.closeModal();
+
+    if (!process || !currentUser) {
+      return;
+    }
+
+    const alreadyMember = process.members.some((m) => {
+      return m.memberId === currentUser._id;
+    });
+
+    if (alreadyMember) {
+      message.error('You are already a member!');
+      return;
+    }
 
     Meteor.call('joinProcess', process._id, (error, response) => {
       if (error) {
@@ -263,7 +265,7 @@ class Process extends Component {
   handleDateAndTimeChange = (dateOrTime, entity) => {
     const { newMeeting } = this.state;
     const newerMeeting = { ...newMeeting };
-    newerMeeting[entity] = dateOrTime.substring(0, 10);
+    newerMeeting[entity] = dateOrTime;
 
     this.setState({
       newMeeting: newerMeeting,
@@ -384,43 +386,41 @@ class Process extends Component {
     return (
       process &&
       process.meetings.map((meeting, meetingIndex) => (
-        <AccordionPanel
+        <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          header={
-            <Box pad="small" background="white">
-              <FancyDate occurence={meeting} resources={resources} />
-            </Box>
-          }
+          bg="white"
+          mb="2"
           style={{
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <Box pad="small" background="white">
-            <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
+          <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <Box flex="1" textAlign="left">
+              <FancyDate occurence={meeting} resources={resources} />
+            </Box>
+          </AccordionButton>
+          <AccordionPanel>
+            <Heading size="sm">Attendees</Heading>
             {meeting.attendees && (
-              <List data={meeting.attendees}>
-                {(attendee) => (
-                  <Box
-                    key={attendee.memberUsername}
-                    style={{
-                      position: 'relative',
-                      paddingTop: 6,
-                      paddingBottom: 6,
-                    }}
-                  >
+              <List>
+                {meeting.attendees.map((attendee) => (
+                  <Box key={attendee.memberUsername}>
                     {attendee.memberUsername}
                   </Box>
-                )}
+                ))}
               </List>
             )}
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Anchor onClick={() => this.deleteMeeting(meetingIndex)}>
+            <Center py="2" mt="2">
+              <Button
+                size="xs"
+                colorScheme="red"
+                onClick={() => this.deleteMeeting(meetingIndex)}
+              >
                 Delete this meeting
-              </Anchor>
-            </div>
-          </Box>
-        </AccordionPanel>
+              </Button>
+            </Center>
+          </AccordionPanel>
+        </AccordionItem>
       ))
     );
   };
@@ -443,10 +443,16 @@ class Process extends Component {
           .includes(currentUser._id);
 
       return (
-        <AccordionPanel
+        <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          header={
-            <Box pad="small" background="white">
+          bg="white"
+          mb="2"
+          style={{
+            display: isFutureMeeting(meeting) ? 'block' : 'none',
+          }}
+        >
+          <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
                 isAttending={isAttending}
@@ -455,19 +461,20 @@ class Process extends Component {
                 resources={resources}
               />
             </Box>
-          }
-          style={{
-            display: isFutureMeeting(meeting) ? 'block' : 'none',
-          }}
-        >
-          <Box pad="small" justify="center" direction="row" background="white">
-            <Button
-              size="small"
-              label={isAttending ? 'Cannot make it' : 'Register attendance'}
-              onClick={() => this.toggleAttendance(meetingIndex)}
-            />
-          </Box>
-        </AccordionPanel>
+          </AccordionButton>
+
+          <AccordionPanel>
+            <Center p="2" bg="white">
+              <Button
+                size="sm"
+                colorScheme={isAttending ? 'gray' : 'green'}
+                onClick={() => this.toggleAttendance(meetingIndex)}
+              >
+                {isAttending ? 'Cannot make it' : 'Register attendance'}
+              </Button>
+            </Center>
+          </AccordionPanel>
+        </AccordionItem>
       );
     });
   };
@@ -508,7 +515,6 @@ class Process extends Component {
                 console.log(error);
                 closeLoader();
               } else {
-                console.log(respond);
                 Meteor.call(
                   'addProcessDocument',
                   { name: uploadableFile.name, downloadUrl },
@@ -519,7 +525,6 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      console.log(respond);
                       message.success(
                         `${uploadableFile.name} is succesfully uploaded and assigned to this process!`
                       );
@@ -612,20 +617,28 @@ class Process extends Component {
     return (
       <Box>
         {!isAdmin && (
-          <Box justify="center" direction="row" margin={{ bottom: 'large' }}>
+          <Center mb="6">
             <Button
-              label={isMember ? 'Leave process' : 'Join process'}
-              primary={!isMember}
+              colorScheme={isMember ? 'gray' : 'green'}
               onClick={this.openModal}
-            />
-          </Box>
+            >
+              {isMember ? 'Leave process' : 'Join process'}
+            </Button>
+          </Center>
         )}
 
-        {currentUser && process && process.members && (
-          <Fragment>
-            <Heading level={5}>Members</Heading>
-            <Box margin={{ bottom: 'medium' }}>
-              <NiceList list={membersList} actionsDisabled={!isAdmin}>
+        {process?.members && (
+          <Box mb="8">
+            <Heading mb="2" size="sm">
+              Members
+            </Heading>
+            <Box mb="4" bg="white">
+              <NiceList
+                actionsDisabled={!isAdmin}
+                keySelector="username"
+                list={membersList}
+                spacing="0"
+              >
                 {(member) => (
                   <span
                     style={{
@@ -638,12 +651,18 @@ class Process extends Component {
                 )}
               </NiceList>
             </Box>
-          </Fragment>
+          </Box>
         )}
 
-        <Heading level={5}>Documents</Heading>
+        <Heading mb="2" size="sm">
+          Documents
+        </Heading>
         {process && process.documents && process.documents.length > 0 ? (
-          <NiceList list={documentsList} actionsDisabled={!isAdmin}>
+          <NiceList
+            actionsDisabled={!isAdmin}
+            keySelector="downloadUrl"
+            list={documentsList}
+          >
             {(document) => (
               <div style={{ width: '100%' }}>
                 <a href={document.downloadUrl} target="_blank">
@@ -653,22 +672,21 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Text size="small" pad="small" margin={{ bottom: 'small' }}>
+          <Text size="small" pad="2" margin={{ bottom: 'small' }}>
             <em>No document assigned</em>
           </Text>
         )}
 
         {isAdmin && (
-          <Box>
+          <Center p="2">
             <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
                 <Box
-                  width="medium"
-                  height="small"
-                  background="white"
-                  round="4px"
-                  justify="center"
-                  pad="medium"
+                  bg="white"
+                  cursor="grab"
+                  h="180px"
+                  p="4"
+                  w="240px"
                   {...getRootProps()}
                 >
                   {isUploading ? (
@@ -685,7 +703,7 @@ class Process extends Component {
                 </Box>
               )}
             </ReactDropzone>
-          </Box>
+          </Center>
         )}
       </Box>
     );
@@ -721,26 +739,26 @@ class Process extends Component {
         {this.getTitle(process, isAdmin)}
         <ScreenClassRender
           render={(screenClass) => (
-            <Tabs alignSelf="start" justify="start">
-              <Tab title="Info" style={{ marginLeft: 12 }}>
-                <Box
-                  alignSelf="center"
-                  width={screenClass === 'xs' ? 'medium' : 'large'}
-                  height={screenClass === 'xs' ? 'small' : 'medium'}
-                  margin={{ top: 'small', bottom: 'small' }}
-                  pad={{ top: 'medium' }}
-                >
-                  <Image src={process.imageUrl} fit="contain" fill />
-                </Box>
-                <Box pad="medium">
-                  <div className="text-content">
-                    {renderHTML(process.description)}
-                  </div>
-                </Box>
-              </Tab>
-              <Tab title="Discussion" style={{ marginLeft: 12 }}>
-                <div>{chatData && this.renderDiscussion()}</div>
-              </Tab>
+            <Tabs variant="enclosed">
+              <TabList pl="4">
+                <Tab>Info</Tab>
+                <Tab>Discussion</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Box>
+                    <Image src={process.imageUrl} fit="contain" fill />
+                  </Box>
+                  <Box pt="4">
+                    <div className="text-content">
+                      {renderHTML(process.description)}
+                    </div>
+                  </Box>
+                </TabPanel>
+                <TabPanel>
+                  <div>{chatData && this.renderDiscussion()}</div>
+                </TabPanel>
+              </TabPanels>
             </Tabs>
           )}
         />
@@ -753,7 +771,7 @@ class Process extends Component {
     const isMember = this.isMember();
 
     return (
-      <Box pad="medium">
+      <Box p="4">
         <Box background="light-2">
           <Chattery
             messages={messages}
@@ -832,14 +850,14 @@ class Process extends Component {
         <Template
           leftContent={
             <Visible lg xl>
-              <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
+              <Box p="4">{this.renderMembersAndDocuments()}</Box>
             </Visible>
           }
           rightContent={
-            <Box pad="small">
-              <Heading level={5}>Dates</Heading>
+            <Box p="2">
+              <Heading size="sm">Dates</Heading>
 
-              <Text size="small" pad="small" margin={{ bottom: 'medium' }}>
+              <Text fontSize="sm" mb="4">
                 <em>
                   {process.meetings &&
                   process.meetings.filter((meeting) =>
@@ -852,20 +870,15 @@ class Process extends Component {
                 </em>
               </Text>
 
-              {process.meetings && isAdmin ? (
-                <div>
-                  <Accordion animate multiple={false}>
-                    {this.renderDates()}
-                  </Accordion>
-                </div>
-              ) : (
-                <Accordion>{this.renderMeetings()}</Accordion>
-              )}
+              <Accordion allowToggle>
+                {process.meetings && isAdmin
+                  ? this.renderDates()
+                  : this.renderMeetings()}
+              </Accordion>
 
               {isAdmin && (
                 <div>
                   <CreateMeetingForm
-                    newMeeting={newMeeting}
                     handleDateChange={(date) =>
                       this.handleDateAndTimeChange(date, 'startDate')
                     }
@@ -885,21 +898,20 @@ class Process extends Component {
             </Box>
           }
         >
-          <Box background="white">{this.renderProcessInfo()}</Box>
+          <Box bg="white" mb="4">
+            {this.renderProcessInfo()}
+          </Box>
           <Visible xs sm md>
-            <Box pad="medium">{this.renderMembersAndDocuments()}</Box>
+            <Box p="4">{this.renderMembersAndDocuments()}</Box>
           </Visible>
           {isAdmin && (
-            <Box
-              direction="row"
-              justify="center"
-              pad="medium"
-              margin={{ bottom: 'large' }}
-            >
+            <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
-                <Anchor label="Edit this Process" />
+                <Button as="span" variant="ghost">
+                  Edit
+                </Button>
               </Link>
-            </Box>
+            </Center>
           )}
         </Template>
         <ConfirmModal
@@ -934,21 +946,14 @@ class Process extends Component {
           </Text>
         </ConfirmModal>
 
-        {process && process.isPrivate && inviteManagerOpen && (
-          <Layer full="vertical" position="right">
-            <Box fill style={{ maxWidth: '378px' }} pad="medium">
-              <Box direction="row" align="start" justify="between">
-                <Heading level={5}>Manage Access</Heading>
-                <Button
-                  flex={{ grow: 0 }}
-                  icon={<Close />}
-                  onClick={this.handleCloseInviteManager}
-                  plain
-                />
-              </Box>
-              <InviteManager process={process} />
-            </Box>
-          </Layer>
+        {process && process.isPrivate && (
+          <Drawer
+            title="Manage Access"
+            isOpen={inviteManagerOpen}
+            onClose={this.handleCloseInviteManager}
+          >
+            <InviteManager process={process} />
+          </Drawer>
         )}
       </div>
     );
@@ -969,99 +974,80 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
   );
 };
 
-class CreateMeetingForm extends PureComponent {
-  state = {
-    isLocal: true,
-  };
+function CreateMeetingForm({
+  handleDateChange,
+  handleStartTimeChange,
+  handleFinishTimeChange,
+  resources,
+  handlePlaceChange,
+  handleSubmit,
+  buttonDisabled,
+}) {
+  const [isLocal, setIsLocal] = useState(true);
 
-  render() {
-    const {
-      newMeeting,
-      handleDateChange,
-      handleStartTimeChange,
-      handleFinishTimeChange,
-      resources,
-      handlePlaceChange,
-      handleSubmit,
-      buttonDisabled,
-    } = this.props;
-
-    const { isLocal } = this.state;
-
-    return (
-      <Box pad="small" background="white" margin={{ vertical: 'small' }}>
-        <h4>Add a Meeting</h4>
-        <div style={{ marginBottom: 6 }}>
-          <Calendar
-            size="small"
-            date={
-              newMeeting.startDate
-                ? newMeeting.startDate + 'T00:00:00.000Z'
-                : new Date().toISOString()
-            }
-            onSelect={handleDateChange}
-            firstDayOfWeek={1}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.startTime}
-            onChange={handleStartTimeChange}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <TimePicker
-            value={newMeeting.endTime}
-            onChange={handleFinishTimeChange}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <CheckBox
-            checked={isLocal}
-            label={`At ${publicSettings.name}?`}
-            onChange={() => this.setState({ isLocal: event.target.checked })}
-          />
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          {isLocal ? (
-            <Select
-              size="small"
-              plain={false}
-              placeholder="Select resource"
-              name="resource"
-              options={resources.map((part, i) => part.label)}
-              onChange={({ option }) => handlePlaceChange(option)}
-            />
-          ) : (
-            <TextArea
-              placeholder="Location"
-              onChange={(event) => handlePlaceChange(event.target.value)}
-              size="small"
-            />
-          )}
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: 0,
-          }}
-        >
-          <Button
-            label="Add"
-            type="submit"
-            onClick={handleSubmit}
-            disabled={buttonDisabled}
-          />
-        </div>
+  return (
+    <Box p="2" bg="white" my="2">
+      <Heading ml="2" mt="2" size="xs">
+        Add a Meeting
+      </Heading>
+      <Box py="4">
+        <DatePicker noTime onChange={handleDateChange} />
       </Box>
-    );
-  }
+      <HStack spacing="2" mb="6">
+        <DatePicker
+          onlyTime
+          placeholder="Start time"
+          onChange={handleStartTimeChange}
+        />
+        <DatePicker
+          onlyTime
+          placeholder="Finish time"
+          onChange={handleFinishTimeChange}
+        />
+      </HStack>
+
+      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
+        <Switch
+          id="is-local-switch"
+          isChecked={isLocal}
+          onChange={({ target: { checked } }) => setIsLocal(checked)}
+        />
+        <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
+          {`At ${publicSettings.name}?`}
+        </FormLabel>
+      </FormControl>
+
+      {isLocal ? (
+        <Select
+          size="sm"
+          placeholder="Select resource"
+          name="resource"
+          onChange={({ target: { value } }) => handlePlaceChange(value)}
+        >
+          {resources.map((part, i) => (
+            <option key={part.label}>{part.label}</option>
+          ))}
+        </Select>
+      ) : (
+        <Textarea
+          placeholder="Location"
+          size="sm"
+          onChange={(event) => handlePlaceChange(event.target.value)}
+        />
+      )}
+
+      <Flex justify="flex-end" my="4">
+        <Button
+          colorScheme="green"
+          disabled={buttonDisabled}
+          size="sm"
+          onClick={handleSubmit}
+        >
+          Add Meeting
+        </Button>
+      </Flex>
+    </Box>
+  );
 }
 
 export default Process;

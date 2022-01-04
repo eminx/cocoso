@@ -1,7 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button } from 'grommet';
+import {
+  Box,
+  Button,
+  Center,
+  SimpleGrid,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
@@ -20,7 +27,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Works({ history }) {
+function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
@@ -74,48 +81,56 @@ function Works({ history }) {
   });
 
   return (
-    <Box width="100%" margin={{ bottom: '50px' }}>
+    <Box width="100%" mb="100px">
       <Helmet>
         <title>{`Works | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      <Box margin={{ bottom: 'medium' }} alignSelf="center">
+
+      <Center mb="4">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" size="small" label="NEW" />
+            <Button as="span" colorScheme="green" variant="outline">
+              NEW
+            </Button>
           </Link>
         )}
-      </Box>
+      </Center>
 
-      <Box
-        direction="row"
-        justify="center"
-        wrap
-        gap="small"
-        pad={{ left: 'small' }}
-      >
-        <Tag
-          label="ALL"
-          checkable={categoryFilter === null}
-          onClick={() => setCategoryFilter(null)}
-        />
-        {categoriesAssignedToWorks.map((cat) => (
-          <Tag
-            key={cat.label}
-            checkable
-            checked={categoryFilter === cat.label}
-            filterColor={cat.color}
-            label={cat.label && cat.label.toUpperCase()}
-            margin={{ bottom: 'small' }}
-            onClick={() => setCategoryFilter(cat.label)}
-          />
-        ))}
-      </Box>
+      <Center mb="4">
+        <Wrap pl="2" justify="center">
+          <WrapItem>
+            <Tag
+              label="ALL"
+              checkable={categoryFilter === null}
+              onClick={() => setCategoryFilter(null)}
+            />
+          </WrapItem>
+          {categoriesAssignedToWorks.map((cat) => (
+            <WrapItem key={cat.label}>
+              <Tag
+                checkable
+                checked={categoryFilter === cat.label}
+                filterColor={cat.color}
+                label={cat.label && cat.label.toUpperCase()}
+                margin={{ bottom: 'small' }}
+                onClick={() => setCategoryFilter(cat.label)}
+              />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
 
-      <Box direction="row" justify="center" pad="medium" wrap>
-        {worksWithCategoryColors.map((work, index) => (
-          <WorkThumb key={work._id} work={work} history={history} />
-        ))}
-      </Box>
+      <Center px="2">
+        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+          {worksWithCategoryColors.map((work, index) => (
+            <Box key={work._id} w="100%">
+              <Link to={`/${work.authorUsername}/work/${work._id}`}>
+                <WorkThumb work={work} />
+              </Link>
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Center>
     </Box>
   );
 }

@@ -1,124 +1,124 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Box,
   Button,
-  CheckBox,
-  Form,
-  FormField,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Input,
+  Select,
+  Switch,
+  Tag,
+  TagLabel,
+  TagCloseButton,
   Text,
-  TextArea,
-  TextInput,
-} from 'grommet';
+  Textarea,
+  VStack,
+  Wrap,
+} from '@chakra-ui/react';
 
-import Tag from './Tag';
+import FormField from './FormField';
+// import Tag from './Tag';
 
 function ResourceForm({
-  content,
-  setContent,
+  defaultValues,
+  isEditMode,
+  resourcesForCombo,
   suggestions,
-  comboInput,
-  setComboInput,
-  onSuggestionSelect,
-  removeResourceForCombo,
+  onAddResourceForCombo,
+  onRemoveResourceForCombo,
   onSubmit,
 }) {
-  const isEdit = content && content.edit;
-  const isCombo = content && content.isCombo;
+  const { formState, handleSubmit, getValues, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
 
+  const isCombo = getValues('isCombo');
   return (
     <Box>
-      <Heading level={3} margin={{ top: 'medium', left: 'medium' }}>
-        {`${isEdit ? 'Edit' : 'New'} Resource`}
-      </Heading>
+      <Heading mb="8">{`${isEditMode ? 'Edit' : 'New'} Resource`}</Heading>
 
-      <Box width="medium" pad="medium">
-        <Form
-          value={content}
-          onChange={(nextValue) => setContent(nextValue)}
-          onSubmit={onSubmit}
-        >
-          <FormField margin={{ bottom: 'medium' }}>
-            <CheckBox
-              checked={content && isCombo}
-              label="Combo Resource"
-              name="isCombo"
-              disabled={isEdit}
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
+          <FormControl display="flex" alignItems="center">
+            <Switch
+              {...register('isCombo')}
+              isDisabled={isEditMode}
+              id="is-combo-switch"
             />
-          </FormField>
-          {content && isCombo && (
-            <Box background="light-1" pad="small">
-              <Text size="small">
+            <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
+              Combo Resource
+            </FormLabel>
+          </FormControl>
+          {isCombo && (
+            <Box bg="gray.100" p="4">
+              <Text fontSize="sm">
                 Please select multiple resources to create a combo resource
               </Text>
-              <Box
-                direction="row"
-                gap="small"
-                justify="center"
-                pad={{ top: 'small' }}
-                wrap
-              >
-                {content.resourcesForCombo
-                  ? content.resourcesForCombo.map((res) => (
-                      <Tag
-                        key={res._id}
-                        label={res.label.toUpperCase()}
-                        margin={{ bottom: 'small' }}
-                        removable
-                        onRemove={() => removeResourceForCombo(res)}
-                      />
-                    ))
-                  : []}
-              </Box>
-              <Box
-                alignSelf="center"
-                direction="row"
-                gap="small"
-                width="medium"
-              >
-                <TextInput
-                  placeholder="Select Resources"
-                  size="small"
-                  style={{ backgroundColor: 'white' }}
-                  suggestions={suggestions}
-                  value={comboInput}
-                  onChange={(event) => {
-                    setComboInput(event.target.value);
-                  }}
-                  onSuggestionSelect={onSuggestionSelect}
-                />
-              </Box>
+              <Center mt="4">
+                <Wrap>
+                  {resourcesForCombo
+                    ? resourcesForCombo.map((res) => (
+                        <Tag colorScheme="green" key={res._id}>
+                          <TagLabel fontWeight="bold">
+                            {res.label.toUpperCase()}
+                          </TagLabel>
+                          <TagCloseButton
+                            onClick={() => onRemoveResourceForCombo(res)}
+                          />
+                        </Tag>
+                      ))
+                    : []}
+                </Wrap>
+              </Center>
+              <Center>
+                <Select
+                  bg="white"
+                  m="4"
+                  placeholder="Select option"
+                  onChange={onAddResourceForCombo}
+                >
+                  {suggestions.map((resource) => (
+                    <option key={resource.label} value={resource._id}>
+                      {resource.label}
+                    </option>
+                  ))}
+                </Select>
+              </Center>
             </Box>
           )}
 
-          <FormField label="Name" margin={{ top: 'medium', bottom: 'small' }}>
-            <TextInput
-              name="label"
+          <FormField label="Name">
+            <Input
+              {...register('label')}
               placeholder="Sound Studio"
-              plain={false}
-              size="small"
+              size="sm"
             />
           </FormField>
 
           <FormField label="Description">
-            <TextArea
-              name="description"
+            <Textarea
+              {...register('description')}
               placeholder="Using studio requires care..."
-              plain={false}
-              size="small"
+              size="sm"
             />
           </FormField>
 
-          <Box direction="row" justify="end" pad="small">
+          <Flex justify="flex-end" py="4" w="100%">
             <Button
-              disabled={isCombo ? content.resourcesForCombo.length < 2 : false}
-              label="Confirm"
-              primary
+              isDisabled={!isDirty}
+              isLoading={isSubmitting}
               type="submit"
-            />
-          </Box>
-        </Form>
-      </Box>
+            >
+              Confirm
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
     </Box>
   );
 }

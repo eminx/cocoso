@@ -1,23 +1,24 @@
-import { Meteor } from 'meteor/meteor';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import ReactQuill from 'react-quill';
 import {
   Box,
-  Form,
-  FormField,
-  TextInput,
-  TextArea,
-  Heading,
-  Select,
   Button,
-  Text,
-} from 'grommet';
-import { AddCircle } from 'grommet-icons/icons/AddCircle';
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Input,
+  Select,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { Controller, useForm } from 'react-hook-form';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
-import { message } from './message';
+import FormField from '../UIComponents/FormField';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -31,112 +32,41 @@ let emptyDateAndTime = {
   capacity: defaultCapacity,
 };
 
-function Field({ label, children, ...otherProps }) {
-  return (
-    <FormField label={label} {...otherProps} margin={{ bottom: 'medium' }}>
-      {children}
-    </FormField>
-  );
-}
+function ActivityForm({
+  datesAndTimes,
+  defaultValues,
+  imageUrl,
+  isPublicActivity,
+  resources,
+  onSubmit,
+  setDatesAndTimes,
+  uploadableImageLocal,
+  setUploadableImage,
+}) {
+  const { control, formState, handleSubmit, register } = useForm({
+    defaultValues,
+  });
+  const { isDirty, isSubmitting } = formState;
 
-class ActivityForm extends PureComponent {
-  addRecurrence = () => {
-    const { datesAndTimes, setDatesAndTimes } = this.props;
+  const addRecurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
 
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  removeRecurrence = (index) => {
-    const { datesAndTimes, setDatesAndTimes } = this.props;
+  const removeRecurrence = (index) => {
     const newDatesAndTimes = [...datesAndTimes];
     newDatesAndTimes.splice(index, 1);
 
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  addSpace = (name) => {
-    Meteor.call('addSpace', name, (err, res) => {
-      if (err) {
-        message.error(err.reason);
-        console.log(err);
-      } else {
-        message.success('Your place succesfully added to the list :)');
-        this.setState({ addSpaceModal: false });
-      }
-    });
-  };
-
-  renderDateTime = () => {
-    const { isPublicActivity, datesAndTimes } = this.props;
-
-    return (
-      <div style={{ marginBottom: 12 }}>
-        {datesAndTimes.map((recurrence, index) => (
-          <DatesAndTimes
-            key={index}
-            isPublicActivity={isPublicActivity}
-            recurrence={recurrence}
-            removeRecurrence={() => this.removeRecurrence(index)}
-            isNotDeletable={index === 0}
-            handleCapacityChange={(value) =>
-              this.handleCapacityChange(value, index)
-            }
-            handleDateChange={(date, isEndDate) =>
-              this.handleDateChange(date, isEndDate, index)
-            }
-            handleStartTimeChange={(time) =>
-              this.handleTimeChange(time, index, 'startTime')
-            }
-            handleFinishTimeChange={(time) =>
-              this.handleTimeChange(time, index, 'endTime')
-            }
-            handleRangeSwitch={(event) => this.handleRangeSwitch(event, index)}
-            noAnimate={index === 0}
-          />
-        ))}
-        <Box
-          direction="row"
-          justify="center"
-          pad="small"
-          margin="medium"
-          onClick={this.addRecurrence}
-          hoverIndicator
-        >
-          <AddCircle style={{ fontSize: 48, cursor: 'pointer' }} />
-        </Box>
-      </div>
-    );
-  };
-
-  handleTimeChange = (time, recurrenceIndex, startOrFinishTime) => {
-    const { datesAndTimes, setDatesAndTimes } = this.props;
-
+  const handleDateChange = (date, recurrenceIndex, entity) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (index === recurrenceIndex) {
-        item[startOrFinishTime] = time;
-      }
-      return item;
-    });
-
-    setDatesAndTimes(newDatesAndTimes);
-  };
-
-  handleDateChange = (isoDate, isEndDate, recurrenceIndex) => {
-    const date = isoDate.substring(0, 10);
-    const { datesAndTimes, setDatesAndTimes } = this.props;
-    const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex === index) {
-        const recurrence = datesAndTimes[recurrenceIndex];
-        if (recurrence.isRange) {
-          if (isEndDate) {
-            item.endDate = date;
-          } else {
-            item.startDate = date;
-          }
-        } else {
-          item.startDate = date;
-          item.endDate = date;
+        item[entity] = date;
+        if (entity === 'startDate' && !item.isRange) {
+          item['endDate'] = date;
         }
       }
       return item;
@@ -145,15 +75,10 @@ class ActivityForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  handleCapacityChange = (event, recurrenceIndex) => {
-    const value = Number(event.target.value);
-    if (typeof value !== 'number') {
-      return;
-    }
-    const { datesAndTimes, setDatesAndTimes } = this.props;
+  const handleCapacityChange = (value, recurrenceIndex) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (recurrenceIndex === index) {
-        item.capacity = value;
+        item.capacity = Number(value);
       }
       return item;
     });
@@ -161,12 +86,14 @@ class ActivityForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  handleRangeSwitch = (event, recurrenceIndex) => {
+  const handleRangeSwitch = (event, recurrenceIndex) => {
     const value = event.target.checked;
-    const { datesAndTimes, setDatesAndTimes } = this.props;
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
       if (recurrenceIndex === index) {
         item.isRange = value;
+        if (!value) {
+          item.endDate = item.startDate;
+        }
       }
       return item;
     });
@@ -174,157 +101,165 @@ class ActivityForm extends PureComponent {
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  render() {
-    const {
-      imageUrl,
-      uploadableImageLocal,
-      setUploadableImage,
-      resources,
-      isCreating,
-      isPublicActivity,
-      onFormValueChange,
-      onQuillChange,
-      formValues,
-      longDescription,
-      onSubmit,
-      isButtonDisabled,
-      buttonLabel,
-      isFormValid,
-    } = this.props;
-
-    if (!formValues) {
-      return null;
-    }
-
-    return (
-      <Box pad="medium" background="white">
-        <Form
-          onSubmit={onSubmit}
-          value={formValues}
-          onChange={onFormValueChange}
-          // errors={{ name: ['message', '<Box>...</Box>'] }}
-          validate="blur"
-        >
-          <Heading level={4}>Resource*</Heading>
-          <Field name="resource" required>
+  return (
+    <div>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Box mb="8">
+          <Heading mb="4" size="md">
+            Resource
+          </Heading>
+          <FormField>
             <Select
-              size="small"
-              plain={false}
+              {...register('resource', { required: true })}
               placeholder="Select resource to book"
-              name="resource"
-              options={resources}
+              variant="filled"
             >
-              {(option, index, options, { active, disabled, selected }) => (
-                <Box pad="small">
-                  {option.isCombo ? (
-                    <Text>
-                      {option.label +
+              {resources.map((option, index) => {
+                return (
+                  <option
+                    key={option._id}
+                    selected={option._id === defaultValues.resourceId}
+                    value={option._id}
+                  >
+                    {option.isCombo
+                      ? option.label +
                         ': [' +
                         option.resourcesForCombo.map((res, i) => res.label) +
-                        ']'}
-                    </Text>
-                  ) : (
-                    <Text>{option.label}</Text>
-                  )}
-                </Box>
-              )}
+                        ']'
+                      : option.label}
+                  </option>
+                );
+              })}
             </Select>
-          </Field>
+          </FormField>
+        </Box>
 
-          <Heading level={4}>Occurences*</Heading>
+        <Box mb="8">
+          <Heading mb="4" size="md">
+            Occurences*
+          </Heading>
 
-          {this.renderDateTime()}
-          <Box pad={{ top: 'large' }}>
-            <Heading level={4}>Details</Heading>
-            <Field
-              label="Title*"
-              name="title"
-              required
-              // help="This is typicaly title of your event"
-              // validate={(fieldValue, formValue) => console.log(fieldValue)}
-            >
-              <TextInput
-                plain={false}
-                name="title"
-                placeholder="give it a title"
-                required
+          <Box mb="4">
+            {datesAndTimes.map((recurrence, index) => (
+              <DatesAndTimes
+                key={index}
+                isPublicActivity={isPublicActivity}
+                recurrence={recurrence}
+                removeRecurrence={() => removeRecurrence(index)}
+                isNotDeletable={index === 0}
+                handleCapacityChange={(value) =>
+                  handleCapacityChange(value, index)
+                }
+                handleStartDateChange={(date) =>
+                  handleDateChange(date, index, 'startDate')
+                }
+                handleEndDateChange={(date) =>
+                  handleDateChange(date, index, 'endDate')
+                }
+                handleStartTimeChange={(time) =>
+                  handleDateChange(time, index, 'startTime')
+                }
+                handleEndTimeChange={(time) =>
+                  handleDateChange(time, index, 'endTime')
+                }
+                handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
               />
-            </Field>
+            ))}
+            <Center p="6" border="1px solid #ccc">
+              <IconButton
+                size="lg"
+                onClick={addRecurrence}
+                icon={<AddIcon />}
+              />
+            </Center>
+          </Box>
+        </Box>
+
+        <Box mb="8">
+          <Heading mb="4" size="md">
+            Details
+          </Heading>
+
+          <VStack spacing="6">
+            <FormField
+              label="Title"
+              helperText="This is typicaly title of your event"
+            >
+              <Input
+                {...register('title', { required: true })}
+                placeholder="Give it a title"
+              />
+            </FormField>
 
             {isPublicActivity && (
-              <Field label="Subtitle" name="subTitle">
-                <TextInput
-                  plain={false}
-                  name="subTitle"
+              <FormField
+                label="Subtitle"
+                helperText="i.e. artist, or some subtitle..."
+              >
+                <Input
+                  {...register('subTitle', { required: true })}
                   placeholder="give it a subtitle (artist name etc.)"
                 />
-              </Field>
+              </FormField>
             )}
 
-            <Field label="Description">
-              <ReactQuill
-                modules={editorModules}
-                formats={editorFormats}
-                onChange={onQuillChange}
-                value={longDescription || ''}
+            <FormField label="Description">
+              <Controller
+                control={control}
+                name="longDescription"
+                render={({ field }) => (
+                  <ReactQuill
+                    {...field}
+                    formats={editorFormats}
+                    modules={editorModules}
+                  />
+                )}
               />
-            </Field>
+            </FormField>
 
             {isPublicActivity && (
-              <Field label="Place" name="place">
-                <TextInput
-                  plain={false}
-                  name="place"
-                  placeholder="Artistosphere"
-                />
-              </Field>
+              <FormField label="Place">
+                <Input {...register('place')} placeholder="Artistosphere" />
+              </FormField>
             )}
 
             {isPublicActivity && (
-              <Field label="Address" name="address">
-                <TextArea
-                  plain={false}
-                  name="address"
+              <FormField label="Address">
+                <Textarea
+                  {...register('address')}
                   placeholder="17th Street, Berlin..."
                 />
-              </Field>
+              </FormField>
             )}
 
             {isPublicActivity && (
-              <Field
+              <FormField
                 label="Image"
-                help={
-                  (uploadableImageLocal || imageUrl) && (
-                    <Text size="small">
-                      If you want to replace it with another one, click on the
-                      image to reopen the file picker
-                    </Text>
-                  )
+                helperText={
+                  (uploadableImageLocal || imageUrl) &&
+                  'If you want to replace it with another one, click on the image to reopen the file picker'
                 }
               >
-                <Box alignSelf="center">
+                <Center>
                   <FileDropper
                     uploadableImageLocal={uploadableImageLocal}
                     imageUrl={imageUrl}
                     setUploadableImage={setUploadableImage}
                   />
-                </Box>
-              </Field>
+                </Center>
+              </FormField>
             )}
+          </VStack>
+        </Box>
 
-            <Box direction="row" justify="end" pad="small">
-              <Button
-                type="submit"
-                primary
-                disabled={isButtonDisabled}
-                label={buttonLabel}
-              />
-            </Box>
-          </Box>
-        </Form>
-      </Box>
-    );
-  }
+        <Flex justify="flex-end" py="4" w="100%">
+          <Button isLoading={isSubmitting} type="submit">
+            Confirm
+          </Button>
+        </Flex>
+      </form>
+    </div>
+  );
 }
 
 export default ActivityForm;

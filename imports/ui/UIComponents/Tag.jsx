@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Button, Text } from 'grommet';
-import { Close } from 'grommet-icons/icons/Close';
+import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 
 const Tag = ({
   label = '',
@@ -12,57 +12,58 @@ const Tag = ({
   onClick,
   onRemove,
   ...otherProps
-}) => (
-  <Box
-    background={
-      !checkable
-        ? 'accent-4'
-        : checked
-        ? gradientBackground
-          ? gradientBackground
-          : filterColor
-        : gradientBackground || 'white'
+}) => {
+  const getBackground = () => {
+    if (gradientBackground) {
+      return gradientBackground;
+    } else if (filterColor) {
+      return filterColor;
+    } else if (checkable) {
+      if (checked) {
+        return filterColor;
+      } else {
+        return 'white';
+      }
+    } else {
+      return 'teal.500';
     }
-    alignSelf="start"
-    direction="row"
-    align="center"
-    round="2px"
-    gap="small"
-    pad={gradientBackground && checkable ? '2px' : '0'}
-    style={{
-      border:
+  };
+
+  return (
+    <Flex
+      background={getBackground()}
+      border={
         gradientBackground && checkable
           ? 'none'
-          : `2px solid ${filterColor || '#484848'}`,
-    }}
-    {...otherProps}
-  >
-    <Box
-      onClick={onClick}
-      focusIndicator={false}
-      pad="2px 5px"
-      style={{
-        border: !checkable ? 'none' : checked ? 'none' : 'white',
-        background: checkable && checked ? 'none' : 'white',
-      }}
+          : `2px solid ${filterColor || '#484848'}`
+      }
+      borderRadius="2px"
+      display="inline-block"
+      p={gradientBackground && checkable ? '2px' : '0'}
+      {...otherProps}
     >
-      <Text
-        size={otherProps.size || '14px'}
-        weight={checkable ? 'normal' : 'bold'}
-        color={checked ? 'white' : filterColor}
+      <Box
+        background={checkable && checked ? 'none' : 'white'}
+        border={!checkable ? 'none' : checked ? 'none' : 'white'}
+        cursor="pointer"
+        py="0"
+        px="2"
+        onClick={onClick}
       >
-        {checkable ? label : label.toUpperCase()}
-      </Text>
-    </Box>
-    {removable && (
-      <Button
-        plain
-        icon={<Close color="dark-2" size="small" />}
-        margin={{ right: '4px' }}
-        onClick={onRemove}
-      />
-    )}
-  </Box>
-);
+        <Text
+          as="span"
+          color={checked ? 'white' : filterColor}
+          fontSize={otherProps.size || '14px'}
+          fontWeight={checkable ? 'normal' : 'bold'}
+        >
+          {checkable ? label : label && label.toUpperCase()}
+        </Text>
+      </Box>
+      {removable && (
+        <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />
+      )}
+    </Flex>
+  );
+};
 
 export default Tag;

@@ -1,39 +1,32 @@
 import React from 'react';
 import {
   Box,
-  CheckBox,
-  DateInput,
-  MaskedInput,
+  Center,
+  Code,
+  Flex,
+  FormControl,
+  FormLabel,
+  IconButton,
+  NumberInput,
+  NumberInputField,
+  Switch,
   Text,
-  TextInput,
-} from 'grommet';
-import { FormTrash } from 'grommet-icons/icons/FormTrash';
-import { useState } from 'react';
-
-const dateInputProps = {
-  format: 'yyyy-mm-dd',
-  daysOfWeek: true,
-  calendarProps: {
-    firstDayOfWeek: 1,
-    size: 'small',
-  },
-  style: {
-    background: 'white',
-  },
-  size: 'small',
-};
+  Wrap,
+} from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import DatePicker from './DatePicker';
 
 const DatesAndTimes = ({
   recurrence,
-  handleDateChange,
+  handleStartDateChange,
+  handleEndDateChange,
   handleStartTimeChange,
-  handleFinishTimeChange,
+  handleEndTimeChange,
   handleCapacityChange,
   handleRangeSwitch,
   removeRecurrence,
   isNotDeletable,
   isPublicActivity,
-  noAnimate,
 }) => {
   if (!recurrence) {
     return null;
@@ -41,175 +34,132 @@ const DatesAndTimes = ({
 
   const isRange = recurrence.isRange;
 
+  const startDate = {
+    date: recurrence.startDate,
+    time: recurrence.startTime,
+  };
+
+  const endDate = {
+    date: recurrence.endDate,
+    time: recurrence.endTime,
+  };
+
   return (
     <Box
-      pad="small"
-      margin={{ bottom: 'small' }}
-      animation={noAnimate ? null : 'slideUp'}
-      background="light-1"
-      border={
-        recurrence.conflict ? { color: 'status-critical', size: 'small' } : null
-      }
+      p="4"
+      mb="4"
+      border={recurrence.conflict ? '1px solid red' : '1px solid #ccc'}
     >
       {!isNotDeletable && (
-        <Box>
-          <Box
-            alignSelf="center"
-            pad="small"
+        <Flex justify="flex-end" mb="4">
+          <IconButton
             onClick={removeRecurrence}
-            hoverIndicator={{ background: 'light-1' }}
-          >
-            <FormTrash style={{ fontSize: 18, cursor: 'pointer' }} />
-          </Box>
-        </Box>
+            size="sm"
+            icon={<DeleteIcon />}
+          />
+        </Flex>
       )}
-      <Box direction="row" justify="center">
-        <CheckBox
-          checked={isRange}
-          label={<Text>Multiple Days?</Text>}
-          onChange={handleRangeSwitch}
-          pad={{ vertical: 'small' }}
-        />
-      </Box>
-      <Box direction="row" justify="around" wrap>
-        <Box pad="xsmall" margin={{ bottom: 'medium' }}>
-          <Box>
-            <Text size="small">{isRange ? 'Start Day' : 'Day'}</Text>
-            <DateInput
-              {...dateInputProps}
-              value={recurrence.startDate}
-              onChange={({ value }) => {
-                handleDateChange(value);
-              }}
+
+      <Center>
+        <FormControl w="auto" alignItems="center" display="flex">
+          <Switch
+            isChecked={isRange}
+            id="is-multipledays-switch"
+            onChange={handleRangeSwitch}
+            py="2"
+          />
+          <FormLabel htmlFor="is-multipledays-switch" mb="1" ml="2">
+            Multiple Days
+          </FormLabel>
+        </FormControl>
+      </Center>
+
+      <Wrap>
+        <Box p="2">
+          <Box mb="2">
+            <Text fontSize="sm">{isRange ? 'Start Day' : 'Day'}</Text>
+            <DatePicker
+              noTime
+              value={startDate}
+              onChange={handleStartDateChange}
             />
           </Box>
 
           {isRange && (
-            <Box margin={{ top: 'medium' }}>
-              <Text size="small">Finish Day</Text>
-              <DateInput
-                {...dateInputProps}
-                value={recurrence.endDate}
-                onChange={({ value }) => {
-                  handleDateChange(value, 'isEndDate');
-                }}
+            <Box>
+              <Text fontSize="sm">Finish Day</Text>
+              <DatePicker
+                noTime
+                value={endDate}
+                onChange={handleEndDateChange}
               />
             </Box>
           )}
         </Box>
+
         <Box
-          pad="xsmall"
-          margin={{ bottom: 'medium' }}
-          justify="around"
-          flex={{ grow: 0 }}
-          basis="180px"
+          flexDirection="column"
+          p="2"
+          mb="6"
+          justify="space-around"
+          flexGrow={0}
+          flexBasis="180px"
         >
-          <Box>
-            <Text size="small">Start time</Text>
-            <TimePicker
-              value={recurrence.startTime}
+          <Box mb="2">
+            <Text fontSize="sm">Start time</Text>
+            <DatePicker
+              onlyTime
+              value={startDate}
               onChange={handleStartTimeChange}
-              style={{
-                background: 'white',
-              }}
             />
           </Box>
-          <Box margin={{ top: 'medium' }}>
-            <Text size="small">Finish time</Text>
-            <TimePicker
-              value={recurrence.endTime}
-              onChange={handleFinishTimeChange}
-              style={{
-                background: 'white',
-              }}
+
+          <Box>
+            <Text fontSize="sm">Finish time</Text>
+            <DatePicker
+              onlyTime
+              value={endDate}
+              onChange={handleEndTimeChange}
             />
           </Box>
+
           {isPublicActivity && (
-            <Box margin={{ top: 'medium' }} pad="xxsmall">
-              <Text size="small">Capacity</Text>
-              <TextInput
-                placeholder="Capacity"
+            <Box mt="4">
+              <Text fontSize="sm">Capacity</Text>
+              <NumberInput
+                min={1}
+                max={40}
                 value={recurrence.capacity}
+                variant="filled"
                 onChange={handleCapacityChange}
-                style={{
-                  background: 'white',
-                }}
-              />
+              >
+                <NumberInputField placeholder="Capacity" />
+              </NumberInput>
             </Box>
           )}
         </Box>
-      </Box>
+      </Wrap>
+
       {recurrence.conflict && (
-        <Text size="small" textAlign="center" weight="bold">
-          There's already a booking for this resource at this date & time:{' '}
-          <br />
-          <Text color="status-critical" margin="medium">
-            <code>
-              {recurrence.conflict.startDate === recurrence.conflict.endDate
-                ? recurrence.conflict.startDate
-                : recurrence.conflict.startDate +
-                  '-' +
-                  recurrence.conflict.endDate}
-              {', '}
-              {recurrence.conflict.startTime +
-                ' – ' +
-                recurrence.conflict.endTime}
-            </code>
+        <Box>
+          <Text fontSize="sm" textAlign="center" fontWeight="bold">
+            There's already a booking for this resource at this date & time:{' '}
           </Text>
-        </Text>
+          <Code>
+            {recurrence.conflict.startDate === recurrence.conflict.endDate
+              ? recurrence.conflict.startDate
+              : recurrence.conflict.startDate +
+                '-' +
+                recurrence.conflict.endDate}
+            {', '}
+            {recurrence.conflict.startTime +
+              ' – ' +
+              recurrence.conflict.endTime}
+          </Code>
+        </Box>
       )}
     </Box>
   );
 };
-
-const TimePicker = ({ onChange, value, ...otherProps }) => {
-  const [error, setError] = useState(false);
-
-  const handleBlur = () => {
-    if (value.length < 5) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-  };
-  return (
-    <div>
-      <MaskedInput
-        size="small"
-        mask={[
-          {
-            length: 2,
-            options: Array.from(
-              { length: 24 },
-              (v, k) => (k < 10 ? '0' : '') + k.toString()
-            ),
-            regexp: /^1[0,1-2]$|^0?[1-9]$|^0$/,
-            placeholder: 'HH',
-          },
-          { fixed: ':' },
-          {
-            length: 2,
-            options: ['00', '15', '30', '45'],
-            regexp: /^[0-5][0-9]$|^[0-9]$/,
-            placeholder: 'MM',
-          },
-        ]}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        dropHeight="small"
-        onBlur={handleBlur}
-        style={error ? { border: '1px solid red' } : {}}
-        {...otherProps}
-      />
-      {error && (
-        <Text size="small" color="status-critical">
-          Please enter the time in full HH:MM format
-        </Text>
-      )}
-    </div>
-  );
-};
-
-export { TimePicker };
 
 export default DatesAndTimes;

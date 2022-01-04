@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router';
-import { Anchor, Box, Heading } from 'grommet';
+import { Link, Redirect } from 'react-router-dom';
+import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 import Template from '../UIComponents/Template';
-import { Login, SimpleText } from './index';
+import { Login } from './index';
 import { loginWithPassword } from './functions';
 
-const LoginPage = ({ history }) => {
+function LoginPage() {
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
@@ -20,31 +20,39 @@ const LoginPage = ({ history }) => {
 
   return (
     <Template>
-      <Box>
-        <Box width="medium" alignSelf="center">
-          <Heading level={2} textAlign="center">
+      <Center>
+        <Box w="xs">
+          <Heading size="md" textAlign="center">
             Login to Your Account
           </Heading>
-          <SimpleText>
-            Don't have an account?{' '}
-            <Anchor onClick={() => history.push('/signup')}>Signup</Anchor>
-          </SimpleText>
-          <Box pad="medium" background="white" margin={{ bottom: 'medium' }}>
+          <Center pt="4" mb="4">
+            <Text>
+              Don't have an account?{' '}
+              <Link to="/signup">
+                <CLink as="span">
+                  <b>Signup</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+          <Box p="6" bg="white" mb="4">
             <Login onSubmit={handleSubmit} />
           </Box>
-          <Box>
-            <SimpleText>
+          <Center>
+            <Text>
               Forgot your password?
               <br />
-              <Anchor onClick={() => history.push('/forgot-password')}>
-                Reset your password
-              </Anchor>
-            </SimpleText>
-          </Box>
+              <Link to="/forgot-password">
+                <CLink as="span">
+                  <b>Reset your password</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
         </Box>
-      </Box>
+      </Center>
     </Template>
   );
-};
+}
 
 export default LoginPage;
