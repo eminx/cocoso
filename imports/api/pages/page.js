@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Pages = new Mongo.Collection('pages');
 
-Page.schema = new SimpleSchema({
+Pages.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -25,6 +25,6 @@ Page.schema = new SimpleSchema({
   },
 });
 
-Pages.attachSchema(Page.schema);
+Pages.attachSchema(Pages.schema);
 
 export default Pages;

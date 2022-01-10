@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Documents = new Mongo.Collection('documents');
 
-Document.schema = new SimpleSchema({
+Documents.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -19,6 +19,6 @@ Document.schema = new SimpleSchema({
   creationDate: {type: Date},
 });
 
-Documents.attachSchema(Document.schema);
+Documents.attachSchema(Documents.schema);
 
 export default Documents;

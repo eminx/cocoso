@@ -19,7 +19,7 @@ const SchemasHost = {
   }
 };
 
-Host.schema = new SimpleSchema({
+Hosts.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -66,6 +66,6 @@ Host.schema = new SimpleSchema({
 
 });
 
-Hosts.attachSchema(Host.schema);
+Hosts.attachSchema(Hosts.schema);
 
 export default Hosts;

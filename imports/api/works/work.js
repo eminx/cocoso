@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Works = new Mongo.Collection('works');
 
-Work.schema = new SimpleSchema({
+Works.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -33,6 +33,6 @@ Work.schema = new SimpleSchema({
   latestUpdate: {type: Date, optional: true},
 });
 
-Works.attachSchema(Work.schema);
+Works.attachSchema(Works.schema);
 
 export default Works;
