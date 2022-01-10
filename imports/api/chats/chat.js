@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Chats = new Mongo.Collection('chats');
 
-Schemas.Chats = new SimpleSchema({
+Chats.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -26,6 +26,6 @@ Schemas.Chats = new SimpleSchema({
   lastMessageBy: {type: String, regEx: SimpleSchema.RegEx.Id, optional:true},
 });
 
-Chats.attachSchema(Schemas.Chats);
+Chats.attachSchema(Chats.schema);
 
 export default Chats;

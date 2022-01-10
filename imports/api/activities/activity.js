@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Activities = new Mongo.Collection('activities');
 
-Schemas.Activity = new SimpleSchema({
+Activity.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -60,6 +60,6 @@ Schemas.Activity = new SimpleSchema({
   creationDate: {type: Date},
 });
 
-Activities.attachSchema(Schemas.Activity);
+Activities.attachSchema(Activity.schema);
 
 export default Activities;

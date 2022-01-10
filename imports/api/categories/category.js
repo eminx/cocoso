@@ -4,7 +4,7 @@ import { Schemas, CustomValidators } from '../@/schemas';
 
 const Categories = new Mongo.Collection('categories');
 
-Schemas.Category = new SimpleSchema({
+Category.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -18,6 +18,6 @@ Schemas.Category = new SimpleSchema({
   addedDate: {type: Date},
 });
 
-Categories.attachSchema(Schemas.Category);
+Categories.attachSchema(Category.schema);
 
 export default Categories;

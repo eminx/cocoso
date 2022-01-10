@@ -19,7 +19,7 @@ const SchemasHost = {
   }
 };
 
-Schemas.Host = new SimpleSchema({
+Host.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -32,40 +32,40 @@ Schemas.Host = new SimpleSchema({
   'settings.address': {type: String},
   'settings.city': {type: String},
   'settings.country': {type: String},
-  'settings.menu': {type: Array},
+  'settings.menu': {type: Array },
   'settings.menu.$': new SimpleSchema(SchemasHost.menu),
-  'settings.mainColor': {type: Object, optional:true },
+  'settings.mainColor': {type: Object, optional: true },
 
   members: {type: Array},
-  'members.$': {type: Object},
+  'members.$': {type: Object, optional: true},
   'members.$.id': Schemas.Id,
   'members.$.username': {type: String},
   'members.$.email': Schemas.Email,
   'members.$.role': {type: String},
   'members.$.date': {type: Date},
 
-  emails: {type: Array},
+  emails: {type: Array },
   'emails.$': new SimpleSchema(SchemasHost.emailTemplate),
 
   createdAt: {type: Date},
 
-  registeredBy: {type: Object},
+  registeredBy: {type: Object, optional: true },
   'verifiedBy.username': {type: String},
   'verifiedBy.userId': {type: String},
   'verifiedBy.date': {type: Date},
 
-  verifiedBy: {type: Object},
+  verifiedBy: {type: Object, optional: true },
   'verifiedBy.username': {type: String},
   'verifiedBy.userId': {type: String},
   'verifiedBy.date': {type: Date},
 
-  unVerifiedBy: {type: Object},
+  unVerifiedBy: {type: Object, optional: true },
   'unVerifiedBy.username': {type: String},
   'unVerifiedBy.userId': {type: String},
   'unVerifiedBy.date': {type: Date},
 
 });
 
-Hosts.attachSchema(Schemas.Host);
+Hosts.attachSchema(Host.schema);
 
 export default Hosts;
