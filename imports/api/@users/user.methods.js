@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { getHost } from '../@/shared';
 import Hosts from '../@hosts/host';
+import Works from '../works/work';
 
 Meteor.methods({
 
