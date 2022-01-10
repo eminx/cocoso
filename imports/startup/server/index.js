@@ -1,7 +1,13 @@
 import './api';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 Meteor.startup(() => {
+
+  // import { freshInstallment } from './installation';
+
+  // freshInstallment();
+
   const smtp = Meteor.settings.mailCredentials.smtp;
 
   process.env.MAIL_URL =
