@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 const compareByDate = (a, b) => {

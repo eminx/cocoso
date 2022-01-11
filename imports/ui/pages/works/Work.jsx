@@ -26,7 +26,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import NiceSlider from '../../components/NiceSlider';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 
 function Work() {
   const [work, setWork] = useState(null);

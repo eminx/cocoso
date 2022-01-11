@@ -24,7 +24,7 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { compareForSort } from '../../functions';
+import { compareForSort } from '../../@/shared';
 
 const publicSettings = Meteor.settings.public;
 

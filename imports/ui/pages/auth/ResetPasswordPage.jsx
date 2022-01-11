@@ -12,7 +12,7 @@ import {
 import Template from '../components/Template';
 import { ResetPassword } from './index';
 import { StateContext } from '../LayoutContainer';
-import { call } from '../functions';
+import { call } from '../@/shared';
 import { message } from '../components/message';
 
 const ResetPasswordPage = ({ history, match }) => {

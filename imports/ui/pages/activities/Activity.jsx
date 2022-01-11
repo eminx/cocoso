@@ -35,7 +35,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import Tag from '../../components/Tag';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
 

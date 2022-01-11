@@ -5,9 +5,9 @@ import { Box } from '@chakra-ui/react';
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
-import { parseTitle } from '../../functions';
+import { parseTitle } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 
 class NewPage extends PureComponent {
   state = {

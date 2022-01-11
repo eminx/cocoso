@@ -9,7 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import { resizeImage, uploadImage } from '../../functions';
+import { resizeImage, uploadImage } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 const successEditMessage = (isDeleted) => {

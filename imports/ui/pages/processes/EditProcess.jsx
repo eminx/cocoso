@@ -3,12 +3,12 @@ import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Center, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import ProcessForm from '../../components/ProcessForm';
 import Template from '../../components/Template';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
-import { resizeImage, uploadImage } from '../../functions';
+import { resizeImage, uploadImage } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 class EditProcess extends React.Component {

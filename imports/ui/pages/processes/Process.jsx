@@ -5,7 +5,7 @@ import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
-import { formatDate } from '../../functions.js';
+import { formatDate } from '../../@/shared.js';
 import DatePicker from '../../components/DatePicker.jsx';
 
 import {

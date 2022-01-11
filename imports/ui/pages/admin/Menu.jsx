@@ -20,7 +20,7 @@ import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';

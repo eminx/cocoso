@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 
 async function createAccount(values) {
   check(values.email, String);

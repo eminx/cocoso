@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import EditPage from './EditPage';
 import Pages from '../../../api/pages/page';
-import { parseTitle } from '../../functions';
+import { parseTitle } from '../../@/shared';
 
 export default EditPageContainer = withTracker((props) => {
   const pageId = props.match.params.id;

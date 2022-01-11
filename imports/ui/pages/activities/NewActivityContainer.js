@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import NewActivity from './NewActivity.jsx';
-import { parseActsWithResources } from '../../functions';
+import { parseActsWithResources } from '../../@/shared';
 import Resources from '../../../api/resources/resource.js';
 import Activities from '../../../api/activities/activity.js'; 
 

@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Calendar from './Calendar';
 import moment from 'moment';
-import { parseActsWithResources } from '../functions';
+import { parseActsWithResources } from '../@/shared';
 
 import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';

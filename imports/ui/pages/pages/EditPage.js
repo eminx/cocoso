@@ -4,12 +4,12 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
-import { parseTitle } from '../../functions';
+import { parseTitle } from '../../@/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../functions'
+import { call } from '../../@/shared'
 
 class EditPage extends PureComponent {
   state = {

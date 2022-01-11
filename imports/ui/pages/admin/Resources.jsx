@@ -9,7 +9,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import ResourcesForCombo from '../../components/ResourcesForCombo';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
 import ResourceForm from '../../components/ResourceForm';

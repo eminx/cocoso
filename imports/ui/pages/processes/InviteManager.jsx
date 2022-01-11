@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
-import { emailIsValid, includesSpecialCharacters } from '../../functions';
+import { emailIsValid, includesSpecialCharacters } from '../../@/shared';
 import { message } from '../../components/message';
 
 class InviteManager extends PureComponent {

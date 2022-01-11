@@ -16,7 +16,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import { getHslValuesFromLength } from '../../constants/colors';
 
 const publicSettings = Meteor.settings.public;

@@ -5,7 +5,7 @@ import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { StateContext } from '../LayoutContainer';
 import Template from '../components/Template';
 import { Signup } from './index';
-import { createAccount } from './functions';
+import { createAccount } from './@/shared';
 
 function SignupPage() {
   const { currentUser } = useContext(StateContext);

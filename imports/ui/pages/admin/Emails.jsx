@@ -15,7 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';

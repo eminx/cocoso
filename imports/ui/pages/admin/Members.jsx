@@ -23,7 +23,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import { adminMenu } from '../../constants/general';
 import Hosts from '../../../api/@hosts/host';
 const compareUsersByDate = (a, b) => {

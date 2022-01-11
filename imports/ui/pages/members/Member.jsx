@@ -23,7 +23,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import { message } from '../../components/message';
-import { call } from '../../functions';
+import { call } from '../../@/shared';
 import WorkThumb from '../../components/WorkThumb';
 import Works from '../../../api/works/work';
 

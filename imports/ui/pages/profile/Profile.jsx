@@ -17,7 +17,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { userMenu } from '../../constants/general';
-import { call, resizeImage, uploadImage } from '../../functions';
+import { call, resizeImage, uploadImage } from '../../@/shared';
 import FileDropper from '../../components/FileDropper';
 import { StateContext } from '../../LayoutContainer';
 

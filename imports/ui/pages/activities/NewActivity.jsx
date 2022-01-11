@@ -7,7 +7,7 @@ import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
-import { resizeImage, uploadImage } from '../../functions';
+import { resizeImage, uploadImage } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 const successCreation = () => {
