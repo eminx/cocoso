@@ -41,7 +41,7 @@ Meteor.methods({
         resourceIndex: resources.length,
         host,
         authorId: user._id,
-        authorAvatar: user.avatar || '',
+        authorAvatar: user.avatar,
         authorUsername: user.username,
         authorFirstName: user.firstName,
         authorLastName: user.lastName,

@@ -34,12 +34,12 @@ Meteor.methods({
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
           imageUrl,
-          capacity: formValues.capacity || 20,
+          capacity: formValues.capacity,
           members: [
             {
               memberId: user._id,
               username: user.username,
-              // profileImage: user.profileImage || "",
+              profileImage: user.profileImage,
               joinDate: new Date(),
             },
           ],
@@ -163,7 +163,7 @@ Meteor.methods({
           members: {
             memberId: user._id,
             username: user.username,
-            profileImage: user.profileImage || null,
+            profileImage: user.profileImage,
             joinDate: new Date(),
           },
         },

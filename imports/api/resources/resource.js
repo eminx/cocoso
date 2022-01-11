@@ -12,7 +12,7 @@ Resources.schema = new SimpleSchema({
   authorUsername: {type: String},
   authorFirstName: {type: String},
   authorLastName: {type: String},
-  authorAvatar: new SimpleSchema(Schemas.Avatar),
+  authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true },
 
   label: {type: String},
   labelLowerCase: {type: String},

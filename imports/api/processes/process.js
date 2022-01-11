@@ -15,7 +15,7 @@ Processes.schema = new SimpleSchema({
   description: { type: String },
   readingMaterial: { type: String },
   imageUrl: Schemas.Src,
-  capacity: { type: SimpleSchema.Integer },
+  capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
 
   members: { type: Array },
   'members.$': new SimpleSchema({
