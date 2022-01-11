@@ -1,6 +1,6 @@
 # COCOSO || FRESHEN UP
 
-### up for the update 
+## up for the update 
 
 After the updating our server and client side codes
 
@@ -37,3 +37,18 @@ and for ui there is also some organisation needed
     pages/                     # entry points for rendering used by the router
 
 more details: https://guide.meteor.com/structure.html#javascript-structure
+
+## ending
+
+now we are up to date, 
+totally revised our server and client codes and structure,
+and ready to install 
+
+
+### next branches
+
+- i18n-schemas 
+  getting ready for i18n 
+  from all static text in ui (error, notifications, menus, forms, etc)
+  creating locales files in YAML (readable, editable, commentable json)
+  ***this branch wont be an implementation of i18n
