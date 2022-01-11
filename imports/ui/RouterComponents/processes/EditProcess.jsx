@@ -4,12 +4,12 @@ import { Box, Button, Center, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import { call } from '../../functions';
-import ProcessForm from '../../UIComponents/ProcessForm';
-import Template from '../../UIComponents/Template';
-import Loader from '../../UIComponents/Loader';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
+import ProcessForm from '../../components/ProcessForm';
+import Template from '../../components/Template';
+import Loader from '../../components/Loader';
+import ConfirmModal from '../../components/ConfirmModal';
 import { resizeImage, uploadImage } from '../../functions';
-import { message, Alert } from '../../UIComponents/message';
+import { message, Alert } from '../../components/message';
 
 class EditProcess extends React.Component {
   state = {

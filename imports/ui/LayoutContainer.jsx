@@ -35,8 +35,8 @@ import { Helmet } from 'react-helmet';
 
 export const StateContext = React.createContext(null);
 
-import UserPopup from './UIComponents/UserPopup';
-import FormField from './UIComponents/FormField';
+import UserPopup from './components/UserPopup';
+import FormField from './components/FormField';
 import Hosts from '../api/@hosts/host';
 import { chakraTheme } from './constants/theme';
 

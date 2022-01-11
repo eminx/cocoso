@@ -17,8 +17,8 @@ import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import FormField from './FormField';
-import FileDropper from '../UIComponents/FileDropper';
-import NiceSlider from '../UIComponents/NiceSlider';
+import FileDropper from '../components/FileDropper';
+import NiceSlider from '../components/NiceSlider';
 import { editorFormats, editorModules } from '../constants/quillConfig';
 
 function WorkForm({

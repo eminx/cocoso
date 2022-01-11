@@ -3,10 +3,10 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Box, VStack } from '@chakra-ui/react';
 
-import ActivityForm from '../../UIComponents/ActivityForm';
-import Template from '../../UIComponents/Template';
-import { message, Alert } from '../../UIComponents/message';
-import FormSwitch from '../../UIComponents/FormSwitch';
+import ActivityForm from '../../components/ActivityForm';
+import Template from '../../components/Template';
+import { message, Alert } from '../../components/message';
+import FormSwitch from '../../components/FormSwitch';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 

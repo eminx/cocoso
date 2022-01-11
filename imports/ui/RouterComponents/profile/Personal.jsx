@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
 
-import FormField from '../../UIComponents/FormField';
+import FormField from '../../components/FormField';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {

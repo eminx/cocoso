@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Flex, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-import FormField from '../../UIComponents/FormField';
+import FormField from '../../components/FormField';
 
 function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({

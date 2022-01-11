@@ -22,10 +22,10 @@ import { Visible, Hidden } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
-import NiceSlider from '../../UIComponents/NiceSlider';
-import { message } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
+import NiceSlider from '../../components/NiceSlider';
+import { message } from '../../components/message';
 import { call } from '../../functions';
 
 function Work() {

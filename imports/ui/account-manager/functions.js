@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { message } from '../UIComponents/message';
+import { message } from '../components/message';
 import { call } from '../functions';
 
 async function createAccount(values) {

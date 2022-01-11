@@ -11,11 +11,11 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import WorkThumb from '../../UIComponents/WorkThumb';
+import WorkThumb from '../../components/WorkThumb';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../UIComponents/Loader';
-import Tag from '../../UIComponents/Tag';
-import { message } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import Tag from '../../components/Tag';
+import { message } from '../../components/message';
 import { call } from '../../functions';
 import { getHslValuesFromLength } from '../../constants/colors';
 

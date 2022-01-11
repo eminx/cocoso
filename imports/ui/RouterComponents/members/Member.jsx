@@ -20,11 +20,11 @@ import {
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
-import { message } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
+import { message } from '../../components/message';
 import { call } from '../../functions';
-import WorkThumb from '../../UIComponents/WorkThumb';
+import WorkThumb from '../../components/WorkThumb';
 import Works from '../../../api/works/work';
 
 const getFullName = (member) => {

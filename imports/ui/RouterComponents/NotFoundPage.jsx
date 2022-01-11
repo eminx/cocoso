@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import Template from '../UIComponents/Template';
+import Template from '../components/Template';
 
 const NotFoundPage = ({ history }) => {
   return (

@@ -8,10 +8,10 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
-import Loader from '../UIComponents/Loader';
-import CalendarView from '../UIComponents/CalendarView';
-import ConfirmModal from '../UIComponents/ConfirmModal';
-import Tag from '../UIComponents/Tag';
+import Loader from '../components/Loader';
+import CalendarView from '../components/CalendarView';
+import ConfirmModal from '../components/ConfirmModal';
+import Tag from '../components/Tag';
 import { getHslValuesFromLength } from '../constants/colors';
 import { StateContext } from '../LayoutContainer';
 

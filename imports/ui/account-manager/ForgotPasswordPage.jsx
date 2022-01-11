@@ -9,11 +9,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import Template from '../UIComponents/Template';
+import Template from '../components/Template';
 import { ForgotPassword } from './index';
 import { StateContext } from '../LayoutContainer';
 import { call } from '../functions';
-import { message } from '../UIComponents/message';
+import { message } from '../components/message';
 
 function ForgotPasswordPage() {
   const [emailSent, setEmailSent] = useState(false);

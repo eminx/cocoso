@@ -6,7 +6,7 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import { formatDate } from '../../functions.js';
-import DatePicker from '../../UIComponents/DatePicker.jsx';
+import DatePicker from '../../components/DatePicker.jsx';
 
 import {
   Accordion,
@@ -35,16 +35,16 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-import Drawer from '../../UIComponents/Drawer.jsx';
-import Chattery from '../../UIComponents/chattery/Chattery.jsx';
-import Loader from '../../UIComponents/Loader';
-import FancyDate from '../../UIComponents/FancyDate';
-import NiceList from '../../UIComponents/NiceList';
+import Drawer from '../../components/Drawer.jsx';
+import Chattery from '../../components/chattery/Chattery.jsx';
+import Loader from '../../components/Loader';
+import FancyDate from '../../components/FancyDate';
+import NiceList from '../../components/NiceList';
 import InviteManager from './InviteManager';
-import { TimePicker } from '../../UIComponents/DatesAndTimes';
-import Template from '../../UIComponents/Template';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
-import { message } from '../../UIComponents/message';
+import { TimePicker } from '../../components/DatesAndTimes';
+import Template from '../../components/Template';
+import ConfirmModal from '../../components/ConfirmModal';
+import { message } from '../../components/message';
 
 const publicSettings = Meteor.settings.public;
 const defaultMeetingResource = 'Office';

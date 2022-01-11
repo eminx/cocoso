@@ -12,13 +12,13 @@ import {
 } from '@chakra-ui/react';
 
 import Personal from './Personal';
-import ListMenu from '../../UIComponents/ListMenu';
-import Template from '../../UIComponents/Template';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
-import { message } from '../../UIComponents/message';
+import ListMenu from '../../components/ListMenu';
+import Template from '../../components/Template';
+import ConfirmModal from '../../components/ConfirmModal';
+import { message } from '../../components/message';
 import { userMenu } from '../../constants/general';
 import { call, resizeImage, uploadImage } from '../../functions';
-import FileDropper from '../../UIComponents/FileDropper';
+import FileDropper from '../../components/FileDropper';
 import { StateContext } from '../../LayoutContainer';
 
 class Profile extends PureComponent {

@@ -4,16 +4,16 @@ import React, { useState, useContext } from 'react';
 import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 
-import NiceList from '../../UIComponents/NiceList';
-import Template from '../../UIComponents/Template';
-import ListMenu from '../../UIComponents/ListMenu';
-import ResourcesForCombo from '../../UIComponents/ResourcesForCombo';
-import { message } from '../../UIComponents/message';
+import NiceList from '../../components/NiceList';
+import Template from '../../components/Template';
+import ListMenu from '../../components/ListMenu';
+import ResourcesForCombo from '../../components/ResourcesForCombo';
+import { message } from '../../components/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { adminMenu } from '../../constants/general';
-import ResourceForm from '../../UIComponents/ResourceForm';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
+import ResourceForm from '../../components/ResourceForm';
+import ConfirmModal from '../../components/ConfirmModal';
 import Resources from '../../../api/resources/resource';
 
 const resourceModel = {

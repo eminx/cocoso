@@ -6,9 +6,9 @@ import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
-import PagesList from '../../UIComponents/PagesList';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
+import PagesList from '../../components/PagesList';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
 
 import { parseTitle } from '../../functions';
 

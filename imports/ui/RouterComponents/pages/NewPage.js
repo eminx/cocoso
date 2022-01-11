@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
-import PageForm from '../../UIComponents/PageForm';
-import Template from '../../UIComponents/Template';
-import { message, Alert } from '../../UIComponents/message';
+import PageForm from '../../components/PageForm';
+import Template from '../../components/Template';
+import { message, Alert } from '../../components/message';
 import { parseTitle } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions';

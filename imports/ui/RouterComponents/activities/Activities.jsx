@@ -13,8 +13,8 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../UIComponents/Loader';
-import PublicActivityThumb from '../../UIComponents/PublicActivityThumb';
+import Loader from '../../components/Loader';
+import PublicActivityThumb from '../../components/PublicActivityThumb';
 
 const publicSettings = Meteor.settings.public;
 const yesterday = moment().add(-1, 'days');

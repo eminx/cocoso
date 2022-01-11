@@ -29,15 +29,15 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-// import Chattery from '../../UIComponents/chattery/Chattery';
-import FancyDate from '../../UIComponents/FancyDate';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
-import Tag from '../../UIComponents/Tag';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
+// import Chattery from '../../components/chattery/Chattery';
+import FancyDate from '../../components/FancyDate';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
+import Tag from '../../components/Tag';
+import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../functions';
-import { message } from '../../UIComponents/message';
-import FormField from '../../UIComponents/FormField';
+import { message } from '../../components/message';
+import FormField from '../../components/FormField';
 
 class Activity extends PureComponent {
   state = {

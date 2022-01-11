@@ -21,14 +21,14 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
-import ListMenu from '../../UIComponents/ListMenu';
-import { message, Alert } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
+import ListMenu from '../../components/ListMenu';
+import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../functions';
 import { adminMenu } from '../../constants/general';
 import SettingsForm from './SettingsForm';
-import FileDropper from '../../UIComponents/FileDropper';
+import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;

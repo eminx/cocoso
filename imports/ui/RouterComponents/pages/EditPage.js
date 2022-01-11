@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Flex } from '@chakra-ui/react';
 
-import PageForm from '../../UIComponents/PageForm';
-import Template from '../../UIComponents/Template';
+import PageForm from '../../components/PageForm';
+import Template from '../../components/Template';
 import { parseTitle } from '../../functions';
-import Loader from '../../UIComponents/Loader';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
-import { message, Alert } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import ConfirmModal from '../../components/ConfirmModal';
+import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../functions'
 

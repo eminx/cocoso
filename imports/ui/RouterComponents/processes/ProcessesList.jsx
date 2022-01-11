@@ -19,10 +19,10 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Loader from '../../UIComponents/Loader';
-import NiceList from '../../UIComponents/NiceList';
-import Template from '../../UIComponents/Template';
-import { message } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import NiceList from '../../components/NiceList';
+import Template from '../../components/Template';
+import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../functions';
 

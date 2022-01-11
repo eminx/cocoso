@@ -19,11 +19,11 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-import NiceList from '../../UIComponents/NiceList';
-import Template from '../../UIComponents/Template';
-import ListMenu from '../../UIComponents/ListMenu';
-import Loader from '../../UIComponents/Loader';
-import { Alert } from '../../UIComponents/message';
+import NiceList from '../../components/NiceList';
+import Template from '../../components/Template';
+import ListMenu from '../../components/ListMenu';
+import Loader from '../../components/Loader';
+import { Alert } from '../../components/message';
 import { userMenu } from '../../constants/general';
 
 function Activities({ history }) {

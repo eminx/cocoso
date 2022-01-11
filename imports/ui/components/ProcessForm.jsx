@@ -12,8 +12,8 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import FileDropper from '../UIComponents/FileDropper';
-import FormField from '../UIComponents/FormField';
+import FileDropper from '../components/FileDropper';
+import FormField from '../components/FormField';
 
 const ProcessForm = ({
   uploadableImageLocal,

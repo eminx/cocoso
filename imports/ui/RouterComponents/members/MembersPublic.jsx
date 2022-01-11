@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Avatar, Box, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Loader from '../../UIComponents/Loader';
-import { message } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import { message } from '../../components/message';
 import { call } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 

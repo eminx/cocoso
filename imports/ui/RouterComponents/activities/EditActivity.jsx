@@ -4,13 +4,13 @@ import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Center, IconButton, VStack } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
-import ActivityForm from '../../UIComponents/ActivityForm';
-import Template from '../../UIComponents/Template';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
-import FormSwitch from '../../UIComponents/FormSwitch';
-import Loader from '../../UIComponents/Loader';
+import ActivityForm from '../../components/ActivityForm';
+import Template from '../../components/Template';
+import ConfirmModal from '../../components/ConfirmModal';
+import FormSwitch from '../../components/FormSwitch';
+import Loader from '../../components/Loader';
 import { resizeImage, uploadImage } from '../../functions';
-import { message, Alert } from '../../UIComponents/message';
+import { message, Alert } from '../../components/message';
 
 const successEditMessage = (isDeleted) => {
   if (isDeleted) {

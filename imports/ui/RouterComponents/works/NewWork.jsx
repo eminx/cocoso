@@ -4,9 +4,9 @@ import arrayMove from 'array-move';
 import { Box } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
-import WorkForm from '../../UIComponents/WorkForm';
-import Template from '../../UIComponents/Template';
-import { message, Alert } from '../../UIComponents/message';
+import WorkForm from '../../components/WorkForm';
+import Template from '../../components/Template';
+import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../functions';
 
 const formModel = {

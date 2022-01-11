@@ -12,14 +12,14 @@ import {
 import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
-import Template from '../../UIComponents/Template';
-import ListMenu from '../../UIComponents/ListMenu';
+import Template from '../../components/Template';
+import ListMenu from '../../components/ListMenu';
 import { editorFormats, editorModules } from '../../constants/quillConfig';
 import { call } from '../../functions';
-import Loader from '../../UIComponents/Loader';
-import { message, Alert } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import FormField from '../../UIComponents/FormField';
+import FormField from '../../components/FormField';
 import { defaultEmails, adminMenu } from '../../constants/general';
 
 function Emails({ history }) {

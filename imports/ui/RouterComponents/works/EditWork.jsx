@@ -5,12 +5,12 @@ import { Box, Button, Center, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import { StateContext } from '../../LayoutContainer';
-import WorkForm from '../../UIComponents/WorkForm';
-import Template from '../../UIComponents/Template';
-import { message, Alert } from '../../UIComponents/message';
-import ConfirmModal from '../../UIComponents/ConfirmModal';
+import WorkForm from '../../components/WorkForm';
+import Template from '../../components/Template';
+import { message, Alert } from '../../components/message';
+import ConfirmModal from '../../components/ConfirmModal';
 import { call, resizeImage, uploadImage } from '../../functions';
-import Loader from '../../UIComponents/Loader';
+import Loader from '../../components/Loader';
 
 class EditWork extends PureComponent {
   state = {

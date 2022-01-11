@@ -16,11 +16,11 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 
-import ProcessForm from '../../UIComponents/ProcessForm';
+import ProcessForm from '../../components/ProcessForm';
 import { call } from '../../functions';
-import Loader from '../../UIComponents/Loader';
-import Template from '../../UIComponents/Template';
-import { message, Alert } from '../../UIComponents/message';
+import Loader from '../../components/Loader';
+import Template from '../../components/Template';
+import { message, Alert } from '../../components/message';
 import { resizeImage, uploadImage } from '../../functions';
 import { StateContext } from '../../LayoutContainer';
 

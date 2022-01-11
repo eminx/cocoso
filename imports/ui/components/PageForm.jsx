@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
 import { editorFormats, editorModules } from '../constants/quillConfig';
-import FormField from '../UIComponents/FormField';
+import FormField from '../components/FormField';
 
 const PageForm = ({ defaultValues, onSubmit }) => {
   const { control, formState, handleSubmit, register } = useForm({
