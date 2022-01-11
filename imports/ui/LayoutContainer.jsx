@@ -35,10 +35,10 @@ import { Helmet } from 'react-helmet';
 
 export const StateContext = React.createContext(null);
 
-import UserPopup from './UIComponents/UserPopup';
-import FormField from './UIComponents/FormField';
+import UserPopup from './components/UserPopup';
+import FormField from './components/FormField';
 import Hosts from '../api/@hosts/host';
-import { chakraTheme } from './constants/theme';
+import { chakraTheme } from './@/constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
@@ -131,7 +131,7 @@ function LayoutPage({
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
-    import './custom-styles/quilleditor-custom.css';
+    import './@/styles/quilleditor-custom.css';
   }
 
   if (hostLoading || !currentHost) {

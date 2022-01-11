@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Resources = new Mongo.Collection('resources');
 
-Schemas.Resources = new SimpleSchema({
+Resources.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
   
@@ -12,7 +12,7 @@ Schemas.Resources = new SimpleSchema({
   authorUsername: {type: String},
   authorFirstName: {type: String},
   authorLastName: {type: String},
-  authorAvatar: new SimpleSchema(Schemas.Avatar),
+  authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true },
 
   label: {type: String},
   labelLowerCase: {type: String},
@@ -50,6 +50,6 @@ Schemas.Resources = new SimpleSchema({
 
 });
 
-Resources.attachSchema(Schemas.Resources);
+Resources.attachSchema(Resources.schema);
 
 export default Resources;

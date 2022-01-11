@@ -4,7 +4,7 @@ import { Schemas } from '../@/schemas';
 
 const Processes = new Mongo.Collection('processes');
 
-Schemas.Processes = new SimpleSchema({
+Processes.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
@@ -15,7 +15,7 @@ Schemas.Processes = new SimpleSchema({
   description: { type: String },
   readingMaterial: { type: String },
   imageUrl: Schemas.Src,
-  capacity: { type: SimpleSchema.Integer },
+  capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
 
   members: { type: Array },
   'members.$': new SimpleSchema({
@@ -64,6 +64,6 @@ Schemas.Processes = new SimpleSchema({
   creationDate: { type: Date },
 });
 
-Processes.attachSchema(Schemas.Processes);
+Processes.attachSchema(Processes.schema);
 
 export default Processes;
