@@ -12,18 +12,18 @@ Activities.schema = new SimpleSchema({
   authorName: {type: String},
 
   title: {type: String},
-  subTitle: {type: String, optional: true},
-  longDescription: {type: String, optional: true},
+  subTitle: {type: String, defaultValue: ''},
+  longDescription: {type: String},
   imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
-  resourceId: {type: String, regEx: SimpleSchema.RegEx.Id, optional: true},
-  resource: {type: String, optional: true},
-  resourceIndex: {type: SimpleSchema.Integer, optional: true},
+  resourceId: {type: String, regEx: SimpleSchema.RegEx.Id},
+  resource: {type: String, defaultValue: ''},
+  resourceIndex: {type: SimpleSchema.Integer},
   // resourceHourlyFee: {type: String, optional: true}, //undefined
 
-  address: {type: String, optional: true},
-  capacity: {type: SimpleSchema.Integer},
-  place: {type: String, optional: true},
+  address: {type: String, defaultValue: ''},
+  capacity: {type: SimpleSchema.Integer, defaultValue: 20},
+  place: {type: String, defaultValue: ''},
   room: {type: String, optional: true}, //undefined
 
   datesAndTimes: {type: Array},
@@ -48,8 +48,8 @@ Activities.schema = new SimpleSchema({
     
   }),
 
-  practicalInfo: {type: String, optional: true}, // null
-  internalInfo: {type: String, optional: true}, // null
+  practicalInfo: {type: String, defaultValue: ''}, // null
+  internalInfo: {type: String, defaultValue: ''}, // null
 
   isSentForReview: {type: Boolean},
   isPublicActivity: {type: Boolean, optional: true},
