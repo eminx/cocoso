@@ -57,13 +57,13 @@ const EditWork = lazy(() => import('./works/EditWork'));
 const ProfileContainer = lazy(() => import('./profile/ProfileContainer'));
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
 const MemberPublic = lazy(() => import('./members/Member'));
-const SignupPage = lazy(() => import('../account-manager/SignupPage'));
-const LoginPage = lazy(() => import('../account-manager/LoginPage'));
+const SignupPage = lazy(() => import('./auth/SignupPage'));
+const LoginPage = lazy(() => import('./auth/LoginPage'));
 const ForgotPasswordPage = lazy(() =>
-  import('../account-manager/ForgotPasswordPage')
+  import('./auth/ForgotPasswordPage')
 );
 const ResetPasswordPage = lazy(() =>
-  import('../account-manager/ResetPasswordPage')
+  import('./auth/ResetPasswordPage')
 );
 
 // admin
