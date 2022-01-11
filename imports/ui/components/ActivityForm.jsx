@@ -15,7 +15,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 
-import { editorFormats, editorModules } from '../constants/quillConfig';
+import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
 import FormField from '../components/FormField';

@@ -24,7 +24,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
-import { userMenu } from '../../constants/general';
+import { userMenu } from '../../@/constants/general';
 
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);

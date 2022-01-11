@@ -4,7 +4,7 @@ import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
 
 import FormField from '../../components/FormField';
-import { editorFormats, editorModules } from '../../constants/quillConfig';
+import { editorFormats, editorModules } from '../../@/constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {
   const { control, formState, handleSubmit, register } = useForm({

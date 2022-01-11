@@ -11,7 +11,7 @@ import {
 import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
-import { editorFormats, editorModules } from '../constants/quillConfig';
+import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import FileDropper from '../components/FileDropper';
 import FormField from '../components/FormField';
 

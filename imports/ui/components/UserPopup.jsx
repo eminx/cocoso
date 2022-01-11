@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
-import { userMenu, adminMenu } from '../constants/general';
+import { userMenu, adminMenu } from '../@/constants/general';
 
 function UserPopup({ currentUser }) {
   if (!currentUser) {

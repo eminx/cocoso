@@ -12,7 +12,7 @@ import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
-import { getHslValuesFromLength } from '../constants/colors';
+import { getHslValuesFromLength } from '../@/constants/colors';
 import { StateContext } from '../LayoutContainer';
 
 const publicSettings = Meteor.settings.public;

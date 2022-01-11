@@ -17,7 +17,7 @@ import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
 import { message } from '../../components/message';
 import { call } from '../../@/shared';
-import { getHslValuesFromLength } from '../../constants/colors';
+import { getHslValuesFromLength } from '../../@/constants/colors';
 
 const publicSettings = Meteor.settings.public;
 

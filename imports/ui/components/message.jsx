@@ -10,7 +10,7 @@ import {
   createStandaloneToast,
 } from '@chakra-ui/react';
 
-import { chakraTheme } from '../constants/theme';
+import { chakraTheme } from '../@/constants/theme';
 
 const timeOutTime = 5;
 

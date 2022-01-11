@@ -11,7 +11,7 @@ import ResourcesForCombo from '../../components/ResourcesForCombo';
 import { message } from '../../components/message';
 import { call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
-import { adminMenu } from '../../constants/general';
+import { adminMenu } from '../../@/constants/general';
 import ResourceForm from '../../components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
 import Resources from '../../../api/resources/resource';

@@ -7,7 +7,7 @@ import {
   defaultMainColor, 
   defaultMenu, 
   defaultEmails 
-} from '../../ui/constants/general';
+} from '../../ui/@/constants/general';
 
 const username =  'ilkergonenc';
 const email =     'ilkergonenc@gmail.com';

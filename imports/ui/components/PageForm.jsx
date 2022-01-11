@@ -3,7 +3,7 @@ import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 
-import { editorFormats, editorModules } from '../constants/quillConfig';
+import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import FormField from '../components/FormField';
 
 const PageForm = ({ defaultValues, onSubmit }) => {

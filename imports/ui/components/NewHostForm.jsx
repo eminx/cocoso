@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
-import { hostFields } from '../constants/general';
+import { hostFields } from '../@/constants/general';
 import FormField from './FormField';
 
 function NewHostForm({ defaultValues, onSubmit }) {

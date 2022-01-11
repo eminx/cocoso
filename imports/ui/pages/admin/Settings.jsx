@@ -26,7 +26,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../@/shared';
-import { adminMenu } from '../../constants/general';
+import { adminMenu } from '../../@/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
