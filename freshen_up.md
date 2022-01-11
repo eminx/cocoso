@@ -30,13 +30,14 @@ This branch focus on:
 both skeleton and skeleton-api branches were focused on folder structure 
 and for ui there is also some organisation needed 
 
-`
+```
   ui/
     components/                # all reusable components in the application
                                # can be split by domain if there are many
     layouts/                   # wrapper components for behaviour and visuals
     pages/                     # entry points for rendering used by the router
-`
+```
+
 
 more details: https://guide.meteor.com/structure.html#javascript-structure
 
