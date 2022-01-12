@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 
-import { StateContext } from '../LayoutContainer';
-import Template from '../components/Template';
+import { StateContext } from '../../LayoutContainer';
+import Template from '../../components/Template';
 import { Login } from './index';
-import { loginWithPassword } from './@/shared';
+import { loginWithPassword } from '../../@/shared';
 
 function LoginPage() {
   const { currentUser } = useContext(StateContext);

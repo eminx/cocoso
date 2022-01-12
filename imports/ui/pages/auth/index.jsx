@@ -13,7 +13,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import FormField from '../components/FormField';
+import FormField from '../../components/FormField';
 import {
   loginModel,
   signupModel,

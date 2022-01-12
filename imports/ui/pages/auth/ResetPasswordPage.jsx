@@ -9,11 +9,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import Template from '../components/Template';
+import Template from '../../components/Template';
 import { ResetPassword } from './index';
-import { StateContext } from '../LayoutContainer';
-import { call } from '../@/shared';
-import { message } from '../components/message';
+import { StateContext } from '../../LayoutContainer';
+import { call } from '../../@/shared';
+import { message } from '../../components/message';
 
 const ResetPasswordPage = ({ history, match }) => {
   const { currentUser } = useContext(StateContext);
