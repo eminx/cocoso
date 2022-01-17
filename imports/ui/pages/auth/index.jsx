@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
+
 const Joi = require('joi');
+
 import {
   Box,
   Button,
@@ -23,6 +25,9 @@ import {
   emailSchema,
   passwordSchema,
 } from './account.helpers';
+
+const passwordHelperText =
+  'Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number';
 
 const Login = ({ onSubmit }) => {
   const { formState, handleSubmit, register } = useForm({
@@ -86,7 +91,7 @@ const Signup = ({ onSubmit }) => {
 
         <FormField
           errorMessage={errors.password?.message}
-          helperText="Notice>minimum 8 characters"
+          helperText={passwordHelperText}
           isInvalid={errors.password}
           label="Password"
         >
@@ -156,7 +161,7 @@ const ResetPassword = ({ onResetPassword }) => {
       <VStack spacing="6">
         <FormField
           errorMessage={errors.password?.message}
-          helperText="Minimum 8 characters, including at least one letter and number"
+          helperText={passwordHelperText}
           isInvalid={errors.password}
           label="Password"
         >
