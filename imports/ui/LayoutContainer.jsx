@@ -28,6 +28,7 @@ import {
   Text,
   Textarea,
   VStack,
+  Wrap,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
@@ -286,10 +287,10 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   const isPage = pathname.substring(0, 5) === '/page';
 
   return (
-    <Box mb="8">
+    <Box mb="4">
       <ScreenClassRender
         render={(screenClass) => {
-          const large = ['lg', 'xl', 'xxl'].includes(screenClass);
+          const isMobile = ['xs'].includes(screenClass);
 
           return (
             <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
@@ -298,9 +299,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                   marginLeft: 0,
                   marginRight: 0,
                   marginBottom: 12,
-                  alignItems: 'center',
+                  marginTop: 12,
+                  alignItems: 'flex-start',
                 }}
-                alignItems="center"
               >
                 <Col xs={3} style={{ paddingLeft: 0 }}>
                   <Link to="/">
@@ -317,11 +318,14 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                   xs={6}
                   style={{ display: 'flex', justifyContent: 'center' }}
                 >
-                  <Menu
-                    currentHost={currentHost}
-                    large={large}
-                    history={history}
-                  />
+                  {!isMobile && (
+                    <Menu
+                      currentHost={currentHost}
+                      isMobile={false}
+                      screenClass={screenClass}
+                      history={history}
+                    />
+                  )}
                 </Col>
                 <Col xs={3} style={{ paddingRight: 0 }}>
                   <Flex justify="flex-end">
@@ -329,6 +333,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
                   </Flex>
                 </Col>
               </Row>
+              {isMobile && (
+                <Menu currentHost={currentHost} isMobile history={history} />
+              )}
             </Container>
           );
         }}
@@ -337,7 +344,7 @@ const Header = ({ currentUser, currentHost, title, history }) => {
   );
 };
 
-const Menu = ({ currentHost, large, history }) => {
+const Menu = ({ currentHost, isMobile, screenClass, history }) => {
   if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
     return null;
   }
@@ -368,9 +375,11 @@ const Menu = ({ currentHost, large, history }) => {
     return isCurrentPage(item.name);
   });
 
-  if (large) {
+  console.log(screenClass);
+
+  if (['lg', 'xl', 'xxl'].includes(screenClass)) {
     return (
-      <HStack>
+      <Wrap align="center" pt="lg" spacing="4">
         {menuItems.map((item) => (
           <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
@@ -379,37 +388,41 @@ const Menu = ({ currentHost, large, history }) => {
                   ? '1px solid #010101'
                   : 'none'
               }
-              m="1"
+              mx="1"
               textTransform="capitalize"
             >
               {item.label}
             </Text>
           </Box>
         ))}
-      </HStack>
+      </Wrap>
     );
   }
 
   return (
-    <CMenu placement="bottom" closeOnSelect>
-      <MenuButton>
-        <HStack>
-          <Text textTransform="capitalize">
-            {activeMenuItem ? activeMenuItem.label : 'Menu'}
-          </Text>
-          <ChevronDownIcon />
-        </HStack>
-      </MenuButton>
-      <MenuList>
-        {menuItems.map((item) => (
-          <MenuItem key={item.label} onClick={() => handleClick(item)}>
-            {item.label}
-          </MenuItem>
-        ))}
-      </MenuList>
-    </CMenu>
+    <Box align="center">
+      <CMenu placement="bottom" closeOnSelect>
+        <MenuButton>
+          <HStack>
+            <Text textTransform="capitalize">
+              {activeMenuItem ? activeMenuItem.label : 'Menu'}
+            </Text>
+            <ChevronDownIcon />
+          </HStack>
+        </MenuButton>
+        <MenuList>
+          {menuItems.map((item) => (
+            <MenuItem key={item.label} onClick={() => handleClick(item)}>
+              {item.label}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </CMenu>
+    </Box>
   );
 };
+
+const MobileMenu = ({}) => {};
 
 export default withTracker((props) => {
   const hostSub = Meteor.subscribe('currentHost');
