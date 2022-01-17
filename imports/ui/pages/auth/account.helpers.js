@@ -1,5 +1,7 @@
 const Joi = require('joi');
 
+const passwordErrorMessage = 'Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters'
+
 // REGEX
 const regexPassword = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
 
@@ -34,7 +36,7 @@ const emailSchema = {
 };
 
 const passwordSchema = {
-  password: Joi.string().pattern(new RegExp(regexPassword)),
+  password: Joi.string().pattern(new RegExp(regexPassword)).message(passwordErrorMessage),
 };
 
 export {
