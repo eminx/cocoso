@@ -1,0 +1,26 @@
+actions:
+  create: New
+  update: Edit
+  remove: Delete
+  submit: Confirm
+  send: Send
+  cancel: Cancel
+  close: Close
+  reset: Reset
+
+loading:
+  default: loading ...
+
+feedback: 
+  label: Give Feedback
+  form:
+    email: 
+      label: Your email address
+    subject: 
+      label: Subject
+      select:
+        suggest: Suggestion
+        bug: Bug
+        compliment: Compliment
+    details:
+      label: Details
