@@ -56,8 +56,8 @@ Activities.schema = new SimpleSchema({
     
   }),
 
-  practicalInfo: {type: String, defaultValue: ''}, // null
-  internalInfo: {type: String, defaultValue: ''}, // null
+  practicalInfo: {type: String, optional: true}, // null
+  internalInfo: {type: String, optional: true}, // null
 
   isSentForReview: {type: Boolean},
   isPublicActivity: {type: Boolean, optional: true},
