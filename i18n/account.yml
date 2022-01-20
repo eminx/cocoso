@@ -1,0 +1,54 @@
+actions:
+  register: Signup
+  login: Login
+  logout: Logout
+  forgot: Forgot your password?
+  reset: Reset your password
+  remove: Delete Account
+
+login:
+  labels:
+    title: Login to Your Account
+    subtitle: Don't have an account? 
+  form:
+    username:
+      label: Username or Email address
+    password:
+      label: Password
+
+signup:
+  labels:
+    title: Register New Account
+    subtitle: Have an account?
+  form:
+    username:
+      label: Username
+    email:
+      label: Email address
+    password:
+      label: Password
+
+password:
+  labels:
+    title: Reset Password
+    subtitle: If you forgot your password, reset it via a link sent to your email.
+  form:
+    email:
+      label: Type your email please
+
+profile:
+  labels:
+    info: Personal Info
+    avatar: Avatar
+  form:
+    firstname:
+      label: First name
+    lastname:
+      label: Last name
+    bio:
+      label: Bio
+    contact:
+      label: Contact Info
+  message:
+    role: You as {{username}} are part of this organisation with the {{role}} role
+
