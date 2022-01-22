@@ -15,6 +15,14 @@ login:
       label: Username or Email address
     password:
       label: Password
+  messages:
+    error:
+      username: User not found
+      password: Incorrect password
+    success: You are successfully logged in
+
+
+
 
 signup:
   labels:
@@ -23,10 +31,13 @@ signup:
   form:
     username:
       label: Username
+      helper: Minimum 4 characters, only lowercase letters and numbers
     email:
       label: Email address
     password:
       label: Password
+      helper: Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number
+      info: Your password is encrypted in the database.
 
 password:
   labels:

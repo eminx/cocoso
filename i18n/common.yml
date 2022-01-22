@@ -11,6 +11,10 @@ actions:
 loading:
   default: loading ...
 
+validations:
+  required: {{ field }} is not allowed to be empty
+  email: {{ field }} must be a valid email
+
 feedback: 
   label: Give Feedback
   form:

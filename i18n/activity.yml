@@ -1,5 +1,8 @@
-activity:
-  form_title: Create a New Activity
+label:
+  new: Create a New Activity
+  edit: Edit Activity
+
+form:
   switches:
     public: Public Event
     exclusive: Exclusive Activity (Others cannot book)
@@ -8,9 +11,9 @@ activity:
     label: Resource
     placeholder: Select resource to book
   occurences:
-    multiple_days: Multiple Days
     days:
       single: Day
+      multiple: Multiple Days
       start: Start day
       finish: Finish day
     time:
@@ -37,4 +40,18 @@ activity:
   image:
     label: Image
     helper: If you want to replace it with another one, click on the image to reopen the file picker
-  submit: Confirm
+
+
+message:
+  registered_email: Email already registered. Please update instead.
+  register_notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
+  register_attendance: You have just successfully registered your attendance. Welcome!
+  update_attendance: You have successfully updated your RSVP
+  remove_attendance: You have successfully removed your registration
+  register_disabled: 
+    true: RSVP disabled. Please check the practical information.
+    false: Please click and open the date to RSVP
+  capacity_full_by_you: Congrats! You just filled the last space!
+  cancelation:
+    found: Now please continue
+    notFound: Please enter the details of your RSVP
