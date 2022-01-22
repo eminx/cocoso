@@ -1,0 +1,37 @@
+actions:
+  create: Yeni
+  update: Güncelle
+  remove: Sil
+  submit: Kaydet
+  send: Gönder
+  cancel: İptal
+  close: Kapat
+  reset: Sıfırla
+
+loading:
+  default: Yükleniyor ...
+
+validations:
+  required: '{{ field }} is not allowed to be empty'
+  email: '{{ field }} must be a valid email'
+  min: '{{ field }} has to be at least {{ min }} characters'
+
+messages:
+  success:
+    create: '{{ domain }} başarıyla oluşturuldu'
+    update: '{{ domain }} başarıyla güncellendi'
+    remove: '{{ domain }} başarıyla silindi'
+
+feedback: 
+  label: Geri Bildirim
+  form:
+    email: 
+      label: Email adresin
+    subject: 
+      label: Konu
+      select:
+        suggest: Tavsiye
+        bug: Hata
+        compliment: Övgü
+    details:
+      label: Detaylar
