@@ -12,11 +12,18 @@ loading:
   default: loading ...
 
 validations:
-  required: {{ field }} is not allowed to be empty
-  email: {{ field }} must be a valid email
+  required: '{{ field }} is not allowed to be empty'
+  email: '{{ field }} must be a valid email'
+  min: '{{ field }} has to be at least {{ min }} characters'
+
+messages:
+  success:
+    create: '{{ domain }} succesfully created'
+    update: '{{ domain }} succesfully updated'
+    remove: '{{ domain }} succesfully deleted'
 
 feedback: 
-  label: Give Feedback
+  label: Geri Bildirim
   form:
     email: 
       label: Your email address

@@ -34,6 +34,8 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
 
+import { Trans, useTranslation } from 'react-i18next';
+
 export const StateContext = React.createContext(null);
 
 import UserPopup from './components/UserPopup';
@@ -125,6 +127,7 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [ t ] = useTranslation('common');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -218,7 +221,8 @@ function LayoutPage({
                   variant="ghost"
                   onClick={() => setShowFeedbackModal(true)}
                 >
-                  Give Feedback
+                  {/* Give Feedback */}
+                  <Trans i18nKey="feedback.label"></Trans>
                 </Button>
               </Center>
 

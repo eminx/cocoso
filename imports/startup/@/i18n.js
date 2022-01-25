@@ -4,12 +4,12 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-const defaultLang = 'en';
+const defaultLang = 'tr';
 
 const options = {
-  lng: 'en',
-  lang: 'en',
-  fallbackLng: 'en',
+  lng: defaultLang,
+  lang: defaultLang,
+  fallbackLng: defaultLang,
   supportedLngs: ['en', 'tr'],
   preload: ['en'],
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
