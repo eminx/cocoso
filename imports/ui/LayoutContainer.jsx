@@ -34,7 +34,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Container, Row, Col, ScreenClassRender } from 'react-grid-system';
 import { Helmet } from 'react-helmet';
 
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export const StateContext = React.createContext(null);
 
@@ -221,8 +221,7 @@ function LayoutPage({
                   variant="ghost"
                   onClick={() => setShowFeedbackModal(true)}
                 >
-                  {/* Give Feedback */}
-                  <Trans i18nKey="feedback.label"></Trans>
+                  {t('feedback.label')}
                 </Button>
               </Center>
 
@@ -232,18 +231,18 @@ function LayoutPage({
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>Give Feedback</ModalHeader>
+                  <ModalHeader>{t('feedback.label')}</ModalHeader>
                   <ModalCloseButton />
                   <form action="https://formspree.io/f/xdopweon" method="POST">
                     <ModalBody>
                       <VStack spacing="6">
-                        <FormField label="Your email address">
+                        <FormField label={t('feedback.form.email.label')}>
                           <Input type="email" name="_replyto" />
                         </FormField>
 
-                        <FormField label="Subject">
+                        <FormField label={t('feedback.form.subject.label')}>
                           <Select name="subject">
-                            {['Suggestion', 'Bug', 'Compliment'].map(
+                            {[t('feedback.form.subject.select.suggest'), t('feedback.form.subject.select.bug'), t('feedback.form.subject.select.compliment')].map(
                               (option) => (
                                 <option key={option} value={option}>
                                   {option}
@@ -253,7 +252,7 @@ function LayoutPage({
                           </Select>
                         </FormField>
 
-                        <FormField label="Details">
+                        <FormField label={t('feedback.form.details.label')}>
                           <Textarea name="text" name="message" />
                         </FormField>
                       </VStack>
@@ -263,10 +262,10 @@ function LayoutPage({
                         mr={3}
                         onClick={() => setShowFeedbackModal(false)}
                       >
-                        Close
+                        {t('actions.close')}
                       </Button>
                       <Button colorScheme="blue" type="submit">
-                        Send
+                        {t('actions.send')}
                       </Button>
                     </ModalFooter>
                   </form>
