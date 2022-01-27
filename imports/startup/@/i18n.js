@@ -4,17 +4,17 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-const defaultLang = 'tr';
+const defaultLang = 'en';
 
 const options = {
   lng: defaultLang,
   lang: defaultLang,
   fallbackLng: defaultLang,
-  supportedLngs: ['en', 'tr'],
+  supportedLngs: ['en'],
   preload: ['en'],
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
   // have a common namespace used around the full app
-  ns: ['common', 'account', 'activity'],
+  ns: ['common', 'accounts', 'activities', 'pages'],
   defaultNS: 'common',
 
   // saveMissing: true,

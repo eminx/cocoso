@@ -3,9 +3,9 @@ actions:
   update: Edit
   remove: Delete
   submit: Confirm
-  send: Send
+  send: Gönder
   cancel: Cancel
-  close: Close
+  close: Kapat
   reset: Reset
 
 loading:
@@ -26,12 +26,12 @@ feedback:
   label: Geri Bildirim
   form:
     email: 
-      label: Your email address
+      label: Email adresiniz
     subject: 
-      label: Subject
+      label: Konu
       select:
-        suggest: Suggestion
-        bug: Bug
-        compliment: Compliment
+        suggest: Öneri
+        bug: Hata
+        compliment: İltifat
     details:
-      label: Details
+      label: Detaylar

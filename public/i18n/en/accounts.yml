@@ -1,10 +1,11 @@
 actions:
-  register: Signup
+  signup: Signup
   login: Login
   logout: Logout
   forgot: Forgot your password?
   reset: Reset your password
   remove: Delete Account
+  confirm: Confirm
 
 login:
   labels:
@@ -42,10 +43,14 @@ signup:
 password:
   labels:
     title: Reset Password
-    subtitle: If you forgot your password, reset it via a link sent to your email.
+    subtitle: 
+      forgot: If you forgot your password, reset it via a link sent to your email.
+      reset: Create your desired password
   form:
     email:
       label: Type your email please
+  messages:
+    success: Reset link is sent to your email.
 
 profile:
   labels:
