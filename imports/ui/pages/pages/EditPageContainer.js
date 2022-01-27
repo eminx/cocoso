@@ -1,4 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
+import { useTranslation } from 'react-i18next';
 import EditPage from './EditPage';
 import Pages from '../../../api/pages/page';
 import { parseTitle } from '../../@/shared';
@@ -17,11 +18,13 @@ export default EditPageContainer = withTracker((props) => {
   const pageTitles = pages ? pages.map((page) => page.title) : [];
 
   const currentUser = Meteor.user();
+  const [t] = useTranslation('pages');
 
   return {
     isLoading,
     pageData,
     pageTitles,
     currentUser,
+    t
   };
 })(EditPage);

@@ -21,11 +21,11 @@ class NewPage extends PureComponent {
   };
 
   handleSubmit = async (values) => {
-    const { currentUser, pageTitles } = this.props;
+    const { currentUser, pageTitles, t } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
-      message.error('This is not allowed');
+      message.error(t('messages.deny'));
       return false;
     }
 
@@ -36,13 +36,13 @@ class NewPage extends PureComponent {
         (title) => title.toLowerCase() === values.title.toLowerCase()
       )
     ) {
-      message.error('A page with this title already exists');
+      message.error(t('messages.exists'));
       return;
     }
 
     try {
       const result = await call('createPage', values);
-      message.success('New page successfully created');
+      message.success(t('messages.success.create'));
       this.setState({
         newPageId: parseTitle(result),
         isSuccess: true,
@@ -56,7 +56,7 @@ class NewPage extends PureComponent {
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageData, pageTitles } = this.props;
+    const { form, pageData, pageTitles, t } = this.props;
 
     let pageExists = false;
     if (
@@ -69,23 +69,23 @@ class NewPage extends PureComponent {
     }
 
     if (pageExists) {
-      callback('A page with this title already exists');
+      callback(t('messages.exists'));
     } else if (value.length < 4) {
-      callback('Title has to be at least 4 characters');
+      callback(t('form.title.valid'));
     } else {
       callback();
     }
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, t } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to be super admin to create a static page."
+            message={t('messages.admin')}
             type="error"
           />
         </div>
@@ -99,7 +99,7 @@ class NewPage extends PureComponent {
     }
 
     return (
-      <Template heading="Create a New Page">
+      <Template heading={t('labels.create')}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>

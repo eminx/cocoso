@@ -1,37 +1,30 @@
 actions:
-  create: Yeni
-  update: Güncelle
-  remove: Sil
-  submit: Kaydet
-  send: Gönder
-  cancel: İptal
-  close: Kapat
-  reset: Sıfırla
+  confirm: Confirm
+  delete: Delete this page
+  backTo: back to
+  
+labels:
+  create: Create a New Page
+  update: Edit this Page
 
-loading:
-  default: Yükleniyor ...
-
-validations:
-  required: '{{ field }} is not allowed to be empty'
-  email: '{{ field }} must be a valid email'
-  min: '{{ field }} has to be at least {{ min }} characters'
+form:
+  title:
+    label: Title
+    placeholder: Contrinuting
+    valid: Title has to be at least 4 characters
+  desc:
+    label: Description
+    placeholder: Contibuting guidelines are...
 
 messages:
+  deny: This is not allowed
+  admin: You have to be super admin to create a static page.
+  exists: A page with this title already exists
   success:
-    create: '{{ domain }} başarıyla oluşturuldu'
-    update: '{{ domain }} başarıyla güncellendi'
-    remove: '{{ domain }} başarıyla silindi'
+    create: New page successfully created
+    update: Page successfully updated
+    remove: The page is successfully deleted
 
-feedback: 
-  label: Geri Bildirim
-  form:
-    email: 
-      label: Email adresin
-    subject: 
-      label: Konu
-      select:
-        suggest: Tavsiye
-        bug: Hata
-        compliment: Övgü
-    details:
-      label: Detaylar
+modal: 
+  title: Confirm Delete
+  body: Are you sure you want to delete this page?
