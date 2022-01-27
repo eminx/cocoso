@@ -8,6 +8,7 @@ import {
   Link as CLink,
   Text,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import { ResetPassword } from './index';
@@ -16,6 +17,7 @@ import { call } from '../../@/shared';
 import { message } from '../../components/message';
 
 const ResetPasswordPage = ({ history, match }) => {
+  const [ t ] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
   const { token } = match.params;
 
@@ -38,20 +40,20 @@ const ResetPasswordPage = ({ history, match }) => {
       <Center>
         <Box w="xs">
           <Heading size="md" textAlign="center" mb="4">
-            Reset Your Password
+            {t('password.labels.title')}
           </Heading>
           <Text fontSize="lg" mb="6" textAlign="center">
-            Create your desired password
+            {t('password.labels.subtitle.reset')}
           </Text>
           <Box p="6" bg="white" mb="4">
             <ResetPassword onResetPassword={handleResetPassword} />
           </Box>
           <Flex justify="space-around" mt="4">
             <Link to="/login">
-              <CLink as="span">Login</CLink>
+              <CLink as="span">{t('actions.login')}</CLink>
             </Link>
             <Link to="/signup">
-              <CLink as="span">Signup</CLink>
+              <CLink as="span">{t('actions.signup')}</CLink>
             </Link>
           </Flex>
         </Box>

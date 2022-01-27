@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
@@ -8,6 +9,7 @@ import { Login } from './index';
 import { loginWithPassword } from './functions';
 
 function LoginPage() {
+  const [ t ] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
@@ -23,14 +25,14 @@ function LoginPage() {
       <Center>
         <Box w="xs">
           <Heading size="md" textAlign="center">
-            Login to Your Account
+            {t('login.labels.title')}
           </Heading>
           <Center pt="4" mb="4">
             <Text>
-              Don't have an account?{' '}
+              {t('login.labels.subtitle')}{' '}
               <Link to="/signup">
                 <CLink as="span">
-                  <b>Signup</b>
+                  <b>{t('actions.signup')}</b>
                 </CLink>
               </Link>
             </Text>
@@ -40,11 +42,11 @@ function LoginPage() {
           </Box>
           <Center>
             <Text>
-              Forgot your password?
+              {t('actions.forgot')}
               <br />
               <Link to="/forgot-password">
                 <CLink as="span">
-                  <b>Reset your password</b>
+                  <b>{t('actions.reset')}</b>
                 </CLink>
               </Link>
             </Text>

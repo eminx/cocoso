@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
@@ -8,6 +9,7 @@ import { Signup } from './index';
 import { createAccount } from './functions';
 
 function SignupPage() {
+  const [ t ] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
@@ -19,14 +21,14 @@ function SignupPage() {
       <Center>
         <Box>
           <Heading size="md" textAlign="center">
-            Register New Account
+            {t('signup.labels.title')}
           </Heading>
           <Center pt="4" mb="4">
             <Text>
-              Have an account?{' '}
+              {t('signup.labels.subtitle')}{' '}
               <Link to="/login">
                 <CLink as="span">
-                  <b>Login</b>
+                  <b>{t('actions.login')}</b>
                 </CLink>
               </Link>
             </Text>
