@@ -1,0 +1,24 @@
+settings: 
+  label: Settings
+  tabs:
+    logo: Logo
+    info: Org.Info
+    menu: Menu
+    cats: Categories
+
+
+members: 
+  label: Members
+  tabs:
+    all: All
+    participants: Participants
+    contributors: Contributors
+    admins: Admins
+
+
+resources: 
+  label: Resources
+
+  
+emails: 
+  label: Emails
