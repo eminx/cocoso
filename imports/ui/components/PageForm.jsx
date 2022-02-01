@@ -8,9 +8,8 @@ import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import FormField from '../components/FormField';
 
 const PageForm = ({ defaultValues, onSubmit }) => {
-  const [t] = useTranslation('pages');
-  const [tCommon] = useTranslation('common');
-  const tAction = (key) => tCommon(`actions.${key}`);
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
@@ -21,14 +20,14 @@ const PageForm = ({ defaultValues, onSubmit }) => {
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField label={t('form.title.label')}>
+          <FormField label={t('pages.form.title.label')}>
             <Input
               {...register('title', { required: true })}
-              placeholder={t('form.title.placeholder')}
+              placeholder={t('pages.form.title.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.desc.label')}>
+          <FormField label={t('pages.form.desc.label')}>
             <Controller
               control={control}
               name="longDescription"
@@ -38,7 +37,7 @@ const PageForm = ({ defaultValues, onSubmit }) => {
                   {...field}
                   formats={editorFormats}
                   modules={editorModules}
-                  placeholder={t('form.desc.placeholder')}
+                  placeholder={t('pages.form.desc.holder')}
                 />
               )}
             />
@@ -50,7 +49,7 @@ const PageForm = ({ defaultValues, onSubmit }) => {
               isLoading={isSubmitting}
               type="submit"
             >
-              {tAction('submit')}
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>
