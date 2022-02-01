@@ -52,6 +52,7 @@ emails:
     body: 
       label: Body
 
+# ADMIN STATIC PAGES
 pages:
   actions:
     delete: Delete this page
