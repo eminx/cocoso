@@ -1,22 +1,9 @@
-# ADMIN SETTINGS PAGE
-settings: 
-  label: Settings
-  tabs:
-    logo: Logo
-    info: Org.Info
-    menu: Menu
-    cats: Categories
-
-
-
 # ADMIN RESOURCES PAGE
 resources: 
   label: Resources
-  
   cards: 
     date: added by {{username}} on {{date}}
     ifCombo: Combo
-  
   form:
     combo:
       switch: 
@@ -50,7 +37,6 @@ pages:
   actions:
     delete: Delete this page
     backTo: back to
-    
   form:
     title:
       label: Title
