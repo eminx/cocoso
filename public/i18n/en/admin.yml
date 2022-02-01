@@ -1,3 +1,4 @@
+# ADMIN SETTINGS PAGE
 settings: 
   label: Settings
   tabs:
@@ -6,7 +7,7 @@ settings:
     menu: Menu
     cats: Categories
 
-
+# ADMIN MEMBERS PAGE
 members: 
   label: Members
   tabs:
@@ -15,10 +16,51 @@ members:
     contributors: Contributors
     admins: Admins
 
-
+# ADMIN RESOURCES PAGE
 resources: 
   label: Resources
-
   
+  cards: 
+    date: added by {{username}} on {{date}}
+    ifCombo: Combo
+  
+  form:
+    combo:
+      switch: 
+        label: Combo Resource
+      select: 
+        holder: Select option
+        helper: Please select multiple resources to create a combo resource
+    name: 
+      label: Name 
+      holder: Sound Studio
+    desc: 
+      label: Description 
+      holder: Sound Studio
+
+# ADMIN EMAILS PAGE
 emails: 
   label: Emails
+  form: 
+    subject: 
+      label: Subject
+      holder: Welcome
+    appeal:
+      label: Appeal
+      holder: Dear
+      addon: '@username'
+    body: 
+      label: Body
+
+pages:
+  actions:
+    delete: Delete this page
+    backTo: back to
+    
+  form:
+    title:
+      label: Title
+      holder: Contrinuting
+    desc:
+      label: Description
+      holder: Contibuting guidelines are...
