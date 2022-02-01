@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Trans } from 'react-i18next';
 import {
   Box,
   Button,
@@ -30,9 +31,10 @@ class Profile extends PureComponent {
   };
 
   handleSubmit = async (values) => {
+    const { tc } = this.props;
     try {
       await call('saveUserInfo', values);
-      message.success('Your data is successfully saved');
+      message.success(tc('message.success.save', { domain: 'Your data'}));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -58,6 +60,7 @@ class Profile extends PureComponent {
 
   uploadAvatar = async () => {
     const { uploadableAvatar } = this.state;
+    const { tc } = this.props;
 
     this.setState({
       isUploading: true,
@@ -73,7 +76,7 @@ class Profile extends PureComponent {
       this.setState({
         isUploading: false,
       });
-      message.success('Your avatar is successfully set');
+      message.success(tc('message.success.save', { domain: 'Your avatar'}));
     } catch (error) {
       this.setState({
         isUploading: false,
@@ -84,9 +87,10 @@ class Profile extends PureComponent {
   };
 
   deleteAccount = async () => {
+    const { tc } = this.props;
     try {
       await call('deleteAccount');
-      message.success('Your account is deleted');
+      message.success(tc('message.success.remove', { domain: 'You account'}));
       setTimeout(() => {
         window.location.reload();
       }, 400);
@@ -101,9 +105,10 @@ class Profile extends PureComponent {
   };
 
   setSelfAsParticipant = async () => {
+    const { t } = this.props;
     try {
       await call('setSelfAsParticipant');
-      message.success('You are successfully set as participant');
+      message.success(t('profile.message.participant'));
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -111,7 +116,7 @@ class Profile extends PureComponent {
   };
 
   render() {
-    const { currentUser, history } = this.props;
+    const { currentUser, history, t, tc } = this.props;
     const { role } = this.context;
 
     if (!currentUser) {
@@ -135,14 +140,21 @@ class Profile extends PureComponent {
         <Center mb="2" pad="1">
           {['admin', 'contributor', 'participant'].includes(role) ? (
             <Text textAlign="center" fontSize="sm">
-              You as <b>{currentUser.username}</b> are part of this organisation
-              with the <b>{role}</b> role
+              {/*
+                * You as <b>{currentUser.username}</b> are part of this organisation with the <b>{role}</b> role
+                *
+                * BOLD html tags implementation according to this documentation: 
+                * https://react.i18next.com/latest/trans-component
+                */}
+              <Trans i18nKey="accounts:profile.role" username={currentUser.username} role={role}>
+                You as <b>{ currentUser.username }</b> are part of this organisation with the <b>{ role }</b> role
+              </Trans>
             </Text>
           ) : (
             <Box>
-              <Text>You are not part of this organisation. </Text>
+              <Text>{t('profile.message.deny')}</Text>
               <Button onClick={() => this.setSelfAsParticipant()}>
-                Join as participant
+                {t('profile.label')}
               </Button>
             </Box>
           )}
@@ -151,7 +163,7 @@ class Profile extends PureComponent {
         <Center bg="white" p="4" mb="4">
           <Box mb="4">
             <Heading size="md" mb="2" textAlign="center">
-              Avatar
+              {t('profile.form.avatar.label')}
             </Heading>
             <Center style={{ overflow: 'hidden' }}>
               <Box w="120px" h="120px">
@@ -160,7 +172,7 @@ class Profile extends PureComponent {
                     uploadableAvatarLocal ||
                     (currentUser.avatar && currentUser.avatar.src)
                   }
-                  label="Click/Drag to upload"
+                  label={t('profile.form.avatar.fileDropper')}
                   round
                   height="100%"
                   imageFit="cover"
@@ -182,7 +194,7 @@ class Profile extends PureComponent {
                     })
                   }
                 >
-                  Remove
+                  {t('profile.form.avatar.remove')}
                 </Button>
 
                 <Button
@@ -193,7 +205,7 @@ class Profile extends PureComponent {
                   variant="solid"
                   onClick={() => this.uploadAvatar()}
                 >
-                  Confirm
+                  {tc('actions.submit')}
                 </Button>
               </HStack>
             )}
@@ -203,7 +215,7 @@ class Profile extends PureComponent {
         <Box bg="white" p="4">
           <Box>
             <Heading mb="1" mt="2" size="md" textAlign="center">
-              Personal Info
+              {t('profile.label')}
             </Heading>
             <Personal
               defaultValues={currentUser}
@@ -215,29 +227,26 @@ class Profile extends PureComponent {
         <Center>
           <VStack spacing="4" mt="4" p="4">
             <Button variant="outline" onClick={() => this.logout()}>
-              Log out
+              {t('actions.logout')}
             </Button>
             <Button
               colorScheme="red"
               size="sm"
               onClick={() => this.setState({ isDeleteModalOn: true })}
             >
-              Delete Account
+              {t('delete.action')}
             </Button>
           </VStack>
         </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
-          title="Are you sure?"
-          confirmText="Confirm Deletion"
+          title={t('delete.title')}
+          confirmText={t('delete.label')}
           onConfirm={this.deleteAccount}
           onCancel={() => this.setState({ isDeleteModalOn: false })}
         >
-          <Text>
-            You are about to permanently delete your entire account and all data
-            associated with that. This is an irreversible action. Are you sure?
-          </Text>
+          <Text>{t('delete.body')}</Text>
         </ConfirmModal>
       </Template>
     );

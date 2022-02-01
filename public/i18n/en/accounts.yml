@@ -4,8 +4,6 @@ actions:
   logout: Logout
   forgot: Forgot your password?
   reset: Reset your password
-  remove: Delete Account
-  confirm: Confirm
 
 login:
   labels:
@@ -46,14 +44,19 @@ password:
   form:
     email:
       label: Type your email please
-  messages:
-    success: Reset link is sent to your email.
+  message:
+    linkSend: Reset link is sent to your email
+    checkMail: Please check your email and see if you received a link to reset your password
+    reset: Your password is successfully reset. Now you can login
 
 profile:
-  labels:
-    info: Personal Info
-    avatar: Avatar
+  label: Personal Info
+
   form:
+    avatar:
+      label: Avatar
+      fileDropper: Click/Drag to upload
+      remove: Remove
     firstname:
       label: First name
     lastname:
@@ -62,6 +65,14 @@ profile:
       label: Bio
     contact:
       label: Contact Info
-  message:
-    role: You as {{username}} are part of this organisation with the {{role}} role
 
+  message:
+    role: You as <1>{{ username }}</1> are part of this organisation with the <3>{{ role }}</3> role
+    participant: You are successfully set as participant
+    deny: You are not part of this organisation. 
+
+delete:
+  action: Delete Account
+  label: Confirm Deletion
+  title: Are you sure?
+  body: You are about to permanently delete your entire account and all data associated with that. This is an irreversible action. Are you sure?
