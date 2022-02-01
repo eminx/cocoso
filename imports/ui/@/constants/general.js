@@ -1,14 +1,42 @@
 const userMenu = [
-  { label: 'My Profile', value: '/my-profile' },
-  { label: 'My Activities', value: '/my-activities' },
-  { label: 'My Works', value: '/my-works' },
+  { 
+    label: 'My Profile', 
+    key: 'profile', 
+    value: '/my-profile' 
+  },
+  { 
+    label: 'My Activities', 
+    key: 'activities', 
+    value: '/my-activities' 
+  },
+  { 
+    label: 'My Works', 
+    key: 'works', 
+    value: '/my-works' 
+  },
 ];
 
 const adminMenu = [
-  { label: 'Settings', value: '/admin/settings' },
-  { label: 'Members', value: '/admin/members' },
-  { label: 'Resources', value: '/admin/resources' },
-  { label: 'Emails', value: '/admin/emails' },
+  { 
+    label: 'Settings', 
+    key: 'settings', 
+    value: '/admin/settings' 
+  },
+  { 
+    label: 'Members', 
+    key: 'members', 
+    value: '/admin/members' 
+  },
+  { 
+    label: 'Resources', 
+    key: 'resources', 
+    value: '/admin/resources' 
+  },
+  { 
+    label: 'Emails', 
+    key: 'emails', 
+    value: '/admin/emails' 
+  },
 ];
 
 const hostFields = [

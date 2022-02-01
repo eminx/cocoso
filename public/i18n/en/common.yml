@@ -71,3 +71,19 @@ modals:
 
 contact:
   label: Contact
+
+# GUEST | MEMBER | ADMIN MENU LABELS
+menu:
+  guest: 
+    login: Login
+  member:
+    label: My
+    profile: My Profile
+    activities: My Activities
+    works: My Works
+  admin:
+    label: Admin
+    settings: Settings
+    members: Members
+    resources: Resources
+    emails: Emails
