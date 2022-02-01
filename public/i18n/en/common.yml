@@ -54,3 +54,7 @@ modals:
           compliment: Compliment
       details:
         label: Details
+
+
+contact:
+  label: Contact

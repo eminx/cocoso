@@ -1,6 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Badge,
@@ -49,26 +50,28 @@ function MemberPublic({
   const { currentHost } = useContext(StateContext);
   const [avatarModal, setAvatarModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [ t ] = useTranslation('members');
+  const [ tc ] = useTranslation('common');
 
-  const setAsParticipant = async (user) => {
-    try {
-      await call('setAsParticipant', user.id);
-      message.success(`${user.username} is now set back as a participant`);
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
-    }
-  };
+  // const setAsParticipant = async (user) => {
+  //   try {
+  //     await call('setAsParticipant', user.id);
+  //     message.success(`${user.username} is now set back as a participant`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
 
-  const setAsContributor = async (user) => {
-    try {
-      await call('setAsContributor', user.id);
-      message.success(`${user.username} is now set as a contributor`);
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason || error.error);
-    }
-  };
+  // const setAsContributor = async (user) => {
+  //   try {
+  //     await call('setAsContributor', user.id);
+  //     message.success(`${user.username} is now set as a contributor`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     message.error(error.reason || error.error);
+  //   }
+  // };
 
   const worksItem =
     currentHost &&
@@ -102,7 +105,7 @@ function MemberPublic({
             {member.bio && <Box mt="2">{renderHTML(member.bio)}</Box>}
 
             <Button variant="ghost" mt={2} onClick={onOpen}>
-              Contact
+              {tc('contact.label')}
             </Button>
           </Box>
         )
@@ -124,7 +127,7 @@ function MemberPublic({
       ) : (
         <Box w="100%" bg="gray.600" p="2" align="center">
           <Heading level={4} margin="small">
-            Nothing published just yet
+            {t('message.activity.empty')}
           </Heading>
           <Box direction="row" align="center">
             <Image
@@ -133,7 +136,7 @@ function MemberPublic({
             />
           </Box>
           <Text m="2">
-            <b>{member.username}</b> have not been very active so far
+            {t('message.activity.info', { username: member.username })}
           </Text>
         </Box>
       )}
@@ -152,7 +155,7 @@ function MemberPublic({
             <Box className="text-content" margin={{ bottom: 'medium' }}>
               {member.contactInfo
                 ? renderHTML(member.contactInfo)
-                : 'No contact info registered for this user'}
+                : t('message.contact.empty', { username: member.username })}
             </Box>
           </ModalBody>
         </ModalContent>
