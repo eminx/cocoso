@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-
+import { useTranslation } from 'react-i18next';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -23,6 +23,7 @@ function ConfirmModal({
   ...otherProps
 }) {
   const cancelRef = useRef();
+  const [tc] = useTranslation('common');
 
   return (
     <AlertDialog
@@ -43,7 +44,7 @@ function ConfirmModal({
           {!hideFooter && (
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onCancel}>
-                {cancelText || 'Cancel'}
+                {cancelText || tc('actions.cancel')}
               </Button>
               <Button
                 colorScheme="blue"
@@ -51,7 +52,7 @@ function ConfirmModal({
                 ml={3}
                 {...confirmButtonProps}
               >
-                {confirmText || 'Confirm'}
+                {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>
           )}

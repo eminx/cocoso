@@ -18,13 +18,15 @@ export default EditPageContainer = withTracker((props) => {
   const pageTitles = pages ? pages.map((page) => page.title) : [];
 
   const currentUser = Meteor.user();
-  const [t] = useTranslation('pages');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   return {
     isLoading,
     pageData,
     pageTitles,
     currentUser,
-    t
+    t,
+    tc
   };
 })(EditPage);

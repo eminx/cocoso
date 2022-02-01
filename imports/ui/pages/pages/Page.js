@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Center } from '@chakra-ui/react'
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
+import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
@@ -82,8 +83,8 @@ class Page extends PureComponent {
           role === 'admin' && (
             <Center p="2">
               <Link to="/new-page">
-              <Button as="span" colorScheme="green" variant="outline">
-                NEW
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+                <Trans i18nKey="common:actions.create" />
               </Button>
               </Link>
             </Center>
@@ -103,7 +104,9 @@ class Page extends PureComponent {
         {currentUser && role === 'admin' && (
           <Center p="2">
             <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-              <Button as="span" variant="ghost" size="sm">Edit</Button>
+              <Button as="span" variant="ghost" size="sm">
+                <Trans i18nKey="common:actions.update" />
+              </Button>
             </Link>
             </Center>
         )}

@@ -127,7 +127,7 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const [ t ] = useTranslation('common');
+  const [ tc ] = useTranslation('common');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -221,7 +221,7 @@ function LayoutPage({
                   variant="ghost"
                   onClick={() => setShowFeedbackModal(true)}
                 >
-                  {t('feedback.label')}
+                  {tc('modals.feedback.label')}
                 </Button>
               </Center>
 
@@ -231,18 +231,18 @@ function LayoutPage({
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>{t('feedback.label')}</ModalHeader>
+                  <ModalHeader>{tc('modals.feedback.label')}</ModalHeader>
                   <ModalCloseButton />
                   <form action="https://formspree.io/f/xdopweon" method="POST">
                     <ModalBody>
                       <VStack spacing="6">
-                        <FormField label={t('feedback.form.email.label')}>
+                        <FormField label={tc('modals.feedback.form.email.label')}>
                           <Input type="email" name="_replyto" />
                         </FormField>
 
-                        <FormField label={t('feedback.form.subject.label')}>
+                        <FormField label={tc('modals.feedback.form.subject.label')}>
                           <Select name="subject">
-                            {[t('feedback.form.subject.select.suggest'), t('feedback.form.subject.select.bug'), t('feedback.form.subject.select.compliment')].map(
+                            {[tc('modals.feedback.form.subject.select.suggest'), tc('modals.feedback.form.subject.select.bug'), tc('modals.feedback.form.subject.select.compliment')].map(
                               (option) => (
                                 <option key={option} value={option}>
                                   {option}
@@ -252,7 +252,7 @@ function LayoutPage({
                           </Select>
                         </FormField>
 
-                        <FormField label={t('feedback.form.details.label')}>
+                        <FormField label={tc('modals.feedback.form.details.label')}>
                           <Textarea name="text" name="message" />
                         </FormField>
                       </VStack>
@@ -262,10 +262,10 @@ function LayoutPage({
                         mr={3}
                         onClick={() => setShowFeedbackModal(false)}
                       >
-                        {t('actions.close')}
+                        {tc('actions.close')}
                       </Button>
                       <Button colorScheme="blue" type="submit">
-                        {t('actions.send')}
+                        {tc('actions.send')}
                       </Button>
                     </ModalFooter>
                   </form>

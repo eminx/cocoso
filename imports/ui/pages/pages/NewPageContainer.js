@@ -9,10 +9,10 @@ export default NewPageContainer = withTracker((props) => {
   Meteor.subscribe('pages');
   const pages = Pages ? Pages.find().fetch() : null;
   const pageTitles = pages ? pages.map((page) => page.title) : [];
-  const [t] = useTranslation('pages');
+  const [tc] = useTranslation('common');
   return {
     pageTitles,
     currentUser,
-    t
+    tc
   };
 })(NewPage);

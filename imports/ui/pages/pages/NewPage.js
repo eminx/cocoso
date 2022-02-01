@@ -21,11 +21,11 @@ class NewPage extends PureComponent {
   };
 
   handleSubmit = async (values) => {
-    const { currentUser, pageTitles, t } = this.props;
+    const { currentUser, pageTitles, tc } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
-      message.error(t('messages.deny'));
+      message.error(tc('message.access.deny'));
       return false;
     }
 
@@ -36,13 +36,13 @@ class NewPage extends PureComponent {
         (title) => title.toLowerCase() === values.title.toLowerCase()
       )
     ) {
-      message.error(t('messages.exists'));
+      message.error(tc('message.exists', { domain: 'page', property: 'title' }));
       return;
     }
 
     try {
       const result = await call('createPage', values);
-      message.success(t('messages.success.create'));
+      message.success(tc('message.success.create'));
       this.setState({
         newPageId: parseTitle(result),
         isSuccess: true,
@@ -56,7 +56,7 @@ class NewPage extends PureComponent {
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageData, pageTitles, t } = this.props;
+    const { form, pageData, pageTitles, tc } = this.props;
 
     let pageExists = false;
     if (
@@ -68,24 +68,24 @@ class NewPage extends PureComponent {
       pageExists = true;
     }
 
-    if (pageExists) {
-      callback(t('messages.exists'));
+    if (pageExists) {     
+      callback(tc('message.exists', { domain: 'page', property: 'title' }));
     } else if (value.length < 4) {
-      callback(t('form.title.valid'));
+      callback(tc('message.validation.min', { field: 'Page title', min: '4' }));
     } else {
       callback();
     }
   };
 
   render() {
-    const { currentUser, t } = this.props;
+    const { currentUser, tc } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message={t('messages.admin')}
+            message={tc('message.access.admin', { domain: 'static page' })}
             type="error"
           />
         </div>
@@ -99,7 +99,7 @@ class NewPage extends PureComponent {
     }
 
     return (
-      <Template heading={t('labels.create')}>
+      <Template heading={tc('labels.create', { domain: 'Page' })}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>
