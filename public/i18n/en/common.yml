@@ -1,3 +1,4 @@
+# ALL ACTION BUTTON LABELS
 actions:
   create: New
   update: Edit
@@ -8,30 +9,48 @@ actions:
   close: Close
   reset: Reset
 
-loading:
-  default: loading ...
+# ACTION PAGE TITLES
+labels:
+  create: Create a New {{ domain }}
+  update: Edit this {{ domain }}
 
-validations:
-  required: '{{ field }} is not allowed to be empty'
-  email: '{{ field }} must be a valid email'
-  min: '{{ field }} has to be at least {{ min }} characters'
+# ALL CLIENT-SIDE NOTIFICATIONS
+message:
+  loading: loading {{ something }} ...
 
-messages:
   success:
-    create: '{{ domain }} succesfully created'
-    update: '{{ domain }} succesfully updated'
-    remove: '{{ domain }} succesfully deleted'
+    create: '{{ domain }} is succesfully created'
+    update: '{{ domain }} is succesfully updated'
+    remove: '{{ domain }} is succesfully deleted'
 
-feedback: 
-  label: Give Feedback
-  form:
-    email: 
-      label: Your email address
-    subject: 
-      label: Subject
-      select:
-        suggest: Suggestion
-        bug: Bug
-        compliment: Compliment
-    details:
-      label: Details
+  access:
+    deny: You are not allowed
+    admin: You have to be super admin to create a {{ domain }}
+
+  exists: A {{ domain }} with this {{ property }} already exists
+  valid:
+    required: '{{ field }} is not allowed to be empty'
+    email: '{{ field }} must be a valid email'
+    min: '{{ field }} has to be at least {{ min }} characters'
+
+
+modals: 
+  confirm:
+    delete:
+      title: Confirm Delete
+      body: Are you sure you want to delete this {{ domain }}?
+
+  # FEEDBACK FORM
+  feedback: 
+    label: Give Feedback
+    form:
+      email: 
+        label: Your email address
+      subject: 
+        label: Subject
+        select:
+          suggest: Suggestion
+          bug: Bug
+          compliment: Compliment
+      details:
+        label: Details
