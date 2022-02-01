@@ -9,7 +9,7 @@ form:
     rsvp: RSVP disabled
   resource:
     label: Resource
-    placeholder: Select resource to book
+    holder: Select resource to book
   occurences:
     days:
       single: Day
@@ -23,20 +23,20 @@ form:
   details_title: Details
   title:
     label: Title
-    placeholder: Give it a title
+    holder: Give it a title
     helper: This is typicaly title of your event
   subtitle:
     label: Subtitle
-    placeholder: give it a subtitle (artist name etc.)
+    holder: give it a subtitle (artist name etc.)
     helper: i.e. artist, or some subtitle...
   description:
     label: Description
   place:
     label: Place
-    placeholder: Artistosphere
+    holder: Artistosphere
   address:
     label: Address
-    placeholder: 17th Street, Berlin...
+    holder: 17th Street, Berlin...
   image:
     label: Image
     helper: If you want to replace it with another one, click on the image to reopen the file picker

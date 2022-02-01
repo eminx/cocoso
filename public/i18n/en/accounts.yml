@@ -21,10 +21,7 @@ login:
       username: User not found
       password: Incorrect password
     success: You are successfully logged in
-
-
-
-
+    
 signup:
   labels:
     title: Register New Account
