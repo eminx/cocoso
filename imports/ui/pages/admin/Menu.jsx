@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -32,9 +33,11 @@ export default function Menu() {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
+  const [ t ] = useTranslation('hosts');
+  const [ tc ] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed</Alert>;
+    return <Alert>{tc('message.accesss.deny')}</Alert>;
   }
 
   useEffect(() => {
@@ -96,7 +99,7 @@ export default function Menu() {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
-      message.success('Settings are successfully saved');
+      message.success(tc('message.success.save', { domain: 'Settings' }));
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -111,18 +114,17 @@ export default function Menu() {
   return (
     <Box>
       <Heading as="h3" size="md">
-        Menu
+        {t('menu.label')}
       </Heading>
       <Tabs align="center">
         <TabList>
-          <Tab>Visibility & Labels</Tab>
-          <Tab>Order</Tab>
+          <Tab>{t('menu.tabs.menuitems.label')}</Tab>
+          <Tab>{t('menu.tabs.order.label')}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <Text mb="4" fontSize="sm">
-              Check/uncheck items for visibility, and label them as you prefer
-              in order to compose the menu
+              {t('menu.tabs.menuitems.info')}
             </Text>
             <MenuTable
               menu={localSettings.menu}
@@ -131,14 +133,15 @@ export default function Menu() {
             />
 
             <Flex justify="flex-end" py="4">
-              <Button onClick={handleMenuSave}>Confirm</Button>
+              <Button onClick={handleMenuSave}>
+                {tc('actions.submit')}
+              </Button>
             </Flex>
           </TabPanel>
 
           <TabPanel>
             <Text mb="4" size="sm">
-              Reorder items by dragging up and down, if you want to change the
-              menu display order
+              {t('menu.tabs.order.info')}
             </Text>
             <Box>
               {localSettings && localSettings.menu && (
@@ -161,7 +164,7 @@ export default function Menu() {
 
             <Flex justify="flex-end" my="4">
               <Button onClick={handleMenuSave} type="submit">
-                Confirm
+              {tc('actions.submit')}
               </Button>
             </Flex>
           </TabPanel>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -54,9 +55,12 @@ export default function Settings({ history }) {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
+  
+  const [ t ] = useTranslation('hosts');
+  const [ tc ] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed to be here</Alert>;
+    return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
   useEffect(() => {
@@ -79,13 +83,13 @@ export default function Settings({ history }) {
 
   const handleFormSubmit = async (values) => {
     if (!currentUser || role !== 'admin') {
-      message.error('This is not allowed');
+      message.error(tc('message.access.deny'));
       return;
     }
 
     try {
       call('updateHostSettings', values);
-      message.success('Settings successfully updated');
+      message.success(tc('message.success.update', { domain: t('settings.label') }));
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -130,7 +134,7 @@ export default function Settings({ history }) {
 
   const handleCategoryInputChange = (value) => {
     if (specialCh.test(value)) {
-      message.error('Special characters, except dash (-), are not allowed');
+      message.error(t('categories.message.denySpecialChars'));
     } else {
       setCategoryInput(value.toUpperCase());
     }
@@ -139,7 +143,7 @@ export default function Settings({ history }) {
   const setUploadableImage = (files) => {
     setUploading(true);
     if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
+      message.error(t('logo.message.fileDropper'));
       return;
     }
     const uploadableImage = files[0];
@@ -162,7 +166,7 @@ export default function Settings({ history }) {
       const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
       const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
-      message.success('Your logo is successfully set');
+      message.success(t('logo.message.success'));
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -170,29 +174,29 @@ export default function Settings({ history }) {
     }
   };
 
-  const confirmMainColor = async () => {
-    try {
-      await call('setMainColor', mainColor);
-      message.success('Main color is successfully set');
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
-    }
-  };
+  // const confirmMainColor = async () => {
+  //   try {
+  //     await call('setMainColor', mainColor);
+  //     message.success('Main color is successfully set');
+  //   } catch (error) {
+  //     console.error('Error uploading:', error);
+  //     message.error(error.reason);
+  //   }
+  // };
 
-  const handleSetMainColor = (color) => {
-    const newMainColor = {
-      hsl: {
-        h: color.hsl.h.toFixed(0),
-        s: 0.8,
-        l: 0.35,
-      },
-    };
-    setMainColor(newMainColor);
-  };
+  // const handleSetMainColor = (color) => {
+  //   const newMainColor = {
+  //     hsl: {
+  //       h: color.hsl.h.toFixed(0),
+  //       s: 0.8,
+  //       l: 0.35,
+  //     },
+  //   };
+  //   setMainColor(newMainColor);
+  // };
 
   const pathname = history && history.location.pathname;
-  const settings = currentHost && currentHost.settings;
+  // const settings = currentHost && currentHost.settings;
 
   const isImage =
     (localImage && localImage.uploadableImageLocal) ||
@@ -200,7 +204,7 @@ export default function Settings({ history }) {
 
   return (
     <Template
-      heading="Settings"
+      heading={t('settings.label')}
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
@@ -209,19 +213,19 @@ export default function Settings({ history }) {
     >
       <Tabs align="center">
         <TabList>
-          <Tab>Logo</Tab>
-          <Tab>Org.Info</Tab>
-          <Tab>Menu</Tab>
-          <Tab>Categories</Tab>
+          <Tab>{t('settings.tabs.logo')}</Tab>
+          <Tab>{t('settings.tabs.info')}</Tab>
+          <Tab>{t('settings.tabs.menu')}</Tab>
+          <Tab>{t('settings.tabs.cats')}</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
-                Logo
+                {t('logo.label')}
               </Heading>
-              <Text mb="3">Upload Your Logo</Text>
+              <Text mb="3">{t('logo.info')}</Text>
               <Center p="3">
                 <Box>
                   <FileDropper
@@ -246,9 +250,9 @@ export default function Settings({ history }) {
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
-                Organisation
+                {t('info.label')}
               </Heading>
-              <Text mb="3">Add/Edit Information About your Organisation</Text>
+              <Text mb="3">{t('info.info')}</Text>
               <SettingsForm
                 initialValues={localSettings}
                 onSubmit={handleFormSubmit}
@@ -287,9 +291,9 @@ export default function Settings({ history }) {
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
-                Work Categories
+                {t('categories.label')}
               </Heading>
-              <Text mb="3">You can set categories for work entries here</Text>
+              <Text mb="3">{t('categories.info')}</Text>
               <Center>
                 <Wrap p="1" spacing="2" mb="2">
                   {categories.map((category) => (
@@ -317,7 +321,9 @@ export default function Settings({ history }) {
                         handleCategoryInputChange(event.target.value)
                       }
                     />
-                    <Button type="submit">Add</Button>
+                    <Button type="submit">
+                      {tc('actions.add')}
+                    </Button>
                   </HStack>
                 </Center>
               </form>
