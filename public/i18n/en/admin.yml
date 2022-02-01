@@ -7,14 +7,7 @@ settings:
     menu: Menu
     cats: Categories
 
-# ADMIN MEMBERS PAGE
-members: 
-  label: Members
-  tabs:
-    all: All
-    participants: Participants
-    contributors: Contributors
-    admins: Admins
+
 
 # ADMIN RESOURCES PAGE
 resources: 

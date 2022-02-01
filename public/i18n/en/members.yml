@@ -1,0 +1,51 @@
+# ADMIN MEMBERS PAGE
+label: Members
+
+all: All
+
+joinedAt: joined {{ date }}
+
+roles:
+  participant: Participant
+  contributor: Contributor
+  admin: Admin
+  plural: 
+    participants: Participants
+    contributors: Contributors
+    admins: Admins
+
+form:
+  sort: 
+    date: Date joined
+    user: Username
+  holder: username or email
+
+actions:
+  contributor: Set as a Contributor
+  participant: Revert back as a Participant
+
+message:
+  success:
+    contributor: '{{ username }} is now set as a contributor'
+    participant: '{{ username }} is now set back as a participant'
+  contact:
+    empty: No contact info registered for {{ username }}
+  activity:
+    empty: Nothing published just yet 
+    info: '{{ username }} have not been very active so far'
+
+profile:
+  labels:
+    info: Personal Info
+    avatar: Avatar
+  form:
+    firstname:
+      label: First name
+    lastname:
+      label: Last name
+    bio:
+      label: Bio
+    contact:
+      label: Contact Info
+  message:
+    role: You as {{username}} are part of this organisation with the {{role}} role
