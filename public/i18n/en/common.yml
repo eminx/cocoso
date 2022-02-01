@@ -8,11 +8,23 @@ actions:
   cancel: Cancel
   close: Close
   reset: Reset
+  add: Add
 
 # ACTION PAGE TITLES
 labels:
   create: Create a New {{ domain }}
   update: Edit this {{ domain }}
+
+  forms:
+    title: Title
+    subtitle: Subtitle
+    desc:
+      default: Description
+      short: Short description
+      long: Long description
+    image: Image
+    images: Images
+  
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
