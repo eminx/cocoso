@@ -24,9 +24,7 @@ function ForgotPasswordPage() {
   const handleForgotPassword = async (email) => {
     try {
       await call('forgotPassword', email);
-      message.success(
-        'Please check your email and see if you received a link to reset your password'
-      );
+      message.success(t('password.message.checkMail'));
       setEmailSent(true);
     } catch (error) {
       message.error(error.reason);
@@ -52,7 +50,7 @@ function ForgotPasswordPage() {
 
           <Box bg="white" p="6">
             {emailSent ? (
-              <Text>{t('password.messages.success')}</Text>
+              <Text>{t('password.message.linkSend')}</Text>
             ) : (
               <ForgotPassword onForgotPassword={handleForgotPassword} />
             )}

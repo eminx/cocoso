@@ -24,7 +24,7 @@ const ResetPasswordPage = ({ history, match }) => {
   const handleResetPassword = async ({ password }) => {
     try {
       await call('resetPassword', token, password);
-      message.success('Your password is successfully reset. Now you can login');
+      message.success(t('password.message.reset'));
       history.push('/login');
     } catch (error) {
       message.error(error.reason);

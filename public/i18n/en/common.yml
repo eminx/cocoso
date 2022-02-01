@@ -22,6 +22,7 @@ message:
     create: '{{ domain }} is succesfully created'
     update: '{{ domain }} is succesfully updated'
     remove: '{{ domain }} is succesfully deleted'
+    save: '{{ domain }} is succesfully saved'
 
   access:
     deny: You are not allowed

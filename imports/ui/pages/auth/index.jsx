@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
-
-  
-const Joi = require('joi');
-
 import {
   Box,
   Button,
@@ -16,6 +12,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+const Joi = require('joi');
 
 import FormField from '../../components/FormField';
 import {
@@ -30,6 +27,7 @@ import {
 
 const Login = ({ onSubmit }) => {
   const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const { formState, handleSubmit, register } = useForm({
     defaultValues: loginModel,
   });
@@ -48,7 +46,7 @@ const Login = ({ onSubmit }) => {
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            {t('actions.confirm')}
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -58,6 +56,7 @@ const Login = ({ onSubmit }) => {
 
 const Signup = ({ onSubmit }) => {
   const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...usernameSchema,
     ...emailSchema,
@@ -108,7 +107,7 @@ const Signup = ({ onSubmit }) => {
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            {t('actions.confirm')}
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -118,6 +117,7 @@ const Signup = ({ onSubmit }) => {
 
 const ForgotPassword = ({ onForgotPassword }) => {
   const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...emailSchema,
   });
@@ -141,7 +141,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            {t('actions.confirm')}
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -151,6 +151,7 @@ const ForgotPassword = ({ onForgotPassword }) => {
 
 const ResetPassword = ({ onResetPassword }) => {
   const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...passwordSchema,
   });
@@ -175,7 +176,7 @@ const ResetPassword = ({ onResetPassword }) => {
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            {t('actions.confirm')}
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
