@@ -3,6 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
 import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
@@ -29,10 +30,12 @@ function ResourcesPage({ history, resources, isLoading }) {
   const [defaultValues, setDefaultValues] = useState(resourceModel);
   const [resourcesForCombo, setResourcesForCombo] = useState([]);
   const { currentUser, canCreateContent, role } = useContext(StateContext);
+  const [ t ] = useTranslation('admin');
+  const [ tc ] = useTranslation('common');
 
   const handleSubmit = async (values) => {
     if (!values.label || values.label.length < 3) {
-      message.error('Resource name is too short. Minimum 3 letters required');
+      message.error(tc('message.valid.min', { field: 'resource name', min: '3' }));
       return;
     }
     if (
@@ -42,20 +45,20 @@ function ResourcesPage({ history, resources, isLoading }) {
           resource.label.toLowerCase() === defaultValues.label.toLowerCase()
       )
     ) {
-      message.error('There already is a resource with this name');
+      message.error(tc('message.exists', { domain: 'resource', property: 'name' }));
       return;
     }
     try {
       if (isEditMode) {
         await call('updateResource', values.id, values);
-        message.success('Resource successfully updated');
+        message.success(tc('message.success.update', { domain: 'Resource' }));
       } else {
         const parsedValues = {
           ...values,
           resourcesForCombo,
         };
         await call('createResource', parsedValues);
-        message.success('Resource successfully added');
+        message.success(tc('message.success.create', { domain: 'Resource' }));
       }
       closeModal();
     } catch (error) {
@@ -80,7 +83,7 @@ function ResourcesPage({ history, resources, isLoading }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success('Resource successfully deleted');
+      message.success(tc('message.success.remove', { domain: 'Resource' }));
     } catch (error) {
       message.error(error.error || error.reason);
       console.log(error);
@@ -93,13 +96,13 @@ function ResourcesPage({ history, resources, isLoading }) {
     ...resource,
     actions: [
       {
-        content: 'Edit',
+        content: tc('actions.update'),
         handleClick: () => initiateEditDialog(resource),
         isDisabled:
           role !== 'admin' && resource.authorUsername !== currentUser.username,
       },
       {
-        content: 'Delete',
+        content: tc('actions.remove'),
         handleClick: () => deleteResource(resource._id),
         isDisabled:
           role !== 'admin' && resource.authorUsername !== currentUser.username,
@@ -137,7 +140,7 @@ function ResourcesPage({ history, resources, isLoading }) {
 
   return (
     <Template
-      heading="Resources"
+      heading={t('resources.label')}
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
@@ -152,8 +155,9 @@ function ResourcesPage({ history, resources, isLoading }) {
             onClick={() => {
               setShowModal(true);
             }}
+            textTransform="uppercase"
           >
-            NEW
+            {tc('actions.create')}
           </Button>
         </Center>
       )}
@@ -175,8 +179,11 @@ function ResourcesPage({ history, resources, isLoading }) {
               </Text>
               <Box py="2">
                 <Text as="div" fontSize="xs">
-                  added by {resource && resource.authorUsername} on{' '}
-                  {moment(resource.creationDate).format('Do MMM YYYY')} <br />
+                  {t('resources.cards.date', { 
+                    username: resource && resource.authorUsername, 
+                    date: moment(resource.creationDate).format('Do MMM YYYY')
+                  })}
+                  <br />
                 </Text>
               </Box>
             </Box>
