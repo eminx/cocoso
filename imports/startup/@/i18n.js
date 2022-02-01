@@ -14,7 +14,7 @@ const options = {
   preload: ['en'],
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
   // have a common namespace used around the full app
-  ns: ['common', 'accounts', 'activities', 'pages'],
+  ns: ['common', 'accounts', 'admin'],
   defaultNS: 'common',
 
   // saveMissing: true,
