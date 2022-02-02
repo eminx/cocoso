@@ -87,3 +87,7 @@ menu:
     members: Members
     resources: Resources
     emails: Emails
+
+plugins:
+  fileDropper:
+    helper: Drop an image or images; or alternatively click to open the file picker
