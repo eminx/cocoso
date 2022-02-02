@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box, Button, Center, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import i18n from 'i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
@@ -175,7 +176,7 @@ class EditWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success('Your work is successfully updated');
+      message.success(i18n.t('common:message.success.update', { domain: 'Your work'}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -218,7 +219,7 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
       history.push('/my-works');
-      message.success('Your work is successfully deleted');
+      message.success(i18n.t('common:message.success.delete', { domain: 'Your work'}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isLoading: false });
@@ -243,7 +244,7 @@ class EditWork extends PureComponent {
     } = this.state;
 
     if (!currentUser) {
-      return <Alert message="Not allowed" />;
+      return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
     if (isLoading || !values) {
@@ -251,7 +252,7 @@ class EditWork extends PureComponent {
     }
 
     if (currentUser._id !== values.authorId) {
-      return <Alert message="Not allowed" />;
+      return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
     const workRoute = `/${currentUser.username}/work/${workId}`;
@@ -292,7 +293,7 @@ class EditWork extends PureComponent {
             variant="ghost"
             onClick={this.showDeleteModal}
           >
-            Delete
+            {i18n.t('common:actions.remove')}
           </Button>
         </Center>
 
@@ -300,9 +301,9 @@ class EditWork extends PureComponent {
           visible={isDeleteModalOn}
           onConfirm={this.handleDeleteWork}
           onCancel={this.hideDeleteModal}
-          title="Confirm Delete"
+          title={i18n.t('common:modals.confirm.delete.title')}
         >
-          Are you sure you want to delete this item?
+          {i18n.t('common:modals.confirm.delete.body', { domain: 'work' })}
         </ConfirmModal>
       </Template>
     );

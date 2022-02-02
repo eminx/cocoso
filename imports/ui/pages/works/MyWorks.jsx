@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -23,6 +24,9 @@ function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
+
+  const [ t ] = useTranslation('members');
+  const [ tc ] = useTranslation('common');
 
   useEffect(() => {
     Meteor.call('getMyWorks', (error, respond) => {
@@ -53,7 +57,7 @@ function Works({ history }) {
 
   return (
     <Template
-      heading="My Works"
+      heading={t('works.label')}
       titleCentered
       leftContent={
         <Box p="2">
@@ -67,8 +71,9 @@ function Works({ history }) {
               colorScheme="green"
               variant="outline"
               onClick={() => history.push('/new-work')}
+              textTransform="uppercase"
             >
-              NEW
+              {tc('actions.create')}
             </Button>
           </Center>
         )
@@ -88,7 +93,7 @@ function Works({ history }) {
       ) : (
         <Alert
           margin="medium"
-          message="You have to create an account to launch your market"
+          message={t('works.message.guest')}
         />
       )}
     </Template>

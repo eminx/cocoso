@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box } from '@chakra-ui/react';
+import i18n from 'i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
@@ -120,7 +121,7 @@ class NewWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success('Your work is successfully created');
+      message.success(i18n.t('common:message.success.create', { domain: 'Your work'}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -162,7 +163,7 @@ class NewWork extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a contributor to create work"
+            message={i18n.t('members:message.access.contributor', { action: 'create worhk' })}
             type="error"
           />
         </div>
