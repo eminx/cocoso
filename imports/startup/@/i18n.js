@@ -10,8 +10,8 @@ const options = {
   lng: defaultLang,
   lang: defaultLang,
   fallbackLng: defaultLang,
-  supportedLngs: ['en'],
-  preload: ['en'],
+  supportedLngs: ['en', 'sv'],
+  preload: [defaultLang],
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
   // have a common namespace used around the full app
   ns: ['common', 'accounts', 'members', 'hosts', 'admin'],
@@ -39,6 +39,7 @@ if (process && !process.release) {
 // initialize if not already initialized
 if (!i18n.isInitialized) {
   i18n.init(options);
+  i18n.changeLanguage('sv');
 }
 
 export default i18n;

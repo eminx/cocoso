@@ -31,10 +31,10 @@ message:
   loading: loading {{ something }} ...
 
   success:
-    create: '{{ domain }} is succesfully created'
-    update: '{{ domain }} is succesfully updated'
-    remove: '{{ domain }} is succesfully deleted'
-    save: '{{ domain }} is succesfully saved'
+    create: '{{ domain }} is successfully created'
+    update: '{{ domain }} is successfully updated'
+    remove: '{{ domain }} is successfully deleted'
+    save: '{{ domain }} is successfully saved'
 
   access:
     deny: You are not allowed

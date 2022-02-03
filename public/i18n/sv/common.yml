@@ -1,0 +1,93 @@
+# ALL ACTION BUTTON LABELS
+actions:
+  create: Ny
+  update: Redigera
+  remove: Radera
+  submit: Confirm
+  send: Bekräfta
+  cancel: Annullera
+  close: Stänga
+  reset: Återställa
+  add: Lägg till
+
+# ACTION PAGE TITLES
+labels:
+  create: Skapa en Ny {{ domain }}
+  update: Redigera detta {{ domain }}
+
+  forms:
+    title: Title
+    subtitle: Subtitle
+    desc:
+      default: Description
+      short: Short description
+      long: Long description
+    image: Image
+    images: Images
+  
+
+# ALL CLIENT-SIDE NOTIFICATIONS
+message:
+  loading: läser in {{ something }} ...
+
+  success:
+    create: '{{ domain }} har skapats framgångsrikt'
+    update: '{{ domain }} har uppdaterats framgångsrikt'
+    remove: '{{ domain }} ihar raderats'
+    save: '{{ domain }} har sparats'
+
+  access:
+    deny: Du får inte
+    admin: Du måste vara superadmin för att skapa en {{ domain }}
+
+  exists: En {{ domain }} med denna {{ property }} finns redan
+  valid:
+    required: '{{ field }} får inte vara tom'
+    email: '{{ field }} måste vara en giltig e-postadress'
+    min: '{{ field }} måste bestå av minst {{ min }} tecken'
+
+# MODAL POP-UPS
+modals: 
+  confirm:
+    delete:
+      title: Bekräfta radering
+      body: Är du säker på att du vill ta bort denna {{ domain }}?
+
+  # FEEDBACK FORM
+  feedback: 
+    label: Ge feedback
+    form:
+      email: 
+        label: Din e-postadress
+      subject: 
+        label: Ämne
+        select:
+          suggest: Förslag
+          bug: Bugga
+          compliment: Komplimang
+      details:
+        label: Detaljer
+
+
+contact:
+  label: Kontakt
+
+# GUEST | MEMBER | ADMIN MENU LABELS
+menu:
+  guest: 
+    login: Logga in
+  member:
+    label: Min
+    profile: Min Profil
+    activities: Mina Aktiviteter
+    works: Mina Verk
+  admin:
+    label: Admin
+    settings: Inställningar
+    members: Medlemmar
+    resources: Resurser
+    emails: E-postmeddelanden
+
+plugins:
+  fileDropper:
+    helper: Släpp en bild eller bilder; eller alternativt klicka för att öppna filväljaren
