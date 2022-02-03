@@ -5,12 +5,12 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
 const defaultLang = 'en';
+const allLangs = [defaultLang, 'sv'];
 
 const options = {
   lng: defaultLang,
-  lang: defaultLang,
-  fallbackLng: defaultLang,
-  supportedLngs: ['en', 'sv'],
+  fallbackLng: allLangs,
+  supportedLngs: allLangs,
   preload: [defaultLang],
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
   // have a common namespace used around the full app
@@ -39,7 +39,6 @@ if (process && !process.release) {
 // initialize if not already initialized
 if (!i18n.isInitialized) {
   i18n.init(options);
-  i18n.changeLanguage('sv');
 }
 
 export default i18n;

@@ -40,6 +40,7 @@ export const StateContext = React.createContext(null);
 
 import UserPopup from './components/UserPopup';
 import FormField from './components/FormField';
+import ChangeLanguage from './components/ChangeLanguageMenu';
 import Hosts from '../api/@hosts/host';
 import { chakraTheme } from './@/constants/theme';
 
@@ -215,15 +216,15 @@ function LayoutPage({
             <Header {...headerProps} />
             <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-            <Flex bg="gray.100" justify="center" p="6">
-              <Center>
-                <Button
-                  variant="ghost"
-                  onClick={() => setShowFeedbackModal(true)}
-                >
-                  {tc('modals.feedback.label')}
-                </Button>
-              </Center>
+            <Flex bg="gray.100" justify="space-between" align="center" p="6">
+              <Button
+                variant="ghost"
+                onClick={() => setShowFeedbackModal(true)}
+              >
+                {tc('modals.feedback.label')}
+              </Button>
+
+              <ChangeLanguage />
 
               <Modal
                 isOpen={showFeedbackModal}
