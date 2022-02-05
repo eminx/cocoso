@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
@@ -47,6 +48,9 @@ function ActivityForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
+
+  const [ tc ] = useTranslation('common');
+  const [ t ] = useTranslation('activities');
 
   const addRecurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
@@ -106,12 +110,12 @@ function ActivityForm({
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Box mb="8">
           <Heading mb="4" size="md">
-            Resource
+            {t('form.resource.label')}
           </Heading>
           <FormField>
             <Select
               {...register('resource', { required: true })}
-              placeholder="Select resource to book"
+              placeholder={t('form.resource.holder')}
               variant="filled"
             >
               {resources.map((option, index) => {
@@ -136,7 +140,7 @@ function ActivityForm({
 
         <Box mb="8">
           <Heading mb="4" size="md">
-            Occurences*
+            {t('form.occurences.label')}
           </Heading>
 
           <Box mb="4">
@@ -182,28 +186,28 @@ function ActivityForm({
 
           <VStack spacing="6">
             <FormField
-              label="Title"
-              helperText="This is typicaly title of your event"
+              label={t('form.title.label')}
+              helperText={t('form.title.helper')}
             >
               <Input
                 {...register('title', { required: true })}
-                placeholder="Give it a title"
+                placeholder={t('form.title.holder')}
               />
             </FormField>
 
             {isPublicActivity && (
               <FormField
-                label="Subtitle"
-                helperText="i.e. artist, or some subtitle..."
+                label={t('form.subtitle.label')}
+                helperText={t('form.subtitle.helper')}
               >
                 <Input
                   {...register('subTitle', { required: true })}
-                  placeholder="give it a subtitle (artist name etc.)"
+                  placeholder={t('form.subtitle.holder')}
                 />
               </FormField>
             )}
 
-            <FormField label="Description">
+            <FormField label={t('form.desc.label')}>
               <Controller
                 control={control}
                 name="longDescription"
@@ -218,26 +222,26 @@ function ActivityForm({
             </FormField>
 
             {isPublicActivity && (
-              <FormField label="Place">
-                <Input {...register('place')} placeholder="Artistosphere" />
+              <FormField label={t('form.place.label')}>
+                <Input {...register('place')} placeholder={t('form.place.holder')} />
               </FormField>
             )}
 
             {isPublicActivity && (
-              <FormField label="Address">
+              <FormField label={t('form.address.label')}>
                 <Textarea
                   {...register('address')}
-                  placeholder="17th Street, Berlin..."
+                  placeholder={t('form.address.holder')}
                 />
               </FormField>
             )}
 
             {isPublicActivity && (
               <FormField
-                label="Image"
+                label={t('form.image.label')}
                 helperText={
                   (uploadableImageLocal || imageUrl) &&
-                  'If you want to replace it with another one, click on the image to reopen the file picker'
+                  t('form.image.helper')
                 }
               >
                 <Center>
@@ -254,7 +258,7 @@ function ActivityForm({
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isLoading={isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </form>

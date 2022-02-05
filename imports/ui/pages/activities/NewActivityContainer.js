@@ -3,6 +3,7 @@ import NewActivity from './NewActivity.jsx';
 import { parseActsWithResources } from '../../@/shared';
 import Resources from '../../../api/resources/resource.js';
 import Activities from '../../../api/activities/activity.js'; 
+import { useTranslation } from 'react-i18next';
 
 export default NewActivityContainer = withTracker((props) => {
   const resourcesSub = Meteor.subscribe('resources');
@@ -14,9 +15,14 @@ export default NewActivityContainer = withTracker((props) => {
 
   const allOccurences = parseActsWithResources(activitiesList, resources);
 
+  const [ t ] = useTranslation('activities');
+  const [ tc ] = useTranslation('common');
+
   return {
     allOccurences,
     currentUser,
     resources,
+    t,
+    tc
   };
 })(NewActivity);

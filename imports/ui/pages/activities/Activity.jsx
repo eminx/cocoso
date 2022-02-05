@@ -7,6 +7,7 @@ import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
   Accordion,
@@ -78,7 +79,7 @@ class Activity extends PureComponent {
   };
 
   handleRSVPSubmit = async (values, occurenceIndex) => {
-    const { activityData } = this.props;
+    const { activityData, t } = this.props;
 
     const isEmailAlreadyRegistered = activityData.datesAndTimes[
       occurenceIndex
@@ -87,7 +88,7 @@ class Activity extends PureComponent {
     );
 
     if (isEmailAlreadyRegistered) {
-      message.error('Email already registered. Please update instead.');
+      message.error(t('public.register.email'));
       return;
     }
 
@@ -98,9 +99,7 @@ class Activity extends PureComponent {
         values,
         occurenceIndex
       );
-      message.success(
-        'You have just successfully registered your attendance. Welcome!'
-      );
+      message.success(t('public.attandence.create'));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -123,7 +122,7 @@ class Activity extends PureComponent {
 
   findRsvpInfo = () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { activityData } = this.props;
+    const { activityData, t } = this.props;
     const theOccurence =
       activityData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
 
@@ -135,9 +134,7 @@ class Activity extends PureComponent {
     const foundAttendeeIndex = theOccurence.attendees.findIndex(attendeeFinder);
 
     if (!foundAttendee) {
-      message.error(
-        'Sorry we could not find your registration. Please double check the date and spellings, and try again'
-      );
+      message.error(t('public.register.notFound'));
       return;
     }
 
@@ -154,6 +151,7 @@ class Activity extends PureComponent {
 
   renderCancelRsvpModalContent = () => {
     const { rsvpCancelModalInfo } = this.state;
+    const { t } = this.props;
     if (!rsvpCancelModalInfo) {
       return;
     }
@@ -210,7 +208,7 @@ class Activity extends PureComponent {
 
   handleChangeRSVPSubmit = async (values) => {
     const { rsvpCancelModalInfo } = this.state;
-    const { activityData } = this.props;
+    const { activityData, t } = this.props;
 
     const parsedValues = {
       email: values.email,
@@ -227,7 +225,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
-      message.success('You have successfully updated your RSVP');
+      message.success(t('public.attandence.update'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -240,7 +238,7 @@ class Activity extends PureComponent {
 
   handleRemoveRSVP = async () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { activityData } = this.props;
+    const { activityData, t } = this.props;
 
     try {
       await call(
@@ -250,7 +248,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.attendeeIndex,
         rsvpCancelModalInfo.email
       );
-      message.success('You have successfully removed your registration');
+      message.success(t('public.attandence.remove'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -262,7 +260,7 @@ class Activity extends PureComponent {
   };
 
   renderDates = () => {
-    const { activityData, currentUser } = this.props;
+    const { activityData, currentUser, t } = this.props;
     const { capacityGotFullByYou } = this.state;
     const { canCreateContent } = this.context;
 
@@ -273,9 +271,11 @@ class Activity extends PureComponent {
     const yesterday = moment(new Date()).add(-1, 'days');
 
     <Text size="sm" mb="1">
-      {activityData.isRegistrationDisabled
-        ? 'RSVP disabled. Please check the practical information.'
-        : 'Please click and open the date to RSVP'}
+      {
+        activityData.isRegistrationDisabled
+        ? t('public.register.disabled.true')
+        : t('public.register.disabled.false')
+      }
     </Text>;
 
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
@@ -284,7 +284,7 @@ class Activity extends PureComponent {
           {activityData.isRegistrationDisabled &&
             activityData.isPublicActivity && (
               <Text size="sm" mb="1">
-                Registrations are disabled.
+                {t('public.register.disabled.info')}
               </Text>
             )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
@@ -323,7 +323,7 @@ class Activity extends PureComponent {
           <Box bg="white">
             {eventPast ? (
               <Box p="2">
-                <Text color="gray">This event has past</Text>
+                <Text color="gray">{t('public.past')}</Text>
               </Box>
             ) : (
               <Box>
@@ -334,7 +334,7 @@ class Activity extends PureComponent {
                     variant="ghost"
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
-                    Change/cancel existing registration
+                    {t('public.cancel.label')}
                   </Button>
                 </Center>
 
@@ -342,9 +342,8 @@ class Activity extends PureComponent {
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
                   <p>
-                    {capacityGotFullByYou &&
-                      'Congrats! You just filled the last space!'}
-                    Capacity is full now.
+                    {capacityGotFullByYou && t('public.capacity.fullByYou')}
+                    {t('public.capacity.full')}
                   </p>
                 ) : (
                   <RsvpForm
@@ -359,9 +358,9 @@ class Activity extends PureComponent {
             {canCreateContent && (
               <Box px="1">
                 <Heading mb="1" as="h4" size="sm">
-                  Attendees
+                  {t('public.attandence.label')}
                 </Heading>
-                <span>Only visible to registered members</span>
+                <span>{t('public.acceess.deny')}</span>
                 <div
                   style={{
                     paddingBottom: 12,
@@ -411,7 +410,7 @@ class Activity extends PureComponent {
   };
 
   isAdmin = () => {
-    const { activityData } = this.props;
+    const { activityData, t } = this.props;
     const { currentUser } = this.context;
     return (
       currentUser && activityData && currentUser._id === activityData.authorId
@@ -419,7 +418,7 @@ class Activity extends PureComponent {
   };
 
   removeNotification = (messageIndex) => {
-    const { activityData, currentUser } = this.props;
+    const { activityData, currentUser, t } = this.props;
     const shouldRun = currentUser.notifications.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
@@ -447,7 +446,7 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, currentUser, chatData, history } =
+    const { activityData, isLoading, currentUser, chatData, history, t } =
       this.props;
 
     if (!activityData || isLoading) {
@@ -570,24 +569,7 @@ class Activity extends PureComponent {
 
 Activity.contextType = StateContext;
 
-const fields = [
-  {
-    name: 'firstName',
-    label: 'First name',
-  },
-  {
-    name: 'lastName',
-    label: 'Last name',
-  },
-  {
-    name: 'email',
-    label: 'Email address',
-  },
-  // {
-  //   name: 'numberOfPeople',
-  //   label: 'Number of people',
-  // },
-];
+
 
 const initialValues = {
   firstName: '',
@@ -602,7 +584,25 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   });
 
   const { isDirty, isSubmitting } = formState;
-
+  const [ t ] = useTranslation('activities');
+  const fields = [
+    {
+      name: 'firstName',
+      label: t('public.register.form.name.first'),
+    },
+    {
+      name: 'lastName',
+      label: t('public.register.form.name.first'),
+    },
+    {
+      name: 'email',
+      label: t('public.register.form.name.first'),
+    },
+    // {
+    //   name: 'numberOfPeople',
+    //   label: 'Number of people',
+    // },
+  ];
   return (
     <Box bg="white" p="1" mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -612,7 +612,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               <Input {...register(field.name)} size="sm" />
             </FormField>
           ))}
-          <FormField label="Number of Attendees">
+          <FormField label={t('public.register.form.people.number')}>
             <NumberInput size="sm">
               <NumberInputField {...register('numberOfPeople')} />
             </NumberInput>
@@ -622,12 +622,16 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               colorScheme="green"
               isDisabled={isUpdateMode && !isDirty}
               isLoading={isSubmitting}
-              loadingText="Submitting"
+              loadingText={t('public.register.form.loading')}
               size="sm"
               type="submit"
               w="100%"
             >
-              {isUpdateMode ? 'Update' : 'Register'}
+              {
+                isUpdateMode 
+                ? t('public.register.form.actions.update') 
+                : t('public.register.form.actions.create') 
+              }
             </Button>
           </Box>
           {isUpdateMode && (
@@ -637,7 +641,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               variant="ghost"
               onClick={onDelete}
             >
-              Remove your registration
+              {t('public.register.form.actions.remove')}
             </Button>
           )}
         </Stack>
@@ -646,25 +650,26 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   );
 }
 
-function RsvpList({ attendees }) {
+function RsvpList({ attendees }) {  
+  const [ t ] = useTranslation('activities');
   return (
     <ReactTable
       data={attendees}
       columns={[
         {
-          Header: 'First name',
+          Header: t('public.register.form.name.first'),
           accessor: 'firstName',
         },
         {
-          Header: 'Last name',
+          Header: t('public.register.form.name.first'),
           accessor: 'lastName',
         },
         {
-          Header: 'People',
+          Header: t('public.register.form.people.label'),
           accessor: 'numberOfPeople',
         },
         {
-          Header: 'Email',
+          Header: t('public.register.form.email'),
           accessor: 'email',
         },
       ]}
