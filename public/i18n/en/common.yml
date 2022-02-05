@@ -39,6 +39,7 @@ message:
   access:
     deny: You are not allowed
     admin: You have to be super admin to create a {{ domain }}
+    contributor: You have to become a contributor to create {{ domain }}
 
   exists: A {{ domain }} with this {{ property }} already exists
   valid:
@@ -52,6 +53,7 @@ modals:
     delete:
       title: Confirm Delete
       body: Are you sure you want to delete this {{ domain }}?
+      yes: Yes, delete
 
   # FEEDBACK FORM
   feedback: 
@@ -90,4 +92,5 @@ menu:
 
 plugins:
   fileDropper:
+    single: Please drop only one file at a time.
     helper: Drop an image or images; or alternatively click to open the file picker

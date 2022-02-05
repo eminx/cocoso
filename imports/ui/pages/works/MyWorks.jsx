@@ -93,7 +93,7 @@ function Works({ history }) {
       ) : (
         <Alert
           margin="medium"
-          message={t('works.message.guest')}
+          message={t('message.guest')}
         />
       )}
     </Template>

@@ -35,6 +35,7 @@ message:
     info: '{{ username }} have not been very active so far'
   access:
     contributor: You have to become a contributor to {{ action }}
+  guest: You have to create an account to launch your market 
 
 profile:
   labels:
@@ -72,7 +73,4 @@ works:
     label: Additional info
     holder: A bottle costs...
   images:
-    label: Images ({{ count }})
-
-  message:
-    guest: You have to create an account to launch your market
+    label: Images ({{ count }})    
