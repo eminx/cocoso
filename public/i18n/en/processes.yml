@@ -4,6 +4,7 @@ labels:
   member: Members
   document: Documents
   date: Dates
+  invite: Manage Access
 
 tabs: 
   active: Active
@@ -105,3 +106,18 @@ confirm:
     title: Please confirm you want to make {{ admin }} the new admin.
     body: There can only be one admin at a time, so your admin priveleges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
 
+invite:
+  info: Please add data for the person you want to invite to the process
+  success: An email is sent and {{ name }} is successfully invited to the process
+  email:
+    label: email
+    holder: samuel@skogen.pm
+    already: This email address is already added
+    valid: Please enter a valid email
+  firstName:
+    label: first name
+    holder: Samuel
+    valid: Please enter a valid first name
+  submit: Send Invite
+
+    

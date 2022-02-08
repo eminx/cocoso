@@ -14,6 +14,7 @@ actions:
 labels:
   create: Create a New {{ domain }}
   update: Edit this {{ domain }}
+  remove: Remove
   all: All
   booked: booked
   process: Process

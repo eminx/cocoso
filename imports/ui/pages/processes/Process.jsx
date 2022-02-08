@@ -173,7 +173,7 @@ class Process extends Component {
         {isAdmin && process.isPrivate ? (
           <Flex align="flex-end" direction="row" p="4">
             <CLink onClick={this.handleOpenInviteManager} ml="4">
-              Manage Access
+              {t('labels.invite')}
             </CLink>
           </Flex>
         ) : (
@@ -945,11 +945,11 @@ class Process extends Component {
 
         {process && process.isPrivate && (
           <Drawer
-            title="Manage Access"
+            title={t('labels.invite')}
             isOpen={inviteManagerOpen}
             onClose={this.handleCloseInviteManager}
           >
-            <InviteManager process={process} />
+            <InviteManager process={process} t={t} />
           </Drawer>
         )}
       </div>
