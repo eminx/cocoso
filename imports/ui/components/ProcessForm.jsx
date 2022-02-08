@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import FileDropper from '../components/FileDropper';
@@ -26,16 +27,16 @@ const ProcessForm = ({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
+  const [ t ] = useTranslation('processes');
+  const [ tc ] = useTranslation('common');
+
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormField
-            label="Image"
-            helperText={
-              (uploadableImageLocal || imageUrl) &&
-              'If you want to replace it with another one, click on the image to reopen the file picker'
-            }
+            label={t('form.image.label')}
+            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
           >
             <Center>
               <FileDropper
@@ -46,21 +47,21 @@ const ProcessForm = ({
             </Center>
           </FormField>
 
-          <FormField label="Title">
+          <FormField label={t('form.title.label')}>
             <Input
               {...register('title')}
-              placeholder="Understanding Benjamin"
+              placeholder={t('form.title.holder')}
             />
           </FormField>
 
-          <FormField label="Subtitle">
+          <FormField label={t('form.subtitle.label')}>
             <Input
               {...register('readingMaterial')}
-              placeholder="Through Illuminations"
+              placeholder={t('form.subtitle.holder')}
             />
           </FormField>
 
-          <FormField label="Description">
+          <FormField label={t('form.desc.label')}>
             <Controller
               control={control}
               name="description"
@@ -74,7 +75,7 @@ const ProcessForm = ({
             />
           </FormField>
 
-          <FormField label="Capacity">
+          <FormField label={t('form.capacity.label')}>
             <NumberInput>
               <NumberInputField {...register('capacity')} />
             </NumberInput>
@@ -86,7 +87,7 @@ const ProcessForm = ({
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

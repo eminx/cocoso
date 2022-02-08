@@ -24,14 +24,6 @@ import { message, Alert } from '../../components/message';
 import { resizeImage, uploadImage } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
-const successCreation = () => {
-  message.success('Your process is successfully created');
-};
-
-const privateParagraph1 =
-    "Private processes are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.",
-  privateParagraph2 =
-    'You will be able to manage the invites after you create the process.';
 
 class NewProcess extends React.Component {
   state = {
@@ -51,6 +43,10 @@ class NewProcess extends React.Component {
     uploadableImageLocal: null,
     isCreating: false,
   };
+
+  successCreation = () => {
+    message.success('Your process is successfully created');
+  }
 
   handleFormChange = (value) => {
     const { formValues } = this.state;
@@ -171,14 +167,14 @@ class NewProcess extends React.Component {
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
-            message="You have to become a contributor to create a process."
+            message={tc('message.access.contributor', { domain: 'a process' })}
             type="error"
           />
         </div>
@@ -200,13 +196,13 @@ class NewProcess extends React.Component {
     }
 
     if (isSuccess) {
-      successCreation();
+      this.successCreation();
       return <Redirect to={`/process/${newProcessId}`} />;
     }
 
     const buttonLabel = isCreating
-      ? 'Creating your process...'
-      : 'Confirm and Create Process';
+      ? t('form.waiting')
+      : t('form.submit');
     const { title, description } = formValues;
     const isFormValid =
       formValues &&
@@ -215,7 +211,7 @@ class NewProcess extends React.Component {
       uploadableImageLocal;
 
     return (
-      <Template heading="Create a New Process">
+      <Template heading={tc('labels.create', { domain: 'Process' })}>
         <Box bg="white" p="6">
           <Popover trigger="hover">
             <PopoverTrigger>
@@ -227,7 +223,7 @@ class NewProcess extends React.Component {
                 />
                 <FormLabel htmlFor="email-alerts" ml="2" mb="0">
                   <Flex align="center">
-                    <Text fontWeight="bold">Private (invite-only)</Text>
+                    <Text fontWeight="bold">{t('form.private.label')}</Text>
                     <InfoIcon ml="2" />
                   </Flex>
                 </FormLabel>
@@ -235,12 +231,12 @@ class NewProcess extends React.Component {
             </PopoverTrigger>
             <PopoverContent>
               <PopoverCloseButton />
-              <PopoverHeader fontWeight="bold">Private Processes</PopoverHeader>
+              <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
               <PopoverBody>
                 <Text fontSize="md" mb="2">
-                  {privateParagraph1}
+                  {t('form.private.tooltip.P1')}
                 </Text>
-                <Text fontSize="md">{privateParagraph2}</Text>
+                <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
               </PopoverBody>
             </PopoverContent>
           </Popover>

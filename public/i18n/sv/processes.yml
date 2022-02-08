@@ -1,0 +1,34 @@
+labels: 
+  archived: Arkiverad
+  unarchived: Avarkiverad
+
+tabs: 
+  active: Aktiva
+  members: Mina Processer
+  archived: Arkiverad
+
+message:
+  archived: Processen har arkiverats
+  unarchived: Processen har avarkiverats
+
+form:
+  private:
+    label: Privat (endast för inbjudningar)
+    tooltip:
+      title: Privata Processer
+      P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
+      P2: Du kommer att kunna hantera inbjudningarna efter att du har skapat processen.
+  image:
+    label: Bild
+  title:
+    label: Titel
+    holder: Understanding Benjamin
+  subtitle:
+    label: Texta
+    holder: Through Illuminations
+  desc:
+    label: Beskrivning
+  capacity: 
+    label: Kapacitet
+  submit: Bekräfta och Skapa Process
+  waiting: Skapar din process...
