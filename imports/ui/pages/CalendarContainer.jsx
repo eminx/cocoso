@@ -1,7 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import Calendar from './Calendar';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+
 import { parseActsWithResources } from '../@/shared';
+import Calendar from './Calendar';
 
 import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';
@@ -21,6 +23,8 @@ const CalendarContainer = withTracker((props) => {
   const manuals = Documents ? Documents.find().fetch() : null;
 
   const allActivities = parseActsWithResources(activitiesList, resourcesList);
+
+  const [ tc ] = useTranslation('common');
 
   if (processesList) {
     processesList.forEach((process) => {
@@ -62,6 +66,7 @@ const CalendarContainer = withTracker((props) => {
     currentUser,
     resourcesList,
     manuals,
+    tc,
   };
 })(Calendar);
 

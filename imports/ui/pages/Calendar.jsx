@@ -93,10 +93,9 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, resourcesList, allActivities } = this.props;
+    const { isLoading, currentUser, resourcesList, allActivities, tc } = this.props;
     const { canCreateContent, currentHost, role } = this.context;
-    const { editActivity, calendarFilter, selectedActivity, isUploading } =
-      this.state;
+    const { editActivity, calendarFilter, selectedActivity, isUploading } =this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
       return (
@@ -164,8 +163,8 @@ class Calendar extends PureComponent {
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
-              <Button as="span" colorScheme="green" variant="outline">
-                NEW
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+                {tc('actions.create')}
               </Button>
             </Link>
           </Center>
@@ -179,7 +178,7 @@ class Calendar extends PureComponent {
                   alignSelf="center"
                   checkable
                   key="All"
-                  label="All"
+                  label={tc('labels.all')}
                   filterColor="#484848"
                   checked={calendarFilter === 'All'}
                   onClick={() => this.handleCalendarFilterChange('All')}
@@ -235,8 +234,8 @@ class Calendar extends PureComponent {
         <ConfirmModal
           visible={Boolean(selectedActivity)}
           title={selectedActivity && selectedActivity.title}
-          confirmText="Edit"
-          cancelText="Close"
+          confirmText={tc('actions.update')}
+          cancelText={tc('actions.close')}
           onConfirm={this.handleEditActivity}
           onCancel={this.handleCloseModal}
           confirmButtonProps={
@@ -256,7 +255,7 @@ class Calendar extends PureComponent {
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.authorName}
               </Text>{' '}
-              <Text as="span">booked</Text>{' '}
+              <Text as="span">{tc('labels.booked')}</Text>{' '}
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
               </Text>
@@ -292,8 +291,12 @@ class Calendar extends PureComponent {
                 >
                   {' '}
                   {!selectedActivity.isPrivateProcess &&
-                    `${selectedActivity.isProcess ? 'Process ' : 'Event '}
-                    Page`}
+                  `${
+                    selectedActivity.isProcess 
+                    ? tc('labels.process') 
+                    : tc('labels.event')
+                  } ${tc('labels.page')}`}
+                  
                 </Button>
               </Link>
             )}

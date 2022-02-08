@@ -14,6 +14,11 @@ actions:
 labels:
   create: Skapa en Ny {{ domain }}
   update: Redigera detta {{ domain }}
+  all: Allt
+  booked: bokad
+  process: Bearbeta
+  event: Händelse
+  page: Sida
 
   forms:
     title: Title
@@ -90,4 +95,5 @@ menu:
 
 plugins:
   fileDropper:
+    single: Släpp bara en fil åt gången.
     helper: Släpp en bild eller bilder; eller alternativt klicka för att öppna filväljaren
