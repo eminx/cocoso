@@ -139,7 +139,7 @@ class Process extends Component {
   };
 
   getTitle = (process, isAdmin) => {
-    const { history } = this.props;
+    const { history, t } = this.props;
 
     return (
       <Flex>
