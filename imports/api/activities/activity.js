@@ -25,13 +25,13 @@ Activities.schema = new SimpleSchema({
   imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
 
   resourceId: {type: String, regEx: SimpleSchema.RegEx.Id},
-  resource: {type: String, defaultValue: ''},
+  resource: {type: String, optional: true},
   resourceIndex: {type: SimpleSchema.Integer},
   // resourceHourlyFee: {type: String, optional: true}, //undefined
 
-  address: {type: String, defaultValue: ''},
+  address: {type: String, optional: true},
   capacity: {type: SimpleSchema.Integer, defaultValue: 20},
-  place: {type: String, defaultValue: ''},
+  place: {type: String, optional: true},
   room: {type: String, optional: true}, //undefined
 
   datesAndTimes: {type: Array},
@@ -56,8 +56,8 @@ Activities.schema = new SimpleSchema({
     
   }),
 
-  practicalInfo: {type: String, defaultValue: ''}, // null
-  internalInfo: {type: String, defaultValue: ''}, // null
+  practicalInfo: {type: String, optional: true}, // null
+  internalInfo: {type: String, optional: true}, // null
 
   isSentForReview: {type: Boolean},
   isPublicActivity: {type: Boolean, optional: true},
