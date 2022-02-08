@@ -73,7 +73,7 @@ const DatesAndTimes = ({
             py="2"
           />
           <FormLabel htmlFor="is-multipledays-switch" mb="1" ml="2">
-            {t('form.day.multiple')}
+            {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
       </Center>
@@ -81,7 +81,7 @@ const DatesAndTimes = ({
       <Wrap>
         <Box p="2">
           <Box mb="2">
-            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.day.single')}</Text>
+            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
             <DatePicker
               noTime
               value={startDate}
@@ -110,7 +110,7 @@ const DatesAndTimes = ({
           flexBasis="180px"
         >
           <Box mb="2">
-            <Text fontSize="sm">{t('form.start.finish')}</Text>
+            <Text fontSize="sm">{t('form.time.start')}</Text>
             <DatePicker
               onlyTime
               value={startDate}
