@@ -592,11 +592,11 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
     },
     {
       name: 'lastName',
-      label: t('public.register.form.name.first'),
+      label: t('public.register.form.name.last'),
     },
     {
       name: 'email',
-      label: t('public.register.form.name.first'),
+      label: t('public.register.form.email'),
     },
     // {
     //   name: 'numberOfPeople',
