@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import RDC from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Input } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
 // {
@@ -17,6 +18,7 @@ function DatePicker({
   placeholder,
 }) {
   const [selectedDate, setSelectedDate] = useState();
+  const [ t ] = useTranslation('calendar');
 
   useEffect(() => {
     if (value) {
@@ -37,17 +39,26 @@ function DatePicker({
       });
     }
   };
-
+  
   return (
     <RDC
       calendarStartDay={1}
       customInput={<Input variant="filled" />}
       dateFormat={
-        onlyTime ? 'HH:mm' : noTime ? 'yyyy-MM-dd' : 'yyyy-MM-dd  HH:mm'
+        onlyTime 
+          ? t('datePicker.formats.time')
+          : noTime 
+            ? t('datePicker.formats.date') 
+            : t('datePicker.formats.datetime')
       }
       placeholderText={
         placeholder ||
-        (onlyTime ? 'Select Time' : noTime ? 'Select Day' : 'Select Day & Time')
+        (onlyTime 
+          ? t('datePicker.labels.select', { opt: t('datePicker.labels.time') })
+          : noTime 
+            ? t('datePicker.labels.select', { opt: t('datePicker.labels.date') }) 
+            : t('datePicker.labels.select', { opt: t('datePicker.labels.datetime') })
+        )
       }
       selected={selectedDate}
       showTimeSelect={onlyTime || !noTime}

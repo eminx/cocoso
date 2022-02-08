@@ -15,3 +15,14 @@ bigCal:
   agenda: Agenda
   noEventsInRange: There are no events in this range.
   showMore: '{{ total }} more'
+
+datePicker:
+  labels:
+    select: Select {{ opt }}
+    date: Day
+    time: Time
+    datetime: Day & Time 
+  formats:
+    date: HH:mm
+    time: yyyy-MM-dd
+    datetime: yyyy-MM-dd  HH:mm
