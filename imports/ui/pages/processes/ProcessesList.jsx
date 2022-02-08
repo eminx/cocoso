@@ -43,7 +43,7 @@ const filterOptions = [
   },
 ];
 
-export default function ProcessesList({ isLoading, currentUser, processes }) {
+export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -142,8 +142,8 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button as="span" colorScheme="green" variant="outline">
-                NEW
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+                {tc('actions.create')}
               </Button>
             </Link>
           </Center>
