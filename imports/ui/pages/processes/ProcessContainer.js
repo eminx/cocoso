@@ -1,4 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
+import { useTranslation } from 'react-i18next';
+
 import Process from './Process';
 import Processes from '../../../api/processes/process';
 import Chats from '../../../api/chats/chat';
@@ -16,11 +18,16 @@ export default ProcessContainer = withTracker((props) => {
   const chatSubscription = Meteor.subscribe('chat', processId);
   const chatData = Chats ? Chats.findOne({ contextId: processId }) : null;
 
+  const [ t ] = useTranslation('processes');
+  const [ tc ] = useTranslation('common');
+
   return {
     isLoading,
     process,
     currentUser,
     chatData,
     resources,
+    t,
+    tc,
   };
 })(Process);
