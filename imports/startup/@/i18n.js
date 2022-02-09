@@ -39,6 +39,7 @@ if (process && !process.release) {
 // initialize if not already initialized
 if (!i18n.isInitialized) {
   i18n.init(options);
+  i18n.changeLanguage('sv');
 }
 
 export default i18n;
