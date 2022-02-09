@@ -124,7 +124,7 @@ class EditProcess extends React.Component {
   };
 
   render() {
-    const { process, currentUser } = this.props;
+    const { process, currentUser, tc } = this.props;
 
     if (!process) {
       return <Loader />;
