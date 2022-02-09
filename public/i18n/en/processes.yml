@@ -51,7 +51,7 @@ actions:
 
 meeting:
   attends:
-    remove: Your are successfully removed from the list!
+    remove: You are successfully removed from the list!
     register: Your attendance is successfully registered!
   access:
     join: Please join the process to attend the meeting
@@ -60,7 +60,7 @@ meeting:
   success:
     add: Your process meeting is added!
     remove: The meeting is successfully removed
-    fileDropper: is succesfully uploaded and assigned to this process!
+    fileDropper: is successfully uploaded and assigned to this process!
     admin: The admin is successfully changed
   actions:
     remove: Delete this meeting
@@ -83,7 +83,6 @@ meeting:
     location: Location
     submit: Add Meeting
     
-
 document:
   empty: No document assigned
   drop: Drop documents to upload
@@ -96,7 +95,7 @@ confirm:
     text: Confirm {{ opt }} to  the process
     opts:
       leave: leaving
-      join: paticitaion to
+      join: participation to
   body:
     text: Are you sure you want to this {{ opt }} Process?
     opts:
@@ -104,7 +103,7 @@ confirm:
       join: join
   admin:
     title: Please confirm you want to make {{ admin }} the new admin.
-    body: There can only be one admin at a time, so your admin priveleges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
+    body: There can only be one admin at a time, so your admin privileges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
 
 invite:
   info: Please add data for the person you want to invite to the process
@@ -119,5 +118,3 @@ invite:
     holder: Samuel
     valid: Please enter a valid first name
   submit: Send Invite
-
-    

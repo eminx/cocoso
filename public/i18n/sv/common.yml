@@ -14,22 +14,12 @@ actions:
 labels:
   create: Skapa en Ny {{ domain }}
   update: Redigera detta {{ domain }}
+  remove: Avlägsna
   all: Allt
   booked: bokad
   process: Bearbeta
   event: Händelse
   page: Sida
-
-  forms:
-    title: Title
-    subtitle: Subtitle
-    desc:
-      default: Description
-      short: Short description
-      long: Long description
-    image: Image
-    images: Images
-  
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -75,7 +65,6 @@ modals:
           compliment: Komplimang
       details:
         label: Detaljer
-
 
 contact:
   label: Kontakt

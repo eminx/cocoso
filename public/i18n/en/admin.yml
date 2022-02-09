@@ -16,7 +16,7 @@ resources:
       holder: Sound Studio
     desc: 
       label: Description 
-      holder: Sound Studio
+      holder: Using studio requires care ...
 
 # ADMIN EMAILS PAGE
 emails: 

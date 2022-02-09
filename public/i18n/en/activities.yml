@@ -11,7 +11,7 @@ form:
     label: Resource
     holder: Select resource to book
   occurences:
-    label: Occurences*
+    label: Occurrences*
   days:
     single: Day
     multiple: Multiple Days
@@ -28,7 +28,7 @@ form:
   title:
     label: Title
     holder: Give it a title
-    helper: This is typicaly title of your event
+    helper: This is typically title of your event
   subtitle:
     label: Subtitle
     holder: give it a subtitle (artist name etc.)
@@ -53,7 +53,7 @@ members:
     all: All
     public: Public
     private: Private
-  occurences: occurences
+  occurences: occurrences
 
 public:
   register:

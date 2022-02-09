@@ -15,3 +15,15 @@ bigCal:
   agenda: Dagordning
   noEventsInRange: Det finns inga händelser i det här intervallet.
   showMore: '{{ total }} mer'
+
+
+datePicker:
+  labels:
+    select: Välj {{ opt }}
+    date: Dag
+    time: Tid
+    datetime: Dag & Tid 
+  formats:
+    date: HH:mm
+    time: yyyy-MM-dd
+    datetime: yyyy-MM-dd  HH:mm
