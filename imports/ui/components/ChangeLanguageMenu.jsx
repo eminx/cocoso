@@ -36,7 +36,12 @@ export default ChangeLanguage = ({ select, register }) => {
       placeholder={t('common:langs.form.holder')}
     >
       {i18n.languages.map(lang => 
-        <option value={lang}>{t('common:langs.'+lang)}</option>
+        <option 
+          key={lang} 
+          value={lang}
+        >
+          {t('common:langs.'+lang)}
+        </option>
       )}
     </Select>
   );
