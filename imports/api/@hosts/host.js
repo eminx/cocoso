@@ -32,6 +32,7 @@ Hosts.schema = new SimpleSchema({
   'settings.address': {type: String},
   'settings.city': {type: String},
   'settings.country': {type: String},
+  'settings.lang': {type: String, optional: true },
   'settings.menu': {type: Array },
   'settings.menu.$': new SimpleSchema(SchemasHost.menu),
   'settings.mainColor': {type: Object, optional: true },
