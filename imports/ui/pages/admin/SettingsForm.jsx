@@ -34,7 +34,7 @@ function SettingsForm({ initialValues, onSubmit }) {
         <FormField label={t('new.country.label')}>
           <Input {...register('country')} />
         </FormField>
-        <FormField label={tc('langs.form.holder')}>
+        <FormField label={tc('langs.form.label')}>
           <ChangeLanguage select="true" register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
