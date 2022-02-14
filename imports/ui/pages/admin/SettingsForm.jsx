@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
+import ChangeLanguage from '../../components/ChangeLanguageMenu';
 
 function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -32,6 +33,9 @@ function SettingsForm({ initialValues, onSubmit }) {
         </FormField>
         <FormField label={t('new.country.label')}>
           <Input {...register('country')} />
+        </FormField>
+        <FormField label={tc('langs.form.holder')}>
+          <ChangeLanguage select="true" register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">

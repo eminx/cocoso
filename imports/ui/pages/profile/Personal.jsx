@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
+import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import { editorFormats, editorModules } from '../../@/constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {
@@ -57,6 +58,10 @@ const Personal = ({ defaultValues, onSubmit }) => {
                 />
               )}
             />
+          </FormField>
+
+          <FormField label={tc('langs.form.label')}>
+            <ChangeLanguage select="true" register={register} />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
