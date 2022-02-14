@@ -2,6 +2,9 @@
 langs:
   en: Engelsk
   sv: Svenska
+  form:
+    label: Önskat Språk
+    holder: Välj ett språk
 
 # ALL ACTION BUTTON LABELS
 actions:
