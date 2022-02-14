@@ -1,3 +1,8 @@
+# LANGUAGE KEYS
+langs:
+  en: English
+  sv: Swedish
+
 # ALL ACTION BUTTON LABELS
 actions:
   create: New
