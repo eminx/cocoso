@@ -67,7 +67,7 @@ profile:
       label: Contact Info
 
   message:
-    role: You as <1>{{ username }}</1> are part of this organisation with the <3>{{ role }}</3> role
+    role: You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role
     participant: You are successfully set as participant
     deny: You are not part of this organisation. 
 

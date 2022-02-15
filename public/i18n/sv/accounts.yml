@@ -67,7 +67,7 @@ profile:
       label: Kontaktinformation
 
   message:
-    role: Du som <1>{{ username }}</1> är en del av denna organisation med rollen <3>{{ role }}</3>
+    role: Du som <bold>{{ username }}</bold> är en del av denna organisation med rollen <bold>{{ role }}</bold>
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
 

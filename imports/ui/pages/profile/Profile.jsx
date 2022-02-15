@@ -129,7 +129,7 @@ class Profile extends PureComponent {
 
     return (
       <Template
-        heading={currentUser ? 'Personal Info' : 'Join'}
+        heading={t('profile.label')}
         titleCentered
         leftContent={
           <Box p="2">
@@ -140,15 +140,12 @@ class Profile extends PureComponent {
         <Center mb="2" pad="1">
           {['admin', 'contributor', 'participant'].includes(role) ? (
             <Text textAlign="center" fontSize="sm">
-              {/*
-                * You as <b>{currentUser.username}</b> are part of this organisation with the <b>{role}</b> role
-                *
-                * BOLD html tags implementation according to this documentation: 
-                * https://react.i18next.com/latest/trans-component
-                */}
-              <Trans i18nKey="accounts:profile.role" username={currentUser.username} role={role}>
-                You as <b>{ currentUser.username }</b> are part of this organisation with the <b>{ role }</b> role
-              </Trans>
+              <Trans 
+                i18nKey="accounts:profile.message.role" 
+                defaults="You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role"
+                values={{ username: currentUser.username , role }}
+                components={{ bold: <strong /> }}
+              />
             </Text>
           ) : (
             <Box>
