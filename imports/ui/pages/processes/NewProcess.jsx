@@ -174,7 +174,7 @@ class NewProcess extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
-            message={tc('message.access.contributor', { domain: 'a process' })}
+            message={tc('message.access.contributor', { domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}` })}
             type="error"
           />
         </div>
@@ -211,7 +211,7 @@ class NewProcess extends React.Component {
       uploadableImageLocal;
 
     return (
-      <Template heading={tc('labels.create', { domain: 'Process' })}>
+      <Template heading={tc('labels.create', { domain: tc('domains.process') })}>
         <Box bg="white" p="6">
           <Popover trigger="hover">
             <PopoverTrigger>

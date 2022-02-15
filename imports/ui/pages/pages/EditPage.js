@@ -34,7 +34,7 @@ class EditPage extends PureComponent {
         .filter((title) => title !== pageData.title)
         .some((title) => title.toLowerCase() === values.title.toLowerCase())
     ) {
-      message.error(tc('message.exists', { domain: 'page', property: 'title' }));
+      message.error(tc('message.exists', { domain: tc('domains.page').toLowerCase(), property: tc('domains.props.title') }));
       return;
     }
 
@@ -108,7 +108,7 @@ class EditPage extends PureComponent {
 
     return (
       <Template
-        heading={tc('labels.update', { domain: 'page' })}
+        heading={tc('labels.update', { domain: tc('domains.page').toLowerCase() })}
         leftContent={
           <Link to={`/page/${pageData.title}`}>
             <Button
@@ -139,7 +139,7 @@ class EditPage extends PureComponent {
           onCancel={this.closeDeleteModal}
           title={tc('modal.confirm.delete.title')}
         >
-          {tc('modals.confirm.delete.body', { domain: 'page' })}
+          {tc('modals.confirm.delete.body', { domain: tc('domains.page').toLowerCase() })}
         </ConfirmModal>
       </Template>
     );

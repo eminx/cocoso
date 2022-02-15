@@ -98,3 +98,26 @@ plugins:
     replace: If you want to replace it with another one, click on the image to reopen the file picker
     single: Please drop only one file at a time.
     helper: Drop an image or images; or alternatively click to open the file picker
+
+domains:
+  a: a
+  your: Your
+
+  activity: Activity
+  process: Process
+  resource: Resource
+  work: Work
+  host: Host
+  page: Page
+
+  settings: Settings
+  email: Email
+  
+  account: account
+  data: data
+  avatar: avatar
+  static: static
+
+  props:
+    name: name
+    title: title

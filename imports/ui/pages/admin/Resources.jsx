@@ -45,20 +45,20 @@ function ResourcesPage({ history, resources, isLoading }) {
           resource.label.toLowerCase() === defaultValues.label.toLowerCase()
       )
     ) {
-      message.error(tc('message.exists', { domain: 'resource', property: 'name' }));
+      message.error(tc('message.exists', { domain: tc('domains.resource').toLowerCase(), property: tc('domains.props.name') }));
       return;
     }
     try {
       if (isEditMode) {
         await call('updateResource', values.id, values);
-        message.success(tc('message.success.update', { domain: 'Resource' }));
+        message.success(tc('message.success.update', { domain: tc('domains.resource') }));
       } else {
         const parsedValues = {
           ...values,
           resourcesForCombo,
         };
         await call('createResource', parsedValues);
-        message.success(tc('message.success.create', { domain: 'Resource' }));
+        message.success(tc('message.success.create', { domain: tc('domains.resource') }));
       }
       closeModal();
     } catch (error) {
@@ -83,7 +83,7 @@ function ResourcesPage({ history, resources, isLoading }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success(tc('message.success.remove', { domain: 'Resource' }));
+      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
     } catch (error) {
       message.error(error.error || error.reason);
       console.log(error);

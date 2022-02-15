@@ -64,9 +64,9 @@ class EditActivity extends PureComponent {
   successEditMessage = (isDeleted) => {
     const { tc } = this.props;
     if (isDeleted) {
-      message.success(tc('message.success.remove', { domain: 'Your activity'}));
+      message.success(tc('message.success.remove', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
     } else {
-      message.success(tc('message.success.update', { domain: 'Your activity'}));
+      message.success(tc('message.success.update', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
     }
   };
 
@@ -263,7 +263,7 @@ class EditActivity extends PureComponent {
 
     return (
       <Template
-        heading={tc('labels.update', { domain: 'Activity' })}
+        heading={tc('labels.update', { domain: tc('domains.activity') })}
         leftContent={
           <Box pb="2">
             <Link to={`/event/${activity._id}`}>
@@ -326,7 +326,8 @@ class EditActivity extends PureComponent {
           onCancel={this.hideDeleteModal}
           confirmText={tc('modal.confirm.delete.yes')}
         >
-          {tc('modal.confirm.delete.body', { domain: 'activity' })}
+          {tc('modal.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
+          
         </ConfirmModal>
       </Template>
     );

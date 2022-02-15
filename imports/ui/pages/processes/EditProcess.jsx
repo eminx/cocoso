@@ -99,7 +99,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('updateProcess', process._id, formValues, imageUrl);
-      message.success(tc('message.success.update', { domain: 'Process' }));
+      message.success(tc('message.success.update', { domain: tc('domains.process') }));
       this.setState({
         isSuccess: true,
       });
@@ -116,7 +116,7 @@ class EditProcess extends React.Component {
     const processId = this.props.process._id;
     try {
       await call('deleteProcess', processId);
-      message.success(tc('message.success.delete', { domain: 'Process' }));
+      message.success(tc('message.success.delete', { domain: tc('domains.process') }));
     } catch (error) {
       console.log(error);
       message.error(error.error || error.reason);
@@ -132,7 +132,7 @@ class EditProcess extends React.Component {
 
     if (!currentUser) {
       return (
-        <Alert message={tc('message.access.register', { domain: 'a process' })} />
+        <Alert message={tc('message.access.register', { domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}` })} />
       );
     }
     
@@ -202,7 +202,7 @@ class EditProcess extends React.Component {
           onCancel={this.hideDeleteModal}
           confirmText={tc('modals.confirm.delete.yes')}
         >
-          {tc('modals.confirm.delete.body', { domain: 'process' })}
+          {tc('modals.confirm.delete.body', { domain: tc('domains.process').toLowerCase() })}
         </ConfirmModal>
       </Template>
     );

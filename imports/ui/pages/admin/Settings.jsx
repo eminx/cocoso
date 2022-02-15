@@ -89,7 +89,7 @@ export default function Settings({ history }) {
 
     try {
       call('updateHostSettings', values);
-      message.success(tc('message.success.update', { domain: t('settings.label') }));
+      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

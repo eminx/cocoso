@@ -176,7 +176,7 @@ class EditWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.update', { domain: 'Your work'}));
+      message.success(i18n.t('common:message.success.update', { domain: `${tc('domains.your')} ${tc('domains.work').toLowerCase()}`}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -219,7 +219,7 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
       history.push('/my-works');
-      message.success(i18n.t('common:message.success.delete', { domain: 'Your work'}));
+      message.success(i18n.t('common:message.success.delete', { domain: `${tc('domains.your')} ${tc('domains.work').toLowerCase()}`}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isLoading: false });
@@ -303,7 +303,7 @@ class EditWork extends PureComponent {
           onCancel={this.hideDeleteModal}
           title={i18n.t('common:modals.confirm.delete.title')}
         >
-          {i18n.t('common:modals.confirm.delete.body', { domain: 'work' })}
+          {i18n.t('common:modals.confirm.delete.body', { domain: tc('domains.work').toLowerCase() })}
         </ConfirmModal>
       </Template>
     );

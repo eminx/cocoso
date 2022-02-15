@@ -68,7 +68,7 @@ class NewActivity extends PureComponent {
 
   successCreation = () => {
     const { tc } = this.props;
-    message.success(tc('message.success.create', { domain: 'Your activity'}));
+    message.success(tc('message.success.create', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
   };
 
   setUploadableImage = (files) => {
@@ -317,7 +317,7 @@ class NewActivity extends PureComponent {
     const isFormValid = this.isFormValid();
 
     return (
-      <Template heading={tc('labels.create', { domain: 'Activity' })}>
+      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">

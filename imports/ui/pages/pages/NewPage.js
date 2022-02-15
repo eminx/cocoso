@@ -36,7 +36,7 @@ class NewPage extends PureComponent {
         (title) => title.toLowerCase() === values.title.toLowerCase()
       )
     ) {
-      message.error(tc('message.exists', { domain: 'page', property: 'title' }));
+      message.error(tc('message.exists', { domain: tc('domains.page').toLowerCase(), property: tc('domains.props.title') }));
       return;
     }
 
@@ -69,7 +69,7 @@ class NewPage extends PureComponent {
     }
 
     if (pageExists) {     
-      callback(tc('message.exists', { domain: 'page', property: 'title' }));
+      callback(tc('message.exists', { domain: tc('domains.page').toLowerCase(), property: tc('domains.props.title') }));
     } else if (value.length < 4) {
       callback(tc('message.validation.min', { field: 'Page title', min: '4' }));
     } else {
@@ -85,7 +85,7 @@ class NewPage extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message={tc('message.access.admin', { domain: 'static page' })}
+            message={tc('message.access.admin', { domain: `${tc('domains.static')} ${tc('domains.page').toLowerCase()}` })}
             type="error"
           />
         </div>
@@ -99,7 +99,7 @@ class NewPage extends PureComponent {
     }
 
     return (
-      <Template heading={tc('labels.create', { domain: 'Page' })}>
+      <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>

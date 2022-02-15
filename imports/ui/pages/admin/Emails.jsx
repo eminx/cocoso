@@ -64,7 +64,7 @@ function Emails({ history }) {
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
-      message.success(tc('message.success.update', { domain: 'Email' }));
+      message.success(tc('message.success.update', { domain: tc('domains.email') }));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {

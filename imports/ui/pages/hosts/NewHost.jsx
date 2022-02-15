@@ -62,7 +62,7 @@ function NewHost() {
   }
 
   return (
-    <Template heading={tc('labels.create', { domain: 'Host' })}>
+    <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
       <Box p="8" bg="white">
         <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
       </Box>

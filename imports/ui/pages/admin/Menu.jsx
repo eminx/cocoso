@@ -99,7 +99,7 @@ export default function Menu() {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
-      message.success(tc('message.success.save', { domain: 'Settings' }));
+      message.success(tc('message.success.save', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
     } finally {

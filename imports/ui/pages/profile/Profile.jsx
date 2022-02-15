@@ -34,7 +34,7 @@ class Profile extends PureComponent {
     const { tc } = this.props;
     try {
       await call('saveUserInfo', values);
-      message.success(tc('message.success.save', { domain: 'Your data'}));
+      message.success(tc('message.success.save', { domain: `${tc('domains.your')} ${tc('domains.data')}`}));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -76,7 +76,7 @@ class Profile extends PureComponent {
       this.setState({
         isUploading: false,
       });
-      message.success(tc('message.success.save', { domain: 'Your avatar'}));
+      message.success(tc('message.success.save', { domain: `${tc('domains.your')} ${tc('domains.avatar')}`}));
     } catch (error) {
       this.setState({
         isUploading: false,
@@ -90,7 +90,7 @@ class Profile extends PureComponent {
     const { tc } = this.props;
     try {
       await call('deleteAccount');
-      message.success(tc('message.success.remove', { domain: 'You account'}));
+      message.success(tc('message.success.remove', { domain: `${tc('domains.your')} ${tc('domains.account')}`}));
       setTimeout(() => {
         window.location.reload();
       }, 400);

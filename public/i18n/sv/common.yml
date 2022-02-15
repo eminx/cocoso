@@ -98,3 +98,26 @@ plugins:
     replace: Om du vill ersätta den med en annan, klicka på bilden för att öppna filväljaren igen
     single: Släpp bara en fil åt gången.
     helper: Släpp en bild eller bilder; eller alternativt klicka för att öppna filväljaren
+
+domains:
+  a: en
+  your: Din
+
+  activity: Aktivitet
+  process: Process
+  resource: Resurs
+  work: arbete
+  host: Värd
+  page: sida
+
+  settings: Inställningar
+  email: E-postmeddelanden
+  
+  account: konto
+  data: data
+  avatar: avatar
+  static: statisk
+
+  props:
+    name: namn
+    title: titel

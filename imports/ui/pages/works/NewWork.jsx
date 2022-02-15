@@ -121,7 +121,7 @@ class NewWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.create', { domain: 'Your work'}));
+      message.success(i18n.t('common:message.success.create', { domain: `${tc('domains.your')} ${tc('domains.work').toLowerCase()}`}));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
