@@ -379,8 +379,6 @@ const Menu = ({ currentHost, isMobile, screenClass, history }) => {
     return isCurrentPage(item.name);
   });
 
-  // console.log(screenClass);
-
   if (['lg', 'xl', 'xxl'].includes(screenClass)) {
     return (
       <Wrap align="center" pt="lg" spacing="4">
