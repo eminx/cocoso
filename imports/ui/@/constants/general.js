@@ -1,16 +1,19 @@
 const userMenu = [
   { 
-    label: 'My Profile', 
+    // label: 'My Profile', 
+    menu: 'member', 
     key: 'profile', 
     value: '/my-profile' 
   },
   { 
-    label: 'My Activities', 
+    // label: 'My Activities', 
+    menu: 'member', 
     key: 'activities', 
     value: '/my-activities' 
   },
   { 
-    label: 'My Works', 
+    // label: 'My Works', 
+    menu: 'member', 
     key: 'works', 
     value: '/my-works' 
   },
@@ -18,22 +21,26 @@ const userMenu = [
 
 const adminMenu = [
   { 
-    label: 'Settings', 
+    // label: 'Settings', 
+    menu: 'admin', 
     key: 'settings', 
     value: '/admin/settings' 
   },
   { 
-    label: 'Members', 
+    // label: 'Members', 
+    menu: 'admin', 
     key: 'members', 
     value: '/admin/members' 
   },
   { 
-    label: 'Resources', 
+    // label: 'Resources', 
+    menu: 'admin', 
     key: 'resources', 
     value: '/admin/resources' 
   },
   { 
-    label: 'Emails', 
+    // label: 'Emails', 
+    menu: 'admin', 
     key: 'emails', 
     value: '/admin/emails' 
   },
