@@ -113,14 +113,11 @@ function ActivityForm({
               {...register('resource', { required: true })}
               placeholder="Select resource to book"
               variant="filled"
+              value={defaultValues.resourceId}
             >
               {resources.map((option, index) => {
                 return (
-                  <option
-                    key={option._id}
-                    selected={option._id === defaultValues.resourceId}
-                    value={option._id}
-                  >
+                  <option key={option._id} value={option._id}>
                     {option.isCombo
                       ? option.label +
                         ': [' +
