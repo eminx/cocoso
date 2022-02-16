@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
@@ -39,6 +40,8 @@ import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../@/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
+
+moment.locale(i18n.language);
 
 class Activity extends PureComponent {
   state = {

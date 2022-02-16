@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
+import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -26,6 +27,9 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../@/shared';
 import { adminMenu } from '../../@/constants/general';
 import Hosts from '../../../api/@hosts/host';
+
+moment.locale(i18n.language);
+
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
   const dateB = new Date(b.createdAt);

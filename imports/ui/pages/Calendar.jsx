@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 
 import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
@@ -14,6 +15,8 @@ import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
 import { getHslValuesFromLength } from '../@/constants/colors';
 import { StateContext } from '../LayoutContainer';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 

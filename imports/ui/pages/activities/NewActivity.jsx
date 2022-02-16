@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../components/ActivityForm';
@@ -9,6 +10,8 @@ import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
 import { resizeImage, uploadImage } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
+
+moment.locale(i18n.language);
 
 const formModel = {
   title: '',

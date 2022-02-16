@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
+import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -16,6 +17,8 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import PublicActivityThumb from '../../components/PublicActivityThumb';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 const yesterday = moment().add(-1, 'days');

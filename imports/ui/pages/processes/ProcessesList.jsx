@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
+import i18n from 'i18next';
 import { Link } from 'react-router-dom';
 
 import {
@@ -25,6 +26,8 @@ import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../@/shared';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {

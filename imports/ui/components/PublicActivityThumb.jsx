@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 import moment from 'moment';
+import i18n from 'i18next';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+
+moment.locale(i18n.language);
 
 const yesterday = moment(new Date()).add(-1, 'days');
 

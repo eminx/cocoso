@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
@@ -45,6 +46,8 @@ import { TimePicker } from '../../components/DatesAndTimes';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 const defaultMeetingResource = 'Office';

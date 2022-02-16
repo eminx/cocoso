@@ -3,6 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
 import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
+import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 import NiceList from '../../components/NiceList';
@@ -16,6 +17,8 @@ import { adminMenu } from '../../@/constants/general';
 import ResourceForm from '../../components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
 import Resources from '../../../api/resources/resource';
+
+moment.locale(i18n.language);
 
 const resourceModel = {
   label: '',
