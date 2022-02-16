@@ -17,6 +17,7 @@ actions:
   close: Close
   reset: Reset
   add: Add
+  print: Print
 
 # ACTION PAGE TITLES
 labels:

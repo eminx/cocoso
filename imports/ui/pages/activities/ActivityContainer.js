@@ -18,7 +18,7 @@ export default ActivityContainer = withTracker((props) => {
   const chatData = Chats ? Chats.findOne({ contextId: activityId }) : null;
 
   const [ t ] = useTranslation('activities');
-  // const [ tc ] = useTranslation('common');
+  const [ tc ] = useTranslation('common');
 
 
   return {
@@ -27,6 +27,6 @@ export default ActivityContainer = withTracker((props) => {
     currentUser,
     chatData,
     t,
-    // tc
+    tc,
   };
 })(Activity);

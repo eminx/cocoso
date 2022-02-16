@@ -181,7 +181,7 @@ function ActivityForm({
 
         <Box mb="8">
           <Heading mb="4" size="md">
-            Details
+            {t('form.details.label')}
           </Heading>
 
           <VStack spacing="6">
@@ -241,7 +241,7 @@ function ActivityForm({
                 label={t('form.image.label')}
                 helperText={
                   (uploadableImageLocal || imageUrl) &&
-                  t('form.image.helper')
+                  tc('plugins.fileDropper.replace')
                 }
               >
                 <Center>

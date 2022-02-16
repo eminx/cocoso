@@ -260,7 +260,7 @@ class Activity extends PureComponent {
   };
 
   renderDates = () => {
-    const { activityData, currentUser, t } = this.props;
+    const { activityData, currentUser, t, tc } = this.props;
     const { capacityGotFullByYou } = this.state;
     const { canCreateContent } = this.context;
 
@@ -369,7 +369,7 @@ class Activity extends PureComponent {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button size="sm">Print</Button>}
+                    trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -400,7 +400,7 @@ class Activity extends PureComponent {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              <Heading size="sm">Register</Heading>
+              <Heading size="sm">{t('public.register.label')}</Heading>
               {conditionalRender(occurence, occurenceIndex)}
             </AccordionPanel>
           </AccordionItem>
@@ -446,8 +446,7 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, currentUser, chatData, history, t } =
-      this.props;
+    const { activityData, isLoading, currentUser, chatData, history, t, tc } = this.props;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -463,7 +462,7 @@ class Activity extends PureComponent {
         <Center m="2">
           <Link to={`/edit-activity/${activityData._id}`}>
             <Button variant="ghost" as="span">
-              Edit
+              {tc('actions.update')}
             </Button>
           </Link>
         </Center>
@@ -486,7 +485,7 @@ class Activity extends PureComponent {
         rightContent={
           <Box width="100%" p="2">
             <Heading mb="2" as="h5" size="md">
-              Dates
+              {t('public.labels.dates')}
             </Heading>
             {this.renderDates()}
           </Box>
@@ -521,14 +520,14 @@ class Activity extends PureComponent {
 
         <Box p="2" mb="1">
           <Heading mb="2" as="h5" size="md">
-            Resource
+            {t('public.labels.resource')}
           </Heading>
           <Tag label={activityData.resource} />
         </Box>
         {activityData.address && (
           <Box p="2" mb="1">
             <Heading mb="2" as="h5" size="md">
-              Address
+              {t('public.labels.address')}
             </Heading>
             <Text size="sm">{activityData.address}</Text>
           </Box>
@@ -552,8 +551,8 @@ class Activity extends PureComponent {
           visible={isRsvpCancelModalOn}
           title={
             rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
-              ? 'Now please continue'
-              : 'Please enter the details of your RSVP'
+              ? t('public.cancel.found')
+              : t('public.cancel.notFound')
           }
           onConfirm={this.findRsvpInfo}
           onCancel={() => this.setState({ isRsvpCancelModalOn: false })}

@@ -23,7 +23,7 @@ form:
     finish: Sluttid
   capacity: 
     label: Kapacitet
-  details_title:
+  details:
     label: Detaljer
   title:
     label: Titel
@@ -43,7 +43,6 @@ form:
     holder: 17th Street, Berlin...
   image:
     label: Bild
-    helper: If you want to replace it with another one, click on the image to reopen the file picker
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   
@@ -56,7 +55,12 @@ members:
   occurences: händelser
 
 public:
+  labels:
+    resource: Resurs
+    address: Adress
+    dates: Datum
   register:
+    label: Registrera
     form:
       name:
         first: Förnamn

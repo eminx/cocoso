@@ -17,6 +17,7 @@ actions:
   close: Stänga
   reset: Återställa
   add: Lägg till
+  print: Skriva ut
 
 # ACTION PAGE TITLES
 labels:

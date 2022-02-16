@@ -23,7 +23,7 @@ form:
     finish: Finish time
   capacity: 
     label: Capacity
-  details_title:
+  details:
     label: Details
   title:
     label: Title
@@ -43,7 +43,6 @@ form:
     holder: 17th Street, Berlin...
   image:
     label: Image
-    helper: If you want to replace it with another one, click on the image to reopen the file picker
   submit: 'Confirm and Create'
   waiting: 'Creating your activity...'
   
@@ -56,7 +55,12 @@ members:
   occurences: occurrences
 
 public:
+  labels:
+    resource: Resource
+    address: Address
+    dates: Dates
   register:
+    label: Register
     form:
       name:
         first: First Name
