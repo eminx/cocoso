@@ -48,7 +48,7 @@ if (!i18n.isInitialized) {
     } else {
       const handler = Meteor.subscribe('currentHost');
       if (handler.ready()) 
-        preferedLang =Hosts.findOne().settings.lang;
+        preferedLang = Hosts.findOne().settings.lang;
     }
     i18n.changeLanguage(preferedLang);
   });
