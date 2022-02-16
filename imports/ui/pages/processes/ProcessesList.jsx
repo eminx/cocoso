@@ -30,6 +30,7 @@ import { compareForSort } from '../../@/shared';
 moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
+
 export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
@@ -202,7 +203,7 @@ function ProcessItem({ process }) {
         <Box p="2">
           <Text textAlign="right">{process.adminUsername}</Text>
           <Text fontSize="sm" textAlign="right">
-            {moment(process.creationDate).format('Do MMM YYYY')}
+            {moment(process.creationDate).format('D MMM YYYY')}
           </Text>
         </Box>
       </Box>

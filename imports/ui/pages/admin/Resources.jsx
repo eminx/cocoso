@@ -184,7 +184,7 @@ function ResourcesPage({ history, resources, isLoading }) {
                 <Text as="div" fontSize="xs">
                   {t('resources.cards.date', { 
                     username: resource && resource.authorUsername, 
-                    date: moment(resource.creationDate).format('Do MMM YYYY')
+                    date: moment(resource.creationDate).format('D MMM YYYY')
                   })}
                   <br />
                 </Text>

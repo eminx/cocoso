@@ -234,7 +234,7 @@ function Members({ history, members, isLoading }) {
                         <Text>{member && member.email}</Text>
                         <Text fontStyle="italic">{member.role}</Text>
                         <Text fontSize="xs" color="gray.500">
-                          {t('joinedAt', { date: moment(member.date).format('Do MMM YYYY') })}
+                          {t('joinedAt', { date: moment(member.date).format('D MMM YYYY') })}
                           <br />
                         </Text>
                       </Box>
