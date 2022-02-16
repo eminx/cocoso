@@ -21,11 +21,11 @@ class NewPage extends PureComponent {
   };
 
   handleSubmit = async (values) => {
-    const { currentUser, pageTitles } = this.props;
+    const { currentUser, pageTitles, tc } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
-      message.error('This is not allowed');
+      message.error(tc('message.access.deny'));
       return false;
     }
 
@@ -36,13 +36,13 @@ class NewPage extends PureComponent {
         (title) => title.toLowerCase() === values.title.toLowerCase()
       )
     ) {
-      message.error('A page with this title already exists');
+      message.error(tc('message.exists', { domain: tc('domains.page').toLowerCase(), property: tc('domains.props.title') }));
       return;
     }
 
     try {
       const result = await call('createPage', values);
-      message.success('New page successfully created');
+      message.success(tc('message.success.create'));
       this.setState({
         newPageId: parseTitle(result),
         isSuccess: true,
@@ -56,7 +56,7 @@ class NewPage extends PureComponent {
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageData, pageTitles } = this.props;
+    const { form, pageData, pageTitles, tc } = this.props;
 
     let pageExists = false;
     if (
@@ -68,24 +68,24 @@ class NewPage extends PureComponent {
       pageExists = true;
     }
 
-    if (pageExists) {
-      callback('A page with this title already exists');
+    if (pageExists) {     
+      callback(tc('message.exists', { domain: tc('domains.page').toLowerCase(), property: tc('domains.props.title') }));
     } else if (value.length < 4) {
-      callback('Title has to be at least 4 characters');
+      callback(tc('message.validation.min', { field: 'Page title', min: '4' }));
     } else {
       callback();
     }
   };
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, tc } = this.props;
     const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to be super admin to create a static page."
+            message={tc('message.access.admin', { domain: `${tc('domains.static')} ${tc('domains.page').toLowerCase()}` })}
             type="error"
           />
         </div>
@@ -99,7 +99,7 @@ class NewPage extends PureComponent {
     }
 
     return (
-      <Template heading="Create a New Page">
+      <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>

@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -15,6 +17,8 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import PublicActivityThumb from '../../components/PublicActivityThumb';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 const yesterday = moment().add(-1, 'days');
@@ -37,6 +41,8 @@ const compareForSort = (a, b) => {
 function Activities({ activitiesList, processesList, isLoading, history }) {
   const { currentUser, currentHost, canCreateContent } =
     useContext(StateContext);
+
+  const [ tc ] = useTranslation('common');
 
   const getPublicActivities = () => {
     if (!activitiesList) {
@@ -123,8 +129,8 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
       <Center mb="4">
         {canCreateContent && (
           <Link to="/new-activity">
-            <Button as="span" colorScheme="green" variant="outline">
-              NEW
+            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+              {tc('actions.create')}
             </Button>
           </Link>
         )}

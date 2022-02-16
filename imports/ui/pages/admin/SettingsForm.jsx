@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Flex, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
+import ChangeLanguage from '../../components/ChangeLanguageMenu';
 
 function SettingsForm({ initialValues, onSubmit }) {
   const { handleSubmit, register, formState } = useForm({
@@ -11,27 +13,33 @@ function SettingsForm({ initialValues, onSubmit }) {
 
   const { isDirty, isSubmitting } = formState;
 
+  const [ t ] = useTranslation('hosts');
+  const [ tc ] = useTranslation('common');
+
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
-        <FormField label="Name">
+        <FormField label={t('new.name.label')}>
           <Input {...register('name')} />
         </FormField>
-        <FormField label="Email">
+        <FormField label={t('new.email.label')}>
           <Input type="email" {...register('email')} />
         </FormField>
-        <FormField label="Address">
+        <FormField label={t('new.address.label')}>
           <Input {...register('address')} />
         </FormField>
-        <FormField label="City">
+        <FormField label={t('new.city.label')}>
           <Input {...register('city')} />
         </FormField>
-        <FormField label="Country">
+        <FormField label={t('new.country.label')}>
           <Input {...register('country')} />
+        </FormField>
+        <FormField label={tc('langs.form.label')}>
+          <ChangeLanguage select="true" register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </Stack>

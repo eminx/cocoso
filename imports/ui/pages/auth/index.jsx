@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-
-const Joi = require('joi');
-
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -14,6 +12,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+const Joi = require('joi');
 
 import FormField from '../../components/FormField';
 import {
@@ -26,10 +25,9 @@ import {
   passwordSchema,
 } from './account.helpers';
 
-const passwordHelperText =
-  'Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number';
-
 const Login = ({ onSubmit }) => {
+  const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const { formState, handleSubmit, register } = useForm({
     defaultValues: loginModel,
   });
@@ -38,17 +36,17 @@ const Login = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <VStack spacing="6">
-        <FormField label="Username or Email address">
+        <FormField label={t('login.form.username.label')}>
           <Input {...register('username')} />
         </FormField>
 
-        <FormField label="Password">
+        <FormField label={t('login.form.password.label')}>
           <Input {...register('password')} type="password" />
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -57,11 +55,15 @@ const Login = ({ onSubmit }) => {
 };
 
 const Signup = ({ onSubmit }) => {
+  const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...usernameSchema,
     ...emailSchema,
     ...passwordSchema,
   });
+
+  const passwordHelperText = t('signup.form.password.helper');
 
   const { formState, handleSubmit, register } = useForm({
     defaultValues: signupModel,
@@ -74,9 +76,9 @@ const Signup = ({ onSubmit }) => {
       <VStack spacing="6">
         <FormField
           errorMessage={errors.username?.message}
-          helperText="Minimum 4 characters, only lowercase letters and numbers"
+          helperText={t('signup.form.username.helper')}
           isInvalid={errors.username}
-          label="Username"
+          label={t('signup.form.username.label')}
         >
           <Input {...register('username')} />
         </FormField>
@@ -84,7 +86,7 @@ const Signup = ({ onSubmit }) => {
         <FormField
           errorMessage={errors.email?.message}
           isInvalid={errors.email}
-          label="Email address"
+          label={t('signup.form.email.label')}
         >
           <Input {...register('email')} type="email" />
         </FormField>
@@ -93,19 +95,19 @@ const Signup = ({ onSubmit }) => {
           errorMessage={errors.password?.message}
           helperText={passwordHelperText}
           isInvalid={errors.password}
-          label="Password"
+          label={t('signup.form.password.label')}
         >
           <Input {...register('password')} type="password" />
         </FormField>
         <Center>
           <Text fontSize="xs" textAlign="center">
-            Your password is encrypted in the database.
+           {t('signup.form.password.info')}
           </Text>
         </Center>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -114,6 +116,8 @@ const Signup = ({ onSubmit }) => {
 };
 
 const ForgotPassword = ({ onForgotPassword }) => {
+  const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...emailSchema,
   });
@@ -130,14 +134,14 @@ const ForgotPassword = ({ onForgotPassword }) => {
         <FormField
           errorMessage={errors.email?.message}
           isInvalid={errors.email}
-          label="Type your email please"
+          label={t('password.form.email.label')}
         >
           <Input {...register('email')} type="email" />
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -146,6 +150,8 @@ const ForgotPassword = ({ onForgotPassword }) => {
 };
 
 const ResetPassword = ({ onResetPassword }) => {
+  const [ t ] = useTranslation('accounts');
+  const [ tc ] = useTranslation('common');
   const schema = Joi.object({
     ...passwordSchema,
   });
@@ -163,14 +169,14 @@ const ResetPassword = ({ onResetPassword }) => {
           errorMessage={errors.password?.message}
           helperText={passwordHelperText}
           isInvalid={errors.password}
-          label="Password"
+          label={t('login.form.password.label')}
         >
           <Input {...register('password')} type="password" />
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Flex>
       </VStack>
@@ -186,8 +192,8 @@ const AuthContainer = () => {
       <Box>
         <Signup />
         <Center>
-          <Text>Have an account?</Text>
-          <Link onClick={() => setMode('login')}>Login</Link>
+          <Text>{t('signup.labels.subtitle')}</Text>
+          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
         </Center>
       </Box>
     );
@@ -198,8 +204,8 @@ const AuthContainer = () => {
       <Box>
         <ForgotPassword />
         <Flex justify="space-around">
-          <Link onClick={() => setMode('login')}>Login</Link>
-          <Link onClick={() => setMode('signup')}>Signup</Link>
+          <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
+          <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
         </Flex>
       </Box>
     );
@@ -209,12 +215,12 @@ const AuthContainer = () => {
     <Box>
       <Login />
       <Center mb="8">
-        <Heading>Don't have an account?</Heading>
-        <Link onClick={() => setMode('signup')}>Signup</Link>
+        <Heading>{t('login.labels.subtitle')}</Heading>
+        <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
       </Center>
       <Center>
-        <Heading>Forgot your password?</Heading>
-        <Link onClick={() => setMode('recover')}>Reset your password</Link>
+        <Heading>{t('actions.forgot')}</Heading>
+        <Link onClick={() => setMode('recover')}>{t('actions.reset')}</Link>
       </Center>
     </Box>
   );

@@ -125,6 +125,7 @@ Meteor.methods({
           lastName: values.lastName,
           bio: values.bio,
           contactInfo: values.contactInfo,
+          lang: values.lang,
         },
       });
     } catch (error) {

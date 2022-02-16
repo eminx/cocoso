@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import DatePicker from './DatePicker';
+import { useTranslation } from 'react-i18next';
 
 const DatesAndTimes = ({
   recurrence,
@@ -31,6 +32,9 @@ const DatesAndTimes = ({
   if (!recurrence) {
     return null;
   }
+
+  
+  const [ t ] = useTranslation('activities');
 
   const isRange = recurrence.isRange;
 
@@ -69,7 +73,7 @@ const DatesAndTimes = ({
             py="2"
           />
           <FormLabel htmlFor="is-multipledays-switch" mb="1" ml="2">
-            Multiple Days
+            {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
       </Center>
@@ -77,7 +81,7 @@ const DatesAndTimes = ({
       <Wrap>
         <Box p="2">
           <Box mb="2">
-            <Text fontSize="sm">{isRange ? 'Start Day' : 'Day'}</Text>
+            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
             <DatePicker
               noTime
               value={startDate}
@@ -87,7 +91,7 @@ const DatesAndTimes = ({
 
           {isRange && (
             <Box>
-              <Text fontSize="sm">Finish Day</Text>
+              <Text fontSize="sm">{t('form.date.finish')}</Text>
               <DatePicker
                 noTime
                 value={endDate}
@@ -106,7 +110,7 @@ const DatesAndTimes = ({
           flexBasis="180px"
         >
           <Box mb="2">
-            <Text fontSize="sm">Start time</Text>
+            <Text fontSize="sm">{t('form.time.start')}</Text>
             <DatePicker
               onlyTime
               value={startDate}
@@ -115,7 +119,7 @@ const DatesAndTimes = ({
           </Box>
 
           <Box>
-            <Text fontSize="sm">Finish time</Text>
+            <Text fontSize="sm">{t('form.time.finish')}</Text>
             <DatePicker
               onlyTime
               value={endDate}
@@ -125,7 +129,7 @@ const DatesAndTimes = ({
 
           {isPublicActivity && (
             <Box mt="4">
-              <Text fontSize="sm">Capacity</Text>
+              <Text fontSize="sm">{t('form.capacity.label')}</Text>
               <NumberInput
                 min={1}
                 max={40}

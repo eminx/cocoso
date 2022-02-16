@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+
 import { hostFields } from '../@/constants/general';
 import FormField from './FormField';
 
@@ -10,16 +12,21 @@ function NewHostForm({ defaultValues, onSubmit }) {
   });
   const { isDirty, isSubmitting } = formState;
 
+  const [ t ] = useTranslation('hosts');
+  const [ tc ] = useTranslation('common');
+
+  const the = 'submit'
+
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           {hostFields.map((props) => (
-            <FormField key={props.name} label={props.label}>
+            <FormField key={props.name} label={t('new.'+props.name+'.label')}>
               {props.textArea ? (
-                <Textarea {...props} {...register(props.name)} />
+                <Textarea {...props} {...register(props.name)} placeholder={t('new.'+props.name+'.holder')} />
               ) : (
-                <Input {...props} {...register(props.name)} />
+                <Input {...props} {...register(props.name)} placeholder={t('new.'+props.name+'.holder')} />
               )}
             </FormField>
           ))}
@@ -30,7 +37,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.'+the)}
             </Button>
           </Flex>
         </VStack>

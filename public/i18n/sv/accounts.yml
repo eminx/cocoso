@@ -1,0 +1,78 @@
+actions:
+  signup: Bli Medlem
+  login: Logga in
+  logout: Logga ut
+  forgot: Glömt ditt lösenord?
+  reset: Återställ ditt lösenord
+
+login:
+  labels:
+    title: Logga in på ditt konto
+    subtitle: Har du inget konto?
+  form:
+    username:
+      label: Användarnamn eller e-mailadress
+    password:
+      label: Lösenord
+  messages:
+    error:
+      username: Användaren hittades inte
+      password: Fel lösenord
+    success: Du har loggat in
+    
+signup:
+  labels:
+    title: Registrera nytt konto
+    subtitle: Har ett konto?
+  form:
+    username:
+      label: Användarnamn
+      helper: Minst 4 tecken, endast små bokstäver och siffror
+    email:
+      label: E-postadress
+    password:
+      label: Lösenord
+      helper: Minst 8 tecken, inklusive minst en liten bokstav, en stor bokstav och en siffra
+      info: Ditt lösenord är krypterat i databasen.
+
+password:
+  labels:
+    title: Återställ lösenord
+    subtitle: 
+      forgot: Om du har glömt ditt lösenord, återställ det via en länk som skickas till din e-post.
+      reset: Skapa ditt önskade lösenord
+  form:
+    email:
+      label: Skriv din e-post vänligen
+  message:
+    linkSend: Återställningslänk skickas till din e-post
+    checkMail: Kontrollera din e-post och se om du har fått en länk för att återställa ditt lösenord
+    reset: Ditt lösenord har återställts. Nu kan du logga in
+
+profile:
+  label: Personlig information
+
+  form:
+    avatar:
+      label: Avatar
+      fileDropper: Klicka/dra för att ladda upp
+      remove: Avlägsna
+    firstname:
+      label: Förnamn
+    lastname:
+      label: Efternamn
+    bio:
+      label: Bio
+    contact:
+      label: Kontaktinformation
+
+  message:
+    role: Du som <bold>{{ username }}</bold> är en del av denna organisation med rollen <bold>{{ role }}</bold>
+    participant: Du har angetts som deltagare
+    deny: Du är inte en del av denna organisation.
+
+delete:
+  action: Radera Konto
+  label: Bekräfta Radering
+  title: Är du säker?
+  body: Du är på väg att permanent radera hela ditt konto och all data som är kopplad till det. Detta är en oåterkallelig handling. Är du säker?

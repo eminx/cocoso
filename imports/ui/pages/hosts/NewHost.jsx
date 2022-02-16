@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box } from '@chakra-ui/react';
 
 import Template from '../../components/Template';
@@ -20,10 +21,12 @@ const hostModel = {
 function NewHost() {
   const { currentUser } = useContext(StateContext);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [ t ] = useTranslation('admin');
+  const [ tc ] = useTranslation('common');
 
   const handleSubmit = async (values) => {
     if (!currentUser.isSuperAdmin) {
-      message.error('This is not allowed');
+      message.error(tc('message.access.deny'));
       return;
     }
 
@@ -45,7 +48,7 @@ function NewHost() {
   if (!currentUser || !currentUser.isSuperAdmin) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <Alert message="You are not allowed" type="error" />
+        <Alert message={tc('message.access.deny')} type="error" />
       </div>
     );
   }
@@ -53,14 +56,13 @@ function NewHost() {
   if (isSuccess) {
     return (
       <Alert type="success">
-        Your submission is successfully sent. Please wait until we respond to
-        you. Thank you for your interest!
+        {t('new.message.submission')}
       </Alert>
     );
   }
 
   return (
-    <Template heading="Create a New Host">
+    <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
       <Box p="8" bg="white">
         <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
       </Box>

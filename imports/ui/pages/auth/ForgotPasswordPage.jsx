@@ -8,6 +8,7 @@ import {
   Link as CLink,
   Text,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
@@ -16,15 +17,14 @@ import { call } from '../../@/shared';
 import { message } from '../../components/message';
 
 function ForgotPasswordPage() {
+  const [ t ] = useTranslation('accounts');
   const [emailSent, setEmailSent] = useState(false);
   const { currentUser } = useContext(StateContext);
 
   const handleForgotPassword = async (email) => {
     try {
       await call('forgotPassword', email);
-      message.success(
-        'Please check your email and see if you received a link to reset your password'
-      );
+      message.success(t('password.message.checkMail'));
       setEmailSent(true);
     } catch (error) {
       message.error(error.reason);
@@ -40,18 +40,17 @@ function ForgotPasswordPage() {
       <Center>
         <Box w="xs">
           <Heading size="md" textAlign="center">
-            Reset Password
+            {t('password.labels.title')}
           </Heading>
           <Center pt="4" px="4">
             <Text mb="4" textAlign="center">
-              If you forgot your password, reset it via a link sent to your
-              email.
+              {t('password.labels.subtitle.forgot')}
             </Text>
           </Center>
 
           <Box bg="white" p="6">
             {emailSent ? (
-              <Text>Reset link is sent to your email.</Text>
+              <Text>{t('password.message.linkSend')}</Text>
             ) : (
               <ForgotPassword onForgotPassword={handleForgotPassword} />
             )}
@@ -59,10 +58,10 @@ function ForgotPasswordPage() {
 
           <Flex justify="space-around" mt="4">
             <Link to="/login">
-              <CLink as="span">Login</CLink>
+              <CLink as="span">{t('actions.login')}</CLink>
             </Link>
             <Link to="/signup">
-              <CLink as="span">Signup</CLink>
+              <CLink as="span">{t('actions.signup')}</CLink>
             </Link>
           </Flex>
         </Box>

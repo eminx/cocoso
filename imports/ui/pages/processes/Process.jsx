@@ -2,12 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
+import { useTranslation } from 'react-i18next';
+
 import { formatDate } from '../../@/shared.js';
 import DatePicker from '../../components/DatePicker.jsx';
-
 import {
   Accordion,
   AccordionButton,
@@ -34,7 +36,6 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
 import Loader from '../../components/Loader';
@@ -45,6 +46,8 @@ import { TimePicker } from '../../components/DatesAndTimes';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
+
+moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 const defaultMeetingResource = 'Office';
@@ -139,7 +142,7 @@ class Process extends Component {
   };
 
   getTitle = (process, isAdmin) => {
-    const { history } = this.props;
+    const { history, t } = this.props;
 
     return (
       <Flex>
@@ -173,7 +176,7 @@ class Process extends Component {
         {isAdmin && process.isPrivate ? (
           <Flex align="flex-end" direction="row" p="4">
             <CLink onClick={this.handleOpenInviteManager} ml="4">
-              Manage Access
+              {t('labels.invite')}
             </CLink>
           </Flex>
         ) : (
@@ -186,7 +189,7 @@ class Process extends Component {
   };
 
   joinProcess = () => {
-    const { process, currentUser } = this.props;
+    const { process, currentUser, t } = this.props;
     this.closeModal();
 
     if (!process || !currentUser) {
@@ -198,7 +201,7 @@ class Process extends Component {
     });
 
     if (alreadyMember) {
-      message.error('You are already a member!');
+      message.error(t('message.joined'));
       return;
     }
 
@@ -206,13 +209,13 @@ class Process extends Component {
       if (error) {
         message.error(error.error);
       } else {
-        message.success('You are added to the process');
+        message.success(t('message.added'));
       }
     });
   };
 
   leaveProcess = () => {
-    const { process } = this.props;
+    const { process, t } = this.props;
 
     this.closeModal();
 
@@ -220,7 +223,7 @@ class Process extends Component {
       if (error) {
         message.error(error.error);
       } else {
-        message.info('You are removed from the process');
+        message.info(t('message.removed'));
       }
     });
   };
@@ -281,7 +284,7 @@ class Process extends Component {
 
   addMeeting = () => {
     const { newMeeting } = this.state;
-    const { process } = this.props;
+    const { process, t } = this.props;
     newMeeting.endDate = newMeeting.startDate;
 
     Meteor.call(
@@ -293,21 +296,21 @@ class Process extends Component {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success('Your process meeting is added!');
+          message.success(t('meeting.success.add'));
         }
       }
     );
   };
 
   toggleAttendance = (meetingIndex) => {
-    const { process, currentUser } = this.props;
+    const { process, currentUser, t } = this.props;
 
     if (!currentUser) {
-      message.error('Please login and join the process to attend the meeting');
+      message.error(t('meeting.access.logged'));
       return;
     }
     if (!this.isMember()) {
-      message.error('Please join the process to attend the meeting');
+      message.error(t('meeting.success.join'));
       return;
     }
 
@@ -325,7 +328,7 @@ class Process extends Component {
             console.log('error', error);
             message.error(error.error);
           } else {
-            message.success('Your are successfully removed from the list!');
+            message.success(t('meeting.attends.remove'));
           }
         }
       );
@@ -339,7 +342,7 @@ class Process extends Component {
             console.log('error', error);
             message.error(error.error);
           } else {
-            message.success('Your attendance is successfully registered!');
+            message.success(t('meeting.register.remove'));
           }
         }
       );
@@ -347,15 +350,13 @@ class Process extends Component {
   };
 
   deleteMeeting = (meetingIndex) => {
-    const { process } = this.props;
+    const { process, t } = this.props;
     if (!process || !process.meetings) {
       return;
     }
 
     if (process.meetings[meetingIndex].attendees.length > 0) {
-      message.error(
-        'Sorry. Currently you can not delete meetings which have attendees registered to attend'
-      );
+      message.error(t('meeting.access.remove'));
       return;
     }
 
@@ -368,14 +369,14 @@ class Process extends Component {
           console.log(error);
           message.error(error.error);
         } else {
-          message.success('The meeting is successfully removed');
+          message.success(t('meeting.success.remove'));
         }
       }
     );
   };
 
   renderDates = () => {
-    const { process, resources } = this.props;
+    const { process, resources, t } = this.props;
     if (!process) {
       return;
     }
@@ -416,7 +417,7 @@ class Process extends Component {
                 colorScheme="red"
                 onClick={() => this.deleteMeeting(meetingIndex)}
               >
-                Delete this meeting
+                {t('meeting.actions.remove')}
               </Button>
             </Center>
           </AccordionPanel>
@@ -426,7 +427,7 @@ class Process extends Component {
   };
 
   renderMeetings = () => {
-    const { process, currentUser, resources } = this.props;
+    const { process, currentUser, resources, t } = this.props;
     if (!process || !process.meetings) {
       return;
     }
@@ -470,7 +471,7 @@ class Process extends Component {
                 colorScheme={isAttending ? 'gray' : 'green'}
                 onClick={() => this.toggleAttendance(meetingIndex)}
               >
-                {isAttending ? 'Cannot make it' : 'Register attendance'}
+                {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
               </Button>
             </Center>
           </AccordionPanel>
@@ -480,12 +481,12 @@ class Process extends Component {
   };
 
   handleFileDrop = (files) => {
+    const { process, t, tc } = this.props;
+    
     if (files.length !== 1) {
-      message.error('Please drop only one file at a time.');
+      message.error(tc('plugins.fileDropper.single'));
       return;
     }
-
-    const { process } = this.props;
     this.setState({ isUploading: true });
 
     const closeLoader = () => this.setState({ isUploading: false });
@@ -526,7 +527,7 @@ class Process extends Component {
                       closeLoader();
                     } else {
                       message.success(
-                        `${uploadableFile.name} is succesfully uploaded and assigned to this process!`
+                        `${uploadableFile.name} ${t('meeting.success.fileDropper')}`
                       );
                       closeLoader();
                     }
@@ -541,11 +542,10 @@ class Process extends Component {
   };
 
   changeAdmin = () => {
+    const { process, t } = this.props;
     const { potentialNewAdmin } = this.state;
 
     const closeModal = () => this.setState({ potentialNewAdmin: false });
-
-    const { process } = this.props;
     Meteor.call(
       'changeAdmin',
       process._id,
@@ -556,7 +556,7 @@ class Process extends Component {
           message.error(error.error);
           closeModal();
         } else {
-          message.success('The admin is successfully changed');
+          message.success(t('meeting.success.admin'));
           closeModal();
         }
       }
@@ -577,7 +577,7 @@ class Process extends Component {
   };
 
   renderMembersAndDocuments = () => {
-    const { process, currentUser } = this.props;
+    const { process, currentUser, t, tc } = this.props;
 
     const { isUploading } = this.state;
 
@@ -591,7 +591,7 @@ class Process extends Component {
         ...document,
         actions: [
           {
-            content: 'Remove',
+            content: tc('labels.remove'),
             handleClick: () => this.removeProcessDocument(document.name),
           },
         ],
@@ -604,7 +604,7 @@ class Process extends Component {
         ...member,
         actions: [
           {
-            content: 'Make admin',
+            content: t('meeting.actions.makeAdmin'),
             handleClick: () =>
               this.setState({
                 potentialNewAdmin: member.username,
@@ -622,7 +622,7 @@ class Process extends Component {
               colorScheme={isMember ? 'gray' : 'green'}
               onClick={this.openModal}
             >
-              {isMember ? 'Leave process' : 'Join process'}
+              {isMember ? t('actions.leave') : t('actions.join')}
             </Button>
           </Center>
         )}
@@ -630,7 +630,7 @@ class Process extends Component {
         {process?.members && (
           <Box mb="8">
             <Heading mb="2" size="sm">
-              Members
+              {t('labels.member')}
             </Heading>
             <Box mb="4" bg="white">
               <NiceList
@@ -655,7 +655,7 @@ class Process extends Component {
         )}
 
         <Heading mb="2" size="sm">
-          Documents
+          {t('labels.document')}
         </Heading>
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList
@@ -673,7 +673,7 @@ class Process extends Component {
           </NiceList>
         ) : (
           <Text size="small" pad="2" margin={{ bottom: 'small' }}>
-            <em>No document assigned</em>
+            <em>{t('document.empty')}</em>
           </Text>
         )}
 
@@ -692,11 +692,11 @@ class Process extends Component {
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
-                      uploading
+                      {t('document.up')}
                     </div>
                   ) : (
                     <div style={{ textAlign: 'center' }}>
-                      <b>Drop documents to upload</b>
+                      <b>{t('document.drop')}</b>
                     </div>
                   )}
                   <input {...getInputProps()} />
@@ -710,6 +710,7 @@ class Process extends Component {
   };
 
   removeProcessDocument = (documentName) => {
+    const { t } = this.props;
     if (!this.isAdmin()) {
       return;
     }
@@ -723,14 +724,14 @@ class Process extends Component {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success('The manual is successfully removed');
+          message.success(t('document.remove'));
         }
       }
     );
   };
 
   renderProcessInfo = () => {
-    const { process, chatData } = this.props;
+    const { process, chatData, t } = this.props;
     const isAdmin = this.isAdmin();
     const isMember = this.isMember();
 
@@ -741,8 +742,8 @@ class Process extends Component {
           render={(screenClass) => (
             <Tabs variant="enclosed">
               <TabList pl="4">
-                <Tab>Info</Tab>
-                <Tab>Discussion</Tab>
+                <Tab>{t('tabs.process.info')}</Tab>
+                <Tab>{t('tabs.process.discuss')}</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
@@ -767,6 +768,7 @@ class Process extends Component {
   };
 
   renderDiscussion = () => {
+    const { t } = this.props;
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
@@ -789,7 +791,7 @@ class Process extends Component {
             }}
           >
             <Button
-              label="Join this process"
+              label={t('actions.this')}
               primary
               onClick={this.openModal}
               margin="medium"
@@ -819,7 +821,7 @@ class Process extends Component {
   };
 
   render() {
-    const { process, isLoading, resources, history } = this.props;
+    const { process, isLoading, resources, history , t, tc  } = this.props;
 
     if (!process || isLoading) {
       return <Loader />;
@@ -855,7 +857,7 @@ class Process extends Component {
           }
           rightContent={
             <Box p="2">
-              <Heading size="sm">Dates</Heading>
+              <Heading size="sm">{t('labels.date')}</Heading>
 
               <Text fontSize="sm" mb="4">
                 <em>
@@ -864,9 +866,9 @@ class Process extends Component {
                     moment(meeting.endDate).isAfter(yesterday)
                   ).length > 0
                     ? isAdmin
-                      ? 'Open the dates to see the attendees'
-                      : 'Click and open the date to RSVP'
-                    : 'No meeting scheduled yet'}
+                      ? t('meeting.info.admin')
+                      : t('meeting.info.member')
+                    : t('meeting.info.empty')}
                 </em>
               </Text>
 
@@ -908,7 +910,7 @@ class Process extends Component {
             <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
                 <Button as="span" variant="ghost">
-                  Edit
+                  {tc('actions.update')}
                 </Button>
               </Link>
             </Center>
@@ -916,43 +918,41 @@ class Process extends Component {
         </Template>
         <ConfirmModal
           visible={modalOpen}
-          title={`Confirm ${
-            isMember ? 'leaving' : 'participation to'
-          } the process`}
+          title={t('confirm.title.text', { 
+            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join')  
+          })}
           onConfirm={isMember ? this.leaveProcess : this.joinProcess}
           onCancel={this.closeModal}
         >
           <Text>
-            Are you sure you want to
-            {isMember ? ' leave ' : ' join '}
-            this Process?
+            {t('confirm.title.body', { 
+            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join')  
+          })}
           </Text>
         </ConfirmModal>
         <ConfirmModal
           visible={Boolean(potentialNewAdmin)}
-          title="Are you sure?"
+          title={t('confirm.check')}
           onConfirm={this.changeAdmin}
           onCancel={() => this.setState({ potentialNewAdmin: null })}
         >
           <Text>
             <b>
-              Please confirm you want to make {potentialNewAdmin} the new admin.
+            {t('confirm.admin.title', { admin: potentialNewAdmin })}
             </b>
           </Text>
           <Text>
-            There can only be one admin at a time, so your admin priveleges will
-            be removed, and you won't be able to regain it again unless{' '}
-            {potentialNewAdmin} gives consent.
+            {t('confirm.admin.body', { admin: potentialNewAdmin })}
           </Text>
         </ConfirmModal>
 
         {process && process.isPrivate && (
           <Drawer
-            title="Manage Access"
+            title={t('labels.invite')}
             isOpen={inviteManagerOpen}
             onClose={this.handleCloseInviteManager}
           >
-            <InviteManager process={process} />
+            <InviteManager process={process} t={t} />
           </Drawer>
         )}
       </div>
@@ -984,11 +984,12 @@ function CreateMeetingForm({
   buttonDisabled,
 }) {
   const [isLocal, setIsLocal] = useState(true);
+  const [ t ] = useTranslation('processes');
 
   return (
     <Box p="2" bg="white" my="2">
       <Heading ml="2" mt="2" size="xs">
-        Add a Meeting
+        {t('meeting.form.label')}
       </Heading>
       <Box py="4">
         <DatePicker noTime onChange={handleDateChange} />
@@ -996,12 +997,12 @@ function CreateMeetingForm({
       <HStack spacing="2" mb="6">
         <DatePicker
           onlyTime
-          placeholder="Start time"
+          placeholder={t('meeting.form.time.start')}
           onChange={handleStartTimeChange}
         />
         <DatePicker
           onlyTime
-          placeholder="Finish time"
+          placeholder={t('meeting.form.time.end')}
           onChange={handleFinishTimeChange}
         />
       </HStack>
@@ -1013,14 +1014,14 @@ function CreateMeetingForm({
           onChange={({ target: { checked } }) => setIsLocal(checked)}
         />
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-          {`At ${publicSettings.name}?`}
+          {t('meeting.form.switch', { place: publicSettings.name })}
         </FormLabel>
       </FormControl>
 
       {isLocal ? (
         <Select
           size="sm"
-          placeholder="Select resource"
+          placeholder={t('meeting.form.resource')}
           name="resource"
           onChange={({ target: { value } }) => handlePlaceChange(value)}
         >
@@ -1030,7 +1031,7 @@ function CreateMeetingForm({
         </Select>
       ) : (
         <Textarea
-          placeholder="Location"
+          placeholder={t('meeting.form.location')}
           size="sm"
           onChange={(event) => handlePlaceChange(event.target.value)}
         />
@@ -1043,7 +1044,7 @@ function CreateMeetingForm({
           size="sm"
           onClick={handleSubmit}
         >
-          Add Meeting
+          {t('meeting.form.submit')}
         </Button>
       </Flex>
     </Box>

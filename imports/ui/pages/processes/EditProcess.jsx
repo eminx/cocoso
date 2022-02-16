@@ -48,8 +48,9 @@ class EditProcess extends React.Component {
   };
 
   setUploadableImage = (files) => {
+    const { tc } = this.props;
     if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
+      message.error(tc('plugins.fileDroppper.single'));
       return;
     }
     const uploadableImage = files[0];
@@ -98,7 +99,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('updateProcess', process._id, formValues, imageUrl);
-      message.success('Process successfully updated');
+      message.success(tc('message.success.update', { domain: tc('domains.process') }));
       this.setState({
         isSuccess: true,
       });
@@ -115,7 +116,7 @@ class EditProcess extends React.Component {
     const processId = this.props.process._id;
     try {
       await call('deleteProcess', processId);
-      message.success('Process successfully deleted');
+      message.success(tc('message.success.delete', { domain: tc('domains.process') }));
     } catch (error) {
       console.log(error);
       message.error(error.error || error.reason);
@@ -123,7 +124,7 @@ class EditProcess extends React.Component {
   };
 
   render() {
-    const { process, currentUser } = this.props;
+    const { process, currentUser, tc } = this.props;
 
     if (!process) {
       return <Loader />;
@@ -131,10 +132,10 @@ class EditProcess extends React.Component {
 
     if (!currentUser) {
       return (
-        <Alert message="You have to become a registered member to create a process." />
+        <Alert message={tc('message.access.register', { domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}` })} />
       );
     }
-
+    
     if (process.adminId !== currentUser._id) {
       return <Alert message="You are not allowed!" />;
     }
@@ -190,18 +191,18 @@ class EditProcess extends React.Component {
             variant="ghost"
             onClick={this.showDeleteModal}
           >
-            Delete
+            {tc('actions.remove')}
           </Button>
         </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
-          title="Confirm Delete"
+          title={tc('modals.confirm.delete.title')}
           onConfirm={this.deleteProcess}
           onCancel={this.hideDeleteModal}
-          confirmText="Yes, delete"
+          confirmText={tc('modals.confirm.delete.yes')}
         >
-          Are you sure you want to delete this process?
+          {tc('modals.confirm.delete.body', { domain: tc('domains.process').toLowerCase() })}
         </ConfirmModal>
       </Template>
     );

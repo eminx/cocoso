@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
 import moment from 'moment';
+import i18n from 'i18next';
+
+moment.locale(i18n.language);
 
 const getInitials = (string) => {
   var names = string.split(' '),

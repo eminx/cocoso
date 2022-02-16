@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import { Box, Button, Center, Image, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 const FileDropper = ({
   height = '100%',
@@ -23,6 +24,7 @@ const FileDropper = ({
     containerStyle.overflow = 'hidden';
   }
 
+  const [ tc ] = useTranslation('common');
   return (
     <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
@@ -45,8 +47,7 @@ const FileDropper = ({
           ) : (
             <Center p="8">
               <Text textAlign="center" fontSize="sm">
-                Drop an image or images; or alternatively click to open the file
-                picker
+                {tc('plugins.fileDropper.helper')}
               </Text>
             </Center>
           )}

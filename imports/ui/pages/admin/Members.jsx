@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
-
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Center,
@@ -26,6 +27,9 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../@/shared';
 import { adminMenu } from '../../@/constants/general';
 import Hosts from '../../../api/@hosts/host';
+
+moment.locale(i18n.language);
+
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
   const dateB = new Date(b.createdAt);
@@ -37,6 +41,8 @@ function Members({ history, members, isLoading }) {
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
+  const [ t ] = useTranslation('members');
+  const [ tc ] = useTranslation('common');
 
   const { currentUser, role } = useContext(StateContext);
 
@@ -48,7 +54,7 @@ function Members({ history, members, isLoading }) {
     try {
       await call('setAsParticipant', user.id);
       toast({
-        title: `${user.username} is now set back as a participant`,
+        title: t('message.success.participant', { username: user.username }),
         status: 'success',
       });
     } catch (error) {
@@ -64,7 +70,7 @@ function Members({ history, members, isLoading }) {
     try {
       await call('setAsContributor', user.id);
       toast({
-        title: `${user.username} is now set as a contributor`,
+        title: t('message.success.contributor', { username: user.username }),
         status: 'success',
       });
     } catch (error) {
@@ -83,7 +89,7 @@ function Members({ history, members, isLoading }) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert
-          message="You are not allowed to view this content"
+          message={tc('message.access.deny')}
           type="warning"
         />
       </div>
@@ -108,14 +114,14 @@ function Members({ history, members, isLoading }) {
     ...member,
     actions: [
       {
-        content: 'Set as a Contributor',
+        content: t('actions.contributor'),
         handleClick: () => setAsContributor(member),
         isDisabled:
           ['admin', 'contributor'].includes(member.role) ||
           !['admin', 'contributor'].includes(role),
       },
       {
-        content: 'Revert back as a Participant',
+        content: t('actions.participant'),
         handleClick: () => setAsParticipant(member),
         isDisabled:
           !['contributor'].includes(member.role) || !['admin'].includes(role),
@@ -125,30 +131,30 @@ function Members({ history, members, isLoading }) {
 
   const filterOptions = [
     {
-      label: 'All',
+      label: t('all'),
       value: 'all',
     },
     {
-      label: 'Participants',
+      label: t('roles.plural.participants'),
       value: 'participant',
     },
     {
-      label: 'Contributors',
+      label: t('roles.plural.contributors'),
       value: 'contributor',
     },
     {
-      label: 'Admins',
+      label: t('roles.plural.admins'),
       value: 'admin',
     },
   ];
 
   const sortOptions = [
     {
-      label: 'Date joined',
+      label: t('form.sort.date'),
       value: 'join-date',
     },
     {
-      label: 'Username',
+      label: t('form.sort.user'),
       value: 'username',
     },
   ];
@@ -181,7 +187,7 @@ function Members({ history, members, isLoading }) {
 
   return (
     <Template
-      heading="Members"
+      heading={t('label')}
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
@@ -204,7 +210,7 @@ function Members({ history, members, isLoading }) {
             <Box>
               <Input
                 bg="white"
-                placeholder="username or email"
+                placeholder={t('form.holder')}
                 value={filterWord}
                 onChange={(event) => setFilterWord(event.target.value)}
               />
@@ -228,7 +234,7 @@ function Members({ history, members, isLoading }) {
                         <Text>{member && member.email}</Text>
                         <Text fontStyle="italic">{member.role}</Text>
                         <Text fontSize="xs" color="gray.500">
-                          joined {moment(member.date).format('Do MMM YYYY')}{' '}
+                          {t('joinedAt', { date: moment(member.date).format('D MMM YYYY') })}
                           <br />
                         </Text>
                       </Box>

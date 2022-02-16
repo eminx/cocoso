@@ -2,8 +2,10 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
+import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
+import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import { editorFormats, editorModules } from '../../@/constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {
@@ -12,6 +14,9 @@ const Personal = ({ defaultValues, onSubmit }) => {
   });
   const { isDirty, isSubmitting } = formState;
 
+  const [ t ]= useTranslation('members');
+  const [ tc ]= useTranslation('common');
+
   return (
     <div>
       <form
@@ -19,15 +24,15 @@ const Personal = ({ defaultValues, onSubmit }) => {
         defaultValues={defaultValues}
       >
         <VStack spacing="6">
-          <FormField label="First name">
+          <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />
           </FormField>
 
-          <FormField label="Last name">
+          <FormField label={t('profile.form.lastname.label')}>
             <Input {...register('lastName')} placeholder="" />
           </FormField>
 
-          <FormField label="Bio">
+          <FormField label={t('profile.form.bio.label')}>
             <Controller
               control={control}
               name="bio"
@@ -41,7 +46,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
             />
           </FormField>
 
-          <FormField label="Contact Info">
+          <FormField label={t('profile.form.contact.label')}>
             <Controller
               control={control}
               name="contactInfo"
@@ -55,13 +60,17 @@ const Personal = ({ defaultValues, onSubmit }) => {
             />
           </FormField>
 
+          <FormField label={tc('langs.form.label')}>
+            <ChangeLanguage select="true" register={register} />
+          </FormField>
+
           <Flex justify="flex-end" py="4" w="100%">
             <Button
               isDisabled={!isDirty}
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

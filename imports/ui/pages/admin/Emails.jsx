@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
@@ -27,6 +28,8 @@ function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
   const { currentUser, role } = useContext(StateContext);
+  const [ t ] = useTranslation('admin');
+  const [ tc ] = useTranslation('common');
 
   useEffect(() => {
     getEmails();
@@ -51,7 +54,7 @@ function Emails({ history }) {
   }
 
   if (!currentUser || role !== 'admin') {
-    return <Alert>You are not allowed</Alert>;
+    return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
   if (!emails) {
@@ -61,7 +64,7 @@ function Emails({ history }) {
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
-      message.success('Email is successfully updated');
+      message.success(tc('message.success.update', { domain: tc('domains.email') }));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
@@ -73,7 +76,7 @@ function Emails({ history }) {
 
   return (
     <Template
-      heading="Emails"
+      heading={t('emails.label')}
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
@@ -100,24 +103,27 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
     defaultValues,
   });
+  const [ t ] = useTranslation('admin');
+  const [ tc ] = useTranslation('common');
+
   const { isDirty, isSubmitting } = formState;
 
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="4">
-          <FormField label="Subject">
-            <Input {...register('subject')} placeholder="Welcome" />
+          <FormField label={t('emails.form.subject.label')}>
+            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
           </FormField>
 
-          <FormField label="Appeal">
+          <FormField label={t('emails.form.appeal.label')}>
             <InputGroup w="280px">
-              <Input {...register('appeal')} placeholder="Dear" />
-              <InputRightAddon children="@username" />
+              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
+              <InputRightAddon children={t('emails.form.appeal.addon')} />
             </InputGroup>
           </FormField>
 
-          <FormField label="Body">
+          <FormField label={t('emails.form.body.label')}>
             <Controller
               control={control}
               name="body"
@@ -137,7 +143,7 @@ function EmailForm({ defaultValues, onSubmit }) {
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

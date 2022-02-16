@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -31,8 +32,8 @@ function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
-  const { currentUser, currentHost, canCreateContent } =
-    useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
+  const [ tc ] = useTranslation('common');
 
   useEffect(() => {
     getAllWorks();
@@ -89,8 +90,8 @@ function Works() {
       <Center mb="4">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" colorScheme="green" variant="outline">
-              NEW
+            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+              {tc('actions.create')}
             </Button>
           </Link>
         )}

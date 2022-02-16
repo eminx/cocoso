@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
+import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../components/ActivityForm';
@@ -10,9 +11,7 @@ import FormSwitch from '../../components/FormSwitch';
 import { resizeImage, uploadImage } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
-const successCreation = () => {
-  message.success('Your activity is successfully created');
-};
+moment.locale(i18n.language);
 
 const formModel = {
   title: '',
@@ -70,9 +69,15 @@ class NewActivity extends PureComponent {
     );
   };
 
+  successCreation = () => {
+    const { tc } = this.props;
+    message.success(tc('message.success.create', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+  };
+
   setUploadableImage = (files) => {
+    const { t } = this.props;
     if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
+      message.error(tc('plugins.fileDropper.single'));
       return;
     }
     const uploadableImage = files[0];
@@ -276,14 +281,14 @@ class NewActivity extends PureComponent {
   };
 
   render() {
-    const { currentUser, resources } = this.props;
+    const { currentUser, resources, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a contributor to create an activity."
+            message={tc('message.access.contributor', { doamin: 'an activity' })}
             type="error"
           />
         </div>
@@ -304,38 +309,38 @@ class NewActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      successCreation();
+      this.successCreation();
       return <Redirect to={`/event/${newActivityId}`} />;
     }
 
     const buttonLabel = isCreating
-      ? 'Creating your activity...'
-      : 'Confirm and Create';
+      ? t('form.waiting')
+      : t('form.submit');
 
     const isFormValid = this.isFormValid();
 
     return (
-      <Template heading="Create a New Activity">
+      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">
               <FormSwitch
                 isChecked={isPublicActivity}
-                label="Public Event"
+                label={t('form.switch.public')}
                 onChange={this.handlePublicActivitySwitch}
               />
 
               <FormSwitch
                 isChecked={isPublicActivity || isExclusiveActivity}
                 isDisabled={isPublicActivity}
-                label="Exclusive Activity (Others cannot book)"
+                label={t('form.switch.exclusive')}
                 onChange={this.handleExclusiveSwitch}
               />
 
               {isPublicActivity && (
                 <FormSwitch
                   isChecked={isRegistrationDisabled}
-                  label="RSVP disabled"
+                  label={t('form.switch.rsvp')}
                   onChange={this.handleRegistrationSwitch}
                 />
               )}

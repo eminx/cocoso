@@ -21,12 +21,12 @@ class InviteManager extends PureComponent {
 
   isAlreadyInvited = () => {
     const { emailInput } = this.state;
-    const { process } = this.props;
+    const { process, t } = this.props;
     const peopleInvited = process.peopleInvited;
     const inviteEmailsList = peopleInvited.map((person) => person.email);
 
     if (inviteEmailsList.indexOf(emailInput) !== -1) {
-      message.error('This email address is already added');
+      message.error(t('invite.email.already'));
       return true;
     }
 
@@ -35,9 +35,10 @@ class InviteManager extends PureComponent {
 
   isValuesInvalid = () => {
     const { emailInput, firstNameInput } = this.state;
+    const { t } = this.props;
 
     if (!emailIsValid(emailInput)) {
-      message.error('Please enter a valid email');
+      message.error(t('invite.email.valid'));
       return true;
     }
 
@@ -45,7 +46,7 @@ class InviteManager extends PureComponent {
       firstNameInput.length < 2 ||
       includesSpecialCharacters(firstNameInput)
     ) {
-      message.error('Please enter a valid first name');
+      message.error(t('invite.firstName.valid'));
       return true;
     }
 
@@ -59,7 +60,7 @@ class InviteManager extends PureComponent {
     }
 
     const { emailInput, firstNameInput } = this.state;
-    const { process } = this.props;
+    const { process, t } = this.props;
 
     const person = {
       firstName: firstNameInput,
@@ -76,9 +77,7 @@ class InviteManager extends PureComponent {
           message.destroy();
           message.error(error.reason);
         } else {
-          message.success(
-            `An email is sent and ${firstNameInput} is successfully invited to the process`
-          );
+          message.success(t('invite.success', { name: firstNameInput }));
           this.setState({
             firstNameInput: '',
             emailInput: '',
@@ -104,32 +103,34 @@ class InviteManager extends PureComponent {
 
   render() {
     const { emailInput, peopleToBeInvited, firstNameInput } = this.state;
-    const { process } = this.props;
+    const { process, t } = this.props;
     const peopleInvited = process.peopleInvited;
 
     return (
       <Box>
         <VStack py="6">
           <Text>
-            Please add data for the person you want to invite to the process
+            {t('invite.info')}
           </Text>
-          <FormField label="email">
+          <FormField label={t('invite.email.label')}>
             <Input
               onChange={this.handleEmailInputChange}
-              placeholder="samuel@skogen.pm"
+              placeholder={t('invite.email.holder')}
               value={emailInput}
             />
           </FormField>
 
-          <FormField label="first name">
+          <FormField label={t('invite.firstName.label')}>
             <Input
               onChange={this.handleFirstNameInputChange}
-              placeholder="Samuel"
+              placeholder={t('invite.firstName.holder')}
               value={firstNameInput}
             />
           </FormField>
 
-          <Button onClick={this.handleSendInvite}>Send Invite</Button>
+          <Button onClick={this.handleSendInvite}>
+            {t('invite.submit')}
+          </Button>
         </VStack>
 
         <Box py="6">

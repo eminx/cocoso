@@ -1,12 +1,17 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import Calendar from './Calendar';
 import moment from 'moment';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
+
 import { parseActsWithResources } from '../@/shared';
+import Calendar from './Calendar';
 
 import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';
 import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity'; 
+
+moment.locale(i18n.language);
 
 const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');
@@ -21,6 +26,8 @@ const CalendarContainer = withTracker((props) => {
   const manuals = Documents ? Documents.find().fetch() : null;
 
   const allActivities = parseActsWithResources(activitiesList, resourcesList);
+
+  const [ tc ] = useTranslation('common');
 
   if (processesList) {
     processesList.forEach((process) => {
@@ -62,6 +69,7 @@ const CalendarContainer = withTracker((props) => {
     currentUser,
     resourcesList,
     manuals,
+    tc,
   };
 })(Calendar);
 

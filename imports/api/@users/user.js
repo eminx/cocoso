@@ -21,6 +21,7 @@ Users.schema.UserProfile = {
   lastName: { type: String, defaultValue: '' },
   bio: { type: String, optional: true },
   contactInfo: { type: String, optional: true },
+  lang: { type: String, optional: true },
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
 
   memberships: { type: Array, defaultValue: []},

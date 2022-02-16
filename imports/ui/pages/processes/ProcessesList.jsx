@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
+import i18n from 'i18next';
 import { Link } from 'react-router-dom';
 
 import {
@@ -26,33 +27,36 @@ import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../@/shared';
 
+moment.locale(i18n.language);
+
 const publicSettings = Meteor.settings.public;
 
-const filterOptions = [
-  {
-    label: 'Active',
-    value: 'active',
-  },
-  {
-    label: 'My Processes',
-    value: 'my-processes',
-  },
-  {
-    label: 'Archived',
-    value: 'archived',
-  },
-];
-
-export default function ProcessesList({ isLoading, currentUser, processes }) {
+export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
+
+  const filterOptions = [
+    {
+      label: t('tabs.active'),
+      value: 'active',
+    },
+    {
+      label: t('tabs.members'),
+      value: 'my-processes',
+    },
+    {
+      label: t('tabs.archived'),
+      value: 'archived',
+    },
+  ];
+  
 
   const archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
       if (error) {
         message.error(error.error);
       } else {
-        message.success('Process is successfully archived');
+        message.success(t('message.archived'));
       }
     });
   };
@@ -62,7 +66,7 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
       if (error) {
         message.error(error.reason);
       } else {
-        message.success('Process is successfully unarchived');
+        message.success(t('message.unarchived'));
       }
     });
   };
@@ -119,7 +123,7 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
       ...process,
       actions: [
         {
-          content: process.isArchived ? 'Unarchive' : 'Archive',
+          content: process.isArchived ? t('labels.unarchived') : t('labels.archived'),
           handleClick: process.isArchived
             ? () => unarchiveProcess(process._id)
             : () => archiveProcess(process._id),
@@ -142,8 +146,8 @@ export default function ProcessesList({ isLoading, currentUser, processes }) {
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button as="span" colorScheme="green" variant="outline">
-                NEW
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+                {tc('actions.create')}
               </Button>
             </Link>
           </Center>
@@ -199,7 +203,7 @@ function ProcessItem({ process }) {
         <Box p="2">
           <Text textAlign="right">{process.adminUsername}</Text>
           <Text fontSize="sm" textAlign="right">
-            {moment(process.creationDate).format('Do MMM YYYY')}
+            {moment(process.creationDate).format('D MMM YYYY')}
           </Text>
         </Box>
       </Box>

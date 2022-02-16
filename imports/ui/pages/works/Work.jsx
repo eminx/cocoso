@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Badge,
@@ -36,6 +37,9 @@ function Work() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { username, workId } = useParams();
 
+  const [ tc ] = useTranslation('common');
+  const [ tm ] = useTranslation('members');
+
   useEffect(() => {
     getWork();
   }, []);
@@ -64,7 +68,7 @@ function Work() {
     try {
       const info = await call('getUserContactInfo', work.authorUsername);
       if (!info) {
-        setAuthorContactInfo('No contact info registered for this user');
+        setAuthorContactInfo(tm('message.contect.empty'));
         return;
       }
       setAuthorContactInfo(info);
@@ -168,7 +172,7 @@ function Work() {
         {isOwner && (
           <Link to={`/${currentUser.username}/edit-work/${workId}`}>
             <Button size="sm" variant="ghost">
-              Edit
+              {tc('actions.update')}
             </Button>
           </Link>
         )}

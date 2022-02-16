@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -35,26 +36,29 @@ function WorkForm({
   });
   const { isDirty, isSubmitting } = formState;
 
+  const [ t ] = useTranslation('members');
+  const [ tc ] = useTranslation('common');
+
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField label="Title">
+          <FormField label={t('works.title.label')}>
             <Input
               {...register('title')}
-              placeholder="Mango Juice in Bottles..."
+              placeholder={t('works.title.holder')}
             />
           </FormField>
 
-          <FormField label="Short description">
+          <FormField label={t('works.shortDesc.label')}>
             <Textarea
               {...register('shortDescription')}
-              placeholder="Sweet, Natural & Refreshing"
+              placeholder={t('works.shortDesc.holder')}
             />
           </FormField>
 
-          <FormField label="Category">
-            <Select {...register('category')} placeholder="Choose option">
+          <FormField label={t('works.category.label')}>
+            <Select {...register('category')} placeholder={t('works.category.holder')}>
               {categories.map((cat) => (
                 <option
                   key={cat.label}
@@ -70,7 +74,7 @@ function WorkForm({
             </Select>
           </FormField>
 
-          <FormField label="Description">
+          <FormField label={t('works.longDesc.label')}>
             <Controller
               control={control}
               name="longDescription"
@@ -79,20 +83,20 @@ function WorkForm({
                   {...field}
                   formats={editorFormats}
                   modules={editorModules}
-                  placeholder="My Mango juice is handpicked from the trees and..."
+                  placeholder={t('works.longDesc.holder')}
                 />
               )}
             />
           </FormField>
 
-          <FormField label="Additional info">
+          <FormField label={t('works.addInfo.label')}>
             <Textarea
               {...register('additionalInfo')}
-              placeholder="A bottle costs..."
+              placeholder={t('works.addInfo.holder')}
             />
           </FormField>
-
-          <FormField label={`Images (${images.length})`}>
+            
+          <FormField label={t('works.images.label', { count: images.length })}>
             <Box>
               {images && <NiceSlider images={images} />}
 
@@ -128,7 +132,7 @@ function WorkForm({
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

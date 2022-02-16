@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -31,6 +31,10 @@ function Activities({ history }) {
   const [loading, setLoading] = useState(true);
   const { currentUser, canCreateContent } = useContext(StateContext);
 
+  const [ t ] = useTranslation('activities');
+  const [ tm ] = useTranslation('members');
+  const [ tc ] = useTranslation('common');
+  
   useEffect(() => {
     Meteor.call('getMyActivities', (error, respond) => {
       if (error) {
@@ -60,7 +64,7 @@ function Activities({ history }) {
 
   return (
     <Template
-      heading="My Activities"
+      heading={t('members.label')}
       titleCentered
       leftContent={
         <Box p="2">
@@ -75,8 +79,9 @@ function Activities({ history }) {
             variant="outline"
             onClick={() => history.push('/new-activity')}
             mb="4"
+            textTransform="uppercase"
           >
-            NEW
+            {tc('actions.create')}
           </Button>
         </Center>
       )}
@@ -85,9 +90,9 @@ function Activities({ history }) {
         <Tabs>
           <Center>
             <TabList>
-              <Tab>All</Tab>
-              <Tab>Public</Tab>
-              <Tab>Private</Tab>
+              <Tab>{t('members.tabs.all')}</Tab>
+              <Tab>{t('members.tabs.public')}</Tab>
+              <Tab>{t('members.tabs.private')}</Tab>
             </TabList>
           </Center>
 
@@ -126,33 +131,38 @@ function Activities({ history }) {
       ) : (
         <Alert
           margin="medium"
-          message="You have to create an account to launch your market"
+          message={tm('message.guest')}
         />
       )}
     </Template>
   );
 }
 
-const ActivityItem = ({ act }) => (
-  <HStack align="flex-start" bg="white" p="3" w="100%">
-    {act.isPublicActivity && (
-      <Box p="2">
-        <Image fit="cover" w="xs" fill src={act.imageUrl} />
+const ActivityItem = ({ act }) => {
+
+  const [ t ] = useTranslation('activities');
+
+  return  (
+    <HStack align="flex-start" bg="white" p="3" w="100%">
+      {act.isPublicActivity && (
+        <Box p="2">
+          <Image fit="cover" w="xs" fill src={act.imageUrl} />
+        </Box>
+      )}
+      <Box w="100%">
+        <Heading mb="2" overflowWrap="anywhere" size="md">
+          {act.title}
+        </Heading>
+        <Tag>
+          <TagLabel>{act.resource}</TagLabel>
+        </Tag>
+        <Text fontWeight="light">{act.subTitle}</Text>
+        <Text fontStyle="italic" p="1" textAlign="right">
+          {act.datesAndTimes.length} {t('members.occurences')}
+        </Text>
       </Box>
-    )}
-    <Box w="100%">
-      <Heading mb="2" overflowWrap="anywhere" size="md">
-        {act.title}
-      </Heading>
-      <Tag>
-        <TagLabel>{act.resource}</TagLabel>
-      </Tag>
-      <Text fontWeight="light">{act.subTitle}</Text>
-      <Text fontStyle="italic" p="1" textAlign="right">
-        {act.datesAndTimes.length} occurences
-      </Text>
-    </Box>
-  </HStack>
-);
+    </HStack>
+  );
+}
 
 export default Activities;

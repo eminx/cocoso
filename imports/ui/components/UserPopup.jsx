@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
@@ -16,12 +17,15 @@ import { StateContext } from '../LayoutContainer';
 import { userMenu, adminMenu } from '../@/constants/general';
 
 function UserPopup({ currentUser }) {
+
+  const [ tc ] = useTranslation('common');
+
   if (!currentUser) {
     return (
       <Box px="1">
         <Link to="/login">
           <Button as="span" size="sm" variant="ghost">
-            Login
+            {tc('menu.guest.login')}
           </Button>
         </Link>
       </Box>
@@ -40,19 +44,19 @@ function UserPopup({ currentUser }) {
         />
       </MenuButton>
       <MenuList>
-        <MenuGroup title="My">
+        <MenuGroup title={tc('menu.member.label')}>
           {userMenu.map((item) => (
-            <Link key={item.label} to={item.value}>
-              <MenuItem>{item.label}</MenuItem>
+            <Link key={item.key} to={item.value}>
+              <MenuItem>{tc('menu.member.'+item.key)}</MenuItem>
             </Link>
           ))}
         </MenuGroup>
         {role === 'admin' && <MenuDivider />}
         {role === 'admin' && (
-          <MenuGroup title="Admin">
+          <MenuGroup title={tc('menu.admin.label')}>
             {adminMenu.map((item) => (
-              <Link key={item.label} to={item.value}>
-                <MenuItem>{item.label}</MenuItem>
+              <Link key={item.key} to={item.value}>
+                <MenuItem>{tc('menu.admin.'+item.key)}</MenuItem>
               </Link>
             ))}
           </MenuGroup>

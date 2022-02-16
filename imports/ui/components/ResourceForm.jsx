@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -36,6 +37,8 @@ function ResourceForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
+  const [ t ] = useTranslation('admin');
+  const [ tc ] = useTranslation('common');
 
   const isCombo = getValues('isCombo');
   return (
@@ -51,13 +54,13 @@ function ResourceForm({
               id="is-combo-switch"
             />
             <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
-              Combo Resource
+              {t('resources.form.combo.switch.label')}
             </FormLabel>
           </FormControl>
           {isCombo && (
             <Box bg="gray.100" p="4">
               <Text fontSize="sm">
-                Please select multiple resources to create a combo resource
+                {t('resources.form.combo.select.helper')}
               </Text>
               <Center mt="4">
                 <Wrap>
@@ -79,7 +82,7 @@ function ResourceForm({
                 <Select
                   bg="white"
                   m="4"
-                  placeholder="Select option"
+                  placeholder={t('resources.form.combo.select.holder')}
                   onChange={onAddResourceForCombo}
                 >
                   {suggestions.map((resource) => (
@@ -92,18 +95,18 @@ function ResourceForm({
             </Box>
           )}
 
-          <FormField label="Name">
+          <FormField label={t('resources.form.name.label')}>
             <Input
               {...register('label')}
-              placeholder="Sound Studio"
+              placeholder={t('resources.form.name.holder')}
               size="sm"
             />
           </FormField>
 
-          <FormField label="Description">
+          <FormField label={t('resources.form.desc.label')}>
             <Textarea
               {...register('description')}
-              placeholder="Using studio requires care..."
+              placeholder={t('resources.form.desc.holder')}
               size="sm"
             />
           </FormField>
@@ -114,7 +117,7 @@ function ResourceForm({
               isLoading={isSubmitting}
               type="submit"
             >
-              Confirm
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

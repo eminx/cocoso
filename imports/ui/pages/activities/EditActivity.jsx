@@ -12,14 +12,6 @@ import Loader from '../../components/Loader';
 import { resizeImage, uploadImage } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
-const successEditMessage = (isDeleted) => {
-  if (isDeleted) {
-    message.success('The activity is successfully deleted');
-  } else {
-    message.success('Your activity is successfully updated');
-  }
-};
-
 const formModel = {
   resource: '',
   title: '',
@@ -69,6 +61,15 @@ class EditActivity extends PureComponent {
     });
   };
 
+  successEditMessage = (isDeleted) => {
+    const { tc } = this.props;
+    if (isDeleted) {
+      message.success(tc('message.success.remove', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+    } else {
+      message.success(tc('message.success.update', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+    }
+  };
+
   handleFormValueChange = (formValues) => {
     this.setState({
       formValues,
@@ -99,8 +100,9 @@ class EditActivity extends PureComponent {
   };
 
   setUploadableImage = (files) => {
+    const { tc } = this.props;
     if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
+      message.error(tc('plugins.fileDropper.single'));
       return;
     }
     const theImageFile = files[0];
@@ -232,14 +234,14 @@ class EditActivity extends PureComponent {
   };
 
   render() {
-    const { activity, currentUser, resources } = this.props;
+    const { activity, currentUser, resources, tc, t } = this.props;
 
     if (!currentUser || !activity) {
       return <Loader />;
     }
 
     if (activity.authorId !== currentUser._id) {
-      return <Alert message="You are not allowed" />;
+      return <Alert message={tc('message.access.deny')} />;
     }
 
     const {
@@ -252,7 +254,7 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      successEditMessage(isDeleteModalOn);
+      this.successEditMessage(isDeleteModalOn);
       if (isDeleteModalOn) {
         return <Redirect to="/calendar" />;
       }
@@ -261,7 +263,7 @@ class EditActivity extends PureComponent {
 
     return (
       <Template
-        heading="Edit Activity"
+        heading={tc('labels.update', { domain: tc('domains.activity') })}
         leftContent={
           <Box pb="2">
             <Link to={`/event/${activity._id}`}>
@@ -279,14 +281,14 @@ class EditActivity extends PureComponent {
             <VStack spacing="2">
               <FormSwitch
                 isChecked={isPublicActivity}
-                label="Public Event"
+                label={t('form.switch.public')}
                 onChange={this.handlePublicActivitySwitch}
               />
 
               {isPublicActivity && (
                 <FormSwitch
                   isChecked={isRegistrationDisabled}
-                  label="RSVP disabled"
+                  label={t('form.switch.rsvp')}
                   onChange={this.handleRegistrationSwitch}
                 />
               )}
@@ -313,18 +315,19 @@ class EditActivity extends PureComponent {
             variant="ghost"
             onClick={this.showDeleteModal}
           >
-            Delete
+            {tc('actions.remove')}
           </Button>
         </Center>
 
         <ConfirmModal
-          title="Confirm"
+          title={tc('actions.submit')}
           visible={isDeleteModalOn}
           onConfirm={this.deleteActivity}
           onCancel={this.hideDeleteModal}
-          confirmText="Yes, delete"
+          confirmText={tc('modal.confirm.delete.yes')}
         >
-          Are you sure you want to delete this activity?
+          {tc('modal.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
+          
         </ConfirmModal>
       </Template>
     );
