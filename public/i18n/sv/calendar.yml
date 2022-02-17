@@ -24,6 +24,6 @@ datePicker:
     time: Tid
     datetime: Dag & Tid 
   formats:
-    date: HH:mm
-    time: yyyy-MM-dd
+    date: yyyy-MM-dd 
+    time: HH:mm
     datetime: yyyy-MM-dd  HH:mm
