@@ -29,6 +29,7 @@ labels:
   process: Bearbeta
   event: Händelse
   page: Sida
+  contact: Kontakt
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -74,9 +75,6 @@ modals:
           compliment: Komplimang
       details:
         label: Detaljer
-
-contact:
-  label: Kontakt
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:

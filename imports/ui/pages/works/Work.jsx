@@ -152,7 +152,7 @@ function Work() {
             </Flex>
             <Center p="2" mt="4">
               <Button onClick={handleOpenModal} variant="ghost">
-                {`Contact ${work.authorUsername}`}
+                {`${tc('labels.contact')} ${work.authorUsername}`}
               </Button>
             </Center>
           </Box>

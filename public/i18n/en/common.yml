@@ -29,6 +29,7 @@ labels:
   process: Process
   event: Event
   page: Page
+  contact: Contact
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -74,9 +75,6 @@ modals:
           compliment: Compliment
       details:
         label: Details
-
-contact:
-  label: Contact
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
