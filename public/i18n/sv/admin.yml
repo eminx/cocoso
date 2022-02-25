@@ -40,7 +40,7 @@ pages:
   form:
     title:
       label: Titel
-      holder: Contrinuting
+      holder: Bidrar
     desc:
       label: Beskrivning
-      holder: Contibuting guidelines are...
+      holder: Bidragande riktlinjer är...

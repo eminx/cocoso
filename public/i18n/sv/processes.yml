@@ -25,10 +25,10 @@ form:
     label: Bild
   title:
     label: Titel
-    holder: Understanding Benjamin
+    holder: Förstå Benjamin
   subtitle:
     label: Texta
-    holder: Through Illuminations
+    holder: Genom belysningar
   desc:
     label: Beskrivning
   capacity: 
