@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import RDC from 'react-datepicker';
+import RDC, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Input } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+
+// import locale from node_modules
+import { sv } from "date-fns/locale";
+registerLocale("sv", sv);
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
 // {
@@ -18,7 +22,7 @@ function DatePicker({
   placeholder,
 }) {
   const [selectedDate, setSelectedDate] = useState();
-  const [ t ] = useTranslation('calendar');
+  const [ t, i18n ] = useTranslation('calendar');
 
   useEffect(() => {
     if (value) {
@@ -63,6 +67,7 @@ function DatePicker({
       selected={selectedDate}
       showTimeSelect={onlyTime || !noTime}
       showTimeSelectOnly={onlyTime}
+      locale={i18n.language}
       timeFormat="p"
       timeIntervals={15}
       onChange={handleChange}
