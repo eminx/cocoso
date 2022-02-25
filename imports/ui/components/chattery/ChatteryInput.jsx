@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'i18next';
 
 class ChatteryInput extends React.Component {
   state = {
@@ -39,7 +40,7 @@ class ChatteryInput extends React.Component {
             value={this.state.inputValue}
             onChange={this.onChange}
           />
-          <input type="submit" className="chattery-submitbutton" value="Send" />
+          <input type="submit" className="chattery-submitbutton" value={i18n.t('common:actions.send')} />
         </form>
       </div>
     );
