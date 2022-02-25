@@ -24,9 +24,9 @@ class ChatteryBubble extends React.Component {
     } else if (isYesterday) {
       return moment(theDate).format('[Yesterday,] HH:mm');
     } else if (isThisYear) {
-      return moment(theDate).format('ddd, Do MMM, [at] HH:mm');
+      return moment(theDate).format('ddd, D MMM, [at] HH:mm');
     } else {
-      return moment(theDate).format("Do MMM [']YY, [at] HH:mm");
+      return moment(theDate).format("D MMM [']YY, [at] HH:mm");
     }
   };
 
