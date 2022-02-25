@@ -101,11 +101,16 @@ plugins:
 domains:
   a: a
   your: Your
+  public: Public
 
+  calendar: Calendar
   activity: Activity
+  activities: Activities
   process: Process
+  processes: Processes
   resource: Resource
   work: Work
+  works: Works
   host: Host
   page: Page
 

@@ -101,11 +101,16 @@ plugins:
 domains:
   a: en
   your: Din
+  public: Offentlig
 
+  calendar: Kalender
   activity: Aktivitet
+  activities: Aktiviteter
   process: Process
+  processes: Processer
   resource: Resurs
   work: arbete
+  works: Arbetar
   host: Värd
   page: sida
 
