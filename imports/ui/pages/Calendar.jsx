@@ -161,7 +161,7 @@ class Calendar extends PureComponent {
     return (
       <Box>
         <Helmet>
-          <title>{`Activity Calendar | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
         {currentUser && canCreateContent && (
           <Center mb="3">

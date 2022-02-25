@@ -140,7 +140,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
   return (
     <Template>
       <Helmet>
-        <title>{`Processes | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
       <Box>
         {canCreateContent && (

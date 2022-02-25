@@ -123,7 +123,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`Public Activities | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
       <Center mb="4">

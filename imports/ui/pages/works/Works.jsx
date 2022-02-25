@@ -84,7 +84,7 @@ function Works() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`Works | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
       <Center mb="4">
