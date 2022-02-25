@@ -34,6 +34,7 @@ function CalendarView(props) {
     showMore: total => t('bigCal.showMore', { total }),
   }
 
+  // import locale from node_modules
   require('moment/locale/sv')
 
   return (
