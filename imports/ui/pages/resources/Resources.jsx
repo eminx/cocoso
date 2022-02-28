@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+
 import React, { useState, useContext } from 'react';
-import moment from 'moment';
-import i18n from 'i18next';
+import { Link } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
+import moment from 'moment';
 
 import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -150,16 +153,16 @@ function ResourcesPage({ history, resources, isLoading }) {
       </Helmet>
       {canCreateContent && (
         <Center w="100%" mb="4">
-          <Button
-            colorScheme="green"
-            variant="outline"
-            onClick={() => {
-              setShowModal(true);
-            }}
-            textTransform="uppercase"
-          >
-            {tc('actions.create')}
-          </Button>
+          <Link to={currentUser ? '/resources/new' : '/my-profile'}>
+            <Button
+              colorScheme="green"
+              variant="outline"
+              // onClick={() => { setShowModal(true); }}
+              textTransform="uppercase"
+            >
+              {tc('actions.create')}
+            </Button>
+          </Link>
         </Center>
       )}
 
