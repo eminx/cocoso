@@ -176,7 +176,6 @@ function ResourcesPage({ history, resources, isLoading }) {
                   resource.label
                 )}
               </Heading>
-
               <Text as="div" my="2">
                 {resource && resource.description}
               </Text>
