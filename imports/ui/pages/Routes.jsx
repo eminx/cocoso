@@ -5,6 +5,7 @@ import { Progress } from '@chakra-ui/react';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
+import ResourceRoutes from './resources/@ResourceRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -22,11 +23,6 @@ const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer')
 const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
 const ProcessesListContainer = lazy(() => import('./processes/ProcessesListContainer'));
 const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
-// Resources
-const Resources = lazy(() => import('./resources/Resources'));
-const NewResource = lazy(() => import('./resources/NewResource'));
-const Resource = lazy(() => import('./resources/Resource'));
-const EditResource = lazy(() => import('./resources/EditResource'));
 // Pages
 const Page = lazy(() => import('./pages/Page'));
 const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
@@ -77,14 +73,7 @@ export default function () {
             <Route path="/process/:id" component={ProcessContainer} />
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
             {/* Resources */}
-            <Switch>
-              <Route exact path="/resources" component={Resources} />
-              <Route exact path="/resources/new" component={NewResource} />
-              <Switch>
-                <Route path="/resources/:id/edit" component={EditResource} />
-                <Route path="/resources/:id" component={Resource} />
-              </Switch>
-            </Switch>
+            <ResourceRoutes />
             {/* Pages */}
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />
@@ -107,7 +96,6 @@ export default function () {
             {/* Admin */}
             <Route path="/admin/settings" component={Settings} />
             <Route path="/admin/members" component={Members} />
-            <Route path="/admin/resources" component={Resources} />
             <Route path="/admin/emails" component={Emails} />
             {/* SuperAdmin */}
             <Route path="/new-host" component={NewHost} />
