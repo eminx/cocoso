@@ -25,8 +25,8 @@ const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
 // Resources
 const Resources = lazy(() => import('./resources/Resources'));
 const NewResource = lazy(() => import('./resources/NewResource'));
-// const ResourcePage = lazy(() => import('./resources/Resource'));
-// const EditResourcePage = lazy(() => import('./resources/EditResource'));
+const Resource = lazy(() => import('./resources/Resource'));
+const EditResource = lazy(() => import('./resources/EditResource'));
 // Pages
 const Page = lazy(() => import('./pages/Page'));
 const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
@@ -77,10 +77,14 @@ export default function () {
             <Route path="/process/:id" component={ProcessContainer} />
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
             {/* Resources */}
-            <Route exact path="/resources" component={Resources} />
-            <Route exact path="/resources/new" component={NewResource} />
-            {/* <Route path="/resources/:id" component={ResourcePage} /> */}
-            {/* <Route path="/resources/:id/edit" component={EditResourcePage} /> */}
+            <Switch>
+              <Route exact path="/resources" component={Resources} />
+              <Route exact path="/resources/new" component={NewResource} />
+              <Switch>
+                <Route path="/resources/:id/edit" component={EditResource} />
+                <Route path="/resources/:id" component={Resource} />
+              </Switch>
+            </Switch>
             {/* Pages */}
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />

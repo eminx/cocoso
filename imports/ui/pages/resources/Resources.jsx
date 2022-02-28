@@ -169,27 +169,29 @@ function ResourcesPage({ history, resources, isLoading }) {
       <Box p="4" mb="8">
         <NiceList itemBg="white" list={resourcesWithActions}>
           {(resource) => (
-            <Box bg="white" mb="2" p="2" key={resource.label}>
-              <Heading size="md" fontWeight="bold">
-                {resource.isCombo ? (
-                  <ResourcesForCombo resource={resource} />
-                ) : (
-                  resource.label
-                )}
-              </Heading>
-              <Text as="div" my="2">
-                {resource && resource.description}
-              </Text>
-              <Box py="2">
-                <Text as="div" fontSize="xs">
-                  {t('resources.cards.date', { 
-                    username: resource && resource.authorUsername, 
-                    date: moment(resource.creationDate).format('D MMM YYYY')
-                  })}
-                  <br />
+            <Link to={`/resources/${resource._id}`}>
+              <Box bg="white" mb="2" p="2" key={resource.label}>
+                <Heading size="md" fontWeight="bold">
+                  {resource.isCombo ? (
+                    <ResourcesForCombo resource={resource} />
+                  ) : (
+                    resource.label
+                  )}
+                </Heading>
+                <Text as="div" my="2">
+                  {resource && resource.description}
                 </Text>
+                <Box py="2">
+                  <Text as="div" fontSize="xs">
+                    {t('resources.cards.date', { 
+                      username: resource && resource.authorUsername, 
+                      date: moment(resource.creationDate).format('D MMM YYYY')
+                    })}
+                    <br />
+                  </Text>
+                </Box>
               </Box>
-            </Box>
+            </Link>
           )}
         </NiceList>
 
