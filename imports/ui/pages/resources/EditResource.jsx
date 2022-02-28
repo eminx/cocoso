@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Resources from '/imports/api/resources/resource';
 
 import Template from '../../components/Template';
-import ResourceForm from '../../components/ResourceForm';
+import ResourceForm from './components/ResourceForm';
 
 function EditResourcePage({ resource }) {
   const [ tc ] = useTranslation('common');

@@ -11,7 +11,7 @@ import moment from 'moment';
 import Resources from '/imports/api/resources/resource';
 
 import Template from '../../components/Template';
-import ResourcesForCombo from '../../components/ResourcesForCombo';
+import ResourcesForCombo from './components/ResourcesForCombo';
 
 function ResourcePage({ resource }) {
   const [ t ] = useTranslation('admin');

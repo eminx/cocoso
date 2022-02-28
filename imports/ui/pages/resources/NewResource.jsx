@@ -5,7 +5,7 @@ import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
-import ResourceForm from '../../components/ResourceForm';
+import ResourceForm from './components/ResourceForm';
 
 function NewResource() {
   const [ tc ] = useTranslation('common');

@@ -17,10 +17,11 @@ import { call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
-import ResourcesForCombo from '../../components/ResourcesForCombo';
 import { message } from '../../components/message';
-import ResourceForm from '../../components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
+
+import ResourcesForCombo from './components/ResourcesForCombo';
+import ResourceForm from './components/ResourceForm';
 
 moment.locale(i18n.language);
 
