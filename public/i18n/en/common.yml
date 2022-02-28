@@ -109,6 +109,7 @@ domains:
   process: Process
   processes: Processes
   resource: Resource
+  resources: Resources
   work: Work
   works: Works
   host: Host

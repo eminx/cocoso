@@ -109,6 +109,7 @@ domains:
   process: Process
   processes: Processer
   resource: Resurs
+  resources: Resurser
   work: arbete
   works: Arbetar
   host: Värd
