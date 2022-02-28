@@ -1,22 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
-import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 
-import NiceList from '../../components/NiceList';
-import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
-import ResourcesForCombo from '../../components/ResourcesForCombo';
-import { message } from '../../components/message';
+import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet';
+
+import Resources from '/imports/api/resources/resource';
+
 import { call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
-import { adminMenu } from '../../@/constants/general';
+import NiceList from '../../components/NiceList';
+import Template from '../../components/Template';
+import ResourcesForCombo from '../../components/ResourcesForCombo';
+import { message } from '../../components/message';
 import ResourceForm from '../../components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
-import Resources from '../../../api/resources/resource';
 
 moment.locale(i18n.language);
 
@@ -26,13 +27,14 @@ const resourceModel = {
   isCombo: false,
   resourcesForCombo: [],
 };
+const publicSettings = Meteor.settings.public;
 
 function ResourcesPage({ history, resources, isLoading }) {
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [defaultValues, setDefaultValues] = useState(resourceModel);
   const [resourcesForCombo, setResourcesForCombo] = useState([]);
-  const { currentUser, canCreateContent, role } = useContext(StateContext);
+  const { currentUser, canCreateContent, role, currentHost } = useContext(StateContext);
   const [ t ] = useTranslation('admin');
   const [ tc ] = useTranslation('common');
 
@@ -142,14 +144,10 @@ function ResourcesPage({ history, resources, isLoading }) {
   };
 
   return (
-    <Template
-      heading={t('resources.label')}
-      leftContent={
-        <Box p="4">
-          <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
-      }
-    >
+    <Template>
+      <Helmet>
+        <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
       {canCreateContent && (
         <Center w="100%" mb="4">
           <Button
