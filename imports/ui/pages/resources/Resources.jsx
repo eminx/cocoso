@@ -102,20 +102,20 @@ function ResourcesPage({ history, resources, isLoading }) {
 
   const resourcesWithActions = resources.map((resource) => ({
     ...resource,
-    actions: [
-      {
-        content: tc('actions.update'),
-        handleClick: () => initiateEditDialog(resource),
-        isDisabled:
-          role !== 'admin' && resource.authorUsername !== currentUser.username,
-      },
-      {
-        content: tc('actions.remove'),
-        handleClick: () => deleteResource(resource._id),
-        isDisabled:
-          role !== 'admin' && resource.authorUsername !== currentUser.username,
-      },
-    ],
+    // actions: [
+    //   {
+    //     content: tc('actions.update'),
+    //     handleClick: () => initiateEditDialog(resource),
+    //     isDisabled:
+    //       role !== 'admin' && resource.authorUsername !== currentUser.username,
+    //   },
+    //   {
+    //     content: tc('actions.remove'),
+    //     handleClick: () => deleteResource(resource._id),
+    //     isDisabled:
+    //       role !== 'admin' && resource.authorUsername !== currentUser.username,
+    //   },
+    // ],
   }));
 
   const handleAddResourceForCombo = ({ target }) => {
@@ -167,7 +167,7 @@ function ResourcesPage({ history, resources, isLoading }) {
       )}
 
       <Box p="4" mb="8">
-        <NiceList itemBg="white" list={resourcesWithActions}>
+        <NiceList itemBg="white" list={resourcesWithActions} actionsDisabled={true}>
           {(resource) => (
             <Link to={`/resources/${resource._id}`}>
               <Box bg="white" mb="2" p="2" key={resource.label}>
