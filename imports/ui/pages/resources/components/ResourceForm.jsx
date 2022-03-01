@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,7 +8,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   Select,
   Switch,
@@ -21,30 +20,81 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 
-import FormField from '/imports/ui/components/FormField';
-// import Tag from './Tag';
+import { call } from '../../../@/shared';
+import { message } from '../../../components/message';
+import FormField from '../../../components/FormField';
 
-function ResourceForm({
-  defaultValues,
-  isEditMode,
-  resourcesForCombo,
-  suggestions,
-  onAddResourceForCombo,
-  onRemoveResourceForCombo,
-  onSubmit,
-}) {
-  const { formState, handleSubmit, getValues, register } = useForm({
-    defaultValues,
-  });
+function ResourceForm({ resources, defaultValues, isEditMode, comboResources }) {
+  const [ resourcesForCombo, setResourcesForCombo ] = useState(comboResources);
+  
+  const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
+
   const [ t ] = useTranslation('admin');
   const [ tc ] = useTranslation('common');
 
   const isCombo = getValues('isCombo');
+
+  // const checkResourceNameExists = () => {
+  //   if (isEditMode) return false;
+  //   return resources.some(
+  //     (resource) => resource.label.toLowerCase() === defaultValues.label.toLowerCase()
+  //   );
+  // } 
+  const onSubmit = async (values) => {
+    // console.log(checkResourceNameExists())
+    // if (!values.label || values.label.length < 3) {
+    //   message.error(tc('message.valid.min', { field: 'resource name', min: '3' }));
+    //   return;
+    // }
+    // if (checkResourceNameExists()) {
+    //   message.error(tc('message.exists', { domain: tc('domains.resource').toLowerCase(), property: tc('domains.props.name') }));
+    //   return;
+    // }
+    try 
+    {
+      if (isEditMode) 
+      {
+        await call('updateResource', values.id, values);
+        message.success(tc('message.success.update', { domain: tc('domains.resource') }));
+      } 
+      else 
+      {
+        const newResource = await call('createResource', { ...values, resourcesForCombo });
+        console.log(newResource);
+        message.success(tc('message.success.create', { domain: tc('domains.resource') }));
+      }
+    } 
+    catch (error) 
+    {
+      console.log(error);
+      message.error(error.reason || error.error);
+    }
+  };
+  
+  const handleAddResourceForCombo = ({ target }) => {
+    const { value } = target;
+    const selectedResource = resources.find((r) => r._id === value);
+    setResourcesForCombo([...resourcesForCombo, selectedResource]);
+  };
+
+  const handleRemoveResourceForCombo = (res) => {
+    const newResourcesForCombo = resourcesForCombo.filter(
+      (resource) => res.label !== resource.label
+    );
+    setResourcesForCombo(newResourcesForCombo);
+  };
+
+  const suggestions = () => {
+    return resources.filter((res, index) => {
+      return (
+        !res.isCombo && !resourcesForCombo.some((r) => r.label === res.label)
+      );
+    });
+  };
+
   return (
     <Box>
-      {/* <Heading mb="8">{`${isEditMode ? 'Edit' : 'New'} Resource`}</Heading> */}
-
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormControl display="flex" alignItems="center">
@@ -71,7 +121,7 @@ function ResourceForm({
                             {res.label.toUpperCase()}
                           </TagLabel>
                           <TagCloseButton
-                            onClick={() => onRemoveResourceForCombo(res)}
+                            onClick={() => handleRemoveResourceForCombo(res)}
                           />
                         </Tag>
                       ))
@@ -83,9 +133,9 @@ function ResourceForm({
                   bg="white"
                   m="4"
                   placeholder={t('resources.form.combo.select.holder')}
-                  onChange={onAddResourceForCombo}
+                  onChange={handleAddResourceForCombo}
                 >
-                  {suggestions.map((resource) => (
+                  {suggestions().map((resource) => (
                     <option key={resource.label} value={resource._id}>
                       {resource.label}
                     </option>
@@ -127,3 +177,10 @@ function ResourceForm({
 }
 
 export default ResourceForm;
+
+// export default ResourceFormContainer = withTracker(() => {
+//   const handler = Meteor.subscribe('resources');
+//   if (!handler.ready()) return { resources: [] };
+//   const resources =  Resources.find({}).fetch().reverse();
+//   return { resources };
+// })(ResourceForm);
