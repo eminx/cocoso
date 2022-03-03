@@ -16,7 +16,7 @@ export default function Breadcrumb({ domain, domainKey }) {
           if(domain?._id == item) item = domain[domainKey];
           item = item.charAt(0).toUpperCase() + item.slice(1);
           if(item=='' && index==0) return (
-            <BreadcrumbItem>
+            <BreadcrumbItem key={'breadcrumb-'+index}>
               <Link to='/'>Home</Link>
             </BreadcrumbItem>
           );
@@ -26,14 +26,14 @@ export default function Breadcrumb({ domain, domainKey }) {
               if (breadcrumbs[i]!='') href = href + '/' + breadcrumbs[i]
             }
             return (
-              <BreadcrumbItem>
+              <BreadcrumbItem key={'breadcrumb-'+index}>
                 <Link to={href}>{item}</Link>
               </BreadcrumbItem>
             );
           }
           if (index==breadcrumbs.length-1) {
             return (
-              <BreadcrumbItem isCurrentPage>
+              <BreadcrumbItem isCurrentPage key={'breadcrumb-'+index}>
                 <BreadcrumbLink href="#">{item}</BreadcrumbLink>
               </BreadcrumbItem>
             );
