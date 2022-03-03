@@ -23,8 +23,9 @@ import {
 import { call } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
+import { Redirect } from 'react-router';
 
-function ResourceForm({ resources, defaultValues, isEditMode, comboResources }) {
+function ResourceForm({ resources, defaultValues, isEditMode, comboResources, history }) {
   const [ resourcesForCombo, setResourcesForCombo ] = useState(comboResources);
   
   const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
@@ -61,8 +62,9 @@ function ResourceForm({ resources, defaultValues, isEditMode, comboResources }) 
       else 
       {
         const newResource = await call('createResource', { ...values, resourcesForCombo });
-        console.log(newResource);
+        // console.log(newResource);
         message.success(tc('message.success.create', { domain: tc('domains.resource') }));
+        if(newResource) history.push('/resources/'+newResource);
       }
     } 
     catch (error) 

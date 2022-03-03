@@ -11,7 +11,7 @@ import Resources from '/imports/api/resources/resource';
 import Template from '../../components/Template';
 import ResourceForm from './components/ResourceForm';
 
-function NewResourcePage({ resources, isLoading }) {
+function NewResourcePage({ resources, isLoading, history }) {
   const [ tc ] = useTranslation('common');
   
   const resourceModel = {
@@ -34,6 +34,7 @@ function NewResourcePage({ resources, isLoading }) {
               defaultValues={resourceModel}
               isEditMode={false}
               comboResources={resourceModel.resourcesForCombo} 
+              history={history}
             />
         }
       </Box>

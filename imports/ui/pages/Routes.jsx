@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Router, Route, Redirect } from 'react-router-dom';
+import { Switch, Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Progress } from '@chakra-ui/react';
 
@@ -73,7 +73,7 @@ export default function () {
             <Route path="/process/:id" component={ProcessContainer} />
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
             {/* Resources */}
-            <ResourceRoutes path="/resources"/>
+            <ResourceRoutes path="/resources" history={browserHistory} />
             {/* Pages */}
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />

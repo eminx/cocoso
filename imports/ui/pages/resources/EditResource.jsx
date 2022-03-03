@@ -12,10 +12,11 @@ import { call } from '../../@/shared';
 import { message } from '../../components/message';
 import ConfirmModal from '../../components/ConfirmModal';
 
+import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
 import ResourceForm from './components/ResourceForm';
 
-function EditResourcePage({ resources, resource, resourcesForCombo, isLoading }) {
+function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, history }) {
   const [ tc ] = useTranslation('common');
   const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false)
   
@@ -26,18 +27,19 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading })
     try {
       await call('deleteResource', resourceId);
       message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
+      history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
       console.log(error);
     }
   };
 
-  if (typeof resource === 'undefined')  return <Redirect to="/resources" />;
+  if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Center>
-        <Link to={`/resources/${resource._id}`}>Back to resource</Link>
+        <Link to={`/resources/${resource?._id}`}>Back to resource</Link>
       </Center>
       <Box bg="white" p="6">
         {!isLoading 
@@ -65,7 +67,7 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading })
       <ConfirmModal
         visible={isDeleteModalOn}
         title={tc('modals.confirm.delete.title')}
-        onConfirm={() => deleteResource(resource._id)}
+        onConfirm={() => deleteResource(resource?._id)}
         onCancel={hideDeleteModal}
         confirmText={tc('modals.confirm.delete.yes')}
       >
