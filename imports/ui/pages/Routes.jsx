@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Router, Route } from 'react-router-dom';
+import { Switch, Router, Route, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Progress } from '@chakra-ui/react';
 
@@ -9,7 +9,6 @@ import ResourceRoutes from './resources/@ResourceRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
-// const NotFoundPage = lazy(() => import('./NotFoundPage'));
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Activities
@@ -48,15 +47,16 @@ const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
 // SuperAdmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
+// NotFound
+const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
 export default function () {
   return (
     <Router history={browserHistory}>
-      <Switch>
-        <LayoutContainer history={browserHistory}>
-          <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
+      <LayoutContainer history={browserHistory}>
+        <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
+          <Switch>
             {/* Home */}
-            {/* <Route path="*" component={NotFoundPage} /> */}
             <Route exact path="/" component={Home} />
             {/* Calendar */}
             <Route exact path="/calendar" component={CalendarContainer} />
@@ -69,39 +69,43 @@ export default function () {
             <Route path="/edit-activity/:id/" component={EditActivityContainer}/>
             {/* Processes */}
             <Route exact path="/new-process" component={NewProcessContainer} />
-            <Route path="/processes/" component={ProcessesListContainer} />
+            <Route exact path="/processes/" component={ProcessesListContainer} />
             <Route path="/process/:id" component={ProcessContainer} />
             <Route path="/edit-process/:id/" component={EditProcessContainer} />
             {/* Resources */}
-            <ResourceRoutes />
+            <ResourceRoutes path="/resources"/>
             {/* Pages */}
             <Route exact path="/new-page" component={NewPageContainer} />
             <Route path="/page/:id" component={Page} />
             <Route path="/edit-page/:id/" component={EditPageContainer} />
             {/* Works */}
-            <Route path="/my-works" component={MyWorks} />
+            <Route exact path="/my-works" component={MyWorks} />
             <Route path="/:username/work/:workId" component={Work} />
             <Route path="/:username/edit-work/:workId" component={EditWork} />
-            <Route path="/new-work" component={NewWork} />
-            <Route path="/works" component={Works} />
+            <Route exact path="/new-work" component={NewWork} />
+            <Route exact path="/works" component={Works} />
             {/* Auth */}
-            <Route path="/signup" component={SignupPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/forgot-password" component={ForgotPasswordPage} />
+            <Route exact path="/signup" component={SignupPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/forgot-password" component={ForgotPasswordPage} />
             <Route path="/reset-password/:token" component={ResetPasswordPage}/>
             {/* Members */}
-            <Route path="/my-profile/" component={ProfileContainer} history={browserHistory}/>
-            <Route path="/members" component={MembersPublic} />
+            <Route exact path="/my-profile/" component={ProfileContainer} history={browserHistory}/>
+            <Route exact path="/members" component={MembersPublic} />
             <Route path="/@:username" component={MemberPublic} />
             {/* Admin */}
-            <Route path="/admin/settings" component={Settings} />
-            <Route path="/admin/members" component={Members} />
-            <Route path="/admin/emails" component={Emails} />
+            <Route exact path="/admin/settings" component={Settings} />
+            <Route exact path="/admin/members" component={Members} />
+            <Route exact path="/admin/emails" component={Emails} />
             {/* SuperAdmin */}
-            <Route path="/new-host" component={NewHost} />
-          </Suspense>
-        </LayoutContainer>
-      </Switch>
+            <Route exact path="/new-host" component={NewHost} />
+            {/* NotFoundPage */}
+            <Route exact path="/not-found" component={NotFoundPage} />
+            <Route exact path="/404" component={NotFoundPage} />
+            <Route path="*"><NotFoundPage /></Route>
+          </Switch>
+        </Suspense>
+      </LayoutContainer>
     </Router>
   );
 }

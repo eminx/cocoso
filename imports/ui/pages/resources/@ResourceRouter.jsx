@@ -7,9 +7,9 @@ const NewResource = lazy(() => import('./NewResource'));
 const Resource = lazy(() => import('./Resource'));
 const EditResource = lazy(() => import('./EditResource'));
 
-export default function ResourceRoutes() {
+export default function ResourceRoutes({path}) {
   return (
-    <Switch>
+    <Switch path={path}>
       <Route exact path="/resources" component={Resources} />
       <Route exact path="/resources/new" component={NewResource} />
       <Switch>
