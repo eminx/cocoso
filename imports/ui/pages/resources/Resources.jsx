@@ -8,15 +8,14 @@ import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
 
-import { Box, Button, Center, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, List, ListItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import ResourcesCollection from '/imports/api/resources/resource';
 
 import { StateContext } from '../../LayoutContainer';
-import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
-import ResourcesForCombo from './components/ResourcesForCombo';
+import ResourceCard from './components/ResourceCard';
 
 moment.locale(i18n.language);
 
@@ -24,8 +23,7 @@ const publicSettings = Meteor.settings.public;
 
 function ResourcesPage({ resources, isLoading }) {
 
-  const { currentUser, canCreateContent, role, currentHost } = useContext(StateContext);
-  const [ t ] = useTranslation('admin');
+  const { currentUser, canCreateContent, currentHost } = useContext(StateContext);
   const [ tc ] = useTranslation('common');
 
   return (
@@ -54,37 +52,19 @@ function ResourcesPage({ resources, isLoading }) {
           </Heading>
         </Center>
       }
-      <Box p="4" mb="8">
-        {!isLoading &&
-          <NiceList itemBg="white" list={resources} actionsDisabled={true}>
-            {(resource) => (
-              <Link to={`/resources/${resource._id}`}>
-                <Box bg="white" mb="2" p="2" key={resource.label}>
-                  <Heading size="md" fontWeight="bold">
-                    {resource.isCombo ? (
-                      <ResourcesForCombo resource={resource} />
-                    ) : (
-                      resource.label
-                    )}
-                  </Heading>
-                  <Text as="div" my="2">
-                    {resource && resource.description}
-                  </Text>
-                  <Box py="2">
-                    <Text as="div" fontSize="xs">
-                      {t('resources.cards.date', { 
-                        username: resource && resource.authorUsername, 
-                        date: moment(resource.creationDate).format('D MMM YYYY')
-                      })}
-                      <br />
-                    </Text>
-                  </Box>
-                </Box>
-              </Link>
-            )}
-          </NiceList>
-        }
-      </Box>
+      {!isLoading &&
+        <Box p="4" mb="8">
+          <List>
+            {resources.map((resource, index) => (
+              <ListItem key={'resource-'+index}>
+                <Link to={`/resources/${resource?._id}`}>
+                  <ResourceCard resource={resource}/>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      }
     </Template>
   );
 }
