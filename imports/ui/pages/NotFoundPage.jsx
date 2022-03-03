@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import Template from '../components/Template';
 
-const NotFoundPage = ({ history }) => {
+const NotFoundPage = ({ domain, history }) => {
   return (
     <Template>
       <Box m="4" p="2">
@@ -10,7 +10,7 @@ const NotFoundPage = ({ history }) => {
           404
         </Text>
         <Text textAlign="center" fontWeight="bold">
-          Page could not be found dear
+          {domain ? domain : 'Page'} could not be found dear
         </Text>
       </Box>
     </Template>
