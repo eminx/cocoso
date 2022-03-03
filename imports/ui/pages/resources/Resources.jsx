@@ -15,6 +15,7 @@ import ResourcesCollection from '/imports/api/resources/resource';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 
 moment.locale(i18n.language);
@@ -44,7 +45,7 @@ function ResourcesPage({ resources, isLoading }) {
           </Link>
         </Center>
       )}
-
+      <Breadcrumb />
       {resources.length == 0 && 
         <Center>
           <Heading size="md" fontWeight="bold">

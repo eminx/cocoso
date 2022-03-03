@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Resources from '/imports/api/resources/resource';
 
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
 function NewResourcePage({ resources, isLoading, history }) {
@@ -24,9 +25,7 @@ function NewResourcePage({ resources, isLoading, history }) {
 
   return (
     <Template heading={tc('labels.create', { domain: tc('domains.resource') })}>
-      <Center>
-        <Link to={`/resources`}>Back to resources</Link>
-      </Center>
+      <Breadcrumb />
       <Box bg="white" p="6">
         {!isLoading 
           && <ResourceForm 

@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,11 +13,12 @@ import ConfirmModal from '../../components/ConfirmModal';
 
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
 function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, history }) {
   const [ tc ] = useTranslation('common');
-  const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false)
+  const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false);
   
   const hideDeleteModal = () => setIsDeleteModalOn(false);
   const showDeleteModal = () => setIsDeleteModalOn(true);
@@ -34,13 +34,12 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, h
     }
   };
 
+
   if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
-      <Center>
-        <Link to={`/resources/${resource?._id}`}>Back to resource</Link>
-      </Center>
+      <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
         {!isLoading 
           && <ResourceForm 

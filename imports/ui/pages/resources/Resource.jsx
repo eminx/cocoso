@@ -10,6 +10,7 @@ import Resources from '/imports/api/resources/resource';
 
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 
 function ResourcePage({ resource }) {
@@ -19,9 +20,7 @@ function ResourcePage({ resource }) {
 
   return (
     <Template>
-      <Center>
-        <Link to={`/resources`}>Back to resources</Link>
-      </Center>
+      <Breadcrumb domain={resource} domainKey="label" />
       <ResourceCard resource={resource}/>
       <Center my="2">
         <Link to={`/resources/${resource?._id}/edit`}>
