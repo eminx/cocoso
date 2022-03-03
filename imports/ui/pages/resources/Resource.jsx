@@ -18,47 +18,42 @@ function ResourcePage({ resource }) {
   const [ t ] = useTranslation('admin');
   const [ tc ] = useTranslation('common');
 
+  if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
+
   return (
-    <div>
-    {typeof resource === 'undefined' && 
-      <NotFoundPage domain="Resource with this name or id" />
-    }
-    {typeof resource !== 'undefined' && 
-      <Template>
-        <Center>
-          <Link to={`/resources`}>Back to resources</Link>
-        </Center>
-        <Box bg="white" mb="2" p="2" key={resource?.label}>
-          <Heading size="md" fontWeight="bold">
-            {resource?.isCombo ? (
-              <ResourcesForCombo resource={resource} />
-            ) : (
-              resource?.label
-            )}
-          </Heading>
-          <Text as="div" my="2">
-            {resource && resource?.description}
+    <Template>
+      <Center>
+        <Link to={`/resources`}>Back to resources</Link>
+      </Center>
+      <Box bg="white" mb="2" p="2" key={resource?.label}>
+        <Heading size="md" fontWeight="bold">
+          {resource?.isCombo ? (
+            <ResourcesForCombo resource={resource} />
+          ) : (
+            resource?.label
+          )}
+        </Heading>
+        <Text as="div" my="2">
+          {resource && resource?.description}
+        </Text>
+        <Box py="2">
+          <Text as="div" fontSize="xs">
+            {t('resources.cards.date', { 
+              username: resource && resource?.authorUsername, 
+              date: moment(resource?.creationDate).format('D MMM YYYY')
+            })}
+            <br />
           </Text>
-          <Box py="2">
-            <Text as="div" fontSize="xs">
-              {t('resources.cards.date', { 
-                username: resource && resource?.authorUsername, 
-                date: moment(resource?.creationDate).format('D MMM YYYY')
-              })}
-              <br />
-            </Text>
-          </Box>
         </Box>
-        <Center my="2">
-          <Link to={`/resources/${resource?._id}/edit`}>
-            <Button size="sm" variant="ghost">
-              {tc('actions.update')}
-            </Button>
-          </Link>
-        </Center>
-      </Template>
-    }
-    </div>
+      </Box>
+      <Center my="2">
+        <Link to={`/resources/${resource?._id}/edit`}>
+          <Button size="sm" variant="ghost">
+            {tc('actions.update')}
+          </Button>
+        </Link>
+      </Center>
+    </Template>
   );
 }
 
