@@ -47,6 +47,13 @@ function ResourcesPage({ resources, isLoading }) {
         </Center>
       )}
 
+      {resources.length == 0 && 
+        <Center>
+          <Heading size="md" fontWeight="bold">
+            No resource published yet.
+          </Heading>
+        </Center>
+      }
       <Box p="4" mb="8">
         {!isLoading &&
           <NiceList itemBg="white" list={resources} actionsDisabled={true}>
