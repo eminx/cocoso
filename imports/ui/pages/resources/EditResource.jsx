@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,6 +31,8 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading })
       console.log(error);
     }
   };
+
+  if (typeof resource === 'undefined')  return <Redirect to="/resources" />;
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
