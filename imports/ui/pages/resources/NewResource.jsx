@@ -1,22 +1,34 @@
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Center } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Resources from '/imports/api/resources/resource';
-
+import { call } from '../../@/shared';
+import { message } from '../../components/message';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
-function NewResourcePage({ resources, isLoading, history }) {
+function NewResourcePage({ history }) {
+  const [resourceLabels, setResourceLabels] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [ tc ] = useTranslation('common');
+
+  useEffect(() => {
+    getResourceLabels();
+  }, []);
+
+  const getResourceLabels = async () => {
+    try {
+      const response = await call('getResourceLabels');
+      setResourceLabels(response);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(false);
+    }
+  };
   
   const resourceModel = {
-    _id: '',
     label: '',
     description: '',
     isCombo: false,
@@ -29,7 +41,7 @@ function NewResourcePage({ resources, isLoading, history }) {
       <Box bg="white" p="6">
         {!isLoading 
           && <ResourceForm 
-              resources={resources}
+              resources={resourceLabels}
               defaultValues={resourceModel}
               isEditMode={false}
               comboResources={resourceModel.resourcesForCombo} 
@@ -41,9 +53,4 @@ function NewResourcePage({ resources, isLoading, history }) {
   );
 }
 
-export default NewResource = withTracker(() => {
-  const handler = Meteor.subscribe('resources');
-  if (!handler.ready()) return { resources: [], isLoading: true };
-  const resources =  Resources.find({ }, { fields: { label: 1 }}).fetch().reverse();
-  return { resources, isLoading: false };
-})(NewResourcePage);
+export default NewResourcePage;
