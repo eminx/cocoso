@@ -77,7 +77,7 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, h
 }
 
 export default EditResource = withTracker((props) => {
-  const resourceId = props.match.params.id;
+  const resourceId = props.match.params.resourceId;
   const handler = Meteor.subscribe('resources');
   if (!handler.ready()) return { resources: [], resource: {}, resourcesForCombo: [], isLoading: true };
   const resources =  Resources.find({}).fetch().reverse();
