@@ -1,7 +1,10 @@
 import React from 'react';
 import { Box, Heading, Flex, Tag, Text } from '@chakra-ui/react';
+
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import moment from 'moment';
+moment.locale(i18n.language);
 
 export default function ResourcesCard({ resource }) {
   const [ t ] = useTranslation('admin');

@@ -1,10 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
-import moment from 'moment';
-
 import { Box, Button, Center, Heading, List, ListItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
@@ -14,8 +10,6 @@ import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
-
-moment.locale(i18n.language);
 
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
