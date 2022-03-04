@@ -4,18 +4,12 @@ import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Resources from './resource';
 
+
 Meteor.methods({
   getResources() {
     const host = getHost(this);
     const sort = { creationDate: -1 };
-    const fields = {
-      label: 1,
-      description: 1,
-      isCombo: 1,
-      resourcesForCombo: 1,
-      authorUsername: 1,
-      creationDate: 1,
-    };
+    const fields = Resources.publicFields;
     return Resources.find({ host }, { sort, fields }).fetch();
   },
   
@@ -24,6 +18,12 @@ Meteor.methods({
     const sort = { creationDate: -1 };
     const fields = { label: 1 };
     return Resources.find({ host }, { sort, fields }).fetch();
+  },
+  
+  getResourceById(resourceId) {
+    const _id = resourceId;
+    const fields = Resources.publicFields;
+    return Resources.findOne({ _id }, { fields });
   },
 
   createResource(values) {
