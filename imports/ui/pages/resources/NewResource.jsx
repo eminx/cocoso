@@ -22,8 +22,6 @@ function NewResourcePage({ history }) {
       <Box bg="white" p="6">
         <ResourceForm 
           defaultValues={resourceModel}
-          isEditMode={false}
-          comboResources={resourceModel.resourcesForCombo} 
           history={history}
         />
       </Box>
