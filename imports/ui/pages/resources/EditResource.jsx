@@ -1,28 +1,40 @@
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Resources from '/imports/api/resources/resource';
-
 import { call } from '../../@/shared';
 import { message } from '../../components/message';
-import ConfirmModal from '../../components/ConfirmModal';
-
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
+import ConfirmModal from '../../components/ConfirmModal';
 
-function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
-  const [ tc ] = useTranslation('common');
+function EditResourcePage({ history }) {
+  const { resourceId } = useParams();
+  const [ resource, setResource ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false);
+  const [ tc ] = useTranslation('common');
+  
+  useEffect(() => {
+    getResourceById();
+  }, []);
+
+  const getResourceById = async () => {
+    try {
+      const response = await call('getResourceById', resourceId);
+      setResource(response);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(false);
+    }
+  };
   
   const hideDeleteModal = () => setIsDeleteModalOn(false);
   const showDeleteModal = () => setIsDeleteModalOn(true);
-
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
@@ -35,7 +47,7 @@ function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
   };
 
   if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
-
+  
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Breadcrumb domain={resource} domainKey="label" />
@@ -44,12 +56,10 @@ function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
           <ResourceForm 
             defaultValues={resource} 
             isEditMode={true} 
-            comboResources={resourcesForCombo} 
+            history={history}
           />
         }
-        
       </Box>
-
       <Center p="4">
         <Button
           colorScheme="red"
@@ -60,7 +70,6 @@ function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
           {tc('actions.remove')}
         </Button>
       </Center>
-
       <ConfirmModal
         visible={isDeleteModalOn}
         title={tc('modals.confirm.delete.title')}
@@ -74,23 +83,4 @@ function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
   );
 }
 
-export default EditResource = withTracker((props) => {
-  const resourceId = props.match.params.resourceId;
-  const handler = Meteor.subscribe('resources');
-  if (!handler.ready()) return { resource: {}, resourcesForCombo: [], isLoading: true };
-  const resource =  Resources.findOne(
-    { _id: resourceId }, 
-    { 
-      fields: { 
-        label: 1,
-        description: 1,
-        isCombo: 1,
-        resourcesForCombo: 1
-      },
-    }
-  );  
-  const resourcesForCombo = resource?.resourcesForCombo;
-  return { resource, resourcesForCombo, isLoading: false };
-})(EditResourcePage);
-
-
+export default EditResourcePage;
