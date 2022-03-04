@@ -24,19 +24,17 @@ import { call } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 
-function ResourceForm({ defaultValues, isEditMode, comboResources, history }) {
+function ResourceForm({ defaultValues, isEditMode, history }) {
   const [ resourceLabels, setResourceLabels ] = useState([]);
   // const [ isLoading, setIsLoading ] = useState(true);
-
-  const [ resourcesForCombo, setResourcesForCombo ] = useState(comboResources);
+  const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
   
   const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
+  const isCombo = getValues('isCombo');
 
   const [ t ] = useTranslation('admin');
   const [ tc ] = useTranslation('common');
-
-  const isCombo = getValues('isCombo');
 
   useEffect(() => {
     getResourceLabels();
