@@ -50,6 +50,15 @@ Resources.schema = new SimpleSchema({
 
 });
 
+Resources.publicFields = {
+  label: 1,
+  description: 1,
+  isCombo: 1,
+  resourcesForCombo: 1,
+  authorUsername: 1,
+  creationDate: 1,
+};
+
 Resources.attachSchema(Resources.schema);
 
 export default Resources;
