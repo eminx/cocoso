@@ -1,22 +1,39 @@
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import Resources from '/imports/api/resources/resource';
-
+import { call } from '../../@/shared';
+import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
+import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 
-function ResourcePage({ resource }) {
+function ResourcePage() {
+  const { resourceId } = useParams();
+  const [ resource, setResource ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ tc ] = useTranslation('common');
 
+  useEffect(() => {
+    getResourceById();
+  }, []);
+
+  const getResourceById = async () => {
+    try {
+      const response = await call('getResourceById', resourceId);
+      setResource(response);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(false);
+    }
+  };
+
   if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
+  if (isLoading) return <Loader />
 
   return (
     <Template>
@@ -33,10 +50,4 @@ function ResourcePage({ resource }) {
   );
 }
 
-export default Resource = withTracker((props) => {
-  const resourceId = props.match.params.id;
-  const handler = Meteor.subscribe('resources');
-  if (!handler.ready()) return { resource: {}, isLoading: true };
-  const resource =  Resources.findOne({ _id: resourceId });
-  return { resource };
-})(ResourcePage);
+export default ResourcePage;
