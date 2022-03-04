@@ -17,8 +17,6 @@ import ResourceCard from './components/ResourceCard';
 
 moment.locale(i18n.language);
 
-const publicSettings = Meteor.settings.public;
-
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
   const [resources, setResources] = useState([]);
@@ -32,7 +30,6 @@ function ResourcesPage() {
   const getResources = async () => {
     try {
       const response = await call('getResources');
-      console.log(response)
       setResources(response);
       setIsLoading(false);
     } catch (error) {
@@ -44,7 +41,7 @@ function ResourcesPage() {
   return (
     <Template>
       <Helmet>
-        <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${Meteor.settings.public.name}`}</title>
       </Helmet>
       {canCreateContent && (
         <Center w="100%" mb="4">
@@ -85,10 +82,3 @@ function ResourcesPage() {
 }
 
 export default ResourcesPage;
-
-// export default Resources = withTracker(() => {
-//   const handler = Meteor.subscribe('resources');
-//   if (!handler.ready()) return { resources: [], isLoading: true };
-//   const resources =  ResourcesCollection.find({}).fetch().reverse();
-//   return { resources, isLoading: false };
-// })(ResourcesPage);
