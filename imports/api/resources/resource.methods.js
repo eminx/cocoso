@@ -7,8 +7,16 @@ import Resources from './resource';
 Meteor.methods({
   getResources() {
     const host = getHost(this);
-
-    return Resources.find({ host }, { sort: { creationDate: 1 } }).fetch();
+    const sort = { creationDate: -1 };
+    const fields = {
+      label: 1,
+      description: 1,
+      isCombo: 1,
+      resourcesForCombo: 1,
+      authorUsername: 1,
+      creationDate: 1,
+    };
+    return Resources.find({ host }, { sort, fields }).fetch();
   },
 
   createResource(values) {
