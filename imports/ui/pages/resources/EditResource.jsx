@@ -16,7 +16,7 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
-function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, history }) {
+function EditResourcePage({ resource, resourcesForCombo, isLoading, history }) {
   const [ tc ] = useTranslation('common');
   const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false);
   
@@ -34,20 +34,18 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, h
     }
   };
 
-
   if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
-        {!isLoading 
-          && <ResourceForm 
-              resources={resources}
-              defaultValues={resource} 
-              isEditMode={true} 
-              comboResources={resourcesForCombo} 
-            />
+        {!isLoading && 
+          <ResourceForm 
+            defaultValues={resource} 
+            isEditMode={true} 
+            comboResources={resourcesForCombo} 
+          />
         }
         
       </Box>
@@ -79,8 +77,7 @@ function EditResourcePage({ resources, resource, resourcesForCombo, isLoading, h
 export default EditResource = withTracker((props) => {
   const resourceId = props.match.params.resourceId;
   const handler = Meteor.subscribe('resources');
-  if (!handler.ready()) return { resources: [], resource: {}, resourcesForCombo: [], isLoading: true };
-  const resources =  Resources.find({}).fetch().reverse();
+  if (!handler.ready()) return { resource: {}, resourcesForCombo: [], isLoading: true };
   const resource =  Resources.findOne(
     { _id: resourceId }, 
     { 
@@ -93,7 +90,7 @@ export default EditResource = withTracker((props) => {
     }
   );  
   const resourcesForCombo = resource?.resourcesForCombo;
-  return { resources, resource, resourcesForCombo, isLoading: false };
+  return { resource, resourcesForCombo, isLoading: false };
 })(EditResourcePage);
 
 

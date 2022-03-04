@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,7 +24,10 @@ import { call } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 
-function ResourceForm({ resources, defaultValues, isEditMode, comboResources, history }) {
+function ResourceForm({ defaultValues, isEditMode, comboResources, history }) {
+  const [ resourceLabels, setResourceLabels ] = useState([]);
+  // const [ isLoading, setIsLoading ] = useState(true);
+
   const [ resourcesForCombo, setResourcesForCombo ] = useState(comboResources);
   
   const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
@@ -34,6 +37,21 @@ function ResourceForm({ resources, defaultValues, isEditMode, comboResources, hi
   const [ tc ] = useTranslation('common');
 
   const isCombo = getValues('isCombo');
+
+  useEffect(() => {
+    getResourceLabels();
+  }, []);
+
+  const getResourceLabels = async () => {
+    try {
+      const response = await call('getResourceLabels');
+      setResourceLabels(response);
+      // setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      // setIsLoading(false);
+    }
+  };
 
   // const checkResourceNameExists = () => {
   //   if (isEditMode) return false;
@@ -75,7 +93,7 @@ function ResourceForm({ resources, defaultValues, isEditMode, comboResources, hi
   
   const handleAddResourceForCombo = ({ target }) => {
     const { value } = target;
-    const selectedResource = resources.find((r) => r._id === value);
+    const selectedResource = resourceLabels.find((r) => r._id === value);
     setResourcesForCombo([...resourcesForCombo, selectedResource]);
   };
 
@@ -87,7 +105,7 @@ function ResourceForm({ resources, defaultValues, isEditMode, comboResources, hi
   };
 
   const suggestions = () => {
-    return resources.filter((res, index) => {
+    return resourceLabels.filter((res, index) => {
       return (
         !res.isCombo && !resourcesForCombo.some((r) => r.label === res.label)
       );
