@@ -1,7 +1,4 @@
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
@@ -11,8 +8,8 @@ import moment from 'moment';
 import { Box, Button, Center, Heading, List, ListItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import ResourcesCollection from '/imports/api/resources/resource';
-
+import { call } from '../../@/shared';
+import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -22,10 +19,27 @@ moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-function ResourcesPage({ resources, isLoading }) {
-
-  const { currentUser, canCreateContent, currentHost } = useContext(StateContext);
+function ResourcesPage() {
+  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
+  const [resources, setResources] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [ tc ] = useTranslation('common');
+
+  useEffect(() => {
+    getResources();
+  }, []);
+
+  const getResources = async () => {
+    try {
+      const response = await call('getResources');
+      console.log(response)
+      setResources(response);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Template>
@@ -70,9 +84,11 @@ function ResourcesPage({ resources, isLoading }) {
   );
 }
 
-export default Resources = withTracker(() => {
-  const handler = Meteor.subscribe('resources');
-  if (!handler.ready()) return { resources: [], isLoading: true };
-  const resources =  ResourcesCollection.find({}).fetch().reverse();
-  return { resources, isLoading: false };
-})(ResourcesPage);
+export default ResourcesPage;
+
+// export default Resources = withTracker(() => {
+//   const handler = Meteor.subscribe('resources');
+//   if (!handler.ready()) return { resources: [], isLoading: true };
+//   const resources =  ResourcesCollection.find({}).fetch().reverse();
+//   return { resources, isLoading: false };
+// })(ResourcesPage);
