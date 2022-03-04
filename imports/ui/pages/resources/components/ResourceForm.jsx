@@ -23,7 +23,6 @@ import {
 import { call } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
-import { Redirect } from 'react-router';
 
 function ResourceForm({ resources, defaultValues, isEditMode, comboResources, history }) {
   const [ resourcesForCombo, setResourcesForCombo ] = useState(comboResources);

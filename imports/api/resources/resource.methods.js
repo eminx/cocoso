@@ -4,7 +4,6 @@ import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Resources from './resource';
 
-
 Meteor.methods({
   getResources() {
     const host = getHost(this);
@@ -12,7 +11,7 @@ Meteor.methods({
     const fields = Resources.publicFields;
     return Resources.find({ host }, { sort, fields }).fetch();
   },
-  
+
   getResourceLabels() {
     const host = getHost(this);
     const sort = { creationDate: -1 };

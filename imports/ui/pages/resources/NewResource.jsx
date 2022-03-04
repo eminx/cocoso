@@ -9,8 +9,8 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
 function NewResourcePage({ history }) {
-  const [resourceLabels, setResourceLabels] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [ resourceLabels, setResourceLabels ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ tc ] = useTranslation('common');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function NewResourcePage({ history }) {
       setIsLoading(false);
     }
   };
-  
+
   const resourceModel = {
     label: '',
     description: '',

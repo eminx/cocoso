@@ -1,7 +1,6 @@
 import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// const NotFoundPage = lazy(() => import('../../../NotFoundPage'));
 const Resources = lazy(() => import('./Resources'));
 const NewResource = lazy(() => import('./NewResource'));
 const Resource = lazy(() => import('./Resource'));

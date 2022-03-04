@@ -13,8 +13,8 @@ import ResourceCard from './components/ResourceCard';
 
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
-  const [resources, setResources] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [ resources, setResources ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ tc ] = useTranslation('common');
 
   useEffect(() => {
