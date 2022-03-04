@@ -13,8 +13,8 @@ export default function ResourceRoutes({ path, history }) {
       <Route exact path="/resources" component={Resources} />
       <Route exact path="/resources/new" component={NewResource} history={history} />
       <Switch>
-        <Route path="/resources/:id/edit" component={EditResource} history={history} />
-        <Route path="/resources/:id" component={Resource} />
+        <Route path="/resources/:resourceId/edit" component={EditResource} history={history} />
+        <Route path="/resources/:resourceId" component={Resource} />
       </Switch>
     </Switch>
   );
