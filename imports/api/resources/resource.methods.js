@@ -18,6 +18,13 @@ Meteor.methods({
     };
     return Resources.find({ host }, { sort, fields }).fetch();
   },
+  
+  getResourceLabels() {
+    const host = getHost(this);
+    const sort = { creationDate: -1 };
+    const fields = { label: 1 };
+    return Resources.find({ host }, { sort, fields }).fetch();
+  },
 
   createResource(values) {
     const user = Meteor.user();
