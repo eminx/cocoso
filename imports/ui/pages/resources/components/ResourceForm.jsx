@@ -194,10 +194,3 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 }
 
 export default ResourceForm;
-
-// export default ResourceFormContainer = withTracker(() => {
-//   const handler = Meteor.subscribe('resources');
-//   if (!handler.ready()) return { resources: [] };
-//   const resources =  Resources.find({}).fetch().reverse();
-//   return { resources };
-// })(ResourceForm);
