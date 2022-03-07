@@ -59,6 +59,6 @@ Resources.publicFields = {
   creationDate: 1,
 };
 
-Resources.attachSchema(Resources.schema);
+// Resources.attachSchema(Resources.schema);
 
 export default Resources;
