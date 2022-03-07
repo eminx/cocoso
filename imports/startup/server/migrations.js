@@ -20,10 +20,26 @@ Migrations.add({
     });
   }
 });
+// Drop && Set back - labelLowerCase
+Migrations.add({
+  version: 2,
+  up: async function() {
+    console.log('up to', this.version);
+    Resources.update({}, {$unset: {labelLowerCase: true}}, {multi: true});
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({_id: {$exists: true}}).forEach(item => {
+      const labelLowerCase = item.label.toLowerCase();
+      Resources.update(item._id, {$set: {labelLowerCase}});
+    });
+  }
+});
 
 // Run migrations
 Meteor.startup(() => {
   Migrations.migrateTo(0);
   // Migrations.migrateTo(1);
-  // Migrations.migrateTo('latest');
+  // Migrations.migrateTo(2);
+  Migrations.migrateTo('latest');
 });
