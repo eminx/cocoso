@@ -15,9 +15,9 @@ Resources.schema = new SimpleSchema({
   // authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true },
 
   label: {type: String},
-  labelLowerCase: {type: String},
+  // labelLowerCase: {type: String},
   description: {type: String},
-  hourlyFee: {type: String, optional: true},
+  // hourlyFee: {type: String, optional: true},
   isCombo: {type: Boolean},
 
   resourceIndex: {type: SimpleSchema.Integer, optional: true},
