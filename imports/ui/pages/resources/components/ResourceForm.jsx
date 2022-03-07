@@ -51,40 +51,19 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     }
   };
 
-  // const checkResourceNameExists = () => {
-  //   if (isEditMode) return false;
-  //   return resources.some(
-  //     (resource) => resource.label.toLowerCase() === defaultValues.label.toLowerCase()
-  //   );
-  // } 
   const onSubmit = async (values) => {
-    // console.log(checkResourceNameExists())
-    // if (!values.label || values.label.length < 3) {
-    //   message.error(tc('message.valid.min', { field: 'resource name', min: '3' }));
-    //   return;
-    // }
-    // if (checkResourceNameExists()) {
-    //   message.error(tc('message.exists', { domain: tc('domains.resource').toLowerCase(), property: tc('domains.props.name') }));
-    //   return;
-    // }
-    try 
-    {
-      if (isEditMode) 
-      {
-        await call('updateResource', values.id, values);
+    try {
+      if (isEditMode) {
+        await call('updateResource', defaultValues._id, values);
         message.success(tc('message.success.update', { domain: tc('domains.resource') }));
-      } 
-      else 
-      {
-        const newResource = await call('createResource', { ...values, resourcesForCombo });
-        // console.log(newResource);
+      } else {
+        if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
+        values.resourcesForCombo = resourcesForCombo;
+        const newResource = await call('createResource', values);
         message.success(tc('message.success.create', { domain: tc('domains.resource') }));
         if(newResource) history.push('/resources/'+newResource);
       }
-    } 
-    catch (error) 
-    {
-      console.log(error);
+    } catch (error) {
       message.error(error.reason || error.error);
     }
   };
