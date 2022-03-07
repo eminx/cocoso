@@ -4,6 +4,26 @@ import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Resources from './resource';
 
+// RESOURCE METHOD VALIDATIONS
+function validateUser(user, currentHost) {
+  if (!user || !isContributorOrAdmin(user, currentHost)) {
+    throw new Meteor.Error('You are not allowed');
+  }
+  return true;
+}
+function validateLabel(label, host, resourceId) {
+  // set resource query
+  let resourceQuery = { host, label };
+  if (resourceId) resourceQuery._id = { $ne: resourceId };
+  // validate label
+  if (label.length < 3) {
+    throw new Meteor.Error('Resource name is too short. Minimum 3 letters required');
+  } else if (Resources.find(resourceQuery).fetch().length > 0) {
+    throw new Meteor.Error('There already is a resource with this name');
+  }
+  return true;
+}
+// RESOURCE METHODS
 Meteor.methods({
   getResources() {
     const host = getHost(this);
@@ -18,105 +38,63 @@ Meteor.methods({
     const fields = { label: 1 };
     return Resources.find({ host }, { sort, fields }).fetch();
   },
-  
+
   getResourceById(resourceId) {
-    const _id = resourceId;
     const fields = Resources.publicFields;
-    return Resources.findOne({ _id }, { fields });
+    return Resources.findOne(resourceId, { fields });
   },
 
   createResource(values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    const resources = Resources.find({ host }).fetch();
-    if (
-      resources.some(
-        (resource) =>
-          resource.label.toLowerCase() === values.label.toLowerCase()
-      )
-    ) {
-      throw new Meteor.Error('There already is a resource with this name');
-    }
-    if (values.label.length < 3) {
-      throw new Meteor.Error(
-        'Resource name is too short. Minimum 3 letters required'
-      );
-    }
-
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
-      throw new Meteor.Error('You are not allowed');
-    }
-
-    try {
-      const newResourceId = Resources.insert({
-        ...values,
-        labelLowerCase: values.label.toLowerCase(),
-        resourceIndex: resources.length,
-        host,
-        authorId: user._id,
-        authorAvatar: user.avatar,
-        authorUsername: user.username,
-        authorFirstName: user.firstName,
-        authorLastName: user.lastName,
-        creationDate: new Date(),
-      });
-      return newResourceId;
-    } catch (error) {
-      console.log(error);
-      throw new Meteor.Error(error);
+    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    const resourceIndex = Resources.find({host}).count();
+    if(validateUser(user, currentHost) && validateLabel(values.label, host)) {
+      try {
+        return Resources.insert({
+          host,
+          authorId: user._id,
+          ...values,
+          resourceIndex,
+          authorUsername: user.username,
+          creationDate: new Date(),
+        });
+      } catch (error) {
+        throw new Meteor.Error(error);
+      }
     }
   },
 
   updateResource(resourceId, values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    const labelAlreadyExists = Resources.findOne({
-      host,
-      _id: { $ne: resourceId },
-      labelLowerCase: values.label.toLowerCase(),
-    });
-
-    if (labelAlreadyExists) {
-      throw new Meteor.Error('There already is a resource with this name');
-    } else if (values.label.length < 3) {
-      throw new Meteor.Error(
-        'Resource name is too short. Minimum 3 letters required'
-      );
-    } else if (!user || !isContributorOrAdmin(user, currentHost)) {
-      throw new Meteor.Error('You are not allowed');
-    }
-
-    try {
-      Resources.update(resourceId, {
-        $set: {
-          ...values,
-          labelLowerCase: values.label.toLowerCase(),
-          updatedBy: user.username,
-          latestUpdate: new Date(),
-        },
-      });
-      return values.label;
-    } catch (error) {
-      console.log(error);
-      throw new Meteor.Error(error, "Couldn't add to Collection");
+    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    if(validateUser(user, currentHost) && validateLabel(values.label, host, resourceId)) {
+      try {
+        Resources.update(resourceId, {
+          $set: {
+            ...values,
+            updatedBy: user.username,
+            latestUpdate: new Date(),
+          },
+        });
+      } catch (error) {
+        throw new Meteor.Error(error, "Couldn't add to Collection");
+      }
     }
   },
 
   deleteResource(resourceId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
-      throw new Meteor.Error('You are not allowed');
-    }
-
-    try {
-      Resources.remove(resourceId);
-    } catch (error) {
-      throw new Meteor.Error(error, "Couldn't remove from collection");
+    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    if(validateUser(user, currentHost)) {
+      try {
+        Resources.remove(resourceId);
+      } catch (error) {
+        throw new Meteor.Error(error, "Couldn't remove from collection");
+      }
     }
   },
+
 });
