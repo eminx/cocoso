@@ -29,3 +29,4 @@ dev-error-overlay@0.1.1       # Show build errors in client when using HMR
 edgee:slingshot               # Directly post files to cloud storage services, such as AWS-S3.
 aldeed:collection2            # Automatic validation of Meteor Mongo insert and update operations on the client and server
 force-ssl-custom              # Require this application to use HTTPS
+percolate:migrations
