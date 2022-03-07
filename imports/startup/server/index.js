@@ -26,3 +26,5 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${url}`;
   };
 });
+
+import './migrations';
