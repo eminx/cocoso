@@ -97,6 +97,46 @@ Migrations.add({
     Resources.update({}, {$unset: {updatedAt: true}}, {multi: true});
   }
 });
+// Switch between - authorId <=> userId
+Migrations.add({
+  version: 6,
+  up: async function() {
+    console.log('up to', this.version);
+    await Resources.find({authorId: {$exists: true}}).forEach(item => {
+      const userId = item.authorId;
+      Resources.update(item._id, {$set: {userId}});
+    });
+    Resources.update({}, {$unset: {authorId: true}}, {multi: true});
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({userId: {$exists: true}}).forEach(item => {
+      const authorId = item.userId;
+      Resources.update(item._id, {$set: {authorId}});
+    });
+    Resources.update({}, {$unset: {userId: true}}, {multi: true});
+  }
+});
+// Switch between - authorUsername <=> createdBy
+Migrations.add({
+  version: 7,
+  up: async function() {
+    console.log('up to', this.version);
+    await Resources.find({authorUsername: {$exists: true}}).forEach(item => {
+      const createdBy = item.authorUsername;
+      Resources.update(item._id, {$set: {createdBy}});
+    });
+    Resources.update({}, {$unset: {authorUsername: true}}, {multi: true});
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({createdBy: {$exists: true}}).forEach(item => {
+      const authorUsername = item.createdBy;
+      Resources.update(item._id, {$set: {authorUsername}});
+    });
+    Resources.update({}, {$unset: {createdBy: true}}, {multi: true});
+  }
+});
 
 // Run migrations
 Meteor.startup(() => {
@@ -106,5 +146,7 @@ Meteor.startup(() => {
   // Migrations.migrateTo(3);
   // Migrations.migrateTo(4);
   // Migrations.migrateTo(5);
+  // Migrations.migrateTo(6);
+  // Migrations.migrateTo(7);
   Migrations.migrateTo('latest');
 });

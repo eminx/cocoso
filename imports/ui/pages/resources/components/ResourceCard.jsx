@@ -23,7 +23,7 @@ export default function ResourcesCard({ resource }) {
       <Box py="2">
         <Text as="div" fontSize="xs">
           {t('resources.cards.date', { 
-            username: resource && resource?.authorUsername, 
+            username: resource && resource?.createdBy, 
             date: moment(resource?.createdAt).format('D MMM YYYY')
           })}
           <br />

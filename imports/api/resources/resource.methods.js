@@ -69,10 +69,10 @@ Meteor.methods({
       try {
         return Resources.insert({
           host,
-          authorId: user._id,
+          userId: user._id,
           ...values,
           resourceIndex,
-          authorUsername: user.username,
+          createdBy: user.username,
           createdAt: new Date(),
         });
       } catch (error) {
