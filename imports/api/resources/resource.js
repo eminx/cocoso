@@ -20,8 +20,8 @@ Resources.schema = new SimpleSchema({
   // hourlyFee: {type: String, optional: true},
   isCombo: {type: Boolean},
 
-  resourceIndex: {type: SimpleSchema.Integer, optional: true},
-  resourcesForCombo: {type: Array, optional: true},
+  resourceIndex: {type: SimpleSchema.Integer},
+  resourcesForCombo: {type: Array},
   'resourcesForCombo.$': Schemas.Id,
   // 'resourcesForCombo.$': new SimpleSchema({
   //   _id: Schemas.Id,
@@ -51,15 +51,15 @@ Resources.schema = new SimpleSchema({
 
 });
 
+Resources.attachSchema(Resources.schema);
+
 Resources.publicFields = {
   label: 1,
   description: 1,
   isCombo: 1,
   resourcesForCombo: 1,
   authorUsername: 1,
-  creationDate: 1,
+  createdAt: 1,
 };
-
-// Resources.attachSchema(Resources.schema);
 
 export default Resources;

@@ -36,7 +36,7 @@ function fetchComboResources(resource) {
 Meteor.methods({
   getResources() {
     const host = getHost(this);
-    const sort = { creationDate: -1 };
+    const sort = { createdAt: -1 };
     const fields = Resources.publicFields;
     const resources = Resources.find({ host }, { sort, fields }).fetch();
     resources.forEach(resource => {
@@ -48,7 +48,7 @@ Meteor.methods({
 
   getResourceLabels() {
     const host = getHost(this);
-    const sort = { creationDate: -1 };
+    const sort = { createdAt: -1 };
     const fields = { label: 1 };
     return Resources.find({ host }, { sort, fields }).fetch();
   },
