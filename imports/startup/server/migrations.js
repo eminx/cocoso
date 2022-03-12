@@ -35,11 +35,34 @@ Migrations.add({
     });
   }
 });
+// Change - resourcesForCombo - arrayOfObjects <=> arrayOfIds
+Migrations.add({
+  version: 3,
+  up: async function() {
+    console.log('up to', this.version);
+    await Resources.find({ isCombo: true }).forEach(item => {
+      const resourcesForCombo = [];
+      item.resourcesForCombo.forEach(res => { resourcesForCombo.push(res._id) });
+      Resources.update(item._id, {$set: {resourcesForCombo}});
+    });
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({ isCombo: true }).forEach(item => {
+      const resourcesForCombo =  Resources.find(
+        { _id : { $in : item.resourcesForCombo } }, 
+        { fields: { label: 1 } }
+      ).fetch();
+      Resources.update(item._id, {$set: {resourcesForCombo}});
+    });
+  }
+});
 
 // Run migrations
 Meteor.startup(() => {
-  Migrations.migrateTo(0);
+  // Migrations.migrateTo(0);
   // Migrations.migrateTo(1);
   // Migrations.migrateTo(2);
-  Migrations.migrateTo('latest');
+  // Migrations.migrateTo(3);
+  // Migrations.migrateTo('latest');
 });
