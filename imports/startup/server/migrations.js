@@ -57,6 +57,26 @@ Migrations.add({
     });
   }
 });
+// Switch between - creationDate <=> createdAt
+Migrations.add({
+  version: 4,
+  up: async function() {
+    console.log('up to', this.version);
+    await Resources.find({creationDate: {$exists: true}}).forEach(item => {
+      const createdAt = item.creationDate;
+      Resources.update(item._id, {$set: {createdAt}});
+    });
+    Resources.update({}, {$unset: {creationDate: true}}, {multi: true});
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({createdAt: {$exists: true}}).forEach(item => {
+      const creationDate = item.createdAt;
+      Resources.update(item._id, {$set: {creationDate}});
+    });
+    Resources.update({}, {$unset: {createdAt: true}}, {multi: true});
+  }
+});
 
 // Run migrations
 Meteor.startup(() => {
@@ -64,5 +84,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(1);
   // Migrations.migrateTo(2);
   // Migrations.migrateTo(3);
-  // Migrations.migrateTo('latest');
+  // Migrations.migrateTo(4);
+  Migrations.migrateTo('latest');
 });

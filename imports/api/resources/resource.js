@@ -47,7 +47,7 @@ Resources.schema = new SimpleSchema({
 
   updatedBy: {type: String, optional: true},
   latestUpdate: {type: Date, optional: true},
-  creationDate: {type: Date},
+  createdAt: {type: Date},
 
 });
 

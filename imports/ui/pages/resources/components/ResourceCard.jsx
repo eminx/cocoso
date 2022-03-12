@@ -24,7 +24,7 @@ export default function ResourcesCard({ resource }) {
         <Text as="div" fontSize="xs">
           {t('resources.cards.date', { 
             username: resource && resource?.authorUsername, 
-            date: moment(resource?.creationDate).format('D MMM YYYY')
+            date: moment(resource?.createdAt).format('D MMM YYYY')
           })}
           <br />
         </Text>

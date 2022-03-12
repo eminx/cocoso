@@ -73,7 +73,7 @@ Meteor.methods({
           ...values,
           resourceIndex,
           authorUsername: user.username,
-          creationDate: new Date(),
+          createdAt: new Date(),
         });
       } catch (error) {
         throw new Meteor.Error(error);
