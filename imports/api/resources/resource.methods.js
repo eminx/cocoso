@@ -23,13 +23,27 @@ function validateLabel(label, host, resourceId) {
   }
   return true;
 }
+// FETCH COMBO RESOURCES
+function fetchComboResources(resource) {
+  const resourcesForCombo =  Resources.find(
+    { _id : { $in : resource.resourcesForCombo } }, 
+    { fields: { label: 1 } }
+  ).fetch();
+  resource.resourcesForCombo = resourcesForCombo;
+  return resource;
+}
 // RESOURCE METHODS
 Meteor.methods({
   getResources() {
     const host = getHost(this);
     const sort = { creationDate: -1 };
     const fields = Resources.publicFields;
-    return Resources.find({ host }, { sort, fields }).fetch();
+    const resources = Resources.find({ host }, { sort, fields }).fetch();
+    resources.forEach(resource => {
+      if (resource.isCombo) 
+        resource = fetchComboResources(resource);
+    });
+    return resources;
   },
 
   getResourceLabels() {
@@ -41,14 +55,16 @@ Meteor.methods({
 
   getResourceById(resourceId) {
     const fields = Resources.publicFields;
-    return Resources.findOne(resourceId, { fields });
+    let resource = Resources.findOne(resourceId, { fields });
+    resource = fetchComboResources(resource);
+    return resource;
   },
 
   createResource(values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
-    const resourceIndex = Resources.find({host}).count();
+    const resourceIndex = Resources.find({ host }).count();
     if(validateUser(user, currentHost) && validateLabel(values.label, host)) {
       try {
         return Resources.insert({
