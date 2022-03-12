@@ -45,9 +45,9 @@ Resources.schema = new SimpleSchema({
   //   // creationDate: {type: Date, optional: true },
   // }),
 
-  updatedBy: {type: String, optional: true},
-  latestUpdate: {type: Date, optional: true},
   createdAt: {type: Date},
+  updatedAt: {type: Date, optional: true},
+  updatedBy: {type: String, optional: true},
 
 });
 

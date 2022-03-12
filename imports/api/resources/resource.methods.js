@@ -91,7 +91,7 @@ Meteor.methods({
           $set: {
             ...values,
             updatedBy: user.username,
-            latestUpdate: new Date(),
+            updatedAt: new Date(),
           },
         });
       } catch (error) {

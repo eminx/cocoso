@@ -77,6 +77,26 @@ Migrations.add({
     Resources.update({}, {$unset: {createdAt: true}}, {multi: true});
   }
 });
+// Switch between - latestUpdate <=> updatedAt
+Migrations.add({
+  version: 5,
+  up: async function() {
+    console.log('up to', this.version);
+    await Resources.find({latestUpdate: {$exists: true}}).forEach(item => {
+      const updatedAt = item.latestUpdate;
+      Resources.update(item._id, {$set: {updatedAt}});
+    });
+    Resources.update({}, {$unset: {latestUpdate: true}}, {multi: true});
+  },
+  down: async function() {
+    console.log('down to', (this.version - 1));
+    await Resources.find({updatedAt: {$exists: true}}).forEach(item => {
+      const latestUpdate = item.updatedAt;
+      Resources.update(item._id, {$set: {latestUpdate}});
+    });
+    Resources.update({}, {$unset: {updatedAt: true}}, {multi: true});
+  }
+});
 
 // Run migrations
 Meteor.startup(() => {
@@ -85,5 +105,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(2);
   // Migrations.migrateTo(3);
   // Migrations.migrateTo(4);
+  // Migrations.migrateTo(5);
   Migrations.migrateTo('latest');
 });
