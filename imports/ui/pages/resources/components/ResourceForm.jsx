@@ -52,13 +52,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (values) => {
+    if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
+    values.resourcesForCombo = resourcesForCombo.map(item => item._id);
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
         message.success(tc('message.success.update', { domain: tc('domains.resource') }));
       } else {
-        if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
-        values.resourcesForCombo = resourcesForCombo;
         const newResource = await call('createResource', values);
         message.success(tc('message.success.create', { domain: tc('domains.resource') }));
         if(newResource) history.push('/resources/'+newResource);
