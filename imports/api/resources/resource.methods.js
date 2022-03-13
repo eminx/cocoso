@@ -56,7 +56,7 @@ Meteor.methods({
   getResourceById(resourceId) {
     const fields = Resources.publicFields;
     let resource = Resources.findOne(resourceId, { fields });
-    resource = fetchComboResources(resource);
+    if (resource && resource.isCombo) resource = fetchComboResources(resource);
     return resource;
   },
 
