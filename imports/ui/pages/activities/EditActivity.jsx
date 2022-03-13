@@ -9,7 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import { resizeImage, uploadImage } from '../../@/shared';
+import { resizeImage, uploadImage, call } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 const formModel = {
@@ -35,9 +35,11 @@ class EditActivity extends PureComponent {
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
+    resources: [],
   };
 
   componentDidMount() {
+    this.getResources();
     this.setInitialData();
   }
 
@@ -46,6 +48,15 @@ class EditActivity extends PureComponent {
       this.setInitialData();
     }
   }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
+  };
 
   setInitialData = () => {
     const { activity } = this.props;
@@ -145,13 +156,14 @@ class EditActivity extends PureComponent {
   };
 
   updateActivity = () => {
-    const { activity, resources } = this.props;
+    const { activity } = this.props;
     const {
       formValues,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
       datesAndTimes,
+      resources,
     } = this.state;
 
     const resource = resources.find(
@@ -234,7 +246,7 @@ class EditActivity extends PureComponent {
   };
 
   render() {
-    const { activity, currentUser, resources, tc, t } = this.props;
+    const { activity, currentUser, tc, t } = this.props;
 
     if (!currentUser || !activity) {
       return <Loader />;
@@ -251,6 +263,7 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
       isSuccess,
       uploadableImageLocal,
+      resources, 
     } = this.state;
 
     if (isSuccess) {

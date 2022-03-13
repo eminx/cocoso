@@ -21,7 +21,6 @@ export default NewActivityContainer = withTracker((props) => {
   return {
     allOccurences,
     currentUser,
-    resources,
     t,
     tc
   };

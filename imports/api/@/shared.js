@@ -1,12 +1,20 @@
+import Resources from "../resources/resource";
+
 const getHost = (self) => self.connection.httpHeaders.host;
 
 const siteUrl = Meteor.absoluteUrl();
 
 const getResourceIndex = (resource, host) => {
-  import Resources from "../resources/resource";
   const resources = Resources.find(
     { host },
-    { sort: { creationDate: 1 } }
+    { 
+      sort: { createdAt: -1 },
+      fields: {
+        label: 1,
+        isCombo: 1,
+        resourceIndex: 1
+      }
+    }
   ).fetch();
 
   if (resources.length > 0) {

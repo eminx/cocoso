@@ -67,7 +67,7 @@ const CalendarContainer = withTracker((props) => {
     isLoading,
     allActivities,
     currentUser,
-    resourcesList,
+    // resourcesList,
     manuals,
     tc,
   };

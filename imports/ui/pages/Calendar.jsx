@@ -14,6 +14,8 @@ import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
 import { getHslValuesFromLength } from '../@/constants/colors';
+import { call } from '../@/shared';
+import { message } from '../components/message';
 import { StateContext } from '../LayoutContainer';
 
 moment.locale(i18n.language);
@@ -26,6 +28,20 @@ class Calendar extends PureComponent {
     editActivity: null,
     calendarFilter: 'All',
     selectedActivity: null,
+    resourcesList: []
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resourcesList = await call('getResources');
+      this.setState({ resourcesList });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
   };
 
   handleModeChange = (e) => {
@@ -96,9 +112,9 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, resourcesList, allActivities, tc } = this.props;
+    const { isLoading, currentUser, allActivities, tc } = this.props;
     const { canCreateContent, currentHost, role } = this.context;
-    const { editActivity, calendarFilter, selectedActivity, isUploading } =this.state;
+    const { editActivity, calendarFilter, selectedActivity, isUploading, resourcesList } =this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
       return (

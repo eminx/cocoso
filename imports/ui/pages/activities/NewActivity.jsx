@@ -8,7 +8,7 @@ import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
-import { resizeImage, uploadImage } from '../../@/shared';
+import { resizeImage, uploadImage, call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
@@ -50,6 +50,20 @@ class NewActivity extends PureComponent {
     isExclusiveActivity: true,
     isRegistrationDisabled: false,
     isCreating: false,
+    resources: [],
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
   };
 
   handleSubmit = (values) => {
@@ -122,13 +136,13 @@ class NewActivity extends PureComponent {
   };
 
   createActivity = () => {
-    const { resources } = this.props;
     const {
       formValues,
       datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
+      resources,
     } = this.state;
 
     const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
@@ -281,7 +295,7 @@ class NewActivity extends PureComponent {
   };
 
   render() {
-    const { currentUser, resources, t, tc } = this.props;
+    const { currentUser, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
@@ -306,6 +320,7 @@ class NewActivity extends PureComponent {
       isExclusiveActivity,
       isRegistrationDisabled,
       datesAndTimes,
+      resources,
     } = this.state;
 
     if (isSuccess) {

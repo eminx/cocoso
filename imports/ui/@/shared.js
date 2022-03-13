@@ -109,7 +109,8 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
         (res) => res.label === activity.resource
       );
       if (theResource && theResource.isCombo) {
-        theResource.resourcesForCombo.forEach((resourceForCombo) => {
+        theResource.resourcesForCombo.forEach(async (resourceForCombo) => {
+          const theComboResource = await call('getResourceById', resourceForCombo);
           allActivities.push({
             title: activity.title,
             start: moment(
@@ -129,8 +130,8 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
             isMultipleDay:
               recurrence.isMultipleDay ||
               recurrence.startDate !== recurrence.endDate,
-            resource: resourceForCombo.label,
-            resourceIndex: resourceForCombo.resourceIndex,
+            resource: theComboResource.label,
+            resourceIndex: theComboResource.resourceIndex,
             isPublicActivity: activity.isPublicActivity,
             isWithComboResource: true,
             comboResource: activity.resource,

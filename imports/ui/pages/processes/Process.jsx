@@ -45,6 +45,7 @@ import InviteManager from './InviteManager';
 import { TimePicker } from '../../components/DatesAndTimes';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
+import { call } from '../../@/shared';
 import { message } from '../../components/message';
 
 moment.locale(i18n.language);
@@ -66,6 +67,20 @@ class Process extends Component {
     droppedDocuments: null,
     potentialNewAdmin: false,
     inviteManagerOpen: false,
+    resources: [],
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
   };
 
   isMember = () => {
@@ -376,7 +391,8 @@ class Process extends Component {
   };
 
   renderDates = () => {
-    const { process, resources, t } = this.props;
+    const { process, t } = this.props;
+    const { resources } = this.state;
     if (!process) {
       return;
     }
@@ -427,7 +443,8 @@ class Process extends Component {
   };
 
   renderMeetings = () => {
-    const { process, currentUser, resources, t } = this.props;
+    const { process, currentUser, t } = this.props;
+    const { resources } = this.state;
     if (!process || !process.meetings) {
       return;
     }
@@ -821,7 +838,8 @@ class Process extends Component {
   };
 
   render() {
-    const { process, isLoading, resources, history , t, tc  } = this.props;
+    const { process, isLoading, history , t, tc  } = this.props;
+    const { resources } = this.state;
 
     if (!process || isLoading) {
       return <Loader />;
