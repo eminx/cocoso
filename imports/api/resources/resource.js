@@ -29,6 +29,7 @@ Resources.publicFields = {
   description: 1,
   isCombo: 1,
   resourcesForCombo: 1,
+  resourceIndex: 1,
   createdBy: 1,
   createdAt: 1,
 };
