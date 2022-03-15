@@ -337,9 +337,9 @@ class EditActivity extends PureComponent {
           visible={isDeleteModalOn}
           onConfirm={this.deleteActivity}
           onCancel={this.hideDeleteModal}
-          confirmText={tc('modal.confirm.delete.yes')}
+          confirmText={tc('modals.confirm.delete.yes')}
         >
-          {tc('modal.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
+          {tc('modals.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
           
         </ConfirmModal>
       </Template>
