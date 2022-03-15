@@ -12,7 +12,6 @@ import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity'; 
 
 moment.locale(i18n.language);
-
 const CalendarContainer = withTracker((props) => {
   const activities = Meteor.subscribe('activities');
   const isLoading = !activities.ready();
@@ -20,6 +19,9 @@ const CalendarContainer = withTracker((props) => {
   const currentUser = Meteor.user();
   const resourcesSub = Meteor.subscribe('resources');
   const resourcesList = Resources ? Resources.find().fetch() : null;
+  resourcesList.forEach(resource => {
+    if (resource.isCombo) resource = fetchComboResources(resource);
+  });
   const processesSubscription = Meteor.subscribe('processes');
   const processesList = Processes ? Processes.find().fetch() : null;
 
@@ -61,6 +63,15 @@ const CalendarContainer = withTracker((props) => {
         });
       }
     });
+  }
+
+  function fetchComboResources(resource) {
+    const resourcesForCombo =  Resources.find(
+      { _id : { $in : resource.resourcesForCombo } }, 
+      { fields: { label: 1, resourceIndex: 1 } }
+    ).fetch();
+    resource.resourcesForCombo = resourcesForCombo;
+    return resource;
   }
 
   return {
