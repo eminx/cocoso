@@ -27,4 +27,4 @@ Meteor.startup(() => {
   };
 });
 
-import './migrations';
+// import './migrations';
