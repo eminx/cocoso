@@ -1,36 +1,36 @@
 # ADMIN RESOURCES PAGE
-resources: 
+resources:
   label: Resurser
-  cards: 
+  cards:
     date: lagt till av {{ username }} den {{ date }}
     ifCombo: Combo
   form:
     combo:
-      switch: 
+      switch:
         label: Combo Resurser
-      select: 
+      select:
         holder: Välj alternativ
         helper: Välj flera resurser för att skapa en kombinationsresurs
-    name: 
+    name:
       label: Namn
       holder: Sound Studio
-    desc: 
-      label: Beskrivning 
+    desc:
+      label: Beskrivning
       holder: Att använda studio kräver omsorg ...
 
 # ADMIN EMAILS PAGE
-emails: 
+emails:
   label: E-postmeddelanden
-  form: 
-    subject: 
-      label: ÄmneÄmne
+  form:
+    subject:
+      label: Ämne
       holder: Välkommen
     appeal:
-      label: Överklagande
+      label: Vädjan
       holder: Kära
       addon: '@username'
-    body: 
-      label: Kropp
+    body:
+      label: Beskrivning
 
 # ADMIN STATIC PAGES
 pages:

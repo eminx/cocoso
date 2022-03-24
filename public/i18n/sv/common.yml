@@ -44,7 +44,7 @@ message:
   access:
     deny: Du får inte
     admin: Du måste vara superadmin för att skapa en {{ domain }}
-    contributor: Du måste bli en bidragsgivare för att skapa {{ domain }}
+    contributor: Du måste bli en utgivare för att skapa {{ domain }}
     register: Du måste bli en registrerad medlem för att skapa {{ domain }}
 
   exists: En {{ domain }} med denna {{ property }} finns redan
@@ -54,7 +54,7 @@ message:
     min: '{{ field }} måste bestå av minst {{ min }} tecken'
 
 # MODAL POP-UPS
-modals: 
+modals:
   confirm:
     delete:
       title: Bekräfta radering
@@ -62,12 +62,12 @@ modals:
       yes: Ja, radera
 
   # FEEDBACK FORM
-  feedback: 
+  feedback:
     label: Ge feedback
     form:
-      email: 
+      email:
         label: Din e-postadress
-      subject: 
+      subject:
         label: Ämne
         select:
           suggest: Förslag
@@ -78,7 +78,7 @@ modals:
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
-  guest: 
+  guest:
     login: Logga in
   member:
     label: Min
@@ -117,7 +117,7 @@ domains:
 
   settings: Inställningar
   email: E-postmeddelanden
-  
+
   account: konto
   data: data
   avatar: avatar

@@ -7,26 +7,26 @@ joinedAt: gick med {{ date }}
 
 roles:
   participant: Deltagare
-  contributor: Bidragsgivare
+  contributor: Utgivare
   admin: Admin
-  plural: 
+  plural:
     participants: Deltagare
-    contributors: Bidragsgivare
+    contributors: Utgivare
     admins: Admin
 
 form:
-  sort: 
+  sort:
     date: Datum gick med
     user: Användarnamn
-  holder: användarnamn eller e-mail
+  holder: användarnamn eller epost
 
 actions:
-  contributor: Ställ in som bidragsgivare
+  contributor: Ställ in som utgivare
   participant: Återgå som deltagare
 
 message:
   success:
-    contributor: '{{ username }} är nu inställd som en bidragsgivare'
+    contributor: '{{ username }} är nu inställd som en utgivare'
     participant: '{{ username }} är nu återställd som deltagare'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
@@ -34,7 +34,7 @@ message:
     empty: Inget publicerat ännu
     info: '{{ username }} har inte varit särskilt aktiva hittills'
   access:
-    contributor: Du måste bli en bidragsgivare till {{ action }}
+    contributor: Du måste bli en utgivare till {{ action }}
   guest: Du måste skapa ett konto för att lansera din marknad
 
 profile:
@@ -52,7 +52,6 @@ profile:
       label: Kontakt Info
   message:
     role: Du som {{username}} är en del av denna organisation med rollen {{role}}
-
 
 works:
   label: Mina Verk
@@ -73,4 +72,4 @@ works:
     label: Ytterligare info
     holder: En flaska kostar...
   images:
-    label: Bilder ({{ count }})    
+    label: Bilder ({{ count }})
