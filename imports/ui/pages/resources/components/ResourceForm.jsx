@@ -20,20 +20,26 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 
-import { call } from '../../../@/shared';
+import { call  } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
+import FileDropper from '../../../components/FileDropper';
 
-function ResourceForm({ defaultValues, isEditMode, history }) {
+function ResourceForm({ defaultValues, isEditMode, history, imageUrl }) {
+
   const [ resourceLabels, setResourceLabels ] = useState([]);
   // const [ isLoading, setIsLoading ] = useState(true);
   const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
+  const [ uploadedImage, setUploadedImage ] = useState();
+  const [ uploadableImage, setUploadableImage ] = useState();
+  const [ uploadableImageLocal, setUploadableImageLocal] = useState();
   
   const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
   const isCombo = getValues('isCombo');
 
   const [ t ] = useTranslation('admin');
+  const [ tp ] = useTranslation('processes');
   const [ tc ] = useTranslation('common');
 
   useEffect(() => {
@@ -87,6 +93,24 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
         !res.isCombo && !resourcesForCombo.some((r) => r.label === res.label)
       );
     });
+  };
+
+  const setFileDropperImage = (files) => {
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        setUploadableImage(uploadableImage);
+        setUploadableImageLocal(reader.result);
+      },
+      false
+    );
   };
 
   return (
@@ -155,6 +179,20 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
               placeholder={t('resources.form.desc.holder')}
               size="sm"
             />
+          </FormField>
+          
+          
+          <FormField
+            label={tp('form.image.label')}
+            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+          >
+            <Center>
+              <FileDropper
+                imageUrl={imageUrl}
+                setUploadableImage={setFileDropperImage}
+                uploadableImageLocal={uploadableImageLocal}
+              />
+            </Center>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
