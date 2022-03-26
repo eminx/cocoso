@@ -20,17 +20,17 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 
-import { call  } from '../../../@/shared';
+import { call, resizeImage, uploadImage } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 import FileDropper from '../../../components/FileDropper';
 
-function ResourceForm({ defaultValues, isEditMode, history, imageUrl }) {
+function ResourceForm({ defaultValues, isEditMode, history }) {
 
   const [ resourceLabels, setResourceLabels ] = useState([]);
-  // const [ isLoading, setIsLoading ] = useState(true);
   const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
-  const [ uploadedImage, setUploadedImage ] = useState();
+  const imageUrl = defaultValues?.imageUrl;
+
   const [ uploadableImage, setUploadableImage ] = useState();
   const [ uploadableImageLocal, setUploadableImageLocal] = useState();
   
@@ -50,16 +50,26 @@ function ResourceForm({ defaultValues, isEditMode, history, imageUrl }) {
     try {
       const response = await call('getResourceLabels');
       setResourceLabels(response);
-      // setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
-      // setIsLoading(false);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 1200);
+      const uploadedImageUrl = await uploadImage(resizedImage, 'resourcesImageUpload');
+      return uploadedImageUrl;
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
     }
   };
 
   const onSubmit = async (values) => {
     if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
     values.resourcesForCombo = resourcesForCombo.map(item => item._id);
+    values.imageUrl = await handleUploadImage()
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
@@ -127,6 +137,7 @@ function ResourceForm({ defaultValues, isEditMode, history, imageUrl }) {
               {t('resources.form.combo.switch.label')}
             </FormLabel>
           </FormControl>
+
           {isCombo && (
             <Box bg="gray.100" p="4">
               <Text fontSize="sm">
@@ -180,8 +191,7 @@ function ResourceForm({ defaultValues, isEditMode, history, imageUrl }) {
               size="sm"
             />
           </FormField>
-          
-          
+
           <FormField
             label={tp('form.image.label')}
             helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
