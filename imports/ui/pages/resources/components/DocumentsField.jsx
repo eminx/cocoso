@@ -125,7 +125,8 @@ export default function DocumentsField({ domainType, domainId }) {
             <Box
               bg="white"
               cursor="grab"
-              p="4"
+              px="2" 
+              py="4"
               {...getRootProps()}
             >
               {isUploading ? (
@@ -154,8 +155,9 @@ export default function DocumentsField({ domainType, domainId }) {
             <NiceList
               actionsDisabled={!isAdmin}
               keySelector="downloadUrl"
-              list={documents}
-              p="4"
+              list={documents} 
+              px="2" 
+              py="4"
             >
               {(document) => (
                 <div style={{ width: '100%' }}>

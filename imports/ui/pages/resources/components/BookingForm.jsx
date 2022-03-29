@@ -24,7 +24,7 @@ export default function BookingForm() {
       <Heading mb="2" size="sm">
         Bookings
       </Heading>
-      <Box p="4" bg="white">
+      <Box px="2" py="4" bg="white">
         <Box mb="4">
           <DatePicker noTime onChange={(date) => handleDateAndTimeChange(date, 'startDate')} />
         </Box>

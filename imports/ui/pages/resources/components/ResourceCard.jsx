@@ -9,18 +9,23 @@ moment.locale(i18n.language);
 export default function ResourcesCard({ resource }) {
   const [ t ] = useTranslation('admin');
   return (
-    <Box bg="white" mb="2" p="2" key={resource?.label}>
-      <Heading size="md" fontWeight="bold">
+    <Box bg="white" mb="2" px="2" py="4" key={resource?.label}>
+      <Heading size="md" fontWeight="bold" mb="4">
         {resource?.isCombo ? (
           <ResourcesForCombo resource={resource} />
         ) : (
           resource?.label
         )}
       </Heading>
-      <Text as="div" my="2">
+      {resource?.imageUrl && 
+        <Box mb="4">
+          <Image src={resource?.imageUrl} fit="contain" fill />
+        </Box>
+      }
+      <Text as="div" mb="4">
         {resource && resource?.description}
       </Text>
-      <Box py="2">
+      <Box>
         <Text as="div" fontSize="xs">
           {t('resources.cards.date', { 
             username: resource && resource?.createdBy, 
@@ -29,11 +34,6 @@ export default function ResourcesCard({ resource }) {
           <br />
         </Text>
       </Box>
-      {resource?.imageUrl && 
-        <Box>
-          <Image src={resource?.imageUrl} fit="contain" fill />
-        </Box>
-      }
     </Box>
   );
 }
