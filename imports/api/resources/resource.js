@@ -28,6 +28,7 @@ Resources.attachSchema(Resources.schema);
 Resources.publicFields = {
   label: 1,
   description: 1,
+  imageUrl: 1,
   isCombo: 1,
   resourcesForCombo: 1,
   resourceIndex: 1,
