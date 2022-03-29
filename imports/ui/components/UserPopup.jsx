@@ -58,9 +58,13 @@ function UserPopup({ currentUser }) {
         {notifications && notifications.length > 0 && (
           <MenuGroup title={tc('menu.notifications.label')}>
             {notifications.map((item) => (
-              <Link key={item.title} to={`/${item.context}/${item.contextId}`}>
+              <Link
+                key={item.contextId + item.count}
+                to={`/${item.context}/${item.contextId}`}
+              >
                 <MenuItem>
-                  {item.title} <Badge>{item.count}</Badge>
+                  {item.contextId}{' '}
+                  <Badge colorScheme="tomato">{item.count}</Badge>
                 </MenuItem>
               </Link>
             ))}
