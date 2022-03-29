@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Flex, Tag, Text } from '@chakra-ui/react';
+import { Box, Heading, Flex, Tag, Text, Image } from '@chakra-ui/react';
 
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -29,6 +29,11 @@ export default function ResourcesCard({ resource }) {
           <br />
         </Text>
       </Box>
+      {resource?.imageUrl && 
+        <Box>
+          <Image src={resource?.imageUrl} fit="contain" fill />
+        </Box>
+      }
     </Box>
   );
 }
