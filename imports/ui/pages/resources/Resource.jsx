@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
+import DocumentsField from './components/DocumentsField';
 
 function ResourcePage() {
   const { resourceId } = useParams();
@@ -36,7 +37,11 @@ function ResourcePage() {
   if (isLoading) return <Loader />
 
   return (
-    <Template>
+    <Template
+      leftContent={
+        <DocumentsField />
+      }
+    >
       <Breadcrumb domain={resource} domainKey="label" />
       <ResourceCard resource={resource}/>
       <Center my="2">
