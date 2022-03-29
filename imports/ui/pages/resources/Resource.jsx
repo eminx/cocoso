@@ -39,7 +39,7 @@ function ResourcePage() {
   return (
     <Template
       leftContent={
-        <DocumentsField />
+        <DocumentsField domainType="resource" domainId={resource?._id}/>
       }
     >
       <Breadcrumb domain={resource} domainKey="label" />
