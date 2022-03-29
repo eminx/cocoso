@@ -3,15 +3,20 @@ import { getHost } from '../@/shared';
 import Documents from './document';
 
 Meteor.methods({
-  createDocument(documentLabel, documentUrl, contextType) {
+  
+  getDocumentsByAttachments(attachedTo) {
+    const host = getHost(this);
+    const sort = { };
+    const fields = Documents.publicFields;
+    const documents = Documents.find({ host, attachedTo }, { sort, fields }).fetch();
+    return documents;
+  },
+
+  createDocument(documentLabel, documentUrl, contextType, attachedTo) {
     const user = Meteor.user();
     if (!user) {
       return;
     }
-
-    check(documentLabel, String);
-    check(documentUrl, String);
-    check(contextType, String);
 
     const host = getHost(this);
 
@@ -21,12 +26,13 @@ Meteor.methods({
         documentLabel,
         documentUrl,
         contextType,
+        attachedTo,
         uploadedUsername: user.username,
         uploadedBy: user._id,
         uploadedByName: user.username,
         creationDate: new Date(),
       });
-      return theNewDocId;
+      return Documents.findOne(theNewDocId);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");
