@@ -11,6 +11,7 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
+import BookingForm from './components/BookingForm';
 
 function ResourcePage() {
   const { resourceId } = useParams();
@@ -38,9 +39,8 @@ function ResourcePage() {
 
   return (
     <Template
-      leftContent={
-        <DocumentsField domainType="resource" domainId={resource?._id}/>
-      }
+      leftContent={<DocumentsField domainType="resource" domainId={resource?._id}/>}
+      rightContent={<BookingForm />}
     >
       <Breadcrumb domain={resource} domainKey="label" />
       <ResourceCard resource={resource}/>
