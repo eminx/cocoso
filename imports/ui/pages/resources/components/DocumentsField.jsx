@@ -134,7 +134,7 @@ export default function DocumentsField({ domainType, domainId }) {
                   {t('document.up')}
                 </div>
               ) : (
-                <Button width="100%">
+                <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
                   {t('document.drop')}
                 </Button>
               )}
