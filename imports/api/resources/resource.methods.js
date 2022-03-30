@@ -123,12 +123,21 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
 
+    values = { 
+      ...values, 
+      userId: user?._id, 
+      bookedBy: user?.username, 
+      bookedAt: new Date() 
+    }
+
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
     const theResources = Resources.findOne(resourceId, { fields: { bookings: 1 }});
-    const bookings = [...theResources.bookings, values];
+    let bookings = [ ];
+    if (theResources.bookings) bookings = [ ...theResources.bookings, values ];
+    else bookings = [ values ];
     const sortedBookings = bookings.sort(compareForSort);
 
     try {
