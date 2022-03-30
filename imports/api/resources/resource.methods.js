@@ -115,7 +115,9 @@ Meteor.methods({
   },
 
   getBookings(resourceId) {
-    return Resources.findOne(resourceId, { fields: { bookings: 1 } });
+    const resource = Resources.findOne(resourceId, { fields: { bookings: 1 } });
+    if (resource.bookings) return resource.bookings;
+    else return [];
   },
 
   createBooking(resourceId, values) {
