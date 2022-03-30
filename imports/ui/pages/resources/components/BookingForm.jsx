@@ -35,10 +35,7 @@ export default function BookingForm({ domainId }) {
   };
 
   return (
-    <Box mt="1.75rem">
-      <Heading mb="2" size="sm">
-        Bookings
-      </Heading>
+
       <Box px="2" py="4" bg="white">
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Box mb="4">
@@ -80,6 +77,5 @@ export default function BookingForm({ domainId }) {
           </Flex>
         </form>
       </Box>
-    </Box>
   );
 };
