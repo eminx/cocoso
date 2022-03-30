@@ -3,6 +3,7 @@ import { getHost } from '../@/shared';
 import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Resources from './resource';
+import { compareForSort } from '../processes/process.helpers';
 
 // RESOURCE METHOD VALIDATIONS
 function validateUser(user, currentHost) {
@@ -63,7 +64,7 @@ Meteor.methods({
   createResource(values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     const resourceIndex = Resources.find({ host }).count();
     if(validateUser(user, currentHost) && validateLabel(values.label, host)) {
       try {
@@ -84,7 +85,7 @@ Meteor.methods({
   updateResource(resourceId, values) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     if(validateUser(user, currentHost) && validateLabel(values.label, host, resourceId)) {
       try {
         Resources.update(resourceId, {
@@ -103,13 +104,41 @@ Meteor.methods({
   deleteResource(resourceId) {
     const user = Meteor.user();
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { field: { members: 1 }});
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     if(validateUser(user, currentHost)) {
       try {
         Resources.remove(resourceId);
       } catch (error) {
         throw new Meteor.Error(error, "Couldn't remove from collection");
       }
+    }
+  },
+
+  getBookings(resourceId) {
+    return Resources.findOne(resourceId, { fields: { bookings: 1 } });
+  },
+
+  createBooking(resourceId, values) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
+
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    const theResources = Resources.findOne(resourceId, { fields: { bookings: 1 }});
+    const bookings = [...theResources.bookings, values];
+    const sortedBookings = bookings.sort(compareForSort);
+
+    try {
+      Resources.update(resourceId, {
+        $set: {
+          bookings: sortedBookings,
+        },
+      });
+    } catch (error) {
+      throw new Meteor.Error('Could not create the meeting due to:', error.reason);
     }
   },
 
