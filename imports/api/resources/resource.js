@@ -17,6 +17,18 @@ Resources.schema = new SimpleSchema({
   resourcesForCombo: {type: Array},
   'resourcesForCombo.$': Schemas.Id,
 
+  bookings: { type: Array, defaultValue: [] },
+  'bookings.$': { type: new SimpleSchema({
+    startDate: { type: String },
+    endDate: { type: String },
+    startTime: { type: String },
+    endTime: { type: String },
+    description: { type: String },
+    userId: Schemas.Id,
+    bookedBy: { type: String },
+    bookedAt: { type: Date },
+  }), optional: true },
+
   createdBy: {type: String},
   createdAt: {type: Date},
   updatedBy: {type: String, optional: true},
