@@ -148,6 +148,7 @@ Meteor.methods({
           bookings: sortedBookings,
         },
       });
+      return values;
     } catch (error) {
       throw new Meteor.Error('Could not create the meeting due to:', error.reason);
     }

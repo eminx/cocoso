@@ -61,6 +61,7 @@ export default function BookingsField({ domainId }) {
           message.error(error.error);
         } else {
           message.success(t('meeting.success.add'));
+          setBookings([ ...bookings, respond ]);
         }
       }
     );
