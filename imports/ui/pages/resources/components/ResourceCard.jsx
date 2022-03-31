@@ -28,7 +28,7 @@ export default function ResourcesCard({ resource }) {
       <Box>
         <Text as="div" fontSize="xs">
           {t('resources.cards.date', { 
-            username: resource && resource?.createdBy, 
+            username: resource && resource?.user.username, 
             date: moment(resource?.createdAt).format('D MMM YYYY')
           })}
           <br />

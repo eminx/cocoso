@@ -45,6 +45,13 @@ Meteor.methods({
       if (resource.isCombo) 
         resource = fetchComboResources(resource);
     });
+    resources.forEach(resource => {
+      if (resource.userId) {
+        resource.user = {} = Meteor.users.findOne(resource.userId, { fields: { username: 1, avatar: { src: 1 } }});
+        resource.user.avatar = resource.user.avatar.src;
+        delete resource.userId;
+      }
+    });
     return resources;
   },
 
@@ -59,6 +66,11 @@ Meteor.methods({
     const fields = Resources.publicFields;
     let resource = Resources.findOne(resourceId, { fields });
     if (resource && resource.isCombo) resource = fetchComboResources(resource);
+    if (resource.userId) {
+      resource.user = {} = Meteor.users.findOne(resource.userId, { fields: { username: 1, avatar: { src: 1 } }});
+      resource.user.avatar = resource.user.avatar.src;
+      delete resource.userId;
+    }
     return resource;
   },
 
