@@ -8,7 +8,6 @@ import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 
-import { formatDate } from '../../@/shared.js';
 import DatePicker from '../../components/DatePicker.jsx';
 import {
   Accordion,
@@ -42,7 +41,6 @@ import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import InviteManager from './InviteManager';
-import { TimePicker } from '../../components/DatesAndTimes';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
@@ -110,18 +108,19 @@ class Process extends Component {
     });
   };
 
-  addNewChatMessage = (message) => {
-    Meteor.call(
-      'addChatMessage',
-      this.props.process._id,
-      message,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        }
+  addNewChatMessage = (messageContent) => {
+    const { process } = this.props;
+    const values = {
+      context: 'process',
+      contextId: process._id,
+      message: messageContent,
+    };
+
+    Meteor.call('addChatMessage', values, (error, respond) => {
+      if (error) {
+        console.log('error', error);
       }
-    );
+    });
   };
 
   getChatMessages = () => {
@@ -471,7 +470,9 @@ class Process extends Component {
                 colorScheme={isAttending ? 'gray' : 'green'}
                 onClick={() => this.toggleAttendance(meetingIndex)}
               >
-                {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
+                {isAttending
+                  ? t('meeting.isAttending.false')
+                  : t('meeting.isAttending.true')}
               </Button>
             </Center>
           </AccordionPanel>
@@ -482,7 +483,7 @@ class Process extends Component {
 
   handleFileDrop = (files) => {
     const { process, t, tc } = this.props;
-    
+
     if (files.length !== 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;
@@ -527,7 +528,9 @@ class Process extends Component {
                       closeLoader();
                     } else {
                       message.success(
-                        `${uploadableFile.name} ${t('meeting.success.fileDropper')}`
+                        `${uploadableFile.name} ${t(
+                          'meeting.success.fileDropper'
+                        )}`
                       );
                       closeLoader();
                     }
@@ -821,7 +824,7 @@ class Process extends Component {
   };
 
   render() {
-    const { process, isLoading, resources, history , t, tc  } = this.props;
+    const { process, isLoading, resources, history, t, tc } = this.props;
 
     if (!process || isLoading) {
       return <Loader />;
@@ -918,16 +921,20 @@ class Process extends Component {
         </Template>
         <ConfirmModal
           visible={modalOpen}
-          title={t('confirm.title.text', { 
-            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join')  
+          title={t('confirm.title.text', {
+            opt: isMember
+              ? t('confirm.title.opts.leave')
+              : t('confirm.title.opts.join'),
           })}
           onConfirm={isMember ? this.leaveProcess : this.joinProcess}
           onCancel={this.closeModal}
         >
           <Text>
-            {t('confirm.title.body', { 
-            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join')  
-          })}
+            {t('confirm.title.body', {
+              opt: isMember
+                ? t('confirm.title.opts.leave')
+                : t('confirm.title.opts.join'),
+            })}
           </Text>
         </ConfirmModal>
         <ConfirmModal
@@ -937,13 +944,9 @@ class Process extends Component {
           onCancel={() => this.setState({ potentialNewAdmin: null })}
         >
           <Text>
-            <b>
-            {t('confirm.admin.title', { admin: potentialNewAdmin })}
-            </b>
+            <b>{t('confirm.admin.title', { admin: potentialNewAdmin })}</b>
           </Text>
-          <Text>
-            {t('confirm.admin.body', { admin: potentialNewAdmin })}
-          </Text>
+          <Text>{t('confirm.admin.body', { admin: potentialNewAdmin })}</Text>
         </ConfirmModal>
 
         {process && process.isPrivate && (
@@ -984,7 +987,7 @@ function CreateMeetingForm({
   buttonDisabled,
 }) {
   const [isLocal, setIsLocal] = useState(true);
-  const [ t ] = useTranslation('processes');
+  const [t] = useTranslation('processes');
 
   return (
     <Box p="2" bg="white" my="2">
