@@ -2,7 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Heading, Text, Button, HStack, Textarea, Switch, FormControl, FormLabel } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Button, HStack, Textarea, 
+  Switch, FormControl, FormLabel, 
+  Accordion, AccordionItem, AccordionButton, AccordionPanel, } from '@chakra-ui/react';
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import moment from 'moment';
 
 import { call } from '../../../@/shared';
@@ -87,87 +90,107 @@ export default function BookingsField({ domainId }) {
         Bookings
       </Heading>
 
-      {isAdmin &&       
-        <Box px="2" py="4" bg="white">
-          <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <FormControl display='flex' alignItems='center' mb="2">
-              <Switch id='book-multiple-days' size="sm" onChange={() => setMultipledays(!multipledays) } />
-              <FormLabel htmlFor='book-multiple-days' fontSize="sm" mb='0' ml="2">
-                Book for multiple days
-              </FormLabel>
-            </FormControl>
-            <HStack spacing="2" mb="4">
-              <DatePicker 
-                noTime 
-                placeholder="Start date"
-                onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
-              />
-              {multipledays && 
-              <DatePicker 
-                noTime 
-                placeholder="Finish date"
-                onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
-              />}
-            </HStack>
-            <HStack spacing="2" mb="4">
-              <DatePicker
-                onlyTime
-                placeholder={t('meeting.form.time.start')}
-                onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
-              />
-              <DatePicker
-                onlyTime
-                placeholder={t('meeting.form.time.end')}
-                onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
-              />
-            </HStack>
+      <Box bg="white">
+        <Accordion defaultIndex={[1]} allowMultiple allowToggle>
+          <AccordionItem>
+            {({ isExpanded }) => (
+              <>
+                <h2>
+                  <AccordionButton>
+                    <Box flex='1' textAlign='left'>
+                      Add a Booking
+                    </Box>
+                    {isExpanded ? (
+                      <MinusIcon fontSize='12px' />
+                    ) : (
+                      <AddIcon fontSize='12px' />
+                    )}
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  {isAdmin &&       
+                    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+                      <FormControl display='flex' alignItems='center' mb="2">
+                        <Switch id='book-multiple-days' size="sm" onChange={() => setMultipledays(!multipledays) } />
+                        <FormLabel htmlFor='book-multiple-days' fontSize="sm" mb='0' ml="2">
+                          Book for multiple days
+                        </FormLabel>
+                      </FormControl>
+                      <HStack spacing="2" mb="4">
+                        <DatePicker 
+                          noTime 
+                          placeholder="Start date"
+                          onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
+                        />
+                        {multipledays && 
+                        <DatePicker 
+                          noTime 
+                          placeholder="Finish date"
+                          onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
+                        />}
+                      </HStack>
+                      <HStack spacing="2" mb="4">
+                        <DatePicker
+                          onlyTime
+                          placeholder={t('meeting.form.time.start')}
+                          onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
+                        />
+                        <DatePicker
+                          onlyTime
+                          placeholder={t('meeting.form.time.end')}
+                          onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
+                        />
+                      </HStack>
 
-            <Textarea
-              {...register('description')}
-              placeholder="Note, usage, purpose, etc..."
-              size="sm"
-              mb="4"
-            />
+                      <Textarea
+                        {...register('description')}
+                        placeholder="Note, usage, purpose, etc..."
+                        size="sm"
+                        mb="4"
+                      />
 
-            <Flex justify="flex-end">
-              <Button
-                colorScheme="green"
-                isDisabled={!isDirty}
-                isLoading={isSubmitting}
-                size="sm"
-                type="submit"
-              >
-                Book
-              </Button>
-            </Flex>
-          </form>
-        </Box>
-      }
+                      <Flex justify="flex-end">
+                        <Button
+                          colorScheme="green"
+                          isDisabled={!isDirty}
+                          isLoading={isSubmitting}
+                          size="sm"
+                          type="submit"
+                        >
+                          Book
+                        </Button>
+                      </Flex>
+                    </form>
+                  }
+                </AccordionPanel>
+              </>
+            )}
+          </AccordionItem>
+        </Accordion>
+      </Box>
 
       {!isLoading && 
         <Box
           bg="white"
-          borderTop="1px"
+          borderBottom="1px"
           borderColor="gray.200"
         >
           {bookings && bookings.length > 0 ? (
             <NiceList
               actionsDisabled={!isAdmin}
               list={bookings} 
-              px="2" 
-              py="4"
             >
               {(booking) => (
                 <Box>
-                  <Text fontSize="md">
+                  <Text fontSize="sm">
                     {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${booking.startDate === booking.endDate ? '' : moment(booking.endDate).format('ddd, D MMM')} ${booking.endTime} `}
                   </Text>
+                  <Text fontSize="xs" fontStyle="italic" fontWeight="medium">
+                    booked by {booking.bookedBy}
+                  </Text>
                   <Text fontSize="xs">
                     {booking.description}
-                  </Text>
-                  <Text fontSize="sm" fontWeight="medium">
-                    booked by {booking.bookedBy}
                   </Text>
                 </Box>
               )}
