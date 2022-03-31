@@ -11,7 +11,7 @@ Resources.schema = new SimpleSchema({
 
   label: {type: String},
   description: {type: String},
-  imageUrl: Schemas.Src,
+  imageUrl: { type: Schemas.Src, optional: true },
   isCombo: {type: Boolean},
   resourceIndex: {type: SimpleSchema.Integer},
   resourcesForCombo: {type: Array},

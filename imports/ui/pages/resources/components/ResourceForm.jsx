@@ -31,8 +31,8 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
   const imageUrl = defaultValues?.imageUrl;
 
-  const [ uploadableImage, setUploadableImage ] = useState();
-  const [ uploadableImageLocal, setUploadableImageLocal] = useState();
+  const [ uploadableImage, setUploadableImage ] = useState(null);
+  const [ uploadableImageLocal, setUploadableImageLocal] = useState(null);
   
   const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
@@ -56,20 +56,22 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const handleUploadImage = async () => {
-    try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImageUrl = await uploadImage(resizedImage, 'resourcesImageUpload');
-      return uploadedImageUrl;
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
+    if (uploadableImage !== null) {
+      try {
+        const resizedImage = await resizeImage(uploadableImage, 1200);
+        const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
+        return uploadedImageUrl;
+      } catch (error) {
+        console.error('Error uploading:', error);
+        message.error(error.reason);
+      }
     }
   };
 
   const onSubmit = async (values) => {
     if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
     values.resourcesForCombo = resourcesForCombo.map(item => item._id);
-    values.imageUrl = await handleUploadImage()
+    if (values.imageUrl!=='') values.imageUrl = await handleUploadImage()
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
