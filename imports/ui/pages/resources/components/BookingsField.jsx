@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Heading, Text, Button, HStack, Textarea } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Button, HStack, Textarea, Switch, FormControl, FormLabel } from '@chakra-ui/react';
 import moment from 'moment';
 
 import { call } from '../../../@/shared';
@@ -16,6 +16,8 @@ export default function BookingsField({ domainId }) {
   
   const [ bookings, setBookings] = useState([]);
   const [ newBooking, setNewBooking ] = useState({});
+  const [ multipledays, setMultipledays ] = useState(false);
+
   const [ isLoading, setIsLoading ] = useState(true);
   const [ isAdmin ] = useState(true);
 
@@ -27,30 +29,31 @@ export default function BookingsField({ domainId }) {
     // !isLoading ? console.log("bookings: ", bookings) : console.log('isLoading')
   }, []);
 
-  const bookingListActions = [{
-    content: tc('labels.remove'),
-    // handleClick: () => removeBooking(booking._id),
-  }];
-
   const getBookings = async () => {
     try {
       const response = await call('getBookings', domainId);
       setBookings(
-        response.map(booking =>  ({ ...booking, actions: bookingListActions })));
+        response.map(booking =>  ({ ...booking, actions: [{
+          content: tc('labels.remove'),
+          // handleClick: () => removeBooking(booking._id),
+        }] 
+      })));
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
       setIsLoading(false);
     }
   };
-    
+
   const handleDateAndTimeChange = (value, key) => {
     newBooking[key] = value;
     setNewBooking({...newBooking});
   };
 
   const onSubmit = async (values) => {
-    values = { ...newBooking, endDate: newBooking.startDate, ...values }
+    multipledays === false
+      ? values = { ...newBooking, endDate: newBooking.startDate, ...values }
+      : values = { ...newBooking, ...values }
     Meteor.call(
       'createBooking',
       domainId,
@@ -76,12 +79,25 @@ export default function BookingsField({ domainId }) {
       {isAdmin &&       
         <Box px="2" py="4" bg="white">
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <Box mb="4">
+            <FormControl display='flex' alignItems='center' mb="2">
+              <Switch id='book-multiple-days' size="sm" onChange={() => setMultipledays(!multipledays) } />
+              <FormLabel htmlFor='book-multiple-days' fontSize="sm" mb='0' ml="2">
+                Book for multiple days
+              </FormLabel>
+            </FormControl>
+            <HStack spacing="2" mb="4">
               <DatePicker 
                 noTime 
+                placeholder="Start date"
                 onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
               />
-            </Box>
+              {multipledays && 
+              <DatePicker 
+                noTime 
+                placeholder="Finish date"
+                onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
+              />}
+            </HStack>
             <HStack spacing="2" mb="4">
               <DatePicker
                 onlyTime
@@ -126,18 +142,23 @@ export default function BookingsField({ domainId }) {
           {bookings && bookings.length > 0 ? (
             <NiceList
               actionsDisabled={!isAdmin}
-              keySelector="booking"
               list={bookings} 
               px="2" 
               py="4"
             >
               {(booking) => (
-                <Text size="xs">
-                  {`At ${moment(booking.startDate).format('ddd, D MMM')} 
-                    from ${booking.startTime} 
-                    to ${booking.endTime} 
-                    for \n'${booking.description}'`}
-                </Text>
+                <Box>
+                  <Text fontSize="md">
+                    {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
+                    to ${booking.startDate === booking.endDate ? '' : moment(booking.endDate).format('ddd, D MMM')} ${booking.endTime} `}
+                  </Text>
+                  <Text fontSize="xs">
+                    {booking.description}
+                  </Text>
+                  <Text fontSize="sm" fontWeight="medium">
+                    booked by {booking.bookedBy}
+                  </Text>
+                </Box>
               )}
             </NiceList>
           ) : (
@@ -147,7 +168,6 @@ export default function BookingsField({ domainId }) {
           )}
         </Box>
       }
-      
     </Box>
   );
 };

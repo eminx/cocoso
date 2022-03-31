@@ -19,6 +19,7 @@ Resources.schema = new SimpleSchema({
 
   bookings: { type: Array, defaultValue: [] },
   'bookings.$': { type: new SimpleSchema({
+    _id: Schemas.Id,
     startDate: { type: String },
     endDate: { type: String },
     startTime: { type: String },

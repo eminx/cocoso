@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { getHost } from '../@/shared';
 import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
@@ -124,8 +125,9 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-
+    
     values = { 
+      _id: Random.id(),
       ...values, 
       userId: user?._id, 
       bookedBy: user?.username, 

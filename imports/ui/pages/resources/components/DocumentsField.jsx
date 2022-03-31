@@ -154,7 +154,6 @@ export default function DocumentsField({ domainType, domainId }) {
           {documents && documents.length > 0 ? (
             <NiceList
               actionsDisabled={!isAdmin}
-              keySelector="downloadUrl"
               list={documents} 
               px="2" 
               py="4"
