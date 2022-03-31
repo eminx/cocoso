@@ -9,8 +9,8 @@ moment.locale(i18n.language);
 export default function ResourcesCard({ resource }) {
   const [ t ] = useTranslation('admin');
   return (
-    <Box bg="white" mb="2" px="2" py="4" key={resource?.label}>
-      <Flex justifyContent="space-between" alignItems="flex-start" px="2" mb="4">
+    <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
+      <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
         <Heading size="md" fontWeight="bold">
           {resource?.isCombo ? (
             <ResourcesForCombo resource={resource} />

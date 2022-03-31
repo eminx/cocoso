@@ -1,17 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
-import { set, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
+import moment from 'moment';
+moment.locale(i18n.language);
+
+import { useForm } from 'react-hook-form';
 import { Box, Flex, Heading, Text, Button, HStack, Textarea, 
   Switch, FormControl, FormLabel, 
   Accordion, AccordionItem, AccordionButton, AccordionPanel, Input, } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import moment from 'moment';
 
 import { call } from '../../../@/shared';
 import NiceList from '../../../components/NiceList';
 import { message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
+
 
 export default function BookingsField({ domain }) {
   const [ t ] = useTranslation('processes');
@@ -100,8 +104,8 @@ export default function BookingsField({ domain }) {
   };
 
   return (
-    <Box mt="1.75rem">
-      <Heading mb="2" size="sm">
+    <Box mt="5">
+      <Heading mb="4" size="sm">
         Bookings
       </Heading>
 
@@ -193,9 +197,7 @@ export default function BookingsField({ domain }) {
 
       {!isLoading && 
         <Box
-          bg="white"
-          borderBottom="1px"
-          borderColor="gray.200"
+          bg="white" mt="2"
         >
           {bookings && bookings.length > 0 ? (
             <NiceList

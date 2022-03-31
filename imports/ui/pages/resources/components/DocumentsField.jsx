@@ -114,8 +114,8 @@ export default function DocumentsField({ domainType, domainId }) {
   }
 
   return (
-    <Box mt="1.75rem">
-      <Heading mb="2" size="sm">
+    <Box mt="5">
+      <Heading mb="4" size="sm">
         {t('labels.document')}
       </Heading>
 
@@ -147,9 +147,7 @@ export default function DocumentsField({ domainType, domainId }) {
 
       {!isLoading && 
         <Box
-          bg="white"
-          borderTop="1px"
-          borderColor="gray.200"
+          bg="white" mt="2"
         >
           {documents && documents.length > 0 ? (
             <NiceList
