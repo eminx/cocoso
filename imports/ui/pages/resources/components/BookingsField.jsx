@@ -35,7 +35,7 @@ export default function BookingsField({ domainId }) {
       setBookings(
         response.map(booking =>  ({ ...booking, actions: [{
           content: tc('labels.remove'),
-          // handleClick: () => removeBooking(booking._id),
+          handleClick: () => removeBooking(booking._id),
         }] 
       })));
       setIsLoading(false);
@@ -44,7 +44,18 @@ export default function BookingsField({ domainId }) {
       setIsLoading(false);
     }
   };
-
+  
+  const removeBooking = async (bookingId) => {
+    try {
+      const response = await call('deleteBooking', domainId, bookingId);
+      setBookings(bookings.map(booking => {
+        if (booking._id!==bookingId) return booking;
+      }))
+    } catch (error) {
+      message.error(error.reason);
+    }
+  };
+    
   const handleDateAndTimeChange = (value, key) => {
     newBooking[key] = value;
     setNewBooking({...newBooking});

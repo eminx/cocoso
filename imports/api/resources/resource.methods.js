@@ -156,4 +156,17 @@ Meteor.methods({
     }
   },
 
+  deleteBooking(resourceId, bookingId) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
+    if(validateUser(user, currentHost)) {
+      try {
+        Resources.update(resourceId, { $pull: { bookings: { _id: bookingId }}});
+      } catch (error) {
+        throw new Meteor.Error(error, "Couldn't remove from collection");
+      }
+    }
+  }
+
 });
