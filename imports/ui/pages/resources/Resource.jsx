@@ -40,7 +40,7 @@ function ResourcePage() {
   return (
     <Template
       leftContent={<DocumentsField domainType="resource" domainId={resource?._id}/>}
-      rightContent={<BookingsField domainId={resource?._id} />}
+      rightContent={<BookingsField domain={resource} />}
     >
       <Breadcrumb domain={resource} domainKey="label" />
       <ResourceCard resource={resource}/>

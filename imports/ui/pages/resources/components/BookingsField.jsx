@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Text, Button, HStack, Textarea, 
   Switch, FormControl, FormLabel, 
-  Accordion, AccordionItem, AccordionButton, AccordionPanel, } from '@chakra-ui/react';
+  Accordion, AccordionItem, AccordionButton, AccordionPanel, Input, } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import moment from 'moment';
 
@@ -13,7 +13,7 @@ import NiceList from '../../../components/NiceList';
 import { message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
 
-export default function BookingsField({ domainId }) {
+export default function BookingsField({ domain }) {
   const [ t ] = useTranslation('processes');
   const [ tc ] = useTranslation('common');
   
@@ -27,37 +27,37 @@ export default function BookingsField({ domainId }) {
   const { formState, handleSubmit, register } = useForm();
   const { isDirty, isSubmitting } = formState;
 
-  useEffect(() => {
-    getBookings();
-    // !isLoading ? console.log("bookings: ", bookings) : console.log('isLoading')
-  }, []);
+  // useEffect(() => {
+  //   getBookings();
+  //   // !isLoading ? console.log("bookings: ", bookings) : console.log('isLoading')
+  // }, []);
 
-  const getBookings = async () => {
-    try {
-      const response = await call('getBookings', domainId);
-      setBookings(
-        response.map(booking =>  ({ ...booking, actions: [{
-          content: tc('labels.remove'),
-          handleClick: () => removeBooking(booking._id),
-        }] 
-      })));
-      setIsLoading(false);
-    } catch (error) {
-      message.error(error.reason);
-      setIsLoading(false);
-    }
-  };
+  // const getBookings = async () => {
+  //   try {
+  //     const response = await call('getBookings', domain?._id);
+  //     setBookings(
+  //       response.map(booking =>  ({ ...booking, actions: [{
+  //         content: tc('labels.remove'),
+  //         handleClick: () => removeBooking(booking._id),
+  //       }] 
+  //     })));
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     message.error(error.reason);
+  //     setIsLoading(false);
+  //   }
+  // };
   
-  const removeBooking = async (bookingId) => {
-    try {
-      const response = await call('deleteBooking', domainId, bookingId);
-      setBookings(bookings.map(booking => {
-        if (booking._id!==bookingId) return booking;
-      }))
-    } catch (error) {
-      message.error(error.reason);
-    }
-  };
+  // const removeBooking = async (bookingId) => {
+  //   try {
+  //     const response = await call('deleteBooking', domain?._id, bookingId);
+  //     setBookings(bookings.map(booking => {
+  //       if (booking._id!==bookingId) return booking;
+  //     }))
+  //   } catch (error) {
+  //     message.error(error.reason);
+  //   }
+  // };
     
   const handleDateAndTimeChange = (value, key) => {
     newBooking[key] = value;
@@ -67,21 +67,42 @@ export default function BookingsField({ domainId }) {
   const onSubmit = async (values) => {
     multipledays === false
       ? values = { ...newBooking, endDate: newBooking.startDate, ...values }
-      : values = { ...newBooking, ...values }
-    Meteor.call(
-      'createBooking',
-      domainId,
-      values,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        } else {
-          message.success(t('meeting.success.add'));
-          setBookings([ ...bookings, respond ]);
-        }
-      }
-    );
+      : values = { ...newBooking, ...values };
+
+    values = {
+      title: values.title,
+      subTitle: '',
+      longDescription: values.description,
+      resource: {
+        label: domain.label,
+        _id: domain._id,
+        resourceIndex: domain.resourceIndex,
+      },
+      place: '',
+      practicalInfo: '',
+      internalInfo: '',
+      address: '',
+      capacity: 0,
+      datesAndTimes: [{
+        startDate: values.startDate,
+        startTime: values.startTime,
+        endDate: values.endDate,
+        endTime: values.endTime,
+        capacity: 0,
+      }],
+      isPublicActivity: false,
+      isRegistrationDisabled: true,
+    };
+
+    console.log(values)
+
+    Meteor.call('createActivity', values, '', (error, result) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.reason);
+      } 
+    });
+
   };
 
   return (
@@ -141,6 +162,13 @@ export default function BookingsField({ domainId }) {
                           onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
                         />
                       </HStack>
+
+                      <Input
+                        {...register('title')}
+                        placeholder="Give a name"
+                        size="sm"
+                        mb="4"
+                      />
 
                       <Textarea
                         {...register('description')}

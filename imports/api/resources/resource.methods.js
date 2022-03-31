@@ -127,58 +127,58 @@ Meteor.methods({
     }
   },
 
-  getBookings(resourceId) {
-    const resource = Resources.findOne(resourceId, { fields: { bookings: 1 } });
-    if (resource.bookings) return resource.bookings;
-    else return [];
-  },
+  // getBookings(resourceId) {
+  //   const resource = Resources.findOne(resourceId, { fields: { bookings: 1 } });
+  //   if (resource.bookings) return resource.bookings;
+  //   else return [];
+  // },
 
-  createBooking(resourceId, values) {
-    const user = Meteor.user();
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
+  // createBooking(resourceId, values) {
+  //   const user = Meteor.user();
+  //   const host = getHost(this);
+  //   const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     
-    values = { 
-      _id: Random.id(),
-      ...values, 
-      userId: user?._id, 
-      bookedBy: user?.username, 
-      bookedAt: new Date() 
-    }
+  //   values = { 
+  //     _id: Random.id(),
+  //     ...values, 
+  //     userId: user?._id, 
+  //     bookedBy: user?.username, 
+  //     bookedAt: new Date() 
+  //   }
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
-      throw new Meteor.Error('Not allowed!');
-    }
+  //   if (!user || !isContributorOrAdmin(user, currentHost)) {
+  //     throw new Meteor.Error('Not allowed!');
+  //   }
 
-    const theResources = Resources.findOne(resourceId, { fields: { bookings: 1 }});
-    let bookings = [ ];
-    if (theResources.bookings) bookings = [ ...theResources.bookings, values ];
-    else bookings = [ values ];
-    const sortedBookings = bookings.sort(compareForSort);
+  //   const theResources = Resources.findOne(resourceId, { fields: { bookings: 1 }});
+  //   let bookings = [ ];
+  //   if (theResources.bookings) bookings = [ ...theResources.bookings, values ];
+  //   else bookings = [ values ];
+  //   const sortedBookings = bookings.sort(compareForSort);
 
-    try {
-      Resources.update(resourceId, {
-        $set: {
-          bookings: sortedBookings,
-        },
-      });
-      return values;
-    } catch (error) {
-      throw new Meteor.Error('Could not create the meeting due to:', error.reason);
-    }
-  },
+  //   try {
+  //     Resources.update(resourceId, {
+  //       $set: {
+  //         bookings: sortedBookings,
+  //       },
+  //     });
+  //     return values;
+  //   } catch (error) {
+  //     throw new Meteor.Error('Could not create the meeting due to:', error.reason);
+  //   }
+  // },
 
-  deleteBooking(resourceId, bookingId) {
-    const user = Meteor.user();
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-    if(validateUser(user, currentHost)) {
-      try {
-        Resources.update(resourceId, { $pull: { bookings: { _id: bookingId }}});
-      } catch (error) {
-        throw new Meteor.Error(error, "Couldn't remove from collection");
-      }
-    }
-  }
+  // deleteBooking(resourceId, bookingId) {
+  //   const user = Meteor.user();
+  //   const host = getHost(this);
+  //   const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
+  //   if(validateUser(user, currentHost)) {
+  //     try {
+  //       Resources.update(resourceId, { $pull: { bookings: { _id: bookingId }}});
+  //     } catch (error) {
+  //       throw new Meteor.Error(error, "Couldn't remove from collection");
+  //     }
+  //   }
+  // }
 
 });
