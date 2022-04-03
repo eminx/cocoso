@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Heading, Flex, Tag, Text, Image, Link, Avatar } from '@chakra-ui/react';
+import renderHTML from 'react-render-html';
 
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
@@ -43,7 +44,9 @@ export default function ResourcesCard({ resource }) {
       }
       <Box>
         <Text as="p" mb="4">
-          {resource && resource?.description}
+          <div className="text-content">
+              {renderHTML(resource?.description)}{' '}
+            </div>
         </Text>
         <Text as="p" fontSize="xs">
           {moment(resource?.createdAt).format('D MMM YYYY')}
