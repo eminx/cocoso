@@ -43,11 +43,9 @@ export default function ResourcesCard({ resource }) {
         </Box>
       }
       <Box>
-        <Text as="p" mb="4">
-          <div className="text-content">
-              {renderHTML(resource?.description)}{' '}
-            </div>
-        </Text>
+        <Box className="text-content" mb="4">
+          {renderHTML(resource?.description)}{' '}
+        </Box>
         <Text as="p" fontSize="xs">
           {moment(resource?.createdAt).format('D MMM YYYY')}
         </Text>
