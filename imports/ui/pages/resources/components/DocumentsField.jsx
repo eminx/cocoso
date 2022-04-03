@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box,  Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
+import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../@/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
-import { DeleteIcon } from '@chakra-ui/icons';
 
 export default function DocumentsField({ domainType, domainId }) {
   const [ t ] = useTranslation('processes');
@@ -133,6 +133,7 @@ export default function DocumentsField({ domainType, domainId }) {
               {documents.map(document => (
                 <ListItem key={document._id} p="4" display="flex" justifyContent="space-between" alignItems="center">
                   <Link href={document.documentUrl} isExternal>
+                    <ExternalLinkIcon mr='2px' fontSize="sm" />
                     {document.documentLabel}
                   </Link>
                   <Button>
