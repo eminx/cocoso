@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box,  Heading, Text, Button } from '@chakra-ui/react';
+import { Box,  Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
 
 import { call } from '../../../@/shared';
 import Loader from '../../../components/Loader';
-import NiceList from '../../../components/NiceList';
 import { message } from '../../../components/message';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 export default function DocumentsField({ domainType, domainId }) {
   const [ t ] = useTranslation('processes');
@@ -18,21 +18,10 @@ export default function DocumentsField({ domainType, domainId }) {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ isAdmin ] = useState(true);
 
-  useEffect(() => {
-    getDocuments();
-    // !isLoading ? console.log("documents: ", documents) : console.log('isLoading')
-  }, []);
-
-  const documentListActions = [{
-    content: tc('labels.remove'),
-    handleClick: () => removeDocument(document._id),
-  }];
-
   const getDocuments = async () => {
     try {
       const response = await call('getDocumentsByAttachments', domainId);
-      setDocuments(
-        response.map(document =>  ({ ...document, actions: documentListActions })));
+      setDocuments(response);
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -40,8 +29,11 @@ export default function DocumentsField({ domainType, domainId }) {
     }
   };
     
-  const createDocument = (uploadableFile, downloadUrl) => {
+  useEffect(() => {
+    getDocuments();
+  }, [documents]);
 
+  const createDocument = (uploadableFile, downloadUrl) => {
     Meteor.call(
       'createDocument',
       uploadableFile.name,
@@ -54,22 +46,15 @@ export default function DocumentsField({ domainType, domainId }) {
           console.log(error);
           setIsUploading(false);
         } else {
-          message.success(
-            `${uploadableFile.name} ${t('meeting.success.fileDropper')}`
-          );
+          message.success(`${uploadableFile.name} ${t('meeting.success.fileDropper')}`);
           setIsUploading(false);
-          setDocuments([ ...documents, { ...respond, actions: documentListActions } ]);
         }
       }
     );
-    
-  }
+  };
 
   const removeDocument = (documentId) => {
-    if (!isAdmin) {
-      return;
-    }
-
+    if (!isAdmin) return;
     Meteor.call(
       'removeManual',
       documentId,
@@ -79,21 +64,17 @@ export default function DocumentsField({ domainType, domainId }) {
           message.error(error.error);
         } else {
           message.success(t('document.remove'));
-          const documentDeleted = documents.map(document => document._id).indexOf(documentId);
-          setDocuments(documents.splice(documentDeleted, 1));
         }
       }
     );
-  }
+  };
     
   const handleFileDrop = (files) => {
-    
     if (files.length !== 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;
     }
     setIsUploading(true);
-
     const upload = new Slingshot.Upload('processDocumentUpload');
     files.forEach((file) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
@@ -111,7 +92,7 @@ export default function DocumentsField({ domainType, domainId }) {
         }
       });
     });
-  }
+  };
 
   return (
     <Box mt="5">
@@ -146,24 +127,20 @@ export default function DocumentsField({ domainType, domainId }) {
       )}
 
       {!isLoading && 
-        <Box
-          bg="white" mt="2"
-        >
+        <Box bg="white" mt="2" >
           {documents && documents.length > 0 ? (
-            <NiceList
-              actionsDisabled={!isAdmin}
-              list={documents} 
-              px="2" 
-              py="4"
-            >
-              {(document) => (
-                <div style={{ width: '100%' }}>
-                  <a href={document.documentUrl} target="_blank">
+            <List>
+              {documents.map(document => (
+                <ListItem key={document._id} p="4" display="flex" justifyContent="space-between" alignItems="center">
+                  <Link href={document.documentUrl} isExternal>
                     {document.documentLabel}
-                  </a>
-                </div>
-              )}
-            </NiceList>
+                  </Link>
+                  <Button>
+                    <DeleteIcon onClick={() =>  removeDocument(document._id)} />
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
           ) : (
             <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
               <em>{t('document.empty')}</em>
@@ -171,7 +148,7 @@ export default function DocumentsField({ domainType, domainId }) {
           )}
         </Box>
       }
-      
+
     </Box>
   );
 };
