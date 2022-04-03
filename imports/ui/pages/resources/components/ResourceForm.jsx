@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -19,7 +19,9 @@ import {
   VStack,
   Wrap,
 } from '@chakra-ui/react';
+import ReactQuill from 'react-quill';
 
+import { editorFormats, editorModules } from '../../../@/constants/quillConfig';
 import { call, resizeImage, uploadImage } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
@@ -34,7 +36,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const [ uploadableImage, setUploadableImage ] = useState(null);
   const [ uploadableImageLocal, setUploadableImageLocal] = useState(null);
   
-  const { formState, handleSubmit, getValues, register } = useForm({ defaultValues });
+  const { formState, handleSubmit, getValues, register, control } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
   const isCombo = getValues('isCombo');
 
@@ -71,7 +73,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const onSubmit = async (values) => {
     if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
     values.resourcesForCombo = resourcesForCombo.map(item => item._id);
-    if (values.imageUrl!=='') values.imageUrl = await handleUploadImage()
+    if (values.imageUrl!=='') values.imageUrl = await handleUploadImage();
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
@@ -187,12 +189,20 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
           </FormField>
 
           <FormField label={t('resources.form.desc.label')}>
-            <Textarea
-              {...register('description')}
-              placeholder={t('resources.form.desc.holder')}
-              size="sm"
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  formats={editorFormats}
+                  modules={editorModules}
+                  placeholder={t('resources.form.desc.holder')}
+                />
+              )}
             />
           </FormField>
+
 
           <FormField
             label={tp('form.image.label')}
