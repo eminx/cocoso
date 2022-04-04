@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Switch,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  Text,
-  VStack,
-  Wrap,
-  IconButton,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Flex, FormControl, FormLabel, Input, Switch, Text, VStack, Wrap, IconButton, WrapItem } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
+import AutoCompleteSelect from 'react-select'
+import makeAnimated from 'react-select/animated';
 
 import { editorFormats, editorModules } from '../../../@/constants/quillConfig';
 import { call, resizeImage, uploadImage } from '../../../@/shared';
@@ -31,12 +15,15 @@ import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 import FileDropper from '../../../components/FileDropper';
 import NiceSlider from '../../../components/NiceSlider';
+import Loader from '../../../components/Loader';
+
+const animatedComponents = makeAnimated();
 
 function ResourceForm({ defaultValues, isEditMode, history }) {
 
+  const [ isLoading, setIsLoading ] = useState(true);
   const [ resourceLabels, setResourceLabels ] = useState([]);
-  const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
-
+  const [ resourcesForCombo, setResourcesForCombo ] = useState([]);
   const [ images, setImages ] = useState(defaultValues?.images ? defaultValues.images : []);
 
   const { formState, handleSubmit, getValues, register, control } = useForm({ defaultValues });
@@ -49,12 +36,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   useEffect(() => {
     getResourceLabels();
+    setResourcesForCombo(defaultValues?.resourcesForCombo.map(item => ({ value: item._id, label: item.label })));
   }, []);
 
   const getResourceLabels = async () => {
     try {
       const response = await call('getResourceLabels');
-      setResourceLabels(response);
+      setResourceLabels(response.map(item => ({ value: item._id, label: item.label })));
+      setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
     }
@@ -82,7 +71,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   const onSubmit = async (values) => {
     if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
-    values.resourcesForCombo = resourcesForCombo.map(item => item._id);
+    values.resourcesForCombo = resourcesForCombo.map(item => item.value);
     if (values.images!==[]) values.images = await handleUploadImage();
     try {
       if (isEditMode) {
@@ -97,26 +86,9 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       message.error(error.reason || error.error);
     }
   };
-  
-  const handleAddResourceForCombo = ({ target }) => {
-    const { value } = target;
-    const selectedResource = resourceLabels.find((r) => r._id === value);
-    setResourcesForCombo([...resourcesForCombo, selectedResource]);
-  };
 
-  const handleRemoveResourceForCombo = (res) => {
-    const newResourcesForCombo = resourcesForCombo.filter(
-      (resource) => res.label !== resource.label
-    );
-    setResourcesForCombo(newResourcesForCombo);
-  };
-
-  const suggestions = () => {
-    return resourceLabels.filter((res, index) => {
-      return (
-        !res.isCombo && !resourcesForCombo.some((r) => r.label === res.label)
-      );
-    });
+  const handleAutoCompleteSelectChange = (newValue, actionMeta) => { 
+    setResourcesForCombo(newValue);
   };
 
   const handleRemoveImage = (imageIndex) => {
@@ -165,40 +137,22 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
           </FormControl>
 
           {isCombo && (
-            <Box bg="gray.100" p="4">
-              <Text fontSize="sm">
+            <Box bg="gray.100" p="6" w="90%">
+              <Text fontSize="sm" mb="6">
                 {t('resources.form.combo.select.helper')}
               </Text>
-              <Center mt="4">
-                <Wrap>
-                  {resourcesForCombo
-                    ? resourcesForCombo.map((res) => (
-                        <Tag colorScheme="green" key={res._id}>
-                          <TagLabel fontWeight="bold">
-                            {res.label.toUpperCase()}
-                          </TagLabel>
-                          <TagCloseButton
-                            onClick={() => handleRemoveResourceForCombo(res)}
-                          />
-                        </Tag>
-                      ))
-                    : []}
-                </Wrap>
-              </Center>
-              <Center>
-                <Select
-                  bg="white"
-                  m="4"
-                  placeholder={t('resources.form.combo.select.holder')}
-                  onChange={handleAddResourceForCombo}
-                >
-                  {suggestions().map((resource) => (
-                    <option key={resource.label} value={resource._id}>
-                      {resource.label}
-                    </option>
-                  ))}
-                </Select>
-              </Center>
+              {isLoading 
+                ? <Loader />
+                : <AutoCompleteSelect 
+                    onChange={handleAutoCompleteSelectChange}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                    defaultValue={resourcesForCombo}
+                    options={resourceLabels} 
+                    style={{ width: '100%', marginTop: '1rem' }}
+                  />
+              }
             </Box>
           )}
 
