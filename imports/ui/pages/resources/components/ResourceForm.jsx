@@ -61,27 +61,22 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const handleUploadImage = async () => {
-    const isThereUploadable = images.some(image => image.type === 'not-uploaded');
-    if (isThereUploadable) {
-      try {
-        const imagesReadyToSave = await Promise.all(
-          images.map(async image => {
-            if (image.type === 'not-uploaded') {
-              const resizedImage = await resizeImage(image.resizableData, 1200);
-              const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
-              return uploadedImageUrl;
-            } else {
-              return image;
-            }
-          })
-        );
-        return imagesReadyToSave;
-      } catch (error) {
-        console.error('Error uploading:', error);
-        message.error(error.reason);
-      }
-    } else {
-      return [];
+    try {
+      const imagesReadyToSave = await Promise.all(
+        images.map(async image => {
+          if (image.type === 'not-uploaded') {
+            const resizedImage = await resizeImage(image.resizableData, 1200);
+            const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
+            return uploadedImageUrl;
+          } else {
+            return image;
+          }
+        })
+      );
+      return imagesReadyToSave;
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
     }
   };
 
