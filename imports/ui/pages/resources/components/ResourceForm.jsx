@@ -15,34 +15,37 @@ import {
   TagLabel,
   TagCloseButton,
   Text,
-  Textarea,
   VStack,
   Wrap,
+  IconButton,
+  WrapItem,
 } from '@chakra-ui/react';
+import { SmallCloseIcon } from '@chakra-ui/icons';
 import ReactQuill from 'react-quill';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 import { editorFormats, editorModules } from '../../../@/constants/quillConfig';
 import { call, resizeImage, uploadImage } from '../../../@/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 import FileDropper from '../../../components/FileDropper';
+import NiceSlider from '../../../components/NiceSlider';
 
 function ResourceForm({ defaultValues, isEditMode, history }) {
 
   const [ resourceLabels, setResourceLabels ] = useState([]);
   const [ resourcesForCombo, setResourcesForCombo ] = useState(defaultValues?.resourcesForCombo);
-  const imageUrl = defaultValues?.imageUrl;
 
-  const [ uploadableImage, setUploadableImage ] = useState(null);
-  const [ uploadableImageLocal, setUploadableImageLocal] = useState(null);
-  
+  const [ images, setImages ] = useState(defaultValues?.images ? defaultValues.images : []);
+
   const { formState, handleSubmit, getValues, register, control } = useForm({ defaultValues });
   const { isDirty, isSubmitting } = formState;
   const isCombo = getValues('isCombo');
 
   const [ t ] = useTranslation('admin');
-  const [ tp ] = useTranslation('processes');
   const [ tc ] = useTranslation('common');
+  const [ tm ] = useTranslation('members');
 
   useEffect(() => {
     getResourceLabels();
@@ -58,22 +61,34 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const handleUploadImage = async () => {
-    if (uploadableImage !== null) {
+    const isThereUploadable = images.some(image => image.type === 'not-uploaded');
+    if (isThereUploadable) {
       try {
-        const resizedImage = await resizeImage(uploadableImage, 1200);
-        const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
-        return uploadedImageUrl;
+        const imagesReadyToSave = await Promise.all(
+          images.map(async image => {
+            if (image.type === 'not-uploaded') {
+              const resizedImage = await resizeImage(image.resizableData, 1200);
+              const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
+              return uploadedImageUrl;
+            } else {
+              return image;
+            }
+          })
+        );
+        return imagesReadyToSave;
       } catch (error) {
         console.error('Error uploading:', error);
         message.error(error.reason);
       }
+    } else {
+      return [];
     }
   };
 
   const onSubmit = async (values) => {
     if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
     values.resourcesForCombo = resourcesForCombo.map(item => item._id);
-    if (values.imageUrl!=='') values.imageUrl = await handleUploadImage();
+    if (values.images!==[]) values.images = await handleUploadImage();
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
@@ -109,22 +124,34 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     });
   };
 
+  const handleRemoveImage = (imageIndex) => {
+    setImages(images.filter((image, index) => imageIndex !== index));
+  };
+
+  const handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) return;
+    setImages(arrayMove(images, oldIndex, newIndex));
+  };
+
   const setFileDropperImage = (files) => {
-    if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        setUploadableImage(uploadableImage);
-        setUploadableImageLocal(reader.result);
-      },
-      false
-    );
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.addEventListener(
+        'load',
+        () => {
+          setImages(images => [
+            ...images,
+            {
+              resizableData: file,
+              type: 'not-uploaded',
+              src: reader.result,
+            }
+          ]);
+        },
+        false
+      );
+    });
   };
 
   return (
@@ -184,7 +211,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             <Input
               {...register('label')}
               placeholder={t('resources.form.name.holder')}
-              size="sm"
             />
           </FormField>
 
@@ -203,18 +229,31 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             />
           </FormField>
 
-
-          <FormField
-            label={tp('form.image.label')}
-            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
-          >
-            <Center>
-              <FileDropper
-                imageUrl={imageUrl}
-                setUploadableImage={setFileDropperImage}
-                uploadableImageLocal={uploadableImageLocal}
-              />
-            </Center>
+          <FormField label={tm('works.images.label', { count: images.length })}>
+            <Box>
+              {images && 
+                <>
+                  <NiceSlider images={images.map(image => image.src ? image.src : image)} />
+                  <SortableContainer
+                    onSortEnd={handleSortImages}
+                    axis="xy"
+                    helperClass="sortableHelper"
+                  >
+                    {images.map((image, index) => (
+                      <SortableItem
+                        key={'sortable_img_'+index}
+                        index={index}
+                        image={image.src ? image.src : image}
+                        onRemoveImage={() => handleRemoveImage(index)}
+                      />
+                    ))}
+                  </SortableContainer>
+                </>
+              }
+              <Center w="100%">
+                <FileDropper setUploadableImage={setFileDropperImage} />
+              </Center>
+            </Box>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
@@ -230,6 +269,30 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       </form>
     </Box>
   );
-}
+};
+
+const thumbStyle = (backgroundImage) => ({
+  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
+});
+
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
+  return (
+    <WrapItem key={image} className="sortable-thumb" style={thumbStyle(image)}>
+      <IconButton
+        className="sortable-thumb-icon"
+        colorScheme="gray.900"
+        icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+        size="xs"
+        onClick={onRemoveImage}
+        style={{ position: 'absolute', top: 4, right: 4 }}
+      />
+    </WrapItem>
+  );
+});
+
+const SortableContainer = sortableContainer(({ children }) => (
+  <Wrap py="2">{children}</Wrap>
+));
+
 
 export default ResourceForm;
