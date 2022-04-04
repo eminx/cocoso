@@ -228,8 +228,9 @@ class Process extends Component {
   };
 
   removeNotification = (messageIndex) => {
+    console.log(messageIndex);
     const { process, currentUser } = this.props;
-    const shouldRun = currentUser.notifications.find((notification) => {
+    const shouldRun = currentUser.notifications?.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
       }
