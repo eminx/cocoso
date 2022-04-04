@@ -7,6 +7,8 @@ import i18n from 'i18next';
 import moment from 'moment';
 moment.locale(i18n.language);
 
+import NiceSlider from '../../../components/NiceSlider';
+
 export default function ResourcesCard({ resource }) {
   const [ t ] = useTranslation('admin');
   return (
@@ -37,9 +39,12 @@ export default function ResourcesCard({ resource }) {
           </Flex>
         </Link>
       </Flex>
-      {resource?.imageUrl && 
+      {resource?.images && 
         <Box mb="4">
-          <Image src={resource?.imageUrl} fit="contain" fill />
+          {resource.images.length === 1 
+            ? <Image src={resource.images[0]} fit="contain" fill />
+            : <NiceSlider images={resource.images} />
+          }
         </Box>
       }
       <Box>
