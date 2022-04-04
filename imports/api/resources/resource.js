@@ -11,7 +11,9 @@ Resources.schema = new SimpleSchema({
 
   label: {type: String},
   description: {type: String},
-  imageUrl: { type: Schemas.Src, optional: true },
+  images: { type: Array, optional: true },
+  'images.$': Schemas.Src,
+
   isCombo: {type: Boolean},
   resourceIndex: {type: SimpleSchema.Integer},
   resourcesForCombo: {type: Array},
@@ -42,11 +44,10 @@ Resources.publicFields = {
   userId: 1,
   label: 1,
   description: 1,
-  imageUrl: 1,
+  images: 1,
   isCombo: 1,
   resourcesForCombo: 1,
   resourceIndex: 1,
-  // createdBy: 1,
   createdAt: 1,
 };
 
