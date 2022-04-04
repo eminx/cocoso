@@ -12,7 +12,6 @@ function NewResourcePage({ history }) {
   const resourceModel = {
     label: '',
     description: '',
-    imageUrl: '',
     isCombo: false,
     resourcesForCombo: [],
   };
