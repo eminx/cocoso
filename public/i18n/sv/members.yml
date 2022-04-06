@@ -1,0 +1,75 @@
+# ADMIN MEMBERS PAGE
+label: Medlemmar
+
+all: Allt
+
+joinedAt: gick med {{ date }}
+
+roles:
+  participant: Deltagare
+  contributor: Utgivare
+  admin: Admin
+  plural:
+    participants: Deltagare
+    contributors: Utgivare
+    admins: Admin
+
+form:
+  sort:
+    date: Datum gick med
+    user: Användarnamn
+  holder: användarnamn eller epost
+
+actions:
+  contributor: Ställ in som utgivare
+  participant: Återgå som deltagare
+
+message:
+  success:
+    contributor: '{{ username }} är nu inställd som en utgivare'
+    participant: '{{ username }} är nu återställd som deltagare'
+  contact:
+    empty: Ingen kontaktinformation registrerad för {{ username }}
+  activity:
+    empty: Inget publicerat ännu
+    info: '{{ username }} har inte varit särskilt aktiva hittills'
+  access:
+    contributor: Du måste bli en utgivare till {{ action }}
+  guest: Du måste skapa ett konto för att lansera din marknad
+
+profile:
+  labels:
+    info: Personlig Info
+    avatar: Avatar
+  form:
+    firstname:
+      label: Förnamn
+    lastname:
+      label: Efternamn
+    bio:
+      label: Bio
+    contact:
+      label: Kontakt Info
+  message:
+    role: Du som {{username}} är en del av denna organisation med rollen {{role}}
+
+works:
+  label: Mina Verk
+
+  title:
+    label: Titel
+    holder: Mangojuice på flaska...
+  shortDesc:
+    label: Kort beskrivning
+    holder: Söt, naturlig och uppfriskande
+  category:
+    label: Kategori
+    holder: Välj alternativ
+  longDesc:
+    label: Beskrivning
+    holder: Min mangojuice är handplockad från träden och...
+  addInfo:
+    label: Ytterligare info
+    holder: En flaska kostar...
+  images:
+    label: Bilder ({{ count }})

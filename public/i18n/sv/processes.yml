@@ -1,0 +1,120 @@
+labels: 
+  archived: Arkiverad
+  unarchived: Avarkiverad
+  member: Medlemmar
+  document: Dokument
+  date: Datum
+  invite: Hantera åtkomst
+
+tabs: 
+  active: Aktiva
+  members: Mina Processer
+  archived: Arkiverad
+  process:
+    info: Info
+    discuss: Diskussion
+
+form:
+  private:
+    label: Privat (endast för inbjudningar)
+    tooltip:
+      title: Privata Processer
+      P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
+      P2: Du kommer att kunna hantera inbjudningarna efter att du har skapat processen.
+  image:
+    label: Bild
+  title:
+    label: Titel
+    holder: Förstå Benjamin
+  subtitle:
+    label: Texta
+    holder: Genom belysningar
+  desc:
+    label: Beskrivning
+  capacity: 
+    label: Kapacitet
+  submit: Bekräfta och Skapa Process
+  waiting: Skapar din process...
+
+message:
+  archived: Processen har arkiverats
+  unarchived: Processen har avarkiverats
+
+  joined: Du är redan medlem!
+  added: Du läggs till i processen
+  removed: Du tas bort från processen
+
+actions:
+  this: Gå med i denna process
+  join: Gå med i processen
+  leave: Lämna processen
+
+meeting:
+  attends:
+    remove: Du har tagits bort från listan!
+    register: Din närvaro har registrerats!
+  access:
+    join: Gå med i processen för att delta i mötet
+    logged: Logga in och gå med i processen för att delta i mötet
+    remove: Förlåt. För närvarande kan du inte ta bort möten som har deltagare registrerade för att delta
+  success:
+    add: Ditt processmöte har lagts till!
+    remove: Mötet har tagits bort
+    fileDropper: har laddats upp och tilldelats den här processen!
+    admin: Administratören har ändrats
+  actions:
+    remove: Ta bort det här mötet
+    makeAdmin: Gör admin
+  isAttending:
+    false: Kan inte klara det
+    true: Registrera närvaro
+  info:
+    empty: Inget möte planerat ännu
+    member: Klicka och öppna datumet för att OSA
+    admin: Öppna datumen för att se deltagarna
+  form:
+    label: Lägg till ett möte
+    date: Välj Dag
+    time: 
+      start: Starttid
+      end: Sluttid
+    switch: På {{ place }}?
+    resource: Välj resurs
+    location: Plats
+    submit: Lägg till möte
+    
+document:
+  empty: Inget dokument tilldelat
+  drop: Släpp dokument för att ladda upp
+  up: laddar upp
+  remove: Manualen har tagits bort
+
+confirm: 
+  check: Är du säker?
+  title: 
+    text: Bekräfta {{ opt }} till processen
+    opts:
+      leave: lämnar
+      join: deltagande till
+  body:
+    text: Är du säker på att du vill använda den här {{ opt }}-processen?
+    opts:
+      leave: lämnar
+      join: ansluta sig
+  admin:
+    title: Bekräfta att du vill göra {{ admin }} till ny administratör.
+    body: Det kan bara finnas en administratör åt gången, så dina administratörsbehörigheter kommer att tas bort, och du kommer inte att kunna återfå den igen om inte {{ admin }} ger ditt samtycke.
+
+invite:
+  info: Vänligen lägg till data för den person du vill bjuda in till processen
+  success: Ett e-postmeddelande skickas och {{ name }} har bjudits in till processen
+  email:
+    label: e-post
+    holder: samuel@skogen.pm
+    already: Den här e-postadressen har redan lagts till
+    valid: Vänligen ange en giltig e-postadress
+  firstName:
+    label: förnamn
+    holder: Samuel
+    valid: Ange ett giltigt förnamn
+  submit: Skicka inbjudan

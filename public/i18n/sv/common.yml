@@ -1,0 +1,129 @@
+# LANGUAGE KEYS
+langs:
+  en: Engelsk
+  sv: Svenska
+  form:
+    label: Önskat Språk
+    holder: Välj ett språk
+
+# ALL ACTION BUTTON LABELS
+actions:
+  create: Ny
+  update: Redigera
+  remove: Radera
+  submit: Bekräfta
+  send: Bekräfta
+  cancel: Annullera
+  close: Stänga
+  reset: Återställa
+  add: Lägg till
+  print: Skriva ut
+
+# ACTION PAGE TITLES
+labels:
+  create: Skapa en Ny {{ domain }}
+  update: Redigera detta {{ domain }}
+  remove: Avlägsna
+  all: Allt
+  booked: bokad
+  process: Bearbeta
+  event: Händelse
+  page: Sida
+  contact: Kontakt
+
+# ALL CLIENT-SIDE NOTIFICATIONS
+message:
+  loading: läser in {{ something }} ...
+
+  success:
+    create: '{{ domain }} har skapats framgångsrikt'
+    update: '{{ domain }} har uppdaterats framgångsrikt'
+    remove: '{{ domain }} ihar raderats'
+    save: '{{ domain }} har sparats'
+
+  access:
+    deny: Du får inte
+    admin: Du måste vara superadmin för att skapa en {{ domain }}
+    contributor: Du måste bli en utgivare för att skapa {{ domain }}
+    register: Du måste bli en registrerad medlem för att skapa {{ domain }}
+
+  exists: En {{ domain }} med denna {{ property }} finns redan
+  valid:
+    required: '{{ field }} får inte vara tom'
+    email: '{{ field }} måste vara en giltig e-postadress'
+    min: '{{ field }} måste bestå av minst {{ min }} tecken'
+
+# MODAL POP-UPS
+modals:
+  confirm:
+    delete:
+      title: Bekräfta radering
+      body: Är du säker på att du vill ta bort denna {{ domain }}?
+      yes: Ja, radera
+
+  # FEEDBACK FORM
+  feedback:
+    label: Ge feedback
+    form:
+      email:
+        label: Din e-postadress
+      subject:
+        label: Ämne
+        select:
+          suggest: Förslag
+          bug: Bugga
+          compliment: Komplimang
+      details:
+        label: Detaljer
+
+# GUEST | MEMBER | ADMIN MENU LABELS
+menu:
+  guest:
+    login: Logga in
+  member:
+    label: Min
+    profile: Min Profil
+    activities: Mina Aktiviteter
+    works: Mina Verk
+  admin:
+    label: Admin
+    settings: Inställningar
+    members: Medlemmar
+    resources: Resurser
+    emails: E-postmeddelanden
+  notifications:
+    label: Aviseringar
+
+plugins:
+  fileDropper:
+    replace: Om du vill ersätta den med en annan, klicka på bilden för att öppna filväljaren igen
+    single: Släpp bara en fil åt gången.
+    helper: Släpp en bild eller bilder; eller alternativt klicka för att öppna filväljaren
+
+domains:
+  a: en
+  your: Din
+  public: Offentlig
+
+  calendar: Kalender
+  activity: Aktivitet
+  activities: Aktiviteter
+  process: Process
+  processes: Processer
+  resource: Resurs
+  work: arbete
+  works: Arbetar
+  host: Värd
+  page: sida
+
+  settings: Inställningar
+  email: E-postmeddelanden
+
+  account: konto
+  data: data
+  avatar: avatar
+  static: statisk
+
+  props:
+    name: namn
+    title: titel

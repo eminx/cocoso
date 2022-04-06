@@ -1,0 +1,120 @@
+labels: 
+  archived: Archived
+  unarchived: Unarchive
+  member: Members
+  document: Documents
+  date: Dates
+  invite: Manage Access
+
+tabs: 
+  active: Active
+  members: My Processes
+  archived: Archived
+  process:
+    info: Info
+    discuss: Discussion
+
+form:
+  private:
+    label: Private (invite-only)
+    tooltip:
+      title: Private Processes
+      P1: Private processes are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.
+      P2: You will be able to manage the invites after you create the process.
+  image:
+    label: Image
+  title:
+    label: Title
+    holder: Understanding Benjamin
+  subtitle:
+    label: Subtitle
+    holder: Through Illuminations
+  desc:
+    label: Description
+  capacity: 
+    label: Capacity
+  submit: Confirm and Create Process
+  waiting: Creating your process...
+
+message:
+  archived: Process is successfully archived
+  unarchived: Process is successfully unarchived
+
+  joined: You are already a member!
+  added: You are added to the process
+  removed: You are removed from the process
+
+actions:
+  this: Join this process
+  join: Join process
+  leave: Leave process
+
+meeting:
+  attends:
+    remove: You are successfully removed from the list!
+    register: Your attendance is successfully registered!
+  access:
+    join: Please join the process to attend the meeting
+    logged: Please login and join the process to attend the meeting
+    remove: Sorry. Currently you can not delete meetings which have attendees registered to attend
+  success:
+    add: Your process meeting is added!
+    remove: The meeting is successfully removed
+    fileDropper: is successfully uploaded and assigned to this process!
+    admin: The admin is successfully changed
+  actions:
+    remove: Delete this meeting
+    makeAdmin: Make admin
+  isAttending:
+    false: Cannot make it
+    true: Register attendance
+  info:
+    empty: No meeting scheduled yet
+    member: Click and open the date to RSVP
+    admin: Open the dates to see the attendees
+  form:
+    label: Add a Meeting
+    date: Select Day
+    time: 
+      start: Start time
+      end: Finish time
+    switch: At {{ place }}?
+    resource: Select resource
+    location: Location
+    submit: Add Meeting
+    
+document:
+  empty: No document assigned
+  drop: Drop documents to upload
+  up: uploading
+  remove: The manual is successfully removed
+
+confirm: 
+  check: Are you sure?
+  title: 
+    text: Confirm {{ opt }} to  the process
+    opts:
+      leave: leaving
+      join: participation to
+  body:
+    text: Are you sure you want to this {{ opt }} Process?
+    opts:
+      leave: leave
+      join: join
+  admin:
+    title: Please confirm you want to make {{ admin }} the new admin.
+    body: There can only be one admin at a time, so your admin privileges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
+
+invite:
+  info: Please add data for the person you want to invite to the process
+  success: An email is sent and {{ name }} is successfully invited to the process
+  email:
+    label: email
+    holder: samuel@skogen.pm
+    already: This email address is already added
+    valid: Please enter a valid email
+  firstName:
+    label: first name
+    holder: Samuel
+    valid: Please enter a valid first name
+  submit: Send Invite

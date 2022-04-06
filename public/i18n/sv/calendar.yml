@@ -1,0 +1,29 @@
+bigCal:
+  date: Datum
+  time: Tid
+  event: Händelse
+  allDay: Hela dagen
+  week: Vecka
+  work_week: Arbetsvecka
+  day: Dag
+  month: Månad
+  previous: Tillbaka
+  next: Nästa
+  yesterday: I går
+  tomorrow: I morgon
+  today: I dag
+  agenda: Dagordning
+  noEventsInRange: Det finns inga händelser i det här intervallet.
+  showMore: '{{ total }} mer'
+
+
+datePicker:
+  labels:
+    select: Välj {{ opt }}
+    date: Dag
+    time: Tid
+    datetime: Dag & Tid 
+  formats:
+    date: yyyy-MM-dd 
+    time: HH:mm
+    datetime: yyyy-MM-dd  HH:mm
