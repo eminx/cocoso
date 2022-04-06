@@ -755,9 +755,12 @@ class Process extends Component {
   renderProcessInfo = () => {
     const { process, chatData, currentUser, t } = this.props;
     const isAdmin = this.isAdmin();
-    const notificationCount = currentUser.notifications.find((n) => {
-      return n.contextId === process._id;
-    })?.unSeenIndexes?.length;
+    const notificationCount =
+      currentUser &&
+      currentUser.notifications &&
+      currentUser.notifications.find((n) => {
+        return n.contextId === process._id;
+      })?.unSeenIndexes?.length;
 
     return (
       <div>
@@ -769,7 +772,9 @@ class Process extends Component {
                 <Tab>{t('tabs.process.info')}</Tab>
                 <Tab>
                   {t('tabs.process.discuss')}{' '}
-                  <Badge colorScheme="red">{notificationCount}</Badge>
+                  {notificationCount && (
+                    <Badge colorScheme="red">{notificationCount}</Badge>
+                  )}
                 </Tab>
               </TabList>
               <TabPanels>
