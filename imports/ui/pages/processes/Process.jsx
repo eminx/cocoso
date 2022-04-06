@@ -832,12 +832,7 @@ class Process extends Component {
   };
 
   render() {
-<<<<<<< Updated upstream
     const { process, isLoading, resources, history, t, tc } = this.props;
-=======
-    const { process, isLoading, history, t, tc } = this.props;
-    const { resources } = this.state;
->>>>>>> Stashed changes
 
     if (!process || isLoading) {
       return <Loader />;
