@@ -661,6 +661,7 @@ class Process extends Component {
         <Heading mb="2" size="sm">
           {t('labels.document')}
         </Heading>
+
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList
             actionsDisabled={!isAdmin}
@@ -737,11 +738,9 @@ class Process extends Component {
   renderProcessInfo = () => {
     const { process, chatData, currentUser, t } = this.props;
     const isAdmin = this.isAdmin();
-    const isMember = this.isMember();
-    const isNotificationOn = process.isNotificationOn;
-    const notificationCount = currentUser.notifications.find(
-      (n) => (n.contextId = process._id)
-    )?.unSeenIndexes?.length;
+    const notificationCount = currentUser.notifications.find((n) => {
+      return n.contextId === process._id;
+    })?.unSeenIndexes?.length;
 
     return (
       <div>
