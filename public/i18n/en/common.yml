@@ -54,7 +54,7 @@ message:
     min: '{{ field }} has to be at least {{ min }} characters'
 
 # MODAL POP-UPS
-modals: 
+modals:
   confirm:
     delete:
       title: Confirm Delete
@@ -62,12 +62,12 @@ modals:
       yes: Yes, delete
 
   # FEEDBACK FORM
-  feedback: 
+  feedback:
     label: Give Feedback
     form:
-      email: 
+      email:
         label: Your email address
-      subject: 
+      subject:
         label: Subject
         select:
           suggest: Suggestion
@@ -78,7 +78,7 @@ modals:
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
-  guest: 
+  guest:
     login: Login
   member:
     label: My
@@ -91,6 +91,8 @@ menu:
     members: Members
     resources: Resources
     emails: Emails
+  notifications:
+    label: Notifications
 
 plugins:
   fileDropper:
@@ -117,7 +119,7 @@ domains:
 
   settings: Settings
   email: Email
-  
+
   account: account
   data: data
   avatar: avatar
