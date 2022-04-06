@@ -46,29 +46,6 @@ import { chakraTheme } from './@/constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
-const menu = [
-  {
-    label: 'Activities',
-    route: '/',
-  },
-  {
-    label: 'Processes',
-    route: '/processes',
-  },
-  {
-    label: 'Calendar',
-    route: '/calendar',
-  },
-  {
-    label: 'Works',
-    route: '/works',
-  },
-  {
-    label: 'Info',
-    route: `/page/about`,
-  },
-];
-
 const getRoute = (item, index) => {
   if (index === 0) {
     return '/';
@@ -77,17 +54,6 @@ const getRoute = (item, index) => {
     return '/page/about';
   }
   return `/${item.name}`;
-};
-
-const getGotoPath = (pathname) => {
-  const shortPath = pathname.substring(0, 3);
-  if (shortPath === '/pr') {
-    return '/processes';
-  } else if (pathname.includes('/work/')) {
-    return '/works';
-  } else {
-    return '/';
-  }
 };
 
 const getBackgroundStyle = (cHue) => {
@@ -128,7 +94,7 @@ function LayoutPage({
   children,
 }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -237,23 +203,33 @@ function LayoutPage({
                   <form action="https://formspree.io/f/xdopweon" method="POST">
                     <ModalBody>
                       <VStack spacing="6">
-                        <FormField label={tc('modals.feedback.form.email.label')}>
+                        <FormField
+                          label={tc('modals.feedback.form.email.label')}
+                        >
                           <Input type="email" name="_replyto" />
                         </FormField>
 
-                        <FormField label={tc('modals.feedback.form.subject.label')}>
+                        <FormField
+                          label={tc('modals.feedback.form.subject.label')}
+                        >
                           <Select name="subject">
-                            {[tc('modals.feedback.form.subject.select.suggest'), tc('modals.feedback.form.subject.select.bug'), tc('modals.feedback.form.subject.select.compliment')].map(
-                              (option) => (
-                                <option key={option} value={option}>
-                                  {option}
-                                </option>
-                              )
-                            )}
+                            {[
+                              tc('modals.feedback.form.subject.select.suggest'),
+                              tc('modals.feedback.form.subject.select.bug'),
+                              tc(
+                                'modals.feedback.form.subject.select.compliment'
+                              ),
+                            ].map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
                           </Select>
                         </FormField>
 
-                        <FormField label={tc('modals.feedback.form.details.label')}>
+                        <FormField
+                          label={tc('modals.feedback.form.details.label')}
+                        >
                           <Textarea name="text" name="message" />
                         </FormField>
                       </VStack>
@@ -280,16 +256,7 @@ function LayoutPage({
   );
 }
 
-const Header = ({ currentUser, currentHost, title, history }) => {
-  const UserStuff = () => (
-    <NotificationsPopup notifications={currentUser.notifications} />
-  );
-
-  const pathname = location.pathname;
-  const gotoPath = getGotoPath(pathname);
-
-  const isPage = pathname.substring(0, 5) === '/page';
-
+function Header({ currentUser, currentHost, title, history }) {
   return (
     <Box mb="4">
       <ScreenClassRender
@@ -346,9 +313,9 @@ const Header = ({ currentUser, currentHost, title, history }) => {
       />
     </Box>
   );
-};
+}
 
-const Menu = ({ currentHost, isMobile, screenClass, history }) => {
+function Menu({ currentHost, isMobile, screenClass, history }) {
   if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
     return null;
   }
@@ -422,9 +389,7 @@ const Menu = ({ currentHost, isMobile, screenClass, history }) => {
       </CMenu>
     </Box>
   );
-};
-
-const MobileMenu = ({}) => {};
+}
 
 export default withTracker((props) => {
   const hostSub = Meteor.subscribe('currentHost');

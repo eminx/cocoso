@@ -43,6 +43,8 @@ function UserPopup({ currentUser }) {
 
   const { role } = useContext(StateContext);
 
+  const isNotification = notifications && notifications.length > 0;
+
   return (
     <Menu>
       <MenuButton>
@@ -51,11 +53,13 @@ function UserPopup({ currentUser }) {
           showBorder
           src={currentUser.avatar && currentUser.avatar.src}
         >
-          <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />
+          {isNotification && (
+            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />
+          )}
         </Avatar>
       </MenuButton>
       <MenuList>
-        {notifications && notifications.length > 0 && (
+        {isNotification && (
           <MenuGroup title={tc('menu.notifications.label')}>
             {notifications.map((item) => (
               <Link
@@ -63,8 +67,7 @@ function UserPopup({ currentUser }) {
                 to={`/${item.context}/${item.contextId}`}
               >
                 <MenuItem>
-                  {item.contextId}{' '}
-                  <Badge colorScheme="tomato">{item.count}</Badge>
+                  {item.title} <Badge colorScheme="tomato">{item.count}</Badge>
                 </MenuItem>
               </Link>
             ))}
