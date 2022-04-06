@@ -45,6 +45,7 @@ import InviteManager from './InviteManager';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
+import { call } from '../../@/shared.js';
 
 moment.locale(i18n.language);
 
@@ -109,7 +110,7 @@ class Process extends Component {
     });
   };
 
-  addNewChatMessage = (messageContent) => {
+  addNewChatMessage = async (messageContent) => {
     const { process } = this.props;
     const values = {
       context: 'process',
@@ -117,11 +118,11 @@ class Process extends Component {
       message: messageContent,
     };
 
-    Meteor.call('addChatMessage', values, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-      }
-    });
+    try {
+      await call('addChatMessage', values);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   getChatMessages = () => {

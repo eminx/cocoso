@@ -36,7 +36,7 @@ Meteor.methods({
     }
     const host = getHost(this);
 
-    const unSeenIndex = Chats.findOne({ contextId: values.contextId }).messages.length;
+    const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages?.length;
 
     try {
       Chats.update(
@@ -57,18 +57,15 @@ Meteor.methods({
           },
         }
       );
-      if (values.contextType === 'activity') {
-        return;
-      }
-      if (values.contextType = 'process') {
-        Meteor.call('createProcessNotifications', values, unSeenIndex);
+      if (values.context === 'process') {
+        Meteor.call('createProcessNotification', values, unSeenIndex);
       }
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  createProcessNotifications(values, unSeenIndex) {
+  createProcessNotification(values, unSeenIndex) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
