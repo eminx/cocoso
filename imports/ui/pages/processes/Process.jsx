@@ -14,6 +14,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Box,
   Button,
   Center,
@@ -228,7 +229,6 @@ class Process extends Component {
   };
 
   removeNotification = (messageIndex) => {
-    console.log(messageIndex);
     const { process, currentUser } = this.props;
     const shouldRun = currentUser.notifications?.find((notification) => {
       if (!notification.unSeenIndexes) {
@@ -735,9 +735,13 @@ class Process extends Component {
   };
 
   renderProcessInfo = () => {
-    const { process, chatData, t } = this.props;
+    const { process, chatData, currentUser, t } = this.props;
     const isAdmin = this.isAdmin();
     const isMember = this.isMember();
+    const isNotificationOn = process.isNotificationOn;
+    const notificationCount = currentUser.notifications.find(
+      (n) => (n.contextId = process._id)
+    )?.unSeenIndexes?.length;
 
     return (
       <div>
@@ -747,7 +751,10 @@ class Process extends Component {
             <Tabs variant="enclosed">
               <TabList pl="4">
                 <Tab>{t('tabs.process.info')}</Tab>
-                <Tab>{t('tabs.process.discuss')}</Tab>
+                <Tab>
+                  {t('tabs.process.discuss')}{' '}
+                  <Badge colorScheme="red">{notificationCount}</Badge>
+                </Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
