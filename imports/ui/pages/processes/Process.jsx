@@ -36,17 +36,16 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
 import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
-import InviteManager from './InviteManager';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call } from '../../@/shared';
 import { message } from '../../components/message';
-import { call } from '../../@/shared.js';
+import { call } from '../../@/shared';
 
 moment.locale(i18n.language);
 
@@ -849,12 +848,8 @@ class Process extends Component {
   };
 
   render() {
-<<<<<<< HEAD
-    const { process, isLoading, history , t, tc  } = this.props;
+    const { process, isLoading, history, t, tc } = this.props;
     const { resources } = this.state;
-=======
-    const { process, isLoading, resources, history, t, tc } = this.props;
->>>>>>> develop
 
     if (!process || isLoading) {
       return <Loader />;
@@ -993,7 +988,7 @@ class Process extends Component {
   }
 }
 
-const MeetingInfo = ({ meeting, isAttending, resources }) => {
+function MeetingInfo({ meeting, isAttending, resources }) {
   return (
     <Box>
       <FancyDate occurence={meeting} resources={resources} />
@@ -1005,7 +1000,7 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
       )}
     </Box>
   );
-};
+}
 
 function CreateMeetingForm({
   handleDateChange,
