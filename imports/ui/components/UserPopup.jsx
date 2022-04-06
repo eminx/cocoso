@@ -13,6 +13,7 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Text,
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
@@ -67,7 +68,13 @@ function UserPopup({ currentUser }) {
                 to={`/${item.context}/${item.contextId}`}
               >
                 <MenuItem>
-                  {item.title} <Badge colorScheme="tomato">{item.count}</Badge>
+                  <Text color="gray.600" isTruncated>
+                    {item.title}{' '}
+                  </Text>
+                  <Badge colorScheme="red" size="xs">
+                    {' '}
+                    {item.count}
+                  </Badge>
                 </MenuItem>
               </Link>
             ))}
