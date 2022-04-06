@@ -52,12 +52,12 @@ class ChatteryBubble extends React.Component {
 
     return (
       <div className={bubbleClassContainer}>
-        <VisibilitySensor onChange={this.removeNotification}>
+        <VisibilitySensor
+          partialVisibility="bottom"
+          onChange={this.removeNotification}
+        >
           {({ isVisible }) => (
-            <div
-              className={bubbleClass}
-              // style={!isSeen ? { borderColor: '#ea3924' } : null}
-            >
+            <div className={bubbleClass}>
               <div className="talktext">
                 <p className="talktext-senderinfo">{senderUsername}</p>
                 <p className="talktext-content">{children}</p>
