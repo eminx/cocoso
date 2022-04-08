@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
@@ -15,21 +15,24 @@ import { call } from '../../../@/shared';
 import NiceList from '../../../components/NiceList';
 import { message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
+import { StateContext } from '../../../LayoutContainer';
 
 
 export default function BookingsField({ domain }) {
-  const [ t ] = useTranslation('processes');
-  const [ tc ] = useTranslation('common');
-  
+  const { role, canCreateContent } = useContext(StateContext);
+  const isAdmin = role === 'admin' ? true : false;
+
   const [ bookings, setBookings] = useState([]);
   const [ newBooking, setNewBooking ] = useState({});
   const [ multipledays, setMultipledays ] = useState(false);
-
   const [ isLoading, setIsLoading ] = useState(true);
-  const [ isAdmin ] = useState(true);
 
   const { formState, handleSubmit, register } = useForm();
   const { isDirty, isSubmitting } = formState;
+
+  const [ t ] = useTranslation('processes');
+  const [ tc ] = useTranslation('common');
+  
 
   const getBookings = async () => {
     try {
@@ -52,6 +55,10 @@ export default function BookingsField({ domain }) {
   }, [bookings]);
   
   const removeBooking = async (bookingId) => {
+    if (!isAdmin) {
+      message.error(tc('message.access.deny'));
+      return;
+    }
     try {
       await call('deleteActivity', bookingId);
     } catch (error) {
@@ -127,7 +134,7 @@ export default function BookingsField({ domain }) {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                  {isAdmin &&       
+                  {canCreateContent &&       
                     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
                       <FormControl display='flex' alignItems='center' mb="2">
                         <Switch id='book-multiple-days' size="sm" onChange={() => setMultipledays(!multipledays) } />
