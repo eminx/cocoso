@@ -21,15 +21,18 @@ import moment from 'moment';
 moment.locale(i18n.language);
 
 import NiceSlider from '../../../components/NiceSlider';
-import Chattery from '../../../components/chattery/Chattery.jsx';
+import Chattery from '../../../components/chattery/Chattery';
 
 export default function ResourcesCard({
-  canCreateContent,
+  currentUser,
   discussion,
   resource,
   addNewChatMessage,
 }) {
   const [t] = useTranslation('resources');
+
+  const removeNotification = () => {};
+
   return (
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
       <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
@@ -89,8 +92,8 @@ export default function ResourcesCard({
                 <Chattery
                   messages={discussion}
                   onNewMessage={addNewChatMessage}
-                  // removeNotification={this.removeNotification}
-                  isMember={canCreateContent}
+                  removeNotification={removeNotification}
+                  isMember={Boolean(currentUser)}
                 />
               </div>
             )}

@@ -13,19 +13,19 @@ import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
 import { StateContext } from '../../LayoutContainer';
+import useChattery from '../../components/chattery/useChattery';
 
 function ResourcePage() {
   const { resourceId } = useParams();
   const [resource, setResource] = useState(null);
-  const [discussion, setDiscussion] = useState(null);
+  // const [discussion, setDiscussion] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-
   const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
     getResourceById();
-    getChatByContextId();
   }, []);
 
   const getResourceById = async () => {
@@ -39,23 +39,15 @@ function ResourcePage() {
     }
   };
 
-  const getChatByContextId = async () => {
-    try {
-      const response = await call('getChatByContextId', resourceId);
-      if (!response) {
-        return;
-      }
-      const messages = response.messages.map((message) => {
-        return {
-          ...message,
-          isFromMe: message?.senderId === currentUser?._id,
-        };
-      });
-      setDiscussion(messages);
-    } catch (error) {
-      message.error(error.reason);
-    }
-  };
+  // const parseChatData = () => {
+  //   const messages = chatData?.messages?.map((message) => {
+  //     return {
+  //       ...message,
+  //       isFromMe: message?.senderId === currentUser?._id,
+  //     };
+  //   });
+  //   setDiscussion(messages);
+  // };
 
   const addNewChatMessage = async (messageContent) => {
     const values = {
@@ -85,7 +77,7 @@ function ResourcePage() {
       <Breadcrumb domain={resource} domainKey="label" />
       <ResourceCard
         addNewChatMessage={addNewChatMessage}
-        canCreateContent={canCreateContent}
+        currentUser={currentUser}
         discussion={discussion}
         resource={resource}
       />
