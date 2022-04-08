@@ -103,19 +103,29 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     const resourceIndex = Resources.find({ host }).count();
-    if(validateUser(user, currentHost) && validateLabel(values.label, host)) {
-      try {
-        return Resources.insert({
-          host,
-          userId: user._id,
-          ...values,
-          resourceIndex,
-          createdBy: user.username,
-          createdAt: new Date(),
+    if (!validateUser(user, currentHost) || !validateLabel(values.label, host)) {
+      return 'Not valid user or label!';
+    }
+    try {
+      const newResourceId = Resources.insert({
+        host,
+        userId: user._id,
+        ...values,
+        resourceIndex,
+        createdBy: user.username,
+        createdAt: new Date(),
+      },
+      () => {
+        Meteor.call('createChat', values.label, newResourceId, (error, result) => {
+          if (error) {
+            console.log('Chat is not created due to error: ', error);
+          }
         });
-      } catch (error) {
-        throw new Meteor.Error(error);
       }
+      );
+      return newResourceId;
+    } catch (error) {
+      throw new Meteor.Error(error);
     }
   },
 

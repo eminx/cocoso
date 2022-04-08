@@ -28,19 +28,19 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${url}`;
   };
 
-  // Resources.find().forEach(r => {
-  //   Chats.insert({
-  //     host: 'localhost:3000',
-  //     contextId: r._id,
-  //     contextName: r.label,
-  //     createdBy: {
-  //       userId: 'P7gktqsquKYsDZAxe',
-  //       username: 'emin',
-  //     },
-  //     isNotificationOn: false,
-  //     messages: new Array(),
-  //   })
-  // })
+  Resources.find().forEach(r => {
+    Chats.insert({
+      host: r.host,
+      contextId: r._id,
+      contextName: r.label,
+      createdBy: {
+        userId: 'P7gktqsquKYsDZAxe',
+        username: 'emin',
+      },
+      isNotificationOn: false,
+      messages: new Array(),
+    })
+  })
 });
 
 // import './migrations';

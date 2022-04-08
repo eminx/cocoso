@@ -10,7 +10,7 @@ Resources.schema = new SimpleSchema({
   userId: Schemas.Id,
 
   label: {type: String},
-  description: {type: String},
+  description: {type: String, optional: true},
   images: { type: Array, optional: true },
   'images.$': Schemas.Src,
 
@@ -18,19 +18,6 @@ Resources.schema = new SimpleSchema({
   resourceIndex: {type: SimpleSchema.Integer},
   resourcesForCombo: {type: Array},
   'resourcesForCombo.$': Schemas.Id,
-
-  bookings: { type: Array, defaultValue: [] },
-  'bookings.$': { type: new SimpleSchema({
-    _id: Schemas.Id,
-    startDate: { type: String },
-    endDate: { type: String },
-    startTime: { type: String },
-    endTime: { type: String },
-    description: { type: String },
-    userId: Schemas.Id,
-    bookedBy: { type: String },
-    bookedAt: { type: Date },
-  }), optional: true },
 
   createdBy: {type: String},
   createdAt: {type: Date},

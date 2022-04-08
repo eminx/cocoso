@@ -79,10 +79,10 @@ export default function ResourcesCard({
             )}
             <Box>
               <Box className="text-content" mb="4">
-                {renderHTML(resource?.description)}{' '}
+                {resource.description && renderHTML(resource.description)}
               </Box>
               <Text as="p" fontSize="xs">
-                {moment(resource?.createdAt).format('D MMM YYYY')}
+                {moment(resource.createdAt).format('D MMM YYYY')}
               </Text>
             </Box>
           </TabPanel>

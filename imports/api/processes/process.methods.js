@@ -25,7 +25,7 @@ Meteor.methods({
     }
 
     try {
-      const add = Processes.insert(
+      const newProcessId = Processes.insert(
         {
           host,
           adminId: user._id,
@@ -48,7 +48,7 @@ Meteor.methods({
           creationDate: new Date(),
         },
         () => {
-          Meteor.call('createChat', formValues.title, add, (error, result) => {
+          Meteor.call('createChat', formValues.title, newProcessId, (error, result) => {
             if (error) {
               console.log('Chat is not created due to error: ', error);
             }

@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, FormControl, FormLabel, Input, Switch, Text, VStack, Wrap, IconButton, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Switch,
+  Text,
+  VStack,
+  Wrap,
+  IconButton,
+  WrapItem,
+} from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-import AutoCompleteSelect from 'react-select'
+import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
 import { editorFormats, editorModules } from '../../../@/constants/quillConfig';
@@ -20,29 +34,39 @@ import Loader from '../../../components/Loader';
 const animatedComponents = makeAnimated();
 
 function ResourceForm({ defaultValues, isEditMode, history }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [resourceLabels, setResourceLabels] = useState([]);
+  const [resourcesForCombo, setResourcesForCombo] = useState([]);
+  const [images, setImages] = useState(
+    defaultValues?.images ? defaultValues.images : []
+  );
 
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ resourceLabels, setResourceLabels ] = useState([]);
-  const [ resourcesForCombo, setResourcesForCombo ] = useState([]);
-  const [ images, setImages ] = useState(defaultValues?.images ? defaultValues.images : []);
-
-  const { formState, handleSubmit, getValues, register, control } = useForm({ defaultValues });
+  const { formState, handleSubmit, getValues, register, control } = useForm({
+    defaultValues,
+  });
   const { isDirty, isSubmitting } = formState;
   const isCombo = getValues('isCombo');
 
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
-  const [ tm ] = useTranslation('members');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+  const [tm] = useTranslation('members');
 
   useEffect(() => {
     getResourceLabels();
-    setResourcesForCombo(defaultValues?.resourcesForCombo.map(item => ({ value: item._id, label: item.label })));
+    setResourcesForCombo(
+      defaultValues?.resourcesForCombo.map((item) => ({
+        value: item._id,
+        label: item.label,
+      }))
+    );
   }, []);
 
   const getResourceLabels = async () => {
     try {
       const response = await call('getResourceLabels');
-      setResourceLabels(response.map(item => ({ value: item._id, label: item.label })));
+      setResourceLabels(
+        response.map((item) => ({ value: item._id, label: item.label }))
+      );
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -52,10 +76,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const handleUploadImage = async () => {
     try {
       const imagesReadyToSave = await Promise.all(
-        images.map(async image => {
+        images.map(async (image) => {
           if (image.type === 'not-uploaded') {
             const resizedImage = await resizeImage(image.resizableData, 1200);
-            const uploadedImageUrl = await uploadImage(resizedImage, 'processDocumentUpload');
+            const uploadedImageUrl = await uploadImage(
+              resizedImage,
+              'processDocumentUpload'
+            );
             return uploadedImageUrl;
           } else {
             return image;
@@ -70,24 +97,31 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (values) => {
-    if (resourcesForCombo.length==0) values.isCombo = false; // if isCombo checked but no resource selected
-    values.resourcesForCombo = resourcesForCombo.map(item => item.value);
-    if (values.images!==[]) values.images = await handleUploadImage();
+    if (resourcesForCombo.length == 0) values.isCombo = false; // if isCombo checked but no resource selected
+    values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
+    if (values.images !== []) values.images = await handleUploadImage();
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
-        message.success(tc('message.success.update', { domain: tc('domains.resource') }));
+        message.success(
+          tc('message.success.update', { domain: tc('domains.resource') })
+        );
+        history.push('/resources/' + defaultValues._id);
       } else {
         const newResource = await call('createResource', values);
-        message.success(tc('message.success.create', { domain: tc('domains.resource') }));
-        if(newResource) history.push('/resources/'+newResource);
+        message.success(
+          tc('message.success.create', { domain: tc('domains.resource') })
+        );
+        if (newResource) {
+          history.push('/resources/' + newResource);
+        }
       }
     } catch (error) {
       message.error(error.reason || error.error);
     }
   };
 
-  const handleAutoCompleteSelectChange = (newValue, actionMeta) => { 
+  const handleAutoCompleteSelectChange = (newValue, actionMeta) => {
     setResourcesForCombo(newValue);
   };
 
@@ -101,19 +135,19 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const setFileDropperImage = (files) => {
-    files.forEach(file => {
+    files.forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.addEventListener(
         'load',
         () => {
-          setImages(images => [
+          setImages((images) => [
             ...images,
             {
               resizableData: file,
               type: 'not-uploaded',
               src: reader.result,
-            }
+            },
           ]);
         },
         false
@@ -141,18 +175,19 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
               <Text fontSize="sm" mb="6">
                 {t('resources.form.combo.select.helper')}
               </Text>
-              {isLoading 
-                ? <Loader />
-                : <AutoCompleteSelect 
-                    onChange={handleAutoCompleteSelectChange}
-                    closeMenuOnSelect={false}
-                    components={animatedComponents}
-                    isMulti
-                    defaultValue={resourcesForCombo}
-                    options={resourceLabels} 
-                    style={{ width: '100%', marginTop: '1rem' }}
-                  />
-              }
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <AutoCompleteSelect
+                  onChange={handleAutoCompleteSelectChange}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  defaultValue={resourcesForCombo}
+                  options={resourceLabels}
+                  style={{ width: '100%', marginTop: '1rem' }}
+                />
+              )}
             </Box>
           )}
 
@@ -180,9 +215,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
           <FormField label={tm('works.images.label', { count: images.length })}>
             <Box>
-              {images && 
+              {images && (
                 <>
-                  <NiceSlider images={images.map(image => image.src ? image.src : image)} />
+                  <NiceSlider
+                    images={images.map((image) =>
+                      image.src ? image.src : image
+                    )}
+                  />
                   <SortableContainer
                     onSortEnd={handleSortImages}
                     axis="xy"
@@ -190,7 +229,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   >
                     {images.map((image, index) => (
                       <SortableItem
-                        key={'sortable_img_'+index}
+                        key={'sortable_img_' + index}
                         index={index}
                         image={image.src ? image.src : image}
                         onRemoveImage={() => handleRemoveImage(index)}
@@ -198,7 +237,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                     ))}
                   </SortableContainer>
                 </>
-              }
+              )}
               <Center w="100%">
                 <FileDropper setUploadableImage={setFileDropperImage} />
               </Center>
@@ -218,7 +257,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       </form>
     </Box>
   );
-};
+}
 
 const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
@@ -242,6 +281,5 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
 const SortableContainer = sortableContainer(({ children }) => (
   <Wrap py="2">{children}</Wrap>
 ));
-
 
 export default ResourceForm;
