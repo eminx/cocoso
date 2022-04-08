@@ -136,7 +136,7 @@ export default function DocumentsField({ domainType, domainId }) {
                     <ExternalLinkIcon mr='2px' fontSize="sm" />
                     {document.documentLabel}
                   </Link>
-                  <Button>
+                  <Button variant="ghost">
                     <DeleteIcon onClick={() =>  removeDocument(document._id)} />
                   </Button>
                 </ListItem>
