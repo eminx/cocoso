@@ -1,0 +1,10 @@
+# RESOURCES PAGE
+label: Resurser
+
+all: Allt
+
+messages:
+  notfound: Ingen resurs hittades
+
+form:
+  holder: filtrera med namn

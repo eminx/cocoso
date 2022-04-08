@@ -1,0 +1,10 @@
+# RESOURCES PAGE
+label: Resources
+
+all: All
+
+messages:
+  notfound: No resource found
+
+form:
+  holder: filter with name

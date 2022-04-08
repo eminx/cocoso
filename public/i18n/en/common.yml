@@ -30,6 +30,10 @@ labels:
   event: Event
   page: Page
   contact: Contact
+  sortBy:
+    placeholder: Sort by
+    date: Date
+    name: Name
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
