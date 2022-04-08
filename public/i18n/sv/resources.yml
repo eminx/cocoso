@@ -8,3 +8,7 @@ messages:
 
 form:
   holder: filtrera med namn
+
+tabs:
+  info: Info
+  discussion: Diskussion

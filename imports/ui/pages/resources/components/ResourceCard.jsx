@@ -1,16 +1,35 @@
 import React from 'react';
-import { Box, Heading, Flex, Tag, Text, Image, Link, Avatar } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Heading,
+  Flex,
+  Image,
+  Link,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
-
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
 moment.locale(i18n.language);
 
 import NiceSlider from '../../../components/NiceSlider';
+import Chattery from '../../../components/chattery/Chattery.jsx';
 
-export default function ResourcesCard({ resource }) {
-  const [ t ] = useTranslation('admin');
+export default function ResourcesCard({
+  canCreateContent,
+  discussion,
+  resource,
+  addNewChatMessage,
+}) {
+  const [t] = useTranslation('resources');
   return (
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
       <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
@@ -21,7 +40,7 @@ export default function ResourcesCard({ resource }) {
             resource?.label
           )}
         </Heading>
-        <Link href={'/@'+resource.user?.username}>
+        {/* <Link href={'/@'+resource.user?.username}>
           <Flex alignItems="center">
             <Text 
               fontSize="xs"
@@ -37,30 +56,53 @@ export default function ResourcesCard({ resource }) {
               src={resource.user?.avatar ? resource.user?.avatar : null}
             />
           </Flex>
-        </Link>
+        </Link> */}
       </Flex>
-      {resource?.images && 
-        <Box mb="4">
-          {resource.images.length === 1 
-            ? <Image src={resource.images[0]} fit="contain" fill />
-            : <NiceSlider images={resource.images} />
-          }
-        </Box>
-      }
-      <Box>
-        <Box className="text-content" mb="4">
-          {renderHTML(resource?.description)}{' '}
-        </Box>
-        <Text as="p" fontSize="xs">
-          {moment(resource?.createdAt).format('D MMM YYYY')}
-        </Text>
-      </Box>
+      <Tabs variant="enclosed">
+        <TabList pl="4">
+          <Tab>{t('tabs.info')}</Tab>
+          <Tab>{t('tabs.discussion')} </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            {resource?.images && (
+              <Box mb="4">
+                {resource.images.length === 1 ? (
+                  <Image src={resource.images[0]} fit="contain" fill />
+                ) : (
+                  <NiceSlider images={resource.images} />
+                )}
+              </Box>
+            )}
+            <Box>
+              <Box className="text-content" mb="4">
+                {renderHTML(resource?.description)}{' '}
+              </Box>
+              <Text as="p" fontSize="xs">
+                {moment(resource?.createdAt).format('D MMM YYYY')}
+              </Text>
+            </Box>
+          </TabPanel>
+          <TabPanel>
+            {discussion && (
+              <div>
+                <Chattery
+                  messages={discussion}
+                  onNewMessage={addNewChatMessage}
+                  // removeNotification={this.removeNotification}
+                  isMember={canCreateContent}
+                />
+              </div>
+            )}
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 }
 
 function ResourcesForCombo({ resource }) {
-  const [ t ] = useTranslation('admin');
+  const [t] = useTranslation('admin');
   const resourcesForCombo = resource?.resourcesForCombo;
   const length = resource?.resourcesForCombo.length;
 
@@ -68,7 +110,9 @@ function ResourcesForCombo({ resource }) {
     <span>
       <Flex mb="2">
         <Text mr="2">{resource?.label}</Text>
-        <Tag size="sm" textTransform="uppercase">{t('resources.cards.ifCombo')}</Tag>
+        <Tag size="sm" textTransform="uppercase">
+          {t('resources.cards.ifCombo')}
+        </Tag>
       </Flex>
       {' ['}
       {resourcesForCombo.map((res, i) => (

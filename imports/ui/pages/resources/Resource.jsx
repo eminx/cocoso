@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -12,15 +12,20 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
+import { StateContext } from '../../LayoutContainer';
 
 function ResourcePage() {
   const { resourceId } = useParams();
-  const [ resource, setResource ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ tc ] = useTranslation('common');
+  const [resource, setResource] = useState(null);
+  const [discussion, setDiscussion] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [tc] = useTranslation('common');
+
+  const { canCreateContent, currentUser, role } = useContext(StateContext);
 
   useEffect(() => {
     getResourceById();
+    getChatByContextId();
   }, []);
 
   const getResourceById = async () => {
@@ -34,16 +39,56 @@ function ResourcePage() {
     }
   };
 
-  if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
-  if (isLoading) return <Loader />
+  const getChatByContextId = async () => {
+    try {
+      const response = await call('getChatByContextId', resourceId);
+      if (!response) {
+        return;
+      }
+      const messages = response.messages.map((message) => {
+        return {
+          ...message,
+          isFromMe: message?.senderId === currentUser?._id,
+        };
+      });
+      setDiscussion(messages);
+    } catch (error) {
+      message.error(error.reason);
+    }
+  };
+
+  const addNewChatMessage = async (messageContent) => {
+    const values = {
+      context: 'resource',
+      contextId: resource._id,
+      message: messageContent,
+    };
+
+    try {
+      await call('addChatMessage', values);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  if (typeof resource === 'undefined')
+    return <NotFoundPage domain="Resource with this name or id" />;
+  if (isLoading) return <Loader />;
 
   return (
     <Template
-      leftContent={<DocumentsField domainType="resource" domainId={resource?._id}/>}
+      leftContent={
+        <DocumentsField domainType="resource" domainId={resource?._id} />
+      }
       rightContent={<BookingsField domain={resource} />}
     >
       <Breadcrumb domain={resource} domainKey="label" />
-      <ResourceCard resource={resource}/>
+      <ResourceCard
+        addNewChatMessage={addNewChatMessage}
+        canCreateContent={canCreateContent}
+        discussion={discussion}
+        resource={resource}
+      />
       <Center my="2">
         <Link to={`/resources/${resource?._id}/edit`}>
           <Button size="sm" variant="ghost">

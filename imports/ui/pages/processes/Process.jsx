@@ -803,7 +803,7 @@ class Process extends Component {
 
     return (
       <Box p="4">
-        <Box background="light-2">
+        <Box bg="light-2">
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}

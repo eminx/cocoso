@@ -8,3 +8,7 @@ messages:
 
 form:
   holder: filter with name
+
+tabs:
+  info: Info
+  discussion: Discussion
