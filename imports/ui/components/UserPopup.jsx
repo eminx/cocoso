@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
+  AvatarBadge,
+  Badge,
   Box,
   Button,
   Menu,
@@ -11,14 +13,14 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Text,
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 import { userMenu, adminMenu } from '../@/constants/general';
 
 function UserPopup({ currentUser }) {
-
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   if (!currentUser) {
     return (
@@ -32,7 +34,17 @@ function UserPopup({ currentUser }) {
     );
   }
 
+  const { notifications } = currentUser;
+  let notificationsCounter = 0;
+  if (notifications && notifications.length > 0) {
+    notifications.forEach((notification) => {
+      notificationsCounter += notification.count;
+    });
+  }
+
   const { role } = useContext(StateContext);
+
+  const isNotification = notifications && notifications.length > 0;
 
   return (
     <Menu>
@@ -41,13 +53,37 @@ function UserPopup({ currentUser }) {
           mr="2"
           showBorder
           src={currentUser.avatar && currentUser.avatar.src}
-        />
+        >
+          {isNotification && (
+            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />
+          )}
+        </Avatar>
       </MenuButton>
       <MenuList>
+        {isNotification && (
+          <MenuGroup title={tc('menu.notifications.label')}>
+            {notifications.map((item) => (
+              <Link
+                key={item.contextId + item.count}
+                to={`/${item.context}/${item.contextId}`}
+              >
+                <MenuItem>
+                  <Text color="gray.600" isTruncated>
+                    {item.title}{' '}
+                  </Text>
+                  <Badge colorScheme="red" size="xs">
+                    {' '}
+                    {item.count}
+                  </Badge>
+                </MenuItem>
+              </Link>
+            ))}
+          </MenuGroup>
+        )}
         <MenuGroup title={tc('menu.member.label')}>
           {userMenu.map((item) => (
             <Link key={item.key} to={item.value}>
-              <MenuItem>{tc('menu.member.'+item.key)}</MenuItem>
+              <MenuItem>{tc('menu.member.' + item.key)}</MenuItem>
             </Link>
           ))}
         </MenuGroup>
@@ -56,7 +92,7 @@ function UserPopup({ currentUser }) {
           <MenuGroup title={tc('menu.admin.label')}>
             {adminMenu.map((item) => (
               <Link key={item.key} to={item.value}>
-                <MenuItem>{tc('menu.admin.'+item.key)}</MenuItem>
+                <MenuItem>{tc('menu.admin.' + item.key)}</MenuItem>
               </Link>
             ))}
           </MenuGroup>

@@ -91,6 +91,8 @@ menu:
     members: Medlemmar
     resources: Resurser
     emails: E-postmeddelanden
+  notifications:
+    label: Aviseringar
 
 plugins:
   fileDropper:

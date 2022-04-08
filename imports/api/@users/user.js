@@ -45,6 +45,12 @@ Users.schema.UserProfile = {
     contextId: Schemas.Id,
     context: {type: String},
     count: {type: SimpleSchema.Integer},
+    title: {type: String, optional: true},
+    unSeenIndexes: { type: Array, defaultValue: [], optional: true},
+    'unSeenIndexes.$': {
+      type: SimpleSchema.Integer,
+      optional: true
+    },
   }), optional: true },
 
   attending: { type: Array, optional: true},
