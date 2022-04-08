@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box,  Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
@@ -8,15 +8,18 @@ import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 import { call } from '../../../@/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
+import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ domainType, domainId }) {
-  const [ t ] = useTranslation('processes');
-  const [ tc ] = useTranslation('common');
-  
+  const { role, canCreateContent } = useContext(StateContext);
+  const isAdmin = role === 'admin' ? true : false;
+
   const [ documents, setDocuments] = useState([]);
   const [ isUploading, setIsUploading ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
-  const [ isAdmin ] = useState(true);
+
+  const [ t ] = useTranslation('processes');
+  const [ tc ] = useTranslation('common');
 
   const getDocuments = async () => {
     try {
@@ -54,7 +57,10 @@ export default function DocumentsField({ domainType, domainId }) {
   };
 
   const removeDocument = (documentId) => {
-    if (!isAdmin) return;
+    if (!isAdmin) {
+      message.error(tc('message.access.deny'));
+      return;
+    }
     Meteor.call(
       'removeManual',
       documentId,
@@ -100,7 +106,7 @@ export default function DocumentsField({ domainType, domainId }) {
         {t('labels.document')}
       </Heading>
 
-      {isAdmin && (
+      {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>
           {({ getRootProps, getInputProps, isDragActive }) => (
             <Box
