@@ -128,7 +128,7 @@ function ResourcesPage() {
             {resourcesFilteredAndSorted.map((resource, index) => (
               <ListItem key={'resource-' + index}>
                 <Link to={`/resources/${resource?._id}`}>
-                  <ResourceCard resource={resource} />
+                  <ResourceCard resource={resource} isThumb="true" />
                 </Link>
               </ListItem>
             ))}
