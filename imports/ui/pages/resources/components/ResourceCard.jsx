@@ -13,6 +13,7 @@ import {
   TabPanel,
   Tag,
   Text,
+  Center,
 } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +29,7 @@ export default function ResourcesCard({
   discussion,
   resource,
   addNewChatMessage,
+  isThumb,
 }) {
   const [t] = useTranslation('resources');
 
@@ -62,16 +64,20 @@ export default function ResourcesCard({
         </Link> */}
       </Flex>
       <Tabs variant="enclosed">
-        <TabList pl="4">
-          <Tab>{t('tabs.info')}</Tab>
-          <Tab>{t('tabs.discussion')} </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
+        {!isThumb &&
+          <TabList pl="4">
+            <Tab>{t('tabs.info')}</Tab>
+            <Tab>{t('tabs.discussion')} </Tab>
+          </TabList>
+        }
+        <TabPanels pt="4">
+          <TabPanel p="0">
             {resource?.images && (
               <Box mb="4">
-                {resource.images.length === 1 ? (
-                  <Image src={resource.images[0]} fit="contain" fill />
+                {resource.images.length === 1 || isThumb ? (
+                  <Center>
+                    <Image src={resource.images[0]} fit="contain" fill />
+                  </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
                 )}
@@ -86,7 +92,7 @@ export default function ResourcesCard({
               </Text>
             </Box>
           </TabPanel>
-          <TabPanel>
+          <TabPanel p="0">
             {discussion && (
               <div>
                 <Chattery
