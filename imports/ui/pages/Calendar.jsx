@@ -4,7 +4,16 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 
-import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Tag as CTag,
+  TagLabel,
+  Text,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
@@ -410,7 +419,7 @@ class Calendar extends PureComponent {
 
         <ConfirmModal
           visible={Boolean(selectedSlot)}
-          title="New Booking?"
+          title={tc('labels.newBooking') + '?'}
           confirmText={
             <span>
               {tc('actions.create')} <ArrowForwardIcon />
@@ -423,16 +432,13 @@ class Calendar extends PureComponent {
         >
           <Box bg="light-1" p="1" my="1">
             <Box>
-              <Tag
-                as="span"
-                label={
-                  calendarFilter === 'All'
+              <CTag mr="2">
+                <TagLabel>
+                  {calendarFilter === 'All'
                     ? tc('labels.unselected')
-                    : calendarFilter
-                }
-                mb="2"
-                mr="2"
-              />
+                    : calendarFilter}
+                </TagLabel>
+              </CTag>
               <Text as="span" fontWeight="bold">
                 {selectedSlot?.content}
               </Text>

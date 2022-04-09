@@ -26,15 +26,16 @@ labels:
   contact: Kontakt
   create: Skapa en Ny {{ domain }}
   event: Händelse
+  newBooking: Ny bokning
   page: Sida
   process: Bearbeta
-  remove: Avlägsna
+  remove: Ta bort
   sortBy:
     placeholder: Sortera med
     date: Datum
     name: Namn
   update: Redigera detta {{ domain }}
-  unselected: Ej valt
+  unselected: Ej valt resurs
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

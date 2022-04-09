@@ -50,8 +50,8 @@ function ActivityForm({
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ tc ] = useTranslation('common');
-  const [ t ] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+  const [t] = useTranslation('activities');
 
   const addRecurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
@@ -150,11 +150,21 @@ function ActivityForm({
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
                 isNotDeletable={index === 0}
-                handleCapacityChange={(value) => handleCapacityChange(value, index)}
-                handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
-                handleEndDateChange={(date) => handleDateChange(date, index, 'endDate') }
-                handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
-                handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
+                handleCapacityChange={(value) =>
+                  handleCapacityChange(value, index)
+                }
+                handleStartDateChange={(date) =>
+                  handleDateChange(date, index, 'startDate')
+                }
+                handleEndDateChange={(date) =>
+                  handleDateChange(date, index, 'endDate')
+                }
+                handleStartTimeChange={(time) =>
+                  handleDateChange(time, index, 'startTime')
+                }
+                handleEndTimeChange={(time) =>
+                  handleDateChange(time, index, 'endTime')
+                }
                 handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
               />
             ))}
@@ -212,7 +222,10 @@ function ActivityForm({
 
             {isPublicActivity && (
               <FormField label={t('form.place.label')}>
-                <Input {...register('place')} placeholder={t('form.place.holder')} />
+                <Input
+                  {...register('place')}
+                  placeholder={t('form.place.holder')}
+                />
               </FormField>
             )}
 

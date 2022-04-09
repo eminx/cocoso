@@ -26,6 +26,7 @@ labels:
   contact: Contact
   create: Create a New {{ domain }}
   event: Event
+  newBooking: New Booking
   page: Page
   process: Process
   remove: Remove
@@ -34,7 +35,7 @@ labels:
     date: Date
     name: Name
   update: Edit this {{ domain }}
-  unselected: Not selected
+  unselected: Not selected resource
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

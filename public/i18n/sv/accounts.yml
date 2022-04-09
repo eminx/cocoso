@@ -19,7 +19,7 @@ login:
       username: Användaren hittades inte
       password: Fel lösenord
     success: Du har loggat in
-    
+
 signup:
   labels:
     title: Registrera nytt konto
@@ -38,7 +38,7 @@ signup:
 password:
   labels:
     title: Återställ lösenord
-    subtitle: 
+    subtitle:
       forgot: Om du har glömt ditt lösenord, återställ det via en länk som skickas till din e-post.
       reset: Skapa ditt önskade lösenord
   form:
@@ -56,7 +56,7 @@ profile:
     avatar:
       label: Avatar
       fileDropper: Klicka/dra för att ladda upp
-      remove: Avlägsna
+      remove: Ta bort
     firstname:
       label: Förnamn
     lastname:
