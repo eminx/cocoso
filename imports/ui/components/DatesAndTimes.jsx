@@ -149,7 +149,7 @@ const DatesAndTimes = ({
           <Text fontSize="sm" textAlign="center" fontWeight="bold">
             There's already a booking for this resource at this date & time:{' '}
           </Text>
-          <Code>
+          <Code colorScheme='red' mx="auto" display="block" width="fit-content" mt="4">
             {recurrence.conflict.startDate === recurrence.conflict.endDate
               ? recurrence.conflict.startDate
               : recurrence.conflict.startDate +

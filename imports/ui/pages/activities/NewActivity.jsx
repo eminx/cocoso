@@ -278,6 +278,17 @@ class NewActivity extends PureComponent {
     });
   };
 
+  handleSelectedResource = async (resourceId) => {
+    try {
+      const resource = await call('getResourceById', resourceId);
+      const { formValues } = this.state;
+      formValues.resource = resource;
+      this.setState({ formValues });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   isFormValid = () => {
     const { formValues, datesAndTimes } = this.state;
     const { title } = formValues;
@@ -371,6 +382,7 @@ class NewActivity extends PureComponent {
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
             setUploadableImage={this.setUploadableImage}
+            setSelectedResource={this.handleSelectedResource}
             isButtonDisabled={!isFormValid || isCreating}
             isCreating={isCreating}
             isFormValid={isFormValid}

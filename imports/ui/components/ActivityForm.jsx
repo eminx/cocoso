@@ -43,6 +43,7 @@ function ActivityForm({
   setDatesAndTimes,
   uploadableImageLocal,
   setUploadableImage,
+  setSelectedResource,
 }) {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
@@ -118,6 +119,7 @@ function ActivityForm({
               placeholder={t('form.resource.holder')}
               variant="filled"
               value={defaultValues.resourceId}
+              onChange={(e) => setSelectedResource(e.target.value)}
             >
               {resources.map((option, index) => {
                 return (
@@ -148,21 +150,11 @@ function ActivityForm({
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
                 isNotDeletable={index === 0}
-                handleCapacityChange={(value) =>
-                  handleCapacityChange(value, index)
-                }
-                handleStartDateChange={(date) =>
-                  handleDateChange(date, index, 'startDate')
-                }
-                handleEndDateChange={(date) =>
-                  handleDateChange(date, index, 'endDate')
-                }
-                handleStartTimeChange={(time) =>
-                  handleDateChange(time, index, 'startTime')
-                }
-                handleEndTimeChange={(time) =>
-                  handleDateChange(time, index, 'endTime')
-                }
+                handleCapacityChange={(value) => handleCapacityChange(value, index)}
+                handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
+                handleEndDateChange={(date) => handleDateChange(date, index, 'endDate') }
+                handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
+                handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
                 handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
               />
             ))}
