@@ -7,7 +7,7 @@ moment.locale(i18n.language);
 
 import { useForm } from 'react-hook-form';
 import { Box, Flex, Heading, Text, Button, HStack, Textarea, 
-  Switch, FormControl, FormLabel, 
+  Switch, FormControl, FormLabel, Code,
   Accordion, AccordionItem, AccordionButton, AccordionPanel, Input, } from '@chakra-ui/react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
@@ -17,14 +17,22 @@ import { message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 
+const today = new Date().toISOString().substring(0, 10);
 
 export default function BookingsField({ domain }) {
+
   const { role, canCreateContent } = useContext(StateContext);
   const isAdmin = role === 'admin' ? true : false;
 
   const [ bookings, setBookings] = useState([]);
-  const [ newBooking, setNewBooking ] = useState({});
+  const [ newBooking, setNewBooking ] = useState({
+    startDate: today, 
+    endDate: today,
+    startTime: '', 
+    endTime: ''
+  });
   const [ multipledays, setMultipledays ] = useState(false);
+  const [ occurences, setOccurences] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
 
   const { formState, handleSubmit, register } = useForm();
@@ -51,6 +59,22 @@ export default function BookingsField({ domain }) {
   };
 
   useEffect(() => {
+    getAllOccurences();
+  }, []);
+
+  const getAllOccurences = async () => {
+    setIsLoading(true);
+    try {
+      const response = await call('getAllOccurences');
+      setOccurences([ ...response ]);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(true);
+    }
+  };
+
+  useEffect(() => {
     getBookings();
   }, [bookings]);
   
@@ -69,6 +93,60 @@ export default function BookingsField({ domain }) {
   const handleDateAndTimeChange = (value, key) => {
     newBooking[key] = value;
     setNewBooking({...newBooking});
+    validateBookings(newBooking, domain);
+  };
+
+  const validateBookings = (selectedOccurence, selectedResource) => {
+
+    const allOccurencesWithSelectedResource = occurences.filter(
+      (occurence) => {
+        if (selectedResource.isCombo) {
+          return selectedResource.resourcesForCombo.some((resourceForCombo) => {
+            return resourceForCombo.label === occurence.resource;
+          });
+        }
+        return occurence.resource === selectedResource.label;
+      }
+    );
+
+    // console.log('allOccurencesWithSelectedResource: ', allOccurencesWithSelectedResource);
+
+    const occurenceWithConflict = allOccurencesWithSelectedResource.find(
+      (occurence) => {
+        const selectedStart = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
+        const selectedEnd = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
+        const existingStart = `${occurence.startDate} ${occurence.startTime}`;
+        const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
+        const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+        return (
+          moment(selectedStart, dateTimeFormat).isBetween(
+            existingStart,
+            existingEnd
+          ) ||
+          moment(selectedEnd, dateTimeFormat).isBetween(
+            existingStart,
+            existingEnd
+          )
+        );
+      }
+    );
+
+    // console.log('occurenceWithConflict: ', occurenceWithConflict);
+
+    if (occurenceWithConflict) {
+      if (selectedOccurence?.conflict) delete selectedOccurence.conflict
+      setNewBooking({
+        ...selectedOccurence,
+        conflict: {
+          ...occurenceWithConflict,
+        },
+      });
+    } else {
+      delete selectedOccurence.conflict
+      setNewBooking(selectedOccurence);
+    }
+
+    // console.log(newBooking);
   };
 
   const onSubmit = async (values) => {
@@ -142,31 +220,52 @@ export default function BookingsField({ domain }) {
                           Book for multiple days
                         </FormLabel>
                       </FormControl>
-                      <HStack spacing="2" mb="4">
-                        <DatePicker 
-                          noTime 
-                          placeholder="Start date"
-                          onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
-                        />
-                        {multipledays && 
-                        <DatePicker 
-                          noTime 
-                          placeholder="Finish date"
-                          onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
-                        />}
-                      </HStack>
-                      <HStack spacing="2" mb="4">
-                        <DatePicker
-                          onlyTime
-                          placeholder={t('meeting.form.time.start')}
-                          onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
-                        />
-                        <DatePicker
-                          onlyTime
-                          placeholder={t('meeting.form.time.end')}
-                          onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
-                        />
-                      </HStack>
+
+                      <Box p={newBooking.conflict ? '2' : '0'} mb="4" border={newBooking.conflict ? '1px solid red' : 'none'}>
+                        <HStack spacing="2" mb="4">
+                          <DatePicker 
+                            noTime 
+                            placeholder="Start date"
+                            onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
+                          />
+                          {multipledays && 
+                          <DatePicker 
+                            noTime 
+                            placeholder="Finish date"
+                            onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
+                          />}
+                        </HStack>
+                        <HStack spacing="2">
+                          <DatePicker
+                            onlyTime
+                            placeholder={t('meeting.form.time.start')}
+                            onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
+                          />
+                          <DatePicker
+                            onlyTime
+                            placeholder={t('meeting.form.time.end')}
+                            onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
+                          />
+                        </HStack>
+                        {newBooking.conflict && (
+                          <Box mt="4">
+                            <Text fontSize="sm" textAlign="center" fontWeight="bold">
+                              There's already a booking for this resource at this date & time:{' '}
+                            </Text>
+                            <Code colorScheme='red' mx="auto" display="block" width="fit-content" mt="4">
+                              {newBooking.conflict.startDate === newBooking.conflict.endDate
+                                ? newBooking.conflict.startDate
+                                : newBooking.conflict.startDate +
+                                  '-' +
+                                  newBooking.conflict.endDate}
+                              {', '}
+                              {newBooking.conflict.startTime +
+                                ' – ' +
+                                newBooking.conflict.endTime}
+                            </Code>
+                          </Box>
+                        )}
+                      </Box>
 
                       <Input
                         {...register('title')}
@@ -185,7 +284,7 @@ export default function BookingsField({ domain }) {
                       <Flex justify="flex-end">
                         <Button
                           colorScheme="green"
-                          isDisabled={!isDirty}
+                          isDisabled={!isDirty || newBooking.conflict}
                           isLoading={isSubmitting}
                           size="sm"
                           type="submit"
