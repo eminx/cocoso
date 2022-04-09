@@ -20,6 +20,7 @@ import { StateContext } from '../../../LayoutContainer';
 const today = new Date().toISOString().substring(0, 10);
 
 export default function BookingsField({ domain }) {
+
   const { role, canCreateContent } = useContext(StateContext);
   const isAdmin = role === 'admin' ? true : false;
 
@@ -219,6 +220,7 @@ export default function BookingsField({ domain }) {
                           Book for multiple days
                         </FormLabel>
                       </FormControl>
+
                       <Box p={newBooking.conflict ? '2' : '0'} mb="4" border={newBooking.conflict ? '1px solid red' : 'none'}>
                         <HStack spacing="2" mb="4">
                           <DatePicker 
@@ -264,6 +266,7 @@ export default function BookingsField({ domain }) {
                           </Box>
                         )}
                       </Box>
+
                       <Input
                         {...register('title')}
                         placeholder="Give a name"
@@ -281,7 +284,7 @@ export default function BookingsField({ domain }) {
                       <Flex justify="flex-end">
                         <Button
                           colorScheme="green"
-                          isDisabled={!isDirty}
+                          isDisabled={!isDirty || newBooking.conflict}
                           isLoading={isSubmitting}
                           size="sm"
                           type="submit"
