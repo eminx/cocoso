@@ -106,7 +106,7 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
     }
     activity.datesAndTimes.forEach((recurrence) => {
       const theResource = resourcesList.find(
-        (res) => res.label === activity.resource
+        (res) => res._id === activity.resourceId
       );
       if (theResource && theResource.isCombo) {
         theResource.resourcesForCombo.forEach((resourceForCombo) => {
@@ -158,8 +158,8 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
           isMultipleDay:
             recurrence.isMultipleDay ||
             recurrence.startDate !== recurrence.endDate,
-          resource: activity.resource,
-          resourceIndex: activity.resourceIndex,
+          resource: theResource.label,
+          resourceIndex: theResource.resourceIndex,
           isPublicActivity: activity.isPublicActivity,
           isWithComboResource: false,
           imageUrl: activity.imageUrl,
