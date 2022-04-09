@@ -34,6 +34,7 @@ export default NewActivityContainer = withTracker((props) => {
   return {
     allOccurences,
     currentUser,
+    history: props.history,
     t,
     tc
   };

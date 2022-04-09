@@ -8,6 +8,7 @@ import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
+import { stringify } from 'query-string';
 
 import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
@@ -24,11 +25,12 @@ const publicSettings = Meteor.settings.public;
 
 class Calendar extends PureComponent {
   state = {
-    mode: 'list',
-    editActivity: null,
     calendarFilter: 'All',
+    editActivity: null,
+    resourcesList: [],
     selectedActivity: null,
-    resourcesList: []
+    selectedSlot: null,
+    mode: 'list',
   };
 
   componentDidMount() {
@@ -74,6 +76,72 @@ class Calendar extends PureComponent {
     });
   };
 
+  handleSelectSlot = (slotInfo) => {
+    const { resourcesList, calendarFilter } = this.state;
+
+    const selectedResource = resourcesList.find(
+      (resource) => resource.label === calendarFilter
+    );
+
+    // One day selected in month view
+    if (slotInfo?.slots?.length === 1) {
+      const type = 'month-oneday';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type,
+          content: moment(slotInfo?.start).format('DD MMMM'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    } else if (
+      // Multiple days selected in month view
+      slotInfo?.slots?.length > 1 &&
+      moment(slotInfo?.end).format('HH:mm') === '00:00'
+    ) {
+      const type = 'month-multipledays';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type: 'month-multipledays',
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ' – ' +
+            moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    } else {
+      const type = 'other';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type: 'other',
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ': ' +
+            moment(slotInfo?.start).format('HH:mm') +
+            ' – ' +
+            moment(slotInfo?.end).format('HH:mm'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    }
+  };
+
+  activateRedirectToBooking = () => {
+    this.setState(({ selectedSlot }) => ({
+      selectedSlot: {
+        ...selectedSlot,
+        isRedirectActive: true,
+      },
+    }));
+  };
+
+  handleCloseSelectedSlot = () => {
+    this.setState({ selectedSlot: null });
+  };
+
   getActivityTimes = (activity) => {
     if (!activity) {
       return '';
@@ -114,7 +182,14 @@ class Calendar extends PureComponent {
   render() {
     const { isLoading, currentUser, allActivities, tc } = this.props;
     const { canCreateContent, currentHost, role } = this.context;
-    const { editActivity, calendarFilter, selectedActivity, isUploading, resourcesList } =this.state;
+    const {
+      editActivity,
+      calendarFilter,
+      selectedActivity,
+      selectedSlot,
+      isUploading,
+      resourcesList,
+    } = this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
       return (
@@ -174,15 +249,26 @@ class Calendar extends PureComponent {
       };
     });
 
+    if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
+      return <Redirect to={selectedSlot.bookingUrl} />;
+    }
+
     return (
       <Box>
         <Helmet>
-          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${
+            currentHost.settings.name
+          } | ${publicSettings.name}`}</title>
         </Helmet>
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+              <Button
+                as="span"
+                colorScheme="green"
+                variant="outline"
+                textTransform="uppercase"
+              >
                 {tc('actions.create')}
               </Button>
             </Link>
@@ -245,6 +331,7 @@ class Calendar extends PureComponent {
               <CalendarView
                 activities={allFilteredActsWithColors}
                 onSelect={this.handleSelectActivity}
+                onSelectSlot={this.handleSelectSlot}
               />
             </Box>
           )}
@@ -310,20 +397,70 @@ class Calendar extends PureComponent {
                 >
                   {' '}
                   {!selectedActivity.isPrivateProcess &&
-                  `${
-                    selectedActivity.isProcess 
-                    ? tc('labels.process') 
-                    : tc('labels.event')
-                  } ${tc('labels.page')}`}
-                  
+                    `${
+                      selectedActivity.isProcess
+                        ? tc('labels.process')
+                        : tc('labels.event')
+                    } ${tc('labels.page')}`}
                 </Button>
               </Link>
             )}
           </Center>
         </ConfirmModal>
+
+        <ConfirmModal
+          visible={Boolean(selectedSlot)}
+          title="New Booking?"
+          confirmText={
+            <span>
+              {tc('actions.create')} <ArrowForwardIcon />
+            </span>
+          }
+          cancelText={tc('actions.close')}
+          onConfirm={this.activateRedirectToBooking}
+          onCancel={this.handleCloseSelectedSlot}
+          onClickOutside={this.handleCloseSelectedSlot}
+        >
+          <Box bg="light-1" p="1" my="1">
+            <Box>
+              <Tag
+                as="span"
+                label={
+                  calendarFilter === 'All'
+                    ? tc('labels.unselected')
+                    : calendarFilter
+                }
+                mb="2"
+                mr="2"
+              />
+              <Text as="span" fontWeight="bold">
+                {selectedSlot?.content}
+              </Text>
+            </Box>
+          </Box>
+        </ConfirmModal>
       </Box>
     );
   }
+}
+
+function parseDatesForQuery(slotInfo, selectedResource, type) {
+  let bookingUrl = '/new-activity/?';
+  const params = {
+    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: moment(slotInfo?.start).format('HH:mm'),
+    endTime: moment(slotInfo?.end).format('HH:mm'),
+    resource: selectedResource ? selectedResource._id : '',
+  };
+
+  if (type !== 'other') {
+    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endTime = '23:59';
+  }
+
+  bookingUrl += stringify(params);
+  return bookingUrl;
 }
 
 Calendar.contextType = StateContext;

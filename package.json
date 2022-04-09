@@ -50,6 +50,7 @@
     "js-yaml": "^4.1.0",
     "meteor-node-stubs": "^1.1.0",
     "moment": "^2.26.0",
+    "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-big-calendar": "^0.33.6",
     "react-color": "^2.19.3",
