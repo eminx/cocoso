@@ -311,15 +311,15 @@ class NewActivity extends PureComponent {
     });
   };
 
-  handleSelectedResource = async (resourceId) => {
-    try {
-      const resource = await call('getResourceById', resourceId);
-      const { formValues } = this.state;
-      formValues.resource = resource;
-      this.setState({ formValues });
-    } catch (err) {
-      console.error(err);
-    }
+  handleSelectedResource = (resourceId) => {
+    const { resources } = this.state;
+    const resource = resources.find((r) => r._id === resourceId);
+    this.setState((formValues) => ({
+      formValues: {
+        ...formValues,
+        resource,
+      },
+    }));
   };
 
   isFormValid = () => {
