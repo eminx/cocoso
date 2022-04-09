@@ -86,14 +86,20 @@ class Calendar extends PureComponent {
   };
 
   handleSelectSlot = (slotInfo) => {
+    const { canCreateContent } = this.context;
+
+    if (!canCreateContent) {
+      return;
+    }
+
     const { resourcesList, calendarFilter } = this.state;
 
     const selectedResource = resourcesList.find(
       (resource) => resource.label === calendarFilter
     );
 
-    // One day selected in month view
     if (slotInfo?.slots?.length === 1) {
+      // One day selected in month view
       const type = 'month-oneday';
       this.setState({
         selectedSlot: {
@@ -112,7 +118,7 @@ class Calendar extends PureComponent {
       this.setState({
         selectedSlot: {
           ...slotInfo,
-          type: 'month-multipledays',
+          type,
           content:
             moment(slotInfo?.start).format('DD MMMM') +
             ' – ' +
@@ -121,11 +127,12 @@ class Calendar extends PureComponent {
         },
       });
     } else {
+      // All other, i.e. weekly, daily bookings
       const type = 'other';
       this.setState({
         selectedSlot: {
           ...slotInfo,
-          type: 'other',
+          type,
           content:
             moment(slotInfo?.start).format('DD MMMM') +
             ': ' +

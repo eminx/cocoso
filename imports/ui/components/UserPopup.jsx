@@ -21,6 +21,7 @@ import { userMenu, adminMenu } from '../@/constants/general';
 
 function UserPopup({ currentUser }) {
   const [tc] = useTranslation('common');
+  const { role } = useContext(StateContext);
 
   if (!currentUser) {
     return (
@@ -41,8 +42,6 @@ function UserPopup({ currentUser }) {
       notificationsCounter += notification.count;
     });
   }
-
-  const { role } = useContext(StateContext);
 
   const isNotification = notifications && notifications.length > 0;
 
