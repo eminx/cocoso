@@ -75,9 +75,21 @@ class EditActivity extends PureComponent {
   successEditMessage = (isDeleted) => {
     const { tc } = this.props;
     if (isDeleted) {
-      message.success(tc('message.success.remove', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+      message.success(
+        tc('message.success.remove', {
+          domain: `${tc('domains.your')} ${tc(
+            'domains.activity'
+          ).toLowerCase()}`,
+        })
+      );
     } else {
-      message.success(tc('message.success.update', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+      message.success(
+        tc('message.success.update', {
+          domain: `${tc('domains.your')} ${tc(
+            'domains.activity'
+          ).toLowerCase()}`,
+        })
+      );
     }
   };
 
@@ -263,7 +275,7 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
       isSuccess,
       uploadableImageLocal,
-      resources, 
+      resources,
     } = this.state;
 
     if (isSuccess) {
@@ -339,8 +351,9 @@ class EditActivity extends PureComponent {
           onCancel={this.hideDeleteModal}
           confirmText={tc('modals.confirm.delete.yes')}
         >
-          {tc('modals.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
-          
+          {tc('modals.confirm.delete.body', {
+            domain: tc('domains.activity').toLowerCase(),
+          })}
         </ConfirmModal>
       </Template>
     );

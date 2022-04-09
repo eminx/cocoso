@@ -118,12 +118,15 @@ function ActivityForm({
               {...register('resource', { required: true })}
               placeholder={t('form.resource.holder')}
               variant="filled"
-              value={defaultValues.resourceId}
               onChange={(e) => setSelectedResource(e.target.value)}
             >
               {resources.map((option, index) => {
                 return (
-                  <option key={option._id} value={option._id}>
+                  <option
+                    key={option._id}
+                    selected={option._id === defaultValues.resourceId}
+                    value={option._id}
+                  >
                     {option.isCombo
                       ? option.label +
                         ': [' +
