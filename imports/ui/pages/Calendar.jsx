@@ -8,6 +8,7 @@ import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
+import { stringify } from 'query-string';
 
 import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
@@ -84,14 +85,13 @@ class Calendar extends PureComponent {
 
     // One day selected in month view
     if (slotInfo?.slots?.length === 1) {
+      const type = 'month-oneday';
       this.setState({
         selectedSlot: {
           ...slotInfo,
-          type: 'month-oneday',
+          type,
           content: moment(slotInfo?.start).format('DD MMMM'),
-          bookingUrl: `/new-activity/?startDate=${moment(
-            slotInfo?.start
-          ).format('YYYY-MM-DD')}&resource=${selectedResource?._id}`,
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
     } else if (
@@ -99,6 +99,7 @@ class Calendar extends PureComponent {
       slotInfo?.slots?.length > 1 &&
       moment(slotInfo?.end).format('HH:mm') === '00:00'
     ) {
+      const type = 'month-multipledays';
       this.setState({
         selectedSlot: {
           ...slotInfo,
@@ -107,14 +108,11 @@ class Calendar extends PureComponent {
             moment(slotInfo?.start).format('DD MMMM') +
             ' – ' +
             moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
-          bookingUrl: `/new-activity/?startDate=${moment(
-            slotInfo?.start
-          ).format('YYYY-MM-DD')}&endDate=${moment(slotInfo?.end)
-            .add(-1, 'days')
-            .format('YYYY-MM-DD')}&resource=${selectedResource?._id}`,
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
     } else {
+      const type = 'other';
       this.setState({
         selectedSlot: {
           ...slotInfo,
@@ -125,13 +123,7 @@ class Calendar extends PureComponent {
             moment(slotInfo?.start).format('HH:mm') +
             ' – ' +
             moment(slotInfo?.end).format('HH:mm'),
-          bookingUrl: `/new-activity/?startDate=${moment(
-            slotInfo?.start
-          ).format('YYYY-MM-DD')}&startTime=${moment(slotInfo?.start).format(
-            'HH:mm'
-          )}&endTime=${moment(slotInfo?.end).format('HH:mm')}&resource=${
-            selectedResource?._id
-          }`,
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
     }
@@ -450,6 +442,25 @@ class Calendar extends PureComponent {
       </Box>
     );
   }
+}
+
+function parseDatesForQuery(slotInfo, selectedResource, type) {
+  let bookingUrl = '/new-activity/?';
+  const params = {
+    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: moment(slotInfo?.start).format('HH:mm'),
+    endTime: moment(slotInfo?.end).format('HH:mm'),
+    resource: selectedResource ? selectedResource._id : '',
+  };
+
+  if (type !== 'other') {
+    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endTime = '23:59';
+  }
+
+  bookingUrl += stringify(params);
+  return bookingUrl;
 }
 
 Calendar.contextType = StateContext;

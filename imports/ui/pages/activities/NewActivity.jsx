@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
+import { parse } from 'query-string';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
@@ -39,7 +40,7 @@ const emptyDateAndTime = {
 class NewActivity extends PureComponent {
   state = {
     formValues: { ...formModel },
-    datesAndTimes: [{ ...emptyDateAndTime }],
+    datesAndTimes: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -50,6 +51,7 @@ class NewActivity extends PureComponent {
     isExclusiveActivity: true,
     isRegistrationDisabled: false,
     isCreating: false,
+    isReady: false,
     resources: [],
   };
 
@@ -60,10 +62,38 @@ class NewActivity extends PureComponent {
   getResources = async () => {
     try {
       const resources = await call('getResources');
-      this.setState({ resources });
+      this.setState({ resources }, () => {
+        this.setInitialValuesWithQP();
+      });
     } catch (error) {
       message.error(error.error || error.reason);
     }
+  };
+
+  setInitialValuesWithQP = () => {
+    const { history } = this.props;
+    const {
+      location: { search },
+    } = history;
+    const params = parse(search);
+
+    const defaultOccurence = {
+      ...emptyDateAndTime,
+      ...params,
+      isRange:
+        params?.startDate &&
+        params?.endDate &&
+        params.startDate !== params.endDate,
+    };
+    this.setState((formValues) => ({
+      formValues: {
+        ...formValues,
+        resource: params.resource || '',
+        datesAndTimes: [defaultOccurence],
+      },
+      datesAndTimes: [defaultOccurence],
+      isReady: true,
+    }));
   };
 
   handleSubmit = (values) => {
@@ -85,7 +115,11 @@ class NewActivity extends PureComponent {
 
   successCreation = () => {
     const { tc } = this.props;
-    message.success(tc('message.success.create', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+    message.success(
+      tc('message.success.create', {
+        domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
+      })
+    );
   };
 
   setUploadableImage = (files) => {
@@ -231,7 +265,6 @@ class NewActivity extends PureComponent {
       (occurence) => {
         if (selectedResource.isCombo) {
           return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-            console.log(resourceForCombo.label, occurence.resource);
             return resourceForCombo.label === occurence.resource;
           });
         }
@@ -281,7 +314,7 @@ class NewActivity extends PureComponent {
   isFormValid = () => {
     const { formValues, datesAndTimes } = this.state;
     const { title } = formValues;
-    const isValuesOK = formValues && formValues.resource && title.length > 3;
+    const isValuesOK = formValues && formValues.resource && title?.length > 3;
     const isConflict = datesAndTimes.some((occurence) =>
       Boolean(occurence.conflict)
     );
@@ -302,7 +335,9 @@ class NewActivity extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message={tc('message.access.contributor', { doamin: 'an activity' })}
+            message={tc('message.access.contributor', {
+              doamin: 'an activity',
+            })}
             type="error"
           />
         </div>
@@ -318,6 +353,7 @@ class NewActivity extends PureComponent {
       uploadableImageLocal,
       isPublicActivity,
       isExclusiveActivity,
+      isReady,
       isRegistrationDisabled,
       datesAndTimes,
       resources,
@@ -328,14 +364,18 @@ class NewActivity extends PureComponent {
       return <Redirect to={`/event/${newActivityId}`} />;
     }
 
-    const buttonLabel = isCreating
-      ? t('form.waiting')
-      : t('form.submit');
+    if (!isReady) {
+      return null;
+    }
+
+    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
 
     const isFormValid = this.isFormValid();
 
     return (
-      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
+      <Template
+        heading={tc('labels.create', { domain: tc('domains.activity') })}
+      >
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">
