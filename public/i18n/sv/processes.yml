@@ -1,4 +1,4 @@
-labels: 
+labels:
   archived: Arkiverad
   unarchived: Avarkiverad
   member: Medlemmar
@@ -6,7 +6,7 @@ labels:
   date: Datum
   invite: Hantera åtkomst
 
-tabs: 
+tabs:
   active: Aktiva
   members: Mina Processer
   archived: Arkiverad
@@ -31,7 +31,7 @@ form:
     holder: Genom belysningar
   desc:
     label: Beskrivning
-  capacity: 
+  capacity:
     label: Kapacitet
   submit: Bekräfta och Skapa Process
   waiting: Skapar din process...
@@ -74,24 +74,24 @@ meeting:
     admin: Öppna datumen för att se deltagarna
   form:
     label: Lägg till ett möte
-    date: Välj Dag
-    time: 
+    date: Välj dag
+    time:
       start: Starttid
       end: Sluttid
     switch: På {{ place }}?
     resource: Välj resurs
     location: Plats
     submit: Lägg till möte
-    
+
 document:
   empty: Inget dokument tilldelat
   drop: Släpp dokument för att ladda upp
   up: laddar upp
   remove: Manualen har tagits bort
 
-confirm: 
+confirm:
   check: Är du säker?
-  title: 
+  title:
     text: Bekräfta {{ opt }} till processen
     opts:
       leave: lämnar

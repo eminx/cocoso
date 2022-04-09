@@ -24,7 +24,7 @@ labels:
   all: Allt
   booked: bokad
   contact: Kontakt
-  create: Skapa en Ny {{ domain }}
+  create: Skapa en ny {{ domain }}
   event: Händelse
   newBooking: Ny bokning
   page: Sida

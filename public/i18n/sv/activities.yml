@@ -1,11 +1,11 @@
 label:
-  new: Skapa en Ny Aktivitet
-  edit: Redigera Aktivitet
+  new: Skapa en aktivitet
+  edit: Redigera aktivitet
 
 form:
   switch:
-    public: Offentligt Evenemang
-    exclusive: Exklusiv Aktivitet (andra kan inte boka)
+    public: Offentligt evenemang
+    exclusive: Exklusiv aktivitet (andra kan inte boka)
     rsvp: OSA inaktiverad
   resource:
     label: Resurser
@@ -21,7 +21,7 @@ form:
   time:
     start: Starttid
     finish: Sluttid
-  capacity: 
+  capacity:
     label: Kapacitet
   details:
     label: Detaljer
@@ -31,7 +31,7 @@ form:
     helper: Detta är vanligtvis titeln på ditt evenemang
   subtitle:
     label: Texta
-    holder: ge den en undertext (artistnamn etc.)
+    holder: ge den en undertitet (artistnamn etc.)
     helper: dvs artist, eller någon undertext...
   desc:
     label: Beskrivning
@@ -45,14 +45,14 @@ form:
     label: Bild
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
-  
-members: 
-  label: Mina Aktiviteter
+
+members:
+  label: Mina aktiviteter
   tabs:
     all: Allt
     public: Offentlig
     private: Privat
-  occurences: händelser
+  occurences: Händelser
 
 public:
   labels:
@@ -66,17 +66,17 @@ public:
         first: Förnamn
         last: Efternamn
       email: E-post
-      people: 
+      people:
         label: Människor
         number: Antal Deltagare
-      loading: Skickar in
-      actions: 
+      loading: Loading
+      actions:
         create: Registrera
         update: Uppdatering
         remove: Ta bort din registrering
     email: E-post redan registrerad. Uppdatera istället.
     notFound: Tyvärr kunde vi inte hitta din registrering. Dubbelkolla datum och stavningar och försök igen
-    disabled: 
+    disabled:
       true: OSA inaktiverad. Kontrollera den praktiska informationen.
       false: Klicka och öppna datumet för att OSA
       info: Registreringar är inaktiverade.
@@ -95,4 +95,3 @@ public:
   past: Denna händelse har förflutit
   acceess:
     deny: Endast synlig för registrerade medlemmar
-
