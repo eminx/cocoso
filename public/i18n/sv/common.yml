@@ -21,19 +21,20 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
-  create: Skapa en Ny {{ domain }}
-  update: Redigera detta {{ domain }}
-  remove: Avlägsna
   all: Allt
   booked: bokad
-  process: Bearbeta
+  contact: Kontakt
+  create: Skapa en Ny {{ domain }}
   event: Händelse
   page: Sida
-  contact: Kontakt
+  process: Bearbeta
+  remove: Avlägsna
   sortBy:
     placeholder: Sortera med
     date: Datum
     name: Namn
+  update: Redigera detta {{ domain }}
+  unselected: Ej valt
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ const localizer = momentLocalizer(moment);
 function CalendarView(props) {
   const { activities } = props;
 
-  const [ t, i18n ] = useTranslation('calendar');
+  const [t, i18n] = useTranslation('calendar');
   const messages = {
     allDay: t('bigCal.allDay'),
     previous: t('bigCal.previous'),
@@ -26,36 +26,38 @@ function CalendarView(props) {
     month: t('bigCal.month'),
     week: t('bigCal.week'),
     day: t('bigCal.day'),
-    agenda: t('bigCal.agenda'),  
+    agenda: t('bigCal.agenda'),
     date: t('bigCal.date'),
     time: t('bigCal.time'),
     event: t('bigCal.event'),
     noEventsInRange: t('bigCal.noEventsInRange'),
-    showMore: total => t('bigCal.showMore', { total }),
-  }
+    showMore: (total) => t('bigCal.showMore', { total }),
+  };
 
   // import locale from node_modules
-  require('moment/locale/sv')
+  require('moment/locale/sv');
 
   return (
     <div>
       <Calendar
-        localizer={localizer}
+        allDayAccessor="isMultipleDay"
         culture={i18n.language}
-        messages={messages}
+        defaultView="month"
         events={activities}
+        localizer={localizer}
+        messages={messages}
+        popup
+        popupOffset={30}
+        selectable
+        showMultiDayTimes
+        step={60}
+        views={['month', 'week', 'day', 'agenda']}
         eventPropGetter={(event) => ({
           // className: 'category-' + event.resourceIndex,
           style: { backgroundColor: event.resourceColor },
         })}
         onSelectEvent={props.onSelect}
-        defaultView="month"
-        showMultiDayTimes
-        step={60}
-        views={['month', 'week', 'day', 'agenda']}
-        popup
-        popupOffset={30}
-        allDayAccessor="isMultipleDay"
+        onSelectSlot={props.onSelectSlot}
       />
     </div>
   );

@@ -21,19 +21,20 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
-  create: Create a New {{ domain }}
-  update: Edit this {{ domain }}
-  remove: Remove
   all: All
   booked: booked
-  process: Process
+  contact: Contact
+  create: Create a New {{ domain }}
   event: Event
   page: Page
-  contact: Contact
+  process: Process
+  remove: Remove
   sortBy:
     placeholder: Sort by
     date: Date
     name: Name
+  update: Edit this {{ domain }}
+  unselected: Not selected
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
