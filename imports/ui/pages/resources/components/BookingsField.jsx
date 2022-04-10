@@ -319,9 +319,6 @@ export default function BookingsField({ domain }) {
                   <Text fontSize="xs" fontStyle="italic" fontWeight="medium">
                     booked by {booking.bookedBy}
                   </Text>
-                  <Text fontSize="xs">
-                    {booking.description}
-                  </Text>
                 </Box>
               )}
             </NiceList>
