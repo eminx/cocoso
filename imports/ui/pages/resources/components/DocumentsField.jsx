@@ -18,7 +18,7 @@ export default function DocumentsField({ domainType, domainId }) {
   const [ isUploading, setIsUploading ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
 
-  const [ t ] = useTranslation('processes');
+  const [ t ] = useTranslation('resources');
   const [ tc ] = useTranslation('common');
 
   const getDocuments = async () => {
@@ -49,7 +49,7 @@ export default function DocumentsField({ domainType, domainId }) {
           console.log(error);
           setIsUploading(false);
         } else {
-          message.success(`${uploadableFile.name} ${t('meeting.success.fileDropper')}`);
+          message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
           setIsUploading(false);
         }
       }
@@ -69,7 +69,7 @@ export default function DocumentsField({ domainType, domainId }) {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success(t('document.remove'));
+          message.success(tc('documents.remove'));
         }
       }
     );
@@ -103,7 +103,7 @@ export default function DocumentsField({ domainType, domainId }) {
   return (
     <Box mt="5">
       <Heading mb="4" size="sm">
-        {t('labels.document')}
+        {tc('documents.label')}
       </Heading>
 
       {canCreateContent && (
@@ -119,11 +119,11 @@ export default function DocumentsField({ domainType, domainId }) {
               {isUploading ? (
                 <div style={{ textAlign: 'center' }}>
                   <Loader />
-                  {t('document.up')}
+                  {tc('documents.up')}
                 </div>
               ) : (
                 <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
-                  {t('document.drop')}
+                  {tc('documents.drop')}
                 </Button>
               )}
               <input {...getInputProps()} />
@@ -150,7 +150,7 @@ export default function DocumentsField({ domainType, domainId }) {
             </List>
           ) : (
             <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
-              <em>{t('document.empty')}</em>
+              <em>{tc('documents.empty')}</em>
             </Text>
           )}
         </Box>

@@ -47,9 +47,8 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const { isDirty, isSubmitting } = formState;
   const isCombo = getValues('isCombo');
 
-  const [t] = useTranslation('admin');
+  const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
-  const [tm] = useTranslation('members');
 
   useEffect(() => {
     getResourceLabels();
@@ -166,14 +165,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
               id="is-combo-switch"
             />
             <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
-              {t('resources.form.combo.switch.label')}
+              {t('form.combo.switch.label')}
             </FormLabel>
           </FormControl>
 
           {isCombo && (
             <Box bg="gray.100" p="6" w="90%">
               <Text fontSize="sm" mb="6">
-                {t('resources.form.combo.select.helper')}
+                {t('form.combo.select.helper')}
               </Text>
               {isLoading ? (
                 <Loader />
@@ -191,14 +190,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             </Box>
           )}
 
-          <FormField label={t('resources.form.name.label')}>
+          <FormField label={t('form.name.label')}>
             <Input
               {...register('label')}
-              placeholder={t('resources.form.name.holder')}
+              placeholder={t('form.name.holder')}
             />
           </FormField>
 
-          <FormField label={t('resources.form.desc.label')}>
+          <FormField label={t('form.desc.label')}>
             <Controller
               control={control}
               name="description"
@@ -207,13 +206,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   {...field}
                   formats={editorFormats}
                   modules={editorModules}
-                  placeholder={t('resources.form.desc.holder')}
+                  placeholder={t('form.desc.holder')}
                 />
               )}
             />
           </FormField>
 
-          <FormField label={tm('works.images.label', { count: images.length })}>
+          <FormField label={t('form.images.label', { count: images.length })}>
             <Box>
               {images && (
                 <>

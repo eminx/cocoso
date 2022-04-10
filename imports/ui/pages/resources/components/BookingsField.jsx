@@ -38,13 +38,13 @@ export default function BookingsField({ domain }) {
   const { formState, handleSubmit, register } = useForm();
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ] = useTranslation('processes');
+  const [ t ] = useTranslation('resources');
   const [ tc ] = useTranslation('common');
   
 
   const getBookings = async () => {
     try {
-      const response = await call('getResourceBookings', domain?._id);
+      const response = await call('getResourceBookingsForUser', domain?._id);
       setBookings(
         response.map(booking =>  ({ ...booking, actions: [{
           content: tc('labels.remove'),
@@ -191,7 +191,7 @@ export default function BookingsField({ domain }) {
   return (
     <Box mt="5">
       <Heading mb="4" size="sm">
-        Bookings
+        {t('booking.labels.field')}
       </Heading>
 
       <Box bg="white">
@@ -202,7 +202,7 @@ export default function BookingsField({ domain }) {
                 <h2>
                   <AccordionButton>
                     <Box flex='1' textAlign='left'>
-                      Add a Booking
+                      {t('booking.labels.form')}
                     </Box>
                     {isExpanded ? (
                       <MinusIcon fontSize='12px' />
@@ -217,7 +217,7 @@ export default function BookingsField({ domain }) {
                       <FormControl display='flex' alignItems='center' mb="2">
                         <Switch id='book-multiple-days' size="sm" onChange={() => setMultipledays(!multipledays) } />
                         <FormLabel htmlFor='book-multiple-days' fontSize="sm" mb='0' ml="2">
-                          Book for multiple days
+                          {t('booking.multiple')}
                         </FormLabel>
                       </FormControl>
 
@@ -225,32 +225,32 @@ export default function BookingsField({ domain }) {
                         <HStack spacing="2" mb="4">
                           <DatePicker 
                             noTime 
-                            placeholder="Start date"
+                            placeholder={t('booking.date.start')}
                             onChange={(date) => handleDateAndTimeChange(date, 'startDate')} 
                           />
                           {multipledays && 
                           <DatePicker 
                             noTime 
-                            placeholder="Finish date"
+                            placeholder={t('booking.date.start')}
                             onChange={(date) => handleDateAndTimeChange(date, 'endDate')} 
                           />}
                         </HStack>
                         <HStack spacing="2">
                           <DatePicker
                             onlyTime
-                            placeholder={t('meeting.form.time.start')}
+                            placeholder={t('booking.time.start')}
                             onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
                           />
                           <DatePicker
                             onlyTime
-                            placeholder={t('meeting.form.time.end')}
+                            placeholder={t('booking.time.end')}
                             onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
                           />
                         </HStack>
                         {newBooking.conflict && (
                           <Box mt="4">
                             <Text fontSize="sm" textAlign="center" fontWeight="bold">
-                              There's already a booking for this resource at this date & time:{' '}
+                              {t('booking.conflict')}
                             </Text>
                             <Code colorScheme='red' mx="auto" display="block" width="fit-content" mt="4">
                               {newBooking.conflict.startDate === newBooking.conflict.endDate
@@ -269,14 +269,14 @@ export default function BookingsField({ domain }) {
 
                       <Input
                         {...register('title')}
-                        placeholder="Give a name"
+                        placeholder={t('booking.title')}
                         size="sm"
                         mb="4"
                       />
 
                       <Textarea
                         {...register('description')}
-                        placeholder="Note, usage, purpose, etc..."
+                        placeholder={t('booking.description')}
                         size="sm"
                         mb="4"
                       />
@@ -289,7 +289,7 @@ export default function BookingsField({ domain }) {
                           size="sm"
                           type="submit"
                         >
-                          Book
+                          {t('booking.submit')}
                         </Button>
                       </Flex>
                     </form>
@@ -315,12 +315,6 @@ export default function BookingsField({ domain }) {
                   <Text fontSize="sm">
                     {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${booking.startDate === booking.endDate ? '' : moment(booking.endDate).format('ddd, D MMM')} ${booking.endTime} `}
-                  </Text>
-                  <Text fontSize="xs" fontStyle="italic" fontWeight="medium">
-                    booked by {booking.bookedBy}
-                  </Text>
-                  <Text fontSize="xs">
-                    {booking.description}
                   </Text>
                 </Box>
               )}

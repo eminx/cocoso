@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-  Avatar,
   Box,
   Heading,
   Flex,
   Image,
-  Link,
   Tabs,
   Tab,
   TabList,
@@ -111,7 +109,7 @@ export default function ResourcesCard({
 }
 
 function ResourcesForCombo({ resource }) {
-  const [t] = useTranslation('admin');
+  const [t] = useTranslation('resources');
   const resourcesForCombo = resource?.resourcesForCombo;
   const length = resource?.resourcesForCombo.length;
 
@@ -120,7 +118,7 @@ function ResourcesForCombo({ resource }) {
       <Flex mb="2">
         <Text mr="2">{resource?.label}</Text>
         <Tag size="sm" textTransform="uppercase">
-          {t('resources.cards.ifCombo')}
+          {t('cards.ifCombo')}
         </Tag>
       </Flex>
       {' ['}

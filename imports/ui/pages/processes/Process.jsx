@@ -545,11 +545,7 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      message.success(
-                        `${uploadableFile.name} ${t(
-                          'meeting.success.fileDropper'
-                        )}`
-                      );
+                      message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
                       closeLoader();
                     }
                   }
@@ -676,7 +672,7 @@ class Process extends Component {
         )}
 
         <Heading mb="2" size="sm">
-          {t('labels.document')}
+          {tc('documents.label')}
         </Heading>
 
         {process && process.documents && process.documents.length > 0 ? (
@@ -695,7 +691,7 @@ class Process extends Component {
           </NiceList>
         ) : (
           <Text size="small" pad="2" margin={{ bottom: 'small' }}>
-            <em>{t('document.empty')}</em>
+            <em>{tc('documents.empty')}</em>
           </Text>
         )}
 
@@ -714,11 +710,11 @@ class Process extends Component {
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
-                      {t('document.up')}
+                      {tc('documents.up')}
                     </div>
                   ) : (
                     <div style={{ textAlign: 'center' }}>
-                      <b>{t('document.drop')}</b>
+                      <b>{tc('documents.drop')}</b>
                     </div>
                   )}
                   <input {...getInputProps()} />
@@ -746,7 +742,7 @@ class Process extends Component {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success(t('document.remove'));
+          message.success(tc('documents.remove'));
         }
       }
     );

@@ -70,29 +70,41 @@ Meteor.methods({
     return resource;
   },
 
-  getResourceBookings(resourceId) {
-    const bookings = Activities.find(
-      { resourceId }, 
-      { fields: { 
-        authorName: 1,
-        title: 1,
-        longDescription: 1,
-        datesAndTimes: 1,
-      }}
-      ).fetch();
+  getResourceBookingsForUser(resourceId) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
+    if (!validateUser(user, currentHost) ) {
+      return 'Not valid user!';
+    }
 
-    return bookings.map(booking => {
-      return {
-        _id: booking._id,
-        startDate: booking.datesAndTimes[0].startDate,
-        startTime: booking.datesAndTimes[0].startTime,
-        endDate: booking.datesAndTimes[0].endDate,
-        endTime: booking.datesAndTimes[0].endTime,
-        title: booking.title,
-        description: booking.longDescription,
-        bookedBy: booking.authorName, 
-      }
-    });
+    try {
+      const bookings = Activities.find(
+        { 
+          resourceId,
+          authorId: user._id,
+        }, 
+        { fields: { 
+          title: 1,
+          longDescription: 1,
+          datesAndTimes: 1,
+        }}
+        ).fetch();
+
+      return bookings.map(booking => {
+        return {
+          _id: booking._id,
+          startDate: booking.datesAndTimes[0].startDate,
+          startTime: booking.datesAndTimes[0].startTime,
+          endDate: booking.datesAndTimes[0].endDate,
+          endTime: booking.datesAndTimes[0].endTime,
+          title: booking.title,
+          description: booking.longDescription,
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   createResource(values) {
