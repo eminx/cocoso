@@ -18,7 +18,7 @@ export default function DocumentsField({ domainType, domainId }) {
   const [ isUploading, setIsUploading ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
 
-  const [ t ] = useTranslation('processes');
+  const [ t ] = useTranslation('resources');
   const [ tc ] = useTranslation('common');
 
   const getDocuments = async () => {
@@ -49,7 +49,7 @@ export default function DocumentsField({ domainType, domainId }) {
           console.log(error);
           setIsUploading(false);
         } else {
-          message.success(`${uploadableFile.name} ${t('meeting.success.fileDropper')}`);
+          message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
           setIsUploading(false);
         }
       }
@@ -103,7 +103,7 @@ export default function DocumentsField({ domainType, domainId }) {
   return (
     <Box mt="5">
       <Heading mb="4" size="sm">
-        {t('labels.document')}
+        {tc('documents.label')}
       </Heading>
 
       {canCreateContent && (

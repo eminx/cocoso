@@ -545,11 +545,7 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      message.success(
-                        `${uploadableFile.name} ${t(
-                          'meeting.success.fileDropper'
-                        )}`
-                      );
+                      message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
                       closeLoader();
                     }
                   }
@@ -676,7 +672,7 @@ class Process extends Component {
         )}
 
         <Heading mb="2" size="sm">
-          {t('labels.document')}
+          {tc('documents.label')}
         </Heading>
 
         {process && process.documents && process.documents.length > 0 ? (

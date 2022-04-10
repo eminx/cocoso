@@ -137,7 +137,10 @@ domains:
 
 
 documents:
+  label: Documents
   empty: No document assigned
   drop: Drop documents to upload
   up: uploading
-  remove: The manual is successfully removed
+  remove: The document is successfully removed
+  fileDropper: is successfully uploaded and assigned
+

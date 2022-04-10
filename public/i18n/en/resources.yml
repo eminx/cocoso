@@ -23,7 +23,7 @@ form:
   
   images:
     label: Images ({{ count }})    
-    
+
 tabs:
   info: Info
   discussion: Discussion
@@ -32,3 +32,20 @@ tabs:
 cards: 
   date: added by {{username}} on {{date}}
   ifCombo: Combo
+
+
+booking:
+  labels: 
+    field: Bookings
+    form: Add a Booking
+  multiple: Book for multiple days
+  conflict: "There's already a booking for this resource at this date & time: "
+  date: 
+    start: Start date
+    end: Finish date
+  time: 
+    start: Start time
+    end: Finish time
+  title: Give a name
+  description: Note, usage, purpose ..
+  submit: Book
