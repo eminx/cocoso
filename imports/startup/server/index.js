@@ -5,7 +5,6 @@ import Resources from '../../api/resources/resource';
 import Chats from '../../api/chats/chat';
 
 Meteor.startup(() => {
-
   // import { freshInstallment } from './installation';
 
   // freshInstallment();
@@ -28,7 +27,7 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${url}`;
   };
 
-  Resources.find().forEach(r => {
+  Resources.find().forEach((r) => {
     Chats.insert({
       host: r.host,
       contextId: r._id,
@@ -39,8 +38,8 @@ Meteor.startup(() => {
       },
       isNotificationOn: false,
       messages: new Array(),
-    })
-  })
+    });
+  });
 });
 
-// import './migrations';
+import './migrations';
