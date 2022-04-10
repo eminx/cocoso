@@ -37,9 +37,8 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [resourceLabels, setResourceLabels] = useState([]);
   const [resourcesForCombo, setResourcesForCombo] = useState([]);
-  const [images, setImages] = useState(
-    defaultValues?.images ? defaultValues.images : []
-  );
+  const defaultImages = defaultValues?.images ? defaultValues.images : [];
+  const [images, setImages] = useState(defaultImages);
 
   const { formState, handleSubmit, getValues, register, control } = useForm({
     defaultValues,
@@ -154,6 +153,11 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     });
   };
 
+  const isEditable = () => {
+    if (isDirty)  return isDirty;
+    else          return images.length==defaultImages.length ? isDirty : !isDirty;
+  }
+
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -245,7 +249,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty}
+              isDisabled={!isEditable()}
               isLoading={isSubmitting}
               type="submit"
             >
