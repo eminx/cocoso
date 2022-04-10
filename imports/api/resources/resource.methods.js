@@ -64,11 +64,8 @@ Meteor.methods({
   getResourceById(resourceId) {
     const fields = Resources.publicFields;
     let resource = Resources.findOne(resourceId, { fields });
-    if (resource && resource.isCombo) resource = fetchComboResources(resource);
-    if (resource.userId) {
-      resource.user = {} = Meteor.users.findOne(resource.userId, { fields: { username: 1, avatar: { src: 1 } }});
-      resource.user.avatar = resource.user.avatar.src;
-      delete resource.userId;
+    if (resource && resource.isCombo) {
+      resource = fetchComboResources(resource);
     }
     return resource;
   },
