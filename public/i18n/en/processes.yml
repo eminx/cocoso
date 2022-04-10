@@ -83,12 +83,6 @@ meeting:
     location: Location
     submit: Add Meeting
     
-document:
-  empty: No document assigned
-  drop: Drop documents to upload
-  up: uploading
-  remove: The manual is successfully removed
-
 confirm: 
   check: Are you sure?
   title: 

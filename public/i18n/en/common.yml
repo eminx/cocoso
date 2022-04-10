@@ -134,3 +134,10 @@ domains:
   props:
     name: name
     title: title
+
+
+documents:
+  empty: No document assigned
+  drop: Drop documents to upload
+  up: uploading
+  remove: The manual is successfully removed
