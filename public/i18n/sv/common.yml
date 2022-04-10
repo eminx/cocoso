@@ -134,3 +134,11 @@ domains:
   props:
     name: namn
     title: titel
+
+documents:
+  label: Dokument
+  empty: Inget dokument tilldelat
+  drop: Släpp dokument för att ladda upp
+  up: laddar upp
+  remove: Manualen har tagits bort
+  fileDropper: har laddats upp och tilldelats!

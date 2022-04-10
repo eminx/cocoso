@@ -2,7 +2,6 @@ labels:
   archived: Arkiverad
   unarchived: Avarkiverad
   member: Medlemmar
-  document: Dokument
   date: Datum
   invite: Hantera åtkomst
 
@@ -82,12 +81,6 @@ meeting:
     resource: Välj resurs
     location: Plats
     submit: Lägg till möte
-
-document:
-  empty: Inget dokument tilldelat
-  drop: Släpp dokument för att ladda upp
-  up: laddar upp
-  remove: Manualen har tagits bort
 
 confirm:
   check: Är du säker?
