@@ -44,7 +44,7 @@ export default function BookingsField({ domain }) {
 
   const getBookings = async () => {
     try {
-      const response = await call('getResourceBookings', domain?._id);
+      const response = await call('getResourceBookingsForUser', domain?._id);
       setBookings(
         response.map(booking =>  ({ ...booking, actions: [{
           content: tc('labels.remove'),
