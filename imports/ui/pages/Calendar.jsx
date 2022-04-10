@@ -260,7 +260,10 @@ class Calendar extends PureComponent {
           color += ')';
         }
       });
-      return { ...res, color };
+      const comboLabel = `${res.label} [${res.resourcesForCombo
+        .map((item) => item.label)
+        .join(',')}]`;
+      return { ...res, color, label: comboLabel };
     });
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
@@ -337,17 +340,31 @@ class Calendar extends PureComponent {
                   onChange={this.handleAutoCompleteSelectChange}
                   components={animatedComponents}
                   value={selectedResource}
-                  options={nonComboResourcesWithColor.map((item) => ({
+                  options={[
+                    ...nonComboResourcesWithColor,
+                    ...comboResourcesWithColor,
+                  ].map((item) => ({
                     ...item,
                     value: item._id,
                   }))}
                   style={{ width: '100%', marginTop: '1rem' }}
+                  styles={{
+                    option: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                    singleValue: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                  }}
                 />
               </Box>
             )}
           </Center>
           <Center>
             <Wrap justify="center" mb="2" px="1">
+              {console.log(comboResourcesWithColor)}
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
                 comboResourcesWithColor.map((resource, i) => (
                   <WrapItem key={resource.label}>
