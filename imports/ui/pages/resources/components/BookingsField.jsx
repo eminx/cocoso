@@ -316,9 +316,6 @@ export default function BookingsField({ domain }) {
                     {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${booking.startDate === booking.endDate ? '' : moment(booking.endDate).format('ddd, D MMM')} ${booking.endTime} `}
                   </Text>
-                  <Text fontSize="xs" fontStyle="italic" fontWeight="medium">
-                    booked by {booking.bookedBy}
-                  </Text>
                 </Box>
               )}
             </NiceList>

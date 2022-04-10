@@ -88,7 +88,6 @@ Meteor.methods({
           authorId: user._id,
         }, 
         { fields: { 
-          authorName: 1,
           title: 1,
           longDescription: 1,
           datesAndTimes: 1,
@@ -104,7 +103,6 @@ Meteor.methods({
           endTime: booking.datesAndTimes[0].endTime,
           title: booking.title,
           description: booking.longDescription,
-          bookedBy: booking.authorName, 
         }
       });
     } catch (error) {
