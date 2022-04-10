@@ -8,7 +8,24 @@ messages:
 
 form:
   holder: filter with name
+  combo:
+    switch: 
+      label: Combo Resource
+    select: 
+      holder: Select option
+      helper: Please select multiple resources to create a combo resource
+  name: 
+    label: Name 
+    holder: Sound Studio
+  desc: 
+    label: Description 
+    holder: Using studio requires care ...
 
 tabs:
   info: Info
   discussion: Discussion
+
+  
+cards: 
+  date: added by {{username}} on {{date}}
+  ifCombo: Combo
