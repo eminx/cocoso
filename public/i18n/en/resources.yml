@@ -20,7 +20,10 @@ form:
   desc: 
     label: Description 
     holder: Using studio requires care ...
-
+  
+  images:
+    label: Images ({{ count }})    
+    
 tabs:
   info: Info
   discussion: Discussion

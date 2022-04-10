@@ -49,7 +49,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
-  const [tm] = useTranslation('members');
 
   useEffect(() => {
     getResourceLabels();
@@ -213,7 +212,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             />
           </FormField>
 
-          <FormField label={tm('works.images.label', { count: images.length })}>
+          <FormField label={t('form.images.label', { count: images.length })}>
             <Box>
               {images && (
                 <>
