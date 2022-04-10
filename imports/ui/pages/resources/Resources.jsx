@@ -11,6 +11,7 @@ import {
   ListItem,
   Select,
   Text,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
@@ -63,7 +64,7 @@ function ResourcesPage() {
   });
 
   return (
-    <Template>
+    <Box width="100%" mb="100px">
       <Helmet>
         <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${
           Meteor.settings.public.name
@@ -93,8 +94,8 @@ function ResourcesPage() {
         </Center>
       )}
 
-      <Center p="4" pb="0">
-        <Box>
+      <Center display="flex" alignItems="center" mb="8">
+        <Box mr="4">
           <Input
             bg="white"
             placeholder={t('form.holder')}
@@ -103,16 +104,14 @@ function ResourcesPage() {
             onChange={(event) => setFilterWord(event.target.value)}
           />
         </Box>
-      </Center>
-
-      <Center p="4">
-        <Box>
-          <Text fontSize="sm" mb="2" textAlign="center">
+        <Box display="flex" alignItems="center">
+          <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
             {tc('labels.sortBy.placeholder')}
           </Text>
           <Select
             bg="white"
             size="sm"
+            w="fit-content"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
@@ -123,19 +122,19 @@ function ResourcesPage() {
       </Center>
 
       {!isLoading && (
-        <Box p="4" mb="8">
-          <List>
+        <Center px="2">
+          <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
             {resourcesFilteredAndSorted.map((resource, index) => (
-              <ListItem key={'resource-' + index}>
+              <Box key={'resource-' + index}>
                 <Link to={`/resources/${resource?._id}`}>
                   <ResourceCard resource={resource} isThumb="true" />
                 </Link>
-              </ListItem>
+              </Box>
             ))}
-          </List>
-        </Box>
+          </SimpleGrid>
+        </Center>
       )}
-    </Template>
+    </Box>
   );
 }
 
