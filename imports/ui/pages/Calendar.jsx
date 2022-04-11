@@ -18,6 +18,8 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { stringify } from 'query-string';
+import AutoCompleteSelect from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
@@ -29,8 +31,9 @@ import { message } from '../components/message';
 import { StateContext } from '../LayoutContainer';
 
 moment.locale(i18n.language);
-
+const animatedComponents = makeAnimated();
 const publicSettings = Meteor.settings.public;
+const maxResourceLabelsToShow = 12;
 
 class Calendar extends PureComponent {
   state = {
@@ -40,6 +43,7 @@ class Calendar extends PureComponent {
     selectedActivity: null,
     selectedSlot: null,
     mode: 'list',
+    selectedResource: null,
   };
 
   componentDidMount() {
@@ -68,9 +72,14 @@ class Calendar extends PureComponent {
   };
 
   handleCalendarFilterChange = (value) => {
-    this.setState({
-      calendarFilter: value,
-    });
+    this.setState({ calendarFilter: value });
+    if (value == 'All') this.setState({ selectedResource: null });
+  };
+
+  handleAutoCompleteSelectChange = (newValue, actionMeta) => {
+    this.setState({ selectedResource: newValue });
+    if (newValue === null) this.handleCalendarFilterChange('All');
+    else this.handleCalendarFilterChange(newValue?.label);
   };
 
   handleCloseModal = () => {
@@ -205,6 +214,7 @@ class Calendar extends PureComponent {
       selectedSlot,
       isUploading,
       resourcesList,
+      selectedResource,
     } = this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
@@ -250,7 +260,10 @@ class Calendar extends PureComponent {
           color += ')';
         }
       });
-      return { ...res, color };
+      const comboLabel = `${res.label} [${res.resourcesForCombo
+        .map((item) => item.label)
+        .join(',')}]`;
+      return { ...res, color, label: comboLabel };
     });
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
@@ -305,38 +318,68 @@ class Calendar extends PureComponent {
                   onClick={() => this.handleCalendarFilterChange('All')}
                 />
               </WrapItem>
-              {nonComboResourcesWithColor.map((resource, i) => (
-                <WrapItem key={resource.label}>
-                  <Tag
-                    checkable
-                    label={resource.label}
-                    filterColor={resource.color}
-                    checked={calendarFilter === resource.label}
-                    onClick={() =>
-                      this.handleCalendarFilterChange(resource.label)
-                    }
-                  />
-                </WrapItem>
-              ))}
+              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
+                nonComboResourcesWithColor.map((resource, i) => (
+                  <WrapItem key={resource.label}>
+                    <Tag
+                      checkable
+                      label={resource.label}
+                      filterColor={resource.color}
+                      checked={calendarFilter === resource.label}
+                      onClick={() =>
+                        this.handleCalendarFilterChange(resource.label)
+                      }
+                    />
+                  </WrapItem>
+                ))}
             </Wrap>
+            {nonComboResourcesWithColor.length >= maxResourceLabelsToShow && (
+              <Box w="30rem" zIndex={11}>
+                <AutoCompleteSelect
+                  isClearable
+                  onChange={this.handleAutoCompleteSelectChange}
+                  components={animatedComponents}
+                  value={selectedResource}
+                  options={[
+                    ...nonComboResourcesWithColor,
+                    ...comboResourcesWithColor,
+                  ].map((item) => ({
+                    ...item,
+                    value: item._id,
+                  }))}
+                  style={{ width: '100%', marginTop: '1rem' }}
+                  styles={{
+                    option: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                    singleValue: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                  }}
+                />
+              </Box>
+            )}
           </Center>
-
           <Center>
             <Wrap justify="center" mb="2" px="1">
-              {comboResourcesWithColor.map((resource, i) => (
-                <WrapItem key={resource.label}>
-                  <Tag
-                    checkable
-                    label={resource.label}
-                    filterColor={'#2d2d2d'}
-                    gradientBackground={resource.color}
-                    checked={calendarFilter === resource.label}
-                    onClick={() =>
-                      this.handleCalendarFilterChange(resource.label)
-                    }
-                  />
-                </WrapItem>
-              ))}
+              {console.log(comboResourcesWithColor)}
+              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
+                comboResourcesWithColor.map((resource, i) => (
+                  <WrapItem key={resource.label}>
+                    <Tag
+                      checkable
+                      label={resource.label}
+                      filterColor={'#2d2d2d'}
+                      gradientBackground={resource.color}
+                      checked={calendarFilter === resource.label}
+                      onClick={() =>
+                        this.handleCalendarFilterChange(resource.label)
+                      }
+                    />
+                  </WrapItem>
+                ))}
             </Wrap>
           </Center>
 
