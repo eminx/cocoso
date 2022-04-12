@@ -285,16 +285,35 @@ class Process extends Component {
     const newerMeeting = { ...newMeeting };
     newerMeeting[entity] = dateOrTime;
 
-    this.setState({
-      newMeeting: newerMeeting,
-      isFormValid: this.isFormValid(),
-    });
+    this.setState(
+      {
+        newMeeting: newerMeeting,
+      },
+      () => {
+        this.setState({
+          isFormValid: this.isFormValid(),
+        });
+      }
+    );
   };
 
   handlePlaceChange = (place) => {
-    const { newMeeting } = this.state;
-    newMeeting.resource = place;
-    this.setState({ newMeeting, isFormValid: this.isFormValid() });
+    const { newMeeting, resources } = this.state;
+    const selectedResource = resources.find((r) => r.label === place);
+    this.setState(
+      {
+        newMeeting: {
+          ...newMeeting,
+          resource: place,
+          resourceId: selectedResource._id,
+        },
+      },
+      () => {
+        this.setState({
+          isFormValid: this.isFormValid(),
+        });
+      }
+    );
   };
 
   addMeeting = () => {
@@ -545,7 +564,9 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
+                      message.success(
+                        `${uploadableFile.name} ${t('documents.fileDropper')}`
+                      );
                       closeLoader();
                     }
                   }
