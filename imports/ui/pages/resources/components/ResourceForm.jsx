@@ -35,7 +35,7 @@ const animatedComponents = makeAnimated();
 
 function ResourceForm({ defaultValues, isEditMode, history }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [resourceLabels, setResourceLabels] = useState([]);
+  const [resources, setResources] = useState([]);
   const [resourcesForCombo, setResourcesForCombo] = useState([]);
   const defaultImages = defaultValues?.images ? defaultValues.images : [];
   const [images, setImages] = useState(defaultImages);
@@ -50,7 +50,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    getResourceLabels();
+    getResources();
     setResourcesForCombo(
       defaultValues?.resourcesForCombo.map((item) => ({
         value: item._id,
@@ -59,10 +59,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     );
   }, []);
 
-  const getResourceLabels = async () => {
+  const getResources = async () => {
     try {
-      const response = await call('getResourceLabels');
-      setResourceLabels(
+      const response = await call('getResources');
+      setResources(
         response.map((item) => ({ value: item._id, label: item.label }))
       );
       setIsLoading(false);
@@ -95,7 +95,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (values) => {
-    if (resourcesForCombo.length == 0) values.isCombo = false; // if isCombo checked but no resource selected
+    if (resourcesForCombo.length == 0) {
+      values.isCombo = false;
+    } // if isCombo checked but no resource selected
+
     values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
     if (values.images !== []) values.images = await handleUploadImage();
     try {
@@ -154,9 +157,9 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const isEditable = () => {
-    if (isDirty)  return isDirty;
-    else          return images.length==defaultImages.length ? isDirty : !isDirty;
-  }
+    if (isDirty) return isDirty;
+    else return images.length == defaultImages.length ? isDirty : !isDirty;
+  };
 
   return (
     <Box>
@@ -187,7 +190,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   components={animatedComponents}
                   isMulti
                   defaultValue={resourcesForCombo}
-                  options={resourceLabels}
+                  options={resources}
                   style={{ width: '100%', marginTop: '1rem' }}
                 />
               )}
@@ -195,10 +198,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
           )}
 
           <FormField label={t('form.name.label')}>
-            <Input
-              {...register('label')}
-              placeholder={t('form.name.holder')}
-            />
+            <Input {...register('label')} placeholder={t('form.name.holder')} />
           </FormField>
 
           <FormField label={t('form.desc.label')}>
