@@ -64,10 +64,10 @@ Meteor.methods({
   getResourceById(resourceId) {
     const fields = Resources.publicFields;
     let resource = Resources.findOne(resourceId, { fields });
-    if (resource && resource.isCombo) {
-      resource = fetchComboResources(resource);
+    return  {
+      ...resource,
+      resourcesForCombo: isCombo && fetchComboResources(resource)
     }
-    return resource;
   },
 
   getResourceBookingsForUser(resourceId) {
