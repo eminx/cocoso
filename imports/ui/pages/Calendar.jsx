@@ -364,7 +364,6 @@ class Calendar extends PureComponent {
           </Center>
           <Center>
             <Wrap justify="center" mb="2" px="1">
-              {console.log(comboResourcesWithColor)}
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
                 comboResourcesWithColor.map((resource, i) => (
                   <WrapItem key={resource.label}>

@@ -52,7 +52,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   useEffect(() => {
     getResources();
     setResourcesForCombo(
-      defaultValues?.resourcesForCombo.map((item) => ({
+      defaultValues?.resourcesForCombo?.map((item) => ({
         value: item._id,
         label: item.label,
       }))
