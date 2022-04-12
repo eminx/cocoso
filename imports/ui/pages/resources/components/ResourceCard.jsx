@@ -33,6 +33,10 @@ export default function ResourcesCard({
 
   const removeNotification = () => {};
 
+  if (!resource) {
+    return null;
+  }
+
   return (
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
       <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
@@ -62,12 +66,12 @@ export default function ResourcesCard({
         </Link> */}
       </Flex>
       <Tabs variant="enclosed">
-        {!isThumb &&
+        {!isThumb && (
           <TabList pl="4">
             <Tab>{t('tabs.info')}</Tab>
             <Tab>{t('tabs.discussion')} </Tab>
           </TabList>
-        }
+        )}
         <TabPanels pt="4">
           <TabPanel p="0">
             {resource?.images && (

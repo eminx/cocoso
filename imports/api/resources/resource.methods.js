@@ -44,7 +44,7 @@ Meteor.methods({
     let resource = Resources.findOne(resourceId, { fields });
     return  {
       ...resource,
-      resourcesForCombo: isCombo && fetchComboResources(resource)
+      resourcesForCombo: resource.isCombo && fetchComboResources(resource)
     }
   },
 
