@@ -130,6 +130,7 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
               recurrence.isMultipleDay ||
               recurrence.startDate !== recurrence.endDate,
             resource: resourceForCombo.label,
+            resourceId: resourceForCombo._id,
             resourceIndex: resourceForCombo.resourceIndex,
             isPublicActivity: activity.isPublicActivity,
             isWithComboResource: true,
@@ -159,6 +160,7 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
             recurrence.isMultipleDay ||
             recurrence.startDate !== recurrence.endDate,
           resource: theResource.label,
+          resourceId: theResource._id,
           resourceIndex: theResource.resourceIndex,
           isPublicActivity: activity.isPublicActivity,
           isWithComboResource: false,
