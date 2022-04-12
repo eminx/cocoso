@@ -37,6 +37,11 @@ Slingshot.fileRestrictions('avatarImageUpload', {
   maxSize: 5 * 1024 * 1024,
 });
 
+Slingshot.fileRestrictions('resourceImageUpload', {
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  maxSize: 5 * 3024 * 3024,
+});
+
 Slingshot.createDirective('avatarImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
@@ -78,6 +83,28 @@ Slingshot.createDirective('workImageUpload', Slingshot.S3Storage, {
     return currentUser.username + '/' + file.name;
   },
 });
+
+Slingshot.createDirective('resourceImageUpload', Slingshot.S3Storage, {
+  AWSAccessKeyId: s3Settings.AWSAccessKeyId,
+  AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
+  bucket: s3Settings.AWSBucketName,
+  acl: 'public-read',
+  region: s3Settings.AWSRegion,
+
+  authorize: function () {
+    if (!this.userId) {
+      var message = 'Please login before posting images';
+      throw new Meteor.Error('Login Required', message);
+    }
+    return true;
+  },
+
+  key: function (file) {
+    var currentUser = Meteor.user();
+    return currentUser.username + '/' + file.name;
+  },
+});
+
 
 Slingshot.createDirective('processImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,

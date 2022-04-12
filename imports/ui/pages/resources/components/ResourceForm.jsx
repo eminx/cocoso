@@ -79,7 +79,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             const resizedImage = await resizeImage(image.resizableData, 1200);
             const uploadedImageUrl = await uploadImage(
               resizedImage,
-              'processDocumentUpload'
+              'resourceImageUpload'
             );
             return uploadedImageUrl;
           } else {
