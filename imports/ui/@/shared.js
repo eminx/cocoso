@@ -135,6 +135,7 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
             isPublicActivity: activity.isPublicActivity,
             isWithComboResource: true,
             comboResource: activity.resource,
+            comboResourceId: theResource._id,
             imageUrl: activity.imageUrl,
             _id: activity._id,
           });

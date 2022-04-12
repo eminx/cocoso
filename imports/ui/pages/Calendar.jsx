@@ -218,9 +218,13 @@ class Calendar extends PureComponent {
     } = this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
+      if (activity.title === 'Lets work') {
+        console.log(activity.comboResourceId, calendarFilter);
+      }
       return (
-        calendarFilter === 'All' || activity.resourceId === calendarFilter
-        // activity.comboResource === calendarFilter
+        calendarFilter === 'All' ||
+        calendarFilter === activity.resourceId ||
+        calendarFilter === activity.comboResourceId
       );
     });
 
