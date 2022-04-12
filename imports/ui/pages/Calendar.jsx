@@ -79,7 +79,7 @@ class Calendar extends PureComponent {
   handleAutoCompleteSelectChange = (newValue, actionMeta) => {
     this.setState({ selectedResource: newValue });
     if (newValue === null) this.handleCalendarFilterChange('All');
-    else this.handleCalendarFilterChange(newValue?.label);
+    else this.handleCalendarFilterChange(newValue?._id);
   };
 
   handleCloseModal = () => {
@@ -104,7 +104,7 @@ class Calendar extends PureComponent {
     const { resourcesList, calendarFilter } = this.state;
 
     const selectedResource = resourcesList.find(
-      (resource) => resource.label === calendarFilter
+      (resource) => resource._id === calendarFilter
     );
 
     if (slotInfo?.slots?.length === 1) {
@@ -219,9 +219,8 @@ class Calendar extends PureComponent {
 
     const filteredActivities = allActivities.filter((activity) => {
       return (
-        calendarFilter === 'All' ||
-        activity.resource === calendarFilter ||
-        activity.comboResource === calendarFilter
+        calendarFilter === 'All' || activity.resourceId === calendarFilter
+        // activity.comboResource === calendarFilter
       );
     });
 
@@ -268,7 +267,7 @@ class Calendar extends PureComponent {
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
       const resource = nonComboResourcesWithColor.find(
-        (res) => res.label === act.resource
+        (res) => res._id === act.resourceId
       );
       const resourceColor = (resource && resource.color) || '#484848';
 
@@ -320,14 +319,14 @@ class Calendar extends PureComponent {
               </WrapItem>
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
                 nonComboResourcesWithColor.map((resource, i) => (
-                  <WrapItem key={resource.label}>
+                  <WrapItem key={resource._id}>
                     <Tag
                       checkable
                       label={resource.label}
                       filterColor={resource.color}
-                      checked={calendarFilter === resource.label}
+                      checked={calendarFilter === resource._id}
                       onClick={() =>
-                        this.handleCalendarFilterChange(resource.label)
+                        this.handleCalendarFilterChange(resource._id)
                       }
                     />
                   </WrapItem>
@@ -366,15 +365,15 @@ class Calendar extends PureComponent {
             <Wrap justify="center" mb="2" px="1">
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
                 comboResourcesWithColor.map((resource, i) => (
-                  <WrapItem key={resource.label}>
+                  <WrapItem key={resource._id}>
                     <Tag
                       checkable
                       label={resource.label}
                       filterColor={'#2d2d2d'}
                       gradientBackground={resource.color}
-                      checked={calendarFilter === resource.label}
+                      checked={calendarFilter === resource._id}
                       onClick={() =>
-                        this.handleCalendarFilterChange(resource.label)
+                        this.handleCalendarFilterChange(resource._id)
                       }
                     />
                   </WrapItem>

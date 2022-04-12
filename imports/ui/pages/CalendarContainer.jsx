@@ -9,7 +9,7 @@ import Calendar from './Calendar';
 import Processes from '../../api/processes/process';
 import Documents from '../../api/documents/document';
 import Resources from '../../api/resources/resource';
-import Activities from '../../api/activities/activity'; 
+import Activities from '../../api/activities/activity';
 
 moment.locale(i18n.language);
 const CalendarContainer = withTracker((props) => {
@@ -19,7 +19,7 @@ const CalendarContainer = withTracker((props) => {
   const currentUser = Meteor.user();
   const resourcesSub = Meteor.subscribe('resources');
   const resourcesList = Resources ? Resources.find().fetch() : null;
-  resourcesList.forEach(resource => {
+  resourcesList.forEach((resource) => {
     if (resource.isCombo) resource = fetchComboResources(resource);
   });
   const processesSubscription = Meteor.subscribe('processes');
@@ -29,7 +29,7 @@ const CalendarContainer = withTracker((props) => {
 
   const allActivities = parseActsWithResources(activitiesList, resourcesList);
 
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   if (processesList) {
     processesList.forEach((process) => {
@@ -51,9 +51,12 @@ const CalendarContainer = withTracker((props) => {
             endTime: meeting.endTime,
             authorName: process.adminUsername,
             resource: meeting.resource,
+            resourceId:
+              meeting.resourceId ||
+              resourcesList?.find((r) => r.label === meeting.resource)?._id,
+            resourceIndex: meeting.resourceIndex,
             longDescription: process.description,
             isMultipleDay: false,
-            resourceIndex: meeting.resourceIndex,
             isPublicActivity: true,
             imageUrl: process.imageUrl,
             _id: process._id,
@@ -66,8 +69,8 @@ const CalendarContainer = withTracker((props) => {
   }
 
   function fetchComboResources(resource) {
-    const resourcesForCombo =  Resources.find(
-      { _id : { $in : resource.resourcesForCombo } }, 
+    const resourcesForCombo = Resources.find(
+      { _id: { $in: resource.resourcesForCombo } },
       { fields: { label: 1, resourceIndex: 1 } }
     ).fetch();
     resource.resourcesForCombo = resourcesForCombo;
