@@ -5,13 +5,6 @@ import Hosts from '../@hosts/host';
 import Resources from './resource';
 import Activities from '../activities/activity';
 
-// RESOURCE METHOD VALIDATIONS
-function validateUser(user, currentHost) {
-  if (!user || !isContributorOrAdmin(user, currentHost)) {
-    throw new Meteor.Error('You are not allowed');
-  }
-  return true;
-}
 function validateLabel(label, host, resourceId) {
   // set resource query
   let resourceQuery = { host, label };
@@ -30,8 +23,7 @@ function fetchComboResources(resource) {
     { _id : { $in : resource.resourcesForCombo } }, 
     { fields: { label: 1 } }
   ).fetch();
-  resource.resourcesForCombo = resourcesForCombo;
-  return resource;
+  return resourcesForCombo
 }
 // RESOURCE METHODS
 Meteor.methods({
@@ -40,25 +32,11 @@ Meteor.methods({
     const sort = { createdAt: -1 };
     const fields = Resources.publicFields;
     const resources = Resources.find({ host }, { sort, fields }).fetch();
-    resources.forEach(resource => {
-      if (resource.isCombo) 
-        resource = fetchComboResources(resource);
-    });
-    resources.forEach(resource => {
-      if (resource.userId) {
-        resource.user = {} = Meteor.users.findOne(resource.userId, { fields: { username: 1, avatar: { src: 1 } }});
-        resource.user.avatar = resource.user.avatar.src;
-        delete resource.userId;
-      }
-    });
-    return resources;
-  },
 
-  getResourceLabels() {
-    const host = getHost(this);
-    const sort = { createdAt: -1 };
-    const fields = { label: 1 };
-    return Resources.find({ host }, { sort, fields }).fetch();
+    return resources.map(resource => ({
+      ...resource,
+      resourcesForCombo: resource.isCombo && fetchComboResources(resource)
+    }));
   },
 
   getResourceById(resourceId) {
@@ -74,7 +52,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-    if (!validateUser(user, currentHost) ) {
+    if (!isContributorOrAdmin(user, currentHost) ) {
       return 'Not valid user!';
     }
 
@@ -112,7 +90,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
     const resourceIndex = Resources.find({ host }).count();
-    if (!validateUser(user, currentHost) || !validateLabel(values.label, host)) {
+    if (!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
     try {
@@ -142,7 +120,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-    if(validateUser(user, currentHost) && validateLabel(values.label, host, resourceId)) {
+    if(isContributorOrAdmin(user, currentHost) && validateLabel(values.label, host, resourceId)) {
       try {
         Resources.update(resourceId, {
           $set: {
@@ -161,7 +139,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-    if(validateUser(user, currentHost)) {
+    if(isContributorOrAdmin(user, currentHost)) {
       try {
         Resources.remove(resourceId);
       } catch (error) {
