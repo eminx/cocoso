@@ -36,7 +36,7 @@ const animatedComponents = makeAnimated();
 function ResourceForm({ defaultValues, isEditMode, history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [resources, setResources] = useState([]);
-  const [resourcesForCombo, setResourcesForCombo] = useState([]);
+  // const [resourcesForCombo, setResourcesForCombo] = useState([]);
   const defaultImages = defaultValues?.images ? defaultValues.images : [];
   const [images, setImages] = useState(defaultImages);
 
@@ -51,12 +51,12 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   useEffect(() => {
     getResources();
-    setResourcesForCombo(
-      defaultValues?.resourcesForCombo?.map((item) => ({
-        value: item._id,
-        label: item.label,
-      }))
-    );
+    // setResourcesForCombo(
+    //   defaultValues?.resourcesForCombo?.map((item) => ({
+    //     value: item._id,
+    //     label: item.label,
+    //   }))
+    // );
   }, []);
 
   const getResources = async () => {
@@ -95,9 +95,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (values) => {
-    if (resourcesForCombo.length == 0) {
+    const { resourcesForCombo } = defaultValues;
+    if (!resourcesForCombo || resourcesForCombo.length === 0) {
       values.isCombo = false;
-    } // if isCombo checked but no resource selected
+    }
 
     values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
     if (values.images !== []) values.images = await handleUploadImage();
@@ -161,6 +162,17 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     else return images.length == defaultImages.length ? isDirty : !isDirty;
   };
 
+  if (!defaultValues) {
+    return null;
+  }
+
+  const resourcesForComboParsed =
+    defaultValues.resourcesForCombo &&
+    defaultValues.resourcesForCombo.map((r) => ({
+      value: r._id,
+      label: r.label,
+    }));
+
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -189,7 +201,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
-                  defaultValue={resourcesForCombo}
+                  defaultValue={resourcesForComboParsed}
                   options={resources}
                   style={{ width: '100%', marginTop: '1rem' }}
                 />

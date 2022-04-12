@@ -13,11 +13,11 @@ import ConfirmModal from '../../components/ConfirmModal';
 
 function EditResourcePage({ history }) {
   const { resourceId } = useParams();
-  const [ resource, setResource ] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ isDeleteModalOn, setIsDeleteModalOn ] = useState(false);
-  const [ tc ] = useTranslation('common');
-  
+  const [resource, setResource] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
+  const [tc] = useTranslation('common');
+
   useEffect(() => {
     getResourceById();
   }, []);
@@ -32,13 +32,15 @@ function EditResourcePage({ history }) {
       setIsLoading(false);
     }
   };
-  
+
   const hideDeleteModal = () => setIsDeleteModalOn(false);
   const showDeleteModal = () => setIsDeleteModalOn(true);
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
+      message.success(
+        tc('message.success.remove', { domain: tc('domains.resource') })
+      );
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
@@ -46,19 +48,20 @@ function EditResourcePage({ history }) {
     }
   };
 
-  if (typeof resource === 'undefined')  return <NotFoundPage domain="Resource with this name or id" />;
-  
+  if (typeof resource === 'undefined')
+    return <NotFoundPage domain="Resource with this name or id" />;
+
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
-        {!isLoading && 
-          <ResourceForm 
-            defaultValues={resource} 
-            isEditMode={true} 
+        {!isLoading && (
+          <ResourceForm
+            defaultValues={resource}
+            isEditMode={true}
             history={history}
           />
-        }
+        )}
       </Box>
       <Center p="4">
         <Button
@@ -71,13 +74,15 @@ function EditResourcePage({ history }) {
         </Button>
       </Center>
       <ConfirmModal
+        confirmText={tc('modals.confirm.delete.yes')}
         visible={isDeleteModalOn}
         title={tc('modals.confirm.delete.title')}
-        onConfirm={() => deleteResource(resource?._id)}
         onCancel={hideDeleteModal}
-        confirmText={tc('modals.confirm.delete.yes')}
+        onConfirm={() => deleteResource(resource?._id)}
       >
-        {tc('modals.confirm.delete.body', { domain: tc('domains.resource').toLowerCase() })}
+        {tc('modals.confirm.delete.body', {
+          domain: tc('domains.resource').toLowerCase(),
+        })}
       </ConfirmModal>
     </Template>
   );
