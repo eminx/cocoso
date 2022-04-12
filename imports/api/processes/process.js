@@ -41,6 +41,7 @@ Processes.schema = new SimpleSchema({
 
     room: { type: String, optional: true }, 
     resource: { type: String, optional: true }, 
+    resourceId: { type: Schemas.Id, optional: true }, 
     resourceIndex: { type: String, optional: true }, 
 
     attendees: { type: Array },

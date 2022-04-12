@@ -98,10 +98,16 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     const { resourcesForCombo } = defaultValues;
     if (!resourcesForCombo || resourcesForCombo.length === 0) {
       values.isCombo = false;
+      values.resourcesForCombo = null;
+    } else {
+      values.isCombo = true;
+      values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
     }
 
-    values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
-    if (values.images !== []) values.images = await handleUploadImage();
+    if (values.images !== []) {
+      values.images = await handleUploadImage();
+    }
+
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);

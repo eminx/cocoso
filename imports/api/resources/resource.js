@@ -14,13 +14,13 @@ Resources.schema = new SimpleSchema({
   images: { type: Array, optional: true },
   'images.$': Schemas.Src,
 
-  isCombo: {type: Boolean},
+  isCombo: {type: Boolean, optional: true},
   resourceIndex: {type: SimpleSchema.Integer},
   resourcesForCombo: {type: Array},
   'resourcesForCombo.$': Schemas.Id,
 
-  createdBy: {type: String},
-  createdAt: {type: Date},
+  createdBy: {type: String, optional: true},
+  createdAt: {type: Date, optional: true},
   updatedBy: {type: String, optional: true},
   updatedAt: {type: Date, optional: true},
 });
