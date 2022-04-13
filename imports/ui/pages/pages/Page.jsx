@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center } from '@chakra-ui/react'
+import { Box, Button, Center } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
@@ -37,10 +37,10 @@ class Page extends PureComponent {
       return;
     }
 
-    const routeName = match.params.id;
+    const param = match.params.id;
 
     const currentPage = pages.find(
-      (page) => parseTitle(page.title) === parseTitle(routeName)
+      (page) => parseTitle(page.title) === parseTitle(param)
     );
     return currentPage;
   };
@@ -54,7 +54,7 @@ class Page extends PureComponent {
       return <Loader />;
     }
 
-    const routeName = match.params.id;
+    const param = match.params.id;
 
     const currentPage = this.getCurrentPage();
 
@@ -75,7 +75,7 @@ class Page extends PureComponent {
           <PagesList
             pageTitles={pageTitles}
             onChange={this.handlePageClick}
-            activePageTitle={routeName}
+            activePageTitle={param}
           />
         }
         rightContent={
@@ -83,9 +83,14 @@ class Page extends PureComponent {
           role === 'admin' && (
             <Center p="2">
               <Link to="/new-page">
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                <Trans i18nKey="common:actions.create" />
-              </Button>
+                <Button
+                  as="span"
+                  colorScheme="green"
+                  variant="outline"
+                  textTransform="uppercase"
+                >
+                  <Trans i18nKey="common:actions.create" />
+                </Button>
               </Link>
             </Center>
           )
@@ -108,7 +113,7 @@ class Page extends PureComponent {
                 <Trans i18nKey="common:actions.update" />
               </Button>
             </Link>
-            </Center>
+          </Center>
         )}
       </Template>
     );

@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Tag as CTag,
   TagLabel,
   Text,
@@ -275,6 +276,9 @@ class Calendar extends PureComponent {
       return <Redirect to={selectedSlot.bookingUrl} />;
     }
 
+    const selectFilterView =
+      nonComboResourcesWithColor?.length >= maxResourceLabelsToShow;
+
     return (
       <Box>
         <Helmet>
@@ -299,20 +303,21 @@ class Calendar extends PureComponent {
 
         <Box bg="white" pt="1" mb="3">
           <Center p="2">
-            <Wrap justify="center" px="1" pb="1">
-              <WrapItem>
-                <Tag
-                  alignSelf="center"
-                  checkable
-                  key="All"
-                  label={tc('labels.all')}
-                  filterColor="#484848"
-                  checked={!calendarFilter}
-                  onClick={() => this.handleCalendarFilterChange(null)}
-                />
-              </WrapItem>
-              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
-                nonComboResourcesWithColor.map((resource, i) => (
+            {!selectFilterView ? (
+              <Wrap justify="center" px="1" pb="1">
+                <WrapItem>
+                  <Tag
+                    alignSelf="center"
+                    checkable
+                    key="All"
+                    label={tc('labels.all')}
+                    filterColor="#484848"
+                    checked={!calendarFilter}
+                    onClick={() => this.handleCalendarFilterChange(null)}
+                  />
+                </WrapItem>
+
+                {nonComboResourcesWithColor.map((resource, i) => (
                   <WrapItem key={resource._id}>
                     <Tag
                       checkable
@@ -323,36 +328,49 @@ class Calendar extends PureComponent {
                     />
                   </WrapItem>
                 ))}
-            </Wrap>
-            {nonComboResourcesWithColor.length >= maxResourceLabelsToShow && (
-              <Box w="30rem" zIndex={11}>
-                <AutoCompleteSelect
-                  isClearable
-                  onChange={this.handleCalendarFilterChange}
-                  components={animatedComponents}
-                  value={calendarFilter}
-                  options={[
-                    ...nonComboResourcesWithColor,
-                    ...comboResourcesWithColor,
-                  ].map((item) => ({
-                    ...item,
-                    value: item._id,
-                  }))}
-                  style={{ width: '100%', marginTop: '1rem' }}
-                  styles={{
-                    option: (styles, { data }) => ({
-                      ...styles,
-                      color: data.color,
-                    }),
-                    singleValue: (styles, { data }) => ({
-                      ...styles,
-                      color: data.color,
-                    }),
-                  }}
-                />
-              </Box>
+              </Wrap>
+            ) : (
+              <Flex w="30rem" align="center">
+                <Button
+                  colorScheme="green"
+                  mr="2"
+                  size="sm"
+                  variant={calendarFilter ? 'outline' : 'solid'}
+                  onClick={() => this.handleCalendarFilterChange(null)}
+                >
+                  {tc('labels.all')}
+                </Button>
+
+                <Box w="100%" zIndex={5}>
+                  <AutoCompleteSelect
+                    isClearable
+                    onChange={this.handleCalendarFilterChange}
+                    components={animatedComponents}
+                    value={calendarFilter}
+                    options={[
+                      ...nonComboResourcesWithColor,
+                      ...comboResourcesWithColor,
+                    ].map((item) => ({
+                      ...item,
+                      value: item._id,
+                    }))}
+                    style={{ width: '100%', marginTop: '1rem' }}
+                    styles={{
+                      option: (styles, { data }) => ({
+                        ...styles,
+                        color: data.color,
+                      }),
+                      singleValue: (styles, { data }) => ({
+                        ...styles,
+                        color: data.color,
+                      }),
+                    }}
+                  />
+                </Box>
+              </Flex>
             )}
           </Center>
+
           <Center>
             <Wrap justify="center" mb="2" px="1">
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
