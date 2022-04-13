@@ -7,8 +7,6 @@ import {
   Center,
   Heading,
   Input,
-  List,
-  ListItem,
   Select,
   Text,
   SimpleGrid,
@@ -18,7 +16,6 @@ import { Helmet } from 'react-helmet';
 import { call } from '../../@/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 
@@ -52,7 +49,13 @@ function ResourcesPage() {
     if (!resource.label) {
       return false;
     }
-    return resource.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+    return (
+      resource.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+      (resource.isCombo &&
+        resource.resourcesForCombo.some(
+          (r) => r.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
+        ))
+    );
   });
 
   const resourcesFilteredAndSorted = resourcesFiltered.sort((a, b) => {
@@ -94,8 +97,8 @@ function ResourcesPage() {
         </Center>
       )}
 
-      <Center display="flex" alignItems="center" mb="8">
-        <Box mr="4">
+      <Center mb="4">
+        <Box>
           <Input
             bg="white"
             placeholder={t('form.holder')}
@@ -104,6 +107,8 @@ function ResourcesPage() {
             onChange={(event) => setFilterWord(event.target.value)}
           />
         </Box>
+      </Center>
+      <Center mb="6">
         <Box display="flex" alignItems="center">
           <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
             {tc('labels.sortBy.placeholder')}
