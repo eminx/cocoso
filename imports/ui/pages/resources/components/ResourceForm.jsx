@@ -174,13 +174,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     return null;
   }
 
-  const resourcesForComboParsed =
-    resourcesForCombo &&
-    resourcesForCombo.map((r) => ({
-      value: r._id,
-      label: r.label,
-    }));
-
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -209,7 +202,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
-                  defaultValue={resourcesForComboParsed}
+                  defaultValue={resourcesForCombo}
                   options={resources.filter((r) => !r.isCombo)}
                   style={{ width: '100%', marginTop: '1rem' }}
                 />
