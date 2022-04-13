@@ -837,11 +837,11 @@ class Process extends Component {
             }}
           >
             <Button
-              label={t('actions.this')}
-              primary
+              colorScheme={isMember ? 'gray' : 'green'}
               onClick={this.openModal}
-              margin="medium"
-            />
+            >
+              {isMember ? t('actions.leave') : t('actions.join')}
+            </Button>
           </div>
         )}
       </Box>
