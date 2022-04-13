@@ -65,7 +65,7 @@ Meteor.methods({
           currentHost._id.valueOf();
         }
       }
-      console.log(currentHost, currentHost._idcurrentHostId());
+      console.log(currentHost, currentHost._id, currentHostId());
 
       Meteor.users.update(user._id, {
         $addToSet: {
