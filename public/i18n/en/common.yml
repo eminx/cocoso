@@ -18,6 +18,7 @@ actions:
   reset: Reset
   add: Add
   print: Print
+  logout: Logout
 
 # ACTION PAGE TITLES
 labels:
@@ -135,7 +136,6 @@ domains:
     name: name
     title: title
 
-
 documents:
   label: Documents
   empty: No document assigned
@@ -143,4 +143,3 @@ documents:
   up: uploading
   remove: The document is successfully removed
   fileDropper: is successfully uploaded and assigned
-

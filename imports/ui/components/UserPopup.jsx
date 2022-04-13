@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +8,7 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Menu,
   MenuButton,
   MenuDivider,
@@ -96,6 +98,16 @@ function UserPopup({ currentUser }) {
             ))}
           </MenuGroup>
         )}
+
+        <MenuDivider />
+
+        <MenuGroup>
+          <Center py="2">
+            <Button variant="outline" onClick={() => Meteor.logout()}>
+              {tc('actions.logout')}
+            </Button>
+          </Center>
+        </MenuGroup>
       </MenuList>
     </Menu>
   );

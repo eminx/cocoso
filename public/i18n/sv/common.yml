@@ -18,6 +18,7 @@ actions:
   reset: Återställa
   add: Lägg till
   print: Skriva ut
+  logout: Logga ut
 
 # ACTION PAGE TITLES
 labels:

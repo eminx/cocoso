@@ -112,10 +112,6 @@ class Profile extends PureComponent {
     }
   };
 
-  logout = () => {
-    Meteor.logout();
-  };
-
   setSelfAsParticipant = async () => {
     const { t } = this.props;
     try {
@@ -237,9 +233,6 @@ class Profile extends PureComponent {
 
         <Center>
           <VStack spacing="4" mt="4" p="4">
-            <Button variant="outline" onClick={() => this.logout()}>
-              {t('actions.logout')}
-            </Button>
             <Button
               colorScheme="red"
               size="sm"
