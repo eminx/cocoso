@@ -36,7 +36,7 @@ const animatedComponents = makeAnimated();
 function ResourceForm({ defaultValues, isEditMode, history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [resources, setResources] = useState([]);
-  // const [resourcesForCombo, setResourcesForCombo] = useState([]);
+  const [resourcesForCombo, setResourcesForCombo] = useState([]);
   const defaultImages = defaultValues?.images ? defaultValues.images : [];
   const [images, setImages] = useState(defaultImages);
 
@@ -51,19 +51,23 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   useEffect(() => {
     getResources();
-    // setResourcesForCombo(
-    //   defaultValues?.resourcesForCombo?.map((item) => ({
-    //     value: item._id,
-    //     label: item.label,
-    //   }))
-    // );
+    setResourcesForCombo(
+      defaultValues?.resourcesForCombo?.map((item) => ({
+        value: item._id,
+        label: item.label,
+      }))
+    );
   }, []);
 
   const getResources = async () => {
     try {
       const response = await call('getResources');
       setResources(
-        response.map((item) => ({ value: item._id, label: item.label }))
+        response.map((item) => ({
+          value: item._id,
+          label: item.label,
+          isCombo: item.isCombo,
+        }))
       );
       setIsLoading(false);
     } catch (error) {
@@ -95,7 +99,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (values) => {
-    const { resourcesForCombo } = defaultValues;
     if (!resourcesForCombo || resourcesForCombo.length === 0) {
       values.isCombo = false;
       values.resourcesForCombo = [];
@@ -164,8 +167,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const isEditable = () => {
-    if (isDirty) return isDirty;
-    else return images.length == defaultImages.length ? isDirty : !isDirty;
+    return isDirty || images.length !== defaultImages.length;
   };
 
   if (!defaultValues) {
@@ -173,8 +175,8 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   }
 
   const resourcesForComboParsed =
-    defaultValues.resourcesForCombo &&
-    defaultValues.resourcesForCombo.map((r) => ({
+    resourcesForCombo &&
+    resourcesForCombo.map((r) => ({
       value: r._id,
       label: r.label,
     }));
@@ -208,7 +210,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   components={animatedComponents}
                   isMulti
                   defaultValue={resourcesForComboParsed}
-                  options={resources}
+                  options={resources.filter((r) => !r.isCombo)}
                   style={{ width: '100%', marginTop: '1rem' }}
                 />
               )}
