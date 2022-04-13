@@ -118,13 +118,11 @@ export default function BookingsField({ domain }) {
     const allOccurencesWithSelectedResource = occurences.filter((occurence) => {
       if (selectedResource.isCombo) {
         return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-          return resourceForCombo.label === occurence.resource;
+          return resourceForCombo._id === occurence.resourceId;
         });
       }
-      return occurence.resource === selectedResource.label;
+      return selectedResource._id === occurence.resourceId;
     });
-
-    // console.log('allOccurencesWithSelectedResource: ', allOccurencesWithSelectedResource);
 
     const occurenceWithConflict = allOccurencesWithSelectedResource.find(
       (occurence) => {
