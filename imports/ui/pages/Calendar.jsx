@@ -30,11 +30,13 @@ import { getHslValuesFromLength } from '../@/constants/colors';
 import { call } from '../@/shared';
 import { message } from '../components/message';
 import { StateContext } from '../LayoutContainer';
+const publicSettings = Meteor.settings.public;
 
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
-const publicSettings = Meteor.settings.public;
 const maxResourceLabelsToShow = 12;
+
+const localeSort = (a, b) => a.label.localeCompare(b.label);
 
 class Calendar extends PureComponent {
   state = {
@@ -228,37 +230,41 @@ class Calendar extends PureComponent {
     );
 
     const hslValues = getHslValuesFromLength(nonComboResources.length);
-    const nonComboResourcesWithColor = nonComboResources.map((res, i) => ({
-      ...res,
-      color: hslValues[i],
-    }));
+    const nonComboResourcesWithColor = nonComboResources
+      .sort(localeSort)
+      .map((res, i) => ({
+        ...res,
+        color: hslValues[i],
+      }));
 
     const comboResources = resourcesList.filter((resource) => resource.isCombo);
-    const comboResourcesWithColor = comboResources.map((res, i) => {
-      const colors = [];
-      res.resourcesForCombo.forEach((resCo, i) => {
-        const resWithColor = nonComboResourcesWithColor.find(
-          (nRes) => resCo.label === nRes.label
-        );
-        if (!resWithColor) {
-          return;
-        }
-        colors.push(resWithColor.color);
+    const comboResourcesWithColor = comboResources
+      .sort(localeSort)
+      .map((res, i) => {
+        const colors = [];
+        res.resourcesForCombo.forEach((resCo, i) => {
+          const resWithColor = nonComboResourcesWithColor.find(
+            (nRes) => resCo.label === nRes.label
+          );
+          if (!resWithColor) {
+            return;
+          }
+          colors.push(resWithColor.color);
+        });
+        let color = 'linear-gradient(to right, ';
+        colors.forEach((c, i) => {
+          color += c;
+          if (i < colors.length - 1) {
+            color += ', ';
+          } else {
+            color += ')';
+          }
+        });
+        const comboLabel = `${res.label} [${res.resourcesForCombo
+          .map((item) => item.label)
+          .join(',')}]`;
+        return { ...res, color, label: comboLabel };
       });
-      let color = 'linear-gradient(to right, ';
-      colors.forEach((c, i) => {
-        color += c;
-        if (i < colors.length - 1) {
-          color += ', ';
-        } else {
-          color += ')';
-        }
-      });
-      const comboLabel = `${res.label} [${res.resourcesForCombo
-        .map((item) => item.label)
-        .join(',')}]`;
-      return { ...res, color, label: comboLabel };
-    });
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
       const resource = nonComboResourcesWithColor.find(
@@ -278,6 +284,11 @@ class Calendar extends PureComponent {
 
     const selectFilterView =
       nonComboResourcesWithColor?.length >= maxResourceLabelsToShow;
+
+    const allResourcesForSelect = [
+      ...comboResourcesWithColor,
+      ...nonComboResourcesWithColor,
+    ];
 
     return (
       <Box>
@@ -304,31 +315,51 @@ class Calendar extends PureComponent {
         <Box bg="white" pt="1" mb="3">
           <Center p="2">
             {!selectFilterView ? (
-              <Wrap justify="center" px="1" pb="1">
-                <WrapItem>
-                  <Tag
-                    alignSelf="center"
-                    checkable
-                    key="All"
-                    label={tc('labels.all')}
-                    filterColor="#484848"
-                    checked={!calendarFilter}
-                    onClick={() => this.handleCalendarFilterChange(null)}
-                  />
-                </WrapItem>
-
-                {nonComboResourcesWithColor.map((resource, i) => (
-                  <WrapItem key={resource._id}>
+              <Box>
+                <Wrap justify="center" px="1" pb="1" mb="3">
+                  <WrapItem>
                     <Tag
+                      alignSelf="center"
                       checkable
-                      label={resource.label}
-                      filterColor={resource.color}
-                      checked={calendarFilter?._id === resource._id}
-                      onClick={() => this.handleCalendarFilterChange(resource)}
+                      key="All"
+                      label={tc('labels.all')}
+                      filterColor="#484848"
+                      checked={!calendarFilter}
+                      onClick={() => this.handleCalendarFilterChange(null)}
                     />
                   </WrapItem>
-                ))}
-              </Wrap>
+
+                  {nonComboResourcesWithColor.map((resource, i) => (
+                    <WrapItem key={resource._id}>
+                      <Tag
+                        checkable
+                        label={resource.label}
+                        filterColor={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() =>
+                          this.handleCalendarFilterChange(resource)
+                        }
+                      />
+                    </WrapItem>
+                  ))}
+                </Wrap>
+                <Wrap justify="center" mb="2" px="1">
+                  {comboResourcesWithColor.map((resource, i) => (
+                    <WrapItem key={resource._id}>
+                      <Tag
+                        checkable
+                        label={resource.label}
+                        filterColor={'#2d2d2d'}
+                        gradientBackground={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() =>
+                          this.handleCalendarFilterChange(resource)
+                        }
+                      />
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              </Box>
             ) : (
               <Flex w="30rem" align="center">
                 <Button
@@ -347,10 +378,7 @@ class Calendar extends PureComponent {
                     onChange={this.handleCalendarFilterChange}
                     components={animatedComponents}
                     value={calendarFilter}
-                    options={[
-                      ...nonComboResourcesWithColor,
-                      ...comboResourcesWithColor,
-                    ].map((item) => ({
+                    options={allResourcesForSelect.map((item) => ({
                       ...item,
                       value: item._id,
                     }))}
@@ -358,35 +386,16 @@ class Calendar extends PureComponent {
                     styles={{
                       option: (styles, { data }) => ({
                         ...styles,
-                        color: data.color,
-                      }),
-                      singleValue: (styles, { data }) => ({
-                        ...styles,
-                        color: data.color,
+                        borderLeft: `8px solid ${data.color}`,
+                        // background: data.color.replace('40%', '90%'),
+                        paddingLeft: !data.isCombo && 6,
+                        fontWeight: data.isCombo ? 'bold' : 'normal',
                       }),
                     }}
                   />
                 </Box>
               </Flex>
             )}
-          </Center>
-
-          <Center>
-            <Wrap justify="center" mb="2" px="1">
-              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
-                comboResourcesWithColor.map((resource, i) => (
-                  <WrapItem key={resource._id}>
-                    <Tag
-                      checkable
-                      label={resource.label}
-                      filterColor={'#2d2d2d'}
-                      gradientBackground={resource.color}
-                      checked={calendarFilter?._id === resource._id}
-                      onClick={() => this.handleCalendarFilterChange(resource)}
-                    />
-                  </WrapItem>
-                ))}
-            </Wrap>
           </Center>
 
           {isLoading ? (
