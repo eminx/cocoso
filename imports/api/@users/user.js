@@ -26,7 +26,6 @@ Users.schema.UserProfile = {
 
   memberships: { type: Array, defaultValue: []},
   'memberships.$': { type: new SimpleSchema({
-    hostId: Schemas.Id,
     host: Schemas.Hostname,
     role: {type: String},
     date: {type: Date},

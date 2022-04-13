@@ -79,7 +79,6 @@ function setMembership(user, host) {
     Meteor.users.update(user._id, {
       $addToSet: {
         memberships: {
-          hostId: host._id,
           host: host.host,
           role: 'admin',
           date: new Date(),

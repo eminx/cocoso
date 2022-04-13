@@ -44,7 +44,7 @@ if (!i18n.isInitialized) {
     if (Meteor.userId()) {
       const handler = Meteor.subscribe('me');
       if (handler.ready()) 
-        preferedLang = Meteor.users.findOne(Meteor.userId(), { fields: { lang: 1 }}).lang;
+        preferedLang = Meteor.user()?.lang;
     } else {
       const handler = Meteor.subscribe('currentHost');
       if (handler.ready()) 

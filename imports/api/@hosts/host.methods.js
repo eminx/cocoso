@@ -59,7 +59,6 @@ Meteor.methods({
         $push: {
           memberships: {
             host: values.host,
-            hostId: hostId,
             role: 'admin',
             date: new Date(),
           },
