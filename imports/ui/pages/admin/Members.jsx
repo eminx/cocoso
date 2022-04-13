@@ -15,7 +15,6 @@ import {
   TabPanels,
   TabList,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
@@ -37,12 +36,11 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members({ history, members, isLoading }) {
-  const toast = useToast();
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
-  const [ t ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   const { currentUser, role } = useContext(StateContext);
 
@@ -53,13 +51,13 @@ function Members({ history, members, isLoading }) {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      toast({
+      message.success({
         title: t('message.success.participant', { username: user.username }),
         status: 'success',
       });
     } catch (error) {
       console.log(error);
-      toast({
+      message.error({
         title: error.reason || error.error,
         status: 'error',
       });
@@ -69,13 +67,13 @@ function Members({ history, members, isLoading }) {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      toast({
+      message.success({
         title: t('message.success.contributor', { username: user.username }),
         status: 'success',
       });
     } catch (error) {
       console.log(error);
-      toast({
+      message.error({
         title: error.reason || error.error,
         status: 'error',
       });
@@ -88,10 +86,7 @@ function Members({ history, members, isLoading }) {
   ) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <Alert
-          message={tc('message.access.deny')}
-          type="warning"
-        />
+        <Alert message={tc('message.access.deny')} type="warning" />
       </div>
     );
   }
@@ -234,7 +229,9 @@ function Members({ history, members, isLoading }) {
                         <Text>{member && member.email}</Text>
                         <Text fontStyle="italic">{member.role}</Text>
                         <Text fontSize="xs" color="gray.500">
-                          {t('joinedAt', { date: moment(member.date).format('D MMM YYYY') })}
+                          {t('joinedAt', {
+                            date: moment(member.date).format('D MMM YYYY'),
+                          })}
                           <br />
                         </Text>
                       </Box>
