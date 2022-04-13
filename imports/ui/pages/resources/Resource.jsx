@@ -19,10 +19,9 @@ import useChattery from '../../components/chattery/useChattery';
 function ResourcePage() {
   const { resourceId } = useParams();
   const [resource, setResource] = useState(null);
-  // const [discussion, setDiscussion] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const { currentUser } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
@@ -64,9 +63,13 @@ function ResourcePage() {
     }
   };
 
-  if (typeof resource === 'undefined')
+  if (!resource) {
     return <NotFoundPage domain="Resource with this name or id" />;
-  if (isLoading) return <Loader />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <ScreenClassRender
@@ -82,7 +85,9 @@ function ResourcePage() {
                 />
               )
             }
-            rightContent={<BookingsField domain={resource} />}
+            rightContent={
+              <BookingsField currentUser={currentUser} domain={resource} />
+            }
           >
             <Breadcrumb domain={resource} domainKey="label" />
             <ResourceCard

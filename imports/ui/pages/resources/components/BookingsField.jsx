@@ -34,9 +34,9 @@ import { StateContext } from '../../../LayoutContainer';
 
 const today = new Date().toISOString().substring(0, 10);
 
-export default function BookingsField({ domain }) {
+export default function BookingsField({ currentUser, domain }) {
   const { role, canCreateContent } = useContext(StateContext);
-  const isAdmin = role === 'admin' ? true : false;
+  const isAdmin = role === 'admin';
 
   const [bookings, setBookings] = useState([]);
   const [newBooking, setNewBooking] = useState({
@@ -55,7 +55,30 @@ export default function BookingsField({ domain }) {
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
+  useEffect(() => {
+    getAllOccurences();
+  }, []);
+
+  useEffect(() => {
+    getBookings();
+  }, [bookings.length]);
+
+  const getAllOccurences = async () => {
+    setIsLoading(true);
+    try {
+      const response = await call('getAllOccurences');
+      setOccurences([...response]);
+      setIsLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setIsLoading(true);
+    }
+  };
+
   const getBookings = async () => {
+    if (!currentUser) {
+      return;
+    }
     try {
       const response = await call('getResourceBookingsForUser', domain?._id);
       setBookings(
@@ -75,26 +98,6 @@ export default function BookingsField({ domain }) {
       setIsLoading(true);
     }
   };
-
-  useEffect(() => {
-    getAllOccurences();
-  }, []);
-
-  const getAllOccurences = async () => {
-    setIsLoading(true);
-    try {
-      const response = await call('getAllOccurences');
-      setOccurences([...response]);
-      setIsLoading(false);
-    } catch (error) {
-      message.error(error.reason);
-      setIsLoading(true);
-    }
-  };
-
-  useEffect(() => {
-    getBookings();
-  }, [bookings]);
 
   const removeBooking = async (bookingId) => {
     if (!isAdmin) {
@@ -197,7 +200,7 @@ export default function BookingsField({ domain }) {
 
   return (
     <Box mt="5">
-      <Heading mb="4" size="sm">
+      <Heading mb="4" ml="4" size="sm">
         {t('booking.labels.field')}
       </Heading>
 
