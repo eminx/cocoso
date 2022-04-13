@@ -781,7 +781,7 @@ class Process extends Component {
         {this.getTitle(process, isAdmin)}
         <ScreenClassRender
           render={(screenClass) => (
-            <Tabs variant="enclosed">
+            <Tabs variant="enclosed-colored">
               <TabList pl="4">
                 <Tab>{t('tabs.process.info')}</Tab>
                 <Tab>

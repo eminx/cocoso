@@ -65,7 +65,7 @@ export default function ResourcesCard({
           </Flex>
         </Link> */}
       </Flex>
-      <Tabs variant="enclosed">
+      <Tabs variant="enclosed-colored">
         {!isThumb && (
           <TabList pl="4">
             <Tab>{t('tabs.info')}</Tab>
