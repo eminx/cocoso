@@ -51,10 +51,9 @@ function Members({ history, members, isLoading }) {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      message.success({
-        title: t('message.success.participant', { username: user.username }),
-        status: 'success',
-      });
+      message.success(
+        t('message.success.participant', { username: user.username })
+      );
     } catch (error) {
       console.log(error);
       message.error({
@@ -67,10 +66,9 @@ function Members({ history, members, isLoading }) {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      message.success({
-        title: t('message.success.contributor', { username: user.username }),
-        status: 'success',
-      });
+      message.success(
+        t('message.success.contributor', { username: user.username })
+      );
     } catch (error) {
       console.log(error);
       message.error({

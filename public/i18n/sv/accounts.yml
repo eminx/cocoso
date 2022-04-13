@@ -51,6 +51,7 @@ password:
 
 profile:
   label: Personlig information
+  joinOrganisation: Join
 
   form:
     avatar:

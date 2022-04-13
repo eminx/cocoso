@@ -34,7 +34,11 @@ class Profile extends PureComponent {
     const { tc } = this.props;
     try {
       await call('saveUserInfo', values);
-      message.success(tc('message.success.save', { domain: `${tc('domains.your')} ${tc('domains.data')}`}));
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.data')}`,
+        })
+      );
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -76,7 +80,11 @@ class Profile extends PureComponent {
       this.setState({
         isUploading: false,
       });
-      message.success(tc('message.success.save', { domain: `${tc('domains.your')} ${tc('domains.avatar')}`}));
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.avatar')}`,
+        })
+      );
     } catch (error) {
       this.setState({
         isUploading: false,
@@ -90,7 +98,11 @@ class Profile extends PureComponent {
     const { tc } = this.props;
     try {
       await call('deleteAccount');
-      message.success(tc('message.success.remove', { domain: `${tc('domains.your')} ${tc('domains.account')}`}));
+      message.success(
+        tc('message.success.remove', {
+          domain: `${tc('domains.your')} ${tc('domains.account')}`,
+        })
+      );
       setTimeout(() => {
         window.location.reload();
       }, 400);
@@ -110,7 +122,7 @@ class Profile extends PureComponent {
       await call('setSelfAsParticipant');
       message.success(t('profile.message.participant'));
     } catch (error) {
-      console.error('Error uploading:', error);
+      console.error('Error:', error);
       message.error(error.reason);
     }
   };
@@ -140,19 +152,21 @@ class Profile extends PureComponent {
         <Center mb="2" pad="1">
           {['admin', 'contributor', 'participant'].includes(role) ? (
             <Text textAlign="center" fontSize="sm">
-              <Trans 
-                i18nKey="accounts:profile.message.role" 
+              <Trans
+                i18nKey="accounts:profile.message.role"
                 defaults="You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role"
-                values={{ username: currentUser.username , role }}
+                values={{ username: currentUser.username, role }}
                 components={{ bold: <strong /> }}
               />
             </Text>
           ) : (
             <Box>
               <Text>{t('profile.message.deny')}</Text>
-              <Button onClick={() => this.setSelfAsParticipant()}>
-                {t('profile.label')}
-              </Button>
+              <Center my="2">
+                <Button onClick={() => this.setSelfAsParticipant()}>
+                  {t('profile.joinOrganisation')}
+                </Button>
+              </Center>
             </Box>
           )}
         </Center>

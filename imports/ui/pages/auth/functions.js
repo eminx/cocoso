@@ -24,7 +24,7 @@ function loginWithPassword(username, password, isNewAccount) {
     if (isNewAccount) {
       Meteor.call('setSelfAsParticipant', (error, respond) => {
         if (error) {
-          message.error(error, reason);
+          message.error(error.reason);
           console.log(error);
         }
       });

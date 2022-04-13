@@ -58,11 +58,19 @@ Meteor.methods({
         }
       );
 
+      const currentHostId = () => {
+        if (typeof currentHost._id === 'string') {
+          return currentHost._id;
+        } else {
+          currentHost._id.valueOf();
+        }
+      }
+
       Meteor.users.update(user._id, {
         $addToSet: {
           memberships: {
             host,
-            hostId: currentHost._id,
+            hostId: currentHostId(),
             role: 'participant',
             date: new Date(),
           },

@@ -8,7 +8,7 @@ actions:
 login:
   labels:
     title: Login to Your Account
-    subtitle: Don't have an account? 
+    subtitle: Don't have an account?
   form:
     username:
       label: Username or Email address
@@ -19,7 +19,7 @@ login:
       username: User not found
       password: Incorrect password
     success: You are successfully logged in
-    
+
 signup:
   labels:
     title: Register New Account
@@ -38,7 +38,7 @@ signup:
 password:
   labels:
     title: Reset Password
-    subtitle: 
+    subtitle:
       forgot: If you forgot your password, reset it via a link sent to your email.
       reset: Create your desired password
   form:
@@ -51,6 +51,7 @@ password:
 
 profile:
   label: Personal Info
+  joinOrganisation: Join
 
   form:
     avatar:
@@ -69,7 +70,7 @@ profile:
   message:
     role: You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role
     participant: You are successfully set as participant
-    deny: You are not part of this organisation. 
+    deny: You are not part of this organisation.
 
 delete:
   action: Delete Account
