@@ -49,7 +49,7 @@ profile:
     bio:
       label: Bio
     contact:
-      label: Kontakt Info
+      label: Kontakt info
   message:
     role: Du som {{username}} är en del av denna organisation med rollen {{role}}
 

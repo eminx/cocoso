@@ -21,8 +21,8 @@ datePicker:
     select: Select {{ opt }}
     date: Day
     time: Time
-    datetime: Day & Time 
+    datetime: Day & Time
   formats:
-    date: yyyy-MM-dd 
+    date: yyyy-MM-dd
     time: HH:mm
     datetime: yyyy-MM-dd  HH:mm

@@ -66,6 +66,20 @@ class Process extends Component {
     droppedDocuments: null,
     potentialNewAdmin: false,
     inviteManagerOpen: false,
+    resources: [],
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
   };
 
   isMember = () => {
@@ -271,16 +285,35 @@ class Process extends Component {
     const newerMeeting = { ...newMeeting };
     newerMeeting[entity] = dateOrTime;
 
-    this.setState({
-      newMeeting: newerMeeting,
-      isFormValid: this.isFormValid(),
-    });
+    this.setState(
+      {
+        newMeeting: newerMeeting,
+      },
+      () => {
+        this.setState({
+          isFormValid: this.isFormValid(),
+        });
+      }
+    );
   };
 
   handlePlaceChange = (place) => {
-    const { newMeeting } = this.state;
-    newMeeting.resource = place;
-    this.setState({ newMeeting, isFormValid: this.isFormValid() });
+    const { newMeeting, resources } = this.state;
+    const selectedResource = resources.find((r) => r.label === place);
+    this.setState(
+      {
+        newMeeting: {
+          ...newMeeting,
+          resource: place,
+          resourceId: selectedResource._id,
+        },
+      },
+      () => {
+        this.setState({
+          isFormValid: this.isFormValid(),
+        });
+      }
+    );
   };
 
   addMeeting = () => {
@@ -377,7 +410,8 @@ class Process extends Component {
   };
 
   renderDates = () => {
-    const { process, resources, t } = this.props;
+    const { process, t } = this.props;
+    const { resources } = this.state;
     if (!process) {
       return;
     }
@@ -428,7 +462,8 @@ class Process extends Component {
   };
 
   renderMeetings = () => {
-    const { process, currentUser, resources, t } = this.props;
+    const { process, currentUser, t } = this.props;
+    const { resources } = this.state;
     if (!process || !process.meetings) {
       return;
     }
@@ -530,9 +565,7 @@ class Process extends Component {
                       closeLoader();
                     } else {
                       message.success(
-                        `${uploadableFile.name} ${t(
-                          'meeting.success.fileDropper'
-                        )}`
+                        `${uploadableFile.name} ${t('documents.fileDropper')}`
                       );
                       closeLoader();
                     }
@@ -660,7 +693,7 @@ class Process extends Component {
         )}
 
         <Heading mb="2" size="sm">
-          {t('labels.document')}
+          {tc('documents.label')}
         </Heading>
 
         {process && process.documents && process.documents.length > 0 ? (
@@ -679,7 +712,7 @@ class Process extends Component {
           </NiceList>
         ) : (
           <Text size="small" pad="2" margin={{ bottom: 'small' }}>
-            <em>{t('document.empty')}</em>
+            <em>{tc('documents.empty')}</em>
           </Text>
         )}
 
@@ -698,11 +731,11 @@ class Process extends Component {
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
-                      {t('document.up')}
+                      {tc('documents.up')}
                     </div>
                   ) : (
                     <div style={{ textAlign: 'center' }}>
-                      <b>{t('document.drop')}</b>
+                      <b>{tc('documents.drop')}</b>
                     </div>
                   )}
                   <input {...getInputProps()} />
@@ -730,7 +763,7 @@ class Process extends Component {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success(t('document.remove'));
+          message.success(tc('documents.remove'));
         }
       }
     );
@@ -753,7 +786,9 @@ class Process extends Component {
                 <Tab>{t('tabs.process.info')}</Tab>
                 <Tab>
                   {t('tabs.process.discuss')}{' '}
-                  <Badge colorScheme="red">{notificationCount}</Badge>
+                  {notificationCount && (
+                    <Badge colorScheme="red">{notificationCount}</Badge>
+                  )}
                 </Tab>
               </TabList>
               <TabPanels>
@@ -785,7 +820,7 @@ class Process extends Component {
 
     return (
       <Box p="4">
-        <Box background="light-2">
+        <Box bg="light-2">
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}
@@ -832,7 +867,8 @@ class Process extends Component {
   };
 
   render() {
-    const { process, isLoading, resources, history, t, tc } = this.props;
+    const { process, isLoading, history, t, tc } = this.props;
+    const { resources } = this.state;
 
     if (!process || isLoading) {
       return <Loader />;
@@ -971,7 +1007,7 @@ class Process extends Component {
   }
 }
 
-const MeetingInfo = ({ meeting, isAttending, resources }) => {
+function MeetingInfo({ meeting, isAttending, resources }) {
   return (
     <Box>
       <FancyDate occurence={meeting} resources={resources} />
@@ -983,7 +1019,7 @@ const MeetingInfo = ({ meeting, isAttending, resources }) => {
       )}
     </Box>
   );
-};
+}
 
 function CreateMeetingForm({
   handleDateChange,

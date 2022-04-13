@@ -21,15 +21,21 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
-  create: Create a New {{ domain }}
-  update: Edit this {{ domain }}
-  remove: Remove
   all: All
   booked: booked
-  process: Process
-  event: Event
-  page: Page
   contact: Contact
+  create: Create a New {{ domain }}
+  event: Event
+  newBooking: New Booking
+  page: Page
+  process: Process
+  remove: Remove
+  sortBy:
+    placeholder: Sort by
+    date: Date
+    name: Name
+  update: Edit this {{ domain }}
+  unselected: Not selected resource
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -111,6 +117,7 @@ domains:
   process: Process
   processes: Processes
   resource: Resource
+  resources: Resources
   work: Work
   works: Works
   host: Host
@@ -127,3 +134,13 @@ domains:
   props:
     name: name
     title: title
+
+
+documents:
+  label: Documents
+  empty: No document assigned
+  drop: Drop documents to upload
+  up: uploading
+  remove: The document is successfully removed
+  fileDropper: is successfully uploaded and assigned
+

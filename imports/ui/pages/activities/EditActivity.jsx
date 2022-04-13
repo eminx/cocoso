@@ -9,7 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import { resizeImage, uploadImage } from '../../@/shared';
+import { resizeImage, uploadImage, call } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 const formModel = {
@@ -35,9 +35,11 @@ class EditActivity extends PureComponent {
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
+    resources: [],
   };
 
   componentDidMount() {
+    this.getResources();
     this.setInitialData();
   }
 
@@ -46,6 +48,15 @@ class EditActivity extends PureComponent {
       this.setInitialData();
     }
   }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
+  };
 
   setInitialData = () => {
     const { activity } = this.props;
@@ -64,9 +75,21 @@ class EditActivity extends PureComponent {
   successEditMessage = (isDeleted) => {
     const { tc } = this.props;
     if (isDeleted) {
-      message.success(tc('message.success.remove', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+      message.success(
+        tc('message.success.remove', {
+          domain: `${tc('domains.your')} ${tc(
+            'domains.activity'
+          ).toLowerCase()}`,
+        })
+      );
     } else {
-      message.success(tc('message.success.update', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+      message.success(
+        tc('message.success.update', {
+          domain: `${tc('domains.your')} ${tc(
+            'domains.activity'
+          ).toLowerCase()}`,
+        })
+      );
     }
   };
 
@@ -83,11 +106,21 @@ class EditActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, uploadableImage } = this.state;
+    const { isPublicActivity, uploadableImage, resources } = this.state;
+    const formValues = { ...values };
+    if (values.resourceId) {
+      const selectedResource = resources.find(
+        (r) => r._id === values.resourceId
+      );
+      formValues.resource = selectedResource.label;
+      formValues.resourceId = selectedResource._id;
+      formValues.resourceIndex = selectedResource.resourceIndex;
+    }
+
     this.setState(
       {
         isCreating: true,
-        formValues: values,
+        formValues,
       },
       () => {
         if (isPublicActivity && uploadableImage) {
@@ -120,6 +153,14 @@ class EditActivity extends PureComponent {
     );
   };
 
+  handleSelectedResource = (value) => {
+    const { resources } = this.state;
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState({
+      selectedResource,
+    });
+  };
+
   uploadImage = async () => {
     const { uploadableImage } = this.state;
 
@@ -145,7 +186,7 @@ class EditActivity extends PureComponent {
   };
 
   updateActivity = () => {
-    const { activity, resources } = this.props;
+    const { activity } = this.props;
     const {
       formValues,
       isPublicActivity,
@@ -154,42 +195,29 @@ class EditActivity extends PureComponent {
       datesAndTimes,
     } = this.state;
 
-    const resource = resources.find(
-      (resource) =>
-        resource._id === formValues.resource ||
-        resource._id === formValues.resourceId
-    );
-
+    const imageUrl = uploadedImage || activity.imageUrl;
     const values = {
       ...formValues,
       datesAndTimes,
+      imageUrl,
       isPublicActivity,
       isRegistrationDisabled,
-      resource,
     };
 
-    const imageUrl = uploadedImage || activity.imageUrl;
-
-    Meteor.call(
-      'updateActivity',
-      values,
-      activity._id,
-      imageUrl,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-          this.setState({
-            isLoading: false,
-            isError: true,
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            isSuccess: true,
-          });
-        }
+    Meteor.call('updateActivity', activity._id, values, (error, respond) => {
+      if (error) {
+        console.log(error);
+        this.setState({
+          isLoading: false,
+          isError: true,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          isSuccess: true,
+        });
       }
-    );
+    });
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
@@ -234,7 +262,7 @@ class EditActivity extends PureComponent {
   };
 
   render() {
-    const { activity, currentUser, resources, tc, t } = this.props;
+    const { activity, currentUser, tc, t } = this.props;
 
     if (!currentUser || !activity) {
       return <Loader />;
@@ -251,6 +279,7 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
       isSuccess,
       uploadableImageLocal,
+      resources,
     } = this.state;
 
     if (isSuccess) {
@@ -304,6 +333,7 @@ class EditActivity extends PureComponent {
             uploadableImageLocal={uploadableImageLocal}
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
+            setSelectedResource={this.handleSelectedResource}
             setUploadableImage={this.setUploadableImage}
           />
         </Box>
@@ -324,10 +354,11 @@ class EditActivity extends PureComponent {
           visible={isDeleteModalOn}
           onConfirm={this.deleteActivity}
           onCancel={this.hideDeleteModal}
-          confirmText={tc('modal.confirm.delete.yes')}
+          confirmText={tc('modals.confirm.delete.yes')}
         >
-          {tc('modal.confirm.delete.body', { domain: tc("domains.activity").toLowerCase() })}
-          
+          {tc('modals.confirm.delete.body', {
+            domain: tc('domains.activity').toLowerCase(),
+          })}
         </ConfirmModal>
       </Template>
     );

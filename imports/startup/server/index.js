@@ -1,9 +1,10 @@
 import './api';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import Resources from '../../api/resources/resource';
+import Chats from '../../api/chats/chat';
 
 Meteor.startup(() => {
-
   // import { freshInstallment } from './installation';
 
   // freshInstallment();
@@ -26,3 +27,5 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${url}`;
   };
 });
+
+import './migrations';

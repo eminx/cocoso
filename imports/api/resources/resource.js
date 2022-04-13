@@ -7,49 +7,35 @@ const Resources = new Mongo.Collection('resources');
 Resources.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
-  
-  authorId: Schemas.Id,
-  authorUsername: {type: String},
-  authorFirstName: {type: String},
-  authorLastName: {type: String},
-  authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true },
+  userId: Schemas.Id,
 
   label: {type: String},
-  labelLowerCase: {type: String},
-  description: {type: String},
-  hourlyFee: {type: String, optional: true},
-  isCombo: {type: Boolean},
+  description: {type: String, optional: true},
+  images: { type: Array, optional: true },
+  'images.$': Schemas.Src,
 
-  resourceIndex: {type: SimpleSchema.Integer, optional: true},
-  resourcesForCombo: {type: Array, optional: true},
-  'resourcesForCombo.$': new SimpleSchema({
-    _id: Schemas.Id,
-    host: Schemas.Hostname,
-    
-    authorId: Schemas.Id,
-    authorUsername: {type: String},
-    authorFirstName: {type: String},
-    authorLastName: {type: String},
-    authorAvatar: new SimpleSchema(Schemas.Avatar),
+  isCombo: {type: Boolean, optional: true},
+  resourceIndex: {type: SimpleSchema.Integer},
+  resourcesForCombo: {type: Array},
+  'resourcesForCombo.$': Schemas.Id,
 
-    label: {type: String},
-    labelLowerCase: {type: String},
-    description: {type: String},
-    hourlyFee: {type: String, optional: true},
-    isCombo: {type: Boolean},
-    resourceIndex: {type: SimpleSchema.Integer, optional: true},
-    
-    updatedBy: {type: String, optional: true},
-    latestUpdate: {type: Date, optional: true},
-    creationDate: {type: Date},
-  }),
-
+  createdBy: {type: String, optional: true},
+  createdAt: {type: Date, optional: true},
   updatedBy: {type: String, optional: true},
-  latestUpdate: {type: Date, optional: true},
-  creationDate: {type: Date},
-
+  updatedAt: {type: Date, optional: true},
 });
 
 Resources.attachSchema(Resources.schema);
+
+Resources.publicFields = {
+  userId: 1,
+  label: 1,
+  description: 1,
+  images: 1,
+  isCombo: 1,
+  resourcesForCombo: 1,
+  resourceIndex: 1,
+  createdAt: 1,
+};
 
 export default Resources;

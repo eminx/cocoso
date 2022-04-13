@@ -21,15 +21,21 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
-  create: Skapa en Ny {{ domain }}
-  update: Redigera detta {{ domain }}
-  remove: Avlägsna
   all: Allt
   booked: bokad
-  process: Bearbeta
-  event: Händelse
-  page: Sida
   contact: Kontakt
+  create: Skapa en ny {{ domain }}
+  event: Händelse
+  newBooking: Ny bokning
+  page: Sida
+  process: Bearbeta
+  remove: Ta bort
+  sortBy:
+    placeholder: Sortera med
+    date: Datum
+    name: Namn
+  update: Redigera detta {{ domain }}
+  unselected: Ej valt resurs
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -111,6 +117,7 @@ domains:
   process: Process
   processes: Processer
   resource: Resurs
+  resources: Resurser
   work: arbete
   works: Arbetar
   host: Värd
@@ -127,3 +134,11 @@ domains:
   props:
     name: namn
     title: titel
+
+documents:
+  label: Dokument
+  empty: Inget dokument tilldelat
+  drop: Släpp dokument för att ladda upp
+  up: laddar upp
+  remove: Manualen har tagits bort
+  fileDropper: har laddats upp och tilldelats!

@@ -3,7 +3,9 @@ import { getHost } from '../@/shared';
 import { isContributorOrAdmin } from '../@users/user.roles';
 import Hosts from '../@hosts/host';
 import Activities from './activity';
+import Resources from '../resources/resource';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
+import moment from 'moment';
 
 Meteor.methods({
   getMyActivities() {
@@ -24,7 +26,78 @@ Meteor.methods({
     }
   },
 
-  createActivity(formValues, uploadedImage) {
+  getAllOccurences () {
+    const host = getHost(this);
+    try {
+      const activities = Activities.find({ host }, 
+        { fields: {
+          title: 1,
+          authorName: 1,
+          longDescription: 1,
+          isPublicActivity: 1,
+          imageUrl: 1,
+          datesAndTimes: 1,
+          resource: 1,
+          resourceIndex: 1,
+        }}
+      ).fetch();
+
+      let occurences = [];
+
+      activities.forEach(activity => {
+
+        if (activity?.datesAndTimes && activity.datesAndTimes.length > 0) {
+
+          activity.datesAndTimes.forEach(recurrence => {
+
+            const occurence = {
+              _id: activity._id,
+              title: activity.title,
+              authorName: activity.authorName,
+              longDescription: activity.longDescription,
+              imageUrl: activity.imageUrl,
+              isPublicActivity: activity.isPublicActivity,
+              isWithComboResource: false,
+              start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
+              end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
+              startDate: recurrence.startDate,
+              startTime: recurrence.startTime,
+              endDate: recurrence.endDate,
+              endTime: recurrence.endTime,
+              isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+            };
+
+            const resource = Resources.findOne(activity.resourceId, { fields: { isCombo: 1 }});
+            
+            if (resource?.isCombo) {
+              resource.resourcesForCombo.forEach(resId => {
+                const res = Resources.findOne(resId, { fields: { label: 1, resourceIndex: 1 }});
+                occurences.push({
+                  ...occurence,
+                  resource: res.label,
+                  resourceIndex: res.resourceIndex,
+                });
+              })
+            }
+
+            occurences.push({
+              ...occurence,
+              resource: activity.resource,
+              resourceIndex: activity.resourceIndex,
+            });
+
+          });
+        }
+      });
+
+      return occurences;
+
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch works");
+    }
+  },
+
+  createActivity(values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -33,31 +106,19 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    if (formValues.isPublicActivity && !uploadedImage) {
+    if (values.isPublicActivity && !values.imageUrl) {
       throw new Meteor.Error('Image is required for public activities');
     }
 
     try {
       const add = Activities.insert({
-        host: host,
+        ...values,
+        host,
         authorId: user._id,
         authorName: user.username,
-        title: formValues.title,
-        subTitle: formValues.subTitle,
-        longDescription: formValues.longDescription,
-        resource: formValues.resource.label,
-        resourceId: formValues.resource._id,
-        resourceIndex: formValues.resource.resourceIndex,
-        place: formValues.place,
-        practicalInfo: formValues.practicalInfo,
-        internalInfo: formValues.internalInfo,
-        address: formValues.address,
-        capacity: formValues.capacity,
-        datesAndTimes: formValues.datesAndTimes,
-        imageUrl: uploadedImage,
         isSentForReview: false,
-        isPublicActivity: formValues.isPublicActivity,
-        isRegistrationDisabled: formValues.isRegistrationDisabled,
+        isPublicActivity: values.isPublicActivity,
+        isRegistrationDisabled: values.isRegistrationDisabled,
         isPublished: true,
         creationDate: new Date(),
       });
@@ -78,7 +139,7 @@ Meteor.methods({
     }
   },
 
-  updateActivity(formValues, activityId, imageUrl) {
+  updateActivity(activityId, values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -87,31 +148,16 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
     
-    const resourceIndex = formValues.resource.resourceIndex;
-    const theG = Activities.findOne(activityId);
-    if (user._id !== theG.authorId) {
+    const theActivity = Activities.findOne(activityId);
+    if (user._id !== theActivity.authorId) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
       Activities.update(activityId, {
         $set: {
-          title: formValues.title,
-          subTitle: formValues.subTitle,
-          longDescription: formValues.longDescription,
-          resource: formValues.resource.label,
-          resourceId: formValues.resource._id,
-          resourceIndex: resourceIndex,
-          place: formValues.place,
-          practicalInfo: formValues.practicalInfo,
-          internalInfo: formValues.internalInfo,
-          address: formValues.address,
-          datesAndTimes: formValues.datesAndTimes,
-          isPublicActivity: formValues.isPublicActivity,
-          isRegistrationDisabled: formValues.isRegistrationDisabled,
-          imageUrl,
-          latestUpdate: new Date(),
-        },
+          ...values,
+        }
       });
       return activityId;
     } catch (error) {

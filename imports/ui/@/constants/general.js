@@ -32,12 +32,12 @@ const adminMenu = [
     key: 'members', 
     value: '/admin/members' 
   },
-  { 
-    // label: 'Resources', 
-    menu: 'admin', 
-    key: 'resources', 
-    value: '/admin/resources' 
-  },
+  // { 
+  //   // label: 'Resources', 
+  //   menu: 'admin', 
+  //   key: 'resources', 
+  //   value: '/admin/resources' 
+  // },
   { 
     // label: 'Emails', 
     menu: 'admin', 

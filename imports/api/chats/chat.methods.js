@@ -6,6 +6,11 @@ import Processes from '../processes/process';
 import Chats from './chat';
 
 Meteor.methods({
+  getChatByContextId(contextId) {
+    const chat = Chats.findOne({contextId});
+    return chat;
+  },
+
   createChat(contextName, contextId) {
     const user = Meteor.user();
     const host = getHost(this);

@@ -27,6 +27,7 @@ function ConfirmModal({
 
   return (
     <AlertDialog
+      isCentered
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       onClose={onCancel}

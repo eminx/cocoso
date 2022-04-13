@@ -4,28 +4,59 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 
-import { Box, Button, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Tag as CTag,
+  TagLabel,
+  Text,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
+import { stringify } from 'query-string';
+import AutoCompleteSelect from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
 import { getHslValuesFromLength } from '../@/constants/colors';
+import { call } from '../@/shared';
+import { message } from '../components/message';
 import { StateContext } from '../LayoutContainer';
 
 moment.locale(i18n.language);
-
+const animatedComponents = makeAnimated();
 const publicSettings = Meteor.settings.public;
+const maxResourceLabelsToShow = 12;
 
 class Calendar extends PureComponent {
   state = {
-    mode: 'list',
+    calendarFilter: null,
     editActivity: null,
-    calendarFilter: 'All',
+    resourcesList: [],
     selectedActivity: null,
+    selectedSlot: null,
+    mode: 'list',
+    selectedResource: null,
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resourcesList = await call('getResources');
+      this.setState({ resourcesList });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
   };
 
   handleModeChange = (e) => {
@@ -40,10 +71,8 @@ class Calendar extends PureComponent {
     });
   };
 
-  handleCalendarFilterChange = (value) => {
-    this.setState({
-      calendarFilter: value,
-    });
+  handleCalendarFilterChange = (value, meta) => {
+    this.setState({ calendarFilter: value });
   };
 
   handleCloseModal = () => {
@@ -56,6 +85,79 @@ class Calendar extends PureComponent {
     this.setState({
       editActivity: true,
     });
+  };
+
+  handleSelectSlot = (slotInfo) => {
+    const { canCreateContent } = this.context;
+
+    if (!canCreateContent) {
+      return;
+    }
+
+    const { resourcesList, calendarFilter } = this.state;
+
+    const selectedResource = resourcesList.find(
+      (resource) => calendarFilter && resource._id === calendarFilter._id
+    );
+
+    if (slotInfo?.slots?.length === 1) {
+      // One day selected in month view
+      const type = 'month-oneday';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type,
+          content: moment(slotInfo?.start).format('DD MMMM'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    } else if (
+      // Multiple days selected in month view
+      slotInfo?.slots?.length > 1 &&
+      moment(slotInfo?.end).format('HH:mm') === '00:00'
+    ) {
+      const type = 'month-multipledays';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type,
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ' – ' +
+            moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    } else {
+      // All other, i.e. weekly, daily bookings
+      const type = 'other';
+      this.setState({
+        selectedSlot: {
+          ...slotInfo,
+          type,
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ': ' +
+            moment(slotInfo?.start).format('HH:mm') +
+            ' – ' +
+            moment(slotInfo?.end).format('HH:mm'),
+          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
+        },
+      });
+    }
+  };
+
+  activateRedirectToBooking = () => {
+    this.setState(({ selectedSlot }) => ({
+      selectedSlot: {
+        ...selectedSlot,
+        isRedirectActive: true,
+      },
+    }));
+  };
+
+  handleCloseSelectedSlot = () => {
+    this.setState({ selectedSlot: null });
   };
 
   getActivityTimes = (activity) => {
@@ -96,15 +198,23 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, resourcesList, allActivities, tc } = this.props;
+    const { isLoading, currentUser, allActivities, tc } = this.props;
     const { canCreateContent, currentHost, role } = this.context;
-    const { editActivity, calendarFilter, selectedActivity, isUploading } =this.state;
+    const {
+      editActivity,
+      calendarFilter,
+      selectedActivity,
+      selectedSlot,
+      isUploading,
+      resourcesList,
+      selectedResource,
+    } = this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
       return (
-        calendarFilter === 'All' ||
-        activity.resource === calendarFilter ||
-        activity.comboResource === calendarFilter
+        !calendarFilter ||
+        calendarFilter._id === activity.resourceId ||
+        calendarFilter._id === activity.comboResourceId
       );
     });
 
@@ -143,12 +253,15 @@ class Calendar extends PureComponent {
           color += ')';
         }
       });
-      return { ...res, color };
+      const comboLabel = `${res.label} [${res.resourcesForCombo
+        .map((item) => item.label)
+        .join(',')}]`;
+      return { ...res, color, label: comboLabel };
     });
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
       const resource = nonComboResourcesWithColor.find(
-        (res) => res.label === act.resource
+        (res) => res._id === act.resourceId
       );
       const resourceColor = (resource && resource.color) || '#484848';
 
@@ -158,15 +271,26 @@ class Calendar extends PureComponent {
       };
     });
 
+    if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
+      return <Redirect to={selectedSlot.bookingUrl} />;
+    }
+
     return (
       <Box>
         <Helmet>
-          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${
+            currentHost.settings.name
+          } | ${publicSettings.name}`}</title>
         </Helmet>
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+              <Button
+                as="span"
+                colorScheme="green"
+                variant="outline"
+                textTransform="uppercase"
+              >
                 {tc('actions.create')}
               </Button>
             </Link>
@@ -183,42 +307,67 @@ class Calendar extends PureComponent {
                   key="All"
                   label={tc('labels.all')}
                   filterColor="#484848"
-                  checked={calendarFilter === 'All'}
-                  onClick={() => this.handleCalendarFilterChange('All')}
+                  checked={!calendarFilter}
+                  onClick={() => this.handleCalendarFilterChange(null)}
                 />
               </WrapItem>
-              {nonComboResourcesWithColor.map((resource, i) => (
-                <WrapItem key={resource.label}>
-                  <Tag
-                    checkable
-                    label={resource.label}
-                    filterColor={resource.color}
-                    checked={calendarFilter === resource.label}
-                    onClick={() =>
-                      this.handleCalendarFilterChange(resource.label)
-                    }
-                  />
-                </WrapItem>
-              ))}
+              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
+                nonComboResourcesWithColor.map((resource, i) => (
+                  <WrapItem key={resource._id}>
+                    <Tag
+                      checkable
+                      label={resource.label}
+                      filterColor={resource.color}
+                      checked={calendarFilter?._id === resource._id}
+                      onClick={() => this.handleCalendarFilterChange(resource)}
+                    />
+                  </WrapItem>
+                ))}
             </Wrap>
+            {nonComboResourcesWithColor.length >= maxResourceLabelsToShow && (
+              <Box w="30rem" zIndex={11}>
+                <AutoCompleteSelect
+                  isClearable
+                  onChange={this.handleCalendarFilterChange}
+                  components={animatedComponents}
+                  value={calendarFilter}
+                  options={[
+                    ...nonComboResourcesWithColor,
+                    ...comboResourcesWithColor,
+                  ].map((item) => ({
+                    ...item,
+                    value: item._id,
+                  }))}
+                  style={{ width: '100%', marginTop: '1rem' }}
+                  styles={{
+                    option: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                    singleValue: (styles, { data }) => ({
+                      ...styles,
+                      color: data.color,
+                    }),
+                  }}
+                />
+              </Box>
+            )}
           </Center>
-
           <Center>
             <Wrap justify="center" mb="2" px="1">
-              {comboResourcesWithColor.map((resource, i) => (
-                <WrapItem key={resource.label}>
-                  <Tag
-                    checkable
-                    label={resource.label}
-                    filterColor={'#2d2d2d'}
-                    gradientBackground={resource.color}
-                    checked={calendarFilter === resource.label}
-                    onClick={() =>
-                      this.handleCalendarFilterChange(resource.label)
-                    }
-                  />
-                </WrapItem>
-              ))}
+              {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
+                comboResourcesWithColor.map((resource, i) => (
+                  <WrapItem key={resource._id}>
+                    <Tag
+                      checkable
+                      label={resource.label}
+                      filterColor={'#2d2d2d'}
+                      gradientBackground={resource.color}
+                      checked={calendarFilter?._id === resource._id}
+                      onClick={() => this.handleCalendarFilterChange(resource)}
+                    />
+                  </WrapItem>
+                ))}
             </Wrap>
           </Center>
 
@@ -229,6 +378,7 @@ class Calendar extends PureComponent {
               <CalendarView
                 activities={allFilteredActsWithColors}
                 onSelect={this.handleSelectActivity}
+                onSelectSlot={this.handleSelectSlot}
               />
             </Box>
           )}
@@ -294,20 +444,67 @@ class Calendar extends PureComponent {
                 >
                   {' '}
                   {!selectedActivity.isPrivateProcess &&
-                  `${
-                    selectedActivity.isProcess 
-                    ? tc('labels.process') 
-                    : tc('labels.event')
-                  } ${tc('labels.page')}`}
-                  
+                    `${
+                      selectedActivity.isProcess
+                        ? tc('labels.process')
+                        : tc('labels.event')
+                    } ${tc('labels.page')}`}
                 </Button>
               </Link>
             )}
           </Center>
         </ConfirmModal>
+
+        <ConfirmModal
+          visible={Boolean(selectedSlot)}
+          title={tc('labels.newBooking') + '?'}
+          confirmText={
+            <span>
+              {tc('actions.create')} <ArrowForwardIcon />
+            </span>
+          }
+          cancelText={tc('actions.close')}
+          onConfirm={this.activateRedirectToBooking}
+          onCancel={this.handleCloseSelectedSlot}
+          onClickOutside={this.handleCloseSelectedSlot}
+        >
+          <Box bg="light-1" p="1" my="1">
+            <Box>
+              <CTag mr="2">
+                <TagLabel>
+                  {calendarFilter
+                    ? calendarFilter?.label
+                    : tc('labels.unselected')}
+                </TagLabel>
+              </CTag>
+              <Text as="span" fontWeight="bold">
+                {selectedSlot?.content}
+              </Text>
+            </Box>
+          </Box>
+        </ConfirmModal>
       </Box>
     );
   }
+}
+
+function parseDatesForQuery(slotInfo, selectedResource, type) {
+  let bookingUrl = '/new-activity/?';
+  const params = {
+    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: moment(slotInfo?.start).format('HH:mm'),
+    endTime: moment(slotInfo?.end).format('HH:mm'),
+    resource: selectedResource ? selectedResource._id : '',
+  };
+
+  if (type !== 'other') {
+    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endTime = '23:59';
+  }
+
+  bookingUrl += stringify(params);
+  return bookingUrl;
 }
 
 Calendar.contextType = StateContext;

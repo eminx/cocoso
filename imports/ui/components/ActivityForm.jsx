@@ -43,14 +43,15 @@ function ActivityForm({
   setDatesAndTimes,
   uploadableImageLocal,
   setUploadableImage,
+  setSelectedResource,
 }) {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ tc ] = useTranslation('common');
-  const [ t ] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+  const [t] = useTranslation('activities');
 
   const addRecurrence = () => {
     const newDatesAndTimes = [...datesAndTimes, { ...emptyDateAndTime }];
@@ -114,14 +115,18 @@ function ActivityForm({
           </Heading>
           <FormField>
             <Select
-              {...register('resource', { required: true })}
+              {...register('resourceId', { required: true })}
               placeholder={t('form.resource.holder')}
               variant="filled"
-              value={defaultValues.resourceId}
+              onChange={(e) => setSelectedResource(e.target.value)}
             >
               {resources.map((option, index) => {
                 return (
-                  <option key={option._id} value={option._id}>
+                  <option
+                    key={option._id}
+                    selected={option._id === defaultValues.resourceId}
+                    value={option._id}
+                  >
                     {option.isCombo
                       ? option.label +
                         ': [' +
@@ -220,7 +225,10 @@ function ActivityForm({
 
             {isPublicActivity && (
               <FormField label={t('form.place.label')}>
-                <Input {...register('place')} placeholder={t('form.place.holder')} />
+                <Input
+                  {...register('place')}
+                  placeholder={t('form.place.holder')}
+                />
               </FormField>
             )}
 

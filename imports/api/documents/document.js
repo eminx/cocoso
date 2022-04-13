@@ -13,6 +13,8 @@ Documents.schema = new SimpleSchema({
   uploadedByName: {type: String},
 
   contextType: {type: String},
+  attachedTo: Schemas.Id,
+
   documentLabel: {type: String},
   documentUrl: {type: String, regEx: SimpleSchema.RegEx.Url},
 
@@ -20,5 +22,10 @@ Documents.schema = new SimpleSchema({
 });
 
 Documents.attachSchema(Documents.schema);
+
+Documents.publicFields = {
+  documentLabel: 1,
+  documentUrl: 1,
+};
 
 export default Documents;

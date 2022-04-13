@@ -3,12 +3,13 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
+import { parse } from 'query-string';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
-import { resizeImage, uploadImage } from '../../@/shared';
+import { resizeImage, uploadImage, call } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
@@ -38,8 +39,8 @@ const emptyDateAndTime = {
 
 class NewActivity extends PureComponent {
   state = {
-    formValues: { ...formModel },
-    datesAndTimes: [{ ...emptyDateAndTime }],
+    formValues: null,
+    datesAndTimes: null,
     isLoading: false,
     isSuccess: false,
     isError: false,
@@ -50,14 +51,69 @@ class NewActivity extends PureComponent {
     isExclusiveActivity: true,
     isRegistrationDisabled: false,
     isCreating: false,
+    isReady: false,
+    resources: [],
+  };
+
+  componentDidMount() {
+    this.getResources();
+  }
+
+  getResources = async () => {
+    try {
+      const resources = await call('getResources');
+      this.setState({ resources }, () => {
+        this.setInitialValuesWithQP();
+      });
+    } catch (error) {
+      message.error(error.error || error.reason);
+    }
+  };
+
+  setInitialValuesWithQP = () => {
+    const { history } = this.props;
+    const { formValues } = this.state;
+
+    const {
+      location: { search },
+    } = history;
+    const params = parse(search);
+
+    const defaultOccurence = {
+      ...emptyDateAndTime,
+      ...params,
+      isRange:
+        params?.startDate &&
+        params?.endDate &&
+        params.startDate !== params.endDate,
+    };
+
+    const initialValues = {
+      ...formValues,
+      resourceId: params.resource || '',
+      datesAndTimes: [defaultOccurence],
+    };
+
+    this.setState({
+      formValues: initialValues,
+      datesAndTimes: [defaultOccurence],
+      isReady: true,
+    });
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity } = this.state;
+    const { isPublicActivity, resources } = this.state;
+
+    const formValues = { ...values };
+    const selectedResource = resources.find((r) => r._id === values.resourceId);
+    formValues.resource = selectedResource.label;
+    formValues.resourceId = selectedResource._id;
+    formValues.resourceIndex = selectedResource.resourceIndex;
+
     this.setState(
       {
         isCreating: true,
-        formValues: values,
+        formValues,
       },
       () => {
         if (isPublicActivity) {
@@ -71,7 +127,11 @@ class NewActivity extends PureComponent {
 
   successCreation = () => {
     const { tc } = this.props;
-    message.success(tc('message.success.create', { domain: `${tc("domains.your")} ${tc("domains.activity").toLowerCase()}`}));
+    message.success(
+      tc('message.success.create', {
+        domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
+      })
+    );
   };
 
   setUploadableImage = (files) => {
@@ -121,8 +181,7 @@ class NewActivity extends PureComponent {
     }
   };
 
-  createActivity = () => {
-    const { resources } = this.props;
+  createActivity = async () => {
     const {
       formValues,
       datesAndTimes,
@@ -141,34 +200,31 @@ class NewActivity extends PureComponent {
       attendees: [],
     }));
 
-    const resource = resources.find(
-      (resource) => resource._id === formValues.resource
-    );
-
     const values = {
       ...formValues,
       datesAndTimes: datesAndTimesNoConflict,
       isPublicActivity,
       isRegistrationDisabled,
-      resource,
+      imageUrl: uploadedImage,
     };
 
-    Meteor.call('createActivity', values, uploadedImage, (error, result) => {
-      if (error) {
-        console.log('error', error);
-        message.error(error.reason);
-        this.setState({
+    try {
+      const newActivityId = await call('createActivity', values);
+      this.setState(
+        {
           isCreating: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isCreating: false,
-          newActivityId: result,
+          newActivityId,
           isSuccess: true,
-        });
-      }
-    });
+        },
+        () => this.successCreation()
+      );
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({
+        isCreating: false,
+        isError: true,
+      });
+    }
   };
 
   handlePublicActivitySwitch = (event) => {
@@ -201,12 +257,15 @@ class NewActivity extends PureComponent {
   };
 
   setDatesAndTimes = (selectedOccurences) => {
-    const { formValues } = this.state;
+    const { formValues, resources } = this.state;
     this.setState({
       datesAndTimes: selectedOccurences,
     });
 
-    this.validateBookings(selectedOccurences, formValues.resource);
+    const selectedResource = resources.find(
+      (r) => r._id === formValues.resourceId
+    );
+    this.validateBookings(selectedOccurences, selectedResource);
   };
 
   validateBookings = (selectedOccurences, selectedResource) => {
@@ -217,11 +276,10 @@ class NewActivity extends PureComponent {
       (occurence) => {
         if (selectedResource.isCombo) {
           return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-            console.log(resourceForCombo.label, occurence.resource);
-            return resourceForCombo.label === occurence.resource;
+            return resourceForCombo._id === occurence.resourceId;
           });
         }
-        return occurence.resource === selectedResource.label;
+        return occurence.resourceId === selectedResource._id;
       }
     );
 
@@ -264,10 +322,18 @@ class NewActivity extends PureComponent {
     });
   };
 
+  handleSelectedResource = (value) => {
+    const { resources } = this.state;
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState({
+      selectedResource,
+    });
+  };
+
   isFormValid = () => {
     const { formValues, datesAndTimes } = this.state;
     const { title } = formValues;
-    const isValuesOK = formValues && formValues.resource && title.length > 3;
+    const isValuesOK = formValues && formValues.resource && title?.length > 3;
     const isConflict = datesAndTimes.some((occurence) =>
       Boolean(occurence.conflict)
     );
@@ -281,14 +347,16 @@ class NewActivity extends PureComponent {
   };
 
   render() {
-    const { currentUser, resources, t, tc } = this.props;
+    const { currentUser, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message={tc('message.access.contributor', { doamin: 'an activity' })}
+            message={tc('message.access.contributor', {
+              doamin: 'an activity',
+            })}
             type="error"
           />
         </div>
@@ -304,23 +372,28 @@ class NewActivity extends PureComponent {
       uploadableImageLocal,
       isPublicActivity,
       isExclusiveActivity,
+      isReady,
       isRegistrationDisabled,
       datesAndTimes,
+      resources,
     } = this.state;
 
     if (isSuccess) {
-      this.successCreation();
       return <Redirect to={`/event/${newActivityId}`} />;
     }
 
-    const buttonLabel = isCreating
-      ? t('form.waiting')
-      : t('form.submit');
+    if (!isReady) {
+      return null;
+    }
+
+    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
 
     const isFormValid = this.isFormValid();
 
     return (
-      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
+      <Template
+        heading={tc('labels.create', { domain: tc('domains.activity') })}
+      >
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">
@@ -356,6 +429,7 @@ class NewActivity extends PureComponent {
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
             setUploadableImage={this.setUploadableImage}
+            setSelectedResource={this.handleSelectedResource}
             isButtonDisabled={!isFormValid || isCreating}
             isCreating={isCreating}
             isFormValid={isFormValid}

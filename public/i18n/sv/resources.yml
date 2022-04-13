@@ -1,0 +1,50 @@
+# RESOURCES PAGE
+label: Resurser
+
+all: Allt
+
+messages:
+  notfound: Ingen resurs hittades
+
+form:
+  holder: filtrera med namn
+  combo:
+    switch:
+      label: Combo Resurser
+    select:
+      holder: Välj alternativ
+      helper: Välj flera resurser för att skapa en kombinationsresurs
+  name:
+    label: Namn
+    holder: Sound Studio
+  desc:
+    label: Beskrivning
+    holder: Att använda studio kräver omsorg ...
+  
+  images:
+    label: Images ({{ count }})    
+
+tabs:
+  info: Info
+  discussion: Diskussion
+
+cards:
+  date: lagt till av {{ username }} den {{ date }}
+  ifCombo: Combo
+
+
+booking:
+  labels: 
+    field: Bokningar
+    form: Lägg till en bokning
+  multiple: Boka för flera dagar
+  conflict: "Det finns redan en bokning för den här resursen vid detta datum och tid:"
+  date: 
+    start: Startdatum
+    end: Slutdatum
+  time: 
+    start: Starttid
+    end: Sluttid
+  title: Ge ett namn
+  description: Notera, användning, syfte ..
+  submit: Bok
