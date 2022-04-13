@@ -98,7 +98,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     const { resourcesForCombo } = defaultValues;
     if (!resourcesForCombo || resourcesForCombo.length === 0) {
       values.isCombo = false;
-      values.resourcesForCombo = null;
+      values.resourcesForCombo = [];
     } else {
       values.isCombo = true;
       values.resourcesForCombo = resourcesForCombo.map((item) => item.value);

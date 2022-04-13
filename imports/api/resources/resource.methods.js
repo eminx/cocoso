@@ -117,15 +117,13 @@ Meteor.methods({
   },
 
   updateResource(resourceId, values) {
-
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});
-    
     if(!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host, resourceId)) {
       throw new Meteor.Error(error, "Not allowed");
     }
-    
+
     try {
       Resources.update(resourceId, {
         $set: {
