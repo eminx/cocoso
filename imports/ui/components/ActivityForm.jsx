@@ -115,7 +115,7 @@ function ActivityForm({
           </Heading>
           <FormField>
             <Select
-              {...register('resource', { required: true })}
+              {...register('resourceId', { required: true })}
               placeholder={t('form.resource.holder')}
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}

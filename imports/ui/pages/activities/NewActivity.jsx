@@ -39,7 +39,7 @@ const emptyDateAndTime = {
 
 class NewActivity extends PureComponent {
   state = {
-    formValues: { ...formModel },
+    formValues: null,
     datesAndTimes: null,
     isLoading: false,
     isSuccess: false,
@@ -72,6 +72,8 @@ class NewActivity extends PureComponent {
 
   setInitialValuesWithQP = () => {
     const { history } = this.props;
+    const { formValues } = this.state;
+
     const {
       location: { search },
     } = history;
@@ -85,23 +87,33 @@ class NewActivity extends PureComponent {
         params?.endDate &&
         params.startDate !== params.endDate,
     };
-    this.setState((formValues) => ({
-      formValues: {
-        ...formValues,
-        resource: params.resource || '',
-        datesAndTimes: [defaultOccurence],
-      },
+
+    const initialValues = {
+      ...formValues,
+      resourceId: params.resource || '',
+      datesAndTimes: [defaultOccurence],
+    };
+
+    this.setState({
+      formValues: initialValues,
       datesAndTimes: [defaultOccurence],
       isReady: true,
-    }));
+    });
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity } = this.state;
+    const { isPublicActivity, resources } = this.state;
+
+    const formValues = { ...values };
+    const selectedResource = resources.find((r) => r._id === values.resourceId);
+    formValues.resource = selectedResource.label;
+    formValues.resourceId = selectedResource._id;
+    formValues.resourceIndex = selectedResource.resourceIndex;
+
     this.setState(
       {
         isCreating: true,
-        formValues: values,
+        formValues,
       },
       () => {
         if (isPublicActivity) {
@@ -169,14 +181,13 @@ class NewActivity extends PureComponent {
     }
   };
 
-  createActivity = () => {
+  createActivity = async () => {
     const {
       formValues,
       datesAndTimes,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
-      resources,
     } = this.state;
 
     const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
@@ -189,34 +200,31 @@ class NewActivity extends PureComponent {
       attendees: [],
     }));
 
-    const resource = resources.find(
-      (resource) => resource._id === formValues.resource
-    );
-
     const values = {
       ...formValues,
       datesAndTimes: datesAndTimesNoConflict,
       isPublicActivity,
       isRegistrationDisabled,
-      resource,
+      imageUrl: uploadedImage,
     };
 
-    Meteor.call('createActivity', values, uploadedImage, (error, result) => {
-      if (error) {
-        console.log('error', error);
-        message.error(error.reason);
-        this.setState({
+    try {
+      const newActivityId = await call('createActivity', values);
+      this.setState(
+        {
           isCreating: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isCreating: false,
-          newActivityId: result,
+          newActivityId,
           isSuccess: true,
-        });
-      }
-    });
+        },
+        () => this.successCreation()
+      );
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({
+        isCreating: false,
+        isError: true,
+      });
+    }
   };
 
   handlePublicActivitySwitch = (event) => {
@@ -249,12 +257,15 @@ class NewActivity extends PureComponent {
   };
 
   setDatesAndTimes = (selectedOccurences) => {
-    const { formValues } = this.state;
+    const { formValues, resources } = this.state;
     this.setState({
       datesAndTimes: selectedOccurences,
     });
 
-    this.validateBookings(selectedOccurences, formValues.resource);
+    const selectedResource = resources.find(
+      (r) => r._id === formValues.resourceId
+    );
+    this.validateBookings(selectedOccurences, selectedResource);
   };
 
   validateBookings = (selectedOccurences, selectedResource) => {
@@ -265,10 +276,10 @@ class NewActivity extends PureComponent {
       (occurence) => {
         if (selectedResource.isCombo) {
           return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-            return resourceForCombo.label === occurence.resource;
+            return resourceForCombo._id === occurence.resourceId;
           });
         }
-        return occurence.resource === selectedResource.label;
+        return occurence.resourceId === selectedResource._id;
       }
     );
 
@@ -311,15 +322,12 @@ class NewActivity extends PureComponent {
     });
   };
 
-  handleSelectedResource = (resourceId) => {
+  handleSelectedResource = (value) => {
     const { resources } = this.state;
-    const resource = resources.find((r) => r._id === resourceId);
-    this.setState((formValues) => ({
-      formValues: {
-        ...formValues,
-        resource,
-      },
-    }));
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState({
+      selectedResource,
+    });
   };
 
   isFormValid = () => {
@@ -371,7 +379,6 @@ class NewActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      this.successCreation();
       return <Redirect to={`/event/${newActivityId}`} />;
     }
 

@@ -106,11 +106,21 @@ class EditActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, uploadableImage } = this.state;
+    const { isPublicActivity, uploadableImage, resources } = this.state;
+    const formValues = { ...values };
+    if (values.resourceId) {
+      const selectedResource = resources.find(
+        (r) => r._id === values.resourceId
+      );
+      formValues.resource = selectedResource.label;
+      formValues.resourceId = selectedResource._id;
+      formValues.resourceIndex = selectedResource.resourceIndex;
+    }
+
     this.setState(
       {
         isCreating: true,
-        formValues: values,
+        formValues,
       },
       () => {
         if (isPublicActivity && uploadableImage) {
@@ -141,6 +151,14 @@ class EditActivity extends PureComponent {
       },
       false
     );
+  };
+
+  handleSelectedResource = (value) => {
+    const { resources } = this.state;
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState({
+      selectedResource,
+    });
   };
 
   uploadImage = async () => {
@@ -175,45 +193,31 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
       uploadedImage,
       datesAndTimes,
-      resources,
     } = this.state;
 
-    const resource = resources.find(
-      (resource) =>
-        resource._id === formValues.resource ||
-        resource._id === formValues.resourceId
-    );
-
+    const imageUrl = uploadedImage || activity.imageUrl;
     const values = {
       ...formValues,
       datesAndTimes,
+      imageUrl,
       isPublicActivity,
       isRegistrationDisabled,
-      resource,
     };
 
-    const imageUrl = uploadedImage || activity.imageUrl;
-
-    Meteor.call(
-      'updateActivity',
-      values,
-      activity._id,
-      imageUrl,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-          this.setState({
-            isLoading: false,
-            isError: true,
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            isSuccess: true,
-          });
-        }
+    Meteor.call('updateActivity', activity._id, values, (error, respond) => {
+      if (error) {
+        console.log(error);
+        this.setState({
+          isLoading: false,
+          isError: true,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          isSuccess: true,
+        });
       }
-    );
+    });
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
@@ -329,6 +333,7 @@ class EditActivity extends PureComponent {
             uploadableImageLocal={uploadableImageLocal}
             onSubmit={this.handleSubmit}
             setDatesAndTimes={this.setDatesAndTimes}
+            setSelectedResource={this.handleSelectedResource}
             setUploadableImage={this.setUploadableImage}
           />
         </Box>
