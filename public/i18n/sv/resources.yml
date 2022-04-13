@@ -7,7 +7,7 @@ messages:
   notfound: Ingen resurs hittades
 
 form:
-  holder: filtrera med namn
+  holder: skriva
   combo:
     switch:
       label: Combo Resurser
@@ -20,9 +20,9 @@ form:
   desc:
     label: Beskrivning
     holder: Att använda studio kräver omsorg ...
-  
+
   images:
-    label: Images ({{ count }})    
+    label: Images ({{ count }})
 
 tabs:
   info: Info
@@ -32,17 +32,16 @@ cards:
   date: lagt till av {{ username }} den {{ date }}
   ifCombo: Combo
 
-
 booking:
-  labels: 
+  labels:
     field: Bokningar
     form: Lägg till en bokning
   multiple: Boka för flera dagar
-  conflict: "Det finns redan en bokning för den här resursen vid detta datum och tid:"
-  date: 
+  conflict: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
+  date:
     start: Startdatum
     end: Slutdatum
-  time: 
+  time:
     start: Starttid
     end: Sluttid
   title: Ge ett namn

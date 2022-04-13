@@ -41,29 +41,12 @@ export default function ResourcesCard({
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
       <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
         <Heading size="md" fontWeight="bold">
-          {resource?.isCombo ? (
+          {resource.isCombo ? (
             <ResourcesForCombo resource={resource} />
           ) : (
             resource?.label
           )}
         </Heading>
-        {/* <Link href={'/@'+resource.user?.username}>
-          <Flex alignItems="center">
-            <Text 
-              fontSize="xs"
-              fontWeight="medium"
-              textAlign="center"
-              mr="2"
-              >
-              {resource.user?.username}
-            </Text>
-            <Avatar 
-              size="xs"
-              name={resource.user?.username}
-              src={resource.user?.avatar ? resource.user?.avatar : null}
-            />
-          </Flex>
-        </Link> */}
       </Flex>
       <Tabs variant="enclosed-colored">
         {!isThumb && (
