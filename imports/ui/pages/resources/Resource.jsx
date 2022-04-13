@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { ScreenClassRender } from 'react-grid-system';
 
 import { call } from '../../@/shared';
 import { message } from '../../components/message';
@@ -68,27 +69,42 @@ function ResourcePage() {
   if (isLoading) return <Loader />;
 
   return (
-    <Template
-      leftContent={
-        <DocumentsField domainType="resource" domainId={resource?._id} />
-      }
-      rightContent={<BookingsField domain={resource} />}
-    >
-      <Breadcrumb domain={resource} domainKey="label" />
-      <ResourceCard
-        addNewChatMessage={addNewChatMessage}
-        currentUser={currentUser}
-        discussion={discussion}
-        resource={resource}
-      />
-      <Center my="2">
-        <Link to={`/resources/${resource?._id}/edit`}>
-          <Button size="sm" variant="ghost">
-            {tc('actions.update')}
-          </Button>
-        </Link>
-      </Center>
-    </Template>
+    <ScreenClassRender
+      render={(screenClass) => {
+        const isMobile = ['xs', 'sm', 'md'].includes(screenClass);
+        return (
+          <Template
+            leftContent={
+              !isMobile && (
+                <DocumentsField
+                  domainType="resource"
+                  domainId={resource?._id}
+                />
+              )
+            }
+            rightContent={<BookingsField domain={resource} />}
+          >
+            <Breadcrumb domain={resource} domainKey="label" />
+            <ResourceCard
+              addNewChatMessage={addNewChatMessage}
+              currentUser={currentUser}
+              discussion={discussion}
+              resource={resource}
+            />
+            {isMobile && (
+              <DocumentsField domainType="resource" domainId={resource?._id} />
+            )}
+            <Center my="2">
+              <Link to={`/resources/${resource?._id}/edit`}>
+                <Button size="sm" variant="ghost">
+                  {tc('actions.update')}
+                </Button>
+              </Link>
+            </Center>
+          </Template>
+        );
+      }}
+    />
   );
 }
 
