@@ -81,7 +81,7 @@ class EditPage extends PureComponent {
   openDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   render() {
-    const { currentUser, isLoading, pageData, t, tc } = this.props;
+    const { currentUser, isLoading, pageData, pageTitles, t, tc } = this.props;
     const { currentHost, role } = this.context;
 
     if (!currentUser || role !== 'admin') {
@@ -100,7 +100,8 @@ class EditPage extends PureComponent {
 
     if (isSuccess) {
       if (newPageTitle === 'deleted') {
-        return <Redirect to={`/page/about-${parseTitle(currentHost.name)}`} />;
+        const pageUrl = parseTitle(pageTitles[0]);
+        return <Redirect to={`/page/${pageUrl}`} />;
       } else {
         return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
       }
