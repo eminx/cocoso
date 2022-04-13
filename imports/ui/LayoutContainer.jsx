@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -23,6 +23,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Portal,
   Select,
   Spinner,
   Text,
@@ -316,6 +317,7 @@ function Header({ currentUser, currentHost, title, history }) {
 }
 
 function Menu({ currentHost, isMobile, screenClass, history }) {
+  const ref = useRef();
   if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
     return null;
   }

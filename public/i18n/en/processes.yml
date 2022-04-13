@@ -1,13 +1,13 @@
-labels: 
+labels:
   archived: Archived
   unarchived: Unarchive
   member: Members
   date: Dates
   invite: Manage Access
 
-tabs: 
+tabs:
   active: Active
-  members: My Processes
+  members: My
   archived: Archived
   process:
     info: Info
@@ -30,7 +30,7 @@ form:
     holder: Through Illuminations
   desc:
     label: Description
-  capacity: 
+  capacity:
     label: Capacity
   submit: Confirm and Create Process
   waiting: Creating your process...
@@ -74,17 +74,17 @@ meeting:
   form:
     label: Add a Meeting
     date: Select Day
-    time: 
+    time:
       start: Start time
       end: Finish time
     switch: At {{ place }}?
     resource: Select resource
     location: Location
     submit: Add Meeting
-    
-confirm: 
+
+confirm:
   check: Are you sure?
-  title: 
+  title:
     text: Confirm {{ opt }} to  the process
     opts:
       leave: leaving
