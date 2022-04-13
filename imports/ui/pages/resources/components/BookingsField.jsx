@@ -161,31 +161,22 @@ export default function BookingsField({ domain }) {
   };
 
   const onSubmit = async (values) => {
-    multipledays === false
+    !multipledays
       ? (values = { ...newBooking, endDate: newBooking.startDate, ...values })
       : (values = { ...newBooking, ...values });
 
     activityValues = {
       title: values.title,
-      subTitle: '',
       longDescription: values.description,
-      resource: {
-        label: domain.label,
-        _id: domain._id,
-        resourceIndex: domain.resourceIndex,
-      },
-      place: '',
-      practicalInfo: '',
-      internalInfo: '',
-      address: '',
-      capacity: 0,
+      resource: domain.label,
+      resourceId: domain._id,
+      resourceIndex: domain.resourceIndex,
       datesAndTimes: [
         {
           startDate: values.startDate,
           startTime: values.startTime,
           endDate: values.endDate,
           endTime: values.endTime,
-          capacity: 0,
         },
       ],
       isPublicActivity: false,
@@ -193,7 +184,7 @@ export default function BookingsField({ domain }) {
     };
 
     try {
-      call('createActivity', activityValues, '');
+      call('createActivity', activityValues);
       message.success(
         tc('message.success.create', {
           domain: `${tc('domains.your')} ${tc(

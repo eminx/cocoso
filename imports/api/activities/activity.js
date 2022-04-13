@@ -41,7 +41,7 @@ Activities.schema = new SimpleSchema({
     startTime: {type: String},
     endDate: {type: String},
     endTime: {type: String},
-    capacity: {type: SimpleSchema.Integer},
+    capacity: {type: SimpleSchema.Integer, optional: true},
     isRange: {type: Boolean, optional: true},
     conflict: {type: String, optional: true},
 

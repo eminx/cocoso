@@ -37,7 +37,7 @@ const maxResourceLabelsToShow = 12;
 
 class Calendar extends PureComponent {
   state = {
-    calendarFilter: 'All',
+    calendarFilter: null,
     editActivity: null,
     resourcesList: [],
     selectedActivity: null,
@@ -71,15 +71,8 @@ class Calendar extends PureComponent {
     });
   };
 
-  handleCalendarFilterChange = (value) => {
+  handleCalendarFilterChange = (value, meta) => {
     this.setState({ calendarFilter: value });
-    if (value == 'All') this.setState({ selectedResource: null });
-  };
-
-  handleAutoCompleteSelectChange = (newValue, actionMeta) => {
-    this.setState({ selectedResource: newValue });
-    if (newValue === null) this.handleCalendarFilterChange('All');
-    else this.handleCalendarFilterChange(newValue?._id);
   };
 
   handleCloseModal = () => {
@@ -104,7 +97,7 @@ class Calendar extends PureComponent {
     const { resourcesList, calendarFilter } = this.state;
 
     const selectedResource = resourcesList.find(
-      (resource) => resource._id === calendarFilter
+      (resource) => calendarFilter && resource._id === calendarFilter._id
     );
 
     if (slotInfo?.slots?.length === 1) {
@@ -218,13 +211,10 @@ class Calendar extends PureComponent {
     } = this.state;
 
     const filteredActivities = allActivities.filter((activity) => {
-      if (activity.title === 'Lets work') {
-        console.log(activity.comboResourceId, calendarFilter);
-      }
       return (
-        calendarFilter === 'All' ||
-        calendarFilter === activity.resourceId ||
-        calendarFilter === activity.comboResourceId
+        !calendarFilter ||
+        calendarFilter._id === activity.resourceId ||
+        calendarFilter._id === activity.comboResourceId
       );
     });
 
@@ -317,8 +307,8 @@ class Calendar extends PureComponent {
                   key="All"
                   label={tc('labels.all')}
                   filterColor="#484848"
-                  checked={calendarFilter === 'All'}
-                  onClick={() => this.handleCalendarFilterChange('All')}
+                  checked={!calendarFilter}
+                  onClick={() => this.handleCalendarFilterChange(null)}
                 />
               </WrapItem>
               {nonComboResourcesWithColor.length < maxResourceLabelsToShow &&
@@ -328,10 +318,8 @@ class Calendar extends PureComponent {
                       checkable
                       label={resource.label}
                       filterColor={resource.color}
-                      checked={calendarFilter === resource._id}
-                      onClick={() =>
-                        this.handleCalendarFilterChange(resource._id)
-                      }
+                      checked={calendarFilter?._id === resource._id}
+                      onClick={() => this.handleCalendarFilterChange(resource)}
                     />
                   </WrapItem>
                 ))}
@@ -340,9 +328,9 @@ class Calendar extends PureComponent {
               <Box w="30rem" zIndex={11}>
                 <AutoCompleteSelect
                   isClearable
-                  onChange={this.handleAutoCompleteSelectChange}
+                  onChange={this.handleCalendarFilterChange}
                   components={animatedComponents}
-                  value={selectedResource}
+                  value={calendarFilter}
                   options={[
                     ...nonComboResourcesWithColor,
                     ...comboResourcesWithColor,
@@ -375,10 +363,8 @@ class Calendar extends PureComponent {
                       label={resource.label}
                       filterColor={'#2d2d2d'}
                       gradientBackground={resource.color}
-                      checked={calendarFilter === resource._id}
-                      onClick={() =>
-                        this.handleCalendarFilterChange(resource._id)
-                      }
+                      checked={calendarFilter?._id === resource._id}
+                      onClick={() => this.handleCalendarFilterChange(resource)}
                     />
                   </WrapItem>
                 ))}
@@ -486,9 +472,9 @@ class Calendar extends PureComponent {
             <Box>
               <CTag mr="2">
                 <TagLabel>
-                  {calendarFilter === 'All'
-                    ? tc('labels.unselected')
-                    : calendarFilter}
+                  {calendarFilter
+                    ? calendarFilter?.label
+                    : tc('labels.unselected')}
                 </TagLabel>
               </CTag>
               <Text as="span" fontWeight="bold">
