@@ -23,22 +23,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
     <Box>
       <ScreenClassRender
         render={(screen) =>
-          ['xs', 'sm'].includes(screen) ? (
-            <Center mt="2" mb="8">
-              <Select
-                placeholder={currentPageTitle()}
-                size="sm"
-                w="xs"
-                onChange={(event) =>
-                  history.push(`/page/${parseTitle(event.target.value)}`)
-                }
-              >
-                {pageTitles.map((title) => (
-                  <option>{title}</option>
-                ))}
-              </Select>
-            </Center>
-          ) : (
+          ['lg', 'xl', 'xxl'].includes(screen) ? (
             <Box my="6" w="sm">
               <List>
                 {pageTitles.map((title) => (
@@ -60,6 +45,21 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                 ))}
               </List>
             </Box>
+          ) : (
+            <Center mt="2" mb="8">
+              <Select
+                bg="white"
+                placeholder={currentPageTitle()}
+                w="xs"
+                onChange={(event) =>
+                  history.push(`/page/${parseTitle(event.target.value)}`)
+                }
+              >
+                {pageTitles.map((title) => (
+                  <option>{title}</option>
+                ))}
+              </Select>
+            </Center>
           )
         }
       />
