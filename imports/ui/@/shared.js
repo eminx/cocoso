@@ -26,7 +26,7 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-const parseTitle = (title) => title.replace(/ /g, '-').toLowerCase();
+const parseTitle = (title) => title.replace(/\s+/g, '-').toLowerCase();
 
 function emailIsValid(email) {
   return /\S+@\S+\.\S+/.test(email);
