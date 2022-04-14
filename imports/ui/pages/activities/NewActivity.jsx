@@ -9,7 +9,13 @@ import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
-import { resizeImage, uploadImage, call } from '../../@/shared';
+import {
+  getAllBookingsWithSelectedResource,
+  checkAndSetBookingsWithConflict,
+  resizeImage,
+  uploadImage,
+  call,
+} from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
@@ -54,9 +60,25 @@ class NewActivity extends PureComponent {
     isReady: false,
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.setInitialValuesWithQP();
-  };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { history, resources } = this.props;
+    const { selectedResource, datesAndTimes } = this.state;
+
+    const { search } = history.location;
+    const prevSearch = prevProps.history.location.search;
+    if (
+      search !== prevSearch ||
+      resources?.length !== prevProps.resources?.length
+    ) {
+      this.setInitialValuesWithQP();
+    }
+
+    // if ()
+  }
 
   setInitialValuesWithQP = () => {
     const { history } = this.props;
@@ -67,7 +89,14 @@ class NewActivity extends PureComponent {
     } = history;
     const params = parse(search);
 
-    const defaultOccurence = {
+    if (!params) {
+      this.setState({
+        isReady: true,
+      });
+      return;
+    }
+
+    const defaultBooking = {
       ...emptyDateAndTime,
       ...params,
       isRange:
@@ -78,15 +107,20 @@ class NewActivity extends PureComponent {
 
     const initialValues = {
       ...formValues,
-      resourceId: params.resource || '',
-      datesAndTimes: [defaultOccurence],
+      resourceId: params.resource,
+      // datesAndTimes: [defaultBooking],
     };
 
-    this.setState({
-      formValues: initialValues,
-      datesAndTimes: [defaultOccurence],
-      isReady: true,
-    });
+    this.setState(
+      {
+        formValues: initialValues,
+        datesAndTimes: [defaultBooking],
+        isReady: true,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
   };
 
   handleSubmit = (values) => {
@@ -245,95 +279,65 @@ class NewActivity extends PureComponent {
     });
   };
 
-  setDatesAndTimes = (selectedOccurences) => {
-    const { resources } = this.props;
-    const { formValues } = this.state;
-    this.setState({
-      datesAndTimes: selectedOccurences,
-    });
-
-    const selectedResource = resources.find(
-      (r) => r._id === formValues.resourceId
+  setDatesAndTimes = (selectedBookings) => {
+    this.setState(
+      {
+        datesAndTimes: selectedBookings,
+      },
+      () => {
+        this.validateBookings();
+      }
     );
-    this.validateBookings(selectedOccurences, selectedResource);
   };
 
-  validateBookings = (selectedOccurences, selectedResource) => {
-    const { allOccurences } = this.props;
-    const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+  validateBookings = () => {
+    const { allBookings } = this.props;
+    const { selectedResource, datesAndTimes } = this.state;
 
-    const allOccurencesWithSelectedResource = allOccurences.filter(
-      (occurence) => {
-        if (selectedResource.isCombo) {
-          return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-            return resourceForCombo._id === occurence.resourceId;
-          });
-        }
-        return occurence.resourceId === selectedResource._id;
-      }
+    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+      return;
+    }
+    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
+      selectedResource,
+      allBookings
     );
 
-    const newSelectedOccurences = [];
-    selectedOccurences.forEach((selectedOccurence) => {
-      const occurenceWithConflict = allOccurencesWithSelectedResource.find(
-        (occurence) => {
-          const selectedStart = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
-          const selectedEnd = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
-          const existingStart = `${occurence.startDate} ${occurence.startTime}`;
-          const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-          return (
-            moment(selectedStart, dateTimeFormat).isBetween(
-              existingStart,
-              existingEnd
-            ) ||
-            moment(selectedEnd, dateTimeFormat).isBetween(
-              existingStart,
-              existingEnd
-            )
-          );
-        }
-      );
-      if (occurenceWithConflict) {
-        newSelectedOccurences.push({
-          ...selectedOccurence,
-          conflict: {
-            ...occurenceWithConflict,
-          },
-        });
-      } else {
-        newSelectedOccurences.push({
-          ...selectedOccurence,
-          conflict: null,
-        });
-      }
-    });
+    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
+      datesAndTimes,
+      allBookingsWithSelectedResource
+    );
+
     this.setState({
-      datesAndTimes: newSelectedOccurences,
+      datesAndTimes: selectedBookingsWithConflict,
     });
   };
 
   handleSelectedResource = (value) => {
     const { resources } = this.props;
+    const { datesAndTimes } = this.state;
     const selectedResource = resources.find((r) => r._id === value);
-    this.setState({
-      selectedResource,
-    });
+    this.setState(
+      {
+        selectedResource,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
   };
 
   isFormValid = () => {
-    const { formValues, datesAndTimes } = this.state;
-    const { title } = formValues;
-    const isValuesOK = formValues && formValues.resource && title?.length > 3;
+    const { datesAndTimes } = this.state;
+
     const isConflict = datesAndTimes.some((occurence) =>
       Boolean(occurence.conflict)
     );
-
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some((dateTime) => {
       return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
     });
 
-    return isValuesOK && !isTimesInValid && !isConflict;
+    return !isTimesInValid && !isConflict;
   };
 
   render() {
@@ -376,7 +380,6 @@ class NewActivity extends PureComponent {
     }
 
     const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
-
     const isFormValid = this.isFormValid();
 
     return (
