@@ -230,6 +230,47 @@ const parseComboResourcesWithAllData = (resources) => {
   })
 }
 
+const getAllBookingsWithSelectedResource = (selectedResource, allBookings) => {
+  return allBookings.filter((booking) => {
+    if (selectedResource.isCombo) {
+      return selectedResource.resourcesForCombo.some((resourceForCombo) => {
+        return resourceForCombo._id === booking.resourceId;
+      });
+    }
+    return booking.resourceId === selectedResource._id;
+  });
+}
+
+const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelectedResource) => {
+  const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+
+  return selectedBookings.map((selectedBooking) => {
+    const bookingWithConflict = allBookingsWithSelectedResource.find(
+      (occurence) => {
+        const selectedStart = `${selectedBooking.startDate} ${selectedBooking.startTime}`;
+        const selectedEnd = `${selectedBooking.endDate} ${selectedBooking.endTime}`;
+        const existingStart = `${occurence.startDate} ${occurence.startTime}`;
+        const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
+        return (
+          moment(selectedStart, dateTimeFormat).isBetween(
+            existingStart,
+            existingEnd
+          ) ||
+          moment(selectedEnd, dateTimeFormat).isBetween(
+            existingStart,
+            existingEnd
+          )
+        );
+      }
+    );
+
+    return {
+      ...selectedBooking,
+      conflict: bookingWithConflict || null,
+    }
+  });
+}
+
 function isResourceOccupied(occurence, start, end) {
   const dateTimeFormat = 'M/DD/YYYY hh:mm';
   moment(occurence.dateTime, dateTimeFormat).isBetween(start, end);
@@ -260,5 +301,7 @@ export {
   dataURLtoFile,
   parseAllBookingsWithResources,
   parseComboResourcesWithAllData,
+  getAllBookingsWithSelectedResource,
+  checkAndSetBookingsWithConflict,
   formatDate,
 };
