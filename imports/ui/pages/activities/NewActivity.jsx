@@ -52,22 +52,10 @@ class NewActivity extends PureComponent {
     isRegistrationDisabled: false,
     isCreating: false,
     isReady: false,
-    resources: [],
   };
 
-  componentDidMount() {
-    this.getResources();
-  }
-
-  getResources = async () => {
-    try {
-      const resources = await call('getResources');
-      this.setState({ resources }, () => {
-        this.setInitialValuesWithQP();
-      });
-    } catch (error) {
-      message.error(error.error || error.reason);
-    }
+  componentDidMount = () => {
+    this.setInitialValuesWithQP();
   };
 
   setInitialValuesWithQP = () => {
@@ -102,7 +90,8 @@ class NewActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, resources } = this.state;
+    const { resources } = this.props;
+    const { isPublicActivity } = this.state;
 
     const formValues = { ...values };
     const selectedResource = resources.find((r) => r._id === values.resourceId);
@@ -257,7 +246,8 @@ class NewActivity extends PureComponent {
   };
 
   setDatesAndTimes = (selectedOccurences) => {
-    const { formValues, resources } = this.state;
+    const { resources } = this.props;
+    const { formValues } = this.state;
     this.setState({
       datesAndTimes: selectedOccurences,
     });
@@ -323,7 +313,7 @@ class NewActivity extends PureComponent {
   };
 
   handleSelectedResource = (value) => {
-    const { resources } = this.state;
+    const { resources } = this.props;
     const selectedResource = resources.find((r) => r._id === value);
     this.setState({
       selectedResource,
@@ -347,7 +337,7 @@ class NewActivity extends PureComponent {
   };
 
   render() {
-    const { currentUser, t, tc } = this.props;
+    const { currentUser, resources, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
@@ -375,7 +365,6 @@ class NewActivity extends PureComponent {
       isReady,
       isRegistrationDisabled,
       datesAndTimes,
-      resources,
     } = this.state;
 
     if (isSuccess) {

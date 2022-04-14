@@ -35,11 +35,9 @@ class EditActivity extends PureComponent {
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
-    resources: [],
   };
 
   componentDidMount() {
-    this.getResources();
     this.setInitialData();
   }
 
@@ -48,15 +46,6 @@ class EditActivity extends PureComponent {
       this.setInitialData();
     }
   }
-
-  getResources = async () => {
-    try {
-      const resources = await call('getResources');
-      this.setState({ resources });
-    } catch (error) {
-      message.error(error.error || error.reason);
-    }
-  };
 
   setInitialData = () => {
     const { activity } = this.props;
@@ -106,7 +95,8 @@ class EditActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, uploadableImage, resources } = this.state;
+    const { resources } = this.props;
+    const { isPublicActivity, uploadableImage } = this.state;
     const formValues = { ...values };
     if (values.resourceId) {
       const selectedResource = resources.find(
@@ -154,7 +144,7 @@ class EditActivity extends PureComponent {
   };
 
   handleSelectedResource = (value) => {
-    const { resources } = this.state;
+    const { resources } = this.props;
     const selectedResource = resources.find((r) => r._id === value);
     this.setState({
       selectedResource,
@@ -262,7 +252,7 @@ class EditActivity extends PureComponent {
   };
 
   render() {
-    const { activity, currentUser, tc, t } = this.props;
+    const { activity, currentUser, resources, tc, t } = this.props;
 
     if (!currentUser || !activity) {
       return <Loader />;
@@ -279,7 +269,6 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
       isSuccess,
       uploadableImageLocal,
-      resources,
     } = this.state;
 
     if (isSuccess) {
