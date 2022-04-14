@@ -1,7 +1,7 @@
 # LANGUAGE KEYS
 langs:
   en: English
-  sv: Swedish
+  sv: Svenska
   form:
     label: Preferred Language
     holder: Select a language
