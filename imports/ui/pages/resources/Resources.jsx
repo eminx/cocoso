@@ -23,7 +23,7 @@ import { call } from '../../@/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Breadcrumb from '../../components/Breadcrumb';
-import ResourceCard from './components/ResourceCard';
+import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
 
 function ResourcesPage() {
@@ -186,7 +186,7 @@ function ResourceItem({ resource }) {
   return (
     <Box key={resource._id}>
       <Link to={`/resources/${resource._id}`}>
-        <ResourceCard resource={resource} isThumb="true" />
+        <GridThumb resource={resource} isThumb="true" />
       </Link>
     </Box>
   );
