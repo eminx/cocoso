@@ -63,12 +63,12 @@ function ResourcePage() {
     }
   };
 
-  if (!resource) {
-    return <NotFoundPage domain="Resource with this name or id" />;
-  }
-
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (!resource) {
+    return <NotFoundPage domain="Resource with this name or id" />;
   }
 
   return (
