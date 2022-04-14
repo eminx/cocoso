@@ -44,6 +44,7 @@ function ActivityForm({
   uploadableImageLocal,
   setUploadableImage,
   setSelectedResource,
+  isButtonDisabled,
 }) {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
@@ -262,7 +263,11 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isLoading={isSubmitting} type="submit">
+          <Button
+            isLoading={isSubmitting}
+            isDisabled={isButtonDisabled}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>
