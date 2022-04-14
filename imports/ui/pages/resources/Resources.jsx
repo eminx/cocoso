@@ -16,6 +16,7 @@ import {
   TabPanel,
   TabPanels,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
@@ -107,74 +108,74 @@ function ResourcesPage() {
         </Center>
       )}
 
-      <Tabs size="sm">
-        <Box p="4" bg="gray.50">
-          <Flex justify="center" align="center" mb="4">
-            <TabList>
-              <Tab key="All">All</Tab>
-              <Tab key="All">Combo</Tab>
-              <Tab key="All">Non-combo</Tab>
-            </TabList>
-
-            <Box ml="4">
-              <Input
-                bg="white"
-                placeholder={t('form.holder')}
-                size="sm"
-                value={filterWord}
-                onChange={(event) => setFilterWord(event.target.value)}
-              />
-            </Box>
-          </Flex>
-
-          <Center>
-            <Box display="flex" alignItems="center">
-              <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
-                {tc('labels.sortBy.placeholder')}
-              </Text>
-              <Select
-                bg="white"
-                size="sm"
-                w="fit-content"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="date">{tc('labels.sortBy.date')}</option>
-                <option value="name">{tc('labels.sortBy.name')}</option>
-              </Select>
-            </Box>
-          </Center>
-        </Box>
-        <TabPanels>
-          <TabPanel>
-            <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-              {resourcesFilteredAndSorted.map((resource, index) => (
-                <ResourceItem key={resource._id} resource={resource} />
-              ))}
-            </SimpleGrid>
-          </TabPanel>
-
-          <TabPanel>
-            <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-              {resourcesFilteredAndSorted
-                .filter((r) => r.isCombo)
-                .map((resource, index) => (
+      {resources && resources.length > 0 && (
+        <Tabs size="sm">
+          <Box p="4" bg="gray.50">
+            <Flex direction={{ base: 'column', md: 'row' }} align="center">
+              <Box>
+                <Input
+                  bg="white"
+                  placeholder={t('form.holder')}
+                  size="sm"
+                  value={filterWord}
+                  onChange={(event) => setFilterWord(event.target.value)}
+                />
+              </Box>
+              <Spacer my="2" />
+              <TabList>
+                <Tab key="All">All</Tab>
+                <Tab key="All">Combo</Tab>
+                <Tab key="All">Non-combo</Tab>
+              </TabList>
+              <Spacer my="2" />
+              <Box display="flex" alignItems="center">
+                <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
+                  {tc('labels.sortBy.placeholder')}
+                </Text>
+                <Select
+                  bg="white"
+                  size="sm"
+                  w="fit-content"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="date">{tc('labels.sortBy.date')}</option>
+                  <option value="name">{tc('labels.sortBy.name')}</option>
+                </Select>
+              </Box>
+            </Flex>
+          </Box>
+          <TabPanels>
+            <TabPanel>
+              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+                {resourcesFilteredAndSorted.map((resource, index) => (
                   <ResourceItem key={resource._id} resource={resource} />
                 ))}
-            </SimpleGrid>
-          </TabPanel>
+              </SimpleGrid>
+            </TabPanel>
 
-          <TabPanel>
-            <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-              {resourcesFilteredAndSorted
-                .filter((r) => !r.isCombo)
-                .map((resource, index) => (
-                  <ResourceItem key={resource._id} resource={resource} />
-                ))}
-            </SimpleGrid>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+            <TabPanel>
+              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+                {resourcesFilteredAndSorted
+                  .filter((r) => r.isCombo)
+                  .map((resource, index) => (
+                    <ResourceItem key={resource._id} resource={resource} />
+                  ))}
+              </SimpleGrid>
+            </TabPanel>
+
+            <TabPanel>
+              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+                {resourcesFilteredAndSorted
+                  .filter((r) => !r.isCombo)
+                  .map((resource, index) => (
+                    <ResourceItem key={resource._id} resource={resource} />
+                  ))}
+              </SimpleGrid>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      )}
     </Box>
   );
 }
