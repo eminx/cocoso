@@ -1,5 +1,13 @@
 import React from 'react';
-import { Box, Heading, Flex, Image, Text, Center } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Flex,
+  Image,
+  Text,
+  AspectRatio,
+  Spacer,
+} from '@chakra-ui/react';
 import i18n from 'i18next';
 import moment from 'moment';
 moment.locale(i18n.language);
@@ -11,9 +19,23 @@ export default function GridThumb({ girdItem, itemType }) {
     return null;
   }
 
+  const thumbHasImage =
+    (girdItem?.image && girdItem.image !== '') ||
+    (girdItem?.images && girdItem?.images.length > 0);
+
   return (
-    <Box bg="white" mb="2" px="4" py="4" key={girdItem?.label}>
-      <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
+    <Flex bg="white" mb="2" p="4" key={girdItem?._id} h="100%">
+      {thumbHasImage && (
+        <Box style={{ marginRight: '1rem', width: 'calc(50% - 1rem)' }}>
+          <AspectRatio maxW="480px" ratio={16 / 9}>
+            <Image
+              src={girdItem?.image ? girdItem.image : girdItem.images[0]}
+              objectFit="cover"
+            />
+          </AspectRatio>
+        </Box>
+      )}
+      <Flex w={thumbHasImage ? '50%' : '100%'} direction="column">
         <Heading size="md" fontWeight="bold">
           {itemType === 'resource' && girdItem.isCombo ? (
             <ResourcesForCombo resource={girdItem} />
@@ -21,26 +43,11 @@ export default function GridThumb({ girdItem, itemType }) {
             girdItem?.label
           )}
         </Heading>
-      </Flex>
-      {girdItem?.images && (
-        <Box mb="4">
-          <Center>
-            <Image src={girdItem.images[0]} fit="contain" fill />
-          </Center>
-        </Box>
-      )}
-      {girdItem?.image && (
-        <Box mb="4">
-          <Center>
-            <Image src={girdItem.Image} fit="contain" fill />
-          </Center>
-        </Box>
-      )}
-      <Box>
-        <Text as="p" fontSize="xs">
+        <Spacer my="4" />
+        <Text as="p" fontSize="xs" alignSelf="flex-end">
           {moment(girdItem.createdAt).format('D MMM YYYY')}
         </Text>
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 }
