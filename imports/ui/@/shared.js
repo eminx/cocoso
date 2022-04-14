@@ -95,22 +95,31 @@ const uploadImage = (image, directory) =>
 
 const slingshotUpload = (directory) => new Slingshot.Upload(directory);
 
-const parseActsWithResources = (activitiesList, resourcesList) => {
-  if (!activitiesList || !resourcesList) {
+const parseAllBookingsWithResources = (activities, processes, resources) => {
+  if (!activities || !processes || !resources) {
     return;
   }
-  const allActivities = [];
-  activitiesList.forEach((activity) => {
+  const allBookings = [];
+
+  activities.forEach((activity) => {
     if (!activity.datesAndTimes) {
       return;
     }
     activity.datesAndTimes.forEach((recurrence) => {
-      const theResource = resourcesList.find(
-        (res) => res._id === activity.resourceId
+      const resourceSelected = resources.find(
+        (res) => (
+          res?._id === activity.resourceId
+        )
       );
-      if (theResource && theResource.isCombo) {
-        theResource.resourcesForCombo.forEach((resourceForCombo) => {
-          allActivities.push({
+      if (!resourceSelected) {
+        return;
+      }
+      if (resourceSelected.isCombo) {
+        resourceSelected.resourcesForCombo.forEach((resourceForCombo) => {
+          if (!resourceForCombo) {
+            return;
+          }
+          allBookings.push({
             title: activity.title,
             start: moment(
               recurrence.startDate + recurrence.startTime,
@@ -135,13 +144,13 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
             isPublicActivity: activity.isPublicActivity,
             isWithComboResource: true,
             comboResource: activity.resource,
-            comboResourceId: theResource._id,
+            comboResourceId: resourceSelected._id,
             imageUrl: activity.imageUrl,
-            _id: activity._id,
+            activityId: activity._id,
           });
         });
-      } else if (theResource) {
-        allActivities.push({
+      } else {
+        allBookings.push({
           title: activity.title,
           start: moment(
             recurrence.startDate + recurrence.startTime,
@@ -160,20 +169,66 @@ const parseActsWithResources = (activitiesList, resourcesList) => {
           isMultipleDay:
             recurrence.isMultipleDay ||
             recurrence.startDate !== recurrence.endDate,
-          resource: theResource.label,
-          resourceId: theResource._id,
-          resourceIndex: theResource.resourceIndex,
+          resource: resourceSelected.label,
+          resourceId: resourceSelected._id,
+          resourceIndex: resourceSelected.resourceIndex,
           isPublicActivity: activity.isPublicActivity,
           isWithComboResource: false,
           imageUrl: activity.imageUrl,
-          _id: activity._id,
+          activityId: activity._id,
         });
       }
     });
   });
 
-  return allActivities;
+  processes.forEach((process) => {
+    process.meetings.forEach((meeting) => {
+      const resourceId = meeting.resourceId || resources.find(r => r.label === meeting.resource)?._id;
+      allBookings.push({
+        title: process.title,
+        start: moment(
+          meeting.startDate + meeting.startTime,
+          'YYYY-MM-DD HH:mm'
+        ).toDate(),
+        end: moment(
+          meeting.endDate + meeting.endTime,
+          'YYYY-MM-DD HH:mm'
+        ).toDate(),
+        startDate: meeting.startDate,
+        startTime: meeting.startTime,
+        endDate: meeting.endDate,
+        endTime: meeting.endTime,
+        authorName: process.adminUsername,
+        resource: meeting.resource,
+        resourceId,
+        resourceIndex: meeting.resourceIndex,
+        longDescription: process.description,
+        processId: process._id,
+        isMultipleDay: false,
+        isPublicActivity: true,
+        imageUrl: process.imageUrl,
+        isProcess: true,
+        isPrivateProcess: process.isPrivate,
+      });
+    });
+  });
+
+  return allBookings;
 };
+
+const parseComboResourcesWithAllData = (resources) => {
+  return resources.map((resource) => {
+    if (resource.isCombo) {
+      return {
+        ...resource,
+        resourcesForCombo: resource.resourcesForCombo.map(rId => {
+          return resources.find(res =>  res._id === rId)
+        })
+      }
+    }
+    return resource;
+  })
+}
 
 function isResourceOccupied(occurence, start, end) {
   const dateTimeFormat = 'M/DD/YYYY hh:mm';
@@ -203,6 +258,7 @@ export {
   resizeImage,
   uploadImage,
   dataURLtoFile,
-  parseActsWithResources,
+  parseAllBookingsWithResources,
+  parseComboResourcesWithAllData,
   formatDate,
 };
