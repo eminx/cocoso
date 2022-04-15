@@ -76,7 +76,7 @@ export default function BookingsField({ currentUser, domain }) {
   };
 
   const getBookings = async () => {
-    if (!currentUser) {
+    if (!currentUser || !canCreateContent) {
       return;
     }
     try {
@@ -98,6 +98,10 @@ export default function BookingsField({ currentUser, domain }) {
       setIsLoading(true);
     }
   };
+
+  if (!canCreateContent) {
+    return null;
+  }
 
   const removeBooking = async (bookingId) => {
     if (!isAdmin) {
@@ -222,121 +226,119 @@ export default function BookingsField({ currentUser, domain }) {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                  {canCreateContent && (
-                    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-                      <FormControl display="flex" alignItems="center" mb="2">
-                        <Switch
-                          id="book-multiple-days"
-                          size="sm"
-                          onChange={() => setMultipledays(!multipledays)}
-                        />
-                        <FormLabel
-                          htmlFor="book-multiple-days"
-                          fontSize="sm"
-                          mb="0"
-                          ml="2"
-                        >
-                          {t('booking.multiple')}
-                        </FormLabel>
-                      </FormControl>
-
-                      <Box
-                        p={newBooking.conflict ? '2' : '0'}
-                        mb="4"
-                        border={newBooking.conflict ? '1px solid red' : 'none'}
+                  <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+                    <FormControl display="flex" alignItems="center" mb="2">
+                      <Switch
+                        id="book-multiple-days"
+                        size="sm"
+                        onChange={() => setMultipledays(!multipledays)}
+                      />
+                      <FormLabel
+                        htmlFor="book-multiple-days"
+                        fontSize="sm"
+                        mb="0"
+                        ml="2"
                       >
-                        <HStack spacing="2" mb="4">
+                        {t('booking.multiple')}
+                      </FormLabel>
+                    </FormControl>
+
+                    <Box
+                      p={newBooking.conflict ? '2' : '0'}
+                      mb="4"
+                      border={newBooking.conflict ? '1px solid red' : 'none'}
+                    >
+                      <HStack spacing="2" mb="4">
+                        <DatePicker
+                          noTime
+                          placeholder={t('booking.date.start')}
+                          onChange={(date) =>
+                            handleDateAndTimeChange(date, 'startDate')
+                          }
+                        />
+                        {multipledays && (
                           <DatePicker
                             noTime
                             placeholder={t('booking.date.start')}
                             onChange={(date) =>
-                              handleDateAndTimeChange(date, 'startDate')
+                              handleDateAndTimeChange(date, 'endDate')
                             }
                           />
-                          {multipledays && (
-                            <DatePicker
-                              noTime
-                              placeholder={t('booking.date.start')}
-                              onChange={(date) =>
-                                handleDateAndTimeChange(date, 'endDate')
-                              }
-                            />
-                          )}
-                        </HStack>
-                        <HStack spacing="2">
-                          <DatePicker
-                            onlyTime
-                            placeholder={t('booking.time.start')}
-                            onChange={(time) =>
-                              handleDateAndTimeChange(time, 'startTime')
-                            }
-                          />
-                          <DatePicker
-                            onlyTime
-                            placeholder={t('booking.time.end')}
-                            onChange={(time) =>
-                              handleDateAndTimeChange(time, 'endTime')
-                            }
-                          />
-                        </HStack>
-                        {newBooking.conflict && (
-                          <Box mt="4">
-                            <Text
-                              fontSize="sm"
-                              textAlign="center"
-                              fontWeight="bold"
-                            >
-                              {t('booking.conflict')}
-                            </Text>
-                            <Code
-                              colorScheme="red"
-                              mx="auto"
-                              display="block"
-                              width="fit-content"
-                              mt="4"
-                            >
-                              {newBooking.conflict.startDate ===
-                              newBooking.conflict.endDate
-                                ? newBooking.conflict.startDate
-                                : newBooking.conflict.startDate +
-                                  '-' +
-                                  newBooking.conflict.endDate}
-                              {', '}
-                              {newBooking.conflict.startTime +
-                                ' – ' +
-                                newBooking.conflict.endTime}
-                            </Code>
-                          </Box>
                         )}
-                      </Box>
+                      </HStack>
+                      <HStack spacing="2">
+                        <DatePicker
+                          onlyTime
+                          placeholder={t('booking.time.start')}
+                          onChange={(time) =>
+                            handleDateAndTimeChange(time, 'startTime')
+                          }
+                        />
+                        <DatePicker
+                          onlyTime
+                          placeholder={t('booking.time.end')}
+                          onChange={(time) =>
+                            handleDateAndTimeChange(time, 'endTime')
+                          }
+                        />
+                      </HStack>
+                      {newBooking.conflict && (
+                        <Box mt="4">
+                          <Text
+                            fontSize="sm"
+                            textAlign="center"
+                            fontWeight="bold"
+                          >
+                            {t('booking.conflict')}
+                          </Text>
+                          <Code
+                            colorScheme="red"
+                            mx="auto"
+                            display="block"
+                            width="fit-content"
+                            mt="4"
+                          >
+                            {newBooking.conflict.startDate ===
+                            newBooking.conflict.endDate
+                              ? newBooking.conflict.startDate
+                              : newBooking.conflict.startDate +
+                                '-' +
+                                newBooking.conflict.endDate}
+                            {', '}
+                            {newBooking.conflict.startTime +
+                              ' – ' +
+                              newBooking.conflict.endTime}
+                          </Code>
+                        </Box>
+                      )}
+                    </Box>
 
-                      <Input
-                        {...register('title')}
-                        placeholder={t('booking.title')}
+                    <Input
+                      {...register('title')}
+                      placeholder={t('booking.title')}
+                      size="sm"
+                      mb="4"
+                    />
+
+                    <Textarea
+                      {...register('description')}
+                      placeholder={t('booking.description')}
+                      size="sm"
+                      mb="4"
+                    />
+
+                    <Flex justify="flex-end">
+                      <Button
+                        colorScheme="green"
+                        isDisabled={!isDirty || newBooking.conflict}
+                        isLoading={isSubmitting}
                         size="sm"
-                        mb="4"
-                      />
-
-                      <Textarea
-                        {...register('description')}
-                        placeholder={t('booking.description')}
-                        size="sm"
-                        mb="4"
-                      />
-
-                      <Flex justify="flex-end">
-                        <Button
-                          colorScheme="green"
-                          isDisabled={!isDirty || newBooking.conflict}
-                          isLoading={isSubmitting}
-                          size="sm"
-                          type="submit"
-                        >
-                          {t('booking.submit')}
-                        </Button>
-                      </Flex>
-                    </form>
-                  )}
+                        type="submit"
+                      >
+                        {t('booking.submit')}
+                      </Button>
+                    </Flex>
+                  </form>
                 </AccordionPanel>
               </>
             )}
