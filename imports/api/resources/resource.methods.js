@@ -78,9 +78,9 @@ Meteor.methods({
     }
     try {
       const newResourceId = Resources.insert({
+        ...values,
         host,
         userId: user._id,
-        ...values,
         resourceIndex,
         createdBy: user.username,
         createdAt: new Date(),
@@ -118,7 +118,6 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
-  
   },
 
   deleteResource(resourceId) {
