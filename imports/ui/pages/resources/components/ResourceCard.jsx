@@ -106,11 +106,14 @@ function ResourcesForCombo({ resource }) {
         </Tag>
       </Flex>
       {' ['}
-      {resourcesForCombo.map((res, i) => (
-        <Text as="span" fontSize="sm" key={res._id}>
-          {res.label + (i < length - 1 ? ' + ' : '')}
-        </Text>
-      ))}
+      {resourcesForCombo.map(
+        (res, i) =>
+          res && (
+            <Text as="span" fontSize="sm" key={res._id}>
+              {res.label + (i < length - 1 ? ' + ' : '')}
+            </Text>
+          )
+      )}
       ]
     </span>
   );

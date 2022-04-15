@@ -6,7 +6,6 @@ export default function ResourcesForCombo({ resource }) {
   const [t] = useTranslation('resources');
   const resourcesForCombo = resource?.resourcesForCombo;
   const length = resource?.resourcesForCombo.length;
-
   return (
     <span>
       <Flex mb="2">

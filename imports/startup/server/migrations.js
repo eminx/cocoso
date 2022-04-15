@@ -34,6 +34,7 @@ Migrations.add({
     });
   },
 });
+
 // Drop && Set back - labelLowerCase
 Migrations.add({
   version: 2,
@@ -49,6 +50,7 @@ Migrations.add({
     });
   },
 });
+
 // Change - resourcesForCombo - arrayOfObjects <=> arrayOfIds
 Migrations.add({
   version: 3,
@@ -67,11 +69,13 @@ Migrations.add({
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
       ).fetch();
       Resources.update(item._id, { $set: { resourcesForCombo } });
     });
   },
 });
+
 // Switch between - creationDate <=> createdAt
 Migrations.add({
   version: 4,
@@ -94,6 +98,7 @@ Migrations.add({
     Resources.update({}, { $unset: { createdAt: true } }, { multi: true });
   },
 });
+
 // Switch between - latestUpdate <=> updatedAt
 Migrations.add({
   version: 5,
@@ -116,6 +121,7 @@ Migrations.add({
     Resources.update({}, { $unset: { updatedAt: true } }, { multi: true });
   },
 });
+
 // Switch between - authorId <=> userId
 Migrations.add({
   version: 6,
@@ -136,6 +142,7 @@ Migrations.add({
     Resources.update({}, { $unset: { userId: true } }, { multi: true });
   },
 });
+
 // Switch between - authorUsername <=> createdBy
 Migrations.add({
   version: 7,
@@ -158,6 +165,7 @@ Migrations.add({
     Resources.update({}, { $unset: { createdBy: true } }, { multi: true });
   },
 });
+
 // Switch between - authorUsername <=> createdBy
 Migrations.add({
   version: 8,
@@ -190,23 +198,25 @@ Migrations.add({
   },
 });
 
+// Return embedding resource objects in resourcesForCombo rather than using only _ids
 Migrations.add({
   version: 9,
   up: async function () {
-    console.log('up to', this.version - 1);
+    console.log('up to', this.version);
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
       ).fetch();
       Resources.update(item._id, { $set: { resourcesForCombo } });
     })
   },
   down: async function () {
-    console.log('down to', this.version);
+    console.log('down to', this.version - 1);
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = [];
       item.resourcesForCombo.forEach((res) => {
-        resourcesForCombo.push(res._id);
+        resourcesForCombo.push(res?._id);
       });
       Resources.update(item._id, { $set: { resourcesForCombo } });
     });
@@ -225,5 +235,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
   // Migrations.migrateTo(9);
-  Migrations.migrateTo('latest');
+  // Migrations.migrateTo('latest');
 });

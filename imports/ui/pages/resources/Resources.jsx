@@ -187,7 +187,7 @@ function ResourceItem({ resource }) {
   return (
     <Box key={resource._id}>
       <Link to={`/resources/${resource._id}`}>
-        <GridThumb girdItem={resource} itemType="resource" />
+        <GridThumb gridItem={resource} itemType="resource" />
       </Link>
     </Box>
   );

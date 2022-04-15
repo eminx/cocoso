@@ -52,25 +52,18 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   useEffect(() => {
     getResources();
     setResourcesForCombo(
-      defaultValues &&
-        defaultValues.isCombo &&
-        defaultValues.resourcesForCombo?.map((item) => ({
-          value: item._id,
-          label: item.label,
-        }))
+      defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo
+      // defaultValues.resourcesForCombo?.map((item) => ({
+      //   value: item._id,
+      //   label: item.label,
+      // }))
     );
   }, []);
 
   const getResources = async () => {
     try {
       const response = await call('getResources');
-      setResources(
-        response.map((item) => ({
-          value: item._id,
-          label: item.label,
-          isCombo: item.isCombo,
-        }))
-      );
+      setResources(response);
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -100,14 +93,11 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     }
   };
 
-  const onSubmit = async (values) => {
-    if (!resourcesForCombo || resourcesForCombo.length === 0) {
-      values.isCombo = false;
-      values.resourcesForCombo = [];
-    } else {
-      values.isCombo = true;
-      values.resourcesForCombo = resourcesForCombo.map((item) => item.value);
-    }
+  const onSubmit = async (formValues) => {
+    const values = {
+      ...formValues,
+      resourcesForCombo: resourcesForCombo || [],
+    };
 
     if (values.images !== []) {
       values.images = await handleUploadImage();
@@ -176,6 +166,15 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     return null;
   }
 
+  const autoCompleteOptions = resources
+    .filter((r) => !r.isCombo)
+    .map((r) => ({
+      _id: r._id,
+      label: r.label,
+      description: r.description,
+      resourceIndex: r.resourceIndex,
+    }));
+
   return (
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -200,13 +199,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                 <Loader />
               ) : (
                 <AutoCompleteSelect
-                  onChange={handleAutoCompleteSelectChange}
+                  isMulti
                   closeMenuOnSelect={false}
                   components={animatedComponents}
-                  isMulti
                   defaultValue={resourcesForCombo}
-                  options={resources.filter((r) => !r.isCombo)}
+                  options={autoCompleteOptions}
                   style={{ width: '100%', marginTop: '1rem' }}
+                  getOptionValue={(option) => option._id}
+                  onChange={handleAutoCompleteSelectChange}
                 />
               )}
             </Box>

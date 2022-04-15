@@ -14,22 +14,22 @@ moment.locale(i18n.language);
 
 import ResourcesForCombo from './ResourcesForCombo';
 
-export default function GridThumb({ girdItem, itemType }) {
-  if (!girdItem) {
+export default function GridThumb({ gridItem, itemType }) {
+  if (!gridItem) {
     return null;
   }
 
   const thumbHasImage =
-    (girdItem?.image && girdItem.image !== '') ||
-    (girdItem?.images && girdItem?.images.length > 0);
+    (gridItem?.image && gridItem.image !== '') ||
+    (gridItem?.images && gridItem?.images.length > 0);
 
   return (
-    <Flex bg="white" mb="2" p="4" key={girdItem?._id} h="100%">
+    <Flex bg="white" mb="2" p="4" key={gridItem?._id} h="100%">
       {thumbHasImage && (
         <Box style={{ marginRight: '1rem', width: 'calc(50% - 1rem)' }}>
           <AspectRatio maxW="480px" ratio={16 / 9}>
             <Image
-              src={girdItem?.image ? girdItem.image : girdItem.images[0]}
+              src={gridItem?.image ? gridItem.image : gridItem.images[0]}
               objectFit="cover"
             />
           </AspectRatio>
@@ -37,15 +37,15 @@ export default function GridThumb({ girdItem, itemType }) {
       )}
       <Flex w={thumbHasImage ? '50%' : '100%'} direction="column">
         <Heading size="md" fontWeight="bold">
-          {itemType === 'resource' && girdItem.isCombo ? (
-            <ResourcesForCombo resource={girdItem} />
+          {itemType === 'resource' && gridItem.isCombo ? (
+            <ResourcesForCombo resource={gridItem} />
           ) : (
-            girdItem?.label
+            gridItem?.label
           )}
         </Heading>
         <Spacer my="4" />
         <Text as="p" fontSize="xs" alignSelf="flex-end">
-          {moment(girdItem.createdAt).format('D MMM YYYY')}
+          {moment(gridItem.createdAt).format('D MMM YYYY')}
         </Text>
       </Flex>
     </Flex>
