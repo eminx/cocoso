@@ -53,10 +53,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     getResources();
     setResourcesForCombo(
       defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo
-      // defaultValues.resourcesForCombo?.map((item) => ({
-      //   value: item._id,
-      //   label: item.label,
-      // }))
     );
   }, []);
 
