@@ -17,35 +17,18 @@ function validateLabel(label, host, resourceId) {
   }
   return true;
 }
-// FETCH COMBO RESOURCES
-function fetchComboResources(resource) {
-  const resourcesForCombo =  Resources.find(
-    { _id : { $in : resource.resourcesForCombo } }, 
-    { fields: { label: 1 } }
-  ).fetch();
-  return resourcesForCombo
-}
+
 // RESOURCE METHODS
 Meteor.methods({
   getResources() {
     const host = getHost(this);
     const sort = { createdAt: -1 };
-    const fields = Resources.publicFields;
-    const resources = Resources.find({ host }, { sort, fields }).fetch();
-
-    return resources.map(resource => ({
-      ...resource,
-      resourcesForCombo: resource.isCombo && fetchComboResources(resource)
-    }));
+    return Resources.find({ host }, { sort }).fetch();
   },
 
   getResourceById(resourceId) {
     const fields = Resources.publicFields;
-    let resource = Resources.findOne(resourceId, { fields });
-    return  {
-      ...resource,
-      resourcesForCombo: resource.isCombo && fetchComboResources(resource)
-    }
+    return Resources.findOne(resourceId, { fields });
   },
 
   getResourceBookingsForUser(resourceId) {
@@ -95,9 +78,9 @@ Meteor.methods({
     }
     try {
       const newResourceId = Resources.insert({
+        ...values,
         host,
         userId: user._id,
-        ...values,
         resourceIndex,
         createdBy: user.username,
         createdAt: new Date(),
@@ -135,7 +118,6 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
-  
   },
 
   deleteResource(resourceId) {

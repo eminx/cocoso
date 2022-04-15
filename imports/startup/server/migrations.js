@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Resources from '/imports/api/resources/resource';
-import Host from '/imports/api/@hosts/host';
+import Hosts from '/imports/api/@hosts/host';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -34,6 +34,7 @@ Migrations.add({
     });
   },
 });
+
 // Drop && Set back - labelLowerCase
 Migrations.add({
   version: 2,
@@ -49,6 +50,7 @@ Migrations.add({
     });
   },
 });
+
 // Change - resourcesForCombo - arrayOfObjects <=> arrayOfIds
 Migrations.add({
   version: 3,
@@ -67,12 +69,13 @@ Migrations.add({
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
-        { fields: { label: 1 } }
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
       ).fetch();
       Resources.update(item._id, { $set: { resourcesForCombo } });
     });
   },
 });
+
 // Switch between - creationDate <=> createdAt
 Migrations.add({
   version: 4,
@@ -95,6 +98,7 @@ Migrations.add({
     Resources.update({}, { $unset: { createdAt: true } }, { multi: true });
   },
 });
+
 // Switch between - latestUpdate <=> updatedAt
 Migrations.add({
   version: 5,
@@ -117,6 +121,7 @@ Migrations.add({
     Resources.update({}, { $unset: { updatedAt: true } }, { multi: true });
   },
 });
+
 // Switch between - authorId <=> userId
 Migrations.add({
   version: 6,
@@ -137,6 +142,7 @@ Migrations.add({
     Resources.update({}, { $unset: { userId: true } }, { multi: true });
   },
 });
+
 // Switch between - authorUsername <=> createdBy
 Migrations.add({
   version: 7,
@@ -159,12 +165,13 @@ Migrations.add({
     Resources.update({}, { $unset: { createdBy: true } }, { multi: true });
   },
 });
+
 // Switch between - authorUsername <=> createdBy
 Migrations.add({
   version: 8,
   up: async function () {
     console.log('up to', this.version);
-    await Host.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
+    await Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
       if (!item.settings.menu.find((item) => item?.name === 'resource')) {
         const menu = [
           ...item.settings.menu,
@@ -175,18 +182,43 @@ Migrations.add({
             isHomePage: false,
           },
         ];
-        Host.update(item._id, { $set: { 'settings.menu': menu } });
+        Hosts.update(item._id, { $set: { 'settings.menu': menu } });
       }
     });
   },
   down: async function () {
     console.log('down to', this.version - 1);
-    await Host.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
+    await Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
       const menu = [];
       item.settings.menu.forEach((item) => {
         if (item?.name !== 'resources') menu.push(item);
       });
-      Host.update(item._id, { $set: { 'settings.menu': menu } });
+      Hosts.update(item._id, { $set: { 'settings.menu': menu } });
+    });
+  },
+});
+
+// Return embedding resource objects in resourcesForCombo rather than using only _ids
+Migrations.add({
+  version: 9,
+  up: async function () {
+    console.log('up to', this.version);
+    await Resources.find({ isCombo: true }).forEach((item) => {
+      const resourcesForCombo = Resources.find(
+        { _id: { $in: item.resourcesForCombo } },
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
+      ).fetch();
+      Resources.update(item._id, { $set: { resourcesForCombo } });
+    })
+  },
+  down: async function () {
+    console.log('down to', this.version - 1);
+    await Resources.find({ isCombo: true }).forEach((item) => {
+      const resourcesForCombo = [];
+      item.resourcesForCombo.forEach((res) => {
+        resourcesForCombo.push(res?._id);
+      });
+      Resources.update(item._id, { $set: { resourcesForCombo } });
     });
   },
 });
@@ -194,7 +226,7 @@ Migrations.add({
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
-  // Migrations.migrateTo(1);
+  // Migrations.migrateTo(0);
   // Migrations.migrateTo(2);
   // Migrations.migrateTo(3);
   // Migrations.migrateTo(4);
@@ -202,5 +234,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(6);
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
-  Migrations.migrateTo('latest');
+  Migrations.migrateTo(9);
+  // Migrations.migrateTo('latest');
 });

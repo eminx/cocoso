@@ -27,7 +27,6 @@ export default function ResourcesCard({
   discussion,
   resource,
   addNewChatMessage,
-  isThumb,
 }) {
   const [t] = useTranslation('resources');
 
@@ -49,17 +48,15 @@ export default function ResourcesCard({
         </Heading>
       </Flex>
       <Tabs variant="enclosed-colored">
-        {!isThumb && (
-          <TabList pl="4">
-            <Tab>{t('tabs.info')}</Tab>
-            <Tab>{t('tabs.discussion')} </Tab>
-          </TabList>
-        )}
+        <TabList pl="4">
+          <Tab>{t('tabs.info')}</Tab>
+          <Tab>{t('tabs.discussion')} </Tab>
+        </TabList>
         <TabPanels pt="4">
           <TabPanel p="0">
             {resource?.images && (
               <Box mb="4">
-                {resource.images.length === 1 || isThumb ? (
+                {resource.images.length === 1 ? (
                   <Center>
                     <Image src={resource.images[0]} fit="contain" fill />
                   </Center>
@@ -109,11 +106,14 @@ function ResourcesForCombo({ resource }) {
         </Tag>
       </Flex>
       {' ['}
-      {resourcesForCombo.map((res, i) => (
-        <Text as="span" fontSize="sm" key={res._id}>
-          {res.label + (i < length - 1 ? ' + ' : '')}
-        </Text>
-      ))}
+      {resourcesForCombo.map(
+        (res, i) =>
+          res && (
+            <Text as="span" fontSize="sm" key={res._id}>
+              {res.label + (i < length - 1 ? ' + ' : '')}
+            </Text>
+          )
+      )}
       ]
     </span>
   );
