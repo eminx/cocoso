@@ -252,13 +252,13 @@ const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelect
         const existingStart = `${occurence.startDate} ${occurence.startTime}`;
         const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
         return (
-          moment(selectedStart, dateTimeFormat).isBetween(
-            existingStart,
-            existingEnd
+          moment(existingStart, dateTimeFormat).isBetween(
+            selectedStart,
+            selectedEnd
           ) ||
-          moment(selectedEnd, dateTimeFormat).isBetween(
-            existingStart,
-            existingEnd
+          moment(existingEnd, dateTimeFormat).isBetween(
+            selectedStart,
+            selectedEnd
           )
         );
       }
