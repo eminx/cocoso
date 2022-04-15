@@ -81,7 +81,7 @@ class NewActivity extends PureComponent {
   }
 
   setInitialValuesWithQP = () => {
-    const { history } = this.props;
+    const { history, resources } = this.props;
     const { formValues } = this.state;
 
     const {
@@ -108,13 +108,15 @@ class NewActivity extends PureComponent {
     const initialValues = {
       ...formValues,
       resourceId: params.resource,
-      // datesAndTimes: [defaultBooking],
     };
+
+    const selectedResource = resources?.find((r) => r._id === params.resource);
 
     this.setState(
       {
         formValues: initialValues,
         datesAndTimes: [defaultBooking],
+        selectedResource,
         isReady: true,
       },
       () => {
@@ -124,14 +126,12 @@ class NewActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { resources } = this.props;
-    const { isPublicActivity } = this.state;
-
-    const formValues = { ...values };
-    const selectedResource = resources.find((r) => r._id === values.resourceId);
-    formValues.resource = selectedResource.label;
-    formValues.resourceId = selectedResource._id;
-    formValues.resourceIndex = selectedResource.resourceIndex;
+    const { isPublicActivity, selectedResource } = this.state;
+    const formValues = {
+      ...values,
+      resource: selectedResource.label,
+      resourceIndex: selectedResource.resourceIndex,
+    };
 
     this.setState(
       {
@@ -295,6 +295,7 @@ class NewActivity extends PureComponent {
     const { selectedResource, datesAndTimes } = this.state;
 
     if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+      console.log('wtf');
       return;
     }
     const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
@@ -314,7 +315,6 @@ class NewActivity extends PureComponent {
 
   handleSelectedResource = (value) => {
     const { resources } = this.props;
-    const { datesAndTimes } = this.state;
     const selectedResource = resources.find((r) => r._id === value);
     this.setState(
       {
