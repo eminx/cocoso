@@ -246,8 +246,48 @@ class EditActivity extends PureComponent {
   };
 
   setDatesAndTimes = (datesAndTimes) => {
-    this.setState({
+    this.setState(
+      {
+        datesAndTimes,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  handleSelectedResource = (value) => {
+    const { resources } = this.props;
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState(
+      {
+        selectedResource,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  validateBookings = () => {
+    const { allBookings } = this.props;
+    const { selectedResource, datesAndTimes } = this.state;
+
+    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+      return;
+    }
+    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
+      selectedResource,
+      allBookings
+    );
+
+    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
       datesAndTimes,
+      allBookingsWithSelectedResource
+    );
+
+    this.setState({
+      datesAndTimes: selectedBookingsWithConflict,
     });
   };
 
