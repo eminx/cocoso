@@ -17,7 +17,7 @@ export default NewActivityContainer = withTracker((props) => {
   const currentUser = Meteor.user();
 
   const resourcesWithComboParsed = resources && parseComboResourcesWithAllData(resources);
-  const allBookings = resourcesWithComboParsed && processes && activities && parseAllBookingsWithResources(activities, processes, resourcesWithComboParsed);
+  const allBookings = parseAllBookingsWithResources(activities, processes, resourcesWithComboParsed);
 
   const isLoading =
     !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();

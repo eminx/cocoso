@@ -61,12 +61,11 @@ class NewActivity extends PureComponent {
   };
 
   componentDidMount() {
-    this.setInitialValuesWithQP();
+    this.setInitialValuesWithQueryParams();
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { history, resources } = this.props;
-    const { selectedResource, datesAndTimes } = this.state;
 
     const { search } = history.location;
     const prevSearch = prevProps.history.location.search;
@@ -74,13 +73,11 @@ class NewActivity extends PureComponent {
       search !== prevSearch ||
       resources?.length !== prevProps.resources?.length
     ) {
-      this.setInitialValuesWithQP();
+      this.setInitialValuesWithQueryParams();
     }
-
-    // if ()
   }
 
-  setInitialValuesWithQP = () => {
+  setInitialValuesWithQueryParams = () => {
     const { history, resources } = this.props;
     const { formValues } = this.state;
 
@@ -295,7 +292,6 @@ class NewActivity extends PureComponent {
     const { selectedResource, datesAndTimes } = this.state;
 
     if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
-      console.log('wtf');
       return;
     }
     const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
