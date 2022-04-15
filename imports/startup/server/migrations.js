@@ -234,6 +234,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(6);
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
-  // Migrations.migrateTo(9);
+  Migrations.migrateTo(9);
   // Migrations.migrateTo('latest');
 });
