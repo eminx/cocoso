@@ -9,7 +9,13 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import { resizeImage, uploadImage, call } from '../../@/shared';
+import {
+  getAllBookingsWithSelectedResource,
+  checkAndSetBookingsWithConflict,
+  resizeImage,
+  uploadImage,
+  call,
+} from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 const formModel = {
@@ -175,7 +181,7 @@ class EditActivity extends PureComponent {
     }
   };
 
-  updateActivity = () => {
+  updateActivity = async () => {
     const { activity } = this.props;
     const {
       formValues,
@@ -194,41 +200,38 @@ class EditActivity extends PureComponent {
       isRegistrationDisabled,
     };
 
-    Meteor.call('updateActivity', activity._id, values, (error, respond) => {
-      if (error) {
-        console.log(error);
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
-    });
+    try {
+      await call('updateActivity', activity._id, values);
+      this.setState({
+        isLoading: false,
+        isSuccess: true,
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        isError: true,
+      });
+    }
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
-  deleteActivity = () => {
+  deleteActivity = async () => {
     const activityId = this.props.activity._id;
 
-    Meteor.call('deleteActivity', activityId, (error, respond) => {
-      if (error) {
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
-    });
+    try {
+      await call('deleteActivity', activityId);
+      this.setState({
+        isLoading: false,
+        isSuccess: true,
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        isError: true,
+      });
+    }
   };
 
   handlePublicActivitySwitch = (event) => {

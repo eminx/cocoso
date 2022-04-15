@@ -287,6 +287,19 @@ class NewActivity extends PureComponent {
     );
   };
 
+  handleSelectedResource = (value) => {
+    const { resources } = this.props;
+    const selectedResource = resources.find((r) => r._id === value);
+    this.setState(
+      {
+        selectedResource,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
   validateBookings = () => {
     const { allBookings } = this.props;
     const { selectedResource, datesAndTimes } = this.state;
@@ -307,19 +320,6 @@ class NewActivity extends PureComponent {
     this.setState({
       datesAndTimes: selectedBookingsWithConflict,
     });
-  };
-
-  handleSelectedResource = (value) => {
-    const { resources } = this.props;
-    const selectedResource = resources.find((r) => r._id === value);
-    this.setState(
-      {
-        selectedResource,
-      },
-      () => {
-        this.validateBookings();
-      }
-    );
   };
 
   isFormValid = () => {
