@@ -242,8 +242,6 @@ const getAllBookingsWithSelectedResource = (selectedResource, allBookings) => {
 }
 
 const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelectedResource) => {
-  const dateTimeFormat = 'YYYY-MM-DD HH:mm';
-
   return selectedBookings.map((selectedBooking) => {
     const bookingWithConflict = allBookingsWithSelectedResource.find(
       (occurence) => {
@@ -251,16 +249,8 @@ const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelect
         const selectedEnd = `${selectedBooking.endDate} ${selectedBooking.endTime}`;
         const existingStart = `${occurence.startDate} ${occurence.startTime}`;
         const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-        return (
-          moment(existingStart, dateTimeFormat).isBetween(
-            selectedStart,
-            selectedEnd
-          ) ||
-          moment(existingEnd, dateTimeFormat).isBetween(
-            selectedStart,
-            selectedEnd
-          )
-        );
+
+        return isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd);
       }
     );
 
@@ -271,9 +261,32 @@ const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelect
   });
 }
 
-function isResourceOccupied(occurence, start, end) {
-  const dateTimeFormat = 'M/DD/YYYY hh:mm';
-  moment(occurence.dateTime, dateTimeFormat).isBetween(start, end);
+const isDatesInConflict = (existingStart, existingEnd, selectedStart, selectedEnd) => {
+  const dateTimeFormat = 'YYYY-MM-DD HH:mm';
+
+  // If the same values are selected, moment compare returns false. That's why we do:
+  if (existingStart === selectedStart && existingEnd === selectedEnd) {
+    return true;
+  }
+
+  return (
+    moment(selectedStart, dateTimeFormat).isBetween(
+      existingStart,
+      existingEnd,
+    ) ||
+    moment(selectedEnd, dateTimeFormat).isBetween(
+      existingStart,
+      existingEnd,
+    ) ||
+    moment(existingStart, dateTimeFormat).isBetween(
+      selectedStart,
+      selectedEnd,
+    ) ||
+    moment(existingEnd, dateTimeFormat).isBetween(
+      selectedStart,
+      selectedEnd,
+    )
+  );
 }
 
 function appendLeadingZeroes(n){
