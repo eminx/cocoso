@@ -51,12 +51,6 @@ const useCollisionPrevention = (
       allBookingsWithSelectedResource
     );
 
-    console.log(
-      selectedResource,
-      selectedBookings,
-      selectedBookingsWithConflict
-    );
-
     return {
       selectedBookingsWithConflict,
       isCollisionPreventionLoading,
