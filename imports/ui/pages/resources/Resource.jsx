@@ -21,7 +21,7 @@ function ResourcePage() {
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, canCreateContent } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
@@ -86,7 +86,13 @@ function ResourcePage() {
               )
             }
             rightContent={
-              <BookingsField currentUser={currentUser} domain={resource} />
+              currentUser &&
+              canCreateContent && (
+                <BookingsField
+                  currentUser={currentUser}
+                  selectedResource={resource}
+                />
+              )
             }
           >
             <Breadcrumb domain={resource} domainKey="label" />

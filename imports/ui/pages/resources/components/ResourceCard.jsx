@@ -23,7 +23,7 @@ import NiceSlider from '../../../components/NiceSlider';
 import Chattery from '../../../components/chattery/Chattery';
 import ResourcesForCombo from '../../../components/ResourcesForCombo';
 
-export default function ResourcesCard({
+export default function ResourceCard({
   currentUser,
   discussion,
   resource,
@@ -63,6 +63,7 @@ export default function ResourcesCard({
                   </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
+                  // <h2>fd;f</h2>
                 )}
               </Box>
             )}
