@@ -80,8 +80,8 @@ function ResourcePage() {
             leftContent={
               !isMobile && (
                 <DocumentsField
-                  domainType="resource"
-                  domainId={resource?._id}
+                  contextType="resource"
+                  contextId={resource?._id}
                 />
               )
             }
@@ -95,7 +95,7 @@ function ResourcePage() {
               )
             }
           >
-            <Breadcrumb domain={resource} domainKey="label" />
+            <Breadcrumb context={resource} contextKey="label" />
             <ResourceCard
               addNewChatMessage={addNewChatMessage}
               currentUser={currentUser}
@@ -103,7 +103,10 @@ function ResourcePage() {
               resource={resource}
             />
             {isMobile && (
-              <DocumentsField domainType="resource" domainId={resource?._id} />
+              <DocumentsField
+                contextType="resource"
+                contextId={resource?._id}
+              />
             )}
             <Center my="2">
               <Link to={`/resources/${resource?._id}/edit`}>
