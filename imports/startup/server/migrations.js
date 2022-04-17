@@ -223,6 +223,23 @@ Migrations.add({
   },
 });
 
+// Return embedding resource objects in resourcesForCombo rather than using only _ids
+Migrations.add({
+  version: 10,
+  up: async function () {
+    console.log('up to', this.version);
+    await Activities.update({}, {
+      $set: {
+        isExclusiveActivity: true,
+      }
+    })
+  },
+  down: async function () {
+    console.log('down to', this.version - 1);
+    return;
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -235,5 +252,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
   // Migrations.migrateTo(9);
+  // Migrations.migrateTo(10);
   // Migrations.migrateTo('latest');
 });
