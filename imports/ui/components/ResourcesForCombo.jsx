@@ -7,7 +7,7 @@ export default function ResourcesForCombo({ resource }) {
   const resourcesForCombo = resource?.resourcesForCombo;
   const length = resource?.resourcesForCombo.length;
   return (
-    <span>
+    <div>
       <Flex mb="2">
         <Text mr="2">{resource?.label}</Text>
         <Tag size="sm" textTransform="uppercase">
@@ -21,6 +21,6 @@ export default function ResourcesForCombo({ resource }) {
         </Text>
       ))}
       ]
-    </span>
+    </div>
   );
 }

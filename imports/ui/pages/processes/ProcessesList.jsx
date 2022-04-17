@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   Image,
+  SimpleGrid,
   Tabs,
   Tab,
   TabList,
@@ -26,12 +27,19 @@ import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../@/shared';
+import GridThumb from '../../components/GridThumb';
 
 moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
+export default function ProcessesList({
+  isLoading,
+  currentUser,
+  processes,
+  t,
+  tc,
+}) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -49,7 +57,6 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
       value: 'archived',
     },
   ];
-  
 
   const archiveProcess = (processId) => {
     Meteor.call('archiveProcess', processId, (error, respond) => {
@@ -116,37 +123,27 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
     return futureProcessesAllowed;
   };
 
-  const renderResults = () => {
-    const processesFilteredAndSorted =
-      getFilteredProcesses().sort(compareForSort);
-    const processesList = processesFilteredAndSorted.map((process) => ({
-      ...process,
-      actions: [
-        {
-          content: process.isArchived ? t('labels.unarchived') : t('labels.archived'),
-          handleClick: process.isArchived
-            ? () => unarchiveProcess(process._id)
-            : () => archiveProcess(process._id),
-          isDisabled:
-            !currentUser ||
-            (process.adminId !== currentUser._id && !currentUser.isSuperAdmin),
-        },
-      ],
-    }));
-
-    return processesList;
-  };
+  const processesRendered = getFilteredProcesses()
+    .sort(compareForSort)
+    .reverse();
 
   return (
-    <Template>
+    <Box w="100%">
       <Helmet>
-        <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${
+          publicSettings.name
+        }`}</title>
       </Helmet>
       <Box>
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+              <Button
+                as="span"
+                colorScheme="green"
+                variant="outline"
+                textTransform="uppercase"
+              >
                 {tc('actions.create')}
               </Button>
             </Link>
@@ -164,37 +161,68 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  <NiceList
-                    actionsDisabled={!currentUser || !canCreateContent}
-                    border={false}
-                    itemBg="white"
-                    list={renderResults().reverse()}
-                  >
-                    {(process) => (
-                      <Link to={`/process/${process._id}`}>
-                        <ProcessItem process={process} />
+                  <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
+                    {processesRendered.map((process) => (
+                      <Link key={process._id} to={`/process/${process._id}`}>
+                        <GridThumb
+                          image={process.imageUrl}
+                          large
+                          title={process.title}
+                        >
+                          {moment(process.creationDate).format('D MMM YYYY')}
+                        </GridThumb>
                       </Link>
-                    )}
-                  </NiceList>
+                    ))}
+                  </SimpleGrid>
                 </TabPanel>
               ))}
             </TabPanels>
           </Tabs>
         </Box>
       </Box>
-    </Template>
+    </Box>
   );
 }
 
 function ProcessItem({ process }) {
   return (
+    <Flex bg="white" m="2" __hover={{ cursor: 'pointer' }}>
+      <Box w="100%" p="4" flexBasis="70%">
+        <Heading size="md" fontWeight="bold">
+          {itemType === 'resource' && gridItem.isCombo ? (
+            <ResourcesForCombo resource={gridItem} />
+          ) : (
+            gridItem?.label
+          )}
+        </Heading>
+        <Spacer my="4" />
+        <Text as="p" fontSize="xs" alignSelf="flex-end">
+          {moment(gridItem.createdAt).format('D MMM YYYY')}
+        </Text>
+      </Box>
+
+      {thumbHasImage && (
+        <Box flexBasis="200px">
+          <Image
+            alt={alt}
+            fit="cover"
+            mr="2"
+            src={gridItem.images[0]}
+            w="xs"
+            h="150px"
+          />
+        </Box>
+      )}
+    </Flex>
+  );
+  return (
     <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
       <Box mr="2">
-        <Image w="sm" fit="cover" src={process.imageUrl} />
+        <Image w="xs" fit="cover" src={process.imageUrl} />
       </Box>
       <Box w="100%">
         <Box>
-          <Heading size="lg">{process.title}</Heading>
+          <Heading size="md">{process.title}</Heading>
           <Text fontSize="lg" fontWeight="light">
             {process.readingMaterial}
           </Text>

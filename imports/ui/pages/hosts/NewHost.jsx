@@ -21,8 +21,8 @@ const hostModel = {
 function NewHost() {
   const { currentUser } = useContext(StateContext);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   const handleSubmit = async (values) => {
     if (!currentUser.isSuperAdmin) {
@@ -54,11 +54,7 @@ function NewHost() {
   }
 
   if (isSuccess) {
-    return (
-      <Alert type="success">
-        {t('new.message.submission')}
-      </Alert>
-    );
+    return <Alert type="success">{t('new.message.submission')}</Alert>;
   }
 
   return (

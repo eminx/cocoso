@@ -19,6 +19,7 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import moment from 'moment';
 
 import { call } from '../../@/shared';
 import { message } from '../../components/message';
@@ -26,6 +27,7 @@ import { StateContext } from '../../LayoutContainer';
 import Breadcrumb from '../../components/Breadcrumb';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
+import ResourcesForCombo from '../../components/ResourcesForCombo';
 
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } =
@@ -185,9 +187,21 @@ function ResourceItem({ resource }) {
     return null;
   }
   return (
-    <Box key={resource._id}>
+    <Box>
       <Link to={`/resources/${resource._id}`}>
-        <GridThumb gridItem={resource} itemType="resource" />
+        <GridThumb
+          alt={resource.label}
+          title={
+            resource.isCombo ? (
+              <ResourcesForCombo resource={resource} />
+            ) : (
+              resource.label
+            )
+          }
+          image={resource.images?.[0]}
+        >
+          {moment(resource.createdAt).format('D MMM YYYY')}
+        </GridThumb>
       </Link>
     </Box>
   );
