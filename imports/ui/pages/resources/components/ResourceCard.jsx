@@ -21,8 +21,9 @@ moment.locale(i18n.language);
 
 import NiceSlider from '../../../components/NiceSlider';
 import Chattery from '../../../components/chattery/Chattery';
+import ResourcesForCombo from '../../../components/ResourcesForCombo';
 
-export default function ResourcesCard({
+export default function ResourceCard({
   currentUser,
   discussion,
   resource,
@@ -62,6 +63,7 @@ export default function ResourcesCard({
                   </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
+                  // <h2>fd;f</h2>
                 )}
               </Box>
             )}
@@ -89,32 +91,5 @@ export default function ResourcesCard({
         </TabPanels>
       </Tabs>
     </Box>
-  );
-}
-
-function ResourcesForCombo({ resource }) {
-  const [t] = useTranslation('resources');
-  const resourcesForCombo = resource?.resourcesForCombo;
-  const length = resource?.resourcesForCombo.length;
-
-  return (
-    <span>
-      <Flex mb="2">
-        <Text mr="2">{resource?.label}</Text>
-        <Tag size="sm" textTransform="uppercase">
-          {t('cards.ifCombo')}
-        </Tag>
-      </Flex>
-      {' ['}
-      {resourcesForCombo.map(
-        (res, i) =>
-          res && (
-            <Text as="span" fontSize="sm" key={res._id}>
-              {res.label + (i < length - 1 ? ' + ' : '')}
-            </Text>
-          )
-      )}
-      ]
-    </span>
   );
 }

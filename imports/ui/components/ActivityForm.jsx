@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import {
   Box,
@@ -44,8 +44,13 @@ function ActivityForm({
   uploadableImageLocal,
   setUploadableImage,
   setSelectedResource,
+  isButtonDisabled,
 }) {
-  const { control, formState, handleSubmit, register } = useForm({
+  useEffect(() => {
+    setSelectedResource(getValues('resourceId'));
+  }, [defaultValues]);
+
+  const { control, formState, handleSubmit, getValues, register } = useForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
@@ -262,7 +267,11 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isLoading={isSubmitting} type="submit">
+          <Button
+            isLoading={isSubmitting}
+            isDisabled={isButtonDisabled}
+            type="submit"
+          >
             {tc('actions.submit')}
           </Button>
         </Flex>

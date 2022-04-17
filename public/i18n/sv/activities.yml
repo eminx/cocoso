@@ -16,8 +16,8 @@ form:
     single: Dag
     multiple: Flera olika Dagar
   date:
-    start: Start day
-    finish: Finish day
+    start: Startdag
+    finish: Slutdagen
   time:
     start: Starttid
     finish: Sluttid
@@ -45,6 +45,9 @@ form:
     label: Bild
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
+  conflict:
+    alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
+    notExclusiveInfo: 'Eftersom båda bokningarna inte är exklusiva kan du gå vidare och slutföra din bokning'
 
 members:
   label: Mina aktiviteter

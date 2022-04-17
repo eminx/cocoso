@@ -9,11 +9,17 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import { resizeImage, uploadImage, call } from '../../@/shared';
+import {
+  getAllBookingsWithSelectedResource,
+  checkAndSetBookingsWithConflict,
+  resizeImage,
+  uploadImage,
+  call,
+} from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 const formModel = {
-  resource: '',
+  resourceId: '',
   title: '',
   subTitle: '',
   place: '',
@@ -25,38 +31,32 @@ class EditActivity extends PureComponent {
     datesAndTimes: [],
     formValues: formModel,
     isDeleteModalOn: false,
-    isPublicActivity: false,
     isCreating: false,
     isError: false,
     isLoading: false,
     isSuccess: false,
+    isExclusiveActivity: true,
+    isPublicActivity: false,
     isRegistrationDisabled: false,
     longDescription: '',
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedImage: null,
-    resources: [],
   };
 
   componentDidMount() {
-    this.getResources();
     this.setInitialData();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.activity && this.props.activity) {
+    if (
+      (!prevProps.activity && this.props.activity) ||
+      (!prevProps.allBookings && this.props.allBookings) ||
+      (!prevProps.resources && this.props.resources)
+    ) {
       this.setInitialData();
     }
   }
-
-  getResources = async () => {
-    try {
-      const resources = await call('getResources');
-      this.setState({ resources });
-    } catch (error) {
-      message.error(error.error || error.reason);
-    }
-  };
 
   setInitialData = () => {
     const { activity } = this.props;
@@ -65,11 +65,15 @@ class EditActivity extends PureComponent {
     }
     const { datesAndTimes } = activity;
 
-    this.setState({
-      datesAndTimes: [...datesAndTimes],
-      isPublicActivity: activity.isPublicActivity,
-      isRegistrationDisabled: activity.isRegistrationDisabled,
-    });
+    this.setState(
+      {
+        datesAndTimes: [...datesAndTimes],
+        isPublicActivity: activity.isPublicActivity,
+        isExclusiveActivity: Boolean(activity.isExclusiveActivity),
+        isRegistrationDisabled: activity.isRegistrationDisabled,
+      },
+      () => this.validateBookings()
+    );
   };
 
   successEditMessage = (isDeleted) => {
@@ -106,7 +110,8 @@ class EditActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, uploadableImage, resources } = this.state;
+    const { resources } = this.props;
+    const { isPublicActivity, uploadableImage } = this.state;
     const formValues = { ...values };
     if (values.resourceId) {
       const selectedResource = resources.find(
@@ -153,14 +158,6 @@ class EditActivity extends PureComponent {
     );
   };
 
-  handleSelectedResource = (value) => {
-    const { resources } = this.state;
-    const selectedResource = resources.find((r) => r._id === value);
-    this.setState({
-      selectedResource,
-    });
-  };
-
   uploadImage = async () => {
     const { uploadableImage } = this.state;
 
@@ -185,10 +182,11 @@ class EditActivity extends PureComponent {
     }
   };
 
-  updateActivity = () => {
+  updateActivity = async () => {
     const { activity } = this.props;
     const {
       formValues,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
@@ -200,52 +198,63 @@ class EditActivity extends PureComponent {
       ...formValues,
       datesAndTimes,
       imageUrl,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
     };
 
-    Meteor.call('updateActivity', activity._id, values, (error, respond) => {
-      if (error) {
-        console.log(error);
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
-    });
+    try {
+      await call('updateActivity', activity._id, values);
+      this.setState({
+        isLoading: false,
+        isSuccess: true,
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        isError: true,
+      });
+    }
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
-  deleteActivity = () => {
+  deleteActivity = async () => {
     const activityId = this.props.activity._id;
 
-    Meteor.call('deleteActivity', activityId, (error, respond) => {
-      if (error) {
-        this.setState({
-          isLoading: false,
-          isError: true,
-        });
-      } else {
-        this.setState({
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
-    });
+    try {
+      await call('deleteActivity', activityId);
+      this.setState({
+        isLoading: false,
+        isSuccess: true,
+      });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        isError: true,
+      });
+    }
   };
 
   handlePublicActivitySwitch = (event) => {
     const value = event.target.checked;
     this.setState({
       isPublicActivity: value,
+      isExclusiveActivity: true,
     });
+  };
+
+  handleExclusiveSwitch = (event) => {
+    const { isPublicActivity } = this.state;
+    const value = isPublicActivity || event.target.checked;
+
+    this.setState(
+      {
+        isExclusiveActivity: value,
+      },
+      () => this.validateBookings()
+    );
   };
 
   handleRegistrationSwitch = (event) => {
@@ -256,13 +265,82 @@ class EditActivity extends PureComponent {
   };
 
   setDatesAndTimes = (datesAndTimes) => {
-    this.setState({
+    this.setState(
+      {
+        datesAndTimes,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  handleSelectedResource = (value) => {
+    this.setState(
+      {
+        selectedResource: this.findResourceFromId(value),
+      },
+      () => this.validateBookings()
+    );
+  };
+
+  findResourceFromId = (resourceId) => {
+    const { resources } = this.props;
+    return resources.find((r) => r._id === resourceId);
+  };
+
+  validateBookings = () => {
+    const { activity, allBookings } = this.props;
+    const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
+
+    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+      return;
+    }
+    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
+      selectedResource,
+      allBookings
+    );
+
+    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
       datesAndTimes,
+      allBookingsWithSelectedResource,
+      activity._id
+    );
+
+    const selectedBookingsWithConflictButNotExclusive =
+      selectedBookingsWithConflict.map((item) => {
+        const booking = { ...item };
+        if (item.conflict) {
+          booking.isConflictOK =
+            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+        }
+        return booking;
+      });
+
+    this.setState({
+      datesAndTimes: selectedBookingsWithConflictButNotExclusive,
     });
   };
 
+  isFormValid = () => {
+    const { datesAndTimes } = this.state;
+
+    const isConflictHard =
+      datesAndTimes &&
+      datesAndTimes.some(
+        (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
+      );
+
+    const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    const isTimesInValid = datesAndTimes.some((dateTime) => {
+      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
+    });
+
+    return !isTimesInValid && !isConflictHard;
+  };
+
   render() {
-    const { activity, currentUser, tc, t } = this.props;
+    const { activity, currentUser, resources, tc, t } = this.props;
 
     if (!currentUser || !activity) {
       return <Loader />;
@@ -275,11 +353,12 @@ class EditActivity extends PureComponent {
     const {
       datesAndTimes,
       isDeleteModalOn,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       isSuccess,
+      isLoading,
       uploadableImageLocal,
-      resources,
     } = this.state;
 
     if (isSuccess) {
@@ -289,6 +368,8 @@ class EditActivity extends PureComponent {
       }
       return <Redirect to={`/activity/${activity._id}`} />;
     }
+
+    const isFormValid = this.isFormValid();
 
     return (
       <Template
@@ -314,6 +395,13 @@ class EditActivity extends PureComponent {
                 onChange={this.handlePublicActivitySwitch}
               />
 
+              <FormSwitch
+                isChecked={isPublicActivity || isExclusiveActivity}
+                isDisabled={isPublicActivity}
+                label={t('form.switch.exclusive')}
+                onChange={this.handleExclusiveSwitch}
+              />
+
               {isPublicActivity && (
                 <FormSwitch
                   isChecked={isRegistrationDisabled}
@@ -335,6 +423,9 @@ class EditActivity extends PureComponent {
             setDatesAndTimes={this.setDatesAndTimes}
             setSelectedResource={this.handleSelectedResource}
             setUploadableImage={this.setUploadableImage}
+            isButtonDisabled={!isFormValid || isLoading}
+            isCreating={isLoading}
+            isFormValid={isFormValid}
           />
         </Box>
 

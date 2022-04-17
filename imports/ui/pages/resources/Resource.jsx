@@ -21,7 +21,7 @@ function ResourcePage() {
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, canCreateContent } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
@@ -80,16 +80,22 @@ function ResourcePage() {
             leftContent={
               !isMobile && (
                 <DocumentsField
-                  domainType="resource"
-                  domainId={resource?._id}
+                  contextType="resource"
+                  contextId={resource?._id}
                 />
               )
             }
             rightContent={
-              <BookingsField currentUser={currentUser} domain={resource} />
+              currentUser &&
+              canCreateContent && (
+                <BookingsField
+                  currentUser={currentUser}
+                  selectedResource={resource}
+                />
+              )
             }
           >
-            <Breadcrumb domain={resource} domainKey="label" />
+            <Breadcrumb context={resource} contextKey="label" />
             <ResourceCard
               addNewChatMessage={addNewChatMessage}
               currentUser={currentUser}
@@ -97,7 +103,10 @@ function ResourcePage() {
               resource={resource}
             />
             {isMobile && (
-              <DocumentsField domainType="resource" domainId={resource?._id} />
+              <DocumentsField
+                contextType="resource"
+                contextId={resource?._id}
+              />
             )}
             <Center my="2">
               <Link to={`/resources/${resource?._id}/edit`}>

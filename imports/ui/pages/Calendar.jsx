@@ -42,24 +42,10 @@ class Calendar extends PureComponent {
   state = {
     calendarFilter: null,
     editActivity: null,
-    resourcesList: [],
     selectedActivity: null,
     selectedSlot: null,
     mode: 'list',
     selectedResource: null,
-  };
-
-  componentDidMount() {
-    this.getResources();
-  }
-
-  getResources = async () => {
-    try {
-      const resourcesList = await call('getResources');
-      this.setState({ resourcesList });
-    } catch (error) {
-      message.error(error.error || error.reason);
-    }
   };
 
   handleModeChange = (e) => {
@@ -91,15 +77,16 @@ class Calendar extends PureComponent {
   };
 
   handleSelectSlot = (slotInfo) => {
+    const { resources } = this.props;
     const { canCreateContent } = this.context;
 
     if (!canCreateContent) {
       return;
     }
 
-    const { resourcesList, calendarFilter } = this.state;
+    const { calendarFilter } = this.state;
 
-    const selectedResource = resourcesList.find(
+    const selectedResource = resources.find(
       (resource) => calendarFilter && resource._id === calendarFilter._id
     );
 
@@ -201,7 +188,7 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, allActivities, tc } = this.props;
+    const { isLoading, currentUser, allBookings, resources, tc } = this.props;
     const { canCreateContent, currentHost, role } = this.context;
     const {
       editActivity,
@@ -209,11 +196,10 @@ class Calendar extends PureComponent {
       selectedActivity,
       selectedSlot,
       isUploading,
-      resourcesList,
       selectedResource,
     } = this.state;
 
-    const filteredActivities = allActivities.filter((activity) => {
+    const filteredActivities = allBookings.filter((activity) => {
       return (
         !calendarFilter ||
         calendarFilter._id === activity.resourceId ||
@@ -222,12 +208,10 @@ class Calendar extends PureComponent {
     });
 
     if (editActivity) {
-      return <Redirect to={`/edit-activity/${selectedActivity._id}`} />;
+      return <Redirect to={`/edit-activity/${selectedActivity.activityId}`} />;
     }
 
-    const nonComboResources = resourcesList.filter(
-      (resource) => !resource.isCombo
-    );
+    const nonComboResources = resources.filter((resource) => !resource.isCombo);
 
     const hslValues = getHslValuesFromLength(nonComboResources.length);
     const nonComboResourcesWithColor = nonComboResources
@@ -237,7 +221,7 @@ class Calendar extends PureComponent {
         color: hslValues[i],
       }));
 
-    const comboResources = resourcesList.filter((resource) => resource.isCombo);
+    const comboResources = resources.filter((resource) => resource.isCombo);
     const comboResourcesWithColor = comboResources
       .sort(localeSort)
       .map((res, i) => {
@@ -290,6 +274,12 @@ class Calendar extends PureComponent {
       ...nonComboResourcesWithColor,
     ];
 
+    const selectedLinkForModal =
+      selectedActivity &&
+      (selectedActivity.isProcess
+        ? `/process/${selectedActivity.processId}`
+        : `/activity/${selectedActivity.activityId}`);
+
     return (
       <Box>
         <Helmet>
@@ -297,6 +287,7 @@ class Calendar extends PureComponent {
             currentHost.settings.name
           } | ${publicSettings.name}`}</title>
         </Helmet>
+
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
@@ -457,12 +448,7 @@ class Calendar extends PureComponent {
 
           <Center>
             {selectedActivity && selectedActivity.isPublicActivity && (
-              <Link
-                to={
-                  (selectedActivity.isProcess ? '/process/' : '/event/') +
-                  selectedActivity._id
-                }
-              >
+              <Link to={selectedLinkForModal}>
                 <Button
                   as="span"
                   my="2"

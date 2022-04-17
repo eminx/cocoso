@@ -33,8 +33,7 @@ const DatesAndTimes = ({
     return null;
   }
 
-  
-  const [ t ] = useTranslation('activities');
+  const [t] = useTranslation('activities');
 
   const isRange = recurrence.isRange;
 
@@ -48,11 +47,22 @@ const DatesAndTimes = ({
     time: recurrence.endTime,
   };
 
+  const getBorderColorStyle = () => {
+    if (!recurrence.conflict) {
+      return;
+    } else if (recurrence.isConflictOK) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  };
+
   return (
     <Box
       p="4"
       mb="4"
-      border={recurrence.conflict ? '1px solid red' : '1px solid #ccc'}
+      border="1px solid #ccc"
+      borderColor={getBorderColorStyle()}
     >
       {!isNotDeletable && (
         <Flex justify="flex-end" mb="4">
@@ -81,7 +91,9 @@ const DatesAndTimes = ({
       <Wrap>
         <Box p="2">
           <Box mb="2">
-            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
+            <Text fontSize="sm">
+              {isRange ? t('form.date.start') : t('form.days.single')}
+            </Text>
             <DatePicker
               noTime
               value={startDate}
@@ -147,9 +159,16 @@ const DatesAndTimes = ({
       {recurrence.conflict && (
         <Box>
           <Text fontSize="sm" textAlign="center" fontWeight="bold">
-            There's already a booking for this resource at this date & time:{' '}
+            {t('form.conflict.alert')}
+            <br />
           </Text>
-          <Code colorScheme='red' mx="auto" display="block" width="fit-content" mt="4">
+          <Code
+            colorScheme={recurrence.isConflictOK ? 'orange' : 'red'}
+            mx="auto"
+            display="block"
+            width="fit-content"
+            mt="4"
+          >
             {recurrence.conflict.startDate === recurrence.conflict.endDate
               ? recurrence.conflict.startDate
               : recurrence.conflict.startDate +
@@ -160,6 +179,11 @@ const DatesAndTimes = ({
               ' – ' +
               recurrence.conflict.endTime}
           </Code>
+          {recurrence.isConflictOK && (
+            <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
+              {t('form.conflict.notExclusiveInfo')}
+            </Text>
+          )}
         </Box>
       )}
     </Box>

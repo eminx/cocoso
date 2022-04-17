@@ -117,8 +117,6 @@ Meteor.methods({
         authorId: user._id,
         authorName: user.username,
         isSentForReview: false,
-        isPublicActivity: values.isPublicActivity,
-        isRegistrationDisabled: values.isRegistrationDisabled,
         isPublished: true,
         creationDate: new Date(),
       });

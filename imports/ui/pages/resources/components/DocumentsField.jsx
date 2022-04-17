@@ -18,7 +18,7 @@ import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';
 
-export default function DocumentsField({ domainType, domainId }) {
+export default function DocumentsField({ contextType, contextId }) {
   const { role, canCreateContent } = useContext(StateContext);
   const isAdmin = role === 'admin' ? true : false;
 
@@ -31,7 +31,7 @@ export default function DocumentsField({ domainType, domainId }) {
 
   const getDocuments = async () => {
     try {
-      const response = await call('getDocumentsByAttachments', domainId);
+      const response = await call('getDocumentsByAttachments', contextId);
       setDocuments(response);
       setIsLoading(false);
     } catch (error) {
@@ -44,40 +44,37 @@ export default function DocumentsField({ domainType, domainId }) {
     getDocuments();
   }, [documents.length]);
 
-  const createDocument = (uploadableFile, downloadUrl) => {
-    Meteor.call(
-      'createDocument',
-      uploadableFile.name,
-      downloadUrl,
-      domainType,
-      domainId,
-      (error, respond) => {
-        if (error) {
-          message.error(error.reason);
-          setIsUploading(false);
-        } else {
-          message.success(
-            `${uploadableFile.name} ${t('documents.fileDropper')}`
-          );
-          setIsUploading(false);
-        }
-      }
-    );
+  const createDocument = async (uploadableFile, downloadUrl) => {
+    try {
+      await call(
+        'createDocument',
+        uploadableFile.name,
+        downloadUrl,
+        contextType,
+        contextId
+      );
+      getDocuments();
+      message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
+    } catch (error) {
+      message.error(error.reason);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  const removeDocument = (documentId) => {
+  const removeDocument = async (documentId) => {
     if (!isAdmin) {
       message.error(tc('message.access.deny'));
       return;
     }
-    Meteor.call('removeManual', documentId, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-        message.error(error.reason);
-      } else {
-        message.success(tc('documents.remove'));
-      }
-    });
+
+    try {
+      await call('removeManual', documentId);
+      getDocuments();
+      message.success(tc('documents.remove'));
+    } catch (error) {
+      message.error(error.reason);
+    }
   };
 
   const handleFileDrop = (files) => {

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Resources from '/imports/api/resources/resource';
 import Hosts from '/imports/api/@hosts/host';
+import Activities from '/imports/api/activities/activity';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -223,6 +224,31 @@ Migrations.add({
   },
 });
 
+// Add exclusive switch to all activities
+Migrations.add({
+  version: 10,
+  up: async function () {
+    console.log('up to', this.version);
+    await Activities.find().forEach((item) => {
+      Activities.update({_id: item._id}, {
+        $set: {
+          isExclusiveActivity: true,
+        }
+      });
+    })
+  },
+  down: async function () {
+    console.log('down to', this.version - 1);
+    await Activities.find().forEach((item) => {
+      Activities.update({_id: item._id}, {
+        $unset: {
+          isExclusiveActivity: 1,
+        }
+      });
+    })
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -234,6 +260,7 @@ Meteor.startup(() => {
   // Migrations.migrateTo(6);
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
-  Migrations.migrateTo(9);
+  // Migrations.migrateTo(9);
+  Migrations.migrateTo(10);
   // Migrations.migrateTo('latest');
 });

@@ -9,20 +9,16 @@ import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
-import { resizeImage, uploadImage, call } from '../../@/shared';
+import {
+  getAllBookingsWithSelectedResource,
+  checkAndSetBookingsWithConflict,
+  resizeImage,
+  uploadImage,
+  call,
+} from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
-
-const formModel = {
-  title: '',
-  subTitle: '',
-  place: '',
-  address: '',
-  practicalInfo: '',
-  internalInfo: '',
-  resource: '',
-};
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -52,26 +48,27 @@ class NewActivity extends PureComponent {
     isRegistrationDisabled: false,
     isCreating: false,
     isReady: false,
-    resources: [],
   };
 
   componentDidMount() {
-    this.getResources();
+    this.setInitialValuesWithQueryParams();
   }
 
-  getResources = async () => {
-    try {
-      const resources = await call('getResources');
-      this.setState({ resources }, () => {
-        this.setInitialValuesWithQP();
-      });
-    } catch (error) {
-      message.error(error.error || error.reason);
-    }
-  };
+  componentDidUpdate(prevProps, prevState) {
+    const { history, resources } = this.props;
 
-  setInitialValuesWithQP = () => {
-    const { history } = this.props;
+    const { search } = history.location;
+    const prevSearch = prevProps.history.location.search;
+    if (
+      search !== prevSearch ||
+      resources?.length !== prevProps.resources?.length
+    ) {
+      this.setInitialValuesWithQueryParams();
+    }
+  }
+
+  setInitialValuesWithQueryParams = () => {
+    const { history, resources } = this.props;
     const { formValues } = this.state;
 
     const {
@@ -79,7 +76,14 @@ class NewActivity extends PureComponent {
     } = history;
     const params = parse(search);
 
-    const defaultOccurence = {
+    if (!params) {
+      this.setState({
+        isReady: true,
+      });
+      return;
+    }
+
+    const defaultBooking = {
       ...emptyDateAndTime,
       ...params,
       isRange:
@@ -90,25 +94,31 @@ class NewActivity extends PureComponent {
 
     const initialValues = {
       ...formValues,
-      resourceId: params.resource || '',
-      datesAndTimes: [defaultOccurence],
+      resourceId: params.resource,
     };
 
-    this.setState({
-      formValues: initialValues,
-      datesAndTimes: [defaultOccurence],
-      isReady: true,
-    });
+    const selectedResource = resources?.find((r) => r._id === params.resource);
+
+    this.setState(
+      {
+        formValues: initialValues,
+        datesAndTimes: [defaultBooking],
+        selectedResource,
+        isReady: true,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, resources } = this.state;
-
-    const formValues = { ...values };
-    const selectedResource = resources.find((r) => r._id === values.resourceId);
-    formValues.resource = selectedResource.label;
-    formValues.resourceId = selectedResource._id;
-    formValues.resourceIndex = selectedResource.resourceIndex;
+    const { isPublicActivity, selectedResource } = this.state;
+    const formValues = {
+      ...values,
+      resource: selectedResource.label,
+      resourceIndex: selectedResource.resourceIndex,
+    };
 
     this.setState(
       {
@@ -183,8 +193,9 @@ class NewActivity extends PureComponent {
 
   createActivity = async () => {
     const {
-      formValues,
       datesAndTimes,
+      formValues,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
@@ -203,11 +214,12 @@ class NewActivity extends PureComponent {
     const values = {
       ...formValues,
       datesAndTimes: datesAndTimesNoConflict,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       imageUrl: uploadedImage,
     };
-
+    console.log(isExclusiveActivity, values);
     try {
       const newActivityId = await call('createActivity', values);
       this.setState(
@@ -244,9 +256,12 @@ class NewActivity extends PureComponent {
       });
       return;
     }
-    this.setState({
-      isExclusiveActivity: value,
-    });
+    this.setState(
+      {
+        isExclusiveActivity: value,
+      },
+      () => this.validateBookings()
+    );
   };
 
   handleRegistrationSwitch = (event) => {
@@ -256,86 +271,67 @@ class NewActivity extends PureComponent {
     });
   };
 
-  setDatesAndTimes = (selectedOccurences) => {
-    const { formValues, resources } = this.state;
-    this.setState({
-      datesAndTimes: selectedOccurences,
-    });
-
-    const selectedResource = resources.find(
-      (r) => r._id === formValues.resourceId
-    );
-    this.validateBookings(selectedOccurences, selectedResource);
-  };
-
-  validateBookings = (selectedOccurences, selectedResource) => {
-    const { allOccurences } = this.props;
-    const dateTimeFormat = 'YYYY-MM-DD HH:mm';
-
-    const allOccurencesWithSelectedResource = allOccurences.filter(
-      (occurence) => {
-        if (selectedResource.isCombo) {
-          return selectedResource.resourcesForCombo.some((resourceForCombo) => {
-            return resourceForCombo._id === occurence.resourceId;
-          });
-        }
-        return occurence.resourceId === selectedResource._id;
+  setDatesAndTimes = (selectedBookings) => {
+    this.setState(
+      {
+        datesAndTimes: selectedBookings,
+      },
+      () => {
+        this.validateBookings();
       }
     );
-
-    const newSelectedOccurences = [];
-    selectedOccurences.forEach((selectedOccurence) => {
-      const occurenceWithConflict = allOccurencesWithSelectedResource.find(
-        (occurence) => {
-          const selectedStart = `${selectedOccurence.startDate} ${selectedOccurence.startTime}`;
-          const selectedEnd = `${selectedOccurence.endDate} ${selectedOccurence.endTime}`;
-          const existingStart = `${occurence.startDate} ${occurence.startTime}`;
-          const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-          return (
-            moment(selectedStart, dateTimeFormat).isBetween(
-              existingStart,
-              existingEnd
-            ) ||
-            moment(selectedEnd, dateTimeFormat).isBetween(
-              existingStart,
-              existingEnd
-            )
-          );
-        }
-      );
-      if (occurenceWithConflict) {
-        newSelectedOccurences.push({
-          ...selectedOccurence,
-          conflict: {
-            ...occurenceWithConflict,
-          },
-        });
-      } else {
-        newSelectedOccurences.push({
-          ...selectedOccurence,
-          conflict: null,
-        });
-      }
-    });
-    this.setState({
-      datesAndTimes: newSelectedOccurences,
-    });
   };
 
   handleSelectedResource = (value) => {
-    const { resources } = this.state;
+    const { resources } = this.props;
     const selectedResource = resources.find((r) => r._id === value);
-    this.setState({
+    this.setState(
+      {
+        selectedResource,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  validateBookings = () => {
+    const { allBookings } = this.props;
+    const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
+
+    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+      return;
+    }
+    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
       selectedResource,
+      allBookings
+    );
+
+    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
+      datesAndTimes,
+      allBookingsWithSelectedResource
+    );
+
+    const selectedBookingsWithConflictButNotExclusive =
+      selectedBookingsWithConflict.map((item) => {
+        const booking = { ...item };
+        if (item.conflict) {
+          booking.isConflictOK =
+            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+        }
+        return booking;
+      });
+
+    this.setState({
+      datesAndTimes: selectedBookingsWithConflictButNotExclusive,
     });
   };
 
   isFormValid = () => {
-    const { formValues, datesAndTimes } = this.state;
-    const { title } = formValues;
-    const isValuesOK = formValues && formValues.resource && title?.length > 3;
-    const isConflict = datesAndTimes.some((occurence) =>
-      Boolean(occurence.conflict)
+    const { datesAndTimes } = this.state;
+
+    const isConflictHard = datesAndTimes.some(
+      (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -343,11 +339,11 @@ class NewActivity extends PureComponent {
       return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
     });
 
-    return isValuesOK && !isTimesInValid && !isConflict;
+    return !isTimesInValid && !isConflictHard;
   };
 
   render() {
-    const { currentUser, t, tc } = this.props;
+    const { currentUser, resources, t, tc } = this.props;
     const { canCreateContent } = this.context;
 
     if (!currentUser || !canCreateContent) {
@@ -365,7 +361,6 @@ class NewActivity extends PureComponent {
 
     const {
       formValues,
-      longDescription,
       isSuccess,
       isCreating,
       newActivityId,
@@ -375,7 +370,6 @@ class NewActivity extends PureComponent {
       isReady,
       isRegistrationDisabled,
       datesAndTimes,
-      resources,
     } = this.state;
 
     if (isSuccess) {
@@ -387,7 +381,6 @@ class NewActivity extends PureComponent {
     }
 
     const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
-
     const isFormValid = this.isFormValid();
 
     return (
