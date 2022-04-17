@@ -30,6 +30,12 @@ const defaultMenu = [
     isHomePage: false,
   },
   {
+    label: 'Resources',
+    name: 'resources',
+    isVisible: true,
+    isHomePage: false,
+  },
+  {
     label: 'Info',
     name: 'info',
     isVisible: true,
