@@ -31,11 +31,12 @@ class EditActivity extends PureComponent {
     datesAndTimes: [],
     formValues: formModel,
     isDeleteModalOn: false,
-    isPublicActivity: false,
     isCreating: false,
     isError: false,
     isLoading: false,
     isSuccess: false,
+    isExclusiveActivity: true,
+    isPublicActivity: false,
     isRegistrationDisabled: false,
     longDescription: '',
     uploadableImage: null,
@@ -63,6 +64,7 @@ class EditActivity extends PureComponent {
     this.setState({
       datesAndTimes: [...datesAndTimes],
       isPublicActivity: activity.isPublicActivity,
+      isExclusiveActivity: Boolean(activity.isExclusiveActivity),
       isRegistrationDisabled: activity.isRegistrationDisabled,
     });
   };
@@ -185,6 +187,7 @@ class EditActivity extends PureComponent {
     const { activity } = this.props;
     const {
       formValues,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
@@ -196,6 +199,7 @@ class EditActivity extends PureComponent {
       ...formValues,
       datesAndTimes,
       imageUrl,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
     };
@@ -238,6 +242,21 @@ class EditActivity extends PureComponent {
     const value = event.target.checked;
     this.setState({
       isPublicActivity: value,
+      isExclusiveActivity: true,
+    });
+  };
+
+  handleExclusiveSwitch = (event) => {
+    const value = event.target.checked;
+    const { isPublicActivity } = this.state;
+    if (isPublicActivity) {
+      this.setState({
+        isExclusiveActivity: true,
+      });
+      return;
+    }
+    this.setState({
+      isExclusiveActivity: value,
     });
   };
 
@@ -308,6 +327,7 @@ class EditActivity extends PureComponent {
     const {
       datesAndTimes,
       isDeleteModalOn,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       isSuccess,
@@ -344,6 +364,13 @@ class EditActivity extends PureComponent {
                 isChecked={isPublicActivity}
                 label={t('form.switch.public')}
                 onChange={this.handlePublicActivitySwitch}
+              />
+
+              <FormSwitch
+                isChecked={isPublicActivity || isExclusiveActivity}
+                isDisabled={isPublicActivity}
+                label={t('form.switch.exclusive')}
+                onChange={this.handleExclusiveSwitch}
               />
 
               {isPublicActivity && (
