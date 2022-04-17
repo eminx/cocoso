@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import EditActivity from './EditActivity';
-import { parseAllBookingsWithResources, parseComboResourcesWithAllData } from '../../@/shared';
+import { parseAllBookingsWithResources } from '../../@/shared';
 import Resources from '../../../api/resources/resource';
 import Activities from '../../../api/activities/activity';
 import Processes from '../../../api/processes/process';

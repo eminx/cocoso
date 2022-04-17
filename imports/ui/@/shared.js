@@ -216,20 +216,6 @@ const parseAllBookingsWithResources = (activities, processes, resources) => {
   return allBookings;
 };
 
-const parseComboResourcesWithAllData = (resources) => {
-  return resources.map((resource) => {
-    if (resource.isCombo) {
-      return {
-        ...resource,
-        resourcesForCombo: resource.resourcesForCombo.map(rId => {
-          return resources.find(res =>  res._id === rId)
-        })
-      }
-    }
-    return resource;
-  })
-}
-
 const getAllBookingsWithSelectedResource = (selectedResource, allBookings) => {
   return allBookings.filter((booking) => {
     if (selectedResource.isCombo) {
@@ -313,7 +299,6 @@ export {
   uploadImage,
   dataURLtoFile,
   parseAllBookingsWithResources,
-  parseComboResourcesWithAllData,
   getAllBookingsWithSelectedResource,
   checkAndSetBookingsWithConflict,
   formatDate,

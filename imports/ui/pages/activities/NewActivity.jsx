@@ -203,8 +203,9 @@ class NewActivity extends PureComponent {
 
   createActivity = async () => {
     const {
-      formValues,
       datesAndTimes,
+      formValues,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       uploadedImage,
@@ -223,6 +224,7 @@ class NewActivity extends PureComponent {
     const values = {
       ...formValues,
       datesAndTimes: datesAndTimesNoConflict,
+      isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
       imageUrl: uploadedImage,

@@ -3,10 +3,7 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 
-import {
-  parseAllBookingsWithResources,
-  parseComboResourcesWithAllData,
-} from '../@/shared';
+import { parseAllBookingsWithResources } from '../@/shared';
 import Calendar from './Calendar';
 
 import Processes from '../../api/processes/process';
@@ -22,12 +19,10 @@ const CalendarContainer = withTracker((props) => {
   const processesSub = Meteor.subscribe('processes');
   const processes = Processes ? Processes.find().fetch() : null;
 
-  const resourcesWithComboParsed = parseComboResourcesWithAllData(resources);
-
   const allBookings = parseAllBookingsWithResources(
     activities,
     processes,
-    resourcesWithComboParsed
+    resources
   );
 
   const currentUser = Meteor.user();

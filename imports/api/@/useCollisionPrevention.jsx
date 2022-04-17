@@ -6,7 +6,6 @@ import {
   getAllBookingsWithSelectedResource,
   checkAndSetBookingsWithConflict,
   parseAllBookingsWithResources,
-  parseComboResourcesWithAllData,
 } from '../../ui/@/shared';
 import Resources from '../resources/resource';
 import Activities from '../activities/activity';
@@ -32,13 +31,10 @@ const useCollisionPrevention = (
       return null;
     }
 
-    const resourcesWithComboParsed =
-      resources && parseComboResourcesWithAllData(resources);
-
     const allBookings = parseAllBookingsWithResources(
       activities,
       processes,
-      resourcesWithComboParsed
+      resources
     );
 
     const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(

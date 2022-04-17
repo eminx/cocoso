@@ -287,6 +287,7 @@ class Calendar extends PureComponent {
             currentHost.settings.name
           } | ${publicSettings.name}`}</title>
         </Helmet>
+
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">

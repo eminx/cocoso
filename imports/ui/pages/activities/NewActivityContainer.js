@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import NewActivity from './NewActivity';
-import { parseAllBookingsWithResources, parseComboResourcesWithAllData } from '../../@/shared';
+import { parseAllBookingsWithResources } from '../../@/shared';
 import Resources from '../../../api/resources/resource';
 import Activities from '../../../api/activities/activity'; 
 import Processes from '../../../api/processes/process'; 
@@ -16,8 +16,7 @@ export default NewActivityContainer = withTracker((props) => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
-  const resourcesWithComboParsed = resources && parseComboResourcesWithAllData(resources);
-  const allBookings = parseAllBookingsWithResources(activities, processes, resourcesWithComboParsed);
+  const allBookings = parseAllBookingsWithResources(activities, processes, resources);
 
   const isLoading =
     !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
