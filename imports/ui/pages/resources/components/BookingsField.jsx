@@ -171,7 +171,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
           <AccordionItem>
             {({ isExpanded }) => (
               <>
-                <AccordionButton bg="green.100">
+                <AccordionButton>
                   <Box flex="1" textAlign="left">
                     {t('booking.labels.form')}
                   </Box>
