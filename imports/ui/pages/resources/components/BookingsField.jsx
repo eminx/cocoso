@@ -160,8 +160,6 @@ export default function BookingsField({ currentUser, selectedResource }) {
     selectedBookingsWithConflict && selectedBookingsWithConflict[0]?.conflict
   );
 
-  console.log('wtf');
-
   return (
     <Box mt="5">
       <Heading mb="4" ml="4" size="sm">

@@ -124,8 +124,8 @@ function ResourcesPage() {
               <Spacer my="2" />
               <TabList>
                 <Tab key="All">All</Tab>
-                <Tab key="All">Combo</Tab>
-                <Tab key="All">Non-combo</Tab>
+                <Tab key="Combo">Combo</Tab>
+                <Tab key="Non-combo">Non-combo</Tab>
               </TabList>
               <Spacer my="2" />
               <Box display="flex" alignItems="center">
