@@ -1,53 +1,49 @@
 import React from 'react';
-import {
-  Box,
-  Heading,
-  Flex,
-  Image,
-  Text,
-  AspectRatio,
-  Spacer,
-} from '@chakra-ui/react';
+import { Box, Heading, Flex, Image, Text, Spacer } from '@chakra-ui/react';
 import i18n from 'i18next';
 import moment from 'moment';
 moment.locale(i18n.language);
 
-import ResourcesForCombo from './ResourcesForCombo';
-
-export default function GridThumb({ gridItem, itemType }) {
-  if (!gridItem) {
+export default function GridThumb({ title, image, large = false, children }) {
+  if (!title) {
     return null;
   }
 
-  const thumbHasImage =
-    (gridItem?.image && gridItem.image !== '') ||
-    (gridItem?.images && gridItem?.images.length > 0);
-
   return (
-    <Flex bg="white" mb="2" p="4" key={gridItem?._id} h="100%">
-      {thumbHasImage && (
-        <Box style={{ marginRight: '1rem', width: 'calc(50% - 1rem)' }}>
-          <AspectRatio maxW="480px" ratio={16 / 9}>
-            <Image
-              src={gridItem?.image ? gridItem.image : gridItem.images[0]}
-              objectFit="cover"
-            />
-          </AspectRatio>
-        </Box>
-      )}
-      <Flex w={thumbHasImage ? '50%' : '100%'} direction="column">
-        <Heading size="md" fontWeight="bold">
-          {itemType === 'resource' && gridItem.isCombo ? (
-            <ResourcesForCombo resource={gridItem} />
-          ) : (
-            gridItem?.label
-          )}
+    <Flex
+      bg="white"
+      justify="space-between"
+      m="2"
+      __hover={{ cursor: 'pointer' }}
+    >
+      <Box w="100%" p="4" flexBasis={large ? '50%' : '70%'}>
+        <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
+          {title}
         </Heading>
         <Spacer my="4" />
         <Text as="p" fontSize="xs" alignSelf="flex-end">
-          {moment(gridItem.createdAt).format('D MMM YYYY')}
+          {children}
         </Text>
-      </Flex>
+      </Box>
+
+      {image ? (
+        <Box flexBasis={large ? '50%' : 180}>
+          <Image
+            alt={title}
+            fit="cover"
+            mr="2"
+            src={image}
+            w={large ? 'md' : 'xs'}
+            h={large ? 400 : 150}
+          />
+        </Box>
+      ) : (
+        <Box
+          flexBasis={large ? '50%' : 180}
+          h={large ? 400 : 150}
+          bg="pink.100"
+        />
+      )}
     </Flex>
   );
 }
