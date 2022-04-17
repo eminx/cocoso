@@ -141,6 +141,7 @@ const parseAllBookingsWithResources = (activities, processes, resources) => {
             resource: resourceForCombo.label,
             resourceId: resourceForCombo._id,
             resourceIndex: resourceForCombo.resourceIndex,
+            isExclusiveActivity: activity.isExclusiveActivity,
             isPublicActivity: activity.isPublicActivity,
             isWithComboResource: true,
             comboResource: activity.resource,
@@ -172,6 +173,7 @@ const parseAllBookingsWithResources = (activities, processes, resources) => {
           resource: resourceSelected.label,
           resourceId: resourceSelected._id,
           resourceIndex: resourceSelected.resourceIndex,
+          isExclusiveActivity: activity.isExclusiveActivity,
           isPublicActivity: activity.isPublicActivity,
           isWithComboResource: false,
           imageUrl: activity.imageUrl,
@@ -205,6 +207,7 @@ const parseAllBookingsWithResources = (activities, processes, resources) => {
         longDescription: process.description,
         processId: process._id,
         isMultipleDay: false,
+        isExclusiveActivity: true,
         isPublicActivity: true,
         imageUrl: process.imageUrl,
         isProcess: true,
@@ -227,15 +230,16 @@ const getAllBookingsWithSelectedResource = (selectedResource, allBookings) => {
   });
 }
 
-const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelectedResource) => {
+const checkAndSetBookingsWithConflict = (selectedBookings, allBookingsWithSelectedResource, selfBookingIdForEdit) => {
   return selectedBookings.map((selectedBooking) => {
-    const bookingWithConflict = allBookingsWithSelectedResource.find(
-      (occurence) => {
+    const bookingWithConflict = allBookingsWithSelectedResource
+      .filter((item) => item.activityId !== selfBookingIdForEdit)
+      .find((occurence) => {
         const selectedStart = `${selectedBooking.startDate} ${selectedBooking.startTime}`;
         const selectedEnd = `${selectedBooking.endDate} ${selectedBooking.endTime}`;
         const existingStart = `${occurence.startDate} ${occurence.startTime}`;
         const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-
+        
         return isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd);
       }
     );

@@ -20,16 +20,6 @@ import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
 
-const formModel = {
-  title: '',
-  subTitle: '',
-  place: '',
-  address: '',
-  practicalInfo: '',
-  internalInfo: '',
-  resource: '',
-};
-
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
 const emptyDateAndTime = {
@@ -229,7 +219,7 @@ class NewActivity extends PureComponent {
       isRegistrationDisabled,
       imageUrl: uploadedImage,
     };
-
+    console.log(isExclusiveActivity, values);
     try {
       const newActivityId = await call('createActivity', values);
       this.setState(
@@ -266,9 +256,12 @@ class NewActivity extends PureComponent {
       });
       return;
     }
-    this.setState({
-      isExclusiveActivity: value,
-    });
+    this.setState(
+      {
+        isExclusiveActivity: value,
+      },
+      () => this.validateBookings()
+    );
   };
 
   handleRegistrationSwitch = (event) => {
@@ -304,7 +297,7 @@ class NewActivity extends PureComponent {
 
   validateBookings = () => {
     const { allBookings } = this.props;
-    const { selectedResource, datesAndTimes } = this.state;
+    const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
 
     if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
       return;
@@ -319,23 +312,34 @@ class NewActivity extends PureComponent {
       allBookingsWithSelectedResource
     );
 
+    const selectedBookingsWithConflictButNotExclusive =
+      selectedBookingsWithConflict.map((item) => {
+        const booking = { ...item };
+        if (item.conflict) {
+          booking.isConflictOK =
+            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+        }
+        return booking;
+      });
+
     this.setState({
-      datesAndTimes: selectedBookingsWithConflict,
+      datesAndTimes: selectedBookingsWithConflictButNotExclusive,
     });
   };
 
   isFormValid = () => {
     const { datesAndTimes } = this.state;
 
-    const isConflict = datesAndTimes.some((occurence) =>
-      Boolean(occurence.conflict)
+    const isConflictHard = datesAndTimes.some(
+      (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
     );
+
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some((dateTime) => {
       return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
     });
 
-    return !isTimesInValid && !isConflict;
+    return !isTimesInValid && !isConflictHard;
   };
 
   render() {
@@ -357,7 +361,6 @@ class NewActivity extends PureComponent {
 
     const {
       formValues,
-      longDescription,
       isSuccess,
       isCreating,
       newActivityId,

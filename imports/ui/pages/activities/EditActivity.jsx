@@ -19,7 +19,7 @@ import {
 import { message, Alert } from '../../components/message';
 
 const formModel = {
-  resource: '',
+  resourceId: '',
   title: '',
   subTitle: '',
   place: '',
@@ -49,7 +49,11 @@ class EditActivity extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.activity && this.props.activity) {
+    if (
+      (!prevProps.activity && this.props.activity) ||
+      (!prevProps.allBookings && this.props.allBookings) ||
+      (!prevProps.resources && this.props.resources)
+    ) {
       this.setInitialData();
     }
   }
@@ -61,12 +65,15 @@ class EditActivity extends PureComponent {
     }
     const { datesAndTimes } = activity;
 
-    this.setState({
-      datesAndTimes: [...datesAndTimes],
-      isPublicActivity: activity.isPublicActivity,
-      isExclusiveActivity: Boolean(activity.isExclusiveActivity),
-      isRegistrationDisabled: activity.isRegistrationDisabled,
-    });
+    this.setState(
+      {
+        datesAndTimes: [...datesAndTimes],
+        isPublicActivity: activity.isPublicActivity,
+        isExclusiveActivity: Boolean(activity.isExclusiveActivity),
+        isRegistrationDisabled: activity.isRegistrationDisabled,
+      },
+      () => this.validateBookings()
+    );
   };
 
   successEditMessage = (isDeleted) => {
@@ -149,14 +156,6 @@ class EditActivity extends PureComponent {
       },
       false
     );
-  };
-
-  handleSelectedResource = (value) => {
-    const { resources } = this.props;
-    const selectedResource = resources.find((r) => r._id === value);
-    this.setState({
-      selectedResource,
-    });
   };
 
   uploadImage = async () => {
@@ -247,17 +246,15 @@ class EditActivity extends PureComponent {
   };
 
   handleExclusiveSwitch = (event) => {
-    const value = event.target.checked;
     const { isPublicActivity } = this.state;
-    if (isPublicActivity) {
-      this.setState({
-        isExclusiveActivity: true,
-      });
-      return;
-    }
-    this.setState({
-      isExclusiveActivity: value,
-    });
+    const value = isPublicActivity || event.target.checked;
+
+    this.setState(
+      {
+        isExclusiveActivity: value,
+      },
+      () => this.validateBookings()
+    );
   };
 
   handleRegistrationSwitch = (event) => {
@@ -279,21 +276,22 @@ class EditActivity extends PureComponent {
   };
 
   handleSelectedResource = (value) => {
-    const { resources } = this.props;
-    const selectedResource = resources.find((r) => r._id === value);
     this.setState(
       {
-        selectedResource,
+        selectedResource: this.findResourceFromId(value),
       },
-      () => {
-        this.validateBookings();
-      }
+      () => this.validateBookings()
     );
   };
 
+  findResourceFromId = (resourceId) => {
+    const { resources } = this.props;
+    return resources.find((r) => r._id === resourceId);
+  };
+
   validateBookings = () => {
-    const { allBookings } = this.props;
-    const { selectedResource, datesAndTimes } = this.state;
+    const { activity, allBookings } = this.props;
+    const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
 
     if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
       return;
@@ -305,12 +303,40 @@ class EditActivity extends PureComponent {
 
     const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
       datesAndTimes,
-      allBookingsWithSelectedResource
+      allBookingsWithSelectedResource,
+      activity._id
     );
 
+    const selectedBookingsWithConflictButNotExclusive =
+      selectedBookingsWithConflict.map((item) => {
+        const booking = { ...item };
+        if (item.conflict) {
+          booking.isConflictOK =
+            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+        }
+        return booking;
+      });
+
     this.setState({
-      datesAndTimes: selectedBookingsWithConflict,
+      datesAndTimes: selectedBookingsWithConflictButNotExclusive,
     });
+  };
+
+  isFormValid = () => {
+    const { datesAndTimes } = this.state;
+
+    const isConflictHard =
+      datesAndTimes &&
+      datesAndTimes.some(
+        (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
+      );
+
+    const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    const isTimesInValid = datesAndTimes.some((dateTime) => {
+      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
+    });
+
+    return !isTimesInValid && !isConflictHard;
   };
 
   render() {
@@ -331,6 +357,7 @@ class EditActivity extends PureComponent {
       isPublicActivity,
       isRegistrationDisabled,
       isSuccess,
+      isLoading,
       uploadableImageLocal,
     } = this.state;
 
@@ -341,6 +368,8 @@ class EditActivity extends PureComponent {
       }
       return <Redirect to={`/activity/${activity._id}`} />;
     }
+
+    const isFormValid = this.isFormValid();
 
     return (
       <Template
@@ -394,6 +423,9 @@ class EditActivity extends PureComponent {
             setDatesAndTimes={this.setDatesAndTimes}
             setSelectedResource={this.handleSelectedResource}
             setUploadableImage={this.setUploadableImage}
+            isButtonDisabled={!isFormValid || isLoading}
+            isCreating={isLoading}
+            isFormValid={isFormValid}
           />
         </Box>
 

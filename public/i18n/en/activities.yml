@@ -21,7 +21,7 @@ form:
   time:
     start: Start time
     finish: Finish time
-  capacity: 
+  capacity:
     label: Capacity
   details:
     label: Details
@@ -45,8 +45,11 @@ form:
     label: Image
   submit: 'Confirm and Create'
   waiting: 'Creating your activity...'
-  
-members: 
+  conflict:
+    alert: "There's already a booking for this resource at this date & time:"
+    notExclusiveInfo: 'Since both activities are not exclusive, you may go ahead and finalise your booking'
+
+members:
   label: My Activities
   tabs:
     all: All
@@ -66,17 +69,17 @@ public:
         first: First Name
         last: Last Name
       email: Email
-      people: 
+      people:
         label: People
         number: Number of Attendees
       loading: Submitting
-      actions: 
+      actions:
         create: Register
         update: Update
         remove: Remove your registration
     email: Email already registered. Please update instead.
     notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
-    disabled: 
+    disabled:
       true: RSVP disabled. Please check the practical information.
       false: Please click and open the date to RSVP
       info: Registrations are disabled.
@@ -95,4 +98,3 @@ public:
   past: This event has past
   acceess:
     deny: Only visible to registered members
-

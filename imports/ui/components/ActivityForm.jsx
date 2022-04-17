@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import {
   Box,
@@ -46,7 +46,11 @@ function ActivityForm({
   setSelectedResource,
   isButtonDisabled,
 }) {
-  const { control, formState, handleSubmit, register } = useForm({
+  useEffect(() => {
+    setSelectedResource(getValues('resourceId'));
+  }, [defaultValues]);
+
+  const { control, formState, handleSubmit, getValues, register } = useForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
