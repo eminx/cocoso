@@ -164,6 +164,20 @@ Meteor.methods({
           multi: true,
         }
       );
+
+      Processes.update(
+        {
+          adminId: userId,
+        },
+        {
+          $set: {
+            authorAvatar: newAvatar,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
