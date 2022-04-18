@@ -40,7 +40,9 @@ class EditPage extends PureComponent {
 
     try {
       const result = await call('updatePage', pageData._id, values);
-      message.success(tc('message.success.update'));
+      message.success(tc('message.success.update', {
+        domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
+      }));
       this.setState({
         newPageTitle: parseTitle(result),
         isSuccess: true,
@@ -64,7 +66,9 @@ class EditPage extends PureComponent {
 
     try {
       await call('deletePage', pageData._id);
-      message.success(tc('message.success.remove'));
+      message.success(tc('message.success.remove', {
+        domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
+      }));
       this.setState({
         newPageTitle: 'deleted',
         isSuccess: true,
@@ -82,7 +86,7 @@ class EditPage extends PureComponent {
 
   render() {
     const { currentUser, isLoading, pageData, pageTitles, t, tc } = this.props;
-    const { currentHost, role } = this.context;
+    const { role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
