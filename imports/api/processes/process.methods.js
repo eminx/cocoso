@@ -60,7 +60,7 @@ Meteor.methods({
         Meteor.users.update(user._id, {
           $addToSet: {
             processes: {
-              processId: add,
+              processId: newProcessId,
               name: formValues.title,
               joinDate: new Date(),
               isAdmin: true,
