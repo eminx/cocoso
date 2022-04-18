@@ -39,15 +39,12 @@ export default function ResourceCard({
 
   return (
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
-      <Flex justifyContent="space-between" alignItems="flex-start" mb="4">
+      <Box mb="4">
         <Heading size="md" fontWeight="bold">
-          {resource.isCombo ? (
-            <ResourcesForCombo resource={resource} />
-          ) : (
-            resource?.label
-          )}
+          {resource.label}
         </Heading>
-      </Flex>
+        {resource.isCombo && <ResourcesForCombo resource={resource} />}
+      </Box>
       <Tabs variant="enclosed-colored">
         <TabList pl="4">
           <Tab>{t('tabs.info')}</Tab>
@@ -63,7 +60,6 @@ export default function ResourceCard({
                   </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
-                  // <h2>fd;f</h2>
                 )}
               </Box>
             )}
