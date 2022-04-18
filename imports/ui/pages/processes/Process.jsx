@@ -565,7 +565,7 @@ class Process extends Component {
                       closeLoader();
                     } else {
                       message.success(
-                        `${uploadableFile.name} ${t('documents.fileDropper')}`
+                        `${uploadableFile.name} ${tc('documents.fileDropper')}`
                       );
                       closeLoader();
                     }

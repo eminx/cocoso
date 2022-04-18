@@ -26,7 +26,6 @@ const Schemas = {
   Avatar: {
     src: {
       type: String, 
-      regEx: SimpleSchema.RegEx.Url
     },
     date: {type: Date},
   },

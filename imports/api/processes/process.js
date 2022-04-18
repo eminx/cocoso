@@ -10,6 +10,7 @@ Processes.schema = new SimpleSchema({
 
   adminId: Schemas.Id,
   adminUsername: { type: String },
+  adminAvatar: { type: String, optional: true },
   
   title: { type: String },
   description: { type: String },

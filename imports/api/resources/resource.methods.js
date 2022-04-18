@@ -69,7 +69,6 @@ Meteor.methods({
   },
 
   createResource(values) {
-    console.log(values);
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 }});

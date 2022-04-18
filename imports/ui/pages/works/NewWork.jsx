@@ -122,9 +122,9 @@ class NewWork extends PureComponent {
       });
       message.success(
         i18n.t('common:message.success.create', {
-          domain: `${i18n.tc('domains.your')} ${tc(
-            'domains.work'
-          ).toLowerCase()}`,
+          domain: `${i18n.t('common:domains.your')} ${i18n
+            .t('common:domains.work')
+            .toLowerCase()}`,
         })
       );
     } catch (error) {
