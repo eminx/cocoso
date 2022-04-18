@@ -11,8 +11,6 @@ Works.schema = new SimpleSchema({
   authorId: Schemas.Id,
   authorUsername: {type: String},
 
-  authorFirstName: {type: String},
-  authorLastName: {type: String},
   authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true},
   userAvatar: {type: String, optional: true}, // mostly undefined
 

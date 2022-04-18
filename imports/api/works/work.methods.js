@@ -68,8 +68,6 @@ Meteor.methods({
         authorId: user._id,
         authorAvatar: user.avatar,
         authorUsername: user.username,
-        authorFirstName: user.firstName,
-        authorLastName: user.lastName,
         creationDate: new Date(),
       });
       return newWorkId;
