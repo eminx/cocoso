@@ -42,7 +42,9 @@ class NewPage extends PureComponent {
 
     try {
       const result = await call('createPage', values);
-      message.success(tc('message.success.create'));
+      message.success(tc('message.success.create', {
+        domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
+      }));
       this.setState({
         newPageId: parseTitle(result),
         isSuccess: true,

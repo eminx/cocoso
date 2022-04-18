@@ -9,7 +9,7 @@ import {
 } from '../../startup/@/constants';
 
 Meteor.methods({
-  async createNewHost(values) {
+  createNewHost(values) {
     const currentUser = Meteor.user();
     if (!currentUser || !currentUser.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
@@ -20,9 +20,8 @@ Meteor.methods({
     }
 
     try {
-      const hostId = await Hosts.insert({
+      const hostId = Hosts.insert({
         host: values.host,
-        email: values.email,
         settings: {
           name: values.name,
           email: values.email,
@@ -45,7 +44,7 @@ Meteor.methods({
         createdAt: new Date()
       });
 
-      await Pages.insert({
+      Pages.insert({
         host: values.host,
         authorId: currentUser._id,
         authorName: currentUser.username,
