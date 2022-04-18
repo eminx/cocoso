@@ -17,14 +17,14 @@ form:
   private:
     label: Privat (endast för inbjudningar)
     tooltip:
-      title: Privata Processer
+      title: Privata processer
       P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
       P2: Du kommer att kunna hantera inbjudningarna efter att du har skapat processen.
   image:
     label: Bild
   title:
     label: Titel
-    holder: Förstå Benjamin
+    holder: Att förstå Benjamin
   subtitle:
     label: Texta
     holder: Genom belysningar
@@ -32,7 +32,7 @@ form:
     label: Beskrivning
   capacity:
     label: Kapacitet
-  submit: Bekräfta och Skapa Process
+  submit: Bekräfta och skapa process
   waiting: Skapar din process...
 
 message:

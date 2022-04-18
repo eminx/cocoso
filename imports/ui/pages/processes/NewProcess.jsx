@@ -24,7 +24,6 @@ import { message, Alert } from '../../components/message';
 import { resizeImage, uploadImage } from '../../@/shared';
 import { StateContext } from '../../LayoutContainer';
 
-
 class NewProcess extends React.Component {
   state = {
     formValues: {
@@ -46,7 +45,7 @@ class NewProcess extends React.Component {
 
   successCreation = () => {
     message.success('Your process is successfully created');
-  }
+  };
 
   handleFormChange = (value) => {
     const { formValues } = this.state;
@@ -174,7 +173,11 @@ class NewProcess extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
-            message={tc('message.access.contributor', { domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}` })}
+            message={tc('message.access.contributor', {
+              domain: `${tc('domains.a')} ${tc(
+                'domains.process'
+              ).toLowerCase()}`,
+            })}
             type="error"
           />
         </div>
@@ -200,9 +203,7 @@ class NewProcess extends React.Component {
       return <Redirect to={`/process/${newProcessId}`} />;
     }
 
-    const buttonLabel = isCreating
-      ? t('form.waiting')
-      : t('form.submit');
+    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const { title, description } = formValues;
     const isFormValid =
       formValues &&
@@ -211,7 +212,11 @@ class NewProcess extends React.Component {
       uploadableImageLocal;
 
     return (
-      <Template heading={tc('labels.create', { domain: tc('domains.process') })}>
+      <Template
+        heading={tc('labels.create', {
+          domain: tc('domains.process').toLowerCase(),
+        })}
+      >
         <Box bg="white" p="6">
           <Popover trigger="hover">
             <PopoverTrigger>
@@ -231,7 +236,9 @@ class NewProcess extends React.Component {
             </PopoverTrigger>
             <PopoverContent>
               <PopoverCloseButton />
-              <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
+              <PopoverHeader fontWeight="bold">
+                {t('form.private.tooltip.title')}
+              </PopoverHeader>
               <PopoverBody>
                 <Text fontSize="md" mb="2">
                   {t('form.private.tooltip.P1')}
