@@ -25,7 +25,7 @@ const Schemas = {
   },
   Avatar: {
     src: {
-      type: String, 
+      type: String,
     },
     date: {type: Date},
   },

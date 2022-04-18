@@ -13,7 +13,7 @@ Works.schema = new SimpleSchema({
 
   authorFirstName: {type: String},
   authorLastName: {type: String},
-  authorAvatar: new SimpleSchema(Schemas.Avatar),
+  authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true},
   userAvatar: {type: String, optional: true}, // mostly undefined
 
   title: {type: String},

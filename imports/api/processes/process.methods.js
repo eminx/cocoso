@@ -47,15 +47,14 @@ Meteor.methods({
           isPublished: true,
           isPrivate: isPrivate,
           creationDate: new Date(),
-        },
-        () => {
-          Meteor.call('createChat', formValues.title, newProcessId, (error, result) => {
-            if (error) {
-              console.log('Chat is not created due to error: ', error);
-            }
-          });
         }
       );
+
+      Meteor.call('createChat', formValues.title, newProcessId, (error, result) => {
+        if (error) {
+          console.log('Chat is not created due to error: ', error);
+        }
+      });
 
       try {
         Meteor.users.update(user._id, {
