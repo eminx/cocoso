@@ -78,6 +78,11 @@ class NewProcess extends React.Component {
   };
 
   handleSubmit = (values) => {
+    const { uploadableImage } = this.state;
+    if (!uploadableImage) {
+      message.error(tc('error.imageRequired'));
+      return;
+    }
     const parsedValues = {
       ...values,
       capacity: Number(values.capacity),
@@ -208,7 +213,7 @@ class NewProcess extends React.Component {
     const isFormValid =
       formValues &&
       title.length > 3 &&
-      description.length > 20 &&
+      description.length > 10 &&
       uploadableImageLocal;
 
     return (
@@ -250,6 +255,7 @@ class NewProcess extends React.Component {
 
           <ProcessForm
             defaultValues={formValues}
+            isSubmitDisabled={isFormValid}
             onSubmit={this.handleSubmit}
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}

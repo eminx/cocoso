@@ -131,6 +131,7 @@ Meteor.methods({
 
     try {
       Processes.remove(processId);
+      return true;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

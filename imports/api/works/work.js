@@ -22,7 +22,7 @@ Works.schema = new SimpleSchema({
   additionalInfo: {type: String, defaultValue: ""},
 
   images: {type: Array, optional: true},
-  'images.$': {type: Schemas.Src},
+  'images.$': {type: String},
 
   category: {type: Object, optional: true},
   'category.categoryId': {type: Schemas.Id},

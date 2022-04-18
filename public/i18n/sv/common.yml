@@ -48,6 +48,9 @@ message:
     remove: '{{ domain }} ihar raderats'
     save: '{{ domain }} har sparats'
 
+  error:
+    imageRequired: Bild krävs
+
   access:
     deny: Du får inte
     admin: Du måste vara superadmin för att skapa en {{ domain }}

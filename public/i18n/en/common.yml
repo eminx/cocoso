@@ -48,6 +48,9 @@ message:
     remove: '{{ domain }} is successfully deleted'
     save: '{{ domain }} is successfully saved'
 
+  error:
+    imageRequired: Image is required
+
   access:
     deny: You are not allowed
     admin: You have to be super admin to create a {{ domain }}

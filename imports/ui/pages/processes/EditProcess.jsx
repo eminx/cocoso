@@ -93,13 +93,15 @@ class EditProcess extends React.Component {
   };
 
   updateProcess = async () => {
-    const { process } = this.props;
+    const { process, tc } = this.props;
     const { formValues, uploadedImage } = this.state;
     const imageUrl = uploadedImage || process.imageUrl;
 
     try {
       await call('updateProcess', process._id, formValues, imageUrl);
-      message.success(tc('message.success.update', { domain: tc('domains.process') }));
+      message.success(
+        tc('message.success.update', { domain: tc('domains.process') })
+      );
       this.setState({
         isSuccess: true,
       });
@@ -113,10 +115,15 @@ class EditProcess extends React.Component {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteProcess = async () => {
-    const processId = this.props.process._id;
+    const { process, tc } = this.props;
+    const processId = process._id;
+
     try {
       await call('deleteProcess', processId);
-      message.success(tc('message.success.delete', { domain: tc('domains.process') }));
+      message.success(
+        tc('message.success.remove', { domain: tc('domains.process') })
+      );
+      this.setState({ isSuccess: true });
     } catch (error) {
       console.log(error);
       message.error(error.error || error.reason);
@@ -132,10 +139,14 @@ class EditProcess extends React.Component {
 
     if (!currentUser) {
       return (
-        <Alert message={tc('message.access.register', { domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}` })} />
+        <Alert
+          message={tc('message.access.register', {
+            domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}`,
+          })}
+        />
       );
     }
-    
+
     if (process.adminId !== currentUser._id) {
       return <Alert message="You are not allowed!" />;
     }
@@ -149,6 +160,9 @@ class EditProcess extends React.Component {
     } = this.state;
 
     if (isSuccess) {
+      if (isDeleteModalOn) {
+        return <Redirect to="/processes" />;
+      }
       return <Redirect to={`/process/${process._id}`} />;
     }
 
@@ -202,7 +216,9 @@ class EditProcess extends React.Component {
           onCancel={this.hideDeleteModal}
           confirmText={tc('modals.confirm.delete.yes')}
         >
-          {tc('modals.confirm.delete.body', { domain: tc('domains.process').toLowerCase() })}
+          {tc('modals.confirm.delete.body', {
+            domain: tc('domains.process').toLowerCase(),
+          })}
         </ConfirmModal>
       </Template>
     );
