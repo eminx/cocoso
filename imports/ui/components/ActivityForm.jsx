@@ -27,8 +27,8 @@ const today = new Date().toISOString().substring(0, 10);
 let emptyDateAndTime = {
   startDate: today,
   endDate: today,
-  startTime: '',
-  endTime: '',
+  startTime: '00:00',
+  endTime: '23:59',
   attendees: [],
   capacity: defaultCapacity,
 };

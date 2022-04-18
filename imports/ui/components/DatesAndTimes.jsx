@@ -108,6 +108,7 @@ const DatesAndTimes = ({
                 noTime
                 value={endDate}
                 onChange={handleEndDateChange}
+                minDate={new Date(startDate.date)}
               />
             </Box>
           )}

@@ -5,8 +5,8 @@ import { Input } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 // import locale from node_modules
-import { sv } from "date-fns/locale";
-registerLocale("sv", sv);
+import { sv } from 'date-fns/locale';
+registerLocale('sv', sv);
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
 // {
@@ -20,9 +20,15 @@ function DatePicker({
   onlyTime = false,
   noTime = true,
   placeholder,
+  ...otherProps
 }) {
   const [selectedDate, setSelectedDate] = useState();
-  const [ t, i18n ] = useTranslation('calendar');
+  const [t, i18n] = useTranslation('calendar');
+
+  let locale = i18n.language;
+  if (i18n.language === 'en') {
+    locale = 'en-GB';
+  }
 
   useEffect(() => {
     if (value) {
@@ -43,34 +49,36 @@ function DatePicker({
       });
     }
   };
-  
+
   return (
     <RDC
       calendarStartDay={1}
       customInput={<Input variant="filled" />}
       dateFormat={
-        onlyTime 
+        onlyTime
           ? t('datePicker.formats.time')
-          : noTime 
-            ? t('datePicker.formats.date') 
-            : t('datePicker.formats.datetime')
+          : noTime
+          ? t('datePicker.formats.date')
+          : t('datePicker.formats.datetime')
       }
       placeholderText={
         placeholder ||
-        (onlyTime 
+        (onlyTime
           ? t('datePicker.labels.select', { opt: t('datePicker.labels.time') })
-          : noTime 
-            ? t('datePicker.labels.select', { opt: t('datePicker.labels.date') }) 
-            : t('datePicker.labels.select', { opt: t('datePicker.labels.datetime') })
-        )
+          : noTime
+          ? t('datePicker.labels.select', { opt: t('datePicker.labels.date') })
+          : t('datePicker.labels.select', {
+              opt: t('datePicker.labels.datetime'),
+            }))
       }
       selected={selectedDate}
       showTimeSelect={onlyTime || !noTime}
       showTimeSelectOnly={onlyTime}
-      locale={i18n.language}
+      locale={locale}
       timeFormat="p"
       timeIntervals={15}
       onChange={handleChange}
+      {...otherProps}
     />
   );
 }
