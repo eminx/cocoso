@@ -113,7 +113,6 @@ class NewWork extends PureComponent {
         categoryId: selectedCategory._id,
       },
     };
-
     try {
       const respond = await call('createWork', parsedValues, imagesReadyToSave);
       this.setState({
@@ -121,9 +120,16 @@ class NewWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.create', { domain: `${tc('domains.your')} ${tc('domains.work').toLowerCase()}`}));
+      message.success(
+        i18n.t('common:message.success.create', {
+          domain: `${i18n.tc('domains.your')} ${tc(
+            'domains.work'
+          ).toLowerCase()}`,
+        })
+      );
     } catch (error) {
       message.error(error.reason);
+      console.log(error);
       this.setState({ isCreating: false });
     }
   };
@@ -163,7 +169,9 @@ class NewWork extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message={i18n.t('members:message.access.contributor', { action: 'create worhk' })}
+            message={i18n.t('members:message.access.contributor', {
+              action: 'create worhk',
+            })}
             type="error"
           />
         </div>
