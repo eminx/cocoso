@@ -30,7 +30,7 @@ Meteor.methods({
           host,
           adminId: user._id,
           adminUsername: user.username,
-          adminAvatar: user.author.src,
+          adminAvatar: user.avatar,
           title: formValues.title,
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
