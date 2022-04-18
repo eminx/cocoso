@@ -74,7 +74,7 @@ Meteor.methods({
           "Couldn't add the process info to user collection, but process is created"
         );
       }
-      return add;
+      return newProcessId;
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't add process to the collection");
@@ -100,7 +100,7 @@ Meteor.methods({
     check(formValues.capacity, Number);
 
     try {
-      const add = Processes.update(processId, {
+      Processes.update(processId, {
         $set: {
           title: formValues.title,
           description: formValues.description,
