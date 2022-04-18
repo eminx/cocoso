@@ -54,8 +54,8 @@ export default function BookingsField({ currentUser, selectedResource }) {
   const [resourceBookingsForUser, setResourceBookingsForUser] = useState([]);
   const [newBooking, setNewBooking] = useState(datesModel);
   const [multipledays, setMultipledays] = useState(false);
+  const [isAccordionOpen, setAccordionOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   const { formState, handleSubmit, register } = useForm();
   const { isDirty, isSubmitting } = formState;
 
@@ -143,14 +143,15 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
     try {
       await call('createActivity', activityValues);
-      getResourceBookingsForUser();
       message.success(
         tc('message.success.create', {
-          selectedResource: `${tc('domains.your')} ${tc(
+          domain: `${tc('domains.your')} ${tc(
             'domains.activity'
           ).toLowerCase()}`,
         })
       );
+      setAccordionOpen(false);
+      getResourceBookingsForUser();
     } catch (error) {
       message.error(error.reason);
     }
@@ -167,7 +168,12 @@ export default function BookingsField({ currentUser, selectedResource }) {
       </Heading>
 
       <Box bg="white">
-        <Accordion defaultIndex={[1]} allowMultiple allowToggle>
+        <Accordion
+          index={[isAccordionOpen ? 0 : null]}
+          allowMultiple
+          allowToggle
+          onChange={() => setAccordionOpen(!isAccordionOpen)}
+        >
           <AccordionItem>
             {({ isExpanded }) => (
               <>
