@@ -176,7 +176,13 @@ class EditWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.update', { domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`}));
+      message.success(
+        i18n.t('common:message.success.update', {
+          domain: `${i18n.t('common:domains.your')} ${i18n
+            .t('common:domains.work')
+            .toLowerCase()}`,
+        })
+      );
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -219,7 +225,13 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
       history.push('/my-works');
-      message.success(i18n.t('common:message.success.delete', { domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`}));
+      message.success(
+        i18n.t('common:message.success.remove', {
+          domain: `${i18n.t('common:domains.your')} ${i18n
+            .t('common:domains.work')
+            .toLowerCase()}`,
+        })
+      );
     } catch (error) {
       message.error(error.reason);
       this.setState({ isLoading: false });
@@ -303,7 +315,9 @@ class EditWork extends PureComponent {
           onCancel={this.hideDeleteModal}
           title={i18n.t('common:modals.confirm.delete.title')}
         >
-          {i18n.t('common:modals.confirm.delete.body', { domain: i18n.t('common:domains.work').toLowerCase() })}
+          {i18n.t('common:modals.confirm.delete.body', {
+            domain: i18n.t('common:domains.work').toLowerCase(),
+          })}
         </ConfirmModal>
       </Template>
     );
