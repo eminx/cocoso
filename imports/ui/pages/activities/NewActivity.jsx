@@ -219,7 +219,7 @@ class NewActivity extends PureComponent {
       isRegistrationDisabled,
       imageUrl: uploadedImage,
     };
-    console.log(isExclusiveActivity, values);
+
     try {
       const newActivityId = await call('createActivity', values);
       this.setState(

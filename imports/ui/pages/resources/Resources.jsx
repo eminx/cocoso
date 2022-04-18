@@ -167,7 +167,7 @@ function ResourcesPage() {
             </TabPanel>
 
             <TabPanel>
-              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+              <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted
                   .filter((r) => !r.isCombo)
                   .map((resource, index) => (
@@ -191,16 +191,17 @@ function ResourceItem({ resource }) {
       <Link to={`/resources/${resource._id}`}>
         <GridThumb
           alt={resource.label}
-          title={
-            resource.isCombo ? (
-              <ResourcesForCombo resource={resource} />
-            ) : (
-              resource.label
-            )
-          }
+          title={resource.label}
           image={resource.images?.[0]}
         >
-          {moment(resource.createdAt).format('D MMM YYYY')}
+          {resource.isCombo && (
+            <Box>
+              <ResourcesForCombo resource={resource} />
+            </Box>
+          )}
+          <Text fontSize="xs">
+            {moment(resource.createdAt).format('D MMM YYYY')}
+          </Text>
         </GridThumb>
       </Link>
     </Box>

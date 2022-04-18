@@ -1,26 +1,31 @@
 import React from 'react';
-import { Flex, Tag, Text } from '@chakra-ui/react';
+import { Badge, Box, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 export default function ResourcesForCombo({ resource }) {
   const [t] = useTranslation('resources');
   const resourcesForCombo = resource?.resourcesForCombo;
-  const length = resource?.resourcesForCombo.length;
   return (
-    <div>
-      <Flex mb="2">
-        <Text mr="2">{resource?.label}</Text>
-        <Tag size="sm" textTransform="uppercase">
-          {t('cards.ifCombo')}
-        </Tag>
-      </Flex>
-      {' ['}
-      {resourcesForCombo.map((res, i) => (
-        <Text as="span" fontSize="sm" key={res._id}>
-          {res.label + (i < length - 1 ? ' + ' : '')}
-        </Text>
-      ))}
-      ]
-    </div>
+    <Box my="2">
+      <Badge p="1" my="1">
+        {t('cards.ifCombo')}:
+        <Flex pt="1" wrap="wrap">
+          {resourcesForCombo.map((res, i) => (
+            <Badge
+              // fontWeight="normal"
+              key={res._id}
+              mr="1"
+              mb="1"
+              px="1"
+              size="xs"
+              textTransform="none"
+              variant="solid"
+            >
+              {res.label}
+            </Badge>
+          ))}
+        </Flex>
+      </Badge>
+    </Box>
   );
 }

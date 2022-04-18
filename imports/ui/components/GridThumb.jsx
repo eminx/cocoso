@@ -16,14 +16,12 @@ export default function GridThumb({ title, image, large = false, children }) {
       m="2"
       __hover={{ cursor: 'pointer' }}
     >
-      <Box w="100%" p="4" flexBasis={large ? '50%' : '70%'}>
+      <Box p="4" flexBasis={large ? '50%' : '70%'}>
         <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
           {title}
         </Heading>
-        <Spacer my="4" />
-        <Text as="p" fontSize="xs" alignSelf="flex-end">
-          {children}
-        </Text>
+        <Spacer my="1" />
+        <Box>{children}</Box>
       </Box>
 
       {image ? (
