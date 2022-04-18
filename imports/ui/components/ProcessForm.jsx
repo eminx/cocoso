@@ -22,13 +22,14 @@ const ProcessForm = ({
   defaultValues,
   onSubmit,
   imageUrl,
+  isSubmitDisabled,
 }) => {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
   });
   const { isDirty, isSubmitting } = formState;
-  const [ t ] = useTranslation('processes');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('processes');
+  const [tc] = useTranslation('common');
 
   return (
     <div>
@@ -36,7 +37,11 @@ const ProcessForm = ({
         <VStack spacing="6">
           <FormField
             label={t('form.image.label')}
-            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+            isRequired
+            helperText={
+              (uploadableImageLocal || imageUrl) &&
+              tc('plugins.fileDropper.replace')
+            }
           >
             <Center>
               <FileDropper
@@ -47,24 +52,25 @@ const ProcessForm = ({
             </Center>
           </FormField>
 
-          <FormField label={t('form.title.label')}>
+          <FormField label={t('form.title.label')} isRequired>
             <Input
-              {...register('title')}
+              {...register('title', { required: true })}
               placeholder={t('form.title.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.subtitle.label')}>
+          <FormField label={t('form.subtitle.label')} isRequired>
             <Input
-              {...register('readingMaterial')}
+              {...register('readingMaterial', { required: true })}
               placeholder={t('form.subtitle.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.desc.label')}>
+          <FormField label={t('form.desc.label')} isRequired>
             <Controller
               control={control}
               name="description"
+              rules={{ required: true }}
               render={({ field }) => (
                 <ReactQuill
                   {...field}
@@ -75,15 +81,15 @@ const ProcessForm = ({
             />
           </FormField>
 
-          <FormField label={t('form.capacity.label')}>
+          <FormField label={t('form.capacity.label')} isRequired>
             <NumberInput>
-              <NumberInputField {...register('capacity')} />
+              <NumberInputField {...register('capacity', { required: true })} />
             </NumberInput>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty}
+              isDisabled={!isDirty || isSubmitDisabled}
               isLoading={isSubmitting}
               type="submit"
             >
