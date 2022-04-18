@@ -111,7 +111,7 @@ Meteor.methods({
     }
 
     try {
-      const add = Activities.insert({
+      const activityId = Activities.insert({
         ...values,
         host,
         authorId: user._id,
@@ -130,7 +130,7 @@ Meteor.methods({
       //     }
       //   });
       // }
-      return add;
+      return activityId;
     } catch (error) {
       console.log(error)
       throw new Meteor.Error(error, "Couldn't add to Collection");
