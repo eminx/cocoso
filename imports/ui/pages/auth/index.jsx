@@ -26,8 +26,8 @@ import {
 } from './account.helpers';
 
 const Login = ({ onSubmit }) => {
-  const [ t ] = useTranslation('accounts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('accounts');
+  const [tc] = useTranslation('common');
   const { formState, handleSubmit, register } = useForm({
     defaultValues: loginModel,
   });
@@ -55,8 +55,8 @@ const Login = ({ onSubmit }) => {
 };
 
 const Signup = ({ onSubmit }) => {
-  const [ t ] = useTranslation('accounts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('accounts');
+  const [tc] = useTranslation('common');
   const schema = Joi.object({
     ...usernameSchema,
     ...emailSchema,
@@ -101,7 +101,7 @@ const Signup = ({ onSubmit }) => {
         </FormField>
         <Center>
           <Text fontSize="xs" textAlign="center">
-           {t('signup.form.password.info')}
+            {t('signup.form.password.info')}
           </Text>
         </Center>
 
@@ -116,8 +116,8 @@ const Signup = ({ onSubmit }) => {
 };
 
 const ForgotPassword = ({ onForgotPassword }) => {
-  const [ t ] = useTranslation('accounts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('accounts');
+  const [tc] = useTranslation('common');
   const schema = Joi.object({
     ...emailSchema,
   });
@@ -150,8 +150,8 @@ const ForgotPassword = ({ onForgotPassword }) => {
 };
 
 const ResetPassword = ({ onResetPassword }) => {
-  const [ t ] = useTranslation('accounts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('accounts');
+  const [tc] = useTranslation('common');
   const schema = Joi.object({
     ...passwordSchema,
   });
@@ -161,6 +161,8 @@ const ResetPassword = ({ onResetPassword }) => {
     resolver: joiResolver(schema),
   });
   const { errors, isDirty, isSubmitting } = formState;
+
+  const passwordHelperText = t('signup.form.password.helper');
 
   return (
     <form onSubmit={handleSubmit((data) => onResetPassword(data))}>
