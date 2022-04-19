@@ -50,8 +50,8 @@ function MemberPublic({
   const { currentHost } = useContext(StateContext);
   const [avatarModal, setAvatarModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [ t ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   // const setAsParticipant = async (user) => {
   //   try {
@@ -105,7 +105,7 @@ function MemberPublic({
             {member.bio && <Box mt="2">{renderHTML(member.bio)}</Box>}
 
             <Button variant="ghost" mt={2} onClick={onOpen}>
-              {tc('contact.label')}
+              {tc('labels.contact')}
             </Button>
           </Box>
         )
