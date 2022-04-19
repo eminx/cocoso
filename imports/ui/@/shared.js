@@ -356,6 +356,7 @@ const getComboResourcesWithColor = (comboResources, nonComboResourcesWithColor) 
 }
 
 export {
+  localeSort,
   getInitials,
   removeSpace,
   compareForSort,

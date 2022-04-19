@@ -20,6 +20,7 @@ import { editorFormats, editorModules } from '../@/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
 import FormField from '../components/FormField';
+import { localeSort } from '../@/shared';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -125,7 +126,7 @@ function ActivityForm({
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
-              {resources.map((option, index) => {
+              {resources.sort(localeSort).map((option, index) => {
                 return (
                   <option
                     key={option._id}
