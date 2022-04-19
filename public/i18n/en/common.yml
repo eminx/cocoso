@@ -108,7 +108,8 @@ plugins:
   fileDropper:
     replace: If you want to replace it with another one, click on the image to reopen the file picker
     single: Please drop only one file at a time.
-    helper: Drop an image or images; or alternatively click to open the file picker
+    helper: Drop or pick image
+    helperMultiple: Drop or pick image(s)
 
 domains:
   a: a

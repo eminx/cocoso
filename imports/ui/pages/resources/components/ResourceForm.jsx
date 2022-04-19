@@ -253,7 +253,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                 </>
               )}
               <Center w="100%">
-                <FileDropper setUploadableImage={setFileDropperImage} />
+                <FileDropper
+                  setUploadableImage={setFileDropperImage}
+                  isMultiple
+                />
               </Center>
             </Box>
           </FormField>

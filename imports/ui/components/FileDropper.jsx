@@ -11,6 +11,7 @@ const FileDropper = ({
   round = false,
   uploadableImageLocal,
   setUploadableImage,
+  isMultiple = false,
   ...otherProps
 }) => {
   const containerStyle = {
@@ -24,7 +25,7 @@ const FileDropper = ({
     containerStyle.overflow = 'hidden';
   }
 
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
   return (
     <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
@@ -47,7 +48,9 @@ const FileDropper = ({
           ) : (
             <Center p="8">
               <Text textAlign="center" fontSize="sm">
-                {tc('plugins.fileDropper.helper')}
+                {isMultiple
+                  ? tc('plugins.fileDropper.helperMultiple')
+                  : tc('plugins.fileDropper.helper')}
               </Text>
             </Center>
           )}

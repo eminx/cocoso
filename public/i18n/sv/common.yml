@@ -108,7 +108,8 @@ plugins:
   fileDropper:
     replace: Om du vill ersätta den med en annan, klicka på bilden för att öppna filväljaren igen
     single: Släpp bara en fil åt gången.
-    helper: Släpp en bild eller bilder; eller alternativt klicka för att öppna filväljaren
+    helper: Släpp eller välj bild
+    helperMultiple: Släpp eller välj bild(er)
 
 domains:
   a: en

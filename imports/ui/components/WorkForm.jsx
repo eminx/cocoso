@@ -36,8 +36,8 @@ function WorkForm({
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   return (
     <div>
@@ -58,7 +58,10 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.category.label')}>
-            <Select {...register('category')} placeholder={t('works.category.holder')}>
+            <Select
+              {...register('category')}
+              placeholder={t('works.category.holder')}
+            >
               {categories.map((cat) => (
                 <option
                   key={cat.label}
@@ -95,7 +98,7 @@ function WorkForm({
               placeholder={t('works.addInfo.holder')}
             />
           </FormField>
-            
+
           <FormField label={t('works.images.label', { count: images.length })}>
             <Box>
               {images && <NiceSlider images={images} />}
@@ -115,12 +118,18 @@ function WorkForm({
                     />
                   ))}
                   <Center w="100%">
-                    <FileDropper setUploadableImage={setUploadableImages} />
+                    <FileDropper
+                      setUploadableImage={setUploadableImages}
+                      isMultiple
+                    />
                   </Center>
                 </SortableContainer>
               ) : (
                 <Center>
-                  <FileDropper setUploadableImage={setUploadableImages} />
+                  <FileDropper
+                    setUploadableImage={setUploadableImages}
+                    isMultiple
+                  />
                 </Center>
               )}
             </Box>
