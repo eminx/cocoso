@@ -5,6 +5,8 @@ import i18n from 'i18next';
 
 moment.locale(i18n.language);
 
+const localeSort = (a, b) => a.label.localeCompare(b.label);
+
 const getInitials = (string) => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
@@ -291,6 +293,70 @@ function formatDate(date) {
   return formattedDate;
 }
 
+function getHslValuesFromLength(length) {
+  if (typeof length !== 'number') {
+    return null;
+  }
+
+  const saturation = '75%';
+  const lightness = '40%';
+
+  const colorValues = [];
+  const share = Math.round(360 / length);
+  for (i = 0; i < length; i++) {
+    colorValues.push(
+      `hsl(${share * (i + 1) - share / 2}, ${saturation}, ${lightness})`
+    );
+  }
+
+  return colorValues;
+}
+
+const getNonComboResourcesWithColor = (nonComboResources) => {
+  console.log(nonComboResources, 'f');
+  if (!nonComboResources) {
+    return;
+  }
+  console.log(nonComboResources, 'c');
+  const hslValues = getHslValuesFromLength(nonComboResources.length);
+  return nonComboResources
+    .sort(localeSort)
+    .map((res, i) => ({
+      ...res,
+      color: hslValues[i],
+    }));
+}
+
+const getComboResourcesWithColor = (comboResources, nonComboResourcesWithColor) => {
+  return comboResources
+    .sort(localeSort)
+    .map((res, i) => {
+      const colors = [];
+      res.resourcesForCombo.forEach((resCo, i) => {
+        const resWithColor = nonComboResourcesWithColor.find(
+          (nRes) => resCo.label === nRes.label
+        );
+        if (!resWithColor) {
+          return;
+        }
+        colors.push(resWithColor.color);
+      });
+      let color = 'linear-gradient(to right, ';
+      colors.forEach((c, i) => {
+        color += c;
+        if (i < colors.length - 1) {
+          color += ', ';
+        } else {
+          color += ')';
+        }
+      });
+      const comboLabel = `${res.label} [${res.resourcesForCombo
+        .map((item) => item.label)
+        .join(',')}]`;
+      return { ...res, color, label: comboLabel };
+  }); 
+}
+
 export {
   getInitials,
   removeSpace,
@@ -306,4 +372,6 @@ export {
   getAllBookingsWithSelectedResource,
   checkAndSetBookingsWithConflict,
   formatDate,
+  getNonComboResourcesWithColor,
+  getComboResourcesWithColor
 };

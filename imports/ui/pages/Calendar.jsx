@@ -26,9 +26,10 @@ import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
-import { getHslValuesFromLength } from '../@/constants/colors';
-import { call } from '../@/shared';
-import { message } from '../components/message';
+import {
+  getNonComboResourcesWithColor,
+  getComboResourcesWithColor,
+} from '../@/shared';
 import { StateContext } from '../LayoutContainer';
 const publicSettings = Meteor.settings.public;
 
@@ -212,43 +213,14 @@ class Calendar extends PureComponent {
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
-
-    const hslValues = getHslValuesFromLength(nonComboResources.length);
-    const nonComboResourcesWithColor = nonComboResources
-      .sort(localeSort)
-      .map((res, i) => ({
-        ...res,
-        color: hslValues[i],
-      }));
-
+    const nonComboResourcesWithColor =
+      getNonComboResourcesWithColor(nonComboResources);
+    console.log(nonComboResourcesWithColor);
     const comboResources = resources.filter((resource) => resource.isCombo);
-    const comboResourcesWithColor = comboResources
-      .sort(localeSort)
-      .map((res, i) => {
-        const colors = [];
-        res.resourcesForCombo.forEach((resCo, i) => {
-          const resWithColor = nonComboResourcesWithColor.find(
-            (nRes) => resCo.label === nRes.label
-          );
-          if (!resWithColor) {
-            return;
-          }
-          colors.push(resWithColor.color);
-        });
-        let color = 'linear-gradient(to right, ';
-        colors.forEach((c, i) => {
-          color += c;
-          if (i < colors.length - 1) {
-            color += ', ';
-          } else {
-            color += ')';
-          }
-        });
-        const comboLabel = `${res.label} [${res.resourcesForCombo
-          .map((item) => item.label)
-          .join(',')}]`;
-        return { ...res, color, label: comboLabel };
-      });
+    const comboResourcesWithColor = getComboResourcesWithColor(
+      comboResources,
+      nonComboResourcesWithColor
+    );
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
       const resource = nonComboResourcesWithColor.find(
