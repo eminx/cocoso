@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { getHost } from '../@/shared';
 import Hosts from '../@hosts/host';
 import Works from '../works/work';
+import Processes from '../processes/process';
 
 Meteor.methods({
 
