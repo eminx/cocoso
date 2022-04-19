@@ -25,10 +25,7 @@ function DatePicker({
   const [selectedDate, setSelectedDate] = useState();
   const [t, i18n] = useTranslation('calendar');
 
-  let locale = i18n.language;
-  if (i18n.language === 'en') {
-    locale = 'en-GB';
-  }
+  let locale = i18n.language === 'en' ? 'en-GB' : i18n.language;
 
   useEffect(() => {
     if (value) {
