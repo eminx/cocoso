@@ -78,9 +78,10 @@ class NewProcess extends React.Component {
   };
 
   handleSubmit = (values) => {
+    const { tc } = this.props;
     const { uploadableImage } = this.state;
     if (!uploadableImage) {
-      message.error(tc('error.imageRequired'));
+      message.error(tc('message.error.imageRequired'));
       return;
     }
     const parsedValues = {

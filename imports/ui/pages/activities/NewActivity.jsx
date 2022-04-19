@@ -113,12 +113,18 @@ class NewActivity extends PureComponent {
   };
 
   handleSubmit = (values) => {
-    const { isPublicActivity, selectedResource } = this.state;
+    const { tc } = this.props;
+    const { isPublicActivity, uploadableImage, selectedResource } = this.state;
     const formValues = {
       ...values,
       resource: selectedResource.label,
       resourceIndex: selectedResource.resourceIndex,
     };
+
+    if (isPublicActivity && !uploadableImage) {
+      message.error(tc('message.error.imageRequired'));
+      return;
+    }
 
     this.setState(
       {
