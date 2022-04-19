@@ -18,6 +18,7 @@ const FileDropper = ({
     borderWidth: 1,
     borderStyle: 'dashed',
     cursor: 'pointer',
+    width: '100%',
   };
 
   if (round) {
