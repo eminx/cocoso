@@ -215,7 +215,7 @@ class Calendar extends PureComponent {
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
     const nonComboResourcesWithColor =
       getNonComboResourcesWithColor(nonComboResources);
-    console.log(nonComboResourcesWithColor);
+
     const comboResources = resources.filter((resource) => resource.isCombo);
     const comboResourcesWithColor = getComboResourcesWithColor(
       comboResources,
@@ -341,10 +341,8 @@ class Calendar extends PureComponent {
                     onChange={this.handleCalendarFilterChange}
                     components={animatedComponents}
                     value={calendarFilter}
-                    options={allResourcesForSelect.map((item) => ({
-                      ...item,
-                      value: item._id,
-                    }))}
+                    options={allResourcesForSelect}
+                    getOptionValue={(option) => option._id}
                     style={{ width: '100%', marginTop: '1rem' }}
                     styles={{
                       option: (styles, { data }) => ({
