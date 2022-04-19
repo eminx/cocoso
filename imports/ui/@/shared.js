@@ -313,11 +313,9 @@ function getHslValuesFromLength(length) {
 }
 
 const getNonComboResourcesWithColor = (nonComboResources) => {
-  console.log(nonComboResources, 'f');
   if (!nonComboResources) {
     return;
   }
-  console.log(nonComboResources, 'c');
   const hslValues = getHslValuesFromLength(nonComboResources.length);
   return nonComboResources
     .sort(localeSort)
