@@ -22,7 +22,7 @@ Activities.schema = new SimpleSchema({
     }
   },
   longDescription: {type: String, optional: true},
-  imageUrl: {type: String, regEx: SimpleSchema.RegEx.Url, optional: true},
+  imageUrl: {type: String, optional: true},
 
   resourceId: {type: String, regEx: SimpleSchema.RegEx.Id},
   resource: {type: String, optional: true},
