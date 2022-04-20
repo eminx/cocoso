@@ -43,9 +43,9 @@ function WorkForm({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField label={t('works.title.label')}>
+          <FormField label={t('works.title.label')} isRequired>
             <Input
-              {...register('title')}
+              {...register('title', { required: true })}
               placeholder={t('works.title.holder')}
             />
           </FormField>
@@ -57,9 +57,9 @@ function WorkForm({
             />
           </FormField>
 
-          <FormField label={t('works.category.label')}>
+          <FormField label={t('works.category.label')} isRequired>
             <Select
-              {...register('categoryId')}
+              {...register('categoryId', { required: true })}
               placeholder={t('works.category.holder')}
             >
               {categories.map((cat) => (
@@ -74,10 +74,11 @@ function WorkForm({
             </Select>
           </FormField>
 
-          <FormField label={t('works.longDesc.label')}>
+          <FormField label={t('works.longDesc.label')} isRequired>
             <Controller
               control={control}
               name="longDescription"
+              rules={{ required: true }}
               render={({ field }) => (
                 <ReactQuill
                   {...field}
