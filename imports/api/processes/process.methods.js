@@ -158,6 +158,8 @@ Meteor.methods({
       throw new Meteor.Error('You are already a member');
     }
 
+    const currentHostName = currentHost.settings?.name;
+
     try {
       Processes.update(theProcess._id, {
         $addToSet: {
@@ -181,7 +183,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theProcess.title}" at ${publicSettings.name}`,
+        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
         getProcessJoinText(
           user.firstName || user.username,
           theProcess.title,
@@ -201,6 +203,8 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
+    const currentHostName = currentHost.settings?.name;
+
     try {
       Processes.update(theProcess._id, {
         $pull: {
@@ -219,7 +223,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theProcess.title}" at ${publicSettings.name}`,
+        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
         getProcessLeaveText(
           user.firstName || user.username,
           theProcess.title,
@@ -319,6 +323,8 @@ Meteor.methods({
       confirmDate: new Date(),
     });
 
+    const currentHostName = currentHost.settings?.name;
+
     try {
       Processes.update(processId, {
         $set: {
@@ -328,7 +334,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theProcess.title}" at ${publicSettings.name}`,
+        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
         getMeetingAttendText(
           user.firstName || user.username,
           updatedMeetings[meetingIndex],
@@ -364,6 +370,8 @@ Meteor.methods({
     );
     updatedMeetings[meetingIndex].attendees = theAttendeesWithout;
 
+    const currentHostName = currentHost.settings?.name;
+
     try {
       Processes.update(processId, {
         $set: {
@@ -373,7 +381,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theProcess.title}" at ${publicSettings.name}`,
+        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
         getMeetingUnattendText(
           user.firstName || user.username,
           updatedMeetings[meetingIndex],
@@ -401,7 +409,7 @@ Meteor.methods({
     const theProcess = Processes.findOne(processId);
     if (theProcess.adminId !== user._id) {
       throw new Meteor.Error('You are not admin!');
-    }
+    }    
 
     try {
       Processes.update(processId, {
@@ -554,11 +562,13 @@ Meteor.methods({
       throw new Meteor.Error('This email address is already added to the list');
     }
 
+    const currentHostName = currentHost.settings?.name;
+
     try {
       Meteor.call(
         'sendEmail',
         person.email,
-        `Invitation to join the process "${theProcess.title}" at ${publicSettings.name} by ${user.username}`,
+        `Invitation to join the process "${theProcess.title}" at ${currentHostName || publicSettings.name} by ${user.username}`,
         getInviteToPrivateProcessText(
           person.firstName,
           theProcess.title,
