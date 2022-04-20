@@ -102,7 +102,7 @@ class NewWork extends PureComponent {
     const { values, categories } = this.state;
 
     const selectedCategory = categories.find(
-      (category) => category._id === values.category
+      (category) => category._id === values.categoryId
     );
 
     const parsedValues = {

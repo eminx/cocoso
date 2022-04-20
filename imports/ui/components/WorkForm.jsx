@@ -59,16 +59,13 @@ function WorkForm({
 
           <FormField label={t('works.category.label')}>
             <Select
-              {...register('category')}
+              {...register('categoryId')}
               placeholder={t('works.category.holder')}
             >
               {categories.map((cat) => (
                 <option
-                  key={cat.label}
-                  selected={
-                    cat.label.toLowerCase() ===
-                    defaultValues.category.toLowerCase()
-                  }
+                  key={cat._id}
+                  selected={cat._id === defaultValues.categoryId}
                   value={cat._id}
                 >
                   {cat.label.toUpperCase()}

@@ -46,14 +46,13 @@ class EditWork extends PureComponent {
 
     try {
       const response = await call('getWork', workId, username);
-      const catLabel =
-        response.category &&
-        response.category.label &&
-        response.category.label.toUpperCase();
+      const assignedCategory = response?.category;
+
       this.setState({
         values: {
           ...response,
-          category: catLabel,
+          category: assignedCategory?.label?.toUpperCase(),
+          categoryId: assignedCategory?.categoryId,
         },
         images: response.images.map((image) => ({
           src: image,
@@ -157,9 +156,9 @@ class EditWork extends PureComponent {
       return;
     }
 
-    const selectedCategory = categories.find(
-      (category) => category._id === values.category
-    );
+    const selectedCategory = categories.find((category) => {
+      return category._id === values.categoryId;
+    });
 
     const parsedValues = {
       ...values,
