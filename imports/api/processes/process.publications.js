@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+
+import { getHost } from '../_utils/shared';
 import Processes from './process';
 
 Meteor.publish('processes', function () {
@@ -16,7 +17,8 @@ Meteor.publish('processes', function () {
     adminId: 1,
   };
   if (userId) {
-    (fields.members = 1), (fields.peopleInvited = 1);
+    fields.members = 1;
+    fields.peopleInvited = 1;
   }
 
   return Processes.find(

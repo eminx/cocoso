@@ -4,7 +4,7 @@ import { Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { ScreenClassRender } from 'react-grid-system';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Loader from '../../components/Loader';
@@ -78,20 +78,12 @@ function ResourcePage() {
         return (
           <Template
             leftContent={
-              !isMobile && (
-                <DocumentsField
-                  contextType="resource"
-                  contextId={resource?._id}
-                />
-              )
+              !isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />
             }
             rightContent={
               currentUser &&
               canCreateContent && (
-                <BookingsField
-                  currentUser={currentUser}
-                  selectedResource={resource}
-                />
+                <BookingsField currentUser={currentUser} selectedResource={resource} />
               )
             }
           >
@@ -102,12 +94,7 @@ function ResourcePage() {
               discussion={discussion}
               resource={resource}
             />
-            {isMobile && (
-              <DocumentsField
-                contextType="resource"
-                contextId={resource?._id}
-              />
-            )}
+            {isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />}
             <Center my="2">
               <Link to={`/resources/${resource?._id}/edit`}>
                 <Button size="sm" variant="ghost">

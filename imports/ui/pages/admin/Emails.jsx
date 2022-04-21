@@ -15,21 +15,21 @@ import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
-import { editorFormats, editorModules } from '../../@/constants/quillConfig';
-import { call } from '../../@/shared';
+import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
+import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
-import { adminMenu } from '../../@/constants/general';
-import { defaultEmails } from '../../../startup/@/constants';
+import { adminMenu } from '../../utils/constants/general';
+import { defaultEmails } from '../../../startup/constants';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
   const { currentUser, role } = useContext(StateContext);
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getEmails();
@@ -89,10 +89,7 @@ function Emails({ history }) {
             <Heading size="md" mb="4">
               {email.title}
             </Heading>
-            <EmailForm
-              onSubmit={(values) => handleSubmit(values, index)}
-              defaultValues={email}
-            />
+            <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
           </Box>
         ))}
     </Template>
@@ -103,8 +100,8 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
     defaultValues,
   });
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   const { isDirty, isSubmitting } = formState;
 
@@ -128,21 +125,13 @@ function EmailForm({ defaultValues, onSubmit }) {
               control={control}
               name="body"
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                />
+                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
           </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

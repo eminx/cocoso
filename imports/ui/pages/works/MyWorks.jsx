@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
@@ -17,7 +9,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
-import { userMenu } from '../../@/constants/general';
+import { userMenu } from '../../utils/constants/general';
 import WorkThumb from '../../components/WorkThumb';
 
 function Works({ history }) {
@@ -25,8 +17,8 @@ function Works({ history }) {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
 
-  const [ t ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     Meteor.call('getMyWorks', (error, respond) => {
@@ -82,19 +74,13 @@ function Works({ history }) {
       {currentUser && works ? (
         <NiceList actionsDisabled list={myWorksWithActions}>
           {(work) => (
-            <Link
-              key={work._id}
-              to={`/${work.authorUsername}/work/${work._id}`}
-            >
+            <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
               <WorkThumb work={work} />
             </Link>
           )}
         </NiceList>
       ) : (
-        <Alert
-          margin="medium"
-          message={t('message.guest')}
-        />
+        <Alert margin="medium" message={t('message.guest')} />
       )}
     </Template>
   );
@@ -103,12 +89,7 @@ function Works({ history }) {
 const WorkItem = ({ work }) => (
   <Flex bg="white" p="2" w="100%">
     <Box mr="4">
-      <Image
-        boxSize="140px"
-        h="180px"
-        objectFit="cover"
-        src={work.images && work.images[0]}
-      />
+      <Image boxSize="140px" h="180px" objectFit="cover" src={work.images && work.images[0]} />
     </Box>
     <Box>
       <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>

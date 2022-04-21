@@ -11,13 +11,7 @@ const colStyle = {
   margin: '0 auto',
 };
 
-function Template({
-  heading,
-  leftContent,
-  rightContent,
-  titleCentered = true,
-  children,
-}) {
+function Template({ heading, leftContent, rightContent, titleCentered = true, children }) {
   return (
     <Container fluid style={{ width: '100%', padding: 0, marginBottom: 24 }}>
       <Helmet>
@@ -31,12 +25,7 @@ function Template({
         <Col lg={6} style={{ ...colStyle, paddingLeft: 0, paddingRight: 0 }}>
           {heading && (
             <Box pl={titleCentered ? '0' : '2'} mb="2">
-              <Heading
-                as="h3"
-                mb="4"
-                size="md"
-                textAlign={titleCentered ? 'center' : 'start'}
-              >
+              <Heading as="h3" mb="4" size="md" textAlign={titleCentered ? 'center' : 'start'}>
                 {heading}
               </Heading>
             </Box>

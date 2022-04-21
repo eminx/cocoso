@@ -3,12 +3,11 @@ import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Center, IconButton } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
-import { call } from '../../@/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import ProcessForm from '../../components/ProcessForm';
 import Template from '../../components/Template';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
-import { resizeImage, uploadImage } from '../../@/shared';
 import { message, Alert } from '../../components/message';
 
 class EditProcess extends React.Component {
@@ -73,10 +72,7 @@ class EditProcess extends React.Component {
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'processImageUpload'
-      );
+      const uploadedImage = await uploadImage(resizedImage, 'processImageUpload');
       this.setState(
         {
           uploadedImage,
@@ -99,9 +95,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('updateProcess', process._id, formValues, imageUrl);
-      message.success(
-        tc('message.success.update', { domain: tc('domains.process') })
-      );
+      message.success(tc('message.success.update', { domain: tc('domains.process') }));
       this.setState({
         isSuccess: true,
       });
@@ -120,9 +114,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('deleteProcess', processId);
-      message.success(
-        tc('message.success.remove', { domain: tc('domains.process') })
-      );
+      message.success(tc('message.success.remove', { domain: tc('domains.process') }));
       this.setState({ isSuccess: true });
     } catch (error) {
       console.log(error);
@@ -151,13 +143,7 @@ class EditProcess extends React.Component {
       return <Alert message="You are not allowed!" />;
     }
 
-    const {
-      isDeleteModalOn,
-      formValues,
-      isSuccess,
-      uploadableImageLocal,
-      isUpdating,
-    } = this.state;
+    const { isDeleteModalOn, formValues, isSuccess, uploadableImageLocal, isUpdating } = this.state;
 
     if (isSuccess) {
       if (isDeleteModalOn) {
@@ -179,11 +165,7 @@ class EditProcess extends React.Component {
         leftContent={
           <Box p="2">
             <Link to={`/process/${process._id}`}>
-              <IconButton
-                as="span"
-                aria-label="Back"
-                icon={<ArrowBackIcon />}
-              />
+              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>
         }
@@ -199,12 +181,7 @@ class EditProcess extends React.Component {
         </Box>
 
         <Center p="4">
-          <Button
-            colorScheme="red"
-            size="sm"
-            variant="ghost"
-            onClick={this.showDeleteModal}
-          >
+          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {tc('actions.remove')}
           </Button>
         </Center>

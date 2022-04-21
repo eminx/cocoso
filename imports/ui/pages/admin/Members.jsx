@@ -23,9 +23,9 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../@/shared';
-import { adminMenu } from '../../@/constants/general';
-import Hosts from '../../../api/@hosts/host';
+import { call } from '../../utils/shared';
+import { adminMenu } from '../../utils/constants/general';
+import Hosts from '../../../api/hosts/host';
 
 moment.locale(i18n.language);
 
@@ -51,9 +51,7 @@ function Members({ history, members, isLoading }) {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      message.success(
-        t('message.success.participant', { username: user.username })
-      );
+      message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
       console.log(error);
       message.error({
@@ -66,9 +64,7 @@ function Members({ history, members, isLoading }) {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      message.success(
-        t('message.success.contributor', { username: user.username })
-      );
+      message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
       console.log(error);
       message.error({
@@ -78,10 +74,7 @@ function Members({ history, members, isLoading }) {
     }
   };
 
-  if (
-    !currentUser ||
-    (role !== 'admin' && role !== 'contributor' && !currentUser.isSuperAdmin)
-  ) {
+  if (!currentUser || (role !== 'admin' && role !== 'contributor' && !currentUser.isSuperAdmin)) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert message={tc('message.access.deny')} type="warning" />
@@ -116,8 +109,7 @@ function Members({ history, members, isLoading }) {
       {
         content: t('actions.participant'),
         handleClick: () => setAsParticipant(member),
-        isDisabled:
-          !['contributor'].includes(member.role) || !['admin'].includes(role),
+        isDisabled: !['contributor'].includes(member.role) || !['admin'].includes(role),
       },
     ],
   }));
@@ -166,9 +158,7 @@ function Members({ history, members, isLoading }) {
   let membersSorted;
   switch (sortBy) {
     case 'username':
-      membersSorted = membersFilteredWithType.sort((a, b) =>
-        a.username.localeCompare(b.username)
-      );
+      membersSorted = membersFilteredWithType.sort((a, b) => a.username.localeCompare(b.username));
       break;
     case 'join-date':
     default:
@@ -214,11 +204,7 @@ function Members({ history, members, isLoading }) {
             {filterOptions.map((item, index) =>
               item.value === filter ? (
                 <TabPanel key={item.value} p="1" mb="3">
-                  <NiceList
-                    itemBg="white"
-                    keySelector="email"
-                    list={membersSorted}
-                  >
+                  <NiceList itemBg="white" keySelector="email" list={membersSorted}>
                     {(member) => (
                       <Box key={member.username} p="2">
                         <Heading size="md" fontWeight="bold">

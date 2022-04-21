@@ -20,7 +20,7 @@ import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import FormField from './FormField';
 import FileDropper from '../components/FileDropper';
 import NiceSlider from '../components/NiceSlider';
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 
 function WorkForm({
   categories,
@@ -51,10 +51,7 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.shortDesc.label')}>
-            <Textarea
-              {...register('shortDescription')}
-              placeholder={t('works.shortDesc.holder')}
-            />
+            <Textarea {...register('shortDescription')} placeholder={t('works.shortDesc.holder')} />
           </FormField>
 
           <FormField label={t('works.category.label')} isRequired>
@@ -91,10 +88,7 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.addInfo.label')}>
-            <Textarea
-              {...register('additionalInfo')}
-              placeholder={t('works.addInfo.holder')}
-            />
+            <Textarea {...register('additionalInfo')} placeholder={t('works.addInfo.holder')} />
           </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
@@ -102,11 +96,7 @@ function WorkForm({
               {images && <NiceSlider images={images} />}
 
               {images && images.length > 0 ? (
-                <SortableContainer
-                  onSortEnd={onSortImages}
-                  axis="xy"
-                  helperClass="sortableHelper"
-                >
+                <SortableContainer onSortEnd={onSortImages} axis="xy" helperClass="sortableHelper">
                   {images.map((image, index) => (
                     <SortableItem
                       key={image}
@@ -116,29 +106,19 @@ function WorkForm({
                     />
                   ))}
                   <Center w="100%">
-                    <FileDropper
-                      setUploadableImage={setUploadableImages}
-                      isMultiple
-                    />
+                    <FileDropper setUploadableImage={setUploadableImages} isMultiple />
                   </Center>
                 </SortableContainer>
               ) : (
                 <Center>
-                  <FileDropper
-                    setUploadableImage={setUploadableImages}
-                    isMultiple
-                  />
+                  <FileDropper setUploadableImage={setUploadableImages} isMultiple />
                 </Center>
               )}
             </Box>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>
@@ -152,27 +132,23 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  return (
-    <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <IconButton
-        className="sortable-thumb-icon"
-        colorScheme="gray.900"
-        icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-        size="xs"
-        onClick={onRemoveImage}
-        style={{ position: 'absolute', top: 4, right: 4 }}
-      />
-    </Box>
-  );
-});
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
+  <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
+    <IconButton
+      className="sortable-thumb-icon"
+      colorScheme="gray.900"
+      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+      size="xs"
+      onClick={onRemoveImage}
+      style={{ position: 'absolute', top: 4, right: 4 }}
+    />
+  </Box>
+));
 
-const SortableContainer = sortableContainer(({ children }) => {
-  return (
-    <Center w="100%">
-      <Wrap py="2">{children}</Wrap>
-    </Center>
-  );
-});
+const SortableContainer = sortableContainer(({ children }) => (
+  <Center w="100%">
+    <Wrap py="2">{children}</Wrap>
+  </Center>
+));
 
 export default WorkForm;

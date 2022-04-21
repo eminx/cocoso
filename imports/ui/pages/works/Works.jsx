@@ -2,14 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  SimpleGrid,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../components/WorkThumb';
@@ -17,8 +10,8 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
-import { getHslValuesFromLength } from '../../@/constants/colors';
+import { call } from '../../utils/shared';
+import { getHslValuesFromLength } from '../../utils/constants/colors';
 
 const publicSettings = Meteor.settings.public;
 
@@ -33,7 +26,7 @@ function Works() {
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getAllWorks();
@@ -57,11 +50,9 @@ function Works() {
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
-    ? sortedWorks.filter((work) => {
-        return (
-          work.category && work.category.label === categoryFilter.toLowerCase()
-        );
-      })
+    ? sortedWorks.filter(
+        (work) => work.category && work.category.label === categoryFilter.toLowerCase()
+      )
     : sortedWorks;
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
@@ -70,8 +61,7 @@ function Works() {
     const category = categoriesAssignedToWorks.find((category) => {
       return (
         category.label &&
-        category.label ===
-          (work.category && work.category.label && work.category.label)
+        category.label === (work.category && work.category.label && work.category.label)
       );
     });
     const categoryColor = category && category.color;
@@ -84,7 +74,9 @@ function Works() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${
+          publicSettings.name
+        }`}</title>
       </Helmet>
 
       <Center mb="4">
@@ -137,9 +129,7 @@ function Works() {
 }
 
 getCategoriesAssignedToWorks = (works) => {
-  const labels = Array.from(
-    new Set(works.map((work) => work.category && work.category.label))
-  );
+  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
 
   const hslValues = getHslValuesFromLength(labels.length);
   return labels.map((label, i) => ({

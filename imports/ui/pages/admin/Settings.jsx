@@ -26,8 +26,8 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
-import { call, resizeImage, uploadImage } from '../../@/shared';
-import { adminMenu } from '../../@/constants/general';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
+import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
@@ -55,9 +55,9 @@ export default function Settings({ history }) {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
-  
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -199,8 +199,7 @@ export default function Settings({ history }) {
   // const settings = currentHost && currentHost.settings;
 
   const isImage =
-    (localImage && localImage.uploadableImageLocal) ||
-    (currentHost && currentHost.logo);
+    (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
   return (
     <Template
@@ -229,9 +228,7 @@ export default function Settings({ history }) {
               <Center p="3">
                 <Box>
                   <FileDropper
-                    uploadableImageLocal={
-                      localImage && localImage.uploadableImageLocal
-                    }
+                    uploadableImageLocal={localImage && localImage.uploadableImageLocal}
                     imageUrl={currentHost && currentHost.logo}
                     setUploadableImage={setUploadableImage}
                     width={isImage && '120px'}
@@ -253,10 +250,7 @@ export default function Settings({ history }) {
                 {t('info.label')}
               </Heading>
               <Text mb="3">{t('info.info')}</Text>
-              <SettingsForm
-                initialValues={localSettings}
-                onSubmit={handleFormSubmit}
-              />
+              <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
             </AlphaContainer>
           </TabPanel>
 
@@ -299,12 +293,8 @@ export default function Settings({ history }) {
                   {categories.map((category) => (
                     <WrapItem key={category.label}>
                       <Tag colorScheme="messenger">
-                        <TagLabel fontWeight="bold">
-                          {category.label.toUpperCase()}
-                        </TagLabel>
-                        <TagCloseButton
-                          onClick={() => removeCategory(category._id)}
-                        />
+                        <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                        <TagCloseButton onClick={() => removeCategory(category._id)} />
                       </Tag>
                     </WrapItem>
                   ))}
@@ -317,13 +307,9 @@ export default function Settings({ history }) {
                       placeholder="PAJAMAS"
                       mt="2"
                       value={categoryInput}
-                      onChange={(event) =>
-                        handleCategoryInputChange(event.target.value)
-                      }
+                      onChange={(event) => handleCategoryInputChange(event.target.value)}
                     />
-                    <Button type="submit">
-                      {tc('actions.add')}
-                    </Button>
+                    <Button type="submit">{tc('actions.add')}</Button>
                   </HStack>
                 </Center>
               </form>

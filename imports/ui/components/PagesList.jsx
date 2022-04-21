@@ -1,17 +1,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Flex,
-  Link as CLink,
-  List,
-  ListItem,
-  Select,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Center, Flex, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
 
-import { parseTitle } from '../@/shared';
+import { parseTitle } from '../utils/shared';
 import { ScreenClassRender } from 'react-grid-system';
 
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
@@ -32,9 +23,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                       <CLink as="span">
                         <Text
                           fontWeight={
-                            parseTitle(activePageTitle) === parseTitle(title)
-                              ? 'bold'
-                              : 'normal'
+                            parseTitle(activePageTitle) === parseTitle(title) ? 'bold' : 'normal'
                           }
                         >
                           {title}
@@ -51,9 +40,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                 bg="white"
                 placeholder={currentPageTitle()}
                 w="xs"
-                onChange={(event) =>
-                  history.push(`/page/${parseTitle(event.target.value)}`)
-                }
+                onChange={(event) => history.push(`/page/${parseTitle(event.target.value)}`)}
               >
                 {pageTitles.map((title) => (
                   <option>{title}</option>

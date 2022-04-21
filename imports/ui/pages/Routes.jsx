@@ -5,7 +5,7 @@ import { Progress } from '@chakra-ui/react';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
-import ResourceRoutes from './resources/@ResourceRouter';
+import ResourceRoutes from './resources/ResourceRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -64,10 +64,10 @@ export default function () {
               {/* Activities */}
               <Route exact path="/activities" component={ActivitiesContainer} />
               <Route exact path="/my-activities" component={MyActivities} />
-              <Route exact path="/new-activity" component={NewActivityContainer}/>
+              <Route exact path="/new-activity" component={NewActivityContainer} />
               <Route path="/event/:id" component={ActivityContainer} />
               <Route path="/activity/:id" component={ActivityContainer} />
-              <Route path="/edit-activity/:id/" component={EditActivityContainer}/>
+              <Route path="/edit-activity/:id/" component={EditActivityContainer} />
               {/* Processes */}
               <Route exact path="/new-process" component={NewProcessContainer} />
               <Route exact path="/processes/" component={ProcessesListContainer} />
@@ -89,9 +89,14 @@ export default function () {
               <Route exact path="/signup" component={SignupPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/forgot-password" component={ForgotPasswordPage} />
-              <Route path="/reset-password/:token" component={ResetPasswordPage}/>
+              <Route path="/reset-password/:token" component={ResetPasswordPage} />
               {/* Members */}
-              <Route exact path="/my-profile/" component={ProfileContainer} history={browserHistory}/>
+              <Route
+                exact
+                path="/my-profile/"
+                component={ProfileContainer}
+                history={browserHistory}
+              />
               <Route exact path="/members" component={MembersPublic} />
               <Route path="/@:username" component={MemberPublic} />
               {/* Admin */}
@@ -103,7 +108,9 @@ export default function () {
               {/* NotFoundPage */}
               <Route exact path="/not-found" component={NotFoundPage} />
               <Route exact path="/404" component={NotFoundPage} />
-              <Route path="*"><NotFoundPage /></Route>
+              <Route path="*">
+                <NotFoundPage />
+              </Route>
             </Switch>
           </Suspense>
         </LayoutContainer>

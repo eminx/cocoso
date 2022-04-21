@@ -4,22 +4,22 @@ import i18n from 'i18next';
 
 class ChatteryInput extends React.Component {
   state = {
-    inputValue: ''
+    inputValue: '',
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({
-      inputValue: event.target.value
+      inputValue: event.target.value,
     });
   };
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault();
     const { inputValue } = this.state;
     if (inputValue !== '') {
       this.setState(
         {
-          inputValue: ''
+          inputValue: '',
         },
         () => this.props.onNewMessage(inputValue)
       );
@@ -29,18 +29,18 @@ class ChatteryInput extends React.Component {
   render() {
     return (
       <div className="chattery-inputform-container">
-        <form
-          className="chattery-inputform"
-          autoComplete="off"
-          onSubmit={this.onSubmit}
-        >
+        <form className="chattery-inputform" autoComplete="off" onSubmit={this.onSubmit}>
           <textarea
             type="text"
             className="chattery-input"
             value={this.state.inputValue}
             onChange={this.onChange}
           />
-          <input type="submit" className="chattery-submitbutton" value={i18n.t('common:actions.send')} />
+          <input
+            type="submit"
+            className="chattery-submitbutton"
+            value={i18n.t('common:actions.send')}
+          />
         </form>
       </div>
     );
@@ -48,7 +48,7 @@ class ChatteryInput extends React.Component {
 }
 
 ChatteryInput.propTypes = {
-  onNewMessage: PropTypes.func.isRequired
+  onNewMessage: PropTypes.func.isRequired,
 };
 
 export { ChatteryInput };

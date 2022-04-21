@@ -19,17 +19,10 @@ function WorkThumb({ work }) {
             {work.title}
           </Heading>
           {work.category && (
-            <Tag
-              filterColor={work.categoryColor}
-              label={work.category.label}
-              mb="1"
-            />
+            <Tag filterColor={work.categoryColor} label={work.category.label} mb="1" />
           )}
         </Box>
-        <Avatar
-          name={work.authorUsername}
-          src={work.authorAvatar ? work.authorAvatar.src : null}
-        />
+        <Avatar name={work.authorUsername} src={work.authorAvatar ? work.authorAvatar.src : null} />
       </Flex>
       {work.images && work.images[0] && (
         <Box>

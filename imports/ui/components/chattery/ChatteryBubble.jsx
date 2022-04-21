@@ -25,9 +25,8 @@ class ChatteryBubble extends React.Component {
       return moment(theDate).format('[Yesterday,] HH:mm');
     } else if (isThisYear) {
       return moment(theDate).format('ddd, D MMM, [at] HH:mm');
-    } else {
-      return moment(theDate).format("D MMM [']YY, [at] HH:mm");
     }
+    return moment(theDate).format("D MMM [']YY, [at] HH:mm");
   };
 
   removeNotification = (isVisible) => {
@@ -38,8 +37,7 @@ class ChatteryBubble extends React.Component {
   };
 
   render() {
-    const { senderUsername, createdDate, isFromMe, isSeen, children } =
-      this.props;
+    const { senderUsername, createdDate, isFromMe, isSeen, children } = this.props;
     let bubbleClass = 'talk-bubble tri-right round ';
     let bubbleClassContainer = 'talk-bubble-container ';
     if (isFromMe) {
@@ -52,18 +50,13 @@ class ChatteryBubble extends React.Component {
 
     return (
       <div className={bubbleClassContainer}>
-        <VisibilitySensor
-          partialVisibility="bottom"
-          onChange={this.removeNotification}
-        >
+        <VisibilitySensor partialVisibility="bottom" onChange={this.removeNotification}>
           {({ isVisible }) => (
             <div className={bubbleClass}>
               <div className="talktext">
                 <p className="talktext-senderinfo">{senderUsername}</p>
                 <p className="talktext-content">{children}</p>
-                <p className="talktext-dateinfo">
-                  {this.parseDate(createdDate)}
-                </p>
+                <p className="talktext-dateinfo">{this.parseDate(createdDate)}</p>
               </div>
             </div>
           )}

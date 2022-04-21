@@ -21,12 +21,7 @@ function Drawer({
   ...otherProps
 }) {
   return (
-    <CDrawer
-      isOpen={isOpen}
-      onClose={onClose}
-      placement={placement}
-      {...otherProps}
-    >
+    <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />

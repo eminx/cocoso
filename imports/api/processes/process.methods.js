@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost, getResourceIndex } from '../@/shared';
-import { isAdmin, isContributorOrAdmin, isMember } from '../@users/user.roles';
-import Hosts from '../@hosts/host';
+import { check } from 'meteor/check';
+
+import { getHost, getResourceIndex } from '../_utils/shared';
+import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
+import Hosts from '../hosts/host';
 import Processes from './process';
 import {
   getProcessJoinText,
@@ -25,32 +27,30 @@ Meteor.methods({
     }
 
     try {
-      const newProcessId = Processes.insert(
-        {
-          host,
-          adminId: user._id,
-          adminUsername: user.username,
-          adminAvatar: user.avatar,
-          title: formValues.title,
-          description: formValues.description,
-          readingMaterial: formValues.readingMaterial,
-          imageUrl,
-          capacity: formValues.capacity,
-          members: [
-            {
-              memberId: user._id,
-              username: user.username,
-              profileImage: user.profileImage,
-              joinDate: new Date(),
-            },
-          ],
-          isPublished: true,
-          isPrivate: isPrivate,
-          creationDate: new Date(),
-        }
-      );
+      const newProcessId = Processes.insert({
+        host,
+        adminId: user._id,
+        adminUsername: user.username,
+        adminAvatar: user.avatar,
+        title: formValues.title,
+        description: formValues.description,
+        readingMaterial: formValues.readingMaterial,
+        imageUrl,
+        capacity: formValues.capacity,
+        members: [
+          {
+            memberId: user._id,
+            username: user.username,
+            profileImage: user.profileImage,
+            joinDate: new Date(),
+          },
+        ],
+        isPublished: true,
+        isPrivate,
+        creationDate: new Date(),
+      });
 
-      Meteor.call('createChat', formValues.title, newProcessId, (error, result) => {
+      Meteor.call('createChat', formValues.title, newProcessId, (error) => {
         if (error) {
           console.log('Chat is not created due to error: ', error);
         }
@@ -141,18 +141,14 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    
+
     if (!user || !isMember(user, currentHost)) {
-      throw new Meteor.Error(
-        'Please sign up to become a participant at this host first!'
-      );
+      throw new Meteor.Error('Please sign up to become a participant at this host first!');
     }
-      
+
     const theProcess = Processes.findOne(processId);
 
-    const alreadyMember = theProcess.members.some(m => {
-      return m.memberId === user._id;
-    })
+    const alreadyMember = theProcess.members.some((m) => m.memberId === user._id);
 
     if (alreadyMember) {
       throw new Meteor.Error('You are already a member');
@@ -184,11 +180,7 @@ Meteor.methods({
         'sendEmail',
         user._id,
         `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessJoinText(
-          user.firstName || user.username,
-          theProcess.title,
-          processId
-        )
+        getProcessJoinText(user.firstName || user.username, theProcess.title, processId)
       );
     } catch (error) {
       console.log(error);
@@ -201,6 +193,8 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
 
     const theProcess = Processes.findOne(processId);
     const currentHostName = currentHost.settings?.name;
@@ -216,7 +210,7 @@ Meteor.methods({
       Meteor.users.update(user._id, {
         $pull: {
           processes: {
-            processId: processId,
+            processId,
           },
         },
       });
@@ -224,11 +218,7 @@ Meteor.methods({
         'sendEmail',
         user._id,
         `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessLeaveText(
-          user.firstName || user.username,
-          theProcess.title,
-          processId
-        )
+        getProcessLeaveText(user.firstName || user.username, theProcess.title, processId)
       );
     } catch (error) {
       throw new Meteor.Error('Could not leave the process');
@@ -249,9 +239,16 @@ Meteor.methods({
       throw new Meteor.Error('You are not the admin!');
     }
 
-    newMeeting.attendees = [];
-    newMeeting.resourceIndex = getResourceIndex(newMeeting.resource, host);
-    const meetings = [...theProcess.meetings, newMeeting];
+    const meetings = [
+      ...theProcess.meetings,
+      [
+        {
+          ...newMeeting,
+          attendees: [],
+          resourceIndex: getResourceIndex(newMeeting.resource, host),
+        },
+      ],
+    ];
     const sortedMeetings = meetings.sort(compareForSort);
 
     try {
@@ -261,10 +258,7 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      throw new Meteor.Error(
-        'Could not create the meeting due to:',
-        error.reason
-      );
+      throw new Meteor.Error('Could not create the meeting due to:', error.reason);
     }
   },
 
@@ -282,9 +276,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not the admin!');
     }
 
-    const newMeetings = theProcess.meetings.filter(
-      (meeting, mIndex) => mIndex !== meetingIndex
-    );
+    const newMeetings = theProcess.meetings.filter((meeting, mIndex) => mIndex !== meetingIndex);
 
     try {
       Processes.update(processId, {
@@ -293,10 +285,7 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      throw new Meteor.Error(
-        'Could not remove the meeting due to: ',
-        error.reason
-      );
+      throw new Meteor.Error('Could not remove the meeting due to: ', error.reason);
     }
   },
 
@@ -310,9 +299,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (
-      !theProcess.members.map((member) => member.memberId).includes(user._id)
-    ) {
+    if (!theProcess.members.map((member) => member.memberId).includes(user._id)) {
       throw new Meteor.Error('You are not a member!');
     }
 
@@ -343,34 +330,30 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      throw new Meteor.Error(
-        'Could not registered attendance due to:',
-        error.reason
-      );
+      throw new Meteor.Error('Could not registered attendance due to:', error.reason);
     }
   },
 
   unAttendMeeting(processId, meetingIndex) {
     const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+
     if (!user) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     const theProcess = Processes.findOne(processId);
-    if (
-      !theProcess.members.map((member) => member.memberId).includes(user._id)
-    ) {
+    if (!theProcess.members.map((member) => member.memberId).includes(user._id)) {
       throw new Meteor.Error('You are not a member!');
     }
 
     const updatedMeetings = [...theProcess.meetings];
     const theAttendees = [...updatedMeetings[meetingIndex].attendees];
-    const theAttendeesWithout = theAttendees.filter(
-      (attendee) => attendee.memberId !== user._id
-    );
+    const theAttendeesWithout = theAttendees.filter((attendee) => attendee.memberId !== user._id);
     updatedMeetings[meetingIndex].attendees = theAttendeesWithout;
 
-    const currentHostName = currentHost.settings?.name;
+    const currentHostName = currentHost?.settings?.name;
 
     try {
       Processes.update(processId, {
@@ -390,10 +373,7 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      throw new Meteor.Error(
-        'Could not removed attendance due to:',
-        error.reason
-      );
+      throw new Meteor.Error('Could not removed attendance due to:', error.reason);
     }
   },
 
@@ -409,7 +389,7 @@ Meteor.methods({
     const theProcess = Processes.findOne(processId);
     if (theProcess.adminId !== user._id) {
       throw new Meteor.Error('You are not admin!');
-    }    
+    }
 
     try {
       Processes.update(processId, {
@@ -436,9 +416,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not admin!');
     }
 
-    const newDocuments = theProcess.documents.filter(
-      (document) => document.name !== documentName
-    );
+    const newDocuments = theProcess.documents.filter((document) => document.name !== documentName);
 
     try {
       Processes.update(processId, {
@@ -447,10 +425,7 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      throw new Meteor.Error(
-        'Could not remove the document because: ',
-        error.reason
-      );
+      throw new Meteor.Error('Could not remove the document because: ', error.reason);
     }
   },
 
@@ -554,9 +529,7 @@ Meteor.methods({
       throw new Meteor.Error('This process is not private');
     }
 
-    const invitedEmailsList = theProcess.peopleInvited.map(
-      (person) => person.email
-    );
+    const invitedEmailsList = theProcess.peopleInvited.map((p) => p.email);
 
     if (invitedEmailsList.indexOf(person.email) !== -1) {
       throw new Meteor.Error('This email address is already added to the list');
@@ -568,7 +541,9 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         person.email,
-        `Invitation to join the process "${theProcess.title}" at ${currentHostName || publicSettings.name} by ${user.username}`,
+        `Invitation to join the process "${theProcess.title}" at ${
+          currentHostName || publicSettings.name
+        } by ${user.username}`,
         getInviteToPrivateProcessText(
           person.firstName,
           theProcess.title,

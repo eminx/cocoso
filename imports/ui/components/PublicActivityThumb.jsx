@@ -37,17 +37,12 @@ function PublicActivityThumb({ item }) {
     // }
 
     return (
-      <div
-        key={date.startDate + date.startTime}
-        style={{ marginRight: 12, marginBottom: 12 }}
-      >
+      <div key={date.startDate + date.startTime} style={{ marginRight: 12, marginBottom: 12 }}>
         <div style={{ ...dateStyle }}>
           <span style={{ fontSize: 24, marginRight: 2 }}>
             <b>{moment(date.startDate).format('DD')}</b>
           </span>
-          <span style={{ fontSize: 16 }}>
-            {moment(date.startDate).format('MMM').toUpperCase()}
-          </span>
+          <span style={{ fontSize: 16 }}>{moment(date.startDate).format('MMM').toUpperCase()}</span>
         </div>
       </div>
     );

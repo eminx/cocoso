@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Flex,
-  List,
-  ListItem,
-  Menu,
-  MenuItem,
-  MenuButton,
-  MenuList,
-} from '@chakra-ui/react';
+import { Box, Flex, List, ListItem, Menu, MenuItem, MenuButton, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 function NiceList({

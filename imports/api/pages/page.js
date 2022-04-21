@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Schemas } from '../@/schemas';
+import { Schemas } from '../_utils/schemas';
 
 const Pages = new Mongo.Collection('pages');
 
@@ -9,16 +9,16 @@ Pages.schema = new SimpleSchema({
   host: Schemas.Hostname,
 
   authorId: Schemas.Id,
-  authorName: {type: String},
+  authorName: { type: String },
 
-  title: {type: String},
-  longDescription: {type: String},
+  title: { type: String },
+  longDescription: { type: String },
   isPublished: {
     type: Boolean,
     defaultValue: true,
   },
 
-  creationDate: {type: Date},
+  creationDate: { type: Date },
   latestUpdate: {
     type: Date,
     optional: true,

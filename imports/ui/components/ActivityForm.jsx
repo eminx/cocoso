@@ -16,16 +16,16 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
 import FormField from '../components/FormField';
-import { localeSort } from '../@/shared';
+import { localeSort } from '../utils/shared';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
 
-let emptyDateAndTime = {
+const emptyDateAndTime = {
   startDate: today,
   endDate: today,
   startTime: '00:00',
@@ -77,7 +77,7 @@ function ActivityForm({
       if (index === recurrenceIndex) {
         item[entity] = date;
         if (entity === 'startDate' && !item.isRange) {
-          item['endDate'] = date;
+          item.endDate = date;
         }
       }
       return item;
@@ -126,22 +126,17 @@ function ActivityForm({
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
-              {resources.sort(localeSort).map((option, index) => {
-                return (
-                  <option
-                    key={option._id}
-                    selected={option._id === defaultValues.resourceId}
-                    value={option._id}
-                  >
-                    {option.isCombo
-                      ? option.label +
-                        ': [' +
-                        option.resourcesForCombo.map((res, i) => res.label) +
-                        ']'
-                      : option.label}
-                  </option>
-                );
-              })}
+              {resources.sort(localeSort).map((option, index) => (
+                <option
+                  key={option._id}
+                  selected={option._id === defaultValues.resourceId}
+                  value={option._id}
+                >
+                  {option.isCombo
+                    ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
+                    : option.label}
+                </option>
+              ))}
             </Select>
           </FormField>
         </Box>
@@ -159,30 +154,16 @@ function ActivityForm({
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
                 isNotDeletable={index === 0}
-                handleCapacityChange={(value) =>
-                  handleCapacityChange(value, index)
-                }
-                handleStartDateChange={(date) =>
-                  handleDateChange(date, index, 'startDate')
-                }
-                handleEndDateChange={(date) =>
-                  handleDateChange(date, index, 'endDate')
-                }
-                handleStartTimeChange={(time) =>
-                  handleDateChange(time, index, 'startTime')
-                }
-                handleEndTimeChange={(time) =>
-                  handleDateChange(time, index, 'endTime')
-                }
+                handleCapacityChange={(value) => handleCapacityChange(value, index)}
+                handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
+                handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
+                handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
+                handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
                 handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
               />
             ))}
             <Center p="6" border="1px solid #ccc">
-              <IconButton
-                size="lg"
-                onClick={addRecurrence}
-                icon={<AddIcon />}
-              />
+              <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
           </Box>
         </Box>
@@ -193,10 +174,7 @@ function ActivityForm({
           </Heading>
 
           <VStack spacing="6">
-            <FormField
-              label={t('form.title.label')}
-              helperText={t('form.title.helper')}
-            >
+            <FormField label={t('form.title.label')} helperText={t('form.title.helper')}>
               <Input
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
@@ -204,10 +182,7 @@ function ActivityForm({
             </FormField>
 
             {isPublicActivity && (
-              <FormField
-                label={t('form.subtitle.label')}
-                helperText={t('form.subtitle.helper')}
-              >
+              <FormField label={t('form.subtitle.label')} helperText={t('form.subtitle.helper')}>
                 <Input
                   {...register('subTitle', { required: true })}
                   placeholder={t('form.subtitle.holder')}
@@ -220,40 +195,27 @@ function ActivityForm({
                 control={control}
                 name="longDescription"
                 render={({ field }) => (
-                  <ReactQuill
-                    {...field}
-                    formats={editorFormats}
-                    modules={editorModules}
-                  />
+                  <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
                 )}
               />
             </FormField>
 
             {isPublicActivity && (
               <FormField label={t('form.place.label')}>
-                <Input
-                  {...register('place')}
-                  placeholder={t('form.place.holder')}
-                />
+                <Input {...register('place')} placeholder={t('form.place.holder')} />
               </FormField>
             )}
 
             {isPublicActivity && (
               <FormField label={t('form.address.label')}>
-                <Textarea
-                  {...register('address')}
-                  placeholder={t('form.address.holder')}
-                />
+                <Textarea {...register('address')} placeholder={t('form.address.holder')} />
               </FormField>
             )}
 
             {isPublicActivity && (
               <FormField
                 label={t('form.image.label')}
-                helperText={
-                  (uploadableImageLocal || imageUrl) &&
-                  tc('plugins.fileDropper.replace')
-                }
+                helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
               >
                 <Center>
                   <FileDropper
@@ -268,11 +230,7 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button
-            isLoading={isSubmitting}
-            isDisabled={isButtonDisabled}
-            type="submit"
-          >
+          <Button isLoading={isSubmitting} isDisabled={isButtonDisabled} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

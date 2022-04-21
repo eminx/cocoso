@@ -14,14 +14,19 @@ import {
   TabPanels,
   TabPanel,
   Text,
+  Table,
+  Tbody,
+  Thead,
+  Tr,
+  Td,
+  Th,
 } from '@chakra-ui/react';
-import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
 
 import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -33,8 +38,8 @@ export default function Menu() {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.accesss.deny')}</Alert>;
@@ -133,9 +138,7 @@ export default function Menu() {
             />
 
             <Flex justify="flex-end" py="4">
-              <Button onClick={handleMenuSave}>
-                {tc('actions.submit')}
-              </Button>
+              <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
             </Flex>
           </TabPanel>
 
@@ -145,18 +148,11 @@ export default function Menu() {
             </Text>
             <Box>
               {localSettings && localSettings.menu && (
-                <SortableContainer
-                  onSortEnd={onSortMenuEnd}
-                  helperClass="sortableHelper"
-                >
+                <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
                   {localSettings.menu
                     .filter((item) => item.isVisible)
                     .map((value, index) => (
-                      <SortableItem
-                        key={`item-${value.name}`}
-                        index={index}
-                        value={value.label}
-                      />
+                      <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
                     ))}
                 </SortableContainer>
               )}
@@ -164,7 +160,7 @@ export default function Menu() {
 
             <Flex justify="flex-end" my="4">
               <Button onClick={handleMenuSave} type="submit">
-              {tc('actions.submit')}
+                {tc('actions.submit')}
               </Button>
             </Flex>
           </TabPanel>
@@ -190,9 +186,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
               <Center>
                 <Switch
                   isChecked={item.isVisible}
-                  onChange={(event) =>
-                    handleMenuItemCheck(index, event.target.checked)
-                  }
+                  onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
                 />
               </Center>
             </Td>
@@ -201,9 +195,7 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
                 <Input
                   isDisabled={!item.isVisible}
                   value={item.label}
-                  onChange={(e) =>
-                    handleMenuItemLabelChange(index, e.target.value)
-                  }
+                  onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
                 />
               </FormField>
             </Td>
@@ -220,6 +212,4 @@ const SortableItem = sortableElement(({ value }) => (
   </Flex>
 ));
 
-const SortableContainer = sortableContainer(({ children }) => (
-  <Box>{children}</Box>
-));
+const SortableContainer = sortableContainer(({ children }) => <Box>{children}</Box>);

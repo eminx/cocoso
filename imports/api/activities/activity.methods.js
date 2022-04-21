@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
-import { isContributorOrAdmin } from '../@users/user.roles';
-import Hosts from '../@hosts/host';
+import moment from 'moment';
+
+import { getHost } from '../_utils/shared';
+import { isContributorOrAdmin } from '../users/user.roles';
+import Hosts from '../hosts/host';
 import Activities from './activity';
 import Resources from '../resources/resource';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
-import moment from 'moment';
 
 Meteor.methods({
   getMyActivities() {
@@ -26,30 +27,30 @@ Meteor.methods({
     }
   },
 
-  getAllOccurences () {
+  getAllOccurences() {
     const host = getHost(this);
     try {
-      const activities = Activities.find({ host }, 
-        { fields: {
-          title: 1,
-          authorName: 1,
-          longDescription: 1,
-          isPublicActivity: 1,
-          imageUrl: 1,
-          datesAndTimes: 1,
-          resource: 1,
-          resourceIndex: 1,
-        }}
+      const activities = Activities.find(
+        { host },
+        {
+          fields: {
+            title: 1,
+            authorName: 1,
+            longDescription: 1,
+            isPublicActivity: 1,
+            imageUrl: 1,
+            datesAndTimes: 1,
+            resource: 1,
+            resourceIndex: 1,
+          },
+        }
       ).fetch();
 
-      let occurences = [];
+      const occurences = [];
 
-      activities.forEach(activity => {
-
+      activities.forEach((activity) => {
         if (activity?.datesAndTimes && activity.datesAndTimes.length > 0) {
-
-          activity.datesAndTimes.forEach(recurrence => {
-
+          activity.datesAndTimes.forEach((recurrence) => {
             const occurence = {
               _id: activity._id,
               title: activity.title,
@@ -58,26 +59,34 @@ Meteor.methods({
               imageUrl: activity.imageUrl,
               isPublicActivity: activity.isPublicActivity,
               isWithComboResource: false,
-              start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
+              start: moment(
+                recurrence.startDate + recurrence.startTime,
+                'YYYY-MM-DD HH:mm'
+              ).toDate(),
               end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
               startDate: recurrence.startDate,
               startTime: recurrence.startTime,
               endDate: recurrence.endDate,
               endTime: recurrence.endTime,
-              isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+              isMultipleDay:
+                recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
             };
 
-            const resource = Resources.findOne(activity.resourceId, { fields: { isCombo: 1 }});
-            
+            const resource = Resources.findOne(activity.resourceId, {
+              fields: { isCombo: 1 },
+            });
+
             if (resource?.isCombo) {
-              resource.resourcesForCombo.forEach(resId => {
-                const res = Resources.findOne(resId, { fields: { label: 1, resourceIndex: 1 }});
+              resource.resourcesForCombo.forEach((resId) => {
+                const res = Resources.findOne(resId, {
+                  fields: { label: 1, resourceIndex: 1 },
+                });
                 occurences.push({
                   ...occurence,
                   resource: res.label,
                   resourceIndex: res.resourceIndex,
                 });
-              })
+              });
             }
 
             occurences.push({
@@ -85,13 +94,11 @@ Meteor.methods({
               resource: activity.resource,
               resourceIndex: activity.resourceIndex,
             });
-
           });
         }
       });
 
       return occurences;
-
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }
@@ -132,7 +139,7 @@ Meteor.methods({
       // }
       return activityId;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -145,7 +152,7 @@ Meteor.methods({
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
-    
+
     const theActivity = Activities.findOne(activityId);
     if (user._id !== theActivity.authorId) {
       throw new Meteor.Error('You are not allowed!');
@@ -155,11 +162,11 @@ Meteor.methods({
       Activities.update(activityId, {
         $set: {
           ...values,
-        }
+        },
       });
       return activityId;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -262,7 +269,7 @@ Meteor.methods({
     }
   },
 
-  removeAttendance(activityId, occurenceIndex, attendeeIndex, email) {
+  removeAttendance(activityId, occurenceIndex, attendeeIndex) {
     const theActivity = Activities.findOne(activityId);
     const occurences = [...theActivity.datesAndTimes];
     const theOccurence = occurences[occurenceIndex];

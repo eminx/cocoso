@@ -47,12 +47,7 @@ function ConfirmModal({
               <Button ref={cancelRef} onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button
-                colorScheme="blue"
-                onClick={onConfirm}
-                ml={3}
-                {...confirmButtonProps}
-              >
+              <Button colorScheme="blue" onClick={onConfirm} ml={3} {...confirmButtonProps}>
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>

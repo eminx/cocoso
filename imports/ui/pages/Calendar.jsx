@@ -26,11 +26,9 @@ import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
-import {
-  getNonComboResourcesWithColor,
-  getComboResourcesWithColor,
-} from '../@/shared';
+import { getNonComboResourcesWithColor, getComboResourcesWithColor } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
+
 const publicSettings = Meteor.settings.public;
 
 moment.locale(i18n.language);
@@ -156,19 +154,13 @@ class Calendar extends PureComponent {
       return '';
     }
     if (activity.startDate === activity.endDate) {
-      return `${activity.startTime}–${activity.endTime} ${moment(
-        activity.startDate
-      ).format('DD MMMM')}`;
+      return `${activity.startTime}–${activity.endTime} ${moment(activity.startDate).format(
+        'DD MMMM'
+      )}`;
     }
-    return (
-      moment(activity.startDate).format('DD MMM') +
-      ' ' +
-      activity.startTime +
-      ' – ' +
-      moment(activity.endDate).format('DD MMM') +
-      ' ' +
-      activity.endTime
-    );
+    return `${moment(activity.startDate).format('DD MMM')} ${activity.startTime} – ${moment(
+      activity.endDate
+    ).format('DD MMM')} ${activity.endTime}`;
   };
 
   isCreator = () => {
@@ -179,11 +171,7 @@ class Calendar extends PureComponent {
       return false;
     }
 
-    if (
-      selectedActivity &&
-      currentUser &&
-      currentUser.username === selectedActivity.authorName
-    ) {
+    if (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) {
       return true;
     }
   };
@@ -213,8 +201,7 @@ class Calendar extends PureComponent {
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
-    const nonComboResourcesWithColor =
-      getNonComboResourcesWithColor(nonComboResources);
+    const nonComboResourcesWithColor = getNonComboResourcesWithColor(nonComboResources);
 
     const comboResources = resources.filter((resource) => resource.isCombo);
     const comboResourcesWithColor = getComboResourcesWithColor(
@@ -223,9 +210,7 @@ class Calendar extends PureComponent {
     );
 
     const allFilteredActsWithColors = filteredActivities.map((act, i) => {
-      const resource = nonComboResourcesWithColor.find(
-        (res) => res._id === act.resourceId
-      );
+      const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
       const resourceColor = (resource && resource.color) || '#484848';
 
       return {
@@ -238,13 +223,9 @@ class Calendar extends PureComponent {
       return <Redirect to={selectedSlot.bookingUrl} />;
     }
 
-    const selectFilterView =
-      nonComboResourcesWithColor?.length >= maxResourceLabelsToShow;
+    const selectFilterView = nonComboResourcesWithColor?.length >= maxResourceLabelsToShow;
 
-    const allResourcesForSelect = [
-      ...comboResourcesWithColor,
-      ...nonComboResourcesWithColor,
-    ];
+    const allResourcesForSelect = [...comboResourcesWithColor, ...nonComboResourcesWithColor];
 
     const selectedLinkForModal =
       selectedActivity &&
@@ -263,12 +244,7 @@ class Calendar extends PureComponent {
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
-              <Button
-                as="span"
-                colorScheme="green"
-                variant="outline"
-                textTransform="uppercase"
-              >
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
               </Button>
             </Link>
@@ -299,9 +275,7 @@ class Calendar extends PureComponent {
                         label={resource.label}
                         filterColor={resource.color}
                         checked={calendarFilter?._id === resource._id}
-                        onClick={() =>
-                          this.handleCalendarFilterChange(resource)
-                        }
+                        onClick={() => this.handleCalendarFilterChange(resource)}
                       />
                     </WrapItem>
                   ))}
@@ -315,9 +289,7 @@ class Calendar extends PureComponent {
                         filterColor={'#2d2d2d'}
                         gradientBackground={resource.color}
                         checked={calendarFilter?._id === resource._id}
-                        onClick={() =>
-                          this.handleCalendarFilterChange(resource)
-                        }
+                        onClick={() => this.handleCalendarFilterChange(resource)}
                       />
                     </WrapItem>
                   ))}
@@ -386,12 +358,7 @@ class Calendar extends PureComponent {
           }
           onClickOutside={this.handleCloseModal}
         >
-          <Box
-            bg="light-1"
-            style={{ fontFamily: 'Courier, monospace' }}
-            p="1"
-            my="1"
-          >
+          <Box bg="light-1" style={{ fontFamily: 'Courier, monospace' }} p="1" my="1">
             <div>
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.authorName}
@@ -410,28 +377,19 @@ class Calendar extends PureComponent {
                 selectedActivity.longDescription &&
                 (selectedActivity.isPrivateProcess
                   ? ''
-                  : renderHTML(
-                      selectedActivity.longDescription.slice(0, 120) + '...'
-                    ))}
+                  : renderHTML(`${selectedActivity.longDescription.slice(0, 120)}...`))}
             </div>
           </Text>
 
           <Center>
             {selectedActivity && selectedActivity.isPublicActivity && (
               <Link to={selectedLinkForModal}>
-                <Button
-                  as="span"
-                  my="2"
-                  rightIcon={<ArrowForwardIcon />}
-                  variant="ghost"
-                >
+                <Button as="span" my="2" rightIcon={<ArrowForwardIcon />} variant="ghost">
                   {' '}
                   {!selectedActivity.isPrivateProcess &&
-                    `${
-                      selectedActivity.isProcess
-                        ? tc('labels.process')
-                        : tc('labels.event')
-                    } ${tc('labels.page')}`}
+                    `${selectedActivity.isProcess ? tc('labels.process') : tc('labels.event')} ${tc(
+                      'labels.page'
+                    )}`}
                 </Button>
               </Link>
             )}
@@ -440,7 +398,7 @@ class Calendar extends PureComponent {
 
         <ConfirmModal
           visible={Boolean(selectedSlot)}
-          title={tc('labels.newBooking') + '?'}
+          title={`${tc('labels.newBooking')}?`}
           confirmText={
             <span>
               {tc('actions.create')} <ArrowForwardIcon />
@@ -455,9 +413,7 @@ class Calendar extends PureComponent {
             <Box>
               <CTag mr="2">
                 <TagLabel>
-                  {calendarFilter
-                    ? calendarFilter?.label
-                    : tc('labels.unselected')}
+                  {calendarFilter ? calendarFilter?.label : tc('labels.unselected')}
                 </TagLabel>
               </CTag>
               <Text as="span" fontWeight="bold">

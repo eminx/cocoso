@@ -11,7 +11,7 @@ import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 
-import { parseTitle } from '../../@/shared';
+import { parseTitle } from '../../utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -39,9 +39,7 @@ class Page extends PureComponent {
 
     const param = match.params.id;
 
-    const currentPage = pages.find(
-      (page) => parseTitle(page.title) === parseTitle(param)
-    );
+    const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
     return currentPage;
   };
 
@@ -83,12 +81,7 @@ class Page extends PureComponent {
           role === 'admin' && (
             <Center p="2">
               <Link to="/new-page">
-                <Button
-                  as="span"
-                  colorScheme="green"
-                  variant="outline"
-                  textTransform="uppercase"
-                >
+                <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                   <Trans i18nKey="common:actions.create" />
                 </Button>
               </Link>
@@ -101,9 +94,7 @@ class Page extends PureComponent {
         </Helmet>
 
         <Box bg="white" mb="2" py="4" px="6">
-          <div className="text-content">
-            {renderHTML(currentPage.longDescription)}
-          </div>
+          <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
         </Box>
 
         {currentUser && role === 'admin' && (

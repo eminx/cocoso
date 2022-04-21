@@ -9,7 +9,7 @@ import { Login } from './index';
 import { loginWithPassword } from './functions';
 
 function LoginPage() {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {

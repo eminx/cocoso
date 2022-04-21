@@ -17,18 +17,14 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
-moment.locale(i18n.language);
 
 import NiceSlider from '../../../components/NiceSlider';
 import Chattery from '../../../components/chattery/Chattery';
 import ResourcesForCombo from '../../../components/ResourcesForCombo';
 
-export default function ResourceCard({
-  currentUser,
-  discussion,
-  resource,
-  addNewChatMessage,
-}) {
+moment.locale(i18n.language);
+
+export default function ResourceCard({ currentUser, discussion, resource, addNewChatMessage }) {
   const [t] = useTranslation('resources');
 
   const removeNotification = () => {};

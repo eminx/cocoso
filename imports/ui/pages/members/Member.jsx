@@ -24,26 +24,19 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import WorkThumb from '../../components/WorkThumb';
 import Works from '../../../api/works/work';
 
 const getFullName = (member) => {
   const { firstName, lastName } = member;
   if (firstName && lastName) {
-    return firstName + ' ' + lastName;
-  } else {
-    return firstName || lastName || '';
+    return `${firstName} ${lastName}`;
   }
+  return firstName || lastName || '';
 };
 
-function MemberPublic({
-  isLoading,
-  member,
-  memberWorks,
-  currentUser,
-  history,
-}) {
+function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) {
   if (!member || isLoading) {
     return <Loader />;
   }
@@ -130,23 +123,12 @@ function MemberPublic({
             {t('message.activity.empty')}
           </Heading>
           <Box direction="row" align="center">
-            <Image
-              fit="contain"
-              src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif"
-            />
+            <Image fit="contain" src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif" />
           </Box>
-          <Text m="2">
-            {t('message.activity.info', { username: member.username })}
-          </Text>
+          <Text m="2">{t('message.activity.info', { username: member.username })}</Text>
         </Box>
       )}
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpen={onOpen}
-        size="sm"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getFullName(member)}</ModalHeader>
@@ -171,11 +153,7 @@ function MemberPublic({
         >
           <ModalOverlay />
           <ModalContent>
-            <Image
-              src={member.avatar.src}
-              alt={member.username}
-              fit="contain"
-            />
+            <Image src={member.avatar.src} alt={member.username} fit="contain" />
           </ModalContent>
         </Modal>
       )}
@@ -186,12 +164,8 @@ function MemberPublic({
 export default Member = withTracker(({ match, history }) => {
   const { username } = match.params;
   const publicMemberSubscription = Meteor.subscribe('memberAtHost', username);
-  const publicMemberWorksSubscription = Meteor.subscribe(
-    'memberWorksAtHost',
-    username
-  );
-  const isLoading =
-    !publicMemberSubscription.ready() || !publicMemberWorksSubscription.ready();
+  const publicMemberWorksSubscription = Meteor.subscribe('memberWorksAtHost', username);
+  const isLoading = !publicMemberSubscription.ready() || !publicMemberWorksSubscription.ready();
   const currentUser = Meteor.user();
   const member = Meteor.users.findOne({ username });
   const memberWorks = Works.find({ authorUsername: username }).fetch();

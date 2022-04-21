@@ -2,23 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  HStack,
-  VStack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
 import Personal from './Personal';
 import ListMenu from '../../components/ListMenu';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
-import { userMenu } from '../../@/constants/general';
-import { call, resizeImage, uploadImage } from '../../@/shared';
+import { userMenu } from '../../utils/constants/general';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FileDropper from '../../components/FileDropper';
 import { StateContext } from '../../LayoutContainer';
 
@@ -72,10 +64,7 @@ class Profile extends PureComponent {
 
     try {
       const resizedAvatar = await resizeImage(uploadableAvatar, 1200);
-      const uploadedAvatar = await uploadImage(
-        resizedAvatar,
-        'avatarImageUpload'
-      );
+      const uploadedAvatar = await uploadImage(resizedAvatar, 'avatarImageUpload');
       await call('setAvatar', uploadedAvatar);
       this.setState({
         isUploading: false,
@@ -175,10 +164,7 @@ class Profile extends PureComponent {
             <Center style={{ overflow: 'hidden' }}>
               <Box w="120px" h="120px">
                 <FileDropper
-                  imageUrl={
-                    uploadableAvatarLocal ||
-                    (currentUser.avatar && currentUser.avatar.src)
-                  }
+                  imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
                   label={t('profile.form.avatar.fileDropper')}
                   round
                   height="100%"
@@ -224,10 +210,7 @@ class Profile extends PureComponent {
             <Heading mb="1" mt="2" size="md" textAlign="center">
               {t('profile.label')}
             </Heading>
-            <Personal
-              defaultValues={currentUser}
-              onSubmit={this.handleSubmit}
-            />
+            <Personal defaultValues={currentUser} onSubmit={this.handleSubmit} />
           </Box>
         </Box>
 

@@ -26,20 +26,14 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { compareForSort } from '../../@/shared';
+import { compareForSort } from '../../utils/shared';
 import GridThumb from '../../components/GridThumb';
 
 moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({
-  isLoading,
-  currentUser,
-  processes,
-  t,
-  tc,
-}) {
+export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -87,17 +81,12 @@ export default function ProcessesList({
       if (filterBy === 2) {
         return process.isArchived === true;
       } else if (filterBy === 1) {
-        return (
-          currentUser &&
-          process.members.some((member) => member.memberId === currentUser._id)
-        );
-      } else {
-        return !process.isArchived;
+        return currentUser && process.members.some((member) => member.memberId === currentUser._id);
       }
+      return !process.isArchived;
     });
 
-    const filteredProcessesWithAccessFilter =
-      parseOnlyAllowedProcesses(filteredProcesses);
+    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
     return filteredProcessesWithAccessFilter;
   };
 
@@ -105,27 +94,22 @@ export default function ProcessesList({
     const futureProcessesAllowed = futureProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;
-      } else {
-        if (!currentUser) {
-          return false;
-        }
-        const currentUserId = currentUser._id;
-        return (
-          process.adminId === currentUserId ||
-          process.members.some((member) => member.memberId === currentUserId) ||
-          process.peopleInvited.some(
-            (person) => person.email === currentUser.emails[0].address
-          )
-        );
       }
+      if (!currentUser) {
+        return false;
+      }
+      const currentUserId = currentUser._id;
+      return (
+        process.adminId === currentUserId ||
+        process.members.some((member) => member.memberId === currentUserId) ||
+        process.peopleInvited.some((person) => person.email === currentUser.emails[0].address)
+      );
     });
 
     return futureProcessesAllowed;
   };
 
-  const processesRendered = getFilteredProcesses()
-    .sort(compareForSort)
-    .reverse();
+  const processesRendered = getFilteredProcesses().sort(compareForSort).reverse();
 
   return (
     <Box w="100%">
@@ -138,12 +122,7 @@ export default function ProcessesList({
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button
-                as="span"
-                colorScheme="green"
-                variant="outline"
-                textTransform="uppercase"
-              >
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
               </Button>
             </Link>
@@ -164,11 +143,7 @@ export default function ProcessesList({
                   <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
                     {processesRendered.map((process) => (
                       <Link key={process._id} to={`/process/${process._id}`}>
-                        <GridThumb
-                          image={process.imageUrl}
-                          large
-                          title={process.title}
-                        >
+                        <GridThumb image={process.imageUrl} large title={process.title}>
                           {moment(process.creationDate).format('D MMM YYYY')}
                         </GridThumb>
                       </Link>
@@ -203,14 +178,7 @@ function ProcessItem({ process }) {
 
       {thumbHasImage && (
         <Box flexBasis="200px">
-          <Image
-            alt={alt}
-            fit="cover"
-            mr="2"
-            src={gridItem.images[0]}
-            w="xs"
-            h="150px"
-          />
+          <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
         </Box>
       )}
     </Flex>

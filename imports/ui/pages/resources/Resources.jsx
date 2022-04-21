@@ -21,7 +21,7 @@ import {
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -30,8 +30,7 @@ import Loader from '../../components/Loader';
 import ResourcesForCombo from '../../components/ResourcesForCombo';
 
 function ResourcesPage() {
-  const { currentUser, currentHost, canCreateContent } =
-    useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
   const [resources, setResources] = useState([]);
   const [filterWord, setFilterWord] = useState('');
   const [sortBy, setSortBy] = useState('date');
@@ -74,9 +73,8 @@ function ResourcesPage() {
   const resourcesFilteredAndSorted = resourcesFiltered.sort((a, b) => {
     if (sortBy === 'name') {
       return a.label.localeCompare(b.label);
-    } else {
-      return new Date(b.createdAt) - new Date(a.createdAt);
     }
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
   return (
@@ -89,12 +87,7 @@ function ResourcesPage() {
       {canCreateContent && (
         <Center w="100%" mb="4">
           <Link to={currentUser ? '/resources/new' : '/my-profile'}>
-            <Button
-              as="span"
-              colorScheme="green"
-              variant="outline"
-              textTransform="uppercase"
-            >
+            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
             </Button>
           </Link>
@@ -189,19 +182,13 @@ function ResourceItem({ resource }) {
   return (
     <Box>
       <Link to={`/resources/${resource._id}`}>
-        <GridThumb
-          alt={resource.label}
-          title={resource.label}
-          image={resource.images?.[0]}
-        >
+        <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
           {resource.isCombo && (
             <Box>
               <ResourcesForCombo resource={resource} />
             </Box>
           )}
-          <Text fontSize="xs">
-            {moment(resource.createdAt).format('D MMM YYYY')}
-          </Text>
+          <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
         </GridThumb>
       </Link>
     </Box>

@@ -15,7 +15,7 @@ import {
   resizeImage,
   uploadImage,
   call,
-} from '../../@/shared';
+} from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
@@ -59,10 +59,7 @@ class NewActivity extends PureComponent {
 
     const { search } = history.location;
     const prevSearch = prevProps.history.location.search;
-    if (
-      search !== prevSearch ||
-      resources?.length !== prevProps.resources?.length
-    ) {
+    if (search !== prevSearch || resources?.length !== prevProps.resources?.length) {
       this.setInitialValuesWithQueryParams();
     }
   }
@@ -86,10 +83,7 @@ class NewActivity extends PureComponent {
     const defaultBooking = {
       ...emptyDateAndTime,
       ...params,
-      isRange:
-        params?.startDate &&
-        params?.endDate &&
-        params.startDate !== params.endDate,
+      isRange: params?.startDate && params?.endDate && params.startDate !== params.endDate,
     };
 
     const initialValues = {
@@ -178,10 +172,7 @@ class NewActivity extends PureComponent {
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'activityImageUpload'
-      );
+      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
       this.setState(
         {
           uploadedImage,
@@ -318,15 +309,13 @@ class NewActivity extends PureComponent {
       allBookingsWithSelectedResource
     );
 
-    const selectedBookingsWithConflictButNotExclusive =
-      selectedBookingsWithConflict.map((item) => {
-        const booking = { ...item };
-        if (item.conflict) {
-          booking.isConflictOK =
-            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
-        }
-        return booking;
-      });
+    const selectedBookingsWithConflictButNotExclusive = selectedBookingsWithConflict.map((item) => {
+      const booking = { ...item };
+      if (item.conflict) {
+        booking.isConflictOK = !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+      }
+      return booking;
+    });
 
     this.setState({
       datesAndTimes: selectedBookingsWithConflictButNotExclusive,
@@ -341,9 +330,9 @@ class NewActivity extends PureComponent {
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    const isTimesInValid = datesAndTimes.some((dateTime) => {
-      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
-    });
+    const isTimesInValid = datesAndTimes.some(
+      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+    );
 
     return !isTimesInValid && !isConflictHard;
   };
@@ -390,9 +379,7 @@ class NewActivity extends PureComponent {
     const isFormValid = this.isFormValid();
 
     return (
-      <Template
-        heading={tc('labels.create', { domain: tc('domains.activity') })}
-      >
+      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">

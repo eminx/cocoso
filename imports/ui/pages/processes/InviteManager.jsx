@@ -1,16 +1,8 @@
 import React, { PureComponent } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  Input,
-  Tag,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Input, Tag, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
-import { emailIsValid, includesSpecialCharacters } from '../../@/shared';
+import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
 import { message } from '../../components/message';
 
 class InviteManager extends PureComponent {
@@ -42,15 +34,10 @@ class InviteManager extends PureComponent {
       return true;
     }
 
-    if (
-      firstNameInput.length < 2 ||
-      includesSpecialCharacters(firstNameInput)
-    ) {
+    if (firstNameInput.length < 2 || includesSpecialCharacters(firstNameInput)) {
       message.error(t('invite.firstName.valid'));
       return true;
     }
-
-    return;
   };
 
   handleSendInvite = (event) => {
@@ -67,24 +54,19 @@ class InviteManager extends PureComponent {
       email: emailInput,
     };
 
-    Meteor.call(
-      'invitePersonToPrivateProcess',
-      process._id,
-      person,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.destroy();
-          message.error(error.reason);
-        } else {
-          message.success(t('invite.success', { name: firstNameInput }));
-          this.setState({
-            firstNameInput: '',
-            emailInput: '',
-          });
-        }
+    Meteor.call('invitePersonToPrivateProcess', process._id, person, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.destroy();
+        message.error(error.reason);
+      } else {
+        message.success(t('invite.success', { name: firstNameInput }));
+        this.setState({
+          firstNameInput: '',
+          emailInput: '',
+        });
       }
-    );
+    });
   };
 
   handleEmailInputChange = (event) => {
@@ -109,9 +91,7 @@ class InviteManager extends PureComponent {
     return (
       <Box>
         <VStack py="6">
-          <Text>
-            {t('invite.info')}
-          </Text>
+          <Text>{t('invite.info')}</Text>
           <FormField label={t('invite.email.label')}>
             <Input
               onChange={this.handleEmailInputChange}
@@ -128,9 +108,7 @@ class InviteManager extends PureComponent {
             />
           </FormField>
 
-          <Button onClick={this.handleSendInvite}>
-            {t('invite.submit')}
-          </Button>
+          <Button onClick={this.handleSendInvite}>{t('invite.submit')}</Button>
         </VStack>
 
         <Box py="6">

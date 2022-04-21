@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Works from './work';
 
-Meteor.publish('work', function (id) {
-  return Works.find({
+Meteor.publish('work', (id) =>
+  Works.find({
     _id: id,
-  });
-});
+  })
+);
 
 Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();

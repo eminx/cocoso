@@ -2,25 +2,17 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Heading,
-  Text,
-  Button,
-  Link,
-  List,
-  ListItem,
-} from '@chakra-ui/react';
+import { Box, Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
 import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 
-import { call } from '../../../@/shared';
+import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId }) {
   const { role, canCreateContent } = useContext(StateContext);
-  const isAdmin = role === 'admin' ? true : false;
+  const isAdmin = role === 'admin';
 
   const [documents, setDocuments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -46,13 +38,7 @@ export default function DocumentsField({ contextType, contextId }) {
 
   const createDocument = async (uploadableFile, downloadUrl) => {
     try {
-      await call(
-        'createDocument',
-        uploadableFile.name,
-        downloadUrl,
-        contextType,
-        contextId
-      );
+      await call('createDocument', uploadableFile.name, downloadUrl, contextType, contextId);
       getDocuments();
       message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
     } catch (error) {
@@ -94,7 +80,6 @@ export default function DocumentsField({ contextType, contextId }) {
           console.error('Error uploading:', error);
           message.error(error.reason);
           setIsUploading(false);
-          return;
         } else {
           createDocument(uploadableFile, downloadUrl);
         }
@@ -122,12 +107,7 @@ export default function DocumentsField({ contextType, contextId }) {
                   {tc('documents.up')}
                 </div>
               ) : (
-                <Button
-                  width="100%"
-                  textAlign="left"
-                  textColor="gray.400"
-                  justifyContent="start"
-                >
+                <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
                   {tc('documents.drop')}
                 </Button>
               )}

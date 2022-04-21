@@ -2,17 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Input,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-const Joi = require('joi');
+import { Box, Button, Center, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import {
@@ -24,6 +14,8 @@ import {
   emailSchema,
   passwordSchema,
 } from './account.helpers';
+
+const Joi = require('joi');
 
 const Login = ({ onSubmit }) => {
   const [t] = useTranslation('accounts');

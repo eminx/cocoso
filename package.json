@@ -26,7 +26,8 @@
   "homepage": "https://github.com/eminx/cocoso#readme",
   "scripts": {
     "start": "meteor run --settings private/settings.json",
-    "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production"
+    "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production",
+    "lint": "eslint . --ext .js --ext .jsx"
   },
   "theme": {
     "primary-color": "orange"
@@ -83,5 +84,26 @@
       "client": "client/main.jsx",
       "server": "server/main.js"
     }
+  },
+  "devDependencies": {
+    "@babel/eslint-plugin": "^7.17.7",
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-meteor": "^0.3.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-meteor": "^7.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.3"
+  },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor"
   }
 }

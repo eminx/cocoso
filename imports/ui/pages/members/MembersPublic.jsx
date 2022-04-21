@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 const compareByDate = (a, b) => {
@@ -17,10 +17,9 @@ const compareByDate = (a, b) => {
 const getFullName = (member) => {
   const { firstName, lastName } = member;
   if (firstName && lastName) {
-    return firstName + ' ' + lastName;
-  } else {
-    return firstName || lastName || '';
+    return `${firstName} ${lastName}`;
   }
+  return firstName || lastName || '';
 };
 
 const publicSettings = Meteor.settings.public;
@@ -104,12 +103,7 @@ function PublicMembers() {
             <WrapItem key={member.id}>
               <Link to={`/@${member.username}`}>
                 <Box m="1">
-                  <Avatar
-                    name={member.username}
-                    showBorder
-                    size="2xl"
-                    src={member.avatarSrc}
-                  />
+                  <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />
                   <Center>
                     <Text fontWeight="bold" fontSize="lg" isTruncated>
                       {member.username}

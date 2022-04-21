@@ -10,7 +10,7 @@ import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call, resizeImage, uploadImage } from '../../@/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 
 class EditWork extends PureComponent {
@@ -108,9 +108,7 @@ class EditWork extends PureComponent {
       isCreating: true,
     });
 
-    const isThereUploadable = images.some(
-      (image) => image.type === 'not-uploaded'
-    );
+    const isThereUploadable = images.some((image) => image.type === 'not-uploaded');
     if (!isThereUploadable) {
       const imagesReadyToSave = images.map((image) => image.src);
       this.updateWork(imagesReadyToSave);
@@ -122,17 +120,10 @@ class EditWork extends PureComponent {
         images.map(async (uploadableImage, index) => {
           if (uploadableImage.type === 'uploaded') {
             return uploadableImage.src;
-          } else {
-            const resizedImage = await resizeImage(
-              uploadableImage.resizableData,
-              1200
-            );
-            const uploadedImage = await uploadImage(
-              resizedImage,
-              'workImageUpload'
-            );
-            return uploadedImage;
           }
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
+          const uploadedImage = await uploadImage(resizedImage, 'workImageUpload');
+          return uploadedImage;
         })
       );
       this.updateWork(imagesReadyToSave);
@@ -156,9 +147,7 @@ class EditWork extends PureComponent {
       return;
     }
 
-    const selectedCategory = categories.find((category) => {
-      return category._id === values.categoryId;
-    });
+    const selectedCategory = categories.find((category) => category._id === values.categoryId);
 
     const parsedValues = {
       ...values,
@@ -177,9 +166,7 @@ class EditWork extends PureComponent {
       });
       message.success(
         i18n.t('common:message.success.update', {
-          domain: `${i18n.t('common:domains.your')} ${i18n
-            .t('common:domains.work')
-            .toLowerCase()}`,
+          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
         })
       );
     } catch (error) {
@@ -226,9 +213,7 @@ class EditWork extends PureComponent {
       history.push('/my-works');
       message.success(
         i18n.t('common:message.success.remove', {
-          domain: `${i18n.t('common:domains.your')} ${i18n
-            .t('common:domains.work')
-            .toLowerCase()}`,
+          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
         })
       );
     } catch (error) {
@@ -244,15 +229,8 @@ class EditWork extends PureComponent {
     const { currentUser } = this.context;
     const { match } = this.props;
     const workId = match.params.workId;
-    const {
-      categories,
-      images,
-      isCreating,
-      isLoading,
-      isSuccess,
-      isDeleteModalOn,
-      values,
-    } = this.state;
+    const { categories, images, isCreating, isLoading, isSuccess, isDeleteModalOn, values } =
+      this.state;
 
     if (!currentUser) {
       return <Alert message={i18n.t('common:message.access.deny')} />;
@@ -276,11 +254,7 @@ class EditWork extends PureComponent {
         leftContent={
           <Box pb="2">
             <Link to={workRoute}>
-              <IconButton
-                as="span"
-                aria-label="Back"
-                icon={<ArrowBackIcon />}
-              />
+              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>
         }
@@ -298,12 +272,7 @@ class EditWork extends PureComponent {
         </Box>
 
         <Center p="4">
-          <Button
-            colorScheme="red"
-            size="sm"
-            variant="ghost"
-            onClick={this.showDeleteModal}
-          >
+          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {i18n.t('common:actions.remove')}
           </Button>
         </Center>

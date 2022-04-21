@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
-import { userMenu, adminMenu } from '../@/constants/general';
+import { userMenu, adminMenu } from '../utils/constants/general';
 
 function UserPopup({ currentUser }) {
   const [tc] = useTranslation('common');
@@ -50,24 +50,15 @@ function UserPopup({ currentUser }) {
   return (
     <Menu>
       <MenuButton>
-        <Avatar
-          mr="2"
-          showBorder
-          src={currentUser.avatar && currentUser.avatar.src}
-        >
-          {isNotification && (
-            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />
-          )}
+        <Avatar mr="2" showBorder src={currentUser.avatar && currentUser.avatar.src}>
+          {isNotification && <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />}
         </Avatar>
       </MenuButton>
       <MenuList>
         {isNotification && (
           <MenuGroup title={tc('menu.notifications.label')}>
             {notifications.map((item) => (
-              <Link
-                key={item.contextId + item.count}
-                to={`/${item.context}/${item.contextId}`}
-              >
+              <Link key={item.contextId + item.count} to={`/${item.context}/${item.contextId}`}>
                 <MenuItem>
                   <Text color="gray.600" isTruncated>
                     {item.title}{' '}
@@ -84,7 +75,7 @@ function UserPopup({ currentUser }) {
         <MenuGroup title={tc('menu.member.label')}>
           {userMenu.map((item) => (
             <Link key={item.key} to={item.value}>
-              <MenuItem>{tc('menu.member.' + item.key)}</MenuItem>
+              <MenuItem>{tc(`menu.member.${item.key}`)}</MenuItem>
             </Link>
           ))}
         </MenuGroup>
@@ -93,7 +84,7 @@ function UserPopup({ currentUser }) {
           <MenuGroup title={tc('menu.admin.label')}>
             {adminMenu.map((item) => (
               <Link key={item.key} to={item.value}>
-                <MenuItem>{tc('menu.admin.' + item.key)}</MenuItem>
+                <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
               </Link>
             ))}
           </MenuGroup>

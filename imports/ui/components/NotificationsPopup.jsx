@@ -33,11 +33,7 @@ function NotificationsPopup({ notifications }) {
             <BellIcon />
           ) : (
             <BellIcon>
-              <AvatarBadge
-                borderColor="papayawhip"
-                bg="tomato"
-                boxSize=".25em"
-              />
+              <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".25em" />
             </BellIcon>
           )
         }

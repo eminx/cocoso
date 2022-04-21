@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 import FormField from '../components/FormField';
 
 const PageForm = ({ defaultValues, onSubmit }) => {
@@ -44,11 +44,7 @@ const PageForm = ({ defaultValues, onSubmit }) => {
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

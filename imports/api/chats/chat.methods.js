@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
-import { isContributorOrAdmin } from '../@users/user.roles';
-import Hosts from '../@hosts/host';
+import { getHost } from '../_utils/shared';
+import { isContributorOrAdmin } from '../users/user.roles';
+import Hosts from '../hosts/host';
 import Processes from '../processes/process';
 import Chats from './chat';
 
 Meteor.methods({
   getChatByContextId(contextId) {
-    const chat = Chats.findOne({contextId});
+    const chat = Chats.findOne({ contextId });
     return chat;
   },
 
@@ -23,13 +23,13 @@ Meteor.methods({
     const theChat = Chats.insert({
       host,
       contextName,
-      contextId: contextId,
+      contextId,
       createdBy: {
         userId: user._id,
         username: user.username,
       },
       isNotificationOn: false,
-      messages: new Array(),
+      messages: [],
     });
     return theChat;
   },
@@ -75,7 +75,7 @@ Meteor.methods({
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-    
+
     const contextId = values.contextId;
 
     try {
@@ -85,7 +85,7 @@ Meteor.methods({
         .map((other) => Meteor.users.findOne(other.memberId));
       theOthers.forEach((member) => {
         let contextIdIndex = -1;
-        for (let i = 0; i < member.notifications.length; i++) {
+        for (let i = 0; i < member.notifications.length; i += 1) {
           if (member.notifications[i].contextId === contextId) {
             contextIdIndex = i;
             break;
@@ -96,13 +96,13 @@ Meteor.methods({
           const notifications = [...member.notifications];
           notifications[contextIdIndex].count += 1;
           if (!notifications[contextIdIndex].unSeenIndexes) {
-            notifications[contextIdIndex].unSeenIndexes = []
+            notifications[contextIdIndex].unSeenIndexes = [];
           }
-          
+
           notifications[contextIdIndex].unSeenIndexes?.push(unSeenIndex);
           Meteor.users.update(member._id, {
             $set: {
-              notifications: notifications,
+              notifications,
             },
           });
         } else {
@@ -153,16 +153,16 @@ Meteor.methods({
           (notification, index) => index !== notificationIndex
         );
       } else {
-        const newUnSeenIndexes = notifications[
-          notificationIndex
-        ].unSeenIndexes.filter(unSeenIndex => unSeenIndex !== messageIndex);
+        const newUnSeenIndexes = notifications[notificationIndex].unSeenIndexes.filter(
+          (unSeenIndex) => unSeenIndex !== messageIndex
+        );
         notifications[notificationIndex].unSeenIndexes = newUnSeenIndexes;
         newNotifications = notifications;
       }
 
       Meteor.users.update(user._id, {
         $set: {
-          notifications: newNotifications
+          notifications: newNotifications,
         },
       });
     } catch (error) {

@@ -24,17 +24,17 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
-import { userMenu } from '../../@/constants/general';
+import { userMenu } from '../../utils/constants/general';
 
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentUser, canCreateContent } = useContext(StateContext);
 
-  const [ t ] = useTranslation('activities');
-  const [ tm ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
-  
+  const [t] = useTranslation('activities');
+  const [tm] = useTranslation('members');
+  const [tc] = useTranslation('common');
+
   useEffect(() => {
     Meteor.call('getMyActivities', (error, respond) => {
       if (error) {
@@ -107,10 +107,7 @@ function Activities({ history }) {
               </NiceList>
             </TabPanel>
             <TabPanel>
-              <NiceList
-                actionsDisabled
-                list={activities.filter((act) => act.isPublicActivity)}
-              >
+              <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
                 {(act) => (
                   <Link to={`/activity/${act._id}`}>
                     <ActivityItem act={act} history={history} />
@@ -119,30 +116,23 @@ function Activities({ history }) {
               </NiceList>
             </TabPanel>
             <TabPanel>
-              <NiceList
-                actionsDisabled
-                list={activities.filter((act) => !act.isPublicActivity)}
-              >
+              <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
                 {(act) => <ActivityItem act={act} history={history} />}
               </NiceList>
             </TabPanel>
           </TabPanels>
         </Tabs>
       ) : (
-        <Alert
-          margin="medium"
-          message={tm('message.guest')}
-        />
+        <Alert margin="medium" message={tm('message.guest')} />
       )}
     </Template>
   );
 }
 
 const ActivityItem = ({ act }) => {
+  const [t] = useTranslation('activities');
 
-  const [ t ] = useTranslation('activities');
-
-  return  (
+  return (
     <HStack align="flex-start" bg="white" p="3" w="100%">
       {act.isPublicActivity && (
         <Box p="2">
@@ -163,6 +153,6 @@ const ActivityItem = ({ act }) => {
       </Box>
     </HStack>
   );
-}
+};
 
 export default Activities;

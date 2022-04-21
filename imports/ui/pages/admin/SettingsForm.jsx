@@ -13,8 +13,8 @@ function SettingsForm({ initialValues, onSubmit }) {
 
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>

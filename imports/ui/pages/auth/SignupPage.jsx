@@ -9,7 +9,7 @@ import { Signup } from './index';
 import { createAccount } from './functions';
 
 function SignupPage() {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {

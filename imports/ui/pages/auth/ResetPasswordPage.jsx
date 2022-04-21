@@ -1,23 +1,16 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Link as CLink,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import { ResetPassword } from './index';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 
 const ResetPasswordPage = ({ history, match }) => {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
   const { token } = match.params;
 

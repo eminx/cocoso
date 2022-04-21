@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 import Template from '../../components/Template';
 import NewHostForm from '../../components/NewHostForm';
 import { message, Alert } from '../../components/message';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 const hostModel = {

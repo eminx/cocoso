@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
-import { editorFormats, editorModules } from '../../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {
   const { control, formState, handleSubmit, register } = useForm({
@@ -14,15 +14,12 @@ const Personal = ({ defaultValues, onSubmit }) => {
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ]= useTranslation('members');
-  const [ tc ]= useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit((data) => onSubmit(data))}
-        defaultValues={defaultValues}
-      >
+      <form onSubmit={handleSubmit((data) => onSubmit(data))} defaultValues={defaultValues}>
         <VStack spacing="6">
           <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />
@@ -37,11 +34,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
               control={control}
               name="bio"
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                />
+                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
           </FormField>
@@ -51,11 +44,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
               control={control}
               name="contactInfo"
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                />
+                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
           </FormField>
@@ -65,11 +54,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>

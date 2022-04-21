@@ -13,18 +13,14 @@ const fancyDateStyle = {
   lineHeight: 1,
 };
 
-const DateJust = ({ children, ...otherProps }) => {
-  return (
-    <div {...otherProps}>
-      <div style={{ ...fancyDateStyle, fontSize: 24 }}>
-        {moment(children).format('DD')}
-      </div>
-      <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(children).format('MMM').toUpperCase()}
-      </div>
+const DateJust = ({ children, ...otherProps }) => (
+  <div {...otherProps}>
+    <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>
+    <div style={{ ...fancyDateStyle, fontSize: 15 }}>
+      {moment(children).format('MMM').toUpperCase()}
     </div>
-  );
-};
+  </div>
+);
 
 const FancyDate = ({ occurence, resources, ...otherProps }) => (
   <div
@@ -69,7 +65,7 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         >
           <em>
             {resources.map((place) => place.label).includes(occurence.resource)
-              ? occurence.resource + ', ' + publicSettings.name
+              ? `${occurence.resource}, ${publicSettings.name}`
               : occurence.resource}
           </em>
         </div>

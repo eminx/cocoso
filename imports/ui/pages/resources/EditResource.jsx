@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
@@ -38,9 +38,7 @@ function EditResourcePage({ history }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success(
-        tc('message.success.remove', { domain: tc('domains.resource') })
-      );
+      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
@@ -55,21 +53,10 @@ function EditResourcePage({ history }) {
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
-        {!isLoading && (
-          <ResourceForm
-            defaultValues={resource}
-            isEditMode={true}
-            history={history}
-          />
-        )}
+        {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
       </Box>
       <Center p="4">
-        <Button
-          colorScheme="red"
-          size="sm"
-          variant="ghost"
-          onClick={showDeleteModal}
-        >
+        <Button colorScheme="red" size="sm" variant="ghost" onClick={showDeleteModal}>
           {tc('actions.remove')}
         </Button>
       </Center>

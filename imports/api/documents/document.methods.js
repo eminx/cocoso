@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Documents from './document';
 
 Meteor.methods({
-  
   getDocumentsByAttachments(attachedTo) {
     const host = getHost(this);
-    const sort = { };
+    const sort = {};
     const fields = Documents.publicFields;
     const documents = Documents.find({ host, attachedTo }, { sort, fields }).fetch();
     return documents;
@@ -21,7 +20,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      const theNewDocId = Documents.insert({
+      Documents.insert({
         host,
         documentLabel,
         documentUrl,
@@ -32,7 +31,6 @@ Meteor.methods({
         uploadedByName: user.username,
         creationDate: new Date(),
       });
-      return Documents.findOne(theNewDocId);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");
@@ -42,7 +40,7 @@ Meteor.methods({
   removeManual(documentId) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
-      throw new Meteor.Error(error, 'You do not have the privileges');
+      throw new Meteor.Error('You do not have the privileges');
     }
 
     try {

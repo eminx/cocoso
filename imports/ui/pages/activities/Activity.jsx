@@ -37,7 +37,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import Tag from '../../components/Tag';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
 
@@ -84,9 +84,7 @@ class Activity extends PureComponent {
   handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData, t } = this.props;
 
-    const isEmailAlreadyRegistered = activityData.datesAndTimes[
-      occurenceIndex
-    ].attendees.some(
+    const isEmailAlreadyRegistered = activityData.datesAndTimes[occurenceIndex].attendees.some(
       (attendee) => attendee.email.toLowerCase() === values.email.toLowerCase()
     );
 
@@ -96,12 +94,7 @@ class Activity extends PureComponent {
     }
 
     try {
-      await call(
-        'registerAttendance',
-        activityData._id,
-        values,
-        occurenceIndex
-      );
+      await call('registerAttendance', activityData._id, values, occurenceIndex);
       message.success(t('public.attandence.create'));
     } catch (error) {
       console.log(error);
@@ -117,8 +110,7 @@ class Activity extends PureComponent {
       rsvpCancelModalInfo: {
         occurenceIndex,
         email: currentUser ? currentUser.emails[0].address : '',
-        lastName:
-          currentUser && currentUser.lastName ? currentUser.lastName : '',
+        lastName: currentUser && currentUser.lastName ? currentUser.lastName : '',
       },
     });
   };
@@ -126,8 +118,7 @@ class Activity extends PureComponent {
   findRsvpInfo = () => {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData, t } = this.props;
-    const theOccurence =
-      activityData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
+    const theOccurence = activityData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
 
     const attendeeFinder = (attendee) =>
       attendee.lastName === rsvpCancelModalInfo.lastName &&
@@ -171,42 +162,41 @@ class Activity extends PureComponent {
           onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
         />
       );
-    } else {
-      return (
-        <Box>
-          <FormControl id="lastname" mb="3" size="sm">
-            <FormLabel>Last name</FormLabel>
-            <Input
-              value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
-              onChange={(e) =>
-                this.setState({
-                  rsvpCancelModalInfo: {
-                    ...rsvpCancelModalInfo,
-                    lastName: e.target.value,
-                  },
-                })
-              }
-              // size="sm"
-            />
-          </FormControl>
-
-          <FormControl id="email" size="sm">
-            <FormLabel>Email</FormLabel>
-            <Input
-              value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
-              onChange={(e) =>
-                this.setState({
-                  rsvpCancelModalInfo: {
-                    ...rsvpCancelModalInfo,
-                    email: e.target.value,
-                  },
-                })
-              }
-            />
-          </FormControl>
-        </Box>
-      );
     }
+    return (
+      <Box>
+        <FormControl id="lastname" mb="3" size="sm">
+          <FormLabel>Last name</FormLabel>
+          <Input
+            value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
+            onChange={(e) =>
+              this.setState({
+                rsvpCancelModalInfo: {
+                  ...rsvpCancelModalInfo,
+                  lastName: e.target.value,
+                },
+              })
+            }
+            // size="sm"
+          />
+        </FormControl>
+
+        <FormControl id="email" size="sm">
+          <FormLabel>Email</FormLabel>
+          <Input
+            value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
+            onChange={(e) =>
+              this.setState({
+                rsvpCancelModalInfo: {
+                  ...rsvpCancelModalInfo,
+                  email: e.target.value,
+                },
+              })
+            }
+          />
+        </FormControl>
+      </Box>
+    );
   };
 
   handleChangeRSVPSubmit = async (values) => {
@@ -274,29 +264,21 @@ class Activity extends PureComponent {
     const yesterday = moment(new Date()).add(-1, 'days');
 
     <Text size="sm" mb="1">
-      {
-        activityData.isRegistrationDisabled
+      {activityData.isRegistrationDisabled
         ? t('public.register.disabled.true')
-        : t('public.register.disabled.false')
-      }
+        : t('public.register.disabled.false')}
     </Text>;
 
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
-          {activityData.isRegistrationDisabled &&
-            activityData.isPublicActivity && (
-              <Text size="sm" mb="1">
-                {t('public.register.disabled.info')}
-              </Text>
-            )}
+          {activityData.isRegistrationDisabled && activityData.isPublicActivity && (
+            <Text size="sm" mb="1">
+              {t('public.register.disabled.info')}
+            </Text>
+          )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box
-              bg="white"
-              key={occurence.startDate + occurence.startTime}
-              p="2"
-              mb="2"
-            >
+            <Box bg="white" key={occurence.startDate + occurence.startTime} p="2" mb="2">
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -351,9 +333,7 @@ class Activity extends PureComponent {
                 ) : (
                   <RsvpForm
                     defaultValues={defaultRsvpValues}
-                    onSubmit={(values) =>
-                      this.handleRSVPSubmit(values, occurenceIndex)
-                    }
+                    onSubmit={(values) => this.handleRSVPSubmit(values, occurenceIndex)}
                   />
                 )}
               </Box>
@@ -391,11 +371,7 @@ class Activity extends PureComponent {
     return (
       <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <AccordionItem
-            key={occurence.startDate + occurence.startTime}
-            bg="white"
-            mb="2"
-          >
+          <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
             <AccordionButton _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
@@ -415,9 +391,7 @@ class Activity extends PureComponent {
   isAdmin = () => {
     const { activityData, t } = this.props;
     const { currentUser } = this.context;
-    return (
-      currentUser && activityData && currentUser._id === activityData.authorId
-    );
+    return currentUser && activityData && currentUser._id === activityData.authorId;
   };
 
   removeNotification = (messageIndex) => {
@@ -426,26 +400,19 @@ class Activity extends PureComponent {
       if (!notification.unSeenIndexes) {
         return false;
       }
-      return notification.unSeenIndexes.some((unSeenIndex) => {
-        return unSeenIndex === messageIndex;
-      });
+      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
     });
     if (!shouldRun) {
       return;
     }
 
-    Meteor.call(
-      'removeNotification',
-      activityData._id,
-      messageIndex,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.destroy();
-          message.error(error.error);
-        }
+    Meteor.call('removeNotification', activityData._id, messageIndex, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.destroy();
+        message.error(error.error);
       }
-    );
+    });
   };
 
   render() {
@@ -459,17 +426,15 @@ class Activity extends PureComponent {
 
     const messages = this.getChatMessages();
 
-    const EditButton = currentUser &&
-      activityData &&
-      currentUser._id === activityData.authorId && (
-        <Center m="2">
-          <Link to={`/edit-activity/${activityData._id}`}>
-            <Button variant="ghost" as="span">
-              {tc('actions.update')}
-            </Button>
-          </Link>
-        </Center>
-      );
+    const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
+      <Center m="2">
+        <Link to={`/edit-activity/${activityData._id}`}>
+          <Button variant="ghost" as="span">
+            {tc('actions.update')}
+          </Button>
+        </Link>
+      </Center>
+    );
 
     return (
       <Template
@@ -571,8 +536,6 @@ class Activity extends PureComponent {
 
 Activity.contextType = StateContext;
 
-
-
 const initialValues = {
   firstName: '',
   lastName: '',
@@ -586,7 +549,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   });
 
   const { isDirty, isSubmitting } = formState;
-  const [ t ] = useTranslation('activities');
+  const [t] = useTranslation('activities');
   const fields = [
     {
       name: 'firstName',
@@ -629,20 +592,13 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               type="submit"
               w="100%"
             >
-              {
-                isUpdateMode 
-                ? t('public.register.form.actions.update') 
-                : t('public.register.form.actions.create') 
-              }
+              {isUpdateMode
+                ? t('public.register.form.actions.update')
+                : t('public.register.form.actions.create')}
             </Button>
           </Box>
           {isUpdateMode && (
-            <Button
-              colorScheme="red"
-              size="sm"
-              variant="ghost"
-              onClick={onDelete}
-            >
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={onDelete}>
               {t('public.register.form.actions.remove')}
             </Button>
           )}
@@ -652,8 +608,8 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   );
 }
 
-function RsvpList({ attendees }) {  
-  const [ t ] = useTranslation('activities');
+function RsvpList({ attendees }) {
+  const [t] = useTranslation('activities');
   return (
     <ReactTable
       data={attendees}
