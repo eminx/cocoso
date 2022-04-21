@@ -21,29 +21,29 @@ function SettingsForm({ initialValues, onSubmit }) {
       <Stack spacing="4">
         <FormField label={t('new.name.label')}>
           <Input {...register('name')} />
-          </FormField>
+        </FormField>
         <FormField label={t('new.email.label')}>
           <Input type="email" {...register('email')} />
-          </FormField>
+        </FormField>
         <FormField label={t('new.address.label')}>
           <Input {...register('address')} />
-          </FormField>
+        </FormField>
         <FormField label={t('new.city.label')}>
           <Input {...register('city')} />
-          </FormField>
+        </FormField>
         <FormField label={t('new.country.label')}>
           <Input {...register('country')} />
-          </FormField>
+        </FormField>
         <FormField label={tc('langs.form.label')}>
           <ChangeLanguage select="true" register={register} />
-          </FormField>
+        </FormField>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </Stack>
-      </form>
+          </Button>
+        </Flex>
+      </Stack>
+    </form>
   );
 }
 

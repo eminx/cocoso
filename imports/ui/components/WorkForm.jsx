@@ -48,11 +48,11 @@ function WorkForm({
               {...register('title', { required: true })}
               placeholder={t('works.title.holder')}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('works.shortDesc.label')}>
             <Textarea {...register('shortDescription')} placeholder={t('works.shortDesc.holder')} />
-            </FormField>
+          </FormField>
 
           <FormField label={t('works.category.label')} isRequired>
             <Select
@@ -66,10 +66,10 @@ function WorkForm({
                   value={cat._id}
                 >
                   {cat.label.toUpperCase()}
-                  </option>
+                </option>
               ))}
-              </Select>
-            </FormField>
+            </Select>
+          </FormField>
 
           <FormField label={t('works.longDesc.label')} isRequired>
             <Controller
@@ -85,11 +85,11 @@ function WorkForm({
                 />
               )}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('works.addInfo.label')}>
             <Textarea {...register('additionalInfo')} placeholder={t('works.addInfo.holder')} />
-            </FormField>
+          </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
             <Box>
@@ -107,24 +107,24 @@ function WorkForm({
                   ))}
                   <Center w="100%">
                     <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                    </Center>
-                  </SortableContainer>
+                  </Center>
+                </SortableContainer>
               ) : (
                 <Center>
                   <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                  </Center>
+                </Center>
               )}
-              </Box>
-            </FormField>
+            </Box>
+          </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </div>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 }
 
@@ -132,27 +132,23 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  return (
-    <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <IconButton
-        className="sortable-thumb-icon"
-        colorScheme="gray.900"
-        icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-        size="xs"
-        onClick={onRemoveImage}
-        style={{ position: 'absolute', top: 4, right: 4 }}
-      />
-      </Box>
-  );
-});
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
+  <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
+    <IconButton
+      className="sortable-thumb-icon"
+      colorScheme="gray.900"
+      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+      size="xs"
+      onClick={onRemoveImage}
+      style={{ position: 'absolute', top: 4, right: 4 }}
+    />
+  </Box>
+));
 
-const SortableContainer = sortableContainer(({ children }) => {
-  return (
-    <Center w="100%">
-      <Wrap py="2">{children}</Wrap>
-      </Center>
-  );
-});
+const SortableContainer = sortableContainer(({ children }) => (
+  <Center w="100%">
+    <Wrap py="2">{children}</Wrap>
+  </Center>
+));
 
 export default WorkForm;

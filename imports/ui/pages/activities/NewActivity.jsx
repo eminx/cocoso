@@ -330,9 +330,9 @@ class NewActivity extends PureComponent {
     );
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    const isTimesInValid = datesAndTimes.some((dateTime) => {
-      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
-    });
+    const isTimesInValid = datesAndTimes.some(
+      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+    );
 
     return !isTimesInValid && !isConflictHard;
   };
@@ -350,7 +350,7 @@ class NewActivity extends PureComponent {
             })}
             type="error"
           />
-          </div>
+        </div>
       );
     }
 
@@ -403,8 +403,8 @@ class NewActivity extends PureComponent {
                   onChange={this.handleRegistrationSwitch}
                 />
               )}
-              </VStack>
-            </Box>
+            </VStack>
+          </Box>
 
           <ActivityForm
             datesAndTimes={datesAndTimes}
@@ -420,8 +420,8 @@ class NewActivity extends PureComponent {
             isCreating={isCreating}
             isFormValid={isFormValid}
           />
-          </Box>
-        </Template>
+        </Box>
+      </Template>
     );
   }
 }

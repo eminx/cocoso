@@ -59,7 +59,7 @@ function CalendarView(props) {
         onSelectEvent={props.onSelect}
         onSelectSlot={props.onSelectSlot}
       />
-      </div>
+    </div>
   );
 }
 

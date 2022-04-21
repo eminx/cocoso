@@ -147,9 +147,7 @@ class EditWork extends PureComponent {
       return;
     }
 
-    const selectedCategory = categories.find((category) => {
-      return category._id === values.categoryId;
-    });
+    const selectedCategory = categories.find((category) => category._id === values.categoryId);
 
     const parsedValues = {
       ...values,
@@ -257,8 +255,8 @@ class EditWork extends PureComponent {
           <Box pb="2">
             <Link to={workRoute}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
+            </Link>
+          </Box>
         }
       >
         <Box bg="white" p="6">
@@ -271,13 +269,13 @@ class EditWork extends PureComponent {
             onSubmit={this.uploadImages}
             setUploadableImages={this.setUploadableImages}
           />
-          </Box>
+        </Box>
 
         <Center p="4">
           <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {i18n.t('common:actions.remove')}
-            </Button>
-          </Center>
+          </Button>
+        </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
@@ -288,8 +286,8 @@ class EditWork extends PureComponent {
           {i18n.t('common:modals.confirm.delete.body', {
             domain: i18n.t('common:domains.work').toLowerCase(),
           })}
-          </ConfirmModal>
-        </Template>
+        </ConfirmModal>
+      </Template>
     );
   }
 }

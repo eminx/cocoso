@@ -111,9 +111,9 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
               color="blue.500"
               size="xl"
             />
-            </Center>
-          </Box>
-        </ChakraProvider>
+          </Center>
+        </Box>
+      </ChakraProvider>
     );
   }
 
@@ -158,7 +158,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       {publicSettings.faviconUrl && (
         <Helmet>
           <link rel="icon" href={publicSettings.faviconUrl} />
-      </Helmet>
+        </Helmet>
       )}
       <StateContext.Provider
         value={{
@@ -177,7 +177,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
             <Flex bg="gray.100" justify="space-between" align="center" p="6">
               <Button variant="ghost" onClick={() => setShowFeedbackModal(true)}>
                 {tc('modals.feedback.label')}
-                </Button>
+              </Button>
 
               <ChangeLanguage />
 
@@ -191,7 +191,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                       <VStack spacing="6">
                         <FormField label={tc('modals.feedback.form.email.label')}>
                           <Input type="email" name="_replyto" />
-                          </FormField>
+                        </FormField>
 
                         <FormField label={tc('modals.feedback.form.subject.label')}>
                           <Select name="subject">
@@ -202,32 +202,32 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                             ].map((option) => (
                               <option key={option} value={option}>
                                 {option}
-                                </option>
+                              </option>
                             ))}
-                            </Select>
-                          </FormField>
+                          </Select>
+                        </FormField>
 
                         <FormField label={tc('modals.feedback.form.details.label')}>
                           <Textarea name="text" name="message" />
-                          </FormField>
-                        </VStack>
-                      </ModalBody>
+                        </FormField>
+                      </VStack>
+                    </ModalBody>
                     <ModalFooter>
                       <Button mr={3} onClick={() => setShowFeedbackModal(false)}>
                         {tc('actions.close')}
-                        </Button>
+                      </Button>
                       <Button colorScheme="blue" type="submit">
                         {tc('actions.send')}
-                        </Button>
-                      </ModalFooter>
-                    </form>
-                  </ModalContent>
-                </Modal>
-              </Flex>
-            </Box>
-          </Center>
-        </StateContext.Provider>
-      </ChakraProvider>
+                      </Button>
+                    </ModalFooter>
+                  </form>
+                </ModalContent>
+              </Modal>
+            </Flex>
+          </Box>
+        </Center>
+      </StateContext.Provider>
+    </ChakraProvider>
   );
 }
 
@@ -257,9 +257,9 @@ function Header({ currentUser, currentHost, title, history }) {
                         src={currentHost && currentHost.logo}
                         className="header-logo"
                       />
-                      </Box>
-                    </Link>
-                  </Col>
+                    </Box>
+                  </Link>
+                </Col>
                 <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
                   {!isMobile && (
                     <Menu
@@ -269,19 +269,19 @@ function Header({ currentUser, currentHost, title, history }) {
                       history={history}
                     />
                   )}
-                  </Col>
+                </Col>
                 <Col xs={3} style={{ paddingRight: 0 }}>
                   <Flex justify="flex-end">
                     <UserPopup currentUser={currentUser} />
-                    </Flex>
-                  </Col>
-                </Row>
+                  </Flex>
+                </Col>
+              </Row>
               {isMobile && <Menu currentHost={currentHost} isMobile history={history} />}
-              </Container>
+            </Container>
           );
         }}
       />
-      </Box>
+    </Box>
   );
 }
 
@@ -313,9 +313,7 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
     return name === pathname.substring(1, pathname.length);
   };
 
-  const activeMenuItem = menuItems.find((item) => {
-    return isCurrentPage(item.name);
-  });
+  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
   if (['lg', 'xl', 'xxl'].includes(screenClass)) {
     return (
@@ -330,10 +328,10 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
               textTransform="capitalize"
             >
               {item.label}
-              </Text>
-            </Box>
+            </Text>
+          </Box>
         ))}
-        </Wrap>
+      </Wrap>
     );
   }
 
@@ -344,17 +342,17 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
           <HStack>
             <Text textTransform="capitalize">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Text>
             <ChevronDownIcon />
-            </HStack>
-          </MenuButton>
+          </HStack>
+        </MenuButton>
         <MenuList>
           {menuItems.map((item) => (
             <MenuItem key={item.label} onClick={() => handleClick(item)}>
               {item.label}
-              </MenuItem>
+            </MenuItem>
           ))}
-          </MenuList>
-        </CMenu>
-      </Box>
+        </MenuList>
+      </CMenu>
+    </Box>
   );
 }
 

@@ -78,7 +78,7 @@ function Members({ history, members, isLoading }) {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert message={tc('message.access.deny')} type="warning" />
-        </div>
+      </div>
     );
   }
 
@@ -174,7 +174,7 @@ function Members({ history, members, isLoading }) {
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
+        </Box>
       }
     >
       <Center p="1">
@@ -184,10 +184,10 @@ function Members({ history, members, isLoading }) {
               {filterOptions.map((item) => (
                 <Tab key={item.value} onClick={() => setFilter(item.value)}>
                   {item.label}
-                  </Tab>
+                </Tab>
               ))}
-              </TabList>
-            </Center>
+            </TabList>
+          </Center>
 
           <Center p="4">
             <Box>
@@ -197,8 +197,8 @@ function Members({ history, members, isLoading }) {
                 value={filterWord}
                 onChange={(event) => setFilterWord(event.target.value)}
               />
-              </Box>
-            </Center>
+            </Box>
+          </Center>
 
           <TabPanels>
             {filterOptions.map((item, index) =>
@@ -209,7 +209,7 @@ function Members({ history, members, isLoading }) {
                       <Box key={member.username} p="2">
                         <Heading size="md" fontWeight="bold">
                           {member.username}
-                          </Heading>
+                        </Heading>
                         <Text>{member && member.email}</Text>
                         <Text fontStyle="italic">{member.role}</Text>
                         <Text fontSize="xs" color="gray.500">
@@ -217,19 +217,19 @@ function Members({ history, members, isLoading }) {
                             date: moment(member.date).format('D MMM YYYY'),
                           })}
                           <br />
-                          </Text>
-                        </Box>
+                        </Text>
+                      </Box>
                     )}
-                    </NiceList>
-                  </TabPanel>
+                  </NiceList>
+                </TabPanel>
               ) : (
                 <TabPanel key={index} />
               )
             )}
-            </TabPanels>
-          </Tabs>
-        </Center>
-      </Template>
+          </TabPanels>
+        </Tabs>
+      </Center>
+    </Template>
   );
 }
 

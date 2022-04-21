@@ -34,12 +34,12 @@ function ForgotPasswordPage() {
         <Box w="xs">
           <Heading size="md" textAlign="center">
             {t('password.labels.title')}
-            </Heading>
+          </Heading>
           <Center pt="4" px="4">
             <Text mb="4" textAlign="center">
               {t('password.labels.subtitle.forgot')}
-              </Text>
-            </Center>
+            </Text>
+          </Center>
 
           <Box bg="white" p="6">
             {emailSent ? (
@@ -47,19 +47,19 @@ function ForgotPasswordPage() {
             ) : (
               <ForgotPassword onForgotPassword={handleForgotPassword} />
             )}
-            </Box>
+          </Box>
 
           <Flex justify="space-around" mt="4">
             <Link to="/login">
               <CLink as="span">{t('actions.login')}</CLink>
-              </Link>
+            </Link>
             <Link to="/signup">
               <CLink as="span">{t('actions.signup')}</CLink>
-              </Link>
-            </Flex>
-          </Box>
-        </Center>
-      </Template>
+            </Link>
+          </Flex>
+        </Box>
+      </Center>
+    </Template>
   );
 }
 

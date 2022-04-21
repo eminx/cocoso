@@ -21,8 +21,8 @@ function NewResourcePage({ history }) {
       <Breadcrumb />
       <Box bg="white" p="6">
         <ResourceForm defaultValues={resourceModel} history={history} />
-        </Box>
-      </Template>
+      </Box>
+    </Template>
   );
 }
 

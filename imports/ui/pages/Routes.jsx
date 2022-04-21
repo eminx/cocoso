@@ -110,11 +110,11 @@ export default function () {
               <Route exact path="/404" component={NotFoundPage} />
               <Route path="*">
                 <NotFoundPage />
-                </Route>
-              </Switch>
-            </Suspense>
-          </LayoutContainer>
-        </Switch>
-      </Router>
+              </Route>
+            </Switch>
+          </Suspense>
+        </LayoutContainer>
+      </Switch>
+    </Router>
   );
 }

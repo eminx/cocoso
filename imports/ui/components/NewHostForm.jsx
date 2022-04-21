@@ -36,17 +36,17 @@ function NewHostForm({ defaultValues, onSubmit }) {
                   placeholder={t(`new.${props.name}.holder`)}
                 />
               )}
-              </FormField>
+            </FormField>
           ))}
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc(`actions.${the}`)}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </div>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 }
 

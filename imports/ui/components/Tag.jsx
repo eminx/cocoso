@@ -51,10 +51,10 @@ const Tag = ({
           fontWeight={checkable ? 'normal' : 'bold'}
         >
           {checkable ? label : label && label.toUpperCase()}
-          </Text>
-        </Box>
+        </Text>
+      </Box>
       {removable && <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />}
-      </Flex>
+    </Flex>
   );
 };
 

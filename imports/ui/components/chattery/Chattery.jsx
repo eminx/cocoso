@@ -21,7 +21,7 @@ function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }
       ) : (
         <p style={{ padding: 24, textAlign: 'center' }}>{noMemberText}</p>
       )}
-      </div>
+    </div>
   );
 }
 

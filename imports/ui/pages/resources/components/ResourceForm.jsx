@@ -144,9 +144,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     });
   };
 
-  const isEditable = () => {
-    return isDirty || images.length !== defaultImages.length;
-  };
+  const isEditable = () => isDirty || images.length !== defaultImages.length;
 
   if (!defaultValues) {
     return null;
@@ -169,14 +167,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             <Switch {...register('isCombo')} isDisabled={isEditMode} id="is-combo-switch" />
             <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
               {t('form.combo.switch.label')}
-              </FormLabel>
-            </FormControl>
+            </FormLabel>
+          </FormControl>
 
           {isCombo && (
             <Box bg="gray.100" p="6" w="90%">
               <Text fontSize="sm" mb="6">
                 {t('form.combo.select.helper')}
-                </Text>
+              </Text>
               {isLoading ? (
                 <Loader />
               ) : (
@@ -191,12 +189,12 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   onChange={handleAutoCompleteSelectChange}
                 />
               )}
-          </Box>
+            </Box>
           )}
 
           <FormField label={t('form.name.label')}>
             <Input {...register('label')} placeholder={t('form.name.holder')} />
-            </FormField>
+          </FormField>
 
           <FormField label={t('form.desc.label')}>
             <Controller
@@ -211,7 +209,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                 />
               )}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('form.images.label', { count: images.length })}>
             <Box>
@@ -231,23 +229,23 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                         onRemoveImage={() => handleRemoveImage(index)}
                       />
                     ))}
-                    </SortableContainer>
-              </>
+                  </SortableContainer>
+                </>
               )}
               <Center w="100%">
                 <FileDropper setUploadableImage={setFileDropperImage} isMultiple />
-                </Center>
-              </Box>
-            </FormField>
+              </Center>
+            </Box>
+          </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button isDisabled={!isEditable()} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </Box>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </Box>
   );
 }
 
@@ -255,20 +253,18 @@ const thumbStyle = (backgroundImage) => ({
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
 });
 
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  return (
-    <WrapItem key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <IconButton
-        className="sortable-thumb-icon"
-        colorScheme="gray.900"
-        icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-        size="xs"
-        onClick={onRemoveImage}
-        style={{ position: 'absolute', top: 4, right: 4 }}
-      />
-      </WrapItem>
-  );
-});
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
+  <WrapItem key={image} className="sortable-thumb" style={thumbStyle(image)}>
+    <IconButton
+      className="sortable-thumb-icon"
+      colorScheme="gray.900"
+      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+      size="xs"
+      onClick={onRemoveImage}
+      style={{ position: 'absolute', top: 4, right: 4 }}
+    />
+  </WrapItem>
+));
 
 const SortableContainer = sortableContainer(({ children }) => <Wrap py="2">{children}</Wrap>);
 

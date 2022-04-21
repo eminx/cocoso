@@ -16,12 +16,12 @@ function ListMenu({ list, pathname, children, ...otherProps }) {
             <CLink as="span">
               <Text fontWeight={pathname === item.value ? 'bold' : 'normal'}>
                 {tc(`menu.${item.menu}.${item.key}`)}
-                </Text>
-              </CLink>
-            </Link>
-          </ListItem>
+              </Text>
+            </CLink>
+          </Link>
+        </ListItem>
       ))}
-      </List>
+    </List>
   );
 }
 

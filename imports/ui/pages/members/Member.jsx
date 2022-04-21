@@ -92,41 +92,41 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
             />
             <Text fontWeight="bold" size="lg" textAlign="center">
               {member.username}
-              </Text>
+            </Text>
             <Text textAlign="center">{getFullName(member)}</Text>
 
             {member.bio && <Box mt="2">{renderHTML(member.bio)}</Box>}
 
             <Button variant="ghost" mt={2} onClick={onOpen}>
               {tc('labels.contact')}
-              </Button>
-        </Box>
+            </Button>
+          </Box>
         )
       }
     >
       {worksLabel && member && (
         <Heading size="md" m="4">
           {worksLabel} by {member.username}
-      </Heading>
+        </Heading>
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
           <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
             <Box mb="4">
               <WorkThumb work={work} />
-              </Box>
-            </Link>
+            </Box>
+          </Link>
         ))
       ) : (
         <Box w="100%" bg="gray.600" p="2" align="center">
           <Heading level={4} margin="small">
             {t('message.activity.empty')}
-            </Heading>
+          </Heading>
           <Box direction="row" align="center">
             <Image fit="contain" src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif" />
-            </Box>
-          <Text m="2">{t('message.activity.info', { username: member.username })}</Text>
           </Box>
+          <Text m="2">{t('message.activity.info', { username: member.username })}</Text>
+        </Box>
       )}
       <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm" isCentered>
         <ModalOverlay />
@@ -138,10 +138,10 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
               {member.contactInfo
                 ? renderHTML(member.contactInfo)
                 : t('message.contact.empty', { username: member.username })}
-              </Box>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
       {avatarExists && (
         <Modal
@@ -154,10 +154,10 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
           <ModalOverlay />
           <ModalContent>
             <Image src={member.avatar.src} alt={member.username} fit="contain" />
-            </ModalContent>
-      </Modal>
+          </ModalContent>
+        </Modal>
       )}
-      </Template>
+    </Template>
   );
 }
 

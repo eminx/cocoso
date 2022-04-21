@@ -95,9 +95,9 @@ function Work() {
         />
         <Button as="span" variant="link" href={`/@${work.authorUsername}`}>
           <Text fontSize="sm">{work.authorUsername}</Text>
-          </Button>
-        </VStack>
-      </Link>
+        </Button>
+      </VStack>
+    </Link>
   );
 
   return (
@@ -109,21 +109,21 @@ function Work() {
               <Box>
                 <Heading as="h2" size="lg" mb={1}>
                   {work.title}
-                  </Heading>
+                </Heading>
                 <Text mb="4">{work.shortDescription}</Text>
                 {work.category && (
                   <Badge variant="outline" color="gray.800" fontSize="md">
                     {work.category.label}
-                </Badge>
+                  </Badge>
                 )}
-                </Box>
+              </Box>
               <Box>
                 <Visible xs sm md>
                   <AvatarHolder />
-                  </Visible>
-                </Box>
-              </Flex>
-            </Box>
+                </Visible>
+              </Box>
+            </Flex>
+          </Box>
         }
         rightContent={
           <Box>
@@ -138,43 +138,43 @@ function Work() {
                 <Hidden lg xl>
                   <Text fontSize="lg" textAlign="center" ml="2">
                     {work.additionalInfo}
-                    </Text>
-                  </Hidden>
+                  </Text>
+                </Hidden>
                 <Visible lg xl>
                   <Text fontSize="lg">{work.additionalInfo}</Text>
-                  </Visible>
-                </Box>
+                </Visible>
+              </Box>
               <Box>
                 <Hidden xs sm md>
                   <AvatarHolder />
-                  </Hidden>
-                </Box>
-              </Flex>
+                </Hidden>
+              </Box>
+            </Flex>
             <Center p="2" mt="4">
               <Button onClick={handleOpenModal} variant="ghost">
                 {`${tc('labels.contact')} ${work.authorUsername}`}
-                </Button>
-              </Center>
-            </Box>
+              </Button>
+            </Center>
+          </Box>
         }
       >
         <Box mt="2" bg="white">
           <NiceSlider images={work.images} />
           <Box mt="2" p="4">
             <div className="text-content">{renderHTML(work.longDescription)} </div>
-            </Box>
           </Box>
-        </Template>
+        </Box>
+      </Template>
 
       <Center my="2">
         {isOwner && (
           <Link to={`/${currentUser.username}/edit-work/${workId}`}>
             <Button size="sm" variant="ghost">
               {tc('actions.update')}
-              </Button>
-        </Link>
+            </Button>
+          </Link>
         )}
-        </Center>
+      </Center>
 
       <Modal isOpen={isOpen} onClose={onClose} onOpen={handleOpenModal} size="sm" isCentered>
         <ModalOverlay />
@@ -184,11 +184,11 @@ function Work() {
           <ModalBody>
             <Box className="text-content" mb="2">
               {authorContactInfo ? renderHTML(authorContactInfo) : 'Loading...'}
-              </Box>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </Fragment>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Fragment>
   );
 }
 

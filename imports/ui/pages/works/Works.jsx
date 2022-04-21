@@ -50,20 +50,19 @@ function Works() {
   const sortedWorks = works.sort(compareByDate);
 
   const filteredWorks = categoryFilter
-    ? sortedWorks.filter((work) => {
-        return work.category && work.category.label === categoryFilter.toLowerCase();
-      })
+    ? sortedWorks.filter(
+        (work) => work.category && work.category.label === categoryFilter.toLowerCase()
+      )
     : sortedWorks;
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
 
   const worksWithCategoryColors = filteredWorks.map((work, index) => {
-    const category = categoriesAssignedToWorks.find((category) => {
-      return (
-        category.label &&
+    const category = categoriesAssignedToWorks.find(
+      (category) =>
+      category.label &&
         category.label === (work.category && work.category.label && work.category.label)
-      );
-    });
+    ));
     const categoryColor = category && category.color;
     return {
       ...work,

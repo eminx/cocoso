@@ -27,13 +27,13 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                           }
                         >
                           {title}
-                          </Text>
-                        </CLink>
-                      </Link>
-                    </ListItem>
+                        </Text>
+                      </CLink>
+                    </Link>
+                  </ListItem>
                 ))}
-                </List>
-              </Box>
+              </List>
+            </Box>
           ) : (
             <Center mt="2" mb="8">
               <Select
@@ -45,12 +45,12 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                 {pageTitles.map((title) => (
                   <option>{title}</option>
                 ))}
-                </Select>
-              </Center>
+              </Select>
+            </Center>
           )
         }
       />
-      </Box>
+    </Box>
   );
 });
 

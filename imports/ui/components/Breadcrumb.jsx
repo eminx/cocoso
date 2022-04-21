@@ -17,8 +17,8 @@ export default function Breadcrumb({ domain, domainKey }) {
           item = item.charAt(0).toUpperCase() + item.slice(1);
           if (item == '' && index == 0)
             return (
-                <BreadcrumbItem key={`breadcrumb-${index}`}>
-                  <Link to="/">Home</Link>
+              <BreadcrumbItem key={`breadcrumb-${index}`}>
+                <Link to="/">Home</Link>
               </BreadcrumbItem>
             );
           if (index != breadcrumbs.length - 1) {
@@ -29,18 +29,18 @@ export default function Breadcrumb({ domain, domainKey }) {
             return (
               <BreadcrumbItem key={`breadcrumb-${index}`}>
                 <Link to={href}>{item}</Link>
-                </BreadcrumbItem>
+              </BreadcrumbItem>
             );
           }
           if (index == breadcrumbs.length - 1) {
             return (
               <BreadcrumbItem isCurrentPage key={`breadcrumb-${index}`}>
                 <BreadcrumbLink href="#">{item}</BreadcrumbLink>
-                </BreadcrumbItem>
+              </BreadcrumbItem>
             );
           }
         })}
-        </BreadcrumbMenu>
-      </Center>
+      </BreadcrumbMenu>
+    </Center>
   );
 }

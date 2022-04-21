@@ -98,7 +98,7 @@ class InviteManager extends PureComponent {
               placeholder={t('invite.email.holder')}
               value={emailInput}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('invite.firstName.label')}>
             <Input
@@ -106,10 +106,10 @@ class InviteManager extends PureComponent {
               placeholder={t('invite.firstName.holder')}
               value={firstNameInput}
             />
-            </FormField>
+          </FormField>
 
           <Button onClick={this.handleSendInvite}>{t('invite.submit')}</Button>
-          </VStack>
+        </VStack>
 
         <Box py="6">
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
@@ -117,13 +117,13 @@ class InviteManager extends PureComponent {
               <Tag key={person.email}>
                 <Text fontWeight="bold" mr="1">
                   {person.firstName}
-                  </Text>
+                </Text>
                 {person.email}
-                </Tag>
+              </Tag>
             ))}
-            </EmailsContainer>
-          </Box>
+          </EmailsContainer>
         </Box>
+      </Box>
     );
   }
 }
@@ -132,9 +132,9 @@ const EmailsContainer = (props) => (
   <Box>
     <Heading size="md" mb="4">
       {props.title} ({props.count})
-      </Heading>
+    </Heading>
     <Box>{props.children}</Box>
-    </Box>
+  </Box>
 );
 
 export default InviteManager;

@@ -159,7 +159,7 @@ class NewWork extends PureComponent {
             })}
             type="error"
           />
-          </div>
+        </div>
       );
     }
 
@@ -181,8 +181,8 @@ class NewWork extends PureComponent {
             onSubmit={this.uploadImages}
             setUploadableImages={this.setUploadableImages}
           />
-          </Box>
-        </Template>
+        </Box>
+      </Template>
     );
   }
 }

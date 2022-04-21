@@ -21,9 +21,9 @@ function NiceList({
             actionsDisabled={actionsDisabled}
             renderChildren={children}
           />
-          </ListItem>
+        </ListItem>
       ))}
-      </List>
+    </List>
   );
 }
 
@@ -36,7 +36,7 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
           <Menu placement="bottom-end">
             <MenuButton>
               <ChevronDownIcon boxSize="6" />
-              </MenuButton>
+            </MenuButton>
             <MenuList>
               {listItem.actions &&
                 listItem.actions.map((action) => (
@@ -46,13 +46,13 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
                     onClick={action.isDisabled ? null : action.handleClick}
                   >
                     {action.content}
-                    </MenuItem>
+                  </MenuItem>
                 ))}
-              </MenuList>
-        </Menu>
+            </MenuList>
+          </Menu>
         )}
-        </Box>
-      </Flex>
+      </Box>
+    </Flex>
   );
 }
 

@@ -37,12 +37,12 @@ class ChatteryInput extends React.Component {
             onChange={this.onChange}
           />
           <input
-                type="submit"
-                className="chattery-submitbutton"
-                value={i18n.t('common:actions.send')}
+            type="submit"
+            className="chattery-submitbutton"
+            value={i18n.t('common:actions.send')}
           />
-          </form>
-        </div>
+        </form>
+      </div>
     );
   }
 }

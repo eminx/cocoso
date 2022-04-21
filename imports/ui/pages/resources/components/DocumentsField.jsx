@@ -95,7 +95,7 @@ export default function DocumentsField({ contextType, contextId }) {
     <Box mt="5">
       <Heading mb="4" ml="4" size="sm">
         {tc('documents.label')}
-        </Heading>
+      </Heading>
 
       {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>
@@ -105,16 +105,16 @@ export default function DocumentsField({ contextType, contextId }) {
                 <div style={{ textAlign: 'center' }}>
                   <Loader />
                   {tc('documents.up')}
-                  </div>
+                </div>
               ) : (
                 <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
                   {tc('documents.drop')}
-                  </Button>
+                </Button>
               )}
               <input {...getInputProps()} />
-              </Box>
+            </Box>
           )}
-      </ReactDropzone>
+        </ReactDropzone>
       )}
 
       <Box bg="white" mt="2">
@@ -131,19 +131,19 @@ export default function DocumentsField({ contextType, contextId }) {
                 <Link href={document.documentUrl} isExternal>
                   <ExternalLinkIcon mr="2px" fontSize="sm" />
                   {document.documentLabel}
-                  </Link>
+                </Link>
                 <Button variant="ghost">
                   <DeleteIcon onClick={() => removeDocument(document._id)} />
-                  </Button>
-                </ListItem>
+                </Button>
+              </ListItem>
             ))}
-            </List>
+          </List>
         ) : (
           <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
             <em>{tc('documents.empty')}</em>
-            </Text>
+          </Text>
         )}
-        </Box>
       </Box>
+    </Box>
   );
 }

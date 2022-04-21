@@ -80,7 +80,7 @@ function Emails({ history }) {
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
+        </Box>
       }
     >
       {emails &&
@@ -88,11 +88,11 @@ function Emails({ history }) {
           <Box key={email.title} p="6" bg="white" mb="4">
             <Heading size="md" mb="4">
               {email.title}
-              </Heading>
+            </Heading>
             <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
-            </Box>
+          </Box>
         ))}
-      </Template>
+    </Template>
   );
 }
 
@@ -111,14 +111,14 @@ function EmailForm({ defaultValues, onSubmit }) {
         <VStack spacing="4">
           <FormField label={t('emails.form.subject.label')}>
             <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
-            </FormField>
+          </FormField>
 
           <FormField label={t('emails.form.appeal.label')}>
             <InputGroup w="280px">
               <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
               <InputRightAddon children={t('emails.form.appeal.addon')} />
-              </InputGroup>
-            </FormField>
+            </InputGroup>
+          </FormField>
 
           <FormField label={t('emails.form.body.label')}>
             <Controller
@@ -128,16 +128,16 @@ function EmailForm({ defaultValues, onSubmit }) {
                 <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
-            </FormField>
+          </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </Box>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </Box>
   );
 }
 

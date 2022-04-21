@@ -96,7 +96,7 @@ function PublicMembers() {
     <Box mb="3" p="1">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-        </Helmet>
+      </Helmet>
       <Center>
         <Wrap>
           {members.map((member) => (
@@ -107,18 +107,18 @@ function PublicMembers() {
                   <Center>
                     <Text fontWeight="bold" fontSize="lg" isTruncated>
                       {member.username}
-                      </Text>
-                    </Center>
+                    </Text>
+                  </Center>
                   <Center>
                     <Text isTruncated>{getFullName(member)}</Text>
-                    </Center>
-                  </Box>
-                </Link>
-              </WrapItem>
+                  </Center>
+                </Box>
+              </Link>
+            </WrapItem>
           ))}
-          </Wrap>
-        </Center>
-      </Box>
+        </Wrap>
+      </Center>
+    </Box>
   );
 }
 

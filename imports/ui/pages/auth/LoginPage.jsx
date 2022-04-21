@@ -26,20 +26,20 @@ function LoginPage() {
         <Box w="xs">
           <Heading size="md" textAlign="center">
             {t('login.labels.title')}
-            </Heading>
+          </Heading>
           <Center pt="4" mb="4">
             <Text>
               {t('login.labels.subtitle')}{' '}
               <Link to="/signup">
                 <CLink as="span">
                   <b>{t('actions.signup')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
           <Box p="6" bg="white" mb="4">
             <Login onSubmit={handleSubmit} />
-            </Box>
+          </Box>
           <Center>
             <Text>
               {t('actions.forgot')}
@@ -47,13 +47,13 @@ function LoginPage() {
               <Link to="/forgot-password">
                 <CLink as="span">
                   <b>{t('actions.reset')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center>
-          </Box>
-        </Center>
-      </Template>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+        </Box>
+      </Center>
+    </Template>
   );
 }
 

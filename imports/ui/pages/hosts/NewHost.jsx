@@ -49,7 +49,7 @@ function NewHost() {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert message={tc('message.access.deny')} type="error" />
-        </div>
+      </div>
     );
   }
 
@@ -61,8 +61,8 @@ function NewHost() {
     <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
       <Box p="8" bg="white">
         <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
-        </Box>
-      </Template>
+      </Box>
+    </Template>
   );
 }
 

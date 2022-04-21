@@ -4,14 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "airbnb",
-    "plugin:import/errors",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended"
-  ],
+  "extends": ["airbnb", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -20,8 +13,12 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@babel", "react", "import", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": ["error"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-one-expression-per-line": [0],
+    "react/prop-types": [0],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -32,19 +29,15 @@
         "tsx": "never"
       }
     ],
-    "indent": ["error", 2],
     "no-underscore-dangle": "off",
-    "prettier/prettier": ["error"],
-    "react-hooks/exhaustive-deps": "warn",
-    "react-hooks/rules-of-hooks": "error",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-indent-props": [2, 4],
-    "react/jsx-indent": [2, 4],
-    "react/jsx-one-expression-per-line": [0],
-    "react/prefer-stateless-function": [1]
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
   },
   "settings": {
-    "import/resolver": "meteor",
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
     "react": {
       "version": "detect"
     }

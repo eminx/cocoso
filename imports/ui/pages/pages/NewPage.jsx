@@ -101,7 +101,7 @@ class NewPage extends PureComponent {
             })}
             type="error"
           />
-          </div>
+        </div>
       );
     }
 
@@ -115,8 +115,8 @@ class NewPage extends PureComponent {
       <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
-          </Box>
-        </Template>
+        </Box>
+      </Template>
     );
   }
 }

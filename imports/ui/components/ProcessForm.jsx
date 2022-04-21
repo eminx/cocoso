@@ -46,22 +46,22 @@ const ProcessForm = ({
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={uploadableImageLocal}
               />
-              </Center>
-            </FormField>
+            </Center>
+          </FormField>
 
           <FormField label={t('form.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
               placeholder={t('form.title.holder')}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('form.subtitle.label')} isRequired>
             <Input
               {...register('readingMaterial', { required: true })}
               placeholder={t('form.subtitle.holder')}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('form.desc.label')} isRequired>
             <Controller
@@ -72,13 +72,13 @@ const ProcessForm = ({
                 <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('form.capacity.label')} isRequired>
             <NumberInput>
               <NumberInputField {...register('capacity', { required: true })} />
-              </NumberInput>
-            </FormField>
+            </NumberInput>
+          </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
@@ -87,11 +87,11 @@ const ProcessForm = ({
               type="submit"
             >
               {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </div>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 };
 

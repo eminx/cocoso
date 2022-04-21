@@ -23,11 +23,11 @@ const Personal = ({ defaultValues, onSubmit }) => {
         <VStack spacing="6">
           <FormField label={t('profile.form.firstname.label')}>
             <Input {...register('firstName')} placeholder="" />
-            </FormField>
+          </FormField>
 
           <FormField label={t('profile.form.lastname.label')}>
             <Input {...register('lastName')} placeholder="" />
-            </FormField>
+          </FormField>
 
           <FormField label={t('profile.form.bio.label')}>
             <Controller
@@ -37,7 +37,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
                 <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={t('profile.form.contact.label')}>
             <Controller
@@ -47,20 +47,20 @@ const Personal = ({ defaultValues, onSubmit }) => {
                 <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
-            </FormField>
+          </FormField>
 
           <FormField label={tc('langs.form.label')}>
             <ChangeLanguage select="true" register={register} />
-            </FormField>
+          </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </VStack>
-        </form>
-      </div>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </div>
   );
 };
 

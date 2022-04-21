@@ -14,7 +14,7 @@ export default function ResourceRoutes({ path, history }) {
       <Switch>
         <Route path="/resources/:resourceId/edit" component={EditResource} history={history} />
         <Route path="/resources/:resourceId" component={Resource} />
-        </Switch>
       </Switch>
+    </Switch>
   );
 }

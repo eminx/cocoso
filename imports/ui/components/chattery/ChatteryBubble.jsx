@@ -57,11 +57,11 @@ class ChatteryBubble extends React.Component {
                 <p className="talktext-senderinfo">{senderUsername}</p>
                 <p className="talktext-content">{children}</p>
                 <p className="talktext-dateinfo">{this.parseDate(createdDate)}</p>
-                </div>
               </div>
+            </div>
           )}
-          </VisibilitySensor>
-        </div>
+        </VisibilitySensor>
+      </div>
     );
   }
 }

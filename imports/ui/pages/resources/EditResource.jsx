@@ -54,12 +54,12 @@ function EditResourcePage({ history }) {
       <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
         {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
-        </Box>
+      </Box>
       <Center p="4">
         <Button colorScheme="red" size="sm" variant="ghost" onClick={showDeleteModal}>
           {tc('actions.remove')}
-          </Button>
-        </Center>
+        </Button>
+      </Center>
       <ConfirmModal
         confirmText={tc('modals.confirm.delete.yes')}
         visible={isDeleteModalOn}
@@ -70,8 +70,8 @@ function EditResourcePage({ history }) {
         {tc('modals.confirm.delete.body', {
           domain: tc('domains.resource').toLowerCase(),
         })}
-        </ConfirmModal>
-      </Template>
+      </ConfirmModal>
+    </Template>
   );
 }
 

@@ -52,9 +52,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
       return null;
     }
 
-    const futureProcesses = processesList.filter((process) => {
-      return process.meetings?.some((meeting) => moment(meeting.startDate).isAfter(yesterday));
-    });
+    const futureProcesses = processesList.filter((process) =>
+      process.meetings?.some((meeting) => moment(meeting.startDate).isAfter(yesterday))
+    );
 
     const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(futureProcesses);
 
@@ -95,7 +95,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
     return (
       <Box width="100%" mb="50px">
         <Loader />
-        </Box>
+      </Box>
     );
   }
 
@@ -105,17 +105,17 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${
           currentHost.settings.name
         } | ${publicSettings.name}`}</title>
-        </Helmet>
+      </Helmet>
 
       <Center mb="4">
         {canCreateContent && (
           <Link to="/new-activity">
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
-              </Button>
-        </Link>
+            </Button>
+          </Link>
         )}
-        </Center>
+      </Center>
 
       <Center px="2">
         <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
@@ -125,12 +125,12 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
                 to={activity.isProcess ? `/process/${activity._id}` : `/activity/${activity._id}`}
               >
                 <PublicActivityThumb item={activity} />
-                </Link>
-              </Box>
+              </Link>
+            </Box>
           ))}
-          </SimpleGrid>
-        </Center>
-      </Box>
+        </SimpleGrid>
+      </Center>
+    </Box>
   );
 }
 

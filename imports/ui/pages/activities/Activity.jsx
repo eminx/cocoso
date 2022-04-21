@@ -155,11 +155,11 @@ class Activity extends PureComponent {
         ...rsvpCancelModalInfo,
       };
       return (
-          <RsvpForm
-            isUpdateMode
-            onDelete={this.handleRemoveRSVP}
-            defaultValues={defaultValues}
-            onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
+        <RsvpForm
+          isUpdateMode
+          onDelete={this.handleRemoveRSVP}
+          defaultValues={defaultValues}
+          onSubmit={(values) => this.handleChangeRSVPSubmit(values)}
         />
       );
     }
@@ -179,7 +179,7 @@ class Activity extends PureComponent {
             }
             // size="sm"
           />
-          </FormControl>
+        </FormControl>
 
         <FormControl id="email" size="sm">
           <FormLabel>Email</FormLabel>
@@ -194,8 +194,8 @@ class Activity extends PureComponent {
               })
             }
           />
-          </FormControl>
-        </Box>
+        </FormControl>
+      </Box>
     );
   };
 
@@ -267,7 +267,7 @@ class Activity extends PureComponent {
       {activityData.isRegistrationDisabled
         ? t('public.register.disabled.true')
         : t('public.register.disabled.false')}
-        </Text>;
+    </Text>;
 
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
@@ -275,14 +275,14 @@ class Activity extends PureComponent {
           {activityData.isRegistrationDisabled && activityData.isPublicActivity && (
             <Text size="sm" mb="1">
               {t('public.register.disabled.info')}
-          </Text>
+            </Text>
           )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box bg="white" key={occurence.startDate + occurence.startTime} p="2" mb="2">
               <FancyDate occurence={occurence} />
-              </Box>
+            </Box>
           ))}
-          </div>
+        </div>
       );
     }
 
@@ -309,7 +309,7 @@ class Activity extends PureComponent {
             {eventPast ? (
               <Box p="2">
                 <Text color="gray">{t('public.past')}</Text>
-                </Box>
+              </Box>
             ) : (
               <Box>
                 <Center m="2">
@@ -320,29 +320,29 @@ class Activity extends PureComponent {
                     onClick={() => this.openCancelRsvpModal(occurenceIndex)}
                   >
                     {t('public.cancel.label')}
-                    </Button>
-                  </Center>
+                  </Button>
+                </Center>
 
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
                   <p>
-                        {capacityGotFullByYou && t('public.capacity.fullByYou')}
-                      {t('public.capacity.full')}
+                    {capacityGotFullByYou && t('public.capacity.fullByYou')}
+                    {t('public.capacity.full')}
                   </p>
                 ) : (
                   <RsvpForm
-                      defaultValues={defaultRsvpValues}
+                    defaultValues={defaultRsvpValues}
                     onSubmit={(values) => this.handleRSVPSubmit(values, occurenceIndex)}
                   />
                 )}
-                </Box>
+              </Box>
             )}
             {canCreateContent && (
               <Box px="1">
                 <Heading mb="1" as="h4" size="sm">
                   {t('public.attandence.label')}
-                  </Heading>
+                </Heading>
                 <span>{t('public.acceess.deny')}</span>
                 <div
                   style={{
@@ -356,14 +356,14 @@ class Activity extends PureComponent {
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
-                  </div>
+                </div>
                 <RsvpList
                   attendees={occurence.attendees}
                   ref={(element) => (this.printableElement = element)}
                 />
-            </Box>
+              </Box>
             )}
-            </Box>
+          </Box>
         );
       }
     };
@@ -375,16 +375,16 @@ class Activity extends PureComponent {
             <AccordionButton _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
-                </Box>
+              </Box>
               <AccordionIcon />
-              </AccordionButton>
+            </AccordionButton>
             <AccordionPanel>
               <Heading size="sm">{t('public.register.label')}</Heading>
               {conditionalRender(occurence, occurenceIndex)}
-              </AccordionPanel>
-            </AccordionItem>
+            </AccordionPanel>
+          </AccordionItem>
         ))}
-        </Accordion>
+      </Accordion>
     );
   };
 
@@ -400,9 +400,7 @@ class Activity extends PureComponent {
       if (!notification.unSeenIndexes) {
         return false;
       }
-      return notification.unSeenIndexes.some((unSeenIndex) => {
-        return unSeenIndex === messageIndex;
-      });
+      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
     });
     if (!shouldRun) {
       return;
@@ -429,10 +427,10 @@ class Activity extends PureComponent {
     const messages = this.getChatMessages();
 
     const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
-    <Center m="2">
-          <Link to={`/edit-activity/${activityData._id}`}>
-            <Button variant="ghost" as="span">
-              {tc('actions.update')}
+      <Center m="2">
+        <Link to={`/edit-activity/${activityData._id}`}>
+          <Button variant="ghost" as="span">
+            {tc('actions.update')}
           </Button>
         </Link>
       </Center>
@@ -444,21 +442,21 @@ class Activity extends PureComponent {
           <Box p="2">
             <Heading as="h3" size="lg">
               {activityData.title}
-              </Heading>
+            </Heading>
             {activityData.subTitle && (
               <Heading as="h4" size="md" fontWeight="light">
                 {activityData.subTitle}
-            </Heading>
+              </Heading>
             )}
-            </Box>
+          </Box>
         }
         rightContent={
           <Box width="100%" p="2">
             <Heading mb="2" as="h5" size="md">
               {t('public.labels.dates')}
-              </Heading>
+            </Heading>
             {this.renderDates()}
-            </Box>
+          </Box>
         }
       >
         <Box bg="white" mb="4">
@@ -470,7 +468,7 @@ class Activity extends PureComponent {
                 // style={{ maxHeight: 400 }}
                 htmlHeight={400}
               />
-          </Box>
+            </Box>
           )}
 
           {activityData.longDescription && (
@@ -483,24 +481,24 @@ class Activity extends PureComponent {
                 className="text-content"
               >
                 {renderHTML(activityData.longDescription)}
-                </div>
-          </Box>
+              </div>
+            </Box>
           )}
-          </Box>
+        </Box>
 
         <Box p="2" mb="1">
           <Heading mb="2" as="h5" size="md">
             {t('public.labels.resource')}
-            </Heading>
+          </Heading>
           <Tag label={activityData.resource} />
-          </Box>
+        </Box>
         {activityData.address && (
           <Box p="2" mb="1">
             <Heading mb="2" as="h5" size="md">
               {t('public.labels.address')}
-              </Heading>
+            </Heading>
             <Text size="sm">{activityData.address}</Text>
-        </Box>
+          </Box>
         )}
 
         {/* {activityData.isPublicActivity && messages && chatData && (
@@ -530,8 +528,8 @@ class Activity extends PureComponent {
           onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
         >
           {this.renderCancelRsvpModalContent()}
-          </ConfirmModal>
-        </Template>
+        </ConfirmModal>
+      </Template>
     );
   }
 }
@@ -577,13 +575,13 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
           {fields.map((field) => (
             <FormField key={field.name} label={field.label}>
               <Input {...register(field.name)} size="sm" />
-              </FormField>
+            </FormField>
           ))}
           <FormField label={t('public.register.form.people.number')}>
             <NumberInput size="sm">
               <NumberInputField {...register('numberOfPeople')} />
-              </NumberInput>
-            </FormField>
+            </NumberInput>
+          </FormField>
           <Box pt="2" w="100%">
             <Button
               colorScheme="green"
@@ -597,16 +595,16 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               {isUpdateMode
                 ? t('public.register.form.actions.update')
                 : t('public.register.form.actions.create')}
-              </Button>
-            </Box>
+            </Button>
+          </Box>
           {isUpdateMode && (
             <Button colorScheme="red" size="sm" variant="ghost" onClick={onDelete}>
               {t('public.register.form.actions.remove')}
-          </Button>
+            </Button>
           )}
-          </Stack>
-        </form>
-      </Box>
+        </Stack>
+      </form>
+    </Box>
   );
 }
 

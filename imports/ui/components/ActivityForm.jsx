@@ -118,7 +118,7 @@ function ActivityForm({
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.resource.label')}
-            </Heading>
+          </Heading>
           <FormField>
             <Select
               {...register('resourceId', { required: true })}
@@ -126,27 +126,25 @@ function ActivityForm({
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
-              {resources.sort(localeSort).map((option, index) => {
-                return (
-                  <option
-                    key={option._id}
-                    selected={option._id === defaultValues.resourceId}
-                    value={option._id}
-                  >
-                    {option.isCombo
-                      ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
-                      : option.label}
-                    </option>
-                );
-              })}
-              </Select>
-            </FormField>
-          </Box>
+              {resources.sort(localeSort).map((option, index) => (
+                <option
+                  key={option._id}
+                  selected={option._id === defaultValues.resourceId}
+                  value={option._id}
+                >
+                  {option.isCombo
+                    ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
+                    : option.label}
+                </option>
+              ))}
+            </Select>
+          </FormField>
+        </Box>
 
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.occurences.label')}
-            </Heading>
+          </Heading>
 
           <Box mb="4">
             {datesAndTimes.map((recurrence, index) => (
@@ -166,14 +164,14 @@ function ActivityForm({
             ))}
             <Center p="6" border="1px solid #ccc">
               <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
-              </Center>
-            </Box>
+            </Center>
           </Box>
+        </Box>
 
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.details.label')}
-            </Heading>
+          </Heading>
 
           <VStack spacing="6">
             <FormField label={t('form.title.label')} helperText={t('form.title.helper')}>
@@ -181,7 +179,7 @@ function ActivityForm({
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
               />
-              </FormField>
+            </FormField>
 
             {isPublicActivity && (
               <FormField label={t('form.subtitle.label')} helperText={t('form.subtitle.helper')}>
@@ -189,7 +187,7 @@ function ActivityForm({
                   {...register('subTitle', { required: true })}
                   placeholder={t('form.subtitle.holder')}
                 />
-            </FormField>
+              </FormField>
             )}
 
             <FormField label={t('form.desc.label')}>
@@ -200,18 +198,18 @@ function ActivityForm({
                   <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
                 )}
               />
-              </FormField>
+            </FormField>
 
             {isPublicActivity && (
               <FormField label={t('form.place.label')}>
                 <Input {...register('place')} placeholder={t('form.place.holder')} />
-            </FormField>
+              </FormField>
             )}
 
             {isPublicActivity && (
               <FormField label={t('form.address.label')}>
                 <Textarea {...register('address')} placeholder={t('form.address.holder')} />
-            </FormField>
+              </FormField>
             )}
 
             {isPublicActivity && (
@@ -225,19 +223,19 @@ function ActivityForm({
                     imageUrl={imageUrl}
                     setUploadableImage={setUploadableImage}
                   />
-                  </Center>
-            </FormField>
+                </Center>
+              </FormField>
             )}
-            </VStack>
-          </Box>
+          </VStack>
+        </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isLoading={isSubmitting} isDisabled={isButtonDisabled} type="submit">
             {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </form>
-      </div>
+          </Button>
+        </Flex>
+      </form>
+    </div>
   );
 }
 

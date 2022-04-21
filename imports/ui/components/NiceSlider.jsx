@@ -45,9 +45,9 @@ function NiceSlider({ images }) {
                   style={{ cursor: 'pointer', margin: '0 auto' }}
                   onClick={() => setToggler(!toggler)}
                 />
-                </Center>
+              </Center>
             ))}
-            </Slider>
+          </Slider>
 
           {images.length > 1 && (
             <Flex justify="space-between" style={arrowsContainerStyle}>
@@ -58,7 +58,7 @@ function NiceSlider({ images }) {
                   icon={<ArrowBackIcon />}
                   onClick={() => this.slider.slickPrev()}
                 />
-                </Box>
+              </Box>
 
               <Box
                 {...iconBoxProps}
@@ -74,8 +74,8 @@ function NiceSlider({ images }) {
                   icon={<ArrowForwardIcon />}
                   onClick={() => this.slider.slickNext()}
                 />
-                </Box>
-          </Flex>
+              </Box>
+            </Flex>
           )}
 
           <FsLightbox
@@ -84,7 +84,7 @@ function NiceSlider({ images }) {
               <img src={img} />
             ))}
           />
-          </Box>
+        </Box>
       )}
     />
   );

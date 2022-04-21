@@ -175,7 +175,7 @@ class NewProcess extends React.Component {
             })}
             type="error"
           />
-          </div>
+        </div>
       );
     }
 
@@ -222,21 +222,21 @@ class NewProcess extends React.Component {
                   <Flex align="center">
                     <Text fontWeight="bold">{t('form.private.label')}</Text>
                     <InfoIcon ml="2" />
-                    </Flex>
-                  </FormLabel>
-                </FormControl>
-              </PopoverTrigger>
+                  </Flex>
+                </FormLabel>
+              </FormControl>
+            </PopoverTrigger>
             <PopoverContent>
               <PopoverCloseButton />
               <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
               <PopoverBody>
                 <Text fontSize="md" mb="2">
                   {t('form.private.tooltip.P1')}
-                  </Text>
+                </Text>
                 <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
 
           <ProcessForm
             defaultValues={formValues}
@@ -245,8 +245,8 @@ class NewProcess extends React.Component {
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}
           />
-          </Box>
-        </Template>
+        </Box>
+      </Template>
     );
   }
 }

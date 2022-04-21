@@ -207,7 +207,7 @@ export default function Settings({ history }) {
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
+        </Box>
       }
     >
       <Tabs align="center">
@@ -216,14 +216,14 @@ export default function Settings({ history }) {
           <Tab>{t('settings.tabs.info')}</Tab>
           <Tab>{t('settings.tabs.menu')}</Tab>
           <Tab>{t('settings.tabs.cats')}</Tab>
-          </TabList>
+        </TabList>
 
         <TabPanels>
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('logo.label')}
-                </Heading>
+              </Heading>
               <Text mb="3">{t('logo.info')}</Text>
               <Center p="3">
                 <Box>
@@ -234,25 +234,25 @@ export default function Settings({ history }) {
                     width={isImage && '120px'}
                     height={isImage && '80px'}
                   />
-                  </Box>
-                </Center>
+                </Box>
+              </Center>
               {localImage && localImage.uploadableImageLocal && (
                 <Center p="2">
                   <Button onClick={() => uploadLogo()}>Confirm</Button>
-              </Center>
+                </Center>
               )}
-              </AlphaContainer>
-            </TabPanel>
+            </AlphaContainer>
+          </TabPanel>
 
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('info.label')}
-                </Heading>
+              </Heading>
               <Text mb="3">{t('info.info')}</Text>
               <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
-              </AlphaContainer>
-            </TabPanel>
+            </AlphaContainer>
+          </TabPanel>
 
           {/* <AlphaContainer>
         <Heading as="h3" size="md">
@@ -279,14 +279,14 @@ export default function Settings({ history }) {
           <TabPanel>
             <AlphaContainer>
               <Menu />
-              </AlphaContainer>
-            </TabPanel>
+            </AlphaContainer>
+          </TabPanel>
 
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('categories.label')}
-                </Heading>
+              </Heading>
               <Text mb="3">{t('categories.info')}</Text>
               <Center>
                 <Wrap p="1" spacing="2" mb="2">
@@ -295,11 +295,11 @@ export default function Settings({ history }) {
                       <Tag colorScheme="messenger">
                         <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
                         <TagCloseButton onClick={() => removeCategory(category._id)} />
-                        </Tag>
-                      </WrapItem>
+                      </Tag>
+                    </WrapItem>
                   ))}
-                  </Wrap>
-                </Center>
+                </Wrap>
+              </Center>
               <form onSubmit={addNewCategory}>
                 <Center>
                   <HStack>
@@ -310,14 +310,14 @@ export default function Settings({ history }) {
                       onChange={(event) => handleCategoryInputChange(event.target.value)}
                     />
                     <Button type="submit">{tc('actions.add')}</Button>
-                    </HStack>
-                  </Center>
-                </form>
-              </AlphaContainer>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Template>
+                  </HStack>
+                </Center>
+              </form>
+            </AlphaContainer>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Template>
   );
 }
 
@@ -325,6 +325,6 @@ function AlphaContainer({ title, children }) {
   return (
     <Box bg="white" mb="8" p="6">
       {children}
-      </Box>
+    </Box>
   );
 }

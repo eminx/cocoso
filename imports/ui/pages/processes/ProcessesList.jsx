@@ -117,16 +117,16 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${
           publicSettings.name
         }`}</title>
-        </Helmet>
+      </Helmet>
       <Box>
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
-                </Button>
-              </Link>
-        </Center>
+              </Button>
+            </Link>
+          </Center>
         )}
         <Box p="4">
           <Tabs onChange={(index) => setFilterBy(index)}>
@@ -135,8 +135,8 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
                 {filterOptions.map((option) => (
                   <Tab key={option.value}>{option.label}</Tab>
                 ))}
-                </TabList>
-              </Center>
+              </TabList>
+            </Center>
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
@@ -145,17 +145,17 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
                       <Link key={process._id} to={`/process/${process._id}`}>
                         <GridThumb image={process.imageUrl} large title={process.title}>
                           {moment(process.creationDate).format('D MMM YYYY')}
-                          </GridThumb>
-                        </Link>
+                        </GridThumb>
+                      </Link>
                     ))}
-                    </SimpleGrid>
-                  </TabPanel>
+                  </SimpleGrid>
+                </TabPanel>
               ))}
-              </TabPanels>
-            </Tabs>
-          </Box>
+            </TabPanels>
+          </Tabs>
         </Box>
       </Box>
+    </Box>
   );
 }
 
@@ -169,40 +169,40 @@ function ProcessItem({ process }) {
           ) : (
             gridItem?.label
           )}
-          </Heading>
+        </Heading>
         <Spacer my="4" />
         <Text as="p" fontSize="xs" alignSelf="flex-end">
           {moment(gridItem.createdAt).format('D MMM YYYY')}
-          </Text>
-        </Box>
+        </Text>
+      </Box>
 
       {thumbHasImage && (
         <Box flexBasis="200px">
           <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
-      </Box>
+        </Box>
       )}
-      </Flex>
+    </Flex>
   );
   return (
     <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
       <Box mr="2">
         <Image w="xs" fit="cover" src={process.imageUrl} />
-        </Box>
+      </Box>
       <Box w="100%">
         <Box>
           <Heading size="md">{process.title}</Heading>
           <Text fontSize="lg" fontWeight="light">
             {process.readingMaterial}
-            </Text>
-          </Box>
+          </Text>
+        </Box>
 
         <Box p="2">
           <Text textAlign="right">{process.adminUsername}</Text>
           <Text fontSize="sm" textAlign="right">
             {moment(process.creationDate).format('D MMM YYYY')}
-            </Text>
-          </Box>
+          </Text>
         </Box>
-      </Flex>
+      </Box>
+    </Flex>
   );
 }

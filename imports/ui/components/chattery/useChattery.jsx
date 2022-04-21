@@ -7,12 +7,10 @@ const useChattery = (contextId, currentUser) =>
   useTracker(() => {
     const subscription = Meteor.subscribe('chat', contextId);
     const chat = Chats.findOne({ contextId });
-    const discussion = chat?.messages?.map((message) => {
-      return {
-        ...message,
-        isFromMe: currentUser && message && message.senderId === currentUser._id,
-      };
-    });
+    const discussion = chat?.messages?.map((message) => ({
+      ...message,
+      isFromMe: currentUser && message && message.senderId === currentUser._id,
+    }));
     return {
       discussion,
       isChatLoading: !subscription.ready(),

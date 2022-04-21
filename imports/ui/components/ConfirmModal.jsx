@@ -38,7 +38,7 @@ function ConfirmModal({
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
-            </AlertDialogHeader>
+          </AlertDialogHeader>
 
           <AlertDialogBody>{children}</AlertDialogBody>
 
@@ -46,15 +46,15 @@ function ConfirmModal({
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
-                </Button>
+              </Button>
               <Button colorScheme="blue" onClick={onConfirm} ml={3} {...confirmButtonProps}>
                 {confirmText || tc('actions.submit')}
-                </Button>
-          </AlertDialogFooter>
+              </Button>
+            </AlertDialogFooter>
           )}
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
   );
 }
 

@@ -166,8 +166,8 @@ class EditProcess extends React.Component {
           <Box p="2">
             <Link to={`/process/${process._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
+            </Link>
+          </Box>
         }
       >
         <Box bg="white" p="6">
@@ -178,13 +178,13 @@ class EditProcess extends React.Component {
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}
           />
-          </Box>
+        </Box>
 
         <Center p="4">
           <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {tc('actions.remove')}
-            </Button>
-          </Center>
+          </Button>
+        </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
@@ -196,8 +196,8 @@ class EditProcess extends React.Component {
           {tc('modals.confirm.delete.body', {
             domain: tc('domains.process').toLowerCase(),
           })}
-          </ConfirmModal>
-        </Template>
+        </ConfirmModal>
+      </Template>
     );
   }
 }

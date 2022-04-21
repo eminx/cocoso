@@ -30,8 +30,8 @@ function Drawer({
         <DrawerBody>{children}</DrawerBody>
 
         <DrawerFooter>{footer}</DrawerFooter>
-        </DrawerContent>
-      </CDrawer>
+      </DrawerContent>
+    </CDrawer>
   );
 }
 

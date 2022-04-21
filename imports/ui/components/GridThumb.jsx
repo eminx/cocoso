@@ -15,10 +15,10 @@ export default function GridThumb({ title, image, large = false, children }) {
       <Box p="4" flexBasis={large ? '50%' : '70%'}>
         <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
           {title}
-          </Heading>
+        </Heading>
         <Spacer my="1" />
         <Box>{children}</Box>
-        </Box>
+      </Box>
 
       {image ? (
         <Box flexBasis={large ? '50%' : 180}>
@@ -30,10 +30,10 @@ export default function GridThumb({ title, image, large = false, children }) {
             w={large ? 'md' : 'xs'}
             h={large ? 400 : 150}
           />
-          </Box>
+        </Box>
       ) : (
         <Box flexBasis={large ? '50%' : 180} h={large ? 400 : 150} bg="pink.100" />
       )}
-      </Flex>
+    </Flex>
   );
 }

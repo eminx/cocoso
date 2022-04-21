@@ -99,10 +99,10 @@ function ResourcePage() {
               <Link to={`/resources/${resource?._id}/edit`}>
                 <Button size="sm" variant="ghost">
                   {tc('actions.update')}
-                  </Button>
-                </Link>
-              </Center>
-            </Template>
+                </Button>
+              </Link>
+            </Center>
+          </Template>
         );
       }}
     />

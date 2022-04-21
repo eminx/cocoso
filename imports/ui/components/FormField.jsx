@@ -8,7 +8,7 @@ function FormField({ children, errorMessage, helperText, label, size = 'sm', ...
       {children}
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
-      </FormControl>
+    </FormControl>
   );
 }
 

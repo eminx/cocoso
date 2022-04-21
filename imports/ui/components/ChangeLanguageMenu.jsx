@@ -17,10 +17,10 @@ export default ChangeLanguage = ({ select, register }) => {
               onClick={() => i18n.changeLanguage(lang)}
             >
               {t(`common:langs.${lang}`)}
-              </MenuItem>
+            </MenuItem>
           ))}
-          </MenuList>
-        </Menu>
+        </MenuList>
+      </Menu>
     );
 
   return (
@@ -28,8 +28,8 @@ export default ChangeLanguage = ({ select, register }) => {
       {i18n.languages.map((lang) => (
         <option key={lang} value={lang}>
           {t(`common:langs.${lang}`)}
-          </option>
+        </option>
       ))}
-      </Select>
+    </Select>
   );
 };

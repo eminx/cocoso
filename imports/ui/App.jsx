@@ -11,6 +11,6 @@ export default function () {
   return (
     <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
       <Routes />
-      </Suspense>
+    </Suspense>
   );
 }

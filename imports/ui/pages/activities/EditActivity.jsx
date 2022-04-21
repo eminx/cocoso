@@ -319,9 +319,9 @@ class EditActivity extends PureComponent {
       datesAndTimes.some((occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK);
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    const isTimesInValid = datesAndTimes.some((dateTime) => {
-      return !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime);
-    });
+    const isTimesInValid = datesAndTimes.some(
+      (dateTime) => !regex.test(dateTime.startTime) || !regex.test(dateTime.endTime)
+    );
 
     return !isTimesInValid && !isConflictHard;
   };
@@ -365,8 +365,8 @@ class EditActivity extends PureComponent {
           <Box pb="2">
             <Link to={`/event/${activity._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
+            </Link>
+          </Box>
         }
       >
         <Box bg="white" p="8">
@@ -392,8 +392,8 @@ class EditActivity extends PureComponent {
                   onChange={this.handleRegistrationSwitch}
                 />
               )}
-              </VStack>
-            </Box>
+            </VStack>
+          </Box>
 
           <ActivityForm
             datesAndTimes={datesAndTimes}
@@ -410,13 +410,13 @@ class EditActivity extends PureComponent {
             isCreating={isLoading}
             isFormValid={isFormValid}
           />
-          </Box>
+        </Box>
 
         <Center p="4">
           <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {tc('actions.remove')}
-            </Button>
-          </Center>
+          </Button>
+        </Center>
 
         <ConfirmModal
           title={tc('actions.submit')}
@@ -428,8 +428,8 @@ class EditActivity extends PureComponent {
           {tc('modals.confirm.delete.body', {
             domain: tc('domains.activity').toLowerCase(),
           })}
-          </ConfirmModal>
-        </Template>
+        </ConfirmModal>
+      </Template>
     );
   }
 }

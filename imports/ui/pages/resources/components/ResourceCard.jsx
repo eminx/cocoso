@@ -38,14 +38,14 @@ export default function ResourceCard({ currentUser, discussion, resource, addNew
       <Box mb="4">
         <Heading size="md" fontWeight="bold">
           {resource.label}
-          </Heading>
+        </Heading>
         {resource.isCombo && <ResourcesForCombo resource={resource} />}
-        </Box>
+      </Box>
       <Tabs variant="enclosed-colored">
         <TabList pl="4">
           <Tab>{t('tabs.info')}</Tab>
           <Tab>{t('tabs.discussion')} </Tab>
-          </TabList>
+        </TabList>
         <TabPanels pt="4">
           <TabPanel p="0">
             {resource?.images && (
@@ -53,21 +53,21 @@ export default function ResourceCard({ currentUser, discussion, resource, addNew
                 {resource.images.length === 1 ? (
                   <Center>
                     <Image src={resource.images[0]} fit="contain" fill />
-                    </Center>
+                  </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
                 )}
-            </Box>
+              </Box>
             )}
             <Box>
               <Box className="text-content" mb="4">
                 {resource.description && renderHTML(resource.description)}
-                </Box>
+              </Box>
               <Text as="p" fontSize="xs">
                 {moment(resource.createdAt).format('D MMM YYYY')}
-                </Text>
-              </Box>
-            </TabPanel>
+              </Text>
+            </Box>
+          </TabPanel>
           <TabPanel p="0">
             {discussion && (
               <div>
@@ -77,11 +77,11 @@ export default function ResourceCard({ currentUser, discussion, resource, addNew
                   removeNotification={removeNotification}
                   isMember={Boolean(currentUser)}
                 />
-            </div>
+              </div>
             )}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Box>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
   );
 }

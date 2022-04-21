@@ -83,30 +83,30 @@ class Page extends PureComponent {
               <Link to="/new-page">
                 <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                   <Trans i18nKey="common:actions.create" />
-                  </Button>
-                </Link>
-          </Center>
+                </Button>
+              </Link>
+            </Center>
           )
         }
       >
         <Helmet>
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-          </Helmet>
+        </Helmet>
 
         <Box bg="white" mb="2" py="4" px="6">
           <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
-          </Box>
+        </Box>
 
         {currentUser && role === 'admin' && (
           <Center p="2">
             <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
               <Button as="span" variant="ghost" size="sm">
                 <Trans i18nKey="common:actions.update" />
-                </Button>
-              </Link>
-        </Center>
+              </Button>
+            </Link>
+          </Center>
         )}
-        </Template>
+      </Template>
     );
   }
 }

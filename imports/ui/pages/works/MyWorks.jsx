@@ -54,7 +54,7 @@ function Works({ history }) {
       leftContent={
         <Box p="2">
           <ListMenu pathname={pathname} list={userMenu} />
-          </Box>
+        </Box>
       }
       rightContent={
         currentUser && (
@@ -66,8 +66,8 @@ function Works({ history }) {
               textTransform="uppercase"
             >
               {tc('actions.create')}
-              </Button>
-        </Center>
+            </Button>
+          </Center>
         )
       }
     >
@@ -76,13 +76,13 @@ function Works({ history }) {
           {(work) => (
             <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
               <WorkThumb work={work} />
-              </Link>
+            </Link>
           )}
-          </NiceList>
+        </NiceList>
       ) : (
         <Alert margin="medium" message={t('message.guest')} />
       )}
-      </Template>
+    </Template>
   );
 }
 
@@ -90,14 +90,14 @@ const WorkItem = ({ work }) => (
   <Flex bg="white" p="2" w="100%">
     <Box mr="4">
       <Image boxSize="140px" h="180px" objectFit="cover" src={work.images && work.images[0]} />
-      </Box>
+    </Box>
     <Box>
       <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
         {work.title}
-        </Heading>
+      </Heading>
       <Text fontWeight="light">{work.shortDescription}</Text>
-      </Box>
-    </Flex>
+    </Box>
+  </Flex>
 );
 
 export default Works;

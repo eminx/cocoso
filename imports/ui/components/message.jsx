@@ -27,13 +27,13 @@ const Alert = ({ children, isClosable, message, type = 'error', ...otherProps })
           <Box flex="1">
             <AlertTitle>
               {success ? 'Success!' : info ? 'Info' : warning ? 'Warning' : 'Error'}
-              </AlertTitle>
+            </AlertTitle>
             <AlertDescription display="block">{children || message}</AlertDescription>
-            </Box>
+          </Box>
           {isClosable && <CloseButton position="absolute" right="8px" top="8px" />}
-          </CAlert>
-        </Box>
-      </Center>
+        </CAlert>
+      </Box>
+    </Center>
   );
 };
 
