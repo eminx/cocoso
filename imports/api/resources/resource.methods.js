@@ -11,7 +11,9 @@ function validateLabel(label, host, resourceId) {
   if (resourceId) resourceQuery._id = { $ne: resourceId };
   // validate label
   if (label.length < 3) {
-    throw new Meteor.Error('Resource name is too short. Minimum 3 letters required');
+    throw new Meteor.Error(
+      'Resource name is too short. Minimum 3 letters required'
+    );
   } else if (Resources.find(resourceQuery).fetch().length > 0) {
     throw new Meteor.Error('There already is a resource with this name');
   }
@@ -45,14 +47,16 @@ Meteor.methods({
           resourceId,
           authorId: user._id,
         },
-        { fields: {
-          title: 1,
-          longDescription: 1,
-          datesAndTimes: 1,
-        } },
+        {
+          fields: {
+            title: 1,
+            longDescription: 1,
+            datesAndTimes: 1,
+          },
+        }
       ).fetch();
 
-      return bookings.map(booking => ({
+      return bookings.map((booking) => ({
         _id: booking._id,
         startDate: booking.datesAndTimes[0].startDate,
         startTime: booking.datesAndTimes[0].startTime,
@@ -71,25 +75,34 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     const resourceIndex = Resources.find({ host }).count();
-    if (!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host)) {
+    if (
+      !isContributorOrAdmin(user, currentHost) ||
+      !validateLabel(values.label, host)
+    ) {
       return 'Not valid user or label!';
     }
     try {
-      const newResourceId = Resources.insert({
-        ...values,
-        host,
-        userId: user._id,
-        resourceIndex,
-        createdBy: user.username,
-        createdAt: new Date(),
-      },
-      () => {
-        Meteor.call('createChat', values.label, newResourceId, (error, result) => {
-          if (error) {
-            console.log('Chat is not created due to error: ', error);
-          }
-        });
-      },
+      const newResourceId = Resources.insert(
+        {
+          ...values,
+          host,
+          userId: user._id,
+          resourceIndex,
+          createdBy: user.username,
+          createdAt: new Date(),
+        },
+        () => {
+          Meteor.call(
+            'createChat',
+            values.label,
+            newResourceId,
+            (error, result) => {
+              if (error) {
+                console.log('Chat is not created due to error: ', error);
+              }
+            }
+          );
+        }
       );
       return newResourceId;
     } catch (error) {
@@ -101,7 +114,10 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
-    if (!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host, resourceId)) {
+    if (
+      !isContributorOrAdmin(user, currentHost) ||
+      !validateLabel(values.label, host, resourceId)
+    ) {
       throw new Meteor.Error(error, 'Not allowed');
     }
 
@@ -130,5 +146,4 @@ Meteor.methods({
       }
     }
   },
-
 });

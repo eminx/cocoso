@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Resources from '../resources/resource';
 
-const getHost = self => self.connection.httpHeaders.host;
+const getHost = (self) => self.connection.httpHeaders.host;
 
 const siteUrl = Meteor.absoluteUrl();
 
@@ -15,11 +15,11 @@ const getResourceIndex = (resource, host) => {
         isCombo: 1,
         resourceIndex: 1,
       },
-    },
+    }
   ).fetch();
 
   if (resources.length > 0) {
-    const resItem = resources.find(res => res.label === resource);
+    const resItem = resources.find((res) => res.label === resource);
     if (resItem?.isCombo) {
       return '99';
     }
@@ -27,8 +27,4 @@ const getResourceIndex = (resource, host) => {
   }
 };
 
-export {
-  getHost,
-  siteUrl,
-  getResourceIndex,
-};
+export { getHost, siteUrl, getResourceIndex };

@@ -27,7 +27,7 @@ Meteor.publish('processes', function () {
     {
       fields,
       sort: { creationDate: 1 },
-    },
+    }
   );
 });
 

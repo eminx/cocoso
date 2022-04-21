@@ -24,7 +24,7 @@ function getHslValuesFromLength(length) {
   const share = Math.round(360 / length);
   for (let i = 0; i < length; i += 1) {
     colorValues.push(
-      `hsl(${(share * (i + 1)) - (share / 2)}, ${saturation}, ${lightness})`,
+      `hsl(${share * (i + 1) - share / 2}, ${saturation}, ${lightness})`
     );
   }
 

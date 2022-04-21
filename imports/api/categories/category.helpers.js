@@ -11,12 +11,7 @@ const catColors = [
   'hsla(334, 62%, 80%, 0.7)',
 ];
 
-const isUserAdmin = (members, userId) => members.some(
-  member => member.id === userId && member.role === 'admin',
-);
+const isUserAdmin = (members, userId) =>
+  members.some((member) => member.id === userId && member.role === 'admin');
 
-
-export {
-  catColors,
-  isUserAdmin,
-};
+export { catColors, isUserAdmin };

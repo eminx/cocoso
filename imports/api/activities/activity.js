@@ -17,7 +17,9 @@ Activities.schema = new SimpleSchema({
     optional: true,
     custom() {
       if (this.field('isPublicActivity').value) {
-        if (this.value === null || this.value === '') { return SimpleSchema.ErrorTypes.REQUIRED; }
+        if (this.value === null || this.value === '') {
+          return SimpleSchema.ErrorTypes.REQUIRED;
+        }
       }
     },
   },
@@ -36,7 +38,6 @@ Activities.schema = new SimpleSchema({
 
   datesAndTimes: { type: Array },
   'datesAndTimes.$': new SimpleSchema({
-
     startDate: { type: String },
     startTime: { type: String },
     endDate: { type: String },
@@ -46,15 +47,16 @@ Activities.schema = new SimpleSchema({
     conflict: { type: String, optional: true },
 
     attendees: { type: Array, optional: true },
-    'attendees.$': { type: new SimpleSchema({
-      email: Schemas.Email,
-      firstName: { type: String },
-      lastName: { type: String },
-      numberOfPeople: { type: SimpleSchema.Integer },
-      registerDate: { type: Date },
-    }),
-    optional: true },
-
+    'attendees.$': {
+      type: new SimpleSchema({
+        email: Schemas.Email,
+        firstName: { type: String },
+        lastName: { type: String },
+        numberOfPeople: { type: SimpleSchema.Integer },
+        registerDate: { type: Date },
+      }),
+      optional: true,
+    },
   }),
 
   practicalInfo: { type: String, optional: true }, // null

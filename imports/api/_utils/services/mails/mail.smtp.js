@@ -4,10 +4,7 @@ import { check } from 'meteor/check';
 
 import { getHost } from '../../shared';
 import Hosts from '../../../hosts/host';
-import {
-  isValidEmail,
-  getEmailBody,
-} from './mail.helpers';
+import { isValidEmail, getEmailBody } from './mail.helpers';
 
 const publicSettings = Meteor.settings.public;
 
@@ -60,7 +57,7 @@ Meteor.methods({
       'sendEmail',
       user.emails[0].address,
       email.subject,
-      getEmailBody(email, user.username),
+      getEmailBody(email, user.username)
     );
   },
 
@@ -74,7 +71,7 @@ Meteor.methods({
       'sendEmail',
       user.emails[0].address,
       email.subject,
-      getEmailBody(email, user.username),
+      getEmailBody(email, user.username)
     );
   },
 
@@ -88,7 +85,7 @@ Meteor.methods({
       'sendEmail',
       user.emails[0].address,
       email.subject,
-      getEmailBody(email, user.username),
+      getEmailBody(email, user.username)
     );
   },
 });

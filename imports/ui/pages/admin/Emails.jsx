@@ -25,7 +25,7 @@ import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 import { adminMenu } from '../../utils/constants/general';
-import { defaultEmails } from '../../../startup/@/constants';
+import { defaultEmails } from '../../../startup/constants';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);

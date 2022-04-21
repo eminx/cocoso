@@ -41,7 +41,8 @@ Meteor.methods({
     }
     const host = getHost(this);
 
-    const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages?.length;
+    const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages
+      ?.length;
 
     try {
       Chats.update(
@@ -60,7 +61,7 @@ Meteor.methods({
             isNotificationOn: true,
             lastMessageBy: user._id,
           },
-        },
+        }
       );
       if (values.context === 'process') {
         Meteor.call('createProcessNotification', values, unSeenIndex);
@@ -81,8 +82,8 @@ Meteor.methods({
     try {
       const theProcess = Processes.findOne(contextId);
       const theOthers = theProcess.members
-        .filter(member => member.memberId !== user._id)
-        .map(other => Meteor.users.findOne(other.memberId));
+        .filter((member) => member.memberId !== user._id)
+        .map((other) => Meteor.users.findOne(other.memberId));
       theOthers.forEach((member) => {
         let contextIdIndex = -1;
         for (let i = 0; i < member.notifications.length; i++) {
@@ -138,7 +139,7 @@ Meteor.methods({
       }
 
       const notificationIndex = notifications.findIndex(
-        notification => notification.contextId === contextId,
+        (notification) => notification.contextId === contextId
       );
 
       if (notificationIndex < 0) {
@@ -150,12 +151,12 @@ Meteor.methods({
       let newNotifications;
       if (notifications[notificationIndex].count === 0) {
         newNotifications = notifications.filter(
-          (notification, index) => index !== notificationIndex,
+          (notification, index) => index !== notificationIndex
         );
       } else {
         const newUnSeenIndexes = notifications[
           notificationIndex
-        ].unSeenIndexes.filter(unSeenIndex => unSeenIndex !== messageIndex);
+        ].unSeenIndexes.filter((unSeenIndex) => unSeenIndex !== messageIndex);
         notifications[notificationIndex].unSeenIndexes = newUnSeenIndexes;
         newNotifications = notifications;
       }

@@ -6,7 +6,6 @@ import Works from '../works/work';
 import Processes from '../processes/process';
 
 Meteor.methods({
-
   createAccount(values) {
     check(values.email, String);
     check(values.username, String);
@@ -31,14 +30,14 @@ Meteor.methods({
 
     if (
       currentHost.members &&
-      currentHost.members.some(member => member.id === user._id)
+      currentHost.members.some((member) => member.id === user._id)
     ) {
       throw new Meteor.Error('Host already does have you as a participant');
     }
 
     if (
       user.memberships &&
-      user.memberships.some(membership => membership.host === host)
+      user.memberships.some((membership) => membership.host === host)
     ) {
       throw new Meteor.Error('You are already a participant');
     }
@@ -56,7 +55,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
 
       Meteor.users.update(user._id, {
@@ -80,13 +79,13 @@ Meteor.methods({
 
     const currentHost = Hosts.findOne({ host });
 
-    if (!currentHost.members.some(member => member.id === user._id)) {
+    if (!currentHost.members.some((member) => member.id === user._id)) {
       throw new Meteor.Error(
-        'Host already does not have you as a participant ',
+        'Host already does not have you as a participant '
       );
     }
 
-    if (!user.memberships.some(membership => membership.host === host)) {
+    if (!user.memberships.some((membership) => membership.host === host)) {
       throw new Meteor.Error('You are already not a participant');
     }
 
@@ -163,7 +162,7 @@ Meteor.methods({
         },
         {
           multi: true,
-        },
+        }
       );
 
       Processes.update(
@@ -177,7 +176,7 @@ Meteor.methods({
         },
         {
           multi: true,
-        },
+        }
       );
     } catch (error) {
       console.log(error);

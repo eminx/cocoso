@@ -11,7 +11,7 @@ function Home() {
     return 'loading...';
   }
 
-  const visibleMenu = menu.filter(item => item.isVisible);
+  const visibleMenu = menu.filter((item) => item.isVisible);
 
   const path = visibleMenu[0].name;
 

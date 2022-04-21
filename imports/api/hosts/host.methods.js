@@ -6,7 +6,7 @@ import {
   defaultMenu,
   defaultMainColor,
   defaultEmails,
-} from '../../startup/@/constants';
+} from '../../startup/constants';
 
 Meteor.methods({
   createNewHost(values) {
@@ -84,7 +84,7 @@ Meteor.methods({
         };
       }
     });
-    const validMembers = members.filter(member => member && member.id);
+    const validMembers = members.filter((member) => member && member.id);
     return validMembers;
   },
 });

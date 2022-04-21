@@ -31,7 +31,7 @@ Meteor.publish('membersForPublic', function () {
         firstName: true,
         lastName: true,
       },
-    },
+    }
   );
 });
 

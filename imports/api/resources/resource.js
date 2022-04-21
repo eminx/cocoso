@@ -18,13 +18,15 @@ Resources.schema = new SimpleSchema({
   resourceIndex: { type: SimpleSchema.Integer },
 
   resourcesForCombo: { type: Array, defaultValue: [] },
-  'resourcesForCombo.$': { type: new SimpleSchema({
-    _id: { type: String },
-    label: { type: String },
-    description: { type: String, optional: true },
-    resourceIndex: { type: SimpleSchema.Integer },
-  }),
-  optional: true },
+  'resourcesForCombo.$': {
+    type: new SimpleSchema({
+      _id: { type: String },
+      label: { type: String },
+      description: { type: String, optional: true },
+      resourceIndex: { type: SimpleSchema.Integer },
+    }),
+    optional: true,
+  },
 
   createdBy: { type: String, optional: true },
   createdAt: { type: Date, optional: true },

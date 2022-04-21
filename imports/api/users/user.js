@@ -25,57 +25,69 @@ Users.schema.UserProfile = {
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
 
   memberships: { type: Array, defaultValue: [] },
-  'memberships.$': { type: new SimpleSchema({
-    host: Schemas.Hostname,
-    role: { type: String },
-    date: { type: Date },
-  }),
-  optional: true },
+  'memberships.$': {
+    type: new SimpleSchema({
+      host: Schemas.Hostname,
+      role: { type: String },
+      date: { type: Date },
+    }),
+    optional: true,
+  },
 
   processes: { type: Array, defaultValue: [] },
-  'processes.$': { type: new SimpleSchema({
-    processId: Schemas.Id,
-    name: { type: String },
-    isAdmin: { type: Boolean },
-    joinDate: { type: Date },
-  }),
-  optional: true },
+  'processes.$': {
+    type: new SimpleSchema({
+      processId: Schemas.Id,
+      name: { type: String },
+      isAdmin: { type: Boolean },
+      joinDate: { type: Date },
+    }),
+    optional: true,
+  },
 
   notifications: { type: Array, defaultValue: [] },
-  'notifications.$': { type: new SimpleSchema({
-    contextId: Schemas.Id,
-    context: { type: String },
-    count: { type: SimpleSchema.Integer },
-    title: { type: String, optional: true },
-    unSeenIndexes: { type: Array, defaultValue: [], optional: true },
-    'unSeenIndexes.$': {
-      type: SimpleSchema.Integer,
-      optional: true,
-    },
-  }),
-  optional: true },
+  'notifications.$': {
+    type: new SimpleSchema({
+      contextId: Schemas.Id,
+      context: { type: String },
+      count: { type: SimpleSchema.Integer },
+      title: { type: String, optional: true },
+      unSeenIndexes: { type: Array, defaultValue: [], optional: true },
+      'unSeenIndexes.$': {
+        type: SimpleSchema.Integer,
+        optional: true,
+      },
+    }),
+    optional: true,
+  },
 
   attending: { type: Array, optional: true },
-  'attending.$': { type: new SimpleSchema({
-    groupId: Schemas.Id,
-    name: { type: String },
-    meAdmin: { type: Boolean },
-    joinDate: { type: Date },
-  }),
-  optional: true },
+  'attending.$': {
+    type: new SimpleSchema({
+      groupId: Schemas.Id,
+      name: { type: String },
+      meAdmin: { type: Boolean },
+      joinDate: { type: Date },
+    }),
+    optional: true,
+  },
 
-  verifiedBy: { type: new SimpleSchema({
-    userId: Schemas.Id,
-    username: { type: String },
-    date: { type: Date },
-  }),
-  optional: true },
-  unVerifiedBy: { type: new SimpleSchema({
-    userId: Schemas.Id,
-    username: { type: String },
-    date: { type: Date },
-  }),
-  optional: true },
+  verifiedBy: {
+    type: new SimpleSchema({
+      userId: Schemas.Id,
+      username: { type: String },
+      date: { type: Date },
+    }),
+    optional: true,
+  },
+  unVerifiedBy: {
+    type: new SimpleSchema({
+      userId: Schemas.Id,
+      username: { type: String },
+      date: { type: Date },
+    }),
+    optional: true,
+  },
 };
 
 // Ensuring every user has an email address, should be in server-side code
@@ -85,9 +97,11 @@ Accounts.validateNewUser((user) => {
   return true;
 });
 
-Users.attachSchema(new SimpleSchema({
-  ...Users.schema.AccountBase,
-  ...Users.schema.UserProfile,
-}));
+Users.attachSchema(
+  new SimpleSchema({
+    ...Users.schema.AccountBase,
+    ...Users.schema.UserProfile,
+  })
+);
 
 export default Users;

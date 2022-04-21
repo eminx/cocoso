@@ -3,11 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import Hosts from '/imports/api/hosts/host';
 import Pages from '/imports/api/pages/page';
-import {
-  defaultMainColor,
-  defaultMenu,
-  defaultEmails,
-} from '../../startup/@/constants';
+import { defaultMainColor, defaultMenu, defaultEmails } from '../constants';
 
 const username = 'ilkergonenc';
 const email = 'ilkergonenc@gmail.com';

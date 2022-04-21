@@ -12,7 +12,7 @@ Migrations.add({
     Resources.update(
       {},
       { $unset: { authorFirstName: true } },
-      { multi: true },
+      { multi: true }
     );
     Resources.update({}, { $unset: { authorLastName: true } }, { multi: true });
   },
@@ -22,15 +22,15 @@ Migrations.add({
       const user = Meteor.users.findOne(item.authorId);
       Resources.update(
         { _id: item._id },
-        { $set: { authorAvatar: user.avatar } },
+        { $set: { authorAvatar: user.avatar } }
       );
       Resources.update(
         { _id: item._id },
-        { $set: { authorFirstName: user.firstName } },
+        { $set: { authorFirstName: user.firstName } }
       );
       Resources.update(
         { _id: item._id },
-        { $set: { authorLastName: user.lastName } },
+        { $set: { authorLastName: user.lastName } }
       );
     });
   },
@@ -70,7 +70,7 @@ Migrations.add({
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
-        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } },
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
       ).fetch();
       Resources.update(item._id, { $set: { resourcesForCombo } });
     });
@@ -86,7 +86,7 @@ Migrations.add({
       (item) => {
         const createdAt = item.creationDate;
         Resources.update(item._id, { $set: { createdAt } });
-      },
+      }
     );
     Resources.update({}, { $unset: { creationDate: true } }, { multi: true });
   },
@@ -109,7 +109,7 @@ Migrations.add({
       (item) => {
         const updatedAt = item.latestUpdate;
         Resources.update(item._id, { $set: { updatedAt } });
-      },
+      }
     );
     Resources.update({}, { $unset: { latestUpdate: true } }, { multi: true });
   },
@@ -153,7 +153,7 @@ Migrations.add({
       (item) => {
         const createdBy = item.authorUsername;
         Resources.update(item._id, { $set: { createdBy } });
-      },
+      }
     );
     Resources.update({}, { $unset: { authorUsername: true } }, { multi: true });
   },
@@ -173,7 +173,7 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     await Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
-      if (!item.settings.menu.find(item => item?.name === 'resource')) {
+      if (!item.settings.menu.find((item) => item?.name === 'resource')) {
         const menu = [
           ...item.settings.menu,
           {
@@ -207,7 +207,7 @@ Migrations.add({
     await Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
-        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } },
+        { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
       ).fetch();
       Resources.update(item._id, { $set: { resourcesForCombo } });
     });
@@ -230,21 +230,27 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     await Activities.find().forEach((item) => {
-      Activities.update({ _id: item._id }, {
-        $set: {
-          isExclusiveActivity: true,
-        },
-      });
+      Activities.update(
+        { _id: item._id },
+        {
+          $set: {
+            isExclusiveActivity: true,
+          },
+        }
+      );
     });
   },
   async down() {
     console.log('down to', this.version - 1);
     await Activities.find().forEach((item) => {
-      Activities.update({ _id: item._id }, {
-        $unset: {
-          isExclusiveActivity: 1,
-        },
-      });
+      Activities.update(
+        { _id: item._id },
+        {
+          $unset: {
+            isExclusiveActivity: 1,
+          },
+        }
+      );
     });
   },
 });

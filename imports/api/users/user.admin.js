@@ -4,11 +4,11 @@ import Hosts from '../hosts/host';
 import { isContributorOrAdmin, isContributor } from './user.roles';
 
 const publicSettings = Meteor.settings.public;
-const getVerifiedEmailText = username => `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${publicSettings.name}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${publicSettings.name} Team`;
+const getVerifiedEmailText = (username) =>
+  `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${publicSettings.name}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${publicSettings.name} Team`;
 
-const isUserAdmin = (members, userId) => members.some(
-  member => member.id === userId && member.role === 'admin',
-);
+const isUserAdmin = (members, userId) =>
+  members.some((member) => member.id === userId && member.role === 'admin');
 
 Meteor.methods({
   setAsAdmin(memberId) {
@@ -25,10 +25,11 @@ Meteor.methods({
 
     if (
       !member.memberships ||
-      !member.memberships.some(membership => (
-        membership.host === host &&
+      !member.memberships.some(
+        (membership) =>
+          membership.host === host &&
           ['contributor', 'participant'].includes(membership.role)
-      ))
+      )
     ) {
       throw new Meteor.Error('User is not a participant or contributor');
     }
@@ -48,7 +49,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
       Hosts.update(
         { _id: currentHost._id, 'members.id': memberId },
@@ -61,7 +62,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
       Meteor.call('sendNewAdminEmail', memberId);
     } catch (error) {
@@ -82,10 +83,13 @@ Meteor.methods({
     if (
       !member ||
       !member.memberships ||
-      !member.memberships.some(membership => membership.host === host && membership.role === 'participant')
+      !member.memberships.some(
+        (membership) =>
+          membership.host === host && membership.role === 'participant'
+      )
     ) {
       throw new Meteor.Error(
-        'Some error occured... Sorry, your inquiry could not be done',
+        'Some error occured... Sorry, your inquiry could not be done'
       );
     }
 
@@ -104,7 +108,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
       Hosts.update(
         { _id: currentHost._id, 'members.id': memberId },
@@ -117,7 +121,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
       Meteor.call('sendNewContributorEmail', memberId);
     } catch (error) {
@@ -155,7 +159,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
       Hosts.update(
         { _id: currentHost._id, 'members.id': memberId },
@@ -168,7 +172,7 @@ Meteor.methods({
               date: new Date(),
             },
           },
-        },
+        }
       );
 
       // const currentHost = Hosts.findOne({ host });
@@ -201,7 +205,7 @@ Meteor.methods({
           $set: {
             settings: newSettings,
           },
-        },
+        }
       );
     } catch (error) {
       throw new Meteor.Error(error);
@@ -225,7 +229,7 @@ Meteor.methods({
           $set: {
             logo: image,
           },
-        },
+        }
       );
     } catch (error) {
       throw new Meteor.Error(error);
@@ -255,7 +259,7 @@ Meteor.methods({
           $set: {
             settings: newSettings,
           },
-        },
+        }
       );
     } catch (error) {
       throw new Meteor.Error(error);
@@ -301,7 +305,7 @@ Meteor.methods({
           $set: {
             emails: newEmails,
           },
-        },
+        }
       );
     } catch (error) {
       throw new Meteor.Error(error);

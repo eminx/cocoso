@@ -29,7 +29,7 @@ Meteor.publish('activities', function (onlyPublic = false) {
         host,
         isPublished: true,
         isPublicActivity: true,
-      },
+      }
       // { fields: publicFields }
     );
   }

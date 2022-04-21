@@ -72,8 +72,4 @@ const defaultEmails = [
   },
 ];
 
-export {
-  defaultMenu,
-  defaultMainColor,
-  defaultEmails,
-};
+export { defaultMenu, defaultMainColor, defaultEmails };

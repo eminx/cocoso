@@ -3,12 +3,14 @@ import { getHost } from '../_utils/shared';
 import Documents from './document';
 
 Meteor.methods({
-
   getDocumentsByAttachments(attachedTo) {
     const host = getHost(this);
-    const sort = { };
+    const sort = {};
     const fields = Documents.publicFields;
-    const documents = Documents.find({ host, attachedTo }, { sort, fields }).fetch();
+    const documents = Documents.find(
+      { host, attachedTo },
+      { sort, fields }
+    ).fetch();
     return documents;
   },
 

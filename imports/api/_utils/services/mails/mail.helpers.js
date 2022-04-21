@@ -3,9 +3,7 @@ const isValidEmail = (email) => {
   return re.test(email);
 };
 
-const getEmailBody = (email, username) => `${email.appeal} ${username},\n${email.body}`;
+const getEmailBody = (email, username) =>
+  `${email.appeal} ${username},\n${email.body}`;
 
-export {
-  isValidEmail,
-  getEmailBody,
-};
+export { isValidEmail, getEmailBody };

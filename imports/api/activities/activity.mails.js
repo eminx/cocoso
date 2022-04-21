@@ -4,12 +4,14 @@ const getRegistrationEmailBody = (
   occurence,
   activityId,
   hostName,
-  host,
+  host
 ) => `
   <p>Hi ${firstName},</p>
   <p>This is a confirmation email to inform you that you have successfully signed up for this event.</p>
   <p>
-    You have registered to come ${numberOfPeople} ${numberOfPeople === 1 ? 'person' : 'people'} 
+    You have registered to come ${numberOfPeople} ${
+  numberOfPeople === 1 ? 'person' : 'people'
+} 
     in total for the event on ${occurence.startDate} at ${occurence.startTime}.
   </p>
   <p>
@@ -26,7 +28,7 @@ const getUnregistrationEmailBody = (
   occurence,
   activityId,
   hostName,
-  host,
+  host
 ) => `
   <p>Hi ${firstName},</p>
   <p>This is a confirmation email to inform you that you have successfully removed your registration from this event.</p>
@@ -37,7 +39,4 @@ const getUnregistrationEmailBody = (
     <br />${hostName} Team
   </p>`;
 
-export {
-  getRegistrationEmailBody,
-  getUnregistrationEmailBody,
-};
+export { getRegistrationEmailBody, getUnregistrationEmailBody };

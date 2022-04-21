@@ -27,7 +27,7 @@
   "scripts": {
     "start": "meteor run --settings private/settings.json",
     "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production",
-    "lint": "eslint . --fix"
+    "lint": "eslint ."
   },
   "theme": {
     "primary-color": "orange"

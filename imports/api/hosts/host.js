@@ -63,7 +63,6 @@ Hosts.schema = new SimpleSchema({
   'unVerifiedBy.username': { type: String },
   'unVerifiedBy.userId': { type: String },
   'unVerifiedBy.date': { type: Date },
-
 });
 
 Hosts.attachSchema(Hosts.schema);
