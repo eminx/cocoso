@@ -53,7 +53,7 @@ Processes.schema = new SimpleSchema({
       resourceId: { type: Schemas.Id, optional: true },
       resourceIndex: { type: String, optional: true },
 
-      attendees: { type: Array },
+      attendees: { type: Array, optional: true },
       'attendees.$': {
         type: new SimpleSchema({
           memberId: Schemas.Id,

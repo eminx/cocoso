@@ -239,22 +239,19 @@ Meteor.methods({
       throw new Meteor.Error('You are not the admin!');
     }
 
-    const meetings = [
+    const newMeetings = [
       ...theProcess.meetings,
-      [
-        {
-          ...newMeeting,
-          attendees: [],
-          resourceIndex: getResourceIndex(newMeeting.resource, host),
-        },
-      ],
+      {
+        ...newMeeting,
+        attendees: [],
+        resourceIndex: getResourceIndex(newMeeting.resource, host),
+      },
     ];
-    const sortedMeetings = meetings.sort(compareForSort);
-
+    const sortedNewMeetings = newMeetings.sort(compareForSort);
     try {
       Processes.update(processId, {
         $set: {
-          meetings: sortedMeetings,
+          meetings: sortedNewMeetings,
         },
       });
     } catch (error) {

@@ -299,9 +299,9 @@ class Process extends Component {
   addMeeting = () => {
     const { newMeeting } = this.state;
     const { process, t } = this.props;
-    newMeeting.endDate = newMeeting.startDate;
-
-    Meteor.call('addProcessMeeting', newMeeting, process._id, (error, respond) => {
+    const meetingToAdd = { ...newMeeting };
+    meetingToAdd.endDate = newMeeting.startDate;
+    Meteor.call('addProcessMeeting', meetingToAdd, process._id, (error, respond) => {
       if (error) {
         console.log('error', error);
         message.error(error.error);
