@@ -26,7 +26,8 @@
   "homepage": "https://github.com/eminx/cocoso#readme",
   "scripts": {
     "start": "meteor run --settings private/settings.json",
-    "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production"
+    "analyze": "meteor run --settings private/settings.json --extra-packages bundle-visualizer --production",
+    "lint": "eslint . --fix"
   },
   "theme": {
     "primary-color": "orange"
