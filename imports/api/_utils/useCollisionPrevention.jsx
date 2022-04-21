@@ -11,11 +11,7 @@ import Resources from '../resources/resource';
 import Activities from '../activities/activity';
 import Processes from '../processes/process';
 
-const useCollisionPrevention = (
-  selectedResource,
-  selectedBookings,
-  counterValue
-) =>
+const useCollisionPrevention = (selectedResource, selectedBookings, counterValue) =>
   useTracker(() => {
     const resourcesSub = Meteor.subscribe('resources');
     const resources = Resources ? Resources.find().fetch() : null;
@@ -31,11 +27,7 @@ const useCollisionPrevention = (
       return null;
     }
 
-    const allBookings = parseAllBookingsWithResources(
-      activities,
-      processes,
-      resources
-    );
+    const allBookings = parseAllBookingsWithResources(activities, processes, resources);
 
     const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
       selectedResource,

@@ -25,7 +25,7 @@ import { localeSort } from '../utils/shared';
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
 
-let emptyDateAndTime = {
+const emptyDateAndTime = {
   startDate: today,
   endDate: today,
   startTime: '00:00',
@@ -77,7 +77,7 @@ function ActivityForm({
       if (index === recurrenceIndex) {
         item[entity] = date;
         if (entity === 'startDate' && !item.isRange) {
-          item['endDate'] = date;
+          item.endDate = date;
         }
       }
       return item;
@@ -118,7 +118,7 @@ function ActivityForm({
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.resource.label')}
-          </Heading>
+            </Heading>
           <FormField>
             <Select
               {...register('resourceId', { required: true })}
@@ -134,22 +134,19 @@ function ActivityForm({
                     value={option._id}
                   >
                     {option.isCombo
-                      ? option.label +
-                        ': [' +
-                        option.resourcesForCombo.map((res, i) => res.label) +
-                        ']'
+                      ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
                       : option.label}
-                  </option>
+                    </option>
                 );
               })}
-            </Select>
-          </FormField>
-        </Box>
+              </Select>
+            </FormField>
+          </Box>
 
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.occurences.label')}
-          </Heading>
+            </Heading>
 
           <Box mb="4">
             {datesAndTimes.map((recurrence, index) => (
@@ -159,60 +156,40 @@ function ActivityForm({
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
                 isNotDeletable={index === 0}
-                handleCapacityChange={(value) =>
-                  handleCapacityChange(value, index)
-                }
-                handleStartDateChange={(date) =>
-                  handleDateChange(date, index, 'startDate')
-                }
-                handleEndDateChange={(date) =>
-                  handleDateChange(date, index, 'endDate')
-                }
-                handleStartTimeChange={(time) =>
-                  handleDateChange(time, index, 'startTime')
-                }
-                handleEndTimeChange={(time) =>
-                  handleDateChange(time, index, 'endTime')
-                }
+                handleCapacityChange={(value) => handleCapacityChange(value, index)}
+                handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
+                handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
+                handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
+                handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
                 handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
               />
             ))}
             <Center p="6" border="1px solid #ccc">
-              <IconButton
-                size="lg"
-                onClick={addRecurrence}
-                icon={<AddIcon />}
-              />
-            </Center>
+              <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
+              </Center>
+            </Box>
           </Box>
-        </Box>
 
         <Box mb="8">
           <Heading mb="4" size="md">
             {t('form.details.label')}
-          </Heading>
+            </Heading>
 
           <VStack spacing="6">
-            <FormField
-              label={t('form.title.label')}
-              helperText={t('form.title.helper')}
-            >
+            <FormField label={t('form.title.label')} helperText={t('form.title.helper')}>
               <Input
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
               />
-            </FormField>
+              </FormField>
 
             {isPublicActivity && (
-              <FormField
-                label={t('form.subtitle.label')}
-                helperText={t('form.subtitle.helper')}
-              >
+              <FormField label={t('form.subtitle.label')} helperText={t('form.subtitle.helper')}>
                 <Input
                   {...register('subTitle', { required: true })}
                   placeholder={t('form.subtitle.holder')}
                 />
-              </FormField>
+            </FormField>
             )}
 
             <FormField label={t('form.desc.label')}>
@@ -220,40 +197,27 @@ function ActivityForm({
                 control={control}
                 name="longDescription"
                 render={({ field }) => (
-                  <ReactQuill
-                    {...field}
-                    formats={editorFormats}
-                    modules={editorModules}
-                  />
+                  <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
                 )}
               />
-            </FormField>
+              </FormField>
 
             {isPublicActivity && (
               <FormField label={t('form.place.label')}>
-                <Input
-                  {...register('place')}
-                  placeholder={t('form.place.holder')}
-                />
-              </FormField>
+                <Input {...register('place')} placeholder={t('form.place.holder')} />
+            </FormField>
             )}
 
             {isPublicActivity && (
               <FormField label={t('form.address.label')}>
-                <Textarea
-                  {...register('address')}
-                  placeholder={t('form.address.holder')}
-                />
-              </FormField>
+                <Textarea {...register('address')} placeholder={t('form.address.holder')} />
+            </FormField>
             )}
 
             {isPublicActivity && (
               <FormField
                 label={t('form.image.label')}
-                helperText={
-                  (uploadableImageLocal || imageUrl) &&
-                  tc('plugins.fileDropper.replace')
-                }
+                helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
               >
                 <Center>
                   <FileDropper
@@ -261,23 +225,19 @@ function ActivityForm({
                     imageUrl={imageUrl}
                     setUploadableImage={setUploadableImage}
                   />
-                </Center>
-              </FormField>
+                  </Center>
+            </FormField>
             )}
-          </VStack>
-        </Box>
+            </VStack>
+          </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button
-            isLoading={isSubmitting}
-            isDisabled={isButtonDisabled}
-            type="submit"
-          >
+          <Button isLoading={isSubmitting} isDisabled={isButtonDisabled} type="submit">
             {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </form>
-    </div>
+            </Button>
+          </Flex>
+        </form>
+      </div>
   );
 }
 

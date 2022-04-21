@@ -21,22 +21,16 @@ const Tag = ({
     } else if (checkable) {
       if (checked) {
         return filterColor;
-      } else {
-        return 'white';
       }
-    } else {
-      return 'teal.500';
+      return 'white';
     }
+    return 'teal.500';
   };
 
   return (
     <Flex
       background={getBackground()}
-      border={
-        gradientBackground && checkable
-          ? 'none'
-          : `2px solid ${filterColor || '#484848'}`
-      }
+      border={gradientBackground && checkable ? 'none' : `2px solid ${filterColor || '#484848'}`}
       borderRadius="2px"
       display="inline-block"
       p={gradientBackground && checkable ? '2px' : '0'}
@@ -57,12 +51,10 @@ const Tag = ({
           fontWeight={checkable ? 'normal' : 'bold'}
         >
           {checkable ? label : label && label.toUpperCase()}
-        </Text>
-      </Box>
-      {removable && (
-        <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />
-      )}
-    </Flex>
+          </Text>
+        </Box>
+      {removable && <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />}
+      </Flex>
   );
 };
 

@@ -37,7 +37,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     if (!isContributorOrAdmin(user, currentHost)) {
-      return 'Not valid user!';
+      throw new Meteor.Error('Not valid user!');
     }
 
     try {

@@ -7,7 +7,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 
 function NewResourcePage({ history }) {
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   const resourceModel = {
     label: '',
@@ -20,12 +20,9 @@ function NewResourcePage({ history }) {
     <Template heading={tc('labels.create', { domain: tc('domains.resource') })}>
       <Breadcrumb />
       <Box bg="white" p="6">
-        <ResourceForm 
-          defaultValues={resourceModel}
-          history={history}
-        />
-      </Box>
-    </Template>
+        <ResourceForm defaultValues={resourceModel} history={history} />
+        </Box>
+      </Template>
   );
 }
 

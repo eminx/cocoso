@@ -38,18 +38,18 @@ class ChatteryWindow extends React.Component {
                 removeNotification={() => removeNotification(index)}
               >
                 {message.content}
-              </ChatteryBubble>
+                </ChatteryBubble>
             );
           })}
+          </div>
         </div>
-      </div>
     );
   }
 }
 
 ChatteryWindow.propTypes = {
   messages: PropTypes.array.isRequired,
-  meta: PropTypes.object
+  meta: PropTypes.object,
 };
 
 export { ChatteryWindow };

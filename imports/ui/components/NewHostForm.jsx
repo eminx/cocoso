@@ -22,38 +22,31 @@ function NewHostForm({ defaultValues, onSubmit }) {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           {hostFields.map((props) => (
-            <FormField
-              key={props.name}
-              label={t('new.' + props.name + '.label')}
-            >
+            <FormField key={props.name} label={t(`new.${props.name}.label`)}>
               {props.textArea ? (
                 <Textarea
                   {...props}
                   {...register(props.name)}
-                  placeholder={t('new.' + props.name + '.holder')}
+                  placeholder={t(`new.${props.name}.holder`)}
                 />
               ) : (
                 <Input
                   {...props}
                   {...register(props.name)}
-                  placeholder={t('new.' + props.name + '.holder')}
+                  placeholder={t(`new.${props.name}.holder`)}
                 />
               )}
-            </FormField>
+              </FormField>
           ))}
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
-              {tc('actions.' + the)}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </div>
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+              {tc(`actions.${the}`)}
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </div>
   );
 }
 

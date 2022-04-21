@@ -17,20 +17,13 @@ function WorkThumb({ work }) {
         <Box pr="2">
           <Heading my="2" fontWeight="bold" size="md" noOfLines={1}>
             {work.title}
-          </Heading>
+            </Heading>
           {work.category && (
-            <Tag
-              filterColor={work.categoryColor}
-              label={work.category.label}
-              mb="1"
-            />
+            <Tag filterColor={work.categoryColor} label={work.category.label} mb="1" />
           )}
-        </Box>
-        <Avatar
-          name={work.authorUsername}
-          src={work.authorAvatar ? work.authorAvatar.src : null}
-        />
-      </Flex>
+          </Box>
+        <Avatar name={work.authorUsername} src={work.authorAvatar ? work.authorAvatar.src : null} />
+        </Flex>
       {work.images && work.images[0] && (
         <Box>
           <LazyLoadImage
@@ -40,12 +33,12 @@ function WorkThumb({ work }) {
             effect="black-and-white"
             width="100%"
           />
-        </Box>
+      </Box>
       )}
       <Box p="1">
         <Text fontWeight="light">{work.shortDescription}</Text>
+        </Box>
       </Box>
-    </Box>
   );
 }
 

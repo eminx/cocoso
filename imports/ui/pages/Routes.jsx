@@ -12,27 +12,15 @@ const browserHistory = createBrowserHistory();
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Activities
-const ActivitiesContainer = lazy(() =>
-  import('./activities/ActivitiesContainer')
-);
+const ActivitiesContainer = lazy(() => import('./activities/ActivitiesContainer'));
 const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
-const NewActivityContainer = lazy(() =>
-  import('./activities/NewActivityContainer')
-);
-const EditActivityContainer = lazy(() =>
-  import('./activities/EditActivityContainer')
-);
+const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
+const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
 // Processes
-const NewProcessContainer = lazy(() =>
-  import('./processes/NewProcessContainer')
-);
-const EditProcessContainer = lazy(() =>
-  import('./processes/EditProcessContainer')
-);
-const ProcessesListContainer = lazy(() =>
-  import('./processes/ProcessesListContainer')
-);
+const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer'));
+const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
+const ProcessesListContainer = lazy(() => import('./processes/ProcessesListContainer'));
 const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
 // Pages
 const Page = lazy(() => import('./pages/Page'));
@@ -67,9 +55,7 @@ export default function () {
     <Router history={browserHistory}>
       <Switch>
         <LayoutContainer history={browserHistory}>
-          <Suspense
-            fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}
-          >
+          <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
             <Switch>
               {/* Home */}
               <Route exact path="/" component={Home} />
@@ -78,33 +64,15 @@ export default function () {
               {/* Activities */}
               <Route exact path="/activities" component={ActivitiesContainer} />
               <Route exact path="/my-activities" component={MyActivities} />
-              <Route
-                exact
-                path="/new-activity"
-                component={NewActivityContainer}
-              />
+              <Route exact path="/new-activity" component={NewActivityContainer} />
               <Route path="/event/:id" component={ActivityContainer} />
               <Route path="/activity/:id" component={ActivityContainer} />
-              <Route
-                path="/edit-activity/:id/"
-                component={EditActivityContainer}
-              />
+              <Route path="/edit-activity/:id/" component={EditActivityContainer} />
               {/* Processes */}
-              <Route
-                exact
-                path="/new-process"
-                component={NewProcessContainer}
-              />
-              <Route
-                exact
-                path="/processes/"
-                component={ProcessesListContainer}
-              />
+              <Route exact path="/new-process" component={NewProcessContainer} />
+              <Route exact path="/processes/" component={ProcessesListContainer} />
               <Route path="/process/:id" component={ProcessContainer} />
-              <Route
-                path="/edit-process/:id/"
-                component={EditProcessContainer}
-              />
+              <Route path="/edit-process/:id/" component={EditProcessContainer} />
               {/* Resources */}
               <ResourceRoutes path="/resources" history={browserHistory} />
               {/* Pages */}
@@ -120,15 +88,8 @@ export default function () {
               {/* Auth */}
               <Route exact path="/signup" component={SignupPage} />
               <Route exact path="/login" component={LoginPage} />
-              <Route
-                exact
-                path="/forgot-password"
-                component={ForgotPasswordPage}
-              />
-              <Route
-                path="/reset-password/:token"
-                component={ResetPasswordPage}
-              />
+              <Route exact path="/forgot-password" component={ForgotPasswordPage} />
+              <Route path="/reset-password/:token" component={ResetPasswordPage} />
               {/* Members */}
               <Route
                 exact
@@ -149,11 +110,11 @@ export default function () {
               <Route exact path="/404" component={NotFoundPage} />
               <Route path="*">
                 <NotFoundPage />
-              </Route>
-            </Switch>
-          </Suspense>
-        </LayoutContainer>
-      </Switch>
-    </Router>
+                </Route>
+              </Switch>
+            </Suspense>
+          </LayoutContainer>
+        </Switch>
+      </Router>
   );
 }

@@ -6,16 +6,9 @@ import './chattery.css';
 import { ChatteryWindow } from './ChatteryWindow';
 import { ChatteryInput } from './ChatteryInput';
 
-const noMemberText =
-  'If you want to participate to the discussion, please join the process.';
+const noMemberText = 'If you want to participate to the discussion, please join the process.';
 
-function Chattery({
-  messages,
-  onNewMessage,
-  removeNotification,
-  isMember,
-  meta,
-}) {
+function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }) {
   return (
     <div className="chattery-main-container">
       <ChatteryWindow
@@ -28,7 +21,7 @@ function Chattery({
       ) : (
         <p style={{ padding: 24, textAlign: 'center' }}>{noMemberText}</p>
       )}
-    </div>
+      </div>
   );
 }
 

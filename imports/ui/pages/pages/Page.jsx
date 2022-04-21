@@ -39,9 +39,7 @@ class Page extends PureComponent {
 
     const param = match.params.id;
 
-    const currentPage = pages.find(
-      (page) => parseTitle(page.title) === parseTitle(param)
-    );
+    const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
     return currentPage;
   };
 
@@ -83,39 +81,32 @@ class Page extends PureComponent {
           role === 'admin' && (
             <Center p="2">
               <Link to="/new-page">
-                <Button
-                  as="span"
-                  colorScheme="green"
-                  variant="outline"
-                  textTransform="uppercase"
-                >
+                <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                   <Trans i18nKey="common:actions.create" />
-                </Button>
-              </Link>
-            </Center>
+                  </Button>
+                </Link>
+          </Center>
           )
         }
       >
         <Helmet>
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-        </Helmet>
+          </Helmet>
 
         <Box bg="white" mb="2" py="4" px="6">
-          <div className="text-content">
-            {renderHTML(currentPage.longDescription)}
-          </div>
-        </Box>
+          <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+          </Box>
 
         {currentUser && role === 'admin' && (
           <Center p="2">
             <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
               <Button as="span" variant="ghost" size="sm">
                 <Trans i18nKey="common:actions.update" />
-              </Button>
-            </Link>
-          </Center>
+                </Button>
+              </Link>
+        </Center>
         )}
-      </Template>
+        </Template>
     );
   }
 }

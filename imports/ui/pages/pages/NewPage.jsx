@@ -31,9 +31,7 @@ class NewPage extends PureComponent {
     if (
       pageTitles &&
       values &&
-      pageTitles.some(
-        (title) => title.toLowerCase() === values.title.toLowerCase()
-      )
+      pageTitles.some((title) => title.toLowerCase() === values.title.toLowerCase())
     ) {
       message.error(
         tc('message.exists', {
@@ -99,13 +97,11 @@ class NewPage extends PureComponent {
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
             message={tc('message.access.admin', {
-              domain: `${tc('domains.static')} ${tc(
-                'domains.page'
-              ).toLowerCase()}`,
+              domain: `${tc('domains.static')} ${tc('domains.page').toLowerCase()}`,
             })}
             type="error"
           />
-        </div>
+          </div>
       );
     }
 
@@ -119,8 +115,8 @@ class NewPage extends PureComponent {
       <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
-        </Box>
-      </Template>
+          </Box>
+        </Template>
     );
   }
 }

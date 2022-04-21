@@ -48,14 +48,11 @@ function WorkForm({
               {...register('title', { required: true })}
               placeholder={t('works.title.holder')}
             />
-          </FormField>
+            </FormField>
 
           <FormField label={t('works.shortDesc.label')}>
-            <Textarea
-              {...register('shortDescription')}
-              placeholder={t('works.shortDesc.holder')}
-            />
-          </FormField>
+            <Textarea {...register('shortDescription')} placeholder={t('works.shortDesc.holder')} />
+            </FormField>
 
           <FormField label={t('works.category.label')} isRequired>
             <Select
@@ -69,10 +66,10 @@ function WorkForm({
                   value={cat._id}
                 >
                   {cat.label.toUpperCase()}
-                </option>
+                  </option>
               ))}
-            </Select>
-          </FormField>
+              </Select>
+            </FormField>
 
           <FormField label={t('works.longDesc.label')} isRequired>
             <Controller
@@ -88,25 +85,18 @@ function WorkForm({
                 />
               )}
             />
-          </FormField>
+            </FormField>
 
           <FormField label={t('works.addInfo.label')}>
-            <Textarea
-              {...register('additionalInfo')}
-              placeholder={t('works.addInfo.holder')}
-            />
-          </FormField>
+            <Textarea {...register('additionalInfo')} placeholder={t('works.addInfo.holder')} />
+            </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
             <Box>
               {images && <NiceSlider images={images} />}
 
               {images && images.length > 0 ? (
-                <SortableContainer
-                  onSortEnd={onSortImages}
-                  axis="xy"
-                  helperClass="sortableHelper"
-                >
+                <SortableContainer onSortEnd={onSortImages} axis="xy" helperClass="sortableHelper">
                   {images.map((image, index) => (
                     <SortableItem
                       key={image}
@@ -116,35 +106,25 @@ function WorkForm({
                     />
                   ))}
                   <Center w="100%">
-                    <FileDropper
-                      setUploadableImage={setUploadableImages}
-                      isMultiple
-                    />
-                  </Center>
-                </SortableContainer>
+                    <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+                    </Center>
+                  </SortableContainer>
               ) : (
                 <Center>
-                  <FileDropper
-                    setUploadableImage={setUploadableImages}
-                    isMultiple
-                  />
-                </Center>
+                  <FileDropper setUploadableImage={setUploadableImages} isMultiple />
+                  </Center>
               )}
-            </Box>
-          </FormField>
+              </Box>
+            </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </div>
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </div>
   );
 }
 
@@ -163,7 +143,7 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
         onClick={onRemoveImage}
         style={{ position: 'absolute', top: 4, right: 4 }}
       />
-    </Box>
+      </Box>
   );
 });
 
@@ -171,7 +151,7 @@ const SortableContainer = sortableContainer(({ children }) => {
   return (
     <Center w="100%">
       <Wrap py="2">{children}</Wrap>
-    </Center>
+      </Center>
   );
 });
 

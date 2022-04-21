@@ -6,9 +6,11 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 
 moment.locale(i18n.language);
 
-const localeSort = (a, b) => a.label.localeCompare(b.label);
+function localeSort(a, b) {
+  return a.label.localeCompare(b.label);
+}
 
-const getInitials = (string) => {
+function getInitials(string) {
   const names = string.split(' ');
   let initials = names[0].substring(0, 1).toUpperCase();
 
@@ -16,20 +18,22 @@ const getInitials = (string) => {
     initials += names[names.length - 1].substring(0, 1).toUpperCase();
   }
   return initials;
-};
+}
 
-const removeSpace = (str) => {
+function removeSpace(str) {
   const newStr = str.replace(/\s+/g, '');
   return newStr;
-};
+}
 
-const compareForSort = (a, b) => {
+function compareForSort(a, b) {
   const dateA = new Date(a.creationDate);
   const dateB = new Date(b.creationDate);
   return dateA - dateB;
-};
+}
 
-const parseTitle = (title) => title.replace(/\s+/g, '-').toLowerCase();
+function parseTitle(title) {
+  return title.replace(/\s+/g, '-').toLowerCase();
+}
 
 function emailIsValid(email) {
   return /\S+@\S+\.\S+/.test(email);
@@ -97,7 +101,7 @@ const uploadImage = (image, directory) =>
     });
   });
 
-const parseAllBookingsWithResources = (activities, processes, resources) => {
+function parseAllBookingsWithResources(activities, processes, resources) {
   if (!activities || !processes || !resources) {
     return;
   }
@@ -194,10 +198,10 @@ const parseAllBookingsWithResources = (activities, processes, resources) => {
   });
 
   return allBookings;
-};
+}
 
-const getAllBookingsWithSelectedResource = (selectedResource, allBookings) =>
-  allBookings.filter((booking) => {
+function getAllBookingsWithSelectedResource(selectedResource, allBookings) {
+  return allBookings.filter((booking) => {
     if (selectedResource.isCombo) {
       return selectedResource.resourcesForCombo.some(
         (resourceForCombo) => resourceForCombo._id === booking.resourceId
@@ -205,8 +209,9 @@ const getAllBookingsWithSelectedResource = (selectedResource, allBookings) =>
     }
     return booking.resourceId === selectedResource._id;
   });
+}
 
-const isDatesInConflict = (existingStart, existingEnd, selectedStart, selectedEnd) => {
+function isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd) {
   const dateTimeFormat = 'YYYY-MM-DD HH:mm';
 
   // If the same values are selected, moment compare returns false. That's why we do:
@@ -220,14 +225,14 @@ const isDatesInConflict = (existingStart, existingEnd, selectedStart, selectedEn
     moment(existingStart, dateTimeFormat).isBetween(selectedStart, selectedEnd) ||
     moment(existingEnd, dateTimeFormat).isBetween(selectedStart, selectedEnd)
   );
-};
+}
 
-const checkAndSetBookingsWithConflict = (
+function checkAndSetBookingsWithConflict(
   selectedBookings,
   allBookingsWithSelectedResource,
   selfBookingIdForEdit
-) =>
-  selectedBookings.map((selectedBooking) => {
+) {
+  return selectedBookings.map((selectedBooking) => {
     const bookingWithConflict = allBookingsWithSelectedResource
       .filter((item) => item.activityId !== selfBookingIdForEdit)
       .find((occurence) => {
@@ -244,6 +249,7 @@ const checkAndSetBookingsWithConflict = (
       conflict: bookingWithConflict || null,
     };
   });
+}
 
 function appendLeadingZeroes(n) {
   if (n <= 9) {
@@ -276,7 +282,7 @@ function getHslValuesFromLength(length) {
   return colorValues;
 }
 
-const getNonComboResourcesWithColor = (nonComboResources) => {
+function getNonComboResourcesWithColor(nonComboResources) {
   if (!nonComboResources) {
     return;
   }
@@ -287,10 +293,10 @@ const getNonComboResourcesWithColor = (nonComboResources) => {
       color: hslValues[i],
     };
   });
-};
+}
 
-const getComboResourcesWithColor = (comboResources, nonComboResourcesWithColor) =>
-  comboResources.sort(localeSort).map((res) => {
+function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) {
+  return comboResources.sort(localeSort).map((res) => {
     const colors = [];
     res.resourcesForCombo.forEach((resCo) => {
       const resWithColor = nonComboResourcesWithColor.find((nRes) => resCo.label === nRes.label);
@@ -313,6 +319,7 @@ const getComboResourcesWithColor = (comboResources, nonComboResourcesWithColor) 
       .join(',')}]`;
     return { ...res, color, label: comboLabel };
   });
+}
 
 export {
   localeSort,

@@ -17,10 +17,9 @@ const compareByDate = (a, b) => {
 const getFullName = (member) => {
   const { firstName, lastName } = member;
   if (firstName && lastName) {
-    return firstName + ' ' + lastName;
-  } else {
-    return firstName || lastName || '';
+    return `${firstName} ${lastName}`;
   }
+  return firstName || lastName || '';
 };
 
 const publicSettings = Meteor.settings.public;
@@ -97,34 +96,29 @@ function PublicMembers() {
     <Box mb="3" p="1">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-      </Helmet>
+        </Helmet>
       <Center>
         <Wrap>
           {members.map((member) => (
             <WrapItem key={member.id}>
               <Link to={`/@${member.username}`}>
                 <Box m="1">
-                  <Avatar
-                    name={member.username}
-                    showBorder
-                    size="2xl"
-                    src={member.avatarSrc}
-                  />
+                  <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />
                   <Center>
                     <Text fontWeight="bold" fontSize="lg" isTruncated>
                       {member.username}
-                    </Text>
-                  </Center>
+                      </Text>
+                    </Center>
                   <Center>
                     <Text isTruncated>{getFullName(member)}</Text>
-                  </Center>
-                </Box>
-              </Link>
-            </WrapItem>
+                    </Center>
+                  </Box>
+                </Link>
+              </WrapItem>
           ))}
-        </Wrap>
-      </Center>
-    </Box>
+          </Wrap>
+        </Center>
+      </Box>
   );
 }
 

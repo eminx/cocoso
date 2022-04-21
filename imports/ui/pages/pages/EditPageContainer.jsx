@@ -11,9 +11,7 @@ export default EditPageContainer = withTracker((props) => {
   const pages = Pages ? Pages.find().fetch() : [];
 
   const pageData =
-    pages.length > 0
-      ? pages.find((page) => parseTitle(page.title) === pageId)
-      : null;
+    pages.length > 0 ? pages.find((page) => parseTitle(page.title) === pageId) : null;
 
   const pageTitles = pages ? pages.map((page) => page.title) : [];
 

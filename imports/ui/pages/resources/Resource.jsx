@@ -78,20 +78,12 @@ function ResourcePage() {
         return (
           <Template
             leftContent={
-              !isMobile && (
-                <DocumentsField
-                  contextType="resource"
-                  contextId={resource?._id}
-                />
-              )
+              !isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />
             }
             rightContent={
               currentUser &&
               canCreateContent && (
-                <BookingsField
-                  currentUser={currentUser}
-                  selectedResource={resource}
-                />
+                <BookingsField currentUser={currentUser} selectedResource={resource} />
               )
             }
           >
@@ -102,20 +94,15 @@ function ResourcePage() {
               discussion={discussion}
               resource={resource}
             />
-            {isMobile && (
-              <DocumentsField
-                contextType="resource"
-                contextId={resource?._id}
-              />
-            )}
+            {isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />}
             <Center my="2">
               <Link to={`/resources/${resource?._id}/edit`}>
                 <Button size="sm" variant="ghost">
                   {tc('actions.update')}
-                </Button>
-              </Link>
-            </Center>
-          </Template>
+                  </Button>
+                </Link>
+              </Center>
+            </Template>
         );
       }}
     />

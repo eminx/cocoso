@@ -88,9 +88,7 @@ class Process extends Component {
       return false;
     }
 
-    const isMember = process.members.some(
-      (member) => member.memberId === currentUser._id
-    );
+    const isMember = process.members.some((member) => member.memberId === currentUser._id);
 
     return Boolean(isMember);
   };
@@ -175,31 +173,27 @@ class Process extends Component {
             >
               <em style={{ fontSize: 12 }}>This is a private process</em>
             </Tooltip> */}
-          </div>
+        </div>
         )}
         <Box flexGrow={1} mb="2" p="4">
-          <Heading
-            mb="2"
-            size="lg"
-            style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}
-          >
+          <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
             {process.title}
-          </Heading>
+            </Heading>
           <Text fontWeight="light">{process.readingMaterial}</Text>
-        </Box>
+          </Box>
 
         {isAdmin && process.isPrivate ? (
           <Flex align="flex-end" direction="row" p="4">
             <CLink onClick={this.handleOpenInviteManager} ml="4">
               {t('labels.invite')}
-            </CLink>
-          </Flex>
+              </CLink>
+            </Flex>
         ) : (
           <Box alignSelf="end" p="4">
             {process.adminUsername}
-          </Box>
+            </Box>
         )}
-      </Flex>
+        </Flex>
     );
   };
 
@@ -257,27 +251,17 @@ class Process extends Component {
       return;
     }
 
-    Meteor.call(
-      'removeNotification',
-      process._id,
-      messageIndex,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        }
+    Meteor.call('removeNotification', process._id, messageIndex, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.error);
       }
-    );
+    });
   };
 
   isFormValid = () => {
     const { newMeeting } = this.state;
-    return (
-      newMeeting &&
-      newMeeting.startTime &&
-      newMeeting.endTime &&
-      newMeeting.startDate
-    );
+    return newMeeting && newMeeting.startTime && newMeeting.endTime && newMeeting.startDate;
   };
 
   handleDateAndTimeChange = (dateOrTime, entity) => {
@@ -321,19 +305,14 @@ class Process extends Component {
     const { process, t } = this.props;
     newMeeting.endDate = newMeeting.startDate;
 
-    Meteor.call(
-      'addProcessMeeting',
-      newMeeting,
-      process._id,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        } else {
-          message.success(t('meeting.success.add'));
-        }
+    Meteor.call('addProcessMeeting', newMeeting, process._id, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.error);
+      } else {
+        message.success(t('meeting.success.add'));
       }
-    );
+    });
   };
 
   toggleAttendance = (meetingIndex) => {
@@ -353,33 +332,23 @@ class Process extends Component {
       .includes(currentUser._id);
 
     if (isAttending) {
-      Meteor.call(
-        'unAttendMeeting',
-        process._id,
-        meetingIndex,
-        (error, respond) => {
-          if (error) {
-            console.log('error', error);
-            message.error(error.error);
-          } else {
-            message.success(t('meeting.attends.remove'));
-          }
+      Meteor.call('unAttendMeeting', process._id, meetingIndex, (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.error(error.error);
+        } else {
+          message.success(t('meeting.attends.remove'));
         }
-      );
+      });
     } else {
-      Meteor.call(
-        'attendMeeting',
-        process._id,
-        meetingIndex,
-        (error, respond) => {
-          if (error) {
-            console.log('error', error);
-            message.error(error.error);
-          } else {
-            message.success(t('meeting.register.remove'));
-          }
+      Meteor.call('attendMeeting', process._id, meetingIndex, (error, respond) => {
+        if (error) {
+          console.log('error', error);
+          message.error(error.error);
+        } else {
+          message.success(t('meeting.register.remove'));
         }
-      );
+      });
     }
   };
 
@@ -394,19 +363,14 @@ class Process extends Component {
       return;
     }
 
-    Meteor.call(
-      'deleteMeeting',
-      process._id,
-      meetingIndex,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-          message.error(error.error);
-        } else {
-          message.success(t('meeting.success.remove'));
-        }
+    Meteor.call('deleteMeeting', process._id, meetingIndex, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.error);
+      } else {
+        message.success(t('meeting.success.remove'));
       }
-    );
+    });
   };
 
   renderDates = () => {
@@ -416,8 +380,7 @@ class Process extends Component {
       return;
     }
 
-    const isFutureMeeting = (meeting) =>
-      moment(meeting.endDate).isAfter(yesterday);
+    const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
     return (
       process &&
@@ -433,30 +396,24 @@ class Process extends Component {
           <AccordionButton _expanded={{ bg: 'green.100' }}>
             <Box flex="1" textAlign="left">
               <FancyDate occurence={meeting} resources={resources} />
-            </Box>
-          </AccordionButton>
+              </Box>
+            </AccordionButton>
           <AccordionPanel>
             <Heading size="sm">Attendees</Heading>
             {meeting.attendees && (
               <List>
                 {meeting.attendees.map((attendee) => (
-                  <Box key={attendee.memberUsername}>
-                    {attendee.memberUsername}
-                  </Box>
+                  <Box key={attendee.memberUsername}>{attendee.memberUsername}</Box>
                 ))}
-              </List>
+            </List>
             )}
             <Center py="2" mt="2">
-              <Button
-                size="xs"
-                colorScheme="red"
-                onClick={() => this.deleteMeeting(meetingIndex)}
-              >
+              <Button size="xs" colorScheme="red" onClick={() => this.deleteMeeting(meetingIndex)}>
                 {t('meeting.actions.remove')}
-              </Button>
-            </Center>
-          </AccordionPanel>
-        </AccordionItem>
+                </Button>
+              </Center>
+            </AccordionPanel>
+          </AccordionItem>
       ))
     );
   };
@@ -468,16 +425,13 @@ class Process extends Component {
       return;
     }
 
-    const isFutureMeeting = (meeting) =>
-      moment(meeting.endDate).isAfter(yesterday);
+    const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
     return process.meetings.map((meeting, meetingIndex) => {
       const isAttending =
         currentUser &&
         meeting.attendees &&
-        meeting.attendees
-          .map((attendee) => attendee.memberId)
-          .includes(currentUser._id);
+        meeting.attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
 
       return (
         <AccordionItem
@@ -497,8 +451,8 @@ class Process extends Component {
                 isFutureMeeting={isFutureMeeting(meeting)}
                 resources={resources}
               />
-            </Box>
-          </AccordionButton>
+              </Box>
+            </AccordionButton>
 
           <AccordionPanel>
             <Center p="2" bg="white">
@@ -507,13 +461,11 @@ class Process extends Component {
                 colorScheme={isAttending ? 'gray' : 'green'}
                 onClick={() => this.toggleAttendance(meetingIndex)}
               >
-                {isAttending
-                  ? t('meeting.isAttending.false')
-                  : t('meeting.isAttending.true')}
-              </Button>
-            </Center>
-          </AccordionPanel>
-        </AccordionItem>
+                {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
+                </Button>
+              </Center>
+            </AccordionPanel>
+          </AccordionItem>
       );
     });
   };
@@ -540,7 +492,6 @@ class Process extends Component {
           console.error('Error uploading:', error);
           message.error(error.reason);
           closeLoader();
-          return;
         } else {
           Meteor.call(
             'createDocument',
@@ -564,9 +515,7 @@ class Process extends Component {
                       console.log(error);
                       closeLoader();
                     } else {
-                      message.success(
-                        `${uploadableFile.name} ${tc('documents.fileDropper')}`
-                      );
+                      message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
                       closeLoader();
                     }
                   }
@@ -584,21 +533,16 @@ class Process extends Component {
     const { potentialNewAdmin } = this.state;
 
     const closeModal = () => this.setState({ potentialNewAdmin: false });
-    Meteor.call(
-      'changeAdmin',
-      process._id,
-      potentialNewAdmin,
-      (error, respond) => {
-        if (error) {
-          console.log(error);
-          message.error(error.error);
-          closeModal();
-        } else {
-          message.success(t('meeting.success.admin'));
-          closeModal();
-        }
+    Meteor.call('changeAdmin', process._id, potentialNewAdmin, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.error);
+        closeModal();
+      } else {
+        message.success(t('meeting.success.admin'));
+        closeModal();
       }
-    );
+    });
   };
 
   handleOpenInviteManager = (event) => {
@@ -656,20 +600,17 @@ class Process extends Component {
       <Box>
         {!isAdmin && (
           <Center mb="6">
-            <Button
-              colorScheme={isMember ? 'gray' : 'green'}
-              onClick={this.openModal}
-            >
+            <Button colorScheme={isMember ? 'gray' : 'green'} onClick={this.openModal}>
               {isMember ? t('actions.leave') : t('actions.join')}
-            </Button>
-          </Center>
+              </Button>
+        </Center>
         )}
 
         {process?.members && (
           <Box mb="8">
             <Heading mb="2" size="sm">
               {t('labels.member')}
-            </Heading>
+              </Heading>
             <Box mb="4" bg="white">
               <NiceList
                 actionsDisabled={!isAdmin}
@@ -680,71 +621,59 @@ class Process extends Component {
                 {(member) => (
                   <span
                     style={{
-                      fontWeight:
-                        process.adminId === member.memberId ? 700 : 400,
+                      fontWeight: process.adminId === member.memberId ? 700 : 400,
                     }}
                   >
                     {member.username}
-                  </span>
+                    </span>
                 )}
-              </NiceList>
-            </Box>
-          </Box>
+                </NiceList>
+              </Box>
+        </Box>
         )}
 
         <Heading mb="2" size="sm">
           {tc('documents.label')}
-        </Heading>
+          </Heading>
 
         {process && process.documents && process.documents.length > 0 ? (
-          <NiceList
-            actionsDisabled={!isAdmin}
-            keySelector="downloadUrl"
-            list={documentsList}
-          >
+          <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <div style={{ width: '100%' }}>
-                <a href={document.downloadUrl} target="_blank">
+                <a href={document.downloadUrl} target="_blank" rel="noreferrer">
                   {document.name}
-                </a>
-              </div>
+                  </a>
+                </div>
             )}
-          </NiceList>
+            </NiceList>
         ) : (
           <Text size="small" pad="2" margin={{ bottom: 'small' }}>
             <em>{tc('documents.empty')}</em>
-          </Text>
+            </Text>
         )}
 
         {isAdmin && (
           <Center p="2">
             <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box
-                  bg="white"
-                  cursor="grab"
-                  h="180px"
-                  p="4"
-                  w="240px"
-                  {...getRootProps()}
-                >
+                <Box bg="white" cursor="grab" h="180px" p="4" w="240px" {...getRootProps()}>
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
                       {tc('documents.up')}
-                    </div>
+                      </div>
                   ) : (
                     <div style={{ textAlign: 'center' }}>
                       <b>{tc('documents.drop')}</b>
-                    </div>
+                      </div>
                   )}
                   <input {...getInputProps()} />
-                </Box>
+                  </Box>
               )}
-            </ReactDropzone>
-          </Center>
+              </ReactDropzone>
+        </Center>
         )}
-      </Box>
+        </Box>
     );
   };
 
@@ -754,19 +683,14 @@ class Process extends Component {
       return;
     }
 
-    Meteor.call(
-      'removeProcessDocument',
-      documentName,
-      this.props.process._id,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        } else {
-          message.success(tc('documents.remove'));
-        }
+    Meteor.call('removeProcessDocument', documentName, this.props.process._id, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.error);
+      } else {
+        message.success(tc('documents.remove'));
       }
-    );
+    });
   };
 
   renderProcessInfo = () => {
@@ -786,30 +710,26 @@ class Process extends Component {
                 <Tab>{t('tabs.process.info')}</Tab>
                 <Tab>
                   {t('tabs.process.discuss')}{' '}
-                  {notificationCount && (
-                    <Badge colorScheme="red">{notificationCount}</Badge>
-                  )}
-                </Tab>
-              </TabList>
+                  {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
+                  </Tab>
+                </TabList>
               <TabPanels>
                 <TabPanel>
                   <Box>
                     <Image src={process.imageUrl} fit="contain" fill />
-                  </Box>
+                    </Box>
                   <Box pt="4">
-                    <div className="text-content">
-                      {renderHTML(process.description)}
-                    </div>
-                  </Box>
-                </TabPanel>
+                    <div className="text-content">{renderHTML(process.description)}</div>
+                    </Box>
+                  </TabPanel>
                 <TabPanel>
                   <div>{chatData && this.renderDiscussion()}</div>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
           )}
         />
-      </div>
+        </div>
     );
   };
 
@@ -827,7 +747,7 @@ class Process extends Component {
             removeNotification={this.removeNotification}
             isMember={isMember}
           />
-        </Box>
+          </Box>
         {!isMember && (
           <div
             style={{
@@ -836,15 +756,12 @@ class Process extends Component {
               marginBottom: 24,
             }}
           >
-            <Button
-              colorScheme={isMember ? 'gray' : 'green'}
-              onClick={this.openModal}
-            >
+            <Button colorScheme={isMember ? 'gray' : 'green'} onClick={this.openModal}>
               {isMember ? t('actions.leave') : t('actions.join')}
-            </Button>
-          </div>
+              </Button>
+        </div>
         )}
-      </Box>
+        </Box>
     );
   };
 
@@ -900,7 +817,7 @@ class Process extends Component {
           leftContent={
             <Visible lg xl>
               <Box p="4">{this.renderMembersAndDocuments()}</Box>
-            </Visible>
+              </Visible>
           }
           rightContent={
             <Box p="2">
@@ -909,78 +826,67 @@ class Process extends Component {
               <Text fontSize="sm" mb="4">
                 <em>
                   {process.meetings &&
-                  process.meetings.filter((meeting) =>
-                    moment(meeting.endDate).isAfter(yesterday)
-                  ).length > 0
+                  process.meetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
+                    .length > 0
                     ? isAdmin
                       ? t('meeting.info.admin')
                       : t('meeting.info.member')
                     : t('meeting.info.empty')}
-                </em>
-              </Text>
+                  </em>
+                </Text>
 
               <Accordion allowToggle>
-                {process.meetings && isAdmin
-                  ? this.renderDates()
-                  : this.renderMeetings()}
-              </Accordion>
+                {process.meetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+                </Accordion>
 
               {isAdmin && (
                 <div>
                   <CreateMeetingForm
-                    handleDateChange={(date) =>
-                      this.handleDateAndTimeChange(date, 'startDate')
-                    }
+                    handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
                     handleStartTimeChange={(time) =>
                       this.handleDateAndTimeChange(time, 'startTime')
                     }
-                    handleFinishTimeChange={(time) =>
-                      this.handleDateAndTimeChange(time, 'endTime')
-                    }
+                    handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
                     resources={resources}
                     handlePlaceChange={this.handlePlaceChange}
                     handleSubmit={this.addMeeting}
                     buttonDisabled={!isFormValid}
                   />
-                </div>
+              </div>
               )}
-            </Box>
+              </Box>
           }
         >
           <Box bg="white" mb="4">
             {this.renderProcessInfo()}
-          </Box>
+            </Box>
           <Visible xs sm md>
             <Box p="4">{this.renderMembersAndDocuments()}</Box>
-          </Visible>
+            </Visible>
           {isAdmin && (
             <Center p="4" mb="6">
               <Link to={`/edit-process/${process._id}`}>
                 <Button as="span" variant="ghost">
                   {tc('actions.update')}
-                </Button>
-              </Link>
-            </Center>
+                  </Button>
+                </Link>
+          </Center>
           )}
-        </Template>
+          </Template>
         <ConfirmModal
           visible={modalOpen}
           title={t('confirm.title.text', {
-            opt: isMember
-              ? t('confirm.title.opts.leave')
-              : t('confirm.title.opts.join'),
+            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join'),
           })}
           onConfirm={isMember ? this.leaveProcess : this.joinProcess}
           onCancel={this.closeModal}
         >
           <Text>
             {t('confirm.title.body', {
-              opt: isMember
-                ? t('confirm.title.opts.leave')
-                : t('confirm.title.opts.join'),
+              opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join'),
             })}
-          </Text>
-        </ConfirmModal>
+            </Text>
+          </ConfirmModal>
         <ConfirmModal
           visible={Boolean(potentialNewAdmin)}
           title={t('confirm.check')}
@@ -989,9 +895,9 @@ class Process extends Component {
         >
           <Text>
             <b>{t('confirm.admin.title', { admin: potentialNewAdmin })}</b>
-          </Text>
+            </Text>
           <Text>{t('confirm.admin.body', { admin: potentialNewAdmin })}</Text>
-        </ConfirmModal>
+          </ConfirmModal>
 
         {process && process.isPrivate && (
           <Drawer
@@ -1000,9 +906,9 @@ class Process extends Component {
             onClose={this.handleCloseInviteManager}
           >
             <InviteManager process={process} t={t} />
-          </Drawer>
+        </Drawer>
         )}
-      </div>
+        </div>
     );
   }
 }
@@ -1015,9 +921,9 @@ function MeetingInfo({ meeting, isAttending, resources }) {
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
           <em>You're attending</em>
-        </div>
+      </div>
       )}
-    </Box>
+      </Box>
   );
 }
 
@@ -1037,10 +943,10 @@ function CreateMeetingForm({
     <Box p="2" bg="white" my="2">
       <Heading ml="2" mt="2" size="xs">
         {t('meeting.form.label')}
-      </Heading>
+        </Heading>
       <Box py="4">
         <DatePicker noTime onChange={handleDateChange} />
-      </Box>
+        </Box>
       <HStack spacing="2" mb="6">
         <DatePicker
           onlyTime
@@ -1052,7 +958,7 @@ function CreateMeetingForm({
           placeholder={t('meeting.form.time.end')}
           onChange={handleFinishTimeChange}
         />
-      </HStack>
+        </HStack>
 
       <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch
@@ -1062,8 +968,8 @@ function CreateMeetingForm({
         />
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
           {t('meeting.form.switch', { place: publicSettings.name })}
-        </FormLabel>
-      </FormControl>
+          </FormLabel>
+        </FormControl>
 
       {isLocal ? (
         <Select
@@ -1075,7 +981,7 @@ function CreateMeetingForm({
           {resources.map((part, i) => (
             <option key={part.label}>{part.label}</option>
           ))}
-        </Select>
+          </Select>
       ) : (
         <Textarea
           placeholder={t('meeting.form.location')}
@@ -1085,16 +991,11 @@ function CreateMeetingForm({
       )}
 
       <Flex justify="flex-end" my="4">
-        <Button
-          colorScheme="green"
-          disabled={buttonDisabled}
-          size="sm"
-          onClick={handleSubmit}
-        >
+        <Button colorScheme="green" disabled={buttonDisabled} size="sm" onClick={handleSubmit}>
           {t('meeting.form.submit')}
-        </Button>
-      </Flex>
-    </Box>
+          </Button>
+        </Flex>
+      </Box>
   );
 }
 

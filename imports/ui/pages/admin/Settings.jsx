@@ -89,9 +89,7 @@ export default function Settings({ history }) {
 
     try {
       call('updateHostSettings', values);
-      message.success(
-        tc('message.success.update', { domain: tc('domains.settings') })
-      );
+      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -201,8 +199,7 @@ export default function Settings({ history }) {
   // const settings = currentHost && currentHost.settings;
 
   const isImage =
-    (localImage && localImage.uploadableImageLocal) ||
-    (currentHost && currentHost.logo);
+    (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
   return (
     <Template
@@ -210,7 +207,7 @@ export default function Settings({ history }) {
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
+          </Box>
       }
     >
       <Tabs align="center">
@@ -219,48 +216,43 @@ export default function Settings({ history }) {
           <Tab>{t('settings.tabs.info')}</Tab>
           <Tab>{t('settings.tabs.menu')}</Tab>
           <Tab>{t('settings.tabs.cats')}</Tab>
-        </TabList>
+          </TabList>
 
         <TabPanels>
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('logo.label')}
-              </Heading>
+                </Heading>
               <Text mb="3">{t('logo.info')}</Text>
               <Center p="3">
                 <Box>
                   <FileDropper
-                    uploadableImageLocal={
-                      localImage && localImage.uploadableImageLocal
-                    }
+                    uploadableImageLocal={localImage && localImage.uploadableImageLocal}
                     imageUrl={currentHost && currentHost.logo}
                     setUploadableImage={setUploadableImage}
                     width={isImage && '120px'}
                     height={isImage && '80px'}
                   />
-                </Box>
-              </Center>
+                  </Box>
+                </Center>
               {localImage && localImage.uploadableImageLocal && (
                 <Center p="2">
                   <Button onClick={() => uploadLogo()}>Confirm</Button>
-                </Center>
+              </Center>
               )}
-            </AlphaContainer>
-          </TabPanel>
+              </AlphaContainer>
+            </TabPanel>
 
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('info.label')}
-              </Heading>
+                </Heading>
               <Text mb="3">{t('info.info')}</Text>
-              <SettingsForm
-                initialValues={localSettings}
-                onSubmit={handleFormSubmit}
-              />
-            </AlphaContainer>
-          </TabPanel>
+              <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
+              </AlphaContainer>
+            </TabPanel>
 
           {/* <AlphaContainer>
         <Heading as="h3" size="md">
@@ -287,31 +279,27 @@ export default function Settings({ history }) {
           <TabPanel>
             <AlphaContainer>
               <Menu />
-            </AlphaContainer>
-          </TabPanel>
+              </AlphaContainer>
+            </TabPanel>
 
           <TabPanel>
             <AlphaContainer>
               <Heading as="h3" size="md">
                 {t('categories.label')}
-              </Heading>
+                </Heading>
               <Text mb="3">{t('categories.info')}</Text>
               <Center>
                 <Wrap p="1" spacing="2" mb="2">
                   {categories.map((category) => (
                     <WrapItem key={category.label}>
                       <Tag colorScheme="messenger">
-                        <TagLabel fontWeight="bold">
-                          {category.label.toUpperCase()}
-                        </TagLabel>
-                        <TagCloseButton
-                          onClick={() => removeCategory(category._id)}
-                        />
-                      </Tag>
-                    </WrapItem>
+                        <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                        <TagCloseButton onClick={() => removeCategory(category._id)} />
+                        </Tag>
+                      </WrapItem>
                   ))}
-                </Wrap>
-              </Center>
+                  </Wrap>
+                </Center>
               <form onSubmit={addNewCategory}>
                 <Center>
                   <HStack>
@@ -319,19 +307,17 @@ export default function Settings({ history }) {
                       placeholder="PAJAMAS"
                       mt="2"
                       value={categoryInput}
-                      onChange={(event) =>
-                        handleCategoryInputChange(event.target.value)
-                      }
+                      onChange={(event) => handleCategoryInputChange(event.target.value)}
                     />
                     <Button type="submit">{tc('actions.add')}</Button>
-                  </HStack>
-                </Center>
-              </form>
-            </AlphaContainer>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Template>
+                    </HStack>
+                  </Center>
+                </form>
+              </AlphaContainer>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Template>
   );
 }
 
@@ -339,6 +325,6 @@ function AlphaContainer({ title, children }) {
   return (
     <Box bg="white" mb="8" p="6">
       {children}
-    </Box>
+      </Box>
   );
 }

@@ -2,14 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  SimpleGrid,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WorkThumb from '../../components/WorkThumb';
@@ -32,8 +25,7 @@ function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
-  const { currentUser, currentHost, canCreateContent } =
-    useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -59,9 +51,7 @@ function Works() {
 
   const filteredWorks = categoryFilter
     ? sortedWorks.filter((work) => {
-        return (
-          work.category && work.category.label === categoryFilter.toLowerCase()
-        );
+        return work.category && work.category.label === categoryFilter.toLowerCase();
       })
     : sortedWorks;
 
@@ -71,8 +61,7 @@ function Works() {
     const category = categoriesAssignedToWorks.find((category) => {
       return (
         category.label &&
-        category.label ===
-          (work.category && work.category.label && work.category.label)
+        category.label === (work.category && work.category.label && work.category.label)
       );
     });
     const categoryColor = category && category.color;
@@ -88,22 +77,17 @@ function Works() {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${
           publicSettings.name
         }`}</title>
-      </Helmet>
+        </Helmet>
 
       <Center mb="4">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button
-              as="span"
-              colorScheme="green"
-              variant="outline"
-              textTransform="uppercase"
-            >
+            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
-            </Button>
-          </Link>
+              </Button>
+        </Link>
         )}
-      </Center>
+        </Center>
 
       <Center mb="4">
         <Wrap pl="2" justify="center">
@@ -113,7 +97,7 @@ function Works() {
               checkable={categoryFilter === null}
               onClick={() => setCategoryFilter(null)}
             />
-          </WrapItem>
+            </WrapItem>
           {categoriesAssignedToWorks.map((cat) => (
             <WrapItem key={cat.label}>
               <Tag
@@ -124,10 +108,10 @@ function Works() {
                 margin={{ bottom: 'small' }}
                 onClick={() => setCategoryFilter(cat.label)}
               />
-            </WrapItem>
+              </WrapItem>
           ))}
-        </Wrap>
-      </Center>
+          </Wrap>
+        </Center>
 
       <Center px="2">
         <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
@@ -135,19 +119,17 @@ function Works() {
             <Box key={work._id} w="100%">
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
                 <WorkThumb work={work} />
-              </Link>
-            </Box>
+                </Link>
+              </Box>
           ))}
-        </SimpleGrid>
-      </Center>
-    </Box>
+          </SimpleGrid>
+        </Center>
+      </Box>
   );
 }
 
 getCategoriesAssignedToWorks = (works) => {
-  const labels = Array.from(
-    new Set(works.map((work) => work.category && work.category.label))
-  );
+  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
 
   const hslValues = getHslValuesFromLength(labels.length);
   return labels.map((label, i) => ({

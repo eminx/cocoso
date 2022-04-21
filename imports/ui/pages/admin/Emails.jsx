@@ -15,10 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
-import {
-  editorFormats,
-  editorModules,
-} from '../../utils/constants/quillConfig';
+import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
 import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
@@ -67,9 +64,7 @@ function Emails({ history }) {
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
-      message.success(
-        tc('message.success.update', { domain: tc('domains.email') })
-      );
+      message.success(tc('message.success.update', { domain: tc('domains.email') }));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
@@ -85,7 +80,7 @@ function Emails({ history }) {
       leftContent={
         <Box p="4">
           <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
+          </Box>
       }
     >
       {emails &&
@@ -93,14 +88,11 @@ function Emails({ history }) {
           <Box key={email.title} p="6" bg="white" mb="4">
             <Heading size="md" mb="4">
               {email.title}
-            </Heading>
-            <EmailForm
-              onSubmit={(values) => handleSubmit(values, index)}
-              defaultValues={email}
-            />
-          </Box>
+              </Heading>
+            <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
+            </Box>
         ))}
-    </Template>
+      </Template>
   );
 }
 
@@ -118,48 +110,34 @@ function EmailForm({ defaultValues, onSubmit }) {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="4">
           <FormField label={t('emails.form.subject.label')}>
-            <Input
-              {...register('subject')}
-              placeholder={t('emails.form.subject.holder')}
-            />
-          </FormField>
+            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+            </FormField>
 
           <FormField label={t('emails.form.appeal.label')}>
             <InputGroup w="280px">
-              <Input
-                {...register('appeal')}
-                placeholder={t('emails.form.appeal.holder')}
-              />
+              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
               <InputRightAddon children={t('emails.form.appeal.addon')} />
-            </InputGroup>
-          </FormField>
+              </InputGroup>
+            </FormField>
 
           <FormField label={t('emails.form.body.label')}>
             <Controller
               control={control}
               name="body"
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                />
+                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
               )}
             />
-          </FormField>
+            </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </Box>
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </Box>
   );
 }
 

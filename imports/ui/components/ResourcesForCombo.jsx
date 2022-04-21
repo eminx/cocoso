@@ -22,10 +22,10 @@ export default function ResourcesForCombo({ resource }) {
               variant="solid"
             >
               {res.label}
-            </Badge>
+              </Badge>
           ))}
-        </Flex>
-      </Badge>
-    </Box>
+          </Flex>
+        </Badge>
+      </Box>
   );
 }

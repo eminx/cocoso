@@ -2,15 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  HStack,
-  VStack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
 import Personal from './Personal';
 import ListMenu from '../../components/ListMenu';
@@ -72,10 +64,7 @@ class Profile extends PureComponent {
 
     try {
       const resizedAvatar = await resizeImage(uploadableAvatar, 1200);
-      const uploadedAvatar = await uploadImage(
-        resizedAvatar,
-        'avatarImageUpload'
-      );
+      const uploadedAvatar = await uploadImage(resizedAvatar, 'avatarImageUpload');
       await call('setAvatar', uploadedAvatar);
       this.setState({
         isUploading: false,
@@ -142,7 +131,7 @@ class Profile extends PureComponent {
         leftContent={
           <Box p="2">
             <ListMenu pathname={pathname} list={userMenu} />
-          </Box>
+            </Box>
         }
       >
         <Center mb="2" pad="1">
@@ -154,39 +143,36 @@ class Profile extends PureComponent {
                 values={{ username: currentUser.username, role }}
                 components={{ bold: <strong /> }}
               />
-            </Text>
+              </Text>
           ) : (
             <Box>
               <Text>{t('profile.message.deny')}</Text>
               <Center my="2">
                 <Button onClick={() => this.setSelfAsParticipant()}>
                   {t('profile.joinOrganisation')}
-                </Button>
-              </Center>
-            </Box>
+                  </Button>
+                </Center>
+              </Box>
           )}
-        </Center>
+          </Center>
 
         <Center bg="white" p="4" mb="4">
           <Box mb="4">
             <Heading size="md" mb="2" textAlign="center">
               {t('profile.form.avatar.label')}
-            </Heading>
+              </Heading>
             <Center style={{ overflow: 'hidden' }}>
               <Box w="120px" h="120px">
                 <FileDropper
-                  imageUrl={
-                    uploadableAvatarLocal ||
-                    (currentUser.avatar && currentUser.avatar.src)
-                  }
+                  imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
                   label={t('profile.form.avatar.fileDropper')}
                   round
                   height="100%"
                   imageFit="cover"
                   setUploadableImage={this.setUploadableAvatar}
                 />
-              </Box>
-            </Center>
+                </Box>
+              </Center>
             {uploadableAvatarLocal && (
               <HStack spacing="2" p="4">
                 <Button
@@ -202,7 +188,7 @@ class Profile extends PureComponent {
                   }
                 >
                   {t('profile.form.avatar.remove')}
-                </Button>
+                  </Button>
 
                 <Button
                   colorScheme="green"
@@ -213,23 +199,20 @@ class Profile extends PureComponent {
                   onClick={() => this.uploadAvatar()}
                 >
                   {tc('actions.submit')}
-                </Button>
-              </HStack>
+                  </Button>
+            </HStack>
             )}
-          </Box>
-        </Center>
+            </Box>
+          </Center>
 
         <Box bg="white" p="4">
           <Box>
             <Heading mb="1" mt="2" size="md" textAlign="center">
               {t('profile.label')}
-            </Heading>
-            <Personal
-              defaultValues={currentUser}
-              onSubmit={this.handleSubmit}
-            />
+              </Heading>
+            <Personal defaultValues={currentUser} onSubmit={this.handleSubmit} />
+            </Box>
           </Box>
-        </Box>
 
         <Center>
           <VStack spacing="4" mt="4" p="4">
@@ -239,9 +222,9 @@ class Profile extends PureComponent {
               onClick={() => this.setState({ isDeleteModalOn: true })}
             >
               {t('delete.action')}
-            </Button>
-          </VStack>
-        </Center>
+              </Button>
+            </VStack>
+          </Center>
 
         <ConfirmModal
           visible={isDeleteModalOn}
@@ -251,8 +234,8 @@ class Profile extends PureComponent {
           onCancel={() => this.setState({ isDeleteModalOn: false })}
         >
           <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
-      </Template>
+          </ConfirmModal>
+        </Template>
     );
   }
 }

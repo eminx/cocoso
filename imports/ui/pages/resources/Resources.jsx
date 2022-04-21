@@ -30,8 +30,7 @@ import Loader from '../../components/Loader';
 import ResourcesForCombo from '../../components/ResourcesForCombo';
 
 function ResourcesPage() {
-  const { currentUser, currentHost, canCreateContent } =
-    useContext(StateContext);
+  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
   const [resources, setResources] = useState([]);
   const [filterWord, setFilterWord] = useState('');
   const [sortBy, setSortBy] = useState('date');
@@ -74,9 +73,8 @@ function ResourcesPage() {
   const resourcesFilteredAndSorted = resourcesFiltered.sort((a, b) => {
     if (sortBy === 'name') {
       return a.label.localeCompare(b.label);
-    } else {
-      return new Date(b.createdAt) - new Date(a.createdAt);
     }
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
   return (
@@ -85,20 +83,15 @@ function ResourcesPage() {
         <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${
           Meteor.settings.public.name
         }`}</title>
-      </Helmet>
+        </Helmet>
       {canCreateContent && (
         <Center w="100%" mb="4">
           <Link to={currentUser ? '/resources/new' : '/my-profile'}>
-            <Button
-              as="span"
-              colorScheme="green"
-              variant="outline"
-              textTransform="uppercase"
-            >
+            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
-            </Button>
-          </Link>
-        </Center>
+              </Button>
+            </Link>
+      </Center>
       )}
       {/* <Breadcrumb /> */}
 
@@ -106,8 +99,8 @@ function ResourcesPage() {
         <Center>
           <Heading size="md" fontWeight="bold">
             {t('messages.notfound')}
-          </Heading>
-        </Center>
+            </Heading>
+      </Center>
       )}
 
       {resources && resources.length > 0 && (
@@ -122,18 +115,18 @@ function ResourcesPage() {
                   value={filterWord}
                   onChange={(event) => setFilterWord(event.target.value)}
                 />
-              </Box>
+                </Box>
               <Spacer my="2" />
               <TabList>
                 <Tab key="All">All</Tab>
                 <Tab key="Combo">Combo</Tab>
                 <Tab key="Non-combo">Non-combo</Tab>
-              </TabList>
+                </TabList>
               <Spacer my="2" />
               <Box display="flex" alignItems="center">
                 <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
                   {tc('labels.sortBy.placeholder')}
-                </Text>
+                  </Text>
                 <Select
                   bg="white"
                   size="sm"
@@ -143,18 +136,18 @@ function ResourcesPage() {
                 >
                   <option value="date">{tc('labels.sortBy.date')}</option>
                   <option value="name">{tc('labels.sortBy.name')}</option>
-                </Select>
-              </Box>
-            </Flex>
-          </Box>
+                  </Select>
+                </Box>
+              </Flex>
+            </Box>
           <TabPanels>
             <TabPanel>
               <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted.map((resource, index) => (
                   <ResourceItem key={resource._id} resource={resource} />
                 ))}
-              </SimpleGrid>
-            </TabPanel>
+                </SimpleGrid>
+              </TabPanel>
 
             <TabPanel>
               <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
@@ -163,8 +156,8 @@ function ResourcesPage() {
                   .map((resource, index) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
-              </SimpleGrid>
-            </TabPanel>
+                </SimpleGrid>
+              </TabPanel>
 
             <TabPanel>
               <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
@@ -173,12 +166,12 @@ function ResourcesPage() {
                   .map((resource, index) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
-              </SimpleGrid>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+                </SimpleGrid>
+              </TabPanel>
+            </TabPanels>
+      </Tabs>
       )}
-    </Box>
+      </Box>
   );
 }
 
@@ -189,22 +182,16 @@ function ResourceItem({ resource }) {
   return (
     <Box>
       <Link to={`/resources/${resource._id}`}>
-        <GridThumb
-          alt={resource.label}
-          title={resource.label}
-          image={resource.images?.[0]}
-        >
+        <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
           {resource.isCombo && (
             <Box>
               <ResourcesForCombo resource={resource} />
-            </Box>
+          </Box>
           )}
-          <Text fontSize="xs">
-            {moment(resource.createdAt).format('D MMM YYYY')}
-          </Text>
-        </GridThumb>
-      </Link>
-    </Box>
+          <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
+          </GridThumb>
+        </Link>
+      </Box>
   );
 }
 

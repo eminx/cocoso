@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 // import locale from node_modules
 import { sv } from 'date-fns/locale';
+
 registerLocale('sv', sv);
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
@@ -25,7 +26,7 @@ function DatePicker({
   const [selectedDate, setSelectedDate] = useState();
   const [t, i18n] = useTranslation('calendar');
 
-  let locale = i18n.language === 'en' ? 'en-GB' : i18n.language;
+  const locale = i18n.language === 'en' ? 'en-GB' : i18n.language;
 
   useEffect(() => {
     if (value) {
@@ -82,7 +83,7 @@ function DatePicker({
 
 function appendLeadingZeroes(n) {
   if (n <= 9) {
-    return '0' + n;
+    return `0${n}`;
   }
   return n;
 }
@@ -95,21 +96,13 @@ function unFormatDate({ date, time }) {
 }
 
 function formatDate(date) {
-  return (
-    date.getFullYear() +
-    '-' +
-    appendLeadingZeroes(date.getMonth() + 1) +
-    '-' +
-    appendLeadingZeroes(date.getDate())
-  );
+  return `${date.getFullYear()}-${appendLeadingZeroes(date.getMonth() + 1)}-${appendLeadingZeroes(
+    date.getDate()
+  )}`;
 }
 
 function formatTime(date) {
-  return (
-    appendLeadingZeroes(date.getHours()) +
-    ':' +
-    appendLeadingZeroes(date.getMinutes())
-  );
+  return `${appendLeadingZeroes(date.getHours())}:${appendLeadingZeroes(date.getMinutes())}`;
 }
 
 export default DatePicker;

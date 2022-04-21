@@ -49,7 +49,6 @@ const DatesAndTimes = ({
 
   const getBorderColorStyle = () => {
     if (!recurrence.conflict) {
-      return;
     } else if (recurrence.isConflictOK) {
       return 'orange';
     } else {
@@ -58,20 +57,11 @@ const DatesAndTimes = ({
   };
 
   return (
-    <Box
-      p="4"
-      mb="4"
-      border="1px solid #ccc"
-      borderColor={getBorderColorStyle()}
-    >
+    <Box p="4" mb="4" border="1px solid #ccc" borderColor={getBorderColorStyle()}>
       {!isNotDeletable && (
         <Flex justify="flex-end" mb="4">
-          <IconButton
-            onClick={removeRecurrence}
-            size="sm"
-            icon={<DeleteIcon />}
-          />
-        </Flex>
+          <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
+      </Flex>
       )}
 
       <Center>
@@ -84,22 +74,16 @@ const DatesAndTimes = ({
           />
           <FormLabel htmlFor="is-multipledays-switch" mb="1" ml="2">
             {t('form.days.multiple')}
-          </FormLabel>
-        </FormControl>
-      </Center>
+            </FormLabel>
+          </FormControl>
+        </Center>
 
       <Wrap>
         <Box p="2">
           <Box mb="2">
-            <Text fontSize="sm">
-              {isRange ? t('form.date.start') : t('form.days.single')}
-            </Text>
-            <DatePicker
-              noTime
-              value={startDate}
-              onChange={handleStartDateChange}
-            />
-          </Box>
+            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
+            <DatePicker noTime value={startDate} onChange={handleStartDateChange} />
+            </Box>
 
           {isRange && (
             <Box>
@@ -110,9 +94,9 @@ const DatesAndTimes = ({
                 onChange={handleEndDateChange}
                 minDate={new Date(startDate.date)}
               />
-            </Box>
+          </Box>
           )}
-        </Box>
+          </Box>
 
         <Box
           flexDirection="column"
@@ -124,21 +108,13 @@ const DatesAndTimes = ({
         >
           <Box mb="2">
             <Text fontSize="sm">{t('form.time.start')}</Text>
-            <DatePicker
-              onlyTime
-              value={startDate}
-              onChange={handleStartTimeChange}
-            />
-          </Box>
+            <DatePicker onlyTime value={startDate} onChange={handleStartTimeChange} />
+            </Box>
 
           <Box>
             <Text fontSize="sm">{t('form.time.finish')}</Text>
-            <DatePicker
-              onlyTime
-              value={endDate}
-              onChange={handleEndTimeChange}
-            />
-          </Box>
+            <DatePicker onlyTime value={endDate} onChange={handleEndTimeChange} />
+            </Box>
 
           {isPublicActivity && (
             <Box mt="4">
@@ -151,18 +127,18 @@ const DatesAndTimes = ({
                 onChange={handleCapacityChange}
               >
                 <NumberInputField placeholder="Capacity" />
-              </NumberInput>
-            </Box>
+                </NumberInput>
+          </Box>
           )}
-        </Box>
-      </Wrap>
+          </Box>
+        </Wrap>
 
       {recurrence.conflict && (
         <Box>
           <Text fontSize="sm" textAlign="center" fontWeight="bold">
             {t('form.conflict.alert')}
             <br />
-          </Text>
+            </Text>
           <Code
             colorScheme={recurrence.isConflictOK ? 'orange' : 'red'}
             mx="auto"
@@ -172,22 +148,18 @@ const DatesAndTimes = ({
           >
             {recurrence.conflict.startDate === recurrence.conflict.endDate
               ? recurrence.conflict.startDate
-              : recurrence.conflict.startDate +
-                '-' +
-                recurrence.conflict.endDate}
+              : `${recurrence.conflict.startDate}-${recurrence.conflict.endDate}`}
             {', '}
-            {recurrence.conflict.startTime +
-              ' – ' +
-              recurrence.conflict.endTime}
-          </Code>
+            {`${recurrence.conflict.startTime} – ${recurrence.conflict.endTime}`}
+            </Code>
           {recurrence.isConflictOK && (
             <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
               {t('form.conflict.notExclusiveInfo')}
-            </Text>
+          </Text>
           )}
-        </Box>
+      </Box>
       )}
-    </Box>
+      </Box>
   );
 };
 

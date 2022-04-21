@@ -31,19 +31,12 @@ import Works from '../../../api/works/work';
 const getFullName = (member) => {
   const { firstName, lastName } = member;
   if (firstName && lastName) {
-    return firstName + ' ' + lastName;
-  } else {
-    return firstName || lastName || '';
+    return `${firstName} ${lastName}`;
   }
+  return firstName || lastName || '';
 };
 
-function MemberPublic({
-  isLoading,
-  member,
-  memberWorks,
-  currentUser,
-  history,
-}) {
+function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) {
   if (!member || isLoading) {
     return <Loader />;
   }
@@ -99,54 +92,43 @@ function MemberPublic({
             />
             <Text fontWeight="bold" size="lg" textAlign="center">
               {member.username}
-            </Text>
+              </Text>
             <Text textAlign="center">{getFullName(member)}</Text>
 
             {member.bio && <Box mt="2">{renderHTML(member.bio)}</Box>}
 
             <Button variant="ghost" mt={2} onClick={onOpen}>
               {tc('labels.contact')}
-            </Button>
-          </Box>
+              </Button>
+        </Box>
         )
       }
     >
       {worksLabel && member && (
         <Heading size="md" m="4">
           {worksLabel} by {member.username}
-        </Heading>
+      </Heading>
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
           <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
             <Box mb="4">
               <WorkThumb work={work} />
-            </Box>
-          </Link>
+              </Box>
+            </Link>
         ))
       ) : (
         <Box w="100%" bg="gray.600" p="2" align="center">
           <Heading level={4} margin="small">
             {t('message.activity.empty')}
-          </Heading>
+            </Heading>
           <Box direction="row" align="center">
-            <Image
-              fit="contain"
-              src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif"
-            />
+            <Image fit="contain" src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif" />
+            </Box>
+          <Text m="2">{t('message.activity.info', { username: member.username })}</Text>
           </Box>
-          <Text m="2">
-            {t('message.activity.info', { username: member.username })}
-          </Text>
-        </Box>
       )}
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpen={onOpen}
-        size="sm"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getFullName(member)}</ModalHeader>
@@ -156,10 +138,10 @@ function MemberPublic({
               {member.contactInfo
                 ? renderHTML(member.contactInfo)
                 : t('message.contact.empty', { username: member.username })}
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+              </Box>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
 
       {avatarExists && (
         <Modal
@@ -171,27 +153,19 @@ function MemberPublic({
         >
           <ModalOverlay />
           <ModalContent>
-            <Image
-              src={member.avatar.src}
-              alt={member.username}
-              fit="contain"
-            />
-          </ModalContent>
-        </Modal>
+            <Image src={member.avatar.src} alt={member.username} fit="contain" />
+            </ModalContent>
+      </Modal>
       )}
-    </Template>
+      </Template>
   );
 }
 
 export default Member = withTracker(({ match, history }) => {
   const { username } = match.params;
   const publicMemberSubscription = Meteor.subscribe('memberAtHost', username);
-  const publicMemberWorksSubscription = Meteor.subscribe(
-    'memberWorksAtHost',
-    username
-  );
-  const isLoading =
-    !publicMemberSubscription.ready() || !publicMemberWorksSubscription.ready();
+  const publicMemberWorksSubscription = Meteor.subscribe('memberWorksAtHost', username);
+  const isLoading = !publicMemberSubscription.ready() || !publicMemberWorksSubscription.ready();
   const currentUser = Meteor.user();
   const member = Meteor.users.findOne({ username });
   const memberWorks = Works.find({ authorUsername: username }).fetch();

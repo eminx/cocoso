@@ -16,14 +16,9 @@ export default NewActivityContainer = withTracker((props) => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
-  const allBookings = parseAllBookingsWithResources(
-    activities,
-    processes,
-    resources
-  );
+  const allBookings = parseAllBookingsWithResources(activities, processes, resources);
 
-  const isLoading =
-    !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
+  const isLoading = !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
 
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');

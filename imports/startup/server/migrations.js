@@ -156,7 +156,7 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
-      if (!item.settings.menu.find((item) => item?.name === 'resource')) {
+      if (!item.settings.menu.find((menuItem) => menuItem?.name === 'resource')) {
         const menu = [
           ...item.settings.menu,
           {

@@ -81,17 +81,13 @@ class EditActivity extends PureComponent {
     if (isDeleted) {
       message.success(
         tc('message.success.remove', {
-          domain: `${tc('domains.your')} ${tc(
-            'domains.activity'
-          ).toLowerCase()}`,
+          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
         })
       );
     } else {
       message.success(
         tc('message.success.update', {
-          domain: `${tc('domains.your')} ${tc(
-            'domains.activity'
-          ).toLowerCase()}`,
+          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
         })
       );
     }
@@ -114,9 +110,7 @@ class EditActivity extends PureComponent {
     const { isPublicActivity, uploadableImage } = this.state;
     const formValues = { ...values };
     if (values.resourceId) {
-      const selectedResource = resources.find(
-        (r) => r._id === values.resourceId
-      );
+      const selectedResource = resources.find((r) => r._id === values.resourceId);
       formValues.resource = selectedResource.label;
       formValues.resourceId = selectedResource._id;
       formValues.resourceIndex = selectedResource.resourceIndex;
@@ -163,10 +157,7 @@ class EditActivity extends PureComponent {
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'activityImageUpload'
-      );
+      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
       this.setState(
         {
           uploadedImage,
@@ -307,15 +298,13 @@ class EditActivity extends PureComponent {
       activity._id
     );
 
-    const selectedBookingsWithConflictButNotExclusive =
-      selectedBookingsWithConflict.map((item) => {
-        const booking = { ...item };
-        if (item.conflict) {
-          booking.isConflictOK =
-            !item.conflict.isExclusiveActivity && !isExclusiveActivity;
-        }
-        return booking;
-      });
+    const selectedBookingsWithConflictButNotExclusive = selectedBookingsWithConflict.map((item) => {
+      const booking = { ...item };
+      if (item.conflict) {
+        booking.isConflictOK = !item.conflict.isExclusiveActivity && !isExclusiveActivity;
+      }
+      return booking;
+    });
 
     this.setState({
       datesAndTimes: selectedBookingsWithConflictButNotExclusive,
@@ -327,9 +316,7 @@ class EditActivity extends PureComponent {
 
     const isConflictHard =
       datesAndTimes &&
-      datesAndTimes.some(
-        (occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK
-      );
+      datesAndTimes.some((occurence) => Boolean(occurence.conflict) && !occurence.isConflictOK);
 
     const regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     const isTimesInValid = datesAndTimes.some((dateTime) => {
@@ -377,13 +364,9 @@ class EditActivity extends PureComponent {
         leftContent={
           <Box pb="2">
             <Link to={`/event/${activity._id}`}>
-              <IconButton
-                as="span"
-                aria-label="Back"
-                icon={<ArrowBackIcon />}
-              />
-            </Link>
-          </Box>
+              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
+              </Link>
+            </Box>
         }
       >
         <Box bg="white" p="8">
@@ -409,8 +392,8 @@ class EditActivity extends PureComponent {
                   onChange={this.handleRegistrationSwitch}
                 />
               )}
-            </VStack>
-          </Box>
+              </VStack>
+            </Box>
 
           <ActivityForm
             datesAndTimes={datesAndTimes}
@@ -427,18 +410,13 @@ class EditActivity extends PureComponent {
             isCreating={isLoading}
             isFormValid={isFormValid}
           />
-        </Box>
+          </Box>
 
         <Center p="4">
-          <Button
-            colorScheme="red"
-            size="sm"
-            variant="ghost"
-            onClick={this.showDeleteModal}
-          >
+          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
             {tc('actions.remove')}
-          </Button>
-        </Center>
+            </Button>
+          </Center>
 
         <ConfirmModal
           title={tc('actions.submit')}
@@ -450,8 +428,8 @@ class EditActivity extends PureComponent {
           {tc('modals.confirm.delete.body', {
             domain: tc('domains.activity').toLowerCase(),
           })}
-        </ConfirmModal>
-      </Template>
+          </ConfirmModal>
+        </Template>
     );
   }
 }

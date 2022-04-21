@@ -100,7 +100,7 @@ class EditPage extends PureComponent {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert message={tc('message.access.deny')} type="error" />
-        </div>
+          </div>
       );
     }
 
@@ -128,24 +128,19 @@ class EditPage extends PureComponent {
             <Button variant="link" size="sm">
               {t('pages.actions.backTo')}
               {` ${pageData.title}`}
-            </Button>
-          </Link>
+              </Button>
+            </Link>
         }
       >
         <Box bg="white" p="6">
           <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
 
           <Flex justify="center" py="4">
-            <Button
-              colorScheme="red"
-              size="sm"
-              variant="ghost"
-              onClick={this.openDeleteModal}
-            >
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={this.openDeleteModal}>
               {t('pages.actions.delete')}
-            </Button>
-          </Flex>
-        </Box>
+              </Button>
+            </Flex>
+          </Box>
 
         <ConfirmModal
           visible={isDeleteModalOn}
@@ -156,8 +151,8 @@ class EditPage extends PureComponent {
           {tc('modals.confirm.delete.body', {
             domain: tc('domains.page').toLowerCase(),
           })}
-        </ConfirmModal>
-      </Template>
+          </ConfirmModal>
+        </Template>
     );
   }
 }

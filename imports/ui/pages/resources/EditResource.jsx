@@ -38,9 +38,7 @@ function EditResourcePage({ history }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success(
-        tc('message.success.remove', { domain: tc('domains.resource') })
-      );
+      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
@@ -55,24 +53,13 @@ function EditResourcePage({ history }) {
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
       <Breadcrumb domain={resource} domainKey="label" />
       <Box bg="white" p="6">
-        {!isLoading && (
-          <ResourceForm
-            defaultValues={resource}
-            isEditMode={true}
-            history={history}
-          />
-        )}
-      </Box>
+        {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
+        </Box>
       <Center p="4">
-        <Button
-          colorScheme="red"
-          size="sm"
-          variant="ghost"
-          onClick={showDeleteModal}
-        >
+        <Button colorScheme="red" size="sm" variant="ghost" onClick={showDeleteModal}>
           {tc('actions.remove')}
-        </Button>
-      </Center>
+          </Button>
+        </Center>
       <ConfirmModal
         confirmText={tc('modals.confirm.delete.yes')}
         visible={isDeleteModalOn}
@@ -83,8 +70,8 @@ function EditResourcePage({ history }) {
         {tc('modals.confirm.delete.body', {
           domain: tc('domains.resource').toLowerCase(),
         })}
-      </ConfirmModal>
-    </Template>
+        </ConfirmModal>
+      </Template>
   );
 }
 

@@ -1,5 +1,5 @@
-import { ChatteryWindow } from './ChatteryWindow';
-import { ChatteryInput } from './ChatteryInput';
-import { ChatteryBubble } from './ChatteryBubble';
+import { ChatteryWindow } from './ChatteryWindow.jsx';
+import { ChatteryInput } from './ChatteryInput.jsx';
+import { ChatteryBubble } from './ChatteryBubble.jsx';
 
 export { ChatteryWindow, ChatteryInput, ChatteryBubble };

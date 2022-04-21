@@ -10,8 +10,7 @@ const useChattery = (contextId, currentUser) =>
     const discussion = chat?.messages?.map((message) => {
       return {
         ...message,
-        isFromMe:
-          currentUser && message && message.senderId === currentUser._id,
+        isFromMe: currentUser && message && message.senderId === currentUser._id,
       };
     });
     return {

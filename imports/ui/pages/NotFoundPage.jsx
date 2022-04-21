@@ -7,13 +7,13 @@ const NotFoundPage = ({ domain, history }) => {
     <Template>
       <Box m="4" p="2">
         <Text textAlign="center" size="large" margin="2">
-          404
+              404
         </Text>
         <Text textAlign="center" fontWeight="bold">
-          {domain ? domain : 'Page'} could not be found dear
-        </Text>
-      </Box>
-    </Template>
+          {domain || 'Page'} could not be found dear
+          </Text>
+        </Box>
+      </Template>
   );
 };
 

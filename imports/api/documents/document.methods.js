@@ -20,7 +20,7 @@ Meteor.methods({
     const host = getHost(this);
 
     try {
-      const theNewDocId = Documents.insert({
+      Documents.insert({
         host,
         documentLabel,
         documentUrl,
@@ -31,7 +31,6 @@ Meteor.methods({
         uploadedByName: user.username,
         creationDate: new Date(),
       });
-      return Documents.findOne(theNewDocId);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");

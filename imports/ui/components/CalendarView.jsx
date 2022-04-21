@@ -8,7 +8,7 @@ import '../utils/styles/bigcalendar-custom.css';
 
 moment.locale('en-GB', {
   week: {
-    dow: 1, //Monday is the first day of the week.
+    dow: 1, // Monday is the first day of the week.
   },
 });
 
@@ -59,7 +59,7 @@ function CalendarView(props) {
         onSelectEvent={props.onSelect}
         onSelectSlot={props.onSelectSlot}
       />
-    </div>
+      </div>
   );
 }
 

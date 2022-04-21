@@ -25,7 +25,7 @@ const PageForm = ({ defaultValues, onSubmit }) => {
               {...register('title', { required: true })}
               placeholder={t('pages.form.title.holder')}
             />
-          </FormField>
+            </FormField>
 
           <FormField label={t('pages.form.desc.label')}>
             <Controller
@@ -41,20 +41,16 @@ const PageForm = ({ defaultValues, onSubmit }) => {
                 />
               )}
             />
-          </FormField>
+            </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isDirty}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </div>
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </div>
   );
 };
 

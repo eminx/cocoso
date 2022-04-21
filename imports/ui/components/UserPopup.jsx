@@ -31,9 +31,9 @@ function UserPopup({ currentUser }) {
         <Link to="/login">
           <Button as="span" size="sm" variant="ghost">
             {tc('menu.guest.login')}
-          </Button>
-        </Link>
-      </Box>
+            </Button>
+          </Link>
+        </Box>
     );
   }
 
@@ -50,53 +50,44 @@ function UserPopup({ currentUser }) {
   return (
     <Menu>
       <MenuButton>
-        <Avatar
-          mr="2"
-          showBorder
-          src={currentUser.avatar && currentUser.avatar.src}
-        >
-          {isNotification && (
-            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />
-          )}
-        </Avatar>
-      </MenuButton>
+        <Avatar mr="2" showBorder src={currentUser.avatar && currentUser.avatar.src}>
+          {isNotification && <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />}
+          </Avatar>
+        </MenuButton>
       <MenuList>
         {isNotification && (
           <MenuGroup title={tc('menu.notifications.label')}>
             {notifications.map((item) => (
-              <Link
-                key={item.contextId + item.count}
-                to={`/${item.context}/${item.contextId}`}
-              >
+              <Link key={item.contextId + item.count} to={`/${item.context}/${item.contextId}`}>
                 <MenuItem>
                   <Text color="gray.600" isTruncated>
                     {item.title}{' '}
-                  </Text>
+                    </Text>
                   <Badge colorScheme="red" size="xs">
                     {' '}
                     {item.count}
-                  </Badge>
-                </MenuItem>
-              </Link>
+                    </Badge>
+                  </MenuItem>
+                </Link>
             ))}
-          </MenuGroup>
+        </MenuGroup>
         )}
         <MenuGroup title={tc('menu.member.label')}>
           {userMenu.map((item) => (
             <Link key={item.key} to={item.value}>
-              <MenuItem>{tc('menu.member.' + item.key)}</MenuItem>
-            </Link>
+              <MenuItem>{tc(`menu.member.${item.key}`)}</MenuItem>
+              </Link>
           ))}
-        </MenuGroup>
+          </MenuGroup>
         {role === 'admin' && <MenuDivider />}
         {role === 'admin' && (
           <MenuGroup title={tc('menu.admin.label')}>
             {adminMenu.map((item) => (
               <Link key={item.key} to={item.value}>
-                <MenuItem>{tc('menu.admin.' + item.key)}</MenuItem>
-              </Link>
+                <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                </Link>
             ))}
-          </MenuGroup>
+        </MenuGroup>
         )}
 
         <MenuDivider />
@@ -105,11 +96,11 @@ function UserPopup({ currentUser }) {
           <Center py="2">
             <Button variant="outline" onClick={() => Meteor.logout()}>
               {tc('actions.logout')}
-            </Button>
-          </Center>
-        </MenuGroup>
-      </MenuList>
-    </Menu>
+              </Button>
+            </Center>
+          </MenuGroup>
+        </MenuList>
+      </Menu>
   );
 }
 

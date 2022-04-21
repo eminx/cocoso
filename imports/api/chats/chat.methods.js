@@ -29,7 +29,7 @@ Meteor.methods({
         username: user.username,
       },
       isNotificationOn: false,
-      messages: new Array(),
+      messages: [],
     });
     return theChat;
   },
@@ -85,7 +85,7 @@ Meteor.methods({
         .map((other) => Meteor.users.findOne(other.memberId));
       theOthers.forEach((member) => {
         let contextIdIndex = -1;
-        for (let i = 0; i < member.notifications.length; i++) {
+        for (let i = 0; i < member.notifications.length; i += 1) {
           if (member.notifications[i].contextId === contextId) {
             contextIdIndex = i;
             break;

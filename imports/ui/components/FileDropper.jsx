@@ -52,13 +52,13 @@ const FileDropper = ({
                 {isMultiple
                   ? tc('plugins.fileDropper.helperMultiple')
                   : tc('plugins.fileDropper.helper')}
-              </Text>
-            </Center>
+                </Text>
+              </Center>
           )}
           <input {...getInputProps()} />
-        </Box>
+          </Box>
       )}
-    </Dropzone>
+      </Dropzone>
   );
 };
 

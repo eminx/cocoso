@@ -9,7 +9,7 @@ import { Signup } from './index';
 import { createAccount } from './functions';
 
 function SignupPage() {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
@@ -22,23 +22,23 @@ function SignupPage() {
         <Box>
           <Heading size="md" textAlign="center">
             {t('signup.labels.title')}
-          </Heading>
+            </Heading>
           <Center pt="4" mb="4">
             <Text>
               {t('signup.labels.subtitle')}{' '}
               <Link to="/login">
                 <CLink as="span">
                   <b>{t('actions.login')}</b>
-                </CLink>
-              </Link>
-            </Text>
-          </Center>
+                  </CLink>
+                </Link>
+              </Text>
+            </Center>
           <Box p="6" bg="white" mb="4">
             <Signup onSubmit={(values) => createAccount(values)} />
+            </Box>
           </Box>
-        </Box>
-      </Center>
-    </Template>
+        </Center>
+      </Template>
   );
 }
 

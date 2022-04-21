@@ -30,11 +30,11 @@ function Modal({
         <ModalFooter>
           <Button variant="ghost" mr={3} onClick={onClose}>
             {closeButtonLabel}
-          </Button>
+            </Button>
           <Button>{actionButtonLabel}</Button>
-        </ModalFooter>
-      </ModalContent>
-    </CModal>
+          </ModalFooter>
+        </ModalContent>
+      </CModal>
   );
 }
 

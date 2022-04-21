@@ -17,11 +17,10 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import ProcessForm from '../../components/ProcessForm';
-import { call } from '../../utils/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
-import { resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 class NewProcess extends React.Component {
@@ -121,10 +120,7 @@ class NewProcess extends React.Component {
     const { uploadableImage } = this.state;
     try {
       const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(
-        resizedImage,
-        'processImageUpload'
-      );
+      const uploadedImage = await uploadImage(resizedImage, 'processImageUpload');
       this.setState(
         {
           uploadedImage,
@@ -144,12 +140,7 @@ class NewProcess extends React.Component {
     const { formValues, uploadedImage, isPrivate } = this.state;
 
     try {
-      const response = await call(
-        'createProcess',
-        formValues,
-        uploadedImage,
-        isPrivate
-      );
+      const response = await call('createProcess', formValues, uploadedImage, isPrivate);
       this.setState({
         isCreating: false,
         newProcessId: response,
@@ -180,13 +171,11 @@ class NewProcess extends React.Component {
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
             message={tc('message.access.contributor', {
-              domain: `${tc('domains.a')} ${tc(
-                'domains.process'
-              ).toLowerCase()}`,
+              domain: `${tc('domains.a')} ${tc('domains.process').toLowerCase()}`,
             })}
             type="error"
           />
-        </div>
+          </div>
       );
     }
 
@@ -212,10 +201,7 @@ class NewProcess extends React.Component {
     const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const { title, description } = formValues;
     const isFormValid =
-      formValues &&
-      title.length > 3 &&
-      description.length > 10 &&
-      uploadableImageLocal;
+      formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;
 
     return (
       <Template
@@ -236,23 +222,21 @@ class NewProcess extends React.Component {
                   <Flex align="center">
                     <Text fontWeight="bold">{t('form.private.label')}</Text>
                     <InfoIcon ml="2" />
-                  </Flex>
-                </FormLabel>
-              </FormControl>
-            </PopoverTrigger>
+                    </Flex>
+                  </FormLabel>
+                </FormControl>
+              </PopoverTrigger>
             <PopoverContent>
               <PopoverCloseButton />
-              <PopoverHeader fontWeight="bold">
-                {t('form.private.tooltip.title')}
-              </PopoverHeader>
+              <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
               <PopoverBody>
                 <Text fontSize="md" mb="2">
                   {t('form.private.tooltip.P1')}
-                </Text>
+                  </Text>
                 <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
 
           <ProcessForm
             defaultValues={formValues}
@@ -261,8 +245,8 @@ class NewProcess extends React.Component {
             setUploadableImage={this.setUploadableImage}
             uploadableImageLocal={uploadableImageLocal}
           />
-        </Box>
-      </Template>
+          </Box>
+        </Template>
     );
   }
 }

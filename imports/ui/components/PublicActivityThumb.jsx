@@ -37,19 +37,14 @@ function PublicActivityThumb({ item }) {
     // }
 
     return (
-      <div
-        key={date.startDate + date.startTime}
-        style={{ marginRight: 12, marginBottom: 12 }}
-      >
+      <div key={date.startDate + date.startTime} style={{ marginRight: 12, marginBottom: 12 }}>
         <div style={{ ...dateStyle }}>
           <span style={{ fontSize: 24, marginRight: 2 }}>
             <b>{moment(date.startDate).format('DD')}</b>
-          </span>
-          <span style={{ fontSize: 16 }}>
-            {moment(date.startDate).format('MMM').toUpperCase()}
-          </span>
+            </span>
+          <span style={{ fontSize: 16 }}>{moment(date.startDate).format('MMM').toUpperCase()}</span>
+          </div>
         </div>
-      </div>
     );
   };
 
@@ -70,11 +65,11 @@ function PublicActivityThumb({ item }) {
       <Box p="1">
         <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
-        </Heading>
+          </Heading>
         <Text fontWeight={300} style={ellipsisStyle}>
           {item.isProcess ? item.readingMaterial : item.subTitle}
-        </Text>
-      </Box>
+          </Text>
+        </Box>
 
       <Box w="100%">
         <LazyLoadImage
@@ -84,13 +79,13 @@ function PublicActivityThumb({ item }) {
           effect="black-and-white"
           width="100%"
         />
-      </Box>
+        </Box>
 
       <Flex direction="row" justify="end" align="center" mt="1" wrap p="1">
         {futureDates.slice(0, 3).map((date) => renderDate(date))}
         {remaining > 0 && <div style={{ ...dateStyle }}> + {remaining}</div>}
-      </Flex>
-    </Box>
+        </Flex>
+      </Box>
   );
 }
 

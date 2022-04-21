@@ -1,10 +1,12 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": [
     "airbnb",
+    "plugin:import/errors",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
@@ -18,7 +20,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier"],
+  "plugins": ["@babel", "react", "import", "prettier"],
   "rules": {
     "import/extensions": [
       "error",
@@ -30,6 +32,7 @@
         "tsx": "never"
       }
     ],
+    "indent": ["error", 2],
     "no-underscore-dangle": "off",
     "prettier/prettier": ["error"],
     "react-hooks/exhaustive-deps": "warn",
@@ -38,10 +41,12 @@
     "react/jsx-indent-props": [2, 4],
     "react/jsx-indent": [2, 4],
     "react/jsx-one-expression-per-line": [0],
-    "react/prefer-stateless-function": [1],
-    "react/static-property-placement": [1, "property assignment"]
+    "react/prefer-stateless-function": [1]
   },
   "settings": {
-    "import/resolver": "meteor"
+    "import/resolver": "meteor",
+    "react": {
+      "version": "detect"
+    }
   }
 }

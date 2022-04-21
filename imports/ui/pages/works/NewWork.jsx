@@ -80,10 +80,7 @@ class NewWork extends PureComponent {
       const imagesReadyToSave = await Promise.all(
         uploadableImages.map(async (uploadableImage, index) => {
           const resizedImage = await resizeImage(uploadableImage, 1200);
-          const uploadedImage = await uploadImage(
-            resizedImage,
-            'workImageUpload'
-          );
+          const uploadedImage = await uploadImage(resizedImage, 'workImageUpload');
           return uploadedImage;
         })
       );
@@ -101,9 +98,7 @@ class NewWork extends PureComponent {
   createWork = async (imagesReadyToSave) => {
     const { values, categories } = this.state;
 
-    const selectedCategory = categories.find(
-      (category) => category._id === values.categoryId
-    );
+    const selectedCategory = categories.find((category) => category._id === values.categoryId);
 
     const parsedValues = {
       ...values,
@@ -122,9 +117,7 @@ class NewWork extends PureComponent {
       });
       message.success(
         i18n.t('common:message.success.create', {
-          domain: `${i18n.t('common:domains.your')} ${i18n
-            .t('common:domains.work')
-            .toLowerCase()}`,
+          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
         })
       );
     } catch (error) {
@@ -136,12 +129,8 @@ class NewWork extends PureComponent {
 
   handleRemoveImage = (imageIndex) => {
     this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-      uploadableImages: uploadableImages.filter(
-        (image, index) => imageIndex !== index
-      ),
-      uploadableImagesLocal: uploadableImagesLocal.filter(
-        (image, index) => imageIndex !== index
-      ),
+      uploadableImages: uploadableImages.filter((image, index) => imageIndex !== index),
+      uploadableImagesLocal: uploadableImagesLocal.filter((image, index) => imageIndex !== index),
       // unSavedImageChange: true,
     }));
   };
@@ -153,11 +142,7 @@ class NewWork extends PureComponent {
 
     this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
       uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
-      uploadableImagesLocal: arrayMove(
-        uploadableImagesLocal,
-        oldIndex,
-        newIndex
-      ),
+      uploadableImagesLocal: arrayMove(uploadableImagesLocal, oldIndex, newIndex),
       // unSavedImageChange: true,
     }));
   };
@@ -174,17 +159,11 @@ class NewWork extends PureComponent {
             })}
             type="error"
           />
-        </div>
+          </div>
       );
     }
 
-    const {
-      uploadableImagesLocal,
-      isSuccess,
-      newWorkId,
-      isCreating,
-      categories,
-    } = this.state;
+    const { uploadableImagesLocal, isSuccess, newWorkId, isCreating, categories } = this.state;
 
     if (isSuccess && newWorkId) {
       return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
@@ -202,8 +181,8 @@ class NewWork extends PureComponent {
             onSubmit={this.uploadImages}
             setUploadableImages={this.setUploadableImages}
           />
-        </Box>
-      </Template>
+          </Box>
+        </Template>
     );
   }
 }

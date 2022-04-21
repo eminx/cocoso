@@ -9,10 +9,8 @@ setConfiguration({ maxScreenClass: 'xl' });
 
 export default function () {
   return (
-    <Suspense
-      fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}
-    >
+    <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
       <Routes />
-    </Suspense>
+      </Suspense>
   );
 }

@@ -4,7 +4,7 @@ import { Link as CLink, List, ListItem, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 function ListMenu({ list, pathname, children, ...otherProps }) {
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
   if (!list) {
     return null;
   }
@@ -16,12 +16,12 @@ function ListMenu({ list, pathname, children, ...otherProps }) {
             <CLink as="span">
               <Text fontWeight={pathname === item.value ? 'bold' : 'normal'}>
                 {tc(`menu.${item.menu}.${item.key}`)}
-              </Text>
-            </CLink>
-          </Link>
-        </ListItem>
+                </Text>
+              </CLink>
+            </Link>
+          </ListItem>
       ))}
-    </List>
+      </List>
   );
 }
 

@@ -2,17 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Input,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-const Joi = require('joi');
+import { Box, Button, Center, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import {
@@ -24,6 +14,8 @@ import {
   emailSchema,
   passwordSchema,
 } from './account.helpers';
+
+const Joi = require('joi');
 
 const Login = ({ onSubmit }) => {
   const [t] = useTranslation('accounts');
@@ -38,19 +30,19 @@ const Login = ({ onSubmit }) => {
       <VStack spacing="6">
         <FormField label={t('login.form.username.label')}>
           <Input {...register('username')} />
-        </FormField>
+          </FormField>
 
         <FormField label={t('login.form.password.label')}>
           <Input {...register('password')} type="password" />
-        </FormField>
+          </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </VStack>
-    </form>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
   );
 };
 
@@ -81,7 +73,7 @@ const Signup = ({ onSubmit }) => {
           label={t('signup.form.username.label')}
         >
           <Input {...register('username')} />
-        </FormField>
+          </FormField>
 
         <FormField
           errorMessage={errors.email?.message}
@@ -89,7 +81,7 @@ const Signup = ({ onSubmit }) => {
           label={t('signup.form.email.label')}
         >
           <Input {...register('email')} type="email" />
-        </FormField>
+          </FormField>
 
         <FormField
           errorMessage={errors.password?.message}
@@ -98,20 +90,20 @@ const Signup = ({ onSubmit }) => {
           label={t('signup.form.password.label')}
         >
           <Input {...register('password')} type="password" />
-        </FormField>
+          </FormField>
         <Center>
           <Text fontSize="xs" textAlign="center">
             {t('signup.form.password.info')}
-          </Text>
-        </Center>
+            </Text>
+          </Center>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </VStack>
-    </form>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
   );
 };
 
@@ -137,15 +129,15 @@ const ForgotPassword = ({ onForgotPassword }) => {
           label={t('password.form.email.label')}
         >
           <Input {...register('email')} type="email" />
-        </FormField>
+          </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </VStack>
-    </form>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
   );
 };
 
@@ -174,15 +166,15 @@ const ResetPassword = ({ onResetPassword }) => {
           label={t('login.form.password.label')}
         >
           <Input {...register('password')} type="password" />
-        </FormField>
+          </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
           <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </VStack>
-    </form>
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
   );
 };
 
@@ -196,8 +188,8 @@ const AuthContainer = () => {
         <Center>
           <Text>{t('signup.labels.subtitle')}</Text>
           <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
-        </Center>
-      </Box>
+          </Center>
+        </Box>
     );
   }
 
@@ -208,8 +200,8 @@ const AuthContainer = () => {
         <Flex justify="space-around">
           <Link onClick={() => setMode('login')}>{t('actions.login')}</Link>
           <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
-        </Flex>
-      </Box>
+          </Flex>
+        </Box>
     );
   }
 
@@ -219,12 +211,12 @@ const AuthContainer = () => {
       <Center mb="8">
         <Heading>{t('login.labels.subtitle')}</Heading>
         <Link onClick={() => setMode('signup')}>{t('actions.signup')}</Link>
-      </Center>
+        </Center>
       <Center>
         <Heading>{t('actions.forgot')}</Heading>
         <Link onClick={() => setMode('recover')}>{t('actions.reset')}</Link>
-      </Center>
-    </Box>
+        </Center>
+      </Box>
   );
 };
 

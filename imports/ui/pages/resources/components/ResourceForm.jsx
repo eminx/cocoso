@@ -23,10 +23,7 @@ import arrayMove from 'array-move';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import {
-  editorFormats,
-  editorModules,
-} from '../../../utils/constants/quillConfig';
+import { editorFormats, editorModules } from '../../../utils/constants/quillConfig';
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
@@ -54,9 +51,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   useEffect(() => {
     getResources();
-    setResourcesForCombo(
-      defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo
-    );
+    setResourcesForCombo(defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo);
   }, []);
 
   const getResources = async () => {
@@ -75,14 +70,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
         images.map(async (image) => {
           if (image.type === 'not-uploaded') {
             const resizedImage = await resizeImage(image.resizableData, 1200);
-            const uploadedImageUrl = await uploadImage(
-              resizedImage,
-              'resourceImageUpload'
-            );
+            const uploadedImageUrl = await uploadImage(resizedImage, 'resourceImageUpload');
             return uploadedImageUrl;
-          } else {
-            return image;
           }
+          return image;
         })
       );
       return imagesReadyToSave;
@@ -105,17 +96,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
-        message.success(
-          tc('message.success.update', { domain: tc('domains.resource') })
-        );
-        history.push('/resources/' + defaultValues._id);
+        message.success(tc('message.success.update', { domain: tc('domains.resource') }));
+        history.push(`/resources/${defaultValues._id}`);
       } else {
         const newResource = await call('createResource', values);
-        message.success(
-          tc('message.success.create', { domain: tc('domains.resource') })
-        );
+        message.success(tc('message.success.create', { domain: tc('domains.resource') }));
         if (newResource) {
-          history.push('/resources/' + newResource);
+          history.push(`/resources/${newResource}`);
         }
       }
     } catch (error) {
@@ -179,21 +166,17 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           <FormControl display="flex" alignItems="center">
-            <Switch
-              {...register('isCombo')}
-              isDisabled={isEditMode}
-              id="is-combo-switch"
-            />
+            <Switch {...register('isCombo')} isDisabled={isEditMode} id="is-combo-switch" />
             <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
               {t('form.combo.switch.label')}
-            </FormLabel>
-          </FormControl>
+              </FormLabel>
+            </FormControl>
 
           {isCombo && (
             <Box bg="gray.100" p="6" w="90%">
               <Text fontSize="sm" mb="6">
                 {t('form.combo.select.helper')}
-              </Text>
+                </Text>
               {isLoading ? (
                 <Loader />
               ) : (
@@ -208,12 +191,12 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   onChange={handleAutoCompleteSelectChange}
                 />
               )}
-            </Box>
+          </Box>
           )}
 
           <FormField label={t('form.name.label')}>
             <Input {...register('label')} placeholder={t('form.name.holder')} />
-          </FormField>
+            </FormField>
 
           <FormField label={t('form.desc.label')}>
             <Controller
@@ -228,17 +211,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                 />
               )}
             />
-          </FormField>
+            </FormField>
 
           <FormField label={t('form.images.label', { count: images.length })}>
             <Box>
               {images && (
                 <>
-                  <NiceSlider
-                    images={images.map((image) =>
-                      image.src ? image.src : image
-                    )}
-                  />
+                  <NiceSlider images={images.map((image) => (image.src ? image.src : image))} />
                   <SortableContainer
                     onSortEnd={handleSortImages}
                     axis="xy"
@@ -246,36 +225,29 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                   >
                     {images.map((image, index) => (
                       <SortableItem
-                        key={'sortable_img_' + index}
+                        key={`sortable_img_${index}`}
                         index={index}
                         image={image.src ? image.src : image}
                         onRemoveImage={() => handleRemoveImage(index)}
                       />
                     ))}
-                  </SortableContainer>
-                </>
+                    </SortableContainer>
+              </>
               )}
               <Center w="100%">
-                <FileDropper
-                  setUploadableImage={setFileDropperImage}
-                  isMultiple
-                />
-              </Center>
-            </Box>
-          </FormField>
+                <FileDropper setUploadableImage={setFileDropperImage} isMultiple />
+                </Center>
+              </Box>
+            </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button
-              isDisabled={!isEditable()}
-              isLoading={isSubmitting}
-              type="submit"
-            >
+            <Button isDisabled={!isEditable()} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </Box>
+              </Button>
+            </Flex>
+          </VStack>
+        </form>
+      </Box>
   );
 }
 
@@ -294,12 +266,10 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
         onClick={onRemoveImage}
         style={{ position: 'absolute', top: 4, right: 4 }}
       />
-    </WrapItem>
+      </WrapItem>
   );
 });
 
-const SortableContainer = sortableContainer(({ children }) => (
-  <Wrap py="2">{children}</Wrap>
-));
+const SortableContainer = sortableContainer(({ children }) => <Wrap py="2">{children}</Wrap>);
 
 export default ResourceForm;

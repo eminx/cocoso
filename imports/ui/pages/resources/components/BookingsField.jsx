@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
-moment.locale(i18n.language);
 
 import { useForm } from 'react-hook-form';
 import { useCounter } from 'rooks';
@@ -33,6 +32,8 @@ import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
 
+moment.locale(i18n.language);
+
 const today = new Date().toISOString().substring(0, 10);
 
 const datesModel = {
@@ -60,8 +61,11 @@ export default function BookingsField({ currentUser, selectedResource }) {
   const { isDirty, isSubmitting } = formState;
 
   const selectedBookings = [newBooking];
-  const { selectedBookingsWithConflict, isCollisionPreventionLoading } =
-    useCollisionPrevention(selectedResource, selectedBookings, counterValue);
+  const { selectedBookingsWithConflict, isCollisionPreventionLoading } = useCollisionPrevention(
+    selectedResource,
+    selectedBookings,
+    counterValue
+  );
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -72,10 +76,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
   const getResourceBookingsForUser = async () => {
     try {
-      const response = await call(
-        'getResourceBookingsForUser',
-        selectedResource?._id
-      );
+      const response = await call('getResourceBookingsForUser', selectedResource?._id);
       setResourceBookingsForUser(
         response.map((booking) => ({
           ...booking,
@@ -112,7 +113,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
     };
     selectedDates[key] = value;
     if (key === 'startDate' && !multipledays) {
-      selectedDates['endDate'] = value;
+      selectedDates.endDate = value;
     }
     setNewBooking(selectedDates);
     increment();
@@ -145,9 +146,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
       await call('createActivity', activityValues);
       message.success(
         tc('message.success.create', {
-          domain: `${tc('domains.your')} ${tc(
-            'domains.activity'
-          ).toLowerCase()}`,
+          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
         })
       );
       setAccordionOpen(false);
@@ -165,7 +164,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
     <Box mt="5">
       <Heading mb="4" ml="4" size="sm">
         {t('booking.labels.field')}
-      </Heading>
+        </Heading>
 
       <Box bg="white">
         <Accordion
@@ -180,13 +179,9 @@ export default function BookingsField({ currentUser, selectedResource }) {
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
                     {t('booking.labels.form')}
-                  </Box>
-                  {isExpanded ? (
-                    <MinusIcon fontSize="12px" />
-                  ) : (
-                    <AddIcon fontSize="12px" />
-                  )}
-                </AccordionButton>
+                    </Box>
+                  {isExpanded ? <MinusIcon fontSize="12px" /> : <AddIcon fontSize="12px" />}
+                  </AccordionButton>
                 <AccordionPanel pb={4}>
                   <FormControl display="flex" alignItems="center" mb="2">
                     <Switch
@@ -194,15 +189,10 @@ export default function BookingsField({ currentUser, selectedResource }) {
                       size="sm"
                       onChange={() => setMultipledays(!multipledays)}
                     />
-                    <FormLabel
-                      htmlFor="book-multiple-days"
-                      fontSize="sm"
-                      mb="0"
-                      ml="2"
-                    >
+                    <FormLabel htmlFor="book-multiple-days" fontSize="sm" mb="0" ml="2">
                       {t('booking.multiple')}
-                    </FormLabel>
-                  </FormControl>
+                      </FormLabel>
+                    </FormControl>
 
                   <Box
                     p={isConflict ? '2' : '0'}
@@ -213,43 +203,32 @@ export default function BookingsField({ currentUser, selectedResource }) {
                       <DatePicker
                         noTime
                         placeholder={t('booking.date.start')}
-                        onChange={(date) =>
-                          handleDateAndTimeChange(date, 'startDate')
-                        }
+                        onChange={(date) => handleDateAndTimeChange(date, 'startDate')}
                       />
                       {multipledays && (
                         <DatePicker
                           noTime
                           placeholder={t('booking.date.start')}
-                          onChange={(date) =>
-                            handleDateAndTimeChange(date, 'endDate')
-                          }
+                          onChange={(date) => handleDateAndTimeChange(date, 'endDate')}
                         />
                       )}
-                    </HStack>
+                      </HStack>
                     <HStack spacing="2">
                       <DatePicker
                         onlyTime
                         placeholder={t('booking.time.start')}
-                        onChange={(time) =>
-                          handleDateAndTimeChange(time, 'startTime')
-                        }
+                        onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
                       />
                       <DatePicker
                         onlyTime
                         placeholder={t('booking.time.end')}
-                        onChange={(time) =>
-                          handleDateAndTimeChange(time, 'endTime')
-                        }
+                        onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
                       />
-                    </HStack>
+                      </HStack>
                     {isConflict && (
-                      <ConflictMarker
-                        newBooking={selectedBookingsWithConflict[0]}
-                        t={t}
-                      />
+                      <ConflictMarker newBooking={selectedBookingsWithConflict[0]} t={t} />
                     )}
-                  </Box>
+                    </Box>
 
                   <form onSubmit={handleSubmit((data) => onSubmit(data))}>
                     <Input
@@ -275,15 +254,15 @@ export default function BookingsField({ currentUser, selectedResource }) {
                         type="submit"
                       >
                         {t('booking.submit')}
-                      </Button>
-                    </Flex>
-                  </form>
-                </AccordionPanel>
-              </>
+                        </Button>
+                      </Flex>
+                    </form>
+                  </AccordionPanel>
+                </>
             )}
-          </AccordionItem>
-        </Accordion>
-      </Box>
+            </AccordionItem>
+          </Accordion>
+        </Box>
 
       {!isLoading && (
         <Box bg="white" mt="2">
@@ -292,26 +271,24 @@ export default function BookingsField({ currentUser, selectedResource }) {
               {(booking) => (
                 <Box>
                   <Text fontSize="sm">
-                    {`From ${moment(booking.startDate).format('ddd, D MMM')} ${
-                      booking.startTime
-                    } 
+                    {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${
                       booking.startDate === booking.endDate
                         ? ''
                         : moment(booking.endDate).format('ddd, D MMM')
                     } ${booking.endTime} `}
-                  </Text>
-                </Box>
+                    </Text>
+                  </Box>
               )}
-            </NiceList>
+              </NiceList>
           ) : (
             <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
               <em>No bookings yet</em>
-            </Text>
+              </Text>
           )}
-        </Box>
+      </Box>
       )}
-    </Box>
+      </Box>
   );
 }
 
@@ -324,20 +301,14 @@ function ConflictMarker({ newBooking, t }) {
     <Box mt="4">
       <Text fontSize="sm" textAlign="center" fontWeight="bold">
         {t('booking.conflict')}
-      </Text>
-      <Code
-        colorScheme="red"
-        mx="auto"
-        display="block"
-        width="fit-content"
-        mt="4"
-      >
+        </Text>
+      <Code colorScheme="red" mx="auto" display="block" width="fit-content" mt="4">
         {newBooking.conflict.startDate === newBooking.conflict.endDate
           ? newBooking.conflict.startDate
-          : newBooking.conflict.startDate + '-' + newBooking.conflict.endDate}
+          : `${newBooking.conflict.startDate}-${newBooking.conflict.endDate}`}
         {', '}
-        {newBooking.conflict.startTime + ' – ' + newBooking.conflict.endTime}
-      </Code>
-    </Box>
+        {`${newBooking.conflict.startTime} – ${newBooking.conflict.endTime}`}
+        </Code>
+      </Box>
   );
 }

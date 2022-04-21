@@ -1,13 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  Input,
-  Tag,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Input, Tag, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
@@ -42,15 +34,10 @@ class InviteManager extends PureComponent {
       return true;
     }
 
-    if (
-      firstNameInput.length < 2 ||
-      includesSpecialCharacters(firstNameInput)
-    ) {
+    if (firstNameInput.length < 2 || includesSpecialCharacters(firstNameInput)) {
       message.error(t('invite.firstName.valid'));
       return true;
     }
-
-    return;
   };
 
   handleSendInvite = (event) => {
@@ -67,24 +54,19 @@ class InviteManager extends PureComponent {
       email: emailInput,
     };
 
-    Meteor.call(
-      'invitePersonToPrivateProcess',
-      process._id,
-      person,
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.destroy();
-          message.error(error.reason);
-        } else {
-          message.success(t('invite.success', { name: firstNameInput }));
-          this.setState({
-            firstNameInput: '',
-            emailInput: '',
-          });
-        }
+    Meteor.call('invitePersonToPrivateProcess', process._id, person, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.destroy();
+        message.error(error.reason);
+      } else {
+        message.success(t('invite.success', { name: firstNameInput }));
+        this.setState({
+          firstNameInput: '',
+          emailInput: '',
+        });
       }
-    );
+    });
   };
 
   handleEmailInputChange = (event) => {
@@ -116,7 +98,7 @@ class InviteManager extends PureComponent {
               placeholder={t('invite.email.holder')}
               value={emailInput}
             />
-          </FormField>
+            </FormField>
 
           <FormField label={t('invite.firstName.label')}>
             <Input
@@ -124,10 +106,10 @@ class InviteManager extends PureComponent {
               placeholder={t('invite.firstName.holder')}
               value={firstNameInput}
             />
-          </FormField>
+            </FormField>
 
           <Button onClick={this.handleSendInvite}>{t('invite.submit')}</Button>
-        </VStack>
+          </VStack>
 
         <Box py="6">
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
@@ -135,13 +117,13 @@ class InviteManager extends PureComponent {
               <Tag key={person.email}>
                 <Text fontWeight="bold" mr="1">
                   {person.firstName}
-                </Text>
+                  </Text>
                 {person.email}
-              </Tag>
+                </Tag>
             ))}
-          </EmailsContainer>
+            </EmailsContainer>
+          </Box>
         </Box>
-      </Box>
     );
   }
 }
@@ -150,9 +132,9 @@ const EmailsContainer = (props) => (
   <Box>
     <Heading size="md" mb="4">
       {props.title} ({props.count})
-    </Heading>
+      </Heading>
     <Box>{props.children}</Box>
-  </Box>
+    </Box>
 );
 
 export default InviteManager;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
+import {
   Breadcrumb as BreadcrumbMenu,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -8,38 +8,39 @@ import {
 } from '@chakra-ui/react';
 
 export default function Breadcrumb({ domain, domainKey }) {
-  const [ breadcrumbs ] = useState(window.location.pathname.split('/'));
+  const [breadcrumbs] = useState(window.location.pathname.split('/'));
   return (
     <Center py="4">
       <BreadcrumbMenu>
         {breadcrumbs.map((item, index) => {
-          if(domain?._id == item) item = domain[domainKey];
+          if (domain?._id == item) item = domain[domainKey];
           item = item.charAt(0).toUpperCase() + item.slice(1);
-          if(item=='' && index==0) return (
-            <BreadcrumbItem key={'breadcrumb-'+index}>
-              <Link to='/'>Home</Link>
-            </BreadcrumbItem>
-          );
-          if (index!=breadcrumbs.length-1) {
-            let href = '';
-            for (let i = 0; i < index+1; i++) {
-              if (breadcrumbs[i]!='') href = href + '/' + breadcrumbs[i]
-            }
+          if (item == '' && index == 0)
             return (
-              <BreadcrumbItem key={'breadcrumb-'+index}>
-                <Link to={href}>{item}</Link>
+                <BreadcrumbItem key={`breadcrumb-${index}`}>
+                  <Link to="/">Home</Link>
               </BreadcrumbItem>
             );
-          }
-          if (index==breadcrumbs.length-1) {
+          if (index != breadcrumbs.length - 1) {
+            let href = '';
+            for (let i = 0; i < index + 1; i++) {
+              if (breadcrumbs[i] != '') href = `${href}/${breadcrumbs[i]}`;
+            }
             return (
-              <BreadcrumbItem isCurrentPage key={'breadcrumb-'+index}>
+              <BreadcrumbItem key={`breadcrumb-${index}`}>
+                <Link to={href}>{item}</Link>
+                </BreadcrumbItem>
+            );
+          }
+          if (index == breadcrumbs.length - 1) {
+            return (
+              <BreadcrumbItem isCurrentPage key={`breadcrumb-${index}`}>
                 <BreadcrumbLink href="#">{item}</BreadcrumbLink>
-              </BreadcrumbItem>
+                </BreadcrumbItem>
             );
           }
         })}
-      </BreadcrumbMenu>
-    </Center>
+        </BreadcrumbMenu>
+      </Center>
   );
-};
+}

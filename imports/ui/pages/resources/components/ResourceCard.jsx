@@ -17,18 +17,14 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import moment from 'moment';
-moment.locale(i18n.language);
 
 import NiceSlider from '../../../components/NiceSlider';
 import Chattery from '../../../components/chattery/Chattery';
 import ResourcesForCombo from '../../../components/ResourcesForCombo';
 
-export default function ResourceCard({
-  currentUser,
-  discussion,
-  resource,
-  addNewChatMessage,
-}) {
+moment.locale(i18n.language);
+
+export default function ResourceCard({ currentUser, discussion, resource, addNewChatMessage }) {
   const [t] = useTranslation('resources');
 
   const removeNotification = () => {};
@@ -42,14 +38,14 @@ export default function ResourceCard({
       <Box mb="4">
         <Heading size="md" fontWeight="bold">
           {resource.label}
-        </Heading>
+          </Heading>
         {resource.isCombo && <ResourcesForCombo resource={resource} />}
-      </Box>
+        </Box>
       <Tabs variant="enclosed-colored">
         <TabList pl="4">
           <Tab>{t('tabs.info')}</Tab>
           <Tab>{t('tabs.discussion')} </Tab>
-        </TabList>
+          </TabList>
         <TabPanels pt="4">
           <TabPanel p="0">
             {resource?.images && (
@@ -57,21 +53,21 @@ export default function ResourceCard({
                 {resource.images.length === 1 ? (
                   <Center>
                     <Image src={resource.images[0]} fit="contain" fill />
-                  </Center>
+                    </Center>
                 ) : (
                   <NiceSlider images={resource.images} />
                 )}
-              </Box>
+            </Box>
             )}
             <Box>
               <Box className="text-content" mb="4">
                 {resource.description && renderHTML(resource.description)}
-              </Box>
+                </Box>
               <Text as="p" fontSize="xs">
                 {moment(resource.createdAt).format('D MMM YYYY')}
-              </Text>
-            </Box>
-          </TabPanel>
+                </Text>
+              </Box>
+            </TabPanel>
           <TabPanel p="0">
             {discussion && (
               <div>
@@ -81,11 +77,11 @@ export default function ResourceCard({
                   removeNotification={removeNotification}
                   isMember={Boolean(currentUser)}
                 />
-              </div>
+            </div>
             )}
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
   );
 }

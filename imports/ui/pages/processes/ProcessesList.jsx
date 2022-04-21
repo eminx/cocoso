@@ -33,13 +33,7 @@ moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({
-  isLoading,
-  currentUser,
-  processes,
-  t,
-  tc,
-}) {
+export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -87,17 +81,12 @@ export default function ProcessesList({
       if (filterBy === 2) {
         return process.isArchived === true;
       } else if (filterBy === 1) {
-        return (
-          currentUser &&
-          process.members.some((member) => member.memberId === currentUser._id)
-        );
-      } else {
-        return !process.isArchived;
+        return currentUser && process.members.some((member) => member.memberId === currentUser._id);
       }
+      return !process.isArchived;
     });
 
-    const filteredProcessesWithAccessFilter =
-      parseOnlyAllowedProcesses(filteredProcesses);
+    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
     return filteredProcessesWithAccessFilter;
   };
 
@@ -105,27 +94,22 @@ export default function ProcessesList({
     const futureProcessesAllowed = futureProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;
-      } else {
-        if (!currentUser) {
-          return false;
-        }
-        const currentUserId = currentUser._id;
-        return (
-          process.adminId === currentUserId ||
-          process.members.some((member) => member.memberId === currentUserId) ||
-          process.peopleInvited.some(
-            (person) => person.email === currentUser.emails[0].address
-          )
-        );
       }
+      if (!currentUser) {
+        return false;
+      }
+      const currentUserId = currentUser._id;
+      return (
+        process.adminId === currentUserId ||
+        process.members.some((member) => member.memberId === currentUserId) ||
+        process.peopleInvited.some((person) => person.email === currentUser.emails[0].address)
+      );
     });
 
     return futureProcessesAllowed;
   };
 
-  const processesRendered = getFilteredProcesses()
-    .sort(compareForSort)
-    .reverse();
+  const processesRendered = getFilteredProcesses().sort(compareForSort).reverse();
 
   return (
     <Box w="100%">
@@ -133,21 +117,16 @@ export default function ProcessesList({
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${
           publicSettings.name
         }`}</title>
-      </Helmet>
+        </Helmet>
       <Box>
         {canCreateContent && (
           <Center mb="4">
             <Link to={currentUser ? '/new-process' : '/my-profile'}>
-              <Button
-                as="span"
-                colorScheme="green"
-                variant="outline"
-                textTransform="uppercase"
-              >
+              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
-              </Button>
-            </Link>
-          </Center>
+                </Button>
+              </Link>
+        </Center>
         )}
         <Box p="4">
           <Tabs onChange={(index) => setFilterBy(index)}>
@@ -156,31 +135,27 @@ export default function ProcessesList({
                 {filterOptions.map((option) => (
                   <Tab key={option.value}>{option.label}</Tab>
                 ))}
-              </TabList>
-            </Center>
+                </TabList>
+              </Center>
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
                   <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
                     {processesRendered.map((process) => (
                       <Link key={process._id} to={`/process/${process._id}`}>
-                        <GridThumb
-                          image={process.imageUrl}
-                          large
-                          title={process.title}
-                        >
+                        <GridThumb image={process.imageUrl} large title={process.title}>
                           {moment(process.creationDate).format('D MMM YYYY')}
-                        </GridThumb>
-                      </Link>
+                          </GridThumb>
+                        </Link>
                     ))}
-                  </SimpleGrid>
-                </TabPanel>
+                    </SimpleGrid>
+                  </TabPanel>
               ))}
-            </TabPanels>
-          </Tabs>
+              </TabPanels>
+            </Tabs>
+          </Box>
         </Box>
       </Box>
-    </Box>
   );
 }
 
@@ -194,47 +169,40 @@ function ProcessItem({ process }) {
           ) : (
             gridItem?.label
           )}
-        </Heading>
+          </Heading>
         <Spacer my="4" />
         <Text as="p" fontSize="xs" alignSelf="flex-end">
           {moment(gridItem.createdAt).format('D MMM YYYY')}
-        </Text>
-      </Box>
+          </Text>
+        </Box>
 
       {thumbHasImage && (
         <Box flexBasis="200px">
-          <Image
-            alt={alt}
-            fit="cover"
-            mr="2"
-            src={gridItem.images[0]}
-            w="xs"
-            h="150px"
-          />
-        </Box>
+          <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
+      </Box>
       )}
-    </Flex>
+      </Flex>
   );
   return (
     <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
       <Box mr="2">
         <Image w="xs" fit="cover" src={process.imageUrl} />
-      </Box>
+        </Box>
       <Box w="100%">
         <Box>
           <Heading size="md">{process.title}</Heading>
           <Text fontSize="lg" fontWeight="light">
             {process.readingMaterial}
-          </Text>
-        </Box>
+            </Text>
+          </Box>
 
         <Box p="2">
           <Text textAlign="right">{process.adminUsername}</Text>
           <Text fontSize="sm" textAlign="right">
             {moment(process.creationDate).format('D MMM YYYY')}
-          </Text>
+            </Text>
+          </Box>
         </Box>
-      </Box>
-    </Flex>
+      </Flex>
   );
 }

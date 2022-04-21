@@ -33,19 +33,15 @@ function NotificationsPopup({ notifications }) {
             <BellIcon />
           ) : (
             <BellIcon>
-              <AvatarBadge
-                borderColor="papayawhip"
-                bg="tomato"
-                boxSize=".25em"
-              />
-            </BellIcon>
+              <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".25em" />
+              </BellIcon>
           )
         }
       />
       {notifications.length === 0 ? (
         <Box p="2">
           <Text fontSize="sm"> You don't have unread messages</Text>
-        </Box>
+          </Box>
       ) : (
         <MenuList>
           {notifications.map((item) => (
@@ -54,18 +50,18 @@ function NotificationsPopup({ notifications }) {
               onClick={() => history.push(`/${item.context}/${item.contextId}`)}
             >
               {item.title} <Badge>{item.count}</Badge>
-            </MenuItem>
+              </MenuItem>
           ))}
-        </MenuList>
+          </MenuList>
       )}
-    </Menu>
+      </Menu>
   );
 }
 
 const Badge = ({ children }) => (
   <Box bg="tomato" py="2" borderRadius="50%">
     <Code size="sm">{children}</Code>
-  </Box>
+    </Box>
 );
 
 export default NotificationsPopup;

@@ -14,13 +14,7 @@ import { chakraTheme } from '../utils/constants/theme';
 
 const timeOutTime = 5;
 
-const Alert = ({
-  children,
-  isClosable,
-  message,
-  type = 'error',
-  ...otherProps
-}) => {
+const Alert = ({ children, isClosable, message, type = 'error', ...otherProps }) => {
   const success = type === 'success';
   const info = type === 'info';
   const warning = type === 'warning';
@@ -32,24 +26,14 @@ const Alert = ({
           <AlertIcon />
           <Box flex="1">
             <AlertTitle>
-              {success
-                ? 'Success!'
-                : info
-                ? 'Info'
-                : warning
-                ? 'Warning'
-                : 'Error'}
-            </AlertTitle>
-            <AlertDescription display="block">
-              {children || message}
-            </AlertDescription>
-          </Box>
-          {isClosable && (
-            <CloseButton position="absolute" right="8px" top="8px" />
-          )}
-        </CAlert>
-      </Box>
-    </Center>
+              {success ? 'Success!' : info ? 'Info' : warning ? 'Warning' : 'Error'}
+              </AlertTitle>
+            <AlertDescription display="block">{children || message}</AlertDescription>
+            </Box>
+          {isClosable && <CloseButton position="absolute" right="8px" top="8px" />}
+          </CAlert>
+        </Box>
+      </Center>
   );
 };
 
@@ -61,7 +45,7 @@ const renderToast = (status, text, duration) => {
     duration: (duration || timeOutTime) * 1000,
     isClosable: true,
     position: 'top',
-    status: status,
+    status,
   });
 };
 

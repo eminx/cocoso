@@ -69,7 +69,7 @@ function Activities({ history }) {
       leftContent={
         <Box p="2">
           <ListMenu pathname={pathname} list={userMenu} />
-        </Box>
+          </Box>
       }
     >
       {currentUser && canCreateContent && (
@@ -82,8 +82,8 @@ function Activities({ history }) {
             textTransform="uppercase"
           >
             {tc('actions.create')}
-          </Button>
-        </Center>
+            </Button>
+      </Center>
       )}
 
       {currentUser && activities ? (
@@ -93,8 +93,8 @@ function Activities({ history }) {
               <Tab>{t('members.tabs.all')}</Tab>
               <Tab>{t('members.tabs.public')}</Tab>
               <Tab>{t('members.tabs.private')}</Tab>
-            </TabList>
-          </Center>
+              </TabList>
+            </Center>
 
           <TabPanels>
             <TabPanel>
@@ -102,36 +102,30 @@ function Activities({ history }) {
                 {(act) => (
                   <Link to={`/activity/${act._id}`}>
                     <ActivityItem act={act} />
-                  </Link>
+                    </Link>
                 )}
-              </NiceList>
-            </TabPanel>
+                </NiceList>
+              </TabPanel>
             <TabPanel>
-              <NiceList
-                actionsDisabled
-                list={activities.filter((act) => act.isPublicActivity)}
-              >
+              <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
                 {(act) => (
                   <Link to={`/activity/${act._id}`}>
                     <ActivityItem act={act} history={history} />
-                  </Link>
+                    </Link>
                 )}
-              </NiceList>
-            </TabPanel>
+                </NiceList>
+              </TabPanel>
             <TabPanel>
-              <NiceList
-                actionsDisabled
-                list={activities.filter((act) => !act.isPublicActivity)}
-              >
+              <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
                 {(act) => <ActivityItem act={act} history={history} />}
-              </NiceList>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+                </NiceList>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
       ) : (
         <Alert margin="medium" message={tm('message.guest')} />
       )}
-    </Template>
+      </Template>
   );
 }
 
@@ -143,21 +137,21 @@ const ActivityItem = ({ act }) => {
       {act.isPublicActivity && (
         <Box p="2">
           <Image fit="cover" w="xs" fill src={act.imageUrl} />
-        </Box>
+      </Box>
       )}
       <Box w="100%">
         <Heading mb="2" overflowWrap="anywhere" size="md">
           {act.title}
-        </Heading>
+          </Heading>
         <Tag>
           <TagLabel>{act.resource}</TagLabel>
-        </Tag>
+          </Tag>
         <Text fontWeight="light">{act.subTitle}</Text>
         <Text fontStyle="italic" p="1" textAlign="right">
           {act.datesAndTimes.length} {t('members.occurences')}
-        </Text>
-      </Box>
-    </HStack>
+          </Text>
+        </Box>
+      </HStack>
   );
 };
 
