@@ -7,10 +7,7 @@ Meteor.methods({
     const host = getHost(this);
     const sort = {};
     const fields = Documents.publicFields;
-    const documents = Documents.find(
-      { host, attachedTo },
-      { sort, fields }
-    ).fetch();
+    const documents = Documents.find({ host, attachedTo }, { sort, fields }).fetch();
     return documents;
   },
 

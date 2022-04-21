@@ -20,4 +20,3 @@ Package.onUse((api) => {
   // the code was loaded from a non-localhost non-https site, it would
   // stop the app from working and pop up an error box or something.
 });
-

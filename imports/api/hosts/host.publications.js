@@ -13,7 +13,9 @@ Meteor.publish('members', function () {
   const host = getHost(this);
   const currentHost = Hosts.findOne({ host });
 
-  if (user.isSuperAdmin || isContributorOrAdmin(user, currentHost)) {
-    return Hosts.find({ host });
+  if (!user || (!user.isSuperAdmin && !isContributorOrAdmin(user, currentHost))) {
+    return null;
   }
+
+  return Hosts.find({ host });
 });

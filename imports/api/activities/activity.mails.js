@@ -9,9 +9,7 @@ const getRegistrationEmailBody = (
   <p>Hi ${firstName},</p>
   <p>This is a confirmation email to inform you that you have successfully signed up for this event.</p>
   <p>
-    You have registered to come ${numberOfPeople} ${
-  numberOfPeople === 1 ? 'person' : 'people'
-} 
+    You have registered to come ${numberOfPeople} ${numberOfPeople === 1 ? 'person' : 'people'} 
     in total for the event on ${occurence.startDate} at ${occurence.startTime}.
   </p>
   <p>
@@ -23,13 +21,7 @@ const getRegistrationEmailBody = (
     <br />${hostName} Team
   </p>`;
 
-const getUnregistrationEmailBody = (
-  firstName,
-  occurence,
-  activityId,
-  hostName,
-  host
-) => `
+const getUnregistrationEmailBody = (firstName, occurence, activityId, hostName, host) => `
   <p>Hi ${firstName},</p>
   <p>This is a confirmation email to inform you that you have successfully removed your registration from this event.</p>
   <p>You have previously registered to attend the event on ${occurence.startDate} at ${occurence.startTime}, which you just signed out of.</p>

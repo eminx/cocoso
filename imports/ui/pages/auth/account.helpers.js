@@ -1,6 +1,7 @@
 const Joi = require('joi');
 
-const passwordErrorMessage = 'Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters';
+const passwordErrorMessage =
+  'Please make sure to enter minimum one lowercase letter, one capitalcase letter, one number and a total of minimum 8 characters';
 
 // REGEX
 const regexPassword = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
@@ -25,11 +26,9 @@ const resetPasswordModel = {
   password: '',
 };
 
-
 // SCHEMAS
 const usernameSchema = {
-  username: Joi.string().alphanum().min(4).max(15)
-    .required(),
+  username: Joi.string().alphanum().min(4).max(15).required(),
 };
 
 const emailSchema = {

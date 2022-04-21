@@ -2,11 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
-import {
-  defaultMenu,
-  defaultMainColor,
-  defaultEmails,
-} from '../../startup/constants';
+import { defaultMenu, defaultMainColor, defaultEmails } from '../../startup/constants';
 
 Meteor.methods({
   createNewHost(values) {
@@ -20,7 +16,7 @@ Meteor.methods({
     }
 
     try {
-      const hostId = Hosts.insert({
+      Hosts.insert({
         host: values.host,
         settings: {
           name: values.name,
@@ -74,15 +70,16 @@ Meteor.methods({
     const currentHost = Hosts.findOne({ host });
     const members = currentHost.members.map((member) => {
       const user = Meteor.users.findOne(member.id);
-      const avatarSrc = user && user.avatar && user.avatar.src;
-      if (user) {
-        return {
-          ...member,
-          avatarSrc,
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-        };
+      if (!user) {
+        return null;
       }
+      const avatarSrc = user && user.avatar && user.avatar.src;
+      return {
+        ...member,
+        avatarSrc,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+      };
     });
     const validMembers = members.filter((member) => member && member.id);
     return validMembers;

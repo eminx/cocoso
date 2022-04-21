@@ -41,8 +41,7 @@ Meteor.methods({
     }
     const host = getHost(this);
 
-    const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages
-      ?.length;
+    const unSeenIndex = Chats.findOne({ contextId: values.contextId })?.messages?.length;
 
     try {
       Chats.update(
@@ -154,9 +153,9 @@ Meteor.methods({
           (notification, index) => index !== notificationIndex
         );
       } else {
-        const newUnSeenIndexes = notifications[
-          notificationIndex
-        ].unSeenIndexes.filter((unSeenIndex) => unSeenIndex !== messageIndex);
+        const newUnSeenIndexes = notifications[notificationIndex].unSeenIndexes.filter(
+          (unSeenIndex) => unSeenIndex !== messageIndex
+        );
         notifications[notificationIndex].unSeenIndexes = newUnSeenIndexes;
         newNotifications = notifications;
       }

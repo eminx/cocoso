@@ -47,7 +47,6 @@ httpServer.addListener('request', function (req, res) {
   });
 });
 
-
 // NOTE: this doesn't handle websockets!
 //
 // Websockets come in via the 'upgrade' request. We can override this,

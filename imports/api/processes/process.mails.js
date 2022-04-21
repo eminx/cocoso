@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { siteUrl } from '../_utils/shared';
 
 const publicSettings = Meteor.settings.public;
@@ -17,36 +18,21 @@ const getProcessLeaveText = (firstName, processTitle, processId) => `
   Kind regards,\n${publicSettings.name} Team
   `;
 
-const getMeetingAttendText = (
-  firstName,
-  occurence,
-  processTitle,
-  processId
-) => `
+const getMeetingAttendText = (firstName, occurence, processTitle, processId) => `
   Hi ${firstName},\n\n
   This is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study process called "${processTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the process page: ${siteUrl}process/${processId}.\n\n
   You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\n
   We look forward to your participation.\n${publicSettings.name} Team
   `;
 
-const getMeetingUnattendText = (
-  firstName,
-  occurence,
-  processTitle,
-  processId
-) => `
+const getMeetingUnattendText = (firstName, occurence, processTitle, processId) => `
   Hi ${firstName},\n\n
   This is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study process called "${processTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the process page: ${siteUrl}process/${processId}.\n\n
   You are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\n
   We look forward to your participation.\n${publicSettings.name} Team
   `;
 
-const getInviteToPrivateProcessText = (
-  firstName,
-  processTitle,
-  processId,
-  processAdmin
-) => `
+const getInviteToPrivateProcessText = (firstName, processTitle, processId, processAdmin) => `
   Hi ${firstName},\n\n
   This is an email to invite you to a private process entitled ${processTitle} created by ${processAdmin}.\n\n
   If you wish to accept this invite and join the process, simply go to the process page and click the "Join" button: ${siteUrl}process/${processId}.\n\n

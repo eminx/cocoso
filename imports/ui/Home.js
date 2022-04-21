@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { StateContext } from './LayoutContainer';
+import { StateContext } from './LayoutContainer.js';
 
 function Home() {
   const { currentHost } = useContext(StateContext);

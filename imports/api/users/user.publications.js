@@ -13,9 +13,10 @@ Meteor.publish('attendingEvents', function () {
 
 Meteor.publish('me', () => {
   const userId = Meteor.userId();
-  if (userId) {
-    return Meteor.users.find(userId);
+  if (!userId) {
+    return null;
   }
+  return Meteor.users.find(userId);
 });
 
 Meteor.publish('membersForPublic', function () {

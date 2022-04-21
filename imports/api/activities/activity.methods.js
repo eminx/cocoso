@@ -6,10 +6,7 @@ import { isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
 import Resources from '../resources/resource';
-import {
-  getRegistrationEmailBody,
-  getUnregistrationEmailBody,
-} from './activity.mails';
+import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
   getMyActivities() {
@@ -66,17 +63,13 @@ Meteor.methods({
                 recurrence.startDate + recurrence.startTime,
                 'YYYY-MM-DD HH:mm'
               ).toDate(),
-              end: moment(
-                recurrence.endDate + recurrence.endTime,
-                'YYYY-MM-DD HH:mm'
-              ).toDate(),
+              end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
               startDate: recurrence.startDate,
               startTime: recurrence.startTime,
               endDate: recurrence.endDate,
               endTime: recurrence.endTime,
               isMultipleDay:
-                recurrence.isMultipleDay ||
-                recurrence.startDate !== recurrence.endDate,
+                recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
             };
 
             const resource = Resources.findOne(activity.resourceId, {

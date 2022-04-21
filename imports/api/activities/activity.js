@@ -15,13 +15,6 @@ Activities.schema = new SimpleSchema({
   subTitle: {
     type: String,
     optional: true,
-    custom() {
-      if (this.field('isPublicActivity').value) {
-        if (this.value === null || this.value === '') {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    },
   },
   longDescription: { type: String, optional: true },
   imageUrl: { type: String, optional: true },

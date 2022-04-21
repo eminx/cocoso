@@ -13,7 +13,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Text,
+  Text
 } from '@chakra-ui/react';
 import { Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
 
@@ -63,7 +63,7 @@ export default function Menu() {
       if (changedItemIndex === index) {
         return {
           ...item,
-          isVisible: value,
+          isVisible: value
         };
       }
       return item;
@@ -76,7 +76,7 @@ export default function Menu() {
       if (changedItemIndex === index) {
         return {
           ...item,
-          label: value,
+          label: value
         };
       }
       return item;
@@ -90,7 +90,7 @@ export default function Menu() {
     const invisibleItems = menu.filter((item) => !item.isVisible);
     const newSettings = {
       ...localSettings,
-      menu: [...arrayMove(visibleItems, oldIndex, newIndex), ...invisibleItems],
+      menu: [...arrayMove(visibleItems, oldIndex, newIndex), ...invisibleItems]
     };
     setLocalSettings(newSettings);
   };

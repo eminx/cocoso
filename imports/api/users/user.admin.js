@@ -1,11 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
+
 import Hosts from '../hosts/host';
 import { isContributorOrAdmin, isContributor } from './user.roles';
-
-const publicSettings = Meteor.settings.public;
-const getVerifiedEmailText = (username) =>
-  `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at ${publicSettings.name}.\n\nThis means that from now on you're welcome to create your own study processes and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\n${publicSettings.name} Team`;
 
 const isUserAdmin = (members, userId) =>
   members.some((member) => member.id === userId && member.role === 'admin');
@@ -27,8 +24,7 @@ Meteor.methods({
       !member.memberships ||
       !member.memberships.some(
         (membership) =>
-          membership.host === host &&
-          ['contributor', 'participant'].includes(membership.role)
+          membership.host === host && ['contributor', 'participant'].includes(membership.role)
       )
     ) {
       throw new Meteor.Error('User is not a participant or contributor');
@@ -84,13 +80,10 @@ Meteor.methods({
       !member ||
       !member.memberships ||
       !member.memberships.some(
-        (membership) =>
-          membership.host === host && membership.role === 'participant'
+        (membership) => membership.host === host && membership.role === 'participant'
       )
     ) {
-      throw new Meteor.Error(
-        'Some error occured... Sorry, your inquiry could not be done'
-      );
+      throw new Meteor.Error('Some error occured... Sorry, your inquiry could not be done');
     }
 
     try {
@@ -141,9 +134,8 @@ Meteor.methods({
     }
 
     const member = Meteor.users.findOne(memberId);
-    isMemberContributor = isContributor(member, currentHost);
 
-    if (!isMemberContributor) {
+    if (!isContributor(member, currentHost)) {
       throw new Meteor.Error('User is not a contributor');
     }
 
@@ -277,7 +269,6 @@ Meteor.methods({
     }
 
     try {
-      const currentHost = Hosts.findOne({ host });
       return currentHost.emails;
     } catch (error) {
       throw new Meteor.Error(error);

@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import Resources from '/imports/api/resources/resource';
-import Hosts from '/imports/api/hosts/host';
-import Activities from '/imports/api/activities/activity';
+import { Migrations } from 'meteor/percolate:migrations';
+
+import Resources from '../../api/resources/resource';
+import Hosts from '../../api/hosts/host';
+import Activities from '../../api/activities/activity';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -9,29 +11,16 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     Resources.update({}, { $unset: { authorAvatar: true } }, { multi: true });
-    Resources.update(
-      {},
-      { $unset: { authorFirstName: true } },
-      { multi: true }
-    );
+    Resources.update({}, { $unset: { authorFirstName: true } }, { multi: true });
     Resources.update({}, { $unset: { authorLastName: true } }, { multi: true });
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ authorId: { $exists: true } }).forEach((item) => {
+    Resources.find({ authorId: { $exists: true } }).forEach((item) => {
       const user = Meteor.users.findOne(item.authorId);
-      Resources.update(
-        { _id: item._id },
-        { $set: { authorAvatar: user.avatar } }
-      );
-      Resources.update(
-        { _id: item._id },
-        { $set: { authorFirstName: user.firstName } }
-      );
-      Resources.update(
-        { _id: item._id },
-        { $set: { authorLastName: user.lastName } }
-      );
+      Resources.update({ _id: item._id }, { $set: { authorAvatar: user.avatar } });
+      Resources.update({ _id: item._id }, { $set: { authorFirstName: user.firstName } });
+      Resources.update({ _id: item._id }, { $set: { authorLastName: user.lastName } });
     });
   },
 });
@@ -45,7 +34,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ _id: { $exists: true } }).forEach((item) => {
+    Resources.find({ _id: { $exists: true } }).forEach((item) => {
       const labelLowerCase = item.label.toLowerCase();
       Resources.update(item._id, { $set: { labelLowerCase } });
     });
@@ -57,7 +46,7 @@ Migrations.add({
   version: 3,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ isCombo: true }).forEach((item) => {
+    Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = [];
       item.resourcesForCombo.forEach((res) => {
         resourcesForCombo.push(res._id);
@@ -67,7 +56,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ isCombo: true }).forEach((item) => {
+    Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
         { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
@@ -82,17 +71,15 @@ Migrations.add({
   version: 4,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ creationDate: { $exists: true } }).forEach(
-      (item) => {
-        const createdAt = item.creationDate;
-        Resources.update(item._id, { $set: { createdAt } });
-      }
-    );
+    Resources.find({ creationDate: { $exists: true } }).forEach((item) => {
+      const createdAt = item.creationDate;
+      Resources.update(item._id, { $set: { createdAt } });
+    });
     Resources.update({}, { $unset: { creationDate: true } }, { multi: true });
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ createdAt: { $exists: true } }).forEach((item) => {
+    Resources.find({ createdAt: { $exists: true } }).forEach((item) => {
       const creationDate = item.createdAt;
       Resources.update(item._id, { $set: { creationDate } });
     });
@@ -105,17 +92,15 @@ Migrations.add({
   version: 5,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ latestUpdate: { $exists: true } }).forEach(
-      (item) => {
-        const updatedAt = item.latestUpdate;
-        Resources.update(item._id, { $set: { updatedAt } });
-      }
-    );
+    Resources.find({ latestUpdate: { $exists: true } }).forEach((item) => {
+      const updatedAt = item.latestUpdate;
+      Resources.update(item._id, { $set: { updatedAt } });
+    });
     Resources.update({}, { $unset: { latestUpdate: true } }, { multi: true });
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ updatedAt: { $exists: true } }).forEach((item) => {
+    Resources.find({ updatedAt: { $exists: true } }).forEach((item) => {
       const latestUpdate = item.updatedAt;
       Resources.update(item._id, { $set: { latestUpdate } });
     });
@@ -128,7 +113,7 @@ Migrations.add({
   version: 6,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ authorId: { $exists: true } }).forEach((item) => {
+    Resources.find({ authorId: { $exists: true } }).forEach((item) => {
       const userId = item.authorId;
       Resources.update(item._id, { $set: { userId } });
     });
@@ -136,7 +121,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ userId: { $exists: true } }).forEach((item) => {
+    Resources.find({ userId: { $exists: true } }).forEach((item) => {
       const authorId = item.userId;
       Resources.update(item._id, { $set: { authorId } });
     });
@@ -149,17 +134,15 @@ Migrations.add({
   version: 7,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ authorUsername: { $exists: true } }).forEach(
-      (item) => {
-        const createdBy = item.authorUsername;
-        Resources.update(item._id, { $set: { createdBy } });
-      }
-    );
+    Resources.find({ authorUsername: { $exists: true } }).forEach((item) => {
+      const createdBy = item.authorUsername;
+      Resources.update(item._id, { $set: { createdBy } });
+    });
     Resources.update({}, { $unset: { authorUsername: true } }, { multi: true });
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ createdBy: { $exists: true } }).forEach((item) => {
+    Resources.find({ createdBy: { $exists: true } }).forEach((item) => {
       const authorUsername = item.createdBy;
       Resources.update(item._id, { $set: { authorUsername } });
     });
@@ -172,7 +155,7 @@ Migrations.add({
   version: 8,
   async up() {
     console.log('up to', this.version);
-    await Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
+    Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
       if (!item.settings.menu.find((item) => item?.name === 'resource')) {
         const menu = [
           ...item.settings.menu,
@@ -189,10 +172,12 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
+    Hosts.find({ 'settings.menu': { $exists: true } }).forEach((item) => {
       const menu = [];
-      item.settings.menu.forEach((item) => {
-        if (item?.name !== 'resources') menu.push(item);
+      item.settings.menu.forEach((menuItem) => {
+        if (menuItem.name !== 'resources') {
+          menu.push(item);
+        }
       });
       Hosts.update(item._id, { $set: { 'settings.menu': menu } });
     });
@@ -204,7 +189,7 @@ Migrations.add({
   version: 9,
   async up() {
     console.log('up to', this.version);
-    await Resources.find({ isCombo: true }).forEach((item) => {
+    Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = Resources.find(
         { _id: { $in: item.resourcesForCombo } },
         { fields: { _id: 1, label: 1, description: 1, resourceIndex: 1 } }
@@ -214,7 +199,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Resources.find({ isCombo: true }).forEach((item) => {
+    Resources.find({ isCombo: true }).forEach((item) => {
       const resourcesForCombo = [];
       item.resourcesForCombo.forEach((res) => {
         resourcesForCombo.push(res?._id);
@@ -229,7 +214,7 @@ Migrations.add({
   version: 10,
   async up() {
     console.log('up to', this.version);
-    await Activities.find().forEach((item) => {
+    Activities.find().forEach((item) => {
       Activities.update(
         { _id: item._id },
         {
@@ -242,7 +227,7 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    await Activities.find().forEach((item) => {
+    Activities.find().forEach((item) => {
       Activities.update(
         { _id: item._id },
         {

@@ -106,7 +106,6 @@ Slingshot.createDirective('resourceImageUpload', Slingshot.S3Storage, {
   },
 });
 
-
 Slingshot.createDirective('processImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,

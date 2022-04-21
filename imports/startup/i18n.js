@@ -5,7 +5,8 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
-import Hosts from '/imports/api/hosts/host';
+
+import Hosts from '../api/hosts/host';
 
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv'];

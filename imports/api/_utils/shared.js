@@ -18,13 +18,14 @@ const getResourceIndex = (resource, host) => {
     }
   ).fetch();
 
-  if (resources.length > 0) {
-    const resItem = resources.find((res) => res.label === resource);
-    if (resItem?.isCombo) {
-      return '99';
-    }
-    return resItem?.resourceIndex.toString();
+  if (resources.length === 0) {
+    return 0;
   }
+  const resItem = resources.find((res) => res.label === resource);
+  if (resItem?.isCombo) {
+    return '99';
+  }
+  return resItem?.resourceIndex.toString();
 };
 
 export { getHost, siteUrl, getResourceIndex };

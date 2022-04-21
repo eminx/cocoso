@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
+
 import { isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Resources from './resource';
@@ -11,9 +12,7 @@ function validateLabel(label, host, resourceId) {
   if (resourceId) resourceQuery._id = { $ne: resourceId };
   // validate label
   if (label.length < 3) {
-    throw new Meteor.Error(
-      'Resource name is too short. Minimum 3 letters required'
-    );
+    throw new Meteor.Error('Resource name is too short. Minimum 3 letters required');
   } else if (Resources.find(resourceQuery).fetch().length > 0) {
     throw new Meteor.Error('There already is a resource with this name');
   }
@@ -75,10 +74,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     const resourceIndex = Resources.find({ host }).count();
-    if (
-      !isContributorOrAdmin(user, currentHost) ||
-      !validateLabel(values.label, host)
-    ) {
+    if (!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
     try {
@@ -92,16 +88,11 @@ Meteor.methods({
           createdAt: new Date(),
         },
         () => {
-          Meteor.call(
-            'createChat',
-            values.label,
-            newResourceId,
-            (error, result) => {
-              if (error) {
-                console.log('Chat is not created due to error: ', error);
-              }
+          Meteor.call('createChat', values.label, newResourceId, (error) => {
+            if (error) {
+              console.log('Chat is not created due to error: ', error);
             }
-          );
+          });
         }
       );
       return newResourceId;
@@ -118,7 +109,7 @@ Meteor.methods({
       !isContributorOrAdmin(user, currentHost) ||
       !validateLabel(values.label, host, resourceId)
     ) {
-      throw new Meteor.Error(error, 'Not allowed');
+      throw new Meteor.Error('Not allowed');
     }
 
     try {
