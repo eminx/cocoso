@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Schemas } from '../@/schemas';
+import { Schemas } from '../_utils/schemas';
 
 const Documents = new Mongo.Collection('documents');
 
@@ -9,16 +9,16 @@ Documents.schema = new SimpleSchema({
   host: Schemas.Hostname,
 
   uploadedBy: Schemas.Id,
-  uploadedUsername: {type: String},
-  uploadedByName: {type: String},
+  uploadedUsername: { type: String },
+  uploadedByName: { type: String },
 
-  contextType: {type: String},
+  contextType: { type: String },
   attachedTo: Schemas.Id,
 
-  documentLabel: {type: String},
-  documentUrl: {type: String, regEx: SimpleSchema.RegEx.Url},
+  documentLabel: { type: String },
+  documentUrl: { type: String, regEx: SimpleSchema.RegEx.Url },
 
-  creationDate: {type: Date},
+  creationDate: { type: Date },
 });
 
 Documents.attachSchema(Documents.schema);

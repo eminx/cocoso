@@ -15,7 +15,7 @@ import {
   resizeImage,
   uploadImage,
   call,
-} from '../../@/shared';
+} from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);

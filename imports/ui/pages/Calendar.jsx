@@ -29,7 +29,7 @@ import Tag from '../components/Tag';
 import {
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
-} from '../@/shared';
+} from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 const publicSettings = Meteor.settings.public;
 

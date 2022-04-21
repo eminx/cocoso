@@ -20,7 +20,7 @@ import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import FormField from './FormField';
 import FileDropper from '../components/FileDropper';
 import NiceSlider from '../components/NiceSlider';
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 
 function WorkForm({
   categories,

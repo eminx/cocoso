@@ -17,11 +17,11 @@ import {
 import { InfoIcon } from '@chakra-ui/icons';
 
 import ProcessForm from '../../components/ProcessForm';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
-import { resizeImage, uploadImage } from '../../@/shared';
+import { resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 class NewProcess extends React.Component {

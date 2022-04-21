@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { Schemas } from '../@/schemas';
+import { Schemas } from '../_utils/schemas';
 
 const Works = new Mongo.Collection('works');
 
@@ -9,26 +9,26 @@ Works.schema = new SimpleSchema({
   host: Schemas.Hostname,
 
   authorId: Schemas.Id,
-  authorUsername: {type: String},
+  authorUsername: { type: String },
 
-  authorAvatar: {type: new SimpleSchema(Schemas.Avatar), optional: true},
-  userAvatar: {type: String, optional: true}, // mostly undefined
+  authorAvatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
+  userAvatar: { type: String, optional: true }, // mostly undefined
 
-  title: {type: String},
-  shortDescription: {type: String, defaultValue: ""},
-  longDescription: {type: String, defaultValue: ""},
-  additionalInfo: {type: String, defaultValue: ""},
+  title: { type: String },
+  shortDescription: { type: String, defaultValue: '' },
+  longDescription: { type: String, defaultValue: '' },
+  additionalInfo: { type: String, defaultValue: '' },
 
-  images: {type: Array, optional: true},
-  'images.$': {type: String},
+  images: { type: Array, optional: true },
+  'images.$': { type: String },
 
-  category: {type: Object, optional: true},
-  'category.categoryId': {type: Schemas.Id},
-  'category.label': {type: String},
-  'category.color': {type: String},
+  category: { type: Object, optional: true },
+  'category.categoryId': { type: Schemas.Id },
+  'category.label': { type: String },
+  'category.color': { type: String },
 
-  creationDate: {type: Date},
-  latestUpdate: {type: Date, optional: true},
+  creationDate: { type: Date },
+  latestUpdate: { type: Date, optional: true },
 });
 
 Works.attachSchema(Works.schema);

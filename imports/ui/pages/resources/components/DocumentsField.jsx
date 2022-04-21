@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 
-import { call } from '../../../@/shared';
+import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';

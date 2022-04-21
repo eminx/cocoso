@@ -8,7 +8,7 @@ import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
-import { call, resizeImage, uploadImage } from '../../@/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 
 const formModel = {
   title: '',

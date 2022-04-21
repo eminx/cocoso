@@ -21,7 +21,7 @@ import {
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Breadcrumb from '../../components/Breadcrumb';

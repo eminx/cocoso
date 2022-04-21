@@ -3,7 +3,7 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 
-import { parseAllBookingsWithResources } from '../@/shared';
+import { parseAllBookingsWithResources } from '../utils/shared';
 import Calendar from './Calendar';
 
 import Processes from '../../api/processes/process';

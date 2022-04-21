@@ -11,7 +11,7 @@ import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 
-import { parseTitle } from '../../@/shared';
+import { parseTitle } from '../../utils/shared';
 
 const publicSettings = Meteor.settings.public;
 

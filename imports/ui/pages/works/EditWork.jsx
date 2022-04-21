@@ -10,7 +10,7 @@ import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call, resizeImage, uploadImage } from '../../@/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 
 class EditWork extends PureComponent {

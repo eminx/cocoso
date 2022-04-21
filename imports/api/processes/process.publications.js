@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Processes from './process';
 
 Meteor.publish('processes', function () {
@@ -27,7 +27,7 @@ Meteor.publish('processes', function () {
     {
       fields,
       sort: { creationDate: 1 },
-    }
+    },
   );
 });
 

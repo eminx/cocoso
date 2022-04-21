@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
-import { emailIsValid, includesSpecialCharacters } from '../../@/shared';
+import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
 import { message } from '../../components/message';
 
 class InviteManager extends PureComponent {
@@ -109,9 +109,7 @@ class InviteManager extends PureComponent {
     return (
       <Box>
         <VStack py="6">
-          <Text>
-            {t('invite.info')}
-          </Text>
+          <Text>{t('invite.info')}</Text>
           <FormField label={t('invite.email.label')}>
             <Input
               onChange={this.handleEmailInputChange}
@@ -128,9 +126,7 @@ class InviteManager extends PureComponent {
             />
           </FormField>
 
-          <Button onClick={this.handleSendInvite}>
-            {t('invite.submit')}
-          </Button>
+          <Button onClick={this.handleSendInvite}>{t('invite.submit')}</Button>
         </VStack>
 
         <Box py="6">

@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Resources from './resource';
 
 Meteor.publish('resources', function () {

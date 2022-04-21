@@ -12,7 +12,7 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 import FileDropper from '../components/FileDropper';
 import FormField from '../components/FormField';
 

@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getHost } from '../@/shared';
-import Hosts from '../@hosts/host';
+import { getHost } from '../_utils/shared';
+import Hosts from '../hosts/host';
 import Pages from './page';
-import { isAdmin } from '../@users/user.roles';
+import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
   getPages() {
@@ -11,7 +11,7 @@ Meteor.methods({
 
     try {
       return Pages.find({
-        host: host,
+        host,
       }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");

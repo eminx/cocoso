@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
-import Hosts from '/imports/api/@hosts/host';
+import Hosts from '/imports/api/hosts/host';
 
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv'];
@@ -22,7 +22,7 @@ const options = {
   // debug: true,
   backend: {
     loadPath: '/i18n/{{lng}}/{{ns}}.yml',
-    parse: function(data) { return yaml.load(data) },
+    parse(data) { return yaml.load(data); },
   },
   interpolation: {
     escapeValue: false, // not needed for react!!
@@ -43,12 +43,10 @@ if (!i18n.isInitialized) {
     let preferedLang = defaultLang;
     if (Meteor.userId()) {
       const handler = Meteor.subscribe('me');
-      if (handler.ready()) 
-        preferedLang = Meteor.user()?.lang;
+      if (handler.ready()) { preferedLang = Meteor.user()?.lang; }
     } else {
       const handler = Meteor.subscribe('currentHost');
-      if (handler.ready()) 
-        preferedLang = Hosts.findOne().settings.lang;
+      if (handler.ready()) { preferedLang = Hosts.findOne().settings.lang; }
     }
     i18n.changeLanguage(preferedLang);
   });

@@ -6,7 +6,10 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
-import { editorFormats, editorModules } from '../../@/constants/quillConfig';
+import {
+  editorFormats,
+  editorModules,
+} from '../../utils/constants/quillConfig';
 
 const Personal = ({ defaultValues, onSubmit }) => {
   const { control, formState, handleSubmit, register } = useForm({
@@ -14,8 +17,8 @@ const Personal = ({ defaultValues, onSubmit }) => {
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ]= useTranslation('members');
-  const [ tc ]= useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   return (
     <div>

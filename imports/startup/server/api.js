@@ -1,18 +1,18 @@
-import '../../api/@/shared';
-import '../../api/@/schemas';
+import '../../api/_utils/shared';
+import '../../api/_utils/schemas';
 
-import '../../api/@/services/mails/mail.smtp';
-import '../../api/@/services/aws.slingshot';
+import '../../api/_utils/services/mails/mail.smtp';
+import '../../api/_utils/services/aws.slingshot';
 
-import '../../api/@hosts/host';
-import '../../api/@hosts/host.methods';
-import '../../api/@hosts/host.publications';
+import '../../api/hosts/host';
+import '../../api/hosts/host.methods';
+import '../../api/hosts/host.publications';
 
-import '../../api/@users/user';
-import '../../api/@users/user.roles';
-import '../../api/@users/user.admin';
-import '../../api/@users/user.methods';
-import '../../api/@users/user.publications';
+import '../../api/users/user';
+import '../../api/users/user.roles';
+import '../../api/users/user.admin';
+import '../../api/users/user.methods';
+import '../../api/users/user.publications';
 
 import '../../api/pages/page';
 import '../../api/pages/page.methods';

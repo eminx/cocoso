@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';

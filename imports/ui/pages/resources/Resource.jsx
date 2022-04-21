@@ -4,7 +4,7 @@ import { Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { ScreenClassRender } from 'react-grid-system';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Loader from '../../components/Loader';

@@ -42,7 +42,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
   const { currentUser, currentHost, canCreateContent } =
     useContext(StateContext);
 
-  const [ tc ] = useTranslation('common');
+  const [tc] = useTranslation('common');
 
   const getPublicActivities = () => {
     if (!activitiesList) {
@@ -123,13 +123,20 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${
+          currentHost.settings.name
+        } | ${publicSettings.name}`}</title>
       </Helmet>
 
       <Center mb="4">
         {canCreateContent && (
           <Link to="/new-activity">
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+            <Button
+              as="span"
+              colorScheme="green"
+              variant="outline"
+              textTransform="uppercase"
+            >
               {tc('actions.create')}
             </Button>
           </Link>

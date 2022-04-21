@@ -42,8 +42,8 @@ export const StateContext = React.createContext(null);
 import UserPopup from './components/UserPopup';
 import FormField from './components/FormField';
 import ChangeLanguage from './components/ChangeLanguageMenu';
-import Hosts from '../api/@hosts/host';
-import { chakraTheme } from './@/constants/theme';
+import Hosts from '../api/hosts/host';
+import { chakraTheme } from './utils/constants/theme';
 
 const publicSettings = Meteor.settings.public;
 
@@ -103,7 +103,7 @@ function LayoutPage({
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
-    import './@/styles/quilleditor-custom.css';
+    import './utils/styles/quilleditor-custom.css';
   }
 
   if (hostLoading || !currentHost) {

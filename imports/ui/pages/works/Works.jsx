@@ -17,8 +17,8 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
-import { getHslValuesFromLength } from '../../@/constants/colors';
+import { call } from '../../utils/shared';
+import { getHslValuesFromLength } from '../../utils/constants/colors';
 
 const publicSettings = Meteor.settings.public;
 
@@ -32,8 +32,9 @@ function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
-  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
-  const [ tc ] = useTranslation('common');
+  const { currentUser, currentHost, canCreateContent } =
+    useContext(StateContext);
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getAllWorks();
@@ -84,13 +85,20 @@ function Works() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${
+          publicSettings.name
+        }`}</title>
       </Helmet>
 
       <Center mb="4">
         {canCreateContent && (
           <Link to={currentUser ? '/new-work' : '/my-profile'}>
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+            <Button
+              as="span"
+              colorScheme="green"
+              variant="outline"
+              textTransform="uppercase"
+            >
               {tc('actions.create')}
             </Button>
           </Link>

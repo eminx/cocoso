@@ -17,7 +17,7 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
-import { userMenu } from '../../@/constants/general';
+import { userMenu } from '../../utils/constants/general';
 import WorkThumb from '../../components/WorkThumb';
 
 function Works({ history }) {
@@ -25,8 +25,8 @@ function Works({ history }) {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
 
-  const [ t ] = useTranslation('members');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     Meteor.call('getMyWorks', (error, respond) => {
@@ -91,10 +91,7 @@ function Works({ history }) {
           )}
         </NiceList>
       ) : (
-        <Alert
-          margin="medium"
-          message={t('message.guest')}
-        />
+        <Alert margin="medium" message={t('message.guest')} />
       )}
     </Template>
   );

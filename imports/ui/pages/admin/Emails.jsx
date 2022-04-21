@@ -15,21 +15,24 @@ import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
-import { editorFormats, editorModules } from '../../@/constants/quillConfig';
-import { call } from '../../@/shared';
+import {
+  editorFormats,
+  editorModules,
+} from '../../utils/constants/quillConfig';
+import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
-import { adminMenu } from '../../@/constants/general';
+import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/@/constants';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
   const { currentUser, role } = useContext(StateContext);
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getEmails();
@@ -64,7 +67,9 @@ function Emails({ history }) {
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
-      message.success(tc('message.success.update', { domain: tc('domains.email') }));
+      message.success(
+        tc('message.success.update', { domain: tc('domains.email') })
+      );
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
@@ -103,8 +108,8 @@ function EmailForm({ defaultValues, onSubmit }) {
   const { control, handleSubmit, register, formState } = useForm({
     defaultValues,
   });
-  const [ t ] = useTranslation('admin');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
 
   const { isDirty, isSubmitting } = formState;
 
@@ -113,12 +118,18 @@ function EmailForm({ defaultValues, onSubmit }) {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="4">
           <FormField label={t('emails.form.subject.label')}>
-            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+            <Input
+              {...register('subject')}
+              placeholder={t('emails.form.subject.holder')}
+            />
           </FormField>
 
           <FormField label={t('emails.form.appeal.label')}>
             <InputGroup w="280px">
-              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
+              <Input
+                {...register('appeal')}
+                placeholder={t('emails.form.appeal.holder')}
+              />
               <InputRightAddon children={t('emails.form.appeal.addon')} />
             </InputGroup>
           </FormField>

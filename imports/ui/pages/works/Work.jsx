@@ -27,7 +27,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import NiceSlider from '../../components/NiceSlider';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -37,8 +37,8 @@ function Work() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { username, workId } = useParams();
 
-  const [ tc ] = useTranslation('common');
-  const [ tm ] = useTranslation('members');
+  const [tc] = useTranslation('common');
+  const [tm] = useTranslation('members');
 
   useEffect(() => {
     getWork();

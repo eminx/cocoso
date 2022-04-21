@@ -21,7 +21,7 @@ import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -33,8 +33,8 @@ export default function Menu() {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.accesss.deny')}</Alert>;
@@ -99,7 +99,9 @@ export default function Menu() {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
-      message.success(tc('message.success.save', { domain: tc('domains.settings') }));
+      message.success(
+        tc('message.success.save', { domain: tc('domains.settings') })
+      );
     } catch (error) {
       message.error(error.reason);
     } finally {
@@ -133,9 +135,7 @@ export default function Menu() {
             />
 
             <Flex justify="flex-end" py="4">
-              <Button onClick={handleMenuSave}>
-                {tc('actions.submit')}
-              </Button>
+              <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
             </Flex>
           </TabPanel>
 
@@ -164,7 +164,7 @@ export default function Menu() {
 
             <Flex justify="flex-end" my="4">
               <Button onClick={handleMenuSave} type="submit">
-              {tc('actions.submit')}
+                {tc('actions.submit')}
               </Button>
             </Flex>
           </TabPanel>

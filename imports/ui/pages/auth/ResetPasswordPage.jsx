@@ -13,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import Template from '../../components/Template';
 import { ResetPassword } from './index';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 
 const ResetPasswordPage = ({ history, match }) => {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
   const { token } = match.params;
 

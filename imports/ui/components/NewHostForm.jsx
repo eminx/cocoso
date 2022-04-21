@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { hostFields } from '../@/constants/general';
+import { hostFields } from '../utils/constants/general';
 import FormField from './FormField';
 
 function NewHostForm({ defaultValues, onSubmit }) {
@@ -12,21 +12,32 @@ function NewHostForm({ defaultValues, onSubmit }) {
   });
   const { isDirty, isSubmitting } = formState;
 
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
-  const the = 'submit'
+  const the = 'submit';
 
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           {hostFields.map((props) => (
-            <FormField key={props.name} label={t('new.'+props.name+'.label')}>
+            <FormField
+              key={props.name}
+              label={t('new.' + props.name + '.label')}
+            >
               {props.textArea ? (
-                <Textarea {...props} {...register(props.name)} placeholder={t('new.'+props.name+'.holder')} />
+                <Textarea
+                  {...props}
+                  {...register(props.name)}
+                  placeholder={t('new.' + props.name + '.holder')}
+                />
               ) : (
-                <Input {...props} {...register(props.name)} placeholder={t('new.'+props.name+'.holder')} />
+                <Input
+                  {...props}
+                  {...register(props.name)}
+                  placeholder={t('new.' + props.name + '.holder')}
+                />
               )}
             </FormField>
           ))}
@@ -37,7 +48,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
               isLoading={isSubmitting}
               type="submit"
             >
-              {tc('actions.'+the)}
+              {tc('actions.' + the)}
             </Button>
           </Flex>
         </VStack>

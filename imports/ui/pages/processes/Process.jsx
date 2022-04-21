@@ -45,7 +45,7 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 
 moment.locale(i18n.language);
 

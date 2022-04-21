@@ -13,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
 import { ForgotPassword } from './index';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 
 function ForgotPasswordPage() {
-  const [ t ] = useTranslation('accounts');
+  const [t] = useTranslation('accounts');
   const [emailSent, setEmailSent] = useState(false);
   const { currentUser } = useContext(StateContext);
 

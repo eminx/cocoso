@@ -1,5 +1,6 @@
-var url = Npm.require("url");
 import { isLocalConnection, isSslConnection } from 'meteor/force-ssl-common';
+
+const url = Npm.require('url');
 
 // Unfortunately we can't use a connect middleware here since
 // sockjs installs itself prior to all existing listeners
@@ -7,11 +8,10 @@ import { isLocalConnection, isSslConnection } from 'meteor/force-ssl-common';
 // an approach similar to overshadowListeners in
 // https://github.com/sockjs/sockjs-node/blob/cf820c55af6a9953e16558555a31decea554f70e/src/utils.coffee
 
-var httpServer = WebApp.httpServer;
-var oldHttpServerListeners = httpServer.listeners('request').slice(0);
+const httpServer = WebApp.httpServer;
+const oldHttpServerListeners = httpServer.listeners('request').slice(0);
 httpServer.removeAllListeners('request');
 httpServer.addListener('request', function (req, res) {
-
   // allow connections if they have been handled w/ ssl already
   // (either by us or by a proxy) OR the connection is entirely over
   // localhost (development mode).
@@ -24,24 +24,24 @@ httpServer.addListener('request', function (req, res) {
     // connection is not cool. send a 302 redirect!
 
     // var host = url.parse(Meteor.absoluteUrl()).hostname;
-    // Instead of 'Meteor.absoluteUrl()' 
+    // Instead of 'Meteor.absoluteUrl()'
     // gets the requested host address from headers
-    var host = req.headers.host
+    let host = req.headers.host;
 
     // strip off the port number. If we went to a URL with a custom
     // port, we don't know what the custom SSL port is anyway.
     host = host.replace(/:\d+$/, '');
 
     res.writeHead(302, {
-      'Location': 'https://' + host + req.url,
-      'Access-Control-Allow-Origin': '*'
+      Location: `https://${host}${req.url}`,
+      'Access-Control-Allow-Origin': '*',
     });
     res.end();
     return;
   }
 
   // connection is OK. Proceed normally.
-  var args = arguments;
+  const args = arguments;
   oldHttpServerListeners.forEach((oldListener) => {
     oldListener.apply(httpServer, args);
   });

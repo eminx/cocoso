@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Documents from './document';
 
 Meteor.methods({
-  
+
   getDocumentsByAttachments(attachedTo) {
     const host = getHost(this);
     const sort = { };
@@ -42,7 +42,7 @@ Meteor.methods({
   removeManual(documentId) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
-      throw new Meteor.Error(error, 'You do not have the privileges');
+      throw new Meteor.Error('You do not have the privileges');
     }
 
     try {

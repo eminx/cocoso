@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { getHost } from '../@/shared';
+import { getHost } from '../_utils/shared';
 import Activities from './activity';
 
 Meteor.publish('activities', function (onlyPublic = false) {
@@ -29,12 +29,11 @@ Meteor.publish('activities', function (onlyPublic = false) {
         host,
         isPublished: true,
         isPublicActivity: true,
-      }
+      },
       // { fields: publicFields }
     );
-  } else {
-    return Activities.find({ host, isPublished: true });
   }
+  return Activities.find({ host, isPublished: true });
 });
 
 Meteor.publish('activity', function (id) {

@@ -2,6 +2,8 @@ import './api';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import './migrations';
+
 Meteor.startup(() => {
   // import { freshInstallment } from './installation';
 
@@ -10,14 +12,14 @@ Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
 
   process.env.MAIL_URL =
-    'smtps://' +
-    encodeURIComponent(smtp.userName) +
-    ':' +
-    smtp.password +
-    '@' +
-    smtp.host +
-    ':' +
-    smtp.port;
+    `smtps://${
+      encodeURIComponent(smtp.userName)
+    }:${
+      smtp.password
+    }@${
+      smtp.host
+    }:${
+      smtp.port}`;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
   Accounts.emailTemplates.resetPassword.text = function (user, url) {
@@ -25,5 +27,3 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${url}`;
   };
 });
-
-import './migrations';

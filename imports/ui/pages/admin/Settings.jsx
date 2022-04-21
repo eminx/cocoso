@@ -26,8 +26,8 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
-import { call, resizeImage, uploadImage } from '../../@/shared';
-import { adminMenu } from '../../@/constants/general';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
+import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
@@ -55,9 +55,9 @@ export default function Settings({ history }) {
   const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
-  
-  const [ t ] = useTranslation('hosts');
-  const [ tc ] = useTranslation('common');
+
+  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -89,7 +89,9 @@ export default function Settings({ history }) {
 
     try {
       call('updateHostSettings', values);
-      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
+      message.success(
+        tc('message.success.update', { domain: tc('domains.settings') })
+      );
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -321,9 +323,7 @@ export default function Settings({ history }) {
                         handleCategoryInputChange(event.target.value)
                       }
                     />
-                    <Button type="submit">
-                      {tc('actions.add')}
-                    </Button>
+                    <Button type="submit">{tc('actions.add')}</Button>
                   </HStack>
                 </Center>
               </form>

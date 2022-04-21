@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { parseTitle } from '../@/shared';
+import { parseTitle } from '../utils/shared';
 import { ScreenClassRender } from 'react-grid-system';
 
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {

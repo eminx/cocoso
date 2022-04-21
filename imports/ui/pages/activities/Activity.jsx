@@ -37,7 +37,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import Tag from '../../components/Tag';
 import ConfirmModal from '../../components/ConfirmModal';
-import { call } from '../../@/shared';
+import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
 
@@ -274,11 +274,9 @@ class Activity extends PureComponent {
     const yesterday = moment(new Date()).add(-1, 'days');
 
     <Text size="sm" mb="1">
-      {
-        activityData.isRegistrationDisabled
+      {activityData.isRegistrationDisabled
         ? t('public.register.disabled.true')
-        : t('public.register.disabled.false')
-      }
+        : t('public.register.disabled.false')}
     </Text>;
 
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
@@ -372,7 +370,9 @@ class Activity extends PureComponent {
                   }}
                 >
                   <ReactToPrint
-                    trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
+                    trigger={() => (
+                      <Button size="sm">{tc('actions.print')}</Button>
+                    )}
                     content={() => this.printableElement}
                     pageStyle={{ margin: 144 }}
                   />
@@ -449,7 +449,8 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, currentUser, chatData, history, t, tc } = this.props;
+    const { activityData, isLoading, currentUser, chatData, history, t, tc } =
+      this.props;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -571,8 +572,6 @@ class Activity extends PureComponent {
 
 Activity.contextType = StateContext;
 
-
-
 const initialValues = {
   firstName: '',
   lastName: '',
@@ -586,7 +585,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   });
 
   const { isDirty, isSubmitting } = formState;
-  const [ t ] = useTranslation('activities');
+  const [t] = useTranslation('activities');
   const fields = [
     {
       name: 'firstName',
@@ -629,11 +628,9 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
               type="submit"
               w="100%"
             >
-              {
-                isUpdateMode 
-                ? t('public.register.form.actions.update') 
-                : t('public.register.form.actions.create') 
-              }
+              {isUpdateMode
+                ? t('public.register.form.actions.update')
+                : t('public.register.form.actions.create')}
             </Button>
           </Box>
           {isUpdateMode && (
@@ -652,8 +649,8 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   );
 }
 
-function RsvpList({ attendees }) {  
-  const [ t ] = useTranslation('activities');
+function RsvpList({ attendees }) {
+  const [t] = useTranslation('activities');
   return (
     <ReactTable
       data={attendees}

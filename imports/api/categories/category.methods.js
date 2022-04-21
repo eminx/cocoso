@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import { getHost } from '../@/shared';
-import Hosts from '../@hosts/host';
+import { getHost } from '../_utils/shared';
+import Hosts from '../hosts/host';
 import Categories from './category';
 import { catColors, isUserAdmin } from './category.helpers';
 

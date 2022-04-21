@@ -15,7 +15,7 @@ import {
   resizeImage,
   uploadImage,
   call,
-} from '../../@/shared';
+} from '../../utils/shared';
 import { message, Alert } from '../../components/message';
 
 const formModel = {

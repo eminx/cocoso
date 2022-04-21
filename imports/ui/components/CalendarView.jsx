@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../@/styles/bigcalendar-custom.css';
+import '../utils/styles/bigcalendar-custom.css';
 
 moment.locale('en-GB', {
   week: {

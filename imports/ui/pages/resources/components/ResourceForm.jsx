@@ -23,8 +23,11 @@ import arrayMove from 'array-move';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import { editorFormats, editorModules } from '../../../@/constants/quillConfig';
-import { call, resizeImage, uploadImage } from '../../../@/shared';
+import {
+  editorFormats,
+  editorModules,
+} from '../../../utils/constants/quillConfig';
+import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 import FileDropper from '../../../components/FileDropper';

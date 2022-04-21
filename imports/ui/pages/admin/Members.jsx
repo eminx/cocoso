@@ -23,9 +23,9 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import { call } from '../../@/shared';
-import { adminMenu } from '../../@/constants/general';
-import Hosts from '../../../api/@hosts/host';
+import { call } from '../../utils/shared';
+import { adminMenu } from '../../utils/constants/general';
+import Hosts from '../../../api/hosts/host';
 
 moment.locale(i18n.language);
 

@@ -2,10 +2,10 @@ Package.describe({
   name: 'force-ssl-custom',
   version: '0.0.1',
   summary: 'Require this application to use HTTPS',
-  prodOnly: true
+  prodOnly: true,
 });
 
-Package.onUse(function(api) {
+Package.onUse((api) => {
   api.use('ecmascript@0.15.0');
   api.use('webapp@1.10.0', 'server');
   // make sure we come after livedata, so we load after the sockjs

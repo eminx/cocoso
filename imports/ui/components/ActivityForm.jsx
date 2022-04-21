@@ -16,11 +16,11 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../@/constants/quillConfig';
+import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
 import FormField from '../components/FormField';
-import { localeSort } from '../@/shared';
+import { localeSort } from '../utils/shared';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
