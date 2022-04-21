@@ -110,9 +110,10 @@ class Calendar extends PureComponent {
         selectedSlot: {
           ...slotInfo,
           type,
-          content: `${moment(slotInfo?.start).format('DD MMMM')} – ${moment(slotInfo?.end)
-            .add(-1, 'days')
-            .format('DD MMMM')}`,
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ' – ' +
+            moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
           bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
@@ -123,9 +124,12 @@ class Calendar extends PureComponent {
         selectedSlot: {
           ...slotInfo,
           type,
-          content: `${moment(slotInfo?.start).format('DD MMMM')}: ${moment(slotInfo?.start).format(
-            'HH:mm'
-              moment(slotInfo?.end).format('HH:mm')}`,
+          content:
+            moment(slotInfo?.start).format('DD MMMM') +
+            ': ' +
+            moment(slotInfo?.start).format('HH:mm') +
+            ' – ' +
+            moment(slotInfo?.end).format('HH:mm'),
           bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
@@ -235,16 +239,16 @@ class Calendar extends PureComponent {
           <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${
             currentHost.settings.name
           } | ${publicSettings.name}`}</title>
-          </Helmet>
+        </Helmet>
 
         {currentUser && canCreateContent && (
           <Center mb="3">
             <Link to="/new-activity">
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
-                </Button>
-              </Link>
-        </Center>
+              </Button>
+            </Link>
+          </Center>
         )}
 
         <Box bg="white" pt="1" mb="3">
@@ -262,7 +266,7 @@ class Calendar extends PureComponent {
                       checked={!calendarFilter}
                       onClick={() => this.handleCalendarFilterChange(null)}
                     />
-                    </WrapItem>
+                  </WrapItem>
 
                   {nonComboResourcesWithColor.map((resource, i) => (
                     <WrapItem key={resource._id}>
@@ -273,9 +277,9 @@ class Calendar extends PureComponent {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => this.handleCalendarFilterChange(resource)}
                       />
-                      </WrapItem>
+                    </WrapItem>
                   ))}
-                  </Wrap>
+                </Wrap>
                 <Wrap justify="center" mb="2" px="1">
                   {comboResourcesWithColor.map((resource, i) => (
                     <WrapItem key={resource._id}>
@@ -287,10 +291,10 @@ class Calendar extends PureComponent {
                         checked={calendarFilter?._id === resource._id}
                         onClick={() => this.handleCalendarFilterChange(resource)}
                       />
-                      </WrapItem>
+                    </WrapItem>
                   ))}
-                  </Wrap>
-                </Box>
+                </Wrap>
+              </Box>
             ) : (
               <Flex w="30rem" align="center">
                 <Button
@@ -301,7 +305,7 @@ class Calendar extends PureComponent {
                   onClick={() => this.handleCalendarFilterChange(null)}
                 >
                   {tc('labels.all')}
-                  </Button>
+                </Button>
 
                 <Box w="100%" zIndex={5}>
                   <AutoCompleteSelect
@@ -322,10 +326,10 @@ class Calendar extends PureComponent {
                       }),
                     }}
                   />
-                  </Box>
-                </Flex>
+                </Box>
+              </Flex>
             )}
-            </Center>
+          </Center>
 
           {isLoading ? (
             <Loader />
@@ -336,9 +340,9 @@ class Calendar extends PureComponent {
                 onSelect={this.handleSelectActivity}
                 onSelectSlot={this.handleSelectSlot}
               />
-              </Box>
+            </Box>
           )}
-          </Box>
+        </Box>
 
         <ConfirmModal
           visible={Boolean(selectedActivity)}
@@ -358,14 +362,14 @@ class Calendar extends PureComponent {
             <div>
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.authorName}
-                </Text>{' '}
+              </Text>{' '}
               <Text as="span">{tc('labels.booked')}</Text>{' '}
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
-                </Text>
-              </div>
+              </Text>
+            </div>
             <Text>{this.getActivityTimes(selectedActivity)}</Text>
-            </Box>
+          </Box>
 
           <Text fontSize="sm">
             <div className="text-content">
@@ -373,9 +377,9 @@ class Calendar extends PureComponent {
                 selectedActivity.longDescription &&
                 (selectedActivity.isPrivateProcess
                   ? ''
-                  : renderHTML(`${selectedActivity.longDescription.slice(0, 120)  }...`))}
-              </div>
-            </Text>
+                  : renderHTML(`${selectedActivity.longDescription.slice(0, 120)}...`))}
+            </div>
+          </Text>
 
           <Center>
             {selectedActivity && selectedActivity.isPublicActivity && (
@@ -386,19 +390,19 @@ class Calendar extends PureComponent {
                     `${selectedActivity.isProcess ? tc('labels.process') : tc('labels.event')} ${tc(
                       'labels.page'
                     )}`}
-                  </Button>
-            </Link>
+                </Button>
+              </Link>
             )}
-            </Center>
-          </ConfirmModal>
+          </Center>
+        </ConfirmModal>
 
         <ConfirmModal
           visible={Boolean(selectedSlot)}
-          title={`${tc('labels.newBooking')  }?`}
+          title={`${tc('labels.newBooking')}?`}
           confirmText={
             <span>
               {tc('actions.create')} <ArrowForwardIcon />
-              </span>
+            </span>
           }
           cancelText={tc('actions.close')}
           onConfirm={this.activateRedirectToBooking}
@@ -410,15 +414,15 @@ class Calendar extends PureComponent {
               <CTag mr="2">
                 <TagLabel>
                   {calendarFilter ? calendarFilter?.label : tc('labels.unselected')}
-                  </TagLabel>
-                </CTag>
+                </TagLabel>
+              </CTag>
               <Text as="span" fontWeight="bold">
                 {selectedSlot?.content}
-                </Text>
-              </Box>
+              </Text>
             </Box>
-          </ConfirmModal>
-        </Box>
+          </Box>
+        </ConfirmModal>
+      </Box>
     );
   }
 }

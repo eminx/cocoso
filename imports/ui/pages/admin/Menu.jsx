@@ -14,7 +14,13 @@ import {
   TabPanels,
   TabPanel,
   Text,
-, Table, Tbody, Thead, Tr, Td, Th } from '@chakra-ui/react';
+  Table,
+  Tbody,
+  Thead,
+  Tr,
+  Td,
+  Th,
+} from '@chakra-ui/react';
 
 import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -111,50 +117,50 @@ export default function Menu() {
   }
 
   return (
-      <Box>
-        <Heading as="h3" size="md">
-          {t('menu.label')}
+    <Box>
+      <Heading as="h3" size="md">
+        {t('menu.label')}
       </Heading>
-        <Tabs align="center">
-          <TabList>
-            <Tab>{t('menu.tabs.menuitems.label')}</Tab>
-            <Tab>{t('menu.tabs.order.label')}</Tab>
+      <Tabs align="center">
+        <TabList>
+          <Tab>{t('menu.tabs.menuitems.label')}</Tab>
+          <Tab>{t('menu.tabs.order.label')}</Tab>
         </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Text mb="4" fontSize="sm">
-                {t('menu.tabs.menuitems.info')}
+        <TabPanels>
+          <TabPanel>
+            <Text mb="4" fontSize="sm">
+              {t('menu.tabs.menuitems.info')}
             </Text>
-              <MenuTable
-                menu={localSettings.menu}
-                handleMenuItemCheck={handleMenuItemCheck}
-                handleMenuItemLabelChange={handleMenuItemLabelChange}
+            <MenuTable
+              menu={localSettings.menu}
+              handleMenuItemCheck={handleMenuItemCheck}
+              handleMenuItemLabelChange={handleMenuItemLabelChange}
             />
 
-              <Flex justify="flex-end" py="4">
-                <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
+            <Flex justify="flex-end" py="4">
+              <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
             </Flex>
           </TabPanel>
 
-            <TabPanel>
-              <Text mb="4" size="sm">
-                {t('menu.tabs.order.info')}
+          <TabPanel>
+            <Text mb="4" size="sm">
+              {t('menu.tabs.order.info')}
             </Text>
-              <Box>
-                {localSettings && localSettings.menu && (
-              <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
-                    {localSettings.menu
+            <Box>
+              {localSettings && localSettings.menu && (
+                <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
+                  {localSettings.menu
                     .filter((item) => item.isVisible)
                     .map((value, index) => (
-                        <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
+                      <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
                     ))}
                 </SortableContainer>
               )}
             </Box>
 
-              <Flex justify="flex-end" my="4">
-                <Button onClick={handleMenuSave} type="submit">
-                  {tc('actions.submit')}
+            <Flex justify="flex-end" my="4">
+              <Button onClick={handleMenuSave} type="submit">
+                {tc('actions.submit')}
               </Button>
             </Flex>
           </TabPanel>
@@ -166,30 +172,30 @@ export default function Menu() {
 
 function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
   return (
-      <Table size="sm" variant="simple" w="100%">
-        <Thead>
-          <Tr>
-            <Th w="100px">Visibility</Th>
-            <Th>Labels</Th>
+    <Table size="sm" variant="simple" w="100%">
+      <Thead>
+        <Tr>
+          <Th w="100px">Visibility</Th>
+          <Th>Labels</Th>
         </Tr>
       </Thead>
-        <Tbody>
-          {menu.map((item, index) => (
-            <Tr key={item.name}>
-              <Td>
-                <Center>
-                  <Switch
-                    isChecked={item.isVisible}
-                    onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
+      <Tbody>
+        {menu.map((item, index) => (
+          <Tr key={item.name}>
+            <Td>
+              <Center>
+                <Switch
+                  isChecked={item.isVisible}
+                  onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
                 />
               </Center>
             </Td>
-              <Td>
-                <FormField>
-                  <Input
-                    isDisabled={!item.isVisible}
-                    value={item.label}
-                    onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
+            <Td>
+              <FormField>
+                <Input
+                  isDisabled={!item.isVisible}
+                  value={item.label}
+                  onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
                 />
               </FormField>
             </Td>
@@ -201,8 +207,8 @@ function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
 }
 
 const SortableItem = sortableElement(({ value }) => (
-    <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
-      <DragHandleIcon /> <Box pl="2">{value}</Box>
+  <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
+    <DragHandleIcon /> <Box pl="2">{value}</Box>
   </Flex>
 ));
 
