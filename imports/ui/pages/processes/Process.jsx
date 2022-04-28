@@ -875,8 +875,8 @@ class Process extends Component {
           onCancel={this.closeModal}
         >
           <Text>
-            {t('confirm.title.body', {
-              opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join'),
+            {t('confirm.body.text', {
+              opt: isMember ? t('confirm.body.opts.leave') : t('confirm.body.opts.join'),
             })}
           </Text>
         </ConfirmModal>
