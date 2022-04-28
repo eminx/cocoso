@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../utils/styles/bigcalendar-custom.css';
 
-moment.locale('en-GB', {
+moment.locale('en', {
   week: {
     dow: 1, // Monday is the first day of the week.
   },
