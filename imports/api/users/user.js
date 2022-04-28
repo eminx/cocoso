@@ -39,7 +39,7 @@ Users.schema.UserProfile = {
     type: new SimpleSchema({
       processId: Schemas.Id,
       name: { type: String },
-      isAdmin: { type: Boolean },
+      isAdmin: { type: Boolean, defaultValue: false },
       joinDate: { type: Date },
     }),
     optional: true,
