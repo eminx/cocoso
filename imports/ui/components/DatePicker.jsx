@@ -26,7 +26,7 @@ function DatePicker({
   const [selectedDate, setSelectedDate] = useState();
   const [t, i18n] = useTranslation('calendar');
 
-  const locale = i18n.language === 'en' ? 'en-GB' : i18n.language;
+  const locale = i18n.language;
 
   useEffect(() => {
     if (value) {
@@ -73,7 +73,7 @@ function DatePicker({
       showTimeSelect={onlyTime || !noTime}
       showTimeSelectOnly={onlyTime}
       locale={locale}
-      timeFormat="p"
+      timeFormat="HH:mm"
       timeIntervals={15}
       onChange={handleChange}
       {...otherProps}
