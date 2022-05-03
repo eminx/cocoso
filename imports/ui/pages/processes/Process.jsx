@@ -71,7 +71,7 @@ class Process extends Component {
 
   componentDidMount() {
     this.getResources();
-  }
+  };
 
   getResources = async () => {
     try {
@@ -286,6 +286,7 @@ class Process extends Component {
           ...newMeeting,
           resource: place,
           resourceId: selectedResource._id,
+          resourceIndex: selectedResource.resourceIndex,
         },
       },
       () => {
@@ -296,19 +297,43 @@ class Process extends Component {
     );
   };
 
-  addMeeting = () => {
+  addMeeting = async () => {
     const { newMeeting } = this.state;
-    const { process, t } = this.props;
+    const { process, tc } = this.props;
     const meetingToAdd = { ...newMeeting };
     meetingToAdd.endDate = newMeeting.startDate;
-    Meteor.call('addProcessMeeting', meetingToAdd, process._id, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-        message.error(error.error);
-      } else {
-        message.success(t('meeting.success.add'));
-      }
-    });
+
+    const activityValues = {
+      title: process.title,
+      longDescription: process.description,
+      resource: meetingToAdd.resource,
+      resourceId: meetingToAdd.resourceId,
+      resourceIndex: meetingToAdd.resourceIndex,
+      datesAndTimes: [
+        {
+          startDate: meetingToAdd.startDate,
+          startTime: meetingToAdd.startTime,
+          endDate: meetingToAdd.endDate,
+          endTime: meetingToAdd.endTime,
+        },
+      ],
+      isPublicActivity: false,
+      isRegistrationDisabled: true,
+      isProcessMeeting: true,
+      processId: process._id,
+    };
+
+    try {
+      await call('createActivity', activityValues);
+      message.success(
+        tc('message.success.create', {
+          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
+        })
+      );
+    } catch (error) {
+      message.error(error.reason);
+    }
+
   };
 
   toggleAttendance = (meetingIndex) => {
