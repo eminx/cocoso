@@ -1,3 +1,4 @@
+import { boolean } from 'joi';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../_utils/schemas';
@@ -60,6 +61,9 @@ Activities.schema = new SimpleSchema({
   isPublicActivity: { type: Boolean, optional: true },
   isRegistrationDisabled: { type: Boolean, optional: true }, // undefined
   isPublished: { type: Boolean },
+
+  processId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  isProcessMeeting: { type: Boolean, optional: true },
 
   latestUpdate: { type: Date, optional: true },
   creationDate: { type: Date },
