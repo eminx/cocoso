@@ -395,7 +395,7 @@ class Process extends Component {
   };
 
   renderDates = () => {
-    const { process, t } = this.props;
+    const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
     if (!process) {
       return;
@@ -405,25 +405,25 @@ class Process extends Component {
 
     return (
       process &&
-      process.meetings.map((meeting, meetingIndex) => (
+      processMeetings.map((meeting, meetingIndex) => (
         <AccordionItem
-          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+          key={`${meeting.datesAndTimes[0].startTime} ${meeting.datesAndTimes[0].endTime} ${meetingIndex}`}
           bg="white"
           mb="2"
           style={{
-            display: isFutureMeeting(meeting) ? 'block' : 'none',
+            display: isFutureMeeting(meeting.datesAndTimes[0]) ? 'block' : 'none',
           }}
         >
           <AccordionButton _expanded={{ bg: 'green.100' }}>
             <Box flex="1" textAlign="left">
-              <FancyDate occurence={meeting} resources={resources} />
+              <FancyDate occurence={meeting.datesAndTimes[0]} resources={resources} />
             </Box>
           </AccordionButton>
           <AccordionPanel>
             <Heading size="sm">Attendees</Heading>
-            {meeting.attendees && (
+            {meeting.datesAndTimes[0].attendees && (
               <List>
-                {meeting.attendees.map((attendee) => (
+                {meeting.datesAndTimes[0].attendees.map((attendee) => (
                   <Box key={attendee.memberUsername}>{attendee.memberUsername}</Box>
                 ))}
               </List>
@@ -440,23 +440,23 @@ class Process extends Component {
   };
 
   renderMeetings = () => {
-    const { process, currentUser, t } = this.props;
+    const { process, processMeetings, currentUser, t } = this.props;
     const { resources } = this.state;
-    if (!process || !process.meetings) {
+    if (!process || !processMeetings) {
       return;
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
-    return process.meetings.map((meeting, meetingIndex) => {
+    return processMeetings.map((meeting, meetingIndex) => {
       const isAttending =
         currentUser &&
-        meeting.attendees &&
-        meeting.attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
+        meeting.datesAndTimes[0].attendees &&
+        meeting.datesAndTimes[0].attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
 
       return (
         <AccordionItem
-          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+          key={`${meeting.datesAndTimes[0].startTime} ${meeting.datesAndTimes[0].endTime} ${meetingIndex}`}
           bg="white"
           mb="2"
           style={{
@@ -802,7 +802,7 @@ class Process extends Component {
   isNoAccess = () => !this.isMember() && !this.isAdmin() && !this.isInvited();
 
   render() {
-    const { process, isLoading, history, t, tc } = this.props;
+    const { process, processMeetings, isLoading, history, t, tc } = this.props;
     const { resources } = this.state;
 
     if (!process || isLoading) {
@@ -843,8 +843,8 @@ class Process extends Component {
 
               <Text fontSize="sm" mb="4">
                 <em>
-                  {process.meetings &&
-                  process.meetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
+                  {processMeetings &&
+                  processMeetings.filter((meeting) => moment(meeting.datesAndTimes[0].endDate).isAfter(yesterday))
                     .length > 0
                     ? isAdmin
                       ? t('meeting.info.admin')
@@ -854,7 +854,7 @@ class Process extends Component {
               </Text>
 
               <Accordion allowToggle>
-                {process.meetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+                {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
               </Accordion>
 
               {isAdmin && (
