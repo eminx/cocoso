@@ -4,17 +4,20 @@ import { useTranslation } from 'react-i18next';
 import Process from './Process';
 import Processes from '../../../api/processes/process';
 import Chats from '../../../api/chats/chat';
+import Activities from '../../../api/activities/activity';
 // import Resources from '../../../api/resources/resource';
 
 export default ProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;
   const processSubscription = Meteor.subscribe('process', processId);
-  const isLoading = !processSubscription.ready();
+  const activitiesSubscription = Meteor.subscribe('activities');
+  const isLoading = !processSubscription.ready() || !activitiesSubscription.ready();
   const process = Processes ? Processes.findOne({ _id: processId }) : null;
   const currentUser = Meteor.user();
   // const resourcesSub = Meteor.subscribe('resources');
   // const resources = Resources ? Resources.find().fetch() : null;
 
+  const processMeetings = Activities ? Activities.find({ processId }).fetch() : null;
   const chatSubscription = Meteor.subscribe('chat', processId);
   const chatData = Chats ? Chats.findOne({ contextId: processId }) : null;
 
@@ -26,6 +29,7 @@ export default ProcessContainer = withTracker((props) => {
     process,
     currentUser,
     chatData,
+    processMeetings,
     // resources,
     t,
     tc,
