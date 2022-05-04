@@ -380,7 +380,7 @@ class Process extends Component {
       return;
     }
 
-    if (processMeetings[meetingIndex].datesAndTimes[0].attendees.length > 0) {
+    if (processMeetings[meetingIndex].attendees.length > 0) {
       message.error(t('meeting.access.remove'));
       return;
     }
@@ -408,23 +408,23 @@ class Process extends Component {
       process &&
       processMeetings.map((meeting, meetingIndex) => (
         <AccordionItem
-          key={`${meeting.datesAndTimes[0].startTime} ${meeting.datesAndTimes[0].endTime} ${meetingIndex}`}
+          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           bg="white"
           mb="2"
           style={{
-            display: isFutureMeeting(meeting.datesAndTimes[0]) ? 'block' : 'none',
+            display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
           <AccordionButton _expanded={{ bg: 'green.100' }}>
             <Box flex="1" textAlign="left">
-              <FancyDate occurence={meeting.datesAndTimes[0]} resources={resources} />
+              <FancyDate occurence={meeting} resources={resources} />
             </Box>
           </AccordionButton>
           <AccordionPanel>
             <Heading size="sm">Attendees</Heading>
-            {meeting.datesAndTimes[0].attendees && (
+            {meeting.attendees && (
               <List>
-                {meeting.datesAndTimes[0].attendees.map((attendee) => (
+                {meeting.attendees.map((attendee) => (
                   <Box key={attendee.memberUsername}>{attendee.memberUsername}</Box>
                 ))}
               </List>
@@ -452,12 +452,12 @@ class Process extends Component {
     return processMeetings.map((meeting, meetingIndex) => {
       const isAttending =
         currentUser &&
-        meeting.datesAndTimes[0].attendees &&
-        meeting.datesAndTimes[0].attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
+        meeting.attendees &&
+        meeting.attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
 
       return (
         <AccordionItem
-          key={`${meeting.datesAndTimes[0].startTime} ${meeting.datesAndTimes[0].endTime} ${meetingIndex}`}
+          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           bg="white"
           mb="2"
           style={{
@@ -845,7 +845,7 @@ class Process extends Component {
               <Text fontSize="sm" mb="4">
                 <em>
                   {processMeetings &&
-                  processMeetings.filter((meeting) => moment(meeting.datesAndTimes[0].endDate).isAfter(yesterday))
+                  processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
                     .length > 0
                     ? isAdmin
                       ? t('meeting.info.admin')
