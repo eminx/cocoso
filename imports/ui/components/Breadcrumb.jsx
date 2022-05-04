@@ -7,13 +7,13 @@ import {
   Center,
 } from '@chakra-ui/react';
 
-export default function Breadcrumb({ domain, domainKey }) {
+export default function Breadcrumb({ context, contextKey }) {
   const [breadcrumbs] = useState(window.location.pathname.split('/'));
   return (
     <Center py="4">
       <BreadcrumbMenu>
         {breadcrumbs.map((item, index) => {
-          if (domain?._id == item) item = domain[domainKey];
+          if (context?._id == item) item = context[contextKey];
           item = item.charAt(0).toUpperCase() + item.slice(1);
           if (item == '' && index == 0)
             return (
