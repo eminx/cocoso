@@ -300,21 +300,22 @@ class Process extends Component {
   addMeeting = async () => {
     const { newMeeting } = this.state;
     const { process, tc } = this.props;
-    const meetingToAdd = { ...newMeeting };
-    meetingToAdd.endDate = newMeeting.startDate;
 
     const activityValues = {
       title: process.title,
       longDescription: process.description,
-      resource: meetingToAdd.resource,
-      resourceId: meetingToAdd.resourceId,
-      resourceIndex: meetingToAdd.resourceIndex,
+      resource: newMeeting.resource,
+      resourceId: newMeeting.resourceId,
+      resourceIndex: newMeeting.resourceIndex,
       datesAndTimes: [
         {
-          startDate: meetingToAdd.startDate,
-          startTime: meetingToAdd.startTime,
-          endDate: meetingToAdd.endDate,
-          endTime: meetingToAdd.endTime,
+          startDate: newMeeting.startDate,
+          endDate: newMeeting.startDate,
+          startTime: newMeeting.startTime,
+          endTime: newMeeting.endTime,
+          resource: newMeeting.resource,
+          resourceIndex: newMeeting.resourceIndex,
+          attendees: [],
         },
       ],
       isPublicActivity: false,

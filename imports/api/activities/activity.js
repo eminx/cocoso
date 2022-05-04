@@ -39,6 +39,9 @@ Activities.schema = new SimpleSchema({
     capacity: { type: SimpleSchema.Integer, optional: true },
     isRange: { type: Boolean, optional: true },
     conflict: { type: String, optional: true },
+    
+    resource: { type: String, optional: true },
+    resourceIndex: { type: SimpleSchema.Integer, optional: true },
 
     attendees: { type: Array, optional: true },
     'attendees.$': {
