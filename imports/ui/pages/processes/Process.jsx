@@ -313,8 +313,6 @@ class Process extends Component {
           endDate: newMeeting.startDate,
           startTime: newMeeting.startTime,
           endTime: newMeeting.endTime,
-          resource: newMeeting.resource,
-          resourceIndex: newMeeting.resourceIndex,
           attendees: [],
         },
       ],

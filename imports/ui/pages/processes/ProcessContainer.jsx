@@ -20,7 +20,13 @@ export default ProcessContainer = withTracker((props) => {
   const processActivities = Activities ? Activities.find({ processId }).fetch() : null;
   const processMeetings = processActivities.map(activity => {
     if (activity.datesAndTimes.length > 0) {
-      return {...activity.datesAndTimes[0], _id: activity._id};
+      return {
+        _id: activity._id,
+        resource: activity.resource,
+        resourceId: activity.resourceId,
+        resourceIndex: activity.resourceIndex,
+        ...activity.datesAndTimes[0], 
+      };
     }
   });
   const chatSubscription = Meteor.subscribe('chat', processId);
