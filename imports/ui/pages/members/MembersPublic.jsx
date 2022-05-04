@@ -110,7 +110,7 @@ function PublicMembers() {
                     </Text>
                   </Center>
                   <Center>
-                    <Text width="120px" color="gray.900" textAlign="center" isTruncated>
+                    <Text color="gray.900" isTruncated textAlign="center" width="120px">
                       {getFullName(member)}
                     </Text>
                   </Center>
