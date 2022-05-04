@@ -97,7 +97,7 @@ function PublicMembers() {
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      <Center>
+      <Box justifyContent="center">
         <Wrap>
           {members.map((member) => (
             <WrapItem key={member.id}>
@@ -110,14 +110,16 @@ function PublicMembers() {
                     </Text>
                   </Center>
                   <Center>
-                    <Text isTruncated>{getFullName(member)}</Text>
+                    <Text width="120px" color="gray.900" textAlign="center" isTruncated>
+                      {getFullName(member)}
+                    </Text>
                   </Center>
                 </Box>
               </Link>
             </WrapItem>
           ))}
         </Wrap>
-      </Center>
+      </Box>
     </Box>
   );
 }
