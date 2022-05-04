@@ -337,24 +337,33 @@ class Process extends Component {
 
   };
 
-  toggleAttendance = (meetingIndex) => {
-    const { process, currentUser, t } = this.props;
+  toggleAttendance = (meetingId, meetingIndex) => {
+    const { processMeetings, currentUser, t } = this.props;
 
     if (!currentUser) {
       message.error(t('meeting.access.logged'));
       return;
     }
     if (!this.isMember()) {
-      message.error(t('meeting.success.join'));
+      message.error(t('meeting.access.join'));
       return;
     }
 
-    const isAttending = process.meetings[meetingIndex].attendees
-      .map((attendee) => attendee.memberId)
-      .includes(currentUser._id);
+    const isAttending = processMeetings[meetingIndex].attendees
+      .map((attendee) => attendee.username)
+      .includes(currentUser.username);
+
+    const meetingAttendence = {
+      email: currentUser.emails[0].address,
+      username: currentUser.username,
+      firstName: currentUser.firstName || '',
+      lastName: currentUser.lastName || '',
+      numberOfPeople: 1,
+    };
 
     if (isAttending) {
-      Meteor.call('unAttendMeeting', process._id, meetingIndex, (error, respond) => {
+      const attendeeIndex = processMeetings[meetingIndex].attendees.findIndex((attendee) => attendee.username === currentUser.username)
+      Meteor.call('removeAttendance', meetingId, 0, attendeeIndex, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
@@ -363,12 +372,12 @@ class Process extends Component {
         }
       });
     } else {
-      Meteor.call('attendMeeting', process._id, meetingIndex, (error, respond) => {
+      Meteor.call('registerAttendance', meetingId, meetingAttendence, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success(t('meeting.register.remove'));
+          message.success(t('meeting.attends.register'));
         }
       });
     }
@@ -453,7 +462,7 @@ class Process extends Component {
       const isAttending =
         currentUser &&
         meeting.attendees &&
-        meeting.attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
+        meeting.attendees.map((attendee) => attendee.username).includes(currentUser.username);
 
       return (
         <AccordionItem
@@ -481,7 +490,7 @@ class Process extends Component {
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'gray' : 'green'}
-                onClick={() => this.toggleAttendance(meetingIndex)}
+                onClick={() => this.toggleAttendance(meeting._id, meetingIndex)}
               >
                 {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
               </Button>

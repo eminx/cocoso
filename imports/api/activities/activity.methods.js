@@ -275,7 +275,10 @@ Meteor.methods({
     const theOccurence = occurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees[attendeeIndex];
 
-    occurences[occurenceIndex].attendees.splice(attendeeIndex, 1);
+    const theAttendees = [...theOccurence.attendees];
+    const theAttendeesWithout = theAttendees.filter((attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex);
+
+    occurences[occurenceIndex].attendees = theAttendeesWithout;
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });

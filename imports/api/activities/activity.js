@@ -47,6 +47,7 @@ Activities.schema = new SimpleSchema({
     'attendees.$': {
       type: new SimpleSchema({
         email: Schemas.Email,
+        username: { type: String, optional: true },
         firstName: { type: String },
         lastName: { type: String },
         numberOfPeople: { type: SimpleSchema.Integer },
