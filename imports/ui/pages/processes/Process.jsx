@@ -373,18 +373,18 @@ class Process extends Component {
     }
   };
 
-  deleteMeeting = (meetingIndex) => {
-    const { process, t } = this.props;
-    if (!process || !process.meetings) {
+  deleteMeeting = (meetingId, meetingIndex) => {
+    const { process, processMeetings, t } = this.props;
+    if (!process || !processMeetings) {
       return;
     }
 
-    if (process.meetings[meetingIndex].attendees.length > 0) {
+    if (processMeetings[meetingIndex].datesAndTimes[0].attendees.length > 0) {
       message.error(t('meeting.access.remove'));
       return;
     }
 
-    Meteor.call('deleteMeeting', process._id, meetingIndex, (error, respond) => {
+    Meteor.call('deleteActivity', meetingId, (error, respond) => {
       if (error) {
         console.log(error);
         message.error(error.error);
@@ -429,7 +429,7 @@ class Process extends Component {
               </List>
             )}
             <Center py="2" mt="2">
-              <Button size="xs" colorScheme="red" onClick={() => this.deleteMeeting(meetingIndex)}>
+              <Button size="xs" colorScheme="red" onClick={() => this.deleteMeeting(meeting._id, meetingIndex)}>
                 {t('meeting.actions.remove')}
               </Button>
             </Center>
