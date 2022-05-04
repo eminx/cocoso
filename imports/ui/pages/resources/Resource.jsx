@@ -21,7 +21,7 @@ function ResourcePage() {
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { currentUser, canCreateContent } = useContext(StateContext);
+  const { canCreateContent, currentUser, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
@@ -95,13 +95,16 @@ function ResourcePage() {
               resource={resource}
             />
             {isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />}
-            <Center my="2">
-              <Link to={`/resources/${resource?._id}/edit`}>
-                <Button size="sm" variant="ghost">
-                  {tc('actions.update')}
-                </Button>
-              </Link>
-            </Center>
+
+            {role === 'admin' && (
+              <Center my="2">
+                <Link to={`/resources/${resource?._id}/edit`}>
+                  <Button size="sm" variant="ghost">
+                    {tc('actions.update')}
+                  </Button>
+                </Link>
+              </Center>
+            )}
           </Template>
         );
       }}
