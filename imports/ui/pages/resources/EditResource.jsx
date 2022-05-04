@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
@@ -10,8 +11,10 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
+import { Alert } from '../../components/message';
 
 function EditResourcePage({ history }) {
+  const { role } = useContext(StateContext);
   const { resourceId } = useParams();
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +49,17 @@ function EditResourcePage({ history }) {
     }
   };
 
-  if (typeof resource === 'undefined')
+  if (role !== 'admin') {
+    return <Alert message={tc('message.access.deny')} type="error" />;
+  }
+
+  if (typeof resource === 'undefined') {
     return <NotFoundPage domain="Resource with this name or id" />;
+  }
+
+  if (!resource) {
+    return null;
+  }
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
