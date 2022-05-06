@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 
-import { isContributorOrAdmin } from '../users/user.roles';
+import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Resources from './resource';
 import Activities from '../activities/activity';
@@ -74,7 +74,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
     const resourceIndex = Resources.find({ host }).count();
-    if (!isContributorOrAdmin(user, currentHost) || !validateLabel(values.label, host)) {
+    if (!isAdmin(user, currentHost) || !validateLabel(values.label, host)) {
       return 'Not valid user or label!';
     }
     try {
@@ -105,10 +105,7 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
-    if (
-      !isContributorOrAdmin(user, currentHost) ||
-      !validateLabel(values.label, host, resourceId)
-    ) {
+    if (!isAdmin(user, currentHost) || !validateLabel(values.label, host, resourceId)) {
       throw new Meteor.Error('Not allowed');
     }
 
@@ -129,12 +126,15 @@ Meteor.methods({
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host }, { fields: { members: 1 } });
-    if (isContributorOrAdmin(user, currentHost)) {
-      try {
-        Resources.remove(resourceId);
-      } catch (error) {
-        throw new Meteor.Error(error, "Couldn't remove from collection");
-      }
+
+    if (!isAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed');
+    }
+
+    try {
+      Resources.remove(resourceId);
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't remove from collection");
     }
   },
 });
