@@ -20,9 +20,9 @@ Activities.schema = new SimpleSchema({
   longDescription: { type: String, optional: true },
   imageUrl: { type: String, optional: true },
 
-  resourceId: { type: String, regEx: SimpleSchema.RegEx.Id },
+  resourceId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
   resource: { type: String, optional: true },
-  resourceIndex: { type: SimpleSchema.Integer },
+  resourceIndex: { type: SimpleSchema.Integer, optional: true },
   // resourceHourlyFee: {type: String, optional: true}, //undefined
 
   address: { type: String, optional: true },
