@@ -40,31 +40,31 @@ Processes.schema = new SimpleSchema({
     optional: true,
   },
 
-  meetings: { type: Array, defaultValue: [] },
-  'meetings.$': {
-    type: new SimpleSchema({
-      startDate: { type: String },
-      startTime: { type: String },
-      endDate: { type: String },
-      endTime: { type: String },
+  // meetings: { type: Array, defaultValue: [] },
+  // 'meetings.$': {
+  //   type: new SimpleSchema({
+  //     startDate: { type: String },
+  //     startTime: { type: String },
+  //     endDate: { type: String },
+  //     endTime: { type: String },
 
-      room: { type: String, optional: true },
-      resource: { type: String, optional: true },
-      resourceId: { type: Schemas.Id, optional: true },
-      resourceIndex: { type: String, optional: true },
+  //     room: { type: String, optional: true },
+  //     resource: { type: String, optional: true },
+  //     resourceId: { type: Schemas.Id, optional: true },
+  //     resourceIndex: { type: String, optional: true },
 
-      attendees: { type: Array, optional: true },
-      'attendees.$': {
-        type: new SimpleSchema({
-          memberId: Schemas.Id,
-          memberUsername: { type: String },
-          confirmDate: { type: Date },
-        }),
-        optional: true,
-      },
-    }),
-    optional: true,
-  },
+  //     attendees: { type: Array, optional: true },
+  //     'attendees.$': {
+  //       type: new SimpleSchema({
+  //         memberId: Schemas.Id,
+  //         memberUsername: { type: String },
+  //         confirmDate: { type: Date },
+  //       }),
+  //       optional: true,
+  //     },
+  //   }),
+  //   optional: true,
+  // },
 
   peopleInvited: { type: Array, defaultValue: [] },
   'peopleInvited.$': {
