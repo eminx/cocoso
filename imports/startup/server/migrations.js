@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Migrations } from 'meteor/percolate:migrations';
 
-import Resources from '../../api/resources/resource';
 import Hosts from '../../api/hosts/host';
+import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity';
+import Processes from '../../api/processes/process';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -240,6 +241,70 @@ Migrations.add({
   },
 });
 
+// Create activity from each process meeting
+Migrations.add({
+  version: 11,
+  async up() {
+    console.log('up to', this.version);
+    Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
+      await process.meetings.forEach(async (meeting) => {
+        const newAttendees = [];
+        await meeting.attendees.forEach((attendee) => {
+            const theUser = Meteor.users.findOne(attendee.memberId);
+            const theAttendee = {
+              email: theUser.emails[0].address,
+              username: theUser.username,
+              firstName: theUser.firstName || '',
+              lastName: theUser.lastName || '',
+              numberOfPeople: 1,
+              registerDate: attendee.confirmDate,
+            };
+            newAttendees.push(theAttendee);
+        });
+        let newActivity = {
+          host: process.host,
+          authorId: process.adminId,
+          authorName: process.adminUsername,
+          title: process.title,
+          longDescription: process.description,
+          datesAndTimes: [
+            {
+              startDate: meeting.startDate,
+              endDate: meeting.startDate,
+              startTime: meeting.startTime,
+              endTime: meeting.endTime,
+              attendees: [...newAttendees],
+            },
+          ],
+          processId: process._id,
+          isPublicActivity: false,
+          isRegistrationDisabled: true,
+          isProcessMeeting: true,
+          isSentForReview: process.isSentForReview || false,
+          isPublished: process.isPublished,
+          creationDate: process.creationDate,
+        };
+        if (meeting.resource) {
+          const theResource = Resources.findOne({ label: meeting.resource });
+          if (theResource) {
+            newActivity = {
+              ...newActivity,
+              resource: theResource.label || '',
+              resourceId: theResource._id || '',
+              resourceIndex: theResource.resourceIndex || 99,
+            }
+          }
+        }
+        Activities.insert({ ...newActivity });
+      });
+    });
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+    // 
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -252,6 +317,7 @@ Meteor.startup(() => {
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
   // Migrations.migrateTo(9);
-  // Migrations.migrateTo(10);
+  Migrations.migrateTo(10);
+  Migrations.migrateTo(11);
   // Migrations.migrateTo('latest');
 });
