@@ -241,7 +241,7 @@ Migrations.add({
   },
 });
 
-// Create activity from each process meeting
+// Create Activity from each Process Meeting (with a Resource)
 Migrations.add({
   version: 11,
   async up() {
@@ -308,13 +308,22 @@ Migrations.add({
   },
 });
 
-// Clean removed nested Meeting arrays from Processes
+// Clean removed nested Meeting arrays from Processes (with a Resource)
 Migrations.add({
   version: 12,
   async up() {
     console.log('up to', this.version);
     Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
-      // Processes.update({ _id: process._id }, { meetings: 1 });
+      await process.meetings.forEach(async (meeting) => {
+        try {
+          const theResource = Resources.findOne({ label: meeting.resource });
+          if (theResource) {
+            // Processes.update({ _id: process._id }, { meetings: 1 });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
     });
   },
   async down() {
