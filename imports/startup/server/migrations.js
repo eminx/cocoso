@@ -284,16 +284,19 @@ Migrations.add({
           isPublished: process.isPublished,
           creationDate: process.creationDate,
         };
-        if (meeting.resource) {
+        try {
           const theResource = Resources.findOne({ label: meeting.resource });
           if (theResource) {
             newActivity = {
               ...newActivity,
               resource: theResource.label || '',
               resourceId: theResource._id || '',
-              resourceIndex: theResource.resourceIndex || 99,
-            }
+              resourceIndex: theResource.resourceIndex,
+            };
+            console.log(newActivity);    
           }
+        } catch (error) {
+          console.error(error);
         }
         Activities.insert({ ...newActivity });
       });
@@ -317,7 +320,7 @@ Meteor.startup(() => {
   // Migrations.migrateTo(7);
   // Migrations.migrateTo(8);
   // Migrations.migrateTo(9);
-  Migrations.migrateTo(10);
-  Migrations.migrateTo(11);
+  // Migrations.migrateTo(10);
+  // Migrations.migrateTo(11);
   // Migrations.migrateTo('latest');
 });
