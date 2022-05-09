@@ -293,7 +293,7 @@ Migrations.add({
               resourceId: theResource._id || '',
               resourceIndex: theResource.resourceIndex,
             };
-            console.log(newActivity);    
+            // console.log(newActivity);    
           }
         } catch (error) {
           console.error(error);
@@ -304,7 +304,22 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    // 
+    // one way single migration
+  },
+});
+
+// Clean removed nested Meeting arrays from Processes
+Migrations.add({
+  version: 12,
+  async up() {
+    console.log('up to', this.version);
+    Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
+      // Processes.update({ _id: process._id }, { meetings: 1 });
+    });
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+    // one way single migration
   },
 });
 
@@ -322,5 +337,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(9);
   // Migrations.migrateTo(10);
   // Migrations.migrateTo(11);
+  // Migrations.migrateTo(12);
   // Migrations.migrateTo('latest');
 });
