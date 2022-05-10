@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ChatteryBubble } from './ChatteryBubble';
+import ChatteryBubble from './ChatteryBubble';
 
 class ChatteryWindow extends React.Component {
   constructor(props) {
@@ -45,9 +45,11 @@ class ChatteryWindow extends React.Component {
   }
 }
 
+/* eslint-disable react/forbid-prop-types */
 ChatteryWindow.propTypes = {
   messages: PropTypes.array.isRequired,
   meta: PropTypes.object,
 };
+/* eslint-enable react/forbid-prop-types */
 
-export { ChatteryWindow };
+export default ChatteryWindow;
