@@ -71,7 +71,7 @@ class Process extends Component {
 
   componentDidMount() {
     this.getResources();
-  };
+  }
 
   getResources = async () => {
     try {
@@ -332,10 +332,9 @@ class Process extends Component {
     } catch (error) {
       message.error(error.reason);
     }
-
   };
 
-  toggleAttendance = (meetingId, meetingIndex) => {
+  toggleAttendance = (activityId, meetingIndex) => {
     const { processMeetings, currentUser, t } = this.props;
 
     if (!currentUser) {
@@ -360,8 +359,10 @@ class Process extends Component {
     };
 
     if (isAttending) {
-      const attendeeIndex = processMeetings[meetingIndex].attendees.findIndex((attendee) => attendee.username === currentUser.username)
-      Meteor.call('removeAttendance', meetingId, 0, attendeeIndex, (error, respond) => {
+      const attendeeIndex = processMeetings[meetingIndex].attendees.findIndex(
+        (attendee) => attendee.username === currentUser.username
+      );
+      Meteor.call('removeAttendance', activityId, 0, attendeeIndex, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
@@ -370,7 +371,7 @@ class Process extends Component {
         }
       });
     } else {
-      Meteor.call('registerAttendance', meetingId, meetingAttendence, (error, respond) => {
+      Meteor.call('registerAttendance', activityId, meetingAttendence, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
@@ -381,7 +382,7 @@ class Process extends Component {
     }
   };
 
-  deleteMeeting = (meetingId, meetingIndex) => {
+  deleteMeeting = (activityId, meetingIndex) => {
     const { process, processMeetings, t } = this.props;
     if (!process || !processMeetings) {
       return;
@@ -392,7 +393,7 @@ class Process extends Component {
       return;
     }
 
-    Meteor.call('deleteActivity', meetingId, (error, respond) => {
+    Meteor.call('deleteActivity', activityId, (error, respond) => {
       if (error) {
         console.log(error);
         message.error(error.error);
@@ -437,7 +438,11 @@ class Process extends Component {
               </List>
             )}
             <Center py="2" mt="2">
-              <Button size="xs" colorScheme="red" onClick={() => this.deleteMeeting(meeting._id, meetingIndex)}>
+              <Button
+                size="xs"
+                colorScheme="red"
+                onClick={() => this.deleteMeeting(meeting._id, meetingIndex)}
+              >
                 {t('meeting.actions.remove')}
               </Button>
             </Center>
