@@ -1,4 +1,3 @@
-import { boolean } from 'joi';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../_utils/schemas';
@@ -39,7 +38,7 @@ Activities.schema = new SimpleSchema({
     capacity: { type: SimpleSchema.Integer, optional: true },
     isRange: { type: Boolean, optional: true },
     conflict: { type: String, optional: true },
-    
+
     resource: { type: String, optional: true },
     resourceIndex: { type: SimpleSchema.Integer, optional: true },
 
