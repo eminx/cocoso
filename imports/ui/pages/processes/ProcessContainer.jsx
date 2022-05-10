@@ -18,16 +18,17 @@ export default ProcessContainer = withTracker((props) => {
   // const resources = Resources ? Resources.find().fetch() : null;
 
   const processActivities = Activities ? Activities.find({ processId }).fetch() : null;
-  const processMeetings = processActivities.map(activity => {
-    if (activity.datesAndTimes.length > 0) {
-      return {
-        _id: activity._id,
-        resource: activity.resource,
-        resourceId: activity.resourceId,
-        resourceIndex: activity.resourceIndex,
-        ...activity.datesAndTimes[0], 
-      };
+  const processMeetings = processActivities.map((activity) => {
+    if (!activity.datesAndTimes || activity.datesAndTimes.length === 0) {
+      return;
     }
+    return {
+      _id: activity._id,
+      resource: activity.resource,
+      resourceId: activity.resourceId,
+      resourceIndex: activity.resourceIndex,
+      ...activity.datesAndTimes[0],
+    };
   });
   const chatSubscription = Meteor.subscribe('chat', processId);
   const chatData = Chats ? Chats.findOne({ contextId: processId }) : null;
