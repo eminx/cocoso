@@ -247,7 +247,7 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
-      await process.meetings.forEach(async (meeting) => {
+      await process.meetings.forEach(async (meeting, meetingIndex) => {
         const newAttendees = [];
         await meeting.attendees.forEach((attendee) => {
             const theUser = Meteor.users.findOne(attendee.memberId);
@@ -293,7 +293,6 @@ Migrations.add({
               resourceId: theResource._id || '',
               resourceIndex: theResource.resourceIndex,
             };
-            // console.log(newActivity);    
           }
         } catch (error) {
           console.error(error);
@@ -308,22 +307,41 @@ Migrations.add({
   },
 });
 
-// Clean removed nested Meeting arrays from Processes (with a Resource)
+// Clean removed Meeting objects from Meetings array in Process (with a Resource)
 Migrations.add({
   version: 12,
   async up() {
     console.log('up to', this.version);
     Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
-      await process.meetings.forEach(async (meeting) => {
+      await process.meetings.forEach(async (meeting, meetingIndex) => {
         try {
           const theResource = Resources.findOne({ label: meeting.resource });
           if (theResource) {
-            // Processes.update({ _id: process._id }, { meetings: 1 });
+            const newMeetings = process.meetings.filter((meet, index) => { meetingIndex !== index }); 
+            Processes.update(
+              { _id: process._id }, 
+              { $set: { meetings: newMeetings }}
+            );
           }
         } catch (error) {
           console.error(error);
         }
       });
+    });
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+    // one way single migration
+  },
+});
+
+// Clean all nested Meeting arrays from Processes
+Migrations.add({
+  version: 13,
+  async up() {
+    console.log('up to', this.version);
+    Processes.find({ meetings: { $exists: true } }).forEach((process) => {
+      Processes.update({ _id: process._id }, { $unset: { meetings: 1 }});
     });
   },
   async down() {
@@ -347,5 +365,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(10);
   // Migrations.migrateTo(11);
   // Migrations.migrateTo(12);
+  // Migrations.migrateTo(13);
   // Migrations.migrateTo('latest');
 });
