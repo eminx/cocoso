@@ -30,7 +30,8 @@
       }
     ],
     "no-underscore-dangle": "off",
-    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }]
+    "import/no-unresolved": ["error", { "ignore": ["^meteor/", "^/"] }],
+    "no-param-reassign": "off"
   },
   "settings": {
     "import/resolver": {
