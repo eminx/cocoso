@@ -5,6 +5,8 @@ import Resources from '../../api/resources/resource';
 import Hosts from '../../api/hosts/host';
 import Activities from '../../api/activities/activity';
 
+/* eslint-disable no-console */
+
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
   version: 1,
@@ -255,3 +257,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(10);
   // Migrations.migrateTo('latest');
 });
+
+/* eslint-enable no-console */

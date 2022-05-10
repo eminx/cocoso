@@ -16,7 +16,7 @@ Meteor.startup(() => {
   }:${smtp.port}`;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.text = function (user, url) {
+  Accounts.emailTemplates.resetPassword.text = (user, url) => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
