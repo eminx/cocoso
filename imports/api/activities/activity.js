@@ -27,7 +27,7 @@ Activities.schema = new SimpleSchema({
   address: { type: String, optional: true },
   capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
   place: { type: String, optional: true },
-  room: { type: String, optional: true }, // undefined
+  // room: { type: String, optional: true }, // undefined
 
   datesAndTimes: { type: Array },
   'datesAndTimes.$': new SimpleSchema({
@@ -56,13 +56,13 @@ Activities.schema = new SimpleSchema({
     },
   }),
 
-  practicalInfo: { type: String, optional: true }, // null
-  internalInfo: { type: String, optional: true }, // null
+  // practicalInfo: { type: String, optional: true }, // null
+  // internalInfo: { type: String, optional: true }, // null
 
   isExclusiveActivity: { type: Boolean, optional: true },
   isSentForReview: { type: Boolean },
   isPublicActivity: { type: Boolean, optional: true },
-  isRegistrationDisabled: { type: Boolean, optional: true }, // undefined
+  // isRegistrationDisabled: { type: Boolean, optional: true }, // undefined
   isPublished: { type: Boolean },
 
   processId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
