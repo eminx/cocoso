@@ -47,14 +47,14 @@ function ActivityForm({
   setSelectedResource,
   isButtonDisabled,
 }) {
-  useEffect(() => {
-    setSelectedResource(getValues('resourceId'));
-  }, [defaultValues]);
-
   const { control, formState, handleSubmit, getValues, register } = useForm({
     defaultValues,
   });
-  const { isDirty, isSubmitting } = formState;
+  const { isSubmitting } = formState;
+
+  useEffect(() => {
+    setSelectedResource(getValues('resourceId'));
+  }, [defaultValues]);
 
   const [tc] = useTranslation('common');
   const [t] = useTranslation('activities');
@@ -126,14 +126,14 @@ function ActivityForm({
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
-              {resources.sort(localeSort).map((option, index) => (
+              {resources.sort(localeSort).map((option) => (
                 <option
                   key={option._id}
                   selected={option._id === defaultValues.resourceId}
                   value={option._id}
                 >
                   {option.isCombo
-                    ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
+                    ? `${option.label}: [${option.resourcesForCombo.map((res) => res.label)}]`
                     : option.label}
                 </option>
               ))}

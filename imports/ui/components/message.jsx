@@ -26,6 +26,7 @@ const Alert = ({ children, isClosable, message, type = 'error', ...otherProps })
           <AlertIcon />
           <Box flex="1">
             <AlertTitle>
+              {/* eslint-disable-next-line no-nested-ternary */}
               {success ? 'Success!' : info ? 'Info' : warning ? 'Warning' : 'Error'}
             </AlertTitle>
             <AlertDescription display="block">{children || message}</AlertDescription>
