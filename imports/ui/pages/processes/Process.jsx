@@ -297,7 +297,7 @@ class Process extends Component {
     );
   };
 
-  addMeeting = async () => {
+  createActivity = async () => {
     const { newMeeting } = this.state;
     const { process, tc } = this.props;
 
@@ -382,7 +382,7 @@ class Process extends Component {
     }
   };
 
-  deleteMeeting = (activityId, meetingIndex) => {
+  deleteActivity = (activityId, meetingIndex) => {
     const { process, processMeetings, t } = this.props;
     if (!process || !processMeetings) {
       return;
@@ -441,7 +441,7 @@ class Process extends Component {
               <Button
                 size="xs"
                 colorScheme="red"
-                onClick={() => this.deleteMeeting(meeting._id, meetingIndex)}
+                onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
               >
                 {t('meeting.actions.remove')}
               </Button>
@@ -880,7 +880,7 @@ class Process extends Component {
                     handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
                     resources={resources}
                     handlePlaceChange={this.handlePlaceChange}
-                    handleSubmit={this.addMeeting}
+                    handleSubmit={this.createActivity}
                     buttonDisabled={!isFormValid}
                   />
                 </div>
