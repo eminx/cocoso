@@ -58,12 +58,11 @@ function Works() {
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
 
   const worksWithCategoryColors = filteredWorks.map((work, index) => {
-    const category = categoriesAssignedToWorks.find((category) => {
-      return (
+    const category = categoriesAssignedToWorks.find(
+      (category) =>
         category.label &&
         category.label === (work.category && work.category.label && work.category.label)
-      );
-    });
+    );
     const categoryColor = category && category.color;
     return {
       ...work,

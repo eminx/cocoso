@@ -287,12 +287,10 @@ function getNonComboResourcesWithColor(nonComboResources) {
     return;
   }
   const hslValues = getHslValuesFromLength(nonComboResources.length);
-  return nonComboResources.sort(localeSort).map((res, i) => {
-    return {
-      ...res,
-      color: hslValues[i],
-    };
-  });
+  return nonComboResources.sort(localeSort).map((res, i) => ({
+    ...res,
+    color: hslValues[i],
+  }));
 }
 
 function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) {

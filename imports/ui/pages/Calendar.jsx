@@ -110,10 +110,9 @@ class Calendar extends PureComponent {
         selectedSlot: {
           ...slotInfo,
           type,
-          content:
-            moment(slotInfo?.start).format('DD MMMM') +
-            ' – ' +
-            moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
+          content: `${moment(slotInfo?.start).format('DD MMMM')} – ${moment(slotInfo?.end)
+            .add(-1, 'days')
+            .format('DD MMMM')}`,
           bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
@@ -124,12 +123,9 @@ class Calendar extends PureComponent {
         selectedSlot: {
           ...slotInfo,
           type,
-          content:
-            moment(slotInfo?.start).format('DD MMMM') +
-            ': ' +
-            moment(slotInfo?.start).format('HH:mm') +
-            ' – ' +
-            moment(slotInfo?.end).format('HH:mm'),
+          content: `${moment(slotInfo?.start).format('DD MMMM')}: ${moment(slotInfo?.start).format(
+            'HH:mm'
+          )} – ${moment(slotInfo?.end).format('HH:mm')}`,
           bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
         },
       });
@@ -188,13 +184,12 @@ class Calendar extends PureComponent {
       selectedResource,
     } = this.state;
 
-    const filteredActivities = allBookings.filter((activity) => {
-      return (
+    const filteredActivities = allBookings.filter(
+      (activity) =>
         !calendarFilter ||
         calendarFilter._id === activity.resourceId ||
         calendarFilter._id === activity.comboResourceId
-      );
-    });
+    );
 
     if (editActivity) {
       return <Redirect to={`/edit-activity/${selectedActivity.activityId}`} />;
