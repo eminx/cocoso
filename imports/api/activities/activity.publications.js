@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Activities from './activity';
 
-Meteor.publish('activities', function (onlyPublic = false) {
+Meteor.publish('activities', (onlyPublic = false) => {
   const host = getHost(this);
   // const fields = {
   //   title: 1,

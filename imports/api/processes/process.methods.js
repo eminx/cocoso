@@ -52,7 +52,7 @@ Meteor.methods({
 
       Meteor.call('createChat', formValues.title, newProcessId, (error) => {
         if (error) {
-          console.log('Chat is not created due to error: ', error);
+          throw new Meteor.error(error, 'Chat is not created.');
         }
       });
 
@@ -68,7 +68,6 @@ Meteor.methods({
           },
         });
       } catch (error) {
-        console.log(error);
         throw new Meteor.Error(
           error,
           "Couldn't add the process info to user collection, but process is created"
@@ -76,7 +75,6 @@ Meteor.methods({
       }
       return newProcessId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't add process to the collection");
     }
   },
@@ -183,7 +181,6 @@ Meteor.methods({
         getProcessJoinText(user.firstName || user.username, theProcess.title, processId)
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not join the circle');
     }
   },
@@ -558,7 +555,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, 'Could not send the invite to the person');
     }
   },

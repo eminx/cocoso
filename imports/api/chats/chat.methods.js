@@ -120,7 +120,6 @@ Meteor.methods({
         }
       });
     } catch (error) {
-      console.log('error', error);
       throw new Meteor.Error(error);
     }
   },
@@ -166,7 +165,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log('error', error);
       throw new Meteor.Error(error);
     }
   },

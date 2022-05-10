@@ -361,7 +361,6 @@ class Process extends Component {
 
     Meteor.call('deleteMeeting', process._id, meetingIndex, (error, respond) => {
       if (error) {
-        console.log(error);
         message.error(error.error);
       } else {
         message.success(t('meeting.success.remove'));
@@ -498,7 +497,7 @@ class Process extends Component {
             (error, respond) => {
               if (error) {
                 message.error(error);
-                console.log(error);
+
                 closeLoader();
               } else {
                 Meteor.call(
@@ -508,7 +507,7 @@ class Process extends Component {
                   (error, respond) => {
                     if (error) {
                       message.error(error);
-                      console.log(error);
+
                       closeLoader();
                     } else {
                       message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
@@ -531,7 +530,6 @@ class Process extends Component {
     const closeModal = () => this.setState({ potentialNewAdmin: false });
     Meteor.call('changeAdmin', process._id, potentialNewAdmin, (error, respond) => {
       if (error) {
-        console.log(error);
         message.error(error.error);
         closeModal();
       } else {

@@ -53,7 +53,6 @@ function Members({ history, members, isLoading }) {
       await call('setAsParticipant', user.id);
       message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
@@ -66,7 +65,6 @@ function Members({ history, members, isLoading }) {
       await call('setAsContributor', user.id);
       message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',

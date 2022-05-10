@@ -32,7 +32,6 @@ Meteor.methods({
         creationDate: new Date(),
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't create the document");
     }
   },
@@ -46,7 +45,6 @@ Meteor.methods({
     try {
       Documents.remove(documentId);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't delete the document");
     }
   },

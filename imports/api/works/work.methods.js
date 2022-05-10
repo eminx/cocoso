@@ -72,7 +72,6 @@ Meteor.methods({
       });
       return newWorkId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

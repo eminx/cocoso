@@ -20,7 +20,6 @@ Meteor.methods({
       }
       return userId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -64,7 +63,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -100,7 +98,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -122,7 +119,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -173,7 +169,6 @@ Meteor.methods({
         }
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -198,7 +193,6 @@ Meteor.methods({
         Hosts.update(host._id, { $pull: { members: { id: userId } } });
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

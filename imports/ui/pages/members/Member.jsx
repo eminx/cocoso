@@ -51,7 +51,7 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
   //     await call('setAsParticipant', user.id);
   //     message.success(`${user.username} is now set back as a participant`);
   //   } catch (error) {
-  //     console.log(error);
+  //
   //     message.error(error.reason || error.error);
   //   }
   // };

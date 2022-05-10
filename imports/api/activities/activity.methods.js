@@ -139,7 +139,6 @@ Meteor.methods({
       // }
       return activityId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -166,7 +165,6 @@ Meteor.methods({
       });
       return activityId;
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
   },
@@ -264,7 +262,6 @@ Meteor.methods({
         )
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't update attendance");
     }
   },

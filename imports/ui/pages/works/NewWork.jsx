@@ -122,7 +122,7 @@ class NewWork extends PureComponent {
       );
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
+
       this.setState({ isCreating: false });
     }
   };

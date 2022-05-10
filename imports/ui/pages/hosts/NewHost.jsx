@@ -40,7 +40,6 @@ function NewHost() {
       window.scrollTo(0, 0);
       setIsSuccess(true);
     } catch (error) {
-      console.log(error);
       message.error(`Error: ${error.reason || error.error}`);
     }
   };

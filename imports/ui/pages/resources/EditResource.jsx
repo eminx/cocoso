@@ -44,7 +44,6 @@ function EditResourcePage({ history }) {
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
-      console.log(error);
     }
   };
 

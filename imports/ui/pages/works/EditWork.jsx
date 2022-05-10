@@ -61,7 +61,6 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
       this.setState({
         isLoading: false,

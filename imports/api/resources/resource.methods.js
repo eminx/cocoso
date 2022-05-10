@@ -65,7 +65,7 @@ Meteor.methods({
         description: booking.longDescription,
       }));
     } catch (error) {
-      console.error(error);
+      throw new Meteor.error(error);
     }
   },
 
@@ -90,7 +90,7 @@ Meteor.methods({
         () => {
           Meteor.call('createChat', values.label, newResourceId, (error) => {
             if (error) {
-              console.log('Chat is not created due to error: ', error);
+              throw new Meteor.error(error, 'Chat is not created.');
             }
           });
         }
