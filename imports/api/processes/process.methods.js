@@ -12,7 +12,7 @@ import {
   getMeetingUnattendText,
   getInviteToPrivateProcessText,
 } from './process.mails';
-import { compareForSort } from './process.helpers';
+import compareForSort from './process.helpers';
 
 const publicSettings = Meteor.settings.public;
 
@@ -52,7 +52,7 @@ Meteor.methods({
 
       Meteor.call('createChat', formValues.title, newProcessId, (error) => {
         if (error) {
-          throw new Meteor.error(error, 'Chat is not created.');
+          throw new Meteor.Error(error, 'Chat is not created.');
         }
       });
 

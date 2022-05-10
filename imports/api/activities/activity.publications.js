@@ -36,7 +36,7 @@ Meteor.publish('activities', (onlyPublic = false) => {
   return Activities.find({ host, isPublished: true });
 });
 
-Meteor.publish('activity', function (id) {
+Meteor.publish('activity', (id) => {
   const host = getHost(this);
   return Activities.find({
     host,

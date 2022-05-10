@@ -4,4 +4,4 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-export { compareForSort };
+export default compareForSort;
