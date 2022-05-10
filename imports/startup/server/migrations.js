@@ -307,37 +307,9 @@ Migrations.add({
   },
 });
 
-// Clean removed Meeting objects from Meetings array in Process (with a Resource)
-Migrations.add({
-  version: 12,
-  async up() {
-    console.log('up to', this.version);
-    Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
-      await process.meetings.forEach(async (meeting, meetingIndex) => {
-        try {
-          const theResource = Resources.findOne({ label: meeting.resource });
-          if (theResource) {
-            const newMeetings = process.meetings.filter((meet, index) => { meetingIndex !== index }); 
-            Processes.update(
-              { _id: process._id }, 
-              { $set: { meetings: newMeetings }}
-            );
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      });
-    });
-  },
-  async down() {
-    console.log('down to', this.version - 1);
-    // one way single migration
-  },
-});
-
 // Clean all nested Meeting arrays from Processes
 Migrations.add({
-  version: 13,
+  version: 12,
   async up() {
     console.log('up to', this.version);
     Processes.find({ meetings: { $exists: true } }).forEach((process) => {
@@ -365,6 +337,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(10);
   // Migrations.migrateTo(11);
   // Migrations.migrateTo(12);
-  // Migrations.migrateTo(13);
   // Migrations.migrateTo('latest');
 });
