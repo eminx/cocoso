@@ -26,6 +26,7 @@ import {
   Image,
   Link as CLink,
   List,
+  ListItem,
   Select,
   Switch,
   Tabs,
@@ -303,7 +304,9 @@ class Process extends Component {
 
     const activityValues = {
       title: process.title,
+      subTitle: process.readingMaterial,
       longDescription: process.description,
+      imageUrl: process.imageUrl,
       resource: newMeeting.resource,
       resourceId: newMeeting.resourceId,
       resourceIndex: newMeeting.resourceIndex,
@@ -314,11 +317,13 @@ class Process extends Component {
           startTime: newMeeting.startTime,
           endTime: newMeeting.endTime,
           attendees: [],
+          capacity: process.capacity,
         },
       ],
       isPublicActivity: false,
-      isRegistrationDisabled: true,
+      isRegistrationDisabled: false,
       isProcessMeeting: true,
+      isProcessPrivate: process.isPrivate,
       processId: process._id,
     };
 
@@ -411,7 +416,7 @@ class Process extends Component {
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
-
+    console.log(processMeetings);
     return (
       process &&
       processMeetings.map((meeting, meetingIndex) => (
@@ -433,7 +438,12 @@ class Process extends Component {
             {meeting.attendees && (
               <List>
                 {meeting.attendees.map((attendee) => (
-                  <Box key={attendee.memberUsername}>{attendee.memberUsername}</Box>
+                  <ListItem key={attendee.username}>
+                    <Text as="span" fontWeight="bold">
+                      {attendee.username}
+                    </Text>
+                    <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                  </ListItem>
                 ))}
               </List>
             )}
