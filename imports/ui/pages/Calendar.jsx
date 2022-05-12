@@ -35,7 +35,26 @@ moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 12;
 
-const localeSort = (a, b) => a.label.localeCompare(b.label);
+// const localeSort = (a, b) => a.label.localeCompare(b.label);
+
+function parseDatesForQuery(slotInfo, selectedResource, type) {
+  let bookingUrl = '/new-activity/?';
+  const params = {
+    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: moment(slotInfo?.start).format('HH:mm'),
+    endTime: moment(slotInfo?.end).format('HH:mm'),
+    resource: selectedResource ? selectedResource._id : '',
+  };
+
+  if (type !== 'other') {
+    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endTime = '23:59';
+  }
+
+  bookingUrl += stringify(params);
+  return bookingUrl;
+}
 
 class Calendar extends PureComponent {
   state = {
@@ -45,6 +64,20 @@ class Calendar extends PureComponent {
     selectedSlot: null,
     mode: 'list',
     selectedResource: null,
+  };
+
+  getActivityTimes = (activity) => {
+    if (!activity) {
+      return '';
+    }
+    if (activity.startDate === activity.endDate) {
+      return `${activity.startTime}–${activity.endTime} ${moment(activity.startDate).format(
+        'DD MMMM'
+      )}`;
+    }
+    return `${moment(activity.startDate).format('DD MMM')} ${activity.startTime} – ${moment(
+      activity.endDate
+    ).format('DD MMM')} ${activity.endTime}`;
   };
 
   handleModeChange = (e) => {
@@ -59,7 +92,7 @@ class Calendar extends PureComponent {
     });
   };
 
-  handleCalendarFilterChange = (value, meta) => {
+  handleCalendarFilterChange = (value) => {
     this.setState({ calendarFilter: value });
   };
 
@@ -145,20 +178,6 @@ class Calendar extends PureComponent {
     this.setState({ selectedSlot: null });
   };
 
-  getActivityTimes = (activity) => {
-    if (!activity) {
-      return '';
-    }
-    if (activity.startDate === activity.endDate) {
-      return `${activity.startTime}–${activity.endTime} ${moment(activity.startDate).format(
-        'DD MMMM'
-      )}`;
-    }
-    return `${moment(activity.startDate).format('DD MMM')} ${activity.startTime} – ${moment(
-      activity.endDate
-    ).format('DD MMM')} ${activity.endTime}`;
-  };
-
   isCreator = () => {
     const { currentUser } = this.props;
     const { selectedActivity } = this.state;
@@ -174,15 +193,8 @@ class Calendar extends PureComponent {
 
   render() {
     const { isLoading, currentUser, allBookings, resources, tc } = this.props;
-    const { canCreateContent, currentHost, role } = this.context;
-    const {
-      editActivity,
-      calendarFilter,
-      selectedActivity,
-      selectedSlot,
-      isUploading,
-      selectedResource,
-    } = this.state;
+    const { canCreateContent, currentHost } = this.context;
+    const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
 
     const filteredActivities = allBookings.filter(
       (activity) =>
@@ -204,7 +216,7 @@ class Calendar extends PureComponent {
       nonComboResourcesWithColor
     );
 
-    const allFilteredActsWithColors = filteredActivities.map((act, i) => {
+    const allFilteredActsWithColors = filteredActivities.map((act) => {
       const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
       const resourceColor = (resource && resource.color) || '#484848';
 
@@ -263,7 +275,7 @@ class Calendar extends PureComponent {
                     />
                   </WrapItem>
 
-                  {nonComboResourcesWithColor.map((resource, i) => (
+                  {nonComboResourcesWithColor.map((resource) => (
                     <WrapItem key={resource._id}>
                       <Tag
                         checkable
@@ -276,7 +288,7 @@ class Calendar extends PureComponent {
                   ))}
                 </Wrap>
                 <Wrap justify="center" mb="2" px="1">
-                  {comboResourcesWithColor.map((resource, i) => (
+                  {comboResourcesWithColor.map((resource) => (
                     <WrapItem key={resource._id}>
                       <Tag
                         checkable
@@ -420,25 +432,6 @@ class Calendar extends PureComponent {
       </Box>
     );
   }
-}
-
-function parseDatesForQuery(slotInfo, selectedResource, type) {
-  let bookingUrl = '/new-activity/?';
-  const params = {
-    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
-    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
-    startTime: moment(slotInfo?.start).format('HH:mm'),
-    endTime: moment(slotInfo?.end).format('HH:mm'),
-    resource: selectedResource ? selectedResource._id : '',
-  };
-
-  if (type !== 'other') {
-    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
-    params.endTime = '23:59';
-  }
-
-  bookingUrl += stringify(params);
-  return bookingUrl;
 }
 
 Calendar.contextType = StateContext;

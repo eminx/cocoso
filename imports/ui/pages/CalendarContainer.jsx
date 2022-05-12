@@ -1,4 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,7 @@ import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity';
 
 moment.locale(i18n.language);
-const CalendarContainer = withTracker((props) => {
+const CalendarContainer = withTracker(() => {
   const activitiesSub = Meteor.subscribe('activities');
   const activities = Activities ? Activities.find().fetch() : null;
   const resourcesSub = Meteor.subscribe('resources');

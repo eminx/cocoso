@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import Template from '../components/Template';
 
-const NotFoundPage = ({ domain, history }) => (
+const NotFoundPage = ({ domain }) => (
   <Template>
     <Box m="4" p="2">
       <Text textAlign="center" size="large" margin="2">
