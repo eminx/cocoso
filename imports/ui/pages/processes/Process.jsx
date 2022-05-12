@@ -26,6 +26,7 @@ import {
   Image,
   Link as CLink,
   List,
+  ListItem,
   Select,
   Switch,
   Tabs,
@@ -286,6 +287,7 @@ class Process extends Component {
           ...newMeeting,
           resource: place,
           resourceId: selectedResource._id,
+          resourceIndex: selectedResource.resourceIndex,
         },
       },
       () => {
@@ -296,39 +298,76 @@ class Process extends Component {
     );
   };
 
-  addMeeting = () => {
+  createActivity = async () => {
     const { newMeeting } = this.state;
-    const { process, t } = this.props;
-    const meetingToAdd = { ...newMeeting };
-    meetingToAdd.endDate = newMeeting.startDate;
-    Meteor.call('addProcessMeeting', meetingToAdd, process._id, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-        message.error(error.error);
-      } else {
-        message.success(t('meeting.success.add'));
-      }
-    });
+    const { process, tc } = this.props;
+
+    const activityValues = {
+      title: process.title,
+      subTitle: process.readingMaterial,
+      longDescription: process.description,
+      imageUrl: process.imageUrl,
+      resource: newMeeting.resource,
+      resourceId: newMeeting.resourceId,
+      resourceIndex: newMeeting.resourceIndex,
+      datesAndTimes: [
+        {
+          startDate: newMeeting.startDate,
+          endDate: newMeeting.startDate,
+          startTime: newMeeting.startTime,
+          endTime: newMeeting.endTime,
+          attendees: [],
+          capacity: process.capacity,
+        },
+      ],
+      isPublicActivity: false,
+      isRegistrationDisabled: false,
+      isProcessMeeting: true,
+      isProcessPrivate: process.isPrivate,
+      processId: process._id,
+    };
+
+    try {
+      await call('createActivity', activityValues);
+      message.success(
+        tc('message.success.create', {
+          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
+        })
+      );
+    } catch (error) {
+      message.error(error.reason);
+    }
   };
 
-  toggleAttendance = (meetingIndex) => {
-    const { process, currentUser, t } = this.props;
+  toggleAttendance = (activityId, meetingIndex) => {
+    const { processMeetings, currentUser, t } = this.props;
 
     if (!currentUser) {
       message.error(t('meeting.access.logged'));
       return;
     }
     if (!this.isMember()) {
-      message.error(t('meeting.success.join'));
+      message.error(t('meeting.access.join'));
       return;
     }
 
-    const isAttending = process.meetings[meetingIndex].attendees
-      .map((attendee) => attendee.memberId)
-      .includes(currentUser._id);
+    const isAttending = processMeetings[meetingIndex].attendees
+      .map((attendee) => attendee.username)
+      .includes(currentUser.username);
+
+    const meetingAttendence = {
+      email: currentUser.emails[0].address,
+      username: currentUser.username,
+      firstName: currentUser.firstName || '',
+      lastName: currentUser.lastName || '',
+      numberOfPeople: 1,
+    };
 
     if (isAttending) {
-      Meteor.call('unAttendMeeting', process._id, meetingIndex, (error, respond) => {
+      const attendeeIndex = processMeetings[meetingIndex].attendees.findIndex(
+        (attendee) => attendee.username === currentUser.username
+      );
+      Meteor.call('removeAttendance', activityId, 0, attendeeIndex, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
@@ -337,30 +376,31 @@ class Process extends Component {
         }
       });
     } else {
-      Meteor.call('attendMeeting', process._id, meetingIndex, (error, respond) => {
+      Meteor.call('registerAttendance', activityId, meetingAttendence, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
         } else {
-          message.success(t('meeting.register.remove'));
+          message.success(t('meeting.attends.register'));
         }
       });
     }
   };
 
-  deleteMeeting = (meetingIndex) => {
-    const { process, t } = this.props;
-    if (!process || !process.meetings) {
+  deleteActivity = (activityId, meetingIndex) => {
+    const { process, processMeetings, t } = this.props;
+    if (!process || !processMeetings) {
       return;
     }
 
-    if (process.meetings[meetingIndex].attendees.length > 0) {
+    if (processMeetings[meetingIndex].attendees.length > 0) {
       message.error(t('meeting.access.remove'));
       return;
     }
 
-    Meteor.call('deleteMeeting', process._id, meetingIndex, (error, respond) => {
+    Meteor.call('deleteActivity', activityId, (error, respond) => {
       if (error) {
+        console.log(error);
         message.error(error.error);
       } else {
         message.success(t('meeting.success.remove'));
@@ -369,17 +409,17 @@ class Process extends Component {
   };
 
   renderDates = () => {
-    const { process, t } = this.props;
+    const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
     if (!process) {
       return;
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
-
+    console.log(processMeetings);
     return (
       process &&
-      process.meetings.map((meeting, meetingIndex) => (
+      processMeetings.map((meeting, meetingIndex) => (
         <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           bg="white"
@@ -398,12 +438,21 @@ class Process extends Component {
             {meeting.attendees && (
               <List>
                 {meeting.attendees.map((attendee) => (
-                  <Box key={attendee.memberUsername}>{attendee.memberUsername}</Box>
+                  <ListItem key={attendee.username}>
+                    <Text as="span" fontWeight="bold">
+                      {attendee.username}
+                    </Text>
+                    <Text as="span"> ({`${attendee.firstName} ${attendee.lastName}`})</Text>
+                  </ListItem>
                 ))}
               </List>
             )}
             <Center py="2" mt="2">
-              <Button size="xs" colorScheme="red" onClick={() => this.deleteMeeting(meetingIndex)}>
+              <Button
+                size="xs"
+                colorScheme="red"
+                onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
+              >
                 {t('meeting.actions.remove')}
               </Button>
             </Center>
@@ -414,19 +463,19 @@ class Process extends Component {
   };
 
   renderMeetings = () => {
-    const { process, currentUser, t } = this.props;
+    const { process, processMeetings, currentUser, t } = this.props;
     const { resources } = this.state;
-    if (!process || !process.meetings) {
+    if (!process || !processMeetings) {
       return;
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
-    return process.meetings.map((meeting, meetingIndex) => {
+    return processMeetings.map((meeting, meetingIndex) => {
       const isAttending =
         currentUser &&
         meeting.attendees &&
-        meeting.attendees.map((attendee) => attendee.memberId).includes(currentUser._id);
+        meeting.attendees.map((attendee) => attendee.username).includes(currentUser.username);
 
       return (
         <AccordionItem
@@ -454,7 +503,7 @@ class Process extends Component {
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'gray' : 'green'}
-                onClick={() => this.toggleAttendance(meetingIndex)}
+                onClick={() => this.toggleAttendance(meeting._id, meetingIndex)}
               >
                 {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
               </Button>
@@ -497,7 +546,7 @@ class Process extends Component {
             (error, respond) => {
               if (error) {
                 message.error(error);
-
+                console.log(error);
                 closeLoader();
               } else {
                 Meteor.call(
@@ -507,7 +556,7 @@ class Process extends Component {
                   (error, respond) => {
                     if (error) {
                       message.error(error);
-
+                      console.log(error);
                       closeLoader();
                     } else {
                       message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
@@ -530,6 +579,7 @@ class Process extends Component {
     const closeModal = () => this.setState({ potentialNewAdmin: false });
     Meteor.call('changeAdmin', process._id, potentialNewAdmin, (error, respond) => {
       if (error) {
+        console.log(error);
         message.error(error.error);
         closeModal();
       } else {
@@ -775,7 +825,7 @@ class Process extends Component {
   isNoAccess = () => !this.isMember() && !this.isAdmin() && !this.isInvited();
 
   render() {
-    const { process, isLoading, history, t, tc } = this.props;
+    const { process, processMeetings, isLoading, history, t, tc } = this.props;
     const { resources } = this.state;
 
     if (!process || isLoading) {
@@ -816,8 +866,8 @@ class Process extends Component {
 
               <Text fontSize="sm" mb="4">
                 <em>
-                  {process.meetings &&
-                  process.meetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
+                  {processMeetings &&
+                  processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
                     .length > 0
                     ? isAdmin
                       ? t('meeting.info.admin')
@@ -827,7 +877,7 @@ class Process extends Component {
               </Text>
 
               <Accordion allowToggle>
-                {process.meetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+                {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
               </Accordion>
 
               {isAdmin && (
@@ -840,7 +890,7 @@ class Process extends Component {
                     handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
                     resources={resources}
                     handlePlaceChange={this.handlePlaceChange}
-                    handleSubmit={this.addMeeting}
+                    handleSubmit={this.createActivity}
                     buttonDisabled={!isFormValid}
                   />
                 </div>

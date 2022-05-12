@@ -26,7 +26,7 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import compareForSort from '../../utils/shared';
+import { compareForSort } from '../../utils/shared';
 import GridThumb from '../../components/GridThumb';
 
 moment.locale(i18n.language);

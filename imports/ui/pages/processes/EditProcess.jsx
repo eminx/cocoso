@@ -100,6 +100,7 @@ class EditProcess extends React.Component {
         isSuccess: true,
       });
     } catch (error) {
+      console.log(error);
       message.error(error.error || error.reason);
     }
   };
@@ -116,6 +117,7 @@ class EditProcess extends React.Component {
       message.success(tc('message.success.remove', { domain: tc('domains.process') }));
       this.setState({ isSuccess: true });
     } catch (error) {
+      console.log(error);
       message.error(error.error || error.reason);
     }
   };

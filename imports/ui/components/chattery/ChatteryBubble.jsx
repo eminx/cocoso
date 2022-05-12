@@ -8,9 +8,8 @@ moment.locale(i18n.language);
 
 class ChatteryBubble extends React.Component {
   componentDidMount() {
-    const { isFromMe } = this.props;
+    const { isFromMe, children } = this.props;
     if (!isFromMe) {
-      /* eslint-disable-next-line no-unused-expressions */
       this.removeNotification;
     }
   }
@@ -38,7 +37,7 @@ class ChatteryBubble extends React.Component {
   };
 
   render() {
-    const { senderUsername, createdDate, isFromMe, children } = this.props;
+    const { senderUsername, createdDate, isFromMe, isSeen, children } = this.props;
     let bubbleClass = 'talk-bubble tri-right round ';
     let bubbleClassContainer = 'talk-bubble-container ';
     if (isFromMe) {
@@ -52,7 +51,7 @@ class ChatteryBubble extends React.Component {
     return (
       <div className={bubbleClassContainer}>
         <VisibilitySensor partialVisibility="bottom" onChange={this.removeNotification}>
-          {() => (
+          {({ isVisible }) => (
             <div className={bubbleClass}>
               <div className="talktext">
                 <p className="talktext-senderinfo">{senderUsername}</p>
@@ -74,4 +73,4 @@ ChatteryBubble.propTypes = {
   isSeen: PropTypes.bool,
 };
 
-export default ChatteryBubble;
+export { ChatteryBubble };

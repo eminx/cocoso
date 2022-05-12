@@ -8,7 +8,7 @@ Meteor.publish('work', (id) =>
   })
 );
 
-Meteor.publish('myworks', () => {
+Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
   const host = getHost(this);
   // Works._ensureIndex({ host, authorId: currentUserId });
@@ -18,7 +18,7 @@ Meteor.publish('myworks', () => {
   });
 });
 
-Meteor.publish('memberWorksAtHost', (username) => {
+Meteor.publish('memberWorksAtHost', function (username) {
   const host = getHost(this);
   return Works.find({
     authorUsername: username,

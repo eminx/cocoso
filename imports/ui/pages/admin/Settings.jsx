@@ -92,6 +92,7 @@ export default function Settings({ history }) {
       message.success(tc('message.success.update', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
+      console.log(error);
     }
   };
 
@@ -101,6 +102,7 @@ export default function Settings({ history }) {
       setCategories(latestCategories);
     } catch (error) {
       message.error(error.reason);
+      console.log(error);
     }
   };
 
@@ -112,6 +114,7 @@ export default function Settings({ history }) {
       setCategoryInput('');
     } catch (error) {
       message.error(error.reason);
+      console.log(error);
     }
   };
 
@@ -121,6 +124,7 @@ export default function Settings({ history }) {
       getCategories();
     } catch (error) {
       message.error(error.reason);
+      console.log(error);
     }
   };
 

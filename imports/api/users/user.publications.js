@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 
-Meteor.publish('attendingEvents', () =>
-  Meteor.users.find(this.userId, {
+Meteor.publish('attendingEvents', function () {
+  return Meteor.users.find(this.userId, {
     fields: {
       attending: 1,
       profile: 1,
       isSuperAdmin: 1,
     },
-  })
-);
+  });
+});
 
 Meteor.publish('me', () => {
   const userId = Meteor.userId();
@@ -19,7 +19,7 @@ Meteor.publish('me', () => {
   return Meteor.users.find(userId);
 });
 
-Meteor.publish('membersForPublic', () => {
+Meteor.publish('membersForPublic', function () {
   const host = getHost(this);
   // Meteor.users._ensureIndex({ 'memberships.host': host });
   return Meteor.users.find(
@@ -36,7 +36,7 @@ Meteor.publish('membersForPublic', () => {
   );
 });
 
-Meteor.publish('memberAtHost', (username) => {
+Meteor.publish('memberAtHost', function (username) {
   const host = getHost(this);
   return Meteor.users.find({
     username,

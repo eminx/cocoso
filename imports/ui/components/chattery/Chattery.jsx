@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import './chattery.css';
 
-import ChatteryWindow from './ChatteryWindow';
-import ChatteryInput from './ChatteryInput';
+import { ChatteryWindow } from './ChatteryWindow';
+import { ChatteryInput } from './ChatteryInput';
 
 const noMemberText = 'If you want to participate to the discussion, please join the process.';
 
@@ -25,12 +25,10 @@ function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }
   );
 }
 
-/* eslint-disable react/forbid-prop-types */
 Chattery.propTypes = {
   messages: PropTypes.array.isRequired,
   onNewMessage: PropTypes.func.isRequired,
   meta: PropTypes.object,
 };
-/* eslint-enable react/forbid-prop-types */
 
 export default Chattery;

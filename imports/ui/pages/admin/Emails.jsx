@@ -44,7 +44,7 @@ function Emails({ history }) {
       setLoading(false);
     } catch (error) {
       setEmails(defaultEmails);
-
+      console.log(error);
       setLoading(false);
     }
   };

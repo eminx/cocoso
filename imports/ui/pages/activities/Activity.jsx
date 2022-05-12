@@ -97,6 +97,7 @@ class Activity extends PureComponent {
       await call('registerAttendance', activityData._id, values, occurenceIndex);
       message.success(t('public.attandence.create'));
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
@@ -223,6 +224,7 @@ class Activity extends PureComponent {
         isRsvpCancelModalOn: false,
       });
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
@@ -245,6 +247,7 @@ class Activity extends PureComponent {
         isRsvpCancelModalOn: false,
       });
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
@@ -458,14 +461,9 @@ class Activity extends PureComponent {
       >
         <Box bg="white" mb="4">
           {activityData.isPublicActivity && (
-            <Box bg="gray.900">
-              <Image
-                fit="contain"
-                src={activityData.imageUrl}
-                // style={{ maxHeight: 400 }}
-                htmlHeight={400}
-              />
-            </Box>
+            <Center bg="gray.900" width="100%">
+              <Image fit="contain" src={activityData.imageUrl} htmlHeight={400} />
+            </Center>
           )}
 
           {activityData.longDescription && (

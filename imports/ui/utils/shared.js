@@ -40,7 +40,6 @@ function emailIsValid(email) {
 }
 
 function includesSpecialCharacters(string) {
-  // eslint-disable-next-line no-useless-escape
   const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
   if (format.test(string)) {
@@ -55,7 +54,6 @@ function dataURLtoFile(dataurl, filename) {
   const bstr = atob(arr[1]);
   let n = bstr.length;
   const u8arr = new Uint8Array(n);
-  // eslint-disable-next-line no-plusplus
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
@@ -168,34 +166,6 @@ function parseAllBookingsWithResources(activities, processes, resources) {
           activityId: activity._id,
         });
       }
-    });
-  });
-
-  processes.forEach((process) => {
-    process.meetings.forEach((meeting) => {
-      const resourceId =
-        meeting.resourceId || resources.find((r) => r.label === meeting.resource)?._id;
-      allBookings.push({
-        title: process.title,
-        start: moment(meeting.startDate + meeting.startTime, 'YYYY-MM-DD HH:mm').toDate(),
-        end: moment(meeting.endDate + meeting.endTime, 'YYYY-MM-DD HH:mm').toDate(),
-        startDate: meeting.startDate,
-        startTime: meeting.startTime,
-        endDate: meeting.endDate,
-        endTime: meeting.endTime,
-        authorName: process.adminUsername,
-        resource: meeting.resource,
-        resourceId,
-        resourceIndex: meeting.resourceIndex,
-        longDescription: process.description,
-        processId: process._id,
-        isMultipleDay: false,
-        isExclusiveActivity: true,
-        isPublicActivity: true,
-        imageUrl: process.imageUrl,
-        isProcess: true,
-        isPrivateProcess: process.isPrivate,
-      });
     });
   });
 

@@ -32,6 +32,7 @@ class Profile extends PureComponent {
         })
       );
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
@@ -95,6 +96,7 @@ class Profile extends PureComponent {
         window.location.reload();
       }, 400);
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };

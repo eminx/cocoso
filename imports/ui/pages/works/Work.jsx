@@ -73,6 +73,7 @@ function Work() {
       }
       setAuthorContactInfo(info);
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     }
   };
