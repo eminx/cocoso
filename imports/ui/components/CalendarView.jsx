@@ -35,6 +35,7 @@ function CalendarView(props) {
   };
 
   // import locale from node_modules
+  /* eslint-disable-next-line global-require */
   require('moment/locale/sv');
 
   return (

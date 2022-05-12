@@ -22,7 +22,30 @@ import FileDropper from '../components/FileDropper';
 import NiceSlider from '../components/NiceSlider';
 import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 
-function WorkForm({
+const thumbStyle = (backgroundImage) => ({
+  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
+});
+
+const SortableItem = sortableElement(({ image, onRemoveImage }) => (
+  <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
+    <IconButton
+      className="sortable-thumb-icon"
+      colorScheme="gray.900"
+      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+      size="xs"
+      onClick={onRemoveImage}
+      style={{ position: 'absolute', top: 4, right: 4 }}
+    />
+  </Box>
+));
+
+const SortableContainer = sortableContainer(({ children }) => (
+  <Center w="100%">
+    <Wrap py="2">{children}</Wrap>
+  </Center>
+));
+
+const WorkForm = ({
   categories,
   defaultValues,
   images,
@@ -30,7 +53,7 @@ function WorkForm({
   onSortImages,
   onSubmit,
   setUploadableImages,
-}) {
+}) => {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
   });
@@ -126,29 +149,6 @@ function WorkForm({
       </form>
     </div>
   );
-}
-
-const thumbStyle = (backgroundImage) => ({
-  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
-});
-
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
-  <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
-    <IconButton
-      className="sortable-thumb-icon"
-      colorScheme="gray.900"
-      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-      size="xs"
-      onClick={onRemoveImage}
-      style={{ position: 'absolute', top: 4, right: 4 }}
-    />
-  </Box>
-));
-
-const SortableContainer = sortableContainer(({ children }) => (
-  <Center w="100%">
-    <Wrap py="2">{children}</Wrap>
-  </Center>
-));
+};
 
 export default WorkForm;

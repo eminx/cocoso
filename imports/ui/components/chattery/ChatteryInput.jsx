@@ -51,4 +51,4 @@ ChatteryInput.propTypes = {
   onNewMessage: PropTypes.func.isRequired,
 };
 
-export { ChatteryInput };
+export default ChatteryInput;

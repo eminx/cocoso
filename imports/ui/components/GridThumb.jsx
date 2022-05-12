@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Flex, Image, Text, Spacer } from '@chakra-ui/react';
+import { Box, Heading, Flex, Image, Spacer } from '@chakra-ui/react';
 import i18n from 'i18next';
 import moment from 'moment';
 

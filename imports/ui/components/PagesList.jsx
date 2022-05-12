@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Box, Center, Flex, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
+import { Box, Center, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
+import { ScreenClassRender } from 'react-grid-system';
 
 import { parseTitle } from '../utils/shared';
-import { ScreenClassRender } from 'react-grid-system';
 
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   const currentPageTitle = () => {

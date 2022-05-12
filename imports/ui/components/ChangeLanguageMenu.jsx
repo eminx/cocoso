@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Menu, MenuButton, MenuList, MenuItem, Select } from '@chakra-ui/react';
 
-export default ChangeLanguage = ({ select, register }) => {
+const ChangeLanguage = ({ select, register }) => {
   const { t, i18n } = useTranslation();
 
   if (!select)
@@ -13,7 +13,7 @@ export default ChangeLanguage = ({ select, register }) => {
           {i18n.languages.map((lang) => (
             <MenuItem
               key={lang}
-              fontWeight={lang == i18n.language ? 'bold' : 'normal'}
+              fontWeight={lang === i18n.language ? 'bold' : 'normal'}
               onClick={() => i18n.changeLanguage(lang)}
             >
               {t(`common:langs.${lang}`)}
@@ -33,3 +33,5 @@ export default ChangeLanguage = ({ select, register }) => {
     </Select>
   );
 };
+
+export default ChangeLanguage;

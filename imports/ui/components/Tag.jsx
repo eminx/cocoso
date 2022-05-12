@@ -38,6 +38,7 @@ const Tag = ({
     >
       <Box
         background={checkable && checked ? 'none' : 'white'}
+        /* eslint-disable-next-line no-nested-ternary */
         border={!checkable ? 'none' : checked ? 'none' : 'white'}
         cursor="pointer"
         py="0"

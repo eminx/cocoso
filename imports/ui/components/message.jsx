@@ -19,15 +19,24 @@ const Alert = ({ children, isClosable, message, type = 'error', ...otherProps })
   const info = type === 'info';
   const warning = type === 'warning';
 
+  const alertTitle = () => {
+    if (success) {
+      return 'Success!';
+    } else if (info) {
+      return 'Info';
+    } else if (warning) {
+      return 'Warning';
+    }
+    return 'Error';
+  };
+
   return (
     <Center w="100%">
       <Box>
         <CAlert status={type} {...otherProps}>
           <AlertIcon />
           <Box flex="1">
-            <AlertTitle>
-              {success ? 'Success!' : info ? 'Info' : warning ? 'Warning' : 'Error'}
-            </AlertTitle>
+            <AlertTitle>{alertTitle}</AlertTitle>
             <AlertDescription display="block">{children || message}</AlertDescription>
           </Box>
           {isClosable && <CloseButton position="absolute" right="8px" top="8px" />}

@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Modal as CModal,
   ModalOverlay,
   ModalContent,
@@ -7,7 +8,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 function Modal({

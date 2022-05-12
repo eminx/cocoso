@@ -13,18 +13,18 @@ export default function Breadcrumb({ context, contextKey }) {
     <Center py="4">
       <BreadcrumbMenu>
         {breadcrumbs.map((item, index) => {
-          if (context?._id == item) item = context[contextKey];
+          if (context?._id === item) item = context[contextKey];
           item = item.charAt(0).toUpperCase() + item.slice(1);
-          if (item == '' && index == 0)
+          if (item === '' && index === 0)
             return (
               <BreadcrumbItem key={`breadcrumb-${index}`}>
                 <Link to="/">Home</Link>
               </BreadcrumbItem>
             );
-          if (index != breadcrumbs.length - 1) {
+          if (index !== breadcrumbs.length - 1) {
             let href = '';
             for (let i = 0; i < index + 1; i++) {
-              if (breadcrumbs[i] != '') href = `${href}/${breadcrumbs[i]}`;
+              if (breadcrumbs[i] !== '') href = `${href}/${breadcrumbs[i]}`;
             }
             return (
               <BreadcrumbItem key={`breadcrumb-${index}`}>
@@ -32,7 +32,7 @@ export default function Breadcrumb({ context, contextKey }) {
               </BreadcrumbItem>
             );
           }
-          if (index == breadcrumbs.length - 1) {
+          if (index === breadcrumbs.length - 1) {
             return (
               <BreadcrumbItem isCurrentPage key={`breadcrumb-${index}`}>
                 <BreadcrumbLink href="#">{item}</BreadcrumbLink>

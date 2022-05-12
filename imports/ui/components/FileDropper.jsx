@@ -1,13 +1,12 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Box, Button, Center, Image, Text } from '@chakra-ui/react';
+import { Box, Center, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const FileDropper = ({
   height = '100%',
   imageFit = 'contain',
   imageUrl,
-  label,
   round = false,
   uploadableImageLocal,
   setUploadableImage,

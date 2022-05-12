@@ -13,7 +13,7 @@ class ChatteryWindow extends React.Component {
     this.scrollBottom();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate() {
     this.scrollBottom();
   }
 
@@ -50,4 +50,4 @@ ChatteryWindow.propTypes = {
   meta: PropTypes.object,
 };
 
-export { ChatteryWindow };
+export default ChatteryWindow;

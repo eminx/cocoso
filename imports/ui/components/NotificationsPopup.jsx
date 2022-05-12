@@ -2,6 +2,7 @@ import React from 'react';
 import {
   AvatarBadge,
   Box,
+  Code,
   IconButton,
   Menu,
   MenuButton,
@@ -11,7 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { BellIcon } from '@chakra-ui/icons';
 
-function NotificationsPopup({ notifications }) {
+const Badge = ({ children }) => (
+  <Box bg="tomato" py="2" borderRadius="50%">
+    <Code size="sm">{children}</Code>
+  </Box>
+);
+
+const NotificationsPopup = ({ notifications }) => {
   if (!notifications) {
     return null;
   }
@@ -40,7 +47,7 @@ function NotificationsPopup({ notifications }) {
       />
       {notifications.length === 0 ? (
         <Box p="2">
-          <Text fontSize="sm"> You don't have unread messages</Text>
+          <Text fontSize="sm">You don't have unread messages</Text>
         </Box>
       ) : (
         <MenuList>
@@ -56,12 +63,6 @@ function NotificationsPopup({ notifications }) {
       )}
     </Menu>
   );
-}
-
-const Badge = ({ children }) => (
-  <Box bg="tomato" py="2" borderRadius="50%">
-    <Code size="sm">{children}</Code>
-  </Box>
-);
+};
 
 export default NotificationsPopup;

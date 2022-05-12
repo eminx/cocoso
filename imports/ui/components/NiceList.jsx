@@ -2,31 +2,6 @@ import React from 'react';
 import { Box, Flex, List, ListItem, Menu, MenuItem, MenuButton, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
-function NiceList({
-  actionsDisabled,
-  itemBg,
-  keySelector = '_id',
-  list,
-  children,
-  spacing = '4',
-  ...otherProps
-}) {
-  return (
-    <List spacing={spacing} {...otherProps}>
-      {list.map((listItem) => (
-        <ListItem key={listItem[keySelector]} bg={itemBg} pl="4" pr="2" py="2">
-          {' '}
-          <ListItemWithActions
-            listItem={listItem}
-            actionsDisabled={actionsDisabled}
-            renderChildren={children}
-          />
-        </ListItem>
-      ))}
-    </List>
-  );
-}
-
 function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
   return (
     <Flex justify="space-between">
@@ -53,6 +28,31 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
         )}
       </Box>
     </Flex>
+  );
+}
+
+function NiceList({
+  actionsDisabled,
+  itemBg,
+  keySelector = '_id',
+  list,
+  children,
+  spacing = '4',
+  ...otherProps
+}) {
+  return (
+    <List spacing={spacing} {...otherProps}>
+      {list.map((listItem) => (
+        <ListItem key={listItem[keySelector]} bg={itemBg} pl="4" pr="2" py="2">
+          {' '}
+          <ListItemWithActions
+            listItem={listItem}
+            actionsDisabled={actionsDisabled}
+            renderChildren={children}
+          />
+        </ListItem>
+      ))}
+    </List>
   );
 }
 

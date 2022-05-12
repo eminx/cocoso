@@ -10,7 +10,7 @@ export default function ResourcesForCombo({ resource }) {
       <Badge p="1" my="1">
         {t('cards.ifCombo')}:
         <Flex pt="1" wrap="wrap">
-          {resourcesForCombo.map((res, i) => (
+          {resourcesForCombo.map((res) => (
             <Badge
               // fontWeight="normal"
               key={res._id}

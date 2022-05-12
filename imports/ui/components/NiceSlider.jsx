@@ -81,7 +81,7 @@ function NiceSlider({ images }) {
           <FsLightbox
             toggler={toggler}
             sources={images.map((img) => (
-              <img src={img} />
+              <img src={img} role="presentation" />
             ))}
           />
         </Box>
