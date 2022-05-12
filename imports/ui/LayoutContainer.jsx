@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -23,7 +23,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Portal,
   Select,
   Spinner,
   Text,
@@ -57,34 +56,155 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-const getBackgroundStyle = (cHue) => {
-  return {
-    backgroundColor: 'rgba(0, 0, 0, .08)',
+const getBackgroundStyle = () => ({
+  backgroundColor: 'rgba(0, 0, 0, .08)',
+});
+
+// if (!cHue) {
+//   return {
+//     backgroundColor: '#fff',
+//   };
+// }
+// return {
+//   backgroundImage: `-moz-linear-gradient(
+//   0deg,
+//   hsl(${cHue}, 80%, 80%),
+//   hsl(${cHue}, 80%, 95%)
+// )`,
+//   backgroundImage: `-webkit-linear-gradient(
+//   0deg,
+//   hsl(${cHue}, 80%, 80%),
+//   hsl(${cHue}, 80%, 95%)
+// )`,
+//   backgroundImage: `linear-gradient(
+//   0deg,
+//   hsl(${cHue}, 80%, 99%),
+//   hsl(${cHue}, 80%, 90%)
+// )`,
+// };
+function Menu({ currentHost, screenClass, history }) {
+  if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
+    return null;
+  }
+
+  const menu = currentHost.settings.menu;
+
+  const menuItems = menu
+    .filter((item) => item.isVisible)
+    .map((item, index) => ({
+      ...item,
+      route: getRoute(item, index),
+    }));
+
+  const pathname = history.location.pathname;
+
+  const handleClick = (item) => {
+    history.push(item.route);
   };
 
-  if (!cHue) {
-    return {
-      backgroundColor: '#fff',
-    };
-  }
-  return {
-    backgroundImage: `-moz-linear-gradient(
-    0deg,
-    hsl(${cHue}, 80%, 80%),
-    hsl(${cHue}, 80%, 95%)
-  )`,
-    backgroundImage: `-webkit-linear-gradient(
-    0deg,
-    hsl(${cHue}, 80%, 80%),
-    hsl(${cHue}, 80%, 95%)
-  )`,
-    backgroundImage: `linear-gradient(
-    0deg,
-    hsl(${cHue}, 80%, 99%),
-    hsl(${cHue}, 80%, 90%)
-  )`,
+  const isCurrentPage = (name) => {
+    if (name === 'info') {
+      return pathname.substring(0, 5) === '/page';
+    }
+    return name === pathname.substring(1, pathname.length);
   };
-};
+
+  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
+
+  if (['lg', 'xl', 'xxl'].includes(screenClass)) {
+    return (
+      <Wrap align="center" pt="lg" spacing="4">
+        {menuItems.map((item) => (
+          <Box as="button" key={item.name} onClick={() => handleClick(item)}>
+            <Text
+              borderBottom={
+                activeMenuItem && activeMenuItem.label === item.label ? '1px solid #010101' : 'none'
+              }
+              mx="1"
+              textTransform="capitalize"
+            >
+              {item.label}
+            </Text>
+          </Box>
+        ))}
+      </Wrap>
+    );
+  }
+
+  return (
+    <Box align="center">
+      <CMenu placement="bottom" closeOnSelect>
+        <MenuButton>
+          <HStack>
+            <Text textTransform="capitalize">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Text>
+            <ChevronDownIcon />
+          </HStack>
+        </MenuButton>
+        <MenuList>
+          {menuItems.map((item) => (
+            <MenuItem key={item.label} onClick={() => handleClick(item)}>
+              {item.label}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </CMenu>
+    </Box>
+  );
+}
+
+function Header({ currentUser, currentHost, history }) {
+  return (
+    <Box mb="4">
+      <ScreenClassRender
+        render={(screenClass) => {
+          const isMobile = ['xs'].includes(screenClass);
+
+          return (
+            <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
+              <Row
+                style={{
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 12,
+                  marginTop: 12,
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Col xs={3} style={{ paddingLeft: 0 }}>
+                  <Link to="/">
+                    <Box w="120px" h="60px" ml="3">
+                      <Image
+                        fit="contain"
+                        src={currentHost && currentHost.logo}
+                        className="header-logo"
+                      />
+                    </Box>
+                  </Link>
+                </Col>
+                <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
+                  {!isMobile && (
+                    <Menu
+                      currentHost={currentHost}
+                      isMobile={false}
+                      screenClass={screenClass}
+                      history={history}
+                    />
+                  )}
+                </Col>
+                <Col xs={3} style={{ paddingRight: 0 }}>
+                  <Flex justify="flex-end">
+                    <UserPopup currentUser={currentUser} />
+                  </Flex>
+                </Col>
+              </Row>
+              {isMobile && <Menu currentHost={currentHost} isMobile history={history} />}
+            </Container>
+          );
+        }}
+      />
+    </Box>
+  );
+}
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -208,7 +328,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                         </FormField>
 
                         <FormField label={tc('modals.feedback.form.details.label')}>
-                          <Textarea name="text" name="message" />
+                          <Textarea name="message" />
                         </FormField>
                       </VStack>
                     </ModalBody>
@@ -231,132 +351,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   );
 }
 
-function Header({ currentUser, currentHost, title, history }) {
-  return (
-    <Box mb="4">
-      <ScreenClassRender
-        render={(screenClass) => {
-          const isMobile = ['xs'].includes(screenClass);
-
-          return (
-            <Container fluid style={{ width: '100%', padding: 0, zIndex: 9 }}>
-              <Row
-                style={{
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 12,
-                  marginTop: 12,
-                  alignItems: 'flex-start',
-                }}
-              >
-                <Col xs={3} style={{ paddingLeft: 0 }}>
-                  <Link to="/">
-                    <Box w="120px" h="60px" ml="3">
-                      <Image
-                        fit="contain"
-                        src={currentHost && currentHost.logo}
-                        className="header-logo"
-                      />
-                    </Box>
-                  </Link>
-                </Col>
-                <Col xs={6} style={{ display: 'flex', justifyContent: 'center' }}>
-                  {!isMobile && (
-                    <Menu
-                      currentHost={currentHost}
-                      isMobile={false}
-                      screenClass={screenClass}
-                      history={history}
-                    />
-                  )}
-                </Col>
-                <Col xs={3} style={{ paddingRight: 0 }}>
-                  <Flex justify="flex-end">
-                    <UserPopup currentUser={currentUser} />
-                  </Flex>
-                </Col>
-              </Row>
-              {isMobile && <Menu currentHost={currentHost} isMobile history={history} />}
-            </Container>
-          );
-        }}
-      />
-    </Box>
-  );
-}
-
-function Menu({ currentHost, isMobile, screenClass, history }) {
-  const ref = useRef();
-  if (!currentHost || !currentHost.settings || !currentHost.settings.menu) {
-    return null;
-  }
-
-  const menu = currentHost.settings.menu;
-
-  const menuItems = menu
-    .filter((item) => item.isVisible)
-    .map((item, index) => ({
-      ...item,
-      route: getRoute(item, index),
-    }));
-
-  const pathname = history.location.pathname;
-
-  const handleClick = (item) => {
-    history.push(item.route);
-  };
-
-  const isCurrentPage = (name) => {
-    if (name === 'info') {
-      return pathname.substring(0, 5) === '/page';
-    }
-    return name === pathname.substring(1, pathname.length);
-  };
-
-  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
-
-  if (['lg', 'xl', 'xxl'].includes(screenClass)) {
-    return (
-      <Wrap align="center" pt="lg" spacing="4">
-        {menuItems.map((item) => (
-          <Box as="button" key={item.name} onClick={() => handleClick(item)}>
-            <Text
-              borderBottom={
-                activeMenuItem && activeMenuItem.label === item.label ? '1px solid #010101' : 'none'
-              }
-              mx="1"
-              textTransform="capitalize"
-            >
-              {item.label}
-            </Text>
-          </Box>
-        ))}
-      </Wrap>
-    );
-  }
-
-  return (
-    <Box align="center">
-      <CMenu placement="bottom" closeOnSelect>
-        <MenuButton>
-          <HStack>
-            <Text textTransform="capitalize">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Text>
-            <ChevronDownIcon />
-          </HStack>
-        </MenuButton>
-        <MenuList>
-          {menuItems.map((item) => (
-            <MenuItem key={item.label} onClick={() => handleClick(item)}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </CMenu>
-    </Box>
-  );
-}
-
-export default withTracker((props) => {
+export default withTracker(() => {
   const hostSub = Meteor.subscribe('currentHost');
   const currentHost = Hosts ? Hosts.findOne() : null;
   const hostLoading = !hostSub.ready();
