@@ -14,8 +14,9 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
-import DatePicker from './DatePicker';
 import { useTranslation } from 'react-i18next';
+
+import DatePicker from './DatePicker';
 
 const DatesAndTimes = ({
   recurrence,
@@ -48,8 +49,7 @@ const DatesAndTimes = ({
   };
 
   const getBorderColorStyle = () => {
-    if (!recurrence.conflict) {
-    } else if (recurrence.isConflictOK) {
+    if (recurrence.isConflictOK) {
       return 'orange';
     } else {
       return 'red';

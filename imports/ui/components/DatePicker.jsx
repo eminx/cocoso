@@ -1,6 +1,7 @@
+import 'react-datepicker/dist/react-datepicker.css';
+
 import React, { useEffect, useState } from 'react';
 import RDC, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { Input } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +16,29 @@ registerLocale('sv', sv);
 //   time: '18:00'
 // }
 
+function appendLeadingZeroes(n) {
+  if (n <= 9) {
+    return `0${n}`;
+  }
+  return n;
+}
+
+function unFormatDate({ date, time }) {
+  if (!date || !time) {
+    return new Date();
+  }
+  return new Date(`${date}T${time}`);
+}
+
+function formatDate(date) {
+  return `${date.getFullYear()}-${appendLeadingZeroes(date.getMonth() + 1)}-${appendLeadingZeroes(
+    date.getDate()
+  )}`;
+}
+
+function formatTime(date) {
+  return `${appendLeadingZeroes(date.getHours())}:${appendLeadingZeroes(date.getMinutes())}`;
+}
 function DatePicker({
   value,
   onChange,
@@ -79,30 +103,6 @@ function DatePicker({
       {...otherProps}
     />
   );
-}
-
-function appendLeadingZeroes(n) {
-  if (n <= 9) {
-    return `0${n}`;
-  }
-  return n;
-}
-
-function unFormatDate({ date, time }) {
-  if (!date || !time) {
-    return new Date();
-  }
-  return new Date(`${date}T${time}`);
-}
-
-function formatDate(date) {
-  return `${date.getFullYear()}-${appendLeadingZeroes(date.getMonth() + 1)}-${appendLeadingZeroes(
-    date.getDate()
-  )}`;
-}
-
-function formatTime(date) {
-  return `${appendLeadingZeroes(date.getHours())}:${appendLeadingZeroes(date.getMinutes())}`;
 }
 
 export default DatePicker;

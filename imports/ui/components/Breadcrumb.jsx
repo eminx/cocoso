@@ -23,6 +23,7 @@ export default function Breadcrumb({ context, contextKey }) {
             );
           if (index !== breadcrumbs.length - 1) {
             let href = '';
+            /* eslint-disable-next-line no-plusplus */
             for (let i = 0; i < index + 1; i++) {
               if (breadcrumbs[i] !== '') href = `${href}/${breadcrumbs[i]}`;
             }
