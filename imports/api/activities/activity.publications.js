@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Activities from './activity';
 
-Meteor.publish('activities', function (onlyPublic = false) {
+Meteor.publish('activities', function subscribeActivities(onlyPublic = false) {
   const host = getHost(this);
   // const fields = {
   //   title: 1,
@@ -36,7 +36,7 @@ Meteor.publish('activities', function (onlyPublic = false) {
   return Activities.find({ host, isPublished: true });
 });
 
-Meteor.publish('activity', function (id) {
+Meteor.publish('activity', function subscribeActivity(id) {
   const host = getHost(this);
   return Activities.find({
     host,

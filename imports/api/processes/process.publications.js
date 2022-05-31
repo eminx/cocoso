@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Processes from './process';
 
-Meteor.publish('processes', function () {
+Meteor.publish('processes', function subscribeProcesses() {
   const userId = Meteor.userId();
   const host = getHost(this);
   // Processes._ensureIndex({ host, isPublished: true });
@@ -33,7 +33,7 @@ Meteor.publish('processes', function () {
   );
 });
 
-Meteor.publish('process', function (id) {
+Meteor.publish('process', function subscribeProcess(id) {
   const host = getHost(this);
   return Processes.find({
     host,
