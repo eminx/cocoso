@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import './chattery.css';
 
-import ChatteryWindow from './ChatteryWindow';
-import ChatteryInput from './ChatteryInput';
+import { ChatteryWindow } from './ChatteryWindow';
+import { ChatteryInput } from './ChatteryInput';
 
 const noMemberText = 'If you want to participate to the discussion, please join the process.';
 

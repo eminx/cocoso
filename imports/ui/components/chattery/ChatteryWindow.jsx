@@ -50,4 +50,4 @@ ChatteryWindow.propTypes = {
   meta: PropTypes.object,
 };
 
-export default ChatteryWindow;
+export { ChatteryWindow };

@@ -73,4 +73,4 @@ ChatteryBubble.propTypes = {
   isSeen: PropTypes.bool,
 };
 
-export default ChatteryBubble;
+export { ChatteryBubble };
