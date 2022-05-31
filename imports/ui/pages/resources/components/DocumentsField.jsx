@@ -1,9 +1,9 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box, Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
 import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Slingshot } from 'meteor/edgee:slingshot';
 
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
@@ -77,7 +77,6 @@ export default function DocumentsField({ contextType, contextId }) {
       });
       upload.send(uploadableFile, (error, downloadUrl) => {
         if (error) {
-          console.error('Error uploading:', error);
           message.error(error.reason);
           setIsUploading(false);
         } else {
@@ -99,7 +98,7 @@ export default function DocumentsField({ contextType, contextId }) {
 
       {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>
-          {({ getRootProps, getInputProps, isDragActive }) => (
+          {({ getRootProps, getInputProps }) => (
             <Box bg="white" cursor="grab" px="2" py="4" {...getRootProps()}>
               {isUploading ? (
                 <div style={{ textAlign: 'center' }}>

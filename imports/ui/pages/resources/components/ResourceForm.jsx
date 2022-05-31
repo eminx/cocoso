@@ -33,6 +33,25 @@ import Loader from '../../../components/Loader';
 
 const animatedComponents = makeAnimated();
 
+const thumbStyle = (backgroundImage) => ({
+  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
+});
+
+const SortableItem = sortableElement(({ image, onRemoveImage }) => (
+  <WrapItem key={image} className="sortable-thumb" style={thumbStyle(image)}>
+    <IconButton
+      className="sortable-thumb-icon"
+      colorScheme="gray.900"
+      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
+      size="xs"
+      onClick={onRemoveImage}
+      style={{ position: 'absolute', top: 4, right: 4 }}
+    />
+  </WrapItem>
+));
+
+const SortableContainer = sortableContainer(({ children }) => <Wrap py="2">{children}</Wrap>);
+
 function ResourceForm({ defaultValues, isEditMode, history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [resources, setResources] = useState([]);
@@ -49,11 +68,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getResources();
-    setResourcesForCombo(defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo);
-  }, []);
-
   const getResources = async () => {
     try {
       const response = await call('getResources');
@@ -63,6 +77,11 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       message.error(error.reason);
     }
   };
+
+  useEffect(() => {
+    getResources();
+    setResourcesForCombo(defaultValues && defaultValues.isCombo && defaultValues.resourcesForCombo);
+  }, []);
 
   const handleUploadImage = async () => {
     try {
@@ -78,9 +97,9 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       );
       return imagesReadyToSave;
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
     }
+    return null;
   };
 
   const onSubmit = async (formValues) => {
@@ -110,12 +129,12 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     }
   };
 
-  const handleAutoCompleteSelectChange = (newValue, actionMeta) => {
+  const handleAutoCompleteSelectChange = (newValue) => {
     setResourcesForCombo(newValue);
   };
 
   const handleRemoveImage = (imageIndex) => {
-    setImages(images.filter((image, index) => imageIndex !== index));
+    setImages(images.filter((index) => imageIndex !== index));
   };
 
   const handleSortImages = ({ oldIndex, newIndex }) => {
@@ -130,8 +149,8 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       reader.addEventListener(
         'load',
         () => {
-          setImages((images) => [
-            ...images,
+          setImages((imgs) => [
+            ...imgs,
             {
               resizableData: file,
               type: 'not-uploaded',
@@ -248,24 +267,5 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     </Box>
   );
 }
-
-const thumbStyle = (backgroundImage) => ({
-  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
-});
-
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
-  <WrapItem key={image} className="sortable-thumb" style={thumbStyle(image)}>
-    <IconButton
-      className="sortable-thumb-icon"
-      colorScheme="gray.900"
-      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-      size="xs"
-      onClick={onRemoveImage}
-      style={{ position: 'absolute', top: 4, right: 4 }}
-    />
-  </WrapItem>
-));
-
-const SortableContainer = sortableContainer(({ children }) => <Wrap py="2">{children}</Wrap>);
 
 export default ResourceForm;

@@ -20,10 +20,6 @@ function EditResourcePage({ history }) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getResourceById();
-  }, []);
-
   const getResourceById = async () => {
     try {
       const response = await call('getResourceById', resourceId);
@@ -35,16 +31,19 @@ function EditResourcePage({ history }) {
     }
   };
 
+  useEffect(() => {
+    getResourceById();
+  }, []);
+
   const hideDeleteModal = () => setIsDeleteModalOn(false);
   const showDeleteModal = () => setIsDeleteModalOn(true);
-  const deleteResource = async (resourceId) => {
+  const deleteResource = async (id) => {
     try {
-      await call('deleteResource', resourceId);
+      await call('deleteResource', id);
       message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
-      console.log(error);
     }
   };
 

@@ -2,14 +2,12 @@ import React from 'react';
 import {
   Box,
   Heading,
-  Flex,
   Image,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
-  Tag,
   Text,
   Center,
 } from '@chakra-ui/react';

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -24,10 +25,29 @@ import moment from 'moment';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Breadcrumb from '../../components/Breadcrumb';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
 import ResourcesForCombo from '../../components/ResourcesForCombo';
+
+function ResourceItem({ resource }) {
+  if (!resource) {
+    return null;
+  }
+  return (
+    <Box>
+      <Link to={`/resources/${resource._id}`}>
+        <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
+          {resource.isCombo && (
+            <Box>
+              <ResourcesForCombo resource={resource} />
+            </Box>
+          )}
+          <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
+        </GridThumb>
+      </Link>
+    </Box>
+  );
+}
 
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
@@ -37,10 +57,6 @@ function ResourcesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getResources();
-  }, []);
 
   const getResources = async () => {
     try {
@@ -52,6 +68,10 @@ function ResourcesPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getResources();
+  }, []);
 
   if (isLoading) {
     return <Loader />;
@@ -95,7 +115,7 @@ function ResourcesPage() {
       )}
       {/* <Breadcrumb /> */}
 
-      {resources.length == 0 && (
+      {resources.length === 0 && (
         <Center>
           <Heading size="md" fontWeight="bold">
             {t('messages.notfound')}
@@ -143,7 +163,7 @@ function ResourcesPage() {
           <TabPanels>
             <TabPanel>
               <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-                {resourcesFilteredAndSorted.map((resource, index) => (
+                {resourcesFilteredAndSorted.map((resource) => (
                   <ResourceItem key={resource._id} resource={resource} />
                 ))}
               </SimpleGrid>
@@ -153,7 +173,7 @@ function ResourcesPage() {
               <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted
                   .filter((r) => r.isCombo)
-                  .map((resource, index) => (
+                  .map((resource) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
               </SimpleGrid>
@@ -163,7 +183,7 @@ function ResourcesPage() {
               <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted
                   .filter((r) => !r.isCombo)
-                  .map((resource, index) => (
+                  .map((resource) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
               </SimpleGrid>
@@ -171,26 +191,6 @@ function ResourcesPage() {
           </TabPanels>
         </Tabs>
       )}
-    </Box>
-  );
-}
-
-function ResourceItem({ resource }) {
-  if (!resource) {
-    return null;
-  }
-  return (
-    <Box>
-      <Link to={`/resources/${resource._id}`}>
-        <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
-          {resource.isCombo && (
-            <Box>
-              <ResourcesForCombo resource={resource} />
-            </Box>
-          )}
-          <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
-        </GridThumb>
-      </Link>
     </Box>
   );
 }

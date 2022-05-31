@@ -22,11 +22,7 @@ function ResourcePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
   const { canCreateContent, currentUser, role } = useContext(StateContext);
-  const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
-
-  useEffect(() => {
-    getResourceById();
-  }, []);
+  const { discussion } = useChattery(resourceId, currentUser);
 
   const getResourceById = async () => {
     try {
@@ -38,6 +34,10 @@ function ResourcePage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getResourceById();
+  }, []);
 
   // const parseChatData = () => {
   //   const messages = chatData?.messages?.map((message) => {
@@ -59,7 +59,7 @@ function ResourcePage() {
     try {
       await call('addChatMessage', values);
     } catch (error) {
-      console.log('error', error);
+      throw error('error', error);
     }
   };
 

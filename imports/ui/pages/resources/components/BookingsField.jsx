@@ -43,7 +43,27 @@ const datesModel = {
   endTime: '',
 };
 
-export default function BookingsField({ currentUser, selectedResource }) {
+function ConflictMarker({ newBooking, t }) {
+  if (!newBooking.conflict) {
+    return null;
+  }
+
+  return (
+    <Box mt="4">
+      <Text fontSize="sm" textAlign="center" fontWeight="bold">
+        {t('booking.conflict')}
+      </Text>
+      <Code colorScheme="red" mx="auto" display="block" width="fit-content" mt="4">
+        {newBooking.conflict.startDate === newBooking.conflict.endDate
+          ? newBooking.conflict.startDate
+          : `${newBooking.conflict.startDate}-${newBooking.conflict.endDate}`}
+        {', '}
+        {`${newBooking.conflict.startTime} – ${newBooking.conflict.endTime}`}
+      </Code>
+    </Box>
+  );
+}
+function BookingsField({ currentUser, selectedResource }) {
   const { role, canCreateContent } = useContext(StateContext);
   const isAdmin = role === 'admin';
   const { value: counterValue, increment } = useCounter(1);
@@ -61,7 +81,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
   const { isDirty, isSubmitting } = formState;
 
   const selectedBookings = [newBooking];
-  const { selectedBookingsWithConflict, isCollisionPreventionLoading } = useCollisionPrevention(
+  const { selectedBookingsWithConflict } = useCollisionPrevention(
     selectedResource,
     selectedBookings,
     counterValue
@@ -70,9 +90,17 @@ export default function BookingsField({ currentUser, selectedResource }) {
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
-  useEffect(() => {
-    getResourceBookingsForUser();
-  }, []);
+  const removeBooking = async (bookingId) => {
+    if (!isAdmin) {
+      message.error(tc('message.access.deny'));
+      return;
+    }
+    try {
+      await call('deleteActivity', bookingId);
+    } catch (error) {
+      message.error(error.reason);
+    }
+  };
 
   const getResourceBookingsForUser = async () => {
     try {
@@ -95,17 +123,9 @@ export default function BookingsField({ currentUser, selectedResource }) {
     }
   };
 
-  const removeBooking = async (bookingId) => {
-    if (!isAdmin) {
-      message.error(tc('message.access.deny'));
-      return;
-    }
-    try {
-      await call('deleteActivity', bookingId);
-    } catch (error) {
-      message.error(error.reason);
-    }
-  };
+  useEffect(() => {
+    getResourceBookingsForUser();
+  }, []);
 
   const handleDateAndTimeChange = (value, key) => {
     const selectedDates = {
@@ -124,7 +144,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
       ? (values = { ...newBooking, endDate: newBooking.startDate, ...values })
       : (values = { ...newBooking, ...values });
 
-    activityValues = {
+    const activityValues = {
       title: values.title,
       longDescription: values.description,
       resource: selectedResource.label,
@@ -292,23 +312,4 @@ export default function BookingsField({ currentUser, selectedResource }) {
   );
 }
 
-function ConflictMarker({ newBooking, t }) {
-  if (!newBooking.conflict) {
-    return null;
-  }
-
-  return (
-    <Box mt="4">
-      <Text fontSize="sm" textAlign="center" fontWeight="bold">
-        {t('booking.conflict')}
-      </Text>
-      <Code colorScheme="red" mx="auto" display="block" width="fit-content" mt="4">
-        {newBooking.conflict.startDate === newBooking.conflict.endDate
-          ? newBooking.conflict.startDate
-          : `${newBooking.conflict.startDate}-${newBooking.conflict.endDate}`}
-        {', '}
-        {`${newBooking.conflict.startTime} – ${newBooking.conflict.endTime}`}
-      </Code>
-    </Box>
-  );
-}
+export default BookingsField;
