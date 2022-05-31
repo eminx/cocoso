@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Trans } from 'react-i18next';
@@ -22,17 +21,12 @@ class Profile extends PureComponent {
     uploadableAvatar: null,
   };
 
-  handleSubmit = async (values) => {
-    const { tc } = this.props;
+  setSelfAsParticipant = async () => {
+    const { t } = this.props;
     try {
-      await call('saveUserInfo', values);
-      message.success(
-        tc('message.success.save', {
-          domain: `${tc('domains.your')} ${tc('domains.data')}`,
-        })
-      );
+      await call('setSelfAsParticipant');
+      message.success(t('profile.message.participant'));
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
@@ -78,7 +72,20 @@ class Profile extends PureComponent {
       this.setState({
         isUploading: false,
       });
-      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  handleSubmit = async (values) => {
+    const { tc } = this.props;
+    try {
+      await call('saveUserInfo', values);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.data')}`,
+        })
+      );
+    } catch (error) {
       message.error(error.reason);
     }
   };
@@ -96,18 +103,6 @@ class Profile extends PureComponent {
         window.location.reload();
       }, 400);
     } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
-  };
-
-  setSelfAsParticipant = async () => {
-    const { t } = this.props;
-    try {
-      await call('setSelfAsParticipant');
-      message.success(t('profile.message.participant'));
-    } catch (error) {
-      console.error('Error:', error);
       message.error(error.reason);
     }
   };
