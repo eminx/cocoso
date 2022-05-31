@@ -1,14 +1,15 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Center } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import { Alert } from '../../components/message';
 import { userMenu } from '../../utils/constants/general';
 import WorkThumb from '../../components/WorkThumb';
 
@@ -86,18 +87,18 @@ function Works({ history }) {
   );
 }
 
-const WorkItem = ({ work }) => (
-  <Flex bg="white" p="2" w="100%">
-    <Box mr="4">
-      <Image boxSize="140px" h="180px" objectFit="cover" src={work.images && work.images[0]} />
-    </Box>
-    <Box>
-      <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
-        {work.title}
-      </Heading>
-      <Text fontWeight="light">{work.shortDescription}</Text>
-    </Box>
-  </Flex>
-);
+// const WorkItem = ({ work }) => (
+//   <Flex bg="white" p="2" w="100%">
+//     <Box mr="4">
+//       <Image boxSize="140px" h="180px" objectFit="cover" src={work.images && work.images[0]} />
+//     </Box>
+//     <Box>
+//       <Heading as="h3" size="md" mb="2" style={{ overflowWrap: 'anywhere' }}>
+//         {work.title}
+//       </Heading>
+//       <Text fontWeight="light">{work.shortDescription}</Text>
+//     </Box>
+//   </Flex>
+// );
 
 export default Works;

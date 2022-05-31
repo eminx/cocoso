@@ -21,16 +21,22 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
+function getCategoriesAssignedToWorks(works) {
+  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
+
+  const hslValues = getHslValuesFromLength(labels.length);
+  return labels.map((label, i) => ({
+    label,
+    color: hslValues[i],
+  }));
+}
+
 function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getAllWorks();
-  }, []);
 
   const getAllWorks = async () => {
     try {
@@ -42,6 +48,10 @@ function Works() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getAllWorks();
+  }, []);
 
   if (loading || !works) {
     return <Loader />;
@@ -57,11 +67,10 @@ function Works() {
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = filteredWorks.map((work, index) => {
+  const worksWithCategoryColors = filteredWorks.map((work) => {
     const category = categoriesAssignedToWorks.find(
-      (category) =>
-        category.label &&
-        category.label === (work.category && work.category.label && work.category.label)
+      (cat) =>
+        cat.label && cat.label === (work.category && work.category.label && work.category.label)
     );
     const categoryColor = category && category.color;
     return {
@@ -114,7 +123,7 @@ function Works() {
 
       <Center px="2">
         <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-          {worksWithCategoryColors.map((work, index) => (
+          {worksWithCategoryColors.map((work) => (
             <Box key={work._id} w="100%">
               <Link to={`/${work.authorUsername}/work/${work._id}`}>
                 <WorkThumb work={work} />
@@ -126,15 +135,4 @@ function Works() {
     </Box>
   );
 }
-
-getCategoriesAssignedToWorks = (works) => {
-  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
-
-  const hslValues = getHslValuesFromLength(labels.length);
-  return labels.map((label, i) => ({
-    label,
-    color: hslValues[i],
-  }));
-};
-
 export default Works;

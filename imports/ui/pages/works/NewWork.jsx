@@ -78,7 +78,7 @@ class NewWork extends PureComponent {
 
     try {
       const imagesReadyToSave = await Promise.all(
-        uploadableImages.map(async (uploadableImage, index) => {
+        uploadableImages.map(async (uploadableImage) => {
           const resizedImage = await resizeImage(uploadableImage, 1200);
           const uploadedImage = await uploadImage(resizedImage, 'workImageUpload');
           return uploadedImage;
@@ -86,7 +86,6 @@ class NewWork extends PureComponent {
       );
       this.createWork(imagesReadyToSave);
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
@@ -122,7 +121,6 @@ class NewWork extends PureComponent {
       );
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
       this.setState({ isCreating: false });
     }
   };
@@ -163,7 +161,7 @@ class NewWork extends PureComponent {
       );
     }
 
-    const { uploadableImagesLocal, isSuccess, newWorkId, isCreating, categories } = this.state;
+    const { uploadableImagesLocal, isSuccess, newWorkId, categories } = this.state;
 
     if (isSuccess && newWorkId) {
       return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;

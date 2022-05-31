@@ -61,7 +61,6 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
       this.setState({
         isLoading: false,
@@ -117,7 +116,7 @@ class EditWork extends PureComponent {
 
     try {
       const imagesReadyToSave = await Promise.all(
-        images.map(async (uploadableImage, index) => {
+        images.map(async (uploadableImage) => {
           if (uploadableImage.type === 'uploaded') {
             return uploadableImage.src;
           }
@@ -128,7 +127,6 @@ class EditWork extends PureComponent {
       );
       this.updateWork(imagesReadyToSave);
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
@@ -229,8 +227,7 @@ class EditWork extends PureComponent {
     const { currentUser } = this.context;
     const { match } = this.props;
     const workId = match.params.workId;
-    const { categories, images, isCreating, isLoading, isSuccess, isDeleteModalOn, values } =
-      this.state;
+    const { categories, images, isLoading, isSuccess, isDeleteModalOn, values } = this.state;
 
     if (!currentUser) {
       return <Alert message={i18n.t('common:message.access.deny')} />;

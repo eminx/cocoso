@@ -40,10 +40,6 @@ function Work() {
   const [tc] = useTranslation('common');
   const [tm] = useTranslation('members');
 
-  useEffect(() => {
-    getWork();
-  }, []);
-
   const getWork = async () => {
     try {
       const response = await call('getWork', workId, username);
@@ -54,6 +50,10 @@ function Work() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getWork();
+  }, []);
 
   if (!work || loading) {
     return <Loader />;
@@ -73,7 +73,6 @@ function Work() {
       }
       setAuthorContactInfo(info);
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     }
   };
