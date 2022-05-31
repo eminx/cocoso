@@ -51,9 +51,8 @@ const DatesAndTimes = ({
   const getBorderColorStyle = () => {
     if (recurrence.isConflictOK) {
       return 'orange';
-    } else {
-      return 'red';
     }
+    return 'red';
   };
 
   return (
