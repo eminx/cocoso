@@ -1,10 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Heading,
@@ -23,8 +23,6 @@ import renderHTML from 'react-render-html';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
-import { message } from '../../components/message';
-import { call } from '../../utils/shared';
 import WorkThumb from '../../components/WorkThumb';
 import Works from '../../../api/works/work';
 
@@ -36,7 +34,7 @@ const getFullName = (member) => {
   return firstName || lastName || '';
 };
 
-function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) {
+function MemberPublic({ isLoading, member, memberWorks }) {
   if (!member || isLoading) {
     return <Loader />;
   }
@@ -110,7 +108,7 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
         </Heading>
       )}
       {memberWorks && memberWorks.length > 0 ? (
-        memberWorks.map((work, index) => (
+        memberWorks.map((work) => (
           <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
             <Box mb="4">
               <WorkThumb work={work} />
@@ -161,7 +159,7 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
   );
 }
 
-export default Member = withTracker(({ match, history }) => {
+const Member = withTracker(({ match, history }) => {
   const { username } = match.params;
   const publicMemberSubscription = Meteor.subscribe('memberAtHost', username);
   const publicMemberWorksSubscription = Meteor.subscribe('memberWorksAtHost', username);
@@ -177,3 +175,5 @@ export default Member = withTracker(({ match, history }) => {
     history,
   };
 })(MemberPublic);
+
+export default Member;

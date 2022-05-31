@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Box, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
@@ -32,13 +33,12 @@ function PublicMembers() {
   const getAndSetMembers = async () => {
     setLoading(true);
     try {
-      const members = await call('getHostMembers');
-      const sortedMembers = members.sort(compareByDate);
+      const hostMembers = await call('getHostMembers');
+      const sortedMembers = hostMembers.sort(compareByDate);
       setMembers(sortedMembers);
       setLoading(false);
     } catch (error) {
       message.error(error.error);
-      console.log(error);
       setLoading(false);
     }
   };
