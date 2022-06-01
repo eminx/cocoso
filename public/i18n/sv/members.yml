@@ -23,6 +23,7 @@ form:
 actions:
   contributor: Ställ in som utgivare
   participant: Återgå som deltagare
+  usageReport: Se användningsrapport
 
 message:
   success:

@@ -9,13 +9,13 @@ roles:
   participant: Participant
   contributor: Contributor
   admin: Admin
-  plural: 
+  plural:
     participants: Participants
     contributors: Contributors
     admins: Admins
 
 form:
-  sort: 
+  sort:
     date: Date joined
     user: Username
   holder: username or email
@@ -23,6 +23,7 @@ form:
 actions:
   contributor: Set as a Contributor
   participant: Revert back as a Participant
+  usageReport: See usage report
 
 message:
   success:
@@ -31,11 +32,11 @@ message:
   contact:
     empty: No contact info registered for {{ username }}
   activity:
-    empty: Nothing published just yet 
+    empty: Nothing published just yet
     info: '{{ username }} have not been very active so far'
   access:
     contributor: You have to become a contributor to {{ action }}
-  guest: You have to create an account to launch your market 
+  guest: You have to create an account to launch your market
 
 profile:
   labels:
@@ -52,7 +53,6 @@ profile:
       label: Contact Info
   message:
     role: You as {{username}} are part of this organisation with the {{role}} role
-
 
 works:
   label: My Works
@@ -73,4 +73,4 @@ works:
     label: Additional info
     holder: A bottle costs...
   images:
-    label: Images ({{ count }})    
+    label: Images ({{ count }})

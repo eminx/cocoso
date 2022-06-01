@@ -1,46 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import ReactTable from 'react-table';
 import { call } from '../utils/shared';
+import Drawer from './Drawer';
 import { message } from './message';
 
-function UsageReport({ userId }) {
+function UsageReport({ user, isOpen, onClose }) {
   const [activities, setActivities] = useState(null);
 
   useEffect(() => {
     getActivitiesbyUserId();
-  }, []);
+  }, [user]);
 
   const getActivitiesbyUserId = async () => {
+    if (!user) {
+      return;
+    }
     try {
-      const response = await call('getActivitiesbyUserId', userId);
+      const response = await call('getActivitiesbyUserId', user.id);
       setActivities(response);
     } catch (error) {
       message.error();
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <ReactTable
-      data={attendees}
-      columns={[
-        {
-          Header: t('public.register.form.name.first'),
-          accessor: 'firstName',
-        },
-        {
-          Header: t('public.register.form.name.first'),
-          accessor: 'lastName',
-        },
-        {
-          Header: t('public.register.form.people.label'),
-          accessor: 'numberOfPeople',
-        },
-        {
-          Header: t('public.register.form.email'),
-          accessor: 'email',
-        },
-      ]}
-    />
+    <Drawer title={user.username} isOpen={isOpen} onClose={onClose} size="lg">
+      <ReactTable
+        data={activities}
+        columns={[
+          {
+            // Header: t('public.register.form.name.first'),
+            Header: 'Title',
+            accessor: 'title',
+          },
+          {
+            // Header: t('public.register.form.name.last'),
+            Header: 'username',
+            accessor: 'username',
+          },
+        ]}
+      />
+    </Drawer>
   );
 }
 

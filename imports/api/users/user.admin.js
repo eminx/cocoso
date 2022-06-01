@@ -311,7 +311,6 @@ Meteor.methods({
     const isAdmin = currentHost && isUserAdmin(currentHost.members, currentUser._id);
 
     if (!currentUser) {
-      console.log('!currentUser');
       throw new Meteor.Error('You are not allowed');
     }
     if (!isContributorOrAdmin(currentUser, currentHost)) {
