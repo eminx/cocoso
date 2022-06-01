@@ -169,34 +169,6 @@ function parseAllBookingsWithResources(activities, processes, resources) {
     });
   });
 
-  processes.forEach((process) => {
-    process.meetings.forEach((meeting) => {
-      const resourceId =
-        meeting.resourceId || resources.find((r) => r.label === meeting.resource)?._id;
-      allBookings.push({
-        title: process.title,
-        start: moment(meeting.startDate + meeting.startTime, 'YYYY-MM-DD HH:mm').toDate(),
-        end: moment(meeting.endDate + meeting.endTime, 'YYYY-MM-DD HH:mm').toDate(),
-        startDate: meeting.startDate,
-        startTime: meeting.startTime,
-        endDate: meeting.endDate,
-        endTime: meeting.endTime,
-        authorName: process.adminUsername,
-        resource: meeting.resource,
-        resourceId,
-        resourceIndex: meeting.resourceIndex,
-        longDescription: process.description,
-        processId: process._id,
-        isMultipleDay: false,
-        isExclusiveActivity: true,
-        isPublicActivity: true,
-        imageUrl: process.imageUrl,
-        isProcess: true,
-        isPrivateProcess: process.isPrivate,
-      });
-    });
-  });
-
   return allBookings;
 }
 

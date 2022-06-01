@@ -27,7 +27,7 @@ Activities.schema = new SimpleSchema({
   address: { type: String, optional: true },
   capacity: { type: SimpleSchema.Integer, defaultValue: 20 },
   place: { type: String, optional: true },
-  room: { type: String, optional: true }, // undefined
+  // room: { type: String, optional: true }, // undefined
 
   datesAndTimes: { type: Array },
   'datesAndTimes.$': new SimpleSchema({
@@ -39,10 +39,14 @@ Activities.schema = new SimpleSchema({
     isRange: { type: Boolean, optional: true },
     conflict: { type: String, optional: true },
 
+    resource: { type: String, optional: true },
+    resourceIndex: { type: SimpleSchema.Integer, optional: true },
+
     attendees: { type: Array, optional: true },
     'attendees.$': {
       type: new SimpleSchema({
         email: Schemas.Email,
+        username: { type: String, optional: true },
         firstName: { type: String },
         lastName: { type: String },
         numberOfPeople: { type: SimpleSchema.Integer },
@@ -52,14 +56,18 @@ Activities.schema = new SimpleSchema({
     },
   }),
 
-  practicalInfo: { type: String, optional: true }, // null
-  internalInfo: { type: String, optional: true }, // null
+  // practicalInfo: { type: String, optional: true }, // null
+  // internalInfo: { type: String, optional: true }, // null
 
   isExclusiveActivity: { type: Boolean, optional: true },
   isSentForReview: { type: Boolean },
   isPublicActivity: { type: Boolean, optional: true },
-  isRegistrationDisabled: { type: Boolean, optional: true }, // undefined
+  isRegistrationDisabled: { type: Boolean, optional: true },
   isPublished: { type: Boolean },
+
+  processId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  isProcessMeeting: { type: Boolean, optional: true },
+  isProcessPrivate: { type: Boolean, optional: true },
 
   latestUpdate: { type: Date, optional: true },
   creationDate: { type: Date },
