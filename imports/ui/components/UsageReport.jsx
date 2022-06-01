@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import { call } from '../utils/shared';
 import Drawer from './Drawer';
 import { message } from './message';
+import 'react-table/react-table.css';
 
 function UsageReport({ user, isOpen, onClose }) {
   const [activities, setActivities] = useState(null);
@@ -23,7 +24,7 @@ function UsageReport({ user, isOpen, onClose }) {
     }
   };
 
-  if (!user) {
+  if (!user || !activities) {
     return null;
   }
 
