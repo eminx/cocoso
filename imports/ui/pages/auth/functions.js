@@ -7,7 +7,7 @@ import { call } from '../../utils/shared';
 function loginWithPassword(username, password, isNewAccount) {
   Meteor.loginWithPassword(username, password, (error) => {
     if (error) {
-      console.log(error);
+      // console.log(error);
       message.error(error.reason);
       return;
     }
@@ -15,7 +15,7 @@ function loginWithPassword(username, password, isNewAccount) {
       Meteor.call('setSelfAsParticipant', (error2) => {
         if (error2) {
           message.error(error2.reason);
-          console.log(error2);
+          // console.log(error2);
         }
       });
     }

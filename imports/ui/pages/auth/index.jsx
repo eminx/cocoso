@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Input, Link, Text, VStack, Heading } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import {
@@ -179,6 +179,7 @@ const ResetPassword = ({ onResetPassword }) => {
 };
 
 const AuthContainer = () => {
+  const [t] = useTranslation('accounts');
   const [mode, setMode] = useState('signup');
 
   if (mode === 'signup') {
