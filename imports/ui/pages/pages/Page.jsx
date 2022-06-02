@@ -40,6 +40,7 @@ class Page extends PureComponent {
     const param = match.params.id;
 
     const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
+
     return currentPage;
   };
 

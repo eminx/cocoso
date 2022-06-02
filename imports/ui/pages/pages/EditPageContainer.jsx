@@ -1,10 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
 import EditPage from './EditPage';
 import Pages from '../../../api/pages/page';
 import { parseTitle } from '../../utils/shared';
 
-export default EditPageContainer = withTracker((props) => {
+const EditPageContainer = withTracker((props) => {
   const pageId = props.match.params.id;
   const pagesSubscription = Meteor.subscribe('pages');
   const isLoading = !pagesSubscription.ready();
@@ -28,3 +29,5 @@ export default EditPageContainer = withTracker((props) => {
     tc,
   };
 })(EditPage);
+
+export default EditPageContainer;

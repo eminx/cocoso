@@ -39,7 +39,7 @@ class NewPage extends PureComponent {
           property: tc('domains.props.title'),
         })
       );
-      return;
+      return null;
     }
 
     try {
@@ -54,15 +54,16 @@ class NewPage extends PureComponent {
         isSuccess: true,
       });
     } catch (error) {
-      console.log('error', error);
       this.setState({
         isError: true,
       });
+      throw new Error(`error: ${error}`);
     }
+    return null;
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageData, pageTitles, tc } = this.props;
+    const { pageData, pageTitles, tc } = this.props;
 
     let pageExists = false;
     if (

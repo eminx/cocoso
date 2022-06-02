@@ -39,7 +39,7 @@ class EditPage extends PureComponent {
           property: tc('domains.props.title'),
         })
       );
-      return;
+      return null;
     }
 
     try {
@@ -54,11 +54,13 @@ class EditPage extends PureComponent {
         isSuccess: true,
       });
     } catch (error) {
-      console.log('error', error);
       this.setState({
         isError: true,
       });
+      throw new Error(`error: ${error}`);
     }
+
+    return null;
   };
 
   handleDeletePage = async () => {
@@ -87,6 +89,7 @@ class EditPage extends PureComponent {
         isError: true,
       });
     }
+    return null;
   };
 
   closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
