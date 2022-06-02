@@ -5,7 +5,7 @@ import { Box, Button, Center, Code, Flex, Heading, Text } from '@chakra-ui/react
 import moment from 'moment';
 import 'react-table/react-table.css';
 import Select from 'react-select';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
