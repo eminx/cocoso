@@ -83,3 +83,4 @@ report:
     start: Start
     end: End
     consumption: Consumption
+    total: hours in total

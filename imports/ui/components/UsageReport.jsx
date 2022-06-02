@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import 'react-table/react-table.css';
 import Select from 'react-select';
@@ -9,7 +9,6 @@ import Select from 'react-select';
 import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
-import Modal from './Modal';
 import { call } from '../utils/shared';
 import { message } from './message';
 
@@ -21,7 +20,7 @@ function compareDatesForSort(a, b) {
 
 function UsageReport({ user, onClose }) {
   const [activities, setActivities] = useState(null);
-  const [activityDetails, setActivityDetails] = useState(null);
+  const [totalHours, setTotalHours] = useState(null);
   const [resources, setResources] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
 
@@ -45,10 +44,10 @@ function UsageReport({ user, onClose }) {
     }
   };
 
-  const parseActivities = (activities) => {
+  const parseActivities = (response) => {
     const allParsedActivities = [];
     const usedResources = [];
-    activities.forEach((a, index) => {
+    response.forEach((a, index) => {
       if (!usedResources.find((r) => r.value === a.resourceId)) {
         usedResources.push({
           label: a.resource,
@@ -89,18 +88,24 @@ function UsageReport({ user, onClose }) {
       .sort(compareDatesForSort);
 
     const allParsedActivitiesSortedInMonths = [[]];
+    const hours = [];
     let monthCounter = 0;
+    let total = 0;
     allParsedActivitiesSorted.forEach((a, i) => {
-      const previous = i > 0 && allParsedActivitiesSorted[i - 1];
-      if (a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)) {
+      const previous = allParsedActivitiesSorted[i - 1];
+      if (i === 0 || a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)) {
+        total += a.consumption;
         allParsedActivitiesSortedInMonths[monthCounter].push(a);
       } else {
+        total = a.consumption;
         allParsedActivitiesSortedInMonths.push([a]);
         monthCounter += 1;
       }
+      hours[monthCounter] = total;
     });
 
     setActivities(allParsedActivitiesSortedInMonths);
+    setTotalHours(hours);
   };
 
   const handleSelectResource = (selectedResource) => {
@@ -126,57 +131,56 @@ function UsageReport({ user, onClose }) {
       }
       onClose={onClose}
     >
-      {activities.map(
-        (activitiesPerMonth, index) =>
-          index !== 0 && (
-            <Box
-              key={activitiesPerMonth[0]?.startDate}
-              mt="8"
-              pb="8"
-              // ref={(element) => (this.printableElement = element)}
-            >
-              <Heading size="md" mb="2">
-                {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}
-              </Heading>
-              <ReactTable
-                size="sm"
-                data={activitiesPerMonth}
-                columns={[
-                  {
-                    Header: t('report.table.title'),
-                    accessor: 'title',
-                  },
-                  {
-                    Header: t('report.table.resource'),
-                    accessor: 'resource',
-                  },
-                  {
-                    Header: t('report.table.start'),
-                    accessor: 'start',
-                  },
-                  {
-                    Header: t('report.table.end'),
-                    accessor: 'end',
-                  },
-                  {
-                    Header: t('report.table.consumption'),
-                    accessor: 'consumption',
-                  },
-                  // {
-                  //   // Header: t('public.register.form.name.last'),
-                  //   Header: 'Occurences',
-                  //   accessor: 'occurences',
-                  // },
-                ]}
-              />
-              {/* <ReactToPrint
+      {activities.map((activitiesPerMonth, index) => (
+        <Box
+          key={activitiesPerMonth[0]?.startDate}
+          mt="8"
+          pb="8"
+          // ref={(element) => (this.printableElement = element)}
+        >
+          <Heading size="md" mb="2">
+            {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
+            <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
+            {t('report.table.total')}
+          </Heading>
+          <ReactTable
+            size="sm"
+            data={activitiesPerMonth}
+            columns={[
+              {
+                Header: t('report.table.title'),
+                accessor: 'title',
+              },
+              {
+                Header: t('report.table.resource'),
+                accessor: 'resource',
+              },
+              {
+                Header: t('report.table.start'),
+                accessor: 'start',
+              },
+              {
+                Header: t('report.table.end'),
+                accessor: 'end',
+              },
+              {
+                Header: t('report.table.consumption'),
+                accessor: 'consumption',
+              },
+              // {
+              //   // Header: t('public.register.form.name.last'),
+              //   Header: 'Occurences',
+              //   accessor: 'occurences',
+              // },
+            ]}
+          />
+          {/* <ReactToPrint
                 trigger={() => <Button onClick={() => setPrintableMonth(index)} size="sm">{tc('actions.print')}</Button>}
                 content={() => this.printableElement}
                 pageStyle={{ margin: 144 }}
               /> */}
-            </Box>
-          )
-      )}
+        </Box>
+      ))}
     </Drawer>
   );
 }
