@@ -10,6 +10,12 @@ import Modal from './Modal';
 import { call } from '../utils/shared';
 import { message } from './message';
 
+function compareDatesForSort(a, b) {
+  const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
+  const dateB = new Date(`${b.startDate}T${b.startTime}:00Z`);
+  return dateB - dateA;
+}
+
 function UsageReport({ user, onClose }) {
   const [activities, setActivities] = useState(null);
   const [activityDetails, setActivityDetails] = useState(null);
@@ -59,7 +65,9 @@ function UsageReport({ user, onClose }) {
       });
     });
 
-    setActivities(allParsedActivities);
+    const allParsedActivitiesSorted = allParsedActivities.sort(compareDatesForSort);
+
+    setActivities(allParsedActivitiesSorted);
   };
 
   if (!user || !activities) {
