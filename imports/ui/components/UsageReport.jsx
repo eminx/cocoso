@@ -10,7 +10,7 @@ import Modal from './Modal';
 import { call } from '../utils/shared';
 import { message } from './message';
 
-function UsageReport({ user, isOpen, onClose }) {
+function UsageReport({ user, onClose }) {
   const [activities, setActivities] = useState(null);
   const [activityDetails, setActivityDetails] = useState(null);
 
@@ -24,47 +24,83 @@ function UsageReport({ user, isOpen, onClose }) {
     }
     try {
       const response = await call('getActivitiesbyUserId', user.id);
-      setActivities(response);
+      // setActivities(response);
+      parseActivities(response);
     } catch (error) {
+      console.log(error);
       message.error();
     }
+  };
+
+  const parseActivities = (activities) => {
+    const allParsedActivities = [];
+    activities.forEach((a, index) => {
+      a.datesAndTimes.forEach((d, i) => {
+        console.log(d.startDate.substring(0, 7));
+        allParsedActivities.push({
+          ...d,
+          title: (
+            <Link target="_blank" to={`/activity/${a._id}`}>
+              <Button colorScheme="blue" variant="link" as="span">
+                {a.title}
+              </Button>
+            </Link>
+          ),
+          start: d.startDate + ' ' + d.startTime,
+          end: d.endDate + ' ' + d.endTime,
+          resource: a.resource,
+          resourceId: a.resourceId,
+          consumption: moment(d.endDate + ' ' + d.endTime).diff(
+            moment(d.startDate + ' ' + d.startTime),
+            'hours',
+            true
+          ),
+        });
+      });
+    });
+
+    setActivities(allParsedActivities);
   };
 
   if (!user || !activities) {
     return null;
   }
 
-  const parsedActivities = activities.map((activity, index) => {
-    let consumption = 0;
-    activity.datesAndTimes.forEach((d, i) => {
-      console.log(consumption);
-      consumption += moment(d.endDate + ' ' + d.endTime).diff(
-        moment(d.startDate + ' ' + d.startTime),
-        'minutes'
-      );
-    });
-    return {
-      ...activity,
-      title: (
-        <Link target="_blank" to={`/activity/${activity._id}`}>
-          <Button colorScheme="blue" variant="link" as="span">
-            {activity.title}
-          </Button>
-        </Link>
-      ),
-      consumption,
-      occurences: (
-        <Button colorScheme="blue" variant="link" onClick={() => setActivityDetails(activity)}>
-          {activity.datesAndTimes.length}
-        </Button>
-      ),
-    };
-  });
+  // const parsedActivities = activities.map((activity, index) => {
+  //   let consumption = 0;
+  //   activity.datesAndTimes.forEach((d, i) => {
+  //     consumption += moment(d.endDate + ' ' + d.endTime).diff(
+  //       moment(d.startDate + ' ' + d.startTime),
+  //       'minutes'
+  //     );
+  //   });
+  //   return {
+  //     ...activity,
+  //     title: (
+  //       <Link target="_blank" to={`/activity/${activity._id}`}>
+  //         <Button colorScheme="blue" variant="link" as="span">
+  //           {activity.title}
+  //         </Button>
+  //       </Link>
+  //     ),
+  //     consumption,
+  //     occurences: (
+  //       <Button colorScheme="blue" variant="link" onClick={() => setActivityDetails(activity)}>
+  //         {activity.datesAndTimes.length}
+  //       </Button>
+  //     ),
+  //   };
+  // });
 
   return (
-    <Drawer title={user.username} isOpen={isOpen} onClose={onClose} size="xl">
+    <Drawer
+      title={`Consumption Report for ${user.username}`}
+      isOpen={Boolean(activities)}
+      onClose={onClose}
+      size="xl"
+    >
       <ReactTable
-        data={parsedActivities}
+        data={activities}
         columns={[
           {
             // Header: t('public.register.form.name.first'),
@@ -77,15 +113,23 @@ function UsageReport({ user, isOpen, onClose }) {
             accessor: 'resource',
           },
           {
-            // Header: t('public.register.form.name.last'),
-            Header: 'Consumption (min)',
-            accessor: 'consumption',
+            Header: 'Start',
+            accessor: 'start',
+          },
+          {
+            Header: 'End',
+            accessor: 'end',
           },
           {
             // Header: t('public.register.form.name.last'),
-            Header: 'Occurences',
-            accessor: 'occurences',
+            Header: 'Consumption (h)',
+            accessor: 'consumption',
           },
+          // {
+          //   // Header: t('public.register.form.name.last'),
+          //   Header: 'Occurences',
+          //   accessor: 'occurences',
+          // },
         ]}
       />
 
