@@ -5,6 +5,8 @@ import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import 'react-table/react-table.css';
 import Select from 'react-select';
+// import ReactToPrint from 'react-to-print';
+import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
 import Modal from './Modal';
@@ -22,6 +24,8 @@ function UsageReport({ user, onClose }) {
   const [activityDetails, setActivityDetails] = useState(null);
   const [resources, setResources] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
+
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getActivitiesbyUserId();
@@ -51,6 +55,14 @@ function UsageReport({ user, onClose }) {
         });
       }
       a.datesAndTimes.forEach((d, i) => {
+        let consumption = moment(d.endDate + ' ' + d.endTime).diff(
+          moment(d.startDate + ' ' + d.startTime),
+          'hours',
+          true
+        );
+        if ((consumption % 1).toFixed(2) === '0.98') {
+          consumption = Math.ceil(consumption);
+        }
         allParsedActivities.push({
           ...d,
           title: (
@@ -64,11 +76,7 @@ function UsageReport({ user, onClose }) {
           end: d.endDate + ' ' + d.endTime,
           resource: a.resource,
           resourceId: a.resourceId,
-          consumption: moment(d.endDate + ' ' + d.endTime).diff(
-            moment(d.startDate + ' ' + d.startTime),
-            'hours',
-            true
-          ),
+          consumption,
         });
       });
     });
@@ -102,34 +110,11 @@ function UsageReport({ user, onClose }) {
     return null;
   }
 
-  // const parsedActivities = activities.map((activity, index) => {
-  //   let consumption = 0;
-  //   activity.datesAndTimes.forEach((d, i) => {
-  //     consumption += moment(d.endDate + ' ' + d.endTime).diff(
-  //       moment(d.startDate + ' ' + d.startTime),
-  //       'minutes'
-  //     );
-  //   });
-  //   return {
-  //     ...activity,
-  //     title: (
-  //       <Link target="_blank" to={`/activity/${activity._id}`}>
-  //         <Button colorScheme="blue" variant="link" as="span">
-  //           {activity.title}
-  //         </Button>
-  //       </Link>
-  //     ),
-  //     consumption,
-  //     occurences: (
-  //       <Button colorScheme="blue" variant="link" onClick={() => setActivityDetails(activity)}>
-  //         {activity.datesAndTimes.length}
-  //       </Button>
-  //     ),
-  //   };
-  // });
-
   return (
     <Drawer
+      bg="gray.100"
+      isOpen={Boolean(activities)}
+      size="xl"
       title={
         <Title
           resources={resources}
@@ -138,14 +123,18 @@ function UsageReport({ user, onClose }) {
           onChange={handleSelectResource}
         />
       }
-      isOpen={Boolean(activities)}
       onClose={onClose}
-      size="xl"
     >
       {activities.map(
         (activitiesPerMonth, index) =>
           index !== 0 && (
-            <Box key={activitiesPerMonth[0]?.startDate} my="8">
+            <Box
+              // bg="gray.100"
+              key={activitiesPerMonth[0]?.startDate}
+              mt="8"
+              pb="8"
+              // ref={(element) => (this.printableElement = element)}
+            >
               <Heading size="md" mb="2">
                 {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}
               </Heading>
@@ -183,6 +172,11 @@ function UsageReport({ user, onClose }) {
                   // },
                 ]}
               />
+              {/* <ReactToPrint
+                trigger={() => <Button onClick={() => setPrintableMonth(index)} size="sm">{tc('actions.print')}</Button>}
+                content={() => this.printableElement}
+                pageStyle={{ margin: 144 }}
+              /> */}
             </Box>
           )
       )}
