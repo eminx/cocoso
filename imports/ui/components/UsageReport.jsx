@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import { Box, Button, Code, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Code, Flex, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import 'react-table/react-table.css';
 import Select from 'react-select';
-// import ReactToPrint from 'react-to-print';
+import { CSVLink, CSVDownload } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
@@ -167,18 +167,13 @@ function UsageReport({ user, onClose }) {
                 Header: t('report.table.consumption'),
                 accessor: 'consumption',
               },
-              // {
-              //   // Header: t('public.register.form.name.last'),
-              //   Header: 'Occurences',
-              //   accessor: 'occurences',
-              // },
             ]}
           />
-          {/* <ReactToPrint
-                trigger={() => <Button onClick={() => setPrintableMonth(index)} size="sm">{tc('actions.print')}</Button>}
-                content={() => this.printableElement}
-                pageStyle={{ margin: 144 }}
-              /> */}
+          <Center p="2">
+            <CSVLink data={activitiesPerMonth}>
+              <Button size="sm">{tc('actions.downloadCSV')}</Button>
+            </CSVLink>
+          </Center>
         </Box>
       ))}
     </Drawer>

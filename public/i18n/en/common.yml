@@ -19,6 +19,7 @@ actions:
   add: Add
   print: Print
   logout: Logout
+  downloadCSV: Download CSV
 
 # ACTION PAGE TITLES
 labels:
