@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import { Button } from '@chakra-ui/react';
+import { Box, Button, Heading } from '@chakra-ui/react';
 import moment from 'moment';
 import 'react-table/react-table.css';
 
@@ -30,11 +30,10 @@ function UsageReport({ user, onClose }) {
     }
     try {
       const response = await call('getActivitiesbyUserId', user.id);
-      // setActivities(response);
       parseActivities(response);
     } catch (error) {
       console.log(error);
-      message.error();
+      message.error(error);
     }
   };
 
@@ -42,7 +41,6 @@ function UsageReport({ user, onClose }) {
     const allParsedActivities = [];
     activities.forEach((a, index) => {
       a.datesAndTimes.forEach((d, i) => {
-        console.log(d.startDate.substring(0, 7));
         allParsedActivities.push({
           ...d,
           title: (
@@ -67,7 +65,19 @@ function UsageReport({ user, onClose }) {
 
     const allParsedActivitiesSorted = allParsedActivities.sort(compareDatesForSort);
 
-    setActivities(allParsedActivitiesSorted);
+    const allParsedActivitiesSortedInMonths = [[]];
+    let monthCounter = 0;
+    allParsedActivitiesSorted.forEach((a, i) => {
+      const previous = i > 0 && allParsedActivitiesSorted[i - 1];
+      if (a?.startDate?.substring(0, 7) === previous?.startDate?.substring(0, 7)) {
+        allParsedActivitiesSortedInMonths[monthCounter].push(a);
+      } else {
+        allParsedActivitiesSortedInMonths.push([a]);
+        monthCounter += 1;
+      }
+    });
+
+    setActivities(allParsedActivitiesSortedInMonths);
   };
 
   if (!user || !activities) {
@@ -107,39 +117,50 @@ function UsageReport({ user, onClose }) {
       onClose={onClose}
       size="xl"
     >
-      <ReactTable
-        data={activities}
-        columns={[
-          {
-            // Header: t('public.register.form.name.first'),
-            Header: 'Title',
-            accessor: 'title',
-          },
-          {
-            // Header: t('public.register.form.name.last'),
-            Header: 'Resource',
-            accessor: 'resource',
-          },
-          {
-            Header: 'Start',
-            accessor: 'start',
-          },
-          {
-            Header: 'End',
-            accessor: 'end',
-          },
-          {
-            // Header: t('public.register.form.name.last'),
-            Header: 'Consumption (h)',
-            accessor: 'consumption',
-          },
-          // {
-          //   // Header: t('public.register.form.name.last'),
-          //   Header: 'Occurences',
-          //   accessor: 'occurences',
-          // },
-        ]}
-      />
+      {activities.map(
+        (activitiesPerMonth, index) =>
+          index !== 0 && (
+            <Box key={activitiesPerMonth[0]?.startDate} my="8">
+              <Heading size="md" mb="2">
+                {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}
+              </Heading>
+              <ReactTable
+                size="sm"
+                data={activitiesPerMonth}
+                columns={[
+                  {
+                    // Header: t('public.register.form.name.first'),
+                    Header: 'Title',
+                    accessor: 'title',
+                  },
+                  {
+                    // Header: t('public.register.form.name.last'),
+                    Header: 'Resource',
+                    accessor: 'resource',
+                  },
+                  {
+                    Header: 'Start',
+                    accessor: 'start',
+                  },
+                  {
+                    Header: 'End',
+                    accessor: 'end',
+                  },
+                  {
+                    // Header: t('public.register.form.name.last'),
+                    Header: 'Consumption (h)',
+                    accessor: 'consumption',
+                  },
+                  // {
+                  //   // Header: t('public.register.form.name.last'),
+                  //   Header: 'Occurences',
+                  //   accessor: 'occurences',
+                  // },
+                ]}
+              />
+            </Box>
+          )
+      )}
 
       <Modal isOpen={Boolean(activityDetails)} onClose={() => setActivityDetails(null)}>
         <ReactTable
