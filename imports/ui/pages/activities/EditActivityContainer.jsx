@@ -1,14 +1,15 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { useTranslation } from 'react-i18next';
 import EditActivity from './EditActivity';
 import { parseAllBookingsWithResources } from '../../utils/shared';
 import Resources from '../../../api/resources/resource';
 import Activities from '../../../api/activities/activity';
 import Processes from '../../../api/processes/process';
-import { useTranslation } from 'react-i18next';
 
-export default EditActivityContainer = withTracker((props) => {
+const EditActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;
-  const activitySub = Meteor.subscribe('activity', activityId);
+  // const activitySub = Meteor.subscribe('activity', activityId);
   const activity = Activities ? Activities.findOne({ _id: activityId }) : null;
 
   const resourcesSub = Meteor.subscribe('resources');
@@ -17,7 +18,7 @@ export default EditActivityContainer = withTracker((props) => {
   const activities = Activities ? Activities.find().fetch() : null;
   const processesSub = Meteor.subscribe('processes');
   const processes = Processes ? Processes.find().fetch() : null;
-  const meSub = Meteor.subscribe('me');
+  // const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
   const allBookings = parseAllBookingsWithResources(activities, processes, resources);
@@ -37,3 +38,5 @@ export default EditActivityContainer = withTracker((props) => {
     isLoading,
   };
 })(EditActivity);
+
+export default EditActivityContainer;

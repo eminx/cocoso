@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +27,31 @@ import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
 import { userMenu } from '../../utils/constants/general';
 
+function ActivityItem({ act }) {
+  const [t] = useTranslation('activities');
+
+  return (
+    <HStack align="flex-start" bg="white" p="3" w="100%">
+      {act.isPublicActivity && (
+        <Box p="2">
+          <Image fit="cover" w="xs" fill src={act.imageUrl} />
+        </Box>
+      )}
+      <Box w="100%">
+        <Heading mb="2" overflowWrap="anywhere" size="md">
+          {act.title}
+        </Heading>
+        <Tag>
+          <TagLabel>{act.resource}</TagLabel>
+        </Tag>
+        <Text fontWeight="light">{act.subTitle}</Text>
+        <Text fontStyle="italic" p="1" textAlign="right">
+          {act.datesAndTimes.length} {t('members.occurences')}
+        </Text>
+      </Box>
+    </HStack>
+  );
+}
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -128,31 +154,5 @@ function Activities({ history }) {
     </Template>
   );
 }
-
-const ActivityItem = ({ act }) => {
-  const [t] = useTranslation('activities');
-
-  return (
-    <HStack align="flex-start" bg="white" p="3" w="100%">
-      {act.isPublicActivity && (
-        <Box p="2">
-          <Image fit="cover" w="xs" fill src={act.imageUrl} />
-        </Box>
-      )}
-      <Box w="100%">
-        <Heading mb="2" overflowWrap="anywhere" size="md">
-          {act.title}
-        </Heading>
-        <Tag>
-          <TagLabel>{act.resource}</TagLabel>
-        </Tag>
-        <Text fontWeight="light">{act.subTitle}</Text>
-        <Text fontStyle="italic" p="1" textAlign="right">
-          {act.datesAndTimes.length} {t('members.occurences')}
-        </Text>
-      </Box>
-    </HStack>
-  );
-};
 
 export default Activities;

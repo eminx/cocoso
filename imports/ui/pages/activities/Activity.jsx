@@ -43,25 +43,110 @@ import FormField from '../../components/FormField';
 
 moment.locale(i18n.language);
 
+// const initialValues = {
+//   firstName: '',
+//   lastName: '',
+//   email: '',
+//   numberOfPeople: 1,
+// };
+
+function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+  const [t] = useTranslation('activities');
+  const fields = [
+    {
+      name: 'firstName',
+      label: t('public.register.form.name.first'),
+    },
+    {
+      name: 'lastName',
+      label: t('public.register.form.name.last'),
+    },
+    {
+      name: 'email',
+      label: t('public.register.form.email'),
+    },
+    // {
+    //   name: 'numberOfPeople',
+    //   label: 'Number of people',
+    // },
+  ];
+  return (
+    <Box bg="white" p="1" mb="8">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <Stack spacing={2}>
+          {fields.map((field) => (
+            <FormField key={field.name} label={field.label}>
+              <Input {...register(field.name)} size="sm" />
+            </FormField>
+          ))}
+          <FormField label={t('public.register.form.people.number')}>
+            <NumberInput size="sm">
+              <NumberInputField {...register('numberOfPeople')} />
+            </NumberInput>
+          </FormField>
+          <Box pt="2" w="100%">
+            <Button
+              colorScheme="green"
+              isDisabled={isUpdateMode && !isDirty}
+              isLoading={isSubmitting}
+              loadingText={t('public.register.form.loading')}
+              size="sm"
+              type="submit"
+              w="100%"
+            >
+              {isUpdateMode
+                ? t('public.register.form.actions.update')
+                : t('public.register.form.actions.create')}
+            </Button>
+          </Box>
+          {isUpdateMode && (
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={onDelete}>
+              {t('public.register.form.actions.remove')}
+            </Button>
+          )}
+        </Stack>
+      </form>
+    </Box>
+  );
+}
+
+function RsvpList({ attendees }) {
+  const [t] = useTranslation('activities');
+  return (
+    <ReactTable
+      data={attendees}
+      columns={[
+        {
+          Header: t('public.register.form.name.first'),
+          accessor: 'firstName',
+        },
+        {
+          Header: t('public.register.form.name.first'),
+          accessor: 'lastName',
+        },
+        {
+          Header: t('public.register.form.people.label'),
+          accessor: 'numberOfPeople',
+        },
+        {
+          Header: t('public.register.form.email'),
+          accessor: 'email',
+        },
+      ]}
+    />
+  );
+}
+
 class Activity extends PureComponent {
   state = {
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
     capacityGotFullByYou: false,
-  };
-
-  addNewChatMessage = (message) => {
-    Meteor.call(
-      'addChatMessage',
-      this.props.activityData._id,
-      message,
-      'activity',
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-        }
-      }
-    );
   };
 
   getChatMessages = () => {
@@ -71,14 +156,22 @@ class Activity extends PureComponent {
 
     if (chatData) {
       messages = [...chatData.messages];
-      messages.forEach((message) => {
-        if (message.senderId === currentUser._id) {
-          message.isFromMe = true;
+      messages.forEach((chatMessage) => {
+        if (chatMessage.senderId === currentUser._id) {
+          chatMessage.isFromMe = true;
         }
       });
     }
 
     return messages;
+  };
+
+  addNewChatMessage = (chatMessage) => {
+    Meteor.call('addChatMessage', this.props.activityData._id, chatMessage, 'activity', (error) => {
+      if (error) {
+        throw new Error(`error: ${error}`);
+      }
+    });
   };
 
   handleRSVPSubmit = async (values, occurenceIndex) => {
@@ -97,8 +190,8 @@ class Activity extends PureComponent {
       await call('registerAttendance', activityData._id, values, occurenceIndex);
       message.success(t('public.attandence.create'));
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -143,9 +236,88 @@ class Activity extends PureComponent {
     });
   };
 
+  removeNotification = (messageIndex) => {
+    const { activityData, currentUser } = this.props;
+    const shouldRun = currentUser.notifications.find((notification) => {
+      if (!notification.unSeenIndexes) {
+        return false;
+      }
+      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
+    });
+    if (!shouldRun) {
+      return;
+    }
+
+    Meteor.call('removeNotification', activityData._id, messageIndex, (error) => {
+      if (error) {
+        message.destroy();
+        message.error(error.error);
+        throw new Error(`error: ${error}`);
+      }
+    });
+  };
+
+  isAdmin = () => {
+    const { activityData } = this.props;
+    const { currentUser } = this.context;
+    return currentUser && activityData && currentUser._id === activityData.authorId;
+  };
+
+  handleRemoveRSVP = async () => {
+    const { rsvpCancelModalInfo } = this.state;
+    const { activityData, t } = this.props;
+
+    try {
+      await call(
+        'removeAttendance',
+        activityData._id,
+        rsvpCancelModalInfo.occurenceIndex,
+        rsvpCancelModalInfo.attendeeIndex,
+        rsvpCancelModalInfo.email
+      );
+      message.success(t('public.attandence.remove'));
+      this.setState({
+        rsvpCancelModalInfo: null,
+        isRsvpCancelModalOn: false,
+      });
+    } catch (error) {
+      message.error(error.reason);
+      throw new Error(`error: ${error}`);
+    }
+  };
+
+  handleChangeRSVPSubmit = async (values) => {
+    const { rsvpCancelModalInfo } = this.state;
+    const { activityData, t } = this.props;
+
+    const parsedValues = {
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      numberOfPeople: Number(values.numberOfPeople),
+    };
+
+    try {
+      await call(
+        'updateAttendance',
+        activityData._id,
+        parsedValues,
+        rsvpCancelModalInfo.occurenceIndex,
+        rsvpCancelModalInfo.attendeeIndex
+      );
+      message.success(t('public.attandence.update'));
+      this.setState({
+        rsvpCancelModalInfo: null,
+        isRsvpCancelModalOn: false,
+      });
+    } catch (error) {
+      message.error(error.reason);
+      throw new Error(`error: ${error}`);
+    }
+  };
+
   renderCancelRsvpModalContent = () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { t } = this.props;
     if (!rsvpCancelModalInfo) {
       return;
     }
@@ -199,59 +371,6 @@ class Activity extends PureComponent {
     );
   };
 
-  handleChangeRSVPSubmit = async (values) => {
-    const { rsvpCancelModalInfo } = this.state;
-    const { activityData, t } = this.props;
-
-    const parsedValues = {
-      email: values.email,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      numberOfPeople: Number(values.numberOfPeople),
-    };
-
-    try {
-      await call(
-        'updateAttendance',
-        activityData._id,
-        parsedValues,
-        rsvpCancelModalInfo.occurenceIndex,
-        rsvpCancelModalInfo.attendeeIndex
-      );
-      message.success(t('public.attandence.update'));
-      this.setState({
-        rsvpCancelModalInfo: null,
-        isRsvpCancelModalOn: false,
-      });
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
-  };
-
-  handleRemoveRSVP = async () => {
-    const { rsvpCancelModalInfo } = this.state;
-    const { activityData, t } = this.props;
-
-    try {
-      await call(
-        'removeAttendance',
-        activityData._id,
-        rsvpCancelModalInfo.occurenceIndex,
-        rsvpCancelModalInfo.attendeeIndex,
-        rsvpCancelModalInfo.email
-      );
-      message.success(t('public.attandence.remove'));
-      this.setState({
-        rsvpCancelModalInfo: null,
-        isRsvpCancelModalOn: false,
-      });
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
-  };
-
   renderDates = () => {
     const { activityData, currentUser, t, tc } = this.props;
     const { capacityGotFullByYou } = this.state;
@@ -277,7 +396,7 @@ class Activity extends PureComponent {
               {t('public.register.disabled.info')}
             </Text>
           )}
-          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+          {activityData.datesAndTimes.map((occurence) => (
             <Box bg="white" key={occurence.startDate + occurence.startTime} p="2" mb="2">
               <FancyDate occurence={occurence} />
             </Box>
@@ -388,35 +507,8 @@ class Activity extends PureComponent {
     );
   };
 
-  isAdmin = () => {
-    const { activityData, t } = this.props;
-    const { currentUser } = this.context;
-    return currentUser && activityData && currentUser._id === activityData.authorId;
-  };
-
-  removeNotification = (messageIndex) => {
-    const { activityData, currentUser, t } = this.props;
-    const shouldRun = currentUser.notifications.find((notification) => {
-      if (!notification.unSeenIndexes) {
-        return false;
-      }
-      return notification.unSeenIndexes.some((unSeenIndex) => unSeenIndex === messageIndex);
-    });
-    if (!shouldRun) {
-      return;
-    }
-
-    Meteor.call('removeNotification', activityData._id, messageIndex, (error, respond) => {
-      if (error) {
-        console.log('error', error);
-        message.destroy();
-        message.error(error.error);
-      }
-    });
-  };
-
   render() {
-    const { activityData, isLoading, currentUser, chatData, history, t, tc } = this.props;
+    const { activityData, isLoading, currentUser, t, tc } = this.props;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -424,7 +516,7 @@ class Activity extends PureComponent {
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
-    const messages = this.getChatMessages();
+    // const messages = this.getChatMessages();
 
     const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
       <Center m="2">
@@ -530,104 +622,5 @@ class Activity extends PureComponent {
 }
 
 Activity.contextType = StateContext;
-
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  numberOfPeople: 1,
-};
-
-function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
-  const { handleSubmit, register, formState } = useForm({
-    defaultValues,
-  });
-
-  const { isDirty, isSubmitting } = formState;
-  const [t] = useTranslation('activities');
-  const fields = [
-    {
-      name: 'firstName',
-      label: t('public.register.form.name.first'),
-    },
-    {
-      name: 'lastName',
-      label: t('public.register.form.name.last'),
-    },
-    {
-      name: 'email',
-      label: t('public.register.form.email'),
-    },
-    // {
-    //   name: 'numberOfPeople',
-    //   label: 'Number of people',
-    // },
-  ];
-  return (
-    <Box bg="white" p="1" mb="8">
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <Stack spacing={2}>
-          {fields.map((field) => (
-            <FormField key={field.name} label={field.label}>
-              <Input {...register(field.name)} size="sm" />
-            </FormField>
-          ))}
-          <FormField label={t('public.register.form.people.number')}>
-            <NumberInput size="sm">
-              <NumberInputField {...register('numberOfPeople')} />
-            </NumberInput>
-          </FormField>
-          <Box pt="2" w="100%">
-            <Button
-              colorScheme="green"
-              isDisabled={isUpdateMode && !isDirty}
-              isLoading={isSubmitting}
-              loadingText={t('public.register.form.loading')}
-              size="sm"
-              type="submit"
-              w="100%"
-            >
-              {isUpdateMode
-                ? t('public.register.form.actions.update')
-                : t('public.register.form.actions.create')}
-            </Button>
-          </Box>
-          {isUpdateMode && (
-            <Button colorScheme="red" size="sm" variant="ghost" onClick={onDelete}>
-              {t('public.register.form.actions.remove')}
-            </Button>
-          )}
-        </Stack>
-      </form>
-    </Box>
-  );
-}
-
-function RsvpList({ attendees }) {
-  const [t] = useTranslation('activities');
-  return (
-    <ReactTable
-      data={attendees}
-      columns={[
-        {
-          Header: t('public.register.form.name.first'),
-          accessor: 'firstName',
-        },
-        {
-          Header: t('public.register.form.name.first'),
-          accessor: 'lastName',
-        },
-        {
-          Header: t('public.register.form.people.label'),
-          accessor: 'numberOfPeople',
-        },
-        {
-          Header: t('public.register.form.email'),
-          accessor: 'email',
-        },
-      ]}
-    />
-  );
-}
 
 export default Activity;

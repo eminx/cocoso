@@ -54,7 +54,7 @@ class NewActivity extends PureComponent {
     this.setInitialValuesWithQueryParams();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { history, resources } = this.props;
 
     const { search } = history.location;
@@ -106,6 +106,38 @@ class NewActivity extends PureComponent {
     );
   };
 
+  setDatesAndTimes = (selectedBookings) => {
+    this.setState(
+      {
+        datesAndTimes: selectedBookings,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  setUploadableImage = (files) => {
+    const { tc } = this.props;
+    if (files.length > 1) {
+      message.error(tc('plugins.fileDropper.single'));
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage,
+          uploadableImageLocal: reader.result,
+        });
+      },
+      false
+    );
+  };
+
   handleSubmit = (values) => {
     const { tc } = this.props;
     const { isPublicActivity, uploadableImage, selectedResource } = this.state;
@@ -144,27 +176,6 @@ class NewActivity extends PureComponent {
     );
   };
 
-  setUploadableImage = (files) => {
-    const { t } = this.props;
-    if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
-      return;
-    }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
   uploadImage = async () => {
     this.setState({ isLoading: true });
 
@@ -180,11 +191,11 @@ class NewActivity extends PureComponent {
         () => this.createActivity()
       );
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
       });
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -266,17 +277,6 @@ class NewActivity extends PureComponent {
     this.setState({
       isRegistrationDisabled: value,
     });
-  };
-
-  setDatesAndTimes = (selectedBookings) => {
-    this.setState(
-      {
-        datesAndTimes: selectedBookings,
-      },
-      () => {
-        this.validateBookings();
-      }
-    );
   };
 
   handleSelectedResource = (value) => {
@@ -375,7 +375,7 @@ class NewActivity extends PureComponent {
       return null;
     }
 
-    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
+    // const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const isFormValid = this.isFormValid();
 
     return (

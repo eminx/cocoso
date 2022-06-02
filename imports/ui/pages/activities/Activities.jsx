@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Button, Center, SimpleGrid } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -26,7 +26,7 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-function Activities({ activitiesList, processesList, isLoading, history }) {
+function Activities({ activitiesList, processesList, isLoading }) {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
@@ -47,24 +47,6 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
     return futurePublicActivities;
   };
 
-  const getProcessMeetings = () => {
-    if (!processesList) {
-      return null;
-    }
-
-    const futureProcesses = processesList.filter((process) =>
-      process.meetings?.some((meeting) => moment(meeting.startDate).isAfter(yesterday))
-    );
-
-    const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(futureProcesses);
-
-    return futureProcessesWithAccessFilter.map((process) => ({
-      ...process,
-      datesAndTimes: process.meetings,
-      isProcess: true,
-    }));
-  };
-
   const parseOnlyAllowedProcesses = (futureProcesses) => {
     const futureProcessesAllowed = futureProcesses.filter((process) => {
       if (!process.isPrivate) {
@@ -82,6 +64,24 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
     });
 
     return futureProcessesAllowed;
+  };
+
+  const getProcessMeetings = () => {
+    if (!processesList) {
+      return null;
+    }
+
+    const futureProcesses = processesList.filter((process) =>
+      process.meetings?.some((meeting) => moment(meeting.startDate).isAfter(yesterday))
+    );
+
+    const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(futureProcesses);
+
+    return futureProcessesWithAccessFilter.map((process) => ({
+      ...process,
+      datesAndTimes: process.meetings,
+      isProcess: true,
+    }));
   };
 
   const getAllSorted = () => {

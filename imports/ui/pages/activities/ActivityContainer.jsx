@@ -1,10 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { useTranslation } from 'react-i18next';
 import Activity from './Activity';
 import Chats from '../../../api/chats/chat';
 import Activities from '../../../api/activities/activity';
-import { useTranslation } from 'react-i18next';
 
-export default ActivityContainer = withTracker((props) => {
+const ActivityContainer = withTracker((props) => {
   const activityId = props.match.params.id;
   const activity = Meteor.subscribe('activity', activityId);
 
@@ -12,7 +13,7 @@ export default ActivityContainer = withTracker((props) => {
   const activityData = Activities ? Activities.findOne({ _id: activityId }) : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribe('chat', activityId);
+  // const chatSubscription = Meteor.subscribe('chat', activityId);
   const chatData = Chats ? Chats.findOne({ contextId: activityId }) : null;
 
   const [t] = useTranslation('activities');
@@ -27,3 +28,5 @@ export default ActivityContainer = withTracker((props) => {
     tc,
   };
 })(Activity);
+
+export default ActivityContainer;

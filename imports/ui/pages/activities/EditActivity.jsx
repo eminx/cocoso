@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Button, Center, IconButton, VStack } from '@chakra-ui/react';
@@ -48,7 +47,7 @@ class EditActivity extends PureComponent {
     this.setInitialData();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       (!prevProps.activity && this.props.activity) ||
       (!prevProps.allBookings && this.props.allBookings) ||
@@ -73,6 +72,38 @@ class EditActivity extends PureComponent {
         isRegistrationDisabled: activity.isRegistrationDisabled,
       },
       () => this.validateBookings()
+    );
+  };
+
+  setDatesAndTimes = (datesAndTimes) => {
+    this.setState(
+      {
+        datesAndTimes,
+      },
+      () => {
+        this.validateBookings();
+      }
+    );
+  };
+
+  setUploadableImage = (files) => {
+    const { tc } = this.props;
+    if (files.length > 1) {
+      message.error(tc('plugins.fileDropper.single'));
+      return;
+    }
+    const theImageFile = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(theImageFile);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage: theImageFile,
+          uploadableImageLocal: reader.result,
+        });
+      },
+      false
     );
   };
 
@@ -131,27 +162,6 @@ class EditActivity extends PureComponent {
     );
   };
 
-  setUploadableImage = (files) => {
-    const { tc } = this.props;
-    if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
-      return;
-    }
-    const theImageFile = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
   uploadImage = async () => {
     const { uploadableImage } = this.state;
 
@@ -165,11 +175,11 @@ class EditActivity extends PureComponent {
         () => this.updateActivity()
       );
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
       });
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -253,17 +263,6 @@ class EditActivity extends PureComponent {
     this.setState({
       isRegistrationDisabled: value,
     });
-  };
-
-  setDatesAndTimes = (datesAndTimes) => {
-    this.setState(
-      {
-        datesAndTimes,
-      },
-      () => {
-        this.validateBookings();
-      }
-    );
   };
 
   handleSelectedResource = (value) => {
