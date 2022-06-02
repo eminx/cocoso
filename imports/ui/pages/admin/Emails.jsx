@@ -24,16 +24,57 @@ import FormField from '../../components/FormField';
 import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
 
+function EmailForm({ defaultValues, onSubmit }) {
+  const { control, handleSubmit, register, formState } = useForm({
+    defaultValues,
+  });
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  const { isDirty, isSubmitting } = formState;
+
+  return (
+    <Box>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="4">
+          <FormField label={t('emails.form.subject.label')}>
+            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+          </FormField>
+
+          <FormField label={t('emails.form.appeal.label')}>
+            <InputGroup w="280px">
+              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
+              <InputRightAddon children={t('emails.form.appeal.addon')} />
+            </InputGroup>
+          </FormField>
+
+          <FormField label={t('emails.form.body.label')}>
+            <Controller
+              control={control}
+              name="body"
+              render={({ field }) => (
+                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
+              )}
+            />
+          </FormField>
+
+          <Flex justify="flex-end" py="2" w="100%">
+            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+              {tc('actions.submit')}
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+    </Box>
+  );
+}
+
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
   const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    getEmails();
-  }, []);
 
   const getEmails = async () => {
     try {
@@ -44,10 +85,14 @@ function Emails({ history }) {
       setLoading(false);
     } catch (error) {
       setEmails(defaultEmails);
-      console.log(error);
       setLoading(false);
+      throw new Error(`error: ${error}`);
     }
   };
+
+  useEffect(() => {
+    getEmails();
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -93,51 +138,6 @@ function Emails({ history }) {
           </Box>
         ))}
     </Template>
-  );
-}
-
-function EmailForm({ defaultValues, onSubmit }) {
-  const { control, handleSubmit, register, formState } = useForm({
-    defaultValues,
-  });
-  const [t] = useTranslation('admin');
-  const [tc] = useTranslation('common');
-
-  const { isDirty, isSubmitting } = formState;
-
-  return (
-    <Box>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <VStack spacing="4">
-          <FormField label={t('emails.form.subject.label')}>
-            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
-          </FormField>
-
-          <FormField label={t('emails.form.appeal.label')}>
-            <InputGroup w="280px">
-              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
-              <InputRightAddon children={t('emails.form.appeal.addon')} />
-            </InputGroup>
-          </FormField>
-
-          <FormField label={t('emails.form.body.label')}>
-            <Controller
-              control={control}
-              name="body"
-              render={({ field }) => (
-                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-              )}
-            />
-          </FormField>
-
-          <Flex justify="flex-end" py="2" w="100%">
-            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-              {tc('actions.submit')}
-            </Button>
-          </Flex>
-        </VStack>
-      </form>
-    </Box>
   );
 }
 

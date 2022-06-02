@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Heading,
   HStack,
   Input,
@@ -32,27 +31,36 @@ import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
 
+/* eslint-disable-next-line no-useless-escape */
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
-const colorModel = {
-  hsl: {
-    h: 0,
-    s: 0.8,
-    l: 0.2,
-    a: 1,
-  },
-};
+// const colorModel = {
+//   hsl: {
+//     h: 0,
+//     s: 0.8,
+//     l: 0.2,
+//     a: 1,
+//   },
+// };
 
-export default function Settings({ history }) {
+function AlphaContainer({ children }) {
+  return (
+    <Box bg="white" mb="8" p="6">
+      {children}
+    </Box>
+  );
+}
+
+function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
-  const [formAltered, setFormAltered] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  // const [formAltered, setFormAltered] = useState(false);
+  // const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
-  const [mainColor, setMainColor] = useState(colorModel);
-  const [activeMenu, setActiveMenu] = useState(null);
+  // const [mainColor, setMainColor] = useState(colorModel);
+  // const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
@@ -63,6 +71,16 @@ export default function Settings({ history }) {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
+  const getCategories = async () => {
+    try {
+      const latestCategories = await call('getCategories');
+      setCategories(latestCategories);
+    } catch (error) {
+      message.error(error.reason);
+      throw new Error(`error: ${error}`);
+    }
+  };
+
   useEffect(() => {
     if (!currentHost) {
       return;
@@ -71,15 +89,14 @@ export default function Settings({ history }) {
     getCategories();
     currentHost.settings &&
       currentHost.settings.mainColor &&
-      setMainColor(currentHost.settings.mainColor);
-    setLoading(false);
+      // setMainColor(currentHost.settings.mainColor);
+      setLoading(false);
   }, []);
 
-  const handleFormChange = (newSettings) => {
-    console.log(newSettings);
-    setFormAltered(true);
-    setLocalSettings(newSettings);
-  };
+  // const handleFormChange = (newSettings) => {
+  //   setFormAltered(true);
+  //   setLocalSettings(newSettings);
+  // };
 
   const handleFormSubmit = async (values) => {
     if (!currentUser || role !== 'admin') {
@@ -92,17 +109,7 @@ export default function Settings({ history }) {
       message.success(tc('message.success.update', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
-    }
-  };
-
-  const getCategories = async () => {
-    try {
-      const latestCategories = await call('getCategories');
-      setCategories(latestCategories);
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -114,7 +121,7 @@ export default function Settings({ history }) {
       setCategoryInput('');
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -124,7 +131,7 @@ export default function Settings({ history }) {
       getCategories();
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -141,7 +148,7 @@ export default function Settings({ history }) {
   };
 
   const setUploadableImage = (files) => {
-    setUploading(true);
+    // setUploading(true);
     if (files.length > 1) {
       message.error(t('logo.message.fileDropper'));
       return;
@@ -168,9 +175,9 @@ export default function Settings({ history }) {
       await call('assignHostLogo', uploadedImage);
       message.success(t('logo.message.success'));
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
-      setUploading(false);
+      // setUploading(false);
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -179,8 +186,8 @@ export default function Settings({ history }) {
   //     await call('setMainColor', mainColor);
   //     message.success('Main color is successfully set');
   //   } catch (error) {
-  //     console.error('Error uploading:', error);
   //     message.error(error.reason);
+  //     throw new Error(`Error uploading: ${error}`);
   //   }
   // };
 
@@ -321,10 +328,4 @@ export default function Settings({ history }) {
   );
 }
 
-function AlphaContainer({ title, children }) {
-  return (
-    <Box bg="white" mb="8" p="6">
-      {children}
-    </Box>
-  );
-}
+export default Settings;

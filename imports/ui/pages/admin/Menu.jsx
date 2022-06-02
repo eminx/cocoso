@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Alert,
   Box,
   Button,
   Center,
@@ -32,7 +33,51 @@ import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 
-export default function Menu() {
+const SortableItem = sortableElement(({ value }) => (
+  <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
+    <DragHandleIcon /> <Box pl="2">{value}</Box>
+  </Flex>
+));
+
+const SortableContainer = sortableContainer(({ children }) => <Box>{children}</Box>);
+
+function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
+  return (
+    <Table size="sm" variant="simple" w="100%">
+      <Thead>
+        <Tr>
+          <Th w="100px">Visibility</Th>
+          <Th>Labels</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {menu.map((item, index) => (
+          <Tr key={item.name}>
+            <Td>
+              <Center>
+                <Switch
+                  isChecked={item.isVisible}
+                  onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
+                />
+              </Center>
+            </Td>
+            <Td>
+              <FormField>
+                <Input
+                  isDisabled={!item.isVisible}
+                  value={item.label}
+                  onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
+                />
+              </FormField>
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+}
+
+function Menu() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -45,6 +90,15 @@ export default function Menu() {
     return <Alert>{tc('message.accesss.deny')}</Alert>;
   }
 
+  const handleSetActiveMenu = () => {
+    const newActiveMenu = {};
+    currentHost.settings.menu.forEach((item) => {
+      newActiveMenu[item.name] = item.label;
+    });
+
+    setActiveMenu(newActiveMenu);
+  };
+
   useEffect(() => {
     if (!currentHost) {
       return;
@@ -53,15 +107,6 @@ export default function Menu() {
     currentHost.settings && handleSetActiveMenu();
     setLoading(false);
   }, []);
-
-  const handleSetActiveMenu = (key, label) => {
-    const newActiveMenu = {};
-    currentHost.settings.menu.forEach((item) => {
-      newActiveMenu[item.name] = item.label;
-    });
-
-    setActiveMenu(newActiveMenu);
-  };
 
   const handleMenuItemCheck = (changedItemIndex, value) => {
     const newMenu = localSettings.menu.map((item, index) => {
@@ -169,47 +214,4 @@ export default function Menu() {
     </Box>
   );
 }
-
-function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
-  return (
-    <Table size="sm" variant="simple" w="100%">
-      <Thead>
-        <Tr>
-          <Th w="100px">Visibility</Th>
-          <Th>Labels</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {menu.map((item, index) => (
-          <Tr key={item.name}>
-            <Td>
-              <Center>
-                <Switch
-                  isChecked={item.isVisible}
-                  onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
-                />
-              </Center>
-            </Td>
-            <Td>
-              <FormField>
-                <Input
-                  isDisabled={!item.isVisible}
-                  value={item.label}
-                  onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
-                />
-              </FormField>
-            </Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  );
-}
-
-const SortableItem = sortableElement(({ value }) => (
-  <Flex align="center" bg="gray.100" cursor="move" mb="4" p="2">
-    <DragHandleIcon /> <Box pl="2">{value}</Box>
-  </Flex>
-));
-
-const SortableContainer = sortableContainer(({ children }) => <Box>{children}</Box>);
+export default Menu;

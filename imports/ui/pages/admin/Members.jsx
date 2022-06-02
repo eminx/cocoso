@@ -36,7 +36,7 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members({ history, members, isLoading }) {
-  const [sortBy, setSortBy] = useState('join-date');
+  const [sortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
   const [t] = useTranslation('members');
@@ -53,11 +53,11 @@ function Members({ history, members, isLoading }) {
       await call('setAsParticipant', user.id);
       message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
       });
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -66,11 +66,11 @@ function Members({ history, members, isLoading }) {
       await call('setAsContributor', user.id);
       message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
-      console.log(error);
       message.error({
         title: error.reason || error.error,
         status: 'error',
       });
+      throw new Error(`error: ${error}`);
     }
   };
 
@@ -94,6 +94,7 @@ function Members({ history, members, isLoading }) {
       } else if (filter === 'admin') {
         return member.role === 'admin';
       }
+      return false;
     });
 
   const membersList = membersFiltered.map((member) => ({
@@ -133,16 +134,16 @@ function Members({ history, members, isLoading }) {
     },
   ];
 
-  const sortOptions = [
-    {
-      label: t('form.sort.date'),
-      value: 'join-date',
-    },
-    {
-      label: t('form.sort.user'),
-      value: 'username',
-    },
-  ];
+  // const sortOptions = [
+  //   {
+  //     label: t('form.sort.date'),
+  //     value: 'join-date',
+  //   },
+  //   {
+  //     label: t('form.sort.user'),
+  //     value: 'username',
+  //   },
+  // ];
 
   const membersFilteredWithType = membersList.filter((member) => {
     const lowerCaseFilterWord = filterWord ? filterWord.toLowerCase() : '';
@@ -233,7 +234,7 @@ function Members({ history, members, isLoading }) {
   );
 }
 
-export default MembersContainer = withTracker((props) => {
+const MembersContainer = withTracker(() => {
   const membersSubscription = Meteor.subscribe('members');
   const currentHost = Hosts.findOne();
   const isLoading = !membersSubscription.ready();
@@ -246,3 +247,5 @@ export default MembersContainer = withTracker((props) => {
     members,
   };
 })(Members);
+
+export default MembersContainer;
