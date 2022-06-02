@@ -59,7 +59,7 @@ function ResourcePage() {
     try {
       await call('addChatMessage', values);
     } catch (error) {
-      throw error('error', error);
+      throw new Error(`error: ${error}`);
     }
   };
 
