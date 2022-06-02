@@ -8,23 +8,15 @@ import {
   Box,
   Button,
   Center,
-  Flex,
-  Heading,
-  Image,
   SimpleGrid,
   Tabs,
   Tab,
   TabList,
   TabPanels,
   TabPanel,
-  Text,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Loader from '../../components/Loader';
-import NiceList from '../../components/NiceList';
-import Template from '../../components/Template';
-import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../utils/shared';
 import GridThumb from '../../components/GridThumb';
@@ -33,7 +25,7 @@ moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
+function ProcessesList({ currentUser, processes, t, tc }) {
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -52,43 +44,25 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
     },
   ];
 
-  const archiveProcess = (processId) => {
-    Meteor.call('archiveProcess', processId, (error, respond) => {
-      if (error) {
-        message.error(error.error);
-      } else {
-        message.success(t('message.archived'));
-      }
-    });
-  };
+  // const archiveProcess = (processId) => {
+  //   Meteor.call('archiveProcess', processId, (error) => {
+  //     if (error) {
+  //       message.error(error.error);
+  //     } else {
+  //       message.success(t('message.archived'));
+  //     }
+  //   });
+  // };
 
-  const unarchiveProcess = (processId) => {
-    Meteor.call('unarchiveProcess', processId, (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-      } else {
-        message.success(t('message.unarchived'));
-      }
-    });
-  };
-
-  const getFilteredProcesses = () => {
-    if (!processes) {
-      return [];
-    }
-
-    const filteredProcesses = processes.filter((process) => {
-      if (filterBy === 2) {
-        return process.isArchived === true;
-      } else if (filterBy === 1) {
-        return currentUser && process.members.some((member) => member.memberId === currentUser._id);
-      }
-      return !process.isArchived;
-    });
-
-    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
-    return filteredProcessesWithAccessFilter;
-  };
+  // const unarchiveProcess = (processId) => {
+  //   Meteor.call('unarchiveProcess', processId, (error) => {
+  //     if (error) {
+  //       message.error(error.reason);
+  //     } else {
+  //       message.success(t('message.unarchived'));
+  //     }
+  //   });
+  // };
 
   const parseOnlyAllowedProcesses = (futureProcesses) => {
     const futureProcessesAllowed = futureProcesses.filter((process) => {
@@ -107,6 +81,24 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
     });
 
     return futureProcessesAllowed;
+  };
+
+  const getFilteredProcesses = () => {
+    if (!processes) {
+      return [];
+    }
+
+    const filteredProcesses = processes.filter((process) => {
+      if (filterBy === 2) {
+        return process.isArchived === true;
+      } else if (filterBy === 1) {
+        return currentUser && process.members.some((member) => member.memberId === currentUser._id);
+      }
+      return !process.isArchived;
+    });
+
+    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
+    return filteredProcessesWithAccessFilter;
   };
 
   const processesRendered = getFilteredProcesses().sort(compareForSort).reverse();
@@ -159,50 +151,52 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
   );
 }
 
-function ProcessItem({ process }) {
-  return (
-    <Flex bg="white" m="2" __hover={{ cursor: 'pointer' }}>
-      <Box w="100%" p="4" flexBasis="70%">
-        <Heading size="md" fontWeight="bold">
-          {itemType === 'resource' && gridItem.isCombo ? (
-            <ResourcesForCombo resource={gridItem} />
-          ) : (
-            gridItem?.label
-          )}
-        </Heading>
-        <Spacer my="4" />
-        <Text as="p" fontSize="xs" alignSelf="flex-end">
-          {moment(gridItem.createdAt).format('D MMM YYYY')}
-        </Text>
-      </Box>
+// function ProcessItem() {
+//   return (
+//     <Flex bg="white" m="2" __hover={{ cursor: 'pointer' }}>
+//       <Box w="100%" p="4" flexBasis="70%">
+//         <Heading size="md" fontWeight="bold">
+//           {itemType === 'resource' && gridItem.isCombo ? (
+//             <ResourcesForCombo resource={gridItem} />
+//           ) : (
+//             gridItem?.label
+//           )}
+//         </Heading>
+//         <Spacer my="4" />
+//         <Text as="p" fontSize="xs" alignSelf="flex-end">
+//           {moment(gridItem.createdAt).format('D MMM YYYY')}
+//         </Text>
+//       </Box>
 
-      {thumbHasImage && (
-        <Box flexBasis="200px">
-          <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
-        </Box>
-      )}
-    </Flex>
-  );
-  return (
-    <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
-      <Box mr="2">
-        <Image w="xs" fit="cover" src={process.imageUrl} />
-      </Box>
-      <Box w="100%">
-        <Box>
-          <Heading size="md">{process.title}</Heading>
-          <Text fontSize="lg" fontWeight="light">
-            {process.readingMaterial}
-          </Text>
-        </Box>
+//       {thumbHasImage && (
+//         <Box flexBasis="200px">
+//           <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
+//         </Box>
+//       )}
+//     </Flex>
+//   );
+//   // return (
+//   //   <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
+//   //     <Box mr="2">
+//   //       <Image w="xs" fit="cover" src={process.imageUrl} />
+//   //     </Box>
+//   //     <Box w="100%">
+//   //       <Box>
+//   //         <Heading size="md">{process.title}</Heading>
+//   //         <Text fontSize="lg" fontWeight="light">
+//   //           {process.readingMaterial}
+//   //         </Text>
+//   //       </Box>
 
-        <Box p="2">
-          <Text textAlign="right">{process.adminUsername}</Text>
-          <Text fontSize="sm" textAlign="right">
-            {moment(process.creationDate).format('D MMM YYYY')}
-          </Text>
-        </Box>
-      </Box>
-    </Flex>
-  );
-}
+//   //       <Box p="2">
+//   //         <Text textAlign="right">{process.adminUsername}</Text>
+//   //         <Text fontSize="sm" textAlign="right">
+//   //           {moment(process.creationDate).format('D MMM YYYY')}
+//   //         </Text>
+//   //       </Box>
+//   //     </Box>
+//   //   </Flex>
+//   // );
+// }
+
+export default ProcessesList;

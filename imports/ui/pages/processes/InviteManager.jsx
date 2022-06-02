@@ -1,9 +1,19 @@
+import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Box, Button, Heading, Input, Tag, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
 import { message } from '../../components/message';
+
+const EmailsContainer = (props) => (
+  <Box>
+    <Heading size="md" mb="4">
+      {props.title} ({props.count})
+    </Heading>
+    <Box>{props.children}</Box>
+  </Box>
+);
 
 class InviteManager extends PureComponent {
   state = {
@@ -38,6 +48,7 @@ class InviteManager extends PureComponent {
       message.error(t('invite.firstName.valid'));
       return true;
     }
+    return false;
   };
 
   handleSendInvite = (event) => {
@@ -54,11 +65,11 @@ class InviteManager extends PureComponent {
       email: emailInput,
     };
 
-    Meteor.call('invitePersonToPrivateProcess', process._id, person, (error, respond) => {
+    Meteor.call('invitePersonToPrivateProcess', process._id, person, (error) => {
       if (error) {
-        console.log('error', error);
         message.destroy();
         message.error(error.reason);
+        throw new Error(`Error: ${error}`);
       } else {
         message.success(t('invite.success', { name: firstNameInput }));
         this.setState({
@@ -84,7 +95,7 @@ class InviteManager extends PureComponent {
   };
 
   render() {
-    const { emailInput, peopleToBeInvited, firstNameInput } = this.state;
+    const { emailInput, firstNameInput } = this.state;
     const { process, t } = this.props;
     const peopleInvited = process.peopleInvited;
 
@@ -127,14 +138,5 @@ class InviteManager extends PureComponent {
     );
   }
 }
-
-const EmailsContainer = (props) => (
-  <Box>
-    <Heading size="md" mb="4">
-      {props.title} ({props.count})
-    </Heading>
-    <Box>{props.children}</Box>
-  </Box>
-);
 
 export default InviteManager;

@@ -42,6 +42,26 @@ class NewProcess extends React.Component {
     isCreating: false,
   };
 
+  setUploadableImage = (files) => {
+    if (files.length > 1) {
+      message.error('Please drop only one file at a time.');
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        this.setState({
+          uploadableImage,
+          uploadableImageLocal: reader.result,
+        });
+      },
+      false
+    );
+  };
+
   successCreation = () => {
     message.success('Your process is successfully created');
   };
@@ -96,26 +116,6 @@ class NewProcess extends React.Component {
     );
   };
 
-  setUploadableImage = (files) => {
-    if (files.length > 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
   uploadImage = async () => {
     const { uploadableImage } = this.state;
     try {
@@ -128,11 +128,11 @@ class NewProcess extends React.Component {
         () => this.createProcess()
       );
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
       });
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -179,15 +179,8 @@ class NewProcess extends React.Component {
       );
     }
 
-    const {
-      formValues,
-      isLoading,
-      isSuccess,
-      newProcessId,
-      uploadableImageLocal,
-      isPrivate,
-      isCreating,
-    } = this.state;
+    const { formValues, isLoading, isSuccess, newProcessId, uploadableImageLocal, isPrivate } =
+      this.state;
 
     if (isLoading) {
       return <Loader />;
@@ -198,7 +191,7 @@ class NewProcess extends React.Component {
       return <Redirect to={`/process/${newProcessId}`} />;
     }
 
-    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
+    // const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const { title, description } = formValues;
     const isFormValid =
       formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;

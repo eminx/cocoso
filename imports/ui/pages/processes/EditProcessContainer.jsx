@@ -1,10 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
 
 import EditProcess from './EditProcess';
 import Processes from '../../../api/processes/process';
 
-export default EditProcessContainer = withTracker((props) => {
+const EditProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;
   const processSubscription = Meteor.subscribe('process', processId);
   const isLoading = !processSubscription.ready();
@@ -22,3 +23,5 @@ export default EditProcessContainer = withTracker((props) => {
     tc,
   };
 })(EditProcess);
+
+export default EditProcessContainer;

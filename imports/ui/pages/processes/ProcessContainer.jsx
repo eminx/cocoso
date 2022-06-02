@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
 
@@ -7,7 +8,7 @@ import Chats from '../../../api/chats/chat';
 import Activities from '../../../api/activities/activity';
 // import Resources from '../../../api/resources/resource';
 
-export default ProcessContainer = withTracker((props) => {
+const ProcessContainer = withTracker((props) => {
   const processId = props.match.params.id;
   const processSubscription = Meteor.subscribe('process', processId);
   const activitiesSubscription = Meteor.subscribe('activities');
@@ -30,7 +31,7 @@ export default ProcessContainer = withTracker((props) => {
       ...activity.datesAndTimes[0],
     };
   });
-  const chatSubscription = Meteor.subscribe('chat', processId);
+  // const chatSubscription = Meteor.subscribe('chat', processId);
   const chatData = Chats ? Chats.findOne({ contextId: processId }) : null;
 
   const [t] = useTranslation('processes');
@@ -47,3 +48,5 @@ export default ProcessContainer = withTracker((props) => {
     tc,
   };
 })(Process);
+
+export default ProcessContainer;

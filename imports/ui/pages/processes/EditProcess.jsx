@@ -25,27 +25,6 @@ class EditProcess extends React.Component {
     uploadableImageLocal: null,
   };
 
-  handleSubmit = (values) => {
-    const { uploadableImage } = this.state;
-
-    const parsedValues = {
-      ...values,
-      capacity: Number(values.capacity),
-    };
-
-    this.setState({
-      isUpdating: true,
-      formValues: parsedValues,
-    });
-
-    if (!uploadableImage) {
-      this.updateProcess();
-      return;
-    }
-
-    this.uploadImage();
-  };
-
   setUploadableImage = (files) => {
     const { tc } = this.props;
     if (files.length > 1) {
@@ -67,6 +46,27 @@ class EditProcess extends React.Component {
     );
   };
 
+  handleSubmit = (values) => {
+    const { uploadableImage } = this.state;
+
+    const parsedValues = {
+      ...values,
+      capacity: Number(values.capacity),
+    };
+
+    this.setState({
+      isUpdating: true,
+      formValues: parsedValues,
+    });
+
+    if (!uploadableImage) {
+      this.updateProcess();
+      return;
+    }
+
+    this.uploadImage();
+  };
+
   uploadImage = async () => {
     const { uploadableImage } = this.state;
 
@@ -80,11 +80,11 @@ class EditProcess extends React.Component {
         () => this.updateProcess()
       );
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
         isCreating: false,
       });
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -100,8 +100,8 @@ class EditProcess extends React.Component {
         isSuccess: true,
       });
     } catch (error) {
-      console.log(error);
       message.error(error.error || error.reason);
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -117,8 +117,8 @@ class EditProcess extends React.Component {
       message.success(tc('message.success.remove', { domain: tc('domains.process') }));
       this.setState({ isSuccess: true });
     } catch (error) {
-      console.log(error);
       message.error(error.error || error.reason);
+      throw new Error(`Error uploading: ${error}`);
     }
   };
 
@@ -143,7 +143,7 @@ class EditProcess extends React.Component {
       return <Alert message="You are not allowed!" />;
     }
 
-    const { isDeleteModalOn, formValues, isSuccess, uploadableImageLocal, isUpdating } = this.state;
+    const { isDeleteModalOn, isSuccess, uploadableImageLocal } = this.state;
 
     if (isSuccess) {
       if (isDeleteModalOn) {
@@ -152,7 +152,7 @@ class EditProcess extends React.Component {
       return <Redirect to={`/process/${process._id}`} />;
     }
 
-    const { title, description } = formValues;
+    // const { title, description } = formValues;
     // const isFormValid =
     //   formValues &&
     //   title.length > 3 &&
