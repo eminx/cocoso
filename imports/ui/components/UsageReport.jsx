@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
-import { Box, Button, Heading } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import 'react-table/react-table.css';
+import Select from 'react-select';
 
 import Drawer from './Drawer';
 import Modal from './Modal';
@@ -19,10 +20,12 @@ function compareDatesForSort(a, b) {
 function UsageReport({ user, onClose }) {
   const [activities, setActivities] = useState(null);
   const [activityDetails, setActivityDetails] = useState(null);
+  const [resources, setResources] = useState(null);
+  const [selectedResource, setSelectedResource] = useState(null);
 
   useEffect(() => {
     getActivitiesbyUserId();
-  }, [user]);
+  }, [user, selectedResource]);
 
   const getActivitiesbyUserId = async () => {
     if (!user) {
@@ -39,7 +42,14 @@ function UsageReport({ user, onClose }) {
 
   const parseActivities = (activities) => {
     const allParsedActivities = [];
+    const usedResources = [];
     activities.forEach((a, index) => {
+      if (!usedResources.find((r) => r.value === a.resourceId)) {
+        usedResources.push({
+          label: a.resource,
+          value: a.resourceId,
+        });
+      }
       a.datesAndTimes.forEach((d, i) => {
         allParsedActivities.push({
           ...d,
@@ -63,7 +73,11 @@ function UsageReport({ user, onClose }) {
       });
     });
 
-    const allParsedActivitiesSorted = allParsedActivities.sort(compareDatesForSort);
+    setResources(usedResources);
+
+    const allParsedActivitiesSorted = allParsedActivities
+      .filter((a) => (selectedResource ? a.resourceId === selectedResource.value : true))
+      .sort(compareDatesForSort);
 
     const allParsedActivitiesSortedInMonths = [[]];
     let monthCounter = 0;
@@ -78,6 +92,10 @@ function UsageReport({ user, onClose }) {
     });
 
     setActivities(allParsedActivitiesSortedInMonths);
+  };
+
+  const handleSelectResource = (selectedResource) => {
+    setSelectedResource(selectedResource);
   };
 
   if (!user || !activities) {
@@ -112,7 +130,14 @@ function UsageReport({ user, onClose }) {
 
   return (
     <Drawer
-      title={`Consumption Report for ${user.username}`}
+      title={
+        <Title
+          resources={resources}
+          username={user.username}
+          value={selectedResource}
+          onChange={handleSelectResource}
+        />
+      }
       isOpen={Boolean(activities)}
       onClose={onClose}
       size="xl"
@@ -186,6 +211,25 @@ function UsageReport({ user, onClose }) {
         />
       </Modal>
     </Drawer>
+  );
+}
+
+function Title({ username, resources, onChange, value }) {
+  return (
+    <Flex align="center" w="100%" wrap="wrap">
+      <Heading size="md" mr="4" mb="2">{`Consumption Report for ${username}`}</Heading>
+      <Text w="240px" size="md">
+        <Select
+          isClearable
+          isSearchable
+          name="resource"
+          options={resources}
+          size="sm"
+          value={value}
+          onChange={onChange}
+        />
+      </Text>
+    </Flex>
   );
 }
 
