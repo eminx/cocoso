@@ -26,6 +26,7 @@ function UsageReport({ user, onClose }) {
   const [selectedResource, setSelectedResource] = useState(null);
 
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('members');
 
   useEffect(() => {
     getActivitiesbyUserId();
@@ -129,7 +130,6 @@ function UsageReport({ user, onClose }) {
         (activitiesPerMonth, index) =>
           index !== 0 && (
             <Box
-              // bg="gray.100"
               key={activitiesPerMonth[0]?.startDate}
               mt="8"
               pb="8"
@@ -143,26 +143,23 @@ function UsageReport({ user, onClose }) {
                 data={activitiesPerMonth}
                 columns={[
                   {
-                    // Header: t('public.register.form.name.first'),
-                    Header: 'Title',
+                    Header: t('report.table.title'),
                     accessor: 'title',
                   },
                   {
-                    // Header: t('public.register.form.name.last'),
-                    Header: 'Resource',
+                    Header: t('report.table.resource'),
                     accessor: 'resource',
                   },
                   {
-                    Header: 'Start',
+                    Header: t('report.table.start'),
                     accessor: 'start',
                   },
                   {
-                    Header: 'End',
+                    Header: t('report.table.end'),
                     accessor: 'end',
                   },
                   {
-                    // Header: t('public.register.form.name.last'),
-                    Header: 'Consumption (h)',
+                    Header: t('report.table.consumption'),
                     accessor: 'consumption',
                   },
                   // {
@@ -180,38 +177,18 @@ function UsageReport({ user, onClose }) {
             </Box>
           )
       )}
-
-      <Modal isOpen={Boolean(activityDetails)} onClose={() => setActivityDetails(null)}>
-        <ReactTable
-          data={activityDetails?.datesAndTimes}
-          columns={[
-            {
-              Header: 'Start Date',
-              accessor: 'startDate',
-            },
-            {
-              Header: 'Start Time',
-              accessor: 'startTime',
-            },
-            {
-              Header: 'End Date',
-              accessor: 'endDate',
-            },
-            {
-              Header: 'End Time',
-              accessor: 'endTime',
-            },
-          ]}
-        />
-      </Modal>
     </Drawer>
   );
 }
 
 function Title({ username, resources, onChange, value }) {
+  const [t] = useTranslation('members');
+
   return (
     <Flex align="center" w="100%" wrap="wrap">
-      <Heading size="md" mr="4" mb="2">{`Consumption Report for ${username}`}</Heading>
+      <Heading size="md" mr="4" mb="2">
+        {t('report.title', { username: username })}
+      </Heading>
       <Text w="240px" size="md">
         <Select
           isClearable

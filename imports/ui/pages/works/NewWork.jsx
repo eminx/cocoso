@@ -155,7 +155,7 @@ class NewWork extends PureComponent {
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
             message={i18n.t('members:message.access.contributor', {
-              action: 'create worhk',
+              action: 'create work',
             })}
             type="error"
           />

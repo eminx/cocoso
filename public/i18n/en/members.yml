@@ -74,3 +74,12 @@ works:
     holder: A bottle costs...
   images:
     label: Images ({{ count }})
+
+report:
+  title: Consumption Report for {{username}}
+  table:
+    title: Title
+    resource: Resource
+    start: Start
+    end: End
+    consumption: Consumption

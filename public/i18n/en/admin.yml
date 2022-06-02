@@ -1,15 +1,15 @@
 # ADMIN EMAILS PAGE
-emails: 
+emails:
   label: Emails
-  form: 
-    subject: 
+  form:
+    subject:
       label: Subject
       holder: Welcome
     appeal:
       label: Appeal
       holder: Dear
       addon: '@username'
-    body: 
+    body:
       label: Body
 
 # ADMIN STATIC PAGES

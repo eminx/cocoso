@@ -23,7 +23,7 @@ form:
 actions:
   contributor: Ställ in som utgivare
   participant: Återgå som deltagare
-  usageReport: Se användningsrapport
+  usageReport: Se förbrukningsrapport
 
 message:
   success:
@@ -74,3 +74,12 @@ works:
     holder: En flaska kostar...
   images:
     label: Bilder ({{ count }})
+
+report:
+  title: Förbrukningsrapport för {{username}}
+  table:
+    title: Titel
+    resource: Resurs
+    start: Start
+    end: Slut
+    consumption: Förbrukning (h)
