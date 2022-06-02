@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Modal as CModal,
   ModalOverlay,
   ModalContent,
