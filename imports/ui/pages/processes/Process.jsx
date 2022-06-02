@@ -40,7 +40,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import InviteManager from './InviteManager';
 import DatePicker from '../../components/DatePicker';
 import Drawer from '../../components/Drawer';
-import Chattery from '../../components/chattery/Chattery';
+import Chattery from '../../components/chattery/Chattery.jsx';
 import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
