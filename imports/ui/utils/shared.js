@@ -293,14 +293,6 @@ function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) 
   });
 }
 
-function compareDatesForSort(a, b) {
-  const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
-  const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
-  const dateA = new Date(`${firstOccurenceA.startDate}T${firstOccurenceA.startTime}:00Z`);
-  const dateB = new Date(`${firstOccurenceB.startDate}T${firstOccurenceB.startTime}:00Z`);
-  return dateA - dateB;
-}
-
 export {
   localeSort,
   getInitials,
@@ -319,5 +311,4 @@ export {
   formatDate,
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
-  compareDatesForSort,
 };
