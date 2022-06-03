@@ -170,8 +170,16 @@ function UsageReport({ user, onClose }) {
             ]}
           />
           <Center p="2">
-            <CSVLink data={activitiesPerMonth}>
-              <Button size="sm">{tc('actions.downloadCSV')}</Button>
+            <CSVLink
+              data={activitiesPerMonth}
+              filename={`${user.username}_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
+                selectedResource ? selectedResource.label : 'all-resources'
+              }`}
+              target="_blank"
+            >
+              <Button as="span" size="sm">
+                {tc('actions.downloadCSV')}
+              </Button>
             </CSVLink>
           </Center>
         </Box>
