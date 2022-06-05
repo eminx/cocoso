@@ -39,6 +39,8 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import { LockIcon } from '@chakra-ui/icons';
+
 import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
@@ -158,26 +160,10 @@ class Process extends Component {
   };
 
   getTitle = (process, isAdmin) => {
-    const { history, t } = this.props;
+    const { t } = this.props;
 
     return (
       <Flex>
-        {process.isPrivate && (
-          <div style={{ textAlign: 'right' }}>
-            <Tooltip
-              placement="topRight"
-              trigger={['hover', 'click', 'focus']}
-              title={
-                <span style={{ fontSize: 12 }}>
-                  Private processes are only visible by their members, and participation is possible
-                  only via invites by their admins.
-                </span>
-              }
-            >
-              <em style={{ fontSize: 12 }}>This is a private process</em>
-            </Tooltip>
-          </div>
-        )}
         <Box flexGrow={1} mb="2" p="4">
           <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
             {process.title}
@@ -186,10 +172,24 @@ class Process extends Component {
         </Box>
 
         {isAdmin && process.isPrivate ? (
-          <Flex align="flex-end" direction="row" p="4">
-            <CLink onClick={this.handleOpenInviteManager} ml="4">
-              {t('labels.invite')}
-            </CLink>
+          <Flex p="4" direction="column">
+            {process.isPrivate && (
+              <Box alignSelf="end" mb="4">
+                <Tooltip label={t('private.info')}>
+                  <Flex direction="column" justify="flex-end">
+                    <LockIcon alignSelf="end" />
+                    <Text fontSize="sm">
+                      <em>{t('private.title')} </em>
+                    </Text>
+                  </Flex>
+                </Tooltip>
+              </Box>
+            )}
+            <Box>
+              <CLink onClick={this.handleOpenInviteManager} ml="4">
+                {t('labels.invite')}
+              </CLink>
+            </Box>
           </Flex>
         ) : (
           <Box alignSelf="end" p="4">
@@ -418,7 +418,7 @@ class Process extends Component {
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
-    console.log(processMeetings);
+
     return (
       process &&
       processMeetings.map((meeting, meetingIndex) => (

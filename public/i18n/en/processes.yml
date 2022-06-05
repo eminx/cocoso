@@ -112,4 +112,6 @@ invite:
     valid: Please enter a valid first name
   submit: Send Invite
 
-privateInfo: Private processes are only visible by their members, and participation is possible only via invites by their admins.
+private:
+  title: privat
+  info: Private processes are only visible by their members, and participation is possible only via invites by their admins.
