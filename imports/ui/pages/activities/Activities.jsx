@@ -17,14 +17,13 @@ const publicSettings = Meteor.settings.public;
 const yesterday = moment().add(-1, 'days');
 
 const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
-
-const compareForSort = (a, b) => {
+function compareDatesForSort(a, b) {
   const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
   const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
   const dateA = new Date(`${firstOccurenceA.startDate}T${firstOccurenceA.startTime}:00Z`);
   const dateB = new Date(`${firstOccurenceB.startDate}T${firstOccurenceB.startTime}:00Z`);
   return dateA - dateB;
-};
+}
 
 function Activities({ activitiesList, processesList, isLoading, history }) {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
@@ -86,7 +85,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
 
   const getAllSorted = () => {
     const allActivities = [...getPublicActivities(), ...getProcessMeetings()];
-    return allActivities.sort(compareForSort);
+    return allActivities.sort(compareDatesForSort);
   };
 
   const allSortedActivities = getAllSorted();

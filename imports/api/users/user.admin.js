@@ -3,6 +3,7 @@ import { getHost } from '../_utils/shared';
 
 import Hosts from '../hosts/host';
 import { isContributorOrAdmin, isContributor } from './user.roles';
+import Activities from '../activities/activity';
 
 const isUserAdmin = (members, userId) =>
   members.some((member) => member.id === userId && member.role === 'admin');
@@ -298,6 +299,31 @@ Meteor.methods({
           },
         }
       );
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  getActivitiesbyUserId(userId) {
+    const currentUser = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const isAdmin = currentHost && isUserAdmin(currentHost.members, currentUser._id);
+
+    if (!currentUser) {
+      throw new Meteor.Error('You are not allowed');
+    }
+    if (!isContributorOrAdmin(currentUser, currentHost)) {
+      console.log('!isContributorOrAdmin');
+      throw new Meteor.Error('You can not have activities as a participant');
+    }
+    if (userId !== currentUser._id && !isAdmin) {
+      console.log('!isAdmin');
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    try {
+      return Activities.find({ authorId: userId }).fetch();
     } catch (error) {
       throw new Meteor.Error(error);
     }
