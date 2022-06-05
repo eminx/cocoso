@@ -15,6 +15,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  Avatar,
   Badge,
   Box,
   Button,
@@ -179,7 +180,7 @@ class Process extends Component {
                   <Flex direction="column" justify="flex-end">
                     <LockIcon alignSelf="end" />
                     <Text fontSize="sm">
-                      <em>{t('private.title')} </em>
+                      <em>{t('private.title')}</em>
                     </Text>
                   </Flex>
                 </Tooltip>
@@ -192,9 +193,16 @@ class Process extends Component {
             </Box>
           </Flex>
         ) : (
-          <Box alignSelf="end" p="4">
-            {process.adminUsername}
-          </Box>
+          <Center alignSelf="end" p="4">
+            <Link to={`/@${process.adminUsername}`}>
+              <Flex direction="column">
+                <Avatar src={process.authorAvatar} />
+                <Text fontSize="sm" textAlign="center">
+                  {process.adminUsername}
+                </Text>
+              </Flex>
+            </Link>
+          </Center>
         )}
       </Flex>
     );
