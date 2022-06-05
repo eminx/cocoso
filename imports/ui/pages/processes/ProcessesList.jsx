@@ -22,8 +22,6 @@ import {
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
-import NiceList from '../../components/NiceList';
-import Template from '../../components/Template';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../utils/shared';
@@ -51,26 +49,6 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
       value: 'archived',
     },
   ];
-
-  const archiveProcess = (processId) => {
-    Meteor.call('archiveProcess', processId, (error, respond) => {
-      if (error) {
-        message.error(error.error);
-      } else {
-        message.success(t('message.archived'));
-      }
-    });
-  };
-
-  const unarchiveProcess = (processId) => {
-    Meteor.call('unarchiveProcess', processId, (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-      } else {
-        message.success(t('message.unarchived'));
-      }
-    });
-  };
 
   const getFilteredProcesses = () => {
     if (!processes) {

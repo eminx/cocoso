@@ -44,9 +44,11 @@ message:
   removed: Du tas bort från processen
 
 actions:
-  this: Gå med i denna process
-  join: Gå med i processen
-  leave: Lämna processen
+  this: Gå med
+  join: Gå med
+  leave: Lämna
+  archive: Arkivera
+  unarchive: Avarkivera
 
 meeting:
   attends:

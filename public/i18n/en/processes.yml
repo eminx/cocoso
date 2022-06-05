@@ -3,7 +3,7 @@ labels:
   unarchived: Unarchive
   member: Members
   date: Dates
-  invite: Manage Access
+  invite: Manage access
 
 tabs:
   active: Active
@@ -44,9 +44,11 @@ message:
   removed: You are removed from the process
 
 actions:
-  this: Join this process
-  join: Join process
-  leave: Leave process
+  this: Join
+  join: Join
+  leave: Leave
+  archive: Archive
+  unarchive: Unarchive
 
 meeting:
   attends:
@@ -113,5 +115,5 @@ invite:
   submit: Send Invite
 
 private:
-  title: privat
+  title: private
   info: Private processes are only visible by their members, and participation is possible only via invites by their admins.

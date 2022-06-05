@@ -25,10 +25,15 @@ import {
   FormLabel,
   Heading,
   HStack,
+  IconButton,
   Image,
   Link as CLink,
   List,
   ListItem,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   Select,
   Switch,
   Tabs,
@@ -40,7 +45,7 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { LockIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, LockIcon } from '@chakra-ui/icons';
 
 import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
@@ -160,8 +165,36 @@ class Process extends Component {
     return messages;
   };
 
+  archiveProcess = () => {
+    const { process, t } = this.props;
+    const processId = process._id;
+
+    Meteor.call('archiveProcess', processId, (error, respond) => {
+      if (error) {
+        message.error(error.error);
+      } else {
+        message.success(t('message.archived'));
+      }
+    });
+  };
+
+  unarchiveProcess = () => {
+    const { process, t } = this.props;
+    const processId = process._id;
+
+    Meteor.call('unarchiveProcess', processId, (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.success(t('message.unarchived'));
+      }
+    });
+  };
+
   getTitle = (process, isAdmin) => {
     const { t } = this.props;
+
+    const isArchived = process.isArchived;
 
     return (
       <Flex>
@@ -169,12 +202,15 @@ class Process extends Component {
           <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
             {process.title}
             {process.isPrivate && (
-              <Badge ml="2" mb="1">
+              <Badge ml="2" mb="3">
                 <Tooltip label={t('private.info')}>
-                  <Flex direction="column" justify="flex-end">
-                    <LockIcon fontSize="xl" alignSelf="center" />
-                  </Flex>
+                  <Text fontSize="sm">{t('private.title')}</Text>
                 </Tooltip>
+              </Badge>
+            )}
+            {process.isArchived && (
+              <Badge ml="2" mb="3">
+                <Text fontSize="sm">{t('labels.archived')}</Text>
               </Badge>
             )}
           </Heading>
@@ -182,12 +218,6 @@ class Process extends Component {
         </Box>
 
         <Flex p="4" direction="column">
-          {/* <Box>
-            <CLink onClick={this.handleOpenInviteManager} ml="4">
-              {t('labels.invite')}
-            </CLink>
-          </Box> */}
-
           <Center alignSelf="end">
             <Link to={`/@${process.adminUsername}`}>
               <Flex direction="column">
@@ -199,6 +229,25 @@ class Process extends Component {
             </Link>
           </Center>
         </Flex>
+
+        {isAdmin && (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<ChevronDownIcon />}
+              variant="ghost"
+            />
+            <MenuList>
+              {process.isPrivate && isAdmin && (
+                <MenuItem onClick={this.handleOpenInviteManager}>{t('labels.invite')}</MenuItem>
+              )}
+              <MenuItem onClick={isArchived ? this.unarchiveProcess : this.archiveProcess}>
+                {isArchived ? t('actions.unarchive') : t('actions.archive')}
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
     );
   };
@@ -859,9 +908,6 @@ class Process extends Component {
 
     return (
       <div>
-        <Helmet>
-          <title>{process.title}</title>
-        </Helmet>
         <Template
           leftContent={
             <Visible lg xl>
@@ -922,6 +968,11 @@ class Process extends Component {
             </Center>
           )}
         </Template>
+
+        <Helmet>
+          <title>{process.title}</title>
+        </Helmet>
+
         <ConfirmModal
           visible={modalOpen}
           title={t('confirm.title.text', {
