@@ -758,9 +758,9 @@ class Process extends Component {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <Box>
+                  <Center bg="gray.900">
                     <Image src={process.imageUrl} fit="contain" fill />
-                  </Box>
+                  </Center>
                   <Box pt="4">
                     <div className="text-content">{renderHTML(process.description)}</div>
                   </Box>

@@ -1,0 +1,79 @@
+actions:
+  signup: Signup
+  login: Login
+  logout: Logout
+  forgot: Forgot your password?
+  reset: Reset your password
+
+login:
+  labels:
+    title: Login to Your Account
+    subtitle: Don't have an account?
+  form:
+    username:
+      label: Username or Email address
+    password:
+      label: Password
+  messages:
+    error:
+      username: User not found
+      password: Incorrect password
+    success: You are successfully logged in
+
+signup:
+  labels:
+    title: Register New Account
+    subtitle: Have an account?
+  form:
+    username:
+      label: Username
+      helper: Minimum 4 characters, only lowercase letters and numbers
+    email:
+      label: Email address
+    password:
+      label: Password
+      helper: Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number
+      info: Your password is encrypted in the database.
+
+password:
+  labels:
+    title: Reset Password
+    subtitle:
+      forgot: If you forgot your password, reset it via a link sent to your email.
+      reset: Create your desired password
+  form:
+    email:
+      label: Type your email please
+  message:
+    linkSend: Reset link is sent to your email
+    checkMail: Please check your email and see if you received a link to reset your password
+    reset: Your password is successfully reset. Now you can login
+
+profile:
+  label: Personal Info
+  joinOrganisation: Join
+
+  form:
+    avatar:
+      label: Avatar
+      fileDropper: Click/Drag to upload
+      remove: Remove
+    firstname:
+      label: First name
+    lastname:
+      label: Last name
+    bio:
+      label: Bio
+    contact:
+      label: Contact Info
+
+  message:
+    role: You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role
+    participant: You are successfully set as participant
+    deny: You are not part of this organisation.
+
+delete:
+  action: Delete Account
+  label: Confirm Deletion
+  title: Are you sure?
+  body: You are about to permanently delete your entire account and all data associated with that. This is an irreversible action. Are you sure?
