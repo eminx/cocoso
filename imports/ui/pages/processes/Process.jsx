@@ -168,32 +168,27 @@ class Process extends Component {
         <Box flexGrow={1} mb="2" p="4">
           <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
             {process.title}
+            {process.isPrivate && (
+              <Badge ml="2" mb="1">
+                <Tooltip label={t('private.info')}>
+                  <Flex direction="column" justify="flex-end">
+                    <LockIcon fontSize="xl" alignSelf="center" />
+                  </Flex>
+                </Tooltip>
+              </Badge>
+            )}
           </Heading>
           <Text fontWeight="light">{process.readingMaterial}</Text>
         </Box>
 
-        {isAdmin && process.isPrivate ? (
-          <Flex p="4" direction="column">
-            {process.isPrivate && (
-              <Box alignSelf="end" mb="4">
-                <Tooltip label={t('private.info')}>
-                  <Flex direction="column" justify="flex-end">
-                    <LockIcon alignSelf="end" />
-                    <Text fontSize="sm">
-                      <em>{t('private.title')}</em>
-                    </Text>
-                  </Flex>
-                </Tooltip>
-              </Box>
-            )}
-            <Box>
-              <CLink onClick={this.handleOpenInviteManager} ml="4">
-                {t('labels.invite')}
-              </CLink>
-            </Box>
-          </Flex>
-        ) : (
-          <Center alignSelf="end" p="4">
+        <Flex p="4" direction="column">
+          {/* <Box>
+            <CLink onClick={this.handleOpenInviteManager} ml="4">
+              {t('labels.invite')}
+            </CLink>
+          </Box> */}
+
+          <Center alignSelf="end">
             <Link to={`/@${process.adminUsername}`}>
               <Flex direction="column">
                 <Avatar src={process.authorAvatar} />
@@ -203,7 +198,7 @@ class Process extends Component {
               </Flex>
             </Link>
           </Center>
-        )}
+        </Flex>
       </Flex>
     );
   };
