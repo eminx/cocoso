@@ -52,12 +52,12 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
 
   const getFilteredProcesses = () => {
     if (!processes) {
-      return [];
+      return <Loader />;
     }
 
     const filteredProcesses = processes.filter((process) => {
       if (filterBy === 2) {
-        return process.isArchived === true;
+        return process.isArchived;
       } else if (filterBy === 1) {
         return currentUser && process.members.some((member) => member.memberId === currentUser._id);
       }
