@@ -111,3 +111,5 @@ invite:
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan
+
+privateInfo: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer.

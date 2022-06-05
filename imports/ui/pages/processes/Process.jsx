@@ -7,6 +7,7 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 import DatePicker from '../../components/DatePicker.jsx';
 import {
@@ -34,6 +35,7 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Tooltip,
   Text,
   Textarea,
 } from '@chakra-ui/react';
@@ -162,18 +164,18 @@ class Process extends Component {
       <Flex>
         {process.isPrivate && (
           <div style={{ textAlign: 'right' }}>
-            {/* <Tooltip
+            <Tooltip
               placement="topRight"
               trigger={['hover', 'click', 'focus']}
               title={
                 <span style={{ fontSize: 12 }}>
-                  Private processes are only visible by their members, and
-                  participation is possible only via invites by their admins.
+                  Private processes are only visible by their members, and participation is possible
+                  only via invites by their admins.
                 </span>
               }
             >
               <em style={{ fontSize: 12 }}>This is a private process</em>
-            </Tooltip> */}
+            </Tooltip>
           </div>
         )}
         <Box flexGrow={1} mb="2" p="4">
@@ -854,6 +856,9 @@ class Process extends Component {
 
     return (
       <div>
+        <Helmet>
+          <title>{process.title}</title>
+        </Helmet>
         <Template
           leftContent={
             <Visible lg xl>
