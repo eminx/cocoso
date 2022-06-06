@@ -1,0 +1,150 @@
+# LANGUAGE KEYS
+langs:
+  en: English
+  sv: Svenska
+  form:
+    label: Preferred Language
+    holder: Select a language
+
+# ALL ACTION BUTTON LABELS
+actions:
+  create: New
+  update: Edit
+  remove: Delete
+  submit: Confirm
+  send: Send
+  cancel: Cancel
+  close: Close
+  reset: Reset
+  add: Add
+  print: Print
+  logout: Logout
+  downloadCSV: Download CSV
+
+# ACTION PAGE TITLES
+labels:
+  all: All
+  booked: booked
+  contact: Contact
+  create: Create a New {{ domain }}
+  event: Event
+  newBooking: New Booking
+  page: Page
+  process: Process
+  remove: Remove
+  sortBy:
+    placeholder: Sort by
+    date: Date
+    name: Name
+  update: Edit this {{ domain }}
+  unselected: Not selected resource
+
+# ALL CLIENT-SIDE NOTIFICATIONS
+message:
+  loading: loading {{ something }} ...
+
+  success:
+    create: '{{ domain }} is successfully created'
+    update: '{{ domain }} is successfully updated'
+    remove: '{{ domain }} is successfully deleted'
+    save: '{{ domain }} is successfully saved'
+
+  error:
+    imageRequired: Image is required
+
+  access:
+    deny: You are not allowed
+    admin: You have to be super admin to create a {{ domain }}
+    contributor: You have to become a contributor to create {{ domain }}
+    register: You have to become a registered member to create {{ domain }}
+
+  exists: A {{ domain }} with this {{ property }} already exists
+  valid:
+    required: '{{ field }} is not allowed to be empty'
+    email: '{{ field }} must be a valid email'
+    min: '{{ field }} has to be at least {{ min }} characters'
+
+# MODAL POP-UPS
+modals:
+  confirm:
+    delete:
+      title: Confirm Delete
+      body: Are you sure you want to delete this {{ domain }}?
+      yes: Yes, delete
+
+  # FEEDBACK FORM
+  feedback:
+    label: Give Feedback
+    form:
+      email:
+        label: Your email address
+      subject:
+        label: Subject
+        select:
+          suggest: Suggestion
+          bug: Bug
+          compliment: Compliment
+      details:
+        label: Details
+
+# GUEST | MEMBER | ADMIN MENU LABELS
+menu:
+  guest:
+    login: Login
+  member:
+    label: My
+    profile: My Profile
+    activities: My Activities
+    works: My Works
+  admin:
+    label: Admin
+    settings: Settings
+    members: Members
+    resources: Resources
+    emails: Emails
+  notifications:
+    label: Notifications
+
+plugins:
+  fileDropper:
+    replace: If you want to replace it with another one, click on the image to reopen the file picker
+    single: Please drop only one file at a time.
+    helper: Drop or pick image
+    helperMultiple: Drop or pick image(s)
+
+domains:
+  a: a
+  your: Your
+  public: Public
+
+  calendar: Calendar
+  activity: Activity
+  activities: Activities
+  process: Process
+  processes: Processes
+  resource: Resource
+  resources: Resources
+  work: Work
+  works: Works
+  host: Host
+  page: Page
+
+  settings: Settings
+  email: Email
+
+  account: account
+  data: data
+  avatar: avatar
+  static: static
+
+  props:
+    name: name
+    title: title
+
+documents:
+  label: Documents
+  empty: No document assigned
+  drop: Drop documents to upload
+  up: uploading
+  remove: The document is successfully removed
+  fileDropper: is successfully uploaded and assigned

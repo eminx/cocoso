@@ -1,0 +1,26 @@
+# ADMIN EMAILS PAGE
+emails:
+  label: Emails
+  form:
+    subject:
+      label: Subject
+      holder: Welcome
+    appeal:
+      label: Appeal
+      holder: Dear
+      addon: '@username'
+    body:
+      label: Body
+
+# ADMIN STATIC PAGES
+pages:
+  actions:
+    delete: Delete this page
+    backTo: back to
+  form:
+    title:
+      label: Title
+      holder: Contributing
+    desc:
+      label: Description
+      holder: Contributing guidelines are...

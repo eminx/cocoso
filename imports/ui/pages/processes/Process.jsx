@@ -7,6 +7,7 @@ import ReactDropzone from 'react-dropzone';
 import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 import DatePicker from '../../components/DatePicker.jsx';
 import {
@@ -14,6 +15,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  Avatar,
   Badge,
   Box,
   Button,
@@ -23,10 +25,15 @@ import {
   FormLabel,
   Heading,
   HStack,
+  IconButton,
   Image,
   Link as CLink,
   List,
   ListItem,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   Select,
   Switch,
   Tabs,
@@ -34,9 +41,12 @@ import {
   TabList,
   TabPanels,
   TabPanel,
+  Tooltip,
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import { ChevronDownIcon, LockIcon } from '@chakra-ui/icons';
+
 import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
@@ -155,44 +165,88 @@ class Process extends Component {
     return messages;
   };
 
+  archiveProcess = () => {
+    const { process, t } = this.props;
+    const processId = process._id;
+
+    Meteor.call('archiveProcess', processId, (error, respond) => {
+      if (error) {
+        message.error(error.error);
+      } else {
+        message.success(t('message.archived'));
+      }
+    });
+  };
+
+  unarchiveProcess = () => {
+    const { process, t } = this.props;
+    const processId = process._id;
+
+    Meteor.call('unarchiveProcess', processId, (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.success(t('message.unarchived'));
+      }
+    });
+  };
+
   getTitle = (process, isAdmin) => {
-    const { history, t } = this.props;
+    const { t } = this.props;
+
+    const isArchived = process.isArchived;
 
     return (
       <Flex>
-        {process.isPrivate && (
-          <div style={{ textAlign: 'right' }}>
-            {/* <Tooltip
-              placement="topRight"
-              trigger={['hover', 'click', 'focus']}
-              title={
-                <span style={{ fontSize: 12 }}>
-                  Private processes are only visible by their members, and
-                  participation is possible only via invites by their admins.
-                </span>
-              }
-            >
-              <em style={{ fontSize: 12 }}>This is a private process</em>
-            </Tooltip> */}
-          </div>
-        )}
         <Box flexGrow={1} mb="2" p="4">
           <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
             {process.title}
+            {process.isPrivate && (
+              <Badge ml="2" mb="3">
+                <Tooltip label={t('private.info')}>
+                  <Text fontSize="sm">{t('private.title')}</Text>
+                </Tooltip>
+              </Badge>
+            )}
+            {process.isArchived && (
+              <Badge ml="2" mb="3">
+                <Text fontSize="sm">{t('labels.archived')}</Text>
+              </Badge>
+            )}
           </Heading>
           <Text fontWeight="light">{process.readingMaterial}</Text>
         </Box>
 
-        {isAdmin && process.isPrivate ? (
-          <Flex align="flex-end" direction="row" p="4">
-            <CLink onClick={this.handleOpenInviteManager} ml="4">
-              {t('labels.invite')}
-            </CLink>
-          </Flex>
-        ) : (
-          <Box alignSelf="end" p="4">
-            {process.adminUsername}
-          </Box>
+        <Flex p="4" direction="column">
+          <Center alignSelf="end">
+            <Link to={`/@${process.adminUsername}`}>
+              <Flex direction="column">
+                <Avatar src={process.authorAvatar} />
+                <Text fontSize="sm" textAlign="center">
+                  {process.adminUsername}
+                </Text>
+              </Flex>
+            </Link>
+          </Center>
+        </Flex>
+
+        {isAdmin && (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<ChevronDownIcon />}
+              variant="ghost"
+            />
+            <MenuList>
+              {process.isPrivate && isAdmin && (
+                <MenuItem onClick={this.handleOpenInviteManager}>{t('labels.invite')}</MenuItem>
+              )}
+              <MenuItem onClick={isArchived ? this.unarchiveProcess : this.archiveProcess}>
+                {isArchived ? t('actions.unarchive') : t('actions.archive')}
+              </MenuItem>
+            </MenuList>
+          </Menu>
         )}
       </Flex>
     );
@@ -416,7 +470,7 @@ class Process extends Component {
     }
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
-    console.log(processMeetings);
+
     return (
       process &&
       processMeetings.map((meeting, meetingIndex) => (
@@ -758,9 +812,9 @@ class Process extends Component {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <Box>
+                  <Center bg="gray.900">
                     <Image src={process.imageUrl} fit="contain" fill />
-                  </Box>
+                  </Center>
                   <Box pt="4">
                     <div className="text-content">{renderHTML(process.description)}</div>
                   </Box>
@@ -914,6 +968,11 @@ class Process extends Component {
             </Center>
           )}
         </Template>
+
+        <Helmet>
+          <title>{process.title}</title>
+        </Helmet>
+
         <ConfirmModal
           visible={modalOpen}
           title={t('confirm.title.text', {
