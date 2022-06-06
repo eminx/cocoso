@@ -314,16 +314,14 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
     if (!isContributorOrAdmin(currentUser, currentHost)) {
-      console.log('!isContributorOrAdmin');
       throw new Meteor.Error('You can not have activities as a participant');
     }
     if (userId !== currentUser._id && !isAdmin) {
-      console.log('!isAdmin');
       throw new Meteor.Error('You are not allowed');
     }
 
     try {
-      return Activities.find({ authorId: userId }).fetch();
+      return Activities.find({ authorId: userId, host }).fetch();
     } catch (error) {
       throw new Meteor.Error(error);
     }
