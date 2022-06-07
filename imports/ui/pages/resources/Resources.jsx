@@ -28,6 +28,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
 import ResourcesForCombo from '../../components/ResourcesForCombo';
+import Paginate from '../../components/Paginate';
 
 function ResourcesPage() {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
@@ -142,31 +143,49 @@ function ResourcesPage() {
           </Box>
           <TabPanels>
             <TabPanel>
-              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+              {/* <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted.map((resource, index) => (
                   <ResourceItem key={resource._id} resource={resource} />
                 ))}
-              </SimpleGrid>
+              </SimpleGrid> */}
+              <Paginate
+                items={resourcesFilteredAndSorted}
+                grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
+              >
+                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+              </Paginate>
             </TabPanel>
 
             <TabPanel>
-              <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
+              {/* <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted
                   .filter((r) => r.isCombo)
                   .map((resource, index) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
-              </SimpleGrid>
+              </SimpleGrid> */}
+              <Paginate
+                items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
+                grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
+              >
+                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+              </Paginate>
             </TabPanel>
 
             <TabPanel>
-              <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
+              {/* <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
                 {resourcesFilteredAndSorted
                   .filter((r) => !r.isCombo)
                   .map((resource, index) => (
                     <ResourceItem key={resource._id} resource={resource} />
                   ))}
-              </SimpleGrid>
+              </SimpleGrid> */}
+              <Paginate
+                items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
+                grid={{ columns: [1, 2, 3, 4], spacing: 3, w: '100%' }}
+              >
+                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+              </Paginate>
             </TabPanel>
           </TabPanels>
         </Tabs>
