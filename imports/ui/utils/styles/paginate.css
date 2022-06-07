@@ -1,0 +1,9 @@
+.paginate {
+  list-style: none;
+  display: inline-flex;
+}
+
+.paginate > li {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
