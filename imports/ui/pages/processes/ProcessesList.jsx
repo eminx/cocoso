@@ -24,6 +24,7 @@ import { Helmet } from 'react-helmet';
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Paginate from '../../components/Paginate';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../utils/shared';
@@ -140,7 +141,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
+                  {/* <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
                     {processesRendered.map((process) => (
                       <Link key={process._id} to={`/process/${process._id}`}>
                         <GridThumb image={process.imageUrl} large title={process.title}>
@@ -148,7 +149,20 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
                         </GridThumb>
                       </Link>
                     ))}
-                  </SimpleGrid>
+                  </SimpleGrid> */}
+
+                  <Paginate
+                    items={processesRendered}
+                    grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
+                  >
+                    {(process) => (
+                      <Link key={process._id} to={`/process/${process._id}`}>
+                        <GridThumb image={process.imageUrl} large title={process.title}>
+                          {moment(process.creationDate).format('D MMM YYYY')}
+                        </GridThumb>
+                      </Link>
+                    )}
+                  </Paginate>
                 </TabPanel>
               ))}
             </TabPanels>
