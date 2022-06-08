@@ -4,7 +4,9 @@ import ReactPaginate from 'react-paginate';
 
 import '../utils/styles/paginate.css';
 
-function PaginatedItems({ items, itemsPerPage = 6, grid, children }) {
+const defaultItemsPerPage = 6; // 12
+
+function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, grid, children }) {
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -25,22 +27,24 @@ function PaginatedItems({ items, itemsPerPage = 6, grid, children }) {
       <SimpleGrid {...grid}>
         {currentItems && currentItems.map((item) => children(item))}
       </SimpleGrid>
-      <Center>
-        <ReactPaginate
-          containerClassName="paginate"
-          pageLinkClassName="paginate-btn"
-          previousLinkClassName="paginate-btn"
-          nextLinkClassName="paginate-btn"
-          activeLinkClassName="paginate-active-btn"
-          previousLabel="< previous"
-          nextLabel="next >"
-          breakLabel="..."
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={pageCount}
-          renderOnZeroPageCount={null}
-        />
-      </Center>
+      {items.length > itemsPerPage && (
+        <Center>
+          <ReactPaginate
+            containerClassName="paginate"
+            pageLinkClassName="paginate-btn"
+            previousLinkClassName="paginate-btn"
+            nextLinkClassName="paginate-btn"
+            activeLinkClassName="paginate-active-btn"
+            previousLabel="Prev"
+            nextLabel="Next"
+            breakLabel="..."
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            renderOnZeroPageCount={null}
+          />
+        </Center>
+      )}
     </>
   );
 }
