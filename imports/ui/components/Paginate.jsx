@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 
 import '../utils/styles/paginate.css';
 
-const defaultItemsPerPage = 6; // 12
+const defaultItemsPerPage = 12;
 
 function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, grid, wrap, children }) {
   const [currentItems, setCurrentItems] = useState(null);

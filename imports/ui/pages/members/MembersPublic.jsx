@@ -98,7 +98,7 @@ function PublicMembers() {
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      <Paginate items={members} itemsPerPage={2} wrap>
+      <Paginate items={members} itemsPerPage={24} wrap>
         {(member) => (
           <WrapItem key={member.id}>
             <Link to={`/@${member.username}`}>
