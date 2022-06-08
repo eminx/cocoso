@@ -28,12 +28,16 @@ function PaginatedItems({ items, itemsPerPage = 6, grid, children }) {
       <Center>
         <ReactPaginate
           containerClassName="paginate"
-          breakLabel="..."
+          pageLinkClassName="paginate-btn"
+          previousLinkClassName="paginate-btn"
+          nextLinkClassName="paginate-btn"
+          activeLinkClassName="paginate-active-btn"
+          previousLabel="< previous"
           nextLabel="next >"
+          breakLabel="..."
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={pageCount}
-          previousLabel="< previous"
           renderOnZeroPageCount={null}
         />
       </Center>
