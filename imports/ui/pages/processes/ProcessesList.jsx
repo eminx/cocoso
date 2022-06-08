@@ -141,16 +141,6 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  {/* <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
-                    {processesRendered.map((process) => (
-                      <Link key={process._id} to={`/process/${process._id}`}>
-                        <GridThumb image={process.imageUrl} large title={process.title}>
-                          {moment(process.creationDate).format('D MMM YYYY')}
-                        </GridThumb>
-                      </Link>
-                    ))}
-                  </SimpleGrid> */}
-
                   <Paginate
                     items={processesRendered}
                     grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}

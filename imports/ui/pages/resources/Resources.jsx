@@ -143,11 +143,6 @@ function ResourcesPage() {
           </Box>
           <TabPanels>
             <TabPanel>
-              {/* <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-                {resourcesFilteredAndSorted.map((resource, index) => (
-                  <ResourceItem key={resource._id} resource={resource} />
-                ))}
-              </SimpleGrid> */}
               <Paginate
                 items={resourcesFilteredAndSorted}
                 grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
@@ -157,13 +152,6 @@ function ResourcesPage() {
             </TabPanel>
 
             <TabPanel>
-              {/* <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-                {resourcesFilteredAndSorted
-                  .filter((r) => r.isCombo)
-                  .map((resource, index) => (
-                    <ResourceItem key={resource._id} resource={resource} />
-                  ))}
-              </SimpleGrid> */}
               <Paginate
                 items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
                 grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
@@ -173,13 +161,6 @@ function ResourcesPage() {
             </TabPanel>
 
             <TabPanel>
-              {/* <SimpleGrid columns={[1, 2, 3, 4]} spacing={3} w="100%">
-                {resourcesFilteredAndSorted
-                  .filter((r) => !r.isCombo)
-                  .map((resource, index) => (
-                    <ResourceItem key={resource._id} resource={resource} />
-                  ))}
-              </SimpleGrid> */}
               <Paginate
                 items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
                 grid={{ columns: [1, 2, 3, 4], spacing: 3, w: '100%' }}

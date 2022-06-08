@@ -114,18 +114,6 @@ function Works() {
         </Wrap>
       </Center>
 
-      {/* <Center px="2">
-        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-          {worksWithCategoryColors.map((work, index) => (
-            <Box key={work._id} w="100%">
-              <Link to={`/${work.authorUsername}/work/${work._id}`}>
-                <WorkThumb work={work} />
-              </Link>
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Center> */}
-
       <Paginate
         items={worksWithCategoryColors}
         grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
