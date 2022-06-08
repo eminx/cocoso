@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
+import Paginate from '../../components/Paginate';
 import WorkThumb from '../../components/WorkThumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -113,7 +114,7 @@ function Works() {
         </Wrap>
       </Center>
 
-      <Center px="2">
+      {/* <Center px="2">
         <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
           {worksWithCategoryColors.map((work, index) => (
             <Box key={work._id} w="100%">
@@ -123,7 +124,20 @@ function Works() {
             </Box>
           ))}
         </SimpleGrid>
-      </Center>
+      </Center> */}
+
+      <Paginate
+        items={worksWithCategoryColors}
+        grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
+      >
+        {(work) => (
+          <Box key={work._id} w="100%">
+            <Link to={`/${work.authorUsername}/work/${work._id}`}>
+              <WorkThumb work={work} />
+            </Link>
+          </Box>
+        )}
+      </Paginate>
     </Box>
   );
 }
