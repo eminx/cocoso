@@ -120,3 +120,74 @@
   background: var(--chakra-colors-green-500);
   color: var(--chakra-colors-white);
 }
+
+.paginate .disabled a:hover[disabled],
+.paginate .disabled a[data-hover][disabled],
+.paginate .disabled a:hover[aria-disabled='true'],
+.paginate .disabled a[data-hover][aria-disabled='true'],
+.paginate .disabled a:hover[data-disabled],
+.paginate .disabled a[data-hover][data-disabled] {
+  background: var(--chakra-colors-green-500);
+}
+.paginate .disabled a:active,
+.paginate .disabled a[data-active] {
+  background: var(--chakra-colors-green-700);
+}
+
+.paginate .disabled a:hover,
+.paginate .disabled a[data-hover] {
+  background: var(--chakra-colors-green-600);
+}
+.paginate .disabled a[disabled],
+.paginate .disabled a[aria-disabled='true'],
+.paginate .disabled a[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: var(--chakra-shadows-none);
+}
+.paginate .disabled a:focus,
+.paginate .disabled a[data-focus] {
+  box-shadow: var(--chakra-shadows-outline);
+}
+.paginate .disabled a {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  white-space: nowrap;
+  vertical-align: middle;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  width: auto;
+  line-height: 1.2;
+  border-radius: var(--chakra-radii-md);
+  font-weight: var(--chakra-fontWeights-semibold);
+  transition-property: var(--chakra-transition-property-common);
+  transition-duration: var(--chakra-transition-duration-normal);
+  height: var(--chakra-sizes-10);
+  min-width: var(--chakra-sizes-10);
+  font-size: var(--chakra-fontSizes-md);
+  -webkit-padding-start: var(--chakra-space-4);
+  padding-inline-start: var(--chakra-space-4);
+  -webkit-padding-end: var(--chakra-space-4);
+  padding-inline-end: var(--chakra-space-4);
+  background: var(--chakra-colors-green-500);
+  color: var(--chakra-colors-white);
+}
