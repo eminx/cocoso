@@ -1,0 +1,100 @@
+label:
+  new: Create a New Activity
+  edit: Edit Activity
+
+form:
+  switch:
+    public: Public Event
+    exclusive: Exclusive Activity (Others cannot book)
+    rsvp: RSVP disabled
+  resource:
+    label: Resource
+    holder: Select resource to book
+  occurences:
+    label: Occurrences*
+  days:
+    single: Day
+    multiple: Multiple Days
+  date:
+    start: Start day
+    finish: Finish day
+  time:
+    start: Start time
+    finish: Finish time
+  capacity:
+    label: Capacity
+  details:
+    label: Details
+  title:
+    label: Title
+    holder: Give it a title
+    helper: This is typically title of your event
+  subtitle:
+    label: Subtitle
+    holder: give it a subtitle (artist name etc.)
+    helper: i.e. artist, or some subtitle...
+  desc:
+    label: Description
+  place:
+    label: Place
+    holder: Artistosphere
+  address:
+    label: Address
+    holder: 17th Street, Berlin...
+  image:
+    label: Image
+  submit: 'Confirm and Create'
+  waiting: 'Creating your activity...'
+  conflict:
+    alert: "There's already a booking for this resource at this date & time:"
+    notExclusiveInfo: 'Since both activities are not exclusive, you may go ahead and finalise your booking'
+
+members:
+  label: My Activities
+  tabs:
+    all: All
+    public: Public
+    private: Private
+  occurences: occurrences
+
+public:
+  labels:
+    resource: Resource
+    address: Address
+    dates: Dates
+  register:
+    label: Register
+    form:
+      name:
+        first: First Name
+        last: Last Name
+      email: Email
+      people:
+        label: People
+        number: Number of Attendees
+      loading: Submitting
+      actions:
+        create: Register
+        update: Update
+        remove: Remove your registration
+    email: Email already registered. Please update instead.
+    notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
+    disabled:
+      true: RSVP disabled. Please check the practical information.
+      false: Please click and open the date to RSVP
+      info: Registrations are disabled.
+  attandence:
+    label: Attendees
+    create: You have just successfully registered your attendance. Welcome!
+    update: You have successfully updated your RSVP
+    remove: You have successfully removed your registration
+  capacity:
+    full: Capacity is full now.
+    fullByYou: Congrats! You just filled the last space!
+  cancel:
+    label: Change/cancel existing registration
+    found: Now please continue
+    notFound: Please enter the details of your RSVP
+  past: This event has past
+  acceess:
+    deny: Only visible to registered members

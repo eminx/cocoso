@@ -180,7 +180,7 @@ Meteor.methods({
         'sendEmail',
         user._id,
         `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessJoinText(user.firstName || user.username, theProcess.title, processId)
+        getProcessJoinText(user.firstName || user.username, theProcess.title, processId, host)
       );
     } catch (error) {
       console.log(error);
@@ -218,7 +218,7 @@ Meteor.methods({
         'sendEmail',
         user._id,
         `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessLeaveText(user.firstName || user.username, theProcess.title, processId)
+        getProcessLeaveText(user.firstName || user.username, theProcess.title, processId, host)
       );
     } catch (error) {
       throw new Meteor.Error('Could not leave the process');
@@ -396,7 +396,8 @@ Meteor.methods({
           person.firstName,
           theProcess.title,
           theProcess._id,
-          user.username
+          user.username,
+          host
         )
       );
 

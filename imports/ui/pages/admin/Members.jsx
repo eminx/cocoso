@@ -15,6 +15,7 @@ import {
   TabPanels,
   TabList,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
@@ -26,6 +27,7 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
 import Hosts from '../../../api/hosts/host';
+import UsageReport from '../../components/UsageReport';
 
 moment.locale(i18n.language);
 
@@ -39,9 +41,10 @@ function Members({ history, members, isLoading }) {
   const [sortBy, setSortBy] = useState('join-date');
   const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
+  const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentUser, role } = useContext(StateContext);
 
   if (isLoading) {
@@ -110,6 +113,11 @@ function Members({ history, members, isLoading }) {
         content: t('actions.participant'),
         handleClick: () => setAsParticipant(member),
         isDisabled: !['contributor'].includes(member.role) || !['admin'].includes(role),
+      },
+      {
+        content: t('actions.usageReport'),
+        handleClick: () => setUserForUsageReport(member),
+        isDisabled: member.role === 'participant',
       },
     ],
   }));
@@ -229,6 +237,12 @@ function Members({ history, members, isLoading }) {
           </TabPanels>
         </Tabs>
       </Center>
+
+      <UsageReport
+        isOpen={Boolean(userForUsageReport)}
+        user={userForUsageReport}
+        onClose={() => setUserForUsageReport(null)}
+      />
     </Template>
   );
 }

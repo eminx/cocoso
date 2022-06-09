@@ -19,6 +19,7 @@ actions:
   add: Lägg till
   print: Skriva ut
   logout: Logga ut
+  downloadCSV: Ladda ner CSV
 
 # ACTION PAGE TITLES
 labels:

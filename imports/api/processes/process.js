@@ -51,7 +51,7 @@ Processes.schema = new SimpleSchema({
 
   isPublished: { type: Boolean },
   isPrivate: { type: Boolean },
-
+  isArchived: { type: Boolean, optional: true },
   creationDate: { type: Date },
 });
 

@@ -44,9 +44,11 @@ message:
   removed: Du tas bort från processen
 
 actions:
-  this: Gå med i denna process
-  join: Gå med i processen
-  leave: Lämna processen
+  this: Gå med
+  join: Gå med
+  leave: Lämna
+  archive: Arkivera
+  unarchive: Avarkivera
 
 meeting:
   attends:
@@ -111,3 +113,7 @@ invite:
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan
+
+private:
+  title: privat
+  info: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer.
