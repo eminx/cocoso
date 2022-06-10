@@ -6,7 +6,13 @@ import '../utils/styles/paginate.css';
 
 const defaultItemsPerPage = 12;
 
-function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, grid, wrap, children }) {
+function PaginatedItems({
+  items,
+  itemsPerPage = defaultItemsPerPage,
+  isContainerSimpleGrid = true,
+  grid = { columns: [1, 1, 2, 3], spacing: 3, w: '100%' },
+  children,
+}) {
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -24,12 +30,13 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, grid, wrap,
 
   return (
     <>
-      {grid && (
+      {isContainerSimpleGrid ? (
         <SimpleGrid {...grid}>
           {currentItems && currentItems.map((item) => children(item))}
         </SimpleGrid>
+      ) : (
+        <Wrap>{currentItems && currentItems.map((item) => children(item))}</Wrap>
       )}
-      {wrap && <Wrap {...wrap}>{currentItems && currentItems.map((item) => children(item))}</Wrap>}
       {items.length > itemsPerPage && (
         <Center>
           <ReactPaginate

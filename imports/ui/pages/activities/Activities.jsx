@@ -117,7 +117,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         )}
       </Center>
 
-      <Paginate items={allSortedActivities} grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}>
+      <Paginate items={allSortedActivities}>
         {(activity) => (
           <Box key={activity.title}>
             <Link

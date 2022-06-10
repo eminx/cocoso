@@ -143,19 +143,13 @@ function ResourcesPage() {
           </Box>
           <TabPanels>
             <TabPanel>
-              <Paginate
-                items={resourcesFilteredAndSorted}
-                grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
-              >
+              <Paginate items={resourcesFilteredAndSorted}>
                 {(resource) => <ResourceItem key={resource._id} resource={resource} />}
               </Paginate>
             </TabPanel>
 
             <TabPanel>
-              <Paginate
-                items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
-                grid={{ columns: [1, 1, 2, 3], spacing: 3, w: '100%' }}
-              >
+              <Paginate items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}>
                 {(resource) => <ResourceItem key={resource._id} resource={resource} />}
               </Paginate>
             </TabPanel>
