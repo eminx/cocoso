@@ -329,6 +329,7 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     Hosts.find().forEach((host) => {
+      console.log(host);
       Pages.insert({
         host: host.host,
         authorId: host.members[0].id,
@@ -341,6 +342,7 @@ Migrations.add({
         }),
         isPublished: true,
         creationDate: new Date(),
+        isTermsPage: true,
       });
     });
   },
@@ -349,7 +351,7 @@ Migrations.add({
     Hosts.find().forEach((host) => {
       Pages.remove({
         host: host.host,
-        title: 'Terms',
+        isTermsPage: true,
       });
     });
   },
@@ -370,5 +372,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(10);
   // Migrations.migrateTo(11);
   // Migrations.migrateTo(12);
+  // Migrations.migrateTo(13);
   Migrations.migrateTo('latest');
 });

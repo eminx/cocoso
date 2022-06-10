@@ -80,6 +80,11 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const thePage = Pages.find(pageId);
+    if (thePage.isTermsPage) {
+      throw new Meteor.Error('You cannot delete terms page');
+    }
+
     try {
       Pages.remove(pageId);
     } catch (error) {

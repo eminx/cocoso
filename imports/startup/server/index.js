@@ -20,4 +20,6 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+
+  Migrations.unlock();
 });
