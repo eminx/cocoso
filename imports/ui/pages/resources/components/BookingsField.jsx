@@ -102,7 +102,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
     }
     try {
       await call('deleteActivity', bookingId);
-      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
+      message.success(tc('message.success.remove', { domain: tc('domains.activity') }));
       getResourceBookingsForUser();
     } catch (error) {
       message.error(error.reason);
