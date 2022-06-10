@@ -59,7 +59,7 @@ const getRoute = (item, index) => {
 
 const getBackgroundStyle = (cHue) => {
   return {
-    backgroundColor: 'rgba(0, 0, 0, .08)',
+    backgroundColor: 'rgb(245, 245, 245)',
   };
 
   if (!cHue) {
