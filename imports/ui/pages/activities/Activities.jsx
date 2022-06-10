@@ -9,6 +9,7 @@ import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/reac
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
+import Paginate from '../../components/Paginate';
 import PublicActivityThumb from '../../components/PublicActivityThumb';
 
 moment.locale(i18n.language);
@@ -116,19 +117,17 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         )}
       </Center>
 
-      <Center px="2">
-        <SimpleGrid columns={[1, 1, 2, 3]} spacing={3} w="100%">
-          {allSortedActivities.map((activity) => (
-            <Box key={activity.title}>
-              <Link
-                to={activity.isProcess ? `/process/${activity._id}` : `/activity/${activity._id}`}
-              >
-                <PublicActivityThumb item={activity} />
-              </Link>
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Center>
+      <Paginate items={allSortedActivities}>
+        {(activity) => (
+          <Box key={activity.title}>
+            <Link
+              to={activity.isProcess ? `/process/${activity._id}` : `/activity/${activity._id}`}
+            >
+              <PublicActivityThumb item={activity} />
+            </Link>
+          </Box>
+        )}
+      </Paginate>
     </Box>
   );
 }

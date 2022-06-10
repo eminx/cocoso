@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Box, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
+import Paginate from '../../components/Paginate';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
@@ -97,29 +98,27 @@ function PublicMembers() {
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-      <Box justifyContent="center">
-        <Wrap>
-          {members.map((member) => (
-            <WrapItem key={member.id}>
-              <Link to={`/@${member.username}`}>
-                <Box m="1">
-                  <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />
-                  <Center>
-                    <Text fontWeight="bold" fontSize="lg" isTruncated>
-                      {member.username}
-                    </Text>
-                  </Center>
-                  <Center>
-                    <Text color="gray.900" isTruncated textAlign="center" width="120px">
-                      {getFullName(member)}
-                    </Text>
-                  </Center>
-                </Box>
-              </Link>
-            </WrapItem>
-          ))}
-        </Wrap>
-      </Box>
+      <Paginate items={members} itemsPerPage={24} isContainerSimpleGrid={false}>
+        {(member) => (
+          <WrapItem key={member.id}>
+            <Link to={`/@${member.username}`}>
+              <Box m="1">
+                <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />
+                <Center>
+                  <Text fontWeight="bold" fontSize="lg" isTruncated>
+                    {member.username}
+                  </Text>
+                </Center>
+                <Center>
+                  <Text color="gray.900" isTruncated textAlign="center" width="120px">
+                    {getFullName(member)}
+                  </Text>
+                </Center>
+              </Box>
+            </Link>
+          </WrapItem>
+        )}
+      </Paginate>
     </Box>
   );
 }

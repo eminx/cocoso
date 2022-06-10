@@ -4,25 +4,11 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { Link } from 'react-router-dom';
 
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Image,
-  SimpleGrid,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
-import { message } from '../../components/message';
+import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
 import { compareForSort } from '../../utils/shared';
 import GridThumb from '../../components/GridThumb';
@@ -118,15 +104,20 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  <SimpleGrid columns={[1, 1, 2, 2]} spacing={3} w="100%">
-                    {processesRendered.map((process) => (
-                      <Link key={process._id} to={`/process/${process._id}`}>
-                        <GridThumb image={process.imageUrl} large title={process.title}>
-                          {moment(process.creationDate).format('D MMM YYYY')}
-                        </GridThumb>
-                      </Link>
-                    ))}
-                  </SimpleGrid>
+                  {processesRendered.length > 0 && (
+                    <Paginate
+                      items={processesRendered}
+                      grid={{ columns: [1, 1, 2, 2], spacing: 3, w: '100%' }}
+                    >
+                      {(process) => (
+                        <Link key={process._id} to={`/process/${process._id}`}>
+                          <GridThumb image={process.imageUrl} large title={process.title}>
+                            {moment(process.creationDate).format('D MMM YYYY')}
+                          </GridThumb>
+                        </Link>
+                      )}
+                    </Paginate>
+                  )}
                 </TabPanel>
               ))}
             </TabPanels>
@@ -134,53 +125,5 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
         </Box>
       </Box>
     </Box>
-  );
-}
-
-function ProcessItem({ process }) {
-  return (
-    <Flex bg="white" m="2" __hover={{ cursor: 'pointer' }}>
-      <Box w="100%" p="4" flexBasis="70%">
-        <Heading size="md" fontWeight="bold">
-          {itemType === 'resource' && gridItem.isCombo ? (
-            <ResourcesForCombo resource={gridItem} />
-          ) : (
-            gridItem?.label
-          )}
-        </Heading>
-        <Spacer my="4" />
-        <Text as="p" fontSize="xs" alignSelf="flex-end">
-          {moment(gridItem.createdAt).format('D MMM YYYY')}
-        </Text>
-      </Box>
-
-      {thumbHasImage && (
-        <Box flexBasis="200px">
-          <Image alt={alt} fit="cover" mr="2" src={gridItem.images[0]} w="xs" h="150px" />
-        </Box>
-      )}
-    </Flex>
-  );
-  return (
-    <Flex mb="4" p="2" w="100%" __hover={{ cursor: 'pointer' }}>
-      <Box mr="2">
-        <Image w="xs" fit="cover" src={process.imageUrl} />
-      </Box>
-      <Box w="100%">
-        <Box>
-          <Heading size="md">{process.title}</Heading>
-          <Text fontSize="lg" fontWeight="light">
-            {process.readingMaterial}
-          </Text>
-        </Box>
-
-        <Box p="2">
-          <Text textAlign="right">{process.adminUsername}</Text>
-          <Text fontSize="sm" textAlign="right">
-            {moment(process.creationDate).format('D MMM YYYY')}
-          </Text>
-        </Box>
-      </Box>
-    </Flex>
   );
 }
