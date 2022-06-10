@@ -28,7 +28,7 @@ const resetPasswordModel = {
 
 // SCHEMAS
 const usernameSchema = {
-  username: Joi.string().alphanum().min(4).max(15).required(),
+  username: Joi.string().alphanum().case('lower').min(4).max(15).required(),
 };
 
 const emailSchema = {
