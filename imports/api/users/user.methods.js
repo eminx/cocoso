@@ -193,10 +193,10 @@ Meteor.methods({
       throw new Meteor.Error('You are not a member anyways!');
     }
     try {
-      Meteor.users.remove(userId);
       Hosts.find({ 'members.id': userId }).forEach((host) => {
         Hosts.update(host._id, { $pull: { members: { id: userId } } });
       });
+      Meteor.users.remove(userId);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);

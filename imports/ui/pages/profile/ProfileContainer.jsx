@@ -11,6 +11,7 @@ export default ProfileContainer = withTracker((props) => {
   return {
     isLoading,
     currentUser,
+    history: props.history,
     t,
     tc,
   };

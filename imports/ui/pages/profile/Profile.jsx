@@ -17,6 +17,7 @@ import { StateContext } from '../../LayoutContainer';
 class Profile extends PureComponent {
   state = {
     isDeleteModalOn: false,
+    isDeleting: false,
     isUploading: false,
     uploadableAvatarLocal: null,
     uploadableAvatar: null,
@@ -83,22 +84,25 @@ class Profile extends PureComponent {
     }
   };
 
-  deleteAccount = async () => {
-    const { tc } = this.props;
-    try {
-      await call('deleteAccount');
+  deleteAccount = () => {
+    const { history, tc } = this.props;
+    this.setState({
+      isDeleting: true,
+    });
+
+    Meteor.call('deleteAccount', (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+        return;
+      }
       message.success(
         tc('message.success.remove', {
           domain: `${tc('domains.your')} ${tc('domains.account')}`,
         })
       );
-      setTimeout(() => {
-        window.location.reload();
-      }, 400);
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
+      history.push('/');
+    });
   };
 
   setSelfAsParticipant = async () => {
@@ -120,7 +124,7 @@ class Profile extends PureComponent {
       return <Redirect to="/login" />;
     }
 
-    const { isDeleteModalOn, uploadableAvatarLocal, isUploading } = this.state;
+    const { isDeleteModalOn, isDeleting, uploadableAvatarLocal, isUploading } = this.state;
 
     const pathname = history && history.location.pathname;
 
@@ -230,6 +234,7 @@ class Profile extends PureComponent {
           visible={isDeleteModalOn}
           title={t('delete.title')}
           confirmText={t('delete.label')}
+          confirmButtonProps={{ colorScheme: 'red', isLoading: isDeleting, isDisabled: isDeleting }}
           onConfirm={this.deleteAccount}
           onCancel={() => this.setState({ isDeleteModalOn: false })}
         >

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link as RLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Checkbox, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import {
@@ -47,6 +48,7 @@ const Login = ({ onSubmit }) => {
 };
 
 const Signup = ({ onSubmit }) => {
+  const [termsChecked, setTermsChecked] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
   const schema = Joi.object({
@@ -82,23 +84,35 @@ const Signup = ({ onSubmit }) => {
         >
           <Input {...register('email')} type="email" />
         </FormField>
+        <Box>
+          <FormField
+            errorMessage={errors.password?.message}
+            helperText={passwordHelperText}
+            isInvalid={errors.password}
+            label={t('signup.form.password.label')}
+          >
+            <Input {...register('password')} type="password" />
+          </FormField>
 
-        <FormField
-          errorMessage={errors.password?.message}
-          helperText={passwordHelperText}
-          isInvalid={errors.password}
-          label={t('signup.form.password.label')}
-        >
-          <Input {...register('password')} type="password" />
+          <Center mt="2">
+            <Text fontSize="xs" textAlign="center">
+              {t('signup.form.password.info')}
+            </Text>
+          </Center>
+        </Box>
+
+        <FormField>
+          <Checkbox onChange={() => setTermsChecked(!termsChecked)}>
+            <RLink to="/page/terms" target="_blank">
+              <Link as="span">
+                {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
+              </Link>
+            </RLink>
+          </Checkbox>
         </FormField>
-        <Center>
-          <Text fontSize="xs" textAlign="center">
-            {t('signup.form.password.info')}
-          </Text>
-        </Center>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button isDisabled={!isDirty || !termsChecked} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

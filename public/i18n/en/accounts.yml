@@ -34,6 +34,9 @@ signup:
       label: Password
       helper: Minimum 8 characters, including at least one lowercase letter, one uppercase letter, and one number
       info: Your password is encrypted in the database.
+    terms:
+      label: I read and accept {{ terms }}
+      terms: the terms of service and privacy policy
 
 password:
   labels:
