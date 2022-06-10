@@ -14,7 +14,7 @@ actions:
   submit: Bekräfta
   send: Bekräfta
   cancel: Annullera
-  close: Stänga
+  close: Stäng
   reset: Återställa
   add: Lägg till
   print: Skriva ut
@@ -82,7 +82,7 @@ modals:
         label: Ämne
         select:
           suggest: Förslag
-          bug: Bugga
+          bug: Bugg
           compliment: Komplimang
       details:
         label: Detaljer

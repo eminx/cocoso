@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
+  Badge,
   Box,
   Button,
   Center,
@@ -9,14 +10,13 @@ import {
   Heading,
   Input,
   Select,
-  SimpleGrid,
+  Spacer,
   Tab,
   Tabs,
   TabList,
   TabPanel,
   TabPanels,
   Text,
-  Spacer,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
@@ -24,10 +24,8 @@ import moment from 'moment';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Breadcrumb from '../../components/Breadcrumb';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
-import ResourcesForCombo from '../../components/ResourcesForCombo';
 import Paginate from '../../components/Paginate';
 
 function ResourcesPage() {
@@ -36,6 +34,7 @@ function ResourcesPage() {
   const [filterWord, setFilterWord] = useState('');
   const [sortBy, setSortBy] = useState('date');
   const [isLoading, setIsLoading] = useState(true);
+
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
@@ -96,7 +95,7 @@ function ResourcesPage() {
       )}
       {/* <Breadcrumb /> */}
 
-      {resources.length == 0 && (
+      {resourcesFilteredAndSorted.length == 0 && (
         <Center>
           <Heading size="md" fontWeight="bold">
             {t('messages.notfound')}
@@ -104,7 +103,7 @@ function ResourcesPage() {
         </Center>
       )}
 
-      {resources && resources.length > 0 && (
+      {resourcesFilteredAndSorted && resources.length > 0 && (
         <Tabs size="sm">
           <Box p="4" mx="4" bg="gray.50">
             <Flex align="center" direction={{ base: 'column', md: 'row' }}>
@@ -144,22 +143,22 @@ function ResourcesPage() {
           <TabPanels>
             <TabPanel>
               <Paginate items={resourcesFilteredAndSorted}>
-                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
               </Paginate>
             </TabPanel>
 
             <TabPanel>
               <Paginate items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}>
-                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
               </Paginate>
             </TabPanel>
 
             <TabPanel>
               <Paginate
-                items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}
+                items={resourcesFilteredAndSorted.filter((r) => !r.isCombo)}
                 grid={{ columns: [1, 2, 3, 4], spacing: 3, w: '100%' }}
               >
-                {(resource) => <ResourceItem key={resource._id} resource={resource} />}
+                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
               </Paginate>
             </TabPanel>
           </TabPanels>
@@ -169,18 +168,19 @@ function ResourcesPage() {
   );
 }
 
-function ResourceItem({ resource }) {
+function ResourceItem({ t, resource }) {
   if (!resource) {
     return null;
   }
+
   return (
     <Box>
       <Link to={`/resources/${resource._id}`}>
         <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
           {resource.isCombo && (
-            <Box>
-              <ResourcesForCombo resource={resource} />
-            </Box>
+            <Badge>
+              {t('cards.ifCombo')} ({resource.resourcesForCombo.length})
+            </Badge>
           )}
           <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
         </GridThumb>

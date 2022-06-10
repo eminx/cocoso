@@ -9,7 +9,6 @@ import {
   TabList,
   TabPanels,
   TabPanel,
-  Tag,
   Text,
   Center,
 } from '@chakra-ui/react';

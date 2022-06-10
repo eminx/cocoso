@@ -29,10 +29,12 @@ function Modal({
         <ModalBody>{children}</ModalBody>
 
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            {closeButtonLabel}
-          </Button>
-          <Button>{actionButtonLabel}</Button>
+          {closeButtonLabel && (
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              {closeButtonLabel}
+            </Button>
+          )}
+          {actionButtonLabel && <Button>{actionButtonLabel}</Button>}
         </ModalFooter>
       </ModalContent>
     </CModal>

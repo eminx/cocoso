@@ -1,23 +1,33 @@
-import React from 'react';
-import { Badge, Box, Flex } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Badge, Box, Button, Flex, Tag } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import Modal from './Modal';
+
 export default function ResourcesForCombo({ resource }) {
+  const [comboModal, setComboModal] = useState(false);
+
   const [t] = useTranslation('resources');
   const resourcesForCombo = resource?.resourcesForCombo;
   return (
     <Box my="2">
-      <Badge p="1" my="1">
-        {t('cards.ifCombo')}:
+      {resource.isCombo && (
+        <Button variant="link" onClick={() => setComboModal(true)}>
+          <Tag size="lg">
+            {t('cards.ifCombo')} ({resource.resourcesForCombo.length})
+          </Tag>
+        </Button>
+      )}
+
+      <Modal isOpen={Boolean(comboModal)} onClose={() => setComboModal(false)}>
         <Flex pt="1" wrap="wrap">
           {resourcesForCombo.map((res, i) => (
             <Badge
-              // fontWeight="normal"
               key={res._id}
-              mr="1"
-              mb="1"
-              px="1"
-              size="xs"
+              fontSize="20px"
+              mr="2"
+              mb="2"
+              px="2"
               textTransform="none"
               variant="solid"
             >
@@ -25,7 +35,7 @@ export default function ResourcesForCombo({ resource }) {
             </Badge>
           ))}
         </Flex>
-      </Badge>
+      </Modal>
     </Box>
   );
 }
