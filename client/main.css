@@ -11,6 +11,30 @@ body {
   background-repeat: no-repeat;
 }
 
+body h1,
+body h2,
+body h3 {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
+
+body h1:nth-of-type(1) {
+  margin-top: 0;
+}
+
+body h1 {
+  font-size: 2em;
+}
+
+body h2 {
+  font-size: 1.6em;
+}
+
+body h3 {
+  font-size: 1.2em;
+}
+
 .sortableHelper {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
   font-family: 'sans-serif';
