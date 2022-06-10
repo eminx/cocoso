@@ -55,7 +55,7 @@ Meteor.methods({
         host: values.host,
         authorId: currentUser._id,
         authorName: currentUser.username,
-        title: `Terms`,
+        title: 'Terms',
         longDescription: getTerms(values),
         isPublished: true,
         creationDate: new Date(),
