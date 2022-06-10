@@ -15,6 +15,7 @@ Meteor.publish('processes', function () {
     meetings: 1,
     adminUsername: 1,
     adminId: 1,
+    isArchived: 1,
   };
   if (userId) {
     fields.members = 1;
