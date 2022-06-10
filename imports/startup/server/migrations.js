@@ -5,6 +5,8 @@ import Hosts from '../../api/hosts/host';
 import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity';
 import Processes from '../../api/processes/process';
+import Pages from '../../api/pages/page';
+import getTerms from '../../api/_utils/terms';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
@@ -250,16 +252,16 @@ Migrations.add({
       await process.meetings.forEach(async (meeting, meetingIndex) => {
         const newAttendees = [];
         await meeting.attendees.forEach((attendee) => {
-            const theUser = Meteor.users.findOne(attendee.memberId);
-            const theAttendee = {
-              email: theUser.emails[0].address,
-              username: theUser.username,
-              firstName: theUser.firstName || '',
-              lastName: theUser.lastName || '',
-              numberOfPeople: 1,
-              registerDate: attendee.confirmDate,
-            };
-            newAttendees.push(theAttendee);
+          const theUser = Meteor.users.findOne(attendee.memberId);
+          const theAttendee = {
+            email: theUser.emails[0].address,
+            username: theUser.username,
+            firstName: theUser.firstName || '',
+            lastName: theUser.lastName || '',
+            numberOfPeople: 1,
+            registerDate: attendee.confirmDate,
+          };
+          newAttendees.push(theAttendee);
         });
         let newActivity = {
           host: process.host,
@@ -313,12 +315,43 @@ Migrations.add({
   async up() {
     console.log('up to', this.version);
     Processes.find({ meetings: { $exists: true } }).forEach((process) => {
-      Processes.update({ _id: process._id }, { $unset: { meetings: 1 }});
+      Processes.update({ _id: process._id }, { $unset: { meetings: 1 } });
     });
   },
   async down() {
     console.log('down to', this.version - 1);
     // one way single migration
+  },
+});
+
+Migrations.add({
+  version: 13,
+  async up() {
+    console.log('up to', this.version);
+    Hosts.find().forEach((host) => {
+      Pages.insert({
+        host: host.host,
+        authorId: host.members[0].id,
+        authorName: host.members[0].username,
+        title: 'Terms',
+        longDescription: getTerms({
+          name: host.settings.name,
+          host: host.host,
+          email: host.email,
+        }),
+        isPublished: true,
+        creationDate: new Date(),
+      });
+    });
+  },
+  async down() {
+    console.log('down to', this.version);
+    Hosts.find().forEach((host) => {
+      Pages.remove({
+        host: host.host,
+        title: 'Terms',
+      });
+    });
   },
 });
 
@@ -337,5 +370,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(10);
   // Migrations.migrateTo(11);
   // Migrations.migrateTo(12);
-  // Migrations.migrateTo('latest');
+  Migrations.migrateTo('latest');
 });
