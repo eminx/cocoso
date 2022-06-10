@@ -107,7 +107,7 @@ function ResourcesPage() {
       {resources && resources.length > 0 && (
         <Tabs size="sm">
           <Box p="4" mx="4" bg="gray.50">
-            <Flex direction={{ base: 'column', md: 'row' }} align="center">
+            <Flex align="center" direction={{ base: 'column', md: 'row' }}>
               <Box>
                 <Input
                   bg="white"

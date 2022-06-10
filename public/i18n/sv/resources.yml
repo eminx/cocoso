@@ -7,7 +7,7 @@ messages:
   notfound: Ingen resurs hittades
 
 form:
-  holder: skriva
+  holder: skriv
   combo:
     switch:
       label: Combo Resurser
