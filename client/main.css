@@ -11,27 +11,27 @@ body {
   background-repeat: no-repeat;
 }
 
-body h1,
-body h2,
-body h3 {
+.is-terms-page h1,
+.is-terms-page h2,
+.is-terms-page h3 {
   font-weight: bold;
   margin-bottom: 0.5em;
   margin-top: 1em;
 }
 
-body h1:nth-of-type(1) {
+.is-terms-page h1:nth-of-type(1) {
   margin-top: 0;
 }
 
-body h1 {
+.is-terms-page h1 {
   font-size: 2em;
 }
 
-body h2 {
+.is-terms-page h2 {
   font-size: 1.6em;
 }
 
-body h3 {
+.is-terms-page h3 {
   font-size: 1.2em;
 }
 

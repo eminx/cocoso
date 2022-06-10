@@ -92,20 +92,21 @@ class Page extends PureComponent {
         <Helmet>
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
+        <div className={currentPage.isTermsPage && 'is-terms-page'}>
+          <Box bg="white" mb="2" py="4" px="6">
+            <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+          </Box>
 
-        <Box bg="white" mb="2" py="4" px="6">
-          <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
-        </Box>
-
-        {currentUser && role === 'admin' && (
-          <Center p="2">
-            <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
-              <Button as="span" variant="ghost" size="sm">
-                <Trans i18nKey="common:actions.update" />
-              </Button>
-            </Link>
-          </Center>
-        )}
+          {currentUser && role === 'admin' && (
+            <Center p="2">
+              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+                <Button as="span" variant="ghost" size="sm">
+                  <Trans i18nKey="common:actions.update" />
+                </Button>
+              </Link>
+            </Center>
+          )}
+        </div>
       </Template>
     );
   }

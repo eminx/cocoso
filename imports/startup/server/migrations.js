@@ -338,7 +338,7 @@ Migrations.add({
         longDescription: getTerms({
           name: host.settings.name,
           host: host.host,
-          email: host.email,
+          email: host.settings.email,
         }),
         isPublished: true,
         creationDate: new Date(),
