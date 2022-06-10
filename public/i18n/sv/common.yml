@@ -46,7 +46,7 @@ message:
   success:
     create: '{{ domain }} har skapats framgångsrikt'
     update: '{{ domain }} har uppdaterats framgångsrikt'
-    remove: '{{ domain }} ihar raderats'
+    remove: '{{ domain }} har raderats'
     save: '{{ domain }} har sparats'
 
   error:
