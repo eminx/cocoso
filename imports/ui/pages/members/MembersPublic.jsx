@@ -100,7 +100,7 @@ function PublicMembers() {
       </Helmet>
       <Paginate items={members} itemsPerPage={24} isContainerSimpleGrid={false}>
         {(member) => (
-          <WrapItem key={member.id}>
+          <WrapItem w="40" key={member.id}>
             <Link to={`/@${member.username}`}>
               <Box m="1">
                 <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />

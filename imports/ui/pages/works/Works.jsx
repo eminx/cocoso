@@ -116,7 +116,7 @@ function Works() {
 
       <Paginate items={worksWithCategoryColors}>
         {(work) => (
-          <Box key={work._id} w="100%">
+          <Box key={work._id}>
             <Link to={`/${work.authorUsername}/work/${work._id}`}>
               <WorkThumb work={work} />
             </Link>

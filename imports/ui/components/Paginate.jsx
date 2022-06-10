@@ -35,7 +35,7 @@ function PaginatedItems({
           {currentItems && currentItems.map((item) => children(item))}
         </SimpleGrid>
       ) : (
-        <Wrap>{currentItems && currentItems.map((item) => children(item))}</Wrap>
+        <Wrap justify="center">{currentItems && currentItems.map((item) => children(item))}</Wrap>
       )}
       {items.length > itemsPerPage && (
         <Center>
