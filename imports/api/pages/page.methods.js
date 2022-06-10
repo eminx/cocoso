@@ -56,6 +56,11 @@ Meteor.methods({
     check(formValues.title, String);
     check(formValues.longDescription, String);
 
+    const thePage = Pages.find(pageId);
+    if (thePage.isTermsPage) {
+      throw new Meteor.Error('You cannot update terms page.');
+    }
+
     try {
       Pages.update(pageId, {
         $set: {

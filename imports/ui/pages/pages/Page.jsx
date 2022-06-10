@@ -97,7 +97,7 @@ class Page extends PureComponent {
             <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
           </Box>
 
-          {currentUser && role === 'admin' && (
+          {currentUser && role === 'admin' && !currentPage.isTermsPage && (
             <Center p="2">
               <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
                 <Button as="span" variant="ghost" size="sm">
