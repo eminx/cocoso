@@ -37,6 +37,8 @@ message:
   access:
     contributor: Du måste bli en utgivare till {{ action }}
   guest: Du måste skapa ett konto för att lansera din marknad
+  usage:
+    noUsage: Ingen förbrukning har registrerats för denna användare
 
 profile:
   labels:

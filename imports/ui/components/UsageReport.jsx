@@ -116,6 +116,11 @@ function UsageReport({ user, onClose }) {
     return null;
   }
 
+  if (activities.length === 1 && activities[0].length === 0) {
+    message.error(t('message.usage.noUsage'));
+    return null;
+  }
+
   return (
     <Drawer
       bg="gray.100"
@@ -131,59 +136,63 @@ function UsageReport({ user, onClose }) {
       }
       onClose={onClose}
     >
-      {activities.map((activitiesPerMonth, index) => (
-        <Box
-          key={activitiesPerMonth[0]?.startDate}
-          mt="8"
-          pb="8"
-          // ref={(element) => (this.printableElement = element)}
-        >
-          <Heading size="md" mb="2">
-            {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
-            <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
-            {t('report.table.total')}
-          </Heading>
-          <ReactTable
-            size="sm"
-            data={activitiesPerMonth}
-            columns={[
-              {
-                Header: t('report.table.title'),
-                accessor: 'title',
-              },
-              {
-                Header: t('report.table.resource'),
-                accessor: 'resource',
-              },
-              {
-                Header: t('report.table.start'),
-                accessor: 'start',
-              },
-              {
-                Header: t('report.table.end'),
-                accessor: 'end',
-              },
-              {
-                Header: t('report.table.consumption'),
-                accessor: 'consumption',
-              },
-            ]}
-          />
-          <Center p="2">
-            <CSVLink
+      {activities.map((activitiesPerMonth, index) => {
+        const firstAct = activitiesPerMonth[0];
+        const key = firstAct?.startDate + firstAct?.startTime + firstAct?.resourceId;
+        return (
+          <Box
+            key={key}
+            mt="8"
+            pb="8"
+            // ref={(element) => (this.printableElement = element)}
+          >
+            <Heading size="md" mb="2">
+              {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
+              <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
+              {t('report.table.total')}
+            </Heading>
+            <ReactTable
+              size="sm"
               data={activitiesPerMonth}
-              filename={`${user.username}_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
-                selectedResource ? selectedResource.label : 'all-resources'
-              }`}
-              target="_blank"
-            >
-              <Button as="span" size="sm">
-                {tc('actions.downloadCSV')}
-              </Button>
-            </CSVLink>
-          </Center>
-        </Box>
-      ))}
+              columns={[
+                {
+                  Header: t('report.table.title'),
+                  accessor: 'title',
+                },
+                {
+                  Header: t('report.table.resource'),
+                  accessor: 'resource',
+                },
+                {
+                  Header: t('report.table.start'),
+                  accessor: 'start',
+                },
+                {
+                  Header: t('report.table.end'),
+                  accessor: 'end',
+                },
+                {
+                  Header: t('report.table.consumption'),
+                  accessor: 'consumption',
+                },
+              ]}
+            />
+            <Center p="2">
+              <CSVLink
+                data={activitiesPerMonth}
+                filename={`${user.username}_${activitiesPerMonth[0]?.startDate.substring(0, 7)}_${
+                  selectedResource ? selectedResource.label : 'all-resources'
+                }`}
+                target="_blank"
+              >
+                <Button as="span" size="sm">
+                  {tc('actions.downloadCSV')}
+                </Button>
+              </CSVLink>
+            </Center>
+          </Box>
+        );
+      })}
     </Drawer>
   );
 }

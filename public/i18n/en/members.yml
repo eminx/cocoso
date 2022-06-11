@@ -37,6 +37,8 @@ message:
   access:
     contributor: You have to become a contributor to {{ action }}
   guest: You have to create an account to launch your market
+  usage:
+    noUsage: No usage is recorded for this user
 
 profile:
   labels:
