@@ -398,7 +398,7 @@ Migrations.add({
         },
         {
           $set: {
-            authorAvatar: author.avatar,
+            authorAvatar: author.avatar.src,
           },
         }
       );
@@ -420,6 +420,20 @@ Migrations.add({
           $set: {
             adminId: process.admins[0].adminId,
             adminUsername: process.admins[0].username,
+          },
+        }
+      );
+    });
+
+    Works.find().forEach((work) => {
+      const author = Meteor.users.find({ _id: work.authorId });
+      Works.update(
+        {
+          _id: work._id,
+        },
+        {
+          $set: {
+            authorAvatar: author.avatar,
           },
         }
       );

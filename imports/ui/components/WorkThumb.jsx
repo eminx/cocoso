@@ -22,7 +22,7 @@ function WorkThumb({ work }) {
             <Tag filterColor={work.categoryColor} label={work.category.label} mb="1" />
           )}
         </Box>
-        <Avatar name={work.authorUsername} src={work.authorAvatar ? work.authorAvatar.src : null} />
+        <Avatar name={work.authorUsername} src={work.authorAvatar} />
       </Flex>
       {work.images && work.images[0] && (
         <Box>

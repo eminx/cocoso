@@ -88,11 +88,7 @@ function Work() {
   const AvatarHolder = (props) => (
     <Link to={`/@${work.authorUsername}`}>
       <VStack justify="center" {...props}>
-        <Avatar
-          elevation="medium"
-          src={work.authorAvatar ? work.authorAvatar.src : null}
-          name={work.authorUsername}
-        />
+        <Avatar elevation="medium" src={work.authorAvatar} name={work.authorUsername} />
         <Button as="span" variant="link" href={`/@${work.authorUsername}`}>
           <Text fontSize="sm">{work.authorUsername}</Text>
         </Button>
