@@ -10,17 +10,7 @@ Processes.schema = new SimpleSchema({
 
   authorId: Schemas.Id,
   authorUsername: { type: String },
-  authorAvatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
-  admins: { type: Array },
-  'admins.$': new SimpleSchema({
-    adminId: Schemas.Id,
-    username: { type: String },
-    avatar: {
-      type: String,
-      regEx: SimpleSchema.RegEx.Url,
-      optional: true,
-    },
-  }),
+  authorAvatar: { type: String, regEx: SimpleSchema.RegEx.Url, optional: true },
   title: { type: String },
   description: { type: String },
   readingMaterial: { type: String },
@@ -31,12 +21,12 @@ Processes.schema = new SimpleSchema({
   'members.$': new SimpleSchema({
     memberId: Schemas.Id,
     username: { type: String },
-    profileImage: {
+    avatar: {
       type: String,
       regEx: SimpleSchema.RegEx.Url,
       optional: true,
     },
-    isRegisteredMember: { type: Boolean, optional: true },
+    isAdmin: { type: Boolean, optional: true },
     joinDate: { type: Date },
   }),
 
