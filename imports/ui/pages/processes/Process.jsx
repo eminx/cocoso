@@ -110,7 +110,9 @@ class Process extends Component {
       return false;
     }
 
-    const isAdmin = process && process.adminId === currentUser._id;
+    const isAdmin =
+      process &&
+      process.members.some((member) => member.memberId === currentUser._id && member.isAdmin);
 
     return Boolean(isAdmin);
   };
@@ -219,12 +221,12 @@ class Process extends Component {
 
         <Flex p="4" direction="column">
           <Center alignSelf="end">
-            <Link to={`/@${process.adminUsername}`}>
-              <Flex direction="column">
-                <Avatar src={process.authorAvatar} />
-                <Text fontSize="sm" textAlign="center">
-                  {process.adminUsername}
-                </Text>
+            <Link to={`/@${process.authorUsername}`}>
+              <Flex direction="column" align="center">
+                <Avatar name={process.authorUsername} src={process.authorAvatar} />
+                <CLink as="span" fontSize="sm" textAlign="center">
+                  {process.authorUsername}
+                </CLink>
               </Flex>
             </Link>
           </Center>
@@ -689,7 +691,7 @@ class Process extends Component {
               this.setState({
                 potentialNewAdmin: member.username,
               }),
-            isDisabled: member.username === process.adminUsername,
+            isDisabled: member.isAdmin,
           },
         ],
       }));
@@ -717,13 +719,14 @@ class Process extends Component {
                 spacing="0"
               >
                 {(member) => (
-                  <span
-                    style={{
-                      fontWeight: process.adminId === member.memberId ? 700 : 400,
-                    }}
-                  >
-                    {member.username}
-                  </span>
+                  <Link to={`/@${member.username}`}>
+                    <Flex align="center">
+                      <Avatar mr="2" name={member.username} size="sm" src={member.avatar} />
+                      <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
+                        {member.username}
+                      </CLink>
+                    </Flex>
+                  </Link>
                 )}
               </NiceList>
             </Box>
