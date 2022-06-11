@@ -12,7 +12,6 @@ Works.schema = new SimpleSchema({
   authorUsername: { type: String },
 
   authorAvatar: { type: String, regEx: SimpleSchema.RegEx.Url, optional: true },
-  userAvatar: { type: String, optional: true }, // mostly undefined
 
   title: { type: String },
   shortDescription: { type: String, defaultValue: '' },
