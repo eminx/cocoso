@@ -382,7 +382,7 @@ Migrations.add({
           $set: {
             authorId: process.adminId,
             authorUsername: process.adminUsername,
-            authorAvatar: admin.avatar?.src,
+            authorAvatar: admin?.avatar?.src,
             members: newMembers,
           },
           $unset: {
@@ -401,7 +401,7 @@ Migrations.add({
         },
         {
           $set: {
-            authorAvatar: author.avatar?.src,
+            authorAvatar: author?.avatar?.src,
           },
         }
       );
