@@ -393,15 +393,14 @@ Migrations.add({
       );
     });
 
-    Works.find().forEach((work) => {
-      const author = Meteor.users.findOne({ _id: work.authorId });
+    Works.find().forEach(function (work) {
+      const user = Meteor.users.findOne({ _id: work.authorId });
+      const userAvatar = user && user.avatar ? user.avatar.src : '';
       Works.update(
-        {
-          _id: work._id,
-        },
+        { _id: work._id },
         {
           $set: {
-            authorAvatar: author?.avatar?.src,
+            authorAvatar: userAvatar,
           },
         }
       );
@@ -435,14 +434,15 @@ Migrations.add({
     });
 
     Works.find().forEach((work) => {
-      const author = Meteor.users.findOne({ _id: work.authorId });
+      const user = Meteor.users.findOne({ _id: work.authorId });
+      const userAvatar = user ? user.avatar : null;
       Works.update(
         {
           _id: work._id,
         },
         {
           $set: {
-            authorAvatar: author?.avatar,
+            authorAvatar: userAvatar,
           },
         }
       );
@@ -467,5 +467,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(12);
   // Migrations.migrateTo(13);
   // Migrations.migrateTo(14);
-  Migrations.migrateTo('latest');
+  // Migrations.migrateTo('latest');
 });
