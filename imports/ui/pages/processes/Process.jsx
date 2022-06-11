@@ -628,12 +628,12 @@ class Process extends Component {
     });
   };
 
-  changeAdmin = () => {
+  setAsAProcessAdmin = () => {
     const { process, t } = this.props;
     const { potentialNewAdmin } = this.state;
 
     const closeModal = () => this.setState({ potentialNewAdmin: false });
-    Meteor.call('changeAdmin', process._id, potentialNewAdmin, (error, respond) => {
+    Meteor.call('setAsAProcessAdmin', process._id, potentialNewAdmin, (error, respond) => {
       if (error) {
         console.log(error);
         message.error(error.error);
@@ -725,6 +725,9 @@ class Process extends Component {
                       <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
                         {member.username}
                       </CLink>
+                      <Text fontSize="sm" ml="1">
+                        {member.isAdmin && '(admin)'}
+                      </Text>
                     </Flex>
                   </Link>
                 )}
@@ -993,7 +996,7 @@ class Process extends Component {
         <ConfirmModal
           visible={Boolean(potentialNewAdmin)}
           title={t('confirm.check')}
-          onConfirm={this.changeAdmin}
+          onConfirm={this.setAsAProcessAdmin}
           onCancel={() => this.setState({ potentialNewAdmin: null })}
         >
           <Text>

@@ -59,10 +59,10 @@ meeting:
     logged: Please login and join the process to attend the meeting
     remove: Sorry. Currently you can not delete meetings which have attendees registered to attend
   success:
-    add: Your process meeting is added!
+    add: Your process meeting is added
     remove: The meeting is successfully removed
-    fileDropper: is successfully uploaded and assigned to this process!
-    admin: The admin is successfully changed
+    fileDropper: is successfully uploaded and assigned to this process
+    admin: New admin successfully added
   actions:
     remove: Delete this meeting
     makeAdmin: Make admin
@@ -97,8 +97,8 @@ confirm:
       leave: leave
       join: join
   admin:
-    title: Please confirm you want to make {{ admin }} the new admin.
-    body: There can only be one admin at a time, so your admin privileges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
+    title: Please confirm you want to make {{ admin }} an admin for this process.
+    body: When you confirm, you will share the same privileges with {{ admin }} for this process hereafter.
 
 invite:
   info: Please add data for the person you want to invite to the process

@@ -277,7 +277,7 @@ Meteor.methods({
     }
   },
 
-  changeAdmin(processId, newAdminUsername) {
+  setAsAProcessAdmin(processId, newAdminUsername) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -287,7 +287,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!theProcess.members.some((member) => member.memberId === user._id && member.isAdmin)) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -297,11 +297,22 @@ Meteor.methods({
       throw new Meteor.Error('The new admin must be a contributor');
     }
 
+    const newMembers = theProcess.members.map((member) => {
+      if (member.username === newAdminUsername) {
+        return {
+          ...member,
+          isAdmin: true,
+        };
+      }
+      return {
+        ...member,
+      };
+    });
+
     try {
       Processes.update(processId, {
         $set: {
-          adminId: newAdmin._id,
-          adminUsername: newAdminUsername,
+          members: newMembers,
         },
       });
     } catch (error) {
