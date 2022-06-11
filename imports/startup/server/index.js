@@ -5,10 +5,6 @@ import './api';
 import './migrations';
 
 Meteor.startup(() => {
-  // import { freshInstallment } from './installation';
-
-  // freshInstallment();
-
   const smtp = Meteor.settings.mailCredentials.smtp;
 
   process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${smtp.password}@${
