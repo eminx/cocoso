@@ -8,10 +8,19 @@ Processes.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
-  adminId: Schemas.Id,
-  adminUsername: { type: String },
+  authorId: Schemas.Id,
+  authorUsername: { type: String },
   authorAvatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
-
+  admins: { type: Array },
+  'admins.$': new SimpleSchema({
+    adminId: Schemas.Id,
+    username: { type: String },
+    avatar: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Url,
+      optional: true,
+    },
+  }),
   title: { type: String },
   description: { type: String },
   readingMaterial: { type: String },
