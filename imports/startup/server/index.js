@@ -17,18 +17,4 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
-
-  Works.find().forEach((work) => {
-    const author = Meteor.users.findOne({ _id: work.authorId });
-    Works.update(
-      {
-        _id: work._id,
-      },
-      {
-        $set: {
-          authorAvatar: author?.avatar?.src,
-        },
-      }
-    );
-  });
 });
