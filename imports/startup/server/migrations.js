@@ -6,6 +6,8 @@ import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity';
 import Processes from '../../api/processes/process';
 import Pages from '../../api/pages/page';
+import Works from '../../api/works/work';
+
 import getTerms from '../../api/_utils/terms';
 
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
@@ -357,6 +359,74 @@ Migrations.add({
   },
 });
 
+Migrations.add({
+  version: 14,
+  async up() {
+    console.log('up to', this.version);
+    Processes.find().forEach((process) => {
+      const admin = Meteor.users.findOne({ _id: process.adminId });
+      Processes.update(
+        { _id: process._id },
+        {
+          $set: {
+            authorId: process.adminId,
+            authorUsername: process.adminUsername,
+            authorAvatar: admin.avatar.src,
+            admins: [
+              {
+                adminId: admin._id,
+                username: admin.username,
+                avatar: admin.avatar.src,
+              },
+            ],
+          },
+        },
+        {
+          $unset: {
+            adminId: 1,
+            adminUsername: 1,
+          },
+        }
+      );
+    });
+
+    Works.find().forEach((work) => {
+      const author = Meteor.users.find({ _id: work.authorId });
+      Works.update(
+        {
+          _id: work._id,
+        },
+        {
+          $set: {
+            authorAvatar: author.avatar,
+          },
+        }
+      );
+    });
+  },
+  async down() {
+    console.log('down to', this.version);
+    Processes.find().forEach((process) => {
+      Processes.update(
+        { _id: process._id },
+        {
+          $unset: {
+            authorId: 1,
+            authorUsername: 1,
+            admins: 1,
+          },
+        },
+        {
+          $set: {
+            adminId: process.admins[0].adminId,
+            adminUsername: process.admins[0].username,
+          },
+        }
+      );
+    });
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -373,5 +443,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(11);
   // Migrations.migrateTo(12);
   // Migrations.migrateTo(13);
-  Migrations.migrateTo('latest');
+  // Migrations.migrateTo(14);
+  // Migrations.migrateTo('latest');
 });
