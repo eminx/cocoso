@@ -9,6 +9,7 @@ import {
   Button,
   Center,
   Flex,
+  Link as CLink,
   Tag as CTag,
   TagLabel,
   Text,
@@ -360,9 +361,11 @@ class Calendar extends PureComponent {
         >
           <Box bg="light-1" style={{ fontFamily: 'Courier, monospace' }} p="1" my="1">
             <div>
-              <Text as="span" fontWeight="bold">
-                {selectedActivity && selectedActivity.authorName}
-              </Text>{' '}
+              <Link to={`/@${selectedActivity?.authorName}`}>
+                <CLink as="span" fontWeight="bold">
+                  {selectedActivity && selectedActivity.authorName}
+                </CLink>{' '}
+              </Link>
               <Text as="span">{tc('labels.booked')}</Text>{' '}
               <Text as="span" fontWeight="bold">
                 {selectedActivity && selectedActivity.resource}
