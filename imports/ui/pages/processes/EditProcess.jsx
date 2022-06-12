@@ -139,7 +139,7 @@ class EditProcess extends React.Component {
       );
     }
 
-    if (process.adminId !== currentUser._id) {
+    if (!process.members.some((member) => member.memberId === currentUser._id && member.isAdmin)) {
       return <Alert message="You are not allowed!" />;
     }
 
@@ -152,16 +152,9 @@ class EditProcess extends React.Component {
       return <Redirect to={`/process/${process._id}`} />;
     }
 
-    const { title, description } = formValues;
-    // const isFormValid =
-    //   formValues &&
-    //   title.length > 3 &&
-    //   description.length > 20 &&
-    //   (uploadableImageLocal || process.imageUrl);
-
     return (
       <Template
-        heading="Edit your Process"
+        heading="Edit"
         leftContent={
           <Box p="2">
             <Link to={`/process/${process._id}`}>
