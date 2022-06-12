@@ -16,7 +16,7 @@ Documents.schema = new SimpleSchema({
   attachedTo: Schemas.Id,
 
   documentLabel: { type: String },
-  documentUrl: { type: String, regEx: SimpleSchema.RegEx.Url },
+  documentUrl: { type: String },
 
   creationDate: { type: Date },
 });

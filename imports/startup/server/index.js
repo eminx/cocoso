@@ -4,6 +4,7 @@ import Works from '../../api/works/work';
 
 import './api';
 import './migrations';
+import Processes from '../../api/processes/process';
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;

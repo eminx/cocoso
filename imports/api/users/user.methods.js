@@ -151,7 +151,7 @@ Meteor.methods({
         },
         {
           $set: {
-            authorAvatar: newAvatar,
+            authorAvatar: avatar,
           },
         },
         {
@@ -161,11 +161,29 @@ Meteor.methods({
 
       Processes.update(
         {
-          adminId: userId,
+          members: {
+            $elemMatch: {
+              memberId: userId,
+            },
+          },
         },
         {
           $set: {
-            authorAvatar: newAvatar,
+            'members.$.avatar': avatar,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
+
+      Processes.update(
+        {
+          authorId: userId,
+        },
+        {
+          $set: {
+            authorAvatar: avatar,
           },
         },
         {

@@ -10,7 +10,7 @@ Processes.schema = new SimpleSchema({
 
   authorId: Schemas.Id,
   authorUsername: { type: String },
-  authorAvatar: { type: String, regEx: SimpleSchema.RegEx.Url, optional: true },
+  authorAvatar: { type: String, optional: true },
   title: { type: String },
   description: { type: String },
   readingMaterial: { type: String },
@@ -23,7 +23,7 @@ Processes.schema = new SimpleSchema({
     username: { type: String },
     avatar: {
       type: String,
-      regEx: SimpleSchema.RegEx.Url,
+      // regEx: SimpleSchema.RegEx.Url,
       optional: true,
     },
     isAdmin: { type: Boolean, optional: true },
@@ -34,7 +34,7 @@ Processes.schema = new SimpleSchema({
   'documents.$': {
     type: new SimpleSchema({
       name: { type: String },
-      downloadUrl: { type: String, regEx: SimpleSchema.RegEx.Url },
+      downloadUrl: { type: String },
     }),
     optional: true,
   },
