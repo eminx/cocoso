@@ -305,7 +305,7 @@ function Footer({ currentHost, tc }) {
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg="#363636" color="gray.200">
+    <Box w="100%" bg="#363636" color="gray.200" pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
@@ -319,7 +319,12 @@ function Footer({ currentHost, tc }) {
       </Center>
       <Box p="2" w="100%">
         <Center w="100%">
-          <Flex w="100%" direction="column" textAlign="center">
+          <Flex w="100%" direction="column" justify="center" textAlign="center">
+            <Center>
+              <Box w="120px" h="60px" ml="3">
+                <Image fit="contain" src={currentHost.logo} className="header-logo" />
+              </Box>
+            </Center>
             <Heading my="2" size="md">
               {currentHost.settings?.name}
             </Heading>
