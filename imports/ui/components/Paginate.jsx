@@ -21,6 +21,7 @@ function PaginatedItems({
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(items.length / itemsPerPage));
+    window.scrollTo(0, 0);
   }, [itemOffset, items, itemsPerPage]);
 
   const handlePageClick = (event) => {
