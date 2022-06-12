@@ -5,30 +5,21 @@ import { Link } from 'react-router-dom';
 
 import {
   Box,
-  Button,
   Center,
   ChakraProvider,
   Flex,
+  Heading,
   HStack,
   Image,
-  Input,
+  Link as CLink,
+  List,
+  ListItem,
   Menu as CMenu,
   MenuButton,
   MenuList,
   MenuItem,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Portal,
-  Select,
   Spinner,
   Text,
-  Textarea,
-  VStack,
   Wrap,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
@@ -37,10 +28,10 @@ import { Helmet } from 'react-helmet';
 
 import { useTranslation } from 'react-i18next';
 
-import UserPopup from './components/UserPopup';
-import FormField from './components/FormField';
-import ChangeLanguage from './components/ChangeLanguageMenu';
 import Hosts from '../api/hosts/host';
+import UserPopup from './components/UserPopup';
+import ChangeLanguage from './components/ChangeLanguageMenu';
+import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 
 export const StateContext = React.createContext(null);
@@ -87,12 +78,10 @@ const getBackgroundStyle = (cHue) => {
 };
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [tc] = useTranslation('common');
-
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [history]);
+  }, [history.location.pathname]);
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
@@ -174,56 +163,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
             <Header {...headerProps} />
             <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-            <Flex bg="gray.100" justify="space-between" align="center" p="6">
-              <Button variant="ghost" onClick={() => setShowFeedbackModal(true)}>
-                {tc('modals.feedback.label')}
-              </Button>
-
-              <ChangeLanguage />
-
-              <Modal isOpen={showFeedbackModal} onClose={() => setShowFeedbackModal(false)}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>{tc('modals.feedback.label')}</ModalHeader>
-                  <ModalCloseButton />
-                  <form action="https://formspree.io/f/xdopweon" method="POST">
-                    <ModalBody>
-                      <VStack spacing="6">
-                        <FormField label={tc('modals.feedback.form.email.label')}>
-                          <Input type="email" name="_replyto" />
-                        </FormField>
-
-                        <FormField label={tc('modals.feedback.form.subject.label')}>
-                          <Select name="subject">
-                            {[
-                              tc('modals.feedback.form.subject.select.suggest'),
-                              tc('modals.feedback.form.subject.select.bug'),
-                              tc('modals.feedback.form.subject.select.compliment'),
-                            ].map((option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </Select>
-                        </FormField>
-
-                        <FormField label={tc('modals.feedback.form.details.label')}>
-                          <Textarea name="text" name="message" />
-                        </FormField>
-                      </VStack>
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button mr={3} onClick={() => setShowFeedbackModal(false)}>
-                        {tc('actions.close')}
-                      </Button>
-                      <Button colorScheme="blue" type="submit">
-                        {tc('actions.send')}
-                      </Button>
-                    </ModalFooter>
-                  </form>
-                </ModalContent>
-              </Modal>
-            </Flex>
+            <Footer currentHost={currentHost} />
           </Box>
         </Center>
       </StateContext.Provider>
@@ -352,6 +292,52 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
           ))}
         </MenuList>
       </CMenu>
+    </Box>
+  );
+}
+
+function Footer({ currentHost }) {
+  if (!currentHost) {
+    return null;
+  }
+
+  return (
+    <Box w="100%" bg="#363636" color="gray.200">
+      <Center p="2">
+        <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
+          {currentHost.settings?.menu?.map((item) => (
+            <ListItem key={item.name} px="2" py="1">
+              <Link to={`/${item.name}`}>
+                <CLink as="span">{item.label}</CLink>{' '}
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+      </Center>
+      <Box p="2" w="100%">
+        <Center w="100%">
+          <Flex w="100%" direction="column" textAlign="center">
+            <Heading my="2" size="md">
+              {currentHost.settings?.name}
+            </Heading>
+            <Text fontSize="sm">
+              {currentHost.settings?.address} {', '} {currentHost.settings?.city}
+            </Text>
+            <Text fontSize="sm">{currentHost.settings?.email}</Text>
+            <Text fontSize="sm" fontWeight="bold">
+              {currentHost.host}
+            </Text>
+          </Flex>
+        </Center>
+        <Flex align="flex-start" direction="row-reverse" justify="space-between" mt="2" w="100%">
+          <Box size="sm">
+            <ChangeLanguage />
+          </Box>
+          <Box size="sm">
+            <FeedbackForm />
+          </Box>
+        </Flex>
+      </Box>
     </Box>
   );
 }
