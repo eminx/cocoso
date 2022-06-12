@@ -33,12 +33,14 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const userAvatar = user.avatar ? user.avatar.src : null;
+
     try {
       const newProcessId = Processes.insert({
         host,
-        adminId: user._id,
-        adminUsername: user.username,
-        adminAvatar: user.avatar,
+        authorId: user._id,
+        authorUsername: user.username,
+        authorAvatar: userAvatar,
         title: formValues.title,
         description: formValues.description,
         readingMaterial: formValues.readingMaterial,
@@ -46,10 +48,11 @@ Meteor.methods({
         capacity: formValues.capacity,
         members: [
           {
+            avatar: userAvatar,
+            joinDate: new Date(),
+            isAdmin: true,
             memberId: user._id,
             username: user.username,
-            profileImage: user.profileImage,
-            joinDate: new Date(),
           },
         ],
         isPublished: true,
@@ -132,7 +135,8 @@ Meteor.methods({
     }
 
     const processToDelete = Processes.findOne(processId);
-    if (processToDelete.adminId !== user._id) {
+
+    if (!isUserProcessAdmin(processToDelete, user._id)) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -163,13 +167,15 @@ Meteor.methods({
 
     const currentHostName = currentHost.settings?.name;
 
+    const userAvatar = user.avatar ? user.avatar.src : null;
+
     try {
       Processes.update(theProcess._id, {
         $addToSet: {
           members: {
             memberId: user._id,
             username: user.username,
-            profileImage: user.profileImage,
+            avatar: userAvatar,
             joinDate: new Date(),
           },
         },
