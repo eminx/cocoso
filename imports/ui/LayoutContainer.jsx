@@ -161,9 +161,10 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
         <Center className="main-viewport" style={getBackgroundStyle()}>
           <Box maxWidth="1400px" w="100%">
             <Header {...headerProps} />
+
             <Box style={{ minHeight: '100vh' }}>{children}</Box>
 
-            <Footer currentHost={currentHost} />
+            <Footer currentHost={currentHost} tc={tc} />
           </Box>
         </Center>
       </StateContext.Provider>
@@ -296,16 +297,18 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
   );
 }
 
-function Footer({ currentHost }) {
+function Footer({ currentHost, tc }) {
   if (!currentHost) {
     return null;
   }
+
+  const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
     <Box w="100%" bg="#363636" color="gray.200">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
-          {currentHost.settings?.menu?.map((item) => (
+          {activeMenu.map((item) => (
             <ListItem key={item.name} px="2" py="1">
               <Link to={`/${item.name}`}>
                 <CLink as="span">{item.label}</CLink>{' '}
@@ -327,6 +330,13 @@ function Footer({ currentHost }) {
             <Text fontSize="sm" fontWeight="bold">
               {currentHost.host}
             </Text>
+            <Box mt="4">
+              <Link to="/page/terms">
+                <CLink as="span" fontSize="sm">
+                  {tc('terms.title')}{' '}
+                </CLink>
+              </Link>
+            </Box>
           </Flex>
         </Center>
         <Flex align="flex-start" direction="row-reverse" justify="space-between" mt="2" w="100%">
