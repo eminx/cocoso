@@ -16,6 +16,13 @@ import { compareForSort } from './process.helpers';
 
 const publicSettings = Meteor.settings.public;
 
+const isUserProcessAdmin = (process, userId) => {
+  if (!process || !userId) {
+    return false;
+  }
+  return process.members.some((member) => member.memberId === userId && member.isAdmin);
+};
+
 Meteor.methods({
   createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
@@ -91,7 +98,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (user._id !== theProcess.adminId) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -235,7 +242,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -260,7 +267,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -287,7 +294,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (!theProcess.members.some((member) => member.memberId === user._id && member.isAdmin)) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -330,7 +337,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You do not have admin privileges!');
     }
 
@@ -355,7 +362,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
@@ -380,7 +387,7 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-    if (theProcess.adminId !== user._id) {
+    if (!isUserProcessAdmin(theProcess, user._id)) {
       throw new Meteor.Error('You are not admin!');
     }
 
