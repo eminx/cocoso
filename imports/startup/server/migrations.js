@@ -459,7 +459,10 @@ Migrations.add({
       const members = host.members;
       const newMembers = members.map((m) => {
         const member = Meteor.users.findOne({ _id: m.id });
-        const avatar = member && member.avatar ? member.avatar.src : null;
+        if (!member) {
+          return;
+        }
+        const avatar = member.avatar ? member.avatar.src : null;
         return {
           ...m,
           avatar: avatar,
