@@ -450,6 +450,16 @@ Migrations.add({
   },
 });
 
+Migrations.add({
+  version: 15,
+  async up() {
+    console.log('up to', this.version);
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -467,5 +477,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(12);
   // Migrations.migrateTo(13);
   // Migrations.migrateTo(14);
+  // Migrations.migrateTo(15);
   Migrations.migrateTo('latest');
 });
