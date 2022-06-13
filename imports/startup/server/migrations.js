@@ -450,39 +450,6 @@ Migrations.add({
   },
 });
 
-Migrations.add({
-  version: 15,
-  async up() {
-    console.log('up to', this.version);
-
-    Hosts.find().forEach((host) => {
-      const members = host.members;
-      const newMembers = members.map((m) => {
-        const member = Meteor.users.findOne({ _id: m.id });
-        if (!member) {
-          return;
-        }
-        const avatar = member.avatar ? member.avatar.src : null;
-        return {
-          ...m,
-          avatar: avatar,
-        };
-      });
-      Hosts.update(
-        { _id: host._id },
-        {
-          $set: {
-            members: newMembers,
-          },
-        }
-      );
-    });
-  },
-  async down() {
-    console.log('down to', this.version - 1);
-  },
-});
-
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -500,6 +467,5 @@ Meteor.startup(() => {
   // Migrations.migrateTo(12);
   // Migrations.migrateTo(13);
   // Migrations.migrateTo(14);
-  // Migrations.migrateTo(15);
   Migrations.migrateTo('latest');
 });
