@@ -12,7 +12,7 @@ const yesterday = moment(new Date()).add(-1, 'days');
 const dateStyle = {
   fontWeight: 300,
   lineHeight: 1,
-  fontSize: 20,
+  fontSize: 24,
   color: '#030303',
 };
 
@@ -39,7 +39,7 @@ function PublicActivityThumb({ item }) {
     return (
       <div key={date.startDate + date.startTime} style={{ marginRight: 12, marginBottom: 12 }}>
         <div style={{ ...dateStyle }}>
-          <span style={{ fontSize: 24, marginRight: 2 }}>
+          <span style={{ fontSize: 28, marginRight: 2 }}>
             <b>{moment(date.startDate).format('DD')}</b>
           </span>
           <span style={{ fontSize: 16 }}>{moment(date.startDate).format('MMM').toUpperCase()}</span>
@@ -61,12 +61,12 @@ function PublicActivityThumb({ item }) {
   };
 
   return (
-    <Box bg="rgba(255, 255, 255, 0.6)" p="2" w="100%">
-      <Box p="1">
-        <Heading as="h3" size="md" weight="bold" style={ellipsisStyle}>
+    <Box bg="rgba(255, 255, 255, 0.6)" px="4" py="3" w="100%">
+      <Box mb="2">
+        <Heading as="h2" mb="1" size="lg" weight="bold" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}
         </Heading>
-        <Text fontWeight={300} style={ellipsisStyle}>
+        <Text fontWeight={300} fontSize="lg" style={ellipsisStyle}>
           {item.isProcess ? item.readingMaterial : item.subTitle}
         </Text>
       </Box>

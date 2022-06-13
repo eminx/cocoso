@@ -95,7 +95,7 @@ confirm:
       leave: leave
       join: join
   admin:
-    title: Please confirm you want to make {{ admin }} the new admin.
+    title: Please confirm you want to make {{ admin }} an admin for this process.
     body: There can only be one admin at a time, so your admin privileges will be removed, and you won't be able to regain it again unless {{ admin }} gives consent.
 
 invite:

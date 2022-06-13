@@ -23,7 +23,7 @@ Hosts.schema = new SimpleSchema({
   _id: Schemas.Id,
   host: Schemas.Hostname,
 
-  logo: { type: String, regEx: SimpleSchema.RegEx.Url, optional: true },
+  logo: { type: String, optional: true },
 
   settings: { type: Object },
   'settings.name': { type: String },

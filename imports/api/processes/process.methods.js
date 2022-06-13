@@ -307,7 +307,7 @@ Meteor.methods({
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
 
     if (!isContributorOrAdmin(newAdmin, currentHost)) {
-      throw new Meteor.Error('The new admin must be a contributor');
+      throw new Meteor.Error('Process admins must either have a contributor of admin role');
     }
 
     const newMembers = theProcess.members.map((member) => {
