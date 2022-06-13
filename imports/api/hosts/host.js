@@ -38,11 +38,12 @@ Hosts.schema = new SimpleSchema({
 
   members: { type: Array },
   'members.$': { type: Object, optional: true },
-  'members.$.id': Schemas.Id,
-  'members.$.username': { type: String },
-  'members.$.email': Schemas.Email,
-  'members.$.role': { type: String },
+  'members.$.avatar': { type: String, optional: true },
   'members.$.date': { type: Date },
+  'members.$.email': Schemas.Email,
+  'members.$.id': Schemas.Id,
+  'members.$.role': { type: String },
+  'members.$.username': { type: String },
 
   emails: { type: Array },
   'emails.$': new SimpleSchema(SchemasHost.emailTemplate),

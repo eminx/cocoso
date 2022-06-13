@@ -145,6 +145,24 @@ Meteor.methods({
         },
       });
 
+      Hosts.update(
+        {
+          members: {
+            $elemMatch: {
+              id: userId,
+            },
+          },
+        },
+        {
+          $set: {
+            'members.$.avatar': avatar,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
+
       Works.update(
         {
           authorId: userId,

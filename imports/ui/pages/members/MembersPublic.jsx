@@ -103,17 +103,17 @@ function PublicMembers() {
           <WrapItem w="40" key={member.id}>
             <Link to={`/@${member.username}`}>
               <Box m="1">
-                <Avatar name={member.username} showBorder size="2xl" src={member.avatarSrc} />
+                <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
                 <Center>
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
                     {member.username}
                   </Text>
                 </Center>
-                <Center>
+                {/* <Center>
                   <Text color="gray.900" isTruncated textAlign="center" width="120px">
                     {getFullName(member)}
                   </Text>
-                </Center>
+                </Center> */}
               </Box>
             </Link>
           </WrapItem>

@@ -79,6 +79,7 @@ Meteor.methods({
   getHostMembers() {
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
+    return currentHost.members;
     const members = currentHost.members.map((member) => {
       const user = Meteor.users.findOne(member.id);
       if (!user) {
