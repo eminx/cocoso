@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import Works from '../../api/works/work';
+import Hosts from '../../api/hosts/host';
 
 import './api';
 import './migrations';
-import Processes from '../../api/processes/process';
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
@@ -18,4 +17,25 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+
+  Hosts.find().forEach((host) => {
+    const members = host.members;
+    const newMembers = members.map((m) => {
+      const member = Meteor.users.findOne({ _id: m.id });
+      const avatar = member && member.avatar ? member.avatar.src : null;
+      return {
+        ...m,
+        avatar: avatar,
+      };
+    });
+    Hosts.update(
+      { _id: host._id },
+      {
+        $set: {
+          members: newMembers,
+        },
+      }
+    );
+  });
+},
 });
