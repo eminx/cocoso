@@ -231,7 +231,7 @@ class Calendar extends PureComponent {
     const selectedLinkForModal =
       selectedActivity &&
       (selectedActivity.isProcess
-        ? `/process/${selectedActivity.processId}`
+        ? `/processes/${selectedActivity.processId}`
         : `/activity/${selectedActivity.activityId}`);
 
     return (

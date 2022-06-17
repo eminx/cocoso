@@ -149,7 +149,7 @@ class EditProcess extends React.Component {
       if (isDeleteModalOn) {
         return <Redirect to="/processes" />;
       }
-      return <Redirect to={`/process/${process._id}`} />;
+      return <Redirect to={`/processes/${process._id}`} />;
     }
 
     return (
@@ -157,7 +157,7 @@ class EditProcess extends React.Component {
         heading="Edit"
         leftContent={
           <Box p="2">
-            <Link to={`/process/${process._id}`}>
+            <Link to={`/processes/${process._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>

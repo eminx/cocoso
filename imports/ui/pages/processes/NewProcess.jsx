@@ -195,7 +195,7 @@ class NewProcess extends React.Component {
 
     if (isSuccess) {
       this.successCreation();
-      return <Redirect to={`/process/${newProcessId}`} />;
+      return <Redirect to={`/processes/${newProcessId}`} />;
     }
 
     const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');

@@ -85,7 +85,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
       <Box>
         {canCreateContent && (
           <Center mb="4">
-            <Link to={currentUser ? '/new-process' : '/my-profile'}>
+            <Link to={currentUser ? '/processes/new' : '/my-profile'}>
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
               </Button>
@@ -110,7 +110,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
                       grid={{ columns: [1, 1, 2, 2], spacing: 3, w: '100%' }}
                     >
                       {(process) => (
-                        <Link key={process._id} to={`/process/${process._id}`}>
+                        <Link key={process._id} to={`/processes/${process._id}`}>
                           <GridThumb image={process.imageUrl} large title={process.title}>
                             {moment(process.creationDate).format('D MMM YYYY')}
                           </GridThumb>

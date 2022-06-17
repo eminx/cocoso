@@ -121,7 +121,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         {(activity) => (
           <Box key={activity.title}>
             <Link
-              to={activity.isProcess ? `/process/${activity._id}` : `/activity/${activity._id}`}
+              to={activity.isProcess ? `/processes/${activity._id}` : `/activity/${activity._id}`}
             >
               <PublicActivityThumb item={activity} />
             </Link>

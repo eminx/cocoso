@@ -966,7 +966,7 @@ class Process extends Component {
           </Visible>
           {isAdmin && (
             <Center p="4" mb="6">
-              <Link to={`/edit-process/${process._id}`}>
+              <Link to={`/processes/${process._id}/edit`}>
                 <Button as="span" variant="ghost">
                   {tc('actions.update')}
                 </Button>
