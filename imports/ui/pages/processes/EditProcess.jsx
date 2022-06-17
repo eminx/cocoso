@@ -7,6 +7,7 @@ import { call, resizeImage, uploadImage } from '../../utils/shared';
 import ProcessForm from '../../components/ProcessForm';
 import Template from '../../components/Template';
 import Loader from '../../components/Loader';
+import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message, Alert } from '../../components/message';
 
@@ -163,6 +164,7 @@ class EditProcess extends React.Component {
           </Box>
         }
       >
+        <Breadcrumb context={process} contextKey="title" />
         <Box bg="white" p="6">
           <ProcessForm
             defaultValues={process}

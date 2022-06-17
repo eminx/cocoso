@@ -20,6 +20,7 @@ import ProcessForm from '../../components/ProcessForm';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 
@@ -209,6 +210,7 @@ class NewProcess extends React.Component {
           domain: tc('domains.process').toLowerCase(),
         })}
       >
+        <Breadcrumb />
         <Box bg="white" p="6">
           <Popover trigger="hover">
             <PopoverTrigger>

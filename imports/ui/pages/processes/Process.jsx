@@ -54,6 +54,7 @@ import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
@@ -958,6 +959,7 @@ class Process extends Component {
             </Box>
           }
         >
+          <Breadcrumb context={process} contextKey="title" />
           <Box bg="white" mb="4">
             {this.renderProcessInfo()}
           </Box>
