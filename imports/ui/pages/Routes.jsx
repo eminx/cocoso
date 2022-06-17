@@ -6,6 +6,7 @@ import { Progress } from '@chakra-ui/react';
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
+import ProcessRoutes from './processes/ProcessRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -18,10 +19,10 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
 const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
 // Processes
-const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer'));
-const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
-const ProcessesListContainer = lazy(() => import('./processes/ProcessesListContainer'));
-const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
+// const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer'));
+// const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
+// const ProcessesListContainer = lazy(() => import('./processes/ProcessesListContainer'));
+// const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
 // Pages
 const Page = lazy(() => import('./pages/Page'));
 const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
@@ -69,10 +70,11 @@ export default function () {
               <Route path="/activity/:id" component={ActivityContainer} />
               <Route path="/edit-activity/:id/" component={EditActivityContainer} />
               {/* Processes */}
-              <Route exact path="/new-process" component={NewProcessContainer} />
+              {/* <Route exact path="/new-process" component={NewProcessContainer} />
               <Route exact path="/processes/" component={ProcessesListContainer} />
               <Route path="/process/:id" component={ProcessContainer} />
-              <Route path="/edit-process/:id/" component={EditProcessContainer} />
+              <Route path="/edit-process/:id/" component={EditProcessContainer} /> */}
+              <ProcessRoutes path="/processes" history={browserHistory} />
               {/* Resources */}
               <ResourceRoutes path="/resources" history={browserHistory} />
               {/* Pages */}
