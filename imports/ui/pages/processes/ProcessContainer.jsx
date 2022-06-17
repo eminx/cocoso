@@ -8,7 +8,7 @@ import Activities from '../../../api/activities/activity';
 // import Resources from '../../../api/resources/resource';
 
 export default ProcessContainer = withTracker((props) => {
-  const processId = props.match.params.id;
+  const processId = props.match.params.processId;
   const processSubscription = Meteor.subscribe('process', processId);
   const activitiesSubscription = Meteor.subscribe('activities');
   const isLoading = !processSubscription.ready() || !activitiesSubscription.ready();
