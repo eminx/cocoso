@@ -63,7 +63,7 @@ function EditResourcePage({ history }) {
 
   return (
     <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
-      <Breadcrumb domain={resource} domainKey="label" />
+      <Breadcrumb context={resource} contextKey="label" />
       <Box bg="white" p="6">
         {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
       </Box>
