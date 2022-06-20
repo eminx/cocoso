@@ -198,7 +198,7 @@ class Calendar extends PureComponent {
     });
 
     if (editActivity) {
-      return <Redirect to={`/edit-activity/${selectedActivity.activityId}`} />;
+      return <Redirect to={`/activities/${selectedActivity.activityId}/edit`} />;
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
@@ -232,7 +232,7 @@ class Calendar extends PureComponent {
       selectedActivity &&
       (selectedActivity.isProcess
         ? `/processes/${selectedActivity.processId}`
-        : `/activity/${selectedActivity.activityId}`);
+        : `/activities/${selectedActivity.activityId}`);
 
     return (
       <Box>
@@ -244,7 +244,7 @@ class Calendar extends PureComponent {
 
         {currentUser && canCreateContent && (
           <Center mb="3">
-            <Link to="/new-activity">
+            <Link to="/activities/new">
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
               </Button>
@@ -431,7 +431,7 @@ class Calendar extends PureComponent {
 }
 
 function parseDatesForQuery(slotInfo, selectedResource, type) {
-  let bookingUrl = '/new-activity/?';
+  let bookingUrl = '/activities/new/?';
   const params = {
     startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
     endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),

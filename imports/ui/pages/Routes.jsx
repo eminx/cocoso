@@ -67,7 +67,7 @@ export default function () {
               <Route exact path="/my-activities" component={MyActivities} />
               <Route path="/event/:activityId" component={ActivityContainer} />
               {/* <Route exact path="/activities" component={ActivitiesContainer} />
-              <Route exact path="/new-activity" component={NewActivityContainer} />
+              <Route exact path="/activities/new" component={NewActivityContainer} />
               <Route path="/activity/:id" component={ActivityContainer} />
               <Route path="/edit-activity/:id/" component={EditActivityContainer} /> */}
               <ActivityRoutes path="/activities" history={browserHistory} />

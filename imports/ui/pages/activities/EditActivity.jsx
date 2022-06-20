@@ -353,7 +353,7 @@ class EditActivity extends PureComponent {
       if (isDeleteModalOn) {
         return <Redirect to="/calendar" />;
       }
-      return <Redirect to={`/activity/${activity._id}`} />;
+      return <Redirect to={`/activities/${activity._id}`} />;
     }
 
     const isFormValid = this.isFormValid();

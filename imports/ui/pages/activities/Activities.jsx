@@ -109,7 +109,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
 
       <Center mb="4">
         {canCreateContent && (
-          <Link to="/new-activity">
+          <Link to="/activities/new">
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
             </Button>
@@ -121,7 +121,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         {(activity) => (
           <Box key={activity.title}>
             <Link
-              to={activity.isProcess ? `/processes/${activity._id}` : `/activity/${activity._id}`}
+              to={activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`}
             >
               <PublicActivityThumb item={activity} />
             </Link>

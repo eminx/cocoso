@@ -66,7 +66,7 @@ function UsageReport({ user, onClose }) {
         allParsedActivities.push({
           ...d,
           title: (
-            <Link target="_blank" to={`/activity/${a._id}`}>
+            <Link target="_blank" to={`/activities/${a._id}`}>
               <Button colorScheme="blue" variant="link" as="span">
                 {a.title}
               </Button>

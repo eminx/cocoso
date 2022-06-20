@@ -77,7 +77,7 @@ function Activities({ history }) {
           <Button
             colorScheme="green"
             variant="outline"
-            onClick={() => history.push('/new-activity')}
+            onClick={() => history.push('/activities/new')}
             mb="4"
             textTransform="uppercase"
           >
@@ -100,7 +100,7 @@ function Activities({ history }) {
             <TabPanel>
               <NiceList actionsDisabled list={activities}>
                 {(act) => (
-                  <Link to={`/activity/${act._id}`}>
+                  <Link to={`/activities/${act._id}`}>
                     <ActivityItem act={act} />
                   </Link>
                 )}
@@ -109,7 +109,7 @@ function Activities({ history }) {
             <TabPanel>
               <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
                 {(act) => (
-                  <Link to={`/activity/${act._id}`}>
+                  <Link to={`/activities/${act._id}`}>
                     <ActivityItem act={act} history={history} />
                   </Link>
                 )}

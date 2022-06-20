@@ -428,7 +428,7 @@ class Activity extends PureComponent {
 
     const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
       <Center m="2">
-        <Link to={`/edit-activity/${activityData._id}`}>
+        <Link to={`/activities/${activityData._id}/edit`}>
           <Button variant="ghost" as="span">
             {tc('actions.update')}
           </Button>
