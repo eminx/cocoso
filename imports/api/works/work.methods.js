@@ -59,6 +59,7 @@ Meteor.methods({
     }
 
     const host = getHost(this);
+    const userAvatar = user.avatar ? user.avatar.src : null;
 
     try {
       const newWorkId = Works.insert({
@@ -66,7 +67,7 @@ Meteor.methods({
         host,
         images,
         authorId: user._id,
-        authorAvatar: user.avatar,
+        authorAvatar: userAvatar,
         authorUsername: user.username,
         creationDate: new Date(),
       });
