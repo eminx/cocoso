@@ -9,6 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
+import Breadcrumb from '../../components/Breadcrumb';
 import {
   getAllBookingsWithSelectedResource,
   checkAndSetBookingsWithConflict,
@@ -369,6 +370,7 @@ class EditActivity extends PureComponent {
           </Box>
         }
       >
+        <Breadcrumb context={activity} contextKey="title" />
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">

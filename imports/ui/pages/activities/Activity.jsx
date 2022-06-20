@@ -35,6 +35,7 @@ import { StateContext } from '../../LayoutContainer';
 import FancyDate from '../../components/FancyDate';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import Tag from '../../components/Tag';
 import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
@@ -459,6 +460,7 @@ class Activity extends PureComponent {
           </Box>
         }
       >
+        <Breadcrumb context={activityData} contextKey="title" />
         <Box bg="white" mb="4">
           {activityData.isPublicActivity && (
             <Center bg="gray.900" width="100%">

@@ -7,6 +7,7 @@ import { parse } from 'query-string';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
 import {
@@ -380,6 +381,7 @@ class NewActivity extends PureComponent {
 
     return (
       <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
+        <Breadcrumb />
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">
