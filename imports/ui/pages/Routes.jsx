@@ -7,17 +7,18 @@ import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
 import ProcessRoutes from './processes/ProcessRouter';
+import ActivityRoutes from './activities/ActivitiyRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Activities
-const ActivitiesContainer = lazy(() => import('./activities/ActivitiesContainer'));
 const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
-const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
-const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
+// const ActivitiesContainer = lazy(() => import('./activities/ActivitiesContainer'));
+// const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
+// const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
 // Processes
 // const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer'));
 // const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
@@ -63,12 +64,13 @@ export default function () {
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
-              <Route exact path="/activities" component={ActivitiesContainer} />
               <Route exact path="/my-activities" component={MyActivities} />
-              <Route exact path="/new-activity" component={NewActivityContainer} />
               <Route path="/event/:id" component={ActivityContainer} />
+              {/* <Route exact path="/activities" component={ActivitiesContainer} />
+              <Route exact path="/new-activity" component={NewActivityContainer} />
               <Route path="/activity/:id" component={ActivityContainer} />
-              <Route path="/edit-activity/:id/" component={EditActivityContainer} />
+              <Route path="/edit-activity/:id/" component={EditActivityContainer} /> */}
+              <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
               {/* <Route exact path="/new-process" component={NewProcessContainer} />
               <Route exact path="/processes/" component={ProcessesListContainer} />
