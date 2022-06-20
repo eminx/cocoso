@@ -5,7 +5,7 @@ import Activities from '../../../api/activities/activity';
 import { useTranslation } from 'react-i18next';
 
 export default ActivityContainer = withTracker((props) => {
-  const activityId = props.match.params.id;
+  const activityId = props.match.params.activityId;
   const activity = Meteor.subscribe('activity', activityId);
 
   const isLoading = !activity.ready();

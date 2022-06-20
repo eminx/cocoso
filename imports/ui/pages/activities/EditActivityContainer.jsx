@@ -7,7 +7,7 @@ import Processes from '../../../api/processes/process';
 import { useTranslation } from 'react-i18next';
 
 export default EditActivityContainer = withTracker((props) => {
-  const activityId = props.match.params.id;
+  const activityId = props.match.params.activityId;
   const activitySub = Meteor.subscribe('activity', activityId);
   const activity = Activities ? Activities.findOne({ _id: activityId }) : null;
 
