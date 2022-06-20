@@ -68,7 +68,7 @@ function Work() {
     try {
       const info = await call('getUserContactInfo', work.authorUsername);
       if (!info) {
-        setAuthorContactInfo(tm('message.contact.empty'));
+        setAuthorContactInfo(tm('message.contact.empty', { username: work.authorUsername }));
         return;
       }
       setAuthorContactInfo(info);
