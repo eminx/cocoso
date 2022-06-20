@@ -65,7 +65,7 @@ export default function () {
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
               <Route exact path="/my-activities" component={MyActivities} />
-              <Route path="/event/:id" component={ActivityContainer} />
+              <Route path="/event/:activityId" component={ActivityContainer} />
               {/* <Route exact path="/activities" component={ActivitiesContainer} />
               <Route exact path="/new-activity" component={NewActivityContainer} />
               <Route path="/activity/:id" component={ActivityContainer} />
