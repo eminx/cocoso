@@ -64,15 +64,22 @@ export default function () {
               <PageRoutes path="/pages" history={browserHistory} />
               {/* Works */}
               <Route exact path="/my-works" component={MyWorks} />
-              <Route path="/:username/work/:workId" component={Work} />
+              {/* <Route path="/:username/work/:workId" component={Work} />
               <Route path="/:username/edit-work/:workId" component={EditWork} />
               <Route exact path="/new-work" component={NewWork} />
-              <Route exact path="/works" component={Works} />
-              {/* Auth */}
-              <Route exact path="/signup" component={SignupPage} />
-              <Route exact path="/login" component={LoginPage} />
-              <Route exact path="/forgot-password" component={ForgotPasswordPage} />
-              <Route path="/reset-password/:token" component={ResetPasswordPage} />
+              <Route exact path="/works" component={Works} /> */}
+              <Switch path="/works">
+                <Route exact path="/works" component={Works} />
+                <Route exact path="/works/new" component={NewWork} history={browserHistory} />
+              </Switch>
+              <Switch path="/@:username/works">
+                <Route
+                  path="/@:username/works/:workId/edit"
+                  component={EditWork}
+                  history={browserHistory}
+                />
+                <Route path="/@:username/works/:workId" component={Work} />
+              </Switch>
               {/* Members */}
               <Route
                 exact
@@ -86,6 +93,11 @@ export default function () {
               <Route exact path="/admin/settings" component={Settings} />
               <Route exact path="/admin/members" component={Members} />
               <Route exact path="/admin/emails" component={Emails} />
+              {/* Auth */}
+              <Route exact path="/signup" component={SignupPage} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/forgot-password" component={ForgotPasswordPage} />
+              <Route path="/reset-password/:token" component={ResetPasswordPage} />
               {/* SuperAdmin */}
               <Route exact path="/new-host" component={NewHost} />
               {/* NotFoundPage */}
