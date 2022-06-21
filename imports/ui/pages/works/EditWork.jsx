@@ -244,7 +244,7 @@ class EditWork extends PureComponent {
       return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
-    const workRoute = `/${currentUser.username}/work/${workId}`;
+    const workRoute = `/@${currentUser.username}/works/${workId}`;
     if (isSuccess) {
       return <Redirect to={workRoute} />;
     }

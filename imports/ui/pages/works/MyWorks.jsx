@@ -62,7 +62,7 @@ function Works({ history }) {
             <Button
               colorScheme="green"
               variant="outline"
-              onClick={() => history.push('/new-work')}
+              onClick={() => history.push('/works/new')}
               textTransform="uppercase"
             >
               {tc('actions.create')}
@@ -74,7 +74,7 @@ function Works({ history }) {
       {currentUser && works ? (
         <NiceList actionsDisabled list={myWorksWithActions}>
           {(work) => (
-            <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
+            <Link key={work._id} to={`/@${work.authorUsername}/works/${work._id}`}>
               <WorkThumb work={work} />
             </Link>
           )}

@@ -111,7 +111,7 @@ function MemberPublic({ isLoading, member, memberWorks, currentUser, history }) 
       )}
       {memberWorks && memberWorks.length > 0 ? (
         memberWorks.map((work, index) => (
-          <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
+          <Link key={work._id} to={`/@${work.authorUsername}/works/${work._id}`}>
             <Box mb="4">
               <WorkThumb work={work} />
             </Box>

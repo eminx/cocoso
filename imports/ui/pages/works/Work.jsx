@@ -164,7 +164,7 @@ function Work() {
 
       <Center my="2">
         {isOwner && (
-          <Link to={`/${currentUser.username}/edit-work/${workId}`}>
+          <Link to={`/@${currentUser.username}/works/${workId}/edit`}>
             <Button size="sm" variant="ghost">
               {tc('actions.update')}
             </Button>

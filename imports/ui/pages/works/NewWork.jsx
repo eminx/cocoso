@@ -166,7 +166,7 @@ class NewWork extends PureComponent {
     const { uploadableImagesLocal, isSuccess, newWorkId, isCreating, categories } = this.state;
 
     if (isSuccess && newWorkId) {
-      return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
+      return <Redirect to={`/@${currentUser.username}/works/${newWorkId}`} />;
     }
 
     return (
