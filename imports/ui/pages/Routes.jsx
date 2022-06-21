@@ -16,14 +16,6 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Activities
 const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
-// const ActivitiesContainer = lazy(() => import('./activities/ActivitiesContainer'));
-// const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
-// const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
-// Processes
-// const NewProcessContainer = lazy(() => import('./processes/NewProcessContainer'));
-// const EditProcessContainer = lazy(() => import('./processes/EditProcessContainer'));
-// const ProcessesListContainer = lazy(() => import('./processes/ProcessesListContainer'));
-// const ProcessContainer = lazy(() => import('./processes/ProcessContainer'));
 // Pages
 const Page = lazy(() => import('./pages/Page'));
 const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
@@ -66,16 +58,8 @@ export default function () {
               {/* Activities */}
               <Route exact path="/my-activities" component={MyActivities} />
               <Route path="/event/:activityId" component={ActivityContainer} />
-              {/* <Route exact path="/activities" component={ActivitiesContainer} />
-              <Route exact path="/activities/new" component={NewActivityContainer} />
-              <Route path="/activity/:id" component={ActivityContainer} />
-              <Route path="/edit-activity/:id/" component={EditActivityContainer} /> */}
               <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
-              {/* <Route exact path="/new-process" component={NewProcessContainer} />
-              <Route exact path="/processes/" component={ProcessesListContainer} />
-              <Route path="/process/:id" component={ProcessContainer} />
-              <Route path="/edit-process/:id/" component={EditProcessContainer} /> */}
               <ProcessRoutes path="/processes" history={browserHistory} />
               {/* Resources */}
               <ResourceRoutes path="/resources" history={browserHistory} />
