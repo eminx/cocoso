@@ -37,7 +37,7 @@ class Page extends PureComponent {
       return;
     }
 
-    const param = match.params.id;
+    const param = match.params.pageId;
 
     const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
     return currentPage;
@@ -52,7 +52,7 @@ class Page extends PureComponent {
       return <Loader />;
     }
 
-    const param = match.params.id;
+    const param = match.params.pageId;
 
     const currentPage = this.getCurrentPage();
 
