@@ -17,10 +17,6 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Activities
 const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
-// Pages
-// const Page = lazy(() => import('./pages/Page'));
-// const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
-// const EditPageContainer = lazy(() => import('./pages/EditPageContainer'));
 // Works
 const Works = lazy(() => import('./works/Works'));
 const Work = lazy(() => import('./works/Work'));
@@ -65,9 +61,6 @@ export default function () {
               {/* Resources */}
               <ResourceRoutes path="/resources" history={browserHistory} />
               {/* Pages */}
-              {/* <Route exact path="/new-page" component={NewPageContainer} />
-              <Route path="/page/:id" component={Page} />
-              <Route path="/edit-page/:id/" component={EditPageContainer} /> */}
               <PageRoutes path="/pages" history={browserHistory} />
               {/* Works */}
               <Route exact path="/my-works" component={MyWorks} />
