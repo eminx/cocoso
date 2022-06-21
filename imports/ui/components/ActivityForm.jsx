@@ -66,8 +66,10 @@ function ActivityForm({
   };
 
   const removeRecurrence = (index) => {
-    const newDatesAndTimes = [...datesAndTimes];
-    newDatesAndTimes.splice(index, 1);
+    const newDatesAndTimes = datesAndTimes.filter((item, i) => {
+      console.log(index, i);
+      return i !== index;
+    });
 
     setDatesAndTimes(newDatesAndTimes);
   };
@@ -149,7 +151,12 @@ function ActivityForm({
           <Box mb="4">
             {datesAndTimes.map((recurrence, index) => (
               <DatesAndTimes
-                key={index}
+                key={
+                  recurrence.startDate +
+                  recurrence.endDate +
+                  recurrence.startTime +
+                  recurrence.endTime
+                }
                 isPublicActivity={isPublicActivity}
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
