@@ -359,7 +359,7 @@ class Calendar extends PureComponent {
           }
           onClickOutside={this.handleCloseModal}
         >
-          <Box bg="light-1" style={{ fontFamily: 'Courier, monospace' }} p="1" my="1">
+          <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
             <div>
               <Link to={`/@${selectedActivity?.authorName}`}>
                 <CLink as="span" fontWeight="bold">
@@ -367,27 +367,27 @@ class Calendar extends PureComponent {
                 </CLink>{' '}
               </Link>
               <Text as="span">{tc('labels.booked')}</Text>{' '}
-              <Text as="span" fontWeight="bold">
-                {selectedActivity && selectedActivity.resource}
-              </Text>
+              <Link to={`/resources/${selectedActivity?.resourceId}`}>
+                <CLink as="span" fontWeight="bold">
+                  {selectedActivity && selectedActivity.resource}
+                </CLink>
+              </Link>
             </div>
             <Text>{this.getActivityTimes(selectedActivity)}</Text>
           </Box>
 
-          <Text fontSize="sm">
-            <div className="text-content">
-              {selectedActivity &&
-                selectedActivity.longDescription &&
-                (selectedActivity.isPrivateProcess
-                  ? ''
-                  : renderHTML(`${selectedActivity.longDescription.slice(0, 120)}...`))}
-            </div>
+          <Text fontSize="sm" mt="2" p="1">
+            {selectedActivity &&
+              selectedActivity.longDescription &&
+              (selectedActivity.isPrivateProcess
+                ? ''
+                : renderHTML(`${selectedActivity?.longDescription}`))}
           </Text>
 
           <Center>
             {selectedActivity && selectedActivity.isPublicActivity && (
               <Link to={selectedLinkForModal}>
-                <Button as="span" my="2" rightIcon={<ArrowForwardIcon />} variant="ghost">
+                <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
                   {' '}
                   {!selectedActivity.isPrivateProcess &&
                     `${selectedActivity.isProcess ? tc('labels.process') : tc('labels.event')} ${tc(
