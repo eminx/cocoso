@@ -103,7 +103,7 @@ const Signup = ({ onSubmit }) => {
 
         <FormField>
           <Checkbox onChange={() => setTermsChecked(!termsChecked)}>
-            <RLink to="/page/terms" target="_blank">
+            <RLink to="/pages/terms" target="_blank">
               <Link as="span">
                 {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
               </Link>

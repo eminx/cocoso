@@ -113,9 +113,9 @@ class EditPage extends PureComponent {
     if (isSuccess) {
       if (newPageTitle === 'deleted') {
         const pageUrl = parseTitle(pageTitles[0]);
-        return <Redirect to={`/page/${pageUrl}`} />;
+        return <Redirect to={`/pages/${pageUrl}`} />;
       }
-      return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
+      return <Redirect to={`/pages/${parseTitle(newPageTitle)}`} />;
     }
 
     return (
@@ -124,7 +124,7 @@ class EditPage extends PureComponent {
           domain: tc('domains.page').toLowerCase(),
         })}
         leftContent={
-          <Link to={`/page/${pageData.title}`}>
+          <Link to={`/pages/${pageData.title}`}>
             <Button variant="link" size="sm">
               {t('pages.actions.backTo')}
               {` ${pageData.title}`}

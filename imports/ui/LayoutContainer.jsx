@@ -43,7 +43,7 @@ const getRoute = (item, index) => {
     return '/';
   }
   if (item.name === 'info') {
-    return '/page/about';
+    return '/pages/about';
   }
   return `/${item.name}`;
 };
@@ -249,7 +249,7 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
 
   const isCurrentPage = (name) => {
     if (name === 'info') {
-      return pathname.substring(0, 5) === '/page';
+      return pathname.substring(0, 5) === '/pages';
     }
     return name === pathname.substring(1, pathname.length);
   };
@@ -336,7 +336,7 @@ function Footer({ currentHost, tc }) {
               {currentHost.host}
             </Text>
             <Box mt="4">
-              <Link to="/page/terms">
+              <Link to="/pages/terms">
                 <CLink as="span" fontSize="sm">
                   {tc('terms.title')}{' '}
                 </CLink>

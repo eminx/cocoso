@@ -108,7 +108,7 @@ class NewPage extends PureComponent {
     const { formValues, isSuccess, newPageId } = this.state;
 
     if (isSuccess && newPageId) {
-      return <Redirect to={`/page/${newPageId}`} />;
+      return <Redirect to={`/pages/${newPageId}`} />;
     }
 
     return (
