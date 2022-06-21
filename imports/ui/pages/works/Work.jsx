@@ -26,6 +26,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import NiceSlider from '../../components/NiceSlider';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 
@@ -154,6 +155,7 @@ function Work() {
           </Box>
         }
       >
+        <Breadcrumb context={work} contextKey="title" />
         <Box mt="2" bg="white">
           <NiceSlider images={work.images} />
           <Box mt="2" p="4">
