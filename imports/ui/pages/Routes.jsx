@@ -8,6 +8,7 @@ import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
 import ProcessRoutes from './processes/ProcessRouter';
 import ActivityRoutes from './activities/ActivitiyRouter';
+import PageRoutes from './pages/PageRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -17,9 +18,9 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
 // Pages
-const Page = lazy(() => import('./pages/Page'));
-const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
-const EditPageContainer = lazy(() => import('./pages/EditPageContainer'));
+// const Page = lazy(() => import('./pages/Page'));
+// const NewPageContainer = lazy(() => import('./pages/NewPageContainer'));
+// const EditPageContainer = lazy(() => import('./pages/EditPageContainer'));
 // Works
 const Works = lazy(() => import('./works/Works'));
 const Work = lazy(() => import('./works/Work'));
@@ -64,9 +65,10 @@ export default function () {
               {/* Resources */}
               <ResourceRoutes path="/resources" history={browserHistory} />
               {/* Pages */}
-              <Route exact path="/new-page" component={NewPageContainer} />
+              {/* <Route exact path="/new-page" component={NewPageContainer} />
               <Route path="/page/:id" component={Page} />
-              <Route path="/edit-page/:id/" component={EditPageContainer} />
+              <Route path="/edit-page/:id/" component={EditPageContainer} /> */}
+              <PageRoutes path="/pages" history={browserHistory} />
               {/* Works */}
               <Route exact path="/my-works" component={MyWorks} />
               <Route path="/:username/work/:workId" component={Work} />
