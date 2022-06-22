@@ -23,11 +23,6 @@ const Work = lazy(() => import('./works/Work'));
 const MyWorks = lazy(() => import('./works/MyWorks'));
 const NewWork = lazy(() => import('./works/NewWork'));
 const EditWork = lazy(() => import('./works/EditWork'));
-// Auth
-const SignupPage = lazy(() => import('./auth/SignupPage'));
-const LoginPage = lazy(() => import('./auth/LoginPage'));
-const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
-const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
 // Members
 const ProfileContainer = lazy(() => import('./profile/ProfileContainer'));
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
@@ -36,6 +31,11 @@ const MemberPublic = lazy(() => import('./members/Member'));
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
+// Auth
+const SignupPage = lazy(() => import('./auth/SignupPage'));
+const LoginPage = lazy(() => import('./auth/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
 // SuperAdmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
 // NotFound
@@ -53,7 +53,7 @@ export default function () {
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
-              <Route exact path="/my-activities" component={MyActivities} />
+              {/* <Route exact path="/my-activities" component={MyActivities} /> */}
               <Route path="/event/:activityId" component={ActivityContainer} />
               <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
@@ -63,7 +63,7 @@ export default function () {
               {/* Pages */}
               <PageRoutes path="/pages" history={browserHistory} />
               {/* Works */}
-              <Route exact path="/my-works" component={MyWorks} />
+              {/* <Route exact path="/my-works" component={MyWorks} /> */}
               {/* <Route path="/:username/work/:workId" component={Work} />
               <Route path="/:username/edit-work/:workId" component={EditWork} />
               <Route exact path="/new-work" component={NewWork} />
@@ -72,27 +72,37 @@ export default function () {
                 <Route exact path="/works" component={Works} />
                 <Route exact path="/works/new" component={NewWork} history={browserHistory} />
               </Switch>
-              <Switch path="/@:username/works">
+              {/* <Switch path="/@:username/works"> */}
+              {/* <Route path="/@:username/works" component={MyWorks} /> */}
+              {/* </Switch> */}
+              {/* Members */}
+              {/* <Route
+                exact
+                path="/my-profile/"
+                component={ProfileContainer}
+                history={browserHistory}
+              /> */}
+              <Route exact path="/members" component={MembersPublic} />
+              {/* <Route path="/@:username" component={MemberPublic} /> */}
+              {/* Profile & Profile Related Pages */}
+              <Switch path="/@:username">
                 <Route
                   path="/@:username/works/:workId/edit"
                   component={EditWork}
                   history={browserHistory}
                 />
                 <Route path="/@:username/works/:workId" component={Work} />
+                <Route path="/@:username/works" component={MyWorks} />
+                <Route path="/@:username/activities" component={MyActivities} />
+                <Route path="/@:username/profile" component={ProfileContainer} />
+                <Route path="/@:username" component={MemberPublic} />
               </Switch>
-              {/* Members */}
-              <Route
-                exact
-                path="/my-profile/"
-                component={ProfileContainer}
-                history={browserHistory}
-              />
-              <Route exact path="/members" component={MembersPublic} />
-              <Route path="/@:username" component={MemberPublic} />
               {/* Admin */}
-              <Route exact path="/admin/settings" component={Settings} />
-              <Route exact path="/admin/members" component={Members} />
-              <Route exact path="/admin/emails" component={Emails} />
+              <Switch path="/admin">
+                <Route exact path="/admin/settings" component={Settings} />
+                <Route exact path="/admin/members" component={Members} />
+                <Route exact path="/admin/emails" component={Emails} />
+              </Switch>
               {/* Auth */}
               <Route exact path="/signup" component={SignupPage} />
               <Route exact path="/login" component={LoginPage} />
