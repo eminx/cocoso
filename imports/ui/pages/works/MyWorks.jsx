@@ -53,7 +53,7 @@ function Works({ history }) {
       titleCentered
       leftContent={
         <Box p="2">
-          <ListMenu pathname={pathname} list={userMenu} />
+          <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
         </Box>
       }
       rightContent={
