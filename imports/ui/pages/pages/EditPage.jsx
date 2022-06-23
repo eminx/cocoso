@@ -7,6 +7,7 @@ import Template from '../../components/Template';
 import { parseTitle, call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 
@@ -132,6 +133,7 @@ class EditPage extends PureComponent {
           </Link>
         }
       >
+        <Breadcrumb context={pageData} contextKey="title" />
         <Box bg="white" p="6">
           <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
 

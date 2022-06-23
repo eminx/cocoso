@@ -10,6 +10,7 @@ import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 
 import { parseTitle } from '../../utils/shared';
 
@@ -93,6 +94,7 @@ class Page extends PureComponent {
           <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
         </Helmet>
         <div className={currentPage.isTermsPage && 'is-terms-page'}>
+          <Breadcrumb context={currentPage} contextKey="title" />
           <Box bg="white" mb="2" py="4" px="6">
             <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
           </Box>
