@@ -50,10 +50,11 @@ export default function () {
             <Switch>
               {/* Home */}
               <Route exact path="/" component={Home} />
+              {/* Members list public */}
+              <Route exact path="/members" component={MembersPublic} />
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
-              {/* <Route exact path="/my-activities" component={MyActivities} /> */}
               <Route path="/event/:activityId" component={ActivityContainer} />
               <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
@@ -63,27 +64,10 @@ export default function () {
               {/* Pages */}
               <PageRoutes path="/pages" history={browserHistory} />
               {/* Works */}
-              {/* <Route exact path="/my-works" component={MyWorks} /> */}
-              {/* <Route path="/:username/work/:workId" component={Work} />
-              <Route path="/:username/edit-work/:workId" component={EditWork} />
-              <Route exact path="/new-work" component={NewWork} />
-              <Route exact path="/works" component={Works} /> */}
               <Switch path="/works">
                 <Route exact path="/works" component={Works} />
                 <Route exact path="/works/new" component={NewWork} history={browserHistory} />
               </Switch>
-              {/* <Switch path="/@:username/works"> */}
-              {/* <Route path="/@:username/works" component={MyWorks} /> */}
-              {/* </Switch> */}
-              {/* Members */}
-              {/* <Route
-                exact
-                path="/my-profile/"
-                component={ProfileContainer}
-                history={browserHistory}
-              /> */}
-              <Route exact path="/members" component={MembersPublic} />
-              {/* <Route path="/@:username" component={MemberPublic} /> */}
               {/* Profile & Profile Related Pages */}
               <Switch path="/@:username">
                 <Route
