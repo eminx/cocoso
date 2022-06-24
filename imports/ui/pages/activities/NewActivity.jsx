@@ -369,7 +369,7 @@ class NewActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      return <Redirect to={`/event/${newActivityId}`} />;
+      return <Redirect to={`/activities/${newActivityId}`} />;
     }
 
     if (!isReady) {

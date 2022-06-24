@@ -14,19 +14,18 @@ import PageRoutes from './pages/PageRouter';
 const browserHistory = createBrowserHistory();
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
-// Activities
-const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
-const MyActivities = lazy(() => import('./activities/MyActivities'));
 // Works
 const Works = lazy(() => import('./works/Works'));
-const Work = lazy(() => import('./works/Work'));
-const MyWorks = lazy(() => import('./works/MyWorks'));
 const NewWork = lazy(() => import('./works/NewWork'));
 const EditWork = lazy(() => import('./works/EditWork'));
+const Work = lazy(() => import('./works/Work'));
 // Members
-const ProfileContainer = lazy(() => import('./profile/ProfileContainer'));
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
+// User Related
 const MemberPublic = lazy(() => import('./members/Member'));
+const ProfileContainer = lazy(() => import('./profile/ProfileContainer'));
+const MyActivities = lazy(() => import('./activities/MyActivities'));
+const MyWorks = lazy(() => import('./works/MyWorks'));
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
@@ -55,7 +54,6 @@ export default function () {
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
-              <Route path="/event/:activityId" component={ActivityContainer} />
               <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
               <ProcessRoutes path="/processes" history={browserHistory} />

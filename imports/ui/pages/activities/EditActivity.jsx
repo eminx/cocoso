@@ -364,7 +364,7 @@ class EditActivity extends PureComponent {
         heading={tc('labels.update', { domain: tc('domains.activity') })}
         leftContent={
           <Box pb="2">
-            <Link to={`/event/${activity._id}`}>
+            <Link to={`/activities/${activity._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>
