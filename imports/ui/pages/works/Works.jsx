@@ -82,7 +82,7 @@ function Works() {
 
       <Center mb="4">
         {canCreateContent && (
-          <Link to={currentUser ? '/works/new' : '/my-profile'}>
+          <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
             </Button>

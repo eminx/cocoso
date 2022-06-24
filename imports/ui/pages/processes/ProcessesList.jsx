@@ -85,7 +85,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
       <Box>
         {canCreateContent && (
           <Center mb="4">
-            <Link to={currentUser ? '/processes/new' : '/my-profile'}>
+            <Link to={currentUser ? '/processes/new' : `/@${currentUser.username}/profile`}>
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
               </Button>

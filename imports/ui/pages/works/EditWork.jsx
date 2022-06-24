@@ -211,7 +211,7 @@ class EditWork extends PureComponent {
       this.setState({
         isLoading: false,
       });
-      history.push('/my-works');
+      history.push(`/@${currentUser.username}/works`);
       message.success(
         i18n.t('common:message.success.remove', {
           domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,

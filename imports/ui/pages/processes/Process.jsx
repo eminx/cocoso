@@ -886,7 +886,7 @@ class Process extends Component {
   isNoAccess = () => !this.isMember() && !this.isAdmin() && !this.isInvited();
 
   render() {
-    const { process, processMeetings, isLoading, history, t, tc } = this.props;
+    const { process, processMeetings, isLoading, history, t, tc, currentUser } = this.props;
     const { resources } = this.state;
 
     if (!process || isLoading) {
@@ -903,7 +903,7 @@ class Process extends Component {
     } = this.state;
 
     if (redirectToLogin) {
-      return <Redirect to="/my-profile" />;
+      return <Redirect to={`/@${currentUser.username}/profile`} />;
     }
 
     const isMember = this.isMember();

@@ -86,7 +86,7 @@ function ResourcesPage() {
       </Helmet>
       {canCreateContent && (
         <Center w="100%" mb="4">
-          <Link to={currentUser ? '/resources/new' : '/my-profile'}>
+          <Link to={currentUser ? '/resources/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
             </Button>

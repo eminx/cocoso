@@ -25,7 +25,7 @@ const ResetPasswordPage = ({ history, match }) => {
   };
 
   if (currentUser) {
-    return <Redirect to="/my-profile" />;
+    return <Redirect to={`/@${currentUser.username}/profile`} />;
   }
 
   return (

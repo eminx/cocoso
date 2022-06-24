@@ -13,7 +13,7 @@ function LoginPage() {
   const { currentUser } = useContext(StateContext);
 
   if (currentUser) {
-    return <Redirect to="/my-profile" />;
+    return <Redirect to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {
