@@ -21,6 +21,7 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
@@ -72,6 +73,7 @@ function Activities({ history }) {
         </Box>
       }
     >
+      <Breadcrumb />
       {currentUser && canCreateContent && (
         <Center>
           <Button

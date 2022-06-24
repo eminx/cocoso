@@ -6,6 +6,7 @@ import { Box, Button, Center, Flex, Heading, Image, Text } from '@chakra-ui/reac
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
@@ -71,6 +72,7 @@ function Works({ history }) {
         )
       }
     >
+      <Breadcrumb />
       {currentUser && works ? (
         <NiceList actionsDisabled list={myWorksWithActions}>
           {(work) => (
