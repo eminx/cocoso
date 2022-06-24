@@ -15,7 +15,9 @@ function ListMenu({ list, pathname, currentUser, children, ...otherProps }) {
           <Link to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}>
             <CLink as="span">
               <Text fontWeight={pathname === item.value ? 'bold' : 'normal'}>
-                {tc(`menu.${item.menu}.${item.key}`)}
+                {item.key == 'publicProfile'
+                  ? `@${currentUser?.username}`
+                  : tc(`menu.${item.menu}.${item.key}`)}
               </Text>
             </CLink>
           </Link>

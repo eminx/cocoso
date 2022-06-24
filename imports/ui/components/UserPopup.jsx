@@ -78,7 +78,11 @@ function UserPopup({ currentUser }) {
               key={item.key}
               to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}
             >
-              <MenuItem>{tc(`menu.member.${item.key}`)}</MenuItem>
+              <MenuItem>
+                {item.key == 'publicProfile'
+                  ? `@${currentUser?.username}`
+                  : tc(`menu.member.${item.key}`)}
+              </MenuItem>
             </Link>
           ))}
         </MenuGroup>

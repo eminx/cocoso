@@ -2,6 +2,12 @@ const userMenu = [
   {
     // label: 'My Profile',
     menu: 'member',
+    key: 'publicProfile',
+    value: '',
+  },
+  {
+    // label: 'My Profile',
+    menu: 'member',
     key: 'profile',
     value: '/profile',
   },
