@@ -21,6 +21,7 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
@@ -68,16 +69,17 @@ function Activities({ history }) {
       titleCentered
       leftContent={
         <Box p="2">
-          <ListMenu pathname={pathname} list={userMenu} />
+          <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
         </Box>
       }
     >
+      <Breadcrumb />
       {currentUser && canCreateContent && (
         <Center>
           <Button
             colorScheme="green"
             variant="outline"
-            onClick={() => history.push('/new-activity')}
+            onClick={() => history.push('/activities/new')}
             mb="4"
             textTransform="uppercase"
           >
@@ -100,7 +102,7 @@ function Activities({ history }) {
             <TabPanel>
               <NiceList actionsDisabled list={activities}>
                 {(act) => (
-                  <Link to={`/activity/${act._id}`}>
+                  <Link to={`/activities/${act._id}`}>
                     <ActivityItem act={act} />
                   </Link>
                 )}
@@ -109,7 +111,7 @@ function Activities({ history }) {
             <TabPanel>
               <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
                 {(act) => (
-                  <Link to={`/activity/${act._id}`}>
+                  <Link to={`/activities/${act._id}`}>
                     <ActivityItem act={act} history={history} />
                   </Link>
                 )}

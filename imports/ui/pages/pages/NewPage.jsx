@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { parseTitle, call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
@@ -108,11 +109,12 @@ class NewPage extends PureComponent {
     const { formValues, isSuccess, newPageId } = this.state;
 
     if (isSuccess && newPageId) {
-      return <Redirect to={`/page/${newPageId}`} />;
+      return <Redirect to={`/pages/${newPageId}`} />;
     }
 
     return (
       <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
+        <Breadcrumb />
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
         </Box>

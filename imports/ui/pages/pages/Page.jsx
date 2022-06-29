@@ -37,7 +37,7 @@ class Page extends PureComponent {
       return;
     }
 
-    const param = match.params.id;
+    const param = match.params.pageId;
 
     const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
     return currentPage;
@@ -52,12 +52,12 @@ class Page extends PureComponent {
       return <Loader />;
     }
 
-    const param = match.params.id;
+    const param = match.params.pageId;
 
     const currentPage = this.getCurrentPage();
 
     if (!currentPage && pages && pages.length > 0) {
-      return <Redirect to={`/page/${parseTitle(pages[0].title)}`} />;
+      return <Redirect to={`/pages/${parseTitle(pages[0].title)}`} />;
     }
 
     if (!currentPage || !currentPage.title || !currentPage.longDescription) {
@@ -80,7 +80,7 @@ class Page extends PureComponent {
           currentUser &&
           role === 'admin' && (
             <Center p="2">
-              <Link to="/new-page">
+              <Link to="/pages/new">
                 <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                   <Trans i18nKey="common:actions.create" />
                 </Button>
@@ -99,7 +99,7 @@ class Page extends PureComponent {
 
           {currentUser && role === 'admin' && !currentPage.isTermsPage && (
             <Center p="2">
-              <Link to={`/edit-page/${parseTitle(currentPage.title)}`}>
+              <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
                 <Button as="span" variant="ghost" size="sm">
                   <Trans i18nKey="common:actions.update" />
                 </Button>

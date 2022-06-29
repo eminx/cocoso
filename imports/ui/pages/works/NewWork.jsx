@@ -7,6 +7,7 @@ import i18n from 'i18next';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 
@@ -166,11 +167,12 @@ class NewWork extends PureComponent {
     const { uploadableImagesLocal, isSuccess, newWorkId, isCreating, categories } = this.state;
 
     if (isSuccess && newWorkId) {
-      return <Redirect to={`/${currentUser.username}/work/${newWorkId}`} />;
+      return <Redirect to={`/@${currentUser.username}/works/${newWorkId}`} />;
     }
 
     return (
       <Template>
+        <Breadcrumb />
         <Box bg="white" p="6">
           <WorkForm
             categories={categories}

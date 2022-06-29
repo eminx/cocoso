@@ -54,6 +54,7 @@ import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
@@ -885,7 +886,7 @@ class Process extends Component {
   isNoAccess = () => !this.isMember() && !this.isAdmin() && !this.isInvited();
 
   render() {
-    const { process, processMeetings, isLoading, history, t, tc } = this.props;
+    const { process, processMeetings, isLoading, history, t, tc, currentUser } = this.props;
     const { resources } = this.state;
 
     if (!process || isLoading) {
@@ -902,7 +903,7 @@ class Process extends Component {
     } = this.state;
 
     if (redirectToLogin) {
-      return <Redirect to="/my-profile" />;
+      return <Redirect to={`/@${currentUser.username}/profile`} />;
     }
 
     const isMember = this.isMember();
@@ -958,6 +959,7 @@ class Process extends Component {
             </Box>
           }
         >
+          <Breadcrumb context={process} contextKey="title" />
           <Box bg="white" mb="4">
             {this.renderProcessInfo()}
           </Box>
@@ -966,7 +968,7 @@ class Process extends Component {
           </Visible>
           {isAdmin && (
             <Center p="4" mb="6">
-              <Link to={`/edit-process/${process._id}`}>
+              <Link to={`/processes/${process._id}/edit`}>
                 <Button as="span" variant="ghost">
                   {tc('actions.update')}
                 </Button>

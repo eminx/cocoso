@@ -20,7 +20,7 @@ function Home() {
   }
 
   if (path === 'info') {
-    return <Redirect to="/page/about" />;
+    return <Redirect to="/pages/about" />;
   }
 
   return <Redirect to={`/${path}`} />;

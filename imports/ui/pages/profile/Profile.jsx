@@ -7,6 +7,7 @@ import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/r
 import Personal from './Personal';
 import ListMenu from '../../components/ListMenu';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { userMenu } from '../../utils/constants/general';
@@ -134,10 +135,11 @@ class Profile extends PureComponent {
         titleCentered
         leftContent={
           <Box p="2">
-            <ListMenu pathname={pathname} list={userMenu} />
+            <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
           </Box>
         }
       >
+        <Breadcrumb />
         <Center mb="2" pad="1">
           {['admin', 'contributor', 'participant'].includes(role) ? (
             <Text textAlign="center" fontSize="sm">

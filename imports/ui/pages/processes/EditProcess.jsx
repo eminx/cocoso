@@ -7,6 +7,7 @@ import { call, resizeImage, uploadImage } from '../../utils/shared';
 import ProcessForm from '../../components/ProcessForm';
 import Template from '../../components/Template';
 import Loader from '../../components/Loader';
+import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message, Alert } from '../../components/message';
 
@@ -149,7 +150,7 @@ class EditProcess extends React.Component {
       if (isDeleteModalOn) {
         return <Redirect to="/processes" />;
       }
-      return <Redirect to={`/process/${process._id}`} />;
+      return <Redirect to={`/processes/${process._id}`} />;
     }
 
     return (
@@ -157,12 +158,13 @@ class EditProcess extends React.Component {
         heading="Edit"
         leftContent={
           <Box p="2">
-            <Link to={`/process/${process._id}`}>
+            <Link to={`/processes/${process._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>
         }
       >
+        <Breadcrumb context={process} contextKey="title" />
         <Box bg="white" p="6">
           <ProcessForm
             defaultValues={process}

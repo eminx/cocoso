@@ -2,20 +2,26 @@ const userMenu = [
   {
     // label: 'My Profile',
     menu: 'member',
+    key: 'publicProfile',
+    value: '',
+  },
+  {
+    // label: 'My Profile',
+    menu: 'member',
     key: 'profile',
-    value: '/my-profile',
+    value: '/profile',
   },
   {
     // label: 'My Activities',
     menu: 'member',
     key: 'activities',
-    value: '/my-activities',
+    value: '/activities',
   },
   {
     // label: 'My Works',
     menu: 'member',
     key: 'works',
-    value: '/my-works',
+    value: '/works',
   },
 ];
 

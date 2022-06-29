@@ -7,6 +7,7 @@ import Template from '../../components/Template';
 import { parseTitle, call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 
@@ -113,9 +114,9 @@ class EditPage extends PureComponent {
     if (isSuccess) {
       if (newPageTitle === 'deleted') {
         const pageUrl = parseTitle(pageTitles[0]);
-        return <Redirect to={`/page/${pageUrl}`} />;
+        return <Redirect to={`/pages/${pageUrl}`} />;
       }
-      return <Redirect to={`/page/${parseTitle(newPageTitle)}`} />;
+      return <Redirect to={`/pages/${parseTitle(newPageTitle)}`} />;
     }
 
     return (
@@ -124,7 +125,7 @@ class EditPage extends PureComponent {
           domain: tc('domains.page').toLowerCase(),
         })}
         leftContent={
-          <Link to={`/page/${pageData.title}`}>
+          <Link to={`/pages/${pageData.title}`}>
             <Button variant="link" size="sm">
               {t('pages.actions.backTo')}
               {` ${pageData.title}`}
@@ -132,6 +133,7 @@ class EditPage extends PureComponent {
           </Link>
         }
       >
+        <Breadcrumb context={pageData} contextKey="title" />
         <Box bg="white" p="6">
           <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
 

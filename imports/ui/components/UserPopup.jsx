@@ -74,8 +74,15 @@ function UserPopup({ currentUser }) {
         )}
         <MenuGroup title={tc('menu.member.label')}>
           {userMenu.map((item) => (
-            <Link key={item.key} to={item.value}>
-              <MenuItem>{tc(`menu.member.${item.key}`)}</MenuItem>
+            <Link
+              key={item.key}
+              to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}
+            >
+              <MenuItem>
+                {item.key == 'publicProfile'
+                  ? `@${currentUser?.username}`
+                  : tc(`menu.member.${item.key}`)}
+              </MenuItem>
             </Link>
           ))}
         </MenuGroup>

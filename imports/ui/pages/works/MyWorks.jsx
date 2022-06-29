@@ -6,6 +6,7 @@ import { Box, Button, Center, Flex, Heading, Image, Text } from '@chakra-ui/reac
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
@@ -53,7 +54,7 @@ function Works({ history }) {
       titleCentered
       leftContent={
         <Box p="2">
-          <ListMenu pathname={pathname} list={userMenu} />
+          <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
         </Box>
       }
       rightContent={
@@ -62,7 +63,7 @@ function Works({ history }) {
             <Button
               colorScheme="green"
               variant="outline"
-              onClick={() => history.push('/new-work')}
+              onClick={() => history.push('/works/new')}
               textTransform="uppercase"
             >
               {tc('actions.create')}
@@ -71,10 +72,11 @@ function Works({ history }) {
         )
       }
     >
+      <Breadcrumb />
       {currentUser && works ? (
         <NiceList actionsDisabled list={myWorksWithActions}>
           {(work) => (
-            <Link key={work._id} to={`/${work.authorUsername}/work/${work._id}`}>
+            <Link key={work._id} to={`/@${work.authorUsername}/works/${work._id}`}>
               <WorkThumb work={work} />
             </Link>
           )}

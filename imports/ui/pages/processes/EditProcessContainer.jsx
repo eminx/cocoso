@@ -5,7 +5,7 @@ import EditProcess from './EditProcess';
 import Processes from '../../../api/processes/process';
 
 export default EditProcessContainer = withTracker((props) => {
-  const processId = props.match.params.id;
+  const processId = props.match.params.processId;
   const processSubscription = Meteor.subscribe('process', processId);
   const isLoading = !processSubscription.ready();
   const process = Processes ? Processes.findOne({ _id: processId }) : null;

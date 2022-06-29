@@ -19,7 +19,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
               <List>
                 {pageTitles.map((title) => (
                   <ListItem key={title} p="1">
-                    <Link to={`/page/${parseTitle(title)}`}>
+                    <Link to={`/pages/${parseTitle(title)}`}>
                       <CLink as="span">
                         <Text
                           fontWeight={
@@ -40,7 +40,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
                 bg="white"
                 placeholder={currentPageTitle()}
                 w="xs"
-                onChange={(event) => history.push(`/page/${parseTitle(event.target.value)}`)}
+                onChange={(event) => history.push(`/pages/${parseTitle(event.target.value)}`)}
               >
                 {pageTitles.map((title) => (
                   <option>{title}</option>

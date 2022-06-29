@@ -9,6 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
+import Breadcrumb from '../../components/Breadcrumb';
 import {
   getAllBookingsWithSelectedResource,
   checkAndSetBookingsWithConflict,
@@ -353,7 +354,7 @@ class EditActivity extends PureComponent {
       if (isDeleteModalOn) {
         return <Redirect to="/calendar" />;
       }
-      return <Redirect to={`/activity/${activity._id}`} />;
+      return <Redirect to={`/activities/${activity._id}`} />;
     }
 
     const isFormValid = this.isFormValid();
@@ -363,12 +364,13 @@ class EditActivity extends PureComponent {
         heading={tc('labels.update', { domain: tc('domains.activity') })}
         leftContent={
           <Box pb="2">
-            <Link to={`/event/${activity._id}`}>
+            <Link to={`/activities/${activity._id}`}>
               <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
             </Link>
           </Box>
         }
       >
+        <Breadcrumb context={activity} contextKey="title" />
         <Box bg="white" p="8">
           <Box mb="8">
             <VStack spacing="2">

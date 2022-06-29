@@ -82,7 +82,7 @@ function Works() {
 
       <Center mb="4">
         {canCreateContent && (
-          <Link to={currentUser ? '/new-work' : '/my-profile'}>
+          <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
             </Button>
@@ -117,7 +117,7 @@ function Works() {
       <Paginate items={worksWithCategoryColors}>
         {(work) => (
           <Box key={work._id}>
-            <Link to={`/${work.authorUsername}/work/${work._id}`}>
+            <Link to={`/@${work.authorUsername}/works/${work._id}`}>
               <WorkThumb work={work} />
             </Link>
           </Box>

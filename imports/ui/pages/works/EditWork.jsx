@@ -8,6 +8,7 @@ import i18n from 'i18next';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
+import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import ConfirmModal from '../../components/ConfirmModal';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -210,7 +211,7 @@ class EditWork extends PureComponent {
       this.setState({
         isLoading: false,
       });
-      history.push('/my-works');
+      history.push(`/@${currentUser.username}/works`);
       message.success(
         i18n.t('common:message.success.remove', {
           domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
@@ -244,7 +245,7 @@ class EditWork extends PureComponent {
       return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
-    const workRoute = `/${currentUser.username}/work/${workId}`;
+    const workRoute = `/@${currentUser.username}/works/${workId}`;
     if (isSuccess) {
       return <Redirect to={workRoute} />;
     }
@@ -259,6 +260,7 @@ class EditWork extends PureComponent {
           </Box>
         }
       >
+        <Breadcrumb context={values} contextKey="title" />
         <Box bg="white" p="6">
           <WorkForm
             categories={categories}
