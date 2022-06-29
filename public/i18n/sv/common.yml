@@ -27,10 +27,10 @@ labels:
   booked: bokad
   contact: Kontakt
   create: Skapa en ny {{ domain }}
-  event: Händelse
+  event: Aktiviteten
   newBooking: Ny bokning
   page: Sida
-  process: Bearbeta
+  process: Processen
   remove: Ta bort
   sortBy:
     placeholder: Sortera med

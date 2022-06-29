@@ -230,9 +230,11 @@ class Calendar extends PureComponent {
 
     const selectedLinkForModal =
       selectedActivity &&
-      (selectedActivity.isProcess
+      (selectedActivity.isProcess || selectedActivity.isProcessMeeting
         ? `/process/${selectedActivity.processId}`
         : `/activity/${selectedActivity.activityId}`);
+
+    console.log(selectedActivity);
 
     return (
       <Box>
@@ -389,7 +391,11 @@ class Calendar extends PureComponent {
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
                   {' '}
                   {!selectedActivity?.isPrivateProcess &&
-                    `${selectedActivity?.isProcess ? tc('labels.process') : tc('labels.activity')}`}
+                    `${
+                      selectedActivity?.isProcess || selectedActivity?.isProcessMeeting
+                        ? tc('labels.process')
+                        : tc('labels.activity')
+                    }`}
                 </Button>
               </Link>
             }

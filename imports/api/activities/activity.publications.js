@@ -33,7 +33,7 @@ Meteor.publish('activities', function (onlyPublic = false) {
       // { fields: publicFields }
     );
   }
-  return Activities.find({ host, isPublished: true });
+  return Activities.find({ host });
 });
 
 Meteor.publish('activity', function (id) {
