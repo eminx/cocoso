@@ -449,6 +449,14 @@ class Activity extends PureComponent {
                 {activityData.subTitle}
               </Heading>
             )}
+            <Box pt="2" mb="1">
+              {/* <Heading mb="2" as="h5" size="md">
+            {t('public.labels.resource')}
+          </Heading> */}
+              <Link to={`/resources/${activityData.resourceId}`}>
+                <Tag label={activityData.resource} />
+              </Link>
+            </Box>
           </Box>
         }
         rightContent={
@@ -482,15 +490,8 @@ class Activity extends PureComponent {
             </Box>
           )}
         </Box>
-
-        <Box p="2" mb="1">
-          <Heading mb="2" as="h5" size="md">
-            {t('public.labels.resource')}
-          </Heading>
-          <Tag label={activityData.resource} />
-        </Box>
         {activityData.address && (
-          <Box p="2" mb="1">
+          <Box p="4" mb="1">
             <Heading mb="2" as="h5" size="md">
               {t('public.labels.address')}
             </Heading>

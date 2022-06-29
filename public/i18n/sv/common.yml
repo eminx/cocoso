@@ -23,14 +23,15 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
+  activity: Aktiviteten
   all: Allt
   booked: bokad
   contact: Kontakt
   create: Skapa en ny {{ domain }}
-  event: Händelse
+  event: Händelsen
   newBooking: Ny bokning
   page: Sida
-  process: Bearbeta
+  process: Processen
   remove: Ta bort
   sortBy:
     placeholder: Sortera med

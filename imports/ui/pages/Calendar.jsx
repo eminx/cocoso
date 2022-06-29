@@ -230,9 +230,9 @@ class Calendar extends PureComponent {
 
     const selectedLinkForModal =
       selectedActivity &&
-      (selectedActivity.isProcess
-        ? `/processes/${selectedActivity.processId}`
-        : `/activities/${selectedActivity.activityId}`);
+      (selectedActivity.isProcess || selectedActivity.isProcessMeeting
+        ? `/process/${selectedActivity.processId}`
+        : `/activity/${selectedActivity.activityId}`);
 
     return (
       <Box>
@@ -377,25 +377,26 @@ class Calendar extends PureComponent {
           </Box>
 
           <Text fontSize="sm" mt="2" p="1">
-            {selectedActivity &&
-              selectedActivity.longDescription &&
-              (selectedActivity.isPrivateProcess
+            {selectedActivity?.longDescription &&
+              (selectedActivity?.isPrivateProcess
                 ? ''
-                : renderHTML(`${selectedActivity?.longDescription}`))}
+                : renderHTML(selectedActivity?.longDescription))}
           </Text>
 
           <Center>
-            {selectedActivity && selectedActivity.isPublicActivity && (
+            {
               <Link to={selectedLinkForModal}>
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
                   {' '}
-                  {!selectedActivity.isPrivateProcess &&
-                    `${selectedActivity.isProcess ? tc('labels.process') : tc('labels.event')} ${tc(
-                      'labels.page'
-                    )}`}
+                  {!selectedActivity?.isPrivateProcess &&
+                    `${
+                      selectedActivity?.isProcess || selectedActivity?.isProcessMeeting
+                        ? tc('labels.process')
+                        : tc('labels.activity')
+                    }`}
                 </Button>
               </Link>
-            )}
+            }
           </Center>
         </ConfirmModal>
 
