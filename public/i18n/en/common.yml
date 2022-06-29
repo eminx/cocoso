@@ -23,6 +23,7 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
+  activity: Activity
   all: All
   booked: booked
   contact: Contact

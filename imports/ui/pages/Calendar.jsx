@@ -389,9 +389,7 @@ class Calendar extends PureComponent {
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
                   {' '}
                   {!selectedActivity?.isPrivateProcess &&
-                    `${
-                      selectedActivity?.isProcess ? tc('labels.process') : tc('labels.event')
-                    } ${tc('labels.page')}`}
+                    `${selectedActivity?.isProcess ? tc('labels.process') : tc('labels.activity')}`}
                 </Button>
               </Link>
             }
