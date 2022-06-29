@@ -249,7 +249,7 @@ function Menu({ currentHost, isMobile, screenClass, history }) {
 
   const isCurrentPage = (name) => {
     if (name === 'info') {
-      return pathname.substring(0, 5) === '/pages';
+      return pathname.substring(0, 6) === '/pages';
     }
     return name === pathname.substring(1, pathname.length);
   };
