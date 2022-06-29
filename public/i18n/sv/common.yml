@@ -23,11 +23,12 @@ actions:
 
 # ACTION PAGE TITLES
 labels:
+  activity: Aktiviteten
   all: Allt
   booked: bokad
   contact: Kontakt
   create: Skapa en ny {{ domain }}
-  event: Aktiviteten
+  event: Händelsen
   newBooking: Ny bokning
   page: Sida
   process: Processen

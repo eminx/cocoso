@@ -30,6 +30,7 @@ function ConfirmModal({
       isCentered
       isOpen={visible}
       leastDestructiveRef={cancelRef}
+      scrollBehavior="inside"
       onClose={onCancel}
       onOverlayClick={onCancel}
       {...otherProps}
@@ -44,10 +45,16 @@ function ConfirmModal({
 
           {!hideFooter && (
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onCancel}>
+              <Button ref={cancelRef} size="sm" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
-              <Button colorScheme="blue" onClick={onConfirm} ml={3} {...confirmButtonProps}>
+              <Button
+                colorScheme="blue"
+                ml={3}
+                size="sm"
+                onClick={onConfirm}
+                {...confirmButtonProps}
+              >
                 {confirmText || tc('actions.submit')}
               </Button>
             </AlertDialogFooter>

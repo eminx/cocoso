@@ -234,8 +234,6 @@ class Calendar extends PureComponent {
         ? `/process/${selectedActivity.processId}`
         : `/activity/${selectedActivity.activityId}`);
 
-    console.log(selectedActivity);
-
     return (
       <Box>
         <Helmet>
@@ -382,7 +380,7 @@ class Calendar extends PureComponent {
             {selectedActivity?.longDescription &&
               (selectedActivity?.isPrivateProcess
                 ? ''
-                : renderHTML(`${selectedActivity?.longDescription?.substring(0, 200)}...`))}
+                : renderHTML(selectedActivity?.longDescription))}
           </Text>
 
           <Center>
