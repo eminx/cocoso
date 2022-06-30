@@ -16,4 +16,8 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+  Accounts.emailTemplates.verifyEmail.text = function (user, url) {
+    const newUrl = url.replace('#/', '');
+    return `Hi, To verify your account email, simply click the link below. ${newUrl}`;
+  };
 });
