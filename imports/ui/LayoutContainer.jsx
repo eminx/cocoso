@@ -310,7 +310,7 @@ function Footer({ currentHost, tc }) {
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="2" py="1">
-              <Link to={`/${item.name}`}>
+              <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
                 <CLink as="span">{item.label}</CLink>{' '}
               </Link>
             </ListItem>
