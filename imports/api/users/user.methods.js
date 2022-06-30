@@ -258,19 +258,19 @@ Meteor.methods({
       if (!emailForToken.verified) {
         // https://github.com/meteor/meteor/blob/52532e70e53631657d55aa60409bca6f3e243922/packages/accounts-password/password_server.js#L921
         Meteor.users.update(
-          { _id: user._id, 'emails.address': primaryMail.address },
+          { _id: user._id, 'emails.address': emailForToken.address },
           {
             $set: { 'emails.$.verified': true },
-            $pull: { 'services.email.verificationTokens': { address: primaryMail.address } },
+            $pull: { 'services.email.verificationTokens': { address: emailForToken.address } },
           }
         );
-        return 'Your email address is verified. You can close the page now.';
+        return 'verified';
       } else {
-        return 'Your email address is already verified. You can close the page now.';
+        return 'alreadyVerified';
       }
     } else {
       // if no verification tokens exists
-      return 'Your email address is already verified. You can close the page now.';
+      return 'alreadyVerified';
     }
   },
 });

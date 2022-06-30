@@ -67,7 +67,7 @@ message:
 
   verifyEmail:
     verified: Your email address is verified. You can close the page now.
-    wasVerified: Your email address is already verified. You can close the page now.
+    alreadyVerified: Your email address is already verified. You can close the page now.
 
 # MODAL POP-UPS
 modals:
