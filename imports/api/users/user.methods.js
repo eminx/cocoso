@@ -16,6 +16,10 @@ Meteor.methods({
     try {
       const userId = Accounts.createUser(values);
       if (userId) {
+        const accountVerification = Accounts.sendVerificationEmail(userId);
+        Meteor.call('sendVerificationLink', accountVerification);
+        // console.log(accountVerification);
+
         Meteor.call('sendWelcomeEmail', userId);
       }
       return userId;
