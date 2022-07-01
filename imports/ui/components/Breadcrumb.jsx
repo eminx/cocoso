@@ -10,7 +10,7 @@ import {
 export default function Breadcrumb({ context, contextKey }) {
   const [breadcrumbs] = useState(window.location.pathname.split('/'));
   return (
-    <Center py="4">
+    <Center p="4">
       <BreadcrumbMenu>
         {breadcrumbs.map((item, index) => {
           if (context?._id == item) item = context[contextKey];
