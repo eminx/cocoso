@@ -9,7 +9,7 @@ const NotFoundPage = ({ domain, history }) => (
         404
       </Text>
       <Text textAlign="center" fontWeight="bold">
-        {domain || 'Page'} could not be found dear
+        {domain || 'Page'} could not be found
       </Text>
     </Box>
   </Template>
