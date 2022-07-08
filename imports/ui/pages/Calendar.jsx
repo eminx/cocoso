@@ -231,8 +231,8 @@ class Calendar extends PureComponent {
     const selectedLinkForModal =
       selectedActivity &&
       (selectedActivity.isProcess || selectedActivity.isProcessMeeting
-        ? `/process/${selectedActivity.processId}`
-        : `/activity/${selectedActivity.activityId}`);
+        ? `/processes/${selectedActivity.processId}`
+        : `/activities/${selectedActivity.activityId}`);
 
     return (
       <Box>
