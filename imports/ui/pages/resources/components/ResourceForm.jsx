@@ -239,7 +239,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button isDisabled={!isEditable()} isLoading={isSubmitting} type="submit">
+            <Button isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>
