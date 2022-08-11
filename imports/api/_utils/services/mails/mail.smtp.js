@@ -89,12 +89,12 @@ Meteor.methods({
     );
   },
 
-  sendVerificationLink(verificationEmail) {
+  sendVerificationLink(verificationInfo) {
     Meteor.call(
       'sendEmail',
-      verificationEmail.email,
-      verificationEmail.options.subject,
-      verificationEmail.options.text
+      verificationInfo.email,
+      verificationInfo.options.subject,
+      verificationInfo.options.text
     );
   },
 });

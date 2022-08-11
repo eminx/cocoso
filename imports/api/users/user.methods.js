@@ -247,7 +247,7 @@ Meteor.methods({
     const user = Meteor.user();
     const userEmails = user.emails;
     const userVerificationTokens = user.services.email.verificationTokens;
-    if (userVerificationTokens.length > 0) {
+    if (!userVerificationTokens || !userVerificationTokens.length === 0) {
       // map & get verificationToken object for the token
       const verificationTokenItem = userVerificationTokens.find((item) => item.token === token);
       // map & get email object for the token
@@ -255,22 +255,20 @@ Meteor.methods({
         (item) => item.address === verificationTokenItem.address
       );
       // check if email already verified
-      if (!emailForToken.verified) {
-        // https://github.com/meteor/meteor/blob/52532e70e53631657d55aa60409bca6f3e243922/packages/accounts-password/password_server.js#L921
-        Meteor.users.update(
-          { _id: user._id, 'emails.address': emailForToken.address },
-          {
-            $set: { 'emails.$.verified': true },
-            $pull: { 'services.email.verificationTokens': { address: emailForToken.address } },
-          }
-        );
-        return 'verified';
-      } else {
-        return 'alreadyVerified';
+      if (emailForToken.verified) { 
+        return 'alreadyVerified!'; 
       }
-    } else {
-      // if no verification tokens exists
-      return 'alreadyVerified';
-    }
+      // https://github.com/meteor/meteor/blob/52532e70e53631657d55aa60409bca6f3e243922/packages/accounts-password/password_server.js#L921
+      Meteor.users.update(
+        { _id: user._id, 'emails.address': emailForToken.address },
+        {
+          $set: { 'emails.$.verified': true },
+          $pull: { 'services.email.verificationTokens': { address: emailForToken.address } },
+        }
+      );
+      return 'verified';
+    } 
+    // if no verification tokens exists
+    return 'alreadyVerified';
   },
 });
