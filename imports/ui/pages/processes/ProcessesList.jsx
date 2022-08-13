@@ -45,7 +45,6 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
   const getProcesses = async () => {
     try {
       const allProcesses = await call('getProcesses');
-      allProcesses.forEach((p) => console.log(p.isPrivate));
       setProcesses(allProcesses);
     } catch (error) {
       message.error(error.reason);
