@@ -9,14 +9,16 @@ Meteor.publish('processes', function () {
   // Processes._ensureIndex({ host, isPublished: true });
 
   const fields = {
-    title: 1,
-    readingMaterial: 1,
-    imageUrl: 1,
-    meetings: 1,
-    adminUsername: 1,
     adminId: 1,
-    isArchived: 1,
+    adminUsername: 1,
+    description: 1,
+    imageUrl: 1,
+    isPrivate: 1,
+    meetings: 1,
+    readingMaterial: 1,
+    title: 1,
   };
+
   if (userId) {
     fields.members = 1;
     fields.peopleInvited = 1;

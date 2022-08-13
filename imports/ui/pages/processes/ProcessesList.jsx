@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { Link } from 'react-router-dom';
@@ -10,14 +10,16 @@ import { Helmet } from 'react-helmet';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
-import { compareForSort } from '../../utils/shared';
+import { call, compareForSort } from '../../utils/shared';
 import GridThumb from '../../components/GridThumb';
+import { message } from '../../components/message';
 
 moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({ isLoading, currentUser, processes, t, tc }) {
+export default function ProcessesList({ isLoading, currentUser, t, tc }) {
+  const [processes, setProcesses] = useState([]);
   const [filterBy, setFilterBy] = useState(0);
   const { canCreateContent, currentHost } = useContext(StateContext);
 
@@ -35,6 +37,21 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
       value: 'archived',
     },
   ];
+
+  useEffect(() => {
+    getProcesses();
+  }, []);
+
+  const getProcesses = async () => {
+    try {
+      const allProcesses = await call('getProcesses');
+      allProcesses.forEach((p) => console.log(p.isPrivate));
+      setProcesses(allProcesses);
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    }
+  };
 
   const getFilteredProcesses = () => {
     if (!processes) {
@@ -73,7 +90,8 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
     return futureProcessesAllowed;
   };
 
-  const processesRendered = getFilteredProcesses().sort(compareForSort).reverse();
+  const processesRendered =
+    processes && processes.length > 0 && getFilteredProcesses().sort(compareForSort).reverse();
 
   return (
     <Box w="100%">
@@ -104,7 +122,7 @@ export default function ProcessesList({ isLoading, currentUser, processes, t, tc
             <TabPanels>
               {filterOptions.map((option) => (
                 <TabPanel key={option.value}>
-                  {processesRendered.length > 0 && (
+                  {processesRendered && processesRendered.length > 0 && (
                     <Paginate
                       items={processesRendered}
                       grid={{ columns: [1, 1, 2, 2], spacing: 3, w: '100%' }}
