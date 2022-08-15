@@ -101,8 +101,8 @@ const uploadImage = (image, directory) =>
     });
   });
 
-function parseAllBookingsWithResources(activities, processes, resources) {
-  if (!activities || !processes || !resources) {
+function parseAllBookingsWithResources(activities, resources) {
+  if (!activities || !resources) {
     return;
   }
   const allBookings = [];
@@ -212,13 +212,12 @@ function checkAndSetBookingsWithConflict(
 ) {
   return selectedBookings.map((selectedBooking) => {
     const bookingWithConflict = allBookingsWithSelectedResource
-      .filter((item) => item.activityId !== selfBookingIdForEdit)
+      .filter((item) => !selfBookingIdForEdit || item.activityId !== selfBookingIdForEdit)
       .find((occurence) => {
         const selectedStart = `${selectedBooking.startDate} ${selectedBooking.startTime}`;
         const selectedEnd = `${selectedBooking.endDate} ${selectedBooking.endTime}`;
         const existingStart = `${occurence.startDate} ${occurence.startTime}`;
         const existingEnd = `${occurence.endDate} ${occurence.endTime}`;
-
         return isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd);
       });
 

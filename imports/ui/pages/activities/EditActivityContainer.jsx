@@ -15,12 +15,10 @@ export default EditActivityContainer = withTracker((props) => {
   const resources = Resources ? Resources.find().fetch() : null;
   const activitiesSub = Meteor.subscribe('activities');
   const activities = Activities ? Activities.find().fetch() : null;
-  const processesSub = Meteor.subscribe('processes');
-  const processes = Processes ? Processes.find().fetch() : null;
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
-  const allBookings = parseAllBookingsWithResources(activities, processes, resources);
+  const allBookings = parseAllBookingsWithResources(activities, resources);
 
   const isLoading = !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
 
