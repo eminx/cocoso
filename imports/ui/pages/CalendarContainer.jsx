@@ -20,7 +20,7 @@ const CalendarContainer = withTracker((props) => {
   const allBookings = parseAllBookingsWithResources(activities, resources);
 
   const currentUser = Meteor.user();
-  const isLoading = !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
+  const isLoading = !activitiesSub.ready() || !resourcesSub.ready();
 
   const [tc] = useTranslation('common');
 
