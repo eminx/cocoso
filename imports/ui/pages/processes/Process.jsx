@@ -56,7 +56,7 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
-import { message } from '../../components/message';
+import { Alert, message } from '../../components/message';
 import { call } from '../../utils/shared';
 
 moment.locale(i18n.language);
@@ -910,7 +910,7 @@ class Process extends Component {
     const isAdmin = this.isAdmin();
 
     if (process && process.isPrivate && this.isNoAccess()) {
-      return null;
+      return <Alert message={tc('message.access.deny')} />;
     }
 
     return (
