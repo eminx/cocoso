@@ -111,7 +111,7 @@ Meteor.methods({
               notifications: {
                 title: theProcess.title,
                 count: 1,
-                context: 'process',
+                context: 'processes',
                 contextId: theProcess._id,
                 unSeenIndexes: [unSeenIndex],
               },

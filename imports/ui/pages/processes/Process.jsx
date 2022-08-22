@@ -147,7 +147,7 @@ class Process extends Component {
   addNewChatMessage = async (messageContent) => {
     const { process } = this.props;
     const values = {
-      context: 'process',
+      context: 'processes',
       contextId: process._id,
       message: messageContent,
     };
