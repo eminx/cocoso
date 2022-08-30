@@ -17,6 +17,7 @@ export default ProcessContainer = withTracker((props) => {
   // const resourcesSub = Meteor.subscribe('resources');
   // const resources = Resources ? Resources.find().fetch() : null;
 
+  const allActivities = Activities ? Activities.find().fetch() : null;
   const processActivities = Activities ? Activities.find({ processId }).fetch() : null;
   const processMeetings = processActivities.map((activity) => {
     if (!activity.datesAndTimes || activity.datesAndTimes.length === 0) {
@@ -42,7 +43,7 @@ export default ProcessContainer = withTracker((props) => {
     currentUser,
     chatData,
     processMeetings,
-    // resources,
+    allActivities,
     t,
     tc,
   };

@@ -9,7 +9,9 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
-import DatePicker from '../../components/DatePicker.jsx';
+import DatePicker from '../../components/DatePicker';
+import { ConflictMarker } from '../../components/DatesAndTimes';
+
 import {
   Accordion,
   AccordionButton,
@@ -56,8 +58,13 @@ import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
-import { message } from '../../components/message';
-import { call } from '../../utils/shared';
+import { Alert, message } from '../../components/message';
+import {
+  call,
+  checkAndSetBookingsWithConflict,
+  getAllBookingsWithSelectedResource,
+  parseAllBookingsWithResources,
+} from '../../utils/shared';
 
 moment.locale(i18n.language);
 
@@ -79,6 +86,7 @@ class Process extends Component {
     potentialNewAdmin: false,
     inviteManagerOpen: false,
     resources: [],
+    conflictingBooking: null,
   };
 
   componentDidMount() {
@@ -139,7 +147,7 @@ class Process extends Component {
   addNewChatMessage = async (messageContent) => {
     const { process } = this.props;
     const values = {
-      context: 'process',
+      context: 'processes',
       contextId: process._id,
       message: messageContent,
     };
@@ -313,11 +321,6 @@ class Process extends Component {
     });
   };
 
-  isFormValid = () => {
-    const { newMeeting } = this.state;
-    return newMeeting && newMeeting.startTime && newMeeting.endTime && newMeeting.startDate;
-  };
-
   handleDateAndTimeChange = (dateOrTime, entity) => {
     const { newMeeting } = this.state;
     const newerMeeting = { ...newMeeting };
@@ -328,36 +331,36 @@ class Process extends Component {
         newMeeting: newerMeeting,
       },
       () => {
-        this.setState({
-          isFormValid: this.isFormValid(),
-        });
+        this.validateBookings();
       }
     );
   };
 
-  handlePlaceChange = (place) => {
+  handleResourceChange = (resourceLabel) => {
     const { newMeeting, resources } = this.state;
-    const selectedResource = resources.find((r) => r.label === place);
+    const selectedResource = resources.find((r) => r.label === resourceLabel);
     this.setState(
       {
         newMeeting: {
           ...newMeeting,
-          resource: place,
+          resource: resourceLabel,
           resourceId: selectedResource._id,
           resourceIndex: selectedResource.resourceIndex,
         },
       },
       () => {
-        this.setState({
-          isFormValid: this.isFormValid(),
-        });
+        this.validateBookings();
       }
     );
   };
 
   createActivity = async () => {
-    const { newMeeting } = this.state;
+    const { newMeeting, isFormValid } = this.state;
     const { process, tc } = this.props;
+
+    if (!isFormValid) {
+      return;
+    }
 
     const activityValues = {
       title: process.title,
@@ -885,6 +888,62 @@ class Process extends Component {
 
   isNoAccess = () => !this.isMember() && !this.isAdmin() && !this.isInvited();
 
+  validateBookings = () => {
+    const { allActivities } = this.props;
+    const { newMeeting, resources } = this.state;
+
+    if (
+      !newMeeting ||
+      !newMeeting.resourceId ||
+      !newMeeting.startDate ||
+      !newMeeting.startTime ||
+      !newMeeting.endTime
+    ) {
+      this.setState({
+        conflictingBooking: null,
+        isFormValid: false,
+      });
+      return;
+    }
+
+    const selectedResource = resources.find((r) => r._id === newMeeting.resourceId);
+
+    const allBookingsParsed = parseAllBookingsWithResources(allActivities, resources);
+
+    const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
+      selectedResource,
+      allBookingsParsed
+    );
+
+    const selectedBookingsWithConflict = checkAndSetBookingsWithConflict(
+      [
+        {
+          startDate: newMeeting.startDate,
+          endDate: newMeeting.startDate,
+          startTime: newMeeting.startTime,
+          endTime: newMeeting.endTime,
+        },
+      ],
+      allBookingsWithSelectedResource
+    );
+
+    if (
+      selectedBookingsWithConflict &&
+      selectedBookingsWithConflict[0] &&
+      selectedBookingsWithConflict[0].conflict
+    ) {
+      this.setState({
+        conflictingBooking: selectedBookingsWithConflict && selectedBookingsWithConflict[0],
+        isFormValid: false,
+      });
+    } else {
+      this.setState({
+        conflictingBooking: null,
+        isFormValid: true,
+      });
+    }
+  };
+
   render() {
     const { process, processMeetings, isLoading, history, t, tc, currentUser } = this.props;
     const { resources } = this.state;
@@ -900,6 +959,7 @@ class Process extends Component {
       inviteManagerOpen,
       newMeeting,
       modalOpen,
+      conflictingBooking,
     } = this.state;
 
     if (redirectToLogin) {
@@ -910,7 +970,7 @@ class Process extends Component {
     const isAdmin = this.isAdmin();
 
     if (process && process.isPrivate && this.isNoAccess()) {
-      return null;
+      return <Alert message={tc('message.access.deny')} />;
     }
 
     return (
@@ -950,9 +1010,10 @@ class Process extends Component {
                     }
                     handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
                     resources={resources}
-                    handlePlaceChange={this.handlePlaceChange}
+                    handleResourceChange={this.handleResourceChange}
                     handleSubmit={this.createActivity}
                     buttonDisabled={!isFormValid}
+                    conflictingBooking={conflictingBooking}
                   />
                 </div>
               )}
@@ -1036,16 +1097,18 @@ function MeetingInfo({ meeting, isAttending, resources }) {
 }
 
 function CreateMeetingForm({
+  buttonDisabled,
+  conflictingBooking,
   handleDateChange,
   handleStartTimeChange,
   handleFinishTimeChange,
-  resources,
-  handlePlaceChange,
+  handleResourceChange,
   handleSubmit,
-  buttonDisabled,
+  resources,
 }) {
   const [isLocal, setIsLocal] = useState(true);
   const [t] = useTranslation('processes');
+  const [ta] = useTranslation('activities');
 
   return (
     <Box p="2" bg="white" my="2">
@@ -1084,7 +1147,7 @@ function CreateMeetingForm({
           size="sm"
           placeholder={t('meeting.form.resource')}
           name="resource"
-          onChange={({ target: { value } }) => handlePlaceChange(value)}
+          onChange={({ target: { value } }) => handleResourceChange(value)}
         >
           {resources.map((part, i) => (
             <option key={part.label}>{part.label}</option>
@@ -1094,7 +1157,7 @@ function CreateMeetingForm({
         <Textarea
           placeholder={t('meeting.form.location')}
           size="sm"
-          onChange={(event) => handlePlaceChange(event.target.value)}
+          onChange={(event) => handleResourceChange(event.target.value)}
         />
       )}
 
@@ -1103,6 +1166,8 @@ function CreateMeetingForm({
           {t('meeting.form.submit')}
         </Button>
       </Flex>
+
+      {conflictingBooking && <ConflictMarker recurrence={conflictingBooking} t={ta} />}
     </Box>
   );
 }

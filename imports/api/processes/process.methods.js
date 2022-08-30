@@ -24,6 +24,39 @@ const isUserProcessAdmin = (process, userId) => {
 };
 
 Meteor.methods({
+  getProcesses() {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const allProcesses = Processes.find({ host }).fetch();
+    const processesFiltered = allProcesses.filter((process) => {
+      if (!process.isPrivate) {
+        return true;
+      }
+      if (!user) {
+        return false;
+      }
+      const userId = user._id;
+      return (
+        process.adminId === userId ||
+        process.members.some((member) => member.memberId === userId) ||
+        process.peopleInvited.some((person) => person.email === user.emails[0].address)
+      );
+    });
+
+    return processesFiltered.map((process) => ({
+      _id: process._id,
+      title: process.title,
+      readingMaterial: process.readingMaterial,
+      imageUrl: process.imageUrl,
+      meetings: process.meetings,
+      adminUsername: process.adminUsername,
+      isArchived: process.isArchived,
+      members: user ? process.members : null,
+      creationDate: process.creationDate,
+      isPrivate: process.isPrivate,
+    }));
+  },
+
   createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     const host = getHost(this);
