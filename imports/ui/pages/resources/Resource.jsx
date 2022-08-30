@@ -51,7 +51,7 @@ function ResourcePage() {
 
   const addNewChatMessage = async (messageContent) => {
     const values = {
-      context: 'resource',
+      context: 'resources',
       contextId: resource._id,
       message: messageContent,
     };

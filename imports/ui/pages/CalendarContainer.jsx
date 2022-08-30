@@ -16,13 +16,11 @@ const CalendarContainer = withTracker((props) => {
   const activities = Activities ? Activities.find().fetch() : null;
   const resourcesSub = Meteor.subscribe('resources');
   const resources = Resources ? Resources.find().fetch() : null;
-  const processesSub = Meteor.subscribe('processes');
-  const processes = Processes ? Processes.find().fetch() : null;
 
-  const allBookings = parseAllBookingsWithResources(activities, processes, resources);
+  const allBookings = parseAllBookingsWithResources(activities, resources);
 
   const currentUser = Meteor.user();
-  const isLoading = !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
+  const isLoading = !activitiesSub.ready() || !resourcesSub.ready();
 
   const [tc] = useTranslation('common');
 

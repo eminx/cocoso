@@ -133,34 +133,40 @@ const DatesAndTimes = ({
         </Box>
       </Wrap>
 
-      {recurrence.conflict && (
-        <Box>
-          <Text fontSize="sm" textAlign="center" fontWeight="bold">
-            {t('form.conflict.alert')}
-            <br />
-          </Text>
-          <Code
-            colorScheme={recurrence.isConflictOK ? 'orange' : 'red'}
-            mx="auto"
-            display="block"
-            width="fit-content"
-            mt="4"
-          >
-            {recurrence.conflict.startDate === recurrence.conflict.endDate
-              ? recurrence.conflict.startDate
-              : `${recurrence.conflict.startDate}-${recurrence.conflict.endDate}`}
-            {', '}
-            {`${recurrence.conflict.startTime} – ${recurrence.conflict.endTime}`}
-          </Code>
-          {recurrence.isConflictOK && (
-            <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
-              {t('form.conflict.notExclusiveInfo')}
-            </Text>
-          )}
-        </Box>
-      )}
+      {recurrence.conflict && <ConflictMarker recurrence={recurrence} t={t} />}
     </Box>
   );
 };
+
+function ConflictMarker({ recurrence, t }) {
+  return (
+    <Box>
+      <Text fontSize="sm" textAlign="center" fontWeight="bold">
+        {t('form.conflict.alert')}
+        <br />
+      </Text>
+      <Code
+        colorScheme={recurrence.isConflictOK ? 'orange' : 'red'}
+        mx="auto"
+        display="block"
+        width="fit-content"
+        mt="4"
+      >
+        {recurrence.conflict.startDate === recurrence.conflict.endDate
+          ? recurrence.conflict.startDate
+          : `${recurrence.conflict.startDate}-${recurrence.conflict.endDate}`}
+        {', '}
+        {`${recurrence.conflict.startTime} – ${recurrence.conflict.endTime}`}
+      </Code>
+      {recurrence.isConflictOK && (
+        <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
+          {t('form.conflict.notExclusiveInfo')}
+        </Text>
+      )}
+    </Box>
+  );
+}
+
+export { ConflictMarker };
 
 export default DatesAndTimes;
