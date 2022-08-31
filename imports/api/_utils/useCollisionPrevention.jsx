@@ -9,7 +9,6 @@ import {
 } from '../../ui/utils/shared';
 import Resources from '../resources/resource';
 import Activities from '../activities/activity';
-import Processes from '../processes/process';
 
 const useCollisionPrevention = (selectedResource, selectedBookings, counterValue) =>
   useTracker(() => {
@@ -21,7 +20,7 @@ const useCollisionPrevention = (selectedResource, selectedBookings, counterValue
     const isCollisionPreventionLoading =
       !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
 
-    if (!activities || !processes || !resources) {
+    if (!activities || !resources) {
       return null;
     }
 
