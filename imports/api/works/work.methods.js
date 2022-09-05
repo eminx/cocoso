@@ -16,6 +16,23 @@ Meteor.methods({
     }
   },
 
+  getWorksByUser(username) {
+    if (!username) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const host = getHost(this);
+
+    try {
+      const works = Works.find({
+        host,
+        authorUsername: username,
+      }).fetch();
+      return works;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch works");
+    }
+  },
+
   getMyWorks() {
     const user = Meteor.user();
     if (!user) {

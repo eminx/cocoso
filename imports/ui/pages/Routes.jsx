@@ -18,15 +18,10 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Works
 const Works = lazy(() => import('./works/Works'));
 const NewWork = lazy(() => import('./works/NewWork'));
-const EditWork = lazy(() => import('./works/EditWork'));
-const Work = lazy(() => import('./works/Work'));
+// Others are on profile routes
+
 // Members
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
-// User Related
-const MemberPublic = lazy(() => import('./members/Member'));
-const ProfileContainer = lazy(() => import('./profile/EditProfileContainer'));
-const MyActivities = lazy(() => import('./activities/MyActivities'));
-const MyWorks = lazy(() => import('./works/MyWorks'));
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
