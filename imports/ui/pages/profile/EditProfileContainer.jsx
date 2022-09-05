@@ -1,8 +1,8 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
-import Profile from './Profile';
+import EditProfile from './EditProfile';
 
-export default ProfileContainer = withTracker((props) => {
+export default EditProfileContainer = withTracker((props) => {
   const currentUser = Meteor.user();
   const isLoading = !currentUser;
 
@@ -15,4 +15,4 @@ export default ProfileContainer = withTracker((props) => {
     t,
     tc,
   };
-})(Profile);
+})(EditProfile);
