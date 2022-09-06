@@ -13,6 +13,5 @@ export default ActivitiesContainer = withTracker((props) => {
     isLoading,
     activitiesList,
     currentUser,
-    processesList,
   };
 })(ActivitiesList);
