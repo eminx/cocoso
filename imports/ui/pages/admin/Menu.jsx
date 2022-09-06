@@ -28,7 +28,7 @@ import arrayMove from 'array-move';
 
 import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
-import { message } from '../../components/message';
+import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 

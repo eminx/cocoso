@@ -7,8 +7,9 @@ import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
 import ProcessRoutes from './processes/ProcessRouter';
-import ActivityRoutes from './activities/ActivitiyRouter';
+import ActivityRoutes from './activities/ActivityRouter';
 import PageRoutes from './pages/PageRouter';
+import ProfileRoutes from './profile/ProfileRouter';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -17,15 +18,10 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 // Works
 const Works = lazy(() => import('./works/Works'));
 const NewWork = lazy(() => import('./works/NewWork'));
-const EditWork = lazy(() => import('./works/EditWork'));
-const Work = lazy(() => import('./works/Work'));
+// Others are on profile routes
+
 // Members
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
-// User Related
-const MemberPublic = lazy(() => import('./members/Member'));
-const ProfileContainer = lazy(() => import('./profile/ProfileContainer'));
-const MyActivities = lazy(() => import('./activities/MyActivities'));
-const MyWorks = lazy(() => import('./works/MyWorks'));
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
@@ -67,18 +63,7 @@ export default function () {
                 <Route exact path="/works/new" component={NewWork} history={browserHistory} />
               </Switch>
               {/* Profile & Profile Related Pages */}
-              <Switch path="/@:username">
-                <Route
-                  path="/@:username/works/:workId/edit"
-                  component={EditWork}
-                  history={browserHistory}
-                />
-                <Route path="/@:username/works/:workId" component={Work} />
-                <Route path="/@:username/works" component={MyWorks} />
-                <Route path="/@:username/activities" component={MyActivities} />
-                <Route path="/@:username/profile" component={ProfileContainer} />
-                <Route path="/@:username" component={MemberPublic} />
-              </Switch>
+              <ProfileRoutes path="/@:username" history={browserHistory} />
               {/* Admin */}
               <Switch path="/admin">
                 <Route exact path="/admin/settings" component={Settings} />

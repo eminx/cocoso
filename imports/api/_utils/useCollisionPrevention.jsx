@@ -17,8 +17,7 @@ const useCollisionPrevention = (selectedResource, selectedBookings, counterValue
     const activitiesSub = Meteor.subscribe('activities');
     const activities = Activities ? Activities.find().fetch() : null;
 
-    const isCollisionPreventionLoading =
-      !activitiesSub.ready() || !resourcesSub.ready() || !processesSub.ready();
+    const isCollisionPreventionLoading = !activitiesSub.ready() || !resourcesSub.ready();
 
     if (!activities || !resources) {
       return null;
