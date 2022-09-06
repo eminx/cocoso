@@ -963,7 +963,7 @@ class Process extends Component {
     } = this.state;
 
     if (redirectToLogin) {
-      return <Redirect to={`/@${currentUser.username}/profile`} />;
+      return <Redirect to="/login" />;
     }
 
     const isMember = this.isMember();
