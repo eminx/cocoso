@@ -7,6 +7,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import WorkThumb from '../../components/WorkThumb';
+import Paginate from '../../components/Paginate';
 
 function MemberWorks({ match, history }) {
   const [works, setWorks] = useState([]);
@@ -37,29 +38,19 @@ function MemberWorks({ match, history }) {
   }
 
   return (
-    <Wrap justify="center" w="100%" mt="4">
-      {works && works.length > 0 ? (
-        works.map((work, index) => (
-          <WrapItem key={work._id}>
-            <Link key={work._id} to={`/@${work.authorUsername}/works/${work._id}`}>
-              <Box mb="4">
+    <Box justify="center" w="100%" mt="4">
+      {works && works.length > 0 && (
+        <Paginate items={works}>
+          {(work) => (
+            <Box key={work._id}>
+              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
                 <WorkThumb work={work} />
-              </Box>
-            </Link>
-          </WrapItem>
-        ))
-      ) : (
-        <Box w="100%" bg="gray.600" p="2" align="center">
-          <Heading level={4} margin="small">
-            {t('message.activity.empty')}
-          </Heading>
-          <Box direction="row" align="center">
-            <Image fit="contain" src="https://media.giphy.com/media/a0dG9NJaR2tQQ/giphy.gif" />
-          </Box>
-          <Text m="2">{t('message.activity.info', { username })}</Text>
-        </Box>
+              </Link>
+            </Box>
+          )}
+        </Paginate>
       )}
-    </Wrap>
+    </Box>
   );
 }
 

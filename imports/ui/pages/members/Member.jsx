@@ -101,7 +101,7 @@ function MemberPublic({ history, match, path }) {
         </Box>
       </Center>
 
-      <Tabs align="center" defaultIndex={() => getDefaultTabIndex()}>
+      <Tabs align="center" defaultIndex={getDefaultTabIndex()}>
         <TabList>
           <Link to={`/@${user.username}/bio`}>
             <Tab as="div">{tc('domains.bio')}</Tab>
