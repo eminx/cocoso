@@ -26,7 +26,7 @@ function compareDatesForSort(a, b) {
   return dateA - dateB;
 }
 
-function Activities({ activitiesList, processesList, isLoading, history }) {
+function Activities({ activitiesList, isLoading, history }) {
   const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
@@ -47,49 +47,9 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
     return futurePublicActivities;
   };
 
-  const getProcessMeetings = () => {
-    if (!processesList) {
-      return null;
-    }
-
-    const futureProcesses = processesList.filter((process) =>
-      process.meetings?.some((meeting) => moment(meeting.startDate).isAfter(yesterday))
-    );
-
-    const futureProcessesWithAccessFilter = parseOnlyAllowedProcesses(futureProcesses);
-
-    return futureProcessesWithAccessFilter.map((process) => ({
-      ...process,
-      datesAndTimes: process.meetings,
-      isProcess: true,
-    }));
+  const allSortedActivities = () => {
+    return getPublicActivities().sort(compareDatesForSort);
   };
-
-  const parseOnlyAllowedProcesses = (futureProcesses) => {
-    const futureProcessesAllowed = futureProcesses.filter((process) => {
-      if (!process.isPrivate) {
-        return true;
-      }
-      if (!currentUser) {
-        return false;
-      }
-      const currentUserId = currentUser._id;
-      return (
-        process.adminId === currentUserId ||
-        process.members.some((member) => member.memberId === currentUserId) ||
-        process.peopleInvited.some((person) => person.email === currentUser.emails[0].address)
-      );
-    });
-
-    return futureProcessesAllowed;
-  };
-
-  const getAllSorted = () => {
-    const allActivities = [...getPublicActivities(), ...getProcessMeetings()];
-    return allActivities.sort(compareDatesForSort);
-  };
-
-  const allSortedActivities = getAllSorted();
 
   if (isLoading) {
     return (
@@ -117,7 +77,7 @@ function Activities({ activitiesList, processesList, isLoading, history }) {
         )}
       </Center>
 
-      <Paginate items={allSortedActivities}>
+      <Paginate items={allSortedActivities()}>
         {(activity) => (
           <Box key={activity.title}>
             <Link

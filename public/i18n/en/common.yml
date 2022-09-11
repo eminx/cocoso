@@ -117,7 +117,7 @@ domains:
   a: a
   your: Your
   public: Public
-
+  bio: Bio
   calendar: Calendar
   activity: Activity
   activities: Activities

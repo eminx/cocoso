@@ -8,6 +8,30 @@ import Works from '../works/work';
 import Processes from '../processes/process';
 
 Meteor.methods({
+  getUserInfo(username) {
+    check(username, String);
+
+    const host = getHost(this);
+    // const currentHost = Hosts.findOne({ host });
+
+    try {
+      const user = Meteor.users.findOne({ username, 'memberships.host': host });
+      if (!user) {
+        throw new Meteor.Error('User not found in this host');
+      }
+      return {
+        avatar: user.avatar,
+        bio: user.bio,
+        contactInfo: user.contactInfo,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+      };
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
   createAccount(values) {
     check(values.email, String);
     check(values.username, String);

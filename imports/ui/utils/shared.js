@@ -298,6 +298,14 @@ function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) 
   });
 }
 
+function getFullName(user) {
+  const { firstName, lastName } = user;
+  if (firstName && lastName) {
+    return `${firstName} ${lastName}`;
+  }
+  return firstName || lastName || '';
+}
+
 export {
   localeSort,
   getInitials,
@@ -316,4 +324,5 @@ export {
   formatDate,
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
+  getFullName,
 };

@@ -117,7 +117,7 @@ domains:
   a: en
   your: Din
   public: Offentlig
-
+  bio: Bio
   calendar: Kalender
   activity: Aktivitet
   activities: Aktiviteter
