@@ -79,9 +79,10 @@ const getBackgroundStyle = (cHue) => {
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
   const [tc] = useTranslation('common');
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [history.location.pathname]);
+  const { pathname } = history.location;
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [pathname]);
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
@@ -106,27 +107,6 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     );
   }
 
-  // const hsl =
-  //   currentHost.settings &&
-  //   currentHost.settings.mainColor &&
-  //   currentHost.settings.mainColor.hsl;
-  // let cHue;
-  // const customTheme = {
-  //   ...theme,
-  // };
-  // if (hsl) {
-  //   const themeColor = `hsl(${hsl.h}, ${100 * hsl.s}%, ${100 * hsl.l}%)`;
-  //   customTheme.global.colors.brand = themeColor;
-  //   chakraTheme.colors.brand = themeColor;
-  //   customTheme.global.colors['brand-light'] = `hsl(${hsl.h}, ${
-  //     100 * hsl.s
-  //   }%, 95%)`;
-  //   customTheme.global.colors.focus = `hsl(${hsl.h}, 80%, 60%)`;
-
-  //   // complementary color is calculated:
-  //   cHue = hsl.h > 180 ? hsl.h - 180 : 180 - hsl.h;
-  // }
-
   const headerProps = {
     currentUser,
     currentHost,
@@ -141,6 +121,9 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
+  const { menu } = currentHost.settings;
+  // console.log(pathname)
+  const isHeader = menu.some((item) => item.path === pathname);
 
   return (
     <ChakraProvider theme={chakraTheme}>
@@ -160,7 +143,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       >
         <Center className="main-viewport" style={getBackgroundStyle()}>
           <Box maxWidth="1400px" w="100%">
-            <Header {...headerProps} />
+            {<Header {...headerProps} />}
 
             <Box style={{ minHeight: '100vh' }}>{children}</Box>
 

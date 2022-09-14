@@ -59,6 +59,7 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert, message } from '../../components/message';
+import Tably from '../../components/Tably';
 import {
   call,
   checkAndSetBookingsWithConflict,
@@ -470,7 +471,8 @@ class Process extends Component {
 
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
-    const { resources } = this.state;
+    const { conflictingBooking, isFormValid, resources } = this.state;
+
     if (!process) {
       return;
     }
@@ -478,47 +480,59 @@ class Process extends Component {
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
     return (
-      process &&
-      processMeetings.map((meeting, meetingIndex) => (
-        <AccordionItem
-          key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          bg="white"
-          mb="2"
-          style={{
-            display: isFutureMeeting(meeting) ? 'block' : 'none',
-          }}
-        >
-          <AccordionButton _expanded={{ bg: 'green.100' }}>
-            <Box flex="1" textAlign="left">
-              <FancyDate occurence={meeting} resources={resources} />
-            </Box>
-          </AccordionButton>
-          <AccordionPanel>
-            <Heading size="sm">Attendees</Heading>
-            {meeting.attendees && (
-              <List>
-                {meeting.attendees.map((attendee) => (
-                  <ListItem key={attendee.username}>
-                    <Text as="span" fontWeight="bold">
-                      {attendee.username}
-                    </Text>
-                    <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
-                  </ListItem>
-                ))}
-              </List>
-            )}
-            <Center py="2" mt="2">
-              <Button
-                size="xs"
-                colorScheme="red"
-                onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
-              >
-                {t('meeting.actions.remove')}
-              </Button>
-            </Center>
-          </AccordionPanel>
-        </AccordionItem>
-      ))
+      <Box>
+        {process &&
+          processMeetings.map((meeting, meetingIndex) => (
+            <AccordionItem
+              key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+              bg="white"
+              mb="2"
+              style={{
+                display: isFutureMeeting(meeting) ? 'block' : 'none',
+              }}
+            >
+              <AccordionButton _expanded={{ bg: 'green.100' }}>
+                <Box flex="1" textAlign="left">
+                  <FancyDate occurence={meeting} resources={resources} />
+                </Box>
+              </AccordionButton>
+              <AccordionPanel>
+                <Heading size="sm">Attendees</Heading>
+                {meeting.attendees && (
+                  <List>
+                    {meeting.attendees.map((attendee) => (
+                      <ListItem key={attendee.username}>
+                        <Text as="span" fontWeight="bold">
+                          {attendee.username}
+                        </Text>
+                        <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+                <Center py="2" mt="2">
+                  <Button
+                    size="xs"
+                    colorScheme="red"
+                    onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
+                  >
+                    {t('meeting.actions.remove')}
+                  </Button>
+                </Center>
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
+        <CreateMeetingForm
+          handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
+          handleStartTimeChange={(time) => this.handleDateAndTimeChange(time, 'startTime')}
+          handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
+          resources={resources}
+          handleResourceChange={this.handleResourceChange}
+          handleSubmit={this.createActivity}
+          buttonDisabled={!isFormValid}
+          conflictingBooking={conflictingBooking}
+        />
+      </Box>
     );
   };
 
@@ -662,26 +676,11 @@ class Process extends Component {
     });
   };
 
-  renderMembersAndDocuments = () => {
-    const { process, currentUser, t, tc } = this.props;
-
-    const { isUploading } = this.state;
+  renderMembers = () => {
+    const { process, t } = this.props;
 
     const isMember = this.isMember();
     const isAdmin = this.isAdmin();
-
-    const documentsList =
-      process &&
-      process.documents &&
-      process.documents.map((document) => ({
-        ...document,
-        actions: [
-          {
-            content: tc('labels.remove'),
-            handleClick: () => this.removeProcessDocument(document.name),
-          },
-        ],
-      }));
 
     const membersList =
       process &&
@@ -712,9 +711,6 @@ class Process extends Component {
 
         {process?.members && (
           <Box mb="8">
-            <Heading mb="2" size="sm">
-              {t('labels.member')}
-            </Heading>
             <Box mb="4" bg="white">
               <NiceList
                 actionsDisabled={!isAdmin}
@@ -739,11 +735,30 @@ class Process extends Component {
             </Box>
           </Box>
         )}
+      </Box>
+    );
+  };
 
-        <Heading mb="2" size="sm">
-          {tc('documents.label')}
-        </Heading>
+  renderDocuments = () => {
+    const { process, tc } = this.props;
+    const { isUploading } = this.state;
+    const isAdmin = this.isAdmin();
 
+    const documentsList =
+      process &&
+      process.documents &&
+      process.documents.map((document) => ({
+        ...document,
+        actions: [
+          {
+            content: tc('labels.remove'),
+            handleClick: () => this.removeProcessDocument(document.name),
+          },
+        ],
+      }));
+
+    return (
+      <Box>
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
@@ -803,13 +818,11 @@ class Process extends Component {
 
   renderProcessInfo = () => {
     const { process, chatData, currentUser, t } = this.props;
-    const isAdmin = this.isAdmin();
     const notificationCount = currentUser?.notifications?.find((n) => n.contextId === process._id)
       ?.unSeenIndexes?.length;
 
     return (
       <div>
-        {this.getTitle(process, isAdmin)}
         <ScreenClassRender
           render={(screenClass) => (
             <Tabs variant="enclosed-colored">
@@ -972,6 +985,47 @@ class Process extends Component {
     if (process && process.isPrivate && this.isNoAccess()) {
       return <Alert message={tc('message.access.deny')} />;
     }
+
+    const tabs = [
+      {
+        title: 'Info',
+        content: <div className="text-content">{renderHTML(process.description)}</div>,
+        path: `/processes/${process._id}/info`,
+      },
+      {
+        title: t('labels.member'),
+        content: this.renderMembers(),
+        path: `/processes/${process._id}/members`,
+      },
+      {
+        title: tc('documents.label'),
+        content: this.renderDocuments(),
+        path: `/processes/${process._id}/documents`,
+      },
+      {
+        title: t('labels.date'),
+        content: (
+          <Accordion allowToggle>
+            {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+          </Accordion>
+        ),
+        path: `/processes/${process._id}/meetings`,
+      },
+      {
+        title: 'Discussion',
+        content: this.renderDiscussion(),
+        path: `/processes/${process._id}/discussion`,
+      },
+    ];
+
+    return (
+      <Tably
+        images={[process.imageUrl]}
+        subTitle={process.readingMaterial}
+        tabs={tabs}
+        title={process.title}
+      />
+    );
 
     return (
       <div>

@@ -19,7 +19,7 @@ function Tably({ tabs, title, subTitle, images }) {
 
   return (
     <>
-      <Heading as="h3" size="lg" textAlign="center" mt="2">
+      <Heading as="h3" size="lg" textAlign="center" mt="2" mb="2">
         {title}
       </Heading>
       {subTitle && (
@@ -28,7 +28,7 @@ function Tably({ tabs, title, subTitle, images }) {
         </Heading>
       )}
       <Flex direction={isLarge ? 'row' : 'column'}>
-        <Box flexBasis="50%" flexGrow="0" mb="4">
+        <Box flexBasis="50%" flexGrow="0" mb="4" w={isLarge ? '50%' : '100%'}>
           <NiceSlider images={images} />
           {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
         </Box>

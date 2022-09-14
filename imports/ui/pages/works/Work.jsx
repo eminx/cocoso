@@ -29,6 +29,7 @@ import NiceSlider from '../../components/NiceSlider';
 import Breadcrumb from '../../components/Breadcrumb';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
+import Tably from '../../components/Tably';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -97,6 +98,66 @@ function Work() {
     </Link>
   );
 
+  const tabs = [
+    {
+      title: 'Info',
+      content: (
+        <Box>
+          <div
+            style={{
+              whiteSpace: 'pre-line',
+              color: 'rgba(0,0,0, .85)',
+            }}
+            className="text-content"
+          >
+            {renderHTML(work.longDescription)}
+          </div>
+        </Box>
+      ),
+      path: `/@${work.authorUsername}/works/${work._id}/info`,
+    },
+    {
+      title: 'Access & Contact',
+      content: (
+        <Box>
+          <Flex
+            align="center"
+            direction="row"
+            justify="space-between"
+            p="2"
+            style={{ overflow: 'hidden' }}
+          >
+            <Box w="100%" pt="1">
+              <Hidden lg xl>
+                <Text fontSize="lg" textAlign="center" ml="2">
+                  {work.additionalInfo}
+                </Text>
+              </Hidden>
+              <Visible lg xl>
+                <Text fontSize="lg">{work.additionalInfo}</Text>
+              </Visible>
+            </Box>
+            <Box>
+              <Hidden xs sm md>
+                <AvatarHolder />
+              </Hidden>
+            </Box>
+          </Flex>
+          <Center p="2" mt="4">
+            <Button onClick={handleOpenModal} variant="ghost">
+              {`${tc('labels.contact')} ${work.authorUsername}`}
+            </Button>
+          </Center>
+        </Box>
+      ),
+      path: `/@${work.authorUsername}/works/${work._id}/contact`,
+    },
+  ];
+
+  console.log(tabs);
+
+  return <Tably images={[work.images]} subTitle={work.subTitle} tabs={tabs} title={work.title} />;
+
   return (
     <Fragment>
       <Template
@@ -155,7 +216,6 @@ function Work() {
           </Box>
         }
       >
-        <Breadcrumb context={work} contextKey="title" />
         <Box mt="2" bg="white">
           <NiceSlider images={work.images} />
           <Box mt="2" p="4">

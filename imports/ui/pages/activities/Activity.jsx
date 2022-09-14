@@ -432,7 +432,7 @@ class Activity extends PureComponent {
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
-    const messages = this.getChatMessages();
+    // const messages = this.getChatMessages();
 
     const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
       <Center m="2">

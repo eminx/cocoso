@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Center } from '@chakra-ui/react';
+import { Badge, Box, Button, Center, Text, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { ScreenClassRender } from 'react-grid-system';
+import renderHTML from 'react-render-html';
+import moment from 'moment';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
 import { StateContext } from '../../LayoutContainer';
 import useChattery from '../../components/chattery/useChattery';
+import Tably from '../../components/Tably';
+import Chattery from '../../components/chattery/Chattery';
 
 function ResourcePage() {
   const { resourceId } = useParams();
@@ -27,6 +30,8 @@ function ResourcePage() {
   useEffect(() => {
     getResourceById();
   }, []);
+
+  const removeNotification = () => {};
 
   const getResourceById = async () => {
     try {
@@ -71,6 +76,63 @@ function ResourcePage() {
     return <NotFoundPage domain="Resource with this name or id" />;
   }
 
+  const tabs = [
+    {
+      title: 'Info',
+      content: (
+        <Box>
+          <div className="text-content">{renderHTML(resource.description)}</div>
+          <Text as="p" fontSize="xs">
+            {moment(resource.createdAt).format('D MMM YYYY')}
+          </Text>
+        </Box>
+      ),
+      path: `/resources/${resource._id}/info`,
+    },
+    {
+      title: 'Documents',
+      content: <DocumentsField contextType="resource" contextId={resource?._id} />,
+      path: `/resources/${resource._id}/documents`,
+    },
+  ];
+
+  if (currentUser && canCreateContent) {
+    tabs.push({
+      title: 'Bookings',
+      content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
+      path: `/resources/${resource._id}/bookings`,
+    });
+    if (resource.isCombo) {
+      tabs.push({
+        title: 'Combo',
+        content: (
+          <Wrap>
+            {resource.resourcesForCombo.map((res, i) => (
+              <Badge fontSize="16px">{res.label}</Badge>
+            ))}
+          </Wrap>
+        ),
+        path: `/resources/${resource._id}/combo`,
+      });
+    }
+    tabs.push({
+      title: 'Discussion',
+      content: (
+        <div>
+          <Chattery
+            messages={discussion}
+            onNewMessage={addNewChatMessage}
+            removeNotification={removeNotification}
+            isMember={Boolean(currentUser)}
+          />
+        </div>
+      ),
+      path: `/resources/${resource._id}/discussion`,
+    });
+  }
+
+  return <Tably images={resource.images} tabs={tabs} title={resource.label} />;
+
   return (
     <ScreenClassRender
       render={(screenClass) => {
@@ -87,7 +149,6 @@ function ResourcePage() {
               )
             }
           >
-            <Breadcrumb context={resource} contextKey="label" />
             <ResourceCard
               addNewChatMessage={addNewChatMessage}
               currentUser={currentUser}

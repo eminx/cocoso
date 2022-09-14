@@ -93,9 +93,9 @@ export default function DocumentsField({ contextType, contextId }) {
 
   return (
     <Box mt="5">
-      <Heading mb="4" ml="4" size="sm">
+      {/* <Heading mb="4" ml="4" size="sm">
         {tc('documents.label')}
-      </Heading>
+      </Heading> */}
 
       {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>

@@ -20,6 +20,7 @@ import moment from 'moment';
 
 import NiceSlider from '../../../components/NiceSlider';
 import Chattery from '../../../components/chattery/Chattery';
+import Tably from '../../../components/Tably';
 
 moment.locale(i18n.language);
 
@@ -31,6 +32,68 @@ export default function ResourceCard({ currentUser, discussion, resource, addNew
   if (!resource) {
     return null;
   }
+
+  const tabs = [
+    {
+      title: 'Info',
+      content: (
+        <Box>
+          <div className="text-content">{renderHTML(resource.description)}</div>
+          <Text as="p" fontSize="xs">
+            {moment(resource.createdAt).format('D MMM YYYY')}
+          </Text>
+        </Box>
+      ),
+      path: `/resources/${resource._id}/info`,
+    },
+    {
+      title: 'Documents',
+      content: this.renderDocuments(),
+      path: `/resources/${resource._id}/documents`,
+    },
+    {
+      title: 'Bookings',
+      content: (
+        <Accordion allowToggle>
+          {resourceMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+        </Accordion>
+      ),
+      path: `/resources/${resource._id}/meetings`,
+    },
+    {
+      title: 'Combo',
+      content: (
+        <Wrap>
+          {resource.resourcesForCombo.map((res, i) => (
+            <Badge fontSize="16px">{res.label}</Badge>
+          ))}
+        </Wrap>
+      ),
+    },
+    {
+      title: 'Discussion',
+      content: (
+        <div>
+          <Chattery
+            messages={discussion}
+            onNewMessage={addNewChatMessage}
+            removeNotification={removeNotification}
+            isMember={Boolean(currentUser)}
+          />
+        </div>
+      ),
+      path: `/resources/${resource._id}/discussion`,
+    },
+  ];
+
+  return (
+    <Tably
+      images={[process.imageUrl]}
+      subTitle={process.readingMaterial}
+      tabs={tabs}
+      title={process.title}
+    />
+  );
 
   return (
     <Box bg="white" mb="2" px="4" py="4" key={resource?.label}>
