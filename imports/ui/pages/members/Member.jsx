@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Tabs, TabList, Tab, useDisclosure } from '@chakra-ui/react';
+import { Box, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
-import Breadcrumb from '../../components/Breadcrumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import { message, Alert } from '../../components/message';
-import WorkThumb from '../../components/WorkThumb';
-import Works from '../../../api/works/work';
+import { Alert } from '../../components/message';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 
