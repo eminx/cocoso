@@ -38,8 +38,9 @@ function NiceSlider({ images }) {
             {images.map((image) => (
               <Center key={image} width="100%">
                 <Image
-                  w="auto"
-                  h={screenClass === 'xs' ? '200px' : 'sm'}
+                  w="100%"
+                  // h={screenClass === 'xs' ? '200px' : 'sm'}
+                  h="100%"
                   fit="contain"
                   src={image}
                   style={{ cursor: 'pointer', margin: '0 auto' }}
