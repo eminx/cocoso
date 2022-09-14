@@ -19,6 +19,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -27,6 +28,11 @@ import {
   NumberInput,
   NumberInputField,
   Stack,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
   Text,
 } from '@chakra-ui/react';
 
@@ -435,6 +441,72 @@ class Activity extends PureComponent {
           </Button>
         </Link>
       </Center>
+    );
+
+    const tabs = [
+      {
+        title: 'Info',
+        content: (
+          <Box>
+            <div
+              style={{
+                whiteSpace: 'pre-line',
+                color: 'rgba(0,0,0, .85)',
+              }}
+              className="text-content"
+            >
+              {renderHTML(activityData.longDescription)}
+            </div>
+          </Box>
+        ),
+      },
+      {
+        title: 'Dates',
+        content: this.renderDates(),
+      },
+      {
+        title: 'Location',
+        content: (
+          <Box mb="1">
+            <Heading mb="2" as="h5" size="md">
+              {t('public.labels.address')}
+            </Heading>
+            <Text size="sm">{activityData.address}</Text>
+          </Box>
+        ),
+      },
+    ];
+
+    return (
+      <>
+        <Heading as="h3" size="lg" textAlign="center" my="2">
+          {activityData.title}
+        </Heading>
+        {activityData.subTitle && (
+          <Heading as="h4" size="md" fontWeight="light" mb="4" textAlign="center">
+            {activityData.subTitle}
+          </Heading>
+        )}
+        <Flex>
+          <Box flexBasis="50%">
+            <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />
+          </Box>
+          <Box flexBasis="50%" p="4">
+            <Tabs>
+              <TabList px="4">
+                {tabs.map((tab) => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
+              </TabList>
+              <TabPanels>
+                {tabs.map((tab) => (
+                  <TabPanel key={tab.title}>{tab.content}</TabPanel>
+                ))}
+              </TabPanels>
+            </Tabs>
+          </Box>
+        </Flex>
+      </>
     );
 
     return (
