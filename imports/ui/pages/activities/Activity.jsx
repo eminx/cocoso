@@ -47,6 +47,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
+import Tably from '../../components/Tably';
 
 moment.locale(i18n.language);
 
@@ -459,10 +460,12 @@ class Activity extends PureComponent {
             </div>
           </Box>
         ),
+        path: `/activities/${activityData._id}/info`,
       },
       {
         title: 'Dates',
         content: this.renderDates(),
+        path: `/activities/${activityData._id}/dates`,
       },
       {
         title: 'Location',
@@ -474,39 +477,17 @@ class Activity extends PureComponent {
             <Text size="sm">{activityData.address}</Text>
           </Box>
         ),
+        path: `/activities/${activityData._id}/location`,
       },
     ];
 
     return (
-      <>
-        <Heading as="h3" size="lg" textAlign="center" my="2">
-          {activityData.title}
-        </Heading>
-        {activityData.subTitle && (
-          <Heading as="h4" size="md" fontWeight="light" mb="4" textAlign="center">
-            {activityData.subTitle}
-          </Heading>
-        )}
-        <Flex>
-          <Box flexBasis="50%">
-            <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />
-          </Box>
-          <Box flexBasis="50%" p="4">
-            <Tabs>
-              <TabList px="4">
-                {tabs.map((tab) => (
-                  <Tab key={tab.title}>{tab.title}</Tab>
-                ))}
-              </TabList>
-              <TabPanels>
-                {tabs.map((tab) => (
-                  <TabPanel key={tab.title}>{tab.content}</TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
-          </Box>
-        </Flex>
-      </>
+      <Tably
+        images={[activityData.imageUrl]}
+        subTitle={activityData.subTitle}
+        tabs={tabs}
+        title={activityData.title}
+      />
     );
 
     return (
