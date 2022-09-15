@@ -6,12 +6,6 @@ const userMenu = [
     value: '',
   },
   {
-    // label: 'My Profile',
-    menu: 'member',
-    key: 'profile',
-    value: '/profile',
-  },
-  {
     // label: 'My Activities',
     menu: 'member',
     key: 'activities',
