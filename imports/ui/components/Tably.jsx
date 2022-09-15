@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { Box, Flex, Heading, Tabs, Tab, TabList, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Heading, Tabs, Tab, TabList } from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
+import { StateContext } from '../LayoutContainer';
 
 function Tably({ tabs, title, subTitle, images }) {
   const history = useHistory();
   const location = useLocation();
-  const [isDesktop] = useMediaQuery('(min-width: 960px)');
+  const { isDesktop } = useContext(StateContext);
 
   const getDefaultTabIndex = () => {
     return tabs.findIndex((tab) => tab.path === location.pathname);
