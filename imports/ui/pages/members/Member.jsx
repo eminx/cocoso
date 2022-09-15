@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Tabs, TabList, Tab, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
+import { Trans } from 'react-i18next';
 
-import Breadcrumb from '../../components/Breadcrumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
-import WorkThumb from '../../components/WorkThumb';
-import Works from '../../../api/works/work';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 
@@ -22,7 +19,7 @@ function MemberPublic({ history, match, path }) {
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
   const { username, profileRoute } = match.params;
-  const { currentHost } = useContext(StateContext);
+  const { currentUser, currentHost } = useContext(StateContext);
 
   useEffect(() => {
     Meteor.call('getUserInfo', username, (error, respond) => {
@@ -95,6 +92,15 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <Box>
+      {currentUser && currentUser.username === user.username && (
+        <Center p="2">
+          <Link to={`/@${user.username}/edit`}>
+            <Button as="span" variant="ghost" size="sm">
+              <Trans i18nKey="common:actions.update" />
+            </Button>
+          </Link>
+        </Center>
+      )}
       <Center>
         <Box w="large">
           <MemberAvatarEtc t={t} tc={tc} user={user} />
