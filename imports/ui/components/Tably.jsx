@@ -20,14 +20,16 @@ function Tably({ tabs, title, subTitle, images }) {
 
   return (
     <>
-      <Heading as="h3" size="lg" textAlign="center" mt="2" mb="2">
-        {title}
-      </Heading>
-      {subTitle && (
-        <Heading as="h4" size="md" fontWeight="light" mb="6" textAlign="center">
-          {subTitle}
+      <Box mt="4" mb="6">
+        <Heading as="h3" size="lg" textAlign="center">
+          {title}
         </Heading>
-      )}
+        {subTitle && (
+          <Heading as="h4" size="md" fontWeight="light" textAlign="center">
+            {subTitle}
+          </Heading>
+        )}
+      </Box>
       <Flex justify="center" direction={isDesktop ? 'row' : 'column'}>
         {images && images.length > 0 && (
           <Box flexBasis="50%" flexGrow="0" mb="4" w={isDesktop ? '50%' : '100%'}>
