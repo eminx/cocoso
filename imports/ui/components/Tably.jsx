@@ -27,11 +27,13 @@ function Tably({ tabs, title, subTitle, images }) {
           {subTitle}
         </Heading>
       )}
-      <Flex direction={isLarge ? 'row' : 'column'}>
-        <Box flexBasis="50%" flexGrow="0" mb="4" w={isLarge ? '50%' : '100%'}>
-          <NiceSlider images={images} />
-          {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
-        </Box>
+      <Flex justify="center" direction={isLarge ? 'row' : 'column'}>
+        {images && images.length > 0 && (
+          <Box flexBasis="50%" flexGrow="0" mb="4" w={isLarge ? '50%' : '100%'}>
+            <NiceSlider images={images} />
+            {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
+          </Box>
+        )}
         <Box flexBasis="50%" px="4">
           <Tabs
             defaultIndex={getDefaultTabIndex()}
