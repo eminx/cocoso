@@ -15,6 +15,7 @@ import {
   ListItem,
   Spinner,
   Text,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +31,7 @@ const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
   const [tc] = useTranslation('common');
+  const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const { pathname } = history.location;
   // useEffect(() => {
   //   window.scrollTo(0, 0);
@@ -80,6 +82,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
           currentHost,
           role,
           canCreateContent,
+          isDesktop,
         }}
       >
         <Center className="main-viewport">

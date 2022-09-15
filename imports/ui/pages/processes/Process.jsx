@@ -4,7 +4,6 @@ import { Redirect, Link } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
-import { Visible, ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
@@ -823,32 +822,28 @@ class Process extends Component {
 
     return (
       <div>
-        <ScreenClassRender
-          render={(screenClass) => (
-            <Tabs variant="enclosed-colored">
-              <TabList pl="4">
-                <Tab>{t('tabs.process.info')}</Tab>
-                <Tab>
-                  {t('tabs.process.discuss')}{' '}
-                  {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
-                </Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <Center bg="gray.900">
-                    <Image src={process.imageUrl} fit="contain" fill />
-                  </Center>
-                  <Box pt="4">
-                    <div className="text-content">{renderHTML(process.description)}</div>
-                  </Box>
-                </TabPanel>
-                <TabPanel>
-                  <div>{chatData && this.renderDiscussion()}</div>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          )}
-        />
+        <Tabs variant="enclosed-colored">
+          <TabList pl="4">
+            <Tab>{t('tabs.process.info')}</Tab>
+            <Tab>
+              {t('tabs.process.discuss')}{' '}
+              {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Center bg="gray.900">
+                <Image src={process.imageUrl} fit="contain" fill />
+              </Center>
+              <Box pt="4">
+                <div className="text-content">{renderHTML(process.description)}</div>
+              </Box>
+            </TabPanel>
+            <TabPanel>
+              <div>{chatData && this.renderDiscussion()}</div>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </div>
     );
   };

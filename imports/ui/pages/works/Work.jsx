@@ -19,14 +19,12 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Visible, Hidden } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 import NiceSlider from '../../components/NiceSlider';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
@@ -128,19 +126,10 @@ function Work() {
             style={{ overflow: 'hidden' }}
           >
             <Box w="100%" pt="1">
-              <Hidden lg xl>
-                <Text fontSize="lg" textAlign="center" ml="2">
-                  {work.additionalInfo}
-                </Text>
-              </Hidden>
-              <Visible lg xl>
-                <Text fontSize="lg">{work.additionalInfo}</Text>
-              </Visible>
+              <Text fontSize="lg">{work.additionalInfo}</Text>
             </Box>
             <Box>
-              <Hidden xs sm md>
-                <AvatarHolder />
-              </Hidden>
+              <AvatarHolder />
             </Box>
           </Flex>
           <Center p="2" mt="4">

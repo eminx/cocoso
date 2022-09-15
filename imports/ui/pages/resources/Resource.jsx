@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Badge, Box, Button, Center, Text, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ScreenClassRender } from 'react-grid-system';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
 
@@ -24,7 +23,7 @@ function ResourcePage() {
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentUser, isDesktop, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {

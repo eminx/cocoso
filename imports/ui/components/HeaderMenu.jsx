@@ -22,7 +22,7 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-function HeaderMenu({ currentHost, isMobile, screenClass }) {
+function HeaderMenu({ currentHost, isDesktop }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
 
@@ -48,7 +48,7 @@ function HeaderMenu({ currentHost, isMobile, screenClass }) {
 
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
-  if (['lg', 'xl', 'xxl'].includes(screenClass)) {
+  if (isDesktop) {
     return (
       <Wrap align="center" pt="lg" spacing="4">
         {menuItems.map((item) => (
@@ -69,7 +69,7 @@ function HeaderMenu({ currentHost, isMobile, screenClass }) {
   }
 
   return (
-    <Box align="center">
+    <Box align="center" zIndex={10}>
       <CMenu placement="bottom" closeOnSelect>
         <MenuButton>
           <HStack>

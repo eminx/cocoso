@@ -66,10 +66,6 @@ body {
   z-index: 99;
 }
 
-.header-logo {
-  height: 60px;
-}
-
 a,
 .text-content a {
   color: #06c;
