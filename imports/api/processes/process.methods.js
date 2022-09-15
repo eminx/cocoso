@@ -54,6 +54,7 @@ Meteor.methods({
       members: user ? process.members : null,
       creationDate: process.creationDate,
       isPrivate: process.isPrivate,
+      peopleInvited: process.peopleInvited,
     }));
   },
 
