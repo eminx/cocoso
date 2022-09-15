@@ -7,7 +7,7 @@ import NiceSlider from './NiceSlider';
 function Tably({ tabs, title, subTitle, images }) {
   const history = useHistory();
   const location = useLocation();
-  const [isLarge] = useMediaQuery('(min-width: 960px)');
+  const [isDesktop] = useMediaQuery('(min-width: 960px)');
 
   const getDefaultTabIndex = () => {
     return tabs.findIndex((tab) => tab.path === location.pathname);
@@ -27,9 +27,9 @@ function Tably({ tabs, title, subTitle, images }) {
           {subTitle}
         </Heading>
       )}
-      <Flex justify="center" direction={isLarge ? 'row' : 'column'}>
+      <Flex justify="center" direction={isDesktop ? 'row' : 'column'}>
         {images && images.length > 0 && (
-          <Box flexBasis="50%" flexGrow="0" mb="4" w={isLarge ? '50%' : '100%'}>
+          <Box flexBasis="50%" flexGrow="0" mb="4" w={isDesktop ? '50%' : '100%'}>
             <NiceSlider images={images} />
             {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
           </Box>

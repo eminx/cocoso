@@ -22,7 +22,7 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-function Menu({ currentHost, isMobile, screenClass }) {
+function HeaderMenu({ currentHost, isMobile, screenClass }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
 
@@ -89,4 +89,4 @@ function Menu({ currentHost, isMobile, screenClass }) {
   );
 }
 
-export default Menu;
+export default HeaderMenu;
