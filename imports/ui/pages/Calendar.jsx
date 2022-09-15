@@ -23,6 +23,7 @@ import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
+import Header from '../components/Header';
 import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
@@ -241,6 +242,8 @@ class Calendar extends PureComponent {
             currentHost.settings.name
           } | ${publicSettings.name}`}</title>
         </Helmet>
+
+        <Header />
 
         {currentUser && canCreateContent && (
           <Center mb="3">

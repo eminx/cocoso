@@ -21,6 +21,7 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 
+import Header from '../../components/Header';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
@@ -202,59 +203,62 @@ export default function Settings({ history }) {
     (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
   return (
-    <Template
-      heading={t('settings.label')}
-      leftContent={
-        <Box p="4">
-          <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
-      }
-    >
-      <Tabs align="center">
-        <TabList>
-          <Tab>{t('settings.tabs.logo')}</Tab>
-          <Tab>{t('settings.tabs.info')}</Tab>
-          <Tab>{t('settings.tabs.menu')}</Tab>
-          <Tab>{t('settings.tabs.cats')}</Tab>
-        </TabList>
+    <>
+      <Header />
 
-        <TabPanels>
-          <TabPanel>
-            <AlphaContainer>
-              <Heading as="h3" size="md">
-                {t('logo.label')}
-              </Heading>
-              <Text mb="3">{t('logo.info')}</Text>
-              <Center p="3">
-                <Box>
-                  <FileDropper
-                    uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-                    imageUrl={currentHost && currentHost.logo}
-                    setUploadableImage={setUploadableImage}
-                    width={isImage && '120px'}
-                    height={isImage && '80px'}
-                  />
-                </Box>
-              </Center>
-              {localImage && localImage.uploadableImageLocal && (
-                <Center p="2">
-                  <Button onClick={() => uploadLogo()}>Confirm</Button>
+      <Template
+        heading={t('settings.label')}
+        leftContent={
+          <Box p="4">
+            <ListMenu pathname={pathname} list={adminMenu} />
+          </Box>
+        }
+      >
+        <Tabs align="center">
+          <TabList>
+            <Tab>{t('settings.tabs.logo')}</Tab>
+            <Tab>{t('settings.tabs.info')}</Tab>
+            <Tab>{t('settings.tabs.menu')}</Tab>
+            <Tab>{t('settings.tabs.cats')}</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <AlphaContainer>
+                <Heading as="h3" size="md">
+                  {t('logo.label')}
+                </Heading>
+                <Text mb="3">{t('logo.info')}</Text>
+                <Center p="3">
+                  <Box>
+                    <FileDropper
+                      uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+                      imageUrl={currentHost && currentHost.logo}
+                      setUploadableImage={setUploadableImage}
+                      width={isImage && '120px'}
+                      height={isImage && '80px'}
+                    />
+                  </Box>
                 </Center>
-              )}
-            </AlphaContainer>
-          </TabPanel>
+                {localImage && localImage.uploadableImageLocal && (
+                  <Center p="2">
+                    <Button onClick={() => uploadLogo()}>Confirm</Button>
+                  </Center>
+                )}
+              </AlphaContainer>
+            </TabPanel>
 
-          <TabPanel>
-            <AlphaContainer>
-              <Heading as="h3" size="md">
-                {t('info.label')}
-              </Heading>
-              <Text mb="3">{t('info.info')}</Text>
-              <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
-            </AlphaContainer>
-          </TabPanel>
+            <TabPanel>
+              <AlphaContainer>
+                <Heading as="h3" size="md">
+                  {t('info.label')}
+                </Heading>
+                <Text mb="3">{t('info.info')}</Text>
+                <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
+              </AlphaContainer>
+            </TabPanel>
 
-          {/* <AlphaContainer>
+            {/* <AlphaContainer>
         <Heading as="h3" size="md">
           Main Color
         </Heading>
@@ -276,48 +280,49 @@ export default function Settings({ history }) {
         </Flex>
         </AlphaContainer> */}
 
-          <TabPanel>
-            <AlphaContainer>
-              <Menu />
-            </AlphaContainer>
-          </TabPanel>
+            <TabPanel>
+              <AlphaContainer>
+                <Menu />
+              </AlphaContainer>
+            </TabPanel>
 
-          <TabPanel>
-            <AlphaContainer>
-              <Heading as="h3" size="md">
-                {t('categories.label')}
-              </Heading>
-              <Text mb="3">{t('categories.info')}</Text>
-              <Center>
-                <Wrap p="1" spacing="2" mb="2">
-                  {categories.map((category) => (
-                    <WrapItem key={category.label}>
-                      <Tag colorScheme="messenger">
-                        <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                        <TagCloseButton onClick={() => removeCategory(category._id)} />
-                      </Tag>
-                    </WrapItem>
-                  ))}
-                </Wrap>
-              </Center>
-              <form onSubmit={addNewCategory}>
+            <TabPanel>
+              <AlphaContainer>
+                <Heading as="h3" size="md">
+                  {t('categories.label')}
+                </Heading>
+                <Text mb="3">{t('categories.info')}</Text>
                 <Center>
-                  <HStack>
-                    <Input
-                      placeholder="PAJAMAS"
-                      mt="2"
-                      value={categoryInput}
-                      onChange={(event) => handleCategoryInputChange(event.target.value)}
-                    />
-                    <Button type="submit">{tc('actions.add')}</Button>
-                  </HStack>
+                  <Wrap p="1" spacing="2" mb="2">
+                    {categories.map((category) => (
+                      <WrapItem key={category.label}>
+                        <Tag colorScheme="messenger">
+                          <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                          <TagCloseButton onClick={() => removeCategory(category._id)} />
+                        </Tag>
+                      </WrapItem>
+                    ))}
+                  </Wrap>
                 </Center>
-              </form>
-            </AlphaContainer>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Template>
+                <form onSubmit={addNewCategory}>
+                  <Center>
+                    <HStack>
+                      <Input
+                        placeholder="PAJAMAS"
+                        mt="2"
+                        value={categoryInput}
+                        onChange={(event) => handleCategoryInputChange(event.target.value)}
+                      />
+                      <Button type="submit">{tc('actions.add')}</Button>
+                    </HStack>
+                  </Center>
+                </form>
+              </AlphaContainer>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Template>
+    </>
   );
 }
 

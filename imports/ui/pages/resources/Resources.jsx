@@ -21,6 +21,7 @@ import {
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
+import Header from '../../components/Header';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -84,6 +85,9 @@ function ResourcesPage() {
           Meteor.settings.public.name
         }`}</title>
       </Helmet>
+
+      <Header />
+
       {canCreateContent && (
         <Center w="100%" mb="4">
           <Link to={currentUser ? '/resources/new' : `/@${currentUser.username}/profile`}>
@@ -93,7 +97,6 @@ function ResourcesPage() {
           </Link>
         </Center>
       )}
-      {/* <Breadcrumb /> */}
 
       {resourcesFilteredAndSorted.length == 0 && (
         <Center>

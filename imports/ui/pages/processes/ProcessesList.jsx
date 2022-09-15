@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Box, Button, Center, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
@@ -99,6 +100,9 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
           publicSettings.name
         }`}</title>
       </Helmet>
+
+      <Header />
+
       <Box>
         {canCreateContent && (
           <Center mb="4">
