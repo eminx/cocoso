@@ -95,7 +95,7 @@ function PublicMembers() {
   // }));
 
   return (
-    <Box mb="3" p="1">
+    <Box mb="3">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>

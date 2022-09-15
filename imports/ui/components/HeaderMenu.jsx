@@ -22,6 +22,11 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
+const activeMenuItemStyle = {
+  borderBottom: '2px solid #010101',
+  // fontWeight: 'bold',
+};
+
 function HeaderMenu({ currentHost, isDesktop }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
@@ -50,15 +55,14 @@ function HeaderMenu({ currentHost, isDesktop }) {
 
   if (isDesktop) {
     return (
-      <Wrap align="center" pt="lg" spacing="4">
+      <Wrap align="center" bg="gray.100" py="2" px="4" spacing="4">
         {menuItems.map((item) => (
           <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
-              borderBottom={
-                activeMenuItem && activeMenuItem.label === item.label ? '1px solid #010101' : 'none'
+              style={
+                activeMenuItem && activeMenuItem.label === item.label ? activeMenuItemStyle : null
               }
-              mx="1"
-              textTransform="capitalize"
+              textTransform="uppercase"
             >
               {item.label}
             </Text>
@@ -73,13 +77,15 @@ function HeaderMenu({ currentHost, isDesktop }) {
       <CMenu placement="bottom" closeOnSelect>
         <MenuButton>
           <HStack>
-            <Text textTransform="capitalize">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Text>
+            <Text textTransform="uppercase" fontWeight="bold">
+              {activeMenuItem ? activeMenuItem.label : 'Menu'}
+            </Text>
             <ChevronDownIcon />
           </HStack>
         </MenuButton>
         <MenuList>
           {menuItems.map((item) => (
-            <MenuItem key={item.label} onClick={() => handleClick(item)}>
+            <MenuItem key={item.label} textTransform="uppercase" onClick={() => handleClick(item)}>
               {item.label}
             </MenuItem>
           ))}

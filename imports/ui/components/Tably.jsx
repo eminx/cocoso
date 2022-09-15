@@ -38,12 +38,8 @@ function Tably({ tabs, title, subTitle, images }) {
           </Box>
         )}
         <Box flexBasis="50%" px="4">
-          <Tabs
-            defaultIndex={getDefaultTabIndex()}
-            flexShrink="0"
-            size={tabs.length > 3 ? 'sm' : 'md'}
-          >
-            <TabList mb="4">
+          <Tabs defaultIndex={getDefaultTabIndex()} flexShrink="0" size={isDesktop ? 'md' : 'sm'}>
+            <TabList mb="4" flexWrap="wrap">
               {tabs.map((tab) => (
                 <Link key={tab.title} to={tab.path}>
                   <Tab>{tab.title}</Tab>
