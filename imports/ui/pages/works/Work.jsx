@@ -154,9 +154,7 @@ function Work() {
     },
   ];
 
-  console.log(tabs);
-
-  return <Tably images={[work.images]} subTitle={work.subTitle} tabs={tabs} title={work.title} />;
+  return <Tably images={work.images} subTitle={work.subTitle} tabs={tabs} title={work.title} />;
 
   return (
     <Fragment>
