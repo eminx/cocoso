@@ -800,7 +800,7 @@ class Process extends Component {
   };
 
   removeProcessDocument = (documentName) => {
-    const { t } = this.props;
+    const { tc } = this.props;
     if (!this.isAdmin()) {
       return;
     }
