@@ -33,7 +33,11 @@ function Tably({ tabs, title, subTitle, images }) {
           {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
         </Box>
         <Box flexBasis="50%" px="4">
-          <Tabs defaultIndex={getDefaultTabIndex()} flexShrink="0">
+          <Tabs
+            defaultIndex={getDefaultTabIndex()}
+            flexShrink="0"
+            size={tabs.length > 3 ? 'sm' : 'md'}
+          >
             <TabList mb="4">
               {tabs.map((tab) => (
                 <Link key={tab.title} to={tab.path}>
