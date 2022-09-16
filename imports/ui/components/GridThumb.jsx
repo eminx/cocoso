@@ -12,8 +12,8 @@ export default function GridThumb({ title, image, large = false, children }) {
 
   return (
     <Flex
-      bg="gray.50"
-      boxShadow="0 0 2px 0 rgba(120, 120, 120, 0.5)"
+      // bg="gray.50"
+      // boxShadow="0 0 2px 0 rgba(120, 120, 120, 0.5)"
       justify="space-between"
       flexDirection={large ? 'column' : 'row'}
       m="2"

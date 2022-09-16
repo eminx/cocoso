@@ -12,7 +12,7 @@ const imageStyle = {
 
 function WorkThumb({ work }) {
   return (
-    <Box bg="gray.50" borderRadius={3} px="4" py="2" boxShadow="0 0 2px 0 rgba(120, 120, 120, 0.5)">
+    <Box px="4" py="2">
       <Flex align="center" justify="space-between" mb="2">
         <Box pr="2">
           <Heading my="2" size="md" noOfLines={1}>
