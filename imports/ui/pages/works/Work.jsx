@@ -1,30 +1,12 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Center, Flex, Text, VStack, useDisclosure } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
+import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import NiceSlider from '../../components/NiceSlider';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
@@ -157,6 +139,9 @@ function Work() {
 
   return (
     <>
+      <Helmet>
+        <title>{work.title}</title>
+      </Helmet>
       <Tably
         images={work.images}
         nav={tabNav}

@@ -4,6 +4,7 @@ import { Badge, Box, Button, Center, Text, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -135,6 +136,9 @@ function ResourcePage() {
 
   return (
     <>
+      <Helmet>
+        <title>{resource.label}</title>
+      </Helmet>
       <Tably nav={tabNav} images={resource.images} tabs={tabs} title={resource.label} />;
       {role === 'admin' && (
         <Center my="2">
