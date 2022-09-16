@@ -35,10 +35,12 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const { pathname, search } = history.location;
   useEffect(() => {
     const params = parse(search);
-    if (!params || params.scrollTop !== false) {
+    if (params && params.noScrollTop) {
+      return;
+    } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, search]);
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';

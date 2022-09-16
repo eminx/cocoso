@@ -27,7 +27,7 @@ class ChatteryWindow extends React.Component {
     return (
       <div className="chattery-window-container">
         <div className="chattery-window" ref={this.chatWindow}>
-          {this.props.messages.map((message, index) => (
+          {this.props.messages?.map((message, index) => (
             <ChatteryBubble
               key={message.content.substring(0, 2) + index}
               createdDate={message.createdDate}

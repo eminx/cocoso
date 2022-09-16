@@ -3,6 +3,8 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
+  Flex,
   Image,
   Modal,
   ModalBody,
@@ -28,24 +30,29 @@ function MemberAvatarEtc({ t, tc, user }) {
   const { avatar } = user;
 
   return (
-    <div>
-      <Box align="center" m="4" className="text-content">
-        <Avatar
-          name={user.username}
-          src={avatar && avatar.src}
-          size="2xl"
-          onClick={avatar ? () => setAvatarModal(true) : null}
-          style={{ cursor: avatar ? 'pointer' : 'default' }}
-        />
-        <Text fontWeight="bold" size="lg" textAlign="center">
-          {user.username}
-        </Text>
-        <Text textAlign="center">{getFullName(user)}</Text>
-
-        <Button variant="ghost" mt={2} onClick={onOpen}>
-          {tc('labels.contact')}
-        </Button>
-      </Box>
+    <Center>
+      <Flex align="center" p="4">
+        <Box align="center" px="2">
+          <Avatar
+            name={user.username}
+            src={avatar && avatar.src}
+            size="2xl"
+            onClick={avatar ? () => setAvatarModal(true) : null}
+            style={{ cursor: avatar ? 'pointer' : 'default' }}
+          />
+        </Box>
+        <Box px="2">
+          <Text fontWeight="bold" fontSize="lg">
+            {user.username}
+          </Text>
+          <Text>{getFullName(user)}</Text>
+          {/* <Center mt="2">
+            <Button variant="ghost" mt={2} onClick={onOpen}>
+              {tc('labels.contact')}
+            </Button>
+          </Center> */}
+        </Box>
+      </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm" isCentered>
         <ModalOverlay />
@@ -76,7 +83,7 @@ function MemberAvatarEtc({ t, tc, user }) {
           </ModalContent>
         </Modal>
       )}
-    </div>
+    </Center>
   );
 }
 

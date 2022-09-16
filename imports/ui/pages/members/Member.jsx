@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
+import { Box, Button, Container, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Trans } from 'react-i18next';
 
@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
+import Header from '../../components/Header';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,14 @@ function MemberPublic({ history, match, path }) {
   }
 
   return (
-    <Box>
+    <>
+      <Header />
+      <Center>
+        <Box w="large">
+          <MemberAvatarEtc t={t} tc={tc} user={user} />
+        </Box>
+      </Center>
+
       {currentUser && currentUser.username === user.username && (
         <Center p="2">
           <Link to={`/@${user.username}/edit`}>
@@ -101,11 +109,6 @@ function MemberPublic({ history, match, path }) {
           </Link>
         </Center>
       )}
-      <Center>
-        <Box w="large">
-          <MemberAvatarEtc t={t} tc={tc} user={user} />
-        </Box>
-      </Center>
 
       <Tabs align="center" defaultIndex={getDefaultTabIndex()}>
         <TabList>
@@ -115,6 +118,10 @@ function MemberPublic({ history, match, path }) {
 
           <Link to={`/@${user.username}/works`}>
             <Tab as="div">{worksInMenu.label}</Tab>
+          </Link>
+
+          <Link to={`/@${user.username}/contact`}>
+            <Tab as="div">{tc('labels.contact')}</Tab>
           </Link>
           {/* <Tab as="div">
             <Link to={`/@${user.username}/activities`}>Activities</Link>
@@ -128,9 +135,19 @@ function MemberPublic({ history, match, path }) {
           path="/@:username/works"
           render={(props) => <MemberWorks user={user} match={match} />}
         />
+        <Route
+          path="/@:username/contact"
+          render={(props) => (
+            <Container p="4">
+              {user.contactInfo
+                ? renderHTML(user.contactInfo)
+                : t('message.contact.empty', { username: user.username })}
+            </Container>
+          )}
+        />
         {/* <Route path="/@:username/works" component={MyWorks} /> */}
       </Switch>
-    </Box>
+    </>
   );
 }
 

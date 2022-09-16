@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { Box, Flex, Heading, Tabs, Tab, TabList, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Tabs, Tab, TabList, Text } from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
@@ -14,21 +14,28 @@ function Tably({ tabs, title, subTitle, images, nav }) {
     return tabs.findIndex((tab) => tab.path === location.pathname);
   };
 
+  const parsePath = (path) => {
+    const gotoPath = path + '?noScrollTop=true';
+    return gotoPath;
+  };
+
   if (!tabs.find((tab) => tab.path === location.pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
 
+  const isImage = images && images.length > 0;
+
   return (
     <>
-      <Flex mt="4" mb="6" w="100%">
+      <Flex my="4" w="100%">
         <Box p="4" flexBasis="120px">
           <Link to={nav.path}>
-            <Text size="sm" textTransform="uppercase">
+            <Text fontSize="sm" textTransform="uppercase">
               {nav.label}
             </Text>
           </Link>
         </Box>
-        <Box flexBasis="600px" flexGrow={2}>
+        <Flex flexBasis="600px" flexGrow={2} direction="column" justify="center">
           <Heading as="h3" size="lg" textAlign="center">
             {title}
           </Heading>
@@ -37,21 +44,27 @@ function Tably({ tabs, title, subTitle, images, nav }) {
               {subTitle}
             </Heading>
           )}
-        </Box>
+        </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
       <Flex justify="center" direction={isDesktop ? 'row' : 'column'}>
-        {images && images.length > 0 && (
+        {isImage && (
           <Box flexBasis="50%" flexGrow="0" mb="4" w={isDesktop ? '50%' : '100%'}>
             <NiceSlider images={images} />
             {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
           </Box>
         )}
         <Box flexBasis="50%" px="4">
-          <Tabs colorScheme="gray.800" defaultIndex={getDefaultTabIndex()} flexShrink="0" size="sm">
+          <Tabs
+            align={isImage ? 'start' : 'center'}
+            colorScheme="gray.800"
+            defaultIndex={getDefaultTabIndex()}
+            flexShrink="0"
+            size="sm"
+          >
             <TabList mb="4" flexWrap="wrap">
               {tabs.map((tab) => (
-                <Link key={tab.title} to={tab.path}>
+                <Link key={tab.title} to={parsePath(tab.path)}>
                   <Tab textTransform="uppercase">{tab.title}</Tab>
                 </Link>
               ))}
@@ -60,7 +73,13 @@ function Tably({ tabs, title, subTitle, images, nav }) {
 
           <Switch history={history}>
             {tabs.map((tab) => (
-              <Route key={tab.title} path={tab.path} render={(props) => tab.content} />
+              <Route
+                key={tab.title}
+                path={tab.path}
+                render={(props) => (
+                  <Container margin={isImage ? 0 : 'auto'}>{tab.content}</Container>
+                )}
+              />
             ))}
           </Switch>
         </Box>

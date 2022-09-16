@@ -55,10 +55,11 @@ function HeaderMenu({ currentHost, isDesktop }) {
 
   if (isDesktop) {
     return (
-      <Wrap align="center" bg="gray.100" py="2" px="4" spacing="4">
+      <Wrap align="center" py="2" px="4" spacing="4">
         {menuItems.map((item) => (
           <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
+              fontSize="sm"
               style={
                 activeMenuItem && activeMenuItem.label === item.label ? activeMenuItemStyle : null
               }
