@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 
@@ -23,14 +24,7 @@ const DateJust = ({ children, ...otherProps }) => (
 );
 
 const FancyDate = ({ occurence, resources, ...otherProps }) => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      paddingBottom: 12,
-    }}
-    {...otherProps}
-  >
+  <Flex justifyContent="space-between" p="2" mb="2" {...otherProps}>
     <div style={{ flexGrow: 1 }}>
       {occurence.startDate === occurence.endDate ? (
         <DateJust>{occurence.startDate}</DateJust>
@@ -71,7 +65,7 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         </div>
       )}
     </div>
-  </div>
+  </Flex>
 );
 
 export default FancyDate;

@@ -19,7 +19,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -28,11 +27,6 @@ import {
   NumberInput,
   NumberInputField,
   Stack,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
   Text,
 } from '@chakra-ui/react';
 
@@ -280,13 +274,8 @@ class Activity extends PureComponent {
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
-          {activityData.isRegistrationDisabled && activityData.isPublicActivity && (
-            <Text size="sm" mb="1">
-              {t('public.register.disabled.info')}
-            </Text>
-          )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="white" key={occurence.startDate + occurence.startTime} p="2" mb="2">
+            <Box bg="gray.100" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -380,14 +369,16 @@ class Activity extends PureComponent {
       <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
           <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
-            <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              <Heading size="sm">{t('public.register.label')}</Heading>
+              <Text m2="4" fontWeight="bold">
+                {t('public.register.label')}
+              </Text>
               {conditionalRender(occurence, occurenceIndex)}
             </AccordionPanel>
           </AccordionItem>
@@ -456,7 +447,10 @@ class Activity extends PureComponent {
               }}
               className="text-content"
             >
-              {renderHTML(activityData.longDescription)}
+              <Box>
+                <Tag mb="2" label={activityData.resource} />
+                {renderHTML(activityData.longDescription)}
+              </Box>
             </div>
           </Box>
         ),
@@ -471,10 +465,10 @@ class Activity extends PureComponent {
         title: 'Location',
         content: (
           <Box mb="1">
-            <Heading mb="2" as="h5" size="md">
-              {t('public.labels.address')}
-            </Heading>
-            <Text size="sm">{activityData.address}</Text>
+            <Text fontWeight="bold" mb="2">
+              {activityData.place}
+            </Text>
+            <Text>{t('public.labels.address') + ': ' + activityData.address}</Text>
           </Box>
         ),
         path: `/activities/${activityData._id}/location`,
