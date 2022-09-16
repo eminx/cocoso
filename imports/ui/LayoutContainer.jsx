@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { parse } from 'query-string';
 import {
   Box,
   Center,
@@ -32,10 +32,13 @@ const publicSettings = Meteor.settings.public;
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
-  const { pathname } = history.location;
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, [pathname]);
+  const { pathname, search } = history.location;
+  useEffect(() => {
+    const params = parse(search);
+    if (!params || params.scrollTop !== false) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   if (currentUser) {
     import 'react-quill/dist/quill.snow.css';
