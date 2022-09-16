@@ -11,14 +11,7 @@ export default function GridThumb({ title, image, large = false, children }) {
   }
 
   return (
-    <Flex
-      // bg="gray.50"
-      // boxShadow="0 0 2px 0 rgba(120, 120, 120, 0.5)"
-      justify="space-between"
-      flexDirection={large ? 'column' : 'row'}
-      m="2"
-      __hover={{ cursor: 'pointer' }}
-    >
+    <Flex justify="space-between" flexDirection={large ? 'column' : 'row'} m="2">
       <Box p="4" flexBasis={large ? '50%' : '70%'}>
         <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
           {title}

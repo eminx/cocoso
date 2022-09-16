@@ -2,6 +2,13 @@ import { extendTheme } from '@chakra-ui/react';
 
 const chakraTheme = extendTheme({
   components: {
+    Button: {
+      baseStyle: {
+        __focus: {
+          boxShadow: 'none',
+        },
+      },
+    },
     Tabs: {
       defaultProps: {
         colorScheme: 'gray.800',

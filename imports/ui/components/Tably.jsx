@@ -65,7 +65,11 @@ function Tably({ tabs, title, subTitle, images, nav }) {
             <TabList mb="4" flexWrap="wrap">
               {tabs.map((tab) => (
                 <Link key={tab.title} to={parsePath(tab.path)}>
-                  <Tab __focus={{ boxShadow: 'none' }} textTransform="uppercase">
+                  <Tab
+                    _focus={{ boxShadow: 'none' }}
+                    textTransform="uppercase"
+                    onClick={tab.onClick}
+                  >
                     {tab.title}
                   </Tab>
                 </Link>
