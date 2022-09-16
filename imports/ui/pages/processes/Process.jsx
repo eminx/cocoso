@@ -54,8 +54,6 @@ import Chattery from '../../components/chattery/Chattery.jsx';
 import Loader from '../../components/Loader';
 import FancyDate from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
-import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert, message } from '../../components/message';
 import Tably from '../../components/Tably';
@@ -484,19 +482,18 @@ class Process extends Component {
           processMeetings.map((meeting, meetingIndex) => (
             <AccordionItem
               key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-              bg="white"
               mb="2"
               style={{
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
               }}
             >
-              <AccordionButton _expanded={{ bg: 'green.100' }}>
+              <AccordionButton bg="gray.100" _expanded={{ bg: 'green.100' }}>
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
               <AccordionPanel>
-                <Heading size="sm">Attendees</Heading>
+                <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>
                     {meeting.attendees.map((attendee) => (
@@ -951,22 +948,13 @@ class Process extends Component {
   };
 
   render() {
-    const { process, processMeetings, isLoading, history, t, tc, currentUser } = this.props;
-    const { resources } = this.state;
+    const { process, processMeetings, isLoading, t, tc } = this.props;
 
     if (!process || isLoading) {
       return <Loader />;
     }
 
-    const {
-      redirectToLogin,
-      isFormValid,
-      potentialNewAdmin,
-      inviteManagerOpen,
-      newMeeting,
-      modalOpen,
-      conflictingBooking,
-    } = this.state;
+    const { redirectToLogin, potentialNewAdmin, inviteManagerOpen, modalOpen } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/login" />;
@@ -998,9 +986,27 @@ class Process extends Component {
       {
         title: t('labels.date'),
         content: (
-          <Accordion allowToggle>
-            {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
-          </Accordion>
+          <Box p="2">
+            <Text ml="2" fontWeight="bold">
+              {t('labels.date')}
+            </Text>
+
+            <Text ml="2" fontSize="sm" mb="4">
+              <em>
+                {processMeetings &&
+                processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
+                  .length > 0
+                  ? isAdmin
+                    ? t('meeting.info.admin')
+                    : t('meeting.info.member')
+                  : t('meeting.info.empty')}
+              </em>
+            </Text>
+
+            <Accordion allowToggle>
+              {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+            </Accordion>
+          </Box>
         ),
         path: `/processes/${process._id}/meetings`,
       },
@@ -1017,83 +1023,27 @@ class Process extends Component {
     };
 
     return (
-      <Tably
-        images={[process.imageUrl]}
-        subTitle={process.readingMaterial}
-        tabs={tabs}
-        title={process.title}
-        nav={tabNav}
-      />
-    );
-
-    return (
-      <div>
-        <Template
-          leftContent={
-            <Visible lg xl>
-              <Box p="4">{this.renderMembersAndDocuments()}</Box>
-            </Visible>
-          }
-          rightContent={
-            <Box p="2">
-              <Heading size="sm">{t('labels.date')}</Heading>
-
-              <Text fontSize="sm" mb="4">
-                <em>
-                  {processMeetings &&
-                  processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
-                    .length > 0
-                    ? isAdmin
-                      ? t('meeting.info.admin')
-                      : t('meeting.info.member')
-                    : t('meeting.info.empty')}
-                </em>
-              </Text>
-
-              <Accordion allowToggle>
-                {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
-              </Accordion>
-
-              {isAdmin && (
-                <div>
-                  <CreateMeetingForm
-                    handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
-                    handleStartTimeChange={(time) =>
-                      this.handleDateAndTimeChange(time, 'startTime')
-                    }
-                    handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
-                    resources={resources}
-                    handleResourceChange={this.handleResourceChange}
-                    handleSubmit={this.createActivity}
-                    buttonDisabled={!isFormValid}
-                    conflictingBooking={conflictingBooking}
-                  />
-                </div>
-              )}
-            </Box>
-          }
-        >
-          <Breadcrumb context={process} contextKey="title" />
-          <Box bg="white" mb="4">
-            {this.renderProcessInfo()}
-          </Box>
-          <Visible xs sm md>
-            <Box p="4">{this.renderMembersAndDocuments()}</Box>
-          </Visible>
-          {isAdmin && (
-            <Center p="4" mb="6">
-              <Link to={`/processes/${process._id}/edit`}>
-                <Button as="span" variant="ghost">
-                  {tc('actions.update')}
-                </Button>
-              </Link>
-            </Center>
-          )}
-        </Template>
-
+      <>
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
+        <Tably
+          images={[process.imageUrl]}
+          subTitle={process.readingMaterial}
+          tabs={tabs}
+          title={process.title}
+          nav={tabNav}
+        />
+
+        {isAdmin && (
+          <Center p="4" mb="6">
+            <Link to={`/processes/${process._id}/edit`}>
+              <Button as="span" variant="ghost">
+                {tc('actions.update')}
+              </Button>
+            </Link>
+          </Center>
+        )}
 
         <ConfirmModal
           visible={modalOpen}
@@ -1130,7 +1080,7 @@ class Process extends Component {
             <InviteManager process={process} t={t} />
           </Drawer>
         )}
-      </div>
+      </>
     );
   }
 }
@@ -1164,11 +1114,11 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box p="2" bg="white" my="2">
+    <Box bg="white" my="4">
       <Text ml="2" fontWeight="bold">
         {t('meeting.form.label')}
       </Text>
-      <Box py="4">
+      <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
       </Box>
       <HStack spacing="2" mb="6">
@@ -1197,9 +1147,9 @@ function CreateMeetingForm({
 
       {isLocal ? (
         <Select
-          size="sm"
-          placeholder={t('meeting.form.resource')}
           name="resource"
+          placeholder={t('meeting.form.resource')}
+          variant="filled"
           onChange={({ target: { value } }) => handleResourceChange(value)}
         >
           {resources.map((part, i) => (

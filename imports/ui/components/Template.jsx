@@ -21,8 +21,14 @@ function Template({ heading, leftContent, rightContent, titleCentered = true, ch
 
           <Box>
             {heading && (
-              <Box pl={titleCentered ? '0' : '2'} mb="2">
-                <Heading as="h3" mb="4" size="md" textAlign={titleCentered ? 'center' : 'start'}>
+              <Box pl={titleCentered ? '0' : '2'}>
+                <Heading
+                  as="h3"
+                  mt="4"
+                  mb="2"
+                  size="md"
+                  textAlign={titleCentered ? 'center' : 'start'}
+                >
                   {heading}
                 </Heading>
               </Box>
