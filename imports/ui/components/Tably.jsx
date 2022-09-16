@@ -23,7 +23,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
     return <Redirect to={tabs[0].path} />;
   }
 
-  const isImage = images && images.length > 0;
+  const isImage = images && images?.length > 0;
 
   const { menu } = currentHost?.settings;
 

@@ -19,10 +19,10 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
-  Image,
   Input,
   NumberInput,
   NumberInputField,
@@ -437,10 +437,10 @@ class Activity extends PureComponent {
               }}
               className="text-content"
             >
-              <Box>
+              <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
                 <Tag mb="2" label={activityData.resource} />
-                {renderHTML(activityData.longDescription)}
-              </Box>
+              </Flex>
+              <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
             </div>
           </Box>
         ),
@@ -451,7 +451,10 @@ class Activity extends PureComponent {
         content: this.renderDates(),
         path: `/activities/${activityData._id}/dates`,
       },
-      {
+    ];
+
+    if (activityData.isPublicActivity) {
+      tabs.push({
         title: t('public.labels.location'),
         content: (
           <Box mb="1">
@@ -462,8 +465,8 @@ class Activity extends PureComponent {
           </Box>
         ),
         path: `/activities/${activityData._id}/location`,
-      },
-    ];
+      });
+    }
 
     return (
       <>
@@ -472,7 +475,7 @@ class Activity extends PureComponent {
         </Helmet>
 
         <Tably
-          images={[activityData.imageUrl]}
+          images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           navPath="activities"
           subTitle={activityData.subTitle}
           tabs={tabs}
@@ -505,110 +508,10 @@ class Activity extends PureComponent {
         </ConfirmModal>
       </>
     );
-
-    return (
-      <Template
-        leftContent={
-          <Box p="2">
-            <Heading as="h3" size="lg">
-              {activityData.title}
-            </Heading>
-            {activityData.subTitle && (
-              <Heading as="h4" size="md" fontWeight="light">
-                {activityData.subTitle}
-              </Heading>
-            )}
-            <Box pt="2" mb="1">
-              {/* <Heading mb="2" as="h5" size="md">
-            {t('public.labels.resource')}
-          </Heading> */}
-              <Link to={`/resources/${activityData.resourceId}`}>
-                <Tag label={activityData.resource} />
-              </Link>
-            </Box>
-          </Box>
-        }
-        rightContent={
-          <Box width="100%" p="2">
-            <Heading mb="2" as="h5" size="md">
-              {t('public.labels.dates')}
-            </Heading>
-            {this.renderDates()}
-          </Box>
-        }
-      >
-        <Breadcrumb context={activityData} contextKey="title" />
-        <Box bg="white" mb="4">
-          {activityData.isPublicActivity && (
-            <Center bg="gray.900" width="100%">
-              <Image fit="contain" src={activityData.imageUrl} htmlHeight={400} />
-            </Center>
-          )}
-
-          {activityData.longDescription && (
-            <Box p="4">
-              <div
-                style={{
-                  whiteSpace: 'pre-line',
-                  color: 'rgba(0,0,0, .85)',
-                }}
-                className="text-content"
-              >
-                {renderHTML(activityData.longDescription)}
-              </div>
-            </Box>
-          )}
-        </Box>
-        {activityData.address && (
-          <Box p="4" mb="1">
-            <Heading mb="2" as="h5" size="md">
-              {t('public.labels.address')}
-            </Heading>
-            <Text size="sm">{activityData.address}</Text>
-          </Box>
-        )}
-
-        {/* {activityData.isPublicActivity && messages && chatData && (
-          <Box pad="medium" background="light-2" border="dark-2">
-            <Heading mb="1" as="h5" size="md">Chat Section</Heading>
-            <Chattery
-              messages={messages}
-              onNewMessage={this.addNewChatMessage}
-              removeNotification={this.removeNotification}
-              isMember
-            />
-          </Box>
-        )} */}
-
-        {EditButton}
-
-        <ConfirmModal
-          visible={isRsvpCancelModalOn}
-          title={
-            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
-              ? t('public.cancel.found')
-              : t('public.cancel.notFound')
-          }
-          onConfirm={this.findRsvpInfo}
-          onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
-          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
-          onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
-        >
-          {this.renderCancelRsvpModalContent()}
-        </ConfirmModal>
-      </Template>
-    );
   }
 }
 
 Activity.contextType = StateContext;
-
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  numberOfPeople: 1,
-};
 
 function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   const { handleSubmit, register, formState } = useForm({
