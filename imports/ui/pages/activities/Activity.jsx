@@ -481,9 +481,15 @@ class Activity extends PureComponent {
       },
     ];
 
+    const tabNav = {
+      path: '/activities',
+      label: 'Activities',
+    };
+
     return (
       <Tably
         images={[activityData.imageUrl]}
+        nav={tabNav}
         subTitle={activityData.subTitle}
         tabs={tabs}
         title={activityData.title}

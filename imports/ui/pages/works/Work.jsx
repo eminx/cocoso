@@ -143,7 +143,20 @@ function Work() {
     },
   ];
 
-  return <Tably images={work.images} subTitle={work.subTitle} tabs={tabs} title={work.title} />;
+  const tabNav = {
+    path: '/works',
+    label: 'Works',
+  };
+
+  return (
+    <Tably
+      images={work.images}
+      nav={tabNav}
+      subTitle={work.subTitle}
+      tabs={tabs}
+      title={work.title}
+    />
+  );
 
   return (
     <Fragment>

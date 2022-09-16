@@ -1013,12 +1013,18 @@ class Process extends Component {
       },
     ];
 
+    const tabNav = {
+      path: '/processes',
+      label: 'Processes',
+    };
+
     return (
       <Tably
         images={[process.imageUrl]}
         subTitle={process.readingMaterial}
         tabs={tabs}
         title={process.title}
+        nav={tabNav}
       />
     );
 

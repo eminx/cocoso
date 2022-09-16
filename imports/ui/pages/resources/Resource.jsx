@@ -130,7 +130,12 @@ function ResourcePage() {
     });
   }
 
-  return <Tably images={resource.images} tabs={tabs} title={resource.label} />;
+  const tabNav = {
+    path: '/resources',
+    label: 'Resources',
+  };
+
+  return <Tably nav={tabNav} images={resource.images} tabs={tabs} title={resource.label} />;
 
   return (
     <ScreenClassRender
