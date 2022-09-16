@@ -360,78 +360,79 @@ class EditActivity extends PureComponent {
     const isFormValid = this.isFormValid();
 
     return (
-      <Template
-        heading={tc('labels.update', { domain: tc('domains.activity') })}
-        leftContent={
-          <Box pb="2">
-            <Link to={`/activities/${activity._id}`}>
-              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-            </Link>
-          </Box>
-        }
-      >
-        <Breadcrumb context={activity} contextKey="title" />
-        <Box bg="white" p="8">
-          <Box mb="8">
-            <VStack spacing="2">
-              <FormSwitch
-                isChecked={isPublicActivity}
-                label={t('form.switch.public')}
-                onChange={this.handlePublicActivitySwitch}
-              />
-
-              <FormSwitch
-                isChecked={isPublicActivity || isExclusiveActivity}
-                isDisabled={isPublicActivity}
-                label={t('form.switch.exclusive')}
-                onChange={this.handleExclusiveSwitch}
-              />
-
-              {isPublicActivity && (
-                <FormSwitch
-                  isChecked={isRegistrationDisabled}
-                  label={t('form.switch.rsvp')}
-                  onChange={this.handleRegistrationSwitch}
-                />
-              )}
-            </VStack>
-          </Box>
-
-          <ActivityForm
-            datesAndTimes={datesAndTimes}
-            defaultValues={activity}
-            imageUrl={activity && activity.imageUrl}
-            isPublicActivity={isPublicActivity}
-            resources={resources}
-            uploadableImageLocal={uploadableImageLocal}
-            onSubmit={this.handleSubmit}
-            setDatesAndTimes={this.setDatesAndTimes}
-            setSelectedResource={this.handleSelectedResource}
-            setUploadableImage={this.setUploadableImage}
-            isButtonDisabled={!isFormValid || isLoading}
-            isCreating={isLoading}
-            isFormValid={isFormValid}
-          />
-        </Box>
-
-        <Center p="4">
-          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
-            {tc('actions.remove')}
-          </Button>
-        </Center>
-
-        <ConfirmModal
-          title={tc('actions.submit')}
-          visible={isDeleteModalOn}
-          onConfirm={this.deleteActivity}
-          onCancel={this.hideDeleteModal}
-          confirmText={tc('modals.confirm.delete.yes')}
+      <Box bg="gray.100" pt="2">
+        <Template
+          leftContent={
+            <Box pb="2">
+              <Link to={`/activities/${activity._id}`}>
+                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
+              </Link>
+            </Box>
+          }
         >
-          {tc('modals.confirm.delete.body', {
-            domain: tc('domains.activity').toLowerCase(),
-          })}
-        </ConfirmModal>
-      </Template>
+          <Breadcrumb context={activity} contextKey="title" />
+          <Box bg="white" p="8">
+            <Box mb="8">
+              <VStack spacing="2">
+                <FormSwitch
+                  isChecked={isPublicActivity}
+                  label={t('form.switch.public')}
+                  onChange={this.handlePublicActivitySwitch}
+                />
+
+                <FormSwitch
+                  isChecked={isPublicActivity || isExclusiveActivity}
+                  isDisabled={isPublicActivity}
+                  label={t('form.switch.exclusive')}
+                  onChange={this.handleExclusiveSwitch}
+                />
+
+                {isPublicActivity && (
+                  <FormSwitch
+                    isChecked={isRegistrationDisabled}
+                    label={t('form.switch.rsvp')}
+                    onChange={this.handleRegistrationSwitch}
+                  />
+                )}
+              </VStack>
+            </Box>
+
+            <ActivityForm
+              datesAndTimes={datesAndTimes}
+              defaultValues={activity}
+              imageUrl={activity && activity.imageUrl}
+              isPublicActivity={isPublicActivity}
+              resources={resources}
+              uploadableImageLocal={uploadableImageLocal}
+              onSubmit={this.handleSubmit}
+              setDatesAndTimes={this.setDatesAndTimes}
+              setSelectedResource={this.handleSelectedResource}
+              setUploadableImage={this.setUploadableImage}
+              isButtonDisabled={!isFormValid || isLoading}
+              isCreating={isLoading}
+              isFormValid={isFormValid}
+            />
+          </Box>
+
+          <Center p="4">
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
+              {tc('actions.remove')}
+            </Button>
+          </Center>
+
+          <ConfirmModal
+            title={tc('actions.submit')}
+            visible={isDeleteModalOn}
+            onConfirm={this.deleteActivity}
+            onCancel={this.hideDeleteModal}
+            confirmText={tc('modals.confirm.delete.yes')}
+          >
+            {tc('modals.confirm.delete.body', {
+              domain: tc('domains.activity').toLowerCase(),
+            })}
+          </ConfirmModal>
+        </Template>
+      </Box>
     );
   }
 }

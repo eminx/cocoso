@@ -34,7 +34,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
       <Flex my="4" w="100%">
         <Box p="4" flexBasis="120px">
           <Link to={`/${navPath}`}>
-            <CLink as="span" fontSize="sm" textTransform="uppercase">
+            <CLink as="span" textTransform="uppercase">
               {navItem?.label}
             </CLink>
           </Link>
@@ -87,9 +87,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container px="0" margin={isImage ? 0 : 'auto'}>
-                    {tab.content}
-                  </Container>
+                  <Container margin={isImage ? 0 : 'auto'}>{tab.content}</Container>
                 )}
               />
             ))}

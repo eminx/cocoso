@@ -764,7 +764,7 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Text size="small" pad="2" margin={{ bottom: 'small' }}>
+          <Text fontSize="sm" m="4" mt="6">
             <em>{tc('documents.empty')}</em>
           </Text>
         )}

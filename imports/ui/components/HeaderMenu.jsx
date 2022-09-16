@@ -59,7 +59,7 @@ function HeaderMenu({ currentHost, isDesktop }) {
         {menuItems.map((item) => (
           <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
-              fontSize="sm"
+              // fontSize="sm"
               style={
                 activeMenuItem && activeMenuItem.label === item.label ? activeMenuItemStyle : null
               }

@@ -171,20 +171,22 @@ class NewWork extends PureComponent {
     }
 
     return (
-      <Template>
-        <Breadcrumb />
-        <Box bg="white" p="6">
-          <WorkForm
-            categories={categories}
-            defaultValues={formModel}
-            images={uploadableImagesLocal}
-            onRemoveImage={this.handleRemoveImage}
-            onSortImages={this.handleSortImages}
-            onSubmit={this.uploadImages}
-            setUploadableImages={this.setUploadableImages}
-          />
-        </Box>
-      </Template>
+      <Box bg="gray.100">
+        <Template>
+          <Breadcrumb />
+          <Box bg="white" p="6">
+            <WorkForm
+              categories={categories}
+              defaultValues={formModel}
+              images={uploadableImagesLocal}
+              onRemoveImage={this.handleRemoveImage}
+              onSortImages={this.handleSortImages}
+              onSubmit={this.uploadImages}
+              setUploadableImages={this.setUploadableImages}
+            />
+          </Box>
+        </Template>
+      </Box>
     );
   }
 }

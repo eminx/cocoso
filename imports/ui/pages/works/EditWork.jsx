@@ -251,45 +251,47 @@ class EditWork extends PureComponent {
     }
 
     return (
-      <Template
-        leftContent={
-          <Box pb="2">
-            <Link to={workRoute}>
-              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-            </Link>
-          </Box>
-        }
-      >
-        <Breadcrumb context={values} contextKey="title" />
-        <Box bg="white" p="6">
-          <WorkForm
-            categories={categories}
-            defaultValues={values}
-            images={images.map((image) => image.src)}
-            onRemoveImage={this.handleRemoveImage}
-            onSortImages={this.handleSortImages}
-            onSubmit={this.uploadImages}
-            setUploadableImages={this.setUploadableImages}
-          />
-        </Box>
-
-        <Center p="4">
-          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
-            {i18n.t('common:actions.remove')}
-          </Button>
-        </Center>
-
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          onConfirm={this.handleDeleteWork}
-          onCancel={this.hideDeleteModal}
-          title={i18n.t('common:modals.confirm.delete.title')}
+      <Box bg="gray.100" pt="2">
+        <Template
+          leftContent={
+            <Box pb="2">
+              <Link to={workRoute}>
+                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
+              </Link>
+            </Box>
+          }
         >
-          {i18n.t('common:modals.confirm.delete.body', {
-            domain: i18n.t('common:domains.work').toLowerCase(),
-          })}
-        </ConfirmModal>
-      </Template>
+          <Breadcrumb context={values} contextKey="title" />
+          <Box bg="white" p="6">
+            <WorkForm
+              categories={categories}
+              defaultValues={values}
+              images={images.map((image) => image.src)}
+              onRemoveImage={this.handleRemoveImage}
+              onSortImages={this.handleSortImages}
+              onSubmit={this.uploadImages}
+              setUploadableImages={this.setUploadableImages}
+            />
+          </Box>
+
+          <Center p="4">
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
+              {i18n.t('common:actions.remove')}
+            </Button>
+          </Center>
+
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            onConfirm={this.handleDeleteWork}
+            onCancel={this.hideDeleteModal}
+            title={i18n.t('common:modals.confirm.delete.title')}
+          >
+            {i18n.t('common:modals.confirm.delete.body', {
+              domain: i18n.t('common:domains.work').toLowerCase(),
+            })}
+          </ConfirmModal>
+        </Template>
+      </Box>
     );
   }
 }

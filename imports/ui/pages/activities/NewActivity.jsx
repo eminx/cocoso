@@ -380,50 +380,52 @@ class NewActivity extends PureComponent {
     const isFormValid = this.isFormValid();
 
     return (
-      <Template heading={tc('labels.create', { domain: tc('domains.activity') })}>
-        <Breadcrumb />
-        <Box bg="white" p="8">
-          <Box mb="8">
-            <VStack spacing="2">
-              <FormSwitch
-                isChecked={isPublicActivity}
-                label={t('form.switch.public')}
-                onChange={this.handlePublicActivitySwitch}
-              />
-
-              <FormSwitch
-                isChecked={isPublicActivity || isExclusiveActivity}
-                isDisabled={isPublicActivity}
-                label={t('form.switch.exclusive')}
-                onChange={this.handleExclusiveSwitch}
-              />
-
-              {isPublicActivity && (
+      <Box bg="gray.100">
+        <Template>
+          <Breadcrumb />
+          <Box bg="white" p="8">
+            <Box mb="8">
+              <VStack spacing="2">
                 <FormSwitch
-                  isChecked={isRegistrationDisabled}
-                  label={t('form.switch.rsvp')}
-                  onChange={this.handleRegistrationSwitch}
+                  isChecked={isPublicActivity}
+                  label={t('form.switch.public')}
+                  onChange={this.handlePublicActivitySwitch}
                 />
-              )}
-            </VStack>
-          </Box>
 
-          <ActivityForm
-            datesAndTimes={datesAndTimes}
-            defaultValues={formValues}
-            isPublicActivity={isPublicActivity}
-            resources={resources}
-            uploadableImageLocal={uploadableImageLocal}
-            onSubmit={this.handleSubmit}
-            setDatesAndTimes={this.setDatesAndTimes}
-            setUploadableImage={this.setUploadableImage}
-            setSelectedResource={this.handleSelectedResource}
-            isButtonDisabled={!isFormValid || isCreating}
-            isCreating={isCreating}
-            isFormValid={isFormValid}
-          />
-        </Box>
-      </Template>
+                <FormSwitch
+                  isChecked={isPublicActivity || isExclusiveActivity}
+                  isDisabled={isPublicActivity}
+                  label={t('form.switch.exclusive')}
+                  onChange={this.handleExclusiveSwitch}
+                />
+
+                {isPublicActivity && (
+                  <FormSwitch
+                    isChecked={isRegistrationDisabled}
+                    label={t('form.switch.rsvp')}
+                    onChange={this.handleRegistrationSwitch}
+                  />
+                )}
+              </VStack>
+            </Box>
+
+            <ActivityForm
+              datesAndTimes={datesAndTimes}
+              defaultValues={formValues}
+              isPublicActivity={isPublicActivity}
+              resources={resources}
+              uploadableImageLocal={uploadableImageLocal}
+              onSubmit={this.handleSubmit}
+              setDatesAndTimes={this.setDatesAndTimes}
+              setUploadableImage={this.setUploadableImage}
+              setSelectedResource={this.handleSelectedResource}
+              isButtonDisabled={!isFormValid || isCreating}
+              isCreating={isCreating}
+              isFormValid={isFormValid}
+            />
+          </Box>
+        </Template>
+      </Box>
     );
   }
 }
