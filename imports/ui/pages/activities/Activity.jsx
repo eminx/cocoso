@@ -9,7 +9,7 @@ import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-
+import { Helmet } from 'react-helmet';
 import {
   Accordion,
   AccordionButton,
@@ -425,16 +425,6 @@ class Activity extends PureComponent {
 
     // const messages = this.getChatMessages();
 
-    const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
-      <Center m="2">
-        <Link to={`/activities/${activityData._id}/edit`}>
-          <Button variant="ghost" as="span">
-            {tc('actions.update')}
-          </Button>
-        </Link>
-      </Center>
-    );
-
     const tabs = [
       {
         title: t('public.labels.info'),
@@ -481,13 +471,44 @@ class Activity extends PureComponent {
     };
 
     return (
-      <Tably
-        images={[activityData.imageUrl]}
-        nav={tabNav}
-        subTitle={activityData.subTitle}
-        tabs={tabs}
-        title={activityData.title}
-      />
+      <>
+        <Helmet>
+          <title>{activityData.title}</title>
+        </Helmet>
+
+        <Tably
+          images={[activityData.imageUrl]}
+          nav={tabNav}
+          subTitle={activityData.subTitle}
+          tabs={tabs}
+          title={activityData.title}
+        />
+
+        {activityData && currentUser && currentUser._id === activityData.authorId && (
+          <Center m="2">
+            <Link to={`/activities/${activityData._id}/edit`}>
+              <Button variant="ghost" as="span">
+                {tc('actions.update')}
+              </Button>
+            </Link>
+          </Center>
+        )}
+
+        <ConfirmModal
+          visible={isRsvpCancelModalOn}
+          title={
+            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
+              ? t('public.cancel.found')
+              : t('public.cancel.notFound')
+          }
+          onConfirm={this.findRsvpInfo}
+          onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
+          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
+          onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
+        >
+          {this.renderCancelRsvpModalContent()}
+        </ConfirmModal>
+      </>
     );
 
     return (
