@@ -9,8 +9,6 @@ import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
 import { StateContext } from '../../LayoutContainer';
@@ -77,7 +75,7 @@ function ResourcePage() {
 
   const tabs = [
     {
-      title: 'Info',
+      title: tc('labels.info'),
       content: (
         <Box>
           <div className="text-content">{renderHTML(resource.description)}</div>
@@ -89,7 +87,7 @@ function ResourcePage() {
       path: `/resources/${resource._id}/info`,
     },
     {
-      title: 'Documents',
+      title: tc('documents.label'),
       content: <DocumentsField contextType="resource" contextId={resource?._id} />,
       path: `/resources/${resource._id}/documents`,
     },
@@ -97,13 +95,13 @@ function ResourcePage() {
 
   if (currentUser && canCreateContent) {
     tabs.push({
-      title: 'Bookings',
+      title: tc('labels.bookings'),
       content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
       path: `/resources/${resource._id}/bookings`,
     });
     if (resource.isCombo) {
       tabs.push({
-        title: 'Combo',
+        title: tc('labels.combo'),
         content: (
           <Wrap>
             {resource.resourcesForCombo.map((res, i) => (
@@ -115,7 +113,7 @@ function ResourcePage() {
       });
     }
     tabs.push({
-      title: 'Discussion',
+      title: tc('labels.discussion'),
       content: (
         <div>
           <Chattery
@@ -135,45 +133,17 @@ function ResourcePage() {
     label: 'Resources',
   };
 
-  return <Tably nav={tabNav} images={resource.images} tabs={tabs} title={resource.label} />;
-
   return (
-    <ScreenClassRender
-      render={(screenClass) => {
-        const isMobile = ['xs', 'sm', 'md'].includes(screenClass);
-        return (
-          <Template
-            leftContent={
-              !isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />
-            }
-            rightContent={
-              currentUser &&
-              canCreateContent && (
-                <BookingsField currentUser={currentUser} selectedResource={resource} />
-              )
-            }
-          >
-            <ResourceCard
-              addNewChatMessage={addNewChatMessage}
-              currentUser={currentUser}
-              discussion={discussion}
-              resource={resource}
-            />
-            {isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />}
-
-            {role === 'admin' && (
-              <Center my="2">
-                <Link to={`/resources/${resource?._id}/edit`}>
-                  <Button size="sm" variant="ghost">
-                    {tc('actions.update')}
-                  </Button>
-                </Link>
-              </Center>
-            )}
-          </Template>
-        );
-      }}
-    />
+    <>
+      <Tably nav={tabNav} images={resource.images} tabs={tabs} title={resource.label} />;
+      {role === 'admin' && (
+        <Center my="2">
+          <Link to={`/resources/${resource?._id}/edit`}>
+            <Button variant="ghost">{tc('actions.update')}</Button>
+          </Link>
+        </Center>
+      )}
+    </>
   );
 }
 

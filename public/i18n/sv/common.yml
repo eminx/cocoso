@@ -29,12 +29,15 @@ labels:
   contact: Kontakt
   create: Skapa en ny {{ domain }}
   event: Händelsen
+  bookings: Bokningar
   newBooking: Ny bokning
   page: Sida
   process: Processen
   remove: Ta bort
   info: Info
   extra: Extra
+  discussion: Diskussion
+  combo: Combo
   sortBy:
     placeholder: Sortera med
     date: Datum

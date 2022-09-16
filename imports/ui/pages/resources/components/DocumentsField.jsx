@@ -100,16 +100,14 @@ export default function DocumentsField({ contextType, contextId }) {
       {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>
           {({ getRootProps, getInputProps, isDragActive }) => (
-            <Box bg="white" cursor="grab" px="2" py="4" {...getRootProps()}>
+            <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
               {isUploading ? (
                 <div style={{ textAlign: 'center' }}>
                   <Loader />
                   {tc('documents.up')}
                 </div>
               ) : (
-                <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
-                  {tc('documents.drop')}
-                </Button>
+                <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
               )}
               <input {...getInputProps()} />
             </Box>
