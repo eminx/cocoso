@@ -59,9 +59,11 @@ members:
 
 public:
   labels:
-    resource: Resource
     address: Address
     dates: Dates
+    info: Info
+    location: Location
+    resource: Resource
   register:
     label: Register
     form:

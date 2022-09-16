@@ -437,7 +437,7 @@ class Activity extends PureComponent {
 
     const tabs = [
       {
-        title: 'Info',
+        title: t('public.labels.info'),
         content: (
           <Box>
             <div
@@ -457,12 +457,12 @@ class Activity extends PureComponent {
         path: `/activities/${activityData._id}/info`,
       },
       {
-        title: 'Dates',
+        title: t('public.labels.dates'),
         content: this.renderDates(),
         path: `/activities/${activityData._id}/dates`,
       },
       {
-        title: 'Location',
+        title: t('public.labels.location'),
         content: (
           <Box mb="1">
             <Text fontWeight="bold" mb="2">
