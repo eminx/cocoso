@@ -487,7 +487,7 @@ class Process extends Component {
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
               }}
             >
-              <AccordionButton bg="gray.100" _expanded={{ bg: 'green.100' }}>
+              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
@@ -556,7 +556,7 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <AccordionButton _expanded={{ bg: 'green.100' }}>
+          <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
             <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
@@ -987,10 +987,6 @@ class Process extends Component {
         title: t('labels.date'),
         content: (
           <Box p="2">
-            <Text ml="2" fontWeight="bold">
-              {t('labels.date')}
-            </Text>
-
             <Text ml="2" fontSize="sm" mb="4">
               <em>
                 {processMeetings &&

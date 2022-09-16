@@ -1,12 +1,9 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 
 moment.locale(i18n.language);
-
-const publicSettings = Meteor.settings.public;
 
 const fancyDateStyle = {
   color: '#030303',
@@ -59,7 +56,7 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         >
           <em>
             {resources.map((place) => place.label).includes(occurence.resource)
-              ? `${occurence.resource}, ${publicSettings.name}`
+              ? `${occurence.resource}`
               : occurence.resource}
           </em>
         </div>

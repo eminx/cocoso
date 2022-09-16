@@ -476,7 +476,7 @@ class Activity extends PureComponent {
 
         <Tably
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
-          navPath="activities"
+          navPath={activityData.isPublicActivity ? 'activities' : 'calendar'}
           subTitle={activityData.subTitle}
           tabs={tabs}
           title={activityData.title}
