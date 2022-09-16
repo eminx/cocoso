@@ -121,9 +121,15 @@ function ResourcesPage() {
               </Box>
               <Spacer my="2" />
               <TabList>
-                <Tab key="All">All</Tab>
-                <Tab key="Combo">Combo</Tab>
-                <Tab key="Non-combo">Non-combo</Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="All">
+                  All
+                </Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="Combo">
+                  Combo
+                </Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="Non-combo">
+                  Non-combo
+                </Tab>
               </TabList>
               <Spacer my="2" />
               <Box display="flex" alignItems="center">

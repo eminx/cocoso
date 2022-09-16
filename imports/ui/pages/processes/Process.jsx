@@ -819,8 +819,8 @@ class Process extends Component {
       <div>
         <Tabs variant="enclosed-colored">
           <TabList pl="4">
-            <Tab>{t('tabs.process.info')}</Tab>
-            <Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>{t('tabs.process.info')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>
               {t('tabs.process.discuss')}{' '}
               {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
             </Tab>

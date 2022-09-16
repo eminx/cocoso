@@ -118,7 +118,9 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
             <Center>
               <TabList>
                 {filterOptions.map((option) => (
-                  <Tab key={option.value}>{option.label}</Tab>
+                  <Tab _focus={{ boxShadow: 'none' }} key={option.value}>
+                    {option.label}
+                  </Tab>
                 ))}
               </TabList>
             </Center>

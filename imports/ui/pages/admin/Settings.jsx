@@ -216,10 +216,10 @@ export default function Settings({ history }) {
       >
         <Tabs align="center">
           <TabList>
-            <Tab>{t('settings.tabs.logo')}</Tab>
-            <Tab>{t('settings.tabs.info')}</Tab>
-            <Tab>{t('settings.tabs.menu')}</Tab>
-            <Tab>{t('settings.tabs.cats')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.logo')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.info')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.menu')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.cats')}</Tab>
           </TabList>
 
           <TabPanels>

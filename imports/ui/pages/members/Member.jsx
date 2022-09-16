@@ -113,15 +113,21 @@ function MemberPublic({ history, match, path }) {
       <Tabs align="center" defaultIndex={getDefaultTabIndex()}>
         <TabList>
           <Link to={`/@${user.username}/bio`}>
-            <Tab as="div">{tc('domains.bio')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }} as="div">
+              {tc('domains.bio')}
+            </Tab>
           </Link>
 
           <Link to={`/@${user.username}/works`}>
-            <Tab as="div">{worksInMenu.label}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }} as="div">
+              {worksInMenu.label}
+            </Tab>
           </Link>
 
           <Link to={`/@${user.username}/contact`}>
-            <Tab as="div">{tc('labels.contact')}</Tab>
+            <Tab _focus={{ boxShadow: 'none' }} as="div">
+              {tc('labels.contact')}
+            </Tab>
           </Link>
           {/* <Tab as="div">
             <Link to={`/@${user.username}/activities`}>Activities</Link>

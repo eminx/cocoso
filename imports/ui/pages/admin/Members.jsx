@@ -194,7 +194,11 @@ function Members({ history, members, isLoading }) {
             <Center>
               <TabList flexWrap="wrap">
                 {filterOptions.map((item) => (
-                  <Tab key={item.value} onClick={() => setFilter(item.value)}>
+                  <Tab
+                    key={item.value}
+                    _focus={{ boxShadow: 'none' }}
+                    onClick={() => setFilter(item.value)}
+                  >
                     {item.label}
                   </Tab>
                 ))}
