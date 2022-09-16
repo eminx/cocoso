@@ -14,8 +14,8 @@ export default function PageRoutes({ path, history }) {
     <Switch path={path} history={history}>
       <Route path="/@:username/edit" component={EditProfileContainer} />
       {/* <Route path="/@:username/works" component={MemberWorks} /> */}
-      <Route path="/@:username/works/:workId" component={Work} />
       <Route path="/@:username/works/:workId/edit" component={EditWork} />
+      <Route path="/@:username/works/:workId" component={Work} />
       <Route path="/@:username/activities" component={MyActivities} />
       <Route path="/@:username/:profileRoute" history={history} component={MemberPublic} />
       <Route path="/@:username" history={history} component={MemberPublic} />
