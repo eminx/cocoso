@@ -1,34 +1,15 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { Visible, Hidden } from 'react-grid-system';
+import { Avatar, Box, Button, Center, Flex, Text, VStack, useDisclosure } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
+import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import NiceSlider from '../../components/NiceSlider';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
+import Tably from '../../components/Tably';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -97,73 +78,72 @@ function Work() {
     </Link>
   );
 
-  return (
-    <Fragment>
-      <Template
-        leftContent={
-          <Box pt="2" pb="1" px="2">
-            <Flex justify="space-between">
-              <Box>
-                <Heading as="h2" size="lg" mb={1}>
-                  {work.title}
-                </Heading>
-                <Text mb="4">{work.shortDescription}</Text>
-                {work.category && (
-                  <Badge variant="outline" color="gray.800" fontSize="md">
-                    {work.category.label}
-                  </Badge>
-                )}
-              </Box>
-              <Box>
-                <Visible xs sm md>
-                  <AvatarHolder />
-                </Visible>
-              </Box>
-            </Flex>
-          </Box>
-        }
-        rightContent={
-          <Box>
-            <Flex
-              align="center"
-              direction="row"
-              justify="space-between"
-              p="2"
-              style={{ overflow: 'hidden' }}
-            >
-              <Box w="100%" pt="1">
-                <Hidden lg xl>
-                  <Text fontSize="lg" textAlign="center" ml="2">
-                    {work.additionalInfo}
-                  </Text>
-                </Hidden>
-                <Visible lg xl>
-                  <Text fontSize="lg">{work.additionalInfo}</Text>
-                </Visible>
-              </Box>
-              <Box>
-                <Hidden xs sm md>
-                  <AvatarHolder />
-                </Hidden>
-              </Box>
-            </Flex>
-            <Center p="2" mt="4">
-              <Button onClick={handleOpenModal} variant="ghost">
-                {`${tc('labels.contact')} ${work.authorUsername}`}
-              </Button>
-            </Center>
-          </Box>
-        }
-      >
-        <Breadcrumb context={work} contextKey="title" />
-        <Box mt="2" bg="white">
-          <NiceSlider images={work.images} />
-          <Box mt="2" p="4">
-            <div className="text-content">{renderHTML(work.longDescription)} </div>
-          </Box>
+  const tabs = [
+    {
+      title: tc('labels.info'),
+      content: (
+        <Box>
+          <div
+            style={{
+              whiteSpace: 'pre-line',
+              color: 'rgba(0,0,0, .85)',
+            }}
+            className="text-content"
+          >
+            {renderHTML(work.longDescription)}
+          </div>
         </Box>
-      </Template>
+      ),
+      path: `/@${work.authorUsername}/works/${work._id}/info`,
+    },
+    {
+      title: tc('labels.extra'),
+      content: (
+        <Box>
+          <Flex
+            align="center"
+            direction="row"
+            justify="space-between"
+            p="2"
+            style={{ overflow: 'hidden' }}
+          >
+            <Box w="100%" pt="1">
+              <Text fontSize="lg">{work.additionalInfo}</Text>
+            </Box>
+            <Box>
+              <AvatarHolder />
+            </Box>
+          </Flex>
+        </Box>
+      ),
+      path: `/@${work.authorUsername}/works/${work._id}/extra`,
+    },
+    {
+      title: tc('labels.contact'),
+      content: (
+        <Box className="text-content" mb="2" p="4">
+          {authorContactInfo
+            ? renderHTML(authorContactInfo)
+            : tc('message.loading', { something: '' })}
+        </Box>
+      ),
+      onClick: () => handleOpenModal(),
+      path: `/@${work.authorUsername}/works/${work._id}/contact`,
+    },
+  ];
 
+  return (
+    <>
+      <Helmet>
+        <title>{work.title}</title>
+      </Helmet>
+      <Tably
+        images={work.images}
+        navPath="works"
+        subTitle={work.subTitle}
+        tabs={tabs}
+        title={work.title}
+      />
       <Center my="2">
         {isOwner && (
           <Link to={`/@${currentUser.username}/works/${workId}/edit`}>
@@ -171,20 +151,7 @@ function Work() {
           </Link>
         )}
       </Center>
-
-      <Modal isOpen={isOpen} onClose={onClose} onOpen={handleOpenModal} size="sm" isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{author}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box className="text-content" mb="2">
-              {authorContactInfo ? renderHTML(authorContactInfo) : 'Loading...'}
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Fragment>
+    </>
   );
 }
 

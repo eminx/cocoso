@@ -9,7 +9,7 @@ import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-
+import { Helmet } from 'react-helmet';
 import {
   Accordion,
   AccordionButton,
@@ -19,10 +19,10 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
-  Image,
   Input,
   NumberInput,
   NumberInputField,
@@ -41,6 +41,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
+import Tably from '../../components/Tably';
 
 moment.locale(i18n.language);
 
@@ -273,13 +274,8 @@ class Activity extends PureComponent {
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
-          {activityData.isRegistrationDisabled && activityData.isPublicActivity && (
-            <Text size="sm" mb="1">
-              {t('public.register.disabled.info')}
-            </Text>
-          )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="white" key={occurence.startDate + occurence.startTime} p="2" mb="2">
+            <Box bg="gray.100" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -373,14 +369,16 @@ class Activity extends PureComponent {
       <Accordion allowToggle>
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
           <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
-            <AccordionButton _expanded={{ bg: 'green.100' }}>
+            <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
               <Box flex="1" textAlign="left">
                 <FancyDate occurence={occurence} />
               </Box>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              <Heading size="sm">{t('public.register.label')}</Heading>
+              <Text m2="4" fontWeight="bold">
+                {t('public.register.label')}
+              </Text>
               {conditionalRender(occurence, occurenceIndex)}
             </AccordionPanel>
           </AccordionItem>
@@ -425,93 +423,74 @@ class Activity extends PureComponent {
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
-    const messages = this.getChatMessages();
+    // const messages = this.getChatMessages();
 
-    const EditButton = currentUser && activityData && currentUser._id === activityData.authorId && (
-      <Center m="2">
-        <Link to={`/activities/${activityData._id}/edit`}>
-          <Button variant="ghost" as="span">
-            {tc('actions.update')}
-          </Button>
-        </Link>
-      </Center>
-    );
+    const tabs = [
+      {
+        title: t('public.labels.info'),
+        content: (
+          <Box>
+            <div
+              style={{
+                whiteSpace: 'pre-line',
+                color: 'rgba(0,0,0, .85)',
+              }}
+              className="text-content"
+            >
+              <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
+                <Tag mb="2" label={activityData.resource} />
+              </Flex>
+              <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
+            </div>
+          </Box>
+        ),
+        path: `/activities/${activityData._id}/info`,
+      },
+      {
+        title: t('public.labels.dates'),
+        content: this.renderDates(),
+        path: `/activities/${activityData._id}/dates`,
+      },
+    ];
+
+    if (activityData.isPublicActivity) {
+      tabs.push({
+        title: t('public.labels.location'),
+        content: (
+          <Box mb="1">
+            <Text fontWeight="bold" mb="2">
+              {activityData.place}
+            </Text>
+            <Text>{t('public.labels.address') + ': ' + activityData.address}</Text>
+          </Box>
+        ),
+        path: `/activities/${activityData._id}/location`,
+      });
+    }
 
     return (
-      <Template
-        leftContent={
-          <Box p="2">
-            <Heading as="h3" size="lg">
-              {activityData.title}
-            </Heading>
-            {activityData.subTitle && (
-              <Heading as="h4" size="md" fontWeight="light">
-                {activityData.subTitle}
-              </Heading>
-            )}
-            <Box pt="2" mb="1">
-              {/* <Heading mb="2" as="h5" size="md">
-            {t('public.labels.resource')}
-          </Heading> */}
-              <Link to={`/resources/${activityData.resourceId}`}>
-                <Tag label={activityData.resource} />
-              </Link>
-            </Box>
-          </Box>
-        }
-        rightContent={
-          <Box width="100%" p="2">
-            <Heading mb="2" as="h5" size="md">
-              {t('public.labels.dates')}
-            </Heading>
-            {this.renderDates()}
-          </Box>
-        }
-      >
-        <Breadcrumb context={activityData} contextKey="title" />
-        <Box bg="white" mb="4">
-          {activityData.isPublicActivity && (
-            <Center bg="gray.900" width="100%">
-              <Image fit="contain" src={activityData.imageUrl} htmlHeight={400} />
-            </Center>
-          )}
+      <>
+        <Helmet>
+          <title>{activityData.title}</title>
+        </Helmet>
 
-          {activityData.longDescription && (
-            <Box p="4">
-              <div
-                style={{
-                  whiteSpace: 'pre-line',
-                  color: 'rgba(0,0,0, .85)',
-                }}
-                className="text-content"
-              >
-                {renderHTML(activityData.longDescription)}
-              </div>
-            </Box>
-          )}
-        </Box>
-        {activityData.address && (
-          <Box p="4" mb="1">
-            <Heading mb="2" as="h5" size="md">
-              {t('public.labels.address')}
-            </Heading>
-            <Text size="sm">{activityData.address}</Text>
-          </Box>
+        <Tably
+          images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
+          navPath={activityData.isPublicActivity ? 'activities' : 'calendar'}
+          subTitle={activityData.subTitle}
+          tabs={tabs}
+          title={activityData.title}
+        />
+
+        {activityData && currentUser && currentUser._id === activityData.authorId && (
+          <Center m="2">
+            <Link to={`/activities/${activityData._id}/edit`}>
+              <Button variant="ghost" as="span">
+                {tc('actions.update')}
+              </Button>
+            </Link>
+          </Center>
         )}
-
-        {/* {activityData.isPublicActivity && messages && chatData && (
-          <Box pad="medium" background="light-2" border="dark-2">
-            <Heading mb="1" as="h5" size="md">Chat Section</Heading>
-            <Chattery
-              messages={messages}
-              onNewMessage={this.addNewChatMessage}
-              removeNotification={this.removeNotification}
-              isMember
-            />
-          </Box>
-        )} */}
-
-        {EditButton}
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}
@@ -527,19 +506,12 @@ class Activity extends PureComponent {
         >
           {this.renderCancelRsvpModalContent()}
         </ConfirmModal>
-      </Template>
+      </>
     );
   }
 }
 
 Activity.contextType = StateContext;
-
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  numberOfPeople: 1,
-};
 
 function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   const { handleSubmit, register, formState } = useForm({

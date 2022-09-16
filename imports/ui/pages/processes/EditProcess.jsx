@@ -154,45 +154,46 @@ class EditProcess extends React.Component {
     }
 
     return (
-      <Template
-        heading="Edit"
-        leftContent={
-          <Box p="2">
-            <Link to={`/processes/${process._id}`}>
-              <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-            </Link>
-          </Box>
-        }
-      >
-        <Breadcrumb context={process} contextKey="title" />
-        <Box bg="white" p="6">
-          <ProcessForm
-            defaultValues={process}
-            imageUrl={process && process.imageUrl}
-            onSubmit={this.handleSubmit}
-            setUploadableImage={this.setUploadableImage}
-            uploadableImageLocal={uploadableImageLocal}
-          />
-        </Box>
-
-        <Center p="4">
-          <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
-            {tc('actions.remove')}
-          </Button>
-        </Center>
-
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          title={tc('modals.confirm.delete.title')}
-          onConfirm={this.deleteProcess}
-          onCancel={this.hideDeleteModal}
-          confirmText={tc('modals.confirm.delete.yes')}
+      <Box bg="gray.100" pt="2">
+        <Template
+          leftContent={
+            <Box p="2">
+              <Link to={`/processes/${process._id}`}>
+                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
+              </Link>
+            </Box>
+          }
         >
-          {tc('modals.confirm.delete.body', {
-            domain: tc('domains.process').toLowerCase(),
-          })}
-        </ConfirmModal>
-      </Template>
+          <Breadcrumb context={process} contextKey="title" />
+          <Box bg="white" p="6">
+            <ProcessForm
+              defaultValues={process}
+              imageUrl={process && process.imageUrl}
+              onSubmit={this.handleSubmit}
+              setUploadableImage={this.setUploadableImage}
+              uploadableImageLocal={uploadableImageLocal}
+            />
+          </Box>
+
+          <Center p="4">
+            <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
+              {tc('actions.remove')}
+            </Button>
+          </Center>
+
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            title={tc('modals.confirm.delete.title')}
+            onConfirm={this.deleteProcess}
+            onCancel={this.hideDeleteModal}
+            confirmText={tc('modals.confirm.delete.yes')}
+          >
+            {tc('modals.confirm.delete.body', {
+              domain: tc('domains.process').toLowerCase(),
+            })}
+          </ConfirmModal>
+        </Template>
+      </Box>
     );
   }
 }

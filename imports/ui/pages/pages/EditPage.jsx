@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
@@ -120,41 +121,39 @@ class EditPage extends PureComponent {
     }
 
     return (
-      <Template
-        heading={tc('labels.update', {
-          domain: tc('domains.page').toLowerCase(),
-        })}
-        leftContent={
-          <Link to={`/pages/${pageData.title}`}>
-            <Button variant="link" size="sm">
-              {t('pages.actions.backTo')}
-              {` ${pageData.title}`}
-            </Button>
-          </Link>
-        }
-      >
-        <Breadcrumb context={pageData} contextKey="title" />
-        <Box bg="white" p="6">
-          <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
-
-          <Flex justify="center" py="4">
-            <Button colorScheme="red" size="sm" variant="ghost" onClick={this.openDeleteModal}>
-              {t('pages.actions.delete')}
-            </Button>
-          </Flex>
-        </Box>
-
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          onConfirm={this.handleDeletePage}
-          onCancel={this.closeDeleteModal}
-          title={tc('modal.confirm.delete.title')}
+      <Box bg="gray.100" pt="2">
+        <Template
+          leftContent={
+            <Box pb="2">
+              <Link to={`/pages/${pageData.title}`}>
+                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
+              </Link>
+            </Box>
+          }
         >
-          {tc('modals.confirm.delete.body', {
-            domain: tc('domains.page').toLowerCase(),
-          })}
-        </ConfirmModal>
-      </Template>
+          <Breadcrumb context={pageData} contextKey="title" />
+          <Box bg="white" p="6">
+            <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
+
+            <Flex justify="center" py="4">
+              <Button colorScheme="red" size="sm" variant="ghost" onClick={this.openDeleteModal}>
+                {t('pages.actions.delete')}
+              </Button>
+            </Flex>
+          </Box>
+
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            onConfirm={this.handleDeletePage}
+            onCancel={this.closeDeleteModal}
+            title={tc('modal.confirm.delete.title')}
+          >
+            {tc('modals.confirm.delete.body', {
+              domain: tc('domains.page').toLowerCase(),
+            })}
+          </ConfirmModal>
+        </Template>
+      </Box>
     );
   }
 }

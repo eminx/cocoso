@@ -29,10 +29,15 @@ labels:
   contact: Contact
   create: Create a New {{ domain }}
   event: Event
+  bookings: Bookings
   newBooking: New Booking
   page: Page
   process: Process
   remove: Remove
+  info: Info
+  extra: Extra
+  discussion: Discussion
+  combo: Combo
   sortBy:
     placeholder: Sort by
     date: Date

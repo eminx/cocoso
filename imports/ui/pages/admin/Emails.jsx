@@ -13,6 +13,7 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import Header from '../../components/Header';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
@@ -75,24 +76,28 @@ function Emails({ history }) {
   const pathname = history && history.location.pathname;
 
   return (
-    <Template
-      heading={t('emails.label')}
-      leftContent={
-        <Box p="4">
-          <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
-      }
-    >
-      {emails &&
-        emails.map((email, index) => (
-          <Box key={email.title} p="6" bg="white" mb="4">
-            <Heading size="md" mb="4">
-              {email.title}
-            </Heading>
-            <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
+    <>
+      <Header />
+
+      <Template
+        heading={t('emails.label')}
+        leftContent={
+          <Box p="4">
+            <ListMenu pathname={pathname} list={adminMenu} />
           </Box>
-        ))}
-    </Template>
+        }
+      >
+        {emails &&
+          emails.map((email, index) => (
+            <Box key={email.title} p="6" bg="white" mb="4">
+              <Heading size="md" mb="4">
+                {email.title}
+              </Heading>
+              <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
+            </Box>
+          ))}
+      </Template>
+    </>
   );
 }
 

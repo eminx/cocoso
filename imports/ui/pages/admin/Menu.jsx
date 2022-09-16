@@ -123,8 +123,8 @@ export default function Menu() {
       </Heading>
       <Tabs align="center">
         <TabList>
-          <Tab>{t('menu.tabs.menuitems.label')}</Tab>
-          <Tab>{t('menu.tabs.order.label')}</Tab>
+          <Tab _focus={{ boxShadow: 'none' }}>{t('menu.tabs.menuitems.label')}</Tab>
+          <Tab _focus={{ boxShadow: 'none' }}>{t('menu.tabs.order.label')}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

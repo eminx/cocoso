@@ -4,6 +4,7 @@ labels:
   member: Medlemmar
   date: Datum
   invite: Hantera åtkomst
+  attendees: Deltagare
 
 tabs:
   active: Aktiva
