@@ -1017,11 +1017,6 @@ class Process extends Component {
       },
     ];
 
-    const tabNav = {
-      path: '/processes',
-      label: 'Processes',
-    };
-
     return (
       <>
         <Helmet>
@@ -1032,7 +1027,7 @@ class Process extends Component {
           subTitle={process.readingMaterial}
           tabs={tabs}
           title={process.title}
-          nav={tabNav}
+          navPath="processes"
         />
 
         {isAdmin && (

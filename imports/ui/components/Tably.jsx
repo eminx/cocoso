@@ -5,10 +5,10 @@ import { Box, Container, Flex, Heading, Link as CLink, Tabs, Tab, TabList } from
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 
-function Tably({ tabs, title, subTitle, images, nav }) {
+function Tably({ tabs, title, subTitle, images, navPath }) {
   const history = useHistory();
   const location = useLocation();
-  const { isDesktop } = useContext(StateContext);
+  const { isDesktop, currentHost } = useContext(StateContext);
 
   const getDefaultTabIndex = () => {
     return tabs.findIndex((tab) => tab.path === location.pathname);
@@ -25,13 +25,17 @@ function Tably({ tabs, title, subTitle, images, nav }) {
 
   const isImage = images && images.length > 0;
 
+  const { menu } = currentHost?.settings;
+
+  const navItem = menu.find((item) => item.name === navPath);
+
   return (
     <>
       <Flex my="4" w="100%">
         <Box p="4" flexBasis="120px">
-          <Link to={nav.path}>
+          <Link to={`/${navPath}`}>
             <CLink as="span" fontSize="sm" textTransform="uppercase">
-              {nav.label}
+              {navItem?.label}
             </CLink>
           </Link>
         </Box>

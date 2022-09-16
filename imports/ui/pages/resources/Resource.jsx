@@ -129,17 +129,12 @@ function ResourcePage() {
     });
   }
 
-  const tabNav = {
-    path: '/resources',
-    label: 'Resources',
-  };
-
   return (
     <>
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Tably nav={tabNav} images={resource.images} tabs={tabs} title={resource.label} />;
+      <Tably navPath="resources" images={resource.images} tabs={tabs} title={resource.label} />;
       {role === 'admin' && (
         <Center my="2">
           <Link to={`/resources/${resource?._id}/edit`}>

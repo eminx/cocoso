@@ -132,11 +132,6 @@ function Work() {
     },
   ];
 
-  const tabNav = {
-    path: '/works',
-    label: 'Works',
-  };
-
   return (
     <>
       <Helmet>
@@ -144,7 +139,7 @@ function Work() {
       </Helmet>
       <Tably
         images={work.images}
-        nav={tabNav}
+        navPath="works"
         subTitle={work.subTitle}
         tabs={tabs}
         title={work.title}

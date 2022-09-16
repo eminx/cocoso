@@ -465,11 +465,6 @@ class Activity extends PureComponent {
       },
     ];
 
-    const tabNav = {
-      path: '/activities',
-      label: 'Activities',
-    };
-
     return (
       <>
         <Helmet>
@@ -478,7 +473,7 @@ class Activity extends PureComponent {
 
         <Tably
           images={[activityData.imageUrl]}
-          nav={tabNav}
+          navPath="activities"
           subTitle={activityData.subTitle}
           tabs={tabs}
           title={activityData.title}
