@@ -33,6 +33,7 @@ labels:
   page: Sida
   process: Processen
   remove: Ta bort
+  info: Info
   sortBy:
     placeholder: Sortera med
     date: Datum

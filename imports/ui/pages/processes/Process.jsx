@@ -720,13 +720,11 @@ class Process extends Component {
                 {(member) => (
                   <Link to={`/@${member.username}`}>
                     <Flex align="center">
-                      <Avatar mr="2" name={member.username} size="sm" src={member.avatar} />
+                      <Avatar mr="2" name={member.username} size="md" src={member.avatar} />
                       <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
                         {member.username}
                       </CLink>
-                      <Text fontSize="sm" ml="1">
-                        {member.isAdmin && '(admin)'}
-                      </Text>
+                      <Text ml="1">{member.isAdmin && '(admin)'}</Text>
                     </Flex>
                   </Link>
                 )}
@@ -761,11 +759,11 @@ class Process extends Component {
         {process && process.documents && process.documents.length > 0 ? (
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
-              <div style={{ width: '100%' }}>
-                <a href={document.downloadUrl} target="_blank" rel="noreferrer">
+              <Box style={{ width: '100%' }}>
+                <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
                   {document.name}
-                </a>
-              </div>
+                </CLink>
+              </Box>
             )}
           </NiceList>
         ) : (
@@ -775,10 +773,10 @@ class Process extends Component {
         )}
 
         {isAdmin && (
-          <Center p="2">
+          <Center p="2" mt="4">
             <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box bg="white" cursor="grab" h="180px" p="4" w="240px" {...getRootProps()}>
+                <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
@@ -983,7 +981,7 @@ class Process extends Component {
 
     const tabs = [
       {
-        title: 'Info',
+        title: tc('labels.info'),
         content: <div className="text-content">{renderHTML(process.description)}</div>,
         path: `/processes/${process._id}/info`,
       },
@@ -1007,7 +1005,7 @@ class Process extends Component {
         path: `/processes/${process._id}/meetings`,
       },
       {
-        title: 'Discussion',
+        title: t('tabs.process.discuss'),
         content: this.renderDiscussion(),
         path: `/processes/${process._id}/discussion`,
       },
@@ -1167,9 +1165,9 @@ function CreateMeetingForm({
 
   return (
     <Box p="2" bg="white" my="2">
-      <Heading ml="2" mt="2" size="xs">
+      <Text ml="2" fontWeight="bold">
         {t('meeting.form.label')}
-      </Heading>
+      </Text>
       <Box py="4">
         <DatePicker noTime onChange={handleDateChange} />
       </Box>

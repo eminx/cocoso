@@ -33,6 +33,7 @@ labels:
   page: Page
   process: Process
   remove: Remove
+  info: Info
   sortBy:
     placeholder: Sort by
     date: Date

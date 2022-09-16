@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { Box, Container, Flex, Heading, Tabs, Tab, TabList, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Link as CLink, Tabs, Tab, TabList } from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
@@ -30,9 +30,9 @@ function Tably({ tabs, title, subTitle, images, nav }) {
       <Flex my="4" w="100%">
         <Box p="4" flexBasis="120px">
           <Link to={nav.path}>
-            <Text fontSize="sm" textTransform="uppercase">
+            <CLink as="span" fontSize="sm" textTransform="uppercase">
               {nav.label}
-            </Text>
+            </CLink>
           </Link>
         </Box>
         <Flex flexBasis="600px" flexGrow={2} direction="column" justify="center">
@@ -65,7 +65,9 @@ function Tably({ tabs, title, subTitle, images, nav }) {
             <TabList mb="4" flexWrap="wrap">
               {tabs.map((tab) => (
                 <Link key={tab.title} to={parsePath(tab.path)}>
-                  <Tab textTransform="uppercase">{tab.title}</Tab>
+                  <Tab __focus={{ boxShadow: 'none' }} textTransform="uppercase">
+                    {tab.title}
+                  </Tab>
                 </Link>
               ))}
             </TabList>
@@ -77,7 +79,9 @@ function Tably({ tabs, title, subTitle, images, nav }) {
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container margin={isImage ? 0 : 'auto'}>{tab.content}</Container>
+                  <Container px="0" margin={isImage ? 0 : 'auto'}>
+                    {tab.content}
+                  </Container>
                 )}
               />
             ))}
