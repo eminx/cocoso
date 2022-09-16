@@ -89,7 +89,7 @@ function ResourcesPage() {
       <Header />
 
       {canCreateContent && (
-        <Center w="100%" mb="4">
+        <Center w="100%" mb="2">
           <Link to={currentUser ? '/resources/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}

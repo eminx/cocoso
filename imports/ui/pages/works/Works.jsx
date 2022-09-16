@@ -83,7 +83,7 @@ function Works() {
 
       <Header />
 
-      <Center mb="4">
+      <Center mb="2">
         {canCreateContent && (
           <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">

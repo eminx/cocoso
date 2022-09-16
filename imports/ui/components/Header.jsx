@@ -10,14 +10,14 @@ function Header() {
   const { currentHost, currentUser, isDesktop } = useContext(StateContext);
 
   return (
-    <Box mb="4" py="2" w="100%">
+    <Box py="2" w="100%">
       <Flex w="100%" align="flex-start">
         <Box w="56px" />
         <Center w="100%" flexDirection="column" mb="2">
           <Box>
             <Link to="/">
-              <Box w="120px" h="60px" my="2">
-                <Image fit="contain" src={currentHost && currentHost.logo} />
+              <Box w="180px" my="2">
+                <Image fit="contain" margin="0 auto" src={currentHost && currentHost.logo} />
               </Box>
             </Link>
           </Box>

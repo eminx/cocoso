@@ -78,9 +78,7 @@ function HeaderMenu({ currentHost, isDesktop }) {
       <CMenu placement="bottom" closeOnSelect>
         <MenuButton>
           <HStack>
-            <Text textTransform="uppercase" fontWeight="bold">
-              {activeMenuItem ? activeMenuItem.label : 'Menu'}
-            </Text>
+            <Text textTransform="uppercase">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Text>
             <ChevronDownIcon />
           </HStack>
         </MenuButton>

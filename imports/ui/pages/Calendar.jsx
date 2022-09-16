@@ -246,7 +246,7 @@ class Calendar extends PureComponent {
         <Header />
 
         {currentUser && canCreateContent && (
-          <Center mb="3">
+          <Center mb="2">
             <Link to="/activities/new">
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}

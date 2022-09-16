@@ -70,7 +70,7 @@ function Activities({ activitiesList, isLoading, history }) {
 
       <Header />
 
-      <Center mb="4">
+      <Center mb="2">
         {canCreateContent && (
           <Link to="/activities/new">
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
