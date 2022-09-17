@@ -16,8 +16,13 @@ function Header() {
         <Center w="100%" flexDirection="column" mb="2">
           <Box>
             <Link to="/">
-              <Box maxHeight="80px" my="2" w="220px">
-                <Image fit="contain" margin="0 auto" src={currentHost && currentHost.logo} />
+              <Box maxHeight="80px" mt="1" w="220px">
+                <Image
+                  fit="contain"
+                  margin="0 auto"
+                  maxHeight="80px"
+                  src={currentHost && currentHost.logo}
+                />
               </Box>
             </Link>
           </Box>

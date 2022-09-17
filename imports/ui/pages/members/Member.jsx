@@ -134,11 +134,11 @@ function MemberPublic({ history, match, path }) {
         </Center>
         <Box flexBasis="120px" />
       </Flex>
-      <Tabs bg="gray.100" align="center" defaultIndex={getDefaultTabIndex()}>
+      <Tabs align="center" bg="gray.100" defaultIndex={getDefaultTabIndex()} size="sm">
         <TabList>
           {tabs.map((tab) => (
             <Link key={tab.label} to={tab.link}>
-              <Tab _focus={{ boxShadow: 'none' }} textTransform="uppercase" as="div">
+              <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
                 {tab.label}
               </Tab>
             </Link>
@@ -146,7 +146,7 @@ function MemberPublic({ history, match, path }) {
 
           {currentUser && currentUser.username === user.username && (
             <Link to={`/@${user.username}/edit`}>
-              <Tab _focus={{ boxShadow: 'none' }} as="div">
+              <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
                 <Trans i18nKey="common:actions.update" />
               </Tab>
             </Link>
@@ -185,7 +185,6 @@ function MemberPublic({ history, match, path }) {
             </Modal>
           )}
         />
-        {/* <Route path="/@:username/works" component={MyWorks} /> */}
       </Switch>
     </>
   );
