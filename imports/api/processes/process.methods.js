@@ -58,6 +58,23 @@ Meteor.methods({
     }));
   },
 
+  getProcessesByUser(username) {
+    if (!username) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const host = getHost(this);
+
+    try {
+      const processes = Processes.find({
+        $or: [{ authorUsername: username }, { 'members.username': username }],
+        host,
+      }).fetch();
+      return processes;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch processes");
+    }
+  },
+
   createProcess(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     const host = getHost(this);

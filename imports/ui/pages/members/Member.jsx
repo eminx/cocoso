@@ -18,10 +18,11 @@ import { Trans } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
+import Modal from '../../components/Modal';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 import MemberActivities from '../activities/MemberActivities';
-import Modal from '../../components/Modal';
+import MemberProcesses from '../processes/MemberProcesses';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -172,6 +173,10 @@ function MemberPublic({ history, match, path }) {
         <Route
           path="/@:username/activities"
           render={(props) => <MemberActivities user={user} match={match} />}
+        />
+        <Route
+          path="/@:username/processes"
+          render={(props) => <MemberProcesses user={user} match={match} />}
         />
         <Route
           path="/@:username/contact"
