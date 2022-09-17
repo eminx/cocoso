@@ -27,6 +27,23 @@ Meteor.methods({
     }
   },
 
+  getActivitiesByUser(username) {
+    if (!username) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const host = getHost(this);
+
+    try {
+      const activities = Activities.find({
+        host,
+        authorName: username,
+      }).fetch();
+      return activities;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch activities");
+    }
+  },
+
   getAllOccurences() {
     const host = getHost(this);
     try {
@@ -276,7 +293,9 @@ Meteor.methods({
     const theNonAttendee = theOccurence.attendees[attendeeIndex];
 
     const theAttendees = [...theOccurence.attendees];
-    const theAttendeesWithout = theAttendees.filter((attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex);
+    const theAttendeesWithout = theAttendees.filter(
+      (attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex
+    );
 
     occurences[occurenceIndex].attendees = theAttendeesWithout;
 
