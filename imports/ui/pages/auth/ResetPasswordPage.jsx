@@ -4,6 +4,7 @@ import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/reac
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
+import Header from '../../components/Header';
 import { ResetPassword } from './index';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
@@ -29,29 +30,32 @@ const ResetPasswordPage = ({ history, match }) => {
   }
 
   return (
-    <Template>
-      <Center>
-        <Box w="xs">
-          <Heading size="md" textAlign="center" mb="4">
-            {t('password.labels.title')}
-          </Heading>
-          <Text fontSize="lg" mb="6" textAlign="center">
-            {t('password.labels.subtitle.reset')}
-          </Text>
-          <Box p="6" bg="white" mb="4">
-            <ResetPassword onResetPassword={handleResetPassword} />
+    <Box bg="gray.100" pb="8" minHeight="100vh">
+      <Header />
+      <Template>
+        <Center>
+          <Box w="xs">
+            <Heading size="md" textAlign="center" mb="4">
+              {t('password.labels.title')}
+            </Heading>
+            <Text fontSize="lg" mb="6" textAlign="center">
+              {t('password.labels.subtitle.reset')}
+            </Text>
+            <Box p="6" bg="white" mb="4">
+              <ResetPassword onResetPassword={handleResetPassword} />
+            </Box>
+            <Flex justify="space-around" mt="4">
+              <Link to="/login">
+                <CLink as="span">{t('actions.login')}</CLink>
+              </Link>
+              <Link to="/signup">
+                <CLink as="span">{t('actions.signup')}</CLink>
+              </Link>
+            </Flex>
           </Box>
-          <Flex justify="space-around" mt="4">
-            <Link to="/login">
-              <CLink as="span">{t('actions.login')}</CLink>
-            </Link>
-            <Link to="/signup">
-              <CLink as="span">{t('actions.signup')}</CLink>
-            </Link>
-          </Flex>
-        </Box>
-      </Center>
-    </Template>
+        </Center>
+      </Template>
+    </Box>
   );
 };
 

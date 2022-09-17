@@ -5,24 +5,22 @@ import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
-import WorkThumb from '../../components/WorkThumb';
 import Paginate from '../../components/Paginate';
+import GridThumb from '../../components/GridThumb';
 
-function MemberWorks({ match }) {
-  const [works, setWorks] = useState([]);
+function MemberProcesses({ match }) {
+  const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [t] = useTranslation('members');
   const { username } = match.params;
 
   useEffect(() => {
-    Meteor.call('getWorksByUser', username, (error, respond) => {
+    Meteor.call('getProcessesByUser', username, (error, respond) => {
       if (error) {
         message(error);
         setLoading(false);
         return;
       }
-      setWorks(respond);
+      setProcesses(respond);
       setLoading(false);
     });
   }, []);
@@ -31,18 +29,18 @@ function MemberWorks({ match }) {
     return <Loader />;
   }
 
-  if (!works || works.length === 0) {
+  if (!processes || processes.length === 0) {
     <Alert />;
   }
 
   return (
     <Box justify="center" w="100%" mt="4">
-      {works && works.length > 0 && (
-        <Paginate items={works}>
-          {(work) => (
-            <Box key={work._id}>
-              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                <WorkThumb work={work} />
+      {processes && processes.length > 0 && (
+        <Paginate items={processes}>
+          {(process) => (
+            <Box key={process._id}>
+              <Link to={`/processes/${process._id}`}>
+                <GridThumb image={process.imageUrl} large title={process.title}></GridThumb>
               </Link>
             </Box>
           )}
@@ -52,4 +50,4 @@ function MemberWorks({ match }) {
   );
 }
 
-export default MemberWorks;
+export default MemberProcesses;

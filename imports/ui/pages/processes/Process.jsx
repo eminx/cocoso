@@ -7,10 +7,6 @@ import ReactDropzone from 'react-dropzone';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-
-import DatePicker from '../../components/DatePicker';
-import { ConflictMarker } from '../../components/DatesAndTimes';
-
 import {
   Accordion,
   AccordionButton,
@@ -46,8 +42,10 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { ChevronDownIcon, LockIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
+import DatePicker from '../../components/DatePicker';
+import { ConflictMarker } from '../../components/DatesAndTimes';
 import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
@@ -63,6 +61,7 @@ import {
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
 } from '../../utils/shared';
+import EditProcessContainer from './EditProcessContainer';
 
 moment.locale(i18n.language);
 
@@ -1012,6 +1011,14 @@ class Process extends Component {
         path: `/processes/${process._id}/discussion`,
       },
     ];
+
+    if (isAdmin) {
+      tabs.push({
+        title: <b>{tc('actions.update')}</b>,
+        content: null,
+        path: `/processes/${process._id}/edit`,
+      });
+    }
 
     return (
       <>

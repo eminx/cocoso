@@ -16,7 +16,7 @@ function Header() {
         <Center w="100%" flexDirection="column" mb="2">
           <Box>
             <Link to="/">
-              <Box w="180px" my="2">
+              <Box maxHeight="80px" my="2" w="220px">
                 <Image fit="contain" margin="0 auto" src={currentHost && currentHost.logo} />
               </Box>
             </Link>

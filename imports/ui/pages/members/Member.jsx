@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Container, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
+import { Box, Container, Center, Flex, Link as CLink, Tabs, TabList, Tab } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
+import Modal from '../../components/Modal';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
-import Header from '../../components/Header';
+import MemberActivities from '../activities/MemberActivities';
+import MemberProcesses from '../processes/MemberProcesses';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -65,11 +67,6 @@ function MemberPublic({ history, match, path }) {
   //   }
   // };
 
-  const worksInMenu =
-    currentHost &&
-    currentHost.settings.menu &&
-    currentHost.settings.menu.find((item) => item.name === 'works');
-
   const getDefaultTabIndex = () => {
     switch (profileRoute) {
       case 'bio':
@@ -82,56 +79,78 @@ function MemberPublic({ history, match, path }) {
         return 3;
       case 'hosts':
         return 4;
+      case 'contact':
+        return 5;
+      case 'edit':
+        return 6;
       default:
         return 0;
     }
   };
 
-  if (!user) {
-    return null;
-  }
+  const menu = currentHost?.settings?.menu;
+  const worksInMenu = menu.find((item) => item.name === 'works');
+  const activitiesInMenu = menu.find((item) => item.name === 'activities');
+  const processesInMenu = menu.find((item) => item.name === 'processes');
+  const membersInMenu = menu.find((item) => item.name === 'members');
+
+  const tabs = [
+    {
+      link: `/@${user.username}/bio`,
+      label: tc('domains.bio'),
+    },
+    {
+      link: `/@${user.username}/works`,
+      label: worksInMenu.label,
+    },
+    {
+      link: `/@${user.username}/activities`,
+      label: activitiesInMenu.label,
+    },
+    {
+      link: `/@${user.username}/processes`,
+      label: processesInMenu.label,
+    },
+    {
+      link: `/@${user.username}/contact`,
+      label: tc('labels.contact'),
+    },
+  ];
 
   return (
     <>
-      <Header />
-      <Center>
-        <Box w="large">
-          <MemberAvatarEtc t={t} tc={tc} user={user} />
+      <Flex bg="gray.100">
+        <Box p="4" flexBasis="120px">
+          <Link to={`/members`}>
+            <CLink as="span" textTransform="uppercase">
+              {membersInMenu.label}
+            </CLink>
+          </Link>
         </Box>
-      </Center>
-
-      {currentUser && currentUser.username === user.username && (
-        <Center p="2">
-          <Link to={`/@${user.username}/edit`}>
-            <Button as="span" variant="ghost" size="sm">
-              <Trans i18nKey="common:actions.update" />
-            </Button>
-          </Link>
+        <Center flexBasis="100%">
+          <Box w="large">
+            <MemberAvatarEtc t={t} tc={tc} user={user} />
+          </Box>
         </Center>
-      )}
-
-      <Tabs align="center" defaultIndex={getDefaultTabIndex()}>
+        <Box flexBasis="120px" />
+      </Flex>
+      <Tabs bg="gray.100" align="center" defaultIndex={getDefaultTabIndex()}>
         <TabList>
-          <Link to={`/@${user.username}/bio`}>
-            <Tab _focus={{ boxShadow: 'none' }} as="div">
-              {tc('domains.bio')}
-            </Tab>
-          </Link>
+          {tabs.map((tab) => (
+            <Link key={tab.label} to={tab.link}>
+              <Tab _focus={{ boxShadow: 'none' }} textTransform="uppercase" as="div">
+                {tab.label}
+              </Tab>
+            </Link>
+          ))}
 
-          <Link to={`/@${user.username}/works`}>
-            <Tab _focus={{ boxShadow: 'none' }} as="div">
-              {worksInMenu.label}
-            </Tab>
-          </Link>
-
-          <Link to={`/@${user.username}/contact`}>
-            <Tab _focus={{ boxShadow: 'none' }} as="div">
-              {tc('labels.contact')}
-            </Tab>
-          </Link>
-          {/* <Tab as="div">
-            <Link to={`/@${user.username}/activities`}>Activities</Link>
-          </Tab> */}
+          {currentUser && currentUser.username === user.username && (
+            <Link to={`/@${user.username}/edit`}>
+              <Tab _focus={{ boxShadow: 'none' }} as="div">
+                <Trans i18nKey="common:actions.update" />
+              </Tab>
+            </Link>
+          )}
         </TabList>
       </Tabs>
 
@@ -142,13 +161,28 @@ function MemberPublic({ history, match, path }) {
           render={(props) => <MemberWorks user={user} match={match} />}
         />
         <Route
+          path="/@:username/activities"
+          render={(props) => <MemberActivities user={user} match={match} />}
+        />
+        <Route
+          path="/@:username/processes"
+          render={(props) => <MemberProcesses user={user} match={match} />}
+        />
+        <Route
           path="/@:username/contact"
           render={(props) => (
-            <Container p="4">
-              {user.contactInfo
-                ? renderHTML(user.contactInfo)
-                : t('message.contact.empty', { username: user.username })}
-            </Container>
+            <Modal
+              isCentered
+              isOpen
+              title={user.username}
+              onClose={() => history.push(`/@${user.username}`)}
+            >
+              <Container p="4">
+                {user.contactInfo
+                  ? renderHTML(user.contactInfo)
+                  : t('message.contact.empty', { username: user.username })}
+              </Container>
+            </Modal>
           )}
         />
         {/* <Route path="/@:username/works" component={MyWorks} /> */}
