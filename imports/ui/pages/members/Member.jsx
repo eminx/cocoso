@@ -1,17 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Container,
-  Center,
-  Flex,
-  Link as CLink,
-  Tabs,
-  TabList,
-  Tab,
-} from '@chakra-ui/react';
+import { Box, Container, Center, Flex, Link as CLink, Tabs, TabList, Tab } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Trans } from 'react-i18next';
 
