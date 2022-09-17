@@ -138,7 +138,7 @@ function MemberPublic({ history, match, path }) {
         <TabList>
           {tabs.map((tab) => (
             <Link key={tab.label} to={tab.link}>
-              <Tab _focus={{ boxShadow: 'none' }} as="div">
+              <Tab _focus={{ boxShadow: 'none' }} textTransform="uppercase" as="div">
                 {tab.label}
               </Tab>
             </Link>
