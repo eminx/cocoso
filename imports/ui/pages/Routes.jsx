@@ -31,6 +31,7 @@ const SignupPage = lazy(() => import('./auth/SignupPage'));
 const LoginPage = lazy(() => import('./auth/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
+const VerifyEmail = lazy(() => import('./auth/VerifyEmailPage'));
 // SuperAdmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
 // NotFound
@@ -75,6 +76,7 @@ export default function () {
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/forgot-password" component={ForgotPasswordPage} />
               <Route path="/reset-password/:token" component={ResetPasswordPage} />
+              <Route path="/verify-email/:token" component={VerifyEmail} />
               {/* SuperAdmin */}
               <Route exact path="/new-host" component={NewHost} />
               {/* NotFoundPage */}

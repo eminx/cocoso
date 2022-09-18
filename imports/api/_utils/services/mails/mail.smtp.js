@@ -88,4 +88,13 @@ Meteor.methods({
       getEmailBody(email, user.username)
     );
   },
+
+  sendVerificationLink(verificationInfo) {
+    Meteor.call(
+      'sendEmail',
+      verificationInfo.email,
+      verificationInfo.options.subject,
+      verificationInfo.options.text
+    );
+  },
 });

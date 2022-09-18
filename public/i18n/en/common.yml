@@ -70,6 +70,10 @@ message:
     email: '{{ field }} must be a valid email'
     min: '{{ field }} has to be at least {{ min }} characters'
 
+  verifyEmail:
+    verified: Your email address is verified. You can close the page now.
+    alreadyVerified: Your email address is already verified. You can close the page now.
+
 # MODAL POP-UPS
 modals:
   confirm:
@@ -157,3 +161,8 @@ documents:
 
 terms:
   title: Terms of Service & Privacy Policy
+
+emails:
+  verifyEmail:
+    subject: Please verify your email address
+    body: Hi, To verify your account email, simply click the link below
