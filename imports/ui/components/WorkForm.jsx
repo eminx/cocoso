@@ -65,7 +65,7 @@ function WorkForm({
                   selected={cat._id === defaultValues.categoryId}
                   value={cat._id}
                 >
-                  {cat.label.toUpperCase()}
+                  {cat?.label?.toUpperCase()}
                 </option>
               ))}
             </Select>
