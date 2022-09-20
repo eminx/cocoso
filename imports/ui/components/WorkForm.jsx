@@ -7,6 +7,7 @@ import {
   Center,
   Flex,
   IconButton,
+  Image,
   Input,
   Textarea,
   Select,
@@ -21,6 +22,8 @@ import FormField from './FormField';
 import FileDropper from '../components/FileDropper';
 import NiceSlider from '../components/NiceSlider';
 import { editorFormats, editorModules } from '../utils/constants/quillConfig';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css';
 
 function WorkForm({
   categories,
@@ -93,7 +96,7 @@ function WorkForm({
 
           <FormField label={t('works.images.label', { count: images.length })}>
             <Box>
-              {images && <NiceSlider images={images} />}
+              {images && <NiceSlider width="300px" images={images} />}
 
               {images && images.length > 0 ? (
                 <SortableContainer onSortEnd={onSortImages} axis="xy" helperClass="sortableHelper">

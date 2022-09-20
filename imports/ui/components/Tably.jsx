@@ -84,7 +84,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
               )}
             </Box>
             <Box flexGrow="0" mb="4">
-              <NiceSlider images={images} />
+              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
               {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
             </Box>
           </Box>

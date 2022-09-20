@@ -58,7 +58,7 @@
 
 .talk-bubble.right-in {
   float: right;
-  background-color: #00a8ff;
+  background-color: #0f87dd;
   color: #fff;
 }
 
@@ -96,7 +96,7 @@
   top: -8px;
   bottom: auto;
   border: 32px solid;
-  border-color: #00a8ff transparent transparent #00a8ff;
+  border-color: #0f87dd transparent transparent #0f87dd;
 }
 .tri-right.left-top:after {
   content: ' ';
@@ -199,7 +199,7 @@
   right: 30px;
   bottom: -40px;
   border: 20px solid;
-  border-color: #00a8ff transparent transparent #00a8ff;
+  border-color: #0f87dd transparent transparent #0f87dd;
 }
 .tri-right.btm-right-in:after {
   content: ' ';
@@ -210,7 +210,7 @@
   right: 38px;
   bottom: -20px;
   border: 12px solid;
-  border-color: #00a8ff transparent transparent #00a8ff;
+  border-color: #0f87dd transparent transparent #0f87dd;
 }
 /*
 	left: -8px;
@@ -273,7 +273,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #00a8ff transparent transparent #00a8ff;
+  border-color: #0f87dd transparent transparent #0f87dd;
 }
 
 /* Right triangle placed top right flush. */
@@ -287,7 +287,7 @@
   top: -8px;
   bottom: auto;
   border: 32px solid;
-  border-color: #00a8ff transparent transparent #00a8ff;
+  border-color: #0f87dd transparent transparent #0f87dd;
 }
 .tri-right.right-top:after {
   content: ' ';
