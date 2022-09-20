@@ -9,8 +9,19 @@ const chakraTheme = extendTheme({
     },
     Tab: {
       baseStyle: {
+        textTransform: 'uppercase',
+        paddingLeft: 0,
+        paddingRight: 0,
+        marginLeft: 12,
+        marginRight: 12,
         '&:focus': {
           boxShadow: 'none',
+        },
+        '&:nth-child(0)': {
+          marginLeft: 0,
+        },
+        '&:nth-last-child(0)': {
+          marginRight: 0,
         },
       },
     },

@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   Center,
+  Code,
   Flex,
   FormControl,
   FormLabel,
@@ -756,9 +757,11 @@ class Process extends Component {
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
-                <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
-                  {document.name}
-                </CLink>
+                <Code>
+                  <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
+                    {document.name}
+                  </CLink>
+                </Code>
               </Box>
             )}
           </NiceList>
@@ -809,47 +812,14 @@ class Process extends Component {
     });
   };
 
-  renderProcessInfo = () => {
-    const { process, chatData, currentUser, t } = this.props;
-    const notificationCount = currentUser?.notifications?.find((n) => n.contextId === process._id)
-      ?.unSeenIndexes?.length;
-
-    return (
-      <div>
-        <Tabs variant="enclosed-colored">
-          <TabList pl="4">
-            <Tab _focus={{ boxShadow: 'none' }}>{t('tabs.process.info')}</Tab>
-            <Tab _focus={{ boxShadow: 'none' }}>
-              {t('tabs.process.discuss')}{' '}
-              {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Center bg="gray.900">
-                <Image src={process.imageUrl} fit="contain" fill />
-              </Center>
-              <Box pt="4">
-                <div className="text-content">{renderHTML(process.description)}</div>
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <div>{chatData && this.renderDiscussion()}</div>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </div>
-    );
-  };
-
   renderDiscussion = () => {
     const { t } = this.props;
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
     return (
-      <Box p="4">
-        <Box bg="light-2">
+      <Box>
+        <Box>
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}
@@ -985,8 +955,8 @@ class Process extends Component {
       {
         title: t('labels.date'),
         content: (
-          <Box p="2">
-            <Text ml="2" fontSize="sm" mb="4">
+          <Box>
+            <Text fontSize="sm" mb="4">
               <em>
                 {processMeetings &&
                 processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))

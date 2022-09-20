@@ -25,7 +25,7 @@ function NiceSlider({ images }) {
   const [toggler, setToggler] = useState(false);
 
   return (
-    <Box position="relative" w="100%">
+    <Box position="relative" maxHeight="500px">
       <Slider
         swipe
         autoplay
@@ -41,7 +41,6 @@ function NiceSlider({ images }) {
               cursor="pointer"
               fit="contain"
               src={image}
-              w="100%"
               onClick={() => setToggler(!toggler)}
             />
           </Box>

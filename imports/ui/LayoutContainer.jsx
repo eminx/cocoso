@@ -126,8 +126,8 @@ function Footer({ currentHost, tc }) {
         <Center w="100%">
           <Flex w="100%" direction="column" justify="center" textAlign="center">
             <Center>
-              <Box w="120px" h="60px" ml="3">
-                <Image fit="contain" src={currentHost.logo} className="header-logo" />
+              <Box maxHeight="80px" mt="1" w="220px">
+                <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
               </Box>
             </Center>
             <Heading my="2" size="md">

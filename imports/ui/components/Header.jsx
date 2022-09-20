@@ -16,7 +16,7 @@ function Header() {
         <Center w="100%" flexDirection="column" mb="2">
           <Box>
             <Link to="/">
-              <Box maxHeight="80px" mt="1" w="220px">
+              <Box maxHeight="80px" mt="1" mb="2" w="220px">
                 <Image
                   fit="contain"
                   margin="0 auto"

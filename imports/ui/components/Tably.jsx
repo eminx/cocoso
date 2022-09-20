@@ -1,9 +1,27 @@
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { Box, Container, Flex, Heading, Link as CLink, Tabs, Tab, TabList } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Link as CLink,
+  Tabs,
+  Tab,
+  TabList,
+  Text,
+} from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
+
+const tabStyle = {
+  textTransform: 'uppercase',
+  // paddingLeft: 0,
+  // paddingRight: 0,
+  // marginLeft: 12,
+  // marginRight: 12,
+};
 
 function Tably({ tabs, title, subTitle, images, navPath }) {
   const history = useHistory();
@@ -25,27 +43,33 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
 
   const isImage = images && images?.length > 0;
 
-  const { menu } = currentHost?.settings;
+  const { menu, name } = currentHost?.settings;
 
   const navItem = menu.find((item) => item.name === navPath);
 
   return (
     <>
-      <Flex my="4" w="100%">
-        <Box px="4" flexBasis="120px">
+      <Flex my="4">
+        <Flex px="4" flexBasis="120px">
+          <Link to="/">
+            <CLink as="span" textTransform="uppercase" fontWeight="bold">
+              {name}
+            </CLink>
+          </Link>
+          <Text mx="2">/</Text>
           <Link to={`/${navPath}`}>
             <CLink as="span" textTransform="uppercase">
               {navItem?.label}
             </CLink>
           </Link>
-        </Box>
+        </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex direction={isDesktop ? 'row' : 'column'} w="100%" m={isDesktop ? '4' : '0'}>
+      <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'}>
         {isImage && (
-          <Box w="100%" flexBasis={isDesktop ? '40%' : '100%'}>
-            <Flex direction="column" mb={isDesktop ? '16' : '4'}>
-              <Heading as="h3" size="lg" textAlign={isDesktop ? 'right' : 'center'}>
+          <Box flexBasis={isDesktop ? '40%' : '100%'}>
+            <Box mb={isDesktop ? '16' : '4'} px="4">
+              <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                 {title}
               </Heading>
               {subTitle && (
@@ -53,39 +77,34 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
                   as="h4"
                   size="md"
                   fontWeight="light"
-                  textAlign={isDesktop ? 'right' : 'center'}
+                  textAlign={isDesktop ? 'right' : 'left'}
                 >
                   {subTitle}
                 </Heading>
               )}
-            </Flex>
-            <Flex
-              // flexBasis="40%"
-              flexGrow="0"
-              justifyContent="flex-end"
-              mb="4"
-              // w={isDesktop ? '40%' : '100%'}
-              w="100%"
-            >
+            </Box>
+            <Box flexGrow="0" mb="4">
               <NiceSlider images={images} />
               {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
-            </Flex>
+            </Box>
           </Box>
         )}
-        <Box flexBasis="50%" px={isDesktop ? '16' : '4'} mt="2">
+        <Box flexBasis="50%" pl={isDesktop ? '12' : '0'}>
           <Tabs
             align={isImage ? 'start' : 'center'}
             colorScheme="gray.800"
             defaultIndex={getDefaultTabIndex()}
             flexShrink="0"
+            mt="2"
             size="sm"
           >
-            <TabList mb="4" flexWrap="wrap">
+            <TabList flexWrap="wrap" mb="4">
               {tabs.map((tab) => (
-                <Link key={tab.title} to={parsePath(tab.path)}>
+                <Link key={tab.title} to={parsePath(tab.path)} style={{ margin: 0 }}>
                   <Tab
+                    as="span"
                     _focus={{ boxShadow: 'none' }}
-                    textTransform="uppercase"
+                    style={tabStyle}
                     onClick={tab.onClick}
                   >
                     {tab.title}
@@ -101,7 +120,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container margin={isImage ? 0 : 'auto'} px="0" pt="2">
+                  <Container margin={isImage ? 0 : 'auto'} pt="2">
                     {tab.content}
                   </Container>
                 )}
