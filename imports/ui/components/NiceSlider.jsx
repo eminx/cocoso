@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Slider from 'react-slick';
-import { Box, Center, Flex, IconButton, Image } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import FsLightbox from 'fslightbox-react';
 import 'slick-carousel/slick/slick.css';
@@ -25,7 +25,7 @@ function NiceSlider({ images }) {
   const [toggler, setToggler] = useState(false);
 
   return (
-    <Box position="relative">
+    <Box position="relative" w="100%">
       <Slider
         swipe
         autoplay
@@ -36,14 +36,15 @@ function NiceSlider({ images }) {
         ref={(component) => (this.slider = component)}
       >
         {images.map((image) => (
-          <Center key={image}>
+          <Box key={image}>
             <Image
+              cursor="pointer"
               fit="contain"
               src={image}
-              style={{ cursor: 'pointer', margin: '0 auto' }}
+              w="100%"
               onClick={() => setToggler(!toggler)}
             />
-          </Center>
+          </Box>
         ))}
       </Slider>
 

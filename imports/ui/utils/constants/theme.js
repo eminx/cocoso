@@ -16,7 +16,8 @@ const chakraTheme = extendTheme({
     },
   },
   fonts: {
-    heading: "'Charter-bold', 'Sarabun', sans-serif",
+    // heading: "'Charter-bold', 'Sarabun', sans-serif",
+    heading: "'Sarabun', sans-serif",
     body: "'Sarabun', sans-serif",
   },
 });

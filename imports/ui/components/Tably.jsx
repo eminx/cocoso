@@ -32,33 +32,47 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
   return (
     <>
       <Flex my="4" w="100%">
-        <Box p="4" flexBasis="120px">
+        <Box px="4" flexBasis="120px">
           <Link to={`/${navPath}`}>
             <CLink as="span" textTransform="uppercase">
               {navItem?.label}
             </CLink>
           </Link>
         </Box>
-        <Flex flexBasis="600px" flexGrow={2} direction="column" justify="center">
-          <Heading as="h3" size="lg" textAlign="center">
-            {title}
-          </Heading>
-          {subTitle && (
-            <Heading as="h4" size="md" fontWeight="light" textAlign="center">
-              {subTitle}
-            </Heading>
-          )}
-        </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex justify="center" direction={isDesktop ? 'row' : 'column'}>
+      <Flex direction={isDesktop ? 'row' : 'column'} w="100%" m={isDesktop ? '4' : '0'}>
         {isImage && (
-          <Box flexBasis="50%" flexGrow="0" mb="4" w={isDesktop ? '50%' : '100%'}>
-            <NiceSlider images={images} />
-            {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
+          <Box w="100%" flexBasis={isDesktop ? '40%' : '100%'}>
+            <Flex direction="column" mb={isDesktop ? '16' : '4'}>
+              <Heading as="h3" size="lg" textAlign={isDesktop ? 'right' : 'center'}>
+                {title}
+              </Heading>
+              {subTitle && (
+                <Heading
+                  as="h4"
+                  size="md"
+                  fontWeight="light"
+                  textAlign={isDesktop ? 'right' : 'center'}
+                >
+                  {subTitle}
+                </Heading>
+              )}
+            </Flex>
+            <Flex
+              // flexBasis="40%"
+              flexGrow="0"
+              justifyContent="flex-end"
+              mb="4"
+              // w={isDesktop ? '40%' : '100%'}
+              w="100%"
+            >
+              <NiceSlider images={images} />
+              {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
+            </Flex>
           </Box>
         )}
-        <Box flexBasis="50%" px="4">
+        <Box flexBasis="50%" px={isDesktop ? '16' : '4'} mt="2">
           <Tabs
             align={isImage ? 'start' : 'center'}
             colorScheme="gray.800"
@@ -87,7 +101,9 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container margin={isImage ? 0 : 'auto'}>{tab.content}</Container>
+                  <Container margin={isImage ? 0 : 'auto'} px="0" pt="2">
+                    {tab.content}
+                  </Container>
                 )}
               />
             ))}
