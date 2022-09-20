@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Box,
+  Center,
   Container,
   Flex,
   Heading,
@@ -23,7 +24,7 @@ const tabStyle = {
   // marginRight: 12,
 };
 
-function Tably({ tabs, title, subTitle, images, navPath, action = null }) {
+function Tably({ tabs, title, subTitle, images, navPath, action = null, extra = null }) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
@@ -65,9 +66,9 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null }) {
         </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'}>
+      <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'} wrap>
         {isImage && (
-          <Box flexBasis={isDesktop ? '40vw' : '100vw'}>
+          <Box w={isDesktop ? '40vw' : '100vw'}>
             <Box mb={isDesktop ? '16' : '4'} px="4">
               <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                 {title}
@@ -89,10 +90,11 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null }) {
             </Box>
           </Box>
         )}
-        <Box flexBasis={isImage ? '50%' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
+        <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
+          {!isDesktop && <Center>{extra} </Center>}
           {action}
           <Tabs
-            align={isImage ? 'start' : 'center'}
+            align={isDesktop && isImage ? 'start' : 'center'}
             colorScheme="gray.800"
             defaultIndex={getDefaultTabIndex()}
             flexShrink="0"
@@ -129,6 +131,12 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null }) {
             ))}
           </Switch>
         </Box>
+
+        {isDesktop && (
+          <Box ml="2" mt="-2">
+            {extra}
+          </Box>
+        )}
       </Flex>
     </>
   );
