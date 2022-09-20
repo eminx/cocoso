@@ -146,14 +146,14 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
 
 function AvatarHolder({ author }) {
   return (
-    <Link to={author.link}>
+    <Box>
       <VStack justify="center" spacing="1">
         <Avatar elevation="medium" src={author.src} name={author.username} size="lg" />
         <Link to={author.link}>
           <CLink as="span">{author.username}</CLink>
         </Link>
       </VStack>
-    </Link>
+    </Box>
   );
 }
 
