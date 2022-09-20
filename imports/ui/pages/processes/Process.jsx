@@ -24,7 +24,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Image,
   Link as CLink,
   List,
   ListItem,
@@ -34,11 +33,6 @@ import {
   MenuItem,
   Select,
   Switch,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
   Tooltip,
   Text,
   Textarea,
@@ -198,67 +192,6 @@ class Process extends Component {
         message.success(t('message.unarchived'));
       }
     });
-  };
-
-  getTitle = (process, isAdmin) => {
-    const { t } = this.props;
-
-    const isArchived = process.isArchived;
-
-    return (
-      <Flex>
-        <Box flexGrow={1} mb="2" p="4">
-          <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
-            {process.title}
-            {process.isPrivate && (
-              <Badge ml="2" mb="3">
-                <Tooltip label={t('private.info')}>
-                  <Text fontSize="sm">{t('private.title')}</Text>
-                </Tooltip>
-              </Badge>
-            )}
-            {process.isArchived && (
-              <Badge ml="2" mb="3">
-                <Text fontSize="sm">{t('labels.archived')}</Text>
-              </Badge>
-            )}
-          </Heading>
-          <Text fontWeight="light">{process.readingMaterial}</Text>
-        </Box>
-
-        <Flex p="4" direction="column">
-          <Center alignSelf="end">
-            <Link to={`/@${process.authorUsername}`}>
-              <Flex direction="column" align="center">
-                <Avatar name={process.authorUsername} src={process.authorAvatar} />
-                <CLink as="span" fontSize="sm" textAlign="center">
-                  {process.authorUsername}
-                </CLink>
-              </Flex>
-            </Link>
-          </Center>
-        </Flex>
-
-        {isAdmin && (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<ChevronDownIcon />}
-              variant="ghost"
-            />
-            <MenuList>
-              {process.isPrivate && isAdmin && (
-                <MenuItem onClick={this.handleOpenInviteManager}>{t('labels.invite')}</MenuItem>
-              )}
-              <MenuItem onClick={isArchived ? this.unarchiveProcess : this.archiveProcess}>
-                {isArchived ? t('actions.unarchive') : t('actions.archive')}
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
-      </Flex>
-    );
   };
 
   joinProcess = () => {
@@ -998,14 +931,6 @@ class Process extends Component {
       },
     ];
 
-    if (isAdmin) {
-      tabs.push({
-        title: <b>{tc('actions.update')}</b>,
-        content: null,
-        path: `/processes/${process._id}/edit`,
-      });
-    }
-
     return (
       <>
         <Helmet>
@@ -1018,6 +943,11 @@ class Process extends Component {
           title={process.title}
           navPath="processes"
           action={this.renderAction()}
+          author={{
+            src: process.authorAvatar,
+            username: process.authorUsername,
+            link: `/@${process.authorUsername}`,
+          }}
         />
 
         {isAdmin && (

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
+  Avatar,
   Box,
   Center,
   Container,
@@ -11,6 +12,7 @@ import {
   Tab,
   TabList,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
@@ -24,7 +26,7 @@ const tabStyle = {
   // marginRight: 12,
 };
 
-function Tably({ tabs, title, subTitle, images, navPath, action = null, extra = null }) {
+function Tably({ tabs, title, subTitle, images, navPath, action = null, author = null }) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
@@ -91,7 +93,11 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, extra = 
           </Box>
         )}
         <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
-          {!isDesktop && <Center>{extra} </Center>}
+          {!isDesktop && author && (
+            <Center>
+              <AvatarHolder author={author} />
+            </Center>
+          )}
           {action}
           <Tabs
             align={isDesktop && isImage ? 'start' : 'center'}
@@ -132,13 +138,28 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, extra = 
           </Switch>
         </Box>
 
-        {isDesktop && (
-          <Box ml="2" mt="-2">
-            {extra}
+        {isDesktop && author && (
+          <Box w="20vw">
+            <Center>
+              <AvatarHolder author={author} />
+            </Center>
           </Box>
         )}
       </Flex>
     </>
+  );
+}
+
+function AvatarHolder({ author }) {
+  return (
+    <Link to={author.link}>
+      <VStack justify="center">
+        <Avatar elevation="medium" src={author.src} name={author.username} size="lg" />
+        <Link to={author.link}>
+          <CLink as="span">{author.username}</CLink>
+        </Link>
+      </VStack>
+    </Link>
   );
 }
 

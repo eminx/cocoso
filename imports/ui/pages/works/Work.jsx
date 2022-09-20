@@ -118,12 +118,10 @@ function Work() {
     },
     {
       title: tc('labels.contact'),
-      content: (
-        <Box className="text-content" mb="2" p="4">
-          {authorContactInfo
-            ? renderHTML(authorContactInfo)
-            : tc('message.loading', { something: '' })}
-        </Box>
+      content: authorContactInfo ? (
+        <Box className="text-content">{renderHTML(authorContactInfo)}</Box>
+      ) : (
+        <Loader />
       ),
       onClick: () => handleOpenModal(),
       path: `/@${work.authorUsername}/works/${work._id}/contact`,
@@ -141,7 +139,11 @@ function Work() {
         subTitle={work.subTitle}
         tabs={tabs}
         title={work.title}
-        extra={<AvatarHolder />}
+        author={{
+          src: work.authorAvatar,
+          username: work.authorUsername,
+          link: `/@${work.authorUsername}`,
+        }}
       />
       <Center my="2">
         {isOwner && (
