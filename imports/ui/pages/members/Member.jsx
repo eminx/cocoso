@@ -135,7 +135,7 @@ function MemberPublic({ history, match, path }) {
         <Box flexBasis="120px" />
       </Flex>
       <Tabs align="center" bg="gray.100" defaultIndex={getDefaultTabIndex()} size="sm">
-        <TabList>
+        <TabList flexWrap="wrap">
           {tabs.map((tab) => (
             <Link key={tab.label} to={tab.link}>
               <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">

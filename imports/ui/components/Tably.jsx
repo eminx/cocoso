@@ -60,10 +60,10 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
         </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'} wrap>
+      <Flex direction={isDesktop ? 'row' : 'column'} my={isDesktop ? '6' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40vw' : '100vw'}>
-            <Flex mb={isDesktop ? '16' : '4'} px="4" mt="2" justify="space-between">
+            <Flex mb={isDesktop ? '16' : '4'} px="4" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                   {title}
@@ -81,7 +81,7 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
               </Box>
               {!isDesktop && author && (
                 <Box flexBasis="64px">
-                  <AvatarHolder author={author} />
+                  <AvatarHolder size="md" author={author} />
                 </Box>
               )}
             </Flex>
@@ -144,13 +144,15 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
   );
 }
 
-function AvatarHolder({ author }) {
+function AvatarHolder({ author, size = 'lg' }) {
   return (
     <Box>
       <VStack justify="center" spacing="1">
-        <Avatar elevation="medium" src={author.src} name={author.username} size="lg" />
+        <Avatar elevation="medium" src={author.src} name={author.username} size={size} />
         <Link to={author.link}>
-          <CLink as="span">{author.username}</CLink>
+          <CLink as="span" fontSize={size}>
+            {author.username}
+          </CLink>
         </Link>
       </VStack>
     </Box>

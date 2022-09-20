@@ -7,6 +7,11 @@ const chakraTheme = extendTheme({
         colorScheme: 'gray.800',
       },
     },
+    TabList: {
+      defaultProps: {
+        flexWrap: 'wrap',
+      },
+    },
   },
   fonts: {
     // heading: "'Charter-bold', 'Sarabun', sans-serif",
