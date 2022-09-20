@@ -25,7 +25,7 @@ function NiceSlider({ images }) {
   const [toggler, setToggler] = useState(false);
 
   return (
-    <Box bg="gray.900" position="relative">
+    <Box position="relative">
       <Slider
         swipe
         autoplay
