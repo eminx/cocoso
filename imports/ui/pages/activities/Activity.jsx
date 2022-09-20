@@ -440,7 +440,7 @@ class Activity extends PureComponent {
             >
               <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
                 <Link to={`/resources/${activityData.resourceId}`}>
-                  <Badge fontSize="lg" mb="2">
+                  <Badge fontSize="md" mb="2">
                     {activityData.resource}
                   </Badge>
                 </Link>

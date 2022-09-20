@@ -89,7 +89,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
             </Box>
           </Box>
         )}
-        <Box flexBasis="50%" pl={isDesktop ? '12' : '0'}>
+        <Box flexBasis={isImage ? '50%' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
           <Tabs
             align={isImage ? 'start' : 'center'}
             colorScheme="gray.800"
