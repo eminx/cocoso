@@ -13,7 +13,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Avatar,
-  Badge,
   Box,
   Button,
   Center,
@@ -21,23 +20,15 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
-  IconButton,
   Link as CLink,
   List,
   ListItem,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Select,
   Switch,
-  Tooltip,
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import DatePicker from '../../components/DatePicker';
 import { ConflictMarker } from '../../components/DatesAndTimes';
@@ -56,7 +47,6 @@ import {
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
 } from '../../utils/shared';
-import EditProcessContainer from './EditProcessContainer';
 
 moment.locale(i18n.language);
 
@@ -690,7 +680,7 @@ class Process extends Component {
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
-                <Code>
+                <Code fontWeight="bold">
                   <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
                     {document.name}
                   </CLink>

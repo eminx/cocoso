@@ -18,14 +18,6 @@ import {
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 
-const tabStyle = {
-  textTransform: 'uppercase',
-  // paddingLeft: 0,
-  // paddingRight: 0,
-  // marginLeft: 12,
-  // marginRight: 12,
-};
-
 function Tably({ tabs, title, subTitle, images, navPath, action = null, author = null }) {
   const history = useHistory();
   const location = useLocation();
@@ -71,21 +63,28 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
       <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40vw' : '100vw'}>
-            <Box mb={isDesktop ? '16' : '4'} px="4">
-              <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
-                {title}
-              </Heading>
-              {subTitle && (
-                <Heading
-                  as="h4"
-                  size="md"
-                  fontWeight="light"
-                  textAlign={isDesktop ? 'right' : 'left'}
-                >
-                  {subTitle}
+            <Flex mb={isDesktop ? '16' : '4'} px="4" mt="2" justify="space-between">
+              <Box flexBasis={isDesktop ? '100%' : '80%'}>
+                <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
+                  {title}
                 </Heading>
+                {subTitle && (
+                  <Heading
+                    as="h4"
+                    size="md"
+                    fontWeight="light"
+                    textAlign={isDesktop ? 'right' : 'left'}
+                  >
+                    {subTitle}
+                  </Heading>
+                )}
+              </Box>
+              {!isDesktop && author && (
+                <Box flexBasis="64px">
+                  <AvatarHolder author={author} />
+                </Box>
               )}
-            </Box>
+            </Flex>
             <Box flexGrow="0" mb="4">
               <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
               {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
@@ -93,11 +92,6 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
           </Box>
         )}
         <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
-          {!isDesktop && author && (
-            <Center>
-              <AvatarHolder author={author} />
-            </Center>
-          )}
           {action}
           <Tabs
             align={isDesktop && isImage ? 'start' : 'center'}
@@ -113,7 +107,7 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                   <Tab
                     as="span"
                     _focus={{ boxShadow: 'none' }}
-                    style={tabStyle}
+                    textTransform="uppercase"
                     onClick={tab.onClick}
                   >
                     {tab.title}
@@ -153,7 +147,7 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
 function AvatarHolder({ author }) {
   return (
     <Link to={author.link}>
-      <VStack justify="center">
+      <VStack justify="center" spacing="1">
         <Avatar elevation="medium" src={author.src} name={author.username} size="lg" />
         <Link to={author.link}>
           <CLink as="span">{author.username}</CLink>
