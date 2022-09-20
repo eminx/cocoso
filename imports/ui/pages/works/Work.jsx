@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Button, Center, Flex, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Center,
+  Link as CLink,
+  Text,
+  VStack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -10,6 +19,7 @@ import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
+import Tag from '../../components/Tag';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -67,13 +77,13 @@ function Work() {
 
   const isOwner = currentUser && currentUser.username === username;
 
-  const AvatarHolder = (props) => (
+  const AvatarHolder = () => (
     <Link to={`/@${work.authorUsername}`}>
-      <VStack justify="center" {...props}>
-        <Avatar elevation="medium" src={work.authorAvatar} name={work.authorUsername} />
-        <Button as="span" variant="link" href={`/@${work.authorUsername}`}>
-          <Text fontSize="sm">{work.authorUsername}</Text>
-        </Button>
+      <VStack justify="center">
+        <Avatar elevation="medium" src={work.authorAvatar} name={work.authorUsername} size="lg" />
+        <Link to={`/@${work.authorUsername}`}>
+          <CLink as="span">{work.authorUsername}</CLink>
+        </Link>
       </VStack>
     </Link>
   );
@@ -83,6 +93,7 @@ function Work() {
       title: tc('labels.info'),
       content: (
         <Box>
+          <Tag label={work.category.label} mb="4" />
           <div
             style={{
               whiteSpace: 'pre-line',
@@ -100,32 +111,17 @@ function Work() {
       title: tc('labels.extra'),
       content: (
         <Box>
-          <Flex
-            align="center"
-            direction="row"
-            justify="space-between"
-            p="2"
-            style={{ overflow: 'hidden' }}
-          >
-            <Box w="100%" pt="1">
-              <Text fontSize="lg">{work.additionalInfo}</Text>
-            </Box>
-            <Box>
-              <AvatarHolder />
-            </Box>
-          </Flex>
+          <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
       path: `/@${work.authorUsername}/works/${work._id}/extra`,
     },
     {
       title: tc('labels.contact'),
-      content: (
-        <Box className="text-content" mb="2" p="4">
-          {authorContactInfo
-            ? renderHTML(authorContactInfo)
-            : tc('message.loading', { something: '' })}
-        </Box>
+      content: authorContactInfo ? (
+        <Box className="text-content">{renderHTML(authorContactInfo)}</Box>
+      ) : (
+        <Loader />
       ),
       onClick: () => handleOpenModal(),
       path: `/@${work.authorUsername}/works/${work._id}/contact`,
@@ -143,6 +139,11 @@ function Work() {
         subTitle={work.subTitle}
         tabs={tabs}
         title={work.title}
+        author={{
+          src: work.authorAvatar,
+          username: work.authorUsername,
+          link: `/@${work.authorUsername}`,
+        }}
       />
       <Center my="2">
         {isOwner && (

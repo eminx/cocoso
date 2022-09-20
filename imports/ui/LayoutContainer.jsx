@@ -56,7 +56,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
               thickness="4px"
               speed="0.65s"
               emptyColor="gray.200"
-              color="blue.500"
+              color="gray.800"
               size="xl"
             />
           </Center>
@@ -92,7 +92,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       >
         <Center className="main-viewport">
           <Box maxWidth="1400px" w="100%">
-            <Box style={{ minHeight: '100vh' }}>{children}</Box>
+            <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
             <Footer currentHost={currentHost} tc={tc} />
           </Box>
@@ -110,7 +110,7 @@ function Footer({ currentHost, tc }) {
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg="#363636" color="gray.200" pt="4">
+    <Box w="100%" bg="gray.200" color="gray.800" pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
@@ -126,8 +126,8 @@ function Footer({ currentHost, tc }) {
         <Center w="100%">
           <Flex w="100%" direction="column" justify="center" textAlign="center">
             <Center>
-              <Box w="120px" h="60px" ml="3">
-                <Image fit="contain" src={currentHost.logo} className="header-logo" />
+              <Box maxHeight="80px" mt="1" w="220px">
+                <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
               </Box>
             </Center>
             <Heading my="2" size="md">

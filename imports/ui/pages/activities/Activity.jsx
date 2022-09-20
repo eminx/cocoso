@@ -16,6 +16,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Box,
   Button,
   Center,
@@ -438,7 +439,11 @@ class Activity extends PureComponent {
               className="text-content"
             >
               <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
-                <Tag mb="2" label={activityData.resource} />
+                <Link to={`/resources/${activityData.resourceId}`}>
+                  <Badge fontSize="md" mb="2">
+                    {activityData.resource}
+                  </Badge>
+                </Link>
               </Flex>
               <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
             </div>
@@ -458,10 +463,14 @@ class Activity extends PureComponent {
         title: t('public.labels.location'),
         content: (
           <Box mb="1">
-            <Text fontWeight="bold" mb="2">
-              {activityData.place}
-            </Text>
-            <Text>{t('public.labels.address') + ': ' + activityData.address}</Text>
+            {activityData.place && (
+              <Text fontWeight="bold" mb="2">
+                {activityData.place}
+              </Text>
+            )}
+            {activityData.address && (
+              <Text>{t('public.labels.address') + ': ' + activityData.address}</Text>
+            )}
           </Box>
         ),
         path: `/activities/${activityData._id}/location`,

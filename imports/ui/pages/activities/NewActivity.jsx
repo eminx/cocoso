@@ -146,7 +146,7 @@ class NewActivity extends PureComponent {
   };
 
   setUploadableImage = (files) => {
-    const { t } = this.props;
+    const { tc } = this.props;
     if (files.length > 1) {
       message.error(tc('plugins.fileDropper.single'));
       return;

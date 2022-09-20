@@ -215,7 +215,7 @@ export default function Settings({ history }) {
         }
       >
         <Tabs align="center">
-          <TabList>
+          <TabList flexWrap="wrap">
             <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.logo')}</Tab>
             <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.info')}</Tab>
             <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.menu')}</Tab>

@@ -21,7 +21,7 @@ const DateJust = ({ children, ...otherProps }) => (
 );
 
 const FancyDate = ({ occurence, resources, ...otherProps }) => (
-  <Flex justifyContent="space-between" p="2" mb="2" {...otherProps}>
+  <Flex justifyContent="space-between" p="1" mb="1" {...otherProps}>
     <div style={{ flexGrow: 1 }}>
       {occurence.startDate === occurence.endDate ? (
         <DateJust>{occurence.startDate}</DateJust>

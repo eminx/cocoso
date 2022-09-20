@@ -7,47 +7,31 @@ import ReactDropzone from 'react-dropzone';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-
-import DatePicker from '../../components/DatePicker';
-import { ConflictMarker } from '../../components/DatesAndTimes';
-
 import {
   Accordion,
   AccordionButton,
   AccordionItem,
   AccordionPanel,
   Avatar,
-  Badge,
   Box,
   Button,
   Center,
+  Code,
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   HStack,
-  IconButton,
-  Image,
   Link as CLink,
   List,
   ListItem,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Select,
   Switch,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Tooltip,
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { ChevronDownIcon, LockIcon } from '@chakra-ui/icons';
 
+import DatePicker from '../../components/DatePicker';
+import { ConflictMarker } from '../../components/DatesAndTimes';
 import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
@@ -198,67 +182,6 @@ class Process extends Component {
         message.success(t('message.unarchived'));
       }
     });
-  };
-
-  getTitle = (process, isAdmin) => {
-    const { t } = this.props;
-
-    const isArchived = process.isArchived;
-
-    return (
-      <Flex>
-        <Box flexGrow={1} mb="2" p="4">
-          <Heading mb="2" size="lg" style={{ overflowWrap: 'anywhere', lineBreak: 'anywhere' }}>
-            {process.title}
-            {process.isPrivate && (
-              <Badge ml="2" mb="3">
-                <Tooltip label={t('private.info')}>
-                  <Text fontSize="sm">{t('private.title')}</Text>
-                </Tooltip>
-              </Badge>
-            )}
-            {process.isArchived && (
-              <Badge ml="2" mb="3">
-                <Text fontSize="sm">{t('labels.archived')}</Text>
-              </Badge>
-            )}
-          </Heading>
-          <Text fontWeight="light">{process.readingMaterial}</Text>
-        </Box>
-
-        <Flex p="4" direction="column">
-          <Center alignSelf="end">
-            <Link to={`/@${process.authorUsername}`}>
-              <Flex direction="column" align="center">
-                <Avatar name={process.authorUsername} src={process.authorAvatar} />
-                <CLink as="span" fontSize="sm" textAlign="center">
-                  {process.authorUsername}
-                </CLink>
-              </Flex>
-            </Link>
-          </Center>
-        </Flex>
-
-        {isAdmin && (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<ChevronDownIcon />}
-              variant="ghost"
-            />
-            <MenuList>
-              {process.isPrivate && isAdmin && (
-                <MenuItem onClick={this.handleOpenInviteManager}>{t('labels.invite')}</MenuItem>
-              )}
-              <MenuItem onClick={isArchived ? this.unarchiveProcess : this.archiveProcess}>
-                {isArchived ? t('actions.unarchive') : t('actions.archive')}
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
-      </Flex>
-    );
   };
 
   joinProcess = () => {
@@ -675,8 +598,8 @@ class Process extends Component {
   renderMembers = () => {
     const { process, t } = this.props;
 
-    const isMember = this.isMember();
     const isAdmin = this.isAdmin();
+    const isMember = this.isMember();
 
     const membersList =
       process &&
@@ -697,14 +620,6 @@ class Process extends Component {
 
     return (
       <Box>
-        {!isAdmin && (
-          <Center mb="6">
-            <Button colorScheme={isMember ? 'gray' : 'green'} onClick={this.openModal}>
-              {isMember ? t('actions.leave') : t('actions.join')}
-            </Button>
-          </Center>
-        )}
-
         {process?.members && (
           <Box mb="8">
             <Box mb="4" bg="white">
@@ -728,6 +643,14 @@ class Process extends Component {
               </NiceList>
             </Box>
           </Box>
+        )}
+
+        {!isAdmin && isMember && (
+          <Center>
+            <Button colorScheme="red" onClick={() => this.openModal()}>
+              {t('actions.leave')}
+            </Button>
+          </Center>
         )}
       </Box>
     );
@@ -757,14 +680,16 @@ class Process extends Component {
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
-                <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
-                  {document.name}
-                </CLink>
+                <Code fontWeight="bold">
+                  <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
+                    {document.name}
+                  </CLink>
+                </Code>
               </Box>
             )}
           </NiceList>
         ) : (
-          <Text fontSize="sm" m="4" mt="6">
+          <Text fontSize="sm">
             <em>{tc('documents.empty')}</em>
           </Text>
         )}
@@ -810,47 +735,14 @@ class Process extends Component {
     });
   };
 
-  renderProcessInfo = () => {
-    const { process, chatData, currentUser, t } = this.props;
-    const notificationCount = currentUser?.notifications?.find((n) => n.contextId === process._id)
-      ?.unSeenIndexes?.length;
-
-    return (
-      <div>
-        <Tabs variant="enclosed-colored">
-          <TabList pl="4">
-            <Tab _focus={{ boxShadow: 'none' }}>{t('tabs.process.info')}</Tab>
-            <Tab _focus={{ boxShadow: 'none' }}>
-              {t('tabs.process.discuss')}{' '}
-              {notificationCount && <Badge colorScheme="red">{notificationCount}</Badge>}
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <Center bg="gray.900">
-                <Image src={process.imageUrl} fit="contain" fill />
-              </Center>
-              <Box pt="4">
-                <div className="text-content">{renderHTML(process.description)}</div>
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <div>{chatData && this.renderDiscussion()}</div>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </div>
-    );
-  };
-
   renderDiscussion = () => {
     const { t } = this.props;
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
     return (
-      <Box p="4">
-        <Box bg="light-2">
+      <Box>
+        <Box>
           <Chattery
             messages={messages}
             onNewMessage={this.addNewChatMessage}
@@ -947,6 +839,22 @@ class Process extends Component {
     }
   };
 
+  renderAction = () => {
+    const { t } = this.props;
+    const isAdmin = this.isAdmin();
+    const isMember = this.isMember();
+
+    if (!isAdmin && !isMember) {
+      return (
+        <Center mb="6" p="4" bg="green.100">
+          <Button colorScheme="green" onClick={this.openModal}>
+            {t('actions.join')}
+          </Button>
+        </Center>
+      );
+    }
+  };
+
   render() {
     const { process, processMeetings, isLoading, t, tc } = this.props;
 
@@ -986,8 +894,8 @@ class Process extends Component {
       {
         title: t('labels.date'),
         content: (
-          <Box p="2">
-            <Text ml="2" fontSize="sm" mb="4">
+          <Box>
+            <Text fontSize="sm" mb="4">
               <em>
                 {processMeetings &&
                 processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
@@ -1024,6 +932,12 @@ class Process extends Component {
           tabs={tabs}
           title={process.title}
           navPath="processes"
+          action={this.renderAction()}
+          author={{
+            src: process.authorAvatar,
+            username: process.authorUsername,
+            link: `/@${process.authorUsername}`,
+          }}
         />
 
         {isAdmin && (

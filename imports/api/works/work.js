@@ -14,9 +14,9 @@ Works.schema = new SimpleSchema({
   authorAvatar: { type: String, optional: true },
 
   title: { type: String },
-  shortDescription: { type: String, defaultValue: '' },
+  shortDescription: { type: String, defaultValue: '', optional: true },
   longDescription: { type: String, defaultValue: '' },
-  additionalInfo: { type: String, defaultValue: '' },
+  additionalInfo: { type: String, defaultValue: '', optional: true },
 
   images: { type: Array, optional: true },
   'images.$': { type: String },

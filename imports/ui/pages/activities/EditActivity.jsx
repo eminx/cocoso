@@ -119,6 +119,7 @@ class EditActivity extends PureComponent {
 
     this.setState(
       {
+        isLoading: true,
         isCreating: true,
         formValues,
       },
@@ -197,10 +198,7 @@ class EditActivity extends PureComponent {
 
     try {
       await call('updateActivity', activity._id, values);
-      this.setState({
-        isLoading: false,
-        isSuccess: true,
-      });
+      this.setState({ isSuccess: true });
     } catch (error) {
       this.setState({
         isLoading: false,

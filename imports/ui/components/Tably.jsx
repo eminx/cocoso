@@ -1,11 +1,24 @@
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { Box, Container, Flex, Heading, Link as CLink, Tabs, Tab, TabList } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Center,
+  Container,
+  Flex,
+  Heading,
+  Link as CLink,
+  Tabs,
+  Tab,
+  TabList,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 
-function Tably({ tabs, title, subTitle, images, navPath }) {
+function Tably({ tabs, title, subTitle, images, navPath, action = null, author = null }) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
@@ -25,51 +38,74 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
 
   const isImage = images && images?.length > 0;
 
-  const { menu } = currentHost?.settings;
+  const { menu, name } = currentHost?.settings;
 
   const navItem = menu.find((item) => item.name === navPath);
 
   return (
     <>
-      <Flex my="4" w="100%">
-        <Box p="4" flexBasis="120px">
+      <Flex my="4">
+        <Flex px="4" flexBasis="120px">
+          <Link to="/">
+            <CLink as="span" textTransform="uppercase" fontWeight="bold">
+              {name}
+            </CLink>
+          </Link>
+          <Text mx="2">/</Text>
           <Link to={`/${navPath}`}>
             <CLink as="span" textTransform="uppercase">
               {navItem?.label}
             </CLink>
           </Link>
-        </Box>
-        <Flex flexBasis="600px" flexGrow={2} direction="column" justify="center">
-          <Heading as="h3" size="lg" textAlign="center">
-            {title}
-          </Heading>
-          {subTitle && (
-            <Heading as="h4" size="md" fontWeight="light" textAlign="center">
-              {subTitle}
-            </Heading>
-          )}
         </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex justify="center" direction={isDesktop ? 'row' : 'column'}>
+      <Flex direction={isDesktop ? 'row' : 'column'} my={isDesktop ? '6' : '0'} wrap>
         {isImage && (
-          <Box flexBasis="50%" flexGrow="0" mb="4" w={isDesktop ? '50%' : '100%'}>
-            <NiceSlider images={images} />
-            {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
+          <Box w={isDesktop ? '40vw' : '100vw'}>
+            <Flex mb={isDesktop ? '16' : '4'} px="4" justify="space-between">
+              <Box flexBasis={isDesktop ? '100%' : '80%'}>
+                <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
+                  {title}
+                </Heading>
+                {subTitle && (
+                  <Heading
+                    as="h2"
+                    fontSize="24px"
+                    fontWeight="light"
+                    textAlign={isDesktop ? 'right' : 'left'}
+                  >
+                    {subTitle}
+                  </Heading>
+                )}
+              </Box>
+              {!isDesktop && author && (
+                <Box flexBasis="64px">
+                  <AvatarHolder size="md" author={author} />
+                </Box>
+              )}
+            </Flex>
+            <Box flexGrow="0" mb="4">
+              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
+              {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
+            </Box>
           </Box>
         )}
-        <Box flexBasis="50%" px="4">
+        <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
+          {action}
           <Tabs
-            align={isImage ? 'start' : 'center'}
+            align={isDesktop && isImage ? 'start' : 'center'}
             colorScheme="gray.800"
             defaultIndex={getDefaultTabIndex()}
             flexShrink="0"
+            mt="2"
             size="sm"
           >
-            <TabList mb="4" flexWrap="wrap">
+            <TabList flexWrap="wrap" mb="4">
               {tabs.map((tab) => (
-                <Link key={tab.title} to={parsePath(tab.path)}>
+                <Link key={tab.title} to={parsePath(tab.path)} style={{ margin: 0 }}>
                   <Tab
+                    as="span"
                     _focus={{ boxShadow: 'none' }}
                     textTransform="uppercase"
                     onClick={tab.onClick}
@@ -87,14 +123,39 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container margin={isImage ? 0 : 'auto'}>{tab.content}</Container>
+                  <Container margin={isImage ? 0 : 'auto'} pt="2">
+                    {tab.content}
+                  </Container>
                 )}
               />
             ))}
           </Switch>
         </Box>
+
+        {isDesktop && author && (
+          <Box w="20vw">
+            <Center>
+              <AvatarHolder author={author} />
+            </Center>
+          </Box>
+        )}
       </Flex>
     </>
+  );
+}
+
+function AvatarHolder({ author, size = 'lg' }) {
+  return (
+    <Box>
+      <VStack justify="center" spacing="1">
+        <Avatar elevation="medium" src={author.src} name={author.username} size={size} />
+        <Link to={author.link}>
+          <CLink as="span" fontSize={size}>
+            {author.username}
+          </CLink>
+        </Link>
+      </VStack>
+    </Box>
   );
 }
 
