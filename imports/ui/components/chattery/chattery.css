@@ -1,7 +1,6 @@
 .chattery-window-container {
   width: 100%;
   float: none;
-  background-color: #f2f2f2;
 }
 
 .chattery-window {
@@ -27,7 +26,7 @@
   min-height: 96px;
   padding: 6px 10px;
   background-color: #fff;
-  border: 1px solid #d1d1d1;
+  border: 1px solid #888;
   border-radius: 4px;
   box-shadow: none;
   box-sizing: border-box;
@@ -59,10 +58,8 @@
 
 .talk-bubble.right-in {
   float: right;
-}
-
-.talk-bubble.left-in {
-  float: left;
+  background-color: #434343;
+  color: #fff;
 }
 
 /* container */
@@ -99,7 +96,7 @@
   top: -8px;
   bottom: auto;
   border: 32px solid;
-  border-color: #666 transparent transparent transparent;
+  border-color: #434343 transparent transparent #434343;
 }
 .tri-right.left-top:after {
   content: ' ';
@@ -137,7 +134,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #fff #fff transparent transparent;
+  border-color: #eee #eee transparent transparent;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -202,7 +199,7 @@
   right: 30px;
   bottom: -40px;
   border: 20px solid;
-  border-color: #666 #666 transparent transparent;
+  border-color: #434343 transparent transparent #434343;
 }
 .tri-right.btm-right-in:after {
   content: ' ';
@@ -213,7 +210,7 @@
   right: 38px;
   bottom: -20px;
   border: 12px solid;
-  border-color: #fff #fff transparent transparent;
+  border-color: #434343 transparent transparent #434343;
 }
 /*
 	left: -8px;
@@ -276,7 +273,7 @@
   top: 10px;
   bottom: auto;
   border: 12px solid;
-  border-color: #fff transparent transparent #fff;
+  border-color: #434343 transparent transparent #434343;
 }
 
 /* Right triangle placed top right flush. */
@@ -290,7 +287,7 @@
   top: -8px;
   bottom: auto;
   border: 32px solid;
-  border-color: #666 transparent transparent transparent;
+  border-color: #434343 transparent transparent #434343;
 }
 .tri-right.right-top:after {
   content: ' ';
@@ -307,7 +304,7 @@
 
 /* talk bubble contents */
 .talktext {
-  color: #010101;
+  color: #fff;
   padding: 0.5em 1em;
   text-align: left;
   line-height: 16px;
@@ -320,15 +317,25 @@
 }
 
 .talktext-senderinfo {
+  color: #fff;
   font-size: 0.8em;
-  color: darkslategrey;
   font-weight: bold;
 }
 
 .talktext-dateinfo {
+  color: #fff;
   font-size: 0.7em;
-  color: grey;
   text-align: right;
+}
+
+.talk-bubble.left-in {
+  background-color: #eee;
+}
+
+.talk-bubble.left-in .talktext,
+.talk-bubble.left-in .talktext-senderinfo,
+.talk-bubble.left-in .talktext-dateinfo {
+  color: #222;
 }
 
 /* width */

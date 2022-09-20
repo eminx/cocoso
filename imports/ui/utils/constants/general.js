@@ -5,18 +5,18 @@ const userMenu = [
     key: 'publicProfile',
     value: '',
   },
-  {
-    // label: 'My Activities',
-    menu: 'member',
-    key: 'activities',
-    value: '/activities',
-  },
-  {
-    // label: 'My Works',
-    menu: 'member',
-    key: 'works',
-    value: '/works',
-  },
+  // {
+  //   // label: 'My Activities',
+  //   menu: 'member',
+  //   key: 'activities',
+  //   value: '/activities',
+  // },
+  // {
+  //   // label: 'My Works',
+  //   menu: 'member',
+  //   key: 'works',
+  //   value: '/works',
+  // },
 ];
 
 const adminMenu = [

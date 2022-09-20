@@ -16,6 +16,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Box,
   Button,
   Center,
@@ -438,7 +439,11 @@ class Activity extends PureComponent {
               className="text-content"
             >
               <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
-                <Tag mb="2" label={activityData.resource} />
+                <Link to={`/resources/${activityData.resourceId}`}>
+                  <Badge fontSize="md" mb="2">
+                    {activityData.resource}
+                  </Badge>
+                </Link>
               </Flex>
               <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
             </div>

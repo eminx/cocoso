@@ -24,7 +24,6 @@
 body {
   min-height: 101vh;
   margin: 0;
-  font-family: 'Charter', sans-serif;
 }
 
 .main-viewport {
@@ -100,4 +99,9 @@ a,
 .text-content p {
   line-height: 1.3;
   margin-bottom: 0.7em;
+}
+
+.react-slideshow-container .nav.default-nav {
+  margin: 12px;
+  padding: 6px;
 }
