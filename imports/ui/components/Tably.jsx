@@ -67,7 +67,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
       </Flex>
       <Flex direction={isDesktop ? 'row' : 'column'} m={isDesktop ? '4' : '0'}>
         {isImage && (
-          <Box flexBasis={isDesktop ? '40%' : '100%'}>
+          <Box flexBasis={isDesktop ? '40vw' : '100vw'}>
             <Box mb={isDesktop ? '16' : '4'} px="4">
               <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                 {title}

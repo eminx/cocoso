@@ -134,7 +134,7 @@ function ResourcePage() {
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Tably navPath="resources" images={resource.images} tabs={tabs} title={resource.label} />;
+      <Tably navPath="resources" images={resource.images} tabs={tabs} title={resource.label} />
       {role === 'admin' && (
         <Center my="2">
           <Link to={`/resources/${resource?._id}/edit`}>
