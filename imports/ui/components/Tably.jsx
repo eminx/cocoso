@@ -23,7 +23,7 @@ const tabStyle = {
   // marginRight: 12,
 };
 
-function Tably({ tabs, title, subTitle, images, navPath }) {
+function Tably({ tabs, title, subTitle, images, navPath, action = null }) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
@@ -90,6 +90,7 @@ function Tably({ tabs, title, subTitle, images, navPath }) {
           </Box>
         )}
         <Box flexBasis={isImage ? '50%' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
+          {action}
           <Tabs
             align={isImage ? 'start' : 'center'}
             colorScheme="gray.800"

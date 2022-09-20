@@ -675,8 +675,8 @@ class Process extends Component {
   renderMembers = () => {
     const { process, t } = this.props;
 
-    const isMember = this.isMember();
     const isAdmin = this.isAdmin();
+    const isMember = this.isMember();
 
     const membersList =
       process &&
@@ -697,14 +697,6 @@ class Process extends Component {
 
     return (
       <Box>
-        {!isAdmin && (
-          <Center mb="6">
-            <Button colorScheme={isMember ? 'gray' : 'green'} onClick={this.openModal}>
-              {isMember ? t('actions.leave') : t('actions.join')}
-            </Button>
-          </Center>
-        )}
-
         {process?.members && (
           <Box mb="8">
             <Box mb="4" bg="white">
@@ -728,6 +720,14 @@ class Process extends Component {
               </NiceList>
             </Box>
           </Box>
+        )}
+
+        {!isAdmin && isMember && (
+          <Center>
+            <Button colorScheme="red" onClick={() => this.openModal()}>
+              {t('actions.leave')}
+            </Button>
+          </Center>
         )}
       </Box>
     );
@@ -916,6 +916,22 @@ class Process extends Component {
     }
   };
 
+  renderAction = () => {
+    const { t } = this.props;
+    const isAdmin = this.isAdmin();
+    const isMember = this.isMember();
+
+    if (!isAdmin && !isMember) {
+      return (
+        <Center mb="6" p="4" bg="green.100">
+          <Button colorScheme="green" onClick={this.openModal}>
+            {t('actions.join')}
+          </Button>
+        </Center>
+      );
+    }
+  };
+
   render() {
     const { process, processMeetings, isLoading, t, tc } = this.props;
 
@@ -1001,6 +1017,7 @@ class Process extends Component {
           tabs={tabs}
           title={process.title}
           navPath="processes"
+          action={this.renderAction()}
         />
 
         {isAdmin && (
