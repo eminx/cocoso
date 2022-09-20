@@ -65,13 +65,13 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
           <Box w={isDesktop ? '40vw' : '100vw'}>
             <Flex mb={isDesktop ? '16' : '4'} px="4" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
-                <Heading as="h3" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
+                <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                   {title}
                 </Heading>
                 {subTitle && (
                   <Heading
-                    as="h4"
-                    size="md"
+                    as="h2"
+                    fontSize="24px"
                     fontWeight="light"
                     textAlign={isDesktop ? 'right' : 'left'}
                   >
