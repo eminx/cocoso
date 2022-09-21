@@ -36,7 +36,7 @@ function NiceSlider({ images, width = '100vw', isFade = true }) {
   if (isFade) {
     return (
       <Box className="slide-container" w={width}>
-        <Fade transitionDuration={400}>
+        <Fade arrows={false} transitionDuration={400}>
           {images.map((image) => (
             <Box key={image}>
               <Image

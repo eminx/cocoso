@@ -119,7 +119,7 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Flex bg="gray.100">
+      <Flex>
         <Box p="4" flexBasis="120px">
           <Link to={`/members`}>
             <CLink as="span" textTransform="uppercase">
@@ -134,7 +134,7 @@ function MemberPublic({ history, match, path }) {
         </Center>
         <Box flexBasis="120px" />
       </Flex>
-      <Tabs align="center" bg="gray.100" defaultIndex={getDefaultTabIndex()} size="sm">
+      <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm">
         <TabList flexWrap="wrap">
           {tabs.map((tab) => (
             <Link key={tab.label} to={tab.link}>
