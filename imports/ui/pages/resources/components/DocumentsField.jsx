@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Link as CLink, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
+import { Box, Button, Code, Link as CLink, List, ListItem, Text } from '@chakra-ui/react';
 import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
-import { message } from '../../../components/message';
+import { Alert, message } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId }) {
@@ -134,9 +134,7 @@ export default function DocumentsField({ contextType, contextId }) {
             ))}
           </List>
         ) : (
-          <Text fontSize="sm">
-            <em>{tc('documents.empty')}</em>
-          </Text>
+          <Alert type="warning">{tc('documents.empty')}</Alert>
         )}
       </Box>
     </Box>

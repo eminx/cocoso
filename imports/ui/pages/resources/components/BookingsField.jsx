@@ -280,9 +280,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
               )}
             </NiceList>
           ) : (
-            <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
-              <em>No bookings yet</em>
-            </Text>
+            <Alert type="warning">{tc('bookings.empty')}</Alert>
           )}
         </Box>
       )}

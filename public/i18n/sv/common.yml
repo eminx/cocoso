@@ -155,5 +155,8 @@ documents:
   remove: Manualen har tagits bort
   fileDropper: har laddats upp och tilldelats!
 
+bookings:
+  empty: Ingen bokning ännu
+
 terms:
   title: Användarvillkor och sekretesspolicy

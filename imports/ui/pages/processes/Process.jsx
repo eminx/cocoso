@@ -689,9 +689,7 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Text fontSize="sm">
-            <em>{tc('documents.empty')}</em>
-          </Text>
+          <Alert type="warning">{tc('documents.empty')}</Alert>
         )}
 
         {isAdmin && (
@@ -878,6 +876,9 @@ class Process extends Component {
     const notificationCount = currentUser?.notifications?.find((n) => n.contextId === process._id)
       ?.unSeenIndexes?.length;
 
+    const isFutureMeetings =
+      processMeetings?.filter((meeting) => moment(meeting.endDate).isAfter(yesterday)).length > 0;
+
     const tabs = [
       {
         title: tc('labels.info'),
@@ -898,21 +899,22 @@ class Process extends Component {
         title: t('labels.date'),
         content: (
           <Box>
-            <Text fontSize="sm" mb="4">
-              <em>
-                {processMeetings &&
-                processMeetings.filter((meeting) => moment(meeting.endDate).isAfter(yesterday))
-                  .length > 0
-                  ? isAdmin
-                    ? t('meeting.info.admin')
-                    : t('meeting.info.member')
-                  : t('meeting.info.empty')}
-              </em>
-            </Text>
-
-            <Accordion allowToggle>
-              {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
-            </Accordion>
+            {!isFutureMeetings && <Alert type="warning">{t('meeting.info.empty')}</Alert>}
+            {isFutureMeetings && isAdmin && (
+              <Text fontSize="sm" mb="4">
+                {t('meeting.info.admin')}
+              </Text>
+            )}
+            {isFutureMeetings && isMember && (
+              <Text fontSize="sm" mb="4">
+                {t('meeting.info.member')}
+              </Text>
+            )}
+            {isFutureMeetings && (
+              <Accordion allowToggle>
+                {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+              </Accordion>
+            )}
           </Box>
         ),
         path: `/processes/${process._id}/meetings`,
