@@ -88,11 +88,28 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
             </Flex>
             <Box flexGrow="0" mb="4">
               <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
-              {/* <Image fit="contain" src={activityData.imageUrl} htmlHeight="100%" width="100%" />} */}
             </Box>
           </Box>
         )}
+
         <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
+          {!isImage && (
+            <Box p="4">
+              <Heading as="h1" size="xl" textAlign={isDesktop ? 'center' : 'left'}>
+                {title}
+              </Heading>
+              {subTitle && (
+                <Heading
+                  as="h2"
+                  fontSize="24px"
+                  fontWeight="light"
+                  textAlign={isDesktop ? 'center' : 'left'}
+                >
+                  {subTitle}
+                </Heading>
+              )}
+            </Box>
+          )}
           {action}
           <Tabs
             align={isDesktop && isImage ? 'start' : 'center'}

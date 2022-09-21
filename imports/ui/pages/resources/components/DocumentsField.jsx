@@ -1,8 +1,7 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
+import { Box, Code, Link as CLink, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
 import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
@@ -92,11 +91,7 @@ export default function DocumentsField({ contextType, contextId }) {
   }
 
   return (
-    <Box mt="5">
-      {/* <Heading mb="4" ml="4" size="sm">
-        {tc('documents.label')}
-      </Heading> */}
-
+    <Box>
       {canCreateContent && (
         <ReactDropzone onDrop={handleFileDrop} multiple={false}>
           {({ getRootProps, getInputProps, isDragActive }) => (
@@ -126,10 +121,12 @@ export default function DocumentsField({ contextType, contextId }) {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Link href={document.documentUrl} isExternal>
-                  <ExternalLinkIcon mr="2px" fontSize="sm" />
-                  {document.documentLabel}
-                </Link>
+                <Code fontWeight="bold">
+                  <CLink href={document.documentUrl} target="_blank" rel="noreferrer">
+                    <ExternalLinkIcon mr="2px" fontSize="sm" />
+                    {document.documentLabel}
+                  </CLink>
+                </Code>
                 <Button variant="ghost">
                   <DeleteIcon onClick={() => removeDocument(document._id)} />
                 </Button>
@@ -137,7 +134,7 @@ export default function DocumentsField({ contextType, contextId }) {
             ))}
           </List>
         ) : (
-          <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
+          <Text fontSize="sm">
             <em>{tc('documents.empty')}</em>
           </Text>
         )}
