@@ -92,24 +92,6 @@ export default function DocumentsField({ contextType, contextId }) {
 
   return (
     <Box>
-      {canCreateContent && (
-        <ReactDropzone onDrop={handleFileDrop} multiple={false}>
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
-              {isUploading ? (
-                <div style={{ textAlign: 'center' }}>
-                  <Loader />
-                  {tc('documents.up')}
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
-              )}
-              <input {...getInputProps()} />
-            </Box>
-          )}
-        </ReactDropzone>
-      )}
-
       <Box bg="white" mt="2">
         {documents && documents.length > 0 ? (
           <List>
@@ -137,6 +119,23 @@ export default function DocumentsField({ contextType, contextId }) {
           <Alert type="warning">{tc('documents.empty')}</Alert>
         )}
       </Box>
+      {canCreateContent && (
+        <ReactDropzone onDrop={handleFileDrop} multiple={false}>
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+              {isUploading ? (
+                <div style={{ textAlign: 'center' }}>
+                  <Loader />
+                  {tc('documents.up')}
+                </div>
+              ) : (
+                <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+              )}
+              <input {...getInputProps()} />
+            </Box>
+          )}
+        </ReactDropzone>
+      )}
     </Box>
   );
 }
