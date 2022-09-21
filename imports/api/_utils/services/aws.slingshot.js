@@ -19,8 +19,17 @@ Slingshot.fileRestrictions('workImageUpload', {
 });
 
 Slingshot.fileRestrictions('processDocumentUpload', {
-  allowedFileTypes: ['application/pdf', 'image/png', 'image/jpeg'],
-  maxSize: 5 * 1000 * 1000,
+  allowedFileTypes: [
+    'application/pdf',
+    'application/doc',
+    'application/msword',
+    'application/zip',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+  ],
+  maxSize: 30 * 1000 * 1000,
 });
 
 Slingshot.fileRestrictions('pageImageUpload', {

@@ -92,21 +92,21 @@ export default function DocumentsField({ contextType, contextId }) {
 
   return (
     <Box>
-      <Box bg="white" mt="2">
+      <Box bg="white" mb="4">
         {documents && documents.length > 0 ? (
           <List>
             {documents.map((document) => (
               <ListItem
                 key={document._id}
-                p="4"
+                px="2"
+                py="1"
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
               >
                 <Code fontWeight="bold">
                   <CLink href={document.documentUrl} target="_blank" rel="noreferrer">
-                    <ExternalLinkIcon mr="2px" fontSize="sm" />
-                    {document.documentLabel}
+                    {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
                 </Code>
                 <Button variant="ghost">
