@@ -8,7 +8,6 @@ import { useCounter } from 'rooks';
 import {
   Box,
   Flex,
-  Heading,
   Text,
   Button,
   HStack,
@@ -27,7 +26,7 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import NiceList from '../../../components/NiceList';
-import { message } from '../../../components/message';
+import { Alert, message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
