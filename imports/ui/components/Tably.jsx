@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar,
+  Badge,
   Box,
   Center,
   Container,
@@ -111,6 +112,11 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                     onClick={tab.onClick}
                   >
                     {tab.title}
+                    {tab.badge && (
+                      <Badge colorScheme="red" size="xs" mt="-2">
+                        {tab.badge}
+                      </Badge>
+                    )}
                   </Tab>
                 </Link>
               ))}

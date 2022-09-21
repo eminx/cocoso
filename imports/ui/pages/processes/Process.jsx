@@ -856,7 +856,7 @@ class Process extends Component {
   };
 
   render() {
-    const { process, processMeetings, isLoading, t, tc } = this.props;
+    const { currentUser, process, processMeetings, isLoading, t, tc } = this.props;
 
     if (!process || isLoading) {
       return <Loader />;
@@ -874,6 +874,9 @@ class Process extends Component {
     if (process && process.isPrivate && this.isNoAccess()) {
       return <Alert message={tc('message.access.deny')} />;
     }
+
+    const notificationCount = currentUser?.notifications?.find((n) => n.contextId === process._id)
+      ?.unSeenIndexes?.length;
 
     const tabs = [
       {
@@ -918,6 +921,7 @@ class Process extends Component {
         title: t('tabs.process.discuss'),
         content: this.renderDiscussion(),
         path: `/processes/${process._id}/discussion`,
+        badge: notificationCount,
       },
     ];
 
