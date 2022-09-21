@@ -905,7 +905,7 @@ class Process extends Component {
                 {t('meeting.info.admin')}
               </Text>
             )}
-            {isFutureMeetings && isMember && (
+            {isFutureMeetings && !isAdmin && isMember && (
               <Text fontSize="sm" mb="4">
                 {t('meeting.info.member')}
               </Text>
