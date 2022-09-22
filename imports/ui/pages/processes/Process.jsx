@@ -901,7 +901,7 @@ class Process extends Component {
         path: `/processes/${process._id}/documents`,
       },
       {
-        title: t('labels.date'),
+        title: t('labels.meetings'),
         content: (
           <Box>
             {!isFutureMeetings && <Alert type="warning">{t('meeting.info.empty')}</Alert>}

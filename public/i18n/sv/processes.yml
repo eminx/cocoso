@@ -5,6 +5,7 @@ labels:
   date: Datum
   invite: Hantera åtkomst
   attendees: Deltagare
+  meetings: Möten
 
 tabs:
   active: Aktiva

@@ -5,6 +5,7 @@ labels:
   date: Dates
   invite: Manage access
   attendees: Attendees
+  meetings: Meetings
 
 tabs:
   active: Active
