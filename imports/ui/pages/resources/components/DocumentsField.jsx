@@ -7,6 +7,7 @@ import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { Alert, message } from '../../../components/message';
+import NiceList from '../../../components/NiceList';
 import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId }) {
@@ -90,31 +91,35 @@ export default function DocumentsField({ contextType, contextId }) {
     return <Loader />;
   }
 
+  if (!documents) {
+    return null;
+  }
+
+  const documentsList = documents.map((document) => ({
+    ...document,
+    actions: [
+      {
+        content: tc('labels.remove'),
+        handleClick: () => removeDocument(document._id),
+      },
+    ],
+  }));
+
   return (
     <Box>
       <Box bg="white" mb="4">
         {documents && documents.length > 0 ? (
-          <List>
-            {documents.map((document) => (
-              <ListItem
-                key={document._id}
-                px="2"
-                py="1"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+          <NiceList actionsDisabled={!isAdmin} list={documentsList}>
+            {(document) => (
+              <Box style={{ width: '100%' }}>
                 <Code fontWeight="bold">
                   <CLink href={document.documentUrl} target="_blank" rel="noreferrer">
                     {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
                 </Code>
-                <Button variant="ghost">
-                  <DeleteIcon onClick={() => removeDocument(document._id)} />
-                </Button>
-              </ListItem>
-            ))}
-          </List>
+              </Box>
+            )}
+          </NiceList>
         ) : (
           <Alert type="warning">{tc('documents.empty')}</Alert>
         )}
