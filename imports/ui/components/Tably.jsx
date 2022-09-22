@@ -25,14 +25,15 @@ import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 
 function Tably({
-  tabs,
-  title,
-  subTitle,
+  action = null,
+  adminMenu = null,
+  author = null,
   images,
   navPath,
-  action = null,
-  author = null,
-  adminMenu = null,
+  subTitle,
+  tabs,
+  title,
+  tags = null,
 }) {
   const history = useHistory();
   const location = useLocation();
@@ -78,7 +79,7 @@ function Tably({
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40vw' : '100vw'}>
-            <Flex mb={isDesktop ? '16' : '4'} pl="4" pr="1" justify="space-between">
+            <Flex mb={isDesktop ? '16' : '4'} pl="4" pr="0" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                   {title}
@@ -92,6 +93,15 @@ function Tably({
                   >
                     {subTitle}
                   </Heading>
+                )}
+                {tags && tags.length > 0 && (
+                  <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt="2">
+                    {tags.map((tag) => (
+                      <Badge key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
+                        {tag}
+                      </Badge>
+                    ))}
+                  </Flex>
                 )}
               </Box>
               {!isDesktop && author && (

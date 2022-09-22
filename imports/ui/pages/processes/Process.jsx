@@ -948,24 +948,33 @@ class Process extends Component {
       });
     }
 
+    const tags = [];
+    if (process.isPrivate) {
+      tags.push(t('private.title'));
+    }
+    if (process.isArchived) {
+      tags.push(t('labels.archived'));
+    }
+
     return (
       <>
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
         <Tably
-          images={[process.imageUrl]}
-          subTitle={process.readingMaterial}
-          tabs={tabs}
-          title={process.title}
-          navPath="processes"
           action={this.renderAction()}
+          adminMenu={isAdmin ? adminMenu : null}
           author={{
             src: process.authorAvatar,
             username: process.authorUsername,
             link: `/@${process.authorUsername}`,
           }}
-          adminMenu={isAdmin ? adminMenu : null}
+          images={[process.imageUrl]}
+          navPath="processes"
+          subTitle={process.readingMaterial}
+          tabs={tabs}
+          tags={tags}
+          title={process.title}
         />
 
         <ConfirmModal
