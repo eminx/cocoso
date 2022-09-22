@@ -927,6 +927,27 @@ class Process extends Component {
       },
     ];
 
+    const adminMenu = {
+      label: tc('labels.admin.actions'),
+      items: [
+        {
+          label: tc('actions.update'),
+          link: `/processes/${process._id}/edit`,
+        },
+        {
+          label: process.isArchived ? tc('actions.unarchive') : tc('actions.archive'),
+          onClick: process.isArchived ? this.unarchiveProcess : this.archiveProcess,
+        },
+      ],
+    };
+
+    if (process.isPrivate) {
+      adminMenu.items.push({
+        label: t('labels.access'),
+        onClick: this.handleOpenInviteManager,
+      });
+    }
+
     return (
       <>
         <Helmet>
@@ -944,17 +965,8 @@ class Process extends Component {
             username: process.authorUsername,
             link: `/@${process.authorUsername}`,
           }}
+          adminMenu={isAdmin ? adminMenu : null}
         />
-
-        {isAdmin && (
-          <Center p="4" mb="6">
-            <Link to={`/processes/${process._id}/edit`}>
-              <Button as="span" variant="ghost">
-                {tc('actions.update')}
-              </Button>
-            </Link>
-          </Center>
-        )}
 
         <ConfirmModal
           visible={modalOpen}

@@ -44,6 +44,8 @@ labels:
     name: Name
   update: Edit this {{ domain }}
   unselected: Not selected resource
+  admin:
+    actions: Admin
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

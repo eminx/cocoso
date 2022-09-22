@@ -44,6 +44,8 @@ labels:
     name: Namn
   update: Redigera detta {{ domain }}
   unselected: Ej valt resurs
+  admin:
+    actions: Admin
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

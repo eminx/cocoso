@@ -9,17 +9,31 @@ import {
   Flex,
   Heading,
   Link as CLink,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
   Tabs,
   Tab,
   TabList,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { SettingsIcon } from '@chakra-ui/icons';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 
-function Tably({ tabs, title, subTitle, images, navPath, action = null, author = null }) {
+function Tably({
+  tabs,
+  title,
+  subTitle,
+  images,
+  navPath,
+  action = null,
+  author = null,
+  adminMenu = null,
+}) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
@@ -61,10 +75,10 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
         </Flex>
         <Box flexBasis="120px"></Box>
       </Flex>
-      <Flex direction={isDesktop ? 'row' : 'column'} my={isDesktop ? '6' : '0'} wrap>
+      <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40vw' : '100vw'}>
-            <Flex mb={isDesktop ? '16' : '4'} px="4" justify="space-between">
+            <Flex mb={isDesktop ? '16' : '4'} pl="4" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                   {title}
@@ -81,7 +95,7 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                 )}
               </Box>
               {!isDesktop && author && (
-                <Box flexBasis="64px">
+                <Box flexBasis="64px" align="center">
                   <AvatarHolder size="md" author={author} />
                 </Box>
               )}
@@ -117,9 +131,9 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
             defaultIndex={getDefaultTabIndex()}
             flexShrink="0"
             mt="2"
-            size="sm"
+            size={isDesktop ? 'md' : 'sm'}
           >
-            <TabList flexWrap="wrap" mb="4">
+            <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
               {tabs.map((tab) => (
                 <Link key={tab.title} to={parsePath(tab.path)} style={{ margin: 0 }}>
                   <Tab
@@ -127,6 +141,11 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                     _focus={{ boxShadow: 'none' }}
                     textTransform="uppercase"
                     onClick={tab.onClick}
+                    pb="0"
+                    mb="1"
+                    paddingInline="0"
+                    marginInline="2"
+                    // fontWeight="bold"
                   >
                     {tab.title}
                     {tab.badge && (
@@ -137,6 +156,7 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                   </Tab>
                 </Link>
               ))}
+              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
             </TabList>
           </Tabs>
 
@@ -146,9 +166,11 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
                 key={tab.title}
                 path={tab.path}
                 render={(props) => (
-                  <Container margin={isImage ? 0 : 'auto'} pt="2">
-                    {tab.content}
-                  </Container>
+                  <Center>
+                    <Container margin={isImage ? 0 : 'auto'} pt="2">
+                      {tab.content}
+                    </Container>
+                  </Center>
                 )}
               />
             ))}
@@ -170,15 +192,43 @@ function Tably({ tabs, title, subTitle, images, navPath, action = null, author =
 function AvatarHolder({ author, size = 'lg' }) {
   return (
     <Box>
-      <VStack justify="center" spacing="1">
-        <Avatar elevation="medium" src={author.src} name={author.username} size={size} />
-        <Link to={author.link}>
+      <VStack justify="center" spacing="0">
+        <Avatar elevation="medium" src={author?.src} name={author?.username} size={size} />
+        <Link to={author?.link}>
           <CLink as="span" fontSize={size}>
-            {author.username}
+            {author?.username}
           </CLink>
         </Link>
       </VStack>
     </Box>
+  );
+}
+
+function AdminMenu({ adminMenu, isDesktop }) {
+  if (!adminMenu || !adminMenu.label || !adminMenu.items) {
+    return null;
+  }
+
+  return (
+    <Menu direction="rtl" placement="bottom-end">
+      <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '-1' : '-2'}>
+        {/* {adminMenu.label} */}
+        <SettingsIcon />
+      </MenuButton>
+      <MenuList>
+        {adminMenu.items.map((item) =>
+          item.link ? (
+            <Link to={item.link} key={item.label}>
+              <MenuItem>{item.label}</MenuItem>
+            </Link>
+          ) : (
+            <MenuItem key={item.label} onClick={item.onClick}>
+              {item.label}
+            </MenuItem>
+          )
+        )}
+      </MenuList>
+    </Menu>
   );
 }
 
