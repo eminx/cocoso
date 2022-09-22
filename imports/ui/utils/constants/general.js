@@ -89,4 +89,22 @@ const hostFields = [
   },
 ];
 
-export { userMenu, adminMenu, hostFields };
+const acceptedDocumentFormatsForUploads = [
+  '.doc',
+  '.docx',
+  '.jpeg',
+  '.jpg',
+  '.pdf',
+  '.png',
+  '.zip',
+];
+
+const maximumDocumentSizeForUploads = '30 MB';
+
+export {
+  acceptedDocumentFormatsForUploads,
+  adminMenu,
+  hostFields,
+  maximumDocumentSizeForUploads,
+  userMenu,
+};

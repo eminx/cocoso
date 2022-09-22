@@ -152,10 +152,12 @@ domains:
 documents:
   label: Documents
   empty: No document assigned
-  drop: Drop documents to upload
+  drop: Drop documents or click for file upload
   up: uploading
   remove: The document is successfully removed
   fileDropper: is successfully uploaded and assigned
+  acceptedFormats: Accepted formats
+  maxSize: Maximum size
 
 bookings:
   empty: No bookings yet

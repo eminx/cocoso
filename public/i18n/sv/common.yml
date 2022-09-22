@@ -152,10 +152,12 @@ domains:
 documents:
   label: Dokument
   empty: Inget dokument tilldelat
-  drop: Släpp dokument för att ladda upp
+  drop: Släpp dokument eller klicka för filuppladdning
   up: laddar upp
   remove: Manualen har tagits bort
   fileDropper: har laddats upp och tilldelats!
+  acceptedFormats: Godkända format
+  maxSize: Maximal storlek
 
 bookings:
   empty: Ingen bokning ännu

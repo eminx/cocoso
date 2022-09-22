@@ -48,10 +48,10 @@ import {
   parseAllBookingsWithResources,
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
+import { DocumentUploadHelper } from '../../components/UploadHelpers';
 
 moment.locale(i18n.language);
 
-const publicSettings = Meteor.settings.public;
 const defaultMeetingResource = 'Office';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -686,25 +686,28 @@ class Process extends Component {
         )}
 
         {isAdmin && (
-          <Center p="2" mt="4">
-            <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
-              {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
-                  {isUploading ? (
-                    <div style={{ textAlign: 'center' }}>
-                      <Loader />
-                      {tc('documents.up')}
-                    </div>
-                  ) : (
-                    <div style={{ textAlign: 'center' }}>
-                      <b>{tc('documents.drop')}</b>
-                    </div>
-                  )}
-                  <input {...getInputProps()} />
-                </Box>
-              )}
-            </ReactDropzone>
-          </Center>
+          <Box>
+            <Center my="2">
+              <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
+                {({ getRootProps, getInputProps, isDragActive }) => (
+                  <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                    {isUploading ? (
+                      <div style={{ textAlign: 'center' }}>
+                        <Loader />
+                        {tc('documents.up')}
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: 'center' }}>
+                        <b>{tc('documents.drop')}</b>
+                      </div>
+                    )}
+                    <input {...getInputProps()} />
+                  </Box>
+                )}
+              </ReactDropzone>
+            </Center>
+            <DocumentUploadHelper />
+          </Box>
         )}
       </Box>
     );

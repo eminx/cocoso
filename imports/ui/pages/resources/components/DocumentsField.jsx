@@ -9,6 +9,7 @@ import Loader from '../../../components/Loader';
 import { Alert, message } from '../../../components/message';
 import NiceList from '../../../components/NiceList';
 import { StateContext } from '../../../LayoutContainer';
+import { DocumentUploadHelper } from '../../../components/UploadHelpers';
 
 export default function DocumentsField({ contextType, contextId }) {
   const { role, canCreateContent } = useContext(StateContext);
@@ -125,21 +126,26 @@ export default function DocumentsField({ contextType, contextId }) {
         )}
       </Box>
       {canCreateContent && (
-        <ReactDropzone onDrop={handleFileDrop} multiple={false}>
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
-              {isUploading ? (
-                <div style={{ textAlign: 'center' }}>
-                  <Loader />
-                  {tc('documents.up')}
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+        <Box>
+          <Box mb="2">
+            <ReactDropzone onDrop={handleFileDrop} multiple={false}>
+              {({ getRootProps, getInputProps, isDragActive }) => (
+                <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  {isUploading ? (
+                    <div style={{ textAlign: 'center' }}>
+                      <Loader />
+                      {tc('documents.up')}
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+                  )}
+                  <input {...getInputProps()} />
+                </Box>
               )}
-              <input {...getInputProps()} />
-            </Box>
-          )}
-        </ReactDropzone>
+            </ReactDropzone>
+          </Box>
+          <DocumentUploadHelper />
+        </Box>
       )}
     </Box>
   );

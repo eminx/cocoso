@@ -5,17 +5,17 @@ const s3Settings = Meteor.settings.AWSs3;
 
 Slingshot.fileRestrictions('processImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024,
+  maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('hostLogoUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 1008 * 1008,
+  maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('workImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024,
+  maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('processDocumentUpload', {
@@ -29,17 +29,17 @@ Slingshot.fileRestrictions('processDocumentUpload', {
     'image/jpg',
     'image/jpeg',
   ],
-  maxSize: 30 * 1000 * 1000,
+  maxSize: 30 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('pageImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024,
+  maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('activityImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024,
+  maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('avatarImageUpload', {
@@ -49,7 +49,7 @@ Slingshot.fileRestrictions('avatarImageUpload', {
 
 Slingshot.fileRestrictions('resourceImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
-  maxSize: 5 * 3024 * 3024,
+  maxSize: 5 * 1024 * 1024,
 });
 
 Slingshot.createDirective('avatarImageUpload', Slingshot.S3Storage, {
