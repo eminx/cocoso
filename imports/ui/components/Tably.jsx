@@ -225,7 +225,7 @@ function AdminMenu({ adminMenu, isDesktop }) {
         {/* {adminMenu.label} */}
         <SettingsIcon />
       </MenuButton>
-      <MenuList>
+      <MenuList bg="gray.200">
         {adminMenu.items.map((item) =>
           item.link ? (
             <Link to={item.link} key={item.label}>
