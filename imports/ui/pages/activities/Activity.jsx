@@ -480,9 +480,7 @@ class Activity extends PureComponent {
       ],
     };
 
-    const tags = [];
-    tags.push(activityData.resource);
-
+    const tags = [activityData.resource];
     const isAdmin = currentUser && currentUser._id === activityData.authorId;
 
     return (
