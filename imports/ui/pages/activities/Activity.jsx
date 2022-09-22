@@ -438,13 +438,6 @@ class Activity extends PureComponent {
               }}
               className="text-content"
             >
-              <Flex justifyContent={activityData.isPublicActivity ? 'flex-start' : 'center'}>
-                <Link to={`/resources/${activityData.resourceId}`}>
-                  <Badge fontSize="md" mb="2">
-                    {activityData.resource}
-                  </Badge>
-                </Link>
-              </Flex>
               <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
             </div>
           </Box>
@@ -487,6 +480,9 @@ class Activity extends PureComponent {
       ],
     };
 
+    const tags = [];
+    tags.push(activityData.resource);
+
     const isAdmin = currentUser && currentUser._id === activityData.authorId;
 
     return (
@@ -501,6 +497,7 @@ class Activity extends PureComponent {
           navPath={activityData.isPublicActivity ? 'activities' : 'calendar'}
           subTitle={activityData.subTitle}
           tabs={tabs}
+          tags={tags}
           title={activityData.title}
         />
 

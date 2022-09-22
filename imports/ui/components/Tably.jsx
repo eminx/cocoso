@@ -97,7 +97,7 @@ function Tably({
                 {tags && tags.length > 0 && (
                   <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt="2">
                     {tags.map((tag) => (
-                      <Badge key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
+                      <Badge fontSize="14px" key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
                         {tag}
                       </Badge>
                     ))}
