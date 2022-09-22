@@ -78,7 +78,7 @@ function Tably({
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40vw' : '100vw'}>
-            <Flex mb={isDesktop ? '16' : '4'} pl="4" justify="space-between">
+            <Flex mb={isDesktop ? '16' : '4'} pl="4" pr="1" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
                   {title}
