@@ -129,19 +129,28 @@ function ResourcePage() {
     });
   }
 
+  const adminMenu = {
+    label: 'Admin',
+    items: [
+      {
+        label: tc('actions.update'),
+        link: `/resources/${resource._id}/edit`,
+      },
+    ],
+  };
+
   return (
     <>
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Tably navPath="resources" images={resource.images} tabs={tabs} title={resource.label} />
-      {role === 'admin' && (
-        <Center my="2">
-          <Link to={`/resources/${resource?._id}/edit`}>
-            <Button variant="ghost">{tc('actions.update')}</Button>
-          </Link>
-        </Center>
-      )}
+      <Tably
+        adminMenu={role === 'admin' ? adminMenu : null}
+        images={resource.images}
+        navPath="resources"
+        tabs={tabs}
+        title={resource.label}
+      />
     </>
   );
 }

@@ -128,30 +128,34 @@ function Work() {
     },
   ];
 
+  const adminMenu = {
+    label: 'Admin',
+    items: [
+      {
+        label: tc('actions.update'),
+        link: `/@${work.authorUsername}/works/${work._id}/edit`,
+      },
+    ],
+  };
+
   return (
     <>
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
       <Tably
-        images={work.images}
-        navPath="works"
-        subTitle={work.subTitle}
-        tabs={tabs}
-        title={work.title}
+        adminMenu={isOwner ? adminMenu : null}
         author={{
           src: work.authorAvatar,
           username: work.authorUsername,
           link: `/@${work.authorUsername}`,
         }}
+        images={work.images}
+        navPath="works"
+        subTitle={work.subTitle}
+        tabs={tabs}
+        title={work.title}
       />
-      <Center my="2">
-        {isOwner && (
-          <Link to={`/@${currentUser.username}/works/${workId}/edit`}>
-            <Button variant="ghost">{tc('actions.update')}</Button>
-          </Link>
-        )}
-      </Center>
     </>
   );
 }

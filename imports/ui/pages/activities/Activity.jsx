@@ -477,6 +477,18 @@ class Activity extends PureComponent {
       });
     }
 
+    const adminMenu = {
+      label: 'Admin',
+      items: [
+        {
+          label: tc('actions.update'),
+          link: `/activities/${activityData._id}/edit`,
+        },
+      ],
+    };
+
+    const isAdmin = currentUser && currentUser._id === activityData.authorId;
+
     return (
       <>
         <Helmet>
@@ -484,22 +496,13 @@ class Activity extends PureComponent {
         </Helmet>
 
         <Tably
+          adminMenu={isAdmin ? adminMenu : null}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           navPath={activityData.isPublicActivity ? 'activities' : 'calendar'}
           subTitle={activityData.subTitle}
           tabs={tabs}
           title={activityData.title}
         />
-
-        {activityData && currentUser && currentUser._id === activityData.authorId && (
-          <Center m="2">
-            <Link to={`/activities/${activityData._id}/edit`}>
-              <Button variant="ghost" as="span">
-                {tc('actions.update')}
-              </Button>
-            </Link>
-          </Center>
-        )}
 
         <ConfirmModal
           visible={isRsvpCancelModalOn}
