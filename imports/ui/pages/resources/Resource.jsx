@@ -79,7 +79,9 @@ function ResourcePage() {
       title: tc('labels.info'),
       content: (
         <Box>
-          <div className="text-content">{renderHTML(resource.description)}</div>
+          {resource.description && (
+            <div className="text-content">{renderHTML(resource.description)}</div>
+          )}
           <Text as="p" fontSize="xs">
             {moment(resource.createdAt).format('D MMM YYYY')}
           </Text>
