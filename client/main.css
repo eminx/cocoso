@@ -97,9 +97,13 @@ a,
 }
 
 .text-content p {
-  font-size: 18px;
-  line-height: 26px;
-  margin-bottom: 0.8em;
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 1.2em;
+}
+
+.text-content li {
+  margin: 0.5em 1em;
 }
 
 .react-slideshow-container .nav.default-nav {

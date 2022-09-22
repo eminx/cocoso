@@ -86,6 +86,7 @@ function Tably({
                   size="xl"
                   lineHeight={1}
                   mb="2"
+                  mt="1"
                   textAlign={isDesktop ? 'right' : 'left'}
                 >
                   {title}

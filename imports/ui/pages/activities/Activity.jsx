@@ -451,12 +451,12 @@ class Activity extends PureComponent {
         content: (
           <Box mb="1">
             {activityData.place && (
-              <Text fontWeight="bold" mb="2">
+              <Text fontWeight="bold" fontSize="lg" mb="2">
                 {activityData.place}
               </Text>
             )}
             {activityData.address && (
-              <Text>{t('public.labels.address') + ': ' + activityData.address}</Text>
+              <Text fontSize="lg">{t('public.labels.address') + ': ' + activityData.address}</Text>
             )}
           </Box>
         ),
