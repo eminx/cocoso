@@ -81,7 +81,13 @@ function Tably({
           <Box w={isDesktop ? '40vw' : '100vw'}>
             <Flex mb={isDesktop ? '16' : '4'} pl="4" pr="0" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
-                <Heading as="h1" size="xl" textAlign={isDesktop ? 'right' : 'left'}>
+                <Heading
+                  as="h1"
+                  size="xl"
+                  lineHeight={1}
+                  mb="2"
+                  textAlign={isDesktop ? 'right' : 'left'}
+                >
                   {title}
                 </Heading>
                 {subTitle && (
@@ -89,6 +95,7 @@ function Tably({
                     as="h2"
                     fontSize="24px"
                     fontWeight="light"
+                    lineHeight={1}
                     textAlign={isDesktop ? 'right' : 'left'}
                   >
                     {subTitle}
