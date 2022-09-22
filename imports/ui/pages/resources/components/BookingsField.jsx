@@ -77,15 +77,17 @@ export default function BookingsField({ currentUser, selectedResource }) {
     try {
       const response = await call('getResourceBookingsForUser', selectedResource?._id);
       setResourceBookingsForUser(
-        response.map((booking) => ({
-          ...booking,
-          actions: [
-            {
-              content: tc('labels.remove'),
-              handleClick: () => removeBooking(booking._id),
-            },
-          ],
-        }))
+        response
+          .map((booking) => ({
+            ...booking,
+            actions: [
+              {
+                content: tc('labels.remove'),
+                handleClick: () => removeBooking(booking._id),
+              },
+            ],
+          }))
+          .reverse()
       );
       setIsLoading(false);
     } catch (error) {
@@ -162,12 +164,13 @@ export default function BookingsField({ currentUser, selectedResource }) {
   );
 
   return (
-    <Box mt="5">
-      <Box bg="white">
+    <Box>
+      <Box>
         <Accordion
           index={[isAccordionOpen ? 0 : null]}
           allowMultiple
           allowToggle
+          mb="8"
           onChange={() => setAccordionOpen(!isAccordionOpen)}
         >
           <AccordionItem>

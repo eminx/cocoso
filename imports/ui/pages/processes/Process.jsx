@@ -47,6 +47,7 @@ import {
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
 } from '../../utils/shared';
+import { StateContext } from '../../LayoutContainer';
 
 moment.locale(i18n.language);
 
@@ -441,16 +442,6 @@ class Process extends Component {
               </AccordionPanel>
             </AccordionItem>
           ))}
-        <CreateMeetingForm
-          handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
-          handleStartTimeChange={(time) => this.handleDateAndTimeChange(time, 'startTime')}
-          handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
-          resources={resources}
-          handleResourceChange={this.handleResourceChange}
-          handleSubmit={this.createActivity}
-          buttonDisabled={!isFormValid}
-          conflictingBooking={conflictingBooking}
-        />
       </Box>
     );
   };
@@ -664,15 +655,17 @@ class Process extends Component {
     const documentsList =
       process &&
       process.documents &&
-      process.documents.map((document) => ({
-        ...document,
-        actions: [
-          {
-            content: tc('labels.remove'),
-            handleClick: () => this.removeProcessDocument(document.name),
-          },
-        ],
-      }));
+      process.documents
+        .map((document) => ({
+          ...document,
+          actions: [
+            {
+              content: tc('labels.remove'),
+              handleClick: () => this.removeProcessDocument(document.name),
+            },
+          ],
+        }))
+        .reverse();
 
     return (
       <Box>
@@ -855,12 +848,21 @@ class Process extends Component {
 
   render() {
     const { currentUser, process, processMeetings, isLoading, t, tc } = this.props;
+    const { currentHost } = this.context;
 
     if (!process || isLoading) {
       return <Loader />;
     }
 
-    const { redirectToLogin, potentialNewAdmin, inviteManagerOpen, modalOpen } = this.state;
+    const {
+      conflictingBooking,
+      inviteManagerOpen,
+      isFormValid,
+      modalOpen,
+      potentialNewAdmin,
+      redirectToLogin,
+      resources,
+    } = this.state;
 
     if (redirectToLogin) {
       return <Redirect to="/login" />;
@@ -914,6 +916,19 @@ class Process extends Component {
               <Accordion allowToggle>
                 {processMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
               </Accordion>
+            )}
+            {isAdmin && (
+              <CreateMeetingForm
+                buttonDisabled={!isFormValid}
+                conflictingBooking={conflictingBooking}
+                handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
+                handleStartTimeChange={(time) => this.handleDateAndTimeChange(time, 'startTime')}
+                handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
+                handleResourceChange={this.handleResourceChange}
+                handleSubmit={this.createActivity}
+                hostname={currentHost?.settings?.name}
+                resources={resources}
+              />
             )}
           </Box>
         ),
@@ -1039,6 +1054,7 @@ function CreateMeetingForm({
   handleFinishTimeChange,
   handleResourceChange,
   handleSubmit,
+  hostname,
   resources,
 }) {
   const [isLocal, setIsLocal] = useState(true);
@@ -1073,7 +1089,7 @@ function CreateMeetingForm({
           onChange={({ target: { checked } }) => setIsLocal(checked)}
         />
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
-          {t('meeting.form.switch', { place: publicSettings.name })}
+          {t('meeting.form.switch', { place: hostname })}
         </FormLabel>
       </FormControl>
 
@@ -1106,5 +1122,7 @@ function CreateMeetingForm({
     </Box>
   );
 }
+
+Process.contextType = StateContext;
 
 export default Process;

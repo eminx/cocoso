@@ -24,7 +24,7 @@ export default function DocumentsField({ contextType, contextId }) {
   const getDocuments = async () => {
     try {
       const response = await call('getDocumentsByAttachments', contextId);
-      setDocuments(response);
+      setDocuments(response.reverse());
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
