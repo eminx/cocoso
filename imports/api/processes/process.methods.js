@@ -1,18 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import { getHost, getResourceIndex } from '../_utils/shared';
+import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Processes from './process';
 import {
   getProcessJoinText,
   getProcessLeaveText,
-  getMeetingAttendText,
-  getMeetingUnattendText,
   getInviteToPrivateProcessText,
 } from './process.mails';
-import { compareForSort } from './process.helpers';
 
 const publicSettings = Meteor.settings.public;
 

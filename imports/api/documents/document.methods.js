@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Documents from './document';
+import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({

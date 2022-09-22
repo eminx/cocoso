@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Link as CLink,
-  Text,
-  VStack,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -19,14 +10,12 @@ import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
-import Tag from '../../components/Tag';
 
 function Work() {
   const [work, setWork] = useState(null);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useContext(StateContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
@@ -51,12 +40,7 @@ function Work() {
     return <Loader />;
   }
 
-  const handleOpenModal = async () => {
-    onOpen();
-    if (authorContactInfo) {
-      return;
-    }
-
+  const getUserContactInfo = async () => {
     try {
       const info = await call('getUserContactInfo', work.authorUsername);
       if (!info) {
@@ -70,30 +54,13 @@ function Work() {
     }
   };
 
-  const author =
-    work.authorFirstName && work.authorLastName
-      ? `${work.authorFirstName} ${work.authorLastName}`
-      : work.authorUsername;
-
   const isOwner = currentUser && currentUser.username === username;
-
-  const AvatarHolder = () => (
-    <Link to={`/@${work.authorUsername}`}>
-      <VStack justify="center">
-        <Avatar elevation="medium" src={work.authorAvatar} name={work.authorUsername} size="lg" />
-        <Link to={`/@${work.authorUsername}`}>
-          <CLink as="span">{work.authorUsername}</CLink>
-        </Link>
-      </VStack>
-    </Link>
-  );
 
   const tabs = [
     {
       title: tc('labels.info'),
       content: (
         <Box>
-          <Tag label={work.category.label} mb="4" />
           <div
             style={{
               whiteSpace: 'pre-line',
@@ -123,7 +90,7 @@ function Work() {
       ) : (
         <Loader />
       ),
-      onClick: () => handleOpenModal(),
+      onClick: () => getUserContactInfo(),
       path: `/@${work.authorUsername}/works/${work._id}/contact`,
     },
   ];
@@ -137,6 +104,8 @@ function Work() {
       },
     ],
   };
+
+  const tags = [work.category?.label];
 
   return (
     <>
@@ -154,6 +123,7 @@ function Work() {
         navPath="works"
         subTitle={work.subTitle}
         tabs={tabs}
+        tags={tags}
         title={work.title}
       />
     </>
