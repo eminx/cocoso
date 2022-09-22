@@ -935,7 +935,7 @@ class Process extends Component {
           link: `/processes/${process._id}/edit`,
         },
         {
-          label: process.isArchived ? tc('actions.unarchive') : tc('actions.archive'),
+          label: process.isArchived ? t('actions.unarchive') : t('actions.archive'),
           onClick: process.isArchived ? this.unarchiveProcess : this.archiveProcess,
         },
       ],
@@ -943,7 +943,7 @@ class Process extends Component {
 
     if (process.isPrivate) {
       adminMenu.items.push({
-        label: t('labels.access'),
+        label: t('labels.invite'),
         onClick: this.handleOpenInviteManager,
       });
     }
