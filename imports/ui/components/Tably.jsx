@@ -175,13 +175,19 @@ function Tably({
               <Route
                 key={tab.title}
                 path={tab.path}
-                render={(props) => (
-                  <Center>
+                render={(props) =>
+                  isDesktop ? (
                     <Container margin={isImage ? 0 : 'auto'} pt="2">
                       {tab.content}
                     </Container>
-                  </Center>
-                )}
+                  ) : (
+                    <Center>
+                      <Container margin={isImage ? 0 : 'auto'} pt="2">
+                        {tab.content}
+                      </Container>
+                    </Center>
+                  )
+                }
               />
             ))}
           </Switch>
