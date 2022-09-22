@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Code, Link as CLink, List, ListItem, Text } from '@chakra-ui/react';
-import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Box, Code, Link as CLink } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';

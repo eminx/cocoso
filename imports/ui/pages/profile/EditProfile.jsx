@@ -5,12 +5,10 @@ import { Trans } from 'react-i18next';
 import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
 import Personal from './Personal';
-import ListMenu from '../../components/ListMenu';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
-import { userMenu } from '../../utils/constants/general';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FileDropper from '../../components/FileDropper';
 import { StateContext } from '../../LayoutContainer';

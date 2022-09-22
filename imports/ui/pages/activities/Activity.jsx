@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactToPrint from 'react-to-print';
@@ -16,11 +15,9 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Box,
   Button,
   Center,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -35,9 +32,6 @@ import { StateContext } from '../../LayoutContainer';
 // import Chattery from '../../components/chattery/Chattery';
 import FancyDate from '../../components/FancyDate';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
-import Tag from '../../components/Tag';
 import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
