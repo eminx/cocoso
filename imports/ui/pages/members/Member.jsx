@@ -108,22 +108,27 @@ function MemberPublic({ history, match, path }) {
     {
       link: `/@${user.username}/bio`,
       label: tc('domains.bio'),
+      isVisible: true,
     },
     {
       link: `/@${user.username}/works`,
       label: worksInMenu.label,
+      isVisible: worksInMenu.isVisible,
     },
     {
       link: `/@${user.username}/activities`,
       label: activitiesInMenu.label,
+      isVisible: activitiesInMenu.isVisible,
     },
     {
       link: `/@${user.username}/processes`,
       label: processesInMenu.label,
+      isVisible: processesInMenu.isVisible,
     },
     {
       link: `/@${user.username}/contact`,
       label: tc('labels.contact'),
+      isVisible: true,
     },
   ];
 
@@ -136,8 +141,8 @@ function MemberPublic({ history, match, path }) {
           </CLink>
         </Link>
         <Text mx="2">/</Text>
-        <Link to="/">
-          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+        <Link to="/members">
+          <CLink as="span" textTransform="uppercase">
             {membersInMenu.label}
           </CLink>
         </Link>
@@ -153,17 +158,24 @@ function MemberPublic({ history, match, path }) {
       </Box>
       <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm">
         <TabList flexWrap="wrap">
-          {tabs.map((tab) => (
-            <Link key={tab.label} to={tab.link}>
-              <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
-                {tab.label}
-              </Tab>
-            </Link>
-          ))}
+          {tabs
+            .filter((t) => t.isVisible)
+            .map((tab) => (
+              <Link key={tab.label} to={tab.link}>
+                <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
+                  {tab.label}
+                </Tab>
+              </Link>
+            ))}
 
           {currentUser && currentUser.username === user.username && (
             <Link to={`/@${user.username}/edit`}>
-              <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
+              <Tab
+                _focus={{ boxShadow: 'none' }}
+                as="div"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
                 <Trans i18nKey="common:actions.update" />
               </Tab>
             </Link>
