@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Avatar,
   Box,
-  Button,
   Center,
   Flex,
   Image,
@@ -42,15 +41,10 @@ function MemberAvatarEtc({ t, tc, user }) {
           />
         </Box>
         <Box px="2">
-          <Text fontWeight="bold" fontSize="lg">
+          <Text fontWeight="bold" fontSize="xl">
             {user.username}
           </Text>
           <Text>{getFullName(user)}</Text>
-          {/* <Center mt="2">
-            <Button variant="ghost" mt={2} onClick={onOpen}>
-              {tc('labels.contact')}
-            </Button>
-          </Center> */}
         </Box>
       </Flex>
 
