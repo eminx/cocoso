@@ -78,7 +78,7 @@ function Tably({
       </Flex>
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
-          <Box w={isDesktop ? '40vw' : '100vw'}>
+          <Box w={isDesktop ? '40vw' : '100%'}>
             <Flex mb={isDesktop ? '16' : '8'} pl="4" pr="0" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading
@@ -119,12 +119,12 @@ function Tably({
               )}
             </Flex>
             <Box flexGrow="0" mb="4">
-              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
+              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100%'} />
             </Box>
           </Box>
         )}
 
-        <Box w={isDesktop && isImage ? '40vw' : '100vw'} pl={isDesktop && isImage ? '12' : '0'}>
+        <Box w={isDesktop && isImage ? '40vw' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
           {!isImage && (
             <Box p="4">
               <Heading as="h1" size="xl" textAlign={isDesktop ? 'center' : 'left'}>
@@ -215,7 +215,7 @@ function Tably({
 
 function AvatarHolder({ author, size = 'lg' }) {
   return (
-    <Box>
+    <Box pr="2">
       <VStack justify="center" spacing="0">
         <Avatar elevation="medium" src={author?.src} name={author?.username} size={size} />
         <Link to={author?.link}>

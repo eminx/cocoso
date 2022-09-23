@@ -1,7 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Container, Center, Flex, Link as CLink, Tabs, TabList, Tab } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Center,
+  Flex,
+  Link as CLink,
+  Tabs,
+  TabList,
+  Tab,
+  Text,
+} from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Trans } from 'react-i18next';
 
@@ -88,7 +98,7 @@ function MemberPublic({ history, match, path }) {
     }
   };
 
-  const menu = currentHost?.settings?.menu;
+  const { menu, name } = currentHost?.settings;
   const worksInMenu = menu.find((item) => item.name === 'works');
   const activitiesInMenu = menu.find((item) => item.name === 'activities');
   const processesInMenu = menu.find((item) => item.name === 'processes');
@@ -119,21 +129,28 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Flex>
-        <Box p="4" flexBasis="120px">
-          <Link to={`/members`}>
-            <CLink as="span" textTransform="uppercase">
-              {membersInMenu.label}
-            </CLink>
-          </Link>
-        </Box>
+      <Flex p="4">
+        <Link to="/">
+          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+            {name}
+          </CLink>
+        </Link>
+        <Text mx="2">/</Text>
+        <Link to="/">
+          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+            {membersInMenu.label}
+          </CLink>
+        </Link>
+        {/* <Text mx="2">/</Text> */}
+      </Flex>
+
+      <Box>
         <Center flexBasis="100%">
           <Box w="large">
             <MemberAvatarEtc t={t} tc={tc} user={user} />
           </Box>
         </Center>
-        <Box flexBasis="120px" />
-      </Flex>
+      </Box>
       <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm">
         <TabList flexWrap="wrap">
           {tabs.map((tab) => (
