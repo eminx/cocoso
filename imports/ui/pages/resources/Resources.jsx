@@ -21,6 +21,7 @@ import {
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
+import Header from '../../components/Header';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -84,8 +85,11 @@ function ResourcesPage() {
           Meteor.settings.public.name
         }`}</title>
       </Helmet>
+
+      <Header />
+
       {canCreateContent && (
-        <Center w="100%" mb="4">
+        <Center w="100%" mb="2">
           <Link to={currentUser ? '/resources/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
               {tc('actions.create')}
@@ -93,7 +97,6 @@ function ResourcesPage() {
           </Link>
         </Center>
       )}
-      {/* <Breadcrumb /> */}
 
       {resourcesFilteredAndSorted.length == 0 && (
         <Center>
@@ -118,9 +121,15 @@ function ResourcesPage() {
               </Box>
               <Spacer my="2" />
               <TabList>
-                <Tab key="All">All</Tab>
-                <Tab key="Combo">Combo</Tab>
-                <Tab key="Non-combo">Non-combo</Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="All">
+                  All
+                </Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="Combo">
+                  Combo
+                </Tab>
+                <Tab _focus={{ boxShadow: 'none' }} key="Non-combo">
+                  Non-combo
+                </Tab>
               </TabList>
               <Spacer my="2" />
               <Box display="flex" alignItems="center">

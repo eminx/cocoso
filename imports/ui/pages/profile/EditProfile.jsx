@@ -5,12 +5,10 @@ import { Trans } from 'react-i18next';
 import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/react';
 
 import Personal from './Personal';
-import ListMenu from '../../components/ListMenu';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
-import { userMenu } from '../../utils/constants/general';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FileDropper from '../../components/FileDropper';
 import { StateContext } from '../../LayoutContainer';
@@ -130,119 +128,121 @@ class Profile extends PureComponent {
     const pathname = history && history.location.pathname;
 
     return (
-      <Template
-        heading={t('profile.label')}
-        titleCentered
-        leftContent={
-          <Box p="2">
-            <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
-          </Box>
-        }
-      >
-        <Breadcrumb />
-        <Center mb="2" pad="1">
-          {['admin', 'contributor', 'participant'].includes(role) ? (
-            <Text textAlign="center" fontSize="sm">
-              <Trans
-                i18nKey="accounts:profile.message.role"
-                defaults="You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role"
-                values={{ username: currentUser.username, role }}
-                components={{ bold: <strong /> }}
-              />
-            </Text>
-          ) : (
-            <Box>
-              <Text>{t('profile.message.deny')}</Text>
-              <Center my="2">
-                <Button onClick={() => this.setSelfAsParticipant()}>
-                  {t('profile.joinOrganisation')}
-                </Button>
-              </Center>
-            </Box>
-          )}
-        </Center>
+      <Box bg="gray.100">
+        <Template>
+          <Breadcrumb />
+          <Box bg="white">
+            <Center my="2" p="2">
+              {['admin', 'contributor', 'participant'].includes(role) ? (
+                <Text textAlign="center" fontSize="sm">
+                  <Trans
+                    i18nKey="accounts:profile.message.role"
+                    defaults="You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role"
+                    values={{ username: currentUser.username, role }}
+                    components={{ bold: <strong /> }}
+                  />
+                </Text>
+              ) : (
+                <Box>
+                  <Text>{t('profile.message.deny')}</Text>
+                  <Center my="2">
+                    <Button onClick={() => this.setSelfAsParticipant()}>
+                      {t('profile.joinOrganisation')}
+                    </Button>
+                  </Center>
+                </Box>
+              )}
+            </Center>
 
-        <Center bg="white" p="4" mb="4">
-          <Box mb="4">
-            <Heading size="md" mb="2" textAlign="center">
-              {t('profile.form.avatar.label')}
-            </Heading>
-            <Center style={{ overflow: 'hidden' }}>
-              <Box w="120px" h="120px">
-                <FileDropper
-                  imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
-                  label={t('profile.form.avatar.fileDropper')}
-                  round
-                  height="100%"
-                  imageFit="cover"
-                  setUploadableImage={this.setUploadableAvatar}
-                />
+            <Center bg="white" p="4" mb="4">
+              <Box mb="4">
+                <Heading size="md" mb="2" textAlign="center">
+                  {t('profile.form.avatar.label')}
+                </Heading>
+                <Center style={{ overflow: 'hidden' }}>
+                  <Box w="120px" h="120px">
+                    <FileDropper
+                      imageUrl={
+                        uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)
+                      }
+                      label={t('profile.form.avatar.fileDropper')}
+                      round
+                      height="100%"
+                      imageFit="cover"
+                      setUploadableImage={this.setUploadableAvatar}
+                    />
+                  </Box>
+                </Center>
+                {uploadableAvatarLocal && (
+                  <HStack spacing="2" p="4">
+                    <Button
+                      colorScheme="red"
+                      margin={{ top: 'small' }}
+                      size="sm"
+                      variant="ghost"
+                      onClick={() =>
+                        this.setState({
+                          uploadableAvatar: null,
+                          uploadableAvatarLocal: null,
+                        })
+                      }
+                    >
+                      {t('profile.form.avatar.remove')}
+                    </Button>
+
+                    <Button
+                      colorScheme="green"
+                      isDisabled={isUploading}
+                      isLoading={isUploading}
+                      size="sm"
+                      variant="solid"
+                      onClick={() => this.uploadAvatar()}
+                    >
+                      {tc('actions.submit')}
+                    </Button>
+                  </HStack>
+                )}
               </Box>
             </Center>
-            {uploadableAvatarLocal && (
-              <HStack spacing="2" p="4">
-                <Button
-                  colorScheme="red"
-                  margin={{ top: 'small' }}
-                  size="sm"
-                  variant="ghost"
-                  onClick={() =>
-                    this.setState({
-                      uploadableAvatar: null,
-                      uploadableAvatarLocal: null,
-                    })
-                  }
-                >
-                  {t('profile.form.avatar.remove')}
-                </Button>
 
-                <Button
-                  colorScheme="green"
-                  isDisabled={isUploading}
-                  isLoading={isUploading}
-                  size="sm"
-                  variant="solid"
-                  onClick={() => this.uploadAvatar()}
-                >
-                  {tc('actions.submit')}
-                </Button>
-              </HStack>
-            )}
+            <Box bg="white" p="4">
+              <Box>
+                <Heading mb="1" mt="2" size="md" textAlign="center">
+                  {t('profile.label')}
+                </Heading>
+                <Personal defaultValues={currentUser} onSubmit={this.handleSubmit} />
+              </Box>
+            </Box>
           </Box>
-        </Center>
 
-        <Box bg="white" p="4">
-          <Box>
-            <Heading mb="1" mt="2" size="md" textAlign="center">
-              {t('profile.label')}
-            </Heading>
-            <Personal defaultValues={currentUser} onSubmit={this.handleSubmit} />
-          </Box>
-        </Box>
+          <Center>
+            <VStack spacing="4" mt="4" p="4">
+              <Button
+                colorScheme="red"
+                size="sm"
+                onClick={() => this.setState({ isDeleteModalOn: true })}
+              >
+                {t('delete.action')}
+              </Button>
+            </VStack>
+          </Center>
 
-        <Center>
-          <VStack spacing="4" mt="4" p="4">
-            <Button
-              colorScheme="red"
-              size="sm"
-              onClick={() => this.setState({ isDeleteModalOn: true })}
-            >
-              {t('delete.action')}
-            </Button>
-          </VStack>
-        </Center>
-
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          title={t('delete.title')}
-          confirmText={t('delete.label')}
-          confirmButtonProps={{ colorScheme: 'red', isLoading: isDeleting, isDisabled: isDeleting }}
-          onConfirm={this.deleteAccount}
-          onCancel={() => this.setState({ isDeleteModalOn: false })}
-        >
-          <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
-      </Template>
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            title={t('delete.title')}
+            confirmText={t('delete.label')}
+            confirmButtonProps={{
+              colorScheme: 'red',
+              isLoading: isDeleting,
+              isDisabled: isDeleting,
+            }}
+            onConfirm={this.deleteAccount}
+            onCancel={() => this.setState({ isDeleteModalOn: false })}
+          >
+            <Text>{t('delete.body')}</Text>
+          </ConfirmModal>
+        </Template>
+      </Box>
     );
   }
 }

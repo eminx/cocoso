@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Box, Button, Center, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
@@ -99,9 +100,12 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
           publicSettings.name
         }`}</title>
       </Helmet>
+
+      <Header />
+
       <Box>
         {canCreateContent && (
-          <Center mb="4">
+          <Center>
             <Link to={currentUser ? '/processes/new' : `/@${currentUser.username}/profile`}>
               <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
                 {tc('actions.create')}
@@ -110,11 +114,13 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
           </Center>
         )}
         <Box p="4">
-          <Tabs onChange={(index) => setFilterBy(index)}>
+          <Tabs size="sm" onChange={(index) => setFilterBy(index)}>
             <Center>
               <TabList>
                 {filterOptions.map((option) => (
-                  <Tab key={option.value}>{option.label}</Tab>
+                  <Tab _focus={{ boxShadow: 'none' }} key={option.value}>
+                    {option.label}
+                  </Tab>
                 ))}
               </TabList>
             </Center>

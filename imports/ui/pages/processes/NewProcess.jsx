@@ -23,6 +23,7 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
+import Header from '../../components/Header';
 
 class NewProcess extends React.Component {
   state = {
@@ -205,50 +206,48 @@ class NewProcess extends React.Component {
       formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;
 
     return (
-      <Template
-        heading={tc('labels.create', {
-          domain: tc('domains.process').toLowerCase(),
-        })}
-      >
-        <Breadcrumb />
-        <Box bg="white" p="6">
-          <Popover trigger="hover">
-            <PopoverTrigger>
-              <FormControl alignItems="center" display="flex" w="auto" mb="4">
-                <Switch
-                  isChecked={isPrivate}
-                  size="lg"
-                  onChange={this.handlePrivateProcessSwitch}
-                />
-                <FormLabel htmlFor="email-alerts" ml="2" mb="0">
-                  <Flex align="center">
-                    <Text fontWeight="bold">{t('form.private.label')}</Text>
-                    <InfoIcon ml="2" />
-                  </Flex>
-                </FormLabel>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverCloseButton />
-              <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
-              <PopoverBody>
-                <Text fontSize="md" mb="2">
-                  {t('form.private.tooltip.P1')}
-                </Text>
-                <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
+      <Box bg="gray.100">
+        <Template>
+          <Breadcrumb />
+          <Box bg="white" p="6" mb="8">
+            <Popover trigger="hover">
+              <PopoverTrigger>
+                <FormControl alignItems="center" display="flex" w="auto" mb="4">
+                  <Switch
+                    isChecked={isPrivate}
+                    size="lg"
+                    onChange={this.handlePrivateProcessSwitch}
+                  />
+                  <FormLabel htmlFor="email-alerts" ml="2" mb="0">
+                    <Flex align="center">
+                      <Text fontWeight="bold">{t('form.private.label')}</Text>
+                      <InfoIcon ml="2" />
+                    </Flex>
+                  </FormLabel>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverCloseButton />
+                <PopoverHeader fontWeight="bold">{t('form.private.tooltip.title')}</PopoverHeader>
+                <PopoverBody>
+                  <Text fontSize="md" mb="2">
+                    {t('form.private.tooltip.P1')}
+                  </Text>
+                  <Text fontSize="md">{t('form.private.tooltip.P2')}</Text>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
 
-          <ProcessForm
-            defaultValues={formValues}
-            isSubmitDisabled={isFormValid}
-            onSubmit={this.handleSubmit}
-            setUploadableImage={this.setUploadableImage}
-            uploadableImageLocal={uploadableImageLocal}
-          />
-        </Box>
-      </Template>
+            <ProcessForm
+              defaultValues={formValues}
+              isSubmitDisabled={isFormValid}
+              onSubmit={this.handleSubmit}
+              setUploadableImage={this.setUploadableImage}
+              uploadableImageLocal={uploadableImageLocal}
+            />
+          </Box>
+        </Template>
+      </Box>
     );
   }
 }

@@ -1,11 +1,9 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import { Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 
 moment.locale(i18n.language);
-
-const publicSettings = Meteor.settings.public;
 
 const fancyDateStyle = {
   color: '#030303',
@@ -23,14 +21,7 @@ const DateJust = ({ children, ...otherProps }) => (
 );
 
 const FancyDate = ({ occurence, resources, ...otherProps }) => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      paddingBottom: 12,
-    }}
-    {...otherProps}
-  >
+  <Flex justifyContent="space-between" p="1" mb="1" {...otherProps}>
     <div style={{ flexGrow: 1 }}>
       {occurence.startDate === occurence.endDate ? (
         <DateJust>{occurence.startDate}</DateJust>
@@ -65,13 +56,13 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         >
           <em>
             {resources.map((place) => place.label).includes(occurence.resource)
-              ? `${occurence.resource}, ${publicSettings.name}`
+              ? `${occurence.resource}`
               : occurence.resource}
           </em>
         </div>
       )}
     </div>
-  </div>
+  </Flex>
 );
 
 export default FancyDate;

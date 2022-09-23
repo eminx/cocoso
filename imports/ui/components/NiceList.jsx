@@ -14,7 +14,7 @@ function NiceList({
   return (
     <List spacing={spacing} {...otherProps}>
       {list.map((listItem) => (
-        <ListItem key={listItem[keySelector]} bg={itemBg} pl="4" pr="2" py="2">
+        <ListItem key={listItem[keySelector]} bg={itemBg} mb="2">
           {' '}
           <ListItemWithActions
             listItem={listItem}

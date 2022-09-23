@@ -29,16 +29,23 @@ labels:
   contact: Kontakt
   create: Skapa en ny {{ domain }}
   event: Händelsen
+  bookings: Bokningar
   newBooking: Ny bokning
   page: Sida
   process: Processen
   remove: Ta bort
+  info: Info
+  extra: Extra
+  discussion: Diskussion
+  combo: Combo
   sortBy:
     placeholder: Sortera med
     date: Datum
     name: Namn
   update: Redigera detta {{ domain }}
   unselected: Ej valt resurs
+  admin:
+    actions: Admin
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -145,10 +152,15 @@ domains:
 documents:
   label: Dokument
   empty: Inget dokument tilldelat
-  drop: Släpp dokument för att ladda upp
+  drop: Släpp dokument eller klicka för filuppladdning
   up: laddar upp
   remove: Manualen har tagits bort
   fileDropper: har laddats upp och tilldelats!
+  acceptedFormats: Godkända format
+  maxSize: Maximal storlek
+
+bookings:
+  empty: Ingen bokning ännu
 
 terms:
   title: Användarvillkor och sekretesspolicy

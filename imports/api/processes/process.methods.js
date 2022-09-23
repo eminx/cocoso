@@ -1,18 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import { getHost, getResourceIndex } from '../_utils/shared';
+import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Processes from './process';
 import {
   getProcessJoinText,
   getProcessLeaveText,
-  getMeetingAttendText,
-  getMeetingUnattendText,
   getInviteToPrivateProcessText,
 } from './process.mails';
-import { compareForSort } from './process.helpers';
 
 const publicSettings = Meteor.settings.public;
 
@@ -56,6 +53,23 @@ Meteor.methods({
       isPrivate: process.isPrivate,
       peopleInvited: process.peopleInvited,
     }));
+  },
+
+  getProcessesByUser(username) {
+    if (!username) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    const host = getHost(this);
+
+    try {
+      const processes = Processes.find({
+        $or: [{ authorUsername: username }, { 'members.username': username }],
+        host,
+      }).fetch();
+      return processes;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch processes");
+    }
   },
 
   createProcess(formValues, imageUrl, isPrivate = false) {

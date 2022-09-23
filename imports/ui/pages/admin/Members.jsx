@@ -18,6 +18,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
@@ -177,73 +178,81 @@ function Members({ history, members, isLoading }) {
   const pathname = history && history.location.pathname;
 
   return (
-    <Template
-      heading={t('label')}
-      leftContent={
-        <Box p="4">
-          <ListMenu pathname={pathname} list={adminMenu} />
-        </Box>
-      }
-    >
-      <Center p="1">
-        <Tabs w="100%">
-          <Center>
-            <TabList flexWrap="wrap">
-              {filterOptions.map((item) => (
-                <Tab key={item.value} onClick={() => setFilter(item.value)}>
-                  {item.label}
-                </Tab>
-              ))}
-            </TabList>
-          </Center>
+    <>
+      <Header />
 
-          <Center p="4">
-            <Box>
-              <Input
-                bg="white"
-                placeholder={t('form.holder')}
-                value={filterWord}
-                onChange={(event) => setFilterWord(event.target.value)}
-              />
-            </Box>
-          </Center>
+      <Template
+        heading={t('label')}
+        leftContent={
+          <Box p="4">
+            <ListMenu pathname={pathname} list={adminMenu} />
+          </Box>
+        }
+      >
+        <Center p="1">
+          <Tabs w="100%">
+            <Center>
+              <TabList flexWrap="wrap">
+                {filterOptions.map((item) => (
+                  <Tab
+                    key={item.value}
+                    _focus={{ boxShadow: 'none' }}
+                    onClick={() => setFilter(item.value)}
+                  >
+                    {item.label}
+                  </Tab>
+                ))}
+              </TabList>
+            </Center>
 
-          <TabPanels>
-            {filterOptions.map((item, index) =>
-              item.value === filter ? (
-                <TabPanel key={item.value} p="1" mb="3">
-                  <NiceList itemBg="white" keySelector="email" list={membersSorted}>
-                    {(member) => (
-                      <Box key={member.username} p="2">
-                        <Heading size="md" fontWeight="bold">
-                          {member.username}
-                        </Heading>
-                        <Text>{member && member.email}</Text>
-                        <Text fontStyle="italic">{member.role}</Text>
-                        <Text fontSize="xs" color="gray.500">
-                          {t('joinedAt', {
-                            date: moment(member.date).format('D MMM YYYY'),
-                          })}
-                          <br />
-                        </Text>
-                      </Box>
-                    )}
-                  </NiceList>
-                </TabPanel>
-              ) : (
-                <TabPanel key={index} />
-              )
-            )}
-          </TabPanels>
-        </Tabs>
-      </Center>
+            <Center p="4">
+              <Box>
+                <Input
+                  bg="white"
+                  placeholder={t('form.holder')}
+                  value={filterWord}
+                  onChange={(event) => setFilterWord(event.target.value)}
+                />
+              </Box>
+            </Center>
 
-      <UsageReport
-        isOpen={Boolean(userForUsageReport)}
-        user={userForUsageReport}
-        onClose={() => setUserForUsageReport(null)}
-      />
-    </Template>
+            <TabPanels>
+              {filterOptions.map((item, index) =>
+                item.value === filter ? (
+                  <TabPanel key={item.value} p="1" mb="3">
+                    <NiceList itemBg="white" keySelector="email" list={membersSorted}>
+                      {(member) => (
+                        <Box key={member.username} p="2">
+                          <Heading size="md" fontWeight="bold">
+                            {member.username}
+                          </Heading>
+                          <Text>{member && member.email}</Text>
+                          <Text fontStyle="italic">{member.role}</Text>
+                          <Text fontSize="xs" color="gray.500">
+                            {t('joinedAt', {
+                              date: moment(member.date).format('D MMM YYYY'),
+                            })}
+                            <br />
+                          </Text>
+                        </Box>
+                      )}
+                    </NiceList>
+                  </TabPanel>
+                ) : (
+                  <TabPanel key={index} />
+                )
+              )}
+            </TabPanels>
+          </Tabs>
+        </Center>
+
+        <UsageReport
+          isOpen={Boolean(userForUsageReport)}
+          user={userForUsageReport}
+          onClose={() => setUserForUsageReport(null)}
+        />
+      </Template>
+    </>
   );
 }
 

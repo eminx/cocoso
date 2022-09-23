@@ -62,7 +62,7 @@ Meteor.methods({
           },
         }
       );
-      if (values.context === 'process') {
+      if (values.context === 'processes') {
         Meteor.call('createProcessNotification', values, unSeenIndex);
       }
     } catch (error) {

@@ -27,6 +27,10 @@ import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
 import { userMenu } from '../../utils/constants/general';
 
+const focusStyle = {
+  boxShadow: 'none',
+};
+
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,9 +96,9 @@ function Activities({ history }) {
         <Tabs>
           <Center>
             <TabList>
-              <Tab>{t('members.tabs.all')}</Tab>
-              <Tab>{t('members.tabs.public')}</Tab>
-              <Tab>{t('members.tabs.private')}</Tab>
+              <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
+              <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
+              <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
             </TabList>
           </Center>
 

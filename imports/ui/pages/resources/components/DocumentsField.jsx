@@ -1,14 +1,15 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Heading, Text, Button, Link, List, ListItem } from '@chakra-ui/react';
-import { ExternalLinkIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Box, Code, Link as CLink } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
-import { message } from '../../../components/message';
+import { Alert, message } from '../../../components/message';
+import NiceList from '../../../components/NiceList';
 import { StateContext } from '../../../LayoutContainer';
+import { DocumentUploadHelper } from '../../../components/UploadHelpers';
 
 export default function DocumentsField({ contextType, contextId }) {
   const { role, canCreateContent } = useContext(StateContext);
@@ -24,7 +25,7 @@ export default function DocumentsField({ contextType, contextId }) {
   const getDocuments = async () => {
     try {
       const response = await call('getDocumentsByAttachments', contextId);
-      setDocuments(response);
+      setDocuments(response.reverse());
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -91,59 +92,61 @@ export default function DocumentsField({ contextType, contextId }) {
     return <Loader />;
   }
 
+  if (!documents) {
+    return null;
+  }
+
+  const documentsList = documents.map((document) => ({
+    ...document,
+    actions: [
+      {
+        content: tc('labels.remove'),
+        handleClick: () => removeDocument(document._id),
+      },
+    ],
+  }));
+
   return (
-    <Box mt="5">
-      <Heading mb="4" ml="4" size="sm">
-        {tc('documents.label')}
-      </Heading>
-
-      {canCreateContent && (
-        <ReactDropzone onDrop={handleFileDrop} multiple={false}>
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <Box bg="white" cursor="grab" px="2" py="4" {...getRootProps()}>
-              {isUploading ? (
-                <div style={{ textAlign: 'center' }}>
-                  <Loader />
-                  {tc('documents.up')}
-                </div>
-              ) : (
-                <Button width="100%" textAlign="left" textColor="gray.400" justifyContent="start">
-                  {tc('documents.drop')}
-                </Button>
-              )}
-              <input {...getInputProps()} />
-            </Box>
-          )}
-        </ReactDropzone>
-      )}
-
-      <Box bg="white" mt="2">
+    <Box>
+      <Box bg="white" mb="4">
         {documents && documents.length > 0 ? (
-          <List>
-            {documents.map((document) => (
-              <ListItem
-                key={document._id}
-                p="4"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Link href={document.documentUrl} isExternal>
-                  <ExternalLinkIcon mr="2px" fontSize="sm" />
-                  {document.documentLabel}
-                </Link>
-                <Button variant="ghost">
-                  <DeleteIcon onClick={() => removeDocument(document._id)} />
-                </Button>
-              </ListItem>
-            ))}
-          </List>
+          <NiceList actionsDisabled={!isAdmin} list={documentsList}>
+            {(document) => (
+              <Box style={{ width: '100%' }}>
+                <Code fontWeight="bold">
+                  <CLink href={document.documentUrl} target="_blank" rel="noreferrer">
+                    {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
+                  </CLink>
+                </Code>
+              </Box>
+            )}
+          </NiceList>
         ) : (
-          <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
-            <em>{tc('documents.empty')}</em>
-          </Text>
+          <Alert type="warning">{tc('documents.empty')}</Alert>
         )}
       </Box>
+      {canCreateContent && (
+        <Box>
+          <Box mb="2">
+            <ReactDropzone onDrop={handleFileDrop} multiple={false}>
+              {({ getRootProps, getInputProps, isDragActive }) => (
+                <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  {isUploading ? (
+                    <div style={{ textAlign: 'center' }}>
+                      <Loader />
+                      {tc('documents.up')}
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+                  )}
+                  <input {...getInputProps()} />
+                </Box>
+              )}
+            </ReactDropzone>
+          </Box>
+          <DocumentUploadHelper />
+        </Box>
+      )}
     </Box>
   );
 }

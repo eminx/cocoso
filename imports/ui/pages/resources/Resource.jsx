@@ -1,32 +1,35 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Center } from '@chakra-ui/react';
+import { Badge, Box, Button, Center, Text, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ScreenClassRender } from 'react-grid-system';
+import renderHTML from 'react-render-html';
+import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
-import ResourceCard from './components/ResourceCard';
 import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
 import { StateContext } from '../../LayoutContainer';
 import useChattery from '../../components/chattery/useChattery';
+import Tably from '../../components/Tably';
+import Chattery from '../../components/chattery/Chattery';
 
 function ResourcePage() {
   const { resourceId } = useParams();
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
-  const { canCreateContent, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentUser, isDesktop, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
     getResourceById();
   }, []);
+
+  const removeNotification = () => {};
 
   const getResourceById = async () => {
     try {
@@ -71,44 +74,86 @@ function ResourcePage() {
     return <NotFoundPage domain="Resource with this name or id" />;
   }
 
-  return (
-    <ScreenClassRender
-      render={(screenClass) => {
-        const isMobile = ['xs', 'sm', 'md'].includes(screenClass);
-        return (
-          <Template
-            leftContent={
-              !isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />
-            }
-            rightContent={
-              currentUser &&
-              canCreateContent && (
-                <BookingsField currentUser={currentUser} selectedResource={resource} />
-              )
-            }
-          >
-            <Breadcrumb context={resource} contextKey="label" />
-            <ResourceCard
-              addNewChatMessage={addNewChatMessage}
-              currentUser={currentUser}
-              discussion={discussion}
-              resource={resource}
-            />
-            {isMobile && <DocumentsField contextType="resource" contextId={resource?._id} />}
+  const tabs = [
+    {
+      title: tc('labels.info'),
+      content: (
+        <Box>
+          {resource.description && (
+            <div className="text-content">{renderHTML(resource.description)}</div>
+          )}
+          <Text as="p" fontSize="xs">
+            {moment(resource.createdAt).format('D MMM YYYY')}
+          </Text>
+        </Box>
+      ),
+      path: `/resources/${resource._id}/info`,
+    },
+    {
+      title: tc('documents.label'),
+      content: <DocumentsField contextType="resource" contextId={resource?._id} />,
+      path: `/resources/${resource._id}/documents`,
+    },
+  ];
 
-            {role === 'admin' && (
-              <Center my="2">
-                <Link to={`/resources/${resource?._id}/edit`}>
-                  <Button size="sm" variant="ghost">
-                    {tc('actions.update')}
-                  </Button>
-                </Link>
-              </Center>
-            )}
-          </Template>
-        );
-      }}
-    />
+  if (currentUser && canCreateContent) {
+    tabs.push({
+      title: tc('labels.bookings'),
+      content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
+      path: `/resources/${resource._id}/bookings`,
+    });
+    if (resource.isCombo) {
+      tabs.push({
+        title: tc('labels.combo'),
+        content: (
+          <Wrap>
+            {resource.resourcesForCombo.map((res, i) => (
+              <Badge fontSize="16px">{res.label}</Badge>
+            ))}
+          </Wrap>
+        ),
+        path: `/resources/${resource._id}/combo`,
+      });
+    }
+    tabs.push({
+      title: tc('labels.discussion'),
+      content: (
+        <div>
+          <Chattery
+            messages={discussion}
+            onNewMessage={addNewChatMessage}
+            removeNotification={removeNotification}
+            isMember={Boolean(currentUser)}
+          />
+        </div>
+      ),
+      path: `/resources/${resource._id}/discussion`,
+    });
+  }
+
+  const adminMenu = {
+    label: 'Admin',
+    items: [
+      {
+        label: tc('actions.update'),
+        link: `/resources/${resource._id}/edit`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>{resource.label}</title>
+      </Helmet>
+      <Tably
+        adminMenu={role === 'admin' ? adminMenu : null}
+        images={resource.images}
+        navPath="resources"
+        tabs={tabs}
+        title={resource.label}
+      />
+    </>
   );
 }
 

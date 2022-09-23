@@ -1,15 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Tabs, TabList, Tab } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Center,
+  Flex,
+  Link as CLink,
+  Tabs,
+  TabList,
+  Tab,
+  Text,
+} from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import { Alert } from '../../components/message';
+import Modal from '../../components/Modal';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
+import MemberActivities from '../activities/MemberActivities';
+import MemberProcesses from '../processes/MemberProcesses';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -64,11 +77,6 @@ function MemberPublic({ history, match, path }) {
   //   }
   // };
 
-  const worksInMenu =
-    currentHost &&
-    currentHost.settings.menu &&
-    currentHost.settings.menu.find((item) => item.name === 'works');
-
   const getDefaultTabIndex = () => {
     switch (profileRoute) {
       case 'bio':
@@ -81,44 +89,97 @@ function MemberPublic({ history, match, path }) {
         return 3;
       case 'hosts':
         return 4;
+      case 'contact':
+        return 5;
+      case 'edit':
+        return 6;
       default:
         return 0;
     }
   };
 
-  if (!user) {
-    return null;
-  }
+  const { menu, name } = currentHost?.settings;
+  const worksInMenu = menu.find((item) => item.name === 'works');
+  const activitiesInMenu = menu.find((item) => item.name === 'activities');
+  const processesInMenu = menu.find((item) => item.name === 'processes');
+  const membersInMenu = menu.find((item) => item.name === 'members');
+
+  const tabs = [
+    {
+      link: `/@${user.username}/bio`,
+      label: tc('domains.bio'),
+      isVisible: true,
+    },
+    {
+      link: `/@${user.username}/works`,
+      label: worksInMenu.label,
+      isVisible: worksInMenu.isVisible,
+    },
+    {
+      link: `/@${user.username}/activities`,
+      label: activitiesInMenu.label,
+      isVisible: activitiesInMenu.isVisible,
+    },
+    {
+      link: `/@${user.username}/processes`,
+      label: processesInMenu.label,
+      isVisible: processesInMenu.isVisible,
+    },
+    {
+      link: `/@${user.username}/contact`,
+      label: tc('labels.contact'),
+      isVisible: true,
+    },
+  ];
 
   return (
-    <Box>
-      {currentUser && currentUser.username === user.username && (
-        <Center p="2">
-          <Link to={`/@${user.username}/edit`}>
-            <Button as="span" variant="ghost" size="sm">
-              <Trans i18nKey="common:actions.update" />
-            </Button>
-          </Link>
+    <>
+      <Flex p="4">
+        <Link to="/">
+          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+            {name}
+          </CLink>
+        </Link>
+        <Text mx="2">/</Text>
+        <Link to="/members">
+          <CLink as="span" textTransform="uppercase">
+            {membersInMenu.label}
+          </CLink>
+        </Link>
+        {/* <Text mx="2">/</Text> */}
+      </Flex>
+
+      <Box>
+        <Center flexBasis="100%">
+          <Box w="large">
+            <MemberAvatarEtc t={t} tc={tc} user={user} />
+          </Box>
         </Center>
-      )}
-      <Center>
-        <Box w="large">
-          <MemberAvatarEtc t={t} tc={tc} user={user} />
-        </Box>
-      </Center>
+      </Box>
+      <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm">
+        <TabList flexWrap="wrap">
+          {tabs
+            .filter((t) => t.isVisible)
+            .map((tab) => (
+              <Link key={tab.label} to={tab.link}>
+                <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
+                  {tab.label}
+                </Tab>
+              </Link>
+            ))}
 
-      <Tabs align="center" defaultIndex={getDefaultTabIndex()}>
-        <TabList>
-          <Link to={`/@${user.username}/bio`}>
-            <Tab as="div">{tc('domains.bio')}</Tab>
-          </Link>
-
-          <Link to={`/@${user.username}/works`}>
-            <Tab as="div">{worksInMenu.label}</Tab>
-          </Link>
-          {/* <Tab as="div">
-            <Link to={`/@${user.username}/activities`}>Activities</Link>
-          </Tab> */}
+          {currentUser && currentUser.username === user.username && (
+            <Link to={`/@${user.username}/edit`}>
+              <Tab
+                _focus={{ boxShadow: 'none' }}
+                as="div"
+                fontWeight="bold"
+                textTransform="uppercase"
+              >
+                <Trans i18nKey="common:actions.update" />
+              </Tab>
+            </Link>
+          )}
         </TabList>
       </Tabs>
 
@@ -128,9 +189,33 @@ function MemberPublic({ history, match, path }) {
           path="/@:username/works"
           render={(props) => <MemberWorks user={user} match={match} />}
         />
-        {/* <Route path="/@:username/works" component={MyWorks} /> */}
+        <Route
+          path="/@:username/activities"
+          render={(props) => <MemberActivities user={user} match={match} />}
+        />
+        <Route
+          path="/@:username/processes"
+          render={(props) => <MemberProcesses user={user} match={match} />}
+        />
+        <Route
+          path="/@:username/contact"
+          render={(props) => (
+            <Modal
+              isCentered
+              isOpen
+              title={user.username}
+              onClose={() => history.push(`/@${user.username}`)}
+            >
+              <Container p="4">
+                {user.contactInfo
+                  ? renderHTML(user.contactInfo)
+                  : t('message.contact.empty', { username: user.username })}
+              </Container>
+            </Modal>
+          )}
+        />
       </Switch>
-    </Box>
+    </>
   );
 }
 

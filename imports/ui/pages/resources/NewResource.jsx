@@ -17,12 +17,14 @@ function NewResourcePage({ history }) {
   };
 
   return (
-    <Template heading={tc('labels.create', { domain: tc('domains.resource') })}>
-      <Breadcrumb />
-      <Box bg="white" p="6">
-        <ResourceForm defaultValues={resourceModel} history={history} />
-      </Box>
-    </Template>
+    <Box bg="gray.100">
+      <Template>
+        <Breadcrumb />
+        <Box bg="white" p="6">
+          <ResourceForm defaultValues={resourceModel} history={history} />
+        </Box>
+      </Template>
+    </Box>
   );
 }
 
