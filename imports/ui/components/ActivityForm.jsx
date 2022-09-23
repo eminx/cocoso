@@ -237,7 +237,7 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isLoading={isSubmitting} isDisabled={isButtonDisabled} type="submit">
+          <Button isLoading={isButtonDisabled} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

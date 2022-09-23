@@ -215,21 +215,28 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             <Box>
               {images && (
                 <>
-                  <NiceSlider images={images.map((image) => (image.src ? image.src : image))} />
-                  <SortableContainer
-                    onSortEnd={handleSortImages}
-                    axis="xy"
-                    helperClass="sortableHelper"
-                  >
-                    {images.map((image, index) => (
-                      <SortableItem
-                        key={`sortable_img_${index}`}
-                        index={index}
-                        image={image.src ? image.src : image}
-                        onRemoveImage={() => handleRemoveImage(index)}
-                      />
-                    ))}
-                  </SortableContainer>
+                  <Center>
+                    <NiceSlider
+                      width="300px"
+                      images={images.map((image) => (image.src ? image.src : image))}
+                    />
+                  </Center>
+                  <Center>
+                    <SortableContainer
+                      onSortEnd={handleSortImages}
+                      axis="xy"
+                      helperClass="sortableHelper"
+                    >
+                      {images.map((image, index) => (
+                        <SortableItem
+                          key={`sortable_img_${index}`}
+                          index={index}
+                          image={image.src ? image.src : image}
+                          onRemoveImage={() => handleRemoveImage(index)}
+                        />
+                      ))}
+                    </SortableContainer>
+                  </Center>
                 </>
               )}
               <Center w="100%">

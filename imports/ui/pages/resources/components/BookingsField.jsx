@@ -8,7 +8,6 @@ import { useCounter } from 'rooks';
 import {
   Box,
   Flex,
-  Heading,
   Text,
   Button,
   HStack,
@@ -27,7 +26,7 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import NiceList from '../../../components/NiceList';
-import { message } from '../../../components/message';
+import { Alert, message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
@@ -78,15 +77,17 @@ export default function BookingsField({ currentUser, selectedResource }) {
     try {
       const response = await call('getResourceBookingsForUser', selectedResource?._id);
       setResourceBookingsForUser(
-        response.map((booking) => ({
-          ...booking,
-          actions: [
-            {
-              content: tc('labels.remove'),
-              handleClick: () => removeBooking(booking._id),
-            },
-          ],
-        }))
+        response
+          .map((booking) => ({
+            ...booking,
+            actions: [
+              {
+                content: tc('labels.remove'),
+                handleClick: () => removeBooking(booking._id),
+              },
+            ],
+          }))
+          .reverse()
       );
       setIsLoading(false);
     } catch (error) {
@@ -163,22 +164,19 @@ export default function BookingsField({ currentUser, selectedResource }) {
   );
 
   return (
-    <Box mt="5">
-      <Heading mb="4" ml="4" size="sm">
-        {t('booking.labels.field')}
-      </Heading>
-
-      <Box bg="white">
+    <Box>
+      <Box>
         <Accordion
           index={[isAccordionOpen ? 0 : null]}
           allowMultiple
           allowToggle
+          mb="8"
           onChange={() => setAccordionOpen(!isAccordionOpen)}
         >
           <AccordionItem>
             {({ isExpanded }) => (
               <>
-                <AccordionButton>
+                <AccordionButton bg="gray.100">
                   <Box flex="1" textAlign="left">
                     {t('booking.labels.form')}
                   </Box>
@@ -284,9 +282,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
               )}
             </NiceList>
           ) : (
-            <Text size="small" pad="2" p="4" margin={{ bottom: 'small' }}>
-              <em>No bookings yet</em>
-            </Text>
+            <Alert type="warning">{tc('bookings.empty')}</Alert>
           )}
         </Box>
       )}

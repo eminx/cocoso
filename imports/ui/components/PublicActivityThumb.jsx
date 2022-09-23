@@ -61,7 +61,7 @@ function PublicActivityThumb({ item }) {
   };
 
   return (
-    <Box bg="rgba(255, 255, 255, 0.6)" px="4" py="3" w="100%">
+    <Box p="4" w="100%">
       <Box mb="2">
         <Heading mb="1" size="md" style={ellipsisStyle}>
           {item.isProcess ? item.title : item.title}

@@ -6,6 +6,7 @@ import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
 
+import Header from '../../components/Header';
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
@@ -67,47 +68,51 @@ class Page extends PureComponent {
     const pageTitles = pages && pages.map((page) => page.title);
 
     return (
-      <Template
-        heading={currentPage.title}
-        leftContent={
-          <PagesList
-            pageTitles={pageTitles}
-            onChange={this.handlePageClick}
-            activePageTitle={param}
-          />
-        }
-        rightContent={
-          currentUser &&
-          role === 'admin' && (
-            <Center p="2">
-              <Link to="/pages/new">
-                <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                  <Trans i18nKey="common:actions.create" />
-                </Button>
-              </Link>
-            </Center>
-          )
-        }
-      >
-        <Helmet>
-          <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-        </Helmet>
-        <div className={currentPage.isTermsPage && 'is-terms-page'}>
-          <Box bg="white" mb="2" py="4" px="6">
-            <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
-          </Box>
+      <>
+        <Header />
 
-          {currentUser && role === 'admin' && !currentPage.isTermsPage && (
-            <Center p="2">
-              <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-                <Button as="span" variant="ghost" size="sm">
-                  <Trans i18nKey="common:actions.update" />
-                </Button>
-              </Link>
-            </Center>
-          )}
-        </div>
-      </Template>
+        <Template
+          heading={currentPage.title}
+          leftContent={
+            <PagesList
+              pageTitles={pageTitles}
+              onChange={this.handlePageClick}
+              activePageTitle={param}
+            />
+          }
+          rightContent={
+            currentUser &&
+            role === 'admin' && (
+              <Center p="2">
+                <Link to="/pages/new">
+                  <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
+                    <Trans i18nKey="common:actions.create" />
+                  </Button>
+                </Link>
+              </Center>
+            )
+          }
+        >
+          <Helmet>
+            <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          </Helmet>
+          <div className={currentPage.isTermsPage && 'is-terms-page'}>
+            <Box bg="white" mb="2" py="4" px="6">
+              <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+            </Box>
+
+            {currentUser && role === 'admin' && !currentPage.isTermsPage && (
+              <Center p="2">
+                <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+                  <Button as="span" variant="ghost" size="sm">
+                    <Trans i18nKey="common:actions.update" />
+                  </Button>
+                </Link>
+              </Center>
+            )}
+          </div>
+        </Template>
+      </>
     );
   }
 }

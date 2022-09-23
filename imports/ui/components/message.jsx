@@ -5,7 +5,6 @@ import {
   AlertTitle,
   AlertDescription,
   Box,
-  Center,
   CloseButton,
   createStandaloneToast,
 } from '@chakra-ui/react';
@@ -15,25 +14,19 @@ import { chakraTheme } from '../utils/constants/theme';
 const timeOutTime = 5;
 
 const Alert = ({ children, isClosable, message, type = 'error', ...otherProps }) => {
-  const success = type === 'success';
-  const info = type === 'info';
-  const warning = type === 'warning';
-
   return (
-    <Center w="100%">
-      <Box>
-        <CAlert status={type} {...otherProps}>
-          <AlertIcon />
-          <Box flex="1">
-            <AlertTitle>
+    <Box w="100%" maxW="500px">
+      <CAlert status={type} {...otherProps}>
+        <AlertIcon />
+        <Box flex="1">
+          {/* <AlertTitle>
               {success ? 'Success!' : info ? 'Info' : warning ? 'Warning' : 'Error'}
-            </AlertTitle>
-            <AlertDescription display="block">{children || message}</AlertDescription>
-          </Box>
-          {isClosable && <CloseButton position="absolute" right="8px" top="8px" />}
-        </CAlert>
-      </Box>
-    </Center>
+            </AlertTitle> */}
+          <AlertDescription display="block">{children || message}</AlertDescription>
+        </Box>
+        {isClosable && <CloseButton position="absolute" right="8px" top="8px" />}
+      </CAlert>
+    </Box>
   );
 };
 

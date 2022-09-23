@@ -5,18 +5,18 @@ const userMenu = [
     key: 'publicProfile',
     value: '',
   },
-  {
-    // label: 'My Activities',
-    menu: 'member',
-    key: 'activities',
-    value: '/activities',
-  },
-  {
-    // label: 'My Works',
-    menu: 'member',
-    key: 'works',
-    value: '/works',
-  },
+  // {
+  //   // label: 'My Activities',
+  //   menu: 'member',
+  //   key: 'activities',
+  //   value: '/activities',
+  // },
+  // {
+  //   // label: 'My Works',
+  //   menu: 'member',
+  //   key: 'works',
+  //   value: '/works',
+  // },
 ];
 
 const adminMenu = [
@@ -89,4 +89,22 @@ const hostFields = [
   },
 ];
 
-export { userMenu, adminMenu, hostFields };
+const acceptedDocumentFormatsForUploads = [
+  '.doc',
+  '.docx',
+  '.jpeg',
+  '.jpg',
+  '.pdf',
+  '.png',
+  '.zip',
+];
+
+const maximumDocumentSizeForUploads = '30 MB';
+
+export {
+  acceptedDocumentFormatsForUploads,
+  adminMenu,
+  hostFields,
+  maximumDocumentSizeForUploads,
+  userMenu,
+};

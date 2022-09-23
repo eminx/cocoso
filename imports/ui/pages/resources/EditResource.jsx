@@ -62,28 +62,30 @@ function EditResourcePage({ history }) {
   }
 
   return (
-    <Template heading={tc('labels.update', { domain: tc('domains.resource') })}>
-      <Breadcrumb context={resource} contextKey="label" />
-      <Box bg="white" p="6">
-        {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
-      </Box>
-      <Center p="4">
-        <Button colorScheme="red" size="sm" variant="ghost" onClick={showDeleteModal}>
-          {tc('actions.remove')}
-        </Button>
-      </Center>
-      <ConfirmModal
-        confirmText={tc('modals.confirm.delete.yes')}
-        visible={isDeleteModalOn}
-        title={tc('modals.confirm.delete.title')}
-        onCancel={hideDeleteModal}
-        onConfirm={() => deleteResource(resource?._id)}
-      >
-        {tc('modals.confirm.delete.body', {
-          domain: tc('domains.resource').toLowerCase(),
-        })}
-      </ConfirmModal>
-    </Template>
+    <Box bg="gray.100" pt="2">
+      <Template>
+        <Breadcrumb context={resource} contextKey="label" />
+        <Box bg="white" p="6">
+          {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
+        </Box>
+        <Center p="4">
+          <Button colorScheme="red" size="sm" variant="ghost" onClick={showDeleteModal}>
+            {tc('actions.remove')}
+          </Button>
+        </Center>
+        <ConfirmModal
+          confirmText={tc('modals.confirm.delete.yes')}
+          visible={isDeleteModalOn}
+          title={tc('modals.confirm.delete.title')}
+          onCancel={hideDeleteModal}
+          onConfirm={() => deleteResource(resource?._id)}
+        >
+          {tc('modals.confirm.delete.body', {
+            domain: tc('domains.resource').toLowerCase(),
+          })}
+        </ConfirmModal>
+      </Template>
+    </Box>
   );
 }
 

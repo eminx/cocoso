@@ -5,12 +5,13 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Button, Center } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import PublicActivityThumb from '../../components/PublicActivityThumb';
+import Header from '../../components/Header';
 
 moment.locale(i18n.language);
 
@@ -67,7 +68,9 @@ function Activities({ activitiesList, isLoading, history }) {
         } | ${publicSettings.name}`}</title>
       </Helmet>
 
-      <Center mb="4">
+      <Header />
+
+      <Center mb="2">
         {canCreateContent && (
           <Link to="/activities/new">
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">

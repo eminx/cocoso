@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
+import Header from '../../components/Header';
 import { Signup } from './index';
 import { createAccount } from './functions';
 
@@ -17,28 +18,31 @@ function SignupPage() {
   }
 
   return (
-    <Template>
-      <Center>
-        <Box>
-          <Heading size="md" textAlign="center">
-            {t('signup.labels.title')}
-          </Heading>
-          <Center pt="4" mb="4">
-            <Text>
-              {t('signup.labels.subtitle')}{' '}
-              <Link to="/login">
-                <CLink as="span">
-                  <b>{t('actions.login')}</b>
-                </CLink>
-              </Link>
-            </Text>
-          </Center>
-          <Box p="6" bg="white" mb="4">
-            <Signup onSubmit={(values) => createAccount(values)} />
+    <Box bg="gray.100" pb="8" minHeight="100vh">
+      <Header />
+      <Template>
+        <Center>
+          <Box>
+            <Heading size="md" textAlign="center">
+              {t('signup.labels.title')}
+            </Heading>
+            <Center pt="4" mb="4">
+              <Text>
+                {t('signup.labels.subtitle')}{' '}
+                <Link to="/login">
+                  <CLink as="span">
+                    <b>{t('actions.login')}</b>
+                  </CLink>
+                </Link>
+              </Text>
+            </Center>
+            <Box p="6" bg="white" mb="4">
+              <Signup onSubmit={(values) => createAccount(values)} />
+            </Box>
           </Box>
-        </Box>
-      </Center>
-    </Template>
+        </Center>
+      </Template>
+    </Box>
   );
 }
 

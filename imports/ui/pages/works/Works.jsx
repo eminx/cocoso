@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
+import Header from '../../components/Header';
 import Paginate from '../../components/Paginate';
 import WorkThumb from '../../components/WorkThumb';
 import { StateContext } from '../../LayoutContainer';
@@ -80,7 +81,9 @@ function Works() {
         }`}</title>
       </Helmet>
 
-      <Center mb="4">
+      <Header />
+
+      <Center mb="2">
         {canCreateContent && (
           <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
             <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
