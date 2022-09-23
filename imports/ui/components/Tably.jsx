@@ -61,7 +61,7 @@ function Tably({
   return (
     <>
       <Flex my="4">
-        <Flex px="4" flexBasis="120px">
+        <Flex px="4">
           <Link to="/">
             <CLink as="span" textTransform="uppercase" fontWeight="bold">
               {name}
@@ -74,7 +74,7 @@ function Tably({
             </CLink>
           </Link>
         </Flex>
-        <Box flexBasis="120px"></Box>
+        <Box></Box>
       </Flex>
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
