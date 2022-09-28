@@ -63,6 +63,8 @@ Meteor.methods({
 
     try {
       const processes = Processes.find({
+        isPrivate: { $ne: true },
+        isArchived: { $ne: true },
         $or: [{ authorUsername: username }, { 'members.username': username }],
         host,
       }).fetch();
