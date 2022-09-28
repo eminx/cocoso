@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar,
@@ -13,9 +13,6 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
-  Tabs,
-  Tab,
-  TabList,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -23,6 +20,7 @@ import { SettingsIcon } from '@chakra-ui/icons';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
+import Tabs from './Tabs';
 
 function Tably({
   action = null,
@@ -38,6 +36,15 @@ function Tably({
   const history = useHistory();
   const location = useLocation();
   const { isDesktop, currentHost } = useContext(StateContext);
+  const imageContainer = useRef();
+  const [imageContainerTop, setImageContainerTop] = useState(null);
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      const rect = imageContainer?.current?.getBoundingClientRect();
+      setImageContainerTop(rect ? rect.top : null);
+    }, 200);
+  }, [imageContainer]);
 
   const getDefaultTabIndex = () => {
     return tabs.findIndex((tab) => tab.path === location.pathname);
@@ -78,7 +85,7 @@ function Tably({
       </Flex>
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
-          <Box w={isDesktop ? '40vw' : '100%'}>
+          <Box w={isDesktop ? '40%' : '100%'}>
             <Flex mb={isDesktop ? '16' : '8'} pl="4" pr="0" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading
@@ -118,13 +125,13 @@ function Tably({
                 </Box>
               )}
             </Flex>
-            <Box flexGrow="0" mb="4">
-              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100%'} />
+            <Box flexGrow="0" mb="4" ref={imageContainer}>
+              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40%' : '100%'} />
             </Box>
           </Box>
         )}
 
-        <Box w={isDesktop && isImage ? '40vw' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
+        <Box w={isDesktop && isImage ? '40%' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
           {!isImage && (
             <Box p="4">
               <Heading as="h1" size="xl" textAlign={isDesktop ? 'center' : 'left'}>
@@ -150,59 +157,40 @@ function Tably({
             flexShrink="0"
             mt="2"
             size={isDesktop ? 'md' : 'sm'}
+            tabs={tabs}
           >
-            <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
-              {tabs.map((tab) => (
-                <Link key={tab.title} to={parsePath(tab.path)} style={{ margin: 0 }}>
-                  <Tab
-                    as="span"
-                    _focus={{ boxShadow: 'none' }}
-                    textTransform="uppercase"
-                    onClick={tab.onClick}
-                    pb="0"
-                    mb="1"
-                    paddingInline="0"
-                    marginInline="2"
-                    // fontWeight="bold"
-                  >
-                    {tab.title}
-                    {tab.badge && (
-                      <Badge colorScheme="red" size="xs" mt="-2">
-                        {tab.badge}
-                      </Badge>
-                    )}
-                  </Tab>
-                </Link>
-              ))}
-              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-            </TabList>
+            {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
           </Tabs>
 
-          <Switch history={history}>
-            {tabs.map((tab) => (
-              <Route
-                key={tab.title}
-                path={tab.path}
-                render={(props) =>
-                  isDesktop ? (
-                    <Container margin={isImage ? 0 : 'auto'} pt="2">
-                      {tab.content}
-                    </Container>
-                  ) : (
-                    <Center>
-                      <Container margin={isImage ? 0 : 'auto'} pt="2">
-                        {tab.content}
-                      </Container>
-                    </Center>
-                  )
-                }
-              />
-            ))}
-          </Switch>
+          {imageContainerTop && (
+            <Box mt={isDesktop ? `${imageContainerTop - 120}px` : '0'}>
+              <Switch history={history}>
+                {tabs.map((tab) => (
+                  <Route
+                    key={tab.title}
+                    path={tab.path}
+                    render={(props) =>
+                      isDesktop ? (
+                        <Container margin={isImage ? 0 : 'auto'} pt="2">
+                          {tab.content}
+                        </Container>
+                      ) : (
+                        <Center>
+                          <Container margin={isImage ? 0 : 'auto'} pt="2">
+                            {tab.content}
+                          </Container>
+                        </Center>
+                      )
+                    }
+                  />
+                ))}
+              </Switch>
+            </Box>
+          )}
         </Box>
 
         {isDesktop && author && (
-          <Box w="20vw">
+          <Box w="20%">
             <Center>
               <AvatarHolder author={author} />
             </Center>
