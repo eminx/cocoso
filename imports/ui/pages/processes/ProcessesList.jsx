@@ -140,7 +140,7 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
           </Center>
 
           {processesRendered && processesRendered.length > 0 && (
-            <Paginate items={processesRendered} itemsPerPage={6}>
+            <Paginate items={processesRendered}>
               {(process) => (
                 <WrapItem key={process._id}>
                   <Link to={`/processes/${process._id}`}>

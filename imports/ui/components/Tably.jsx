@@ -80,7 +80,7 @@ function Tably({
       </Flex>
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
-          <Box w={isDesktop ? '40%' : '100%'}>
+          <Box w={isDesktop ? '40%' : '100%'} h="100%">
             <Flex mb={isDesktop ? '16' : '8'} pl="4" pr="0" justify="space-between">
               <Box flexBasis={isDesktop ? '100%' : '80%'}>
                 <Heading

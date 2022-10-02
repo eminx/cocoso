@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 
 import Header from '../../components/Header';
 import Paginate from '../../components/Paginate';
-import WorkThumb from '../../components/WorkThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
@@ -121,7 +121,15 @@ function Works() {
         {(work) => (
           <Box key={work._id}>
             <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-              <WorkThumb work={work} />
+              <NewGridThumb
+                avatar={{
+                  name: work.authorUsername,
+                  url: work.authorAvatar,
+                }}
+                imageUrl={work.images[0]}
+                tag={work.category?.label}
+                title={work.title}
+              />
             </Link>
           </Box>
         )}

@@ -1,12 +1,10 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
-import i18n from 'i18next';
-import moment from 'moment';
+import { Avatar, Box, Flex, Heading } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-moment.locale(i18n.language);
+import Tag from './Tag';
 
-export default function GridThumb({ title, imageUrl, subTitle }) {
+export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
   if (!title || !imageUrl) {
     return null;
   }
@@ -23,14 +21,20 @@ export default function GridThumb({ title, imageUrl, subTitle }) {
           marginBottom: 12,
         }}
       />
-      <Box maxW={300}>
-        <Heading fontSize="xl" fontWeight="light" mb="2">
-          {title}
-        </Heading>
-        <Heading fontSize="md" fontWeight="light">
-          <em>{subTitle}</em>
-        </Heading>
-      </Box>
+      <Flex align="flex-start" justify="space-between" mb="2">
+        <Box pr="2" maxW={300}>
+          <Heading fontSize="xl" fontWeight="light" mb="2">
+            {title}
+          </Heading>
+          {subTitle && (
+            <Heading fontSize="md" fontWeight="light">
+              <em>{subTitle}</em>
+            </Heading>
+          )}
+          {tag && <Tag label={tag} mb="1" />}
+        </Box>
+        {avatar && <Avatar name={avatar.name} src={avatar.url} />}
+      </Flex>
     </Box>
   );
 }

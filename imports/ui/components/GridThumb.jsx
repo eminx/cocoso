@@ -11,7 +11,7 @@ export default function GridThumb({ title, image, large = false, children }) {
   }
 
   return (
-    <Flex justify="space-between" flexDirection={large ? 'column' : 'row'} m="2">
+    <Flex justify="space-between" flexDirection={large ? 'column' : 'row'} m="2" w={300}>
       <Box p="4" flexBasis={large ? '50%' : '70%'}>
         <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
           {title}
