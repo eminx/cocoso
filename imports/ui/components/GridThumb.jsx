@@ -12,14 +12,6 @@ export default function GridThumb({ title, image, large = false, children }) {
 
   return (
     <Flex justify="space-between" flexDirection={large ? 'column' : 'row'} m="2" w={300}>
-      <Box p="4" flexBasis={large ? '50%' : '70%'}>
-        <Heading size={large ? 'lg' : 'md'} fontWeight="bold">
-          {title}
-        </Heading>
-        <Spacer my="1" />
-        <Box>{children}</Box>
-      </Box>
-
       {image ? (
         <Box flexBasis={large ? '50%' : 150}>
           <Image
@@ -34,6 +26,14 @@ export default function GridThumb({ title, image, large = false, children }) {
       ) : (
         <Box flexBasis={large ? '50%' : 150} h={large ? 300 : 150} bg="pink.100" />
       )}
+
+      <Box p="4" flexBasis={large ? '50%' : '70%'}>
+        <Heading size={large ? 'lg' : 'md'} fontWeight="light">
+          {title}
+        </Heading>
+        <Spacer my="1" />
+        <Box>{children}</Box>
+      </Box>
     </Flex>
   );
 }

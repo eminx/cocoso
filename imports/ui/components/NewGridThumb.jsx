@@ -23,7 +23,7 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
       />
       <Flex align="flex-start" justify="space-between" mb="2">
         <Box pr="2" maxW={300}>
-          <Heading fontSize="xl" fontWeight="light" mb="2">
+          <Heading fontSize="1.4rem" fontWeight="light" mb="2">
             {title}
           </Heading>
           {subTitle && (
