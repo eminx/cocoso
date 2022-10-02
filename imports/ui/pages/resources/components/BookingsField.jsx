@@ -282,7 +282,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
               )}
             </NiceList>
           ) : (
-            <Alert type="warning">{tc('bookings.empty')}</Alert>
+            <Alert colorScheme="white">{tc('bookings.empty')}</Alert>
           )}
         </Box>
       )}

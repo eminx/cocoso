@@ -8,7 +8,7 @@ const defaultItemsPerPage = 12;
 
 function PaginatedItems({
   grid = { columns: [1, 1, 2, 3], spacing: 3, w: '100%' },
-  isContainerSimpleGrid = true,
+  isContainerSimpleGrid = false,
   items,
   itemsPerPage = defaultItemsPerPage,
   children,
@@ -36,7 +36,9 @@ function PaginatedItems({
           {currentItems && currentItems.map((item) => children(item))}
         </SimpleGrid>
       ) : (
-        <Wrap justify="center">{currentItems && currentItems.map((item) => children(item))}</Wrap>
+        <Wrap justify="space-evenly">
+          {currentItems && currentItems.map((item) => children(item))}
+        </Wrap>
       )}
       {items.length > itemsPerPage && (
         <Center>
