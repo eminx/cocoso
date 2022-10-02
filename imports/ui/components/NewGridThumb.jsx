@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { Box, Heading, Flex, Image, Text, Spacer } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Heading } from '@chakra-ui/react';
 import i18n from 'i18next';
 import moment from 'moment';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 moment.locale(i18n.language);
 
@@ -9,27 +10,20 @@ export default function GridThumb({ title, imageUrl, subTitle }) {
   if (!title || !imageUrl) {
     return null;
   }
-  const [containerWidth, setContainerWidth] = useState(null);
-
-  const imageContainer = useRef();
-
-  const handleContainerWidth = () => {
-    const imageBox = imageContainer?.current?.getBoundingClientRect();
-    setContainerWidth(imageBox.width);
-  };
 
   return (
-    <Box>
-      <Box m="8" h={300} mb="150px" w={containerWidth}>
-        <Image
-          alt={title}
-          h={300}
-          fit="contain"
-          mb="4"
-          ref={imageContainer}
-          src={imageUrl}
-          onLoad={() => handleContainerWidth()}
-        />
+    <Box m="8" mb="150px">
+      <LazyLoadImage
+        alt={title}
+        effect="blur"
+        fit="contain"
+        src={imageUrl}
+        style={{
+          height: 300,
+          marginBottom: 12,
+        }}
+      />
+      <Box maxW={300}>
         <Heading fontSize="xl" fontWeight="light" mb="2">
           {title}
         </Heading>

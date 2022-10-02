@@ -10,8 +10,8 @@ import { Box, Button, Center } from '@chakra-ui/react';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
-import PublicActivityThumb from '../../components/PublicActivityThumb';
 import Header from '../../components/Header';
+import NewGridThumb from '../../components/NewGridThumb';
 
 moment.locale(i18n.language);
 
@@ -86,7 +86,11 @@ function Activities({ activitiesList, isLoading, history }) {
             <Link
               to={activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`}
             >
-              <PublicActivityThumb item={activity} />
+              <NewGridThumb
+                imageUrl={activity.imageUrl}
+                title={activity.title}
+                subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+              />
             </Link>
           </Box>
         )}
