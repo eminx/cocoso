@@ -50,11 +50,6 @@ function Tably({
     return tabs.findIndex((tab) => tab.path === location.pathname);
   };
 
-  const parsePath = (path) => {
-    const gotoPath = path + '?noScrollTop=true';
-    return gotoPath;
-  };
-
   if (!tabs.find((tab) => tab.path === location.pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
@@ -125,9 +120,9 @@ function Tably({
                 </Box>
               )}
             </Flex>
-            <Box flexGrow="0" mb="4" ref={imageContainer}>
+            <Flex flexGrow="0" justify="flex-end" mb="4" ref={imageContainer}>
               <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40%' : '100%'} />
-            </Box>
+            </Flex>
           </Box>
         )}
 
@@ -163,7 +158,11 @@ function Tably({
           </Tabs>
 
           {imageContainerTop && (
-            <Box mt={isDesktop ? `${imageContainerTop - 120}px` : '0'}>
+            <Box
+              mt={isDesktop ? `${imageContainerTop - 120}px` : '0'}
+              h={isDesktop && isImage ? `calc(100vh - ${imageContainerTop + 50}px)` : 'auto'}
+              overflowY="scroll"
+            >
               <Switch history={history}>
                 {tabs.map((tab) => (
                   <Route
