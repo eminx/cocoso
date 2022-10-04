@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Flex, Heading, Image } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
@@ -8,6 +8,7 @@ import HeaderMenu from './HeaderMenu';
 
 function Header() {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const { pathname } = useLocation();
   const logo = useRef(null);
   const [popupWidth, setPopupWidth] = useState();
   useEffect(() => {
@@ -16,6 +17,8 @@ function Header() {
       setPopupWidth(parseInt(rect.width));
     }, 200);
   }, []);
+
+  const hideMenu = ['/login', '/signup', '/reset-password', '/forgot-password'].includes(pathname);
 
   return (
     <Box p="4" w="100%">
@@ -57,13 +60,15 @@ function Header() {
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
-      <Center my="12">
-        <HeaderMenu
-          canCreateContent={canCreateContent}
-          currentHost={currentHost}
-          isDesktop={isDesktop}
-        />
-      </Center>
+      {!hideMenu && (
+        <Center my="12">
+          <HeaderMenu
+            canCreateContent={canCreateContent}
+            currentHost={currentHost}
+            isDesktop={isDesktop}
+          />
+        </Center>
+      )}
     </Box>
   );
 }

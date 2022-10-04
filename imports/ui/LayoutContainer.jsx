@@ -85,8 +85,6 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     '/reset-password',
   ];
 
-  console.log(pagesWithHeaderAndFooter, pathname);
-
   const isHeaderAndFooter = pagesWithHeaderAndFooter.includes(pathname);
 
   return (

@@ -12,6 +12,7 @@ import Loader from '../../components/Loader';
 import Template from '../../components/Template';
 
 import { parseTitle } from '../../utils/shared';
+import Header from '../../components/Header';
 
 const publicSettings = Meteor.settings.public;
 
@@ -68,6 +69,7 @@ class Page extends PureComponent {
 
     return (
       <>
+        <Header />
         <Template
           heading={currentPage.title}
           leftContent={
