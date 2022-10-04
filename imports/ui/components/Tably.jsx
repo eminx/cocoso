@@ -39,11 +39,16 @@ function Tably({
   const imageContainer = useRef();
   const [imageContainerTop, setImageContainerTop] = useState(null);
 
+  const isImage = images && images?.length > 0;
+
   useLayoutEffect(() => {
+    if (!isImage || !isDesktop) {
+      return;
+    }
     setTimeout(() => {
       const rect = imageContainer?.current?.getBoundingClientRect();
       setImageContainerTop(rect ? rect.top : null);
-    }, 200);
+    });
   }, [imageContainer]);
 
   const getDefaultTabIndex = () => {
@@ -53,8 +58,6 @@ function Tably({
   if (!tabs.find((tab) => tab.path === location.pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
-
-  const isImage = images && images?.length > 0;
 
   const { menu, name } = currentHost?.settings;
 
@@ -120,7 +123,12 @@ function Tably({
                 </Box>
               )}
             </Flex>
-            <Flex flexGrow="0" justify="flex-end" mb="4" ref={imageContainer}>
+            <Flex
+              flexGrow="0"
+              justify={isDesktop ? 'flex-end' : 'center'}
+              mb="4"
+              ref={imageContainer}
+            >
               <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
             </Flex>
           </Box>
@@ -157,35 +165,37 @@ function Tably({
             {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
           </Tabs>
 
-          {imageContainerTop && (
-            <Box
-              mt={isDesktop ? `${imageContainerTop - 120}px` : '0'}
-              h={isDesktop && isImage ? `calc(100vh - ${imageContainerTop + 50}px)` : 'auto'}
-              overflowY="scroll"
-            >
-              <Switch history={history}>
-                {tabs.map((tab) => (
-                  <Route
-                    key={tab.title}
-                    path={tab.path}
-                    render={(props) =>
-                      isDesktop ? (
+          <Box
+            mt={
+              isDesktop && isImage && imageContainerTop > 0
+                ? `${imageContainerTop - 120}px`
+                : 'null'
+            }
+            h={isDesktop && isImage ? `calc(100vh - ${imageContainerTop + 60}px)` : 'auto'}
+            overflowY="scroll"
+          >
+            <Switch history={history}>
+              {tabs.map((tab) => (
+                <Route
+                  key={tab.title}
+                  path={tab.path}
+                  render={(props) =>
+                    isDesktop ? (
+                      <Container margin={isImage ? 0 : 'auto'} pt="2">
+                        {tab.content}
+                      </Container>
+                    ) : (
+                      <Center>
                         <Container margin={isImage ? 0 : 'auto'} pt="2">
                           {tab.content}
                         </Container>
-                      ) : (
-                        <Center>
-                          <Container margin={isImage ? 0 : 'auto'} pt="2">
-                            {tab.content}
-                          </Container>
-                        </Center>
-                      )
-                    }
-                  />
-                ))}
-              </Switch>
-            </Box>
-          )}
+                      </Center>
+                    )
+                  }
+                />
+              ))}
+            </Switch>
+          </Box>
         </Box>
 
         {isDesktop && author && (

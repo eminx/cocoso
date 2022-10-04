@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Link as CLink } from '@chakra-ui/react';
+import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
@@ -122,7 +122,9 @@ export default function DocumentsField({ contextType, contextId }) {
             )}
           </NiceList>
         ) : (
-          <Alert type="warning">{tc('documents.empty')}</Alert>
+          <Text fontSize="sm" mb="4" textAlign="center">
+            {tc('documents.empty')}
+          </Text>
         )}
       </Box>
       {canCreateContent && (

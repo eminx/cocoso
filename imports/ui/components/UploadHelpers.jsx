@@ -7,13 +7,11 @@ import {
   maximumDocumentSizeForUploads,
 } from '../utils/constants/general';
 
-import { Alert } from './message';
-
 function DocumentUploadHelper() {
   const [tc] = useTranslation('common');
 
   return (
-    <Alert colorScheme="white" type="info" width="100%">
+    <Box w="100%">
       <Flex justify="space-between">
         <Text fontSize="sm" mb="2" px="2">
           {tc('documents.acceptedFormats')}: <br />
@@ -27,7 +25,7 @@ function DocumentUploadHelper() {
           <Code fontSize="12px">{maximumDocumentSizeForUploads}</Code>
         </Text>
       </Flex>
-    </Alert>
+    </Box>
   );
 }
 

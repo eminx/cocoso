@@ -682,7 +682,9 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Alert type="warning">{tc('documents.empty')}</Alert>
+          <Text fontSize="sm" mb="4" textAlign="center">
+            {tc('documents.empty')}
+          </Text>
         )}
 
         {isAdmin && (
@@ -904,7 +906,11 @@ class Process extends Component {
         title: t('labels.meetings'),
         content: (
           <Box>
-            {!isFutureMeetings && <Alert type="warning">{t('meeting.info.empty')}</Alert>}
+            {!isFutureMeetings && (
+              <Text fontSize="sm" mb="4" textAlign="center">
+                {t('meeting.info.empty')}
+              </Text>
+            )}
             {isFutureMeetings && isAdmin && (
               <Text fontSize="sm" mb="4">
                 {t('meeting.info.admin')}
