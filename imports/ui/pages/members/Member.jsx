@@ -67,33 +67,12 @@ function MemberPublic({ history, match, path }) {
   //   }
   // };
 
-  const getDefaultTabIndex = () => {
-    switch (profileRoute) {
-      case 'bio':
-        return 0;
-      case 'works':
-        return 1;
-      case 'activities':
-        return 2;
-      case 'processes':
-        return 3;
-      case 'hosts':
-        return 4;
-      case 'contact':
-        return 5;
-      case 'edit':
-        return 6;
-      default:
-        return 0;
-    }
-  };
-
   const { menu, name } = currentHost?.settings;
   const membersInMenu = menu.find((item) => item.name === 'members');
 
   const tabs = [
     {
-      path: `/@${user.username}/bio`,
+      path: `/@${username}/bio`,
       title: tc('domains.bio'),
       isVisible: true,
     },
@@ -105,15 +84,26 @@ function MemberPublic({ history, match, path }) {
     })
     ?.forEach((item) => {
       tabs.push({
-        path: `/@${user.username}/${item.name}`,
+        path: `/@${username}/${item.name}`,
         title: item.label,
       });
     });
 
   tabs.push({
-    path: `/@${user.username}/contact`,
+    path: `/@${username}/contact`,
     title: tc('labels.contact'),
   });
+
+  if (currentUser && currentUser.username === username) {
+    tabs.push({
+      path: `/@${username}/edit`,
+      title: <b>{tc('actions.update')}</b>,
+    });
+  }
+
+  const getDefaultTabIndex = () => {
+    return tabs.findIndex((tab) => tab.path === history?.location?.pathname);
+  };
 
   return (
     <>
