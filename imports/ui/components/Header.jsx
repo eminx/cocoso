@@ -12,7 +12,7 @@ function Header() {
   return (
     <Box p="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
-        <Flex align="flex-end">
+        <Flex align={isDesktop ? 'flex-end' : 'flex-start'}>
           <Box>
             <Link to="/">
               <Box maxHeight="80px" mr="4">
@@ -21,12 +21,14 @@ function Header() {
             </Link>
           </Box>
           <Box>
-            <Heading fontSize="28px" fontWeight="normal">
-              SKOGEN
+            <Heading size="lg" fontWeight="normal" textAlign={isDesktop ? 'left' : 'center'}>
+              {currentHost?.settings?.name}
             </Heading>
-            <Heading fontSize="18px" fontWeight="light">
-              Artistrun House for Performing Arts
-            </Heading>
+            {currentHost?.settings?.subname && currentHost?.settings?.subname.length > 0 && (
+              <Heading fontSize="md" fontWeight="light" textAlign={isDesktop ? 'left' : 'center'}>
+                {currentHost.settings.subname}
+              </Heading>
+            )}
           </Box>
         </Flex>
 

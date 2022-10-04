@@ -60,6 +60,8 @@ function HeaderMenu({ canCreateContent, currentHost, isDesktop }) {
     }
   };
 
+  const showNewButton = canCreateContent && activeMenuItem && activeMenuItem.name !== 'members';
+
   return (
     <Box zIndex="1401">
       <Flex align="center">
@@ -80,7 +82,7 @@ function HeaderMenu({ canCreateContent, currentHost, isDesktop }) {
             ))}
           </MenuList>
         </CMenu>
-        {canCreateContent && activeMenuItem.name !== 'members' && (
+        {showNewButton && (
           <Link to={getPathname()}>
             <Flex direction="column" align="center" ml="4" position="relative">
               <IconButton

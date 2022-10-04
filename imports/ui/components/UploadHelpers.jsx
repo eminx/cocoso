@@ -16,7 +16,9 @@ function DocumentUploadHelper() {
         <Text fontSize="sm" mb="2" px="2">
           {tc('documents.acceptedFormats')}: <br />
           {acceptedDocumentFormatsForUploads?.map((format) => (
-            <Code fontSize="12px">{format}</Code>
+            <Code key={format} fontSize="12px" mr="2">
+              {format}
+            </Code>
           ))}
         </Text>
 
