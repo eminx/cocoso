@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Badge,
   Box,
-  Button,
   Center,
   Flex,
   Heading,
@@ -21,7 +20,6 @@ import {
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
-import Header from '../../components/Header';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -85,8 +83,6 @@ function ResourcesPage() {
           Meteor.settings.public.name
         }`}</title>
       </Helmet>
-
-      <Header />
 
       {resourcesFilteredAndSorted.length == 0 && (
         <Center>

@@ -13,7 +13,6 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
-  Text,
   VStack,
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
@@ -21,6 +20,7 @@ import { SettingsIcon } from '@chakra-ui/icons';
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
+import Breadcrumb from './Breadcrumb';
 
 function Tably({
   action = null,
@@ -59,28 +59,9 @@ function Tably({
     return <Redirect to={tabs[0].path} />;
   }
 
-  const { menu, name } = currentHost?.settings;
-
-  const navItem = menu.find((item) => item.name === navPath);
-
   return (
     <>
-      <Flex my="4">
-        <Flex px="4">
-          <Link to="/">
-            <CLink as="span" textTransform="uppercase" fontWeight="bold">
-              {name}
-            </CLink>
-          </Link>
-          <Text mx="2">/</Text>
-          <Link to={`/${navPath}`}>
-            <CLink as="span" textTransform="uppercase">
-              {navItem?.label}
-            </CLink>
-          </Link>
-        </Flex>
-        <Box></Box>
-      </Flex>
+      <Breadcrumb />
       <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
         {isImage && (
           <Box w={isDesktop ? '40%' : '100%'} h="100%">

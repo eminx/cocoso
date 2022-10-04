@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Heading,
   HStack,
   Input,
@@ -21,7 +20,6 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 
-import Header from '../../components/Header';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
@@ -204,8 +202,6 @@ export default function Settings({ history }) {
 
   return (
     <>
-      <Header />
-
       <Template
         heading={t('settings.label')}
         leftContent={

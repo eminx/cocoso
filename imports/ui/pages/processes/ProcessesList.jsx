@@ -4,23 +4,9 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { Link } from 'react-router-dom';
 
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  Image,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Center, Tabs, Tab, TabList, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
@@ -113,8 +99,6 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
           publicSettings.name
         }`}</title>
       </Helmet>
-
-      <Header />
 
       <Box>
         <Box p="4">

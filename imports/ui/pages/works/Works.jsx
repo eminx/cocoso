@@ -2,10 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from '../../components/Header';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
@@ -80,8 +79,6 @@ function Works() {
           publicSettings.name
         }`}</title>
       </Helmet>
-
-      <Header />
 
       <Center mb="4">
         <Wrap pl="2" justify="center">

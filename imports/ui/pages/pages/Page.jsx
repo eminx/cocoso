@@ -6,7 +6,6 @@ import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
 
-import Header from '../../components/Header';
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
@@ -69,8 +68,6 @@ class Page extends PureComponent {
 
     return (
       <>
-        <Header />
-
         <Template
           heading={currentPage.title}
           leftContent={

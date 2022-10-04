@@ -32,6 +32,7 @@ function ForgotPasswordPage() {
   return (
     <Box bg="gray.100" pb="8" minHeight="100vh">
       <Header />
+
       <Template>
         <Center>
           <Box w="xs">

@@ -1,46 +1,32 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Breadcrumb as BreadcrumbMenu,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Center,
-} from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Flex, Link as CLink, Text } from '@chakra-ui/react';
 
-export default function Breadcrumb({ context, contextKey }) {
-  const [breadcrumbs] = useState(window.location.pathname.split('/'));
+import { StateContext } from '../LayoutContainer';
+
+export default function Breadcrumb() {
+  const { currentHost } = useContext(StateContext);
+  const location = useLocation();
+  const { menu, name } = currentHost?.settings;
+
+  const pathItems = location.pathname.split('/');
+  const navItem = menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
+
   return (
-    <Center p="4">
-      <BreadcrumbMenu>
-        {breadcrumbs.map((item, index) => {
-          if (context?._id == item) item = context[contextKey];
-          item = item.charAt(0).toUpperCase() + item.slice(1);
-          if (item == '' && index == 0)
-            return (
-              <BreadcrumbItem key={`breadcrumb-${index}`}>
-                <Link to="/">Home</Link>
-              </BreadcrumbItem>
-            );
-          if (index != breadcrumbs.length - 1) {
-            let href = '';
-            for (let i = 0; i < index + 1; i++) {
-              if (breadcrumbs[i] != '') href = `${href}/${breadcrumbs[i]}`;
-            }
-            return (
-              <BreadcrumbItem key={`breadcrumb-${index}`}>
-                <Link to={href}>{item}</Link>
-              </BreadcrumbItem>
-            );
-          }
-          if (index == breadcrumbs.length - 1) {
-            return (
-              <BreadcrumbItem isCurrentPage key={`breadcrumb-${index}`}>
-                <BreadcrumbLink href="#">{item}</BreadcrumbLink>
-              </BreadcrumbItem>
-            );
-          }
-        })}
-      </BreadcrumbMenu>
-    </Center>
+    <Flex my="4">
+      <Flex px="4">
+        <Link to="/">
+          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+            {name}
+          </CLink>
+        </Link>
+        <Text mx="2">/</Text>
+        <Link to={`/${navItem?.name}`}>
+          <CLink as="span" textTransform="uppercase">
+            {navItem?.label}
+          </CLink>
+        </Link>
+      </Flex>
+    </Flex>
   );
 }

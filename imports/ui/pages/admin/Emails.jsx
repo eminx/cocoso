@@ -13,7 +13,6 @@ import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import Header from '../../components/Header';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
@@ -77,8 +76,6 @@ function Emails({ history }) {
 
   return (
     <>
-      <Header />
-
       <Template
         heading={t('emails.label')}
         leftContent={

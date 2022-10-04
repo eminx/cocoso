@@ -18,7 +18,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
@@ -179,8 +178,6 @@ function Members({ history, members, isLoading }) {
 
   return (
     <>
-      <Header />
-
       <Template
         heading={t('label')}
         leftContent={

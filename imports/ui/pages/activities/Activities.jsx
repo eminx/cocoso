@@ -5,12 +5,11 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
-import Header from '../../components/Header';
 import NewGridThumb from '../../components/NewGridThumb';
 
 moment.locale(i18n.language);
@@ -67,8 +66,6 @@ function Activities({ activitiesList, isLoading, history }) {
           currentHost.settings.name
         } | ${publicSettings.name}`}</title>
       </Helmet>
-
-      <Header />
 
       <Paginate items={allSortedActivities()}>
         {(activity) => (
