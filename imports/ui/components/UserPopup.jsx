@@ -48,7 +48,7 @@ function UserPopup({ currentUser }) {
   const isNotification = notifications && notifications.length > 0;
 
   return (
-    <Menu zIndex={10}>
+    <Menu>
       <MenuButton>
         <Avatar mr="2" showBorder src={currentUser.avatar && currentUser.avatar.src}>
           {isNotification && <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />}

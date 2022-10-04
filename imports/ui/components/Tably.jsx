@@ -121,7 +121,7 @@ function Tably({
               )}
             </Flex>
             <Flex flexGrow="0" justify="flex-end" mb="4" ref={imageContainer}>
-              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40%' : '100%'} />
+              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
             </Flex>
           </Box>
         )}

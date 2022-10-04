@@ -21,14 +21,16 @@ function Header() {
             </Link>
           </Box>
           <Box>
-            <Heading size="lg">SKOGEN</Heading>
-            <Heading size="md" fontWeight="light">
+            <Heading fontSize="28px" fontWeight="normal">
+              SKOGEN
+            </Heading>
+            <Heading fontSize="18px" fontWeight="light">
               Artistrun House for Performing Arts
             </Heading>
           </Box>
         </Flex>
 
-        <Flex justify="flex-end">
+        <Flex justify="flex-end" zIndex="1402">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>

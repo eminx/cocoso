@@ -59,11 +59,11 @@ function HeaderMenu({ currentHost, isDesktop }) {
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
   return (
-    <Box zIndex="1500">
-      <CMenu onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
+    <Box zIndex="1401">
+      <CMenu placement="bottom" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton aria-label="Options" variant="outline">
           <Flex align="flex-end">
-            <HamburgerIcon fontSize="40px" mr="2" />
+            <HamburgerIcon fontSize="40px" mr="2" mb="-1px" />
             <Heading size="xl">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Heading>
           </Flex>
         </MenuButton>
