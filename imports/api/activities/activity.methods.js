@@ -219,6 +219,8 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;
+    const hostLogo = currentHost.logo;
+    const hostAddress = currentHost.settings.address;
 
     const field = `datesAndTimes.${occurenceIndex}.attendees`;
     const occurence = theActivity.datesAndTimes[occurenceIndex];
@@ -234,15 +236,21 @@ Meteor.methods({
         values.email,
         `Your registration for "${theActivity.title}" at ${hostName}`,
         getRegistrationEmailBody(
+          activityId,
+          theActivity.title,
+          theActivity.longDescription,
+          theActivity.imageUrl,
           values.firstName,
+          values.lastName,
           values.numberOfPeople,
           occurence,
-          activityId,
           hostName,
-          host
+          host,
+          hostLogo
         )
       );
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't register attendance");
     }
   },
