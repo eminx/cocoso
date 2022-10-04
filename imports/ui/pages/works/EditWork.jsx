@@ -250,18 +250,21 @@ class EditWork extends PureComponent {
       return <Redirect to={workRoute} />;
     }
 
+    const furtherBreadcrumbLinks = [
+      {
+        label: values.title,
+        link: workRoute,
+      },
+      {
+        label: i18n.t('common:actions.update'),
+        link: null,
+      },
+    ];
+
     return (
-      <Box bg="gray.100" pt="2">
-        <Template
-          leftContent={
-            <Box pb="2">
-              <Link to={workRoute}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={values} contextKey="title" />
+      <Box>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+        <Template>
           <Box bg="white" p="6">
             <WorkForm
               categories={categories}

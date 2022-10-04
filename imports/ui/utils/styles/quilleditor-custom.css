@@ -1,3 +1,7 @@
+.quill .ql-container.ql-snow {
+  background-color: rgb(245, 245, 245);
+}
+
 .ql-container .ql-editor {
   min-height: 18em;
 }

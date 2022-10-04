@@ -110,3 +110,7 @@ a,
   margin: 12px;
   padding: 6px;
 }
+
+.text-link-container:hover .text-link {
+  text-decoration: underline;
+}

@@ -113,7 +113,7 @@ class NewPage extends PureComponent {
     }
 
     return (
-      <Template heading={tc('labels.create', { domain: tc('domains.page') })}>
+      <Template>
         <Breadcrumb />
         <Box bg="white" p="6">
           <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />

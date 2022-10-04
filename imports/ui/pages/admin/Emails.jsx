@@ -23,6 +23,7 @@ import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
+import Breadcrumb from '../../components/Breadcrumb';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
@@ -76,6 +77,7 @@ function Emails({ history }) {
 
   return (
     <>
+      <Breadcrumb />
       <Template
         heading={t('emails.label')}
         leftContent={

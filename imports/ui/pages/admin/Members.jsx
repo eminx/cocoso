@@ -28,6 +28,7 @@ import { call } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
 import Hosts from '../../../api/hosts/host';
 import UsageReport from '../../components/UsageReport';
+import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
 
@@ -178,6 +179,8 @@ function Members({ history, members, isLoading }) {
 
   return (
     <>
+      <Breadcrumb />
+
       <Template
         heading={t('label')}
         leftContent={

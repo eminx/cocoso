@@ -43,7 +43,7 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
             onChange={(event) => history.push(`/pages/${parseTitle(event.target.value)}`)}
           >
             {pageTitles.map((title) => (
-              <option>{title}</option>
+              <option key={title}>{title}</option>
             ))}
           </Select>
         </Center>

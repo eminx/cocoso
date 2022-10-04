@@ -30,6 +30,8 @@ import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
+import Header from '../../components/Header';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -195,13 +197,13 @@ export default function Settings({ history }) {
   // };
 
   const pathname = history && history.location.pathname;
-  // const settings = currentHost && currentHost.settings;
 
   const isImage =
     (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
   return (
     <>
+      <Breadcrumb />
       <Template
         heading={t('settings.label')}
         leftContent={

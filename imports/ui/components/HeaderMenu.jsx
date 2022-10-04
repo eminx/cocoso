@@ -84,15 +84,28 @@ function HeaderMenu({ canCreateContent, currentHost, isDesktop }) {
         </CMenu>
         {showNewButton && (
           <Link to={getPathname()}>
-            <Flex direction="column" align="center" ml="4" position="relative">
+            <Flex
+              align="center"
+              className="text-link-container"
+              direction="column"
+              ml="4"
+              position="relative"
+            >
               <IconButton
-                colorScheme="gray.900"
-                icon={<AddIcon fontSize="xl" />}
-                variant="outline"
                 borderRadius="50%"
                 borderWidth="2px"
+                colorScheme="gray.900"
+                icon={<AddIcon fontSize="sm" />}
+                size="sm"
+                variant="outline"
               />
-              <Text fontSize="sm" position="absolute" top="2.5rem" textTransform="uppercase">
+              <Text
+                className="text-link"
+                fontSize="xs"
+                position="absolute"
+                textTransform="uppercase"
+                top="2rem"
+              >
                 {tc('actions.create')}
               </Text>
             </Flex>

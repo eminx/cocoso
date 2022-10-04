@@ -10,7 +10,7 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
   }
 
   return (
-    <Box m="8" mb="80px">
+    <Box className="text-link-container" m="8" mb="80px">
       <LazyLoadImage
         alt={title}
         effect="blur"
@@ -23,11 +23,11 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
       />
       <Flex align="flex-start" justify="space-between" mb="2">
         <Box pr="2" maxW={300}>
-          <Heading fontSize="1.4rem" fontWeight="light" mb="2">
+          <Heading className="text-link" fontSize="1.4rem" fontWeight="light" mb="2">
             {title}
           </Heading>
           {subTitle && (
-            <Heading fontSize="md" fontWeight="light">
+            <Heading className="text-link" fontSize="md" fontWeight="light">
               <em>{subTitle}</em>
             </Heading>
           )}

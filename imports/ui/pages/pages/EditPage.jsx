@@ -121,7 +121,7 @@ class EditPage extends PureComponent {
     }
 
     return (
-      <Box bg="gray.100" pt="2">
+      <Box>
         <Template
           leftContent={
             <Box pb="2">
