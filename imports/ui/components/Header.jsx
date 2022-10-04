@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Center, Flex, Heading, Image } from '@chakra-ui/react';
 
-import HeaderMenu from './HeaderMenu';
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
+import HeaderMenu from './HeaderMenu';
 
 function Header() {
   const { currentHost, currentUser, isDesktop } = useContext(StateContext);
@@ -32,6 +32,9 @@ function Header() {
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
+      <Center my="12">
+        <HeaderMenu currentHost={currentHost} isDesktop={isDesktop} />
+      </Center>
     </Box>
   );
 }

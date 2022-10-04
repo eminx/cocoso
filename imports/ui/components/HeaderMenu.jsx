@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
+  Flex,
+  Heading,
   HStack,
+  Modal,
+  ModalOverlay,
   Menu as CMenu,
   MenuButton,
   MenuList,
@@ -10,7 +14,7 @@ import {
   Text,
   Wrap,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 
 const getRoute = (item, index) => {
   if (index === 0) {
@@ -30,6 +34,7 @@ const activeMenuItemStyle = {
 function HeaderMenu({ currentHost, isDesktop }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
+  const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = menu
     .filter((item) => item.isVisible)
@@ -53,13 +58,35 @@ function HeaderMenu({ currentHost, isDesktop }) {
 
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
+  return (
+    <Box zIndex="1500">
+      <CMenu onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
+        <MenuButton aria-label="Options" variant="outline">
+          <Flex align="flex-end">
+            <HamburgerIcon fontSize="40px" mr="2" />
+            <Heading size="xl">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Heading>
+          </Flex>
+        </MenuButton>
+        <MenuList>
+          {menuItems.map((item) => (
+            <MenuItem key={item.label} px="4" py="3" onClick={() => handleClick(item)}>
+              <Text fontSize="2xl">{item.label}</Text>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </CMenu>
+      <Modal isOpen={isOpen}>
+        <ModalOverlay />
+      </Modal>
+    </Box>
+  );
+
   if (isDesktop) {
     return (
       <Wrap align="center" py="2" px="4" spacing="4">
         {menuItems.map((item) => (
           <Box as="button" key={item.name} onClick={() => handleClick(item)}>
             <Text
-              // fontSize="sm"
               style={
                 activeMenuItem && activeMenuItem.label === item.label ? activeMenuItemStyle : null
               }
