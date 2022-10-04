@@ -7,7 +7,7 @@ import { StateContext } from '../LayoutContainer';
 import HeaderMenu from './HeaderMenu';
 
 function Header() {
-  const { currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
 
   return (
     <Box p="2" w="100%">
@@ -35,7 +35,11 @@ function Header() {
         </Flex>
       </Flex>
       <Center my="12">
-        <HeaderMenu currentHost={currentHost} isDesktop={isDesktop} />
+        <HeaderMenu
+          canCreateContent={canCreateContent}
+          currentHost={currentHost}
+          isDesktop={isDesktop}
+        />
       </Center>
     </Box>
   );

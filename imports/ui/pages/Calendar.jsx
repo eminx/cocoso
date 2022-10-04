@@ -245,16 +245,6 @@ class Calendar extends PureComponent {
 
         <Header />
 
-        {currentUser && canCreateContent && (
-          <Center mb="2">
-            <Link to="/activities/new">
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                {tc('actions.create')}
-              </Button>
-            </Link>
-          </Center>
-        )}
-
         <Box bg="white" pt="1" mb="3">
           <Center p="2">
             {!selectFilterView ? (

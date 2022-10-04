@@ -70,16 +70,6 @@ function Activities({ activitiesList, isLoading, history }) {
 
       <Header />
 
-      <Center mb="2">
-        {canCreateContent && (
-          <Link to="/activities/new">
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-              {tc('actions.create')}
-            </Button>
-          </Link>
-        )}
-      </Center>
-
       <Paginate items={allSortedActivities()}>
         {(activity) => (
           <Box key={activity.title}>

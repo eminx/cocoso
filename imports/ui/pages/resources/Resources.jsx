@@ -88,16 +88,6 @@ function ResourcesPage() {
 
       <Header />
 
-      {canCreateContent && (
-        <Center w="100%" mb="2">
-          <Link to={currentUser ? '/resources/new' : `/@${currentUser.username}/profile`}>
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-              {tc('actions.create')}
-            </Button>
-          </Link>
-        </Center>
-      )}
-
       {resourcesFilteredAndSorted.length == 0 && (
         <Center>
           <Heading size="md" fontWeight="bold">

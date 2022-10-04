@@ -117,15 +117,6 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
       <Header />
 
       <Box>
-        {canCreateContent && (
-          <Center>
-            <Link to={currentUser ? '/processes/new' : `/@${currentUser.username}/profile`}>
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                {tc('actions.create')}
-              </Button>
-            </Link>
-          </Center>
-        )}
         <Box p="4">
           <Center>
             <Tabs size="sm" onChange={(index) => setFilterBy(index)}>

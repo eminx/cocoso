@@ -83,16 +83,6 @@ function Works() {
 
       <Header />
 
-      <Center mb="2">
-        {canCreateContent && (
-          <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-              {tc('actions.create')}
-            </Button>
-          </Link>
-        )}
-      </Center>
-
       <Center mb="4">
         <Wrap pl="2" justify="center">
           <WrapItem>
