@@ -994,11 +994,11 @@ class Process extends Component {
             link: `/@${process.authorUsername}`,
           }}
           images={[process.imageUrl]}
-          navPath="processes"
           subTitle={process.readingMaterial}
           tabs={tabs}
           tags={tags}
           title={process.title}
+          noGridAdjust={!isMember}
         />
 
         <ConfirmModal

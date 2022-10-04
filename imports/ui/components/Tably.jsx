@@ -27,11 +27,11 @@ function Tably({
   adminMenu = null,
   author = null,
   images,
-  navPath,
   subTitle,
   tabs,
   title,
   tags = null,
+  noGridAdjust = false,
 }) {
   const history = useHistory();
   const location = useLocation();
@@ -42,7 +42,7 @@ function Tably({
   const isImage = images && images?.length > 0;
 
   useLayoutEffect(() => {
-    if (!isImage || !isDesktop) {
+    if (noGridAdjust || !isImage || !isDesktop) {
       return;
     }
     setTimeout(() => {

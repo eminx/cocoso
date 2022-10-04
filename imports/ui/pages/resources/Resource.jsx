@@ -149,7 +149,6 @@ function ResourcePage() {
       <Tably
         adminMenu={role === 'admin' ? adminMenu : null}
         images={resource.images}
-        navPath="resources"
         tabs={tabs}
         title={resource.label}
       />
