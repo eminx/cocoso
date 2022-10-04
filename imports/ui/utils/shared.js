@@ -291,10 +291,7 @@ function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) 
         color += ')';
       }
     });
-    const comboLabel = `${res.label} [${res.resourcesForCombo
-      .map((item) => item.label)
-      .join(',')}]`;
-    return { ...res, color, label: comboLabel };
+    return { ...res, color, label: res.label };
   });
 }
 
