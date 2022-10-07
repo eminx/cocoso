@@ -12,16 +12,18 @@ function Tabs({ tabs, children, ...otherProps }) {
     <CTabs colorScheme="gray.800" flexShrink="0" mt="2" {...otherProps}>
       <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
         {tabs?.map((tab) => (
-          <Link key={tab.title} to={parsePath(tab.path)} style={{ margin: 0 }}>
+          <Link
+            key={tab.title}
+            to={parsePath(tab.path)}
+            style={{ marginBottom: 4, marginInline: 8 }}
+          >
             <Tab
               as="span"
               _focus={{ boxShadow: 'none' }}
               textTransform="uppercase"
-              onClick={tab.onClick}
+              onClick={tab.onClick || null}
               pb="0"
-              mb="1"
               paddingInline="0"
-              marginInline="2"
             >
               {tab.title}
               {tab.badge && (
