@@ -31,6 +31,7 @@ function Header() {
                   ref={logo}
                   fit="contain"
                   maxHeight="80px"
+                  maxWidth="180px"
                   src={currentHost && currentHost.logo}
                 />
               </Box>
@@ -38,7 +39,8 @@ function Header() {
           </Box>
           <Box px="3">
             <Heading
-              size={isDesktop ? 'lg' : 'md'}
+              // size={isDesktop ? 'lg' : 'md'}
+              size="md"
               fontWeight="normal"
               textAlign={isDesktop ? 'left' : 'center'}
             >
@@ -61,7 +63,7 @@ function Header() {
         </Flex>
       </Flex>
       {!hideMenu && (
-        <Center my="12">
+        <Center mt="6" mb="4">
           <HeaderMenu
             canCreateContent={canCreateContent}
             currentHost={currentHost}

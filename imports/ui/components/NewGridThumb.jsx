@@ -10,7 +10,7 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
   }
 
   return (
-    <Box className="text-link-container" m="8" mb="80px">
+    <Box className="text-link-container" m="6" mb="40px">
       <LazyLoadImage
         alt={title}
         effect="blur"

@@ -27,7 +27,7 @@ function compareDatesForSort(a, b) {
 }
 
 function Activities({ activitiesList, isLoading, history }) {
-  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
