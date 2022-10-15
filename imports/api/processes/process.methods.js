@@ -6,7 +6,7 @@ import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Processes from './process';
 import {
-  getProcessJoinText,
+  getProcessRegistrationEmailBody,
   getProcessLeaveText,
   getInviteToPrivateProcessText,
 } from './process.mails';
@@ -208,16 +208,14 @@ Meteor.methods({
     }
 
     const theProcess = Processes.findOne(processId);
-
     const alreadyMember = theProcess.members.some((m) => m.memberId === user._id);
-
     if (alreadyMember) {
       throw new Meteor.Error('You are already a member');
     }
 
-    const currentHostName = currentHost.settings?.name;
-
+    const currentHostName = currentHost?.settings?.name;
     const userAvatar = user.avatar ? user.avatar.src : null;
+    const emailBody = getProcessRegistrationEmailBody(theProcess, currentHost, user);
 
     try {
       Processes.update(theProcess._id, {
@@ -239,12 +237,7 @@ Meteor.methods({
           },
         },
       });
-      Meteor.call(
-        'sendEmail',
-        user._id,
-        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessJoinText(user.firstName || user.username, theProcess.title, processId, host)
-      );
+      Meteor.call('sendEmail', user._id, `"${theProcess.title}", ${currentHostName}`, emailBody);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not join the circle');
@@ -260,8 +253,9 @@ Meteor.methods({
     const currentHost = Hosts.findOne({ host });
 
     const theProcess = Processes.findOne(processId);
-    const currentHostName = currentHost.settings?.name;
+    const currentHostName = currentHost?.settings?.name;
 
+    const emailBody = getProcessRegistrationEmailBody(theProcess, currentHost, user, true);
     try {
       Processes.update(theProcess._id, {
         $pull: {
@@ -280,8 +274,8 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         user._id,
-        `"${theProcess.title}" at ${currentHostName || publicSettings.name}`,
-        getProcessLeaveText(user.firstName || user.username, theProcess.title, processId, host)
+        `"${theProcess.title}", ${currentHostName || publicSettings.name}`,
+        emailBody
       );
     } catch (error) {
       throw new Meteor.Error('Could not leave the process');

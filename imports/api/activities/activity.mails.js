@@ -19,8 +19,8 @@ const getRegistrationEmailBody = (
     host = currentHost.host,
     hostLogo = currentHost.logo,
     hostAddress = currentHost.settings.address;
-  lang = currentUser.lang || currentHost.settings.lang || 'en';
 
+  const lang = currentUser.lang || currentHost.settings.lang || 'en';
   const tr = mailtranslations[lang];
 
   const { attendee, attendees, dateAndTime, dear, title } = tr.general;
@@ -640,7 +640,7 @@ const getUnregistrationEmailBody = (activity, values, currentHost, currentUser) 
     host = currentHost.host,
     hostLogo = currentHost.logo,
     hostAddress = currentHost.settings.address;
-  lang = currentUser.lang || currentHost.settings.lang || 'en';
+  const lang = currentUser.lang || currentHost.settings.lang || 'en';
 
   const tr = mailtranslations[lang];
 
