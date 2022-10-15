@@ -218,12 +218,18 @@ Meteor.methods({
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const hostName = currentHost.settings.name;
-    const hostLogo = currentHost.logo;
-    const hostAddress = currentHost.settings.address;
+    const hostName = currentHost?.settings?.name;
 
     const field = `datesAndTimes.${occurenceIndex}.attendees`;
     const occurence = theActivity.datesAndTimes[occurenceIndex];
+    const currentUser = Meteor.user();
+    const emailBody = getRegistrationEmailBody(
+      theActivity,
+      values,
+      occurence,
+      currentHost,
+      currentUser
+    );
 
     try {
       Activities.update(activityId, {
@@ -235,19 +241,7 @@ Meteor.methods({
         'sendEmail',
         values.email,
         `Your registration for "${theActivity.title}" at ${hostName}`,
-        getRegistrationEmailBody(
-          activityId,
-          theActivity.title,
-          theActivity.longDescription,
-          theActivity.imageUrl,
-          values.firstName,
-          values.lastName,
-          values.numberOfPeople,
-          occurence,
-          hostName,
-          host,
-          hostLogo
-        )
+        emailBody
       );
     } catch (error) {
       console.log(error);

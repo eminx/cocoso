@@ -1,16 +1,27 @@
-const getRegistrationEmailBody = (
-  activityId,
-  activityTitle,
-  activityBody,
-  activityImage,
-  firstName,
-  lastName,
-  numberOfPeople,
-  occurence,
-  hostName,
-  host,
-  hostLogo
-) => {
+import mailtranslations from './mailtranslations';
+
+const getRegistrationEmailBody = (activity, values, occurence, currentHost, currentUser) => {
+  const activityId = activity._id,
+    activityTitle = activity.title,
+    activityBody = activity.longDescription,
+    imageUrl = activity.imageUrl,
+    firstName = values.firstName,
+    lastName = values.lastName,
+    numberOfPeople = values.numberOfPeople,
+    hostName = currentHost.settings.name,
+    host = currentHost.host,
+    hostLogo = currentHost.logo,
+    hostAddress = currentHost.settings.address;
+  lang = currentUser.lang || currentHost.settings.lang || 'en';
+
+  const tr = mailtranslations[lang];
+
+  const { dear, person, people } = tr.general;
+  const { activityPage, confirmedApprovalText, confirmedApprovalTextLong, visitPage } =
+    tr.activityRegister;
+
+  const personOrPeople = numberOfPeople === 1 ? person : people;
+
   return `<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
@@ -125,10 +136,10 @@ const getRegistrationEmailBody = (
         >
           <tbody>
             <tr>
-              <td  style="width:200px;">
+              <td  style="width:180px;">
                 
         <img
-           height="auto" src="${hostLogo}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="200"
+           height="auto" src="${hostLogo}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="180"
         />
       
               </td>
@@ -139,13 +150,51 @@ const getRegistrationEmailBody = (
                   </td>
                 </tr>
               
+          </tbody>
+        </table>
+      
+        </div>
+      
+            <!--[if mso | IE]></td></tr></table><![endif]-->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+      
+        
+        <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="white" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+      
+        
+        <div  style="background:white;background-color:white;margin:0px auto;max-width:600px;">
+          
+          <table
+             align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:white;background-color:white;width:100%;"
+          >
+            <tbody>
+              <tr>
+                <td
+                   style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;"
+                >
+                  <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              
+        <div
+           class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
+        >
+          
+        <table
+           border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
+        >
+          <tbody>
+            
                 <tr>
                   <td
                      align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:24px;font-weight:bold;line-height:1.4;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:22px;font-weight:bold;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostName}</div>
       
                   </td>
@@ -195,8 +244,20 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:20px;line-height:1.4;text-align:center;color:rgb(50, 50, 50);"
-        >Hi ${firstName}! <br />Your registration is confirmed for: <b>${firstName} ${lastName}</b></div>
+           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+        >${dear} ${firstName}, <br /></b></div>
+      
+                  </td>
+                </tr>
+              
+                <tr>
+                  <td
+                     align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
+                  >
+                    
+        <div
+           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+        >${confirmedApprovalText}: <br /></div>
       
                   </td>
                 </tr>
@@ -245,8 +306,9 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Courier, mono-space;font-size:20px;line-height:1.5;text-align:center;color:rgb(50, 50, 50);"
-        ><b>${activityTitle}</b> <br /> ${occurence.startDate}, ${occurence.startTime} - ${occurence.endTime}<br /> ${numberOfPeople} person(s) <br /></div>
+           style="font-family:Courier, mono-space;font-size:20px;line-height:1.3;text-align:center;color:rgb(50, 50, 50);"
+        ><b>${firstName} ${lastName}</b> <br />
+            <b>${activityTitle}</b> <br /> <b>${occurence.startDate}, ${occurence.startTime} - ${occurence.endTime} </b> <br /> <b>${numberOfPeople} ${personOrPeople}</b> <br /></div>
       
                   </td>
                 </tr>
@@ -291,12 +353,12 @@ const getRegistrationEmailBody = (
             
                 <tr>
                   <td
-                     align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;"
+                     align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:16px;line-height:1.4;text-align:left;color:rgb(50, 50, 50);"
-        ><br /> May there be any changes to your registration, please go to the activity page to change your RSVP. Then by opening the date you signed up for, click the "Change RSVP" link and follow the instructions there.</div>
+           style="font-family:Sarabun, Arial;font-size:16px;line-height:1.5;text-align:center;color:rgb(50, 50, 50);"
+        >${confirmedApprovalTextLong}</div>
       
                   </td>
                 </tr>
@@ -317,7 +379,7 @@ const getRegistrationEmailBody = (
                 <a
                    href="https://${host}/activities/${activityId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
-                  Activity Page
+                  ${visitPage}
                 </a>
               </td>
             </tr>
@@ -378,7 +440,7 @@ const getRegistrationEmailBody = (
               <td  style="width:250px;">
                 
         <img
-           height="auto" src="${activityImage}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="250"
+           height="auto" src="${imageUrl}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="250"
         />
       
               </td>
@@ -394,9 +456,7 @@ const getRegistrationEmailBody = (
       
         </div>
       
-            <!--[if mso | IE]></td><![endif]-->
-      <!-- right paragraph -->
-            <!--[if mso | IE]><td class="" style="vertical-align:top;width:300px;" ><![endif]-->
+            <!--[if mso | IE]></td><td class="" style="vertical-align:top;width:300px;" ><![endif]-->
               
         <div
            class="mj-column-per-50 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
@@ -413,7 +473,7 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:20px;line-height:1.4;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:20px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         ><b>${activityTitle}</b></div>
       
                   </td>
@@ -421,11 +481,11 @@ const getRegistrationEmailBody = (
               
                 <tr>
                   <td
-                     align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;"
+                     align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;"
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:16px;line-height:1.4;text-align:left;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${activityBody}</div>
       
                   </td>
@@ -447,7 +507,7 @@ const getRegistrationEmailBody = (
                 <a
                    href="https://${host}/activities/${activityId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
-                  Visit the Activity Page
+                  ${activityPage}
                 </a>
               </td>
             </tr>
@@ -501,8 +561,8 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:20px;line-height:30px;text-align:center;color:rgb(50, 50, 50);"
-        >We look forward to your participation.</div>
+           style="font-family:Sarabun, Arial;font-size:20px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+        >${hostName}</div>
       
                   </td>
                 </tr>
@@ -513,8 +573,8 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:20px;line-height:1.4;text-align:center;color:rgb(50, 50, 50);"
-        >${hostName}</div>
+           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+        >${hostAddress}</div>
       
                   </td>
                 </tr>
