@@ -1,14 +1,25 @@
 {
   "en": {
     "general": {
+      "attendee": "Attendee",
+      "attendees": "Attendees",
+      "dateAndTime": "Date & Time",
       "dear": "Dear",
       "person": "person",
-      "people": "people"
+      "people": "people",
+      "title": "Title"
     },
     "activityRegister": {
-      "confirmedApprovalText": "Your registration is confirmed",
-      "confirmedApprovalTextLong": "May you prefer to make changes to your registration or cancel it; please go to the activity page, open the date you signed up for, and then click the \"Change/cancel existing registration\" link. Then follow the instructions there to edit or your details or entirely cancel your registration for this event.",
       "activityPage": "Activity page",
+      "confirmedApprovalText": "Your registration is confirmed",
+      "confirmedApprovalTextUpdate": "The update to your registration is confirmed",
+      "confirmedApprovalTextLong": "May you prefer to make changes to your registration or cancel it; please go to the activity page, open the date you signed up for, and then click the \"Change/cancel existing registration\" link. Then follow the instructions there to update your details or entirely cancel your registration for this event.",
+      "visitPage": "Visit the activity page"
+    },
+    "activityUnregister": {
+      "activityPage": "Activity page",
+      "confirmedApprovalText": "Your registration is removed",
+      "confirmedApprovalTextLong": "If you want to RSVP again, you can do so at the activity page",
       "visitPage": "Visit the activity page"
     }
   }

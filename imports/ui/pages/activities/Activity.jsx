@@ -331,7 +331,7 @@ class Activity extends PureComponent {
               </Box>
             )}
             {canCreateContent && (
-              <Box px="1">
+              <Box p="1">
                 <Heading mb="1" as="h4" size="sm">
                   {t('public.attandence.label')}
                 </Heading>

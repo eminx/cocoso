@@ -255,13 +255,19 @@ Meteor.methods({
       ...values,
       registerDate: new Date(),
     };
-
+    const occurence = theActivity.datesAndTimes[occurenceIndex];
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const hostName = currentHost.settings.name;
-
+    const currentUser = Meteor.user();
+    const emailBody = getRegistrationEmailBody(
+      theActivity,
+      rsvpValues,
+      occurence,
+      currentHost,
+      currentUser,
+      true
+    );
     const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
-    const occurence = theActivity.datesAndTimes[occurenceIndex];
 
     try {
       Activities.update(activityId, {
@@ -272,15 +278,8 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         values.email,
-        `Update to your registration for "${theActivity.title}" at ${hostName}`,
-        getRegistrationEmailBody(
-          values.firstName,
-          values.numberOfPeople,
-          occurence,
-          activityId,
-          hostName,
-          host
-        )
+        `Update to your registration for "${theActivity.title}" at ${currentHost.settings.name}`,
+        emailBody
       );
     } catch (error) {
       console.log(error);
@@ -293,7 +292,7 @@ Meteor.methods({
     const occurences = [...theActivity.datesAndTimes];
     const theOccurence = occurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees[attendeeIndex];
-
+    console.log(theOccurence.attendees, attendeeIndex);
     const theAttendees = [...theOccurence.attendees];
     const theAttendeesWithout = theAttendees.filter(
       (attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex
@@ -304,6 +303,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;
+    const currentUser = Meteor.user();
 
     try {
       Activities.update(activityId, {
@@ -315,15 +315,10 @@ Meteor.methods({
         'sendEmail',
         theNonAttendee.email,
         `Update to your registration for "${theActivity.title}" at ${hostName}`,
-        getUnregistrationEmailBody(
-          theNonAttendee.firstName,
-          theOccurence,
-          activityId,
-          hostName,
-          host
-        )
+        getUnregistrationEmailBody(theActivity, theNonAttendee, currentHost, currentUser)
       );
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't update document");
     }
   },
