@@ -18,12 +18,13 @@ const getRegistrationEmailBody = (
     hostName = currentHost.settings.name,
     host = currentHost.host,
     hostLogo = currentHost.logo,
-    hostAddress = currentHost.settings.address;
+    hostAddress = currentHost.settings.address,
+    resource = activity.resource;
 
   const lang = currentUser.lang || currentHost.settings.lang || 'en';
   const tr = mailtranslations[lang];
 
-  const { attendee, attendees, dateAndTime, dear, title } = tr.general;
+  const { address, attendee, attendees, dateAndTime, dear, title } = tr.general;
   const {
     activityPage,
     confirmedApprovalText,
@@ -262,7 +263,7 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${dear} ${firstName}, <br /></b></div>
       
                   </td>
@@ -274,7 +275,7 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${confirmedApprovalBrief}: <br /></div>
       
                   </td>
@@ -337,6 +338,14 @@ const getRegistrationEmailBody = (
             <tr>
               <td style="padding: 0 15px 0 0; width: 100px;">${attendingLabel}:</td>
               <td style="padding: 0 15px;"><b>${attending}</b></td>
+            </tr>
+            <tr>
+              <td style="padding: 0 15px 0 0; width: 100px;">${address}:</td>
+              <td style="padding: 0 15px;"><b>${hostAddress}</b></td>
+            </tr>
+            <tr>
+              <td style="padding: 0 15px 0 0; width: 100px;"></td>
+              <td style="padding: 0 15px;"><b>${resource}</b></td>
             </tr>
         </table>
       
@@ -591,7 +600,7 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:20px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostName}</div>
       
                   </td>
@@ -603,7 +612,7 @@ const getRegistrationEmailBody = (
                   >
                     
         <div
-           style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
+           style="font-family:Sarabun, Arial;font-size:14px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
         >${hostAddress}</div>
       
                   </td>

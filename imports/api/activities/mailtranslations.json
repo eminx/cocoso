@@ -1,6 +1,7 @@
 {
   "en": {
     "general": {
+      "address": "Address",
       "attendee": "Attendee",
       "attendees": "Attendees",
       "dateAndTime": "Date & Time",
