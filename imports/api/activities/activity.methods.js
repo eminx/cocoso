@@ -237,12 +237,7 @@ Meteor.methods({
           [field]: rsvpValues,
         },
       });
-      Meteor.call(
-        'sendEmail',
-        values.email,
-        `Your registration for "${theActivity.title}" at ${hostName}`,
-        emailBody
-      );
+      Meteor.call('sendEmail', values.email, `"${theActivity.title}", ${hostName}`, emailBody);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't register attendance");
@@ -292,7 +287,7 @@ Meteor.methods({
     const occurences = [...theActivity.datesAndTimes];
     const theOccurence = occurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees[attendeeIndex];
-    console.log(theOccurence.attendees, attendeeIndex);
+
     const theAttendees = [...theOccurence.attendees];
     const theAttendeesWithout = theAttendees.filter(
       (attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex

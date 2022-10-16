@@ -337,7 +337,7 @@ class Process extends Component {
       .map((attendee) => attendee.username)
       .includes(currentUser.username);
 
-    const meetingAttendence = {
+    const meetingAttendee = {
       email: currentUser.emails[0].address,
       username: currentUser.username,
       firstName: currentUser.firstName || '',
@@ -358,7 +358,7 @@ class Process extends Component {
         }
       });
     } else {
-      Meteor.call('registerAttendance', activityId, meetingAttendence, (error, respond) => {
+      Meteor.call('registerAttendance', activityId, meetingAttendee, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);

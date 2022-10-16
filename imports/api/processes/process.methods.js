@@ -7,8 +7,7 @@ import Hosts from '../hosts/host';
 import Processes from './process';
 import {
   getProcessRegistrationEmailBody,
-  getProcessLeaveText,
-  getInviteToPrivateProcessText,
+  getInviteToPrivateProcessEmailBody,
 } from './process.mails';
 
 const publicSettings = Meteor.settings.public;
@@ -452,21 +451,13 @@ Meteor.methods({
     }
 
     const currentHostName = currentHost.settings?.name;
-
+    const emailBody = getInviteToPrivateProcessEmailBody(theProcess, currentHost, user);
     try {
       Meteor.call(
         'sendEmail',
         person.email,
-        `Invitation to join the process "${theProcess.title}" at ${
-          currentHostName || publicSettings.name
-        } by ${user.username}`,
-        getInviteToPrivateProcessText(
-          person.firstName,
-          theProcess.title,
-          theProcess._id,
-          user.username,
-          host
-        )
+        `"${theProcess.title}", ${currentHostName}`,
+        emailBody
       );
 
       Processes.update(processId, {

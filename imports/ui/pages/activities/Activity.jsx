@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactToPrint from 'react-to-print';
@@ -414,6 +415,10 @@ class Activity extends PureComponent {
 
     if (!activityData || isLoading) {
       return <Loader />;
+    }
+
+    if (activityData.isProcessMeeting) {
+      return <Redirect to={`/processes/${activityData.processId}/dates`} />;
     }
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;

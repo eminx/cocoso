@@ -17,7 +17,7 @@
     },
     "invitePrivateProcess": {
       "confirmedApprovalText": "This is an email to invite you to a private process",
-      "confirmedApprovalTextLong": "If you wish to accept this invite and join the process, simply go to the process page and click the \"Join\" button. Please bear in mind that you have to have an account, or create one, with this email address to which you received this email. You are encouraged to follow the updates, register to attend meetings and join the discussion at this page."
+      "confirmedApprovalTextLong": "If you wish to accept this invite and join, simply go to the page and click the \"Join\" button. Please bear in mind that you have to have an account, or create one, with this email address to which you received this email. You are encouraged to follow the updates, register to attend meetings and join the discussion at this page."
     },
     "attendMeeting": {
       "confirmedApprovalText": "You have successfully registered your attendance for the meeting",
