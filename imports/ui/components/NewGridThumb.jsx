@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import Tag from './Tag';
@@ -8,7 +8,6 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
   if (!title || !imageUrl) {
     return null;
   }
-  const [isMobile] = useMediaQuery('(min-width: 960px)');
 
   return (
     <Box className="text-link-container" m="6" mb="40px">
@@ -18,7 +17,6 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
         fit="contain"
         src={imageUrl}
         style={{
-          height: '100%',
           maxHeight: 300,
           marginBottom: 12,
         }}

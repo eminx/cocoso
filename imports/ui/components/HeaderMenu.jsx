@@ -63,7 +63,7 @@ function HeaderMenu({ canCreateContent, currentHost }) {
   const showNewButton = canCreateContent && activeMenuItem && activeMenuItem.name !== 'members';
 
   return (
-    <Box zIndex="1401">
+    <Box zIndex="1501">
       <Flex align="center">
         <CMenu placement="bottom" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
           <MenuButton aria-label="Options" variant="outline">

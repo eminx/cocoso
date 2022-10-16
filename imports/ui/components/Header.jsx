@@ -31,12 +31,12 @@ function Header() {
           </Link>
         </Box>
         {!isMobile && !hideMenu && (
-          <Center mt="6" mb="4">
+          <Center h="100%" mt="4">
             <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
           </Center>
         )}
 
-        <Flex w="180px" zIndex="1402" justify="flex-end">
+        <Flex w="180px" zIndex="1402" justify="flex-end" align="flex-start">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
