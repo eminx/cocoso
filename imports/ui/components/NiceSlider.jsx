@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Flex, Image } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';

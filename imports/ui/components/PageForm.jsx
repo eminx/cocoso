@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button, Flex, Input, VStack } from '@chakra-ui/react';
-import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
-import FormField from '../components/FormField';
+import FormField from './FormField';
+import ReactQuill from './Quill';
 
 const PageForm = ({ defaultValues, onSubmit }) => {
   const [t] = useTranslation('admin');
@@ -33,12 +32,7 @@ const PageForm = ({ defaultValues, onSubmit }) => {
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                  placeholder={t('pages.form.desc.holder')}
-                />
+                <ReactQuill {...field} placeholder={t('pages.form.desc.holder')} />
               )}
             />
           </FormField>

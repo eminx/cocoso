@@ -7,7 +7,6 @@ import {
   Center,
   Flex,
   IconButton,
-  Image,
   Input,
   Textarea,
   Select,
@@ -15,15 +14,12 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
-import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import FormField from './FormField';
-import FileDropper from '../components/FileDropper';
-import NiceSlider from '../components/NiceSlider';
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
-import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css';
+import FileDropper from './FileDropper';
+import NiceSlider from './NiceSlider';
+import ReactQuill from './Quill';
 
 function WorkForm({
   categories,
@@ -80,12 +76,7 @@ function WorkForm({
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                  placeholder={t('works.longDesc.holder')}
-                />
+                <ReactQuill {...field} placeholder={t('works.longDesc.holder')} />
               )}
             />
           </FormField>

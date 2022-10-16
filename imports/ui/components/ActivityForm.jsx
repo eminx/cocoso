@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import ReactQuill from 'react-quill';
 import {
   Box,
   Button,
@@ -16,10 +15,10 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
-import FormField from '../components/FormField';
+import FormField from './FormField';
+import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
 
 const defaultCapacity = 40;
@@ -201,9 +200,7 @@ function ActivityForm({
               <Controller
                 control={control}
                 name="longDescription"
-                render={({ field }) => (
-                  <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-                )}
+                render={({ field }) => <ReactQuill {...field} />}
               />
             </FormField>
 

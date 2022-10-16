@@ -1,12 +1,11 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Flex, Input, VStack } from '@chakra-ui/react';
-import ReactQuill from 'react-quill';
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
-import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
+import ReactQuill from '../../components/Quill';
 
 const Personal = ({ defaultValues, onSubmit }) => {
   const { control, formState, handleSubmit, register } = useForm({
@@ -33,9 +32,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
             <Controller
               control={control}
               name="bio"
-              render={({ field }) => (
-                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-              )}
+              render={({ field }) => <ReactQuill {...field} />}
             />
           </FormField>
 
@@ -43,9 +40,7 @@ const Personal = ({ defaultValues, onSubmit }) => {
             <Controller
               control={control}
               name="contactInfo"
-              render={({ field }) => (
-                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-              )}
+              render={({ field }) => <ReactQuill {...field} />}
             />
           </FormField>
 

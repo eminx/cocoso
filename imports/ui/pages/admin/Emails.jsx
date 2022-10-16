@@ -9,13 +9,11 @@ import {
   InputRightAddon,
   VStack,
 } from '@chakra-ui/react';
-import ReactQuill from 'react-quill';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
-import { editorFormats, editorModules } from '../../utils/constants/quillConfig';
 import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
@@ -24,6 +22,7 @@ import FormField from '../../components/FormField';
 import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
 import Breadcrumb from '../../components/Breadcrumb';
+import ReactQuill from '../../components/Quill';
 
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
@@ -128,9 +127,7 @@ function EmailForm({ defaultValues, onSubmit }) {
             <Controller
               control={control}
               name="body"
-              render={({ field }) => (
-                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-              )}
+              render={({ field }) => <ReactQuill {...field} />}
             />
           </FormField>
 
