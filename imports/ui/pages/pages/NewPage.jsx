@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
+import i18n from 'i18next';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
@@ -91,7 +92,7 @@ class NewPage extends PureComponent {
 
   render() {
     const { currentUser, tc } = this.props;
-    const { role } = this.context;
+    const { currentHost, role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
@@ -111,14 +112,23 @@ class NewPage extends PureComponent {
     if (isSuccess && newPageId) {
       return <Redirect to={`/pages/${newPageId}`} />;
     }
+    const { menu } = currentHost?.settings;
+    const navItem = menu.find((item) => item.name === 'info');
+
+    const furtherItems = [
+      { label: navItem.label, link: '/pages' },
+      { label: tc('actions.create') },
+    ];
 
     return (
-      <Template>
-        <Breadcrumb />
-        <Box bg="white" p="6">
-          <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
-        </Box>
-      </Template>
+      <>
+        <Breadcrumb furtherItems={furtherItems} />
+        <Template>
+          <Box p="6">
+            <PageForm defaultValues={formValues} onSubmit={this.handleSubmit} />
+          </Box>
+        </Template>
+      </>
     );
   }
 }

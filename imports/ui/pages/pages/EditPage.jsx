@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Redirect } from 'react-router-dom';
+import { Box, Button, Flex } from '@chakra-ui/react';
 
 import PageForm from '../../components/PageForm';
-import Template from '../../components/Template';
 import { parseTitle, call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
 import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
+import Template from '../../components/Template';
 
 class EditPage extends PureComponent {
   state = {
@@ -96,7 +95,7 @@ class EditPage extends PureComponent {
 
   render() {
     const { currentUser, isLoading, pageData, pageTitles, t, tc } = this.props;
-    const { role } = this.context;
+    const { currentHost, role } = this.context;
 
     if (!currentUser || role !== 'admin') {
       return (
@@ -120,19 +119,20 @@ class EditPage extends PureComponent {
       return <Redirect to={`/pages/${parseTitle(newPageTitle)}`} />;
     }
 
+    const { menu } = currentHost?.settings;
+    const navItem = menu.find((item) => item.name === 'info');
+
+    const furtherItems = [
+      { label: navItem.label, link: '/pages' },
+      { label: pageData.title, link: `/pages/${parseTitle(pageData.title)}` },
+      { label: tc('actions.update') },
+    ];
+
     return (
       <Box>
-        <Template
-          leftContent={
-            <Box pb="2">
-              <Link to={`/pages/${pageData.title}`}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={pageData} contextKey="title" />
-          <Box bg="white" p="6">
+        <Breadcrumb furtherItems={furtherItems} />
+        <Template>
+          <Box p="6">
             <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
 
             <Flex justify="center" py="4">
