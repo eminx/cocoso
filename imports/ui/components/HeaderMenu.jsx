@@ -26,7 +26,7 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-function HeaderMenu({ canCreateContent, currentHost, isDesktop }) {
+function HeaderMenu({ canCreateContent, currentHost }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);

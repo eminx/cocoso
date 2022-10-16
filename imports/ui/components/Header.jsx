@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Flex, Heading, Image, useMediaQuery } from '@chakra-ui/react';
 
@@ -10,18 +10,9 @@ function Header() {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
   const { pathname } = useLocation();
   const logo = useRef(null);
-  const [isMobile] = useMediaQuery('(max-width: 660px)');
-  const [popupWidth, setPopupWidth] = useState();
-  useEffect(() => {
-    setTimeout(() => {
-      const rect = logo.current.getBoundingClientRect();
-      setPopupWidth(parseInt(rect.width));
-    }, 200);
-  }, []);
-
+  const [isMobile] = useMediaQuery('(max-width: 640px)');
   const hideMenu = ['/login', '/signup', '/reset-password', '/forgot-password'].includes(pathname);
-
-  const { name, subname } = currentHost?.settings;
+  // const { name, subname } = currentHost?.settings;
 
   return (
     <Box p="4" w="100%">
@@ -39,22 +30,20 @@ function Header() {
             </Box>
           </Link>
         </Box>
-        {!isMobile && <MainHeading name={name} subname={subname} />}
+        {!isMobile && !hideMenu && (
+          <Center mt="6" mb="4">
+            <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
+          </Center>
+        )}
 
         <Flex w="180px" zIndex="1402" justify="flex-end">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
 
-      {isMobile && <MainHeading name={name} subname={subname} />}
-
-      {!hideMenu && (
+      {isMobile && !hideMenu && (
         <Center mt="6" mb="4">
-          <HeaderMenu
-            canCreateContent={canCreateContent}
-            currentHost={currentHost}
-            isDesktop={isDesktop}
-          />
+          <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
         </Center>
       )}
     </Box>
