@@ -35,7 +35,7 @@ function Tably({
 }) {
   const history = useHistory();
   const location = useLocation();
-  const { isDesktop, currentHost } = useContext(StateContext);
+  const { isDesktop } = useContext(StateContext);
   const imageContainer = useRef();
   const [imageContainerTop, setImageContainerTop] = useState(null);
 

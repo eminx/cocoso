@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { Trans } from 'react-i18next';
@@ -9,7 +9,6 @@ import { Trans } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
-import Template from '../../components/Template';
 
 import { parseTitle } from '../../utils/shared';
 import Header from '../../components/Header';
@@ -45,7 +44,7 @@ class Page extends PureComponent {
   };
 
   render() {
-    const { currentUser, currentHost, role } = this.context;
+    const { currentHost, currentUser, isDesktop, role } = this.context;
     const { match } = this.props;
     const { pages, isLoading } = this.state;
 
@@ -69,48 +68,53 @@ class Page extends PureComponent {
 
     return (
       <>
+        <Helmet>
+          <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        </Helmet>
+
         <Header />
-        <Template
-          heading={currentPage.title}
-          leftContent={
+
+        {!isDesktop && (
+          <Center px="4">
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
               activePageTitle={param}
             />
-          }
-          rightContent={
-            currentUser &&
-            role === 'admin' && (
-              <Center p="2">
-                <Link to="/pages/new">
-                  <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                    <Trans i18nKey="common:actions.create" />
-                  </Button>
-                </Link>
-              </Center>
-            )
-          }
-        >
-          <Helmet>
-            <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-          </Helmet>
-          <div className={currentPage.isTermsPage && 'is-terms-page'}>
-            <Box bg="white" mb="2" py="4" px="6">
+          </Center>
+        )}
+
+        <Flex mt={isDesktop ? '8' : '0'}>
+          {isDesktop && (
+            <Box w="30%" p="4" pl="12">
+              <PagesList
+                pageTitles={pageTitles}
+                onChange={this.handlePageClick}
+                activePageTitle={param}
+              />
+            </Box>
+          )}
+          <Box p="4" w={isDesktop ? '40%' : '100%'}>
+            <Box mb="4">
+              <Heading as="h2" size="lg">
+                {currentPage.title}
+              </Heading>
+            </Box>
+            <Box className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
               <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
             </Box>
+          </Box>
+        </Flex>
 
-            {currentUser && role === 'admin' && !currentPage.isTermsPage && (
-              <Center p="2">
-                <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-                  <Button as="span" variant="ghost" size="sm">
-                    <Trans i18nKey="common:actions.update" />
-                  </Button>
-                </Link>
-              </Center>
-            )}
-          </div>
-        </Template>
+        {currentUser && role === 'admin' && !currentPage.isTermsPage && (
+          <Center p="2">
+            <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+              <Button as="span" variant="ghost" size="sm">
+                <Trans i18nKey="common:actions.update" />
+              </Button>
+            </Link>
+          </Center>
+        )}
       </>
     );
   }
