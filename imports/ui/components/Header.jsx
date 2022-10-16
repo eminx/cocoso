@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Box, Center, Flex, Heading, Image } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Image, useMediaQuery } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
@@ -10,6 +10,7 @@ function Header() {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
   const { pathname } = useLocation();
   const logo = useRef(null);
+  const [isMobile] = useMediaQuery('(max-width: 660px)');
   const [popupWidth, setPopupWidth] = useState();
   useEffect(() => {
     setTimeout(() => {
@@ -20,48 +21,33 @@ function Header() {
 
   const hideMenu = ['/login', '/signup', '/reset-password', '/forgot-password'].includes(pathname);
 
+  const { name, subname } = currentHost?.settings;
+
   return (
     <Box p="4" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
-        <Flex align={isDesktop ? 'flex-end' : 'flex-start'}>
-          <Box>
-            <Link to="/">
-              <Box maxHeight="80px">
-                <Image
-                  ref={logo}
-                  fit="contain"
-                  maxHeight="80px"
-                  maxWidth="180px"
-                  src={currentHost && currentHost.logo}
-                />
-              </Box>
-            </Link>
-          </Box>
-          <Box px="3">
-            <Heading
-              // size={isDesktop ? 'lg' : 'md'}
-              size="md"
-              fontWeight="normal"
-              textAlign={isDesktop ? 'left' : 'center'}
-            >
-              {currentHost?.settings?.name}
-            </Heading>
-            {currentHost?.settings?.subname && currentHost?.settings?.subname.length > 0 && (
-              <Heading
-                size={isDesktop ? 'md' : 'sm'}
-                fontWeight="light"
-                textAlign={isDesktop ? 'left' : 'center'}
-              >
-                {currentHost.settings.subname}
-              </Heading>
-            )}
-          </Box>
-        </Flex>
+        <Box>
+          <Link to="/">
+            <Box maxHeight="80px" w="180px">
+              <Image
+                ref={logo}
+                fit="contain"
+                maxHeight="80px"
+                maxWidth="180px"
+                src={currentHost && currentHost.logo}
+              />
+            </Box>
+          </Link>
+        </Box>
+        {!isMobile && <MainHeading name={name} subname={subname} />}
 
-        <Flex justify="flex-end" w={popupWidth} zIndex="1402">
+        <Flex w="180px" zIndex="1402" justify="flex-end">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
+
+      {isMobile && <MainHeading name={name} subname={subname} />}
+
       {!hideMenu && (
         <Center mt="6" mb="4">
           <HeaderMenu
@@ -70,6 +56,25 @@ function Header() {
             isDesktop={isDesktop}
           />
         </Center>
+      )}
+    </Box>
+  );
+}
+
+function MainHeading({ name, subname }) {
+  return (
+    <Box px="3">
+      <Heading fontWeight="normal" mt="2" size="md" textAlign="center">
+        {name}
+      </Heading>
+      {subname && subname.length > 0 && (
+        <Heading
+          size={isDesktop ? 'md' : 'sm'}
+          fontWeight="light"
+          textAlign={isDesktop ? 'left' : 'center'}
+        >
+          {subname}
+        </Heading>
       )}
     </Box>
   );
