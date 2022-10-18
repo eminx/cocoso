@@ -68,8 +68,17 @@ class Page extends PureComponent {
 
     const renderEditButton = () => {
       if (!currentUser || role !== 'admin') {
-        return;
+        return null;
       }
+      return (
+        <Center p="2">
+          <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+            <Button as="span" variant="ghost" size="sm">
+              <Trans i18nKey="common:actions.update" />
+            </Button>
+          </Link>
+        </Center>
+      );
     };
 
     if (isDesktop) {
@@ -99,7 +108,7 @@ class Page extends PureComponent {
               <Box mb="8">
                 <NiceSlider images={currentPage.images} />
               </Box>
-              <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+              <Box p="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
                 <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
               </Box>
             </Box>
