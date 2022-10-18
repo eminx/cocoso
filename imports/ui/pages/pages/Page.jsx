@@ -9,9 +9,9 @@ import { Trans } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
-
-import { parseTitle } from '../../utils/shared';
+import NiceSlider from '../../components/NiceSlider';
 import Header from '../../components/Header';
+import { parseTitle } from '../../utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -66,6 +66,50 @@ class Page extends PureComponent {
 
     const pageTitles = pages && pages.map((page) => page.title);
 
+    const renderEditButton = () => {
+      if (!currentUser || role !== 'admin') {
+        return;
+      }
+    };
+
+    if (isDesktop) {
+      return (
+        <>
+          <Helmet>
+            <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          </Helmet>
+
+          <Header />
+
+          <Flex mt="8">
+            <Box w="30%" p="4" pl="12">
+              <PagesList
+                pageTitles={pageTitles}
+                onChange={this.handlePageClick}
+                activePageTitle={param}
+              />
+            </Box>
+
+            <Box w="100%" maxW="520px">
+              <Box px="4" mb="4">
+                <Heading as="h2" size="lg">
+                  {currentPage.title}
+                </Heading>
+              </Box>
+              <Box mb="8">
+                <NiceSlider images={currentPage.images} />
+              </Box>
+              <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+                <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+              </Box>
+            </Box>
+          </Flex>
+
+          {renderEditButton()}
+        </>
+      );
+    }
+
     return (
       <>
         <Helmet>
@@ -74,47 +118,31 @@ class Page extends PureComponent {
 
         <Header />
 
-        {!isDesktop && (
-          <Center px="4">
-            <PagesList
-              pageTitles={pageTitles}
-              onChange={this.handlePageClick}
-              activePageTitle={param}
-            />
-          </Center>
-        )}
+        <Center px="4">
+          <PagesList
+            pageTitles={pageTitles}
+            onChange={this.handlePageClick}
+            activePageTitle={param}
+          />
+        </Center>
 
-        <Flex mt={isDesktop ? '8' : '0'}>
-          {isDesktop && (
-            <Box w="30%" p="4" pl="12">
-              <PagesList
-                pageTitles={pageTitles}
-                onChange={this.handlePageClick}
-                activePageTitle={param}
-              />
-            </Box>
-          )}
-          <Box p="4" w={isDesktop ? '40%' : '100%'}>
-            <Box mb="4">
+        <Center>
+          <Box w="100%" maxW="520px">
+            <Box px="4" mb="4">
               <Heading as="h2" size="lg">
                 {currentPage.title}
               </Heading>
             </Box>
-            <Box className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+            <Box mb="8">
+              <NiceSlider images={currentPage.images} />
+            </Box>
+            <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
               <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
             </Box>
           </Box>
-        </Flex>
+        </Center>
 
-        {currentUser && role === 'admin' && !currentPage.isTermsPage && (
-          <Center p="2">
-            <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-              <Button as="span" variant="ghost" size="sm">
-                <Trans i18nKey="common:actions.update" />
-              </Button>
-            </Link>
-          </Center>
-        )}
+        {renderEditButton()}
       </>
     );
   }
