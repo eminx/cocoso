@@ -1,6 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
@@ -15,127 +14,68 @@ import { parseTitle } from '../../utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
-class Page extends PureComponent {
-  state = {
-    pages: null,
-    isLoading: true,
-  };
+function Page() {
+  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const [pages, setPages] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { pageId } = useParams();
 
-  componentDidMount() {
+  useEffect(() => {
     Meteor.call('getPages', (error, respond) => {
-      this.setState({
-        pages: respond,
-        isLoading: false,
-      });
+      setPages(respond);
+      setIsLoading(false);
     });
+  }, []);
+
+  const currentPage = pages?.find((page) => parseTitle(page?.title) === parseTitle(pageId));
+
+  if (isLoading) {
+    return <Loader />;
   }
 
-  getCurrentPage = () => {
-    const { match } = this.props;
-    const { pages } = this.state;
-    if (!pages || pages.length === 0) {
-      return;
+  if (!currentPage && pages && pages.length > 0) {
+    return <Redirect to={`/pages/${parseTitle(pages[0].title)}`} />;
+  }
+
+  if (!currentPage || !currentPage.title || !currentPage.longDescription) {
+    return <Loader />;
+  }
+
+  const pageTitles = pages && pages.map((page) => page.title);
+
+  const renderEditButton = () => {
+    if (!currentUser || role !== 'admin') {
+      return null;
     }
-
-    const param = match.params.pageId;
-
-    const currentPage = pages.find((page) => parseTitle(page.title) === parseTitle(param));
-    return currentPage;
+    return (
+      <Center p="2">
+        <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+          <Button as="span" variant="ghost" size="sm">
+            <Trans i18nKey="common:actions.update" />
+          </Button>
+        </Link>
+      </Center>
+    );
   };
 
-  render() {
-    const { currentHost, currentUser, isDesktop, role } = this.context;
-    const { match } = this.props;
-    const { pages, isLoading } = this.state;
-
-    if (isLoading) {
-      return <Loader />;
-    }
-
-    const param = match.params.pageId;
-
-    const currentPage = this.getCurrentPage();
-
-    if (!currentPage && pages && pages.length > 0) {
-      return <Redirect to={`/pages/${parseTitle(pages[0].title)}`} />;
-    }
-
-    if (!currentPage || !currentPage.title || !currentPage.longDescription) {
-      return <Loader />;
-    }
-
-    const pageTitles = pages && pages.map((page) => page.title);
-
-    const renderEditButton = () => {
-      if (!currentUser || role !== 'admin') {
-        return null;
-      }
-      return (
-        <Center p="2">
-          <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-            <Button as="span" variant="ghost" size="sm">
-              <Trans i18nKey="common:actions.update" />
-            </Button>
-          </Link>
-        </Center>
-      );
-    };
-
-    if (isDesktop) {
-      return (
-        <>
-          <Helmet>
-            <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
-          </Helmet>
-
-          <Header />
-
-          <Flex mt="8">
-            <Box w="30%" p="4" pl="12">
-              <PagesList
-                pageTitles={pageTitles}
-                onChange={this.handlePageClick}
-                activePageTitle={param}
-              />
-            </Box>
-
-            <Box w="100%" maxW="520px">
-              <Box px="4" mb="4">
-                <Heading as="h2" size="lg">
-                  {currentPage.title}
-                </Heading>
-              </Box>
-              <Box mb="8">
-                <NiceSlider images={currentPage.images} />
-              </Box>
-              <Box p="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
-                <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
-              </Box>
-            </Box>
-          </Flex>
-
-          {renderEditButton()}
-        </>
-      );
-    }
-
+  if (isDesktop) {
     return (
       <>
         <Helmet>
-          <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+          <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
         </Helmet>
 
         <Header />
 
-        <Center px="4">
-          <PagesList
-            pageTitles={pageTitles}
-            onChange={this.handlePageClick}
-            activePageTitle={param}
-          />
-        </Center>
+        <Flex mt="8">
+          <Box w="30%" p="4" pl="12">
+            <PagesList
+              pageTitles={pageTitles}
+              onChange={this.handlePageClick}
+              activePageTitle={pageId}
+            />
+          </Box>
 
-        <Center>
           <Box w="100%" maxW="520px">
             <Box px="4" mb="4">
               <Heading as="h2" size="lg">
@@ -145,18 +85,52 @@ class Page extends PureComponent {
             <Box mb="8">
               <NiceSlider images={currentPage.images} />
             </Box>
-            <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+            <Box p="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
               <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
             </Box>
           </Box>
-        </Center>
+        </Flex>
 
         {renderEditButton()}
       </>
     );
   }
-}
 
-Page.contextType = StateContext;
+  return (
+    <>
+      <Helmet>
+        <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+      </Helmet>
+
+      <Header />
+
+      <Center px="4">
+        <PagesList
+          pageTitles={pageTitles}
+          onChange={this.handlePageClick}
+          activePageTitle={pageId}
+        />
+      </Center>
+
+      <Center>
+        <Box w="100%" maxW="520px">
+          <Box px="4" mb="4">
+            <Heading as="h2" size="lg">
+              {currentPage.title}
+            </Heading>
+          </Box>
+          <Box mb="8">
+            <NiceSlider images={currentPage.images} />
+          </Box>
+          <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+            <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+          </Box>
+        </Box>
+      </Center>
+
+      {renderEditButton()}
+    </>
+  );
+}
 
 export default Page;
