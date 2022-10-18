@@ -50,7 +50,9 @@ const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
 
 const SortableContainer = sortableContainer(({ children }) => (
   <Center w="100%">
-    <Wrap py="2">{children}</Wrap>
+    <Wrap py="2" display="flex" justify="center">
+      {children}
+    </Wrap>
   </Center>
 ));
 

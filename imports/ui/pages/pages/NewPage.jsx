@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
+import arrayMove from 'array-move';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
@@ -13,6 +14,7 @@ function NewPage({ currentUser, pageTitles, tc }) {
   const { currentHost, role } = useContext(StateContext);
   const [images, setImages] = useState([]);
   const [newPageId, setNewPageId] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   const handleSetUploadableImages = async (files) => {
     files.forEach((uploadableImage, index) => {
@@ -35,6 +37,7 @@ function NewPage({ currentUser, pageTitles, tc }) {
   };
 
   const handleSubmit = (formValues) => {
+    setIsCreating(true);
     if (!images || images.length === 0) {
       createPage(formValues, []);
       return;
@@ -87,6 +90,7 @@ function NewPage({ currentUser, pageTitles, tc }) {
       );
       setNewPageId(parseTitle(result));
     } catch (error) {
+      setIsCreating(false);
       console.log('error', error);
     }
   };
@@ -104,14 +108,14 @@ function NewPage({ currentUser, pageTitles, tc }) {
 
   if (!currentUser || role !== 'admin') {
     return (
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
+      <Center p="4">
         <Alert
           message={tc('message.access.admin', {
             domain: `${tc('domains.static')} ${tc('domains.page').toLowerCase()}`,
           })}
           type="error"
         />
-      </div>
+      </Center>
     );
   }
 
@@ -130,6 +134,7 @@ function NewPage({ currentUser, pageTitles, tc }) {
         <Box p="6">
           <PageForm
             images={images.map((image) => image.src)}
+            isButtonLoading={isCreating}
             onRemoveImage={handleRemoveImage}
             onSortImages={handleSortImages}
             onSetUploadableImages={handleSetUploadableImages}

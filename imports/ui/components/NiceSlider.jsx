@@ -19,6 +19,7 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
             cursor="pointer"
             fit="contain"
             src={images[0]}
+            margin="0 auto"
             onClick={() => setToggler(!toggler)}
           />
         </Box>

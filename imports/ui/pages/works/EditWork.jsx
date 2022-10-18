@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Box, Button, Center, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Button, Center } from '@chakra-ui/react';
 import i18n from 'i18next';
 
 import { StateContext } from '../../LayoutContainer';

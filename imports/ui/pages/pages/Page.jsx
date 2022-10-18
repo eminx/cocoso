@@ -77,12 +77,12 @@ function Page() {
           </Box>
 
           <Box w="100%" maxW="520px">
-            <Box px="4" mb="4">
+            <Box px="4" mb="8">
               <Heading as="h2" size="lg">
                 {currentPage.title}
               </Heading>
             </Box>
-            <Box mb="8">
+            <Box mb="6">
               <NiceSlider images={currentPage.images} />
             </Box>
             <Box p="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">

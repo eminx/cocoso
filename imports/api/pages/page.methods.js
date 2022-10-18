@@ -45,7 +45,7 @@ Meteor.methods({
     }
   },
 
-  updatePage(pageId, formValues) {
+  updatePage(pageId, formValues, images) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -67,7 +67,7 @@ Meteor.methods({
         $set: {
           title: formValues.title,
           longDescription: formValues.longDescription,
-          // imageUrl,
+          images,
           latestUpdate: new Date(),
         },
       });

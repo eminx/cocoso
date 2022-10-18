@@ -10,6 +10,7 @@ import ImageUploadUI from './ImageUploadUI';
 const PageForm = ({
   defaultValues = { title: '', longDescription: '' },
   images,
+  isButtonLoading = false,
   onRemoveImage,
   onSetUploadableImages,
   onSortImages,
@@ -18,10 +19,9 @@ const PageForm = ({
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const { control, formState, handleSubmit, register } = useForm({
+  const { control, handleSubmit, register } = useForm({
     defaultValues,
   });
-  const { isDirty, isSubmitting } = formState;
 
   return (
     <div>
@@ -36,14 +36,14 @@ const PageForm = ({
             />
           </FormField>
 
-          <FormField label={t('pages.form.title.label')}>
+          <FormField isRequired label={t('pages.form.title.label')}>
             <Input
               {...register('title', { required: true })}
               placeholder={t('pages.form.title.holder')}
             />
           </FormField>
 
-          <FormField label={t('pages.form.desc.label')}>
+          <FormField isRequired label={t('pages.form.desc.label')}>
             <Controller
               control={control}
               name="longDescription"
@@ -55,7 +55,7 @@ const PageForm = ({
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            <Button isLoading={isButtonLoading} type="submit">
               {tc('actions.submit')}
             </Button>
           </Flex>
