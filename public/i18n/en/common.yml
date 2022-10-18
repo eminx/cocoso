@@ -164,3 +164,6 @@ bookings:
 
 terms:
   title: Terms of Service & Privacy Policy
+
+images:
+  countLabel: Images ({{ count }})

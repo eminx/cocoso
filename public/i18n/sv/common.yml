@@ -164,3 +164,6 @@ bookings:
 
 terms:
   title: Användarvillkor och sekretesspolicy
+
+images:
+  countLabel: Bilder ({{ count }})

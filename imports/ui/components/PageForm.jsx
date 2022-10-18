@@ -5,8 +5,16 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from './FormField';
 import ReactQuill from './Quill';
+import ImageUploadUI from './ImageUploadUI';
 
-const PageForm = ({ defaultValues, onSubmit }) => {
+const PageForm = ({
+  defaultValues = { title: '', longDescription: '' },
+  images,
+  onRemoveImage,
+  onSetUploadableImages,
+  onSortImages,
+  onSubmit,
+}) => {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -19,6 +27,15 @@ const PageForm = ({ defaultValues, onSubmit }) => {
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
+          <FormField label={tc('images.countLabel', { count: images.length })}>
+            <ImageUploadUI
+              images={images}
+              onRemoveImage={onRemoveImage}
+              onSelectImages={onSetUploadableImages}
+              onSortImages={onSortImages}
+            />
+          </FormField>
+
           <FormField label={t('pages.form.title.label')}>
             <Input
               {...register('title', { required: true })}

@@ -18,6 +18,9 @@ Pages.schema = new SimpleSchema({
     defaultValue: true,
   },
 
+  images: { type: Array, optional: true },
+  'images.$': { type: String },
+
   creationDate: { type: Date },
   latestUpdate: {
     type: Date,
