@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Box, Center } from '@chakra-ui/react';
 import arrayMove from 'array-move';
+import { useTranslation } from 'react-i18next';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
@@ -10,11 +11,19 @@ import { message, Alert } from '../../components/message';
 import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
-function NewPage({ currentUser, pageTitles, tc }) {
-  const { currentHost, role } = useContext(StateContext);
+function NewPage() {
+  const { currentHost, currentUser, role } = useContext(StateContext);
+  const [pageTitles, setPageTitles] = useState([]);
   const [images, setImages] = useState([]);
   const [newPageId, setNewPageId] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [tc] = useTranslation('common');
+
+  useEffect(() => {
+    Meteor.call('getPages', (error, respond) => {
+      setPageTitles(respond.map((page) => page.title));
+    });
+  }, []);
 
   const handleSetUploadableImages = async (files) => {
     files.forEach((uploadableImage, index) => {

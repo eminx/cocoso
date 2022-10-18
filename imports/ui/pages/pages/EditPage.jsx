@@ -13,7 +13,7 @@ import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
 
-function EditPage({}) {
+function EditPage() {
   const { currentHost, currentUser, role } = useContext(StateContext);
 
   const [images, setImages] = useState([]);
