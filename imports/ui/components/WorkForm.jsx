@@ -17,9 +17,9 @@ import { SmallCloseIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import FormField from './FormField';
-import FileDropper from './FileDropper';
 import NiceSlider from './NiceSlider';
 import ReactQuill from './Quill';
+import ImageUploadUI from './ImageUploadUI';
 
 function WorkForm({
   categories,
@@ -86,29 +86,13 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
-            <Box>
-              {images && <NiceSlider width="300px" images={images} />}
-
-              {images && images.length > 0 ? (
-                <SortableContainer onSortEnd={onSortImages} axis="xy" helperClass="sortableHelper">
-                  {images.map((image, index) => (
-                    <SortableItem
-                      key={image}
-                      index={index}
-                      image={image}
-                      onRemoveImage={() => onRemoveImage(index)}
-                    />
-                  ))}
-                  <Center w="100%">
-                    <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                  </Center>
-                </SortableContainer>
-              ) : (
-                <Center>
-                  <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                </Center>
-              )}
-            </Box>
+            {images && <NiceSlider width="300px" images={images} />}
+            <ImageUploadUI
+              images={images}
+              onRemoveImage={onRemoveImage}
+              onSelectImages={setUploadableImages}
+              onSortImages={onSortImages}
+            />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
