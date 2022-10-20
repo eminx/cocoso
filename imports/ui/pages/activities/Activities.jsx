@@ -74,9 +74,10 @@ function Activities({ activitiesList, isLoading, history }) {
               to={activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`}
             >
               <NewGridThumb
+                dates={activity.datesAndTimes.map((d) => d.startDate)}
                 imageUrl={activity.imageUrl}
-                title={activity.title}
                 subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                title={activity.title}
               />
             </Link>
           </Box>

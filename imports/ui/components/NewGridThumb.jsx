@@ -1,10 +1,11 @@
 import React from 'react';
-import { Avatar, Box, Flex, Heading } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
+import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
+export default function GridThumb({ avatar, dates, imageUrl, subTitle, title, tag }) {
   if (!title || !imageUrl) {
     return null;
   }
@@ -28,12 +29,23 @@ export default function GridThumb({ avatar, imageUrl, subTitle, title, tag }) {
           </Heading>
           {subTitle && (
             <Heading className="text-link" fontSize="md" fontWeight="light">
-              <em>{subTitle}</em>
+              {subTitle}
             </Heading>
           )}
           {tag && <Tag label={tag} mb="1" />}
         </Box>
         {avatar && <Avatar name={avatar.name} src={avatar.url} />}
+        {dates && (
+          <Flex color="gray.800">
+            <DateJust style={{ color: '##2d2d2d' }}>{dates[0]}</DateJust>
+            {dates.length > 1 && (
+              <Text fontSize="2xl" ml="2">
+                {' '}
+                + {dates.length - 1}
+              </Text>
+            )}
+          </Flex>
+        )}
       </Flex>
     </Box>
   );
