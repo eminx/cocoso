@@ -26,7 +26,7 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import NiceList from '../../../components/NiceList';
-import { Alert, message } from '../../../components/message';
+import { message } from '../../../components/message';
 import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
@@ -165,6 +165,14 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
   return (
     <Box>
+      {!resourceBookingsForUser ||
+        (resourceBookingsForUser.length === 0 && (
+          <Box>
+            <Text fontSize="sm" mb="4" textAlign="center">
+              {tc('bookings.empty')}
+            </Text>
+          </Box>
+        ))}
       <Box>
         <Accordion
           index={[isAccordionOpen ? 0 : null]}
@@ -266,7 +274,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
       {!isLoading && (
         <Box bg="white" mt="2">
-          {resourceBookingsForUser && resourceBookingsForUser.length > 0 ? (
+          {resourceBookingsForUser && resourceBookingsForUser.length > 0 && (
             <NiceList actionsDisabled={!isAdmin} list={resourceBookingsForUser}>
               {(booking) => (
                 <Box>
@@ -281,8 +289,6 @@ export default function BookingsField({ currentUser, selectedResource }) {
                 </Box>
               )}
             </NiceList>
-          ) : (
-            <Alert type="warning">{tc('bookings.empty')}</Alert>
           )}
         </Box>
       )}

@@ -15,6 +15,16 @@ const chakraTheme = extendTheme({
     },
   },
   components: {
+    Input: {
+      defaultProps: {
+        variant: 'filled',
+      },
+    },
+    Select: {
+      defaultProps: {
+        variant: 'filled',
+      },
+    },
     Tabs: {
       defaultProps: {
         colorScheme: 'gray.800',
@@ -23,6 +33,11 @@ const chakraTheme = extendTheme({
     TabList: {
       defaultProps: {
         flexWrap: 'wrap',
+      },
+    },
+    Textarea: {
+      defaultProps: {
+        variant: 'filled',
       },
     },
   },

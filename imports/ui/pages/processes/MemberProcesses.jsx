@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import Paginate from '../../components/Paginate';
-import GridThumb from '../../components/GridThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 
 function MemberProcesses({ match }) {
   const [processes, setProcesses] = useState([]);
@@ -40,7 +39,11 @@ function MemberProcesses({ match }) {
           {(process) => (
             <Box key={process._id}>
               <Link to={`/processes/${process._id}`}>
-                <GridThumb image={process.imageUrl} large title={process.title}></GridThumb>
+                <NewGridThumb
+                  imageUrl={process.imageUrl}
+                  subTitle={process.readingMaterial}
+                  title={process.title}
+                />
               </Link>
             </Box>
           )}

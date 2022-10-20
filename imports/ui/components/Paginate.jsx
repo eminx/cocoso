@@ -7,8 +7,8 @@ import '../utils/styles/paginate.css';
 const defaultItemsPerPage = 12;
 
 function PaginatedItems({
-  grid = { columns: [1, 1, 2, 3], spacing: 3, w: '100%' },
-  isContainerSimpleGrid = true,
+  grid = { columns: [1, 1, 2, 3], spacing: 2, w: '100%' },
+  isContainerSimpleGrid = false,
   items,
   itemsPerPage = defaultItemsPerPage,
   children,

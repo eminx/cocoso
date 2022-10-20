@@ -7,7 +7,6 @@ import {
   Center,
   Flex,
   IconButton,
-  Image,
   Input,
   Textarea,
   Select,
@@ -15,15 +14,12 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
-import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import FormField from './FormField';
-import FileDropper from '../components/FileDropper';
-import NiceSlider from '../components/NiceSlider';
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
-import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css';
+import NiceSlider from './NiceSlider';
+import ReactQuill from './Quill';
+import ImageUploadUI from './ImageUploadUI';
 
 function WorkForm({
   categories,
@@ -80,12 +76,7 @@ function WorkForm({
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                  placeholder={t('works.longDesc.holder')}
-                />
+                <ReactQuill {...field} placeholder={t('works.longDesc.holder')} />
               )}
             />
           </FormField>
@@ -95,29 +86,17 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
-            <Box>
-              {images && <NiceSlider width="300px" images={images} />}
-
-              {images && images.length > 0 ? (
-                <SortableContainer onSortEnd={onSortImages} axis="xy" helperClass="sortableHelper">
-                  {images.map((image, index) => (
-                    <SortableItem
-                      key={image}
-                      index={index}
-                      image={image}
-                      onRemoveImage={() => onRemoveImage(index)}
-                    />
-                  ))}
-                  <Center w="100%">
-                    <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                  </Center>
-                </SortableContainer>
-              ) : (
-                <Center>
-                  <FileDropper setUploadableImage={setUploadableImages} isMultiple />
-                </Center>
-              )}
-            </Box>
+            {images && (
+              <Center>
+                <NiceSlider width="300px" images={images} />
+              </Center>
+            )}
+            <ImageUploadUI
+              images={images}
+              onRemoveImage={onRemoveImage}
+              onSelectImages={setUploadableImages}
+              onSortImages={onSortImages}
+            />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

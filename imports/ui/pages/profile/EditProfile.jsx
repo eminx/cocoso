@@ -117,7 +117,7 @@ class Profile extends PureComponent {
 
   render() {
     const { currentUser, history, t, tc } = this.props;
-    const { role } = this.context;
+    const { currentHost, role } = this.context;
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -125,12 +125,28 @@ class Profile extends PureComponent {
 
     const { isDeleteModalOn, isDeleting, uploadableAvatarLocal, isUploading } = this.state;
 
-    const pathname = history && history.location.pathname;
+    console.log(currentHost);
+    const membersInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'members');
+
+    const furtherBreadcrumbLinks = [
+      {
+        label: membersInMenu?.label,
+        link: '/members',
+      },
+      {
+        label: currentUser.username,
+        link: `/@${currentUser.username}`,
+      },
+      {
+        label: tc('actions.update'),
+        link: null,
+      },
+    ];
 
     return (
-      <Box bg="gray.100">
+      <Box>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         <Template>
-          <Breadcrumb />
           <Box bg="white">
             <Center my="2" p="2">
               {['admin', 'contributor', 'participant'].includes(role) ? (

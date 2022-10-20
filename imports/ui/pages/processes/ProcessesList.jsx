@@ -4,15 +4,14 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { Link } from 'react-router-dom';
 
-import { Box, Button, Center, Tabs, Tab, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Box, Center, Tabs, Tab, TabList, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
 import { call, compareForSort } from '../../utils/shared';
-import GridThumb from '../../components/GridThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 import { message } from '../../components/message';
 
 moment.locale(i18n.language);
@@ -101,21 +100,10 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
         }`}</title>
       </Helmet>
 
-      <Header />
-
       <Box>
-        {canCreateContent && (
-          <Center>
-            <Link to={currentUser ? '/processes/new' : `/@${currentUser.username}/profile`}>
-              <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-                {tc('actions.create')}
-              </Button>
-            </Link>
-          </Center>
-        )}
         <Box p="4">
-          <Tabs size="sm" onChange={(index) => setFilterBy(index)}>
-            <Center>
+          <Center>
+            <Tabs size="sm" onChange={(index) => setFilterBy(index)}>
               <TabList>
                 {filterOptions.map((option) => (
                   <Tab _focus={{ boxShadow: 'none' }} key={option.value}>
@@ -123,28 +111,24 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
                   </Tab>
                 ))}
               </TabList>
-            </Center>
-            <TabPanels>
-              {filterOptions.map((option) => (
-                <TabPanel key={option.value}>
-                  {processesRendered && processesRendered.length > 0 && (
-                    <Paginate
-                      items={processesRendered}
-                      grid={{ columns: [1, 1, 2, 2], spacing: 3, w: '100%' }}
-                    >
-                      {(process) => (
-                        <Link key={process._id} to={`/processes/${process._id}`}>
-                          <GridThumb image={process.imageUrl} large title={process.title}>
-                            {moment(process.creationDate).format('D MMM YYYY')}
-                          </GridThumb>
-                        </Link>
-                      )}
-                    </Paginate>
-                  )}
-                </TabPanel>
-              ))}
-            </TabPanels>
-          </Tabs>
+            </Tabs>
+          </Center>
+
+          {processesRendered && processesRendered.length > 0 && (
+            <Paginate items={processesRendered}>
+              {(process) => (
+                <WrapItem key={process._id}>
+                  <Link to={`/processes/${process._id}`}>
+                    <NewGridThumb
+                      imageUrl={process.imageUrl}
+                      subTitle={process.readingMaterial}
+                      title={process.title}
+                    />
+                  </Link>
+                </WrapItem>
+              )}
+            </Paginate>
+          )}
         </Box>
       </Box>
     </Box>

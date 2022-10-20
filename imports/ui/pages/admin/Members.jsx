@@ -18,7 +18,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
@@ -29,6 +28,7 @@ import { call } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
 import Hosts from '../../../api/hosts/host';
 import UsageReport from '../../components/UsageReport';
+import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
 
@@ -179,7 +179,7 @@ function Members({ history, members, isLoading }) {
 
   return (
     <>
-      <Header />
+      <Breadcrumb />
 
       <Template
         heading={t('label')}
@@ -208,7 +208,6 @@ function Members({ history, members, isLoading }) {
             <Center p="4">
               <Box>
                 <Input
-                  bg="white"
                   placeholder={t('form.holder')}
                   value={filterWord}
                   onChange={(event) => setFilterWord(event.target.value)}

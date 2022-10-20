@@ -357,19 +357,22 @@ class EditActivity extends PureComponent {
 
     const isFormValid = this.isFormValid();
 
+    const furtherBreadcrumbLinks = [
+      {
+        label: activity.title,
+        link: `/activities/${activity._id}`,
+      },
+      {
+        label: tc('actions.update'),
+        link: null,
+      },
+    ];
+
     return (
-      <Box bg="gray.100" pt="2">
-        <Template
-          leftContent={
-            <Box pb="2">
-              <Link to={`/activities/${activity._id}`}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={activity} contextKey="title" />
-          <Box bg="white" p="8">
+      <Box>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+        <Template>
+          <Box p="6">
             <Box mb="8">
               <VStack spacing="2">
                 <FormSwitch

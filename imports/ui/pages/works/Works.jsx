@@ -2,12 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, SimpleGrid, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from '../../components/Header';
 import Paginate from '../../components/Paginate';
-import WorkThumb from '../../components/WorkThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
@@ -81,18 +80,6 @@ function Works() {
         }`}</title>
       </Helmet>
 
-      <Header />
-
-      <Center mb="2">
-        {canCreateContent && (
-          <Link to={currentUser ? '/works/new' : `/@${currentUser.username}/profile`}>
-            <Button as="span" colorScheme="green" variant="outline" textTransform="uppercase">
-              {tc('actions.create')}
-            </Button>
-          </Link>
-        )}
-      </Center>
-
       <Center mb="4">
         <Wrap pl="2" justify="center">
           <WrapItem>
@@ -121,7 +108,15 @@ function Works() {
         {(work) => (
           <Box key={work._id}>
             <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-              <WorkThumb work={work} />
+              <NewGridThumb
+                avatar={{
+                  name: work.authorUsername,
+                  url: work.authorAvatar,
+                }}
+                imageUrl={work.images[0]}
+                tag={work.category?.label}
+                title={work.title}
+              />
             </Link>
           </Box>
         )}

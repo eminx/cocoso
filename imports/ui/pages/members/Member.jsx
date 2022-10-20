@@ -1,19 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Container,
-  Center,
-  Flex,
-  Link as CLink,
-  Tabs,
-  TabList,
-  Tab,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Container, Center, Flex, Link as CLink, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
-import { Trans } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -23,6 +12,7 @@ import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 import MemberActivities from '../activities/MemberActivities';
 import MemberProcesses from '../processes/MemberProcesses';
+import Tabs from '../../components/Tabs';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -77,60 +67,43 @@ function MemberPublic({ history, match, path }) {
   //   }
   // };
 
-  const getDefaultTabIndex = () => {
-    switch (profileRoute) {
-      case 'bio':
-        return 0;
-      case 'works':
-        return 1;
-      case 'activities':
-        return 2;
-      case 'processes':
-        return 3;
-      case 'hosts':
-        return 4;
-      case 'contact':
-        return 5;
-      case 'edit':
-        return 6;
-      default:
-        return 0;
-    }
-  };
-
   const { menu, name } = currentHost?.settings;
-  const worksInMenu = menu.find((item) => item.name === 'works');
-  const activitiesInMenu = menu.find((item) => item.name === 'activities');
-  const processesInMenu = menu.find((item) => item.name === 'processes');
   const membersInMenu = menu.find((item) => item.name === 'members');
 
   const tabs = [
     {
-      link: `/@${user.username}/bio`,
-      label: tc('domains.bio'),
-      isVisible: true,
-    },
-    {
-      link: `/@${user.username}/works`,
-      label: worksInMenu.label,
-      isVisible: worksInMenu.isVisible,
-    },
-    {
-      link: `/@${user.username}/activities`,
-      label: activitiesInMenu.label,
-      isVisible: activitiesInMenu.isVisible,
-    },
-    {
-      link: `/@${user.username}/processes`,
-      label: processesInMenu.label,
-      isVisible: processesInMenu.isVisible,
-    },
-    {
-      link: `/@${user.username}/contact`,
-      label: tc('labels.contact'),
+      path: `/@${username}/bio`,
+      title: tc('domains.bio'),
       isVisible: true,
     },
   ];
+
+  menu
+    ?.filter((item) => {
+      return ['works', 'activities', 'processes'].includes(item.name) && item.isVisible;
+    })
+    ?.forEach((item) => {
+      tabs.push({
+        path: `/@${username}/${item.name}`,
+        title: item.label,
+      });
+    });
+
+  tabs.push({
+    path: `/@${username}/contact`,
+    title: tc('labels.contact'),
+  });
+
+  if (currentUser && currentUser.username === username) {
+    tabs.push({
+      path: `/@${username}/edit`,
+      title: <b>{tc('actions.update')}</b>,
+    });
+  }
+
+  const getDefaultTabIndex = () => {
+    return tabs.findIndex((tab) => tab.path === history?.location?.pathname);
+  };
 
   return (
     <>
@@ -146,7 +119,6 @@ function MemberPublic({ history, match, path }) {
             {membersInMenu.label}
           </CLink>
         </Link>
-        {/* <Text mx="2">/</Text> */}
       </Flex>
 
       <Box>
@@ -156,32 +128,7 @@ function MemberPublic({ history, match, path }) {
           </Box>
         </Center>
       </Box>
-      <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm">
-        <TabList flexWrap="wrap">
-          {tabs
-            .filter((t) => t.isVisible)
-            .map((tab) => (
-              <Link key={tab.label} to={tab.link}>
-                <Tab _focus={{ boxShadow: 'none' }} as="div" textTransform="uppercase">
-                  {tab.label}
-                </Tab>
-              </Link>
-            ))}
-
-          {currentUser && currentUser.username === user.username && (
-            <Link to={`/@${user.username}/edit`}>
-              <Tab
-                _focus={{ boxShadow: 'none' }}
-                as="div"
-                fontWeight="bold"
-                textTransform="uppercase"
-              >
-                <Trans i18nKey="common:actions.update" />
-              </Tab>
-            </Link>
-          )}
-        </TabList>
-      </Tabs>
+      <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm" tabs={tabs} />
 
       <Switch path={path} history={history}>
         <Route path="/@:username/bio" render={(props) => <Bio user={user} />} />

@@ -17,10 +17,10 @@ function NewResourcePage({ history }) {
   };
 
   return (
-    <Box bg="gray.100">
+    <Box>
+      <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
       <Template>
-        <Breadcrumb />
-        <Box bg="white" p="6">
+        <Box p="6">
           <ResourceForm defaultValues={resourceModel} history={history} />
         </Box>
       </Template>

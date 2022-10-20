@@ -120,7 +120,6 @@ function Work() {
           link: `/@${work.authorUsername}`,
         }}
         images={work.images}
-        navPath="works"
         subTitle={work.subTitle}
         tabs={tabs}
         tags={tags}

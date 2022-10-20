@@ -1,39 +1,116 @@
-import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import React, { useEffect, useContext, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { Box, Button, Flex } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import arrayMove from 'array-move';
 
 import PageForm from '../../components/PageForm';
-import Template from '../../components/Template';
-import { parseTitle, call } from '../../utils/shared';
+import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
 import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
+import Template from '../../components/Template';
 
-class EditPage extends PureComponent {
-  state = {
-    isSuccess: false,
-    isError: false,
-    isDeleteModalOn: false,
+function EditPage() {
+  const { currentHost, currentUser, role } = useContext(StateContext);
+
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(null);
+  const [pageTitles, setPageTitles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const history = useHistory();
+  const { pageId } = useParams();
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  useEffect(() => {
+    Meteor.call('getPages', (error, respond) => {
+      const currentPage =
+        respond?.length > 0 && respond.find((page) => parseTitle(page.title) === pageId);
+      setPage(currentPage);
+      currentPage.images &&
+        setImages(
+          currentPage.images.map((image) => ({
+            src: image,
+            type: 'uploaded',
+          }))
+        );
+      setPageTitles(respond.map((page) => page.title));
+      setIsLoading(false);
+    });
+  }, []);
+
+  const handleSetUploadableImages = async (files) => {
+    files.forEach((uploadableImage, index) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadableImage);
+      reader.addEventListener(
+        'load',
+        () => {
+          setImages((images) => [
+            ...images,
+            {
+              resizableData: uploadableImage,
+              src: reader.result,
+              type: 'not-uploaded',
+            },
+          ]);
+        },
+        false
+      );
+    });
   };
 
-  handleSubmit = async (values) => {
-    const { currentUser, pageData, pageTitles, tc } = this.props;
-    const { role } = this.context;
+  const handleSubmit = (formValues) => {
+    setIsUpdating(true);
+    if (!images || images.length === 0) {
+      updatePage(formValues, []);
+      return;
+    }
+    uploadImages(formValues);
+  };
 
+  const uploadImages = async (formValues) => {
+    const isThereUploadable = images.some((image) => image.type === 'not-uploaded');
+    if (!isThereUploadable) {
+      const imagesReadyToSave = images.map((image) => image.src);
+      updatePage(formValues, imagesReadyToSave);
+      return;
+    }
+
+    try {
+      const imagesReadyToSave = await Promise.all(
+        images.map(async (uploadableImage, index) => {
+          if (uploadableImage.type === 'uploaded') {
+            return uploadableImage.src;
+          }
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
+          const uploadedImage = await uploadImage(resizedImage, 'pageImageUpload');
+          return uploadedImage;
+        })
+      );
+      updatePage(formValues, imagesReadyToSave);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  const updatePage = async (formValues, imagesReadyToSave) => {
     if (!currentUser || role !== 'admin') {
       message.error(tc('message.access.deny'));
       return false;
     }
 
     if (
-      pageTitles &&
-      values &&
       pageTitles
-        .filter((title) => title !== pageData.title)
-        .some((title) => title.toLowerCase() === values.title.toLowerCase())
+        .filter((title) => page.title !== title)
+        .some((title) => title.toLowerCase() === formValues.title.toLowerCase())
     ) {
       message.error(
         tc('message.exists', {
@@ -45,119 +122,115 @@ class EditPage extends PureComponent {
     }
 
     try {
-      const result = await call('updatePage', pageData._id, values);
+      await call('updatePage', page._id, formValues, imagesReadyToSave);
       message.success(
-        tc('message.success.update', {
+        tc('message.success.create', {
           domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
         })
       );
-      this.setState({
-        newPageTitle: parseTitle(result),
-        isSuccess: true,
-      });
+      history.push(`pages/${parseTitle(formValues.title)}`);
     } catch (error) {
+      setIsUpdating(false);
       console.log('error', error);
-      this.setState({
-        isError: true,
-      });
     }
   };
 
-  handleDeletePage = async () => {
-    const { currentUser, pageData, tc } = this.props;
-    const { role } = this.context;
+  const handleRemoveImage = (imageIndex) => {
+    setImages(images.filter((image, index) => imageIndex !== index));
+  };
 
+  const handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+    setImages(arrayMove(images, oldIndex, newIndex));
+  };
+
+  const handleDeletePage = async () => {
     if (!currentUser || role !== 'admin') {
       message.error(tc('message.access.deny'));
       return false;
     }
 
     try {
-      await call('deletePage', pageData._id);
+      await call('deletePage', page._id);
       message.success(
         tc('message.success.remove', {
           domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
         })
       );
-      this.setState({
-        newPageTitle: 'deleted',
-        isSuccess: true,
-      });
+      history.push('/pages');
     } catch (error) {
-      this.setState({
-        isLoading: false,
-        isError: true,
-      });
+      console.log(error);
     }
   };
 
-  closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
-  openDeleteModal = () => this.setState({ isDeleteModalOn: true });
-
-  render() {
-    const { currentUser, isLoading, pageData, pageTitles, t, tc } = this.props;
-    const { role } = this.context;
-
-    if (!currentUser || role !== 'admin') {
-      return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert message={tc('message.access.deny')} type="error" />
-        </div>
-      );
-    }
-
-    const { isSuccess, newPageTitle, isDeleteModalOn } = this.state;
-
-    if (!pageData || isLoading) {
-      return <Loader />;
-    }
-
-    if (isSuccess) {
-      if (newPageTitle === 'deleted') {
-        const pageUrl = parseTitle(pageTitles[0]);
-        return <Redirect to={`/pages/${pageUrl}`} />;
-      }
-      return <Redirect to={`/pages/${parseTitle(newPageTitle)}`} />;
-    }
-
+  if (!currentUser || role !== 'admin') {
     return (
-      <Box bg="gray.100" pt="2">
-        <Template
-          leftContent={
-            <Box pb="2">
-              <Link to={`/pages/${pageData.title}`}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={pageData} contextKey="title" />
-          <Box bg="white" p="6">
-            <PageForm defaultValues={pageData} onSubmit={this.handleSubmit} />
-
-            <Flex justify="center" py="4">
-              <Button colorScheme="red" size="sm" variant="ghost" onClick={this.openDeleteModal}>
-                {t('pages.actions.delete')}
-              </Button>
-            </Flex>
-          </Box>
-
-          <ConfirmModal
-            visible={isDeleteModalOn}
-            onConfirm={this.handleDeletePage}
-            onCancel={this.closeDeleteModal}
-            title={tc('modal.confirm.delete.title')}
-          >
-            {tc('modals.confirm.delete.body', {
-              domain: tc('domains.page').toLowerCase(),
-            })}
-          </ConfirmModal>
-        </Template>
-      </Box>
+      <Center p="4">
+        <Alert
+          message={tc('message.access.admin', {
+            domain: `${tc('domains.static')} ${tc('domains.page').toLowerCase()}`,
+          })}
+          type="error"
+        />
+      </Center>
     );
   }
-}
 
-EditPage.contextType = StateContext;
+  if (!page || isLoading) {
+    return <Loader />;
+  }
+
+  const { menu } = currentHost?.settings;
+  const navItem = menu.find((item) => item.name === 'info');
+
+  const furtherItems = [
+    { label: navItem.label, link: '/pages' },
+    { label: page.title, link: `/pages/${parseTitle(page.title)}` },
+    { label: tc('actions.update') },
+  ];
+
+  return (
+    <Box>
+      <Breadcrumb furtherItems={furtherItems} />
+      <Template>
+        <Box p="6">
+          <PageForm
+            defaultValues={page}
+            images={images.map((image) => image.src)}
+            isButtonLoading={isUpdating}
+            onRemoveImage={handleRemoveImage}
+            onSortImages={handleSortImages}
+            onSetUploadableImages={handleSetUploadableImages}
+            onSubmit={handleSubmit}
+          />
+
+          <Flex justify="center" py="4">
+            <Button
+              colorScheme="red"
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsDeleteModalOn(true)}
+            >
+              {t('pages.actions.delete')}
+            </Button>
+          </Flex>
+        </Box>
+
+        <ConfirmModal
+          visible={isDeleteModalOn}
+          onConfirm={handleDeletePage}
+          onCancel={() => setIsDeleteModalOn(false)}
+          title={tc('modal.confirm.delete.title')}
+        >
+          {tc('modals.confirm.delete.body', {
+            domain: tc('domains.page').toLowerCase(),
+          })}
+        </ConfirmModal>
+      </Template>
+    </Box>
+  );
+}
 
 export default EditPage;

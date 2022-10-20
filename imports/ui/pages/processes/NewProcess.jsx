@@ -206,9 +206,9 @@ class NewProcess extends React.Component {
       formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;
 
     return (
-      <Box bg="gray.100">
+      <Box>
+        <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
         <Template>
-          <Breadcrumb />
           <Box bg="white" p="6" mb="8">
             <Popover trigger="hover">
               <PopoverTrigger>

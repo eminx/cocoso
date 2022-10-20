@@ -1,46 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Breadcrumb as BreadcrumbMenu,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Center,
-} from '@chakra-ui/react';
+import React, { Fragment, useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
 
-export default function Breadcrumb({ context, contextKey }) {
-  const [breadcrumbs] = useState(window.location.pathname.split('/'));
+import { StateContext } from '../LayoutContainer';
+
+export default function Breadcrumb({ furtherItems }) {
+  const { currentHost } = useContext(StateContext);
+  const location = useLocation();
+  const { menu, name } = currentHost?.settings;
+
+  const pathItems = location.pathname.split('/');
+  const navItem = menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
+
   return (
-    <Center p="4">
-      <BreadcrumbMenu>
-        {breadcrumbs.map((item, index) => {
-          if (context?._id == item) item = context[contextKey];
-          item = item.charAt(0).toUpperCase() + item.slice(1);
-          if (item == '' && index == 0)
-            return (
-              <BreadcrumbItem key={`breadcrumb-${index}`}>
-                <Link to="/">Home</Link>
-              </BreadcrumbItem>
-            );
-          if (index != breadcrumbs.length - 1) {
-            let href = '';
-            for (let i = 0; i < index + 1; i++) {
-              if (breadcrumbs[i] != '') href = `${href}/${breadcrumbs[i]}`;
-            }
-            return (
-              <BreadcrumbItem key={`breadcrumb-${index}`}>
-                <Link to={href}>{item}</Link>
-              </BreadcrumbItem>
-            );
-          }
-          if (index == breadcrumbs.length - 1) {
-            return (
-              <BreadcrumbItem isCurrentPage key={`breadcrumb-${index}`}>
-                <BreadcrumbLink href="#">{item}</BreadcrumbLink>
-              </BreadcrumbItem>
-            );
-          }
-        })}
-      </BreadcrumbMenu>
-    </Center>
+    <Box my="4">
+      <Flex px="4" wrap="wrap">
+        <Link to="/">
+          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+            {name}
+          </CLink>
+        </Link>
+        {navItem && <Text mx="2">/</Text>}
+        <Link to={`/${navItem?.name}`}>
+          <CLink as="span" textTransform="uppercase">
+            {navItem?.label}
+          </CLink>
+        </Link>
+        {furtherItems &&
+          furtherItems.map((item) => (
+            <Fragment key={item.label}>
+              <Text mx="2">/</Text>
+              {item.link ? (
+                <Link to={item.link}>
+                  <CLink as="span" textTransform="uppercase">
+                    {item.label}
+                  </CLink>
+                </Link>
+              ) : (
+                <Text textTransform="uppercase">{item.label}</Text>
+              )}
+            </Fragment>
+          ))}
+      </Flex>
+    </Box>
   );
 }
