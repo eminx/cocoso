@@ -208,7 +208,6 @@ function Members({ history, members, isLoading }) {
             <Center p="4">
               <Box>
                 <Input
-                  bg="white"
                   placeholder={t('form.holder')}
                   value={filterWord}
                   onChange={(event) => setFilterWord(event.target.value)}
