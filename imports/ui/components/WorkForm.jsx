@@ -1,20 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  IconButton,
-  Input,
-  Textarea,
-  Select,
-  VStack,
-  Wrap,
-} from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
-import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import { Box, Button, Center, Flex, Input, Textarea, Select, VStack } from '@chakra-ui/react';
 
 import FormField from './FormField';
 import NiceSlider from './NiceSlider';
@@ -109,28 +96,5 @@ function WorkForm({
     </div>
   );
 }
-
-const thumbStyle = (backgroundImage) => ({
-  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
-});
-
-const SortableItem = sortableElement(({ image, onRemoveImage, index }) => (
-  <Box key={image} className="sortable-thumb" style={thumbStyle(image)}>
-    <IconButton
-      className="sortable-thumb-icon"
-      colorScheme="gray.900"
-      icon={<SmallCloseIcon style={{ pointerEvents: 'none' }} />}
-      size="xs"
-      onClick={onRemoveImage}
-      style={{ position: 'absolute', top: 4, right: 4 }}
-    />
-  </Box>
-));
-
-const SortableContainer = sortableContainer(({ children }) => (
-  <Center w="100%">
-    <Wrap py="2">{children}</Wrap>
-  </Center>
-));
 
 export default WorkForm;

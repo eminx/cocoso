@@ -35,7 +35,7 @@ function ConfirmModal({
       onOverlayClick={onCancel}
       {...otherProps}
     >
-      <AlertDialogOverlay>
+      <AlertDialogOverlay zIndex="1404">
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
