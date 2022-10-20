@@ -86,7 +86,11 @@ function WorkForm({
           </FormField>
 
           <FormField label={t('works.images.label', { count: images.length })}>
-            {images && <NiceSlider width="300px" images={images} />}
+            {images && (
+              <Center>
+                <NiceSlider width="300px" images={images} />
+              </Center>
+            )}
             <ImageUploadUI
               images={images}
               onRemoveImage={onRemoveImage}
