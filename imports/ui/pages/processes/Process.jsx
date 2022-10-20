@@ -988,11 +988,11 @@ class Process extends Component {
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
-          author={{
-            src: process.authorAvatar,
-            username: process.authorUsername,
-            link: `/@${process.authorUsername}`,
-          }}
+          // author={{
+          //   src: process.authorAvatar,
+          //   username: process.authorUsername,
+          //   link: `/@${process.authorUsername}`,
+          // }}
           images={[process.imageUrl]}
           subTitle={process.readingMaterial}
           tabs={tabs}

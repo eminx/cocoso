@@ -12,7 +12,6 @@ export default function Breadcrumb({ furtherItems }) {
   const pathItems = location.pathname.split('/');
   const navItem = menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
 
-  // console.log(pathItems);
   return (
     <Center my="4">
       <Flex px="4" wrap="wrap">
