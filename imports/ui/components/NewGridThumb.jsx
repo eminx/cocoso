@@ -36,12 +36,12 @@ export default function GridThumb({ avatar, dates, imageUrl, subTitle, title, ta
         </Box>
         {avatar && <Avatar name={avatar.name} src={avatar.url} />}
         {dates && (
-          <Flex color="gray.800">
+          <Flex color="gray.800" fontWeight="light">
             <DateJust style={{ color: '##2d2d2d' }}>{dates[0]}</DateJust>
             {dates.length > 1 && (
-              <Text fontSize="2xl" ml="2">
+              <Text fontSize="xl" ml="2" wordBreak="keep-all">
                 {' '}
-                + {dates.length - 1}
+                +{dates.length - 1}
               </Text>
             )}
           </Flex>
