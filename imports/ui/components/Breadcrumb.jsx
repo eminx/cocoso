@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Flex, Link as CLink, Text } from '@chakra-ui/react';
+import { Center, Flex, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -14,7 +14,7 @@ export default function Breadcrumb({ furtherItems }) {
 
   // console.log(pathItems);
   return (
-    <Flex my="4">
+    <Center my="4">
       <Flex px="4" wrap="wrap">
         <Link to="/">
           <CLink as="span" textTransform="uppercase" fontWeight="bold">
@@ -43,6 +43,6 @@ export default function Breadcrumb({ furtherItems }) {
             </Fragment>
           ))}
       </Flex>
-    </Flex>
+    </Center>
   );
 }
