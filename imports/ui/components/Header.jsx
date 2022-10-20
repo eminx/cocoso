@@ -31,7 +31,7 @@ function Header() {
           </Link>
         </Box>
         {!isMobile && !hideMenu && (
-          <Center h="100%" mt="4">
+          <Center h="100%" mt="4" mb="8">
             <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
           </Center>
         )}
