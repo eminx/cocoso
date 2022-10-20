@@ -7,16 +7,14 @@ moment.locale(i18n.language);
 
 const fancyDateStyle = {
   color: '#030303',
-  fontWeight: 700,
+  // fontWeight: 700,
   lineHeight: 1,
 };
 
 const DateJust = ({ children, ...otherProps }) => (
   <div {...otherProps}>
     <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>
-    <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-      {moment(children).format('MMM').toUpperCase()}
-    </div>
+    <div style={{ ...fancyDateStyle, fontSize: 16 }}>{moment(children).format('MMM')}</div>
   </div>
 );
 
@@ -27,7 +25,7 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
         <DateJust>{occurence.startDate}</DateJust>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <DateJust>{occurence.startDate}</DateJust>
+          <DateJust style={{ paddingRight: 12 }}>{occurence.startDate}</DateJust>
           {' – '}
           <DateJust style={{ paddingLeft: 12 }}>{occurence.endDate}</DateJust>
         </div>
@@ -65,4 +63,5 @@ const FancyDate = ({ occurence, resources, ...otherProps }) => (
   </Flex>
 );
 
+export { DateJust };
 export default FancyDate;

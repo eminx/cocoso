@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Box, Button, Center, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Button, Center } from '@chakra-ui/react';
 import i18n from 'i18next';
 
 import { StateContext } from '../../LayoutContainer';
@@ -250,18 +249,21 @@ class EditWork extends PureComponent {
       return <Redirect to={workRoute} />;
     }
 
+    const furtherBreadcrumbLinks = [
+      {
+        label: values.title,
+        link: workRoute,
+      },
+      {
+        label: i18n.t('common:actions.update'),
+        link: null,
+      },
+    ];
+
     return (
-      <Box bg="gray.100" pt="2">
-        <Template
-          leftContent={
-            <Box pb="2">
-              <Link to={workRoute}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={values} contextKey="title" />
+      <Box>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+        <Template>
           <Box bg="white" p="6">
             <WorkForm
               categories={categories}

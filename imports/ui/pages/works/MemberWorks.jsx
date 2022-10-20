@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
-import WorkThumb from '../../components/WorkThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 import Paginate from '../../components/Paginate';
 
 function MemberWorks({ match }) {
@@ -42,7 +42,15 @@ function MemberWorks({ match }) {
           {(work) => (
             <Box key={work._id}>
               <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                <WorkThumb work={work} />
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
               </Link>
             </Box>
           )}

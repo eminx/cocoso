@@ -15,35 +15,34 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   return (
     <Box>
       {isDesktop ? (
-        <Box my="6" w="sm">
-          <List>
-            {pageTitles.map((title) => (
-              <ListItem key={title} p="1">
-                <Link to={`/pages/${parseTitle(title)}`}>
-                  <CLink as="span">
-                    <Text
-                      fontWeight={
-                        parseTitle(activePageTitle) === parseTitle(title) ? 'bold' : 'normal'
-                      }
-                    >
-                      {title}
-                    </Text>
-                  </CLink>
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+        <List>
+          {pageTitles.map((title) => (
+            <ListItem key={title} p="1">
+              <Link to={`/pages/${parseTitle(title)}`}>
+                <CLink as="span">
+                  <Text
+                    fontWeight={
+                      parseTitle(activePageTitle) === parseTitle(title) ? 'bold' : 'normal'
+                    }
+                  >
+                    {title}
+                  </Text>
+                </CLink>
+              </Link>
+            </ListItem>
+          ))}
+        </List>
       ) : (
         <Center mt="2" mb="8">
           <Select
-            bg="white"
             placeholder={currentPageTitle()}
             w="xs"
             onChange={(event) => history.push(`/pages/${parseTitle(event.target.value)}`)}
           >
             {pageTitles.map((title) => (
-              <option>{title}</option>
+              <option selected={parseTitle(activePageTitle) === parseTitle(title)} key={title}>
+                {title}
+              </option>
             ))}
           </Select>
         </Center>

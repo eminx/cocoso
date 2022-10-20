@@ -153,18 +153,21 @@ class EditProcess extends React.Component {
       return <Redirect to={`/processes/${process._id}`} />;
     }
 
+    const furtherBreadcrumbLinks = [
+      {
+        label: process.title,
+        link: `/processes/${process._id}`,
+      },
+      {
+        label: tc('actions.update'),
+        link: null,
+      },
+    ];
+
     return (
-      <Box bg="gray.100" pt="2">
-        <Template
-          leftContent={
-            <Box p="2">
-              <Link to={`/processes/${process._id}`}>
-                <IconButton as="span" aria-label="Back" icon={<ArrowBackIcon />} />
-              </Link>
-            </Box>
-          }
-        >
-          <Breadcrumb context={process} contextKey="title" />
+      <Box>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+        <Template>
           <Box bg="white" p="6">
             <ProcessForm
               defaultValues={process}

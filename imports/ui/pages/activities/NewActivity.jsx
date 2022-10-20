@@ -380,10 +380,10 @@ class NewActivity extends PureComponent {
     const isFormValid = this.isFormValid();
 
     return (
-      <Box bg="gray.100">
+      <Box>
+        <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
         <Template>
-          <Breadcrumb />
-          <Box bg="white" p="8">
+          <Box p="6">
             <Box mb="8">
               <VStack spacing="2">
                 <FormSwitch

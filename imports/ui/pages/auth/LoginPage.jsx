@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
-import Header from '../../components/Header';
 import { Login } from './index';
 import { loginWithPassword } from './functions';
 
@@ -23,7 +22,6 @@ function LoginPage() {
 
   return (
     <Box bg="gray.100" pb="8" minHeight="100vh">
-      <Header />
       <Template>
         <Center p="4">
           <Box w="xs">

@@ -8,13 +8,13 @@ import {
   NumberInputField,
   VStack,
 } from '@chakra-ui/react';
-import ReactQuill from 'react-quill';
+
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { editorFormats, editorModules } from '../utils/constants/quillConfig';
-import FileDropper from '../components/FileDropper';
-import FormField from '../components/FormField';
+import FileDropper from './FileDropper';
+import FormField from './FormField';
+import ReactQuill from './Quill';
 
 const ProcessForm = ({
   uploadableImageLocal,
@@ -68,9 +68,7 @@ const ProcessForm = ({
               control={control}
               name="description"
               rules={{ required: true }}
-              render={({ field }) => (
-                <ReactQuill {...field} formats={editorFormats} modules={editorModules} />
-              )}
+              render={({ field }) => <ReactQuill {...field} />}
             />
           </FormField>
 

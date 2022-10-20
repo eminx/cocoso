@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import { getHost } from '../_utils/shared';
 import Works from './work';
 

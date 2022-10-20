@@ -337,7 +337,7 @@ class Process extends Component {
       .map((attendee) => attendee.username)
       .includes(currentUser.username);
 
-    const meetingAttendence = {
+    const meetingAttendee = {
       email: currentUser.emails[0].address,
       username: currentUser.username,
       firstName: currentUser.firstName || '',
@@ -358,7 +358,7 @@ class Process extends Component {
         }
       });
     } else {
-      Meteor.call('registerAttendance', activityId, meetingAttendence, (error, respond) => {
+      Meteor.call('registerAttendance', activityId, meetingAttendee, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);
@@ -682,7 +682,9 @@ class Process extends Component {
             )}
           </NiceList>
         ) : (
-          <Alert type="warning">{tc('documents.empty')}</Alert>
+          <Text fontSize="sm" mb="4" textAlign="center">
+            {tc('documents.empty')}
+          </Text>
         )}
 
         {isAdmin && (
@@ -904,7 +906,11 @@ class Process extends Component {
         title: t('labels.meetings'),
         content: (
           <Box>
-            {!isFutureMeetings && <Alert type="warning">{t('meeting.info.empty')}</Alert>}
+            {!isFutureMeetings && (
+              <Text fontSize="sm" mb="4" textAlign="center">
+                {t('meeting.info.empty')}
+              </Text>
+            )}
             {isFutureMeetings && isAdmin && (
               <Text fontSize="sm" mb="4">
                 {t('meeting.info.admin')}
@@ -982,17 +988,17 @@ class Process extends Component {
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
-          author={{
-            src: process.authorAvatar,
-            username: process.authorUsername,
-            link: `/@${process.authorUsername}`,
-          }}
+          // author={{
+          //   src: process.authorAvatar,
+          //   username: process.authorUsername,
+          //   link: `/@${process.authorUsername}`,
+          // }}
           images={[process.imageUrl]}
-          navPath="processes"
           subTitle={process.readingMaterial}
           tabs={tabs}
           tags={tags}
           title={process.title}
+          noGridAdjust={!isMember}
         />
 
         <ConfirmModal

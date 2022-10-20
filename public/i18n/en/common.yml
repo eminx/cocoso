@@ -46,6 +46,8 @@ labels:
   unselected: Not selected resource
   admin:
     actions: Admin
+  past: Past
+  upcoming: Upcoming
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -164,3 +166,6 @@ bookings:
 
 terms:
   title: Terms of Service & Privacy Policy
+
+images:
+  countLabel: Images ({{ count }})

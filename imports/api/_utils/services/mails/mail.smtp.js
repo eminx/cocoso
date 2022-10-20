@@ -10,6 +10,7 @@ const publicSettings = Meteor.settings.public;
 
 Meteor.methods({
   sendEmail(id, subjectEmail, textEmail) {
+    console.log(subjectEmail);
     check([id, subjectEmail, textEmail], [String]);
     const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
     let toEmail;

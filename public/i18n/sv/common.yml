@@ -46,6 +46,8 @@ labels:
   unselected: Ej valt resurs
   admin:
     actions: Admin
+  past: Tidigare
+  upcoming: Kommande
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -164,3 +166,6 @@ bookings:
 
 terms:
   title: Användarvillkor och sekretesspolicy
+
+images:
+  countLabel: Bilder ({{ count }})

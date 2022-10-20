@@ -4,7 +4,6 @@ import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/reac
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
-import Header from '../../components/Header';
 import { ResetPassword } from './index';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
@@ -31,9 +30,8 @@ const ResetPasswordPage = ({ history, match }) => {
 
   return (
     <Box bg="gray.100" pb="8" minHeight="100vh">
-      <Header />
       <Template>
-        <Center>
+        <Center p="4">
           <Box w="xs">
             <Heading size="md" textAlign="center" mb="4">
               {t('password.labels.title')}

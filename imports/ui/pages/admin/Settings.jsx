@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Heading,
   HStack,
   Input,
@@ -21,7 +20,6 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 
-import Header from '../../components/Header';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
@@ -32,6 +30,8 @@ import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
+import Header from '../../components/Header';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -197,15 +197,13 @@ export default function Settings({ history }) {
   // };
 
   const pathname = history && history.location.pathname;
-  // const settings = currentHost && currentHost.settings;
 
   const isImage =
     (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
   return (
     <>
-      <Header />
-
+      <Breadcrumb />
       <Template
         heading={t('settings.label')}
         leftContent={

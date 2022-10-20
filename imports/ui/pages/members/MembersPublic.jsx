@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Avatar, Box, Center, Text, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from '../../components/Header';
 import Paginate from '../../components/Paginate';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
@@ -99,8 +98,6 @@ function PublicMembers() {
       <Helmet>
         <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-
-      <Header />
 
       <Paginate items={members} itemsPerPage={24} isContainerSimpleGrid={false}>
         {(member) => (

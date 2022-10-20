@@ -61,10 +61,21 @@ function EditResourcePage({ history }) {
     return null;
   }
 
+  const furtherBreadcrumbLinks = [
+    {
+      label: resource.label,
+      link: `/resources/${resource._id}`,
+    },
+    {
+      label: tc('actions.update'),
+      link: null,
+    },
+  ];
+
   return (
-    <Box bg="gray.100" pt="2">
+    <Box>
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       <Template>
-        <Breadcrumb context={resource} contextKey="label" />
         <Box bg="white" p="6">
           {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
         </Box>

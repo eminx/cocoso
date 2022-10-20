@@ -24,6 +24,7 @@ import Hosts from '../api/hosts/host';
 import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
+import Header from './components/Header';
 
 export const StateContext = React.createContext(null);
 
@@ -33,6 +34,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const { pathname, search } = history.location;
+
   useEffect(() => {
     const params = parse(search);
     if (params && params.noScrollTop) {
@@ -41,11 +43,6 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       window.scrollTo(0, 0);
     }
   }, [pathname, search]);
-
-  if (currentUser) {
-    import 'react-quill/dist/quill.snow.css';
-    import './utils/styles/quilleditor-custom.css';
-  }
 
   if (hostLoading || !currentHost) {
     return (
@@ -73,6 +70,18 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
+  const { menu } = currentHost?.settings;
+
+  const pagesWithHeaderAndFooter = [
+    ...menu?.map((item) => '/' + item.name),
+    '/login',
+    '/signup',
+    '/forgot-password',
+    '/reset-password',
+  ];
+
+  const isHeaderAndFooter = pagesWithHeaderAndFooter.includes(pathname);
+
   return (
     <ChakraProvider theme={chakraTheme}>
       {publicSettings.faviconUrl && (
@@ -92,9 +101,11 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       >
         <Center className="main-viewport">
           <Box maxWidth="1400px" w="100%">
+            {isHeaderAndFooter && <Header />}
+
             <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
-            <Footer currentHost={currentHost} tc={tc} />
+            {isHeaderAndFooter && <Footer currentHost={currentHost} tc={tc} />}
           </Box>
         </Center>
       </StateContext.Provider>

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactToPrint from 'react-to-print';
@@ -331,7 +332,7 @@ class Activity extends PureComponent {
               </Box>
             )}
             {canCreateContent && (
-              <Box px="1">
+              <Box p="1">
                 <Heading mb="1" as="h4" size="sm">
                   {t('public.attandence.label')}
                 </Heading>
@@ -416,6 +417,10 @@ class Activity extends PureComponent {
       return <Loader />;
     }
 
+    if (activityData.isProcessMeeting) {
+      return <Redirect to={`/processes/${activityData.processId}/dates`} />;
+    }
+
     const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
 
     // const messages = this.getChatMessages();
@@ -486,7 +491,6 @@ class Activity extends PureComponent {
         <Tably
           adminMenu={isAdmin ? adminMenu : null}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
-          navPath={activityData.isPublicActivity ? 'activities' : 'calendar'}
           subTitle={activityData.subTitle}
           tabs={tabs}
           tags={tags}

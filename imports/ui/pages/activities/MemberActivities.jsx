@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, HStack, Heading, Image, Tag, TagLabel, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import Paginate from '../../components/Paginate';
-import PublicActivityThumb from '../../components/PublicActivityThumb';
+import NewGridThumb from '../../components/NewGridThumb';
 
 function MemberActivities({ match }) {
   const [activities, setActivities] = useState([]);
@@ -44,7 +44,11 @@ function MemberActivities({ match }) {
           {(activity) => (
             <Box key={activity._id}>
               <Link to={`/activities/${activity._id}`}>
-                <PublicActivityThumb item={activity} />
+                <NewGridThumb
+                  imageUrl={activity.imageUrl}
+                  title={activity.title}
+                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                />
               </Link>
             </Box>
           )}
@@ -53,31 +57,5 @@ function MemberActivities({ match }) {
     </Box>
   );
 }
-
-const ActivityItem = ({ act }) => {
-  const [t] = useTranslation('activities');
-
-  return (
-    <HStack align="flex-start" bg="white" p="3" w="100%">
-      {act.isPublicActivity && (
-        <Box p="2">
-          <Image fit="cover" w="xs" fill src={act.imageUrl} />
-        </Box>
-      )}
-      <Box w="100%">
-        <Heading mb="2" overflowWrap="anywhere" size="md">
-          {act.title}
-        </Heading>
-        <Tag>
-          <TagLabel>{act.resource}</TagLabel>
-        </Tag>
-        <Text fontWeight="light">{act.subTitle}</Text>
-        <Text fontStyle="italic" p="1" textAlign="right">
-          {act.datesAndTimes.length} {t('members.occurences')}
-        </Text>
-      </Box>
-    </HStack>
-  );
-};
 
 export default MemberActivities;

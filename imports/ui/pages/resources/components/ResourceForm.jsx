@@ -17,19 +17,18 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
-import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import { editorFormats, editorModules } from '../../../utils/constants/quillConfig';
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import { message } from '../../../components/message';
 import FormField from '../../../components/FormField';
 import FileDropper from '../../../components/FileDropper';
 import NiceSlider from '../../../components/NiceSlider';
 import Loader from '../../../components/Loader';
+import ReactQuill from '../../../components/Quill';
 
 const animatedComponents = makeAnimated();
 
@@ -200,14 +199,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             <Controller
               control={control}
               name="description"
-              render={({ field }) => (
-                <ReactQuill
-                  {...field}
-                  formats={editorFormats}
-                  modules={editorModules}
-                  placeholder={t('form.desc.holder')}
-                />
-              )}
+              render={({ field }) => <ReactQuill {...field} placeholder={t('form.desc.holder')} />}
             />
           </FormField>
 
