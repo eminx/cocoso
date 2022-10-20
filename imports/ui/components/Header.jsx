@@ -36,7 +36,7 @@ function Header() {
           </Center>
         )}
 
-        <Flex w="180px" zIndex="1402" justify="flex-end" align="flex-start">
+        <Flex w="180px" zIndex="1403" justify="flex-end" align="flex-start">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
