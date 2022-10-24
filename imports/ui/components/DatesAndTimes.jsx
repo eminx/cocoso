@@ -26,7 +26,7 @@ const DatesAndTimes = ({
   handleCapacityChange,
   handleRangeSwitch,
   removeRecurrence,
-  isNotDeletable,
+  isDeletable,
   isPublicActivity,
 }) => {
   if (!recurrence) {
@@ -58,7 +58,7 @@ const DatesAndTimes = ({
 
   return (
     <Box p="4" mb="4" border="1px solid #ccc" borderColor={getBorderColorStyle()}>
-      {!isNotDeletable && (
+      {isDeletable && (
         <Flex justify="flex-end" mb="4">
           <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
         </Flex>

@@ -159,7 +159,7 @@ function ActivityForm({
                 isPublicActivity={isPublicActivity}
                 recurrence={recurrence}
                 removeRecurrence={() => removeRecurrence(index)}
-                isNotDeletable={index === 0}
+                isDeletable={datesAndTimes.length > 1}
                 handleCapacityChange={(value) => handleCapacityChange(value, index)}
                 handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
                 handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
