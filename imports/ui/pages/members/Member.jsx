@@ -105,24 +105,22 @@ function MemberPublic({ history, match, path }) {
     });
   }
 
-  const getDefaultTabIndex = () => {
-    return tabs.findIndex((tab) => tab.path === history?.location?.pathname);
-  };
+  const tabIndex = tabs.findIndex((tab) => tab.path === history?.location?.pathname);
 
   return (
     <>
       <Flex p="4">
         <Link to="/">
-          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+          <CLink as="span" fontWeight="bold">
             {name}
           </CLink>
         </Link>
         <Text mx="2">/</Text>
         <Link to="/members">
-          <CLink as="span" textTransform="uppercase">
-            {membersInMenu.label}
-          </CLink>
+          <CLink as="span">{membersInMenu.label}</CLink>
         </Link>
+        <Text mx="2">/</Text>
+        <Text>{currentUser.username}</Text>
       </Flex>
 
       <Box>
@@ -132,7 +130,7 @@ function MemberPublic({ history, match, path }) {
           </Box>
         </Center>
       </Box>
-      <Tabs align="center" defaultIndex={getDefaultTabIndex()} size="sm" tabs={tabs} />
+      <Tabs align="center" index={tabIndex} size="sm" tabs={tabs} />
 
       <Switch path={path} history={history}>
         <Route path="/@:username/bio" render={(props) => <Bio user={user} />} />

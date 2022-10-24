@@ -108,7 +108,7 @@ function Tably({
           />
 
           <Center>
-            <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
+            <NiceSlider images={images} width="100vw" />
           </Center>
           <Center mb="4" mx="4">
             {action}
