@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import { Box, Button, Center, Heading, HStack, VStack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, HStack, Switch, VStack, Text } from '@chakra-ui/react';
 
 import Personal from './Personal';
 import Template from '../../components/Template';
@@ -11,6 +11,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FileDropper from '../../components/FileDropper';
+import FormField from '../../components/FormField';
 import { StateContext } from '../../LayoutContainer';
 
 class Profile extends PureComponent {
@@ -115,8 +116,23 @@ class Profile extends PureComponent {
     }
   };
 
+  setProfilePublic = async (isPublic) => {
+    const { tc } = this.props;
+    try {
+      await call('setProfilePublic', isPublic);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.profile')}`,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
   render() {
-    const { currentUser, history, t, tc } = this.props;
+    const { currentUser, t, tc } = this.props;
     const { currentHost, role } = this.context;
 
     if (!currentUser) {
@@ -125,7 +141,6 @@ class Profile extends PureComponent {
 
     const { isDeleteModalOn, isDeleting, uploadableAvatarLocal, isUploading } = this.state;
 
-    console.log(currentHost);
     const membersInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'members');
 
     const furtherBreadcrumbLinks = [
@@ -219,6 +234,18 @@ class Profile extends PureComponent {
                   </HStack>
                 )}
               </Box>
+            </Center>
+
+            <Center p="4">
+              <FormField
+                label={t('profile.makePublic.label')}
+                helperText={t('profile.makePublic.helperText')}
+              >
+                <Switch
+                  isChecked={currentUser.isPublic}
+                  onChange={({ target: { checked } }) => this.setProfilePublic(checked)}
+                />
+              </FormField>
             </Center>
 
             <Box bg="white" p="4">

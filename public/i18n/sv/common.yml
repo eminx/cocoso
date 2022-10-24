@@ -146,6 +146,7 @@ domains:
   data: data
   avatar: avatar
   static: statisk
+  profile: profil
 
   props:
     name: namn

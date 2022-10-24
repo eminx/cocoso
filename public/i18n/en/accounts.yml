@@ -76,6 +76,10 @@ profile:
     deny: You are not part of this organisation.
     notfound: User with this username within this organization not found
 
+  makePublic:
+    label: Make my profile public
+    helperText: If switched on, your profile will be publicly visible
+
 delete:
   action: Delete Account
   label: Confirm Deletion

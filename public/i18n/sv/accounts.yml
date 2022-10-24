@@ -73,6 +73,8 @@ profile:
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte
 
+  makePublic: Gör min profil offentlig
+
 delete:
   action: Radera Konto
   label: Bekräfta Radering

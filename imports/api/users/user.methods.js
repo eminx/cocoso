@@ -247,6 +247,15 @@ Meteor.methods({
     }
   },
 
+  setProfilePublic(isPublic) {
+    const user = Meteor.user();
+    try {
+      Meteor.users.update({ _id: user._id }, { $set: { isPublic: isPublic } });
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't update");
+    }
+  },
+
   deleteAccount() {
     const userId = Meteor.userId();
     if (!userId) {

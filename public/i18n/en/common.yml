@@ -138,6 +138,7 @@ domains:
   works: Works
   host: Host
   page: Page
+  profile: profile
 
   settings: Settings
   email: Email
