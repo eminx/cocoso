@@ -70,7 +70,7 @@ function Tably({
 
           <GridItem>
             <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
-              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
+              <NiceSlider images={images} width="550px" max />
             </Flex>
           </GridItem>
 
@@ -108,7 +108,7 @@ function Tably({
           />
 
           <Center>
-            <NiceSlider images={images} width="100vw" />
+            <NiceSlider images={images} width="100vw" isFade={false} />
           </Center>
           <Center mb="4" mx="4">
             {action}
