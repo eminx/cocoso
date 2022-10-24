@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactToPrint from 'react-to-print';
@@ -19,6 +19,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -31,7 +32,7 @@ import {
 
 import { StateContext } from '../../LayoutContainer';
 // import Chattery from '../../components/chattery/Chattery';
-import FancyDate from '../../components/FancyDate';
+import FancyDate, { DateJust } from '../../components/FancyDate';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
@@ -410,6 +411,23 @@ class Activity extends PureComponent {
     });
   };
 
+  getDatesForAction = () => {
+    const { activityData } = this.props;
+    return (
+      <Flex bg="green.50" p="4">
+        {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+          <Link key={occurence.startDate} to={`/activities/${activityData._id}/dates`}>
+            <Box pr="8">
+              <em>
+                <DateJust>{occurence.startDate}</DateJust>
+              </em>
+            </Box>
+          </Link>
+        ))}
+      </Flex>
+    );
+  };
+
   render() {
     const { activityData, isLoading, currentUser, chatData, history, t, tc } = this.props;
 
@@ -489,6 +507,7 @@ class Activity extends PureComponent {
         </Helmet>
 
         <Tably
+          action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           subTitle={activityData.subTitle}
