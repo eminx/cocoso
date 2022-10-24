@@ -7,7 +7,7 @@ import FormField from '../../components/FormField';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import ReactQuill from '../../components/Quill';
 
-const Personal = ({ defaultValues, onSubmit }) => {
+function ProfileForm({ defaultValues, onSubmit }) {
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
   });
@@ -57,6 +57,6 @@ const Personal = ({ defaultValues, onSubmit }) => {
       </form>
     </div>
   );
-};
+}
 
-export default Personal;
+export default ProfileForm;
