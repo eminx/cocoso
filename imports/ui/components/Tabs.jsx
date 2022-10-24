@@ -27,7 +27,7 @@ function Tabs({ tabs, children, ...otherProps }) {
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={parsePath(tab.path)} style={linkStyle}>
-              <Tab {...tabProps}>
+              <Tab {...tabProps} onClick={tab.onClick}>
                 {tab.title}
                 {tab.badge && (
                   <Badge colorScheme="red" size="xs" mt="-2">
