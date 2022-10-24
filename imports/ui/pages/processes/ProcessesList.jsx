@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
-import { Link } from 'react-router-dom';
-
-import { Box, Center, Tabs, Tab, TabList, WrapItem } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import { Box, Center, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
@@ -13,30 +13,18 @@ import { StateContext } from '../../LayoutContainer';
 import { call, compareForSort } from '../../utils/shared';
 import NewGridThumb from '../../components/NewGridThumb';
 import { message } from '../../components/message';
+import Tabs from '../../components/Tabs';
 
 moment.locale(i18n.language);
 
 const publicSettings = Meteor.settings.public;
 
-export default function ProcessesList({ isLoading, currentUser, t, tc }) {
+export default function ProcessesList() {
   const [processes, setProcesses] = useState([]);
-  const [filterBy, setFilterBy] = useState(0);
-  const { canCreateContent, currentHost } = useContext(StateContext);
-
-  const filterOptions = [
-    {
-      label: t('tabs.active'),
-      value: 'active',
-    },
-    {
-      label: t('tabs.members'),
-      value: 'my-processes',
-    },
-    {
-      label: t('tabs.archived'),
-      value: 'archived',
-    },
-  ];
+  const { currentHost, currentUser } = useContext(StateContext);
+  const [filter, setFilter] = useState('active');
+  const [t] = useTranslation('processes');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getProcesses();
@@ -58,9 +46,9 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
     }
 
     const filteredProcesses = processes.filter((process) => {
-      if (filterBy === 2) {
+      if (filter === 'archived') {
         return process.isArchived;
-      } else if (filterBy === 1) {
+      } else if (filter === 'my') {
         return currentUser && process.members.some((member) => member.memberId === currentUser._id);
       }
       return !process.isArchived;
@@ -92,6 +80,24 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
   const processesRendered =
     processes && processes.length > 0 && getFilteredProcesses().sort(compareForSort).reverse();
 
+  const tabs = [
+    {
+      title: t('tabs.active'),
+      onClick: () => setFilter('active'),
+    },
+    {
+      title: t('tabs.members'),
+      onClick: () => setFilter('my'),
+    },
+    {
+      title: t('tabs.archived'),
+      onClick: () => setFilter('archived'),
+    },
+  ];
+
+  if (!processesRendered || !processesRendered.length === 0) {
+    return null;
+  }
   return (
     <Box w="100%">
       <Helmet>
@@ -103,32 +109,22 @@ export default function ProcessesList({ isLoading, currentUser, t, tc }) {
       <Box>
         <Box p="4">
           <Center>
-            <Tabs size="sm" onChange={(index) => setFilterBy(index)}>
-              <TabList>
-                {filterOptions.map((option) => (
-                  <Tab _focus={{ boxShadow: 'none' }} key={option.value}>
-                    {option.label}
-                  </Tab>
-                ))}
-              </TabList>
-            </Tabs>
+            <Tabs tabs={tabs} />
           </Center>
 
-          {processesRendered && processesRendered.length > 0 && (
-            <Paginate items={processesRendered}>
-              {(process) => (
-                <WrapItem key={process._id}>
-                  <Link to={`/processes/${process._id}`}>
-                    <NewGridThumb
-                      imageUrl={process.imageUrl}
-                      subTitle={process.readingMaterial}
-                      title={process.title}
-                    />
-                  </Link>
-                </WrapItem>
-              )}
-            </Paginate>
-          )}
+          <Paginate items={processesRendered}>
+            {(process) => (
+              <WrapItem key={process._id}>
+                <Link to={`/processes/${process._id}`}>
+                  <NewGridThumb
+                    imageUrl={process.imageUrl}
+                    subTitle={process.readingMaterial}
+                    title={process.title}
+                  />
+                </Link>
+              </WrapItem>
+            )}
+          </Paginate>
         </Box>
       </Box>
     </Box>
