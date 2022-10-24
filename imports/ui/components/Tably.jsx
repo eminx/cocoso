@@ -107,21 +107,16 @@ function Tably({
             isDesktop={isDesktop}
           />
 
-          <Center mb="4">
+          <Center>
             <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
           </Center>
-          <Box mx="4">{action}</Box>
+          <Center mb="4" mx="4">
+            {action}
+          </Center>
         </Box>
 
         <Box minH="100vh">
-          <Tabs
-            align="center"
-            colorScheme="gray.800"
-            defaultIndex={getDefaultTabIndex()}
-            mt="2"
-            size="sm"
-            tabs={tabs}
-          >
+          <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" size="sm" tabs={tabs}>
             {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
           </Tabs>
 
