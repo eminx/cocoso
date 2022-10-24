@@ -21,7 +21,7 @@ function MemberPublic({ history, match, path }) {
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
-  const { username, profileRoute } = match.params;
+  const { username } = match.params;
   const { currentUser, currentHost } = useContext(StateContext);
 
   useEffect(() => {
@@ -40,7 +40,11 @@ function MemberPublic({ history, match, path }) {
   }
 
   if (error || !user) {
-    return <Alert margin="medium" message={ta('profile.message.notfound')} />;
+    return (
+      <Center p="8">
+        <Alert message={ta('profile.message.notfound')} />
+      </Center>
+    );
   }
 
   if (match.path === '/@:username' && match.isExact) {

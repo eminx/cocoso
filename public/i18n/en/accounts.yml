@@ -74,7 +74,7 @@ profile:
     role: You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role
     participant: You are successfully set as participant
     deny: You are not part of this organisation.
-    notfound: User with this username within this organization not found
+    notfound: User with this username within this organization not found, or chose to hide their profile
 
   makePublic:
     label: Make my profile public

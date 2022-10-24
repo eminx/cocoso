@@ -71,9 +71,11 @@ profile:
     role: Du som <bold>{{ username }}</bold> är en del av denna organisation med rollen <bold>{{ role }}</bold>
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
-    notfound: Användare med detta användarnamn inom denna organisation hittades inte
+    notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
 
-  makePublic: Gör min profil offentlig
+  makePublic:
+    label: Gör min profil offentlig
+    helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
 
 delete:
   action: Radera Konto

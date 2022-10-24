@@ -34,7 +34,7 @@ function PublicMembers() {
     setLoading(true);
     try {
       const members = await call('getHostMembers');
-      const sortedMembers = members.sort(compareByDate);
+      const sortedMembers = members.sort(compareByDate).reverse();
       setMembers(sortedMembers);
       setLoading(false);
     } catch (error) {

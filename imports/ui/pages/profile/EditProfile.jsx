@@ -2,7 +2,17 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import { Box, Button, Center, Heading, HStack, Switch, VStack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Heading,
+  HStack,
+  Switch,
+  VStack,
+  Text,
+  Spacer,
+} from '@chakra-ui/react';
 
 import Personal from './Personal';
 import Template from '../../components/Template';
@@ -236,21 +246,23 @@ class Profile extends PureComponent {
               </Box>
             </Center>
 
-            <Center p="4">
-              <FormField
-                label={t('profile.makePublic.label')}
-                helperText={t('profile.makePublic.helperText')}
-              >
+            <Box p="4" mb="12" textAlign="center">
+              <Heading size="md" mb="2" textAlign="center">
+                {t('profile.makePublic.label')}
+              </Heading>
+              <FormField helperText={t('profile.makePublic.helperText')}>
                 <Switch
+                  colorScheme="green"
                   isChecked={currentUser.isPublic}
+                  size="lg"
                   onChange={({ target: { checked } }) => this.setProfilePublic(checked)}
                 />
               </FormField>
-            </Center>
+            </Box>
 
             <Box bg="white" p="4">
               <Box>
-                <Heading mb="1" mt="2" size="md" textAlign="center">
+                <Heading mb="2" size="md" textAlign="center">
                   {t('profile.label')}
                 </Heading>
                 <Personal defaultValues={currentUser} onSubmit={this.handleSubmit} />
