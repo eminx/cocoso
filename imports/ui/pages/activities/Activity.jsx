@@ -414,13 +414,11 @@ class Activity extends PureComponent {
   getDatesForAction = () => {
     const { activityData } = this.props;
     return (
-      <Flex bg="green.50" p="4">
+      <Flex pt="4">
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
           <Link key={occurence.startDate} to={`/activities/${activityData._id}/dates`}>
-            <Box pr="8">
-              <em>
-                <DateJust>{occurence.startDate}</DateJust>
-              </em>
+            <Box pr="6">
+              <DateJust>{occurence.startDate}</DateJust>
             </Box>
           </Link>
         ))}

@@ -857,13 +857,11 @@ class Process extends Component {
         return null;
       }
       return (
-        <Box p="4" bg="gray.50">
+        <Box pt="4">
           {futureMeetings.map((m) => (
             <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
-              <Box pr="8">
-                <em>
-                  <DateJust>{m.startDate}</DateJust>
-                </em>
+              <Box pr="6">
+                <DateJust>{m.startDate}</DateJust>
               </Box>
             </Link>
           ))}
