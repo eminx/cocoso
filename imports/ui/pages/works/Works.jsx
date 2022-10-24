@@ -113,6 +113,9 @@ function Works() {
                   name: work.authorUsername,
                   url: work.authorAvatar,
                 }}
+                color={
+                  categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label).color
+                }
                 imageUrl={work.images[0]}
                 tag={work.category?.label}
                 title={work.title}
