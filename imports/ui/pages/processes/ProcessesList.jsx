@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Box, Center, Flex, Input, Select, WrapItem } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Loader from '../../components/Loader';
@@ -14,6 +14,7 @@ import { call, compareForSort } from '../../utils/shared';
 import NewGridThumb from '../../components/NewGridThumb';
 import { message } from '../../components/message';
 import Tabs from '../../components/Tabs';
+import FiltrerSorter from '../../components/FiltrerSorter';
 
 moment.locale(i18n.language);
 
@@ -21,8 +22,10 @@ const publicSettings = Meteor.settings.public;
 
 export default function ProcessesList() {
   const [processes, setProcesses] = useState([]);
-  const { currentHost, currentUser } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop } = useContext(StateContext);
   const [filter, setFilter] = useState('active');
+  const [filterWord, setFilterWord] = useState('');
+  const [sorterValue, setSorterValue] = useState('date');
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
 
@@ -106,27 +109,42 @@ export default function ProcessesList() {
         }`}</title>
       </Helmet>
 
-      <Box>
-        <Box p="4">
-          <Center>
-            <Tabs tabs={tabs} />
-          </Center>
+      <Center>
+        <FiltrerSorter>
+          <Flex align="center" justify="space-between" wrap={isDesktop ? 'nowrap' : 'wrap'}>
+            <Input
+              placeholder={'type something'}
+              size="sm"
+              value={filterWord}
+              onChange={(event) => setFilterWord(event.target.value)}
+            />
+            <Tabs mx="8" tabs={tabs} />
+            <Select
+              name="sorter"
+              size="sm"
+              value={sorterValue}
+              onChange={(e) => setSorterValue(e.target.value)}
+            >
+              <option value="date">Date</option>
+              <option value="name">Name</option>
+            </Select>
+          </Flex>
+        </FiltrerSorter>
+      </Center>
 
-          <Paginate items={processesRendered}>
-            {(process) => (
-              <WrapItem key={process._id}>
-                <Link to={`/processes/${process._id}`}>
-                  <NewGridThumb
-                    imageUrl={process.imageUrl}
-                    subTitle={process.readingMaterial}
-                    title={process.title}
-                  />
-                </Link>
-              </WrapItem>
-            )}
-          </Paginate>
-        </Box>
-      </Box>
+      <Paginate items={processesRendered}>
+        {(process) => (
+          <WrapItem key={process._id}>
+            <Link to={`/processes/${process._id}`}>
+              <NewGridThumb
+                imageUrl={process.imageUrl}
+                subTitle={process.readingMaterial}
+                title={process.title}
+              />
+            </Link>
+          </WrapItem>
+        )}
+      </Paginate>
     </Box>
   );
 }
