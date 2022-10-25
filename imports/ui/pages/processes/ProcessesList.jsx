@@ -49,12 +49,20 @@ export default function ProcessesList() {
     }
 
     const filteredProcesses = processes.filter((process) => {
+      const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+      const processWordFiltered =
+        process?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        process?.readingMaterial?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
       if (filter === 'archived') {
-        return process.isArchived;
+        return process.isArchived && processWordFiltered;
       } else if (filter === 'my') {
-        return currentUser && process.members.some((member) => member.memberId === currentUser._id);
+        return (
+          currentUser &&
+          process.members.some((member) => member.memberId === currentUser._id) &&
+          processWordFiltered
+        );
       }
-      return !process.isArchived;
+      return !process.isArchived && processWordFiltered;
     });
 
     const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
