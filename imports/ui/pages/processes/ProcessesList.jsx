@@ -133,7 +133,7 @@ export default function ProcessesList() {
 
       <Center>
         <FiltrerSorter {...filtrerProps}>
-          <Tabs mx="8" tabs={tabs} />
+          <Tabs mx="4" size="sm" tabs={tabs} />
         </FiltrerSorter>
       </Center>
 

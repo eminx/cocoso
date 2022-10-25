@@ -18,7 +18,7 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
   const { isDesktop } = useContext(StateContext);
 
   return (
-    <Accordion w="xl" allowToggle>
+    <Accordion w="2xl" allowToggle>
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
@@ -33,7 +33,8 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             wrap={isDesktop ? 'nowrap' : 'wrap'}
           >
             <Input
-              flexBasis="150px"
+              flexBasis="180px"
+              mb="1"
               placeholder={'type something'}
               size="sm"
               value={filterWord}
@@ -41,7 +42,8 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             />
             {children}
             <Select
-              flexBasis="150px"
+              flexBasis="180px"
+              mt="1"
               name="sorter"
               size="sm"
               value={sorterValue}
