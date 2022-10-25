@@ -34,7 +34,6 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
           >
             <Input
               flexBasis="180px"
-              mb="1"
               placeholder={'type something'}
               size="sm"
               value={filterWord}
@@ -43,7 +42,6 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             {children}
             <Select
               flexBasis="180px"
-              mt="1"
               name="sorter"
               size="sm"
               value={sorterValue}
