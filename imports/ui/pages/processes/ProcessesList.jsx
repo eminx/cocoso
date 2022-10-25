@@ -101,6 +101,14 @@ export default function ProcessesList() {
   if (!processesRendered || !processesRendered.length === 0) {
     return null;
   }
+
+  const filtrerProps = {
+    filterWord,
+    setFilterWord,
+    sorterValue,
+    setSorterValue,
+  };
+
   return (
     <Box w="100%">
       <Helmet>
@@ -110,25 +118,8 @@ export default function ProcessesList() {
       </Helmet>
 
       <Center>
-        <FiltrerSorter>
-          <Flex align="center" justify="space-between" wrap={isDesktop ? 'nowrap' : 'wrap'}>
-            <Input
-              placeholder={'type something'}
-              size="sm"
-              value={filterWord}
-              onChange={(event) => setFilterWord(event.target.value)}
-            />
-            <Tabs mx="8" tabs={tabs} />
-            <Select
-              name="sorter"
-              size="sm"
-              value={sorterValue}
-              onChange={(e) => setSorterValue(e.target.value)}
-            >
-              <option value="date">Date</option>
-              <option value="name">Name</option>
-            </Select>
-          </Flex>
+        <FiltrerSorter {...filtrerProps}>
+          <Tabs mx="8" tabs={tabs} />
         </FiltrerSorter>
       </Center>
 
