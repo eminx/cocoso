@@ -148,26 +148,29 @@ function ActivityForm({
           </Heading>
 
           <Box mb="4">
-            {datesAndTimes.map((recurrence, index) => (
-              <DatesAndTimes
-                key={
-                  recurrence.startDate +
-                  recurrence.endDate +
-                  recurrence.startTime +
-                  recurrence.endTime
-                }
-                isPublicActivity={isPublicActivity}
-                recurrence={recurrence}
-                removeRecurrence={() => removeRecurrence(index)}
-                isDeletable={datesAndTimes.length > 1}
-                handleCapacityChange={(value) => handleCapacityChange(value, index)}
-                handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
-                handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
-                handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
-                handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
-                handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
-              />
-            ))}
+            {datesAndTimes.map((recurrence, index) => {
+              const id =
+                recurrence.startDate +
+                recurrence.endDate +
+                recurrence.startTime +
+                recurrence.endTime +
+                index;
+              return (
+                <DatesAndTimes
+                  key={id}
+                  isPublicActivity={isPublicActivity}
+                  recurrence={recurrence}
+                  removeRecurrence={() => removeRecurrence(index)}
+                  isDeletable={datesAndTimes.length > 1}
+                  handleCapacityChange={(value) => handleCapacityChange(value, index)}
+                  handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
+                  handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
+                  handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
+                  handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
+                  handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
+                />
+              );
+            })}
             <Center p="6" border="1px solid #ccc">
               <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
