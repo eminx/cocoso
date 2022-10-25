@@ -857,7 +857,7 @@ class Process extends Component {
         return null;
       }
       return (
-        <Box pt="4">
+        <Flex pt="4">
           {futureMeetings.map((m) => (
             <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
               <Box pr="6">
@@ -865,7 +865,7 @@ class Process extends Component {
               </Box>
             </Link>
           ))}
-        </Box>
+        </Flex>
       );
     }
   };
