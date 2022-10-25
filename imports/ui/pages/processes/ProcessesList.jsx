@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, Flex, Input, Select, WrapItem } from '@chakra-ui/react';
+import { Box, Center, WrapItem } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -65,8 +65,7 @@ export default function ProcessesList() {
       return !process.isArchived && processWordFiltered;
     });
 
-    const filteredProcessesWithAccessFilter = parseOnlyAllowedProcesses(filteredProcesses);
-    return filteredProcessesWithAccessFilter;
+    return parseOnlyAllowedProcesses(filteredProcesses);
   };
 
   const parseOnlyAllowedProcesses = (futureProcesses) => {
@@ -85,11 +84,22 @@ export default function ProcessesList() {
       );
     });
 
-    return futureProcessesAllowed;
+    return getProcessesSorted(futureProcessesAllowed);
   };
 
-  const processesRendered =
-    processes && processes.length > 0 && getFilteredProcesses().sort(compareForSort).reverse();
+  const getProcessesSorted = (filteredProcesses) => {
+    if (sorterValue === 'name') {
+      return filteredProcesses.sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+      return filteredProcesses.sort(compareForSort).reverse();
+    }
+  };
+
+  if (!processes || !processes.length === 0) {
+    return null;
+  }
+
+  const processesRendered = getFilteredProcesses();
 
   const tabs = [
     {
@@ -105,10 +115,6 @@ export default function ProcessesList() {
       onClick: () => setFilter('archived'),
     },
   ];
-
-  if (!processesRendered || !processesRendered.length === 0) {
-    return null;
-  }
 
   const filtrerProps = {
     filterWord,
