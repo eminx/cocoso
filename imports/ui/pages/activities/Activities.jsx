@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
@@ -12,6 +12,8 @@ import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import Tabs from '../../components/Tabs';
+import FiltrerSorter from '../../components/FiltrerSorter';
+import { call } from '../../utils/shared';
 
 moment.locale(i18n.language);
 
@@ -28,49 +30,78 @@ function compareDatesForSort(a, b) {
   return dateA - dateB;
 }
 
-function Activities({ activitiesList, isLoading, history }) {
+function Activities({ history }) {
+  const [activities, setActivities] = useState([]);
+  const [filterWord, setFilterWord] = useState('');
+  const [sorterValue, setSorterValue] = useState('date');
+  const [isLoading, setIsLoading] = useState(true);
   const { currentHost } = useContext(StateContext);
   const {
     location: { search },
   } = history;
   const { showPast } = parse(search, { parseBooleans: true });
-
   const [tc] = useTranslation('common');
 
+  useEffect(() => {
+    getActivities();
+  }, []);
+
+  const getActivities = async () => {
+    try {
+      setActivities(await call('getAllActivities', true));
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getFuturePublicActivities = () => {
-    if (!activitiesList) {
+    if (!activities) {
       return null;
     }
+    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    return activities.filter((activity) => {
+      const activityWordFiltered =
+        activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
-    const publicActivities = activitiesList.filter(
-      (activity) => activity.isPublicActivity === true
-    );
-
-    const futurePublicActivities = publicActivities.filter((activity) =>
-      activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday))
-    );
-
-    return futurePublicActivities;
-  };
-
-  const allSortedActivities = () => {
-    if (showPast) {
-      return getPastPublicActivities().sort(compareDatesForSort).reverse();
-    }
-    return getFuturePublicActivities().sort(compareDatesForSort);
-  };
-
-  const getPastPublicActivities = () => {
-    if (!activitiesList) {
-      return null;
-    }
-
-    return activitiesList.filter((activity) => {
       return (
-        activity.isPublicActivity &&
-        activity.datesAndTimes.some((date) => moment(date.startDate).isBefore(today))
+        activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
+        activityWordFiltered
       );
     });
+  };
+  const getPastPublicActivities = () => {
+    if (!activities) {
+      return null;
+    }
+
+    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    return activities.filter((activity) => {
+      const activityWordFiltered =
+        activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+      return (
+        activity.datesAndTimes.some((date) => moment(date.startDate).isBefore(today)) &&
+        activityWordFiltered
+      );
+    });
+  };
+
+  const getActivitiesFilteredSorted = () => {
+    if (showPast) {
+      if (sorterValue === 'name') {
+        return getPastPublicActivities().sort((a, b) => a.title.localeCompare(b.title));
+      }
+      return getPastPublicActivities().sort(compareDatesForSort).reverse();
+    } else {
+      if (sorterValue === 'name') {
+        return getFuturePublicActivities().sort((a, b) => a.title.localeCompare(b.title));
+      }
+      return getFuturePublicActivities().sort(compareDatesForSort).reverse();
+    }
   };
 
   if (isLoading) {
@@ -92,6 +123,15 @@ function Activities({ activitiesList, isLoading, history }) {
     },
   ];
 
+  const filtrerProps = {
+    filterWord,
+    setFilterWord,
+    sorterValue,
+    setSorterValue,
+  };
+
+  const activitiesRendered = getActivitiesFilteredSorted();
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
@@ -101,10 +141,12 @@ function Activities({ activitiesList, isLoading, history }) {
       </Helmet>
 
       <Center>
-        <Tabs tabs={tabs} defaultIndex={showPast ? 0 : 1} />
+        <FiltrerSorter {...filtrerProps}>
+          <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+        </FiltrerSorter>
       </Center>
 
-      <Paginate items={allSortedActivities()}>
+      <Paginate items={activitiesRendered}>
         {(activity) => (
           <Box key={activity.title}>
             <Link

@@ -36,7 +36,7 @@ import InviteManager from './InviteManager';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
 import Loader from '../../components/Loader';
-import FancyDate from '../../components/FancyDate';
+import FancyDate, { DateJust } from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert, message } from '../../components/message';
@@ -392,7 +392,7 @@ class Process extends Component {
 
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
-    const { conflictingBooking, isFormValid, resources } = this.state;
+    const { resources } = this.state;
 
     if (!process) {
       return;
@@ -836,17 +836,36 @@ class Process extends Component {
   };
 
   renderAction = () => {
-    const { t } = this.props;
+    const { process, processMeetings, t } = this.props;
+
     const isAdmin = this.isAdmin();
     const isMember = this.isMember();
 
     if (!isAdmin && !isMember) {
       return (
-        <Center mb="6" p="4" bg="green.100">
+        <Center p="4" bg="green.100">
           <Button colorScheme="green" onClick={this.openModal}>
             {t('actions.join')}
           </Button>
         </Center>
+      );
+    } else {
+      const futureMeetings = processMeetings?.filter((meeting) =>
+        moment(meeting.endDate).isAfter(yesterday)
+      );
+      if (!futureMeetings || futureMeetings.length === 0) {
+        return null;
+      }
+      return (
+        <Flex pt="4">
+          {futureMeetings.map((m) => (
+            <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
+              <Box pr="6">
+                <DateJust>{m.startDate}</DateJust>
+              </Box>
+            </Link>
+          ))}
+        </Flex>
       );
     }
   };

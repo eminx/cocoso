@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-const Processes = lazy(() => import('./ProcessesListContainer'));
+const Processes = lazy(() => import('./ProcessesList'));
 const NewProcess = lazy(() => import('./NewProcessContainer'));
 const Process = lazy(() => import('./ProcessContainer'));
 const EditProcess = lazy(() => import('./EditProcessContainer'));

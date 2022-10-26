@@ -5,6 +5,11 @@ const userMenu = [
     key: 'publicProfile',
     value: '',
   },
+  {
+    menu: 'member',
+    key: 'editProfile',
+    value: '',
+  },
   // {
   //   // label: 'My Activities',
   //   menu: 'member',

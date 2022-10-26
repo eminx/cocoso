@@ -8,10 +8,11 @@ import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
+import FiltrerSorter from '../../components/FiltrerSorter';
 
 const compareByDate = (a, b) => {
-  const dateA = new Date(a.createdAt);
-  const dateB = new Date(b.createdAt);
+  const dateA = new Date(a.date);
+  const dateB = new Date(b.date);
   return dateB - dateA;
 };
 
@@ -23,23 +24,20 @@ const getFullName = (member) => {
   return firstName || lastName || '';
 };
 
-const publicSettings = Meteor.settings.public;
-
-function PublicMembers() {
+function MembersPublic() {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
+  const [filterWord, setFilterWord] = useState('');
+  const [sorterValue, setSorterValue] = useState('date');
   const { currentHost } = useContext(StateContext);
 
   const getAndSetMembers = async () => {
-    setLoading(true);
     try {
-      const members = await call('getHostMembers');
-      const sortedMembers = members.sort(compareByDate);
-      setMembers(sortedMembers);
-      setLoading(false);
+      setMembers(await call('getHostMembers'));
     } catch (error) {
       message.error(error.error);
       console.log(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -93,29 +91,63 @@ function PublicMembers() {
   //   ],
   // }));
 
+  const getMembersSorted = (membersFiltered) => {
+    if (sorterValue === 'name') {
+      return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
+    }
+    return membersFiltered.sort(compareByDate);
+  };
+
+  const getMembersFiltered = () => {
+    const lowerCaseFilterWord = filterWord?.toLowerCase();
+    const membersFiltered = members.filter((member) => {
+      if (!member.username) {
+        return false;
+      }
+      return member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+    });
+
+    return getMembersSorted(membersFiltered);
+  };
+
+  const filtrerProps = {
+    filterWord,
+    setFilterWord,
+    sorterValue,
+    setSorterValue,
+  };
+
+  const membersRendered = getMembersFiltered();
+
   return (
     <Box mb="3">
       <Helmet>
-        <title>{`Members | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Paginate items={members} itemsPerPage={24} isContainerSimpleGrid={false}>
+      <Center mb="2">
+        <FiltrerSorter {...filtrerProps} />
+      </Center>
+
+      <Paginate items={membersRendered} itemsPerPage={12} isContainerSimpleGrid={false}>
         {(member) => (
-          <WrapItem w="40" key={member.id}>
+          <WrapItem w="60" key={member.id}>
             <Link to={`/@${member.username}`}>
-              <Box m="1">
-                <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
-                <Center>
-                  <Text fontWeight="bold" fontSize="lg" isTruncated>
-                    {member.username}
-                  </Text>
-                </Center>
-                {/* <Center>
-                  <Text color="gray.900" isTruncated textAlign="center" width="120px">
-                    {getFullName(member)}
-                  </Text>
-                </Center> */}
-              </Box>
+              <Center m="4">
+                <Box>
+                  <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                  <Center>
+                    <Text fontWeight="bold" fontSize="lg" isTruncated>
+                      {member.username}
+                    </Text>
+                  </Center>
+                  <Center>
+                    <Text color="gray.900" isTruncated textAlign="center" width="120px">
+                      {getFullName(member)}
+                    </Text>
+                  </Center>
+                </Box>
+              </Center>
             </Link>
           </WrapItem>
         )}
@@ -124,4 +156,4 @@ function PublicMembers() {
   );
 }
 
-export default PublicMembers;
+export default MembersPublic;

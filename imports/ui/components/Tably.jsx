@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar,
@@ -8,6 +8,8 @@ import {
   Container,
   Flex,
   Heading,
+  Grid,
+  GridItem,
   Link as CLink,
   Menu,
   MenuList,
@@ -31,163 +33,157 @@ function Tably({
   tabs,
   title,
   tags = null,
-  noGridAdjust = false,
 }) {
   const history = useHistory();
   const location = useLocation();
   const { isDesktop } = useContext(StateContext);
-  const imageContainer = useRef();
-  const [imageContainerTop, setImageContainerTop] = useState(null);
-
-  const isImage = images && images?.length > 0;
-
-  useLayoutEffect(() => {
-    if (noGridAdjust || !isImage || !isDesktop) {
-      return;
-    }
-    setTimeout(() => {
-      const rect = imageContainer?.current?.getBoundingClientRect();
-      setImageContainerTop(rect ? rect.top : null);
-    });
-  }, [imageContainer]);
-
-  const getDefaultTabIndex = () => {
-    return tabs.findIndex((tab) => tab.path === location.pathname);
-  };
+  const tabIndex = tabs.findIndex((tab) => tab.path === location.pathname);
 
   if (!tabs.find((tab) => tab.path === location.pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
 
+  if (isDesktop) {
+    return (
+      <>
+        <Breadcrumb />
+        <Grid templateColumns="2fr 2fr 1fr">
+          <GridItem>
+            <Box>
+              <Header
+                author={author}
+                title={title}
+                subTitle={subTitle}
+                tags={tags}
+                isDesktop={isDesktop}
+              />
+            </Box>
+          </GridItem>
+
+          <GridItem pl="12">
+            <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs}>
+              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+            </Tabs>
+            <Box mx="4">{action}</Box>
+          </GridItem>
+          <GridItem>{author && <AvatarHolder author={author} />}</GridItem>
+
+          <GridItem>
+            <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
+              <NiceSlider images={images} width="550px" max />
+            </Flex>
+          </GridItem>
+
+          <GridItem pl="12">
+            <Box h={`calc(100vh - 256px)`} overflowY="scroll">
+              <Switch history={history}>
+                {tabs.map((tab) => (
+                  <Route
+                    key={tab.title}
+                    path={tab.path}
+                    render={(props) => <Container margin={'auto'}>{tab.content}</Container>}
+                  />
+                ))}
+              </Switch>
+            </Box>
+          </GridItem>
+          <GridItem />
+        </Grid>
+      </>
+    );
+  }
+
   return (
     <>
       <Breadcrumb />
-      <Flex direction={isDesktop ? 'row' : 'column'} mt={isDesktop ? '6' : '0'} wrap>
-        {isImage && (
-          <Box w={isDesktop ? '40%' : '100%'} h="100%">
-            <Flex mb={isDesktop ? '16' : '8'} pl="4" pr="0" justify="space-between">
-              <Box flexBasis={isDesktop ? '100%' : '80%'}>
-                <Heading
-                  as="h1"
-                  size="xl"
-                  lineHeight={1}
-                  mb="2"
-                  mt="1"
-                  textAlign={isDesktop ? 'right' : 'left'}
-                >
-                  {title}
-                </Heading>
-                {subTitle && (
-                  <Heading
-                    as="h2"
-                    fontSize="24px"
-                    fontWeight="light"
-                    lineHeight={1}
-                    textAlign={isDesktop ? 'right' : 'left'}
-                  >
-                    {subTitle}
-                  </Heading>
-                )}
-                {tags && tags.length > 0 && (
-                  <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt="2">
-                    {tags.map((tag) => (
-                      <Badge fontSize="14px" key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
-                        {tag}
-                      </Badge>
-                    ))}
-                  </Flex>
-                )}
-              </Box>
-              {!isDesktop && author && (
-                <Box flexBasis="64px" align="center">
-                  <AvatarHolder size="md" author={author} />
-                </Box>
-              )}
-            </Flex>
-            <Flex
-              flexGrow="0"
-              justify={isDesktop ? 'flex-end' : 'center'}
-              mb="4"
-              ref={imageContainer}
-            >
-              <NiceSlider images={images} isFade={isDesktop} width={isDesktop ? '40vw' : '100vw'} />
-            </Flex>
-          </Box>
-        )}
 
-        <Box w={isDesktop && isImage ? '40%' : '100%'} pl={isDesktop && isImage ? '12' : '0'}>
-          {!isImage && (
-            <Box p="4">
-              <Heading as="h1" size="xl" textAlign={isDesktop ? 'center' : 'left'}>
-                {title}
-              </Heading>
-              {subTitle && (
-                <Heading
-                  as="h2"
-                  fontSize="24px"
-                  fontWeight="light"
-                  textAlign={isDesktop ? 'center' : 'left'}
-                >
-                  {subTitle}
-                </Heading>
-              )}
-            </Box>
-          )}
-          {action}
-          <Tabs
-            align={isDesktop && isImage ? 'start' : 'center'}
-            colorScheme="gray.800"
-            defaultIndex={getDefaultTabIndex()}
-            flexShrink="0"
-            mt="2"
-            size={isDesktop ? 'md' : 'sm'}
-            tabs={tabs}
-          >
+      <Box>
+        <Box>
+          <Header
+            author={author}
+            title={title}
+            subTitle={subTitle}
+            tags={tags}
+            isDesktop={isDesktop}
+          />
+
+          <Center>
+            <NiceSlider images={images} width="100vw" isFade={false} />
+          </Center>
+          <Center mb="4" mx="4">
+            {action}
+          </Center>
+        </Box>
+
+        <Box minH="100vh">
+          <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" size="sm" tabs={tabs}>
             {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
           </Tabs>
 
-          <Box
-            mt={
-              isDesktop && isImage && imageContainerTop > 0
-                ? `${imageContainerTop - 120}px`
-                : 'null'
-            }
-            h={isDesktop && isImage ? `calc(100vh - ${imageContainerTop + 60}px)` : 'auto'}
-            overflowY="scroll"
-          >
+          <Box>
             <Switch history={history}>
               {tabs.map((tab) => (
                 <Route
                   key={tab.title}
                   path={tab.path}
-                  render={(props) =>
-                    isDesktop ? (
-                      <Container margin={isImage ? 0 : 'auto'} pt="2">
+                  render={(props) => (
+                    <Center>
+                      <Container margin={'auto'} pt="2">
                         {tab.content}
                       </Container>
-                    ) : (
-                      <Center>
-                        <Container margin={isImage ? 0 : 'auto'} pt="2">
-                          {tab.content}
-                        </Container>
-                      </Center>
-                    )
-                  }
+                    </Center>
+                  )}
                 />
               ))}
             </Switch>
           </Box>
         </Box>
-
-        {isDesktop && author && (
-          <Box w="20%">
-            <Center>
-              <AvatarHolder author={author} />
-            </Center>
-          </Box>
-        )}
-      </Flex>
+      </Box>
     </>
+  );
+}
+
+function Header({ title, subTitle, tags, isDesktop, author }) {
+  return (
+    <Flex mb={isDesktop ? '16' : '8'} pl="4" pr="0" justify="space-between">
+      <Box flexBasis={isDesktop ? '100%' : '80%'}>
+        <Heading
+          as="h1"
+          size="xl"
+          lineHeight={1}
+          mb="2"
+          mt="1"
+          textAlign={isDesktop ? 'right' : 'left'}
+        >
+          {title}
+        </Heading>
+        {subTitle && (
+          <Heading
+            as="h2"
+            fontSize="24px"
+            fontWeight="light"
+            lineHeight={1}
+            textAlign={isDesktop ? 'right' : 'left'}
+          >
+            {subTitle}
+          </Heading>
+        )}
+        {tags && tags.length > 0 && (
+          <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt="2">
+            {tags.map((tag) => (
+              <Badge fontSize="14px" key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
+                {tag}
+              </Badge>
+            ))}
+          </Flex>
+        )}
+      </Box>
+      {!isDesktop && author && (
+        <Box flexBasis="64px" align="center">
+          <AvatarHolder size="md" author={author} />
+        </Box>
+      )}
+    </Flex>
   );
 }
 
