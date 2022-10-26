@@ -29,11 +29,12 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
         <AccordionPanel pb={4}>
           <Flex
             align="center"
-            justify={isDesktop ? 'space-between' : 'center'}
+            justify={isDesktop ? 'space-between' : 'space-around'}
             wrap={isDesktop ? 'nowrap' : 'wrap'}
           >
             <Input
               flexBasis="180px"
+              mb="1"
               placeholder={'type something'}
               size="sm"
               value={filterWord}

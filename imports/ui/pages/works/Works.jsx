@@ -51,24 +51,24 @@ function Works() {
     return <Loader />;
   }
 
-  const sortedWorks = () => {
+  const getSortedWorks = () => {
     if (sorterValue === 'name') {
       return works.sort((a, b) => a.title.localeCompare(b.title));
     }
     return works.sort(compareByDate);
   };
 
-  const filteredWorks = () => {
+  const getFilteredWorks = () => {
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
     if (categoryFilter) {
-      return sortedWorks().filter((work) => {
+      return getSortedWorks().filter((work) => {
         const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
         return (
           work.category && work.category.label === categoryFilter.toLowerCase() && workWordFiltered
         );
       });
     } else {
-      return sortedWorks().filter((work) => {
+      return getSortedWorks().filter((work) => {
         const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
         return workWordFiltered;
       });
@@ -77,7 +77,7 @@ function Works() {
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = filteredWorks().map((work, index) => {
+  const worksWithCategoryColors = getFilteredWorks().map((work, index) => {
     const category = categoriesAssignedToWorks.find((category) => {
       return (
         category.label &&

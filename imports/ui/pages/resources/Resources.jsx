@@ -19,7 +19,7 @@ function Resources() {
   const [resources, setResources] = useState([]);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [combo, setCombo] = useState('all');
 
   const [t] = useTranslation('resources');
@@ -33,14 +33,15 @@ function Resources() {
     try {
       const response = await call('getResources');
       setResources(response);
-      setIsLoading(false);
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
-      setIsLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return <Loader />;
   }
 
@@ -58,8 +59,8 @@ function Resources() {
   };
 
   const getResourcesFiltered = () => {
+    const lowerCaseFilterWord = filterWord?.toLowerCase();
     return getComboFilteredResources().filter((resource) => {
-      const lowerCaseFilterWord = filterWord?.toLowerCase();
       if (!resource.label) {
         return false;
       }
@@ -117,16 +118,6 @@ function Resources() {
   };
 
   const resourcesRendered = getResourcesSorted();
-
-  if (resourcesRendered.length === 0) {
-    return (
-      <Center>
-        <Heading size="md" fontWeight="bold">
-          {t('messages.notfound')}
-        </Heading>
-      </Center>
-    );
-  }
 
   return (
     <Box width="100%" mb="100px">
