@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Box, Center, Text, WrapItem } from '@chakra-ui/react';
+import { Avatar, Box, Center, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Paginate from '../../components/Paginate';
@@ -125,31 +125,24 @@ function MembersPublic() {
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Center mb="2">
+      <Center mb="6">
         <FiltrerSorter {...filtrerProps} />
       </Center>
 
-      <Paginate items={membersRendered} itemsPerPage={12} isContainerSimpleGrid={false}>
+      <Paginate items={membersRendered} itemsPerPage={12}>
         {(member) => (
-          <WrapItem w="60" key={member.id}>
+          <Center p="4" w="60">
             <Link to={`/@${member.username}`}>
-              <Center m="4">
-                <Box>
-                  <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
-                  <Center>
-                    <Text fontWeight="bold" fontSize="lg" isTruncated>
-                      {member.username}
-                    </Text>
-                  </Center>
-                  <Center>
-                    <Text color="gray.900" isTruncated textAlign="center" width="120px">
-                      {getFullName(member)}
-                    </Text>
-                  </Center>
-                </Box>
-              </Center>
+              <Box>
+                <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                <Center>
+                  <Text fontWeight="bold" fontSize="lg" isTruncated>
+                    {member.username}
+                  </Text>
+                </Center>
+              </Box>
             </Link>
-          </WrapItem>
+          </Center>
         )}
       </Paginate>
     </Box>
