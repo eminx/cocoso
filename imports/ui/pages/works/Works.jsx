@@ -13,6 +13,7 @@ import Tag from '../../components/Tag';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { getHslValuesFromLength } from '../../utils/constants/colors';
+import FiltrerSorter from '../../components/FiltrerSorter';
 
 const publicSettings = Meteor.settings.public;
 
@@ -25,8 +26,10 @@ const compareByDate = (a, b) => {
 function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterWord, setFilterWord] = useState('');
+  const [sorterValue, setSorterValue] = useState('date');
   const [categoryFilter, setCategoryFilter] = useState(null);
-  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -48,17 +51,33 @@ function Works() {
     return <Loader />;
   }
 
-  const sortedWorks = works.sort(compareByDate);
+  const sortedWorks = () => {
+    if (sorterValue === 'name') {
+      return works.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return works.sort(compareByDate);
+  };
 
-  const filteredWorks = categoryFilter
-    ? sortedWorks.filter(
-        (work) => work.category && work.category.label === categoryFilter.toLowerCase()
-      )
-    : sortedWorks;
+  const filteredWorks = () => {
+    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    if (categoryFilter) {
+      return sortedWorks().filter((work) => {
+        const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+        return (
+          work.category && work.category.label === categoryFilter.toLowerCase() && workWordFiltered
+        );
+      });
+    } else {
+      return sortedWorks().filter((work) => {
+        const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+        return workWordFiltered;
+      });
+    }
+  };
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
 
-  const worksWithCategoryColors = filteredWorks.map((work, index) => {
+  const worksWithCategoryColors = filteredWorks().map((work, index) => {
     const category = categoriesAssignedToWorks.find((category) => {
       return (
         category.label &&
@@ -72,6 +91,13 @@ function Works() {
     };
   });
 
+  const filtrerProps = {
+    filterWord,
+    setFilterWord,
+    sorterValue,
+    setSorterValue,
+  };
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
@@ -80,7 +106,11 @@ function Works() {
         }`}</title>
       </Helmet>
 
-      <Center mb="4">
+      <Center mb="2">
+        <FiltrerSorter {...filtrerProps} />
+      </Center>
+
+      <Center>
         <Wrap pl="2" justify="center">
           <WrapItem>
             <Tag
@@ -132,10 +162,12 @@ getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
 
   const hslValues = getHslValuesFromLength(labels.length);
-  return labels.map((label, i) => ({
-    label,
-    color: hslValues[i],
-  }));
+  return labels
+    .map((label, i) => ({
+      label,
+      color: hslValues[i],
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 };
 
 export default Works;
