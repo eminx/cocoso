@@ -1,7 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, WrapItem } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -17,8 +16,6 @@ import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 
 moment.locale(i18n.language);
-
-const publicSettings = Meteor.settings.public;
 
 export default function ProcessesList() {
   const [processes, setProcesses] = useState([]);
@@ -126,9 +123,7 @@ export default function ProcessesList() {
   return (
     <Box w="100%">
       <Helmet>
-        <title>{`${tc('domains.processes')} | ${currentHost.settings.name} | ${
-          publicSettings.name
-        }`}</title>
+        <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
       <Center>
@@ -139,7 +134,7 @@ export default function ProcessesList() {
 
       <Paginate items={processesRendered}>
         {(process) => (
-          <WrapItem key={process._id}>
+          <Box key={process._id}>
             <Link to={`/processes/${process._id}`}>
               <NewGridThumb
                 imageUrl={process.imageUrl}
@@ -147,7 +142,7 @@ export default function ProcessesList() {
                 title={process.title}
               />
             </Link>
-          </WrapItem>
+          </Box>
         )}
       </Paginate>
     </Box>

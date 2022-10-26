@@ -1,4 +1,4 @@
-import { Center, SimpleGrid, Wrap } from '@chakra-ui/react';
+import { Center, Wrap } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
@@ -6,13 +6,7 @@ import '../utils/styles/paginate.css';
 
 const defaultItemsPerPage = 12;
 
-function PaginatedItems({
-  grid = { columns: [1, 1, 2, 3], spacing: 2, w: '100%' },
-  isContainerSimpleGrid = false,
-  items,
-  itemsPerPage = defaultItemsPerPage,
-  children,
-}) {
+function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children }) {
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -31,13 +25,9 @@ function PaginatedItems({
 
   return (
     <>
-      {isContainerSimpleGrid ? (
-        <SimpleGrid {...grid}>
-          {currentItems && currentItems.map((item) => children(item))}
-        </SimpleGrid>
-      ) : (
-        <Wrap justify="center">{currentItems && currentItems.map((item) => children(item))}</Wrap>
-      )}
+      <Wrap justify="center" shouldWrapChildren>
+        {currentItems && currentItems.map((item) => children(item))}
+      </Wrap>
       {items.length > itemsPerPage && (
         <Center>
           <ReactPaginate
