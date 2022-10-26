@@ -120,7 +120,7 @@ function MemberPublic({ history, match, path }) {
           <CLink as="span">{membersInMenu.label}</CLink>
         </Link>
         <Text mx="2">/</Text>
-        <Text>{currentUser.username}</Text>
+        <Text>{username}</Text>
       </Flex>
 
       <Box>
