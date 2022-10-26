@@ -12,11 +12,10 @@ Meteor.methods({
     check(username, String);
 
     const host = getHost(this);
-    // const currentHost = Hosts.findOne({ host });
 
     try {
       const user = Meteor.users.findOne({ username, 'memberships.host': host });
-      if (!user) {
+      if ((!user || !user.isPublic) && user._id !== Meteor.userId()) {
         throw new Meteor.Error('User not found in this host');
       }
       return {
@@ -244,6 +243,32 @@ Meteor.methods({
       return user.contactInfo;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't retrieve the contact info");
+    }
+  },
+
+  setProfilePublic(isPublic) {
+    const userId = Meteor.userId();
+    try {
+      Meteor.users.update({ _id: userId }, { $set: { isPublic: isPublic } });
+      Hosts.update(
+        {
+          members: {
+            $elemMatch: {
+              id: userId,
+            },
+          },
+        },
+        {
+          $set: {
+            'members.$.isPublic': isPublic,
+          },
+        },
+        {
+          multi: true,
+        }
+      );
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't update");
     }
   },
 

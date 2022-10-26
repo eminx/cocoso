@@ -5,7 +5,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-export default function GridThumb({ avatar, dates, imageUrl, subTitle, title, tag }) {
+export default function GridThumb({ avatar, color, dates, imageUrl, subTitle, title, tag }) {
   if (!title || !imageUrl) {
     return null;
   }
@@ -32,7 +32,7 @@ export default function GridThumb({ avatar, dates, imageUrl, subTitle, title, ta
               {subTitle}
             </Heading>
           )}
-          {tag && <Tag label={tag} mb="1" />}
+          {tag && <Tag filterColor={color} label={tag} mb="1" />}
         </Box>
         {avatar && <Avatar name={avatar.name} src={avatar.url} />}
         {dates && (

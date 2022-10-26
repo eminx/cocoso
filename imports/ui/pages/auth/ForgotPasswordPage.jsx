@@ -29,7 +29,7 @@ function ForgotPasswordPage() {
   }
 
   return (
-    <Box bg="gray.100" pb="8" minHeight="100vh">
+    <Box pb="8" minHeight="100vh">
       <Template>
         <Center p="4">
           <Box w="xs">

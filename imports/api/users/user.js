@@ -23,6 +23,7 @@ Users.schema.UserProfile = {
   contactInfo: { type: String, optional: true },
   lang: { type: String, optional: true },
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
+  isPublic: { type: Boolean, defaultValue: true, optional: true },
 
   memberships: { type: Array, defaultValue: [] },
   'memberships.$': {

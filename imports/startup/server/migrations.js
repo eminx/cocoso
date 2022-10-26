@@ -460,10 +460,65 @@ Migrations.add({
   },
 });
 
+Migrations.add({
+  version: 16,
+  async up() {
+    console.log('up to', this.version);
+    Meteor.users.update(
+      {},
+      {
+        $set: { isPublic: true },
+      },
+      { multi: true }
+    );
+
+    Hosts.find().forEach((host) => {
+      const members = host.members;
+      const membersAltered = members.map((m) => ({
+        ...m,
+        isPublic: true,
+      }));
+      Hosts.update(
+        { _id: host._id },
+        {
+          $set: {
+            members: membersAltered,
+          },
+        }
+      );
+    });
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+    Meteor.users.update(
+      {},
+      {
+        $unset: { isPublic: true },
+      },
+      { multi: true }
+    );
+    Hosts.find().forEach((host) => {
+      const members = host.members;
+      const membersAltered = members.map((m) => {
+        delete m.isPublic;
+        return m;
+      });
+      Hosts.update(
+        { _id: host._id },
+        {
+          $set: {
+            members: membersAltered,
+          },
+        }
+      );
+    });
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
-  // Migrations.migrateTo(0);
+  // Migrations.migrateTo(1);
   // Migrations.migrateTo(2);
   // Migrations.migrateTo(3);
   // Migrations.migrateTo(4);
@@ -478,5 +533,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(13);
   // Migrations.migrateTo(14);
   // Migrations.migrateTo(15);
-  // Migrations.migrateTo('latest');
+  // Migrations.migrateTo(16);
+  Migrations.migrateTo('latest');
 });

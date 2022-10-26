@@ -1,22 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Badge,
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Input,
-  Select,
-  Spacer,
-  Tab,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Text,
-} from '@chakra-ui/react';
+import { Badge, Box, Center, Heading, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
@@ -26,13 +11,16 @@ import { StateContext } from '../../LayoutContainer';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
+import FiltrerSorter from '../../components/FiltrerSorter';
+import Tabs from '../../components/Tabs';
 
-function ResourcesPage() {
-  const { currentUser, currentHost, canCreateContent } = useContext(StateContext);
+function Resources() {
+  const { currentHost } = useContext(StateContext);
   const [resources, setResources] = useState([]);
   const [filterWord, setFilterWord] = useState('');
-  const [sortBy, setSortBy] = useState('date');
-  const [isLoading, setIsLoading] = useState(true);
+  const [sorterValue, setSorterValue] = useState('date');
+  const [loading, setLoading] = useState(true);
+  const [combo, setCombo] = useState('all');
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -45,120 +33,107 @@ function ResourcesPage() {
     try {
       const response = await call('getResources');
       setResources(response);
-      setIsLoading(false);
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
-      setIsLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return <Loader />;
   }
-  const resourcesFiltered = resources?.filter((resource) => {
-    const lowerCaseFilterWord = filterWord?.toLowerCase();
-    if (!resource.label) {
-      return false;
-    }
-    return (
-      resource.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
-      (resource.isCombo &&
-        resource.resourcesForCombo.some(
-          (r) => r.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
-        ))
-    );
-  });
 
-  const resourcesFilteredAndSorted = resourcesFiltered.sort((a, b) => {
-    if (sortBy === 'name') {
-      return a.label.localeCompare(b.label);
+  const getComboFilteredResources = () => {
+    return resources.filter((r) => {
+      switch (combo) {
+        case 'combo':
+          return r.isCombo;
+        case 'non-combo':
+          return !r.isCombo;
+        default:
+          return true;
+      }
+    });
+  };
+
+  const getResourcesFiltered = () => {
+    const lowerCaseFilterWord = filterWord?.toLowerCase();
+    return getComboFilteredResources().filter((resource) => {
+      if (!resource.label) {
+        return false;
+      }
+      return (
+        resource.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        (resource.isCombo &&
+          resource.resourcesForCombo.some(
+            (r) => r.label.toLowerCase().indexOf(lowerCaseFilterWord) !== -1
+          ))
+      );
+    });
+  };
+
+  const getResourcesSorted = () => {
+    return getResourcesFiltered().sort((a, b) => {
+      if (sorterValue === 'name') {
+        return a.label.localeCompare(b.label);
+      } else {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+    });
+  };
+
+  const tabs = [
+    {
+      title: 'All',
+      onClick: () => setCombo('all'),
+    },
+    {
+      title: 'Combo',
+      onClick: () => setCombo('combo'),
+    },
+    {
+      title: 'Non combo',
+      onClick: () => setCombo('non-combo'),
+    },
+  ];
+
+  const filtrerProps = {
+    filterWord,
+    setFilterWord,
+    sorterValue,
+    setSorterValue,
+  };
+
+  const getTabIndex = () => {
+    switch (combo) {
+      case 'combo':
+        return 1;
+      case 'non-combo':
+        return 2;
+      default:
+        return 0;
     }
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
+  };
+
+  const resourcesRendered = getResourcesSorted();
 
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.resources')} | ${currentHost.settings.name} | ${
-          Meteor.settings.public.name
-        }`}</title>
+        <title>{`${tc('domains.resources')} | ${currentHost.settings.name}}`}</title>
       </Helmet>
 
-      {resourcesFilteredAndSorted.length == 0 && (
-        <Center>
-          <Heading size="md" fontWeight="bold">
-            {t('messages.notfound')}
-          </Heading>
-        </Center>
-      )}
+      <Center mb="2">
+        <FiltrerSorter {...filtrerProps}>
+          <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
+        </FiltrerSorter>
+      </Center>
 
-      {resourcesFilteredAndSorted && resources.length > 0 && (
-        <Tabs size="sm">
-          <Box p="4" mx="4" bg="gray.50">
-            <Flex align="center" direction={{ base: 'column', md: 'row' }}>
-              <Box>
-                <Input
-                  bg="white"
-                  placeholder={t('form.holder')}
-                  size="sm"
-                  value={filterWord}
-                  onChange={(event) => setFilterWord(event.target.value)}
-                />
-              </Box>
-              <Spacer my="2" />
-              <TabList>
-                <Tab _focus={{ boxShadow: 'none' }} key="All">
-                  All
-                </Tab>
-                <Tab _focus={{ boxShadow: 'none' }} key="Combo">
-                  Combo
-                </Tab>
-                <Tab _focus={{ boxShadow: 'none' }} key="Non-combo">
-                  Non-combo
-                </Tab>
-              </TabList>
-              <Spacer my="2" />
-              <Box display="flex" alignItems="center">
-                <Text fontSize="sm" mr="2" textAlign="center" w="fit-content">
-                  {tc('labels.sortBy.placeholder')}
-                </Text>
-                <Select
-                  bg="white"
-                  size="sm"
-                  w="fit-content"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="date">{tc('labels.sortBy.date')}</option>
-                  <option value="name">{tc('labels.sortBy.name')}</option>
-                </Select>
-              </Box>
-            </Flex>
-          </Box>
-          <TabPanels>
-            <TabPanel>
-              <Paginate items={resourcesFilteredAndSorted}>
-                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
-              </Paginate>
-            </TabPanel>
-
-            <TabPanel>
-              <Paginate items={resourcesFilteredAndSorted.filter((r) => r.isCombo)}>
-                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
-              </Paginate>
-            </TabPanel>
-
-            <TabPanel>
-              <Paginate
-                items={resourcesFilteredAndSorted.filter((r) => !r.isCombo)}
-                grid={{ columns: [1, 2, 3, 4], spacing: 3, w: '100%' }}
-              >
-                {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
-              </Paginate>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      )}
+      <Paginate items={resourcesRendered}>
+        {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
+      </Paginate>
     </Box>
   );
 }
@@ -184,4 +159,4 @@ function ResourceItem({ t, resource }) {
   );
 }
 
-export default ResourcesPage;
+export default Resources;

@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-const Activities = lazy(() => import('./ActivitiesContainer'));
+const Activities = lazy(() => import('./Activities'));
 const NewActivity = lazy(() => import('./NewActivityContainer'));
 const Activity = lazy(() => import('./ActivityContainer'));
 const EditActivity = lazy(() => import('./EditActivityContainer'));

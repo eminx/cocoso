@@ -16,15 +16,13 @@ export default function Breadcrumb({ furtherItems }) {
     <Box my="4">
       <Flex px="4" wrap="wrap">
         <Link to="/">
-          <CLink as="span" textTransform="uppercase" fontWeight="bold">
+          <CLink as="span" fontWeight="bold">
             {name}
           </CLink>
         </Link>
         {navItem && <Text mx="2">/</Text>}
         <Link to={`/${navItem?.name}`}>
-          <CLink as="span" textTransform="uppercase">
-            {navItem?.label}
-          </CLink>
+          <CLink as="span">{navItem?.label}</CLink>
         </Link>
         {furtherItems &&
           furtherItems.map((item) => (
@@ -32,12 +30,10 @@ export default function Breadcrumb({ furtherItems }) {
               <Text mx="2">/</Text>
               {item.link ? (
                 <Link to={item.link}>
-                  <CLink as="span" textTransform="uppercase">
-                    {item.label}
-                  </CLink>
+                  <CLink as="span">{item.label}</CLink>
                 </Link>
               ) : (
-                <Text textTransform="uppercase">{item.label}</Text>
+                <Text>{item.label}</Text>
               )}
             </Fragment>
           ))}

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 const DatesAndTimes = ({
   recurrence,
+  key,
   handleStartDateChange,
   handleEndDateChange,
   handleStartTimeChange,
@@ -26,7 +27,7 @@ const DatesAndTimes = ({
   handleCapacityChange,
   handleRangeSwitch,
   removeRecurrence,
-  isNotDeletable,
+  isDeletable,
   isPublicActivity,
 }) => {
   if (!recurrence) {
@@ -58,7 +59,7 @@ const DatesAndTimes = ({
 
   return (
     <Box p="4" mb="4" border="1px solid #ccc" borderColor={getBorderColorStyle()}>
-      {!isNotDeletable && (
+      {isDeletable && (
         <Flex justify="flex-end" mb="4">
           <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
         </Flex>
@@ -66,13 +67,8 @@ const DatesAndTimes = ({
 
       <Center>
         <FormControl w="auto" alignItems="center" display="flex">
-          <Switch
-            isChecked={isRange}
-            id="is-multipledays-switch"
-            onChange={handleRangeSwitch}
-            py="2"
-          />
-          <FormLabel htmlFor="is-multipledays-switch" mb="1" ml="2">
+          <Switch isChecked={isRange} id={key} onChange={handleRangeSwitch} py="2" />
+          <FormLabel htmlFor={key} mb="1" ml="2">
             {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
