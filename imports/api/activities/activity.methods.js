@@ -9,6 +9,20 @@ import Resources from '../resources/resource';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
+  getAllActivities(onlyPublic = false) {
+    const host = getHost(this);
+
+    try {
+      return Activities.find({
+        host,
+        isPublicActivity: onlyPublic,
+      }).fetch();
+      return;
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch works");
+    }
+  },
+
   getMyActivities() {
     const user = Meteor.user();
     if (!user) {
