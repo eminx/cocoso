@@ -1,13 +1,4 @@
 import { extendTheme } from '@chakra-ui/react';
-import { mode } from '@chakra-ui/theme-tools';
-
-const styles = {
-  global: (props) => ({
-    '*::placeholder': {
-      color: 'gray.900',
-    },
-  }),
-};
 
 const chakraTheme = extendTheme({
   colors: {
@@ -27,6 +18,7 @@ const chakraTheme = extendTheme({
     Input: {
       defaultProps: {
         variant: 'filled',
+        _placeholderShown: { opacity: 0.7, color: 'gray.700' },
       },
     },
     Select: {
@@ -57,4 +49,4 @@ const chakraTheme = extendTheme({
   },
 });
 
-export { chakraTheme, styles };
+export { chakraTheme };

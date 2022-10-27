@@ -35,11 +35,9 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             wrap={isDesktop ? 'nowrap' : 'wrap'}
           >
             <Input
-              _placeholder={{ opacity: 0.6, color: 'gray.700' }}
               flexBasis="180px"
               mb="1"
               placeholder={tc('domains.props.title') + '...'}
-              size="sm"
               value={filterWord}
               onChange={(event) => setFilterWord(event.target.value)}
             />
@@ -47,7 +45,6 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             <Select
               flexBasis="180px"
               name="sorter"
-              size="sm"
               value={sorterValue}
               onChange={(e) => setSorterValue(e.target.value)}
             >
