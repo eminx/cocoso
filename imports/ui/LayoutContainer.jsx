@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Hosts from '../api/hosts/host';
 import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
-import { chakraTheme } from './utils/constants/theme';
+import { chakraTheme, styles } from './utils/constants/theme';
 import Header from './components/Header';
 
 export const StateContext = React.createContext(null);
@@ -83,7 +83,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const isHeaderAndFooter = pagesWithHeaderAndFooter.includes(pathname);
 
   return (
-    <ChakraProvider theme={chakraTheme}>
+    <ChakraProvider theme={chakraTheme} styles={styles}>
       {publicSettings.faviconUrl && (
         <Helmet>
           <link rel="icon" href={publicSettings.faviconUrl} />

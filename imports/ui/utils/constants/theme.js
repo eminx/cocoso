@@ -1,4 +1,13 @@
 import { extendTheme } from '@chakra-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
+
+const styles = {
+  global: (props) => ({
+    '*::placeholder': {
+      color: 'gray.900',
+    },
+  }),
+};
 
 const chakraTheme = extendTheme({
   colors: {
@@ -48,4 +57,4 @@ const chakraTheme = extendTheme({
   },
 });
 
-export { chakraTheme };
+export { chakraTheme, styles };
