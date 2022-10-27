@@ -114,3 +114,7 @@ a,
 .text-link-container:hover .text-link {
   text-decoration: underline;
 }
+
+input::placeholder {
+  color: rgba(40, 40, 40, 0.6);
+}

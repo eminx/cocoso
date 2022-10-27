@@ -18,6 +18,7 @@ const chakraTheme = extendTheme({
     Input: {
       defaultProps: {
         variant: 'filled',
+        _placeholderShown: { opacity: 0.7, color: 'gray.700' },
       },
     },
     Select: {

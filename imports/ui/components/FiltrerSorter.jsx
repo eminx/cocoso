@@ -11,11 +11,13 @@ import {
   Link,
   Select,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 
 function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue, children }) {
   const { isDesktop } = useContext(StateContext);
+  const [tc] = useTranslation('common');
 
   return (
     <Accordion w="2xl" allowToggle>
@@ -35,8 +37,7 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             <Input
               flexBasis="180px"
               mb="1"
-              placeholder={'type something'}
-              size="sm"
+              placeholder={tc('domains.props.title') + '...'}
               value={filterWord}
               onChange={(event) => setFilterWord(event.target.value)}
             />
@@ -44,12 +45,11 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
             <Select
               flexBasis="180px"
               name="sorter"
-              size="sm"
               value={sorterValue}
               onChange={(e) => setSorterValue(e.target.value)}
             >
-              <option value="date">Date</option>
-              <option value="name">Name</option>
+              <option value="date">{tc('labels.sortBy.date')}</option>
+              <option value="name">{tc('labels.sortBy.name')}</option>
             </Select>
           </Flex>
         </AccordionPanel>
