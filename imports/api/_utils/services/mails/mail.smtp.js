@@ -5,6 +5,7 @@ import { check } from 'meteor/check';
 import { getHost } from '../../shared';
 import Hosts from '../../../hosts/host';
 import { isValidEmail, getEmailBody } from './mail.helpers';
+import { getWelcomeEmailBody } from './templates.mails';
 
 const publicSettings = Meteor.settings.public;
 
@@ -52,13 +53,25 @@ Meteor.methods({
     const user = Meteor.users.findOne(userId);
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const email = currentHost && currentHost.emails[0];
+    const welcomeText = currentHost && currentHost.emails[0];
+
+    const emailBody = getWelcomeEmailBody(
+      welcomeText?.appeal,
+      currentHost,
+      user?.username,
+      welcomeText?.body
+    );
 
     Meteor.call(
       'sendEmail',
-      user.emails[0].address,
-      email.subject,
-      getEmailBody(email, user.username)
+      user?.emails[0].address,
+      welcomeText?.subject,
+      emailBody,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+        }
+      }
     );
   },
 
@@ -66,13 +79,25 @@ Meteor.methods({
     const user = Meteor.users.findOne(userId);
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const email = currentHost && currentHost.emails[1];
+    const welcomeText = currentHost && currentHost.emails[1];
+
+    const emailBody = getWelcomeEmailBody(
+      welcomeText?.appeal,
+      currentHost,
+      user?.username,
+      welcomeText?.body
+    );
 
     Meteor.call(
       'sendEmail',
-      user.emails[0].address,
-      email.subject,
-      getEmailBody(email, user.username)
+      user?.emails[0].address,
+      welcomeText?.subject,
+      emailBody,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+        }
+      }
     );
   },
 
