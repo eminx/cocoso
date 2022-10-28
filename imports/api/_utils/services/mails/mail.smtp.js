@@ -62,20 +62,42 @@ Meteor.methods({
       welcomeText?.body
     );
 
-    Meteor.call('sendEmail', user?.emails[0].address, welcomeText?.subject, emailBody);
+    Meteor.call(
+      'sendEmail',
+      user?.emails[0].address,
+      welcomeText?.subject,
+      emailBody,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+        }
+      }
+    );
   },
 
   sendNewContributorEmail(userId) {
     const user = Meteor.users.findOne(userId);
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
-    const email = currentHost && currentHost.emails[1];
+    const welcomeText = currentHost && currentHost.emails[1];
+
+    const emailBody = getWelcomeEmailBody(
+      welcomeText?.appeal,
+      currentHost,
+      user?.username,
+      welcomeText?.body
+    );
 
     Meteor.call(
       'sendEmail',
-      user.emails[0].address,
-      email.subject,
-      getEmailBody(email, user.username)
+      user?.emails[0].address,
+      welcomeText?.subject,
+      emailBody,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+        }
+      }
     );
   },
 
