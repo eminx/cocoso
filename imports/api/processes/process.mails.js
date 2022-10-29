@@ -1,4 +1,4 @@
-import mailtranslations from './mailtranslations';
+import mailtranslations from './mailtranslations.json';
 
 const getProcessRegistrationEmailBody = (process, currentHost, currentUser, isLeave = false) => {
   const processId = process._id,
@@ -14,7 +14,6 @@ const getProcessRegistrationEmailBody = (process, currentHost, currentUser, isLe
 
   const lang = currentUser.lang || currentHost.settings.lang || 'en';
   const tr = mailtranslations[lang];
-
   const { dear, visitPage } = tr.general;
   const {
     confirmedApprovalText,
