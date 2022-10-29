@@ -72,6 +72,7 @@ Meteor.methods({
               email: user.emails[0].address,
               role: 'participant',
               date: new Date(),
+              isPublic: Boolean(user.isPublic),
             },
           },
         }
