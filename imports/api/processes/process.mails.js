@@ -1,4 +1,4 @@
-import mailtranslations from './mailtranslations.json';
+import mailtranslations from './mailtranslations';
 
 const getProcessRegistrationEmailBody = (process, currentHost, currentUser, isLeave = false) => {
   const processId = process._id,
