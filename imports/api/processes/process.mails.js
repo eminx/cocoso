@@ -14,7 +14,6 @@ const getProcessRegistrationEmailBody = (process, currentHost, currentUser, isLe
 
   const lang = currentUser.lang || currentHost.settings.lang || 'en';
   const tr = mailtranslations[lang];
-
   const { dear, visitPage } = tr.general;
   const {
     confirmedApprovalText,
