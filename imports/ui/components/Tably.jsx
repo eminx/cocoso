@@ -61,10 +61,14 @@ function Tably({
           </GridItem>
 
           <GridItem pl="12">
+            {action && (
+              <Box mx="4" mb="8">
+                {action}
+              </Box>
+            )}
             <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs}>
               {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
             </Tabs>
-            <Box mx="4">{action}</Box>
           </GridItem>
           <GridItem>{author && <AvatarHolder author={author} />}</GridItem>
 
