@@ -79,7 +79,7 @@ function Tably({
           </GridItem>
 
           <GridItem pl="12">
-            <Box h={`calc(100vh - 256px)`} overflowY="scroll">
+            <Box mb="24">
               <Switch history={history}>
                 {tabs.map((tab) => (
                   <Route
@@ -124,7 +124,7 @@ function Tably({
             {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
           </Tabs>
 
-          <Box>
+          <Box mb="24">
             <Switch history={history}>
               {tabs.map((tab) => (
                 <Route
