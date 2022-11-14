@@ -60,7 +60,7 @@ members:
 public:
   labels:
     address: Address
-    dates: Dates
+    dates: Dates & Register
     info: Info
     location: Location
     resource: Resource
