@@ -73,6 +73,7 @@ Meteor.methods({
               role: 'participant',
               date: new Date(),
               isPublic: Boolean(user.isPublic),
+              avatar: user.avatar?.src,
             },
           },
         }
