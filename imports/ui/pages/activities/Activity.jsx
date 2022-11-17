@@ -611,7 +611,7 @@ function RsvpList({ attendees }) {
           accessor: 'firstName',
         },
         {
-          Header: t('public.register.form.name.first'),
+          Header: t('public.register.form.name.last'),
           accessor: 'lastName',
         },
         {
