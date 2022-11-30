@@ -5,5 +5,5 @@ import Resources from './resource';
 Meteor.publish('resources', function () {
   const host = getHost(this);
   // Resources._ensureIndex({ host });
-  return Resources.find({ host });
+  return Resources.find({ host, isBookable: true });
 });
