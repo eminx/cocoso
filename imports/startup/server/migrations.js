@@ -515,6 +515,34 @@ Migrations.add({
   },
 });
 
+Migrations.add({
+  version: 17,
+  async up() {
+    console.log('up to', this.version);
+    Resources.update(
+      {},
+      {
+        $set: {
+          isBookable: true,
+        },
+      },
+      { multi: true }
+    );
+  },
+  async down() {
+    console.log('down to', this.version - 1);
+    Resources.update(
+      {},
+      {
+        $unset: {
+          isBookable: 1,
+        },
+      },
+      { multi: true }
+    );
+  },
+});
+
 // Run migrations
 Meteor.startup(() => {
   // Migrations.migrateTo(0);
@@ -534,5 +562,6 @@ Meteor.startup(() => {
   // Migrations.migrateTo(14);
   // Migrations.migrateTo(15);
   // Migrations.migrateTo(16);
+  Migrations.migrateTo(17);
   // Migrations.migrateTo('latest');
 });

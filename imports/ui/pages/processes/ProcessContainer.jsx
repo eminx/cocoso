@@ -14,8 +14,6 @@ export default ProcessContainer = withTracker((props) => {
   const isLoading = !processSubscription.ready() || !activitiesSubscription.ready();
   const process = Processes ? Processes.findOne({ _id: processId }) : null;
   const currentUser = Meteor.user();
-  // const resourcesSub = Meteor.subscribe('resources');
-  // const resources = Resources ? Resources.find().fetch() : null;
 
   const allActivities = Activities ? Activities.find().fetch() : null;
   const processActivities = Activities ? Activities.find({ processId }).fetch() : null;

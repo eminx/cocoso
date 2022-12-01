@@ -8,6 +8,9 @@ messages:
 
 form:
   holder: type
+  bookable:
+    switch:
+      label: Bookable
   combo:
     switch:
       label: Combo Resource

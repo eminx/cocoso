@@ -955,7 +955,7 @@ class Process extends Component {
                 handleResourceChange={this.handleResourceChange}
                 handleSubmit={this.createActivity}
                 hostname={currentHost?.settings?.name}
-                resources={resources}
+                resources={resources.filter((r) => r.isBookable)}
               />
             )}
           </Box>
@@ -1110,7 +1110,7 @@ function CreateMeetingForm({
         />
       </HStack>
 
-      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
+      {/* <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch
           id="is-local-switch"
           isChecked={isLocal}
@@ -1119,7 +1119,7 @@ function CreateMeetingForm({
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
           {t('meeting.form.switch', { place: hostname })}
         </FormLabel>
-      </FormControl>
+      </FormControl> */}
 
       {isLocal ? (
         <Select

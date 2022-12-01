@@ -143,8 +143,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     });
   };
 
-  const isEditable = () => isDirty || images.length !== defaultImages.length;
-
   if (!defaultValues) {
     return null;
   }
@@ -162,6 +160,13 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
+          <FormControl display="flex" alignItems="center">
+            <Switch {...register('isBookable')} id="is-bookable-switch" />
+            <FormLabel htmlFor="is-bookable-switch" mb="0" ml="4">
+              {t('form.bookable.switch.label')}
+            </FormLabel>
+          </FormControl>
+
           <FormControl display="flex" alignItems="center">
             <Switch {...register('isCombo')} isDisabled={isEditMode} id="is-combo-switch" />
             <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
