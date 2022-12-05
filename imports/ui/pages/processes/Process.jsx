@@ -1022,16 +1022,18 @@ class Process extends Component {
 
         <ConfirmModal
           visible={modalOpen}
-          title={t('confirm.title.text', {
-            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join'),
-          })}
+          title={isMember ? t('modal.leave.title') : t('modal.join.title')}
           onConfirm={isMember ? this.leaveProcess : this.joinProcess}
           onCancel={this.closeModal}
         >
           <Text>
-            {t('confirm.body.text', {
-              opt: isMember ? t('confirm.body.opts.leave') : t('confirm.body.opts.join'),
-            })}
+            {isMember
+              ? t('modal.leave.body', {
+                  title: process.title,
+                })
+              : t('modal.join.body', {
+                  title: process.title,
+                })}
           </Text>
         </ConfirmModal>
         <ConfirmModal

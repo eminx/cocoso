@@ -78,7 +78,7 @@ profile:
     helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
 
 delete:
-  action: Radera Konto
-  label: Bekräfta Radering
+  action: Radera konto
+  label: Bekräfta radering
   title: Är du säker?
   body: Du är på väg att permanent radera hela ditt konto och all data som är kopplad till det. Detta är en oåterkallelig handling. Är du säker?

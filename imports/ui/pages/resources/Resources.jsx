@@ -122,7 +122,7 @@ function Resources() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.resources')} | ${currentHost.settings.name}}`}</title>
+        <title>{`${tc('domains.resources')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
       <Center mb="2">
