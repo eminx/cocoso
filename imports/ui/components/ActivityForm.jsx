@@ -127,17 +127,20 @@ function ActivityForm({
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
-              {resources.sort(localeSort).map((option, index) => (
-                <option
-                  key={option._id}
-                  selected={option._id === defaultValues.resourceId}
-                  value={option._id}
-                >
-                  {option.isCombo
-                    ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
-                    : option.label}
-                </option>
-              ))}
+              {resources
+                .sort(localeSort)
+                .filter((r) => r.isBookable)
+                .map((option, index) => (
+                  <option
+                    key={option._id}
+                    selected={option._id === defaultValues.resourceId}
+                    value={option._id}
+                  >
+                    {option.isCombo
+                      ? `${option.label}: [${option.resourcesForCombo.map((res, i) => res.label)}]`
+                      : option.label}
+                  </option>
+                ))}
             </Select>
           </FormField>
         </Box>

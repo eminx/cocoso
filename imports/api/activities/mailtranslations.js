@@ -31,7 +31,7 @@ export default {
       attendee: 'Deltagare',
       attendees: 'Deltagare',
       dateAndTime: 'Datum tid',
-      dear: 'Kära',
+      dear: 'Hej',
       person: 'person',
       people: 'personer',
       title: 'Titel',

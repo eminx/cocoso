@@ -8,9 +8,12 @@ messages:
 
 form:
   holder: skriv
+  bookable:
+    switch:
+      label: Bokningsbart
   combo:
     switch:
-      label: Combo Resurser
+      label: Combo resurs
     select:
       holder: Välj alternativ
       helper: Välj flera resurser för att skapa en kombinationsresurs

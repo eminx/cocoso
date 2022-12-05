@@ -15,6 +15,7 @@ Resources.schema = new SimpleSchema({
   'images.$': { type: String },
 
   isCombo: { type: Boolean, optional: true },
+  isBookable: { type: Boolean, optional: true },
   resourceIndex: { type: SimpleSchema.Integer },
 
   resourcesForCombo: { type: Array, defaultValue: [] },
@@ -41,6 +42,7 @@ Resources.publicFields = {
   label: 1,
   description: 1,
   images: 1,
+  isBookable: 1,
   isCombo: 1,
   resourcesForCombo: 1,
   resourceIndex: 1,

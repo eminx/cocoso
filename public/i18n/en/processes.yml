@@ -116,6 +116,14 @@ invite:
     valid: Please enter a valid first name
   submit: Send Invite
 
+modal:
+  join:
+    title: Confirm Joining
+    body: Are you sure you want to join {{ title }}?
+  leave:
+    title: Confirm Leaving
+    body: Are you sure you want to leave {{ title }}?
+
 private:
   title: private
   info: Private processes are only visible by their members, and participation is possible only via invites by their admins.

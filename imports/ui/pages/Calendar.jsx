@@ -224,7 +224,8 @@ class Calendar extends PureComponent {
       return <Redirect to={selectedSlot.bookingUrl} />;
     }
 
-    const selectFilterView = nonComboResourcesWithColor?.length >= maxResourceLabelsToShow;
+    const selectFilterView =
+      nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
 
     const allResourcesForSelect = [...comboResourcesWithColor, ...nonComboResourcesWithColor];
 
@@ -259,31 +260,35 @@ class Calendar extends PureComponent {
                     />
                   </WrapItem>
 
-                  {nonComboResourcesWithColor.map((resource, i) => (
-                    <WrapItem key={resource._id}>
-                      <Tag
-                        checkable
-                        label={resource.label}
-                        filterColor={resource.color}
-                        checked={calendarFilter?._id === resource._id}
-                        onClick={() => this.handleCalendarFilterChange(resource)}
-                      />
-                    </WrapItem>
-                  ))}
+                  {nonComboResourcesWithColor
+                    .filter((r) => r.isBookable)
+                    .map((resource, i) => (
+                      <WrapItem key={resource._id}>
+                        <Tag
+                          checkable
+                          label={resource.label}
+                          filterColor={resource.color}
+                          checked={calendarFilter?._id === resource._id}
+                          onClick={() => this.handleCalendarFilterChange(resource)}
+                        />
+                      </WrapItem>
+                    ))}
                 </Wrap>
                 <Wrap justify="center" mb="2" px="1">
-                  {comboResourcesWithColor.map((resource, i) => (
-                    <WrapItem key={resource._id}>
-                      <Tag
-                        checkable
-                        label={resource.label}
-                        filterColor={'#2d2d2d'}
-                        gradientBackground={resource.color}
-                        checked={calendarFilter?._id === resource._id}
-                        onClick={() => this.handleCalendarFilterChange(resource)}
-                      />
-                    </WrapItem>
-                  ))}
+                  {comboResourcesWithColor
+                    .filter((r) => r.isBookable)
+                    .map((resource, i) => (
+                      <WrapItem key={resource._id}>
+                        <Tag
+                          checkable
+                          label={resource.label}
+                          filterColor={'#2d2d2d'}
+                          gradientBackground={resource.color}
+                          checked={calendarFilter?._id === resource._id}
+                          onClick={() => this.handleCalendarFilterChange(resource)}
+                        />
+                      </WrapItem>
+                    ))}
                 </Wrap>
               </Box>
             ) : (

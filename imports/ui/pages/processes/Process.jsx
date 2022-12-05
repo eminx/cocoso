@@ -955,7 +955,7 @@ class Process extends Component {
                 handleResourceChange={this.handleResourceChange}
                 handleSubmit={this.createActivity}
                 hostname={currentHost?.settings?.name}
-                resources={resources}
+                resources={resources.filter((r) => r.isBookable)}
               />
             )}
           </Box>
@@ -1022,16 +1022,18 @@ class Process extends Component {
 
         <ConfirmModal
           visible={modalOpen}
-          title={t('confirm.title.text', {
-            opt: isMember ? t('confirm.title.opts.leave') : t('confirm.title.opts.join'),
-          })}
+          title={isMember ? t('modal.leave.title') : t('modal.join.title')}
           onConfirm={isMember ? this.leaveProcess : this.joinProcess}
           onCancel={this.closeModal}
         >
           <Text>
-            {t('confirm.body.text', {
-              opt: isMember ? t('confirm.body.opts.leave') : t('confirm.body.opts.join'),
-            })}
+            {isMember
+              ? t('modal.leave.body', {
+                  title: process.title,
+                })
+              : t('modal.join.body', {
+                  title: process.title,
+                })}
           </Text>
         </ConfirmModal>
         <ConfirmModal
@@ -1110,7 +1112,7 @@ function CreateMeetingForm({
         />
       </HStack>
 
-      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
+      {/* <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch
           id="is-local-switch"
           isChecked={isLocal}
@@ -1119,7 +1121,7 @@ function CreateMeetingForm({
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
           {t('meeting.form.switch', { place: hostname })}
         </FormLabel>
-      </FormControl>
+      </FormControl> */}
 
       {isLocal ? (
         <Select

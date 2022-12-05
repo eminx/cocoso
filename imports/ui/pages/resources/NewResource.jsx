@@ -12,6 +12,7 @@ function NewResourcePage({ history }) {
   const resourceModel = {
     label: '',
     description: '',
+    isBookable: true,
     isCombo: false,
     resourcesForCombo: [],
   };
