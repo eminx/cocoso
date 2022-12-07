@@ -144,13 +144,13 @@ function ResourcePage() {
 
   const tags = [];
   if (resource.isCombo) {
-    tags.push(t('form.bookable.switch.label'));
+    tags.push(t('cards.isCombo'));
   }
 
   if (resource.isBookable) {
-    tags.push(t('cards.isCombo'));
+    tags.push(t('cards.isBookable'));
   } else {
-    tags.push(t('cards.isNotCombo'));
+    tags.push(t('cards.isNotBookable'));
   }
 
   return (

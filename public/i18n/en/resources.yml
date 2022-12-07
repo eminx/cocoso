@@ -35,6 +35,8 @@ cards:
   date: added by {{username}} on {{date}}
   isCombo: Combo
   isNotCombo: Not Combo
+  isBookable: Bookable
+  isNotBookable: Not Bookable
 
 booking:
   labels:
