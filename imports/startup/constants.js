@@ -59,10 +59,10 @@ const defaultEmails = [
     body: 'Welcome! As a participant, you may attend our processes and activities. Look forward to hanging out with you!',
   },
   {
-    title: 'New Contributor',
-    subject: 'You are now a contributor',
+    title: 'New Cocreator',
+    subject: 'You are now a cocreator',
     appeal: 'Dear',
-    body: 'You are now verified to be a contributor in our space. This means that you are privileged to create public activities & processes, publish your works, and book resources in our community. \nLook forward!',
+    body: 'You are now verified to be a cocreator in our space. This means that you are privileged to create public activities & processes, publish your works, and book resources in our community. \nLook forward!',
   },
   {
     title: 'New Admin',
