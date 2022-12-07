@@ -8,6 +8,9 @@ messages:
 
 form:
   holder: type
+  bookable:
+    switch:
+      label: Bookable
   combo:
     switch:
       label: Combo Resource
@@ -30,7 +33,10 @@ tabs:
 
 cards:
   date: added by {{username}} on {{date}}
-  ifCombo: Combo
+  isCombo: Combo
+  isNotCombo: Not Combo
+  isBookable: Bookable
+  isNotBookable: Not Bookable
 
 booking:
   labels:

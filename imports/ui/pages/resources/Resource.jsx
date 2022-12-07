@@ -22,6 +22,7 @@ function ResourcePage() {
   const [resource, setResource] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('resources');
   const { canCreateContent, currentUser, isDesktop, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
@@ -96,7 +97,7 @@ function ResourcePage() {
     },
   ];
 
-  if (currentUser && canCreateContent) {
+  if (currentUser && canCreateContent && resource.isBookable) {
     tabs.push({
       title: tc('labels.bookings'),
       content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
@@ -141,6 +142,17 @@ function ResourcePage() {
     ],
   };
 
+  const tags = [];
+  if (resource.isCombo) {
+    tags.push(t('cards.isCombo'));
+  }
+
+  if (resource.isBookable) {
+    tags.push(t('cards.isBookable'));
+  } else {
+    tags.push(t('cards.isNotBookable'));
+  }
+
   return (
     <>
       <Helmet>
@@ -150,6 +162,7 @@ function ResourcePage() {
         adminMenu={role === 'admin' ? adminMenu : null}
         images={resource.images}
         tabs={tabs}
+        tags={tags}
         title={resource.label}
       />
     </>

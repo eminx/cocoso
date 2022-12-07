@@ -13,7 +13,7 @@ actions:
   remove: Radera
   submit: Bekräfta
   send: Bekräfta
-  cancel: Annullera
+  cancel: Avbryt
   close: Stäng
   reset: Återställa
   add: Lägg till
@@ -65,7 +65,7 @@ message:
   access:
     deny: Du får inte
     admin: Du måste vara superadmin för att skapa en {{ domain }}
-    contributor: Du måste bli en utgivare för att skapa {{ domain }}
+    contributor: Du måste bli en medskapare för att skapa {{ domain }}
     register: Du måste bli en registrerad medlem för att skapa {{ domain }}
 
   exists: En {{ domain }} med denna {{ property }} finns redan

@@ -89,22 +89,22 @@ meeting:
 confirm:
   check: Är du säker?
   title:
-    text: Bekräfta {{ opt }} till processen
+    text: Bekräfta {{ opt }}
     opts:
       leave: lämnar
       join: deltagande till
   body:
-    text: Är du säker på att du vill använda den här {{ opt }}-processen?
+    text: Är du säker på att du vill lämna {{ opt }}?
     opts:
       leave: lämnar
       join: ansluta sig
   admin:
-    title: Bekräfta att du vill göra {{ admin }} till administratör för denna process.
-    body: När du bekräftar kommer du att dela samma privilegier med {{ admin }} för denna process härefter.
+    title: Bekräfta att du vill göra {{ admin }} till administratör.
+    body: När du bekräftar kommer du att dela samma privilegier med {{ admin }} härefter.
 
 invite:
-  info: Vänligen lägg till data för den person du vill bjuda in till processen
-  success: Ett e-postmeddelande skickas och {{ name }} har bjudits in till processen
+  info: Vänligen lägg till data för den person du vill bjuda in
+  success: Ett e-postmeddelande skickas och {{ name }} har bjudits in
   email:
     label: e-post
     holder: samuel@skogen.pm
@@ -115,6 +115,14 @@ invite:
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan
+
+modal:
+  join:
+    title: Bekräftelse på att du vill gå med
+    body: Är du säker på att du vill gå med {{ title }}?
+  leave:
+    title: Bekräftelse på att du vill lämna
+    body: Är du säker på att du vill lämna {{ title }}?
 
 private:
   title: privat

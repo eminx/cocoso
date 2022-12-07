@@ -7,7 +7,7 @@ emails:
       holder: Välkommen
     appeal:
       label: Vädjan
-      holder: Kära
+      holder: Hej
       addon: '@username'
     body:
       label: Beskrivning

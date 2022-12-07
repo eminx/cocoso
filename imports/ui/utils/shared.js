@@ -121,6 +121,10 @@ function parseAllBookingsWithResources(activities, resources) {
           if (!resourceForCombo) {
             return;
           }
+          const resourceForComboReal = resources.find((r) => r._id === resourceForCombo._id);
+          if (!resourceForComboReal?.isBookable) {
+            return;
+          }
           allBookings.push({
             title: activity.title,
             start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
@@ -148,6 +152,9 @@ function parseAllBookingsWithResources(activities, resources) {
           });
         });
       } else {
+        if (!resourceSelected.isBookable) {
+          return;
+        }
         allBookings.push({
           title: activity.title,
           start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),

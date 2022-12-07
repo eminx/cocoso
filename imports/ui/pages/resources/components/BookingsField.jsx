@@ -216,7 +216,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
                       {multipledays && (
                         <DatePicker
                           noTime
-                          placeholder={t('booking.date.start')}
+                          placeholder={t('booking.date.end')}
                           onChange={(date) => handleDateAndTimeChange(date, 'endDate')}
                         />
                       )}

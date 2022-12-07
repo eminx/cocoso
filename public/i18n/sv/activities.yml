@@ -60,7 +60,8 @@ members:
 public:
   labels:
     address: Adress
-    dates: Datum & registrering
+    dates: Datum
+    datesAndRegistration: Datum & registrering
     info: Info
     location: Plats
     resource: Resurs
