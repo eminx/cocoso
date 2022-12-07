@@ -226,7 +226,9 @@ function Members({ history, members, isLoading }) {
                             {member.username}
                           </Heading>
                           <Text>{member && member.email}</Text>
-                          <Text fontStyle="italic">{member.role}</Text>
+                          <Text fontStyle="italic">
+                            {member.role === 'contributor' ? 'cocreator' : member.role}
+                          </Text>
                           <Text fontSize="xs" color="gray.500">
                             {t('joinedAt', {
                               date: moment(member.date).format('D MMM YYYY'),
