@@ -28,7 +28,7 @@ Meteor.methods({
           membership.host === host && ['contributor', 'participant'].includes(membership.role)
       )
     ) {
-      throw new Meteor.Error('User is not a participant or contributor');
+      throw new Meteor.Error('User is not a participant or cocreator');
     }
 
     try {
@@ -137,7 +137,7 @@ Meteor.methods({
     const member = Meteor.users.findOne(memberId);
 
     if (!isContributor(member, currentHost)) {
-      throw new Meteor.Error('User is not a contributor');
+      throw new Meteor.Error('User is not a cocreator');
     }
 
     try {

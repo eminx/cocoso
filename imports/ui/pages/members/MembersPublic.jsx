@@ -64,7 +64,7 @@ function MembersPublic() {
   // const setAsContributor = async (user) => {
   //   try {
   //     await call('setAsContributor', user.id);
-  //     message.success(`${user.username} is now set as a contributor`);
+  //     message.success(`${user.username} is now set as a cocreator`);
   //     getAndSetMembers();
   //   } catch (error) {
   //     console.log(error);
