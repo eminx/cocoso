@@ -460,7 +460,10 @@ class Activity extends PureComponent {
         path: `/activities/${activityData._id}/info`,
       },
       {
-        title: t('public.labels.dates'),
+        title:
+          activityData.isPublicActivity && !activityData.isRegistrationDisabled
+            ? t('public.labels.datesAndRegistration')
+            : t('public.labels.dates'),
         content: this.renderDates(),
         path: `/activities/${activityData._id}/dates`,
       },
