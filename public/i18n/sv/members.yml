@@ -7,11 +7,11 @@ joinedAt: gick med {{ date }}
 
 roles:
   participant: Deltagare
-  contributor: Utgivare
+  contributor: Medskapare
   admin: Admin
   plural:
     participants: Deltagare
-    contributors: Utgivare
+    contributors: Medskapare
     admins: Admin
 
 form:
@@ -21,13 +21,13 @@ form:
   holder: användarnamn eller epost
 
 actions:
-  contributor: Ställ in som utgivare
+  contributor: Ställ in som medskapare
   participant: Återgå som deltagare
   usageReport: Se förbrukningsrapport
 
 message:
   success:
-    contributor: '{{ username }} är nu inställd som en utgivare'
+    contributor: '{{ username }} är nu inställd som en medskapare'
     participant: '{{ username }} är nu återställd som deltagare'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
@@ -35,7 +35,7 @@ message:
     empty: Inget publicerat ännu
     info: '{{ username }} har inte varit särskilt aktiva hittills'
   access:
-    contributor: Du måste bli en utgivare till {{ action }}
+    contributor: Du måste bli en medskapare till {{ action }}
   guest: Du måste skapa ett konto för att lansera din marknad
   usage:
     noUsage: Ingen förbrukning har registrerats för denna användare

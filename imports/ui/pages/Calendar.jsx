@@ -227,7 +227,10 @@ class Calendar extends PureComponent {
     const selectFilterView =
       nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
 
-    const allResourcesForSelect = [...comboResourcesWithColor, ...nonComboResourcesWithColor];
+    const allResourcesForSelect = [
+      ...comboResourcesWithColor,
+      ...nonComboResourcesWithColor,
+    ].filter((r) => r.isBookable);
 
     const selectedLinkForModal =
       selectedActivity &&

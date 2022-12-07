@@ -65,7 +65,7 @@ message:
   access:
     deny: You are not allowed
     admin: You have to be super admin to create a {{ domain }}
-    contributor: You have to become a contributor to create {{ domain }}
+    contributor: You have to become a cocreator to create {{ domain }}
     register: You have to become a registered member to create {{ domain }}
 
   exists: A {{ domain }} with this {{ property }} already exists

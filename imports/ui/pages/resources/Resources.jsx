@@ -147,11 +147,14 @@ function ResourceItem({ t, resource }) {
     <Box>
       <Link to={`/resources/${resource._id}`}>
         <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
-          {resource.isCombo && (
-            <Badge>
-              {t('cards.ifCombo')} ({resource.resourcesForCombo.length})
-            </Badge>
-          )}
+          <Text lineHeight={1} my="2">
+            {resource.isCombo && (
+              <Badge>
+                {t('cards.isCombo')} ({resource.resourcesForCombo.length})
+              </Badge>
+            )}{' '}
+            <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
+          </Text>
           <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
         </GridThumb>
       </Link>
