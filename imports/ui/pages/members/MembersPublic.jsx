@@ -131,7 +131,7 @@ function MembersPublic() {
 
       <Paginate items={membersRendered} itemsPerPage={12}>
         {(member) => (
-          <Center p="4" w="60">
+          <Center p="4" w="80">
             <Link to={`/@${member.username}`}>
               <Box>
                 <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
