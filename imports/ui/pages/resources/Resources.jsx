@@ -149,7 +149,7 @@ function ResourceItem({ t, resource }) {
         <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
           {resource.isCombo && (
             <Badge>
-              {t('cards.ifCombo')} ({resource.resourcesForCombo.length})
+              {t('cards.isCombo')} ({resource.resourcesForCombo.length})
             </Badge>
           )}
           <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>

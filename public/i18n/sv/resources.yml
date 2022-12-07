@@ -33,7 +33,8 @@ tabs:
 
 cards:
   date: lagt till av {{ username }} den {{ date }}
-  ifCombo: Combo
+  isCombo: Combo
+  isNotCombo: Ej Combo
 
 booking:
   labels:
