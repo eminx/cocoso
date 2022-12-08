@@ -48,6 +48,7 @@ labels:
     actions: Admin
   past: Tidigare
   upcoming: Kommande
+  filterAndSort: Filtrera & sortera
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
