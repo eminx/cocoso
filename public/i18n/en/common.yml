@@ -48,6 +48,7 @@ labels:
     actions: Admin
   past: Past
   upcoming: Upcoming
+  filterAndSort: Filter & Sort
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

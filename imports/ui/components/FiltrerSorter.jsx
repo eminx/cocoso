@@ -24,7 +24,7 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            <Link as="span">Filter & Sort</Link>
+            <Link as="span">{tc('labels.filterAndSort')}</Link>
           </Box>
           <AccordionIcon />
         </AccordionButton>
