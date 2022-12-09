@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -11,12 +11,14 @@ import { loginWithPassword } from './functions';
 function LoginPage() {
   const [t] = useTranslation('accounts');
   const { currentUser } = useContext(StateContext);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   if (currentUser) {
     return <Redirect to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {
+    setIsSubmitted(true);
     loginWithPassword(values.username, values.password);
   };
 
@@ -39,7 +41,7 @@ function LoginPage() {
               </Text>
             </Center>
             <Box p="6" bg="white" mb="4">
-              <Login onSubmit={handleSubmit} />
+              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>
             <Center>
               <Text>
