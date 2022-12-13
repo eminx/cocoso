@@ -9,6 +9,7 @@ import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Login } from './index';
 import { message } from '../../components/message';
+import { call } from '../../utils/shared';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
@@ -21,12 +22,13 @@ function LoginPage() {
   }
 
   const handleSubmit = (values) => {
+    setIsSubmitted(true);
     Meteor.loginWithPassword(values.username, values.password, (error) => {
       if (error) {
         message.error(error.reason);
+        setIsSubmitted(false);
         return;
       }
-      setIsSubmitted(true);
       setTimeout(() => {
         setIsJoinModal(true);
       }, 300);
