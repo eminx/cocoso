@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
