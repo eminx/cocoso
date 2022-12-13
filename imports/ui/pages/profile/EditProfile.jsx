@@ -97,16 +97,6 @@ function Profile({ history }) {
     });
   };
 
-  const setSelfAsParticipant = async () => {
-    try {
-      await call('setSelfAsParticipant');
-      message.success(t('profile.message.participant'));
-    } catch (error) {
-      console.error('Error:', error);
-      message.error(error.reason);
-    }
-  };
-
   const setProfilePublic = async (isPublic) => {
     try {
       await call('setProfilePublic', isPublic);
@@ -144,7 +134,7 @@ function Profile({ history }) {
       <Template>
         <Box bg="white">
           <Center my="2" p="2">
-            {['admin', 'contributor', 'participant'].includes(role) ? (
+            {['admin', 'contributor', 'participant'].includes(role) && (
               <Text textAlign="center" fontSize="sm">
                 <Trans
                   i18nKey="accounts:profile.message.role"
@@ -153,15 +143,6 @@ function Profile({ history }) {
                   components={{ bold: <strong /> }}
                 />
               </Text>
-            ) : (
-              <Box>
-                <Text>{t('profile.message.deny')}</Text>
-                <Center my="2">
-                  <Button onClick={() => setSelfAsParticipant()}>
-                    {t('profile.joinOrganisation')}
-                  </Button>
-                </Center>
-              </Box>
             )}
           </Center>
 

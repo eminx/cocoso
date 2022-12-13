@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
@@ -5,21 +6,48 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
+import ConfirmModal from '../../components/ConfirmModal';
 import { Login } from './index';
-import { loginWithPassword } from './functions';
+import { message } from '../../components/message';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isJoinModal, setIsJoinModal] = useState(false);
 
-  if (currentUser) {
+  if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
     return <Redirect to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {
-    setIsSubmitted(true);
-    loginWithPassword(values.username, values.password);
+    Meteor.loginWithPassword(values.username, values.password, (error) => {
+      if (error) {
+        message.error(error.reason);
+        return;
+      }
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsJoinModal(true);
+      }, 300);
+    });
+  };
+
+  const cancelJoin = () => {
+    Meteor.logout();
+    setIsJoinModal(false);
+    setIsSubmitted(false);
+    message.info(t('logout.messages.success'));
+  };
+
+  const confirmJoin = async () => {
+    try {
+      await call('setSelfAsParticipant');
+      message.success(t('profile.message.participant'));
+    } catch (error) {
+      console.error(error);
+      message.error(error.reason);
+    }
   };
 
   return (
@@ -57,6 +85,16 @@ function LoginPage() {
           </Box>
         </Center>
       </Template>
+
+      <ConfirmModal
+        title={t('profile.join')}
+        visible={isJoinModal}
+        onConfirm={() => confirmJoin()}
+        onCancel={() => cancelJoin()}
+        confirmText={t('profile.join')}
+      >
+        <Text>{t('profile.joinAsParticipantQuestion')}</Text>
+      </ConfirmModal>
     </Box>
   );
 }
