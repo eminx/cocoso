@@ -258,24 +258,28 @@ Meteor.methods({
     }
   },
 
-  updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
+  updateAttendance(activityId, values, occurenceIndex) {
     const theActivity = Activities.findOne(activityId);
     const rsvpValues = {
       ...values,
       registerDate: new Date(),
     };
-    const occurence = theActivity.datesAndTimes[occurenceIndex];
+    const newDatesAndTimes = [...theActivity.datesAndTimes];
+    const theOccurence = newDatesAndTimes[occurenceIndex];
+
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const currentUser = Meteor.user();
     const emailBody = getRegistrationEmailBody(
       theActivity,
       rsvpValues,
-      occurence,
+      theOccurence,
       currentHost,
       currentUser,
       true
     );
+
+    const attendeeIndex = theOccurence.attendees.findIndex((a) => a.email === values.email);
     const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
 
     try {
@@ -296,18 +300,15 @@ Meteor.methods({
     }
   },
 
-  removeAttendance(activityId, occurenceIndex, attendeeIndex) {
+  removeAttendance(activityId, occurenceIndex, email) {
     const theActivity = Activities.findOne(activityId);
-    const occurences = [...theActivity.datesAndTimes];
-    const theOccurence = occurences[occurenceIndex];
-    const theNonAttendee = theOccurence.attendees[attendeeIndex];
+    const newOccurences = [...theActivity.datesAndTimes];
+    const theOccurence = newOccurences[occurenceIndex];
+    const theNonAttendee = theOccurence.attendees.find((a) => a.email === email);
 
-    const theAttendees = [...theOccurence.attendees];
-    const theAttendeesWithout = theAttendees.filter(
-      (attendee, theAttendeeIndex) => theAttendeeIndex !== attendeeIndex
+    newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
+      (a) => a.email !== email
     );
-
-    occurences[occurenceIndex].attendees = theAttendeesWithout;
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -317,12 +318,12 @@ Meteor.methods({
     try {
       Activities.update(activityId, {
         $set: {
-          datesAndTimes: occurences,
+          datesAndTimes: newOccurences,
         },
       });
       Meteor.call(
         'sendEmail',
-        theNonAttendee.email,
+        email,
         `Update to your registration for "${theActivity.title}" at ${hostName}`,
         getUnregistrationEmailBody(theActivity, theNonAttendee, currentHost, currentUser)
       );
