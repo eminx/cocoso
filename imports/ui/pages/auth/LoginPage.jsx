@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
@@ -12,7 +12,7 @@ import { message } from '../../components/message';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser, role } = useContext(StateContext);
+  const { currentUser, currentHost, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isJoinModal, setIsJoinModal] = useState(false);
 
@@ -87,13 +87,16 @@ function LoginPage() {
       </Template>
 
       <ConfirmModal
-        title={t('profile.join')}
+        title={t('profile.join') + ' ' + currentHost?.settings?.name}
         visible={isJoinModal}
         onConfirm={() => confirmJoin()}
         onCancel={() => cancelJoin()}
         confirmText={t('profile.join')}
       >
-        <Text>{t('profile.joinAsParticipantQuestion')}</Text>
+        <Center>
+          <Image src={currentHost?.logo} m="4" width="4xs" />
+        </Center>
+        <Text fontSize="lg">{t('profile.joinAsParticipantQuestion')}</Text>
       </ConfirmModal>
     </Box>
   );
