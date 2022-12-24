@@ -18,13 +18,12 @@ import {
 
 const Joi = require('joi');
 
-const Login = ({ onSubmit }) => {
+const Login = ({ isSubmitted, onSubmit }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
-  const { formState, handleSubmit, register } = useForm({
+  const { handleSubmit, register } = useForm({
     defaultValues: loginModel,
   });
-  const { isDirty, isSubmitting } = formState;
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -38,7 +37,7 @@ const Login = ({ onSubmit }) => {
         </FormField>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+          <Button isLoading={isSubmitted} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

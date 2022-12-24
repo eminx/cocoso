@@ -20,6 +20,10 @@ login:
       password: Incorrect password
     success: You are successfully logged in
 
+logout:
+  messages:
+    success: You are logged out
+
 signup:
   labels:
     title: Register New Account
@@ -54,7 +58,8 @@ password:
 
 profile:
   label: Personal Info
-  joinOrganisation: Join
+  join: Join
+  joinAsParticipantQuestion: Would you like to join this organization with the participant role?
 
   form:
     avatar:

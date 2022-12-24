@@ -1,23 +1,55 @@
-import React, { useContext } from 'react';
+import { Meteor } from 'meteor/meteor';
+import React, { useContext, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
+import ConfirmModal from '../../components/ConfirmModal';
 import { Login } from './index';
-import { loginWithPassword } from './functions';
+import { message } from '../../components/message';
+import { call } from '../../utils/shared';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, currentHost, role } = useContext(StateContext);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isJoinModal, setIsJoinModal] = useState(false);
 
-  if (currentUser) {
+  if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
     return <Redirect to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {
-    loginWithPassword(values.username, values.password);
+    setIsSubmitted(true);
+    Meteor.loginWithPassword(values.username, values.password, (error) => {
+      if (error) {
+        message.error(error.reason);
+        setIsSubmitted(false);
+        return;
+      }
+      setTimeout(() => {
+        setIsJoinModal(true);
+      }, 300);
+    });
+  };
+
+  const cancelJoin = () => {
+    Meteor.logout();
+    setIsJoinModal(false);
+    setIsSubmitted(false);
+    message.info(t('logout.messages.success'));
+  };
+
+  const confirmJoin = async () => {
+    try {
+      await call('setSelfAsParticipant');
+      message.success(t('profile.message.participant'));
+    } catch (error) {
+      console.error(error);
+      message.error(error.reason);
+    }
   };
 
   return (
@@ -39,7 +71,7 @@ function LoginPage() {
               </Text>
             </Center>
             <Box p="6" bg="white" mb="4">
-              <Login onSubmit={handleSubmit} />
+              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>
             <Center>
               <Text>
@@ -55,6 +87,19 @@ function LoginPage() {
           </Box>
         </Center>
       </Template>
+
+      <ConfirmModal
+        title={t('profile.join') + ' ' + currentHost?.settings?.name}
+        visible={isJoinModal}
+        onConfirm={() => confirmJoin()}
+        onCancel={() => cancelJoin()}
+        confirmText={t('profile.join')}
+      >
+        <Center>
+          <Image src={currentHost?.logo} m="4" width="4xs" />
+        </Center>
+        <Text fontSize="lg">{t('profile.joinAsParticipantQuestion')}</Text>
+      </ConfirmModal>
     </Box>
   );
 }
