@@ -1,8 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, IconButton, VStack } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Redirect } from 'react-router-dom';
+import { Box, Button, Center, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';

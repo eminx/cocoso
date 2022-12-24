@@ -237,7 +237,6 @@ class Activity extends PureComponent {
         'removeAttendance',
         activityData._id,
         rsvpCancelModalInfo.occurenceIndex,
-        rsvpCancelModalInfo.attendeeIndex,
         rsvpCancelModalInfo.email
       );
       message.success(t('public.attandence.remove'));

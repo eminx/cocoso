@@ -346,10 +346,7 @@ class Process extends Component {
     };
 
     if (isAttending) {
-      const attendeeIndex = processMeetings[meetingIndex].attendees.findIndex(
-        (attendee) => attendee.username === currentUser.username
-      );
-      Meteor.call('removeAttendance', activityId, 0, attendeeIndex, (error, respond) => {
+      Meteor.call('removeAttendance', activityId, 0, meetingAttendee.email, (error, respond) => {
         if (error) {
           console.log('error', error);
           message.error(error.error);

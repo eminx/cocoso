@@ -1,0 +1,21 @@
+{
+  "public": {
+    "name": "Cocoso"
+  },
+  "AWSs3": {
+    "AWSAccessKeyId": "your-aws-access-key-id",
+    "AWSSecretAccessKey": "your-aws-secret-access-key",
+    "AWSRegion": "your-aws-region",
+    "AWSBucketName": "your-aws-bucket-name",
+    "AWSBucketReadingMaterials": "your-aws-bucket-reading-material"
+  },
+  "mailCredentials": {
+    "smtp": {
+      "fromEmail": "<noreplyblabla@someemailsite.com>",
+      "userName": "email-username",
+      "password": "a-secret-password",
+      "host": "smtp-email-host",
+      "port": "smtp-email-port"
+    }
+  }
+}

@@ -20,6 +20,10 @@ login:
       password: Fel lösenord
     success: Du har loggat in
 
+logout:
+  messages:
+    success: Du är utloggad
+
 signup:
   labels:
     title: Registrera nytt konto
@@ -51,7 +55,8 @@ password:
 
 profile:
   label: Personlig information
-  joinOrganisation: Join
+  join: Join
+  joinAsParticipantQuestion: Vill du gå med i denna organisation med deltagar rollen?
 
   form:
     avatar:
