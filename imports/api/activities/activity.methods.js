@@ -305,7 +305,6 @@ Meteor.methods({
     const newOccurences = [...theActivity.datesAndTimes];
     const theOccurence = newOccurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees.find((a) => a.email === email);
-
     newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
       (a) => a.email !== email
     );
