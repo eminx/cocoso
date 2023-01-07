@@ -33,9 +33,9 @@ function TermsForHost({ currentHost }) {
         window.
       </p>
       <p>
-        As a member you will also receive running notifications about things happening at
-        {entities}, and can sign yourself up (RSVP) for events with a simple click. Your username
-        will be visible for staff members in the list of attendees.
+        As a member you will also receive running notifications about things happening at {entities}
+        , and can sign yourself up (RSVP) for events with a simple click. Your username will be
+        visible for staff members in the list of attendees.
       </p>
       <p>
         The discussions for each study process are visible to all members of {entities}. These

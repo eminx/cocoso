@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
-import { defaultMenu, defaultMainColor, defaultEmails } from '../../startup/constants';
-import getTerms from '../_utils/terms';
+import { defaultMenu, defaultEmails } from '../../startup/constants';
 
 Meteor.methods({
   createNewHost(values) {
@@ -47,16 +46,6 @@ Meteor.methods({
         authorName: currentUser.username,
         title: `About ${values.name}`,
         longDescription: values.about,
-        isPublished: true,
-        creationDate: new Date(),
-      });
-
-      Pages.insert({
-        host: values.host,
-        authorId: currentUser._id,
-        authorName: currentUser.username,
-        title: 'Terms',
-        longDescription: getTerms(values),
         isPublished: true,
         creationDate: new Date(),
       });

@@ -8,8 +8,6 @@ import Processes from '../../api/processes/process';
 import Pages from '../../api/pages/page';
 import Works from '../../api/works/work';
 
-import getTerms from '../../api/_utils/terms';
-
 // Drop && Set back - authorAvatar && authorFirstName && authorLastName
 Migrations.add({
   version: 1,
@@ -330,23 +328,6 @@ Migrations.add({
   version: 13,
   async up() {
     console.log('up to', this.version);
-    Hosts.find().forEach((host) => {
-      console.log(host);
-      Pages.insert({
-        host: host.host,
-        authorId: host.members[0].id,
-        authorName: host.members[0].username,
-        title: 'Terms',
-        longDescription: getTerms({
-          name: host.settings.name,
-          host: host.host,
-          email: host.settings.email,
-        }),
-        isPublished: true,
-        creationDate: new Date(),
-        isTermsPage: true,
-      });
-    });
   },
   async down() {
     console.log('down to', this.version - 1);

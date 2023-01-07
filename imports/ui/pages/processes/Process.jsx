@@ -840,7 +840,7 @@ class Process extends Component {
 
     if (!isAdmin && !isMember) {
       return (
-        <Center p="4" bg="green.100">
+        <Center p="4" mt="2" bg="green.100">
           <Button colorScheme="green" onClick={this.openModal}>
             {t('actions.join')}
           </Button>
