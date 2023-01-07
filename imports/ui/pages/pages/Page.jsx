@@ -65,8 +65,6 @@ function Page() {
           <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
         </Helmet>
 
-        <Header />
-
         <Flex mt="8">
           <Box w="30%" p="4" pl="12">
             <PagesList
@@ -101,8 +99,6 @@ function Page() {
       <Helmet>
         <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
-
-      <Header />
 
       <Center px="4">
         <PagesList

@@ -10,6 +10,7 @@ import ProcessRoutes from './processes/ProcessRouter';
 import ActivityRoutes from './activities/ActivityRouter';
 import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
+import Terms from '../components/Terms';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
@@ -77,6 +78,7 @@ export default function () {
               <Route path="/reset-password/:token" component={ResetPasswordPage} />
               {/* SuperAdmin */}
               <Route exact path="/new-host" component={NewHost} />
+              <Route exact path="/terms-&-privacy-policy" component={Terms} />
               {/* NotFoundPage */}
               <Route exact path="/not-found" component={NotFoundPage} />
               <Route exact path="/404" component={NotFoundPage} />
