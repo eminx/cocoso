@@ -11,7 +11,7 @@ roles:
   admin: Admin
   plural:
     participants: Participants
-    contributors: Cocreator
+    contributors: Cocreators
     admins: Admins
 
 form:
