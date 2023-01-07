@@ -78,6 +78,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     '/signup',
     '/forgot-password',
     '/reset-password',
+    '/terms-&-privacy-policy',
   ];
 
   const isHeaderAndFooter = pagesWithHeaderAndFooter.includes(pathname);
@@ -145,14 +146,15 @@ function Footer({ currentHost, tc }) {
               {currentHost.settings?.name}
             </Heading>
             <Text fontSize="sm">
-              {currentHost.settings?.address} {', '} {currentHost.settings?.city}
+              {currentHost.settings?.address}
+              {', '} {currentHost.settings?.city}
             </Text>
             <Text fontSize="sm">{currentHost.settings?.email}</Text>
             <Text fontSize="sm" fontWeight="bold">
               {currentHost.host}
             </Text>
             <Box mt="4">
-              <Link to="/pages/terms">
+              <Link to="/terms-&-privacy-policy">
                 <CLink as="span" fontSize="sm">
                   {tc('terms.title')}{' '}
                 </CLink>
