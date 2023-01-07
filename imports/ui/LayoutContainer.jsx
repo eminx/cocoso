@@ -81,7 +81,8 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     '/terms-&-privacy-policy',
   ];
 
-  const isHeaderAndFooter = pagesWithHeaderAndFooter.includes(pathname);
+  const isHeaderAndFooter =
+    pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   return (
     <ChakraProvider theme={chakraTheme}>
