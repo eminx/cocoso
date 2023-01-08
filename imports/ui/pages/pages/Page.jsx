@@ -9,7 +9,6 @@ import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import NiceSlider from '../../components/NiceSlider';
-import Header from '../../components/Header';
 import { parseTitle } from '../../utils/shared';
 
 const publicSettings = Meteor.settings.public;
@@ -75,12 +74,12 @@ function Page() {
           </Box>
 
           <Box w="100%" maxW="520px">
-            <Box px="4" mb="8">
+            <Box px="4" mb="4">
               <Heading as="h2" size="lg">
                 {currentPage.title}
               </Heading>
             </Box>
-            <Box mb="6">
+            <Box mb="4">
               <NiceSlider images={currentPage.images} />
             </Box>
             <Box p="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
@@ -115,7 +114,7 @@ function Page() {
               {currentPage.title}
             </Heading>
           </Box>
-          <Box mb="8">
+          <Box mb="4">
             <NiceSlider images={currentPage.images} />
           </Box>
           <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
