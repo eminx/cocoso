@@ -37,7 +37,7 @@ signup:
     password:
       label: Lösenord
       helper: Minst 8 tecken, inklusive minst en liten bokstav, en stor bokstav och en siffra
-      info: Ditt lösenord är krypterat i databasen.
+      info: Ditt lösenord är krypterat
 
 password:
   labels:

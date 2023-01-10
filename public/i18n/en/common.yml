@@ -20,6 +20,7 @@ actions:
   print: Print
   logout: Logout
   downloadCSV: Download CSV
+  confirmRead: I have read and accept
 
 # ACTION PAGE TITLES
 labels:
