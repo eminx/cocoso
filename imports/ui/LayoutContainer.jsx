@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { parse } from 'query-string';
 import {
@@ -25,17 +25,23 @@ import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
+import { call } from './utils/shared';
 
 export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
+  const [platform, setPlatform] = useState(null);
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const { pathname, search } = history.location;
 
   useEffect(() => {
+    Meteor.call('getPlatform', (error, respond) => {
+      setPlatform(respond);
+    });
+
     const params = parse(search);
     if (params && params.noScrollTop) {
       return;
@@ -107,7 +113,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
             <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
-            {isHeaderAndFooter && <Footer currentHost={currentHost} tc={tc} />}
+            {isHeaderAndFooter && <Footer currentHost={currentHost} platform={platform} tc={tc} />}
           </Box>
         </Center>
       </StateContext.Provider>
@@ -115,7 +121,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   );
 }
 
-function Footer({ currentHost, tc }) {
+function Footer({ currentHost, platform, tc }) {
   if (!currentHost) {
     return null;
   }
@@ -172,6 +178,7 @@ function Footer({ currentHost, tc }) {
           </Box>
         </Flex>
       </Box>
+      <Text>{platform?.name}</Text>
     </Box>
   );
 }

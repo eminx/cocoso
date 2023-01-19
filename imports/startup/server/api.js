@@ -44,3 +44,6 @@ import '../../api/resources/resource.publications';
 import '../../api/activities/activity';
 import '../../api/activities/activity.methods';
 import '../../api/activities/activity.publications';
+
+import '../../api/platform/platform';
+import '../../api/platform/platform.methods';
