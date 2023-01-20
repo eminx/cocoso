@@ -205,12 +205,12 @@ function Footer({ currentHost, platform, tc }) {
           </Box>
         </Flex>
       </Box>
-      <Center p="8" bg="gray.900">
+      {/* <Center p="8" bg="gray.900">
         <Box textAlign="center" color="gray.100">
           <Text>{platform?.name}</Text>
           <CLink onClick={() => setPlatformDrawer(true)}>See communities</CLink>
         </Box>
-      </Center>
+      </Center> */}
 
       {hosts && (
         <Drawer
