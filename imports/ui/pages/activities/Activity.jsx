@@ -49,6 +49,10 @@ class Activity extends PureComponent {
     capacityGotFullByYou: false,
   };
 
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   addNewChatMessage = (message) => {
     Meteor.call(
       'addChatMessage',

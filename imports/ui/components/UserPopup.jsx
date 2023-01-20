@@ -21,12 +21,12 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
-import { userMenu, adminMenu } from '../utils/constants/general';
+import { adminMenu } from '../utils/constants/general';
 
 function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
-  const { role } = useContext(StateContext);
+  const { canCreateContent, role } = useContext(StateContext);
 
   if (!currentUser) {
     return (
@@ -80,6 +80,11 @@ function UserPopup({ currentUser }) {
             <Link to={currentUser && `/@${currentUser?.username}`}>
               <MenuItem>{`@${currentUser?.username}`}</MenuItem>
             </Link>
+            {canCreateContent && (
+              <Link to="/my-activities">
+                <MenuItem>{tc('menu.member.activities')}</MenuItem>
+              </Link>
+            )}
             <Link to={currentUser && `/@${currentUser?.username}/edit`}>
               <MenuItem>{tc('actions.update')}</MenuItem>
             </Link>

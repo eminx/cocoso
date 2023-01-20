@@ -34,7 +34,7 @@ const focusStyle = {
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser, canCreateContent } = useContext(StateContext);
+  const { currentHost, currentUser, canCreateContent } = useContext(StateContext);
 
   const [t] = useTranslation('activities');
   const [tm] = useTranslation('members');
@@ -55,83 +55,85 @@ function Activities({ history }) {
     return <Loader />;
   }
 
-  // const myWorksWithActions = bookings.reverse().map((booking) => ({
-  //   ...booking,
-  //   actions: [
-  //     {
-  //       content: 'Remove',
-  //       handleClick: () => this.removeWork(work._id),
-  //     },
-  //   ],
-  // }));
+  const membersInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'members');
 
-  const pathname = history && history.location.pathname;
+  const furtherBreadcrumbLinks = [
+    {
+      label: membersInMenu?.label,
+      link: '/members',
+    },
+    {
+      label: currentUser.username,
+      link: `/@${currentUser.username}`,
+    },
+    {
+      label: tc('domains.activities'),
+      link: null,
+    },
+  ];
 
   return (
-    <Template
-      heading={t('members.label')}
-      titleCentered
-      leftContent={
-        <Box p="2">
-          <ListMenu pathname={pathname} list={userMenu} currentUser={currentUser} />
-        </Box>
-      }
-    >
-      <Breadcrumb />
-      {currentUser && canCreateContent && (
-        <Center>
-          <Button
-            colorScheme="green"
-            variant="outline"
-            onClick={() => history.push('/activities/new')}
-            mb="4"
-            textTransform="uppercase"
-          >
-            {tc('actions.create')}
-          </Button>
-        </Center>
-      )}
-
-      {currentUser && activities ? (
-        <Tabs>
-          <Center>
-            <TabList>
-              <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
-              <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
-              <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
-            </TabList>
+    <>
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Center>
+        <Heading size="md">{tc('menu.member.activities')}</Heading>
+      </Center>
+      <Template>
+        {currentUser && canCreateContent && (
+          <Center pt="4">
+            <Button
+              colorScheme="green"
+              variant="outline"
+              onClick={() => history.push('/activities/new')}
+              mb="4"
+              textTransform="uppercase"
+            >
+              {tc('actions.create')}
+            </Button>
           </Center>
+        )}
 
-          <TabPanels>
-            <TabPanel>
-              <NiceList actionsDisabled list={activities}>
-                {(act) => (
-                  <Link to={`/activities/${act._id}`}>
-                    <ActivityItem act={act} />
-                  </Link>
-                )}
-              </NiceList>
-            </TabPanel>
-            <TabPanel>
-              <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
-                {(act) => (
-                  <Link to={`/activities/${act._id}`}>
-                    <ActivityItem act={act} history={history} />
-                  </Link>
-                )}
-              </NiceList>
-            </TabPanel>
-            <TabPanel>
-              <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
-                {(act) => <ActivityItem act={act} history={history} />}
-              </NiceList>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      ) : (
-        <Alert margin="medium" message={tm('message.guest')} />
-      )}
-    </Template>
+        {currentUser && activities ? (
+          <Tabs>
+            <Center>
+              <TabList>
+                <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
+                <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
+                <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
+              </TabList>
+            </Center>
+
+            <TabPanels>
+              <TabPanel>
+                <NiceList actionsDisabled list={activities}>
+                  {(act) => (
+                    <Link to={`/activities/${act._id}`}>
+                      <ActivityItem act={act} />
+                    </Link>
+                  )}
+                </NiceList>
+              </TabPanel>
+              <TabPanel>
+                <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
+                  {(act) => (
+                    <Link to={`/activities/${act._id}`}>
+                      <ActivityItem act={act} history={history} />
+                    </Link>
+                  )}
+                </NiceList>
+              </TabPanel>
+              <TabPanel>
+                <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
+                  {(act) => <ActivityItem act={act} history={history} />}
+                </NiceList>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        ) : (
+          <Alert margin="medium" message={tm('message.guest')} />
+        )}
+      </Template>
+    </>
   );
 }
 

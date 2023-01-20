@@ -1,10 +1,12 @@
+import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import Activity from './Activity';
-import Chats from '../../../api/chats/chat';
-import Activities from '../../../api/activities/activity';
 import { useTranslation } from 'react-i18next';
 
-export default ActivityContainer = withTracker((props) => {
+import Activity from './Activity';
+// import Chats from '../../../api/chats/chat';
+import Activities from '../../../api/activities/activity';
+
+const ActivityContainer = withTracker((props) => {
   const activityId = props.match.params.activityId;
   const activity = Meteor.subscribe('activity', activityId);
 
@@ -12,18 +14,26 @@ export default ActivityContainer = withTracker((props) => {
   const activityData = Activities ? Activities.findOne({ _id: activityId }) : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribe('chat', activityId);
-  const chatData = Chats ? Chats.findOne({ contextId: activityId }) : null;
-
-  const [t] = useTranslation('activities');
-  const [tc] = useTranslation('common');
+  // const chatSubscription = Meteor.subscribe('chat', activityId);
+  // const chatData = Chats ? Chats.findOne({ contextId: activityId }) : null;
 
   return {
     isLoading,
     activityData,
     currentUser,
-    chatData,
+    // chatData,
+  };
+})(Activity);
+
+export default function (props) {
+  const [t] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+
+  const allProps = {
+    ...props,
     t,
     tc,
   };
-})(Activity);
+
+  return <ActivityContainer {...allProps} />;
+}

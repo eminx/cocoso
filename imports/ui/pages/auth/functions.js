@@ -1,12 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 
 function loginWithPassword(username, password, isNewAccount) {
-  const [t] = useTranslation('accounts');
-
   Meteor.loginWithPassword(username, password, (error) => {
     if (error) {
       console.log(error);
@@ -21,7 +19,8 @@ function loginWithPassword(username, password, isNewAccount) {
         }
       });
     }
-    message.success(t('login.messages.success'));
+    const translation = i18next.t('accounts:login.messages.success');
+    message.success(translation);
   });
 }
 
