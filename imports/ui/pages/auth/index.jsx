@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link as RLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Checkbox, Flex, Input, Link, Text, VStack } from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
+import ConfirmModal from '../../components/ConfirmModal';
+import Terms from '../../components/Terms';
+
 import {
   loginModel,
   signupModel,
@@ -48,6 +50,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
 
 const Signup = ({ onSubmit }) => {
   const [termsChecked, setTermsChecked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
   const schema = Joi.object({
@@ -64,59 +67,84 @@ const Signup = ({ onSubmit }) => {
   });
   const { errors, isDirty, isSubmitting } = formState;
 
-  return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <VStack spacing="6">
-        <FormField
-          errorMessage={errors.username?.message}
-          helperText={t('signup.form.username.helper')}
-          isInvalid={errors.username}
-          label={t('signup.form.username.label')}
-        >
-          <Input {...register('username')} />
-        </FormField>
+  const confirmModal = () => {
+    setTermsChecked(true);
+    setModalOpen(false);
+  };
 
-        <FormField
-          errorMessage={errors.email?.message}
-          isInvalid={errors.email}
-          label={t('signup.form.email.label')}
-        >
-          <Input {...register('email')} type="email" />
-        </FormField>
-        <Box>
+  return (
+    <Box>
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack spacing="6">
           <FormField
-            errorMessage={errors.password?.message}
-            helperText={passwordHelperText}
-            isInvalid={errors.password}
-            label={t('signup.form.password.label')}
+            errorMessage={errors.username?.message}
+            helperText={t('signup.form.username.helper')}
+            isInvalid={errors.username}
+            label={t('signup.form.username.label')}
           >
-            <Input {...register('password')} type="password" />
+            <Input {...register('username')} />
           </FormField>
 
-          <Center mt="2">
-            <Text fontSize="xs" textAlign="center">
-              {t('signup.form.password.info')}
-            </Text>
-          </Center>
-        </Box>
+          <FormField
+            errorMessage={errors.email?.message}
+            isInvalid={errors.email}
+            label={t('signup.form.email.label')}
+          >
+            <Input {...register('email')} type="email" />
+          </FormField>
+          <Box>
+            <FormField
+              errorMessage={errors.password?.message}
+              helperText={passwordHelperText}
+              isInvalid={errors.password}
+              label={t('signup.form.password.label')}
+            >
+              <Input {...register('password')} type="password" />
+            </FormField>
 
-        <FormField>
-          <Checkbox onChange={() => setTermsChecked(!termsChecked)}>
-            <RLink to="/pages/terms" target="_blank">
-              <Link as="span">
+            <Center mt="2">
+              <Text fontSize="xs" textAlign="center">
+                {t('signup.form.password.info')}
+              </Text>
+            </Center>
+          </Box>
+
+          <FormField>
+            <Flex>
+              <Box pr="2" pt="1">
+                <Checkbox
+                  isChecked={termsChecked}
+                  size="lg"
+                  onChange={() => setTermsChecked(!termsChecked)}
+                />
+              </Box>
+              <Link as="span" onClick={() => setModalOpen(true)}>
                 {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
               </Link>
-            </RLink>
-          </Checkbox>
-        </FormField>
+            </Flex>
+          </FormField>
 
-        <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={!isDirty || !termsChecked} isLoading={isSubmitting} type="submit">
-            {tc('actions.submit')}
-          </Button>
-        </Flex>
-      </VStack>
-    </form>
+          <Flex justify="flex-end" py="4" w="100%">
+            <Button isDisabled={!isDirty || !termsChecked} isLoading={isSubmitting} type="submit">
+              {tc('actions.submit')}
+            </Button>
+          </Flex>
+        </VStack>
+      </form>
+      <ConfirmModal
+        title="Terms of Service & Privacy Policy"
+        visible={modalOpen}
+        confirmText={tc('actions.confirmRead')}
+        cancelText={tc('actions.close')}
+        scrollBehavior="inside"
+        size="full"
+        onConfirm={confirmModal}
+        onCancel={() => setModalOpen(false)}
+        onClickOutside={() => setModalOpen(false)}
+      >
+        <Terms />
+      </ConfirmModal>
+    </Box>
   );
 };
 

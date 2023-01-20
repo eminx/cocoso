@@ -37,6 +37,10 @@ function UsageReport({ user, onClose }) {
     }
     try {
       const response = await call('getActivitiesbyUserId', user.id);
+      if (response && response.length === 0) {
+        message.error(t('message.usage.noUsage'));
+        return;
+      }
       parseActivities(response);
     } catch (error) {
       console.log(error);
@@ -112,12 +116,14 @@ function UsageReport({ user, onClose }) {
     setSelectedResource(selectedResource);
   };
 
-  if (!user || !activities) {
-    return null;
-  }
+  const onCloseDrawer = () => {
+    setActivities(null);
+    setTotalHours(null);
+    setSelectedResource(null);
+    onClose();
+  };
 
-  if (activities.length === 1 && activities[0].length === 0) {
-    message.error(t('message.usage.noUsage'));
+  if (!user || !activities) {
     return null;
   }
 
@@ -134,7 +140,7 @@ function UsageReport({ user, onClose }) {
           onChange={handleSelectResource}
         />
       }
-      onClose={onClose}
+      onClose={onCloseDrawer}
     >
       {activities.map((activitiesPerMonth, index) => {
         const firstAct = activitiesPerMonth[0];

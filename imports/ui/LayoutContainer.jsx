@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { parse } from 'query-string';
 import {
   Box,
   Center,
   ChakraProvider,
+  Code,
   Flex,
   Heading,
   Image,
@@ -14,28 +15,44 @@ import {
   List,
   ListItem,
   Spinner,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import Hosts from '../api/hosts/host';
 import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
+import Drawer from './components/Drawer';
+import { call } from './utils/shared';
 
 export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
+  const [platform, setPlatform] = useState(null);
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const { pathname, search } = history.location;
 
   useEffect(() => {
+    Meteor.call('getPlatform', (error, respond) => {
+      setPlatform(respond);
+    });
+
     const params = parse(search);
     if (params && params.noScrollTop) {
       return;
@@ -107,7 +124,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
             <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
-            {isHeaderAndFooter && <Footer currentHost={currentHost} tc={tc} />}
+            {isHeaderAndFooter && <Footer currentHost={currentHost} platform={platform} tc={tc} />}
           </Box>
         </Center>
       </StateContext.Provider>
@@ -115,7 +132,23 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   );
 }
 
-function Footer({ currentHost, tc }) {
+function Footer({ currentHost, platform, tc }) {
+  const [platformDrawer, setPlatformDrawer] = useState(false);
+  const [hosts, setHosts] = useState([]);
+
+  useEffect(() => {
+    getAllHosts();
+  }, []);
+
+  const getAllHosts = async () => {
+    try {
+      const allHosts = await call('getAllHosts');
+      setHosts(allHosts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!currentHost) {
     return null;
   }
@@ -172,6 +205,54 @@ function Footer({ currentHost, tc }) {
           </Box>
         </Flex>
       </Box>
+      {/* <Center p="8" bg="gray.900">
+        <Box textAlign="center" color="gray.100">
+          <Text>{platform?.name}</Text>
+          <CLink onClick={() => setPlatformDrawer(true)}>See communities</CLink>
+        </Box>
+      </Center> */}
+
+      {hosts && (
+        <Drawer
+          isOpen={platformDrawer}
+          placement="bottom"
+          size="lg"
+          title={platform?.name}
+          zIndex="999 "
+          onClose={() => setPlatformDrawer(false)}
+        >
+          <Box>
+            <Table variant="simple">
+              <Tbody>
+                {hosts?.map((host, index) => (
+                  <Tr key={host.host}>
+                    <Td>
+                      <Image src={host.logo} h="50px" />
+                    </Td>
+                    <Td>
+                      <Text fontSize="lg" fontWeight="bold" mb="1">
+                        {host.name}
+                      </Text>
+                      <Text mb="0.5">
+                        <Code>
+                          <CLink href={`https://${host.host}`} isExternal title={host.host}>
+                            {host.host}
+                            <ExternalLinkIcon mx="2px" mb="3px" />
+                          </CLink>
+                        </Code>
+                      </Text>
+                      <Text mb="0.5">
+                        <Text as="samp">{host.membersCount}</Text> members
+                      </Text>
+                      <Text>{host.city + ', ' + host.country}</Text>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        </Drawer>
+      )}
     </Box>
   );
 }

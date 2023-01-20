@@ -6,7 +6,8 @@
   display: none;
 }
 
-.rbc-calendar .rbc-event-content {
+.rbc-calendar .rbc-event-content,
+.rbc-calendar .rbc-agenda-view {
   color: #fff;
   font-size: 12px;
 }
@@ -28,10 +29,6 @@
 .rbc-month-view,
 .rbc-agenda-content {
   background-color: #fff;
-}
-
-.rbc-calendar .rbc-agenda-content {
-  font-size: 0.8em;
 }
 
 .rbc-calendar .rbc-agenda-view table tbody > tr > td {
