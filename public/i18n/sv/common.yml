@@ -105,8 +105,8 @@ menu:
     login: Logga in
   member:
     label: Min
-    profile: Min Profil
-    activities: Mina Aktiviteter
+    profile: Min profil
+    activities: Mina aktiviteter
     works: Mina Verk
   admin:
     label: Admin
