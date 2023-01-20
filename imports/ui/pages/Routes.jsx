@@ -37,6 +37,8 @@ const NewHost = lazy(() => import('./hosts/NewHost'));
 // NotFound
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
+const MyActivities = lazy(() => import('./activities/MyActivities'));
+
 export default function () {
   return (
     <Router history={browserHistory}>
@@ -51,6 +53,7 @@ export default function () {
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
+              <Route exact path="/my-activities" component={MyActivities} />
               <ActivityRoutes path="/activities" history={browserHistory} />
               {/* Processes */}
               <ProcessRoutes path="/processes" history={browserHistory} />
