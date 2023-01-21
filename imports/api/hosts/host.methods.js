@@ -97,4 +97,19 @@ Meteor.methods({
     const validMembers = members.filter((member) => member && member.id);
     return validMembers;
   },
+
+  getAllMembersFromAllHosts() {
+    const allUsers = Meteor.users.find().fetch();
+    return allUsers
+      .map((user) => ({
+        avatar: user.avatar?.src,
+        date: user.date,
+        id: user._id,
+        isPublic: user.isPublic,
+        memberships: user.memberships,
+        // role: user.role,
+        username: user.username,
+      }))
+      .reverse();
+  },
 });

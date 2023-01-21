@@ -14,6 +14,7 @@ import NewGridThumb from '../../components/NewGridThumb';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
+import { message } from '../../components/message';
 
 moment.locale(i18n.language);
 
@@ -41,9 +42,9 @@ function compareDatesForSortReverse(a, b) {
 
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
-  const [isLoading, setIsLoading] = useState(true);
   const { currentHost } = useContext(StateContext);
   const {
     location: { search },
@@ -57,12 +58,16 @@ function Activities({ history }) {
 
   const getActivities = async () => {
     try {
-      setActivities(await call('getAllActivities', true));
+      if (currentHost.isPortalHost) {
+        setActivities(await call('getAllActivitiesFromAllHosts', true));
+      } else {
+        setActivities(await call('getAllActivities', true));
+      }
     } catch (error) {
       message.error(error.reason);
       console.log(error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -82,6 +87,7 @@ function Activities({ history }) {
       );
     });
   };
+
   const getPastPublicActivities = () => {
     if (!activities) {
       return null;
@@ -113,7 +119,7 @@ function Activities({ history }) {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <Box width="100%" mb="50px">
         <Loader />

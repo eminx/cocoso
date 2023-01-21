@@ -15,12 +15,12 @@ import FiltrerSorter from '../../components/FiltrerSorter';
 import Tabs from '../../components/Tabs';
 
 function Resources() {
-  const { currentHost } = useContext(StateContext);
   const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
-  const [loading, setLoading] = useState(true);
   const [combo, setCombo] = useState('all');
+  const { currentHost } = useContext(StateContext);
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -31,8 +31,11 @@ function Resources() {
 
   const getResources = async () => {
     try {
-      const response = await call('getResources');
-      setResources(response);
+      if (currentHost.isPortalHost) {
+        setResources(await call('getResourcesFromAllHosts'));
+      } else {
+        setResources(await call('getResources'));
+      }
     } catch (error) {
       console.log(error);
       message.error(error.reason);

@@ -9,6 +9,16 @@ import Resources from '../resources/resource';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
+  getAllActivitiesFromAllHosts(onlyPublic = false) {
+    try {
+      return Activities.find({
+        isPublicActivity: onlyPublic,
+      }).fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch works");
+    }
+  },
+
   getAllActivities(onlyPublic = false) {
     const host = getHost(this);
 
@@ -17,7 +27,6 @@ Meteor.methods({
         host,
         isPublicActivity: onlyPublic,
       }).fetch();
-      return;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }

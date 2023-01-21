@@ -25,15 +25,19 @@ const getFullName = (member) => {
 };
 
 function MembersPublic() {
-  const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const { currentHost } = useContext(StateContext);
 
   const getAndSetMembers = async () => {
     try {
-      setMembers(await call('getHostMembers'));
+      if (currentHost.isPortalHost) {
+        setMembers(await call('getAllMembersFromAllHosts'));
+      } else {
+        setMembers(await call('getHostMembers'));
+      }
     } catch (error) {
       message.error(error.error);
       console.log(error);

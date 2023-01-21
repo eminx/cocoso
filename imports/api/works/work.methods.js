@@ -4,6 +4,14 @@ import { getHost } from '../_utils/shared';
 import Works from './work';
 
 Meteor.methods({
+  getAllWorksFromAllHosts() {
+    try {
+      return Works.find().fetch();
+    } catch (error) {
+      throw new Meteor.Error(error, 'Could not retrieve data');
+    }
+  },
+
   getAllWorks() {
     const host = getHost(this);
     try {

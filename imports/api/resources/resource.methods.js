@@ -21,6 +21,11 @@ function validateLabel(label, host, resourceId) {
 
 // RESOURCE METHODS
 Meteor.methods({
+  getResourcesFromAllHosts() {
+    const sort = { createdAt: -1 };
+    return Resources.find({}, { sort }).fetch();
+  },
+
   getResources() {
     const host = getHost(this);
     const sort = { createdAt: -1 };

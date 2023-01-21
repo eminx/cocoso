@@ -19,10 +19,11 @@ moment.locale(i18n.language);
 
 export default function ProcessesList() {
   const [processes, setProcesses] = useState([]);
-  const { currentHost, currentUser, isDesktop } = useContext(StateContext);
   const [filter, setFilter] = useState('active');
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
+  const { currentHost, currentUser } = useContext(StateContext);
+
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
 
@@ -32,8 +33,7 @@ export default function ProcessesList() {
 
   const getProcesses = async () => {
     try {
-      const allProcesses = await call('getProcesses');
-      setProcesses(allProcesses);
+      setProcesses(await call('getProcesses', Boolean(currentHost.isPortalHost)));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

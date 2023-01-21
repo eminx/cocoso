@@ -5,7 +5,10 @@ import Hosts from './host';
 
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
-  return Hosts.find({ host }, { fields: { host: true, settings: true, logo: true } });
+  return Hosts.find(
+    { host },
+    { fields: { host: true, settings: true, logo: true, isPortalHost: true } }
+  );
 });
 
 Meteor.publish('members', function () {

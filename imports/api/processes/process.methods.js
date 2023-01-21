@@ -20,10 +20,10 @@ const isUserProcessAdmin = (process, userId) => {
 };
 
 Meteor.methods({
-  getProcesses() {
+  getProcesses(isPortalHost = false) {
     const user = Meteor.user();
     const host = getHost(this);
-    const allProcesses = Processes.find({ host }).fetch();
+    const allProcesses = isPortalHost ? Processes.find({ host }).fetch() : Processes.find().fetch();
     const processesFiltered = allProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;

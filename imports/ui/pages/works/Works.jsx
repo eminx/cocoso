@@ -38,11 +38,14 @@ function Works() {
 
   const getAllWorks = async () => {
     try {
-      const response = await call('getAllWorks');
-      setWorks(response);
-      setLoading(false);
+      if (currentHost.isPortalHost) {
+        setWorks(await call('getAllWorksFromAllHosts'));
+      } else {
+        setWorks(await call('getAllWorks'));
+      }
     } catch (error) {
       message.error(error.reason);
+    } finally {
       setLoading(false);
     }
   };
