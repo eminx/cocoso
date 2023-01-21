@@ -1,5 +1,5 @@
 import { Center, Wrap } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import '../utils/styles/paginate.css';
@@ -7,20 +7,27 @@ import '../utils/styles/paginate.css';
 const defaultItemsPerPage = 12;
 
 function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children }) {
+  const [currentPage, setCurrentPage] = useState(0);
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
 
   useEffect(() => {
+    handlePageChange(0);
+  }, [items]);
+
+  useEffect(() => {
+    const newPageCount = Math.ceil(items.length / itemsPerPage);
+    setPageCount(newPageCount);
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(items.length / itemsPerPage));
     window.scrollTo(0, 0);
   }, [itemOffset, items, itemsPerPage]);
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
+  const handlePageChange = (page) => {
+    const newOffset = (page * itemsPerPage) % items.length;
     setItemOffset(newOffset);
+    setCurrentPage(page);
   };
 
   return (
@@ -31,6 +38,7 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
       {items.length > itemsPerPage && (
         <Center>
           <ReactPaginate
+            forcePage={currentPage}
             containerClassName="paginate"
             pageLinkClassName="paginate-btn"
             previousLinkClassName="paginate-btn"
@@ -39,7 +47,7 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
             previousLabel="Prev"
             nextLabel="Next"
             breakLabel="..."
-            onPageChange={handlePageClick}
+            onPageChange={(event) => handlePageChange(event.selected)}
             pageRangeDisplayed={5}
             pageCount={pageCount}
             renderOnZeroPageCount={null}
