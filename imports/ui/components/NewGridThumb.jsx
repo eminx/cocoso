@@ -39,7 +39,7 @@ export default function GridThumb({ avatar, color, dates, imageUrl, subTitle, ti
             {tag && <Tag filterColor={color} label={tag} my="1" />}
             {currentHost.isPortalHost && (
               <Flex justify="flex-start">
-                <CTag size="md" my="2" border="1px solid #2d2d2d">
+                <CTag border="1px solid #2d2d2d" my="2">
                   {currentHost.host}
                 </CTag>
               </Flex>

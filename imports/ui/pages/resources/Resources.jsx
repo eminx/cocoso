@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Badge, Box, Center, Heading, Text } from '@chakra-ui/react';
+import { Badge, Box, Center, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 
@@ -141,7 +141,9 @@ function Resources() {
   );
 }
 
-function ResourceItem({ t, resource }) {
+function ResourceItem({ resource, t }) {
+  const { currentHost } = useContext(StateContext);
+
   if (!resource) {
     return null;
   }
@@ -159,6 +161,13 @@ function ResourceItem({ t, resource }) {
             <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
           </Text>
           <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
+          {currentHost.isPortalHost && (
+            <Flex justify="flex-start">
+              <CTag border="1px solid #2d2d2d" mt="2">
+                {currentHost.host}
+              </CTag>
+            </Flex>
+          )}
         </GridThumb>
       </Link>
     </Box>
