@@ -164,7 +164,7 @@ function ResourceItem({ resource, t }) {
           {currentHost.isPortalHost && (
             <Flex justify="flex-start">
               <CTag border="1px solid #2d2d2d" mt="2">
-                {currentHost.host}
+                {resource.host}
               </CTag>
             </Flex>
           )}

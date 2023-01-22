@@ -428,7 +428,7 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, currentUser, chatData, history, t, tc } = this.props;
+    const { activityData, isLoading, currentUser, hideBreadcrumb, t, tc } = this.props;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -507,40 +507,40 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        <Breadcrumb />
-        <Modal
+        {!hideBreadcrumb && <Breadcrumb />}
+        {/* <Modal
           isCentered
           isOpen
           scrollBehavior="inside"
           size="6xl"
           h="90%"
           // onClose={() => history.push(`/@${user.username}`)}
-        >
-          <Tably
-            action={this.getDatesForAction()}
-            adminMenu={isAdmin ? adminMenu : null}
-            images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
-            subTitle={activityData.subTitle}
-            tabs={tabs}
-            tags={tags}
-            title={activityData.title}
-          />
+        > */}
+        <Tably
+          action={this.getDatesForAction()}
+          adminMenu={isAdmin ? adminMenu : null}
+          images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
+          subTitle={activityData.subTitle}
+          tabs={tabs}
+          tags={tags}
+          title={activityData.title}
+        />
 
-          <ConfirmModal
-            visible={isRsvpCancelModalOn}
-            title={
-              rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
-                ? t('public.cancel.found')
-                : t('public.cancel.notFound')
-            }
-            onConfirm={this.findRsvpInfo}
-            onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
-            hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
-            onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
-          >
-            {this.renderCancelRsvpModalContent()}
-          </ConfirmModal>
-        </Modal>
+        <ConfirmModal
+          visible={isRsvpCancelModalOn}
+          title={
+            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
+              ? t('public.cancel.found')
+              : t('public.cancel.notFound')
+          }
+          onConfirm={this.findRsvpInfo}
+          onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
+          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
+          onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
+        >
+          {this.renderCancelRsvpModalContent()}
+        </ConfirmModal>
+        {/* </Modal> */}
       </>
     );
   }

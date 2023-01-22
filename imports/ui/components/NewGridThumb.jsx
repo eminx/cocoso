@@ -6,7 +6,7 @@ import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-export default function GridThumb({ avatar, color, dates, imageUrl, subTitle, title, tag }) {
+export default function GridThumb({ avatar, color, dates, host, imageUrl, subTitle, title, tag }) {
   const { currentHost } = useContext(StateContext);
 
   if (!title || !imageUrl) {
@@ -37,10 +37,10 @@ export default function GridThumb({ avatar, color, dates, imageUrl, subTitle, ti
               </Heading>
             )}
             {tag && <Tag filterColor={color} label={tag} my="1" />}
-            {currentHost.isPortalHost && (
+            {host && currentHost.isPortalHost && (
               <Flex justify="flex-start">
                 <CTag border="1px solid #2d2d2d" my="2">
-                  {currentHost.host}
+                  {host}
                 </CTag>
               </Flex>
             )}

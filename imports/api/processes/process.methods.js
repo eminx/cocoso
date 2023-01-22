@@ -45,6 +45,7 @@ Meteor.methods({
       readingMaterial: process.readingMaterial,
       imageUrl: process.imageUrl,
       meetings: process.meetings,
+      host: process.host,
       adminUsername: process.adminUsername,
       isArchived: process.isArchived,
       members: user ? process.members : null,

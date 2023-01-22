@@ -149,6 +149,7 @@ function Works() {
                 color={
                   categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label).color
                 }
+                host={work.host}
                 imageUrl={work.images[0]}
                 tag={work.category?.label}
                 title={work.title}

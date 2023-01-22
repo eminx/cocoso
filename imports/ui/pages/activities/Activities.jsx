@@ -16,6 +16,7 @@ import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
+import Modal from '../../components/Modal';
 
 moment.locale(i18n.language);
 
@@ -170,6 +171,7 @@ function Activities({ history }) {
             >
               <NewGridThumb
                 dates={activity.datesAndTimes.map((d) => d.startDate)}
+                host={activity.host}
                 imageUrl={activity.imageUrl}
                 subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                 title={activity.title}
@@ -178,6 +180,24 @@ function Activities({ history }) {
           </Box>
         )}
       </Paginate>
+
+      <Switch history={history}>
+        <Route
+          path="/activities/:activityId"
+          render={(props) => (
+            <Modal
+              isCentered
+              isOpen
+              scrollBehavior="inside"
+              size="6xl"
+              h="90%"
+              onClose={() => history.push('/activities?noScrollTop=true')}
+            >
+              <Activity hideBreadcrumb {...props} />
+            </Modal>
+          )}
+        />
+      </Switch>
     </Box>
   );
 }

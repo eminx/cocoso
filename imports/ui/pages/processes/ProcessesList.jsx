@@ -137,6 +137,7 @@ export default function ProcessesList() {
           <Box key={process._id}>
             <Link to={`/processes/${process._id}`}>
               <NewGridThumb
+                host={process.host}
                 imageUrl={process.imageUrl}
                 subTitle={process.readingMaterial}
                 title={process.title}
