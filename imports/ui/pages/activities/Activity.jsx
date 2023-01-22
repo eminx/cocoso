@@ -39,6 +39,7 @@ import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import FormField from '../../components/FormField';
 import Tably from '../../components/Tably';
+import Modal from '../../components/Modal';
 
 moment.locale(i18n.language);
 
@@ -48,10 +49,6 @@ class Activity extends PureComponent {
     rsvpCancelModalInfo: null,
     capacityGotFullByYou: false,
   };
-
-  componentDidMount() {
-    console.log(this.props);
-  }
 
   addNewChatMessage = (message) => {
     Meteor.call(
@@ -509,31 +506,38 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-
-        <Tably
-          action={this.getDatesForAction()}
-          adminMenu={isAdmin ? adminMenu : null}
-          images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
-          subTitle={activityData.subTitle}
-          tabs={tabs}
-          tags={tags}
-          title={activityData.title}
-        />
-
-        <ConfirmModal
-          visible={isRsvpCancelModalOn}
-          title={
-            rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
-              ? t('public.cancel.found')
-              : t('public.cancel.notFound')
-          }
-          onConfirm={this.findRsvpInfo}
-          onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
-          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
-          onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
+        <Modal
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="6xl"
+          // onClose={() => history.push(`/@${user.username}`)}
         >
-          {this.renderCancelRsvpModalContent()}
-        </ConfirmModal>
+          <Tably
+            action={this.getDatesForAction()}
+            adminMenu={isAdmin ? adminMenu : null}
+            images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
+            subTitle={activityData.subTitle}
+            tabs={tabs}
+            tags={tags}
+            title={activityData.title}
+          />
+
+          <ConfirmModal
+            visible={isRsvpCancelModalOn}
+            title={
+              rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
+                ? t('public.cancel.found')
+                : t('public.cancel.notFound')
+            }
+            onConfirm={this.findRsvpInfo}
+            onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
+            hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
+            onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
+          >
+            {this.renderCancelRsvpModalContent()}
+          </ConfirmModal>
+        </Modal>
       </>
     );
   }

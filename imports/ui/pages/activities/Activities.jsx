@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Center } from '@chakra-ui/react';
 import { parse } from 'query-string';
 
+import Activity from './ActivityContainer';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
