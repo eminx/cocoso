@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Button,
   Modal as CModal,
   ModalOverlay,
@@ -8,7 +9,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 function Modal({
@@ -24,20 +24,22 @@ function Modal({
   return (
     <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
-      <ModalContent h={h}>
-        <ModalHeader>{title}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+      <Box zIndex="1405">
+        <ModalContent h={h}>
+          <ModalHeader>{title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>{children}</ModalBody>
 
-        <ModalFooter>
-          {closeButtonLabel && (
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              {closeButtonLabel}
-            </Button>
-          )}
-          {actionButtonLabel && <Button>{actionButtonLabel}</Button>}
-        </ModalFooter>
-      </ModalContent>
+          <ModalFooter>
+            {closeButtonLabel && (
+              <Button variant="ghost" mr={3} onClick={onClose}>
+                {closeButtonLabel}
+              </Button>
+            )}
+            {actionButtonLabel && <Button>{actionButtonLabel}</Button>}
+          </ModalFooter>
+        </ModalContent>
+      </Box>
     </CModal>
   );
 }

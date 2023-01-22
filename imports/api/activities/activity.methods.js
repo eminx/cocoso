@@ -15,7 +15,7 @@ Meteor.methods({
         isPublicActivity: onlyPublic,
       }).fetch();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't fetch works");
+      throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
@@ -28,7 +28,21 @@ Meteor.methods({
         isPublicActivity: onlyPublic,
       }).fetch();
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't fetch works");
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getActivityById(activityId) {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    try {
+      if (currentHost.isPortal) {
+        return Activities.findOne(activityId);
+      } else {
+        return Activities.findOne({ _id: activityId, host });
+      }
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
@@ -46,7 +60,7 @@ Meteor.methods({
       }).fetch();
       return activities;
     } catch (error) {
-      throw new Meteor.Error(error, "Couldn't fetch works");
+      throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 

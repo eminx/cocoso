@@ -196,8 +196,12 @@ function Footer({ currentHost, platform, tc }) {
 
       <Center p="8" bg="gray.900">
         <Box textAlign="center" color="gray.100">
-          <Text>{platform?.name}</Text>
-          <CLink onClick={() => setPlatformDrawer(true)}>{tc('platform.title')}</CLink>
+          <Text fontSize="lg" fontW="bold">
+            {platform?.name}
+          </Text>
+          <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
+            {tc('platform.title')}
+          </CLink>
         </Box>
       </Center>
 
@@ -223,7 +227,6 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
       scrollBehavior="inside"
       size="lg"
       title={tc('platform.communitiesIn', { platform: platform?.name })}
-      zIndex="999"
       onClose={toggleOpen}
     >
       <Center>
@@ -231,7 +234,7 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
           {hosts?.map((host, index) => (
             <ListItem key={host.host}>
               <Flex key={host.host} maxW="420px">
-                <Flex flexGrow="0" h="80px" justify="flex-end" pt="1.5" pr="4" w="40%">
+                <Flex flexGrow="0" h="80px" pr="4" w="40%">
                   <Image fit="contain" h="80px" src={host.logo} />
                 </Flex>
                 <Box flexGrow="1">

@@ -181,28 +181,25 @@ function Activities({ history }) {
         )}
       </Paginate>
 
-      <Switch history={history}>
-        <Route
-          path="/activities/:activityId"
-          render={(props) => (
-            <Modal
-              h="90%"
-              isCentered
-              isOpen
-              scrollBehavior="inside"
-              size="6xl"
-              title={
-                <Link color="#06c" to={`/activities/`}>
-                  Go to page
-                </Link>
-              }
-              onClose={() => history.push('/activities?noScrollTop=true')}
-            >
-              <Activity hideBreadcrumb {...props} />
-            </Modal>
-          )}
-        />
-      </Switch>
+      {currentHost.isPortalHost && (
+        <Switch history={history}>
+          <Route
+            path="/activities/:activityId"
+            render={(props) => (
+              <Modal
+                h="90%"
+                isCentered
+                isOpen
+                scrollBehavior="inside"
+                size="6xl"
+                onClose={() => history.push('/activities?noScrollTop=true')}
+              >
+                <Activity hideBreadcrumb {...props} />
+              </Modal>
+            )}
+          />
+        </Switch>
+      )}
     </Box>
   );
 }
