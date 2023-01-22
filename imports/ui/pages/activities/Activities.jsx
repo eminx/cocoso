@@ -67,7 +67,6 @@ function Activities({ history }) {
       }
     } catch (error) {
       message.error(error.reason);
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -149,6 +148,11 @@ function Activities({ history }) {
 
   const activitiesRendered = getActivitiesFilteredSorted();
 
+  const getActivityLink = (activityId) => {
+    const selectedActivity = activities.find((a) => a._id === activityId);
+    return `https://${selectedActivity?.host}/activities/${selectedActivity?._id}`;
+  };
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
@@ -192,7 +196,11 @@ function Activities({ history }) {
                 isOpen
                 scrollBehavior="inside"
                 size="6xl"
-                onClose={() => history.push('/activities?noScrollTop=true')}
+                onClose={() => history.push('/activities')}
+                actionButtonLabel={tc('actions.toThePage')}
+                onActionButtonClick={() =>
+                  (window.location.href = getActivityLink(props.match.params.activityId))
+                }
               >
                 <Activity hideBreadcrumb {...props} />
               </Modal>

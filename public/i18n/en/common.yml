@@ -21,6 +21,7 @@ actions:
   logout: Logout
   downloadCSV: Download CSV
   confirmRead: I have read and accept
+  toThePage: To the page
 
 # ACTION PAGE TITLES
 labels:

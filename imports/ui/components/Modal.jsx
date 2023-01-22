@@ -19,6 +19,7 @@ function Modal({
   isOpen,
   title,
   onClose,
+  onActionButtonClick,
   ...otherProps
 }) {
   return (
@@ -36,7 +37,9 @@ function Modal({
                 {closeButtonLabel}
               </Button>
             )}
-            {actionButtonLabel && <Button>{actionButtonLabel}</Button>}
+            {actionButtonLabel && (
+              <Button onClick={onActionButtonClick}>{actionButtonLabel}</Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Box>

@@ -21,6 +21,7 @@ actions:
   logout: Logga ut
   downloadCSV: Ladda ner CSV
   confirmRead: Jag har läst och accepterar
+  toThePage: Till sidan
 
 # ACTION PAGE TITLES
 labels:
