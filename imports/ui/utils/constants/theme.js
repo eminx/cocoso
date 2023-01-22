@@ -47,6 +47,13 @@ const chakraTheme = extendTheme({
     heading: "'Sarabun', sans-serif",
     body: "'Sarabun', sans-serif",
   },
+  // styles: {
+  //   global: {
+  //     a: {
+  //       color: '#06c',
+  //     },
+  //   },
+  // },
 });
 
 export { chakraTheme };

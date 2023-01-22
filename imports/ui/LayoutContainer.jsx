@@ -26,7 +26,7 @@ import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
-import Drawer from './components/Drawer';
+import Modal from './components/Modal';
 import { call } from './utils/shared';
 
 export const StateContext = React.createContext(null);
@@ -219,12 +219,14 @@ function Footer({ currentHost, platform, tc }) {
 
 function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
   return (
-    <Drawer
+    <Modal
       isOpen={isOpen}
       placement="bottom"
+      motionPreset="slideInBottom"
+      scrollBehavior="inside"
       size="lg"
       title={tc('platform.communitiesIn', { platform: platform?.name })}
-      zIndex="999 "
+      zIndex="999"
       onClose={toggleOpen}
     >
       <Center>
@@ -232,7 +234,7 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
           {hosts?.map((host, index) => (
             <ListItem key={host.host}>
               <Flex key={host.host} maxW="420px">
-                <Flex flexGrow="0" h="80px" justify="flex-end" p="2" pr="4" w="180px">
+                <Flex flexGrow="0" h="80px" justify="flex-end" pt="1.5" pr="4" w="40%">
                   <Image fit="contain" h="80px" src={host.logo} />
                 </Flex>
                 <Box flexGrow="1">
@@ -240,23 +242,21 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
                     {host.name}
                   </Text>
                   <Text>
-                    <Code>
-                      <CLink href={`https://${host.host}`} title={host.host}>
-                        {host.host}
-                      </CLink>
-                    </Code>
-                  </Text>
-                  <Text>
                     <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
                   </Text>
                   <Text>{host.city + ', ' + host.country}</Text>
+                  <Text>
+                    <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
+                      {host.host}
+                    </CLink>
+                  </Text>
                 </Box>
               </Flex>
             </ListItem>
           ))}
         </List>
       </Center>
-    </Drawer>
+    </Modal>
   );
 }
 
