@@ -46,6 +46,7 @@ import {
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { DocumentUploadHelper } from '../../components/UploadHelpers';
+import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
 
@@ -998,6 +999,7 @@ class Process extends Component {
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
+        <Breadcrumb />
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}

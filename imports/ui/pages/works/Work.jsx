@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
+import Breadcrumb from '../../components/Breadcrumb';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -112,6 +113,7 @@ function Work() {
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
+      <Breadcrumb />
       <Tably
         adminMenu={isOwner ? adminMenu : null}
         author={{

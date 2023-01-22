@@ -16,6 +16,7 @@ import { StateContext } from '../../LayoutContainer';
 import useChattery from '../../components/chattery/useChattery';
 import Tably from '../../components/Tably';
 import Chattery from '../../components/chattery/Chattery';
+import Breadcrumb from '../../components/Breadcrumb';
 
 function ResourcePage() {
   const { resourceId } = useParams();
@@ -158,6 +159,7 @@ function ResourcePage() {
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
+      <Breadcrumb />
       <Tably
         adminMenu={role === 'admin' ? adminMenu : null}
         images={resource.images}
