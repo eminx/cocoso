@@ -43,14 +43,11 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     Meteor.call('getPlatform', (error, respond) => {
       setPlatform(respond);
     });
+  }, []);
 
-    const params = parse(search);
-    if (params && params.noScrollTop) {
-      return;
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [pathname, search]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname.split('/')[1]]);
 
   if (hostLoading || !currentHost) {
     return (

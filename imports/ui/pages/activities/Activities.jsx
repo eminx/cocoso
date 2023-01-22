@@ -186,11 +186,16 @@ function Activities({ history }) {
           path="/activities/:activityId"
           render={(props) => (
             <Modal
+              h="90%"
               isCentered
               isOpen
               scrollBehavior="inside"
               size="6xl"
-              h="90%"
+              title={
+                <Link color="#06c" to={`/activities/`}>
+                  Go to page
+                </Link>
+              }
               onClose={() => history.push('/activities?noScrollTop=true')}
             >
               <Activity hideBreadcrumb {...props} />
