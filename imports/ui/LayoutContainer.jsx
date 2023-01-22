@@ -15,20 +15,11 @@ import {
   List,
   ListItem,
   Spinner,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import Hosts from '../api/hosts/host';
 import ChangeLanguage from './components/ChangeLanguageMenu';
@@ -209,52 +200,65 @@ function Footer({ currentHost, platform, tc }) {
       <Center p="8" bg="gray.900">
         <Box textAlign="center" color="gray.100">
           <Text>{platform?.name}</Text>
-          <CLink onClick={() => setPlatformDrawer(true)}>See communities</CLink>
+          <CLink onClick={() => setPlatformDrawer(true)}>{tc('platform.title')}</CLink>
         </Box>
       </Center>
 
       {hosts && (
-        <Drawer
+        <PlatformDrawer
           isOpen={platformDrawer}
-          placement="bottom"
-          size="lg"
-          title={platform?.name}
-          zIndex="999 "
-          onClose={() => setPlatformDrawer(false)}
-        >
-          <Box>
-            <Table variant="simple">
-              <Tbody>
-                {hosts?.map((host, index) => (
-                  <Tr key={host.host}>
-                    <Td>
-                      <Image src={host.logo} h="50px" />
-                    </Td>
-                    <Td>
-                      <Text fontSize="lg" fontWeight="bold" mb="1">
-                        {host.name}
-                      </Text>
-                      <Text mb="0.5">
-                        <Code>
-                          <CLink href={`https://${host.host}`} isExternal title={host.host}>
-                            {host.host}
-                            <ExternalLinkIcon mx="2px" mb="3px" />
-                          </CLink>
-                        </Code>
-                      </Text>
-                      <Text mb="0.5">
-                        <Text as="samp">{host.membersCount}</Text> members
-                      </Text>
-                      <Text>{host.city + ', ' + host.country}</Text>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Box>
-        </Drawer>
+          hosts={hosts}
+          platform={platform}
+          tc={tc}
+          toggleOpen={() => setPlatformDrawer(!platformDrawer)}
+        />
       )}
     </Box>
+  );
+}
+
+function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
+  return (
+    <Drawer
+      isOpen={isOpen}
+      placement="bottom"
+      size="lg"
+      title={tc('platform.communitiesIn', { platform: platform?.name })}
+      zIndex="999 "
+      onClose={toggleOpen}
+    >
+      <Center>
+        <List spacing="6">
+          {hosts?.map((host, index) => (
+            <ListItem key={host.host}>
+              <Flex key={host.host} maxW="420px">
+                <Flex flexGrow="0" h="80px" justify="flex-end" p="2" pr="4" w="180px">
+                  <Image fit="contain" h="80px" src={host.logo} />
+                </Flex>
+                <Box flexGrow="1">
+                  <Text flexShrink="0" fontSize="lg" fontWeight="bold">
+                    {host.name}
+                  </Text>
+                  <Text>
+                    <Code>
+                      <CLink href={`https://${host.host}`} title={host.host}>
+                        {host.host}
+                      </CLink>
+                    </Code>
+                  </Text>
+                  <Text>
+                    <Text as="samp">
+                      {tc('platform.memnbersCount', { membersCount: host.membersCount })}
+                    </Text>
+                  </Text>
+                  <Text>{host.city + ', ' + host.country}</Text>
+                </Box>
+              </Flex>
+            </ListItem>
+          ))}
+        </List>
+      </Center>
+    </Drawer>
   );
 }
 

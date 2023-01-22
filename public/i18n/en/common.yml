@@ -172,3 +172,8 @@ terms:
 
 images:
   countLabel: Images ({{ count }})
+
+platform:
+  title: See Communities
+  communitiesIn: Communities in {{ platform }}
+  membersCount: {{ membersCount }} members

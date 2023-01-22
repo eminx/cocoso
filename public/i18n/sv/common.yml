@@ -172,3 +172,8 @@ terms:
 
 images:
   countLabel: Bilder ({{ count }})
+
+platform:
+  title: Se Gemenskaper
+  communitiesIn: Gemenskaper i {{ platform }}
+  membersCount: {{ membersCount }} medlemmar
