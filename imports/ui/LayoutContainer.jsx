@@ -247,9 +247,7 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
                     </Code>
                   </Text>
                   <Text>
-                    <Text as="samp">
-                      {tc('platform.memnbersCount', { membersCount: host.membersCount })}
-                    </Text>
+                    <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
                   </Text>
                   <Text>{host.city + ', ' + host.country}</Text>
                 </Box>

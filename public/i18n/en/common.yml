@@ -176,4 +176,4 @@ images:
 platform:
   title: See Communities
   communitiesIn: Communities in {{ platform }}
-  membersCount: {{ membersCount }} members
+  membersCount: '{{ membersCount }} members'
