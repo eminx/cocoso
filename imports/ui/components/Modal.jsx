@@ -15,15 +15,16 @@ function Modal({
   actionButtonLabel,
   closeButtonLabel,
   children,
-  title,
+  h,
   isOpen,
+  title,
   onClose,
   ...otherProps
 }) {
   return (
     <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent h={h}>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{children}</ModalBody>

@@ -40,6 +40,7 @@ import { message } from '../../components/message';
 import FormField from '../../components/FormField';
 import Tably from '../../components/Tably';
 import Modal from '../../components/Modal';
+import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
 
@@ -506,11 +507,13 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
+        <Breadcrumb />
         <Modal
           isCentered
           isOpen
           scrollBehavior="inside"
           size="6xl"
+          h="90%"
           // onClose={() => history.push(`/@${user.username}`)}
         >
           <Tably

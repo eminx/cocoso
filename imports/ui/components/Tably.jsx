@@ -22,7 +22,6 @@ import { SettingsIcon } from '@chakra-ui/icons';
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
-import Breadcrumb from './Breadcrumb';
 
 function Tably({
   action = null,
@@ -46,7 +45,6 @@ function Tably({
   if (isDesktop) {
     return (
       <>
-        <Breadcrumb />
         <Grid templateColumns="2fr 2fr 1fr">
           <GridItem>
             <Box>
@@ -99,8 +97,6 @@ function Tably({
 
   return (
     <>
-      <Breadcrumb />
-
       <Box>
         <Box>
           <Header
