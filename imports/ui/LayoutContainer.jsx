@@ -205,6 +205,7 @@ function Footer({ currentHost, platform, tc }) {
           </Box>
         </Flex>
       </Box>
+
       <Center p="8" bg="gray.900">
         <Box textAlign="center" color="gray.100">
           <Text>{platform?.name}</Text>
