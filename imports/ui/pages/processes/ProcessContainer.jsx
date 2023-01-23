@@ -45,7 +45,6 @@ const ProcessContainer = withTracker((props) => {
 export default function (props) {
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
-
   const allProps = {
     ...props,
     t,

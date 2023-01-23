@@ -118,3 +118,7 @@ a,
 input::placeholder {
   color: rgba(40, 40, 40, 0.6);
 }
+
+.chakra-modal__content-container {
+  z-index: 1405 !important;
+}

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Box,
   Button,
   Modal as CModal,
   ModalOverlay,
@@ -25,24 +24,20 @@ function Modal({
   return (
     <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
-      <Box zIndex="1405">
-        <ModalContent h={h}>
-          <ModalHeader>{title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
+      <ModalContent h={h}>
+        <ModalHeader>{title}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>{children}</ModalBody>
 
-          <ModalFooter>
-            {closeButtonLabel && (
-              <Button variant="ghost" mr={3} onClick={onClose}>
-                {closeButtonLabel}
-              </Button>
-            )}
-            {actionButtonLabel && (
-              <Button onClick={onActionButtonClick}>{actionButtonLabel}</Button>
-            )}
-          </ModalFooter>
-        </ModalContent>
-      </Box>
+        <ModalFooter>
+          {closeButtonLabel && (
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              {closeButtonLabel}
+            </Button>
+          )}
+          {actionButtonLabel && <Button onClick={onActionButtonClick}>{actionButtonLabel}</Button>}
+        </ModalFooter>
+      </ModalContent>
     </CModal>
   );
 }

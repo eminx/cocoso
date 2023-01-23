@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +13,7 @@ import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { getHslValuesFromLength } from '../../utils/constants/colors';
 import FiltrerSorter from '../../components/FiltrerSorter';
-
-const publicSettings = Meteor.settings.public;
+import Work from './Work';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -104,9 +102,7 @@ function Works() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.works')} | ${currentHost.settings.name} | ${
-          publicSettings.name
-        }`}</title>
+        <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
       <Center mb="2">

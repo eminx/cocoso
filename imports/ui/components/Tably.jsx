@@ -27,6 +27,7 @@ function Tably({
   action = null,
   adminMenu = null,
   author = null,
+  content,
   images,
   subTitle,
   tabs,
@@ -36,9 +37,9 @@ function Tably({
   const history = useHistory();
   const location = useLocation();
   const { isDesktop } = useContext(StateContext);
-  const tabIndex = tabs.findIndex((tab) => tab.path === location.pathname);
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
 
-  if (!tabs.find((tab) => tab.path === location.pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
 
@@ -61,12 +62,14 @@ function Tably({
           <GridItem pl="12">
             {action && (
               <Box mx="4" mb="8">
-                {action}
+                {action}/
               </Box>
             )}
-            <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs}>
-              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-            </Tabs>
+            {tabs && (
+              <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs}>
+                {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+              </Tabs>
+            )}
           </GridItem>
           <GridItem>{author && <AvatarHolder author={author} />}</GridItem>
 
@@ -78,15 +81,19 @@ function Tably({
 
           <GridItem pl="12">
             <Box mb="24">
-              <Switch history={history}>
-                {tabs.map((tab) => (
-                  <Route
-                    key={tab.title}
-                    path={tab.path}
-                    render={(props) => <Container margin={'auto'}>{tab.content}</Container>}
-                  />
-                ))}
-              </Switch>
+              {tabs ? (
+                <Switch history={history}>
+                  {tabs.map((tab) => (
+                    <Route
+                      key={tab.title}
+                      path={tab.path}
+                      render={(props) => <Container margin={'auto'}>{tab.content}</Container>}
+                    />
+                  ))}
+                </Switch>
+              ) : (
+                <Container margin="auto">{content}</Container>
+              )}
             </Box>
           </GridItem>
           <GridItem />
@@ -116,26 +123,43 @@ function Tably({
         </Box>
 
         <Box minH="100vh">
-          <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" size="sm" tabs={tabs}>
-            {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-          </Tabs>
+          {tabs && (
+            <Tabs
+              align="center"
+              colorScheme="gray.800"
+              index={tabIndex}
+              mt="2"
+              size="sm"
+              tabs={tabs}
+            >
+              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+            </Tabs>
+          )}
 
           <Box mb="24">
-            <Switch history={history}>
-              {tabs.map((tab) => (
-                <Route
-                  key={tab.title}
-                  path={tab.path}
-                  render={(props) => (
-                    <Center>
-                      <Container margin={'auto'} pt="2">
-                        {tab.content}
-                      </Container>
-                    </Center>
-                  )}
-                />
-              ))}
-            </Switch>
+            {tabs ? (
+              <Switch history={history}>
+                {tabs.map((tab) => (
+                  <Route
+                    key={tab.title}
+                    path={tab.path}
+                    render={(props) => (
+                      <Center>
+                        <Container margin={'auto'} pt="2">
+                          {tab.content}
+                        </Container>
+                      </Center>
+                    )}
+                  />
+                ))}
+              </Switch>
+            ) : (
+              <Center>
+                <Container margin={'auto'} pt="2">
+                  {content}
+                </Container>
+              </Center>
+            )}
           </Box>
         </Box>
       </Box>

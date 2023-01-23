@@ -1,5 +1,5 @@
 import { Center, Wrap } from '@chakra-ui/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import '../utils/styles/paginate.css';
@@ -21,13 +21,16 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
     setPageCount(newPageCount);
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));
-    window.scrollTo(0, 0);
   }, [itemOffset, items, itemsPerPage]);
 
   const handlePageChange = (page) => {
+    if (page === currentPage) {
+      return;
+    }
     const newOffset = (page * itemsPerPage) % items.length;
     setItemOffset(newOffset);
     setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   return (

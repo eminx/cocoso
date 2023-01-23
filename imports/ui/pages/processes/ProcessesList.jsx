@@ -5,6 +5,7 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
+import renderHTML from 'react-render-html';
 
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
@@ -14,6 +15,8 @@ import NewGridThumb from '../../components/NewGridThumb';
 import { message } from '../../components/message';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
+import Tably from '../../components/Tably';
+import Modal from '../../components/Modal';
 
 moment.locale(i18n.language);
 
@@ -22,6 +25,7 @@ export default function ProcessesList() {
   const [filter, setFilter] = useState('active');
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
+  const [modalProcess, setModalProcess] = useState(null);
   const { currentHost, currentUser } = useContext(StateContext);
 
   const [t] = useTranslation('processes');
@@ -135,17 +139,49 @@ export default function ProcessesList() {
       <Paginate items={processesRendered}>
         {(process) => (
           <Box key={process._id}>
-            <Link to={`/processes/${process._id}`}>
-              <NewGridThumb
-                host={process.host}
-                imageUrl={process.imageUrl}
-                subTitle={process.readingMaterial}
-                title={process.title}
-              />
-            </Link>
+            {currentHost.isPortalHost ? (
+              <Box cursor="pointer" onClick={() => setModalProcess(process)}>
+                <NewGridThumb
+                  host={process.host}
+                  imageUrl={process.imageUrl}
+                  subTitle={process.readingMaterial}
+                  title={process.title}
+                />
+              </Box>
+            ) : (
+              <Link to={`/processes/${process._id}`}>
+                <NewGridThumb
+                  imageUrl={process.imageUrl}
+                  subTitle={process.readingMaterial}
+                  title={process.title}
+                />
+              </Link>
+            )}
           </Box>
         )}
       </Paginate>
+
+      {modalProcess && (
+        <Modal
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="6xl"
+          onClose={() => setModalProcess(null)}
+          actionButtonLabel={tc('actions.toThePage')}
+          onActionButtonClick={() =>
+            (window.location.href = `https://${modalProcess.host}/processes/${modalProcess._id}`)
+          }
+        >
+          <Tably
+            images={[modalProcess.imageUrl]}
+            subTitle={modalProcess.readingMaterial}
+            title={modalProcess.title}
+            content={renderHTML(modalProcess.description)}
+          />
+        </Modal>
+      )}
     </Box>
   );
 }

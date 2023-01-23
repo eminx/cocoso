@@ -16,7 +16,7 @@ import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
-import Modal from '../../components/Modal';
+import PortalPageEntryRouter from '../../components/PortalPageEntryRouter';
 
 moment.locale(i18n.language);
 
@@ -148,11 +148,6 @@ function Activities({ history }) {
 
   const activitiesRendered = getActivitiesFilteredSorted();
 
-  const getActivityLink = (activityId) => {
-    const selectedActivity = activities.find((a) => a._id === activityId);
-    return `https://${selectedActivity?.host}/activities/${selectedActivity?._id}`;
-  };
-
   return (
     <Box width="100%" mb="100px">
       <Helmet>
@@ -186,27 +181,9 @@ function Activities({ history }) {
       </Paginate>
 
       {currentHost.isPortalHost && (
-        <Switch history={history}>
-          <Route
-            path="/activities/:activityId"
-            render={(props) => (
-              <Modal
-                h="90%"
-                isCentered
-                isOpen
-                scrollBehavior="inside"
-                size="6xl"
-                onClose={() => history.push('/activities')}
-                actionButtonLabel={tc('actions.toThePage')}
-                onActionButtonClick={() =>
-                  (window.location.href = getActivityLink(props.match.params.activityId))
-                }
-              >
-                <Activity hideBreadcrumb {...props} />
-              </Modal>
-            )}
-          />
-        </Switch>
+        <PortalPageEntryRouter items={activities} context="activities" routeParam="activityId">
+          {(props) => <Activity hideBreadcrumb {...props} />}
+        </PortalPageEntryRouter>
       )}
     </Box>
   );

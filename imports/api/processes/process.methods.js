@@ -43,6 +43,7 @@ Meteor.methods({
       _id: process._id,
       title: process.title,
       readingMaterial: process.readingMaterial,
+      description: process.description,
       imageUrl: process.imageUrl,
       meetings: process.meetings,
       host: process.host,
