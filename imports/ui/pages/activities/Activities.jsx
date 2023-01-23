@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Box, Center } from '@chakra-ui/react';
 import { parse } from 'query-string';
+import renderHTML from 'react-render-html';
 
-import Activity from './ActivityContainer';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
@@ -16,7 +16,8 @@ import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
-import PortalPageEntryRouter from '../../components/PortalPageEntryRouter';
+import Modal from '../../components/Modal';
+import Tably from '../../components/Tably';
 
 moment.locale(i18n.language);
 
@@ -47,6 +48,7 @@ function Activities({ history }) {
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
+  const [modalActivity, setModalActivity] = useState(null);
   const { currentHost } = useContext(StateContext);
   const {
     location: { search },
@@ -165,25 +167,54 @@ function Activities({ history }) {
       <Paginate items={activitiesRendered}>
         {(activity) => (
           <Box key={activity.title}>
-            <Link
-              to={activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`}
-            >
-              <NewGridThumb
-                dates={activity.datesAndTimes.map((d) => d.startDate)}
-                host={activity.host}
-                imageUrl={activity.imageUrl}
-                subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                title={activity.title}
-              />
-            </Link>
+            {currentHost.isPortalHost ? (
+              <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
+                <NewGridThumb
+                  dates={activity.datesAndTimes.map((d) => d.startDate)}
+                  host={activity.host}
+                  imageUrl={activity.imageUrl}
+                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  title={activity.title}
+                />
+              </Box>
+            ) : (
+              <Link
+                to={
+                  activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`
+                }
+              >
+                <NewGridThumb
+                  dates={activity.datesAndTimes.map((d) => d.startDate)}
+                  imageUrl={activity.imageUrl}
+                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  title={activity.title}
+                />
+              </Link>
+            )}
           </Box>
         )}
       </Paginate>
 
-      {currentHost.isPortalHost && (
-        <PortalPageEntryRouter items={activities} context="activities" routeParam="activityId">
-          {(props) => <Activity hideBreadcrumb {...props} />}
-        </PortalPageEntryRouter>
+      {modalActivity && (
+        <Modal
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="6xl"
+          onClose={() => setModalActivity(null)}
+          actionButtonLabel={tc('actions.toThePage')}
+          onActionButtonClick={() =>
+            (window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`)
+          }
+        >
+          <Tably
+            images={[modalActivity.imageUrl]}
+            subTitle={modalActivity.subTitle}
+            title={modalActivity.title}
+            content={renderHTML(modalActivity.longDescription)}
+          />
+        </Modal>
       )}
     </Box>
   );
