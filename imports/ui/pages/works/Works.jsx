@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import renderHTML from 'react-render-html';
 
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
@@ -13,7 +14,8 @@ import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { getHslValuesFromLength } from '../../utils/constants/colors';
 import FiltrerSorter from '../../components/FiltrerSorter';
-import Work from './Work';
+import Modal from '../../components/Modal';
+import Tably from '../../components/Tably';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -27,6 +29,7 @@ function Works() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [categoryFilter, setCategoryFilter] = useState(null);
+  const [modalWork, setModalWork] = useState(null);
   const { currentHost } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
@@ -136,24 +139,72 @@ function Works() {
       <Paginate items={worksWithCategoryColors}>
         {(work) => (
           <Box key={work._id}>
-            <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-              <NewGridThumb
-                avatar={{
-                  name: work.authorUsername,
-                  url: work.authorAvatar,
-                }}
-                color={
-                  categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label).color
-                }
-                host={work.host}
-                imageUrl={work.images[0]}
-                tag={work.category?.label}
-                title={work.title}
-              />
-            </Link>
+            {currentHost.isPortalHost ? (
+              <Box cursor="pointer" onClick={() => setModalWork(work)}>
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  color={
+                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                      .color
+                  }
+                  host={work.host}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
+              </Box>
+            ) : (
+              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  color={
+                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                      .color
+                  }
+                  host={work.host}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
+              </Link>
+            )}
           </Box>
         )}
       </Paginate>
+
+      {modalWork && (
+        <Modal
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="6xl"
+          onClose={() => setModalWork(null)}
+          actionButtonLabel={tc('actions.toThePage')}
+          onActionButtonClick={() =>
+            (window.location.href = `https://${modalWork.host}/@${authorUsername}/works/${modalWork._id}`)
+          }
+        >
+          <Tably
+            author={{
+              src: modalWork.authorAvatar,
+              username: modalWork.authorUsername,
+              link: `/@${modalWork.authorUsername}`,
+            }}
+            content={renderHTML(modalWork.longDescription)}
+            images={modalWork.images}
+            subTitle={modalWork.subTitle}
+            tags={[modalWork.category?.label]}
+            title={modalWork.title}
+          />
+        </Modal>
+      )}
     </Box>
   );
 }
