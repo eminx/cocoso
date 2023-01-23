@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Avatar, Box, Code, Flex, Heading, Tag as CTag, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, Tag as CTag, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { StateContext } from '../LayoutContainer';

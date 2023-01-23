@@ -214,6 +214,7 @@ function Activities({ history }) {
             content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
             images={[modalActivity.imageUrl]}
             subTitle={modalActivity.subTitle}
+            tags={[modalActivity.host]}
             title={modalActivity.title}
           />
         </Modal>

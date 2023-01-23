@@ -167,7 +167,6 @@ function Works() {
                     categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
                       .color
                   }
-                  host={work.host}
                   imageUrl={work.images[0]}
                   tag={work.category?.label}
                   title={work.title}
@@ -188,7 +187,7 @@ function Works() {
           onClose={() => setModalWork(null)}
           actionButtonLabel={tc('actions.toThePage')}
           onActionButtonClick={() =>
-            (window.location.href = `https://${modalWork.host}/@${authorUsername}/works/${modalWork._id}`)
+            (window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`)
           }
         >
           <Tably
@@ -200,7 +199,7 @@ function Works() {
             content={renderHTML(modalWork.longDescription)}
             images={modalWork.images}
             subTitle={modalWork.subTitle}
-            tags={[modalWork.category?.label]}
+            tags={[modalWork.category?.label, modalWork.host]}
             title={modalWork.title}
           />
         </Modal>

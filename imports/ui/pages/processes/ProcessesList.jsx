@@ -177,6 +177,7 @@ export default function ProcessesList() {
           <Tably
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
+            tags={[modalProcess.host]}
             title={modalProcess.title}
             content={renderHTML(modalProcess.description)}
           />
