@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Center } from '@chakra-ui/react';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -18,6 +18,7 @@ import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
+import { DateJust } from '../../components/FancyDate';
 
 moment.locale(i18n.language);
 
@@ -166,7 +167,7 @@ function Activities({ history }) {
 
       <Paginate items={activitiesRendered}>
         {(activity) => (
-          <Box key={activity.title}>
+          <Box key={activity._id}>
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                 <NewGridThumb
@@ -209,15 +210,28 @@ function Activities({ history }) {
           }
         >
           <Tably
+            action={getDatesForAction(modalActivity)}
+            content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
             images={[modalActivity.imageUrl]}
             subTitle={modalActivity.subTitle}
             title={modalActivity.title}
-            content={renderHTML(modalActivity.longDescription)}
           />
         </Modal>
       )}
     </Box>
   );
 }
+
+const getDatesForAction = (activity) => {
+  return (
+    <Flex pt="4">
+      {activity.datesAndTimes.map((occurence, occurenceIndex) => (
+        <Box key={occurence.startDate + occurence.endTime} pr="6">
+          <DateJust>{occurence.startDate}</DateJust>
+        </Box>
+      ))}
+    </Flex>
+  );
+};
 
 export default Activities;

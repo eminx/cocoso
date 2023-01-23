@@ -62,7 +62,7 @@ function Tably({
           <GridItem pl="12">
             {action && (
               <Box mx="4" mb="8">
-                {action}/
+                {action}
               </Box>
             )}
             {tabs && (
