@@ -78,7 +78,7 @@ function Members({ history, members, isLoading }) {
     }
   };
 
-  if (!currentUser || (role !== 'admin' && role !== 'contributor' && !currentUser.isSuperAdmin)) {
+  if (!currentUser || role !== 'admin') {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
         <Alert message={tc('message.access.deny')} type="warning" />
