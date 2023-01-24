@@ -1,12 +1,12 @@
 import { withTracker } from 'meteor/react-meteor-data';
+import React from 'react';
 import NewActivity from './NewActivity';
 import { parseAllBookingsWithResources } from '../../utils/shared';
 import Resources from '../../../api/resources/resource';
 import Activities from '../../../api/activities/activity';
-import Processes from '../../../api/processes/process';
 import { useTranslation } from 'react-i18next';
 
-export default NewActivityContainer = withTracker((props) => {
+const NewActivityContainer = withTracker((props) => {
   const resourcesSub = Meteor.subscribe('resources');
   const resources = Resources ? Resources.find().fetch() : null;
   const activitiesSub = Meteor.subscribe('activities');
@@ -18,9 +18,6 @@ export default NewActivityContainer = withTracker((props) => {
 
   const isLoading = !activitiesSub.ready() || !resourcesSub.ready();
 
-  const [t] = useTranslation('activities');
-  const [tc] = useTranslation('common');
-
   if (!allBookings) {
     return null;
   }
@@ -30,8 +27,18 @@ export default NewActivityContainer = withTracker((props) => {
     currentUser,
     history: props.history,
     resources,
-    t,
-    tc,
     isLoading,
   };
 })(NewActivity);
+
+export default function (props) {
+  const [t] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+
+  const allProps = {
+    ...props,
+    t,
+    tc,
+  };
+  return <NewActivityContainer {...allProps} />;
+}
