@@ -1,23 +1,38 @@
 import React, { useContext } from 'react';
 import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
+  // Accordion,
+  // AccordionItem,
+  // AccordionButton,
+  // AccordionPanel,
+  // AccordionIcon,
   Box,
+  Center,
   Flex,
   Input,
   Link,
   Select,
+  Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 
-function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue, children }) {
+function FiltrerSorter(props) {
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
+
+  // if (isDesktop) {
+  return (
+    <Box mb="2">
+      <Center>
+        <Text fontSize="sm" mb="1">
+          {tc('labels.filterAndSort')}
+        </Text>
+      </Center>
+      <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+    </Box>
+  );
+  // }
 
   return (
     <Accordion w="2xl" allowToggle>
@@ -29,32 +44,48 @@ function FiltrerSorter({ filterWord, setFilterWord, sorterValue, setSorterValue,
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel pb={4}>
-          <Flex
-            align="center"
-            justify={isDesktop ? 'space-between' : 'space-around'}
-            wrap={isDesktop ? 'nowrap' : 'wrap'}
-          >
-            <Input
-              flexBasis="180px"
-              mb="1"
-              placeholder={tc('domains.props.title') + '...'}
-              value={filterWord}
-              onChange={(event) => setFilterWord(event.target.value)}
-            />
-            {children}
-            <Select
-              flexBasis="180px"
-              name="sorter"
-              value={sorterValue}
-              onChange={(e) => setSorterValue(e.target.value)}
-            >
-              <option value="date">{tc('labels.sortBy.date')}</option>
-              <option value="name">{tc('labels.sortBy.name')}</option>
-            </Select>
-          </Flex>
+          <Inputs {...props} isDesktop={isDesktop} tc={tc} />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
+  );
+}
+
+function Inputs({
+  filterWord,
+  setFilterWord,
+  sorterValue,
+  setSorterValue,
+  tc,
+  isDesktop,
+  children,
+}) {
+  return (
+    <Flex
+      align="center"
+      justify={isDesktop ? 'space-between' : 'space-around'}
+      wrap={isDesktop ? 'nowrap' : 'wrap'}
+    >
+      <Input
+        flexBasis="180px"
+        mb={isDesktop ? '0' : '1'}
+        mx="1"
+        placeholder={tc('domains.props.title') + '...'}
+        value={filterWord}
+        onChange={(event) => setFilterWord(event.target.value)}
+      />
+      {children}
+      <Select
+        flexBasis="180px"
+        mx="1"
+        name="sorter"
+        value={sorterValue}
+        onChange={(e) => setSorterValue(e.target.value)}
+      >
+        <option value="date">{tc('labels.sortBy.date')}</option>
+        <option value="name">{tc('labels.sortBy.name')}</option>
+      </Select>
+    </Flex>
   );
 }
 
