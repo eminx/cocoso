@@ -12,7 +12,7 @@ export default function (props) {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    getActivityById();
+    getActivityById(props.match.params);
   }, []);
 
   const { activityId } = props.match.params;

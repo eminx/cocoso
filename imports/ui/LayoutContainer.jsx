@@ -196,7 +196,7 @@ function Footer({ currentHost, platform, tc }) {
 
       <Center p="8" bg="gray.900">
         <Box textAlign="center" color="gray.100">
-          <Text fontSize="lg" fontW="bold">
+          <Text fontSize="lg" fontWeight="bold">
             {platform?.name}
           </Text>
           <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>

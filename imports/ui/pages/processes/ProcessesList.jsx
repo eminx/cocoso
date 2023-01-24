@@ -175,11 +175,11 @@ export default function ProcessesList() {
           }
         >
           <Tably
+            content={modalProcess.description && renderHTML(modalProcess.description)}
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
             tags={[modalProcess.host]}
             title={modalProcess.title}
-            content={renderHTML(modalProcess.description)}
           />
         </Modal>
       )}

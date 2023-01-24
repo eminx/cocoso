@@ -6,8 +6,8 @@ import { Progress } from '@chakra-ui/react';
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
-import ProcessRoutes from './processes/ProcessRouter';
-import ActivityRoutes from './activities/ActivityRouter';
+import ProcessRoutes from './processes/ProcessRoutes';
+import ActivityRoutes from './activities/ActivityRoutes';
 import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
@@ -53,8 +53,8 @@ export default function () {
               {/* Calendar */}
               <Route exact path="/calendar" component={CalendarContainer} />
               {/* Activities */}
-              <Route exact path="/my-activities" component={MyActivities} />
               <ActivityRoutes path="/activities" history={browserHistory} />
+              <Route exact path="/my-activities" component={MyActivities} />
               {/* Processes */}
               <ProcessRoutes path="/processes" history={browserHistory} />
               {/* Resources */}
