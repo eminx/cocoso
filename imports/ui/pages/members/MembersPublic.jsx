@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Box, Center, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Image, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import Paginate from '../../components/Paginate';
@@ -138,7 +138,11 @@ function MembersPublic() {
           <Center key={member.username} p="4" w="80">
             <Link to={`/@${member.username}`}>
               <Box>
-                <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                {member.avatar ? (
+                  <Image h="200px" fit="contain" src={member.avatar} />
+                ) : (
+                  <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                )}
                 <Center>
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
                     {member.username}

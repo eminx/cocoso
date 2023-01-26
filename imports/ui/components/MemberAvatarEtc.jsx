@@ -32,13 +32,19 @@ function MemberAvatarEtc({ t, tc, user }) {
     <Center>
       <Flex align="center" p="4">
         <Box align="center" px="2">
-          <Avatar
+          <Image
+            cursor="pointer"
+            h="200px"
+            src={avatar && avatar.src}
+            onClick={avatar ? () => setAvatarModal(true) : null}
+          />
+          {/* <Avatar
             name={user.username}
             src={avatar && avatar.src}
             size="2xl"
             onClick={avatar ? () => setAvatarModal(true) : null}
             style={{ cursor: avatar ? 'pointer' : 'default' }}
-          />
+          /> */}
         </Box>
         <Box px="2">
           <Text fontWeight="bold" fontSize="xl">
