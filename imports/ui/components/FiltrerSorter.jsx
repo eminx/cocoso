@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import {
-  // Accordion,
-  // AccordionItem,
-  // AccordionButton,
-  // AccordionPanel,
-  // AccordionIcon,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Box,
   Center,
   Flex,
@@ -21,18 +21,18 @@ function FiltrerSorter(props) {
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  // if (isDesktop) {
-  return (
-    <Box mb="2">
-      <Center>
-        <Text fontSize="sm" mb="1">
-          {tc('labels.filterAndSort')}
-        </Text>
-      </Center>
-      <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-    </Box>
-  );
-  // }
+  if (isDesktop) {
+    return (
+      <Box mb="2">
+        <Center>
+          <Text fontSize="sm" mb="1">
+            {tc('labels.filterAndSort')}
+          </Text>
+        </Center>
+        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+      </Box>
+    );
+  }
 
   return (
     <Accordion w="2xl" allowToggle>
