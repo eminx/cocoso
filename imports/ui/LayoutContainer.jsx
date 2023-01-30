@@ -2,12 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { parse } from 'query-string';
 import {
   Box,
   Center,
   ChakraProvider,
-  Code,
   Flex,
   Heading,
   Image,
@@ -27,7 +25,6 @@ import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
-import { call } from './utils/shared';
 
 export const StateContext = React.createContext(null);
 
@@ -35,6 +32,8 @@ const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
   const [platform, setPlatform] = useState(null);
+  const [allHosts, setAllHosts] = useState(null);
+  const [platformDrawer, setPlatformDrawer] = useState(false);
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const { pathname, search } = history.location;
@@ -44,6 +43,12 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       setPlatform(respond);
     });
   }, []);
+
+  useEffect(() => {
+    Meteor.call('getAllHosts', (error, respond) => {
+      setAllHosts(respond);
+    });
+  }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,6 +118,29 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
             <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
             {isHeaderAndFooter && <Footer currentHost={currentHost} platform={platform} tc={tc} />}
+
+            {isHeaderAndFooter && currentHost.isPortalHost && (
+              <Box>
+                <Center p="8" bg="gray.900">
+                  <Box textAlign="center" color="gray.100">
+                    <Text fontSize="lg" fontWeight="bold">
+                      {platform?.name}
+                    </Text>
+                    <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
+                      {tc('platform.title')}
+                    </CLink>
+                  </Box>
+                </Center>
+
+                <PlatformDrawer
+                  isOpen={platformDrawer}
+                  hosts={allHosts}
+                  platform={platform}
+                  tc={tc}
+                  toggleOpen={() => setPlatformDrawer(!platformDrawer)}
+                />
+              </Box>
+            )}
           </Box>
         </Center>
       </StateContext.Provider>
@@ -120,23 +148,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   );
 }
 
-function Footer({ currentHost, platform, tc }) {
-  const [platformDrawer, setPlatformDrawer] = useState(false);
-  const [hosts, setHosts] = useState([]);
-
-  useEffect(() => {
-    getAllHosts();
-  }, []);
-
-  const getAllHosts = async () => {
-    try {
-      const allHosts = await call('getAllHosts');
-      setHosts(allHosts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+function Footer({ currentHost, tc }) {
   if (!currentHost) {
     return null;
   }
@@ -193,27 +205,6 @@ function Footer({ currentHost, platform, tc }) {
           </Box>
         </Flex>
       </Box>
-
-      <Center p="8" bg="gray.900">
-        <Box textAlign="center" color="gray.100">
-          <Text fontSize="lg" fontWeight="bold">
-            {platform?.name}
-          </Text>
-          <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
-            {tc('platform.title')}
-          </CLink>
-        </Box>
-      </Center>
-
-      {hosts && (
-        <PlatformDrawer
-          isOpen={platformDrawer}
-          hosts={hosts}
-          platform={platform}
-          tc={tc}
-          toggleOpen={() => setPlatformDrawer(!platformDrawer)}
-        />
-      )}
     </Box>
   );
 }
