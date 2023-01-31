@@ -13,6 +13,7 @@ import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Tabs from '../../components/Tabs';
+import HostFiltrer from '../../components/HostFiltrer';
 
 function Resources() {
   const [resources, setResources] = useState([]);
@@ -20,7 +21,8 @@ function Resources() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [combo, setCombo] = useState('all');
-  const { currentHost } = useContext(StateContext);
+  const [hostFilterValue, setHostFilterValue] = useState(null);
+  const { allHosts, currentHost } = useContext(StateContext);
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -120,7 +122,19 @@ function Resources() {
     }
   };
 
+  const getResourcesRenderedHostFiltered = (resourcesRendered) => {
+    if (!currentHost.isPortalHost || !hostFilterValue) {
+      return resourcesRendered;
+    }
+    return resourcesRendered.filter((resource) => resource.host === hostFilterValue.host);
+  };
+
   const resourcesRendered = getResourcesSorted();
+  const resourcesRenderedHostFiltered = getResourcesRenderedHostFiltered(resourcesRendered);
+
+  const allHostsFiltered = allHosts?.filter((host) => {
+    return resourcesRendered.some((resource) => resource.host === host.host);
+  });
 
   return (
     <Box width="100%" mb="100px">
@@ -134,7 +148,17 @@ function Resources() {
         </FiltrerSorter>
       </Center>
 
-      <Paginate items={resourcesRendered}>
+      {currentHost.isPortalHost && (
+        <Center>
+          <HostFiltrer
+            allHosts={allHostsFiltered}
+            hostFilterValue={hostFilterValue}
+            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+          />
+        </Center>
+      )}
+
+      <Paginate items={resourcesRenderedHostFiltered}>
         {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
       </Paginate>
     </Box>

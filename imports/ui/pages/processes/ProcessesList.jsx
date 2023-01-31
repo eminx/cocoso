@@ -17,6 +17,7 @@ import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Tably from '../../components/Tably';
 import Modal from '../../components/Modal';
+import HostFiltrer from '../../components/HostFiltrer';
 
 moment.locale(i18n.language);
 
@@ -26,7 +27,8 @@ export default function ProcessesList() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalProcess, setModalProcess] = useState(null);
-  const { currentHost, currentUser } = useContext(StateContext);
+  const [hostFilterValue, setHostFilterValue] = useState(null);
+  const { allHosts, currentHost, currentUser } = useContext(StateContext);
 
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
@@ -100,7 +102,19 @@ export default function ProcessesList() {
     return null;
   }
 
+  const getProcessesRenderedHostFiltered = (processesRendered) => {
+    if (!currentHost.isPortalHost || !hostFilterValue) {
+      return processesRendered;
+    }
+    return processesRendered.filter((process) => process.host === hostFilterValue.host);
+  };
+
   const processesRendered = getFilteredProcesses();
+  const processesRenderedHostFiltered = getProcessesRenderedHostFiltered(processesRendered);
+
+  const allHostsFiltered = allHosts?.filter((host) => {
+    return processesRendered.some((process) => process.host === host.host);
+  });
 
   const tabs = [
     {
@@ -136,7 +150,17 @@ export default function ProcessesList() {
         </FiltrerSorter>
       </Center>
 
-      <Paginate items={processesRendered}>
+      {currentHost.isPortalHost && (
+        <Center>
+          <HostFiltrer
+            allHosts={allHostsFiltered}
+            hostFilterValue={hostFilterValue}
+            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+          />
+        </Center>
+      )}
+
+      <Paginate items={processesRenderedHostFiltered}>
         {(process) => (
           <Box key={process._id}>
             {currentHost.isPortalHost ? (

@@ -16,6 +16,7 @@ import { getHslValuesFromLength } from '../../utils/constants/colors';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
+import HostFiltrer from '../../components/HostFiltrer';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -30,7 +31,8 @@ function Works() {
   const [sorterValue, setSorterValue] = useState('date');
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [modalWork, setModalWork] = useState(null);
-  const { currentHost } = useContext(StateContext);
+  const [hostFilterValue, setHostFilterValue] = useState(null);
+  const { allHosts, currentHost } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -95,6 +97,19 @@ function Works() {
     };
   });
 
+  const getWorksRenderedHostFiltered = (worksRendered) => {
+    if (!currentHost.isPortalHost || !hostFilterValue) {
+      return worksRendered;
+    }
+    return worksRendered.filter((work) => work.host === hostFilterValue.host);
+  };
+
+  const worksRenderedHostFiltered = getWorksRenderedHostFiltered(worksWithCategoryColors);
+
+  const allHostsFiltered = allHosts?.filter((host) => {
+    return worksWithCategoryColors.some((work) => work.host === host.host);
+  });
+
   const filtrerProps = {
     filterWord,
     setFilterWord,
@@ -112,7 +127,7 @@ function Works() {
         <FiltrerSorter {...filtrerProps} />
       </Center>
 
-      <Center>
+      <Center mb="2">
         <Wrap pl="2" justify="center">
           <WrapItem>
             <Tag
@@ -136,7 +151,17 @@ function Works() {
         </Wrap>
       </Center>
 
-      <Paginate items={worksWithCategoryColors}>
+      {currentHost.isPortalHost && (
+        <Center>
+          <HostFiltrer
+            allHosts={allHostsFiltered}
+            hostFilterValue={hostFilterValue}
+            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+          />
+        </Center>
+      )}
+
+      <Paginate items={worksRenderedHostFiltered}>
         {(work) => (
           <Box key={work._id}>
             {currentHost.isPortalHost ? (

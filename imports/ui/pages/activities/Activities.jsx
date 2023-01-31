@@ -19,6 +19,7 @@ import { message } from '../../components/message';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
+import HostFiltrer from '../../components/HostFiltrer';
 
 moment.locale(i18n.language);
 
@@ -50,7 +51,8 @@ function Activities({ history }) {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalActivity, setModalActivity] = useState(null);
-  const { currentHost } = useContext(StateContext);
+  const [hostFilterValue, setHostFilterValue] = useState(null);
+  const { allHosts, currentHost } = useContext(StateContext);
   const {
     location: { search },
   } = history;
@@ -123,6 +125,13 @@ function Activities({ history }) {
     }
   };
 
+  const getActivitiesRenderedHostFiltered = (activitiesRendered) => {
+    if (!currentHost.isPortalHost || !hostFilterValue) {
+      return activitiesRendered;
+    }
+    return activitiesRendered.filter((activity) => activity.host === hostFilterValue.host);
+  };
+
   if (loading) {
     return (
       <Box width="100%" mb="50px">
@@ -150,6 +159,11 @@ function Activities({ history }) {
   };
 
   const activitiesRendered = getActivitiesFilteredSorted();
+  const activitiesRenderedHostFiltered = getActivitiesRenderedHostFiltered(activitiesRendered);
+
+  const allHostsFiltered = allHosts?.filter((host) => {
+    return activitiesRendered.some((act) => act.host === host.host);
+  });
 
   return (
     <Box width="100%" mb="100px">
@@ -165,14 +179,24 @@ function Activities({ history }) {
         </FiltrerSorter>
       </Center>
 
-      <Paginate items={activitiesRendered}>
+      {currentHost.isPortalHost && (
+        <Center>
+          <HostFiltrer
+            allHosts={allHostsFiltered}
+            hostFilterValue={hostFilterValue}
+            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+          />
+        </Center>
+      )}
+
+      <Paginate items={activitiesRenderedHostFiltered}>
         {(activity) => (
           <Box key={activity._id}>
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                 <NewGridThumb
                   dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  host={activity.host}
+                  host={allHosts.find((h) => h.host === activity.host).name}
                   imageUrl={activity.imageUrl}
                   subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}
