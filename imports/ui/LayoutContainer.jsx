@@ -103,12 +103,13 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
       )}
       <StateContext.Provider
         value={{
-          currentUser,
-          userLoading,
-          currentHost,
-          role,
+          allHosts,
           canCreateContent,
+          currentUser,
+          currentHost,
           isDesktop,
+          role,
+          userLoading,
         }}
       >
         <Center className="main-viewport">
