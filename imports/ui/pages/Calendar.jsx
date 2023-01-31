@@ -178,16 +178,9 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, allBookings, resources, tc } = this.props;
-    const { canCreateContent, currentHost, role } = this.context;
-    const {
-      editActivity,
-      calendarFilter,
-      selectedActivity,
-      selectedSlot,
-      isUploading,
-      selectedResource,
-    } = this.state;
+    const { isLoading, allBookings, resources, tc } = this.props;
+    const { currentHost } = this.context;
+    const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
 
     const filteredActivities = allBookings.filter((activity) => {
       return (
@@ -382,19 +375,17 @@ class Calendar extends PureComponent {
           </Text>
 
           <Center>
-            {
-              <Link to={selectedLinkForModal}>
-                <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
-                  {' '}
-                  {!selectedActivity?.isPrivateProcess &&
-                    `${
-                      selectedActivity?.isProcess || selectedActivity?.isProcessMeeting
-                        ? tc('labels.process')
-                        : tc('labels.activity')
-                    }`}
-                </Button>
-              </Link>
-            }
+            <Link to={selectedLinkForModal}>
+              <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
+                {' '}
+                {!selectedActivity?.isPrivateProcess &&
+                  `${
+                    selectedActivity?.isProcess || selectedActivity?.isProcessMeeting
+                      ? tc('labels.process')
+                      : tc('labels.activity')
+                  }`}
+              </Button>
+            </Link>
           </Center>
         </ConfirmModal>
 

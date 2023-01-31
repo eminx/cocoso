@@ -221,7 +221,6 @@ function Works() {
             author={{
               src: modalWork.authorAvatar,
               username: modalWork.authorUsername,
-              link: `/@${modalWork.authorUsername}`,
             }}
             content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
             images={modalWork.images}

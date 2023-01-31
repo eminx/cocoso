@@ -15,6 +15,7 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
@@ -216,11 +217,15 @@ function AvatarHolder({ author, size = 'lg' }) {
     <Box pr="2">
       <VStack justify="center" spacing="0">
         <Avatar elevation="medium" src={author?.src} name={author?.username} size={size} />
-        <Link to={author?.link}>
-          <CLink as="span" fontSize={size}>
-            {author?.username}
-          </CLink>
-        </Link>
+        {author?.link ? (
+          <Link to={author?.link}>
+            <CLink as="span" fontSize={size}>
+              {author?.username}
+            </CLink>
+          </Link>
+        ) : (
+          <Text fontSize={size}>{author?.username}</Text>
+        )}
       </VStack>
     </Box>
   );
