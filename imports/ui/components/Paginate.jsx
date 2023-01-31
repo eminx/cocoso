@@ -14,14 +14,15 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
 
   useEffect(() => {
     handlePageChange(0);
-  }, [items]);
+  }, [items.length]);
 
   useEffect(() => {
+    console.log(itemOffset, items.length, itemsPerPage);
     const newPageCount = Math.ceil(items.length / itemsPerPage);
     setPageCount(newPageCount);
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));
-  }, [itemOffset, items, itemsPerPage]);
+  }, [itemOffset, items.length, itemsPerPage]);
 
   const handlePageChange = (page) => {
     if (page === currentPage) {
