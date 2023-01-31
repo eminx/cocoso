@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Box, Center, Image, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import renderHTML from 'react-render-html';
 
 import Paginate from '../../components/Paginate';
 import Loader from '../../components/Loader';
@@ -9,6 +10,7 @@ import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import FiltrerSorter from '../../components/FiltrerSorter';
+import Modal from '../../components/Modal';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -29,6 +31,7 @@ function MembersPublic() {
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
+  const [modalUser, setModalUser] = useState(null);
   const { currentHost } = useContext(StateContext);
 
   const getAndSetMembers = async () => {
@@ -136,8 +139,8 @@ function MembersPublic() {
       <Paginate items={membersRendered} itemsPerPage={12}>
         {(member) => (
           <Center key={member.username} p="4" w="80">
-            <Link to={`/@${member.username}`}>
-              <Box>
+            {currentHost.isPortalHost ? (
+              <Box cursor="pointer" onClick={() => setModalUser(member)}>
                 {member.avatar ? (
                   <Image h="200px" fit="contain" src={member.avatar} />
                 ) : (
@@ -149,10 +152,63 @@ function MembersPublic() {
                   </Text>
                 </Center>
               </Box>
-            </Link>
+            ) : (
+              <Link to={`/@${member.username}`}>
+                <Box>
+                  {member.avatar ? (
+                    <Image h="200px" fit="contain" src={member.avatar} />
+                  ) : (
+                    <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                  )}
+                  <Center>
+                    <Text fontWeight="bold" fontSize="lg" isTruncated>
+                      {member.username}
+                    </Text>
+                  </Center>
+                </Box>
+              </Link>
+            )}
           </Center>
         )}
       </Paginate>
+
+      {modalUser && (
+        <Modal
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="lg"
+          onClose={() => setModalUser(null)}
+        >
+          <Center>
+            <Box textAlign="center">
+              <Text fontSize="lg" fontWeight="bold">
+                {modalUser.username}
+              </Text>
+              <Text mb="4">{getFullName(modalUser)}</Text>
+              <Center mb="6">
+                {modalUser.avatar ? (
+                  <Image w="350px" fit="contain" src={modalUser.avatar} />
+                ) : (
+                  <Avatar
+                    borderRadius="0"
+                    name={modalUser.username}
+                    showBorder
+                    size="2xl"
+                    src={modalUser.avatar}
+                  />
+                )}
+              </Center>
+              {modalUser.bio && (
+                <Text textAlign="left" fontSize="sm">
+                  {renderHTML(modalUser.bio)}
+                </Text>
+              )}
+            </Box>
+          </Center>
+        </Modal>
+      )}
     </Box>
   );
 }

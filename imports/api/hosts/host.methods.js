@@ -103,11 +103,13 @@ Meteor.methods({
     return allUsers
       .map((user) => ({
         avatar: user.avatar?.src,
+        bio: user.bio,
         date: user.date,
+        memberships: user.memberships,
+        firstName: user.firstName,
+        lastName: user.lastName,
         id: user._id,
         isPublic: user.isPublic,
-        memberships: user.memberships,
-        // role: user.role,
         username: user.username,
       }))
       .reverse();
