@@ -166,7 +166,7 @@ function Resources() {
 }
 
 function ResourceItem({ resource, t }) {
-  const { currentHost } = useContext(StateContext);
+  const { allHosts, currentHost } = useContext(StateContext);
 
   if (!resource) {
     return null;
@@ -188,7 +188,7 @@ function ResourceItem({ resource, t }) {
           {currentHost.isPortalHost && (
             <Flex justify="flex-start">
               <CTag border="1px solid #2d2d2d" mt="2">
-                {resource.host}
+                {allHosts.find((h) => h.host === resource.host).name}
               </CTag>
             </Flex>
           )}

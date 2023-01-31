@@ -228,7 +228,9 @@ function Activities({ history }) {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalActivity(null)}
-          actionButtonLabel={tc('actions.toThePage')}
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalActivity.host).name,
+          })}
           onActionButtonClick={() =>
             (window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`)
           }
@@ -238,7 +240,7 @@ function Activities({ history }) {
             content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
             images={[modalActivity.imageUrl]}
             subTitle={modalActivity.subTitle}
-            tags={[modalActivity.host]}
+            tags={[allHosts.find((h) => h.host === modalActivity.host).name]}
             title={modalActivity.title}
           />
         </Modal>

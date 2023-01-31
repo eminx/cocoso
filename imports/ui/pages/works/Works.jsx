@@ -175,7 +175,7 @@ function Works() {
                     categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
                       .color
                   }
-                  host={work.host}
+                  host={allHosts.find((h) => h.host === work.host).name}
                   imageUrl={work.images[0]}
                   tag={work.category?.label}
                   title={work.title}
@@ -210,7 +210,9 @@ function Works() {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalWork(null)}
-          actionButtonLabel={tc('actions.toThePage')}
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalWork.host).name,
+          })}
           onActionButtonClick={() =>
             (window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`)
           }
@@ -224,7 +226,7 @@ function Works() {
             content={renderHTML(modalWork.longDescription)}
             images={modalWork.images}
             subTitle={modalWork.subTitle}
-            tags={[modalWork.category?.label, modalWork.host]}
+            tags={[modalWork.category?.label, allHosts.find((h) => h.host === modalWork.host).name]}
             title={modalWork.title}
           />
         </Modal>

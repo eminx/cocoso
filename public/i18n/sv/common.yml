@@ -21,7 +21,7 @@ actions:
   logout: Logga ut
   downloadCSV: Ladda ner CSV
   confirmRead: Jag har läst och accepterar
-  toThePage: Till sidan
+  toThePage: Till sidan i {{ hostName }}
 
 # ACTION PAGE TITLES
 labels:

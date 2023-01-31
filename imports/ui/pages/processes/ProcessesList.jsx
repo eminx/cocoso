@@ -166,7 +166,7 @@ export default function ProcessesList() {
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalProcess(process)}>
                 <NewGridThumb
-                  host={process.host}
+                  host={allHosts.find((h) => h.host === process.host).name}
                   imageUrl={process.imageUrl}
                   subTitle={process.readingMaterial}
                   title={process.title}
@@ -193,7 +193,9 @@ export default function ProcessesList() {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalProcess(null)}
-          actionButtonLabel={tc('actions.toThePage')}
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalProcess.host).name,
+          })}
           onActionButtonClick={() =>
             (window.location.href = `https://${modalProcess.host}/processes/${modalProcess._id}`)
           }
@@ -202,7 +204,7 @@ export default function ProcessesList() {
             content={modalProcess.description && renderHTML(modalProcess.description)}
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
-            tags={[modalProcess.host]}
+            tags={[allHosts.find((h) => h.host === modalProcess.host).name]}
             title={modalProcess.title}
           />
         </Modal>

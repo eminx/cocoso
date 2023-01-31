@@ -21,7 +21,7 @@ actions:
   logout: Logout
   downloadCSV: Download CSV
   confirmRead: I have read and accept
-  toThePage: To the page
+  toThePage: To the page in {{ hostName }}
 
 # ACTION PAGE TITLES
 labels:
