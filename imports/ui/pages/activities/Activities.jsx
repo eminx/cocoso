@@ -182,7 +182,7 @@ function Activities({ history }) {
       {currentHost.isPortalHost && (
         <Center>
           <HostFiltrer
-            allHosts={allHostsFiltered}
+            allHosts={allHosts}
             hostFilterValue={hostFilterValue}
             onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
           />

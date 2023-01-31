@@ -46,7 +46,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
   useEffect(() => {
     Meteor.call('getAllHosts', (error, respond) => {
-      setAllHosts(respond);
+      setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
     });
   }, [currentHost && currentHost.isPortalHost]);
 
