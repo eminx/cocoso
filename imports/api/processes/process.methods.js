@@ -23,7 +23,7 @@ Meteor.methods({
   getProcesses(isPortalHost = false) {
     const user = Meteor.user();
     const host = getHost(this);
-    const allProcesses = isPortalHost ? Processes.find({ host }).fetch() : Processes.find().fetch();
+    const allProcesses = isPortalHost ? Processes.find().fetch() : Processes.find({ host }).fetch();
     const processesFiltered = allProcesses.filter((process) => {
       if (!process.isPrivate) {
         return true;
