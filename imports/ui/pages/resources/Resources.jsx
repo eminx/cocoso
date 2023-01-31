@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge, Box, Center, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
+import renderHTML from 'react-render-html';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -14,6 +15,8 @@ import Paginate from '../../components/Paginate';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Tabs from '../../components/Tabs';
 import HostFiltrer from '../../components/HostFiltrer';
+import Modal from '../../components/Modal';
+import Tably from '../../components/Tably';
 
 function Resources() {
   const [resources, setResources] = useState([]);
@@ -21,6 +24,7 @@ function Resources() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [combo, setCombo] = useState('all');
+  const [modalResource, setModalResource] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const { allHosts, currentHost } = useContext(StateContext);
 
@@ -159,8 +163,44 @@ function Resources() {
       )}
 
       <Paginate items={resourcesRenderedHostFiltered}>
-        {(resource) => <ResourceItem key={resource._id} resource={resource} t={t} />}
+        {(resource) => (
+          <Box key={resource._id}>
+            {currentHost.isPortalHost ? (
+              <Box cursor="pointer" onClick={() => setModalResource(resource)}>
+                <ResourceItem resource={resource} t={t} />
+              </Box>
+            ) : (
+              <Link to={`/resources/${resource._id}`}>
+                <ResourceItem resource={resource} t={t} />
+              </Link>
+            )}{' '}
+          </Box>
+        )}
       </Paginate>
+
+      {modalResource && (
+        <Modal
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          size="6xl"
+          onClose={() => setModalResource(null)}
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
+          })}
+          onActionButtonClick={() =>
+            (window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`)
+          }
+        >
+          <Tably
+            content={modalResource.description && renderHTML(modalResource.description)}
+            images={modalResource.images}
+            tags={[allHosts.find((h) => h.host === modalResource.host)?.name]}
+            title={modalResource.label}
+          />
+        </Modal>
+      )}
     </Box>
   );
 }
@@ -174,26 +214,24 @@ function ResourceItem({ resource, t }) {
 
   return (
     <Box>
-      <Link to={`/resources/${resource._id}`}>
-        <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
-          <Text lineHeight={1} my="2">
-            {resource.isCombo && (
-              <Badge>
-                {t('cards.isCombo')} ({resource.resourcesForCombo.length})
-              </Badge>
-            )}{' '}
-            <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
-          </Text>
-          <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
-          {currentHost.isPortalHost && (
-            <Flex justify="flex-start">
-              <CTag border="1px solid #2d2d2d" mt="2">
-                {allHosts.find((h) => h.host === resource.host)?.name}
-              </CTag>
-            </Flex>
-          )}
-        </GridThumb>
-      </Link>
+      <GridThumb alt={resource.label} title={resource.label} image={resource.images?.[0]}>
+        <Text lineHeight={1} my="2">
+          {resource.isCombo && (
+            <Badge>
+              {t('cards.isCombo')} ({resource.resourcesForCombo?.length})
+            </Badge>
+          )}{' '}
+          <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
+        </Text>
+        <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
+        {currentHost.isPortalHost && (
+          <Flex justify="flex-start">
+            <CTag border="1px solid #2d2d2d" mt="2">
+              {allHosts.find((h) => h.host === resource.host)?.name}
+            </CTag>
+          </Flex>
+        )}
+      </GridThumb>
     </Box>
   );
 }

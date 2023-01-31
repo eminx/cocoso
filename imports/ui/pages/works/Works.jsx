@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -223,7 +223,7 @@ function Works() {
               username: modalWork.authorUsername,
               link: `/@${modalWork.authorUsername}`,
             }}
-            content={renderHTML(modalWork.longDescription)}
+            content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
             images={modalWork.images}
             subTitle={modalWork.subTitle}
             tags={[
