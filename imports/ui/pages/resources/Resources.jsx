@@ -188,7 +188,7 @@ function ResourceItem({ resource, t }) {
           {currentHost.isPortalHost && (
             <Flex justify="flex-start">
               <CTag border="1px solid #2d2d2d" mt="2">
-                {allHosts.find((h) => h.host === resource.host).name}
+                {allHosts.find((h) => h.host === resource.host)?.name}
               </CTag>
             </Flex>
           )}

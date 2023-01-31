@@ -196,7 +196,7 @@ function Activities({ history }) {
               <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                 <NewGridThumb
                   dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  host={allHosts.find((h) => h.host === activity.host).name}
+                  host={allHosts.find((h) => h.host === activity.host)?.name}
                   imageUrl={activity.imageUrl}
                   subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}
@@ -229,7 +229,7 @@ function Activities({ history }) {
           size="6xl"
           onClose={() => setModalActivity(null)}
           actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalActivity.host).name,
+            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
           })}
           onActionButtonClick={() =>
             (window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`)
@@ -240,7 +240,7 @@ function Activities({ history }) {
             content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
             images={[modalActivity.imageUrl]}
             subTitle={modalActivity.subTitle}
-            tags={[allHosts.find((h) => h.host === modalActivity.host).name]}
+            tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
             title={modalActivity.title}
           />
         </Modal>
