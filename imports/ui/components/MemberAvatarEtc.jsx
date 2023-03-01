@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Center,
-  Flex,
   Image,
   Modal,
   ModalBody,
@@ -29,30 +28,34 @@ function MemberAvatarEtc({ t, tc, user }) {
   const { avatar } = user;
 
   return (
-    <Center>
-      <Flex align="center" p="4">
-        <Box align="center" px="2">
+    <>
+      <Center px="2">
+        {avatar && avatar.src ? (
           <Image
             cursor="pointer"
+            fit="contain"
             h="200px"
-            src={avatar && avatar.src}
+            src={avatar.src}
             onClick={avatar ? () => setAvatarModal(true) : null}
           />
-          {/* <Avatar
+        ) : (
+          <Avatar
             name={user.username}
             src={avatar && avatar.src}
             size="2xl"
             onClick={avatar ? () => setAvatarModal(true) : null}
             style={{ cursor: avatar ? 'pointer' : 'default' }}
-          /> */}
-        </Box>
-        <Box px="2">
-          <Text fontWeight="bold" fontSize="xl">
-            {user.username}
-          </Text>
-          <Text>{getFullName(user)}</Text>
-        </Box>
-      </Flex>
+          />
+        )}
+      </Center>
+      <Center px="2">
+        <Text fontWeight="bold" fontSize="xl">
+          {user.username}
+        </Text>
+      </Center>
+      <Center>
+        <Text>{getFullName(user)}</Text>
+      </Center>
 
       <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen} size="sm" isCentered>
         <ModalOverlay />
@@ -83,7 +86,7 @@ function MemberAvatarEtc({ t, tc, user }) {
           </ModalContent>
         </Modal>
       )}
-    </Center>
+    </>
   );
 }
 

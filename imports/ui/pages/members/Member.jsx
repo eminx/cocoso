@@ -130,6 +130,7 @@ function MemberPublic({ history, match, path }) {
           </Box>
         </Center>
       </Box>
+
       <Tabs align="center" index={tabIndex} size="sm" tabs={tabs} />
 
       <Switch path={path} history={history}>

@@ -147,7 +147,7 @@ function Profile({ history }) {
           </Center>
 
           <Center bg="white" p="4" mb="4">
-            <Box mb="4">
+            <Box>
               <Heading size="md" mb="2" textAlign="center">
                 {t('profile.form.avatar.label')}
               </Heading>
@@ -195,7 +195,7 @@ function Profile({ history }) {
             </Box>
           </Center>
 
-          <Box p="4" mb="12" textAlign="center">
+          <Box p="4" mb="8" textAlign="center">
             <Heading size="md" mb="2" textAlign="center">
               {t('profile.makePublic.label')}
             </Heading>

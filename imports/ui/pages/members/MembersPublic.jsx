@@ -142,9 +142,15 @@ function MembersPublic() {
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalUser(member)}>
                 {member.avatar ? (
-                  <Image h="200px" fit="contain" src={member.avatar} />
+                  <Image h="128px" fit="contain" src={member.avatar} />
                 ) : (
-                  <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                  <Avatar
+                    borderRadius="0"
+                    name={member.username}
+                    showBorder
+                    size="2xl"
+                    src={member.avatar}
+                  />
                 )}
                 <Center>
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
@@ -156,7 +162,7 @@ function MembersPublic() {
               <Link to={`/@${member.username}`}>
                 <Box>
                   {member.avatar ? (
-                    <Image h="200px" fit="contain" src={member.avatar} />
+                    <Image h="128px" fit="contain" src={member.avatar} />
                   ) : (
                     <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
                   )}
@@ -189,7 +195,7 @@ function MembersPublic() {
               <Text mb="4">{getFullName(modalUser)}</Text>
               <Center mb="6">
                 {modalUser.avatar ? (
-                  <Image w="350px" fit="contain" src={modalUser.avatar} />
+                  <Image h="240px" fit="contain" src={modalUser.avatar} />
                 ) : (
                   <Avatar
                     borderRadius="0"
