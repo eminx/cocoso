@@ -66,7 +66,8 @@ class Activity extends PureComponent {
   };
 
   getChatMessages = () => {
-    const { chatData, currentUser } = this.props;
+    const { chatData } = this.props;
+    const { currentUser } = this.context;
 
     let messages = [];
 
@@ -104,7 +105,7 @@ class Activity extends PureComponent {
   };
 
   openCancelRsvpModal = (occurenceIndex) => {
-    const { currentUser } = this.props;
+    const { currentUser } = this.context;
 
     this.setState({
       isRsvpCancelModalOn: true,
@@ -253,9 +254,9 @@ class Activity extends PureComponent {
   };
 
   renderDates = () => {
-    const { activityData, currentUser, t, tc } = this.props;
+    const { activityData, t, tc } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent } = this.context;
+    const { canCreateContent, currentUser } = this.context;
 
     if (!activityData) {
       return;
@@ -392,7 +393,9 @@ class Activity extends PureComponent {
   };
 
   removeNotification = (messageIndex) => {
-    const { activityData, currentUser, t } = this.props;
+    const { activityData, t } = this.props;
+    const { currentUser } = this.context;
+
     const shouldRun = currentUser.notifications.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
@@ -428,7 +431,8 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, currentUser, hideBreadcrumb, t, tc } = this.props;
+    const { activityData, isLoading, hideBreadcrumb, t, tc } = this.props;
+    const { currentUser } = this.context;
 
     if (!activityData || isLoading) {
       return <Loader />;
