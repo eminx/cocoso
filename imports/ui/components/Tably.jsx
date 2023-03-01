@@ -238,7 +238,7 @@ function AdminMenu({ adminMenu, isDesktop }) {
 
   return (
     <Menu direction="rtl" placement="bottom-end">
-      <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '-1' : '-2'}>
+      <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '0' : '-1'}>
         {/* {adminMenu.label} */}
         <SettingsIcon />
       </MenuButton>
