@@ -164,6 +164,25 @@ Meteor.methods({
     }
   },
 
+  getAllProcessMeetings(isPortalHost = false) {
+    const host = getHost(this);
+
+    try {
+      if (isPortalHost) {
+        return Activities.find({
+          isProcessMeeting: true,
+        }).fetch();
+      } else {
+        return Activities.find({
+          host,
+          isProcessMeeting: true,
+        }).fetch();
+      }
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
   createActivity(values) {
     const user = Meteor.user();
     const host = getHost(this);

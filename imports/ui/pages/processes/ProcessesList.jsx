@@ -20,6 +20,7 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 
 moment.locale(i18n.language);
+const yesterday = moment(new Date()).add(-1, 'days');
 
 export default function ProcessesList() {
   const [processes, setProcesses] = useState([]);
@@ -39,7 +40,10 @@ export default function ProcessesList() {
 
   const getProcesses = async () => {
     try {
-      setProcesses(await call('getProcesses', Boolean(currentHost.isPortalHost)));
+      const meetings = await call('getAllProcessMeetings', Boolean(currentHost.isPortalHost));
+      const retrievedProcesses = await call('getProcesses', Boolean(currentHost.isPortalHost));
+      const parsedProcesses = parseProcessesWithMeetings(retrievedProcesses, meetings);
+      setProcesses(parsedProcesses);
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -94,7 +98,24 @@ export default function ProcessesList() {
     if (sorterValue === 'name') {
       return filteredProcesses.sort((a, b) => a.title.localeCompare(b.title));
     } else {
-      return filteredProcesses.sort(compareForSort).reverse();
+      const processesWithoutFutureMeetings = [];
+      const processesWithFutureMeetings = [];
+      filteredProcesses.forEach((process) => {
+        const meetings = process.meetings;
+        if (
+          meetings &&
+          meetings.length > 0 &&
+          moment(meetings[meetings.length - 1].startDate).isAfter(yesterday)
+        ) {
+          processesWithFutureMeetings.push(process);
+        } else {
+          processesWithoutFutureMeetings.push(process);
+        }
+      });
+      return [
+        ...processesWithFutureMeetings.sort(compareForSortFutureMeeting),
+        ...processesWithoutFutureMeetings.sort(compareForSort),
+      ];
     }
   };
 
@@ -166,6 +187,7 @@ export default function ProcessesList() {
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalProcess(process)}>
                 <NewGridThumb
+                  dates={process.meetings?.map((m) => m.startDate)}
                   host={allHosts.find((h) => h.host === process.host)?.name}
                   imageUrl={process.imageUrl}
                   subTitle={process.readingMaterial}
@@ -175,6 +197,7 @@ export default function ProcessesList() {
             ) : (
               <Link to={`/processes/${process._id}`}>
                 <NewGridThumb
+                  dates={process.meetings?.map((m) => m.startDate)}
                   imageUrl={process.imageUrl}
                   subTitle={process.readingMaterial}
                   title={process.title}
@@ -212,3 +235,36 @@ export default function ProcessesList() {
     </Box>
   );
 }
+
+function parseProcessesWithMeetings(processes, meetings) {
+  return processes.map((process) => {
+    const pId = process._id;
+    const allProcessActivities = meetings.filter((meeting) => meeting.processId === pId);
+    const processActivitiesFuture = allProcessActivities
+      .map((pA) => pA.datesAndTimes[0])
+      .filter((date) => moment(date.startDate).isAfter(yesterday))
+      .sort(compareMeetingDatesForSort);
+    return {
+      ...process,
+      meetings: processActivitiesFuture,
+    };
+  });
+}
+
+function compareMeetingDatesForSort(a, b) {
+  const dateA = new Date(a.startDate);
+  const dateB = new Date(b.startDate);
+  return dateA - dateB;
+}
+
+const compareForSortFutureMeeting = (a, b) => {
+  const firstOccurenceA = a.meetings[0];
+  const firstOccurenceB = b.meetings[0];
+  const dateA = new Date(
+    firstOccurenceA && firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+  );
+  const dateB = new Date(
+    firstOccurenceB && firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+  );
+  return dateA - dateB;
+};
