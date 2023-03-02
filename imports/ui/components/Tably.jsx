@@ -176,7 +176,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           as="h1"
           size="xl"
           lineHeight={1}
-          mb="2"
+          mb="3"
           mt="1"
           textAlign={isDesktop ? 'right' : 'left'}
         >
@@ -194,7 +194,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           </Heading>
         )}
         {tags && tags.length > 0 && (
-          <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt="2">
+          <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt={isDesktop ? '6' : '4'}>
             {tags.map((tag) => (
               <Badge fontSize="14px" key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
                 {tag}
