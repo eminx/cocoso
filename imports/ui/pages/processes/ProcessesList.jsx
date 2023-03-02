@@ -23,6 +23,7 @@ moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
 
 export default function ProcessesList() {
+  const [loading, setLoading] = useState(true);
   const [processes, setProcesses] = useState([]);
   const [filter, setFilter] = useState('active');
   const [filterWord, setFilterWord] = useState('');
@@ -47,6 +48,8 @@ export default function ProcessesList() {
     } catch (error) {
       message.error(error.reason);
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,13 +117,13 @@ export default function ProcessesList() {
       });
       return [
         ...processesWithFutureMeetings.sort(compareForSortFutureMeeting),
-        ...processesWithoutFutureMeetings.sort(compareForSort),
+        ...processesWithoutFutureMeetings.sort(compareForSort).reverse(),
       ];
     }
   };
 
-  if (!processes || !processes.length === 0) {
-    return null;
+  if (loading || !processes || !processes.length === 0) {
+    return <Loader />;
   }
 
   const getProcessesRenderedHostFiltered = (processesRendered) => {
