@@ -11,9 +11,15 @@ import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity
 Meteor.methods({
   getAllActivitiesFromAllHosts(onlyPublic = false) {
     try {
-      return Activities.find({
-        isPublicActivity: onlyPublic,
-      }).fetch();
+      if (onlyPublic) {
+        return Activities.find({
+          $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+        }).fetch();
+      } else {
+        return Activities.find({
+          isPublicActivity: false,
+        });
+      }
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
