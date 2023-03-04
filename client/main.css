@@ -29,6 +29,9 @@ body {
 .main-viewport {
   height: 100%;
   background-repeat: no-repeat;
+  padding-top: 24px;
+  padding-right: 24px;
+  padding-left: 80px;
 }
 
 .is-terms-page h1,

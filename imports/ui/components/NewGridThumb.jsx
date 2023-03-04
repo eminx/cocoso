@@ -22,28 +22,30 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
           fit="contain"
           src={imageUrl}
           style={{
-            maxHeight: 300,
-            marginBottom: 6,
+            height: 320,
+            marginBottom: 12,
           }}
         />
         <Flex align="flex-start" justify="space-between" mb="2">
           <Box pr="2" maxW={300}>
-            <Heading className="text-link" fontSize="1.4rem" fontWeight="light" mb="1">
+            <Heading className="text-link" fontSize="1.5rem" fontWeight="light" mb="2">
               {title}
             </Heading>
             {subTitle && (
-              <Heading className="text-link" fontSize="md" fontWeight="light">
+              <Heading className="text-link" fontSize="1.2rem" fontWeight="light">
                 {subTitle}
               </Heading>
             )}
-            {tag && <Tag filterColor={color} label={tag} my="1" />}
-            {host && currentHost.isPortalHost && (
-              <Flex justify="flex-start">
-                <CTag border="1px solid #2d2d2d" my="2">
-                  {host}
-                </CTag>
-              </Flex>
-            )}
+            <Box py="4">
+              {tag && <Tag filterColor={color} label={tag} />}
+              {host && currentHost.isPortalHost && (
+                <Flex justify="flex-start">
+                  <CTag border="1px solid #2d2d2d" my="2">
+                    {host}
+                  </CTag>
+                </Flex>
+              )}
+            </Box>
           </Box>
           {avatar && <Avatar name={avatar.name} src={avatar.url} />}
           {dates && dates.length > 0 && (

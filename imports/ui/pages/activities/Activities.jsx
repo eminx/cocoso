@@ -223,7 +223,7 @@ function Activities({ history }) {
               <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                 <NewGridThumb
                   dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  host={allHosts.find((h) => h.host === activity.host)?.name}
+                  tag={allHosts.find((h) => h.host === activity.host)?.name}
                   imageUrl={activity.imageUrl}
                   subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}

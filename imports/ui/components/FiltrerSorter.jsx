@@ -24,12 +24,12 @@ function FiltrerSorter(props) {
   if (isDesktop) {
     return (
       <Box mb="2">
+        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
         <Center>
           <Text fontSize="sm" mb="1">
             {tc('labels.filterAndSort')}
           </Text>
         </Center>
-        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
       </Box>
     );
   }
