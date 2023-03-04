@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 const DatesAndTimes = ({
   recurrence,
-  key,
+  id,
   handleStartDateChange,
   handleEndDateChange,
   handleStartTimeChange,
@@ -67,8 +67,8 @@ const DatesAndTimes = ({
 
       <Center>
         <FormControl w="auto" alignItems="center" display="flex">
-          <Switch isChecked={isRange} id={key} onChange={handleRangeSwitch} py="2" />
-          <FormLabel htmlFor={key} mb="1" ml="2">
+          <Switch isChecked={isRange} id={id} onChange={handleRangeSwitch} py="2" />
+          <FormLabel htmlFor={id} mb="1" ml="2">
             {t('form.days.multiple')}
           </FormLabel>
         </FormControl>

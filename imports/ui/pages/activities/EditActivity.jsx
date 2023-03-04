@@ -9,11 +9,12 @@ import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
 import Breadcrumb from '../../components/Breadcrumb';
 import {
-  getAllBookingsWithSelectedResource,
+  call,
+  compareDatesWithStartDateForSort,
   checkAndSetBookingsWithConflict,
+  getAllBookingsWithSelectedResource,
   resizeImage,
   uploadImage,
-  call,
 } from '../../utils/shared';
 import { message, Alert } from '../../components/message';
 
@@ -184,10 +185,12 @@ class EditActivity extends PureComponent {
       datesAndTimes,
     } = this.state;
 
+    const datesAndTimesSorted = datesAndTimes.sort(compareDatesWithStartDateForSort);
+
     const imageUrl = uploadedImage || activity.imageUrl;
     const values = {
       ...formValues,
-      datesAndTimes,
+      datesAndTimesSorted,
       imageUrl,
       isExclusiveActivity,
       isPublicActivity,

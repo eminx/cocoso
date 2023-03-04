@@ -161,6 +161,7 @@ function ActivityForm({
               return (
                 <DatesAndTimes
                   key={id}
+                  id={id}
                   isPublicActivity={isPublicActivity}
                   recurrence={recurrence}
                   removeRecurrence={() => removeRecurrence(index)}

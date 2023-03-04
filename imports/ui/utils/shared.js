@@ -31,6 +31,12 @@ function compareForSort(a, b) {
   return dateA - dateB;
 }
 
+const compareDatesWithStartDateForSort = (a, b) => {
+  const dateA = moment(a.startDate, 'YYYY-MM-DD');
+  const dateB = moment(b.startDate, 'YYYY-MM-DD');
+  return dateA.diff(dateB);
+};
+
 function parseTitle(title) {
   return title.replace(/\s+/g, '-').toLowerCase();
 }
@@ -315,6 +321,7 @@ export {
   getInitials,
   removeSpace,
   compareForSort,
+  compareDatesWithStartDateForSort,
   parseTitle,
   emailIsValid,
   includesSpecialCharacters,

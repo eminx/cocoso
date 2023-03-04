@@ -11,11 +11,12 @@ import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
 import {
-  getAllBookingsWithSelectedResource,
+  call,
+  compareDatesWithStartDateForSort,
   checkAndSetBookingsWithConflict,
+  getAllBookingsWithSelectedResource,
   resizeImage,
   uploadImage,
-  call,
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
@@ -209,9 +210,13 @@ class NewActivity extends PureComponent {
       attendees: [],
     }));
 
+    const datesAndTimesNoConflictSorted = datesAndTimesNoConflict.sort(
+      compareDatesWithStartDateForSort
+    );
+
     const values = {
       ...formValues,
-      datesAndTimes: datesAndTimesNoConflict,
+      datesAndTimes: datesAndTimesNoConflictSorted,
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
@@ -269,10 +274,10 @@ class NewActivity extends PureComponent {
     });
   };
 
-  setDatesAndTimes = (selectedBookings) => {
+  setDatesAndTimes = (datesAndTimes) => {
     this.setState(
       {
-        datesAndTimes: selectedBookings,
+        datesAndTimes,
       },
       () => {
         this.validateBookings();
