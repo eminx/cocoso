@@ -35,9 +35,7 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
 
   return (
     <>
-      <Wrap justify="center" shouldWrapChildren>
-        {currentItems && currentItems.map((item) => children(item))}
-      </Wrap>
+      <Wrap shouldWrapChildren>{currentItems && currentItems.map((item) => children(item))}</Wrap>
       {items.length > itemsPerPage && (
         <Center>
           <ReactPaginate

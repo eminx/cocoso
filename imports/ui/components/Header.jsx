@@ -30,22 +30,24 @@ function Header() {
             </Box>
           </Link>
         </Box>
-        {!isMobile && !hideMenu && (
+        {/* {!isMobile && !hideMenu && (
           <Center h="100%" mt="4" mb="8">
             <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
           </Center>
-        )}
+        )} */}
 
         <Flex w="180px" zIndex="1403" justify="flex-end" align="flex-start">
           <UserPopup currentUser={currentUser} />
         </Flex>
       </Flex>
 
-      {isMobile && !hideMenu && (
-        <Center mt="6" mb="4">
-          <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
-        </Center>
-      )}
+      {/* {isMobile && !hideMenu && ( */}
+      {/* <Center mt="6" mb="4"> */}
+      <Box pb="4" pt="8">
+        <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
+      </Box>
+      {/* </Center> */}
+      {/* )} */}
     </Box>
   );
 }

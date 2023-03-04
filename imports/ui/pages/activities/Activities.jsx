@@ -72,7 +72,7 @@ function Activities({ history }) {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalActivity, setModalActivity] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const {
     location: { search },
   } = history;
@@ -198,21 +198,23 @@ function Activities({ history }) {
         }`}</title>
       </Helmet>
 
-      <Center>
-        <FiltrerSorter {...filtrerProps}>
-          <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
-        </FiltrerSorter>
-      </Center>
+      <Box px="4">
+        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+          <FiltrerSorter {...filtrerProps}>
+            <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+          </FiltrerSorter>
 
-      {currentHost.isPortalHost && (
-        <Center>
-          <HostFiltrer
-            allHosts={allHostsFiltered}
-            hostFilterValue={hostFilterValue}
-            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-          />
-        </Center>
-      )}
+          {currentHost.isPortalHost && (
+            <Box px="8">
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Box>
+          )}
+        </Flex>
+      </Box>
 
       <Paginate items={activitiesRenderedHostFiltered}>
         {(activity) => (

@@ -65,7 +65,8 @@ function HeaderMenu({ canCreateContent, currentHost }) {
   return (
     <Box zIndex="1401">
       <Flex align="center">
-        <CMenu placement="bottom" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
+        <Heading size="xl">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Heading>
+        {/* <CMenu placement="bottom" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
           <MenuButton aria-label="Options" variant="outline">
             <Flex align="flex-end">
               <HamburgerIcon fontSize="40px" mr="2" mb="-1px" />
@@ -81,8 +82,8 @@ function HeaderMenu({ canCreateContent, currentHost }) {
               </Link>
             ))}
           </MenuList>
-        </CMenu>
-        {showNewButton && (
+        </CMenu> */}
+        {/* {showNewButton && (
           <Link to={getPathname()}>
             <Flex
               align="center"
@@ -110,7 +111,7 @@ function HeaderMenu({ canCreateContent, currentHost }) {
               </Text>
             </Flex>
           </Link>
-        )}
+        )} */}
       </Flex>
       <Modal isOpen={isOpen}>
         <ModalOverlay />
