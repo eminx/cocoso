@@ -45,6 +45,26 @@ function compareDatesForSortReverse(a, b) {
   return dateB - dateA;
 }
 
+function parseProcessActivities(activities) {
+  const activitiesParsed = [];
+
+  activities.forEach((act, index) => {
+    if (!act.isProcessMeeting) {
+      activitiesParsed.push(act);
+    } else {
+      const indexParsed = activitiesParsed.findIndex((actP, indexP) => {
+        return actP.processId === act.processId;
+      });
+      if (indexParsed === -1) {
+        activitiesParsed.push(act);
+      } else {
+        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
+      }
+    }
+  });
+  return activitiesParsed;
+}
+
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,11 +86,16 @@ function Activities({ history }) {
   const getActivities = async () => {
     try {
       if (currentHost.isPortalHost) {
-        setActivities(await call('getAllActivitiesFromAllHosts', true));
+        const allActivities = await call('getAllActivitiesFromAllHosts', true);
+        const allActivitiesParsed = parseProcessActivities(allActivities);
+        setActivities(allActivitiesParsed);
       } else {
-        setActivities(await call('getAllActivities', true));
+        const allActivities = await call('getAllActivities', true);
+        const allActivitiesParsed = parseProcessActivities(allActivities);
+        setActivities(allActivitiesParsed);
       }
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     } finally {
       setLoading(false);

@@ -150,18 +150,13 @@ function MemberPublic({ history, match, path }) {
         <Route
           path="/@:username/contact"
           render={(props) => (
-            <Modal
-              isCentered
-              isOpen
-              title={user.username}
-              onClose={() => history.push(`/@${user.username}`)}
-            >
-              <Container p="4">
+            <Center>
+              <Box maxWidth="480px" className="text-content" mt="2" p="4">
                 {user.contactInfo
                   ? renderHTML(user.contactInfo)
                   : t('message.contact.empty', { username: user.username })}
-              </Container>
-            </Modal>
+              </Box>
+            </Center>
           )}
         />
       </Switch>
