@@ -138,7 +138,7 @@ function MembersPublic() {
 
       <Paginate items={membersRendered} itemsPerPage={12}>
         {(member) => (
-          <Box key={member.username} p="4" w="80">
+          <Box key={member.username} p="4" w="280px">
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalUser(member)}>
                 {member.avatar ? (
