@@ -165,6 +165,14 @@ function Activities({ history }) {
     );
   }
 
+  const handleActionButtonClick = () => {
+    if (modalActivity.host === currentHost.host) {
+      history.push(`/activities/${modalActivity._id}`);
+    } else {
+      window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`;
+    }
+  };
+
   const tabs = [
     {
       path: '/activities?showPast=true',
@@ -217,34 +225,39 @@ function Activities({ history }) {
       </Box>
 
       <Paginate items={activitiesRenderedHostFiltered}>
-        {(activity) => (
-          <Box key={activity._id}>
-            {currentHost.isPortalHost ? (
-              <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                <NewGridThumb
-                  dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  host={allHosts.find((h) => h.host === activity.host)?.name}
-                  imageUrl={activity.imageUrl}
-                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                  title={activity.title}
-                />
-              </Box>
-            ) : (
-              <Link
-                to={
-                  activity.isProcess ? `/processes/${activity._id}` : `/activities/${activity._id}`
-                }
-              >
-                <NewGridThumb
-                  dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  imageUrl={activity.imageUrl}
-                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                  title={activity.title}
-                />
-              </Link>
-            )}
-          </Box>
-        )}
+        {(activity) => {
+          const itemHost = allHosts.find((h) => h.host === activity.host)?.name;
+          return (
+            <Box key={activity._id}>
+              {currentHost.isPortalHost ? (
+                <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
+                  <NewGridThumb
+                    dates={activity.datesAndTimes.map((d) => d.startDate)}
+                    host={itemHost}
+                    imageUrl={activity.imageUrl}
+                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                    title={activity.title}
+                  />
+                </Box>
+              ) : (
+                <Link
+                  to={
+                    activity.isProcess
+                      ? `/processes/${activity._id}`
+                      : `/activities/${activity._id}`
+                  }
+                >
+                  <NewGridThumb
+                    dates={activity.datesAndTimes.map((d) => d.startDate)}
+                    imageUrl={activity.imageUrl}
+                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                    title={activity.title}
+                  />
+                </Link>
+              )}
+            </Box>
+          );
+        }}
       </Paginate>
 
       {modalActivity && (
@@ -258,9 +271,7 @@ function Activities({ history }) {
           actionButtonLabel={tc('actions.toThePage', {
             hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
           })}
-          onActionButtonClick={() =>
-            (window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`)
-          }
+          onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
             action={getDatesForAction(modalActivity)}

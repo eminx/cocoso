@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Box, Center, Image, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Container, Image, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -212,11 +212,7 @@ function MembersPublic() {
                   />
                 )}
               </Center>
-              {modalUser.bio && (
-                <Text textAlign="left" fontSize="sm">
-                  {renderHTML(modalUser.bio)}
-                </Text>
-              )}
+              {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
             </Box>
           </Center>
         </Modal>
