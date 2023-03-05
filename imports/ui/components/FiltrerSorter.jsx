@@ -45,11 +45,6 @@ function FiltrerSorter(props) {
         </AccordionButton>
         <AccordionPanel pb={4}>
           <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-          <Center p="2">
-            <Text fontSize="sm" mb="1">
-              {tc('labels.filterAndSort')}
-            </Text>
-          </Center>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
@@ -78,6 +73,7 @@ function Inputs({
       {children}
       <Select
         flexBasis="180px"
+        mb={isDesktop ? '0' : '2'}
         mx={isDesktop ? '2' : '1'}
         name="sorter"
         value={sorterValue}

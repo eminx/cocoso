@@ -132,31 +132,31 @@ function Works({ history }) {
       </Helmet>
 
       <Box px="4">
-        <FiltrerSorter {...filtrerProps}>
-          <Box my="2">
-            <Wrap pl="2">
-              <WrapItem>
+        <FiltrerSorter {...filtrerProps} />
+
+        <Box mb="2" mt="4">
+          <Wrap pl="2">
+            <WrapItem>
+              <Tag
+                label="ALL"
+                checkable={categoryFilter === null}
+                onClick={() => setCategoryFilter(null)}
+              />
+            </WrapItem>
+            {categoriesAssignedToWorks.map((cat) => (
+              <WrapItem key={cat.label}>
                 <Tag
-                  label="ALL"
-                  checkable={categoryFilter === null}
-                  onClick={() => setCategoryFilter(null)}
+                  checkable
+                  checked={categoryFilter === cat.label}
+                  filterColor={cat.color}
+                  label={cat.label && cat.label.toUpperCase()}
+                  margin={{ bottom: 'small' }}
+                  onClick={() => setCategoryFilter(cat.label)}
                 />
               </WrapItem>
-              {categoriesAssignedToWorks.map((cat) => (
-                <WrapItem key={cat.label}>
-                  <Tag
-                    checkable
-                    checked={categoryFilter === cat.label}
-                    filterColor={cat.color}
-                    label={cat.label && cat.label.toUpperCase()}
-                    margin={{ bottom: 'small' }}
-                    onClick={() => setCategoryFilter(cat.label)}
-                  />
-                </WrapItem>
-              ))}
-            </Wrap>
-          </Box>
-        </FiltrerSorter>
+            ))}
+          </Wrap>
+        </Box>
 
         {currentHost.isPortalHost && (
           <Flex p="2" justify={isDesktop ? 'flex-start' : 'center'}>
