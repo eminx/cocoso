@@ -72,8 +72,9 @@ function NewButton({ canCreateContent, currentHost }) {
                 variant="outline"
               />
               <Text
-                className="text-link"
                 fontSize="xs"
+                fontWeight="bold"
+                color="gray.900"
                 position="absolute"
                 textTransform="uppercase"
                 top="2rem"
