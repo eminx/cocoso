@@ -1,6 +1,6 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Flex, Heading, HStack, Image, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, Image, Text } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
@@ -67,7 +67,13 @@ function Header() {
 
       <Box pb="4" pt="12">
         <Heading color="gray.800" size="lg">
-          {currentHostName} / {activeMenuItem?.label}
+          <Text as="span">{currentHostName}</Text>
+          <Text as="span" fontWeight="normal">
+            {' / '}
+          </Text>
+          <Text as="span" fontWeight="normal">
+            {activeMenuItem?.label}
+          </Text>
         </Heading>
       </Box>
     </Box>
