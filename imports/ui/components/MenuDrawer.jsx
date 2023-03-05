@@ -43,14 +43,12 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
           </Flex>
         </Center>
 
-        <Drawer isOpen={isOpen} placement="left" onClose={onToggle}>
+        <Drawer isOpen={isOpen} placement="left" title={t('menu.label')} onClose={onToggle}>
           <VStack align="flex-start" pt="8">
             {menuItems.map((item) => (
               <Link key={item.label} to={item.route} onClick={onToggle}>
                 <Box px="4" py="2">
-                  <Text color="gray.900" fontSize="lg">
-                    {item.label}
-                  </Text>
+                  <Text fontSize="lg">{item.label}</Text>
                 </Box>
               </Link>
             ))}
@@ -77,14 +75,12 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
         </Flex>
       </Center>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onToggle}>
+      <Drawer isOpen={isOpen} placement="right" title={t('menu.label')} onClose={onToggle}>
         <VStack align="flex-start" pt="8">
           {menuItems.map((item) => (
             <Link key={item.label} to={item.route} onClick={onToggle}>
               <Box px="4" py="2">
-                <Text color="gray.900" fontSize="lg">
-                  {item.label}
-                </Text>
+                <Text fontSize="lg">{item.label}</Text>
               </Box>
             </Link>
           ))}
