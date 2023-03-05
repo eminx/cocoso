@@ -26,7 +26,7 @@ body {
   margin: 0;
 }
 
-.main-viewport {
+#main-viewport {
   height: 100%;
   background-repeat: no-repeat;
   padding-top: 12px;
@@ -122,4 +122,14 @@ input::placeholder {
 
 .chakra-modal__content-container {
   z-index: 1405 !important;
+}
+
+.menu-drawer {
+  width: 72px;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-drawer.menu-drawer--open {
+  width: 300px;
+  transition: all 0.2s ease-in-out;
 }

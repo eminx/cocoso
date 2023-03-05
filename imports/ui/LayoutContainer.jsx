@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -112,40 +112,44 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
           userLoading,
         }}
       >
-        {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop />}
+        <Flex>
+          {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop />}
 
-        <Box className="main-viewport" pl={isDesktop ? '84px' : '0'} pr={isDesktop ? '12px' : '0'}>
-          <Box w="100%">
-            {isHeaderAndFooter && <Header />}
+          <Box id="main-viewport" flexGrow="2" px={isDesktop ? '4' : '0'}>
+            <Box w="100%">
+              {isHeaderAndFooter && <Header />}
 
-            <Box style={{ minHeight: '90vh' }}>{children}</Box>
+              <Box style={{ minHeight: '90vh' }}>{children}</Box>
 
-            {isHeaderAndFooter && <Footer currentHost={currentHost} platform={platform} tc={tc} />}
+              {isHeaderAndFooter && (
+                <Footer currentHost={currentHost} platform={platform} tc={tc} />
+              )}
 
-            {isHeaderAndFooter && currentHost.isPortalHost && (
-              <Box>
-                <Center p="8" bg="gray.900">
-                  <Box textAlign="center" color="gray.100">
-                    <Text fontSize="lg" fontWeight="bold">
-                      {platform?.name}
-                    </Text>
-                    <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
-                      {tc('platform.title')}
-                    </CLink>
-                  </Box>
-                </Center>
+              {isHeaderAndFooter && currentHost.isPortalHost && (
+                <Box>
+                  <Center p="8" bg="gray.900">
+                    <Box textAlign="center" color="gray.100">
+                      <Text fontSize="lg" fontWeight="bold">
+                        {platform?.name}
+                      </Text>
+                      <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
+                        {tc('platform.title')}
+                      </CLink>
+                    </Box>
+                  </Center>
 
-                <PlatformDrawer
-                  isOpen={platformDrawer}
-                  hosts={allHosts}
-                  platform={platform}
-                  tc={tc}
-                  toggleOpen={() => setPlatformDrawer(!platformDrawer)}
-                />
-              </Box>
-            )}
+                  <PlatformDrawer
+                    isOpen={platformDrawer}
+                    hosts={allHosts}
+                    platform={platform}
+                    tc={tc}
+                    toggleOpen={() => setPlatformDrawer(!platformDrawer)}
+                  />
+                </Box>
+              )}
+            </Box>
           </Box>
-        </Box>
+        </Flex>
       </StateContext.Provider>
     </ChakraProvider>
   );

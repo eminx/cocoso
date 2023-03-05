@@ -51,7 +51,7 @@ function Header() {
               <Image
                 fit="contain"
                 maxHeight="80px"
-                maxWidth="180px"
+                maxWidth="160px"
                 src={currentHost && currentHost.logo}
               />
             </Box>
