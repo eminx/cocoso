@@ -190,7 +190,7 @@ class EditActivity extends PureComponent {
     const imageUrl = uploadedImage || activity.imageUrl;
     const values = {
       ...formValues,
-      datesAndTimesSorted,
+      datesAndTimes: datesAndTimesSorted,
       imageUrl,
       isExclusiveActivity,
       isPublicActivity,
