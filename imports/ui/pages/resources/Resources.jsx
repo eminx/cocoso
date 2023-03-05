@@ -18,7 +18,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 
-function Resources() {
+function Resources({ history }) {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -91,6 +91,14 @@ function Resources() {
         return new Date(b.createdAt) - new Date(a.createdAt);
       }
     });
+  };
+
+  const handleActionButtonClick = () => {
+    if (modalResource.host === currentHost.host) {
+      history.push(`/resources/${modalResource._id}`);
+    } else {
+      window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`;
+    }
   };
 
   const tabs = [
@@ -193,9 +201,7 @@ function Resources() {
           actionButtonLabel={tc('actions.toThePage', {
             hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
           })}
-          onActionButtonClick={() =>
-            (window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`)
-          }
+          onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
             content={modalResource.description && renderHTML(modalResource.description)}

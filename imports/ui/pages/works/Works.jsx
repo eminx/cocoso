@@ -24,7 +24,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Works() {
+function Works({ history }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -102,6 +102,14 @@ function Works() {
       return worksRendered;
     }
     return worksRendered.filter((work) => work.host === hostFilterValue.host);
+  };
+
+  const handleActionButtonClick = () => {
+    if (modalWork.host === currentHost.host) {
+      history.push(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
+    } else {
+      window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+    }
   };
 
   const worksRenderedHostFiltered = getWorksRenderedHostFiltered(worksWithCategoryColors);
@@ -213,9 +221,7 @@ function Works() {
           actionButtonLabel={tc('actions.toThePage', {
             hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
           })}
-          onActionButtonClick={() =>
-            (window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`)
-          }
+          onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
             author={{

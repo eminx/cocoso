@@ -22,7 +22,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
 
-export default function ProcessesList() {
+export default function ProcessesList({ history }) {
   const [loading, setLoading] = useState(true);
   const [processes, setProcesses] = useState([]);
   const [filter, setFilter] = useState('active');
@@ -140,6 +140,14 @@ export default function ProcessesList() {
     return processesRendered.some((process) => process.host === host.host);
   });
 
+  const handleActionButtonClick = () => {
+    if (modalProcess.host === currentHost.host) {
+      history.push(`/processes/${modalProcess._id}`);
+    } else {
+      window.location.href = `https://${modalProcess.host}/processes/${modalProcess._id}`;
+    }
+  };
+
   const tabs = [
     {
       title: t('tabs.active'),
@@ -224,9 +232,7 @@ export default function ProcessesList() {
           actionButtonLabel={tc('actions.toThePage', {
             hostName: allHosts.find((h) => h.host === modalProcess.host)?.name,
           })}
-          onActionButtonClick={() =>
-            (window.location.href = `https://${modalProcess.host}/processes/${modalProcess._id}`)
-          }
+          onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
             content={modalProcess.description && renderHTML(modalProcess.description)}
