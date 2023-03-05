@@ -47,7 +47,7 @@ function Tably({
   if (isDesktop) {
     return (
       <>
-        <Grid templateColumns="2fr 2fr 1fr">
+        <Grid templateColumns="3fr 4fr 1fr">
           <GridItem>
             <Box>
               <Header
@@ -88,12 +88,12 @@ function Tably({
                     <Route
                       key={tab.title}
                       path={tab.path}
-                      render={(props) => <Container margin={'auto'}>{tab.content}</Container>}
+                      render={(props) => <Container m="0">{tab.content}</Container>}
                     />
                   ))}
                 </Switch>
               ) : (
-                <Container margin="auto">{content}</Container>
+                <Container m="0">{content}</Container>
               )}
             </Box>
           </GridItem>

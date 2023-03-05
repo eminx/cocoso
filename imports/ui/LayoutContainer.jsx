@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -25,6 +25,7 @@ import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
+import MenuDrawer from './components/MenuDrawer';
 
 export const StateContext = React.createContext(null);
 
@@ -81,7 +82,6 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
   const { menu } = currentHost?.settings;
-
   const pagesWithHeaderAndFooter = [
     ...menu?.map((item) => '/' + item.name),
     '/login',
@@ -112,8 +112,10 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
           userLoading,
         }}
       >
-        <Center className="main-viewport">
-          <Box maxWidth="1400px" w="100%">
+        {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop />}
+
+        <Box className="main-viewport" pl={isDesktop ? '84px' : '0'} pr={isDesktop ? '12px' : '0'}>
+          <Box w="100%">
             {isHeaderAndFooter && <Header />}
 
             <Box style={{ minHeight: '90vh' }}>{children}</Box>
@@ -143,7 +145,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
               </Box>
             )}
           </Box>
-        </Center>
+        </Box>
       </StateContext.Provider>
     </ChakraProvider>
   );

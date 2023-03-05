@@ -2,11 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
 
-const parsePath = (path) => {
-  const gotoPath = path + '?noScrollTop=true';
-  return gotoPath;
-};
-
 const tabProps = {
   as: 'span',
   _focus: { boxShadow: 'none' },
@@ -26,7 +21,7 @@ function Tabs({ tabs, children, ...otherProps }) {
       <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
         {tabs?.map((tab) =>
           tab.path ? (
-            <Link key={tab.title} to={parsePath(tab.path)} style={linkStyle}>
+            <Link key={tab.title} to={tab.path} style={linkStyle}>
               <Tab {...tabProps} onClick={tab.onClick}>
                 {tab.title}
                 {tab.badge && (

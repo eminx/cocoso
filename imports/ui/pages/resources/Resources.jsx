@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Badge, Box, Center, Flex, Tag as CTag, Text } from '@chakra-ui/react';
+import { Badge, Box, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import renderHTML from 'react-render-html';
@@ -26,7 +26,7 @@ function Resources() {
   const [combo, setCombo] = useState('all');
   const [modalResource, setModalResource] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -143,40 +143,44 @@ function Resources() {
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.resources')} | ${currentHost.settings.name}`}</title>
+        <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Center mb="2">
-        <FiltrerSorter {...filtrerProps}>
-          <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
-        </FiltrerSorter>
-      </Center>
+      <Box px="2">
+        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+          <FiltrerSorter {...filtrerProps}>
+            <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
+          </FiltrerSorter>
 
-      {currentHost.isPortalHost && (
-        <Center>
-          <HostFiltrer
-            allHosts={allHostsFiltered}
-            hostFilterValue={hostFilterValue}
-            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-          />
-        </Center>
-      )}
+          {currentHost.isPortalHost && (
+            <Flex px="8" justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </Flex>
+      </Box>
 
-      <Paginate items={resourcesRenderedHostFiltered}>
-        {(resource) => (
-          <Box key={resource._id}>
-            {currentHost.isPortalHost ? (
-              <Box cursor="pointer" onClick={() => setModalResource(resource)}>
-                <ResourceItem resource={resource} t={t} />
-              </Box>
-            ) : (
-              <Link to={`/resources/${resource._id}`}>
-                <ResourceItem resource={resource} t={t} />
-              </Link>
-            )}{' '}
-          </Box>
-        )}
-      </Paginate>
+      <Box py="4">
+        <Paginate items={resourcesRenderedHostFiltered}>
+          {(resource) => (
+            <Box key={resource._id}>
+              {currentHost.isPortalHost ? (
+                <Box cursor="pointer" onClick={() => setModalResource(resource)}>
+                  <ResourceItem resource={resource} t={t} />
+                </Box>
+              ) : (
+                <Link to={`/resources/${resource._id}`}>
+                  <ResourceItem resource={resource} t={t} />
+                </Link>
+              )}{' '}
+            </Box>
+          )}
+        </Paginate>
+      </Box>
 
       {modalResource && (
         <Modal

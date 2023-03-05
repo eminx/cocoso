@@ -1,18 +1,46 @@
 import React, { useContext, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Box, Center, Flex, Heading, Image, useMediaQuery } from '@chakra-ui/react';
+import { Link, useHistory } from 'react-router-dom';
+import { Box, Flex, Heading, HStack, Image, useMediaQuery } from '@chakra-ui/react';
 
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
-import HeaderMenu from './HeaderMenu';
+import NewButton from './NewButton';
+import MenuDrawer from './MenuDrawer';
+
+const getRoute = (item, index) => {
+  if (index === 0) {
+    return '/';
+  }
+  if (item.name === 'info') {
+    return '/pages/about';
+  }
+  return `/${item.name}`;
+};
 
 function Header() {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
-  const { pathname } = useLocation();
-  const logo = useRef(null);
-  const [isMobile] = useMediaQuery('(max-width: 640px)');
-  const hideMenu = ['/login', '/signup', '/reset-password', '/forgot-password'].includes(pathname);
+  const history = useHistory();
   // const { name, subname } = currentHost?.settings;
+
+  const { menu } = currentHost?.settings;
+  const menuItems = menu
+    .filter((item) => item.isVisible)
+    .map((item, index) => ({
+      ...item,
+      route: getRoute(item, index),
+    }));
+
+  const pathname = history.location.pathname;
+  const isCurrentPage = (name) => {
+    if (name === 'info') {
+      return pathname.substring(0, 6) === '/pages';
+    }
+    return name === pathname.substring(1, pathname.length);
+  };
+
+  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
+
+  const currentHostName = currentHost?.settings?.name;
 
   return (
     <Box p="4" w="100%">
@@ -21,7 +49,6 @@ function Header() {
           <Link to="/">
             <Box maxHeight="80px" w="180px">
               <Image
-                ref={logo}
                 fit="contain"
                 maxHeight="80px"
                 maxWidth="180px"
@@ -30,24 +57,19 @@ function Header() {
             </Box>
           </Link>
         </Box>
-        {/* {!isMobile && !hideMenu && (
-          <Center h="100%" mt="4" mb="8">
-            <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
-          </Center>
-        )} */}
 
-        <Flex w="180px" zIndex="1403" justify="flex-end" align="flex-start">
+        <HStack align="center" justify="flex-end" spacing="4" zIndex="1403">
+          <NewButton canCreateContent={canCreateContent} currentHost={currentHost} />
           <UserPopup currentUser={currentUser} />
-        </Flex>
+          {!isDesktop && <MenuDrawer currentHost={currentHost} isDesktop={false} />}
+        </HStack>
       </Flex>
 
-      {/* {isMobile && !hideMenu && ( */}
-      {/* <Center mt="6" mb="4"> */}
-      <Box pb="4" pt="8">
-        <HeaderMenu canCreateContent={canCreateContent} currentHost={currentHost} />
+      <Box pb="4" pt="12">
+        <Heading color="gray.800" size="lg">
+          {currentHostName} / {activeMenuItem?.label}
+        </Heading>
       </Box>
-      {/* </Center> */}
-      {/* )} */}
     </Box>
   );
 }

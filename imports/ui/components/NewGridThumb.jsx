@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Avatar, Box, Flex, Heading, Tag as CTag, Text } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { StateContext } from '../LayoutContainer';
@@ -22,30 +22,24 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
           fit="contain"
           src={imageUrl}
           style={{
-            height: 320,
+            maxHeight: 320,
             marginBottom: 12,
           }}
         />
         <Flex align="flex-start" justify="space-between" mb="2">
           <Box pr="2" maxW={300}>
-            <Heading className="text-link" fontSize="1.5rem" fontWeight="light" mb="2">
+            <Heading className="text-link" fontSize="1.3rem" fontWeight="light" mb="2">
               {title}
             </Heading>
             {subTitle && (
-              <Heading className="text-link" fontSize="1.2rem" fontWeight="light">
+              <Heading className="text-link" fontSize="1.1rem" fontWeight="light">
                 {subTitle}
               </Heading>
             )}
-            <Box py="4">
+            <HStack py="3" spacing="4">
+              {host && currentHost.isPortalHost && <Tag border="1px solid #2d2d2d" label={host} />}
               {tag && <Tag filterColor={color} label={tag} />}
-              {host && currentHost.isPortalHost && (
-                <Flex justify="flex-start">
-                  <CTag border="1px solid #2d2d2d" my="2">
-                    {host}
-                  </CTag>
-                </Flex>
-              )}
-            </Box>
+            </HStack>
           </Box>
           {avatar && <Avatar name={avatar.name} src={avatar.url} />}
           {dates && dates.length > 0 && (

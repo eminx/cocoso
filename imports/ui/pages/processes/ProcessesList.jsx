@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ export default function ProcessesList() {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalProcess, setModalProcess] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost, currentUser } = useContext(StateContext);
+  const { allHosts, currentHost, currentUser, isDesktop } = useContext(StateContext);
 
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
@@ -168,21 +168,23 @@ export default function ProcessesList() {
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Center>
-        <FiltrerSorter {...filtrerProps}>
-          <Tabs mx="4" size="sm" tabs={tabs} />
-        </FiltrerSorter>
-      </Center>
+      <Box px="4">
+        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+          <FiltrerSorter {...filtrerProps}>
+            <Tabs mx="4" size="sm" tabs={tabs} />
+          </FiltrerSorter>
 
-      {currentHost.isPortalHost && (
-        <Center>
-          <HostFiltrer
-            allHosts={allHostsFiltered}
-            hostFilterValue={hostFilterValue}
-            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-          />
-        </Center>
-      )}
+          {currentHost.isPortalHost && (
+            <Flex px="8" justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </Flex>
+      </Box>
 
       <Paginate items={processesRenderedHostFiltered}>
         {(process) => (

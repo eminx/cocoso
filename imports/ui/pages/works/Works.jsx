@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -32,7 +32,7 @@ function Works() {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [modalWork, setModalWork] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -123,43 +123,43 @@ function Works() {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Center mb="2">
-        <FiltrerSorter {...filtrerProps} />
-      </Center>
+      <Box px="4">
+        <FiltrerSorter {...filtrerProps}>
+          <Box my="2">
+            <Wrap pl="2">
+              <WrapItem>
+                <Tag
+                  label="ALL"
+                  checkable={categoryFilter === null}
+                  onClick={() => setCategoryFilter(null)}
+                />
+              </WrapItem>
+              {categoriesAssignedToWorks.map((cat) => (
+                <WrapItem key={cat.label}>
+                  <Tag
+                    checkable
+                    checked={categoryFilter === cat.label}
+                    filterColor={cat.color}
+                    label={cat.label && cat.label.toUpperCase()}
+                    margin={{ bottom: 'small' }}
+                    onClick={() => setCategoryFilter(cat.label)}
+                  />
+                </WrapItem>
+              ))}
+            </Wrap>
+          </Box>
+        </FiltrerSorter>
 
-      <Center mb="2">
-        <Wrap pl="2" justify="center">
-          <WrapItem>
-            <Tag
-              label="ALL"
-              checkable={categoryFilter === null}
-              onClick={() => setCategoryFilter(null)}
+        {currentHost.isPortalHost && (
+          <Flex p="2" justify={isDesktop ? 'flex-start' : 'center'}>
+            <HostFiltrer
+              allHosts={allHostsFiltered}
+              hostFilterValue={hostFilterValue}
+              onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
             />
-          </WrapItem>
-          {categoriesAssignedToWorks.map((cat) => (
-            <WrapItem key={cat.label}>
-              <Tag
-                checkable
-                checked={categoryFilter === cat.label}
-                filterColor={cat.color}
-                label={cat.label && cat.label.toUpperCase()}
-                margin={{ bottom: 'small' }}
-                onClick={() => setCategoryFilter(cat.label)}
-              />
-            </WrapItem>
-          ))}
-        </Wrap>
-      </Center>
-
-      {currentHost.isPortalHost && (
-        <Center>
-          <HostFiltrer
-            allHosts={allHostsFiltered}
-            hostFilterValue={hostFilterValue}
-            onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-          />
-        </Center>
-      )}
+          </Flex>
+        )}
+      </Box>
 
       <Paginate items={worksRenderedHostFiltered}>
         {(work) => (

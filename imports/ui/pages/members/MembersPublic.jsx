@@ -132,49 +132,55 @@ function MembersPublic() {
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Center mb="6">
+      <Box px="4">
         <FiltrerSorter {...filtrerProps} />
-      </Center>
+      </Box>
 
       <Paginate items={membersRendered} itemsPerPage={12}>
         {(member) => (
-          <Center key={member.username} p="4" w="80">
+          <Box key={member.username} p="4" w="80">
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalUser(member)}>
                 {member.avatar ? (
-                  <Image h="128px" fit="contain" src={member.avatar} />
+                  <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
                 ) : (
                   <Avatar
-                    borderRadius="0"
+                    borderRadius="12px"
                     name={member.username}
                     showBorder
                     size="2xl"
                     src={member.avatar}
                   />
                 )}
-                <Center>
+                <Box py="2" pl="2">
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
                     {member.username}
                   </Text>
-                </Center>
+                </Box>
               </Box>
             ) : (
               <Link to={`/@${member.username}`}>
                 <Box>
                   {member.avatar ? (
-                    <Image h="128px" fit="contain" src={member.avatar} />
+                    <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
                   ) : (
-                    <Avatar name={member.username} showBorder size="2xl" src={member.avatar} />
+                    <Avatar
+                      borderRadius="12px"
+                      name={member.username}
+                      showBorder
+                      size="2xl"
+                      src={member.avatar}
+                    />
                   )}
-                  <Center>
+                  <Box py="2" pl="2">
                     <Text fontWeight="bold" fontSize="lg" isTruncated>
                       {member.username}
                     </Text>
-                  </Center>
+                  </Box>
                 </Box>
               </Link>
             )}
-          </Center>
+          </Box>
         )}
       </Paginate>
 

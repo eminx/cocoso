@@ -326,7 +326,7 @@ class Calendar extends PureComponent {
           {isLoading ? (
             <Loader />
           ) : (
-            <Box>
+            <Box pr="2">
               <CalendarView
                 activities={allFilteredActsWithColors}
                 onSelect={this.handleSelectActivity}

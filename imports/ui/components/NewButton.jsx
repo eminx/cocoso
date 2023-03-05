@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Modal,
-  ModalOverlay,
-  Menu as CMenu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Text,
-} from '@chakra-ui/react';
-import { HamburgerIcon, AddIcon } from '@chakra-ui/icons';
+import { Box, Flex, Heading, IconButton, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 const getRoute = (item, index) => {
@@ -26,7 +14,7 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-function HeaderMenu({ canCreateContent, currentHost }) {
+function NewButton({ canCreateContent, currentHost }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
@@ -65,25 +53,7 @@ function HeaderMenu({ canCreateContent, currentHost }) {
   return (
     <Box zIndex="1401">
       <Flex align="center">
-        <Heading size="xl">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Heading>
-        {/* <CMenu placement="bottom" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
-          <MenuButton aria-label="Options" variant="outline">
-            <Flex align="flex-end">
-              <HamburgerIcon fontSize="40px" mr="2" mb="-1px" />
-              <Heading size="xl">{activeMenuItem ? activeMenuItem.label : 'Menu'}</Heading>
-            </Flex>
-          </MenuButton>
-          <MenuList>
-            {menuItems.map((item) => (
-              <Link key={item.label} to={item.route}>
-                <MenuItem px="4" py="3">
-                  <Text fontSize="2xl">{item.label}</Text>
-                </MenuItem>
-              </Link>
-            ))}
-          </MenuList>
-        </CMenu> */}
-        {/* {showNewButton && (
+        {showNewButton && (
           <Link to={getPathname()}>
             <Flex
               align="center"
@@ -93,9 +63,10 @@ function HeaderMenu({ canCreateContent, currentHost }) {
               position="relative"
             >
               <IconButton
-                borderRadius="50%"
+                borderRadius="8px"
                 borderWidth="2px"
-                colorScheme="gray.900"
+                borderColor="gray.900"
+                color="gray.900"
                 icon={<AddIcon fontSize="sm" />}
                 size="sm"
                 variant="outline"
@@ -111,7 +82,7 @@ function HeaderMenu({ canCreateContent, currentHost }) {
               </Text>
             </Flex>
           </Link>
-        )} */}
+        )}
       </Flex>
       <Modal isOpen={isOpen}>
         <ModalOverlay />
@@ -120,4 +91,4 @@ function HeaderMenu({ canCreateContent, currentHost }) {
   );
 }
 
-export default HeaderMenu;
+export default NewButton;

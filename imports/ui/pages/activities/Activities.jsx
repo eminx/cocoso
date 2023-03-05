@@ -205,13 +205,13 @@ function Activities({ history }) {
           </FiltrerSorter>
 
           {currentHost.isPortalHost && (
-            <Box px="8">
+            <Flex px="8" justify={isDesktop ? 'flex-start' : 'center'}>
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}
                 onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
               />
-            </Box>
+            </Flex>
           )}
         </Flex>
       </Box>
@@ -223,7 +223,7 @@ function Activities({ history }) {
               <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                 <NewGridThumb
                   dates={activity.datesAndTimes.map((d) => d.startDate)}
-                  tag={allHosts.find((h) => h.host === activity.host)?.name}
+                  host={allHosts.find((h) => h.host === activity.host)?.name}
                   imageUrl={activity.imageUrl}
                   subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}

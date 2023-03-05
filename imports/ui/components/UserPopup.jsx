@@ -54,8 +54,8 @@ function UserPopup({ currentUser }) {
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton>
-          <Avatar mr="2" showBorder src={currentUser.avatar && currentUser.avatar.src}>
-            {isNotification && <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize=".7em" />}
+          <Avatar showBorder src={currentUser.avatar && currentUser.avatar.src}>
+            {isNotification && <AvatarBadge borderColor="papayawhip" bg="tomato" />}
           </Avatar>
         </MenuButton>
         <MenuList>

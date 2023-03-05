@@ -36,13 +36,13 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
         getOptionLabel={(option) => option.name}
       />
 
-      <Center>
-        <Text fontSize="sm" mt="4">
+      <Box>
+        <Text fontSize="sm" mt="2">
           {t('portalHost.renderInfo', {
             hostName: selectedHost ? selectedHost.name : t('portalHost.allHosts'),
           })}
         </Text>
-      </Center>
+      </Box>
     </Box>
   );
 }

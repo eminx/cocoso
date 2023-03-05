@@ -25,17 +25,17 @@ function FiltrerSorter(props) {
     return (
       <Box mb="2">
         <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-        <Center>
-          <Text fontSize="sm" mb="1">
+        <Box px="2">
+          <Text fontSize="sm" mb="1" mt="1">
             {tc('labels.filterAndSort')}
           </Text>
-        </Center>
+        </Box>
       </Box>
     );
   }
 
   return (
-    <Accordion w="2xl" allowToggle>
+    <Accordion w={isDesktop ? '2xl' : '100%'} allowToggle>
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">
@@ -45,6 +45,11 @@ function FiltrerSorter(props) {
         </AccordionButton>
         <AccordionPanel pb={4}>
           <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+          <Center p="2">
+            <Text fontSize="sm" mb="1">
+              {tc('labels.filterAndSort')}
+            </Text>
+          </Center>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
@@ -61,14 +66,10 @@ function Inputs({
   children,
 }) {
   return (
-    <Flex
-      align="center"
-      justify={isDesktop ? 'space-between' : 'space-around'}
-      wrap={isDesktop ? 'nowrap' : 'wrap'}
-    >
+    <Flex align="center" justify="flex-start" wrap={isDesktop ? 'nowrap' : 'wrap'}>
       <Input
         flexBasis="180px"
-        mb={isDesktop ? '0' : '1'}
+        mb={isDesktop ? '0' : '2'}
         mx="1"
         placeholder={tc('domains.props.title') + '...'}
         value={filterWord}
@@ -77,7 +78,7 @@ function Inputs({
       {children}
       <Select
         flexBasis="180px"
-        mx="1"
+        mx={isDesktop ? '2' : '1'}
         name="sorter"
         value={sorterValue}
         onChange={(e) => setSorterValue(e.target.value)}

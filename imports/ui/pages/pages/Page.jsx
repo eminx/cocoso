@@ -64,8 +64,8 @@ function Page() {
           <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
         </Helmet>
 
-        <Flex mt="8">
-          <Box w="30%" p="4" pl="12">
+        <Flex mt="4">
+          <Box w="280px" p="4" mt="8">
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}

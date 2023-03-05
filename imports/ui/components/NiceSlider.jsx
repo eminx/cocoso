@@ -13,7 +13,7 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
 
   if (images.length === 1) {
     return (
-      <Flex justify={isFade ? 'flex-end' : 'center'}>
+      <Flex justify={isFade ? 'flex-start' : 'center'}>
         <Box>
           <Image
             cursor="pointer"

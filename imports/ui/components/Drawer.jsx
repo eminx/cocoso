@@ -10,26 +10,17 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react';
 
-function Drawer({
-  children,
-  content,
-  footer,
-  placement = 'right',
-  title,
-  isOpen,
-  onClose,
-  ...otherProps
-}) {
+function Drawer({ children, footer, placement = 'right', title, isOpen, onClose, ...otherProps }) {
   return (
     <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{title}</DrawerHeader>
+        {title && <DrawerHeader>{title}</DrawerHeader>}
 
         <DrawerBody>{children}</DrawerBody>
 
-        <DrawerFooter>{footer}</DrawerFooter>
+        {footer && <DrawerFooter>{footer}</DrawerFooter>}
       </DrawerContent>
     </CDrawer>
   );
