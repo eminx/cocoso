@@ -115,11 +115,13 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
         <Flex>
           {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop />}
 
-          <Box id="main-viewport" flexGrow="2" px={isDesktop ? '4' : '0'}>
+          <Box id="main-viewport" flexGrow="2">
             <Box w="100%">
               {isHeaderAndFooter && <Header />}
 
-              <Box style={{ minHeight: '90vh' }}>{children}</Box>
+              <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
+                {children}
+              </Box>
 
               {isHeaderAndFooter && (
                 <Footer currentHost={currentHost} platform={platform} tc={tc} />
