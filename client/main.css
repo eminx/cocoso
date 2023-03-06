@@ -32,6 +32,17 @@ body {
   padding-top: 12px;
 }
 
+.logo {
+  max-width: 160px;
+  max-height: 80px;
+}
+
+@media only screen and (max-width: 400px) {
+  .logo {
+    max-width: 120px;
+  }
+}
+
 .is-terms-page h1,
 .is-terms-page h2,
 .is-terms-page h3 {

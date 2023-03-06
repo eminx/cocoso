@@ -47,13 +47,8 @@ function Header() {
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">
-            <Box maxHeight="80px" w="180px">
-              <Image
-                fit="contain"
-                maxHeight="80px"
-                maxWidth="160px"
-                src={currentHost && currentHost.logo}
-              />
+            <Box maxHeight="80px" maxWidth="160px">
+              <Image className="logo" fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>
         </Box>
