@@ -56,7 +56,7 @@
     "moment": "^2.26.0",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
-    "react-big-calendar": "^0.33.6",
+    "react-big-calendar": "^1.6.8",
     "react-color": "^2.19.3",
     "react-csv": "^2.2.2",
     "react-datepicker": "^4.6.0",
