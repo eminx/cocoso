@@ -27,12 +27,17 @@ Meteor.methods({
 
   getAllActivities(onlyPublic = false) {
     const host = getHost(this);
-
     try {
-      return Activities.find({
-        host,
-        isPublicActivity: onlyPublic,
-      }).fetch();
+      if (onlyPublic) {
+        return Activities.find({
+          host,
+          $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+        }).fetch();
+      } else {
+        return Activities.find({
+          isPublicActivity: false,
+        });
+      }
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
