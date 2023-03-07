@@ -28,8 +28,13 @@ body {
 
 #main-viewport {
   height: 100%;
-  background-repeat: no-repeat;
-  padding-top: 12px;
+  width: calc(100% - 72px);
+}
+
+@media (max-width: 960px) {
+  #main-viewport {
+    width: 100%;
+  }
 }
 
 .logo {
@@ -37,7 +42,7 @@ body {
   max-height: 80px;
 }
 
-@media only screen and (max-width: 400px) {
+@media (max-width: 400px) {
   .logo {
     max-width: 120px;
   }
