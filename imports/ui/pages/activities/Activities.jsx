@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 

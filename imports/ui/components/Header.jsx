@@ -43,7 +43,7 @@ function Header() {
   const currentHostName = currentHost?.settings?.name;
 
   return (
-    <Box px={isDesktop ? '8' : '4'} py="4" w="100%">
+    <Box px={isDesktop ? '8' : '4'} py="4" mt="4" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">

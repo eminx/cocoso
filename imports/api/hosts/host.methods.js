@@ -34,6 +34,7 @@ Meteor.methods({
             id: currentUser._id,
             role: 'admin',
             username: currentUser.username,
+            isPublic: false,
           },
         ],
         emails: defaultEmails,
