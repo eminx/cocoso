@@ -9,9 +9,7 @@ export default ChangeLanguage = ({ select, register }) => {
     return (
       <Box p="4">
         <Menu>
-          <MenuButton textTransform="uppercase" fontWeight="bold">
-            {i18n.language}
-          </MenuButton>
+          <MenuButton fontWeight="bold">{t(`common:langs.${i18n.language}`)}</MenuButton>
           <MenuList>
             {i18n.languages.map((lang) => (
               <MenuItem
