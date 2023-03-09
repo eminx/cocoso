@@ -33,7 +33,7 @@ function Tabs({ tabs, children, ...otherProps }) {
             </Link>
           ) : (
             <CLink key={tab.title} style={linkStyle} _hover={{ textDecoration: 'none' }}>
-              <Tab color="#06c" {...tabProps} onClick={tab.onClick}>
+              <Tab {...tabProps} onClick={tab.onClick}>
                 {tab.title}
                 {tab.badge && (
                   <Badge colorScheme="red" size="xs" mt="-2">

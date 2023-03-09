@@ -15,20 +15,26 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
 
   return (
     <Box m="6" mb="40px">
-      <Box className="text-link-container">
+      <Box className="text-link-container" position="relative">
         <LazyLoadImage
           alt={title}
           effect="blur"
           fit="contain"
           src={imageUrl}
           style={{
-            maxHeight: 320,
-            marginBottom: 12,
+            position: 'relative',
+            maxHeight: 260,
+            marginBottom: 6,
           }}
         />
-        <Flex align="flex-start" justify="space-between" mb="2">
+        {host && currentHost.isPortalHost && (
+          <Box position="absolute" top="0" right="0" pl="2" pb="2" bg="white">
+            <Tag border="1px solid #2d2d2d" label={host} />
+          </Box>
+        )}
+        <Flex align="flex-start" justify="space-between">
           <Box pr="2" maxW={300}>
-            <Heading className="text-link" fontSize="1.3rem" fontWeight="light" mb="2">
+            <Heading className="text-link" fontSize="1.3rem" fontWeight="light" mb="1">
               {title}
             </Heading>
             {subTitle && (
@@ -36,8 +42,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
                 {subTitle}
               </Heading>
             )}
-            <HStack py="3" spacing="4">
-              {host && currentHost.isPortalHost && <Tag border="1px solid #2d2d2d" label={host} />}
+            <HStack py="2" spacing="4">
               {tag && <Tag filterColor={color} label={tag} />}
             </HStack>
           </Box>

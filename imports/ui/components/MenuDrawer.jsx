@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  MenuList,
+  MenuItem,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 import Drawer from './Drawer';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
@@ -92,7 +102,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
       </Center>
 
       <Drawer isOpen={isOpen} placement="right" title={t('menu.label')} onClose={onToggle}>
-        <VStack align="flex-start" pt="8">
+        <VStack align="flex-start">
           {menuItems.map((item) => (
             <Link key={item.label} to={item.route} onClick={onToggle}>
               <Box px="4" py="2">

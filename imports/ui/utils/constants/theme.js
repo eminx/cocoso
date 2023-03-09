@@ -50,7 +50,7 @@ const chakraTheme = extendTheme({
   styles: {
     global: {
       a: {
-        color: '#06c',
+        // color: '#06c',
       },
     },
   },
