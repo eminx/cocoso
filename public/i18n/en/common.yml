@@ -2,6 +2,7 @@
 langs:
   en: English
   sv: Svenska
+  tr: Türkçe
   form:
     label: Preferred Language
     holder: Select a language

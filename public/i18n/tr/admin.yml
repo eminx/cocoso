@@ -1,0 +1,26 @@
+# ADMIN EMAILS PAGE
+emails:
+  label: Otomatik Epostalar
+  form:
+    subject:
+      label: Konu
+      holder: Hoşgeldin
+    appeal:
+      label: Çağrış
+      holder: Sevgili
+      addon: '@username'
+    body:
+      label: Açıklama
+
+# ADMIN STATIC PAGES
+pages:
+  actions:
+    delete: Bu sayfayı sil
+    backTo: geri dön
+  form:
+    title:
+      label: Başlık
+      holder: Katkı sağlama
+    desc:
+      label: Açıklama
+      holder: Katkı sağlama prosedürünün işleyiş şekli...

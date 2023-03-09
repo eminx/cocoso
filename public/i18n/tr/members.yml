@@ -1,0 +1,88 @@
+# ADMIN MEMBERS PAGE
+label: Members
+
+all: All
+
+joinedAt: joined {{ date }}
+
+roles:
+  participant: Participant
+  contributor: Cocreator
+  admin: Admin
+  plural:
+    participants: Participants
+    contributors: Cocreators
+    admins: Admins
+
+form:
+  sort:
+    date: Date joined
+    user: Username
+  holder: username or email
+
+actions:
+  contributor: Set as a cocreator
+  participant: Revert back as a participant
+  usageReport: See usage report
+
+message:
+  success:
+    contributor: '{{ username }} is now set as a cocreator'
+    participant: '{{ username }} is now set back as a participant'
+  contact:
+    empty: No contact info registered for {{ username }}
+  activity:
+    empty: Nothing published just yet
+    info: '{{ username }} have not been very active so far'
+  access:
+    contributor: You have to become a cocreator to {{ action }}
+  guest: You have to create an account to launch your market
+  usage:
+    noUsage: No usage is recorded for this user
+
+profile:
+  labels:
+    info: Personal Info
+    avatar: Avatar
+  form:
+    firstname:
+      label: First name
+    lastname:
+      label: Last name
+    bio:
+      label: Bio
+    contact:
+      label: Contact Info
+  message:
+    role: You as {{username}} are part of this organisation with the {{role}} role
+
+works:
+  label: My Works
+
+  title:
+    label: Title
+    holder: Mango Juice in Bottles...
+  shortDesc:
+    label: Short description
+    holder: Sweet, Natural & Refreshing
+  category:
+    label: Category
+    holder: Choose option
+  longDesc:
+    label: Description
+    holder: My Mango juice is handpicked from the trees and...
+  addInfo:
+    label: Additional info
+    holder: A bottle costs...
+  images:
+    label: Images ({{ count }})
+
+report:
+  title: Consumption Report for {{username}}
+  table:
+    title: Title
+    resource: Resource
+    start: Start
+    end: End
+    consumption: Consumption
+    total: hours in total

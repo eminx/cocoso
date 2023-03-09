@@ -1,0 +1,103 @@
+label:
+  new: Yeni bir aktivite oluştur
+  edit: Aktiviteyi düzenle
+
+form:
+  switch:
+    public: Herkese açık etkinlik
+    exclusive: Eksklusif (başkaları bu tarih ve kaynağı ayıramaz)
+    rsvp: Kayıt olma gerekmez
+  resource:
+    label: Kaynak
+    holder: Ayırmak için bir kaynak seç
+  occurences:
+    label: Tekrarlar*
+  days:
+    single: Gün
+    multiple: Birden fazla gün
+  date:
+    start: Başlangıç günü
+    finish: Bitiş günü
+  time:
+    start: Başlangıç saati
+    finish: Bitiş saati
+  capacity:
+    label: Kapasite
+  details:
+    label: Detaylar
+  title:
+    label: Başlık
+    holder: Bir başlık ver
+    helper: Tipik olarak etkinliğin başlığı
+  subtitle:
+    label: Alt başlık
+    holder: Bir alt başlık ver
+    helper: Mesela sanatçının ismi ya da etkinliğin formu
+  desc:
+    label: Açıklama
+  place:
+    label: Yer
+    holder: Atmosfer
+  address:
+    label: Adres
+    holder: 17. cadde, Çukurcuma...
+  image:
+    label: İmaj
+  submit: 'Onayla ve oluştur'
+  waiting: 'Aktivite oluşturuluyor...'
+  conflict:
+    alert: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var:'
+    notExclusiveInfo: 'Her iki aktivite de eksklusif olmadığı için devam edip rezervasyonunu tamamlayabilirsin'
+
+members:
+  label: Aktivitelerim
+  tabs:
+    all: Hepsi
+    public: Halka açık
+    private: Özel
+  occurences: tekrarlar
+
+public:
+  labels:
+    address: Adres
+    dates: Zaman
+    datesAndRegistration: Zaman ve Kayıt
+    info: Bilgi
+    location: Yer
+    resource: Kaynak
+  register:
+    label: Kayıt ol
+    form:
+      name:
+        first: Ad
+        last: Soyad
+      email: Eposta adresş
+      people:
+        label: Katılımcılar
+        number: Katılımcı sayısı
+      loading: Gönderiliyor
+      actions:
+        create: Kayıt ol
+        update: Güncelle
+        remove: Kaydını iptal et
+    email: Bu eposta adresi zaten kayıt olunmuş, lütfen güncelleme seçeneğini seçiniz
+    notFound: Üzgünüz, kaydını bulamadık. Lütfen zamanları ve diğer bilgileri tekrar kontrol edin ve tekrar dene
+    disabled:
+      true: Kayıt devre dışı bırakıldı. Lütfen pratik bilgileri kontrol edin.
+      false: Kayıt olmak için tarihlere tıklayıp açarak, bilgilerini girebilirsin
+      info: Kayıtlar şu an alınmıyor
+  attandence:
+    label: Katılımcılar
+    create: Katılımını başarıyla kaydettik. Hoş gelirsin!
+    update: Katılımını başarıyla güncelledik. Hoş gelirsin!
+    remove: Katılımını başarıyla iptal ettik. Gene bekleriz!
+  capacity:
+    full: Kapasite doldu.
+    fullByYou: Tebrikler! Sonuncu yeri kaptın!
+  cancel:
+    label: Varolan kaydını güncelle ya da iptal et
+    found: Şimdi lütfen devam et
+    notFound: Lütfen kayıt bilgilerini gir
+  past: Etkinlik geçti
+  acceess:
+    deny: Sadece oluşturucu rolündeki kullanıcılara açık

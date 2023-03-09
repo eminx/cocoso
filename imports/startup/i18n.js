@@ -9,7 +9,7 @@ import yaml from 'js-yaml';
 import Hosts from '../api/hosts/host';
 
 const defaultLang = 'en';
-const allLangs = [defaultLang, 'sv'];
+const allLangs = [defaultLang, 'sv', 'tr'];
 const options = {
   lng: defaultLang,
   fallbackLng: allLangs,

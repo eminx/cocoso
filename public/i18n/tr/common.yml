@@ -1,0 +1,181 @@
+# LANGUAGE KEYS
+langs:
+  en: English
+  sv: Svenska
+  tr: Türkçe
+  form:
+    label: Tercih edilen dil
+    holder: Bir dil tercih et
+
+# ALL ACTION BUTTON LABELS
+actions:
+  create: Yeni
+  update: Düzenle
+  remove: Sil
+  submit: Onayla
+  send: Gönder
+  cancel: İptal et
+  close: Kapat
+  reset: Yenile
+  add: Ekle
+  print: Yazdır
+  logout: Çıkış yap
+  downloadCSV: CSV indir
+  confirmRead: Okudum ve kabul ediyorum
+  toThePage: {{ hostName }} sayfasına git
+
+# ACTION PAGE TITLES
+labels:
+  activity: Aktivite
+  all: Tümü
+  booked: ayrıldı
+  contact: İLetişim
+  create: Yeni {{ domain }} Oluştur
+  event: Etkinlik
+  bookings: Rezervasyon
+  newBooking: Yeni Rezervasyon
+  page: Sayfa
+  process: Süreç
+  remove: Kaldır
+  info: Bilgi
+  extra: Eksta
+  discussion: Tartışma
+  combo: Kombo
+  sortBy:
+    placeholder: Sırala
+    date: Tarih
+    name: İsim
+  update: {{ domain }} güncelle
+  unselected: Kaynak seçilmedi
+  admin:
+    actions: Admin
+  past: Geçmiş
+  upcoming: Gelecek
+  filterAndSort: Filtrele & Sırala
+
+# ALL CLIENT-SIDE NOTIFICATIONS
+message:
+  loading: {{ something }} yükleniyor ...
+
+  success:
+    create: '{{ domain }} oluşturuldu'
+    update: '{{ domain }} güncellendi'
+    remove: '{{ domain }} silindi'
+    save: '{{ domain }} kaydedildi'
+
+  error:
+    imageRequired: İmaj gerekiyor
+
+  access:
+    deny: Bunun için iznin yok
+    admin: Bir {{ domain }} oluşturmak için süper admin olmalısın.
+    contributor: {{ domain }} oluşturmak için oluşturucu ya da admin olmalısın.
+    register: {{ domain }} oluşturmak için kayıt olmalısın.
+
+  exists: {{ property }} bir {{ domain }} zaten var
+  valid:
+    required: '{{ field }} boş olamaz'
+    email: '{{ field }} geçerli bir eposta adresi olmalı'
+    min: '{{ field }} minimum {{ min }} karakterden oluşmalı'
+
+# MODAL POP-UPS
+modals:
+  confirm:
+    delete:
+      title: Silmeyi onayla
+      body: {{ domain }} silmek istediğine emin misin?
+      yes: Evet, sil
+
+  # FEEDBACK FORM
+  feedback:
+    label: Geri bildirim
+    form:
+      email:
+        label: Eposta adresin
+      subject:
+        label: Konu
+        select:
+          suggest: Öneri
+          bug: Bug
+          compliment: İltifat
+      details:
+        label: Detaylar
+
+# GUEST | MEMBER | ADMIN MENU LABELS
+menu:
+  guest:
+    login: Giriş
+  member:
+    label: Ben
+    profile: Profiilm
+    activities: Aktivitelerim
+    works: İşlerim
+  admin:
+    label: Admin
+    settings: Ayarlar
+    members: Üyeler
+    resources: Kaynaklar
+    emails: Epostalar
+  notifications:
+    label: Bildirimler
+
+plugins:
+  fileDropper:
+    replace: Bir başka imajla değiştirmek istersen, dosya seçiciyi yeniden açmak için resmin üzerine tıkla.
+    single: Lütfen her seferinde yalnızca bir dosya bırak.
+    helper: İmaj bırak veya seç
+    helperMultiple: İmajlar bırak veya seç
+
+domains:
+  a: bir
+  your: Senin
+  public: Halka açık
+  bio: Hakkında
+  calendar: Takvim
+  activity: Aktivite
+  activities: Aktiviteler
+  process: Süreç
+  processes: Süreçler
+  resource: Kaynak
+  resources: Kaynaklar
+  work: İş
+  works: işler
+  host: host
+  page: sayfa
+  profile: profil
+
+  settings: Ayarlar
+  email: eposta
+
+  account: hesap
+  data: veri
+  avatar: avatar
+  static: static
+
+  props:
+    name: isim
+    title: başlık
+
+documents:
+  label: Dokümanlar
+  empty: Doküman eklenmedi
+  drop: Doküman eklemek için sürükleyin ya da tıklayıp seçin
+  up: yükleniyor
+  remove: Belge başarıyla kaldırıldı
+  fileDropper: başarıyla yüklendi ve atandı
+  acceptedFormats: Kabul edilen formatlar
+  maxSize: Maksimum boyut
+
+bookings:
+  empty: Henüz rezervasyon yok
+
+terms:
+  title: Servis Şartları ve Gizlilik Politikası
+
+images:
+  countLabel: Imajlar ({{ count }})
+
+platform:
+  title: Toplulukları gör
+  communitiesIn: {{ platform }} Topluluklar
+  membersCount: '{{ membersCount }} üye'

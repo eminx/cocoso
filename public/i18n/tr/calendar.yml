@@ -1,0 +1,28 @@
+bigCal:
+  date: Gün
+  time: Saat
+  event: Etkinlik
+  allDay: Tüm gün
+  week: Hafta
+  work_week: Çalışma Haftası
+  day: Gün
+  month: Ay
+  previous: Geri
+  next: İleri
+  yesterday: Dün
+  tomorrow: Yarın
+  today: Bugün
+  agenda: Ajanda
+  noEventsInRange: Bu aralıkta etkinlik yok
+  showMore: '{{ total }} daha fazla'
+
+datePicker:
+  labels:
+    select: {{ opt }} seç
+    date: Gün
+    time: Zaman
+    datetime: Gün ve Saat
+  formats:
+    date: yyyy-MM-dd
+    time: HH:mm
+    datetime: yyyy-MM-dd  HH:mm

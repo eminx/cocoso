@@ -1,0 +1,92 @@
+actions:
+  signup: Kayıt ol
+  login: Giriş
+  logout: Çıkış
+  forgot: Şifreni unuttun mu?
+  reset: Şifreni yenile
+
+login:
+  labels:
+    title: Hesabına Giriş Yap
+    subtitle: Hesabın yok mu?
+  form:
+    username:
+      label: Kullanıcı adın ya da eposta adresin
+    password:
+      label: Şifre
+  messages:
+    error:
+      username: Kullanıcı bulunamadı
+      password: Şifre yanlış
+    success: Başarılı giriş yaptın
+
+logout:
+  messages:
+    success: Çıkış yapıldı
+
+signup:
+  labels:
+    title: Yeni Hesap Aç
+    subtitle: Hesabın var mı?
+  form:
+    username:
+      label: Kullanıcı adı
+      helper: Minimum 4 karakter, sadece küçük harfler ve rakamlardan oluşan
+    email:
+      label: Eposta adresi
+    password:
+      label: Şifre
+      helper: Minimum 8 karakter, en az bir tanesi küçük harf, bir tanesi büyük harf, bir tanesi de rakam
+      info: Şifreniz enkript edilir (sistem sahipleri erişemez)
+    terms:
+      label: {{ terms }} okudum, anladım ve kabul ediyorum 
+      terms: hizmet şartları ve gizlilik politikası
+
+password:
+  labels:
+    title: Şifreyi yenile
+    subtitle:
+      forgot: Parolanı unuttuysan, e-postana gönderilen bir link aracılığıyla sıfırla.
+      reset: Arzuladığın şifreyi oluştur
+  form:
+    email:
+      label: Lütfen eposta adresini yaz
+  message:
+    linkSend: Yenileme linki eposta adresine gönderildi
+    checkMail: Lütfen e-postanı kontrol et ve şifreni sıfırlamak için gönderilen linke tıkla.
+    reset: Parolan başarıyla sıfırlandı. Şimdi giriş yapabilirsin.
+
+profile:
+  label: Kişisel bilgiler
+  join: Katıl
+  joinAsParticipantQuestion: Bu organizasyona katılımcı rolü ile katılmak ister misin?
+
+  form:
+    avatar:
+      label: Avatar
+      fileDropper: Yüklemek için imaj tıkla ya da sürükle
+      remove: Kaldır
+    firstname:
+      label: Ad
+    lastname:
+      label: Soyad
+    bio:
+      label: Hakkında Bilgi
+    contact:
+      label: İletişim Bilgisi
+
+  message:
+    role: <bold>{{ username }}</bold> olarak sen, bu toplulukta <bold>{{ role }}</bold> rolündesin
+    participant: Katılımcı olarak rolün başarıyla gerçekleştirildi
+    deny: Bu topluluğun bir üyesi değilsin
+    notfound: Bu toplulukta bu kullanıcı adına sahip bir kullanıcı bulunamadı veya aradığınız kullanıcı profilini gizli tutmayı tercih etti
+
+  makePublic:
+    label: Profilimi açık yap
+    helperText: Açık olduğunda profiliniz görünür olacak
+
+delete:
+  action: Hesabımı Sil
+  label: Silmeyi onayla
+  title: Emin misin?
+  body: Tüm hesabını ve onunla ilişkili ilgili verileri kalıcı olarak silmek üzeresin. Bu geri dönüşü olmayan bir eylemdir. Emin misin?
