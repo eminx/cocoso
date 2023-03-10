@@ -10,36 +10,36 @@ import Hosts from '../api/hosts/host';
 
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
+const namespaces = [
+  'common',
+  'accounts',
+  'members',
+  'hosts',
+  'admin',
+  'activities',
+  'processes',
+  'calendar',
+  'resources',
+];
+
 const options = {
-  lng: defaultLang,
-  fallbackLng: allLangs,
-  supportedLngs: allLangs,
-  preload: [defaultLang],
-  load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
-  // have a common namespace used around the full app
-  ns: [
-    'common',
-    'accounts',
-    'members',
-    'hosts',
-    'admin',
-    'activities',
-    'processes',
-    'calendar',
-    'resources',
-  ],
-  defaultNS: 'common',
-  // saveMissing: true,
-  // debug: true,
+  allowMultiLoading: true,
   backend: {
     loadPath: '/i18n/{{lng}}/{{ns}}.yml',
-    parse(data) {
+    parse: function (data) {
       return yaml.load(data);
     },
   },
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-  },
+  debug: true,
+  defaultNS: 'common',
+  fallbackLng: defaultLang,
+  lng: defaultLang,
+  load: 'languageOnly',
+  ns: namespaces,
+  only: '*',
+  preload: allLangs,
+  saveMissing: true,
+  supportedLngs: allLangs,
   useSuspense: process && !process.release,
 };
 
