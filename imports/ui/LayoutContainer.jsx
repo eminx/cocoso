@@ -205,10 +205,7 @@ function Footer({ currentHost, tc }) {
             </Box>
           </Flex>
         </Center>
-        <Flex align="flex-start" direction="row-reverse" justify="space-between" mt="2" w="100%">
-          <Box size="sm">
-            <ChangeLanguage />
-          </Box>
+        <Flex align="center" direction="row-reverse" justify="center" mt="2" w="100%">
           <Box size="sm">
             <FeedbackForm />
           </Box>

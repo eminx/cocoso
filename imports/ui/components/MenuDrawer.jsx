@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  IconButton,
-  MenuList,
-  MenuItem,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-
-import Drawer from './Drawer';
+import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
+
+import Drawer from './Drawer';
+import ChangeLanguageMenu from './ChangeLanguageMenu';
 
 const getRoute = (item, index) => {
   if (index === 0) {
@@ -60,24 +51,28 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
               </Flex>
             </Center>
           ) : (
-            <Box pt="4">
-              <Flex align="flex-start" justify="space-between">
-                <Heading fontSize="24px" px="4" mt="2">
-                  {t('menu.label')}
-                </Heading>
-                <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
-              </Flex>
+            <Flex flexDirection="column" h="100%" justify="space-between" overflowY="auto">
+              <Box pt="4">
+                <Flex align="flex-start" justify="space-between">
+                  <Heading fontSize="24px" px="4" mt="2">
+                    {t('menu.label')}
+                  </Heading>
+                  <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
+                </Flex>
 
-              <VStack align="flex-start" p="4" mt="4">
-                {menuItems.map((item) => (
-                  <Link key={item.label} to={item.route} onClick={onToggle}>
-                    <Box px="4" pb="2">
-                      <Text fontSize="lg">{item.label}</Text>
-                    </Box>
-                  </Link>
-                ))}
-              </VStack>
-            </Box>
+                <VStack align="flex-start" p="4" mt="4">
+                  {menuItems.map((item) => (
+                    <Link key={item.label} to={item.route} onClick={onToggle}>
+                      <Box px="4" pb="2">
+                        <Text fontSize="lg">{item.label}</Text>
+                      </Box>
+                    </Link>
+                  ))}
+                </VStack>
+              </Box>
+
+              <Footer />
+            </Flex>
           )}
         </Box>
       </Box>
@@ -86,32 +81,43 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 
   return (
     <Box>
-      <Center>
-        <Flex flexDirection="column" align="center">
-          <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
-          <Text
-            fontSize="12px"
-            fontWeight="bold"
-            position="absolute"
-            top="68px"
-            textTransform="uppercase"
-          >
-            {t('menu.label')}
-          </Text>
-        </Flex>
-      </Center>
+      <Flex flexDirection="column" align="center">
+        <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
+        <Text
+          fontSize="12px"
+          fontWeight="bold"
+          position="absolute"
+          top="68px"
+          textTransform="uppercase"
+        >
+          {t('menu.label')}
+        </Text>
+      </Flex>
 
       <Drawer isOpen={isOpen} placement="right" title={t('menu.label')} onClose={onToggle}>
-        <VStack align="flex-start">
-          {menuItems.map((item) => (
-            <Link key={item.label} to={item.route} onClick={onToggle}>
-              <Box px="4" py="2">
-                <Text fontSize="lg">{item.label}</Text>
-              </Box>
-            </Link>
-          ))}
-        </VStack>
+        <Flex flexDirection="column" h="100%" justify="space-between">
+          <VStack align="flex-start">
+            {menuItems.map((item) => (
+              <Link key={item.label} to={item.route} onClick={onToggle}>
+                <Box px="4" py="2">
+                  <Text fontSize="lg">{item.label}</Text>
+                </Box>
+              </Link>
+            ))}
+          </VStack>
+          <Box mt="4">
+            <Footer />
+          </Box>
+        </Flex>
       </Drawer>
+    </Box>
+  );
+}
+
+function Footer() {
+  return (
+    <Box>
+      <ChangeLanguageMenu />
     </Box>
   );
 }
