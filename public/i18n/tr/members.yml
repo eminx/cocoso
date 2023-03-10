@@ -1,88 +1,88 @@
 # ADMIN MEMBERS PAGE
-label: Members
+label: Üyeler
 
-all: All
+all: Tümü
 
-joinedAt: joined {{ date }}
+joinedAt: {{ date }} katıldı
 
 roles:
-  participant: Participant
-  contributor: Cocreator
+  participant: Katılımcı
+  contributor: Oluşturucu
   admin: Admin
   plural:
-    participants: Participants
-    contributors: Cocreators
-    admins: Admins
+    participants: Katılımcılar
+    contributors: Oluşturucular
+    admins: Adminler
 
 form:
   sort:
-    date: Date joined
-    user: Username
-  holder: username or email
+    date: Katıldığı tarih
+    user: Kullanıcı adı
+  holder: kullanıcı adı ya da eposta adresi
 
 actions:
-  contributor: Set as a cocreator
-  participant: Revert back as a participant
-  usageReport: See usage report
+  contributor: Oluşturucu yap
+  participant: Katılımcı yap
+  usageReport: Kullanım raporunu görüntüle
 
 message:
   success:
-    contributor: '{{ username }} is now set as a cocreator'
-    participant: '{{ username }} is now set back as a participant'
+    contributor: '{{ username }} oluşturucu yapıldı'
+    participant: '{{ username }} katılımcı yapıldı'
   contact:
-    empty: No contact info registered for {{ username }}
+    empty: {{ username }} iletişim bilgisini girmemiş
   activity:
-    empty: Nothing published just yet
-    info: '{{ username }} have not been very active so far'
+    empty: Henüz hiçbir şey yayınlanmamış
+    info: '{{ username }} henüz çok aktif olmamış'
   access:
-    contributor: You have to become a cocreator to {{ action }}
-  guest: You have to create an account to launch your market
+    contributor: {{ action }} için oluşturucu olman gerek
+  guest: İşlerini yayınlaman için oluşturucu ya da admin olman gerek
   usage:
-    noUsage: No usage is recorded for this user
+    noUsage: Bu kullanıcı henüz bir kaynak kullanmamış
 
 profile:
   labels:
-    info: Personal Info
+    info: Kişisel bilgiler
     avatar: Avatar
   form:
     firstname:
-      label: First name
+      label: Ad
     lastname:
-      label: Last name
+      label: Soyad
     bio:
-      label: Bio
+      label: Hakkında
     contact:
-      label: Contact Info
+      label: İletişim
   message:
-    role: You as {{username}} are part of this organisation with the {{role}} role
+    role: {{username}} olarak sen, {{role}} rolüyle bu topluluğun bir parçasısın
 
 works:
-  label: My Works
+  label: İşlerim
 
   title:
-    label: Title
-    holder: Mango Juice in Bottles...
+    label: Başlık
+    holder: Şişede taze nar suyu...
   shortDesc:
-    label: Short description
-    holder: Sweet, Natural & Refreshing
+    label: Kısa Açıklama
+    holder: Tatlı, Doğal ve Serinletici...
   category:
-    label: Category
-    holder: Choose option
+    label: Kategori
+    holder: Bir seçenek seç
   longDesc:
-    label: Description
-    holder: My Mango juice is handpicked from the trees and...
+    label: Açıklama
+    holder: Nar sularımız çiftliğimizden ellerimizle toplanıp sevgiyle sıkılıp şişelenirler...
   addInfo:
-    label: Additional info
-    holder: A bottle costs...
+    label: Ekstra info
+    holder: Bir şişenin tanesi 80TL...
   images:
-    label: Images ({{ count }})
+    label: İmajlar ({{ count }})
 
 report:
-  title: Consumption Report for {{username}}
+  title: {{username}} için Kullanım Raporu
   table:
-    title: Title
-    resource: Resource
-    start: Start
-    end: End
-    consumption: Consumption
-    total: hours in total
+    title: Başlık
+    resource: Kaynank
+    start: Başlangıç
+    end: Bitiş
+    consumption: Kullanım
+    total: toplam saat

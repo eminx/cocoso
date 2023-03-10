@@ -1,129 +1,129 @@
 labels:
-  archived: Archived
-  unarchived: Unarchive
-  member: Members
-  date: Dates
-  invite: Manage access
-  attendees: Attendees
-  meetings: Meetings
+  archived: Arşivlenmiş
+  unarchived: Aktifleştirildi
+  member: Üyeler
+  date: Tarihler
+  invite: Erişimi Yönet
+  attendees: Katılımcılar
+  meetings: Buluşmalar
 
 tabs:
-  active: Active
-  members: My
-  archived: Archived
+  active: Aktif
+  members: Benim
+  archived: Arşivlenmiş
   process:
-    info: Info
-    discuss: Discussion
+    info: Bilgi
+    discuss: Tartışma
 
 form:
   private:
-    label: Private (invite-only)
+    label: Gizli (sadece davet ile)
     tooltip:
-      title: Private Processes
-      P1: Private processes are only visible by their members, and participation is possible only via invites by their admins. You can not change it to public after you've created it.
-      P2: You will be able to manage the invites after you create the process.
+      title: Gizli Süreçler
+      P1: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsiniz.
+      P2: Süreci oluşturduktan sonra davetleri yönetebileceksiniz.
   image:
-    label: Image
+    label: İmaj
   title:
-    label: Title
-    holder: Understanding Benjamin
+    label: Başlık
+    holder: Benjamin'i Anlamak...
   subtitle:
-    label: Subtitle
-    holder: Through Illuminations
+    label: Alt Başlık
+    holder: Illuminations ile...
   desc:
-    label: Description
+    label: Açıklama
   capacity:
-    label: Capacity
-  submit: Confirm and Create Process
-  waiting: Creating your process...
+    label: Kapasite
+  submit: Onayla ve Oluştur
+  waiting: Oluşturuluyor...
 
 message:
-  archived: Process is successfully archived
-  unarchived: Process is successfully unarchived
+  archived: Başarılı şekilde arşivlendi
+  unarchived: Başarılı şekilde aktifleştirildi
 
-  joined: You are already a member!
-  added: You are added to the process
-  removed: You are removed from the process
+  joined: Sen zaten üyesin!
+  added: Başarılı şekilde eklendin
+  removed: Başarılı şekilde çıkarıldın
 
 actions:
-  this: Join
-  join: Join
-  leave: Leave
-  archive: Archive
-  unarchive: Unarchive
+  this: Katıl
+  join: Katıl
+  leave: Ayrıl
+  archive: Arşivle
+  unarchive: Aktifleştir
 
 meeting:
   attends:
-    remove: You are successfully removed from the list!
-    register: Your attendance is successfully registered!
+    remove: Listeden başarıyla çıkarıldın!
+    register: Katılımın başarıyla kaydedildi!
   access:
-    join: Please join the process to attend the meeting
-    logged: Please login and join the process to attend the meeting
-    remove: Sorry. Currently you can not delete meetings which have attendees registered to attend
+    join: Toplantıya katılmak için öncelikle lütfen katıl
+    logged: Toplantıya katılmak için lütfen önce giriş yap ve katıl
+    remove: Üzgünüz. Şu anda, kayıtlı katılımcıların olduğu toplantıları silemezsin.
   success:
-    add: Your process meeting is added
-    remove: The meeting is successfully removed
-    fileDropper: is successfully uploaded and assigned to this process
-    admin: New admin successfully added
+    add: Buluşman eklendi!
+    remove: Buluşma başarılı şekilde silindi
+    fileDropper: dosya(lar) başarılı şekilde eklendi
+    admin: Yeni admin başarılı şekilde eklendi
   actions:
-    remove: Delete this meeting
-    makeAdmin: Make admin
+    remove: Bu buluşmayı sil
+    makeAdmin: Admin yap
   isAttending:
-    false: Cannot make it
-    true: Register attendance
+    false: Gelemiyorum
+    true: Kayıt yap
   info:
-    empty: No meeting scheduled yet
-    member: Click and open the date to RSVP
-    admin: Open the dates to see the attendees
+    empty: Henüz gelecek bir buluşma oluşturulmadı
+    member: Kayıt için tarihe tıkla ve aç
+    admin: Katılımcıları görmek için tarihe tıkla ve aç
   form:
-    label: Add a Meeting
-    date: Select Day
+    label: Buluşma ekle
+    date: Gün seç
     time:
-      start: Start time
-      end: Finish time
-    switch: At {{ place }}?
-    resource: Select resource
-    location: Location
-    submit: Add Meeting
+      start: Başlama zamanı
+      end: Bitiş zamanı
+    switch: {{ place }} ?
+    resource: Kaynak seç
+    location: Yer
+    submit: Buluşma ekle
 
 confirm:
-  check: Are you sure?
+  check: Emin misin?
   title:
-    text: Confirm {{ opt }} to  the process
+    text: {{ opt }} onayla
     opts:
-      leave: leaving
-      join: participation to
+      leave: ayrılıyor
+      join: katılım
   body:
-    text: Are you sure you want to this {{ opt }} Process?
+    text: istediğine emin misin {{ opt }}
     opts:
-      leave: leave
-      join: join
+      leave: katılmak
+      join: ayrılmak
   admin:
-    title: Please confirm you want to make {{ admin }} an admin for this process.
-    body: When you confirm, you will share the same privileges with {{ admin }} for this process hereafter.
+    title: {{ admin }} admin yapmak istediğine emin misin?
+    body: Onayladığında bundan sonra bu işlem için {{ admin }} ile aynı ayrıcalıkları paylaşacaksınız.
 
 invite:
-  info: Please add data for the person you want to invite to the process
-  success: An email is sent and {{ name }} is successfully invited to the process
+  info: Lütfen davet etmek istediğin kişi için veri ekle
+  success: Bir e-posta gönderildi ve {{ name }} başarıyla davet edildi
   email:
-    label: email
-    holder: samuel@skogen.pm
-    already: This email address is already added
-    valid: Please enter a valid email
+    label: eposta adresi
+    holder: murat@skogen.pm
+    already: Bu eposta adresi zaten eklenmiş
+    valid: Lütfen geçerli bir eposta adresi gir
   firstName:
-    label: first name
-    holder: Samuel
-    valid: Please enter a valid first name
-  submit: Send Invite
+    label: Ad
+    holder: Murat
+    valid: Lütfen geçerli bir ad gir
+  submit: Daveti gönder
 
 modal:
   join:
-    title: Confirm Joining
-    body: Are you sure you want to join {{ title }}?
+    title: Katılmayı onayla
+    body: Katılmak istediğine emin misin {{ title }}?
   leave:
-    title: Confirm Leaving
-    body: Are you sure you want to leave {{ title }}?
+    title: Ayrılmayı onayla
+    body: Ayrılmak istediğine emin misin {{ title }}?
 
 private:
-  title: private
-  info: Private processes are only visible by their members, and participation is possible only via invites by their admins.
+  title: Gizli
+  info: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece adminlerinin daveti ile mümkündür.
