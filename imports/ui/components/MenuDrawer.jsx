@@ -81,15 +81,9 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 
   return (
     <Box>
-      <Flex flexDirection="column" align="center">
+      <Flex flexDirection="column" align="center" position="relative">
         <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
-        <Text
-          fontSize="12px"
-          fontWeight="bold"
-          position="absolute"
-          top="68px"
-          textTransform="uppercase"
-        >
+        <Text fontSize="12px" fontWeight="bold" position="absolute" top="36px">
           {tc('menu.label')}
         </Text>
       </Flex>
