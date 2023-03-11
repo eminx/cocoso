@@ -22,7 +22,7 @@ actions:
   logout: Çıkış yap
   downloadCSV: CSV indir
   confirmRead: Okudum ve kabul ediyorum
-  toThePage: {{ hostName }} sayfasına git
+  toThePage: '{{ hostName }} sayfasına git'
 
 # ACTION PAGE TITLES
 labels:
@@ -45,7 +45,7 @@ labels:
     placeholder: Sırala
     date: Tarih
     name: İsim
-  update: {{ domain }} güncelle
+  update: '{{ domain }} güncelle'
   unselected: Kaynak seçilmedi
   admin:
     actions: Admin
@@ -55,7 +55,7 @@ labels:
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
-  loading: {{ something }} yükleniyor ...
+  loading: '{{ something }} yükleniyor...'
 
   success:
     create: '{{ domain }} oluşturuldu'
@@ -69,10 +69,10 @@ message:
   access:
     deny: Bunun için iznin yok
     admin: Bir {{ domain }} oluşturmak için süper admin olmalısın.
-    contributor: {{ domain }} oluşturmak için oluşturucu ya da admin olmalısın.
-    register: {{ domain }} oluşturmak için kayıt olmalısın.
+    contributor: '{{ domain }} oluşturmak için oluşturucu ya da admin olmalısın.'
+    register: '{{ domain }} oluşturmak için kayıt olmalısın.'
 
-  exists: {{ property }} bir {{ domain }} zaten var
+  exists: '{{ property }} bir {{ domain }} zaten var'
   valid:
     required: '{{ field }} boş olamaz'
     email: '{{ field }} geçerli bir eposta adresi olmalı'
@@ -83,7 +83,7 @@ modals:
   confirm:
     delete:
       title: Silmeyi onayla
-      body: {{ domain }} silmek istediğine emin misin?
+      body: '{{ domain }} silmek istediğine emin misin?'
       yes: Evet, sil
 
   # FEEDBACK FORM
@@ -177,5 +177,5 @@ images:
 
 platform:
   title: Toplulukları gör
-  communitiesIn: {{ platform }} Topluluklar
+  communitiesIn: '{{ platform }} Topluluklar'
   membersCount: '{{ membersCount }} üye'

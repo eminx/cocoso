@@ -32,7 +32,7 @@ tabs:
   discussion: Tartışma
 
 cards:
-  date: {{username}} tarafından {{date}} eklendi
+  date: '{{username}} tarafından {{date}} eklendi'
   isCombo: Kombo
   isNotCombo: Kombo değil
   isBookable: Ayrılabilir
@@ -43,7 +43,7 @@ booking:
     field: Rezervasyonlar
     form: Rezervasyon ekle
   multiple: Birkaç günlük rezervasyon yap
-  conflict: "Bu tarih ve saatte bu kaynak için zaten bir ayırma var: "
+  conflict: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var: '
   date:
     start: Başlama günü
     end: Bitiş günü

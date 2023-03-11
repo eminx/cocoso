@@ -3,7 +3,7 @@ label: Üyeler
 
 all: Tümü
 
-joinedAt: {{ date }} katıldı
+joinedAt: '{{ date }} katıldı'
 
 roles:
   participant: Katılımcı
@@ -30,12 +30,12 @@ message:
     contributor: '{{ username }} oluşturucu yapıldı'
     participant: '{{ username }} katılımcı yapıldı'
   contact:
-    empty: {{ username }} iletişim bilgisini girmemiş
+    empty: '{{ username }} iletişim bilgisini girmemiş'
   activity:
     empty: Henüz hiçbir şey yayınlanmamış
     info: '{{ username }} henüz çok aktif olmamış'
   access:
-    contributor: {{ action }} için oluşturucu olman gerek
+    contributor: '{{ action }} için oluşturucu olman gerek'
   guest: İşlerini yayınlaman için oluşturucu ya da admin olman gerek
   usage:
     noUsage: Bu kullanıcı henüz bir kaynak kullanmamış
@@ -54,7 +54,7 @@ profile:
     contact:
       label: İletişim
   message:
-    role: {{username}} olarak sen, {{role}} rolüyle bu topluluğun bir parçasısın
+    role: '{{username}} olarak sen, {{role}} rolüyle bu topluluğun bir parçasısın'
 
 works:
   label: İşlerim
@@ -78,7 +78,7 @@ works:
     label: İmajlar ({{ count }})
 
 report:
-  title: {{username}} için Kullanım Raporu
+  title: '{{username}} için Kullanım Raporu'
   table:
     title: Başlık
     resource: Kaynank

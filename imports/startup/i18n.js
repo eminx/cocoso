@@ -30,9 +30,9 @@ const options = {
       return yaml.load(data);
     },
   },
-  debug: true,
+  debug: false,
   defaultNS: 'common',
-  fallbackLng: defaultLang,
+  fallbackLng: allLangs,
   lng: defaultLang,
   load: 'languageOnly',
   ns: namespaces,

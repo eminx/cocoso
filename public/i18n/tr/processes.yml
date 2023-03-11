@@ -81,7 +81,7 @@ meeting:
     time:
       start: Başlama zamanı
       end: Bitiş zamanı
-    switch: {{ place }} ?
+    switch: '{{ place }} ?'
     resource: Kaynak seç
     location: Yer
     submit: Buluşma ekle
@@ -89,7 +89,7 @@ meeting:
 confirm:
   check: Emin misin?
   title:
-    text: {{ opt }} onayla
+    text: '{{ opt }} onayla'
     opts:
       leave: ayrılıyor
       join: katılım
@@ -99,7 +99,7 @@ confirm:
       leave: katılmak
       join: ayrılmak
   admin:
-    title: {{ admin }} admin yapmak istediğine emin misin?
+    title: '{{ admin }} admin yapmak istediğine emin misin?'
     body: Onayladığında bundan sonra bu işlem için {{ admin }} ile aynı ayrıcalıkları paylaşacaksınız.
 
 invite:

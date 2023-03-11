@@ -18,7 +18,7 @@ bigCal:
 
 datePicker:
   labels:
-    select: {{ opt }} seç
+    select: '{{ opt }} seç'
     date: Gün
     time: Zaman
     datetime: Gün ve Saat
