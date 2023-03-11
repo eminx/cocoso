@@ -1,22 +1,11 @@
 import { Meteor } from 'meteor/meteor';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Center,
-  Heading,
-  Input,
-  Tabs,
-  Tab,
-  TabPanel,
-  TabPanels,
-  TabList,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Input, Select, Text, useDisclosure } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
@@ -29,6 +18,7 @@ import { adminMenu } from '../../utils/constants/general';
 import Hosts from '../../../api/hosts/host';
 import UsageReport from '../../components/UsageReport';
 import Breadcrumb from '../../components/Breadcrumb';
+import Tabs from '../../components/Tabs';
 
 moment.locale(i18n.language);
 
@@ -40,13 +30,12 @@ const compareUsersByDate = (a, b) => {
 
 function Members({ history, members, isLoading }) {
   const [sortBy, setSortBy] = useState('join-date');
-  const [filter, setFilter] = useState('all');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currentUser, role } = useContext(StateContext);
+  const { currentUser, isDesktop, role } = useContext(StateContext);
 
   if (isLoading) {
     return <Loader />;
@@ -86,21 +75,7 @@ function Members({ history, members, isLoading }) {
     );
   }
 
-  const membersFiltered =
-    members &&
-    members.filter((member) => {
-      if (filter === 'all') {
-        return true;
-      } else if (filter === 'participant') {
-        return member.role === 'participant';
-      } else if (filter === 'contributor') {
-        return member.role === 'contributor';
-      } else if (filter === 'admin') {
-        return member.role === 'admin';
-      }
-    });
-
-  const membersList = membersFiltered.map((member) => ({
+  const membersList = members.map((member) => ({
     ...member,
     actions: [
       {
@@ -176,6 +151,22 @@ function Members({ history, members, isLoading }) {
   }
 
   const pathname = history && history.location.pathname;
+  const pathParts = pathname.split('/');
+  const filterInPath = pathParts[pathParts.length - 1];
+
+  const tabs = filterOptions.map((item) => {
+    return {
+      title: item.label,
+      path: `/admin/members/${item.value}`,
+      content: <MemberList roleFilter={filterInPath} members={membersSorted} t={t} />,
+    };
+  });
+
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+
+  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+    return <Redirect to={tabs[0].path} />;
+  }
 
   return (
     <>
@@ -189,63 +180,48 @@ function Members({ history, members, isLoading }) {
           </Box>
         }
       >
-        <Center p="1">
-          <Tabs w="100%">
-            <Center>
-              <TabList flexWrap="wrap">
-                {filterOptions.map((item) => (
-                  <Tab
-                    key={item.value}
-                    _focus={{ boxShadow: 'none' }}
-                    onClick={() => setFilter(item.value)}
-                  >
-                    {item.label}
-                  </Tab>
+        <Box maxWidth={480}>
+          <Tabs forceUppercase={false} index={tabIndex} tabs={tabs} />
+
+          <Box pl="4">
+            <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
+          </Box>
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} px="4" py="2" w="100%">
+            <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
+              <Input
+                placeholder={t('form.holder')}
+                value={filterWord}
+                onChange={(event) => setFilterWord(event.target.value)}
+              />
+            </Box>
+            <Box flexBasis="40%">
+              <Select name="sorter" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                {sortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
-              </TabList>
-            </Center>
+              </Select>
+            </Box>
+          </Flex>
 
-            <Center p="4">
-              <Box>
-                <Input
-                  placeholder={t('form.holder')}
-                  value={filterWord}
-                  onChange={(event) => setFilterWord(event.target.value)}
+          <Box mb="24">
+            <Switch history={history}>
+              {tabs.map((tab) => (
+                <Route
+                  key={tab.title}
+                  exact
+                  path={tab.path}
+                  render={(props) => (
+                    <Box {...props} p="2">
+                      {tab.content}
+                    </Box>
+                  )}
                 />
-              </Box>
-            </Center>
-
-            <TabPanels>
-              {filterOptions.map((item, index) =>
-                item.value === filter ? (
-                  <TabPanel key={item.value} p="1" mb="3">
-                    <NiceList itemBg="white" keySelector="email" list={membersSorted}>
-                      {(member) => (
-                        <Box key={member.username} p="2">
-                          <Heading size="md" fontWeight="bold">
-                            {member.username}
-                          </Heading>
-                          <Text>{member && member.email}</Text>
-                          <Text fontStyle="italic">
-                            {member.role === 'contributor' ? 'cocreator' : member.role}
-                          </Text>
-                          <Text fontSize="xs" color="gray.500">
-                            {t('joinedAt', {
-                              date: moment(member.date).format('D MMM YYYY'),
-                            })}
-                            <br />
-                          </Text>
-                        </Box>
-                      )}
-                    </NiceList>
-                  </TabPanel>
-                ) : (
-                  <TabPanel key={index} />
-                )
-              )}
-            </TabPanels>
-          </Tabs>
-        </Center>
+              ))}
+            </Switch>
+          </Box>
+        </Box>
 
         <UsageReport
           isOpen={Boolean(userForUsageReport)}
@@ -254,6 +230,35 @@ function Members({ history, members, isLoading }) {
         />
       </Template>
     </>
+  );
+}
+
+function MemberList({ members, roleFilter, t }) {
+  const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
+  return (
+    <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
+      {(member) => <MemberItem t={t} member={member} />}
+    </NiceList>
+  );
+}
+
+function MemberItem({ member, t }) {
+  return (
+    <Box key={member.username} p="2">
+      <Heading size="md" fontWeight="bold">
+        {member.username}
+      </Heading>
+      <Text>{member && member.email}</Text>
+      <Text fontSize="sm" fontStyle="italic">
+        {member.role === 'contributor' ? 'cocreator' : member.role}
+      </Text>
+      <Text fontSize="xs" color="gray.500">
+        {t('joinedAt', {
+          date: moment(member.date).format('D MMM YYYY'),
+        })}
+        <br />
+      </Text>
+    </Box>
   );
 }
 

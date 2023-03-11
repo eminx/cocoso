@@ -71,7 +71,7 @@ export default function () {
               {/* Admin */}
               <Switch path="/admin">
                 <Route path="/admin/settings" component={Settings} />
-                <Route exact path="/admin/members" component={Members} />
+                <Route path="/admin/members" component={Members} />
                 <Route exact path="/admin/emails" component={Emails} />
               </Switch>
               {/* Auth */}

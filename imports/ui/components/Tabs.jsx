@@ -5,7 +5,6 @@ import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/re
 const tabProps = {
   as: 'span',
   _focus: { boxShadow: 'none' },
-  textTransform: 'uppercase',
   pb: '0',
   paddingInline: '0',
 };
@@ -15,14 +14,18 @@ const linkStyle = {
   marginInline: 8,
 };
 
-function Tabs({ tabs, children, ...otherProps }) {
+function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   return (
     <CTabs colorScheme="gray.800" flexShrink="0" mt="2" {...otherProps}>
       <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle}>
-              <Tab {...tabProps} onClick={tab.onClick}>
+              <Tab
+                {...tabProps}
+                onClick={tab.onClick}
+                textTransform={forceUppercase ? 'uppercase' : 'normal'}
+              >
                 {tab.title}
                 {tab.badge && (
                   <Badge colorScheme="red" size="xs" mt="-2">

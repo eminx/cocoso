@@ -87,7 +87,7 @@ function Emails({ history }) {
       >
         {emails &&
           emails.map((email, index) => (
-            <Box key={email.title} p="6" bg="white" mb="4">
+            <Box key={email.title} p="4" mb="4" maxWidth={480}>
               <Heading size="md" mb="4">
                 {email.title}
               </Heading>

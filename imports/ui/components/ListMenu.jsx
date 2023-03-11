@@ -8,13 +8,18 @@ function ListMenu({ list, pathname, currentUser, children, ...otherProps }) {
   if (!list) {
     return null;
   }
+
+  const isActiveItem = (item) => {
+    return pathname.includes(item.value);
+  };
+
   return (
     <List {...otherProps}>
       {list.map((item) => (
         <ListItem key={item.value} p="1">
           <Link to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}>
             <CLink as="span">
-              <Text fontWeight={pathname === item.value ? 'bold' : 'normal'}>
+              <Text fontWeight={isActiveItem(item) ? 'bold' : 'normal'}>
                 {item.key == 'publicProfile'
                   ? `@${currentUser?.username}`
                   : tc(`menu.${item.menu}.${item.key}`)}

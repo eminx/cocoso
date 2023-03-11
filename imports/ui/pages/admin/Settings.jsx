@@ -257,7 +257,7 @@ export default function Settings({ history }) {
           </Box>
         }
       >
-        <Tabs index={tabIndex} tabs={tabs} />
+        <Tabs forceUppercase={false} index={tabIndex} tabs={tabs} />
 
         <Box mb="24">
           <Switch history={history}>
@@ -282,7 +282,7 @@ export default function Settings({ history }) {
 
 function AlphaContainer({ title, children }) {
   return (
-    <Box px="4" maxWidth={400}>
+    <Box px="4" maxWidth={480}>
       {children}
     </Box>
   );
