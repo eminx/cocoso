@@ -160,10 +160,9 @@ export default function Settings({ history }) {
       path: '/admin/settings/organization',
       content: (
         <AlphaContainer>
-          <Heading as="h3" size="md">
-            {t('info.label')}
-          </Heading>
-          <Text mb="3">{t('info.info')}</Text>
+          <Text mb="3" fontWeight="bold">
+            {t('info.info')}
+          </Text>
           <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
         </AlphaContainer>
       ),
@@ -173,21 +172,18 @@ export default function Settings({ history }) {
       path: '/admin/settings/logo',
       content: (
         <AlphaContainer>
-          <Heading as="h3" size="md">
-            {t('logo.label')}
-          </Heading>
-          <Text mb="3">{t('logo.info')}</Text>
-          <Center p="3">
-            <Box>
-              <FileDropper
-                uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-                imageUrl={currentHost && currentHost.logo}
-                setUploadableImage={setUploadableImage}
-                width={isImage && '120px'}
-                height={isImage && '80px'}
-              />
-            </Box>
-          </Center>
+          <Text mb="3" fontWeight="bold">
+            {t('logo.info')}
+          </Text>
+          <Box>
+            <FileDropper
+              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+              imageUrl={currentHost && currentHost.logo}
+              setUploadableImage={setUploadableImage}
+              width={isImage && '120px'}
+              height={isImage && '80px'}
+            />
+          </Box>
           {localImage && localImage.uploadableImageLocal && (
             <Center p="2">
               <Button onClick={() => uploadLogo()}>Confirm</Button>
@@ -271,9 +267,9 @@ export default function Settings({ history }) {
                 exact
                 path={tab.path}
                 render={(props) => (
-                  <Container {...props} pt="2">
+                  <Box {...props} pt="2">
                     {tab.content}
-                  </Container>
+                  </Box>
                 )}
               />
             ))}
@@ -285,5 +281,9 @@ export default function Settings({ history }) {
 }
 
 function AlphaContainer({ title, children }) {
-  return <Box>{children}</Box>;
+  return (
+    <Box px="4" maxWidth={400}>
+      {children}
+    </Box>
+  );
 }

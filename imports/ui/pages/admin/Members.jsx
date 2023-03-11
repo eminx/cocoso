@@ -184,7 +184,7 @@ function Members({ history, members, isLoading }) {
       <Template
         heading={t('label')}
         leftContent={
-          <Box p="4">
+          <Box>
             <ListMenu pathname={pathname} list={adminMenu} />
           </Box>
         }

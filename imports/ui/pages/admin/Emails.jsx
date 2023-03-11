@@ -80,7 +80,7 @@ function Emails({ history }) {
       <Template
         heading={t('emails.label')}
         leftContent={
-          <Box p="4">
+          <Box>
             <ListMenu pathname={pathname} list={adminMenu} />
           </Box>
         }

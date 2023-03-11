@@ -112,10 +112,6 @@ export default function Menu() {
 
   return (
     <Box>
-      <Heading as="h3" size="md" mb="6">
-        {t('settings.tabs.menu')}
-      </Heading>
-
       <Box mb="24">
         <Box mb="4">
           <Heading as="h4" fontSize="18px" mb="2">
