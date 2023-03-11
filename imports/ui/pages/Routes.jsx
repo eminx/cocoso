@@ -70,7 +70,7 @@ export default function () {
               <ProfileRoutes path="/@:username" history={browserHistory} />
               {/* Admin */}
               <Switch path="/admin">
-                <Route exact path="/admin/settings" component={Settings} />
+                <Route path="/admin/settings" component={Settings} />
                 <Route exact path="/admin/members" component={Members} />
                 <Route exact path="/admin/emails" component={Emails} />
               </Switch>

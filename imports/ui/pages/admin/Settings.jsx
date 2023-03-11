@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
   Center,
+  Container,
   Heading,
   HStack,
   Input,
-  Tab,
-  TabList,
-  Tabs,
-  TabPanel,
-  TabPanels,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -30,30 +27,18 @@ import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
-import Header from '../../components/Header';
 import Breadcrumb from '../../components/Breadcrumb';
+import Tabs from '../../components/Tabs';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
-
-const colorModel = {
-  hsl: {
-    h: 0,
-    s: 0.8,
-    l: 0.2,
-    a: 1,
-  },
-};
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
-  const [formAltered, setFormAltered] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
-  const [mainColor, setMainColor] = useState(colorModel);
-  const [activeMenu, setActiveMenu] = useState(null);
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
@@ -70,17 +55,8 @@ export default function Settings({ history }) {
     }
     setLocalSettings(currentHost.settings);
     getCategories();
-    currentHost.settings &&
-      currentHost.settings.mainColor &&
-      setMainColor(currentHost.settings.mainColor);
     setLoading(false);
   }, []);
-
-  const handleFormChange = (newSettings) => {
-    console.log(newSettings);
-    setFormAltered(true);
-    setLocalSettings(newSettings);
-  };
 
   const handleFormSubmit = async (values) => {
     if (!currentUser || role !== 'admin') {
@@ -175,31 +151,106 @@ export default function Settings({ history }) {
     }
   };
 
-  // const confirmMainColor = async () => {
-  //   try {
-  //     await call('setMainColor', mainColor);
-  //     message.success('Main color is successfully set');
-  //   } catch (error) {
-  //     console.error('Error uploading:', error);
-  //     message.error(error.reason);
-  //   }
-  // };
-
-  // const handleSetMainColor = (color) => {
-  //   const newMainColor = {
-  //     hsl: {
-  //       h: color.hsl.h.toFixed(0),
-  //       s: 0.8,
-  //       l: 0.35,
-  //     },
-  //   };
-  //   setMainColor(newMainColor);
-  // };
-
   const pathname = history && history.location.pathname;
 
   const isImage =
     (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
+
+  const tabs = [
+    {
+      title: t('settings.tabs.info'),
+      path: '/admin/settings/organization',
+      content: (
+        <AlphaContainer>
+          <Heading as="h3" size="md">
+            {t('info.label')}
+          </Heading>
+          <Text mb="3">{t('info.info')}</Text>
+          <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.logo'),
+      path: '/admin/settings/logo',
+      content: (
+        <AlphaContainer>
+          <Heading as="h3" size="md">
+            {t('logo.label')}
+          </Heading>
+          <Text mb="3">{t('logo.info')}</Text>
+          <Center p="3">
+            <Box>
+              <FileDropper
+                uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+                imageUrl={currentHost && currentHost.logo}
+                setUploadableImage={setUploadableImage}
+                width={isImage && '120px'}
+                height={isImage && '80px'}
+              />
+            </Box>
+          </Center>
+          {localImage && localImage.uploadableImageLocal && (
+            <Center p="2">
+              <Button onClick={() => uploadLogo()}>Confirm</Button>
+            </Center>
+          )}
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.menu'),
+      path: '/admin/settings/menu',
+      content: (
+        <AlphaContainer>
+          <Menu />
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.cats'),
+      path: '/admin/settings/categories',
+      content: (
+        <AlphaContainer>
+          <Heading as="h3" size="md">
+            {t('categories.label')}
+          </Heading>
+          <Text mb="3">{t('categories.info')}</Text>
+          <Center>
+            <Wrap p="1" spacing="2" mb="2">
+              {categories.map((category) => (
+                <WrapItem key={category.label}>
+                  <Tag colorScheme="messenger">
+                    <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                    <TagCloseButton onClick={() => removeCategory(category._id)} />
+                  </Tag>
+                </WrapItem>
+              ))}
+            </Wrap>
+          </Center>
+          <form onSubmit={addNewCategory}>
+            <Center>
+              <HStack>
+                <Input
+                  placeholder="PAJAMAS"
+                  mt="2"
+                  value={categoryInput}
+                  onChange={(event) => handleCategoryInputChange(event.target.value)}
+                />
+                <Button type="submit">{tc('actions.add')}</Button>
+              </HStack>
+            </Center>
+          </form>
+        </AlphaContainer>
+      ),
+    },
+  ];
+
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === history?.location?.pathname);
+
+  if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
+    return <Redirect to={tabs[0].path} />;
+  }
 
   return (
     <>
@@ -207,127 +258,34 @@ export default function Settings({ history }) {
       <Template
         heading={t('settings.label')}
         leftContent={
-          <Box p="4">
+          <Box>
             <ListMenu pathname={pathname} list={adminMenu} />
           </Box>
         }
       >
-        <Tabs align="center">
-          <TabList flexWrap="wrap">
-            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.logo')}</Tab>
-            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.info')}</Tab>
-            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.menu')}</Tab>
-            <Tab _focus={{ boxShadow: 'none' }}>{t('settings.tabs.cats')}</Tab>
-          </TabList>
+        <Tabs index={tabIndex} tabs={tabs} />
 
-          <TabPanels>
-            <TabPanel>
-              <AlphaContainer>
-                <Heading as="h3" size="md">
-                  {t('logo.label')}
-                </Heading>
-                <Text mb="3">{t('logo.info')}</Text>
-                <Center p="3">
-                  <Box>
-                    <FileDropper
-                      uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-                      imageUrl={currentHost && currentHost.logo}
-                      setUploadableImage={setUploadableImage}
-                      width={isImage && '120px'}
-                      height={isImage && '80px'}
-                    />
-                  </Box>
-                </Center>
-                {localImage && localImage.uploadableImageLocal && (
-                  <Center p="2">
-                    <Button onClick={() => uploadLogo()}>Confirm</Button>
-                  </Center>
+        <Box mb="24">
+          <Switch history={history}>
+            {tabs.map((tab) => (
+              <Route
+                key={tab.title}
+                exact
+                path={tab.path}
+                render={(props) => (
+                  <Container {...props} pt="2">
+                    {tab.content}
+                  </Container>
                 )}
-              </AlphaContainer>
-            </TabPanel>
-
-            <TabPanel>
-              <AlphaContainer>
-                <Heading as="h3" size="md">
-                  {t('info.label')}
-                </Heading>
-                <Text mb="3">{t('info.info')}</Text>
-                <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
-              </AlphaContainer>
-            </TabPanel>
-
-            {/* <AlphaContainer>
-        <Heading as="h3" size="md">
-          Main Color
-        </Heading>
-        <Text mb="3">Pick the Main Color for Your Web Presence</Text>
-        <Center>
-          <HuePicker color={mainColor} onChangeComplete={handleSetMainColor} />
-        </Center>
-        <Text>
-          Background color will be accordingly set with its complementary color.
-        </Text>
-
-        <Flex justify="flex-end" py="4">
-          <Button
-            isDisabled={settings && mainColor === settings.mainColor}
-            onClick={() => confirmMainColor()}
-          >
-            Confirm
-          </Button>
-        </Flex>
-        </AlphaContainer> */}
-
-            <TabPanel>
-              <AlphaContainer>
-                <Menu />
-              </AlphaContainer>
-            </TabPanel>
-
-            <TabPanel>
-              <AlphaContainer>
-                <Heading as="h3" size="md">
-                  {t('categories.label')}
-                </Heading>
-                <Text mb="3">{t('categories.info')}</Text>
-                <Center>
-                  <Wrap p="1" spacing="2" mb="2">
-                    {categories.map((category) => (
-                      <WrapItem key={category.label}>
-                        <Tag colorScheme="messenger">
-                          <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                          <TagCloseButton onClick={() => removeCategory(category._id)} />
-                        </Tag>
-                      </WrapItem>
-                    ))}
-                  </Wrap>
-                </Center>
-                <form onSubmit={addNewCategory}>
-                  <Center>
-                    <HStack>
-                      <Input
-                        placeholder="PAJAMAS"
-                        mt="2"
-                        value={categoryInput}
-                        onChange={(event) => handleCategoryInputChange(event.target.value)}
-                      />
-                      <Button type="submit">{tc('actions.add')}</Button>
-                    </HStack>
-                  </Center>
-                </form>
-              </AlphaContainer>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+              />
+            ))}
+          </Switch>
+        </Box>
       </Template>
     </>
   );
 }
 
 function AlphaContainer({ title, children }) {
-  return (
-    <Box bg="white" mb="8" p="6">
-      {children}
-    </Box>
-  );
+  return <Box>{children}</Box>;
 }
