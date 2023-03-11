@@ -116,7 +116,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 
 function Footer() {
   return (
-    <Box>
+    <Box p="4">
       <ChangeLanguageMenu />
     </Box>
   );

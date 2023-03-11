@@ -2,13 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra-ui/react';
 
-export default ChangeLanguage = ({ select, register }) => {
+export default ChangeLanguage = ({ hideHelper = false, register, select }) => {
   const { t, i18n } = useTranslation();
 
   if (!select)
     return (
-      <Box p="4">
-        <Text fontSize="sm">{t('common:langs.form.label')}:</Text>
+      <Box>
+        {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
         <Menu>
           <MenuButton fontWeight="bold" textDecoration="underline">
             {t(`common:langs.${i18n.language}`)}
@@ -30,8 +30,8 @@ export default ChangeLanguage = ({ select, register }) => {
     );
 
   return (
-    <Box p="4">
-      <Text fontSize="sm">{t('common:langs.form.label')}:</Text>
+    <Box>
+      {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
       <Select name="lang" {...register('lang')} placeholder={t('common:langs.form.holder')}>
         {i18n.languages.map((lang) => (
           <option key={lang} value={lang}>

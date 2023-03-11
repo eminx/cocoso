@@ -1,5 +1,6 @@
 # LANGUAGE KEYS
 langs:
+  label: Språk
   en: English
   sv: Svenska
   tr: Türkçe

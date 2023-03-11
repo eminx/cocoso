@@ -13,7 +13,7 @@ export default function Breadcrumb({ furtherItems }) {
   const navItem = menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
 
   return (
-    <Box my="8">
+    <Box my="6">
       <Flex px="4" wrap="wrap">
         <Link to="/">
           <CLink as="span" color="#06c" fontWeight="bold">

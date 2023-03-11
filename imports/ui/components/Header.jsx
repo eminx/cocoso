@@ -47,7 +47,7 @@ function Header() {
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">
-            <Box maxHeight="80px" maxWidth="160px">
+            <Box>
               <Image className="logo" fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>
@@ -60,12 +60,12 @@ function Header() {
         </HStack>
       </Flex>
 
-      <Box pb="4" pt="12">
+      <Box pb="2" pt="10">
         <Heading color="gray.800" size="lg">
-          <Text as="span">{currentHostName}</Text>
-          <Text as="span" fontWeight="normal">
+          {/* <Text as="span">{currentHostName}</Text> */}
+          {/* <Text as="span" fontWeight="normal">
             {' / '}
-          </Text>
+          </Text> */}
           <Text as="span" fontWeight="normal">
             {activeMenuItem?.label}
           </Text>
