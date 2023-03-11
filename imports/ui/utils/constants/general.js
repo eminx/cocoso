@@ -26,28 +26,24 @@ const userMenu = [
 
 const adminMenu = [
   {
-    // label: 'Settings',
     menu: 'admin',
     key: 'settings',
     value: '/admin/settings',
   },
   {
-    // label: 'Members',
     menu: 'admin',
     key: 'members',
     value: '/admin/members',
   },
-  // {
-  //   // label: 'Resources',
-  //   menu: 'admin',
-  //   key: 'resources',
-  //   value: '/admin/resources'
-  // },
   {
-    // label: 'Emails',
     menu: 'admin',
     key: 'emails',
     value: '/admin/emails',
+  },
+  {
+    menu: 'admin',
+    key: 'categories',
+    value: '/admin/categories',
   },
 ];
 

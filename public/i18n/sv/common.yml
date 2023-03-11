@@ -118,6 +118,7 @@ menu:
     members: Medlemmar
     resources: Resurser
     emails: E-postmeddelanden
+    categories: Kategorier
   notifications:
     label: Aviseringar
 

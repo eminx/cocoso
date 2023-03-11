@@ -168,9 +168,20 @@ function Members({ history, members, isLoading }) {
     return <Redirect to={tabs[0].path} />;
   }
 
+  const furtherBreadcrumbLinks = [
+    {
+      label: t('label'),
+      link: 'admin/members',
+    },
+    {
+      label: tabs.find((t) => t.path === pathname).title,
+      link: null,
+    },
+  ];
+
   return (
     <>
-      <Breadcrumb />
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
 
       <Template
         heading={t('label')}
@@ -181,7 +192,7 @@ function Members({ history, members, isLoading }) {
         }
       >
         <Box maxWidth={480}>
-          <Tabs forceUppercase={false} index={tabIndex} tabs={tabs} />
+          <Tabs index={tabIndex} tabs={tabs} />
 
           <Box pl="4">
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>

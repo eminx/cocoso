@@ -74,9 +74,16 @@ function Emails({ history }) {
 
   const pathname = history && history.location.pathname;
 
+  const furtherBreadcrumbLinks = [
+    {
+      label: t('emails.label'),
+      link: null,
+    },
+  ];
+
   return (
     <>
-      <Breadcrumb />
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       <Template
         heading={t('emails.label')}
         leftContent={

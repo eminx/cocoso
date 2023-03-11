@@ -1,21 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Heading,
-  HStack,
-  Input,
-  Tag,
-  TagCloseButton,
-  TagLabel,
-  Text,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -29,13 +15,10 @@ import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
-
-const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
+import Categories from './Categories';
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
@@ -54,9 +37,12 @@ export default function Settings({ history }) {
       return;
     }
     setLocalSettings(currentHost.settings);
-    getCategories();
     setLoading(false);
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   const handleFormSubmit = async (values) => {
     if (!currentUser || role !== 'admin') {
@@ -70,50 +56,6 @@ export default function Settings({ history }) {
     } catch (error) {
       message.error(error.reason);
       console.log(error);
-    }
-  };
-
-  const getCategories = async () => {
-    try {
-      const latestCategories = await call('getCategories');
-      setCategories(latestCategories);
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
-    }
-  };
-
-  const addNewCategory = async (event) => {
-    event.preventDefault();
-    try {
-      await call('addNewCategory', categoryInput.toLowerCase(), 'work');
-      getCategories();
-      setCategoryInput('');
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
-    }
-  };
-
-  const removeCategory = async (categoryId) => {
-    try {
-      await call('removeCategory', categoryId);
-      getCategories();
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
-    }
-  };
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  const handleCategoryInputChange = (value) => {
-    if (specialCh.test(value)) {
-      message.error(t('categories.message.denySpecialChars'));
-    } else {
-      setCategoryInput(value.toUpperCase());
     }
   };
 
@@ -201,43 +143,6 @@ export default function Settings({ history }) {
         </AlphaContainer>
       ),
     },
-    {
-      title: t('settings.tabs.cats'),
-      path: '/admin/settings/categories',
-      content: (
-        <AlphaContainer>
-          <Heading as="h3" size="md">
-            {t('categories.label')}
-          </Heading>
-          <Text mb="3">{t('categories.info')}</Text>
-          <Center>
-            <Wrap p="1" spacing="2" mb="2">
-              {categories.map((category) => (
-                <WrapItem key={category.label}>
-                  <Tag colorScheme="messenger">
-                    <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                    <TagCloseButton onClick={() => removeCategory(category._id)} />
-                  </Tag>
-                </WrapItem>
-              ))}
-            </Wrap>
-          </Center>
-          <form onSubmit={addNewCategory}>
-            <Center>
-              <HStack>
-                <Input
-                  placeholder="PAJAMAS"
-                  mt="2"
-                  value={categoryInput}
-                  onChange={(event) => handleCategoryInputChange(event.target.value)}
-                />
-                <Button type="submit">{tc('actions.add')}</Button>
-              </HStack>
-            </Center>
-          </form>
-        </AlphaContainer>
-      ),
-    },
   ];
   const pathname = history?.location?.pathname;
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
@@ -246,9 +151,20 @@ export default function Settings({ history }) {
     return <Redirect to={tabs[0].path} />;
   }
 
+  const furtherBreadcrumbLinks = [
+    {
+      label: t('settings.label'),
+      link: 'admin/settings',
+    },
+    {
+      label: tabs.find((t) => t.path === pathname).title,
+      link: null,
+    },
+  ];
+
   return (
     <>
-      <Breadcrumb />
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       <Template
         heading={t('settings.label')}
         leftContent={
@@ -257,7 +173,7 @@ export default function Settings({ history }) {
           </Box>
         }
       >
-        <Tabs forceUppercase={false} index={tabIndex} tabs={tabs} />
+        <Tabs index={tabIndex} tabs={tabs} />
 
         <Box mb="24">
           <Switch history={history}>
@@ -282,7 +198,7 @@ export default function Settings({ history }) {
 
 function AlphaContainer({ title, children }) {
   return (
-    <Box px="4" maxWidth={480}>
+    <Box px="4" maxWidth={400}>
       {children}
     </Box>
   );

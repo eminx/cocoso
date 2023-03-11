@@ -14,26 +14,34 @@ import Terms from '../components/Terms';
 
 // ROUTES
 const browserHistory = createBrowserHistory();
+
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
+
 // Works
 const Works = lazy(() => import('./works/Works'));
 const NewWork = lazy(() => import('./works/NewWork'));
+
 // Others are on profile routes
 
 // Members
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
+
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
+const Categories = lazy(() => import('./admin/Categories'));
+
 // Auth
 const SignupPage = lazy(() => import('./auth/SignupPage'));
 const LoginPage = lazy(() => import('./auth/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
+
 // SuperAdmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
+
 // NotFound
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
 
@@ -73,6 +81,7 @@ export default function () {
                 <Route path="/admin/settings" component={Settings} />
                 <Route path="/admin/members" component={Members} />
                 <Route exact path="/admin/emails" component={Emails} />
+                <Route path="/admin/categories" component={Categories} />
               </Switch>
               {/* Auth */}
               <Route exact path="/signup" component={SignupPage} />

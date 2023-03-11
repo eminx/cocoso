@@ -118,6 +118,7 @@ menu:
     members: Üyeler
     resources: Kaynaklar
     emails: Epostalar
+    categories: Kategoriler
   notifications:
     label: Bildirimler
 

@@ -118,6 +118,7 @@ menu:
     members: Members
     resources: Resources
     emails: Emails
+    categories: Categories
   notifications:
     label: Notifications
 

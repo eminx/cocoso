@@ -109,15 +109,17 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Flex p="4">
+      <Flex p="6">
         <Link to="/">
-          <CLink as="span" fontWeight="bold">
+          <CLink as="span" color="#06c" fontWeight="bold">
             {name}
           </CLink>
         </Link>
         <Text mx="2">/</Text>
         <Link to="/members">
-          <CLink as="span">{membersInMenu.label}</CLink>
+          <CLink as="span" color="#06c">
+            {membersInMenu.label}
+          </CLink>
         </Link>
         <Text mx="2">/</Text>
         <Text>{username}</Text>
