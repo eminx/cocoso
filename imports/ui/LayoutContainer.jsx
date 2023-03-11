@@ -20,12 +20,12 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
 import Hosts from '../api/hosts/host';
-import ChangeLanguage from './components/ChangeLanguageMenu';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
+import PortalHostIndicator from './components/PortalHostIndicator';
 
 export const StateContext = React.createContext(null);
 
@@ -117,6 +117,8 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
           <Box id="main-viewport" flexGrow="2">
             <Box w="100%">
+              {currentHost.isPortalHost && <PortalHostIndicator platform={platform} />}
+
               {isHeaderAndFooter && <Header />}
 
               <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
