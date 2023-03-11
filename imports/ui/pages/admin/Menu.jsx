@@ -8,11 +8,6 @@ import {
   Heading,
   Input,
   Switch,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
   Text,
   Table,
   Tbody,
@@ -36,9 +31,8 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
-
   const { currentUser, currentHost, role } = useContext(StateContext);
-  const [t] = useTranslation('hosts');
+  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
@@ -118,82 +112,86 @@ export default function Menu() {
 
   return (
     <Box>
-      <Heading as="h3" size="md">
-        {t('menu.label')}
+      <Heading as="h3" size="md" mb="6">
+        {t('settings.tabs.menu')}
       </Heading>
-      <Tabs align="center">
-        <TabList>
-          <Tab _focus={{ boxShadow: 'none' }}>{t('menu.tabs.menuitems.label')}</Tab>
-          <Tab _focus={{ boxShadow: 'none' }}>{t('menu.tabs.order.label')}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Text mb="4" fontSize="sm">
-              {t('menu.tabs.menuitems.info')}
-            </Text>
-            <MenuTable
-              menu={localSettings.menu}
-              handleMenuItemCheck={handleMenuItemCheck}
-              handleMenuItemLabelChange={handleMenuItemLabelChange}
-            />
 
-            <Flex justify="flex-end" py="4">
-              <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
-            </Flex>
-          </TabPanel>
+      <Box mb="24">
+        <Box mb="4">
+          <Heading as="h4" fontSize="18px" mb="2">
+            {t('menu.tabs.menuitems.label')}
+          </Heading>
+          <Text mb="4" fontSize="sm">
+            {t('menu.tabs.menuitems.info')}
+          </Text>
+          <MenuTable
+            menu={localSettings.menu}
+            t={t}
+            handleMenuItemCheck={handleMenuItemCheck}
+            handleMenuItemLabelChange={handleMenuItemLabelChange}
+          />
 
-          <TabPanel>
-            <Text mb="4" size="sm">
-              {t('menu.tabs.order.info')}
-            </Text>
-            <Box>
-              {localSettings && localSettings.menu && (
-                <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
-                  {localSettings.menu
-                    .filter((item) => item.isVisible)
-                    .map((value, index) => (
-                      <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
-                    ))}
-                </SortableContainer>
-              )}
-            </Box>
+          <Flex justify="flex-end" py="4">
+            <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
+          </Flex>
+        </Box>
+        <Box>
+          <Heading as="h4" fontSize="18px" mb="2">
+            {t('settings.tabs.menuOrder')}
+          </Heading>
 
-            <Flex justify="flex-end" my="4">
-              <Button onClick={handleMenuSave} type="submit">
-                {tc('actions.submit')}
-              </Button>
-            </Flex>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+          <Text mb="4" fontSize="sm">
+            {t('menu.tabs.order.info')}
+          </Text>
+          <Box>
+            {localSettings && localSettings.menu && (
+              <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
+                {localSettings.menu
+                  .filter((item) => item.isVisible)
+                  .map((value, index) => (
+                    <SortableItem key={`item-${value.name}`} index={index} value={value.label} />
+                  ))}
+              </SortableContainer>
+            )}
+          </Box>
+
+          <Flex justify="flex-end" my="4">
+            <Button onClick={handleMenuSave} type="submit">
+              {tc('actions.submit')}
+            </Button>
+          </Flex>
+        </Box>
+      </Box>
     </Box>
   );
 }
 
-function MenuTable({ menu, handleMenuItemCheck, handleMenuItemLabelChange }) {
+function MenuTable({ menu, t, handleMenuItemCheck, handleMenuItemLabelChange }) {
   return (
     <Table size="sm" variant="simple" w="100%">
       <Thead>
         <Tr>
-          <Th w="100px">Visibility</Th>
-          <Th>Labels</Th>
+          <Th w="60px" px="0">
+            {t('menu.itemActive')}
+          </Th>
+          <Th px="0">{t('menu.itemLabel')}</Th>
         </Tr>
       </Thead>
       <Tbody>
         {menu.map((item, index) => (
           <Tr key={item.name}>
-            <Td>
-              <Center>
-                <Switch
-                  isChecked={item.isVisible}
-                  onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
-                />
-              </Center>
+            <Td px="0">
+              <Switch
+                isChecked={item.isVisible}
+                size="sm"
+                onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
+              />
             </Td>
-            <Td>
+            <Td px="0">
               <FormField>
                 <Input
                   isDisabled={!item.isVisible}
+                  size="sm"
                   value={item.label}
                   onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
                 />

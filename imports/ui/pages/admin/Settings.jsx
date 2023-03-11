@@ -42,7 +42,7 @@ export default function Settings({ history }) {
 
   const { currentUser, currentHost, role } = useContext(StateContext);
 
-  const [t] = useTranslation('hosts');
+  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   if (!currentUser || role !== 'admin') {
@@ -151,8 +151,6 @@ export default function Settings({ history }) {
     }
   };
 
-  const pathname = history && history.location.pathname;
-
   const isImage =
     (localImage && localImage.uploadableImageLocal) || (currentHost && currentHost.logo);
 
@@ -245,10 +243,10 @@ export default function Settings({ history }) {
       ),
     },
   ];
+  const pathname = history?.location?.pathname;
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
 
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === history?.location?.pathname);
-
-  if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
     return <Redirect to={tabs[0].path} />;
   }
 

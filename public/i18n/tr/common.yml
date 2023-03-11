@@ -103,6 +103,7 @@ modals:
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
+  label: Menü
   guest:
     login: Giriş
   member:

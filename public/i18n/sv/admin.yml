@@ -1,3 +1,43 @@
+# ADMIN SETTINGS PAGE
+settings:
+  label: Inställningar
+  tabs:
+    logo: Logotyp
+    info: Organisation
+    menu: Meny
+    cats: Kategorier
+    menuVisibility: Synlighet
+    menuOrder: Ordning
+
+logo:
+  label: Logo
+  info: Ladda upp din logotyp
+  message:
+    success: Din logotyp har angetts
+    fileDropper: Släpp bara en fil åt gången
+
+info:
+  label: Organization
+  info: Lägg till/redigera information om din organisation
+
+menu:
+  label: Meny
+  tabs:
+    menuitems:
+      label: Synlighet & Etiketter
+      info: Markera/avmarkera objekt för synlighet och märk dem som du föredrar för att komponera menyn
+    order:
+      label: Ordning
+      info: Ändra ordning på objekt genom att dra upp och ned om du vill ändra visningsordningen
+  itemActive: Aktiv
+  itemLabel: Etiket
+
+categories:
+  label: Arbetskategorier
+  info: Du kan ställa in kategorier för arbetsinlägg här
+  message:
+    denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
+
 # ADMIN EMAILS PAGE
 emails:
   label: E-postmeddelanden

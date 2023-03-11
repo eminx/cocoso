@@ -19,7 +19,7 @@ const getRoute = (item, index) => {
 
 export default function MenuDrawer({ currentHost, isDesktop }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [t] = useTranslation('hosts');
+  const [tc] = useTranslation('common');
 
   const { menu } = currentHost?.settings;
 
@@ -46,7 +46,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
               <Flex flexDirection="column" align="center">
                 <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
                 <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
-                  {t('menu.label')}
+                  {tc('menu.label')}
                 </Text>
               </Flex>
             </Center>
@@ -55,7 +55,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
               <Box pt="4">
                 <Flex align="flex-start" justify="space-between">
                   <Heading fontSize="24px" px="4" mt="2">
-                    {t('menu.label')}
+                    {tc('menu.label')}
                   </Heading>
                   <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
                 </Flex>
@@ -90,11 +90,11 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
           top="68px"
           textTransform="uppercase"
         >
-          {t('menu.label')}
+          {tc('menu.label')}
         </Text>
       </Flex>
 
-      <Drawer isOpen={isOpen} placement="right" title={t('menu.label')} onClose={onToggle}>
+      <Drawer isOpen={isOpen} placement="right" title={tc('menu.label')} onClose={onToggle}>
         <Flex flexDirection="column" h="100%" justify="space-between">
           <VStack align="flex-start">
             {menuItems.map((item) => (
