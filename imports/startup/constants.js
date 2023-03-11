@@ -53,19 +53,19 @@ const defaultMainColor = {
 
 const defaultEmails = [
   {
-    title: 'Welcome Email',
+    key: 'participant',
     subject: 'Welcome as a participant',
     appeal: 'Dear',
     body: 'Welcome! As a participant, you may attend our processes and activities. Look forward to hanging out with you!',
   },
   {
-    title: 'New Cocreator',
+    key: 'cocreator',
     subject: 'You are now a cocreator',
     appeal: 'Dear',
     body: 'You are now verified to be a cocreator in our space. This means that you are privileged to create public activities & processes, publish your works, and book resources in our community. \nLook forward!',
   },
   {
-    title: 'New Admin',
+    key: 'admin',
     subject: 'You are now an admin',
     appeal: 'Dear',
     body: 'You are now registered as an admin in our space. This means that in addition to the privileges of being a contributor; you may create new pages and configure a bunch of options in our shared system. Please use your powers responsible, and enjoy. \nLook forward!',

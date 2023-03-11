@@ -51,6 +51,12 @@ emails:
       addon: '@username'
     body:
       label: Beskrivning
+  participant:
+    new: Ny deltagare
+  cocreator:
+    new: Ny medskapare
+  admin:
+    new: Ny admin
 
 # ADMIN STATIC PAGES
 pages:

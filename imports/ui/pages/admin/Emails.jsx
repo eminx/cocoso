@@ -61,6 +61,14 @@ function Emails({ history }) {
     return 'no data';
   }
 
+  const parsedEmails = emails.map((e, i) => {
+    const key = i === 2 ? 'admin' : i === 1 ? 'cocreator' : 'participant';
+    return {
+      ...e,
+      title: t(`emails.${key}.new`),
+    };
+  });
+
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
@@ -92,8 +100,8 @@ function Emails({ history }) {
           </Box>
         }
       >
-        {emails &&
-          emails.map((email, index) => (
+        {parsedEmails &&
+          parsedEmails.map((email, index) => (
             <Box key={email.title} p="4" mb="4" maxWidth={480}>
               <Heading size="md" mb="4">
                 {email.title}

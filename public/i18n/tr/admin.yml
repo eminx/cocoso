@@ -51,6 +51,12 @@ emails:
       addon: '@username'
     body:
       label: Açıklama
+  participant:
+    new: Yeni Katılımcı
+  cocreator:
+    new: Yeni Oluşturucu
+  admin:
+    new: Yeni Admin
 
 # ADMIN STATIC PAGES
 pages:
