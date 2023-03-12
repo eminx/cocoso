@@ -17,13 +17,14 @@ export default function PortalHostIndicator({ platform }) {
   const { t } = useTranslation('hosts');
 
   return (
-    <Box bg="gray.100" p="1">
+    <Box bg="gray.100">
       <Accordion allowToggle>
         <AccordionItem border="none">
           <AccordionButton
             borderWidth="0"
             display="flex"
             justifyContent="center"
+            p="1"
             w="100%"
             _expanded={{ bg: 'gray.600', color: 'gray.50' }}
           >

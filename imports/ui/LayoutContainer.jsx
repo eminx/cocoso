@@ -117,7 +117,9 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
           <Box id="main-viewport" flexGrow="2">
             <Box w="100%">
-              {currentHost.isPortalHost && <PortalHostIndicator platform={platform} />}
+              {isHeaderAndFooter && currentHost.isPortalHost && (
+                <PortalHostIndicator platform={platform} />
+              )}
 
               {isHeaderAndFooter && <Header />}
 
