@@ -65,7 +65,7 @@ function Page() {
         </Helmet>
 
         <Flex mt="4">
-          <Box w="280px" p="4" mt="8">
+          <Box w="280px" px="4">
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
