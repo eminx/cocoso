@@ -28,6 +28,16 @@ const today = moment();
 
 const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
 const getLastPastOccurence = (occurence) => moment(occurence.endDate).isBefore(today);
+const getFutureOccurences = (dates) => {
+  return dates
+    .filter((date) => moment(date.startDate).isAfter(yesterday))
+    .sort((a, b) => moment(a.startDate) - moment(b.startDate));
+};
+const getPastOccurences = (dates) => {
+  return dates
+    .filter((date) => moment(date.startDate).isBefore(today))
+    .sort((a, b) => moment(b.startDate) - moment(a.startDate));
+};
 
 function compareDatesForSort(a, b) {
   const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
@@ -232,7 +242,11 @@ function Activities({ history }) {
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                   <NewGridThumb
-                    dates={activity.datesAndTimes.map((d) => d.startDate)}
+                    dates={
+                      showPast
+                        ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                        : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                    }
                     host={itemHost}
                     imageUrl={activity.imageUrl}
                     subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
@@ -248,7 +262,11 @@ function Activities({ history }) {
                   }
                 >
                   <NewGridThumb
-                    dates={activity.datesAndTimes.map((d) => d.startDate)}
+                    dates={
+                      showPast
+                        ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                        : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                    }
                     imageUrl={activity.imageUrl}
                     subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                     title={activity.title}
@@ -274,7 +292,7 @@ function Activities({ history }) {
           onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
-            action={getDatesForAction(modalActivity)}
+            action={getDatesForAction(modalActivity, showPast)}
             content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
             images={[modalActivity.imageUrl]}
             subTitle={modalActivity.subTitle}
@@ -287,10 +305,14 @@ function Activities({ history }) {
   );
 }
 
-const getDatesForAction = (activity) => {
+const getDatesForAction = (activity, showPast = false) => {
+  const dates = showPast
+    ? getPastOccurences(activity.datesAndTimes)
+    : getFutureOccurences(activity.datesAndTimes);
+
   return (
     <Flex pt="4">
-      {activity.datesAndTimes.map((occurence, occurenceIndex) => (
+      {dates.map((occurence, occurenceIndex) => (
         <Box key={occurence.startDate + occurence.endTime} pr="6">
           <DateJust>{occurence.startDate}</DateJust>
         </Box>

@@ -18,9 +18,19 @@ import FiltrerSorter from '../../components/FiltrerSorter';
 import Tably from '../../components/Tably';
 import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
+import { DateJust } from '../../components/FancyDate';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
+
+const getFutureOccurences = (dates) => {
+  if (!dates || dates.length === 0) {
+    return dates;
+  }
+  return dates
+    .filter((date) => moment(date.startDate).isAfter(yesterday))
+    .sort((a, b) => moment(a.startDate) - moment(b.startDate));
+};
 
 export default function ProcessesList({ history }) {
   const [loading, setLoading] = useState(true);
@@ -200,7 +210,8 @@ export default function ProcessesList({ history }) {
             {currentHost.isPortalHost ? (
               <Box cursor="pointer" onClick={() => setModalProcess(process)}>
                 <NewGridThumb
-                  dates={process.meetings?.map((m) => m.startDate)}
+                  dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
+                  // dates={process.meetings?.map((m) => m.startDate)}
                   host={allHosts.find((h) => h.host === process.host)?.name}
                   imageUrl={process.imageUrl}
                   subTitle={process.readingMaterial}
@@ -210,7 +221,7 @@ export default function ProcessesList({ history }) {
             ) : (
               <Link to={`/processes/${process._id}`}>
                 <NewGridThumb
-                  dates={process.meetings?.map((m) => m.startDate)}
+                  dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
                   imageUrl={process.imageUrl}
                   subTitle={process.readingMaterial}
                   title={process.title}
@@ -235,6 +246,7 @@ export default function ProcessesList({ history }) {
           onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
+            action={getDatesForAction(modalProcess)}
             content={modalProcess.description && renderHTML(modalProcess.description)}
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
@@ -246,6 +258,20 @@ export default function ProcessesList({ history }) {
     </Box>
   );
 }
+
+const getDatesForAction = (process) => {
+  const dates = getFutureOccurences(process.meetings);
+
+  return (
+    <Flex pt="4">
+      {dates?.map((occurence, occurenceIndex) => (
+        <Box key={occurence.startDate + occurence.endTime} pr="6">
+          <DateJust>{occurence.startDate}</DateJust>
+        </Box>
+      ))}
+    </Flex>
+  );
+};
 
 function parseProcessesWithMeetings(processes, meetings) {
   return processes.map((process) => {

@@ -851,9 +851,14 @@ class Process extends Component {
       if (!futureMeetings || futureMeetings.length === 0) {
         return null;
       }
+
+      const futureMeetingsSorted = futureMeetings.sort(
+        (a, b) => moment(a.startDate) - moment(b.startDate)
+      );
+
       return (
         <Flex pt="4">
-          {futureMeetings.map((m) => (
+          {futureMeetingsSorted.map((m) => (
             <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
               <Box pr="6">
                 <DateJust>{m.startDate}</DateJust>

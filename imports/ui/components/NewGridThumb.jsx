@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Avatar, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import moment from 'moment';
 
 import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
@@ -12,6 +13,8 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   if (!title || !imageUrl) {
     return null;
   }
+
+  const remaining = dates?.length - 1;
 
   return (
     <Box m="4">
@@ -47,13 +50,16 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
             </HStack>
           </Box>
           {avatar && <Avatar name={avatar.name} src={avatar.url} />}
-          {dates && dates.length > 0 && (
-            <Flex color="gray.800" fontWeight="light">
-              <DateJust style={{ color: '##2d2d2d' }}>{dates[0]}</DateJust>
-              {dates.length > 1 && (
+          {dates && (
+            <Flex>
+              {dates.slice(0, 1).map((date) => (
+                <DateJust key={date?.startDate + date?.startTime} date={date}>
+                  {date}
+                </DateJust>
+              ))}
+              {remaining > 0 && (
                 <Text fontSize="xl" ml="2" wordBreak="keep-all">
-                  {' '}
-                  +{dates.length - 1}
+                  + {remaining}
                 </Text>
               )}
             </Flex>
