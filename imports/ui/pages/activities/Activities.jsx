@@ -22,7 +22,7 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 
 moment.locale(i18n.language);
-
+console.log(i18n.language);
 const yesterday = moment().add(-1, 'days');
 const today = moment();
 
@@ -58,7 +58,7 @@ function compareDatesForSortReverse(a, b) {
 function parseProcessActivities(activities) {
   const activitiesParsed = [];
 
-  activities.forEach((act, index) => {
+  activities?.forEach((act, index) => {
     if (!act.isProcessMeeting) {
       activitiesParsed.push(act);
     } else {

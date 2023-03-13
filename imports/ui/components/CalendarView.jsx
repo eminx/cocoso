@@ -2,11 +2,12 @@ import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../utils/styles/bigcalendar-custom.css';
 
-moment.locale('en', {
+moment.locale(i18n.language, {
   week: {
     dow: 1, // Monday is the first day of the week.
   },

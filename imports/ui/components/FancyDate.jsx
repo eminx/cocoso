@@ -14,7 +14,7 @@ const fancyDateStyle = {
 const DateJust = ({ children, ...otherProps }) => (
   <div {...otherProps}>
     <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>
-    <div style={{ ...fancyDateStyle, fontSize: 16 }}>{moment(children).format('MMM')}</div>
+    <div style={{ ...fancyDateStyle, fontSize: 17 }}>{moment(children).format('MMM')}</div>
   </div>
 );
 

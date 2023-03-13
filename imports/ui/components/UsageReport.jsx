@@ -7,10 +7,13 @@ import 'react-table/react-table.css';
 import Select from 'react-select';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 import Drawer from './Drawer';
 import { call } from '../utils/shared';
 import { message } from './message';
+
+moment.locale(i18n.language);
 
 function compareDatesForSort(a, b) {
   const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);

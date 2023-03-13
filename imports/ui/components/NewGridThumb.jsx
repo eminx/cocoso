@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Avatar, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import moment from 'moment';
 
 import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';

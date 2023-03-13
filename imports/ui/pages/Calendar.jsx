@@ -374,24 +374,21 @@ class Calendar extends PureComponent {
 
           <Text fontSize="sm" mt="2" p="1">
             {selectedActivity?.longDescription &&
-              (selectedActivity?.isPrivateProcess
+              (selectedActivity?.isProcessPrivate
                 ? ''
                 : renderHTML(selectedActivity?.longDescription))}
           </Text>
 
-          <Center>
-            <Link to={selectedLinkForModal}>
-              <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
-                {' '}
-                {!selectedActivity?.isPrivateProcess &&
-                  `${
-                    selectedActivity?.isProcess || selectedActivity?.isProcessMeeting
-                      ? tc('labels.process')
-                      : tc('labels.activity')
-                  }`}
-              </Button>
-            </Link>
-          </Center>
+          {!selectedActivity?.isProcessPrivate && (
+            <Center>
+              <Link to={selectedLinkForModal}>
+                <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
+                  {' '}
+                  {tc('actions.entryPage')}
+                </Button>
+              </Link>
+            </Center>
+          )}
         </ConfirmModal>
 
         <ConfirmModal

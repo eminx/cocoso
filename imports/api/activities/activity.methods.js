@@ -5,21 +5,41 @@ import { getHost } from '../_utils/shared';
 import { isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
+import Processes from '../processes/process';
 import Resources from '../resources/resource';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
   getAllActivitiesFromAllHosts(onlyPublic = false) {
+    const user = Meteor.user();
     try {
+      let allActs = [];
       if (onlyPublic) {
-        return Activities.find({
+        allActs = Activities.find({
           $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
         }).fetch();
       } else {
-        return Activities.find({
-          isPublicActivity: false,
+        allActs = Activities.find({
+          $ne: {
+            isPublicActivity: true,
+          },
         });
       }
+      return allActs.filter((act) => {
+        if (!act.isProcessPrivate) {
+          return true;
+        }
+        if (!user) {
+          return false;
+        }
+        const process = Processes.findOne({ _id: act.processId });
+        const userId = user?._id;
+        return (
+          process.adminId === userId ||
+          process.members.some((member) => member.memberId === userId) ||
+          process.peopleInvited.some((person) => person.email === user.emails[0].address)
+        );
+      });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -27,17 +47,35 @@ Meteor.methods({
 
   getAllActivities(onlyPublic = false) {
     const host = getHost(this);
+    const user = Meteor.user();
     try {
+      let allActs = [];
       if (onlyPublic) {
-        return Activities.find({
+        allActs = Activities.find({
           host,
           $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
         }).fetch();
       } else {
-        return Activities.find({
+        allActs = Activities.find({
+          host,
           isPublicActivity: false,
         });
       }
+      return allActs.filter((act) => {
+        if (!act.isProcessPrivate) {
+          return true;
+        }
+        if (!userId) {
+          return false;
+        }
+        const process = Processes.findOne({ _id: act.processId });
+        const userId = user?._id;
+        return (
+          process.adminId === userId ||
+          process.members.some((member) => member.memberId === userId) ||
+          process.peopleInvited.some((person) => person.email === user.emails[0].address)
+        );
+      });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }

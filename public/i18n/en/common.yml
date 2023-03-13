@@ -24,6 +24,7 @@ actions:
   downloadCSV: Download CSV
   confirmRead: I have read and accept
   toThePage: To the page in {{ hostName }}
+  entryPage: Go to the entry page
 
 # ACTION PAGE TITLES
 labels:
