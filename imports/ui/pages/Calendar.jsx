@@ -178,7 +178,7 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, allBookings, resources, tc } = this.props;
+    const { isLoading, allBookings, currentUser, resources, tc } = this.props;
     const { currentHost } = this.context;
     const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
 
@@ -191,7 +191,12 @@ class Calendar extends PureComponent {
     });
 
     if (editActivity) {
-      return <Redirect to={`/activities/${selectedActivity.activityId}/edit`} />;
+      if (selectedActivity?.authorName === currentUser?.username) {
+        if (selectedActivity.isProcessMeeting) {
+          return <Redirect to={`/processes/${selectedActivity.processId}/edit`} />;
+        }
+        return <Redirect to={`/activities/${selectedActivity.activityId}/edit`} />;
+      }
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);

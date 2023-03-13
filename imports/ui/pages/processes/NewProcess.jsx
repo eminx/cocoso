@@ -34,6 +34,7 @@ class NewProcess extends React.Component {
       capacity: 12,
     },
     isLoading: false,
+    isCreating: false,
     isSuccess: false,
     isError: false,
     isPrivate: false,
@@ -79,6 +80,9 @@ class NewProcess extends React.Component {
   };
 
   handleSubmit = (values) => {
+    this.setState({
+      isCreating: true,
+    });
     const { tc } = this.props;
     const { uploadableImage } = this.state;
     if (!uploadableImage) {
@@ -91,7 +95,6 @@ class NewProcess extends React.Component {
     };
     this.setState(
       {
-        isCreating: true,
         formValues: parsedValues,
       },
       this.uploadImage
@@ -144,7 +147,6 @@ class NewProcess extends React.Component {
     try {
       const response = await call('createProcess', formValues, uploadedImage, isPrivate);
       this.setState({
-        isCreating: false,
         newProcessId: response,
         isSuccess: true,
       });
@@ -241,6 +243,7 @@ class NewProcess extends React.Component {
             <ProcessForm
               defaultValues={formValues}
               isSubmitDisabled={isFormValid}
+              isButtonLoading={isCreating}
               onSubmit={this.handleSubmit}
               setUploadableImage={this.setUploadableImage}
               uploadableImageLocal={uploadableImageLocal}

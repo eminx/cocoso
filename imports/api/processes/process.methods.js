@@ -5,6 +5,7 @@ import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Processes from './process';
+import Activities from '../activities/activity';
 import {
   getProcessRegistrationEmailBody,
   getInviteToPrivateProcessEmailBody,
@@ -170,6 +171,19 @@ Meteor.methods({
           imageUrl,
         },
       });
+
+      Activities.update(
+        {
+          processId: processId,
+        },
+        {
+          $set: {
+            title: formValues.title,
+            longDescription: formValues.description,
+            imageUrl,
+          },
+        }
+      );
       return processId;
     } catch (e) {
       throw new Meteor.Error(e, "Couldn't update the process");

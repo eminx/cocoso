@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Center,
@@ -10,26 +10,34 @@ import {
 } from '@chakra-ui/react';
 
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { useSSR, useTranslation } from 'react-i18next';
 
 import FileDropper from './FileDropper';
 import FormField from './FormField';
 import ReactQuill from './Quill';
 
-const ProcessForm = ({
+function ProcessForm({
   uploadableImageLocal,
   setUploadableImage,
   defaultValues,
   onSubmit,
   imageUrl,
   isSubmitDisabled,
-}) => {
+  isButtonLoading,
+}) {
+  const [imageChanged, setImageChanged] = useState(false);
+
   const { control, formState, handleSubmit, register } = useForm({
     defaultValues,
   });
-  const { isDirty, isSubmitting } = formState;
+  const { isDirty } = formState;
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
+
+  const handleSetUploadableImage = (files) => {
+    setUploadableImage(files);
+    setImageChanged(true);
+  };
 
   return (
     <div>
@@ -43,7 +51,7 @@ const ProcessForm = ({
             <Center>
               <FileDropper
                 imageUrl={imageUrl}
-                setUploadableImage={setUploadableImage}
+                setUploadableImage={handleSetUploadableImage}
                 uploadableImageLocal={uploadableImageLocal}
               />
             </Center>
@@ -80,8 +88,8 @@ const ProcessForm = ({
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button
-              isDisabled={!isDirty || isSubmitDisabled}
-              isLoading={isSubmitting}
+              isDisabled={(!isDirty && !imageChanged) || isSubmitDisabled}
+              isLoading={isButtonLoading}
               type="submit"
             >
               {tc('actions.submit')}
@@ -91,6 +99,6 @@ const ProcessForm = ({
       </form>
     </div>
   );
-};
+}
 
 export default ProcessForm;

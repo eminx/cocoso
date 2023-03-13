@@ -21,12 +21,16 @@ class EditProcess extends React.Component {
     },
     isDeleteModalOn: false,
     isSuccess: false,
+    isUpdating: false,
     uploadedImage: null,
     uploadableImage: null,
     uploadableImageLocal: null,
   };
 
   handleSubmit = (values) => {
+    this.setState({
+      isUpdating: true,
+    });
     const { uploadableImage } = this.state;
 
     const parsedValues = {
@@ -172,6 +176,7 @@ class EditProcess extends React.Component {
             <ProcessForm
               defaultValues={process}
               imageUrl={process && process.imageUrl}
+              isButtonLoading={isUpdating}
               onSubmit={this.handleSubmit}
               setUploadableImage={this.setUploadableImage}
               uploadableImageLocal={uploadableImageLocal}

@@ -72,6 +72,7 @@ function parseProcessActivities(activities) {
       }
     }
   });
+
   return activitiesParsed;
 }
 
