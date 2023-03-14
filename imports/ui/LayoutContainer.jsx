@@ -109,6 +109,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
           currentUser,
           currentHost,
           isDesktop,
+          platform,
           role,
           userLoading,
         }}
