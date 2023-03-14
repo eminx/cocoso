@@ -3,6 +3,13 @@ import Dropzone from 'react-dropzone';
 import { Box, Button, Center, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+const containerStyle = {
+  borderWidth: 1,
+  borderStyle: 'dashed',
+  cursor: 'pointer',
+  width: '100%',
+};
+
 const FileDropper = ({
   height = '100%',
   imageFit = 'contain',
@@ -14,13 +21,6 @@ const FileDropper = ({
   isMultiple = false,
   ...otherProps
 }) => {
-  const containerStyle = {
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    cursor: 'pointer',
-    width: '100%',
-  };
-
   if (round) {
     containerStyle.borderRadius = '50%';
     containerStyle.overflow = 'hidden';
