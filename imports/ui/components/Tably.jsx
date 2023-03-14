@@ -170,7 +170,7 @@ function Tably({
 
 function Header({ title, subTitle, tags, isDesktop, author }) {
   return (
-    <Flex mb={isDesktop ? '12' : '8'} pl="4" pr="0" justify="space-between">
+    <Flex mb={isDesktop ? '8' : '8'} pl="4" pr="0" justify="space-between">
       <Box flexBasis={isDesktop ? '100%' : '80%'}>
         <Heading
           as="h1"
