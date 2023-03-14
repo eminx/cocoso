@@ -91,6 +91,10 @@ function Categories({ history }) {
 
   const furtherBreadcrumbLinks = [
     {
+      label: 'Admin',
+      link: '/admin/settings',
+    },
+    {
       label: t('categories.label'),
       link: null,
     },

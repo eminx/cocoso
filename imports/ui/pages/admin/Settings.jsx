@@ -15,7 +15,6 @@ import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
-import Categories from './Categories';
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -152,6 +151,10 @@ export default function Settings({ history }) {
   }
 
   const furtherBreadcrumbLinks = [
+    {
+      label: 'Admin',
+      link: '/admin/settings',
+    },
     {
       label: t('settings.label'),
       link: 'admin/settings',

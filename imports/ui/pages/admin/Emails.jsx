@@ -84,6 +84,10 @@ function Emails({ history }) {
 
   const furtherBreadcrumbLinks = [
     {
+      label: 'Admin',
+      link: '/admin/settings',
+    },
+    {
       label: t('emails.label'),
       link: null,
     },

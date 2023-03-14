@@ -170,6 +170,10 @@ function Members({ history, members, isLoading }) {
 
   const furtherBreadcrumbLinks = [
     {
+      label: 'Admin',
+      link: '/admin/settings',
+    },
+    {
       label: t('label'),
       link: 'admin/members',
     },
