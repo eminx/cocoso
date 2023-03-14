@@ -82,21 +82,6 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     return currentHost.members.filter((m) => m.isPublic);
-    const members = currentHost.members.map((member) => {
-      const user = Meteor.users.findOne(member.id);
-      if (!user) {
-        return null;
-      }
-      const avatarSrc = user && user.avatar && user.avatar.src;
-      return {
-        ...member,
-        avatarSrc,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-      };
-    });
-    const validMembers = members.filter((member) => member && member.id);
-    return validMembers;
   },
 
   getAllMembersFromAllHosts() {

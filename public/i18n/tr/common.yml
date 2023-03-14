@@ -110,7 +110,7 @@ menu:
     login: Giriş
   member:
     label: Ben
-    profile: Profiilm
+    profile: Profilim
     activities: Aktivitelerim
     works: İşlerim
   admin:

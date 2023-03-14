@@ -66,6 +66,7 @@ profile:
       label: Avatar
       fileDropper: Click/Drag to upload
       remove: Remove
+      changeHelper: To change your avatar, click on the image and choose a file
     firstname:
       label: First name
     lastname:
@@ -76,14 +77,22 @@ profile:
       label: Contact Info
 
   message:
-    role: You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role
+    role: You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role
     participant: You are successfully set as participant
-    deny: You are not part of this organisation.
+    deny: You are not part of this community.
     notfound: User with this username within this organization not found, or chose to hide their profile
+    platform: Information you enter here will be saved globally in the {{ platform }} and published in the communities you choose.
 
   makePublic:
     label: Make my profile public
-    helperText: If switched on, your profile will be publicly visible
+    helperText: If switched on, your profile will be publicly visible <bold>in this community</bold>
+    helperTextGlobal: If switched off, your profile will be publicly invisible <bold>in all communities</bold>
+
+  menu:
+    avatar: Avatar
+    about: About Me
+    contact: Contact Info
+    language: Language
 
 delete:
   action: Delete Account

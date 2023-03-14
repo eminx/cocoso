@@ -38,6 +38,9 @@ signup:
       label: Lösenord
       helper: Minst 8 tecken, inklusive minst en liten bokstav, en stor bokstav och en siffra
       info: Ditt lösenord är krypterat
+    terms:
+      label: Jag läser och accepterar {{ terms }}
+      terms: användarvillkoren och sekretesspolicyn
 
 password:
   labels:
@@ -63,6 +66,7 @@ profile:
       label: Avatar
       fileDropper: Klicka/dra för att ladda upp
       remove: Ta bort
+      changeHelper: För att ändra din avatar, klicka på bilden och välj en fil
     firstname:
       label: Förnamn
     lastname:
@@ -73,14 +77,22 @@ profile:
       label: Kontaktinformation
 
   message:
-    role: Du som <bold>{{ username }}</bold> är en del av denna organisation med rollen <bold>{{ role }}</bold>
+    role: Du som <bold>{{ username }}</bold> är en del av <bold>{{ host }}</bold med rollen <bold>{{ role }}</bold>
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
+    platform: Information du anger här kommer att sparas globalt i {{ platform }} och publiceras i communities du väljer.
 
   makePublic:
     label: Gör min profil offentlig
     helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
+    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig <bold>i alla communities</bold>
+
+  menu:
+    avatar: Avatar
+    about: Om mig
+    contact: Kontaktinfo
+    language: Språk
 
 delete:
   action: Radera konto

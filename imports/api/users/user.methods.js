@@ -143,7 +143,24 @@ Meteor.methods({
           lastName: values.lastName,
           bio: values.bio,
           contactInfo: values.contactInfo,
-          lang: values.lang,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
+  setPreferredLanguage(lang) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      Meteor.users.update(user._id, {
+        $set: {
+          lang,
         },
       });
     } catch (error) {
@@ -248,10 +265,27 @@ Meteor.methods({
     }
   },
 
-  setProfilePublic(isPublic) {
+  setProfilePublicGlobally(isPublic) {
     const userId = Meteor.userId();
+    const host = getHost(this);
+
     try {
-      Meteor.users.update({ _id: userId }, { $set: { isPublic: isPublic } });
+      Meteor.users.update(
+        {
+          _id: userId,
+          memberships: {
+            $elemMatch: {
+              host: host,
+            },
+          },
+        },
+        {
+          $set: {
+            isPublic,
+            'memberships.$.isPublic': isPublic,
+          },
+        }
+      );
       Hosts.update(
         {
           members: {
@@ -270,8 +304,73 @@ Meteor.methods({
         }
       );
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, "Couldn't update");
     }
+  },
+
+  setProfilePublic(isPublic) {
+    const userId = Meteor.userId();
+    const host = getHost(this);
+
+    try {
+      Meteor.users.update(
+        {
+          _id: userId,
+          memberships: {
+            $elemMatch: {
+              host: host,
+            },
+          },
+        },
+        {
+          $set: {
+            'memberships.$.isPublic': isPublic,
+          },
+        }
+      );
+      Hosts.update(
+        {
+          host,
+          members: {
+            $elemMatch: {
+              id: userId,
+            },
+          },
+        },
+        {
+          $set: {
+            'members.$.isPublic': isPublic,
+          },
+        }
+      );
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't update");
+    }
+
+    // below turns off all the hosts
+    // try {
+    //   Meteor.users.update({ _id: userId }, { $set: { isPublic: isPublic } });
+    //   Hosts.update(
+    //     {
+    //       members: {
+    //         $elemMatch: {
+    //           id: userId,
+    //         },
+    //       },
+    //     },
+    //     {
+    //       $set: {
+    //         'members.$.isPublic': isPublic,
+    //       },
+    //     },
+    //     {
+    //       multi: true,
+    //     }
+    //   );
+    // } catch (error) {
+    //   throw new Meteor.Error(error, "Couldn't update");
+    // }
   },
 
   deleteAccount() {

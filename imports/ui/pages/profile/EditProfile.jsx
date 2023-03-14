@@ -1,51 +1,61 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useState } from 'react';
-import { Redirect, useParams } from 'react-router-dom';
+import React, { useContext, useLayoutEffect, useState } from 'react';
+import { Redirect, Route, Switch as RouteSwitch, useLocation, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Heading, HStack, Switch, VStack, Text } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  VStack,
+  Text,
+} from '@chakra-ui/react';
 
 import ProfileForm from './ProfileForm';
-import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
-import FileDropper from '../../components/FileDropper';
-import FormField from '../../components/FormField';
+import FormSwitch from '../../components/FormSwitch';
 import { StateContext } from '../../LayoutContainer';
+import AvatarUploader from './AvatarUploader';
+import Tabs from '../../components/Tabs';
+import ChangeLanguage from '../../components/ChangeLanguageMenu';
+import FormField from '../../components/FormField';
 
-function Profile({ history }) {
+function EditProfile({ history }) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadableAvatarLocal, setUploadableAvatarLocal] = useState(null);
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
-
-  const { currentHost, currentUser, role } = useContext(StateContext);
+  const [lang, setLang] = useState(null);
+  const location = useLocation();
+  const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
   const { username } = useParams();
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+
+  useLayoutEffect(() => {
+    setLang(currentUser?.lang);
+  }, [currentUser]);
 
   if (!currentUser || currentUser.username !== username) {
     return <Redirect to="/login" />;
   }
 
-  const handleSubmit = async (values) => {
-    try {
-      await call('saveUserInfo', values);
-      message.success(
-        tc('message.success.save', {
-          domain: `${tc('domains.your')} ${tc('domains.data')}`,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
-  };
-
   const handleSetUploadableAvatar = (files) => {
+    if (!files) {
+      setUploadableAvatar(null);
+      setUploadableAvatarLocal(null);
+      return;
+    }
+
     const uploadableAvatar = files[0];
 
     const reader = new FileReader();
@@ -80,6 +90,34 @@ function Profile({ history }) {
     }
   };
 
+  const handleSubmitInfo = async (values) => {
+    try {
+      await call('saveUserInfo', values);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.data')}`,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  const handleSetLanguage = async () => {
+    try {
+      await call('setPreferredLanguage', lang);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.your')} ${tc('domains.data')}`,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
   const deleteAccount = () => {
     setIsDeleting(true);
     Meteor.call('deleteAccount', (error, respond) => {
@@ -90,7 +128,7 @@ function Profile({ history }) {
       }
       message.success(
         tc('message.success.remove', {
-          domain: `${tc('domains.your')} ${tc('domains.account')}`,
+          domain: `${tc('domains.account')}`,
         })
       );
       history.push('/');
@@ -102,7 +140,7 @@ function Profile({ history }) {
       await call('setProfilePublic', isPublic);
       message.success(
         tc('message.success.save', {
-          domain: `${tc('domains.your')} ${tc('domains.profile')}`,
+          domain: `${tc('domains.profile')}`,
         })
       );
     } catch (error) {
@@ -111,13 +149,21 @@ function Profile({ history }) {
     }
   };
 
-  const membersInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'members');
+  const setProfilePublicGlobally = async (isPublic) => {
+    try {
+      await call('setProfilePublicGlobally', isPublic);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.profile')}`,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
 
   const furtherBreadcrumbLinks = [
-    {
-      label: membersInMenu?.label,
-      link: '/members',
-    },
     {
       label: currentUser.username,
       link: `/@${currentUser.username}`,
@@ -128,122 +174,194 @@ function Profile({ history }) {
     },
   ];
 
+  const isMember = ['admin', 'contributor', 'participant'].includes(role);
+
+  if (!isMember) {
+    return (
+      <Center p="8">
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>{t('profile.message.deny')}</AlertTitle>
+        </Alert>
+      </Center>
+    );
+  }
+
+  const tabs = [
+    {
+      title: t('profile.menu.avatar'),
+      path: `/@${currentUser.username}/edit/avatar`,
+      content: (
+        <Box>
+          <AvatarUploader
+            imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
+            isUploading={isUploading}
+            uploadableAvatarLocal={uploadableAvatarLocal}
+            uploadAvatar={uploadAvatar}
+            setUploadableAvatar={handleSetUploadableAvatar}
+            setUploadableAvatarLocal={setUploadableAvatarLocal}
+          />
+        </Box>
+      ),
+    },
+    {
+      title: t('profile.menu.about'),
+      path: `/@${currentUser.username}/edit/about`,
+      content: (
+        <Box>
+          <Heading mb="2" size="sm">
+            {t('profile.label')}
+          </Heading>
+          <Box maxWidth={400}>
+            <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      title: t('profile.menu.language'),
+      path: `/@${currentUser.username}/edit/language`,
+      content: (
+        <Box>
+          <FormField label={tc('langs.form.label')}>
+            <ChangeLanguage
+              currentLang={currentUser?.lang}
+              hideHelper
+              select
+              onChange={(lang) => setLang(lang)}
+            />
+          </FormField>
+
+          <Flex justify="flex-end" mt="4">
+            <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>
+              {tc('actions.submit')}
+            </Button>
+          </Flex>
+        </Box>
+      ),
+    },
+  ];
+
+  const pathname = location?.pathname;
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+
+  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+    return <Redirect to={tabs[0].path} />;
+  }
+
+  const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
+  const isUserPublic = Boolean(currentMembership.isPublic);
+  const isUserPublicGlobally = currentUser.isPublic;
+
   return (
     <Box>
       <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      <Template>
-        <Box bg="white">
-          <Center my="2" p="2">
-            {['admin', 'contributor', 'participant'].includes(role) && (
-              <Text textAlign="center" fontSize="sm">
+
+      <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
+        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
+          <Heading size="md">{currentHost?.settings?.name}</Heading>
+
+          <Box mt="4">
+            <Alert bg="gray.200" status="info">
+              <AlertIcon color="gray.800" />
+              <Text fontSize="sm">
                 <Trans
                   i18nKey="accounts:profile.message.role"
-                  defaults="You as <bold>{{ username }}</bold> are part of this organisation with the <bold>{{ role }}</bold> role"
-                  values={{ username: currentUser.username, role }}
+                  defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
+                  values={{
+                    host: currentHost?.settings?.name,
+                    role,
+                    username: currentUser.username,
+                  }}
                   components={{ bold: <strong /> }}
                 />
               </Text>
-            )}
-          </Center>
+            </Alert>
+          </Box>
 
-          <Center bg="white" p="4" mb="4">
-            <Box>
-              <Heading size="md" mb="2" textAlign="center">
-                {t('profile.form.avatar.label')}
-              </Heading>
-              <Center style={{ overflow: 'hidden' }}>
-                <Box w="120px" h="120px">
-                  <FileDropper
-                    imageUrl={
-                      uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)
-                    }
-                    label={t('profile.form.avatar.fileDropper')}
-                    round
-                    height="100%"
-                    imageFit="cover"
-                    setUploadableImage={handleSetUploadableAvatar}
-                  />
-                </Box>
-              </Center>
-              {uploadableAvatarLocal && (
-                <HStack spacing="2" p="4">
-                  <Button
-                    colorScheme="red"
-                    margin={{ top: 'small' }}
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setUploadableAvatar(null);
-                      setUploadableAvatarLocal(null);
-                    }}
-                  >
-                    {t('profile.form.avatar.remove')}
-                  </Button>
+          {!currentHost.isPortalHost && (
+            <Box my="4">
+              <Text fontSize="sm" mb="2">
+                {t('profile.makePublic.helperText')}
+              </Text>
 
-                  <Button
-                    colorScheme="green"
-                    isDisabled={isUploading}
-                    isLoading={isUploading}
-                    size="sm"
-                    variant="solid"
-                    onClick={() => uploadAvatar()}
-                  >
-                    {tc('actions.submit')}
-                  </Button>
-                </HStack>
-              )}
-            </Box>
-          </Center>
-
-          <Box p="4" mb="8" textAlign="center">
-            <Heading size="md" mb="2" textAlign="center">
-              {t('profile.makePublic.label')}
-            </Heading>
-            <FormField helperText={t('profile.makePublic.helperText')}>
-              <Switch
+              <FormSwitch
                 colorScheme="green"
-                isChecked={currentUser.isPublic}
-                size="lg"
+                isChecked={isUserPublic}
+                isDisabled={!isUserPublicGlobally}
+                label={t('profile.makePublic.label')}
                 onChange={({ target: { checked } }) => setProfilePublic(checked)}
               />
-            </FormField>
-          </Box>
-
-          <Box bg="white" p="4">
-            <Box>
-              <Heading mb="2" size="md" textAlign="center">
-                {t('profile.label')}
-              </Heading>
-              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmit} />
             </Box>
-          </Box>
+          )}
         </Box>
 
-        <Center>
-          <VStack spacing="4" mt="4" p="4">
-            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
-              {t('delete.action')}
-            </Button>
-          </VStack>
-        </Center>
+        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
+          <Heading size="md">{platform.name}</Heading>
 
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          title={t('delete.title')}
-          confirmText={t('delete.label')}
-          confirmButtonProps={{
-            colorScheme: 'red',
-            isLoading: isDeleting,
-            isDisabled: isDeleting,
-          }}
-          onConfirm={deleteAccount}
-          onCancel={() => setIsDeleteModalOn(false)}
-        >
-          <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
-      </Template>
+          <Box mt="4" mb="8">
+            <Text fontSize="sm" mb="2">
+              {t('profile.makePublic.helperTextGlobal')}
+            </Text>
+
+            <FormSwitch
+              colorScheme="green"
+              isChecked={isUserPublicGlobally}
+              label={t('profile.makePublic.label')}
+              onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
+            />
+          </Box>
+
+          <Alert bg="gray.200" my="4" status="info">
+            <AlertIcon color="gray.800" />
+            <Text fontSize="sm">{t('profile.message.platform', { platform: platform.name })}</Text>
+          </Alert>
+
+          <Tabs index={tabIndex} tabs={tabs} />
+
+          <Box px="4">
+            <RouteSwitch history={history}>
+              {tabs.map((tab) => (
+                <Route
+                  key={tab.title}
+                  exact
+                  path={tab.path}
+                  render={(props) => (
+                    <Box {...props} pt="2">
+                      {tab.content}
+                    </Box>
+                  )}
+                />
+              ))}
+            </RouteSwitch>
+          </Box>
+        </Box>
+      </Flex>
+
+      <Box bg="red.100" my="8">
+        <VStack spacing="4" mt="4" p="4">
+          <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+            {t('delete.action')}
+          </Button>
+        </VStack>
+      </Box>
+
+      <ConfirmModal
+        visible={isDeleteModalOn}
+        title={t('delete.title')}
+        confirmText={t('delete.label')}
+        confirmButtonProps={{
+          colorScheme: 'red',
+          isLoading: isDeleting,
+          isDisabled: isDeleting,
+        }}
+        onConfirm={deleteAccount}
+        onCancel={() => setIsDeleteModalOn(false)}
+      >
+        <Text>{t('delete.body')}</Text>
+      </ConfirmModal>
     </Box>
   );
 }
 
-export default Profile;
+export default EditProfile;

@@ -4,7 +4,6 @@ import { Button, Flex, Input, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import FormField from '../../components/FormField';
-import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import ReactQuill from '../../components/Quill';
 
 function ProfileForm({ defaultValues, onSubmit }) {
@@ -42,10 +41,6 @@ function ProfileForm({ defaultValues, onSubmit }) {
               name="contactInfo"
               render={({ field }) => <ReactQuill {...field} />}
             />
-          </FormField>
-
-          <FormField label={tc('langs.form.label')}>
-            <ChangeLanguage select="true" register={register} />
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

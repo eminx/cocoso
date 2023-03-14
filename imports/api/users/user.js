@@ -31,6 +31,7 @@ Users.schema.UserProfile = {
       host: Schemas.Hostname,
       role: { type: String },
       date: { type: Date },
+      isPublic: { type: Boolean },
     }),
     optional: true,
   },
