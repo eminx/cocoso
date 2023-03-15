@@ -327,7 +327,7 @@ function EditProfile({ history }) {
         </Box>
 
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">{platform.name}</Heading>
+          <Heading size="md">{platform?.name}</Heading>
 
           <Box mt="4" mb="8">
             <Text fontSize="sm" mb="2">
@@ -344,7 +344,7 @@ function EditProfile({ history }) {
 
           <Alert bg="gray.200" my="4" status="info">
             <AlertIcon color="gray.800" />
-            <Text fontSize="sm">{t('profile.message.platform', { platform: platform.name })}</Text>
+            <Text fontSize="sm">{t('profile.message.platform', { platform: platform?.name })}</Text>
           </Alert>
 
           <Tabs index={tabIndex} tabs={tabs} />
