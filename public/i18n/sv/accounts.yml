@@ -59,6 +59,7 @@ password:
 profile:
   label: Personlig information
   join: Join
+  joinHost: Join {{ host }}
   joinAsParticipantQuestion: Vill du gå med i denna organisation med deltagar rollen?
 
   form:
@@ -86,13 +87,19 @@ profile:
   makePublic:
     label: Gör min profil offentlig
     helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
-    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig <bold>i alla communities</bold>
+    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig i alla communities
 
   menu:
     avatar: Avatar
     about: Om mig
     contact: Kontaktinfo
     language: Språk
+
+leave:
+  action: Lämna Community
+  label: Bekräfta att du lämnar
+  title: Är du säker?
+  body: Du är på väg att lämna denna community och överge din roll och privilegierna. Du kanske inte kan hämta dem igen. Är du säker?
 
 delete:
   action: Radera konto

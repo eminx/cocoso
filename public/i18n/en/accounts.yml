@@ -4,6 +4,7 @@ actions:
   logout: Logout
   forgot: Forgot your password?
   reset: Reset your password
+  leave: Leave
 
 login:
   labels:
@@ -59,6 +60,7 @@ password:
 profile:
   label: Personal Info
   join: Join
+  joinHost: Join {{ host }}
   joinAsParticipantQuestion: Would you like to join this organization with the participant role?
 
   form:
@@ -85,14 +87,20 @@ profile:
 
   makePublic:
     label: Make my profile public
-    helperText: If switched on, your profile will be publicly visible <bold>in this community</bold>
-    helperTextGlobal: If switched off, your profile will be publicly invisible <bold>in all communities</bold>
+    helperText: If switched on, your profile will be publicly visible in this community
+    helperTextGlobal: If switched off, your profile will be publicly invisible in all communities
 
   menu:
     avatar: Avatar
     about: About Me
     contact: Contact Info
     language: Language
+
+leave:
+  action: Leave Community
+  label: Confirm Leaving
+  title: Are you sure?
+  body: You are about to leave this community and abandon your role and the privileges. You may not be able to retrieve them again. Are you sure?
 
 delete:
   action: Delete Account

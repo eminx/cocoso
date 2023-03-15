@@ -30,7 +30,9 @@ import FormField from '../../components/FormField';
 
 function EditProfile({ history }) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
+  const [isLeaveModalOn, setIsLeaveModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadableAvatarLocal, setUploadableAvatarLocal] = useState(null);
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
@@ -109,7 +111,7 @@ function EditProfile({ history }) {
       await call('setPreferredLanguage', lang);
       message.success(
         tc('message.success.save', {
-          domain: `${tc('domains.your')} ${tc('domains.data')}`,
+          domain: `${tc('domains.data')}`,
         })
       );
     } catch (error) {
@@ -133,6 +135,26 @@ function EditProfile({ history }) {
       );
       history.push('/');
     });
+  };
+
+  const leaveHost = async () => {
+    setIsLeaving(true);
+    try {
+      await call('leaveHost');
+      message.success(
+        tc('message.success.leave', {
+          host: currentHost?.settings?.name,
+        })
+      );
+      Meteor.logout();
+      history.push('/');
+      setIsLeaveModalOn(false);
+    } catch {
+      console.log(error);
+      message.error(error.reason);
+    } finally {
+      setIsLeaving(false);
+    }
   };
 
   const setProfilePublic = async (isPublic) => {
@@ -253,13 +275,15 @@ function EditProfile({ history }) {
   const isUserPublic = Boolean(currentMembership.isPublic);
   const isUserPublicGlobally = currentUser.isPublic;
 
+  const communityName = currentHost?.settings?.name;
+
   return (
     <Box>
       <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
 
       <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">{currentHost?.settings?.name}</Heading>
+          <Heading size="md">{communityName}</Heading>
 
           <Box mt="4">
             <Alert bg="gray.200" status="info">
@@ -294,6 +318,12 @@ function EditProfile({ history }) {
               />
             </Box>
           )}
+
+          <Box my="4">
+            <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
+              {t('actions.leave')} {communityName}
+            </Button>
+          </Box>
         </Box>
 
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
@@ -359,6 +389,20 @@ function EditProfile({ history }) {
         onCancel={() => setIsDeleteModalOn(false)}
       >
         <Text>{t('delete.body')}</Text>
+      </ConfirmModal>
+
+      <ConfirmModal
+        visible={isLeaveModalOn}
+        title={t('leave.title')}
+        confirmText={t('leave.label')}
+        confirmButtonProps={{
+          colorScheme: 'red',
+          isLoading: isLeaving,
+        }}
+        onConfirm={leaveHost}
+        onCancel={() => setIsLeaveModalOn(false)}
+      >
+        <Text>{t('leave.body')}</Text>
       </ConfirmModal>
     </Box>
   );

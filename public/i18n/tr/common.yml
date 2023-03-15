@@ -64,6 +64,7 @@ message:
     update: '{{ domain }} güncellendi'
     remove: '{{ domain }} silindi'
     save: '{{ domain }} kaydedildi'
+    leave: '{{ host }} topluluğundaki üyeliğin sonlandırıldı'
 
   error:
     imageRequired: İmaj gerekiyor

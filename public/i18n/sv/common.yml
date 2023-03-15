@@ -64,6 +64,7 @@ message:
     update: '{{ domain }} har uppdaterats framgångsrikt'
     remove: '{{ domain }} har raderats'
     save: '{{ domain }} har sparats'
+    leave: Ditt medlemskap hos {{ host }} avslutas
 
   error:
     imageRequired: Bild krävs

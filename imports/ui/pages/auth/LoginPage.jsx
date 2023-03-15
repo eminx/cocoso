@@ -89,7 +89,7 @@ function LoginPage() {
       </Template>
 
       <ConfirmModal
-        title={t('profile.join') + ' ' + currentHost?.settings?.name}
+        title={t('profile.joinHost', { host: currentHost?.settings?.name })}
         visible={isJoinModal}
         onConfirm={() => confirmJoin()}
         onCancel={() => cancelJoin()}

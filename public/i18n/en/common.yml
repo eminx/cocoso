@@ -64,6 +64,7 @@ message:
     update: '{{ domain }} is successfully updated'
     remove: '{{ domain }} is successfully deleted'
     save: '{{ domain }} is successfully saved'
+    leave: Your membership at {{ host }} is terminated
 
   error:
     imageRequired: Image is required

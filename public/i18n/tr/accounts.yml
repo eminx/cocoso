@@ -40,7 +40,7 @@ signup:
       info: Şifreniz enkript edilir (sistem sahipleri erişemez)
     terms:
       label: '{{ terms }} okudum, anladım ve kabul ediyorum'
-      terms: hizmet şartları ve gizlilik politikası
+      terms: Hizmet şartları ve gizlilik politikası
 
 password:
   labels:
@@ -59,6 +59,7 @@ password:
 profile:
   label: Kişisel bilgiler
   join: Katıl
+  joinHost: '{{ host }} topluluğuna katıl'
   joinAsParticipantQuestion: Bu topluluğa katılımcı rolü ile katılmak ister misin?
 
   form:
@@ -93,6 +94,12 @@ profile:
     about: Hakkımda
     contact: İletişim
     language: DİL
+
+leave:
+  action: Topluluktan Ayrıl
+  label: Ayrılmayı Onayla
+  title: Emin misin?
+  body: Bu topluluktan ayrılarak rolünü ve ayrıcalıklarını terk etmek üzeresin. Onları tekrar geri edinemeyebilirsin. Emin misin?
 
 delete:
   action: Hesabımı Sil

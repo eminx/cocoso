@@ -43,7 +43,6 @@ Meteor.methods({
         return userId;
       }
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -72,7 +71,7 @@ Meteor.methods({
               email: user.emails[0].address,
               role: 'participant',
               date: new Date(),
-              isPublic: Boolean(user.isPublic),
+              isPublic: true,
               avatar: user.avatar?.src,
             },
           },
@@ -85,11 +84,11 @@ Meteor.methods({
             host,
             role: 'participant',
             date: new Date(),
+            isPublic: true,
           },
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -112,7 +111,7 @@ Meteor.methods({
       Hosts.update(currentHost._id, {
         $pull: {
           members: {
-            username: user.username,
+            id: user._id,
           },
         },
       });
@@ -125,7 +124,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -146,7 +144,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -164,7 +161,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -251,7 +247,6 @@ Meteor.methods({
         }
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -304,7 +299,6 @@ Meteor.methods({
         }
       );
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error, "Couldn't update");
     }
   },
@@ -373,6 +367,34 @@ Meteor.methods({
     // }
   },
 
+  leaveHost() {
+    const userId = Meteor.userId();
+    const host = getHost(this);
+
+    try {
+      Meteor.users.update(userId, {
+        $pull: {
+          memberships: {
+            host,
+          },
+        },
+      });
+
+      Hosts.update(
+        { host },
+        {
+          $pull: {
+            members: {
+              id: userId,
+            },
+          },
+        }
+      );
+    } catch {
+      throw new Meteor.Error(error);
+    }
+  },
+
   deleteAccount() {
     const userId = Meteor.userId();
     if (!userId) {
@@ -384,7 +406,6 @@ Meteor.methods({
       });
       Meteor.users.remove(userId);
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },

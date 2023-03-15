@@ -16,7 +16,7 @@ export default function AvatarUploader({
   const [tc] = useTranslation('common');
 
   return (
-    <Box w="120px" h="120px">
+    <Box w="120px" h="120px" mb="16">
       <FileDropper
         imageUrl={imageUrl}
         label={t('profile.form.avatar.fileDropper')}
