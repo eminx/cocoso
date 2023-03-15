@@ -4,6 +4,7 @@ actions:
   logout: Logga ut
   forgot: Glömt ditt lösenord?
   reset: Återställ ditt lösenord
+  leave: Lämna {{ host }}
 
 login:
   labels:

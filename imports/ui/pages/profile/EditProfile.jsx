@@ -293,7 +293,7 @@ function EditProfile({ history }) {
                   i18nKey="accounts:profile.message.role"
                   defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
                   values={{
-                    host: currentHost?.settings?.name,
+                    host: communityName,
                     role,
                     username: currentUser.username,
                   }}
@@ -321,7 +321,7 @@ function EditProfile({ history }) {
 
           <Box my="4">
             <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
-              {t('actions.leave')} {communityName}
+              {t('actions.leave', { host: communityName })}
             </Button>
           </Box>
         </Box>
@@ -377,6 +377,20 @@ function EditProfile({ history }) {
       </Box>
 
       <ConfirmModal
+        visible={isLeaveModalOn}
+        title={t('leave.title')}
+        confirmText={t('leave.label')}
+        confirmButtonProps={{
+          colorScheme: 'red',
+          isLoading: isLeaving,
+        }}
+        onConfirm={leaveHost}
+        onCancel={() => setIsLeaveModalOn(false)}
+      >
+        <Text>{t('leave.body')}</Text>
+      </ConfirmModal>
+
+      <ConfirmModal
         visible={isDeleteModalOn}
         title={t('delete.title')}
         confirmText={t('delete.label')}
@@ -389,20 +403,6 @@ function EditProfile({ history }) {
         onCancel={() => setIsDeleteModalOn(false)}
       >
         <Text>{t('delete.body')}</Text>
-      </ConfirmModal>
-
-      <ConfirmModal
-        visible={isLeaveModalOn}
-        title={t('leave.title')}
-        confirmText={t('leave.label')}
-        confirmButtonProps={{
-          colorScheme: 'red',
-          isLoading: isLeaving,
-        }}
-        onConfirm={leaveHost}
-        onCancel={() => setIsLeaveModalOn(false)}
-      >
-        <Text>{t('leave.body')}</Text>
       </ConfirmModal>
     </Box>
   );

@@ -4,6 +4,7 @@ actions:
   logout: Çıkış
   forgot: Şifreni unuttun mu?
   reset: Şifreni yenile
+  leave: '{{ host }} topluluğundan ayrıl'
 
 login:
   labels:
@@ -82,7 +83,7 @@ profile:
     participant: Katılımcı olarak rolün başarıyla gerçekleştirildi
     deny: Bu topluluğun bir üyesi değilsin
     notfound: Bu toplulukta bu kullanıcı adına sahip bir kullanıcı bulunamadı veya aradığınız kullanıcı profilini gizli tutmayı tercih etti
-    platform: Buraya girdiğin bilgiler {{ platform }} de/da global olarak kaydedilecek ve tercih ettiğin topluluklarda yayınlanacaktır.
+    platform: Buraya girdiğin bilgiler {{ platform }} platformunda global olarak kaydedilecek ve tercih ettiğin topluluklarda yayınlanacaktır.
 
   makePublic:
     label: Profilimi görünür yap
@@ -97,7 +98,7 @@ profile:
 
 leave:
   action: Topluluktan Ayrıl
-  label: Ayrılmayı Onayla
+  label: Ayrılmayı onayla
   title: Emin misin?
   body: Bu topluluktan ayrılarak rolünü ve ayrıcalıklarını terk etmek üzeresin. Onları tekrar geri edinemeyebilirsin. Emin misin?
 
