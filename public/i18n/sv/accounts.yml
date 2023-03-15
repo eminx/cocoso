@@ -79,7 +79,7 @@ profile:
       label: Kontaktinformation
 
   message:
-    role: Du som <bold>{{ username }}</bold> är en del av <bold>{{ host }}</bold med rollen <bold>{{ role }}</bold>
+    role: Du som <bold>{{ username }}</bold> är en del av <bold>{{ host }}</bold> med rollen <bold>{{ role }}</bold>
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
