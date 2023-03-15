@@ -26,7 +26,9 @@ import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
-import 'moment/min/locales';
+import moment from 'moment';
+import 'moment/locale/sv';
+import 'moment/locale/tr';
 
 export const StateContext = React.createContext(null);
 
