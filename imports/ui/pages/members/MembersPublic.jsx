@@ -109,7 +109,6 @@ function MembersPublic() {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     const membersFiltered = members.filter((member) => {
       if (!member.isPublic) {
-        console.log(member.isPublic);
         return false;
       }
       if (!member.username) {
@@ -129,7 +128,6 @@ function MembersPublic() {
   };
 
   const membersRendered = getMembersFiltered();
-  console.log(membersRendered);
   return (
     <Box mb="3">
       <Helmet>
