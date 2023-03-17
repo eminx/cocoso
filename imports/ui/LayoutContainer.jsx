@@ -135,7 +135,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                 <Footer currentHost={currentHost} platform={platform} tc={tc} />
               )}
 
-              {isHeaderAndFooter && currentHost.isPortalHost && (
+              {isHeaderAndFooter && (
                 <Box>
                   <Center p="8" bg="gray.900">
                     <Box textAlign="center" color="gray.100">
