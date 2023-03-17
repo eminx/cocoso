@@ -40,7 +40,7 @@ export default function PortalHostIndicator({ platform }) {
           <AccordionPanel bg="gray.700" color="gray.50" pb={4}>
             <Center>
               <Container>
-                <Text textAlign="center">
+                <Text fontSize="sm" textAlign="center">
                   {t('portalHost.indicatorLongText', { platform: platform?.name })}
                 </Text>
               </Container>
