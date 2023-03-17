@@ -26,4 +26,24 @@ Meteor.methods({
       throw new Meteor.Error(error);
     }
   },
+
+  updatePlatformSettings(values) {
+    const currentUser = Meteor.user();
+    if (!currentUser || !currentUser.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    const thePlatform = Platform.findOne();
+    try {
+      Platform.update(thePlatform._id, {
+        $set: {
+          ...values,
+          updatedAt: new Date(),
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
 });

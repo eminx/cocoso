@@ -3,7 +3,7 @@ settings:
   label: Settings
   tabs:
     logo: Logo
-    info: Organization
+    info: Info
     menu: Menu
     cats: Categories
     menuVisibility: Visibility
@@ -18,7 +18,11 @@ logo:
 
 info:
   label: Organisation
-  info: Add/Edit Information About your Organisation
+  info: Enter Information About your Organisation
+  platform:
+    info: Enter Information About the Global Platform
+    name: Name
+    email: Email address
 
 menu:
   label: Menu

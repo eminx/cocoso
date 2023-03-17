@@ -3,7 +3,7 @@ settings:
   label: Inställningar
   tabs:
     logo: Logotyp
-    info: Organisation
+    info: Info
     menu: Meny
     cats: Kategorier
     menuVisibility: Synlighet
@@ -17,8 +17,12 @@ logo:
     fileDropper: Släpp bara en fil åt gången
 
 info:
-  label: Organization
-  info: Lägg till/redigera information om din organisation
+  label: Organisation
+  info: Lägg till information om din organisation
+  platform:
+    info: Lägg till information om den global platformen
+    name: Namn
+    email: Epostadressen
 
 menu:
   label: Meny

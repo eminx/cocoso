@@ -3,7 +3,7 @@ settings:
   label: Ayarlar
   tabs:
     logo: Logo
-    info: Organizasyon
+    info: Info
     menu: Menü
     cats: Kategoriler
     menuVisibility: Görünürlük
@@ -13,12 +13,16 @@ logo:
   label: Logo
   info: Logo yükle
   message:
-    success: Logo başarılı şekilde kaydedilde
+    success: Logo başarılı şekilde kaydedildi
     fileDropper: Lütfen yalnızca tek bir dosya seçiniz
 
 info:
   label: Organizasyon
   info: Topluluk hakkında bilgi gir
+  platform:
+    info: Global Platform hakkında bilgi gir
+    name: İsim
+    email: Eposta adresi
 
 menu:
   label: Menü

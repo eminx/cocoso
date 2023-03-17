@@ -11,6 +11,7 @@ Platform.schema = new SimpleSchema({
   logo: { type: String, optional: true },
   email: Schemas.Email,
   createdAt: { type: Date },
+  lastUpdatedAt: { type: Date, optional: true },
 });
 
 Platform.attachSchema(Platform.schema);

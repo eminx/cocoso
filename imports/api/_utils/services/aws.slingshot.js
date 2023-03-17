@@ -13,6 +13,11 @@ Slingshot.fileRestrictions('hostLogoUpload', {
   maxSize: 10 * 1024 * 1024,
 });
 
+Slingshot.fileRestrictions('platformLogoUpload', {
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  maxSize: 10 * 1024 * 1024,
+});
+
 Slingshot.fileRestrictions('workImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
   maxSize: 30 * 1024 * 1024,
@@ -137,6 +142,27 @@ Slingshot.createDirective('processImageUpload', Slingshot.S3Storage, {
 });
 
 Slingshot.createDirective('hostLogoUpload', Slingshot.S3Storage, {
+  AWSAccessKeyId: s3Settings.AWSAccessKeyId,
+  AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
+  bucket: s3Settings.AWSBucketName,
+  acl: 'public-read',
+  region: s3Settings.AWSRegion,
+
+  authorize() {
+    if (!this.userId) {
+      const message = 'Please login before posting images';
+      throw new Meteor.Error('Login Required', message);
+    }
+    return true;
+  },
+
+  key(file) {
+    const currentUser = Meteor.user();
+    return `${currentUser.username}/${file.name}`;
+  },
+});
+
+Slingshot.createDirective('platformLogoUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketName,

@@ -33,6 +33,9 @@ const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
 const Categories = lazy(() => import('./admin/Categories'));
 
+// Super admin
+const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
+
 // Auth
 const SignupPage = lazy(() => import('./auth/SignupPage'));
 const LoginPage = lazy(() => import('./auth/LoginPage'));
@@ -83,6 +86,8 @@ export default function () {
                 <Route exact path="/admin/emails" component={Emails} />
                 <Route path="/admin/categories" component={Categories} />
               </Switch>
+              {/* Super Admin */}
+              <Route path="/superadmin/platform/settings" component={PlatformSettings} />
               {/* Auth */}
               <Route exact path="/register" component={SignupPage} />
               <Route exact path="/login" component={LoginPage} />
