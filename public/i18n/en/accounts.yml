@@ -29,6 +29,7 @@ signup:
   labels:
     title: Register New Account
     subtitle: Have an account?
+    platform: Your account will be global in the {{ platform }} platform
   form:
     username:
       label: Username

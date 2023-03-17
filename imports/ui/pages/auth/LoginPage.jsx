@@ -13,7 +13,7 @@ import { call } from '../../utils/shared';
 
 function LoginPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, currentHost, platform, role } = useContext(StateContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isJoinModal, setIsJoinModal] = useState(false);
 
@@ -57,10 +57,15 @@ function LoginPage() {
       <Template>
         <Center p="4">
           <Box w="xs">
+            <Center p="4">
+              <Image w="200px" src={platform?.logo} />
+            </Center>
+
             <Heading size="md" textAlign="center">
               {t('login.labels.title')}
             </Heading>
-            <Center pt="4" mb="4">
+
+            <Center pt="4" mb="2">
               <Text>
                 {t('login.labels.subtitle')}{' '}
                 <Link to="/register">
@@ -70,6 +75,7 @@ function LoginPage() {
                 </Link>
               </Text>
             </Center>
+
             <Box p="6" bg="white" mb="4">
               <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>

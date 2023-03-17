@@ -29,6 +29,7 @@ signup:
   labels:
     title: Registrera nytt konto
     subtitle: Har ett konto?
+    platform: Ditt konto kommer att vara globalt i platformen {{ plattform }}
   form:
     username:
       label: Användarnamn

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Box, Center, Heading, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
@@ -10,7 +10,7 @@ import { createAccount } from './functions';
 
 function SignupPage() {
   const [t] = useTranslation('accounts');
-  const { currentUser } = useContext(StateContext);
+  const { currentUser, platform } = useContext(StateContext);
 
   if (currentUser) {
     return <Redirect to={`/@${currentUser.username}/profile`} />;
@@ -24,6 +24,7 @@ function SignupPage() {
             <Heading size="md" textAlign="center">
               {t('signup.labels.title')}
             </Heading>
+
             <Center pt="4" mb="4">
               <Text>
                 {t('signup.labels.subtitle')}{' '}
@@ -34,6 +35,18 @@ function SignupPage() {
                 </Link>
               </Text>
             </Center>
+
+            <Center p="2">
+              <Box>
+                <Center>
+                  <Image w="240px" src={platform?.logo} />
+                </Center>
+                <Text fontSize="sm">
+                  {t('signup.labels.platform', { platform: platform?.name })}
+                </Text>
+              </Box>
+            </Center>
+
             <Box p="6" bg="white" mb="4">
               <Signup onSubmit={(values) => createAccount(values)} />
             </Box>

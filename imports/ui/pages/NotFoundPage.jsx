@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Link as CLink, Text } from '@chakra-ui/react';
 import Template from '../components/Template';
 
 const NotFoundPage = ({ domain, history }) => (
@@ -10,6 +11,11 @@ const NotFoundPage = ({ domain, history }) => (
       </Text>
       <Text textAlign="center" fontWeight="bold">
         {domain || 'Page'} could not be found
+      </Text>
+      <Text textAlign="center" mt="6">
+        <Link to="/">
+          <CLink color="#06c">Back to home page</CLink>
+        </Link>
       </Text>
     </Box>
   </Template>
