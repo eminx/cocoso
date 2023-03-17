@@ -63,7 +63,7 @@ function LoginPage() {
             <Center pt="4" mb="4">
               <Text>
                 {t('login.labels.subtitle')}{' '}
-                <Link to="/signup">
+                <Link to="/register">
                   <CLink as="span">
                     <b>{t('actions.signup')}</b>
                   </CLink>

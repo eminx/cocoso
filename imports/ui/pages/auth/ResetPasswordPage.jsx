@@ -46,7 +46,7 @@ const ResetPasswordPage = ({ history, match }) => {
               <Link to="/login">
                 <CLink as="span">{t('actions.login')}</CLink>
               </Link>
-              <Link to="/signup">
+              <Link to="/register">
                 <CLink as="span">{t('actions.signup')}</CLink>
               </Link>
             </Flex>

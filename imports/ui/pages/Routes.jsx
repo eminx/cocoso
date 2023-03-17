@@ -84,7 +84,7 @@ export default function () {
                 <Route path="/admin/categories" component={Categories} />
               </Switch>
               {/* Auth */}
-              <Route exact path="/signup" component={SignupPage} />
+              <Route exact path="/register" component={SignupPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/forgot-password" component={ForgotPasswordPage} />
               <Route path="/reset-password/:token" component={ResetPasswordPage} />

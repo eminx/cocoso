@@ -1,5 +1,5 @@
 actions:
-  signup: Signup
+  signup: Register
   login: Login
   logout: Logout
   forgot: Forgot your password?
