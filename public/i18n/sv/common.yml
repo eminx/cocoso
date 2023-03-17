@@ -54,6 +54,9 @@ labels:
   past: Tidigare
   upcoming: Kommande
   filterAndSort: Filtrera & sortera
+  notfound:
+    info: Det du letade efter kunde inte hittas
+    gohome: Gå tillbaka till startsidan
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

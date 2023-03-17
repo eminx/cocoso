@@ -54,6 +54,9 @@ labels:
   past: GEÇMİŞ
   upcoming: Gelecek
   filterAndSort: Filtrele & Sırala
+  notfound:
+    info: Aradığın içerik bulunamadı
+    gohome: Ana sayfaya geri dön
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
