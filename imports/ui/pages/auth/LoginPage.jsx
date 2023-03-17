@@ -57,9 +57,11 @@ function LoginPage() {
       <Template>
         <Center p="4">
           <Box w="xs">
-            <Center p="4">
-              <Image w="200px" src={platform?.logo} />
-            </Center>
+            {platform && (
+              <Center p="4">
+                <Image w="200px" src={platform?.logo} />
+              </Center>
+            )}
 
             <Heading size="md" textAlign="center">
               {t('login.labels.title')}
