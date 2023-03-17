@@ -76,7 +76,7 @@ function NewButton({ canCreateContent, currentHost }) {
                 fontWeight="bold"
                 color="gray.900"
                 position="absolute"
-                // textTransform="uppercase"
+                textTransform="uppercase"
                 top="2rem"
               >
                 {tc('actions.create')}

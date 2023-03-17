@@ -71,7 +71,7 @@ message:
 
   access:
     deny: Du får inte
-    admin: Du måste vara superadmin för att skapa en {{ domain }}
+    admin: Du måste vara admin för att skapa en {{ domain }}
     contributor: Du måste bli en medskapare för att skapa {{ domain }}
     register: Du måste bli en registrerad medlem för att skapa {{ domain }}
 

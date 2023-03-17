@@ -30,8 +30,8 @@ actions:
 labels:
   activity: Aktivite
   all: Tümü
-  booked: ayrıldı
-  contact: İLetişim
+  booked: 'ayırdı:'
+  contact: İLETİŞİM
   create: Yeni {{ domain }} Oluştur
   event: Etkinlik
   bookings: Rezervasyon
@@ -39,8 +39,8 @@ labels:
   page: Sayfa
   process: Süreç
   remove: Kaldır
-  info: Bilgi
-  extra: Eksta
+  info: BİLGİ
+  extra: Ekstra
   discussion: Tartışma
   combo: Kombo
   sortBy:
@@ -51,7 +51,7 @@ labels:
   unselected: Kaynak seçilmedi
   admin:
     actions: Admin
-  past: Geçmiş
+  past: GEÇMİŞ
   upcoming: Gelecek
   filterAndSort: Filtrele & Sırala
 

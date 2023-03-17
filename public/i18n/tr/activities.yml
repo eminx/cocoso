@@ -62,7 +62,7 @@ public:
     address: Adres
     dates: Zaman
     datesAndRegistration: Zaman ve Kayıt
-    info: Bilgi
+    info: BİLGİ
     location: Yer
     resource: Kaynak
   register:
