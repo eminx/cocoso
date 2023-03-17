@@ -6,7 +6,12 @@ import '../utils/styles/paginate.css';
 
 const defaultItemsPerPage = 12;
 
-function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children }) {
+function PaginatedItems({
+  centerItems = false,
+  items,
+  itemsPerPage = defaultItemsPerPage,
+  children,
+}) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
@@ -35,7 +40,9 @@ function PaginatedItems({ items, itemsPerPage = defaultItemsPerPage, children })
 
   return (
     <>
-      <Wrap shouldWrapChildren>{currentItems && currentItems.map((item) => children(item))}</Wrap>
+      <Wrap justify={centerItems ? 'center' : 'flex-start'} shouldWrapChildren>
+        {currentItems && currentItems.map((item) => children(item))}
+      </Wrap>
       {items.length > itemsPerPage && (
         <Center>
           <ReactPaginate

@@ -7,7 +7,7 @@ import { message, Alert } from '../../components/message';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 
-function MemberProcesses({ match }) {
+function MemberProcesses({ isDesktop, match }) {
   const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const { username } = match.params;
@@ -33,23 +33,21 @@ function MemberProcesses({ match }) {
   }
 
   return (
-    <Box justify="center" w="100%" mt="4">
-      {processes && processes.length > 0 && (
-        <Paginate items={processes}>
-          {(process) => (
-            <Box key={process._id}>
-              <Link to={`/processes/${process._id}`}>
-                <NewGridThumb
-                  imageUrl={process.imageUrl}
-                  subTitle={process.readingMaterial}
-                  title={process.title}
-                />
-              </Link>
-            </Box>
-          )}
-        </Paginate>
-      )}
-    </Box>
+    <>
+      <Paginate centerItems={!isDesktop} items={processes}>
+        {(process) => (
+          <Box key={process._id}>
+            <Link to={`/processes/${process._id}`}>
+              <NewGridThumb
+                imageUrl={process.imageUrl}
+                subTitle={process.readingMaterial}
+                title={process.title}
+              />
+            </Link>
+          </Box>
+        )}
+      </Paginate>
+    </>
   );
 }
 

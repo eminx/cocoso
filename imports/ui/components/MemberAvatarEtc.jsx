@@ -29,9 +29,11 @@ function MemberAvatarEtc({ t, tc, user }) {
 
   return (
     <>
-      <Center px="2">
+      <Center p="4">
         {avatar && avatar.src ? (
           <Image
+            borderRadius="12px"
+            // boxShadow="0 2px 5px #aaa "
             cursor="pointer"
             fit="contain"
             h="200px"

@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Container, Center, Flex, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Grid, GridItem, Link as CLink, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
-import Modal from '../../components/Modal';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 import MemberActivities from '../activities/MemberActivities';
@@ -22,7 +21,7 @@ function MemberPublic({ history, match, path }) {
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
   const { username } = match.params;
-  const { currentUser, currentHost } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop } = useContext(StateContext);
 
   useEffect(() => {
     Meteor.call('getUserInfo', username, (error, respond) => {
@@ -45,10 +44,6 @@ function MemberPublic({ history, match, path }) {
         <Alert message={ta('profile.message.notfound')} />
       </Center>
     );
-  }
-
-  if (match.path === '/@:username' && match.isExact) {
-    return <Redirect to={`/@${username}/bio`} />;
   }
 
   // const setAsParticipant = async (user) => {
@@ -74,13 +69,15 @@ function MemberPublic({ history, match, path }) {
   const { menu, name } = currentHost?.settings;
   const membersInMenu = menu.find((item) => item.name === 'members');
 
-  const tabs = [
-    {
+  const tabs = [];
+
+  if (!isDesktop) {
+    tabs.push({
       path: `/@${username}/bio`,
       title: tc('domains.bio'),
       isVisible: true,
-    },
-  ];
+    });
+  }
 
   menu
     ?.filter((item) => {
@@ -107,6 +104,10 @@ function MemberPublic({ history, match, path }) {
 
   const tabIndex = tabs.findIndex((tab) => tab.path === history?.location?.pathname);
 
+  if (tabs && !tabs.find((tab) => tab.path === history?.location?.pathname)) {
+    return <Redirect to={tabs[0].path} />;
+  }
+
   return (
     <>
       <Flex p="6">
@@ -125,59 +126,74 @@ function MemberPublic({ history, match, path }) {
         <Text>{username}</Text>
       </Flex>
 
-      <Box>
-        <Center flexBasis="100%">
-          <Box w="large">
-            <MemberAvatarEtc t={t} tc={tc} user={user} />
-          </Box>
-        </Center>
-      </Box>
+      <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
+        <GridItem>
+          <MemberAvatarEtc t={t} tc={tc} user={user} />
+          {isDesktop && <Bio isDesktop={false} user={user} />}
+        </GridItem>
 
-      <Tabs align="center" index={tabIndex} size="sm" tabs={tabs} />
+        <GridItem pl={isDesktop ? '12' : '0'}>
+          <Tabs
+            align={isDesktop ? 'flex-start' : 'center'}
+            index={tabIndex}
+            size="sm"
+            tabs={tabs}
+          />
 
-      <Switch path={path} history={history}>
-        <Route path="/@:username/bio" render={(props) => <Bio user={user} />} />
-        <Route
-          path="/@:username/works"
-          render={(props) => <MemberWorks user={user} match={match} />}
-        />
-        <Route
-          path="/@:username/activities"
-          render={(props) => <MemberActivities user={user} match={match} />}
-        />
-        <Route
-          path="/@:username/processes"
-          render={(props) => <MemberProcesses user={user} match={match} />}
-        />
-        <Route
-          path="/@:username/contact"
-          render={(props) => (
-            <Center>
-              <Box maxWidth="480px" className="text-content" mt="2" p="4">
-                {user.contactInfo
-                  ? renderHTML(user.contactInfo)
-                  : t('message.contact.empty', { username: user.username })}
-              </Box>
-            </Center>
-          )}
-        />
-      </Switch>
+          <Switch path={path} history={history}>
+            {!isDesktop && (
+              <Route
+                path="/@:username/bio"
+                render={(props) => <Bio isDesktop={false} user={user} />}
+              />
+            )}
+            <Route
+              path="/@:username/activities"
+              render={(props) => (
+                <MemberActivities isDesktop={isDesktop} user={user} match={match} />
+              )}
+            />
+            <Route
+              path="/@:username/processes"
+              render={(props) => (
+                <MemberProcesses isDesktop={isDesktop} user={user} match={match} />
+              )}
+            />
+            <Route
+              path="/@:username/works"
+              render={(props) => <MemberWorks isDesktop={isDesktop} user={user} match={match} />}
+            />
+            <Route
+              path="/@:username/contact"
+              render={(props) => (
+                <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
+                  <Box maxWidth="480px" className="text-content" p="4">
+                    {user.contactInfo
+                      ? renderHTML(user.contactInfo)
+                      : t('message.contact.empty', { username: user.username })}
+                  </Box>
+                </Flex>
+              )}
+            />
+          </Switch>
+        </GridItem>
+      </Grid>
     </>
   );
 }
 
-function Bio({ user }) {
+function Bio({ isDesktop, user }) {
   if (!user) {
     return null;
   }
   return (
-    <Center>
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
       {user.bio && (
-        <Box maxWidth="480px" className="text-content" mt="2" p="4">
+        <Box maxWidth="480px" className="text-content" p="4">
           {renderHTML(user.bio)}
         </Box>
       )}
-    </Center>
+    </Flex>
   );
 }
 
