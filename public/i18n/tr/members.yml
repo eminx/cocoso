@@ -22,6 +22,7 @@ form:
 
 actions:
   contributor: Oluşturucu yap
+  admin: Admin yap
   participant: Katılımcı yap
   usageReport: Kullanım raporunu görüntüle
 
@@ -29,6 +30,7 @@ message:
   success:
     contributor: '{{ username }} oluşturucu yapıldı'
     participant: '{{ username }} katılımcı yapıldı'
+    admin: '{{ username }} admin yapıldı'
   contact:
     empty: '{{ username }} iletişim bilgisini girmemiş'
   activity:

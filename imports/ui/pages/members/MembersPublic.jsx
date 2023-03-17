@@ -197,13 +197,9 @@ function MembersPublic() {
         >
           <Center>
             <Box textAlign="center">
-              <Text fontSize="lg" fontWeight="bold">
-                {modalUser.username}
-              </Text>
-              <Text mb="4">{getFullName(modalUser)}</Text>
-              <Center mb="6">
+              <Center mb="2">
                 {modalUser.avatar ? (
-                  <Image h="240px" fit="contain" src={modalUser.avatar} />
+                  <Image borderRadius="12px" h="240px" fit="contain" src={modalUser.avatar} />
                 ) : (
                   <Avatar
                     borderRadius="0"
@@ -214,6 +210,10 @@ function MembersPublic() {
                   />
                 )}
               </Center>
+              <Text fontSize="lg" fontWeight="bold">
+                {modalUser.username}
+              </Text>
+              <Text mb="4">{getFullName(modalUser)}</Text>
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
             </Box>
           </Center>

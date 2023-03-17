@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Heading, Input, Select, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
@@ -34,7 +34,6 @@ function Members({ history, members, isLoading }) {
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentUser, isDesktop, role } = useContext(StateContext);
 
   if (isLoading) {
@@ -67,6 +66,19 @@ function Members({ history, members, isLoading }) {
     }
   };
 
+  const setAsAdmin = async (user) => {
+    try {
+      await call('setAsAdmin', user.id);
+      message.success(t('message.success.admin', { username: user.username }));
+    } catch (error) {
+      console.log(error);
+      message.error({
+        title: error.reason || error.error,
+        status: 'error',
+      });
+    }
+  };
+
   if (!currentUser || role !== 'admin') {
     return (
       <div style={{ maxWidth: 600, margin: '0 auto' }}>
@@ -84,6 +96,11 @@ function Members({ history, members, isLoading }) {
         isDisabled:
           ['admin', 'contributor'].includes(member.role) ||
           !['admin', 'contributor'].includes(role),
+      },
+      {
+        content: t('actions.admin'),
+        handleClick: () => setAsAdmin(member),
+        isDisabled: member.role === 'admin',
       },
       {
         content: t('actions.participant'),

@@ -22,6 +22,7 @@ form:
 
 actions:
   contributor: Ställ in som medskapare
+  admin: Ställ in som admin
   participant: Återgå som deltagare
   usageReport: Se förbrukningsrapport
 
@@ -29,6 +30,7 @@ message:
   success:
     contributor: '{{ username }} är nu inställd som en medskapare'
     participant: '{{ username }} är nu återställd som deltagare'
+    admin: '{{ username }} är nu återställd som admin'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
   activity:
