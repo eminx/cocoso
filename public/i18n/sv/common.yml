@@ -124,6 +124,7 @@ menu:
     resources: Resurser
     emails: E-postmeddelanden
     categories: Kategorier
+    platform: Plattformsinställningar
   notifications:
     label: Aviseringar
 

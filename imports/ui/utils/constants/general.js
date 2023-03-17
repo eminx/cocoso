@@ -47,6 +47,14 @@ const adminMenu = [
   },
 ];
 
+const superadminMenu = [
+  {
+    menu: 'superadmin',
+    key: 'platform',
+    value: '/superadmin/platform/settings',
+  },
+];
+
 const hostFields = [
   {
     // label: 'desired url/address',
@@ -107,5 +115,6 @@ export {
   adminMenu,
   hostFields,
   maximumDocumentSizeForUploads,
+  superadminMenu,
   userMenu,
 };

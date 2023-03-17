@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
-import { adminMenu } from '../utils/constants/general';
+import { adminMenu, superadminMenu } from '../utils/constants/general';
 
 function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +49,8 @@ function UserPopup({ currentUser }) {
   }
 
   const isNotification = notifications && notifications.length > 0;
+
+  const isSuperAdmin = currentUser.isSuperAdmin;
 
   return (
     <Box>
@@ -93,6 +95,16 @@ function UserPopup({ currentUser }) {
           {role === 'admin' && (
             <MenuGroup title={tc('menu.admin.label')}>
               {adminMenu.map((item) => (
+                <Link key={item.key} to={item.value}>
+                  <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                </Link>
+              ))}
+            </MenuGroup>
+          )}
+          {isSuperAdmin && <MenuDivider />}
+          {isSuperAdmin && (
+            <MenuGroup title="Super Admin">
+              {superadminMenu.map((item) => (
                 <Link key={item.key} to={item.value}>
                   <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
                 </Link>

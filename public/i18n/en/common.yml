@@ -124,6 +124,7 @@ menu:
     resources: Resources
     emails: Emails
     categories: Categories
+    platform: Platform Settings
   notifications:
     label: Notifications
 

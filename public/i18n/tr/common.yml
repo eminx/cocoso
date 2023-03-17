@@ -124,6 +124,7 @@ menu:
     resources: Kaynaklar
     emails: Epostalar
     categories: Kategoriler
+    platform: Platform Ayarları
   notifications:
     label: Bildirimler
 
