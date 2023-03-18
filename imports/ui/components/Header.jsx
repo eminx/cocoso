@@ -1,34 +1,27 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Box, Flex, Heading, HStack, Image, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
 import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
 
-const getRoute = (item, index) => {
-  if (index === 0) {
-    return '/';
-  }
-  if (item.name === 'info') {
-    return '/pages/about';
-  }
-  return `/${item.name}`;
-};
-
 function Header() {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const [tc] = useTranslation('common');
   const history = useHistory();
-  // const { name, subname } = currentHost?.settings;
 
   const { menu } = currentHost?.settings;
-  const menuItems = menu
-    .filter((item) => item.isVisible)
-    .map((item, index) => ({
-      ...item,
-      route: getRoute(item, index),
-    }));
+  const menuItems = menu.filter((item) => item.isVisible);
+
+  if (currentHost?.isPortalHost) {
+    menuItems.push({
+      name: 'communities',
+      label: tc('platform.communities'),
+    });
+  }
 
   const pathname = history.location.pathname;
   const isCurrentPage = (name) => {
@@ -39,8 +32,6 @@ function Header() {
   };
 
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
-
-  const currentHostName = currentHost?.settings?.name;
 
   return (
     <Box px={isDesktop ? '8' : '4'} py="4" mt="4" w="100%">
@@ -62,34 +53,11 @@ function Header() {
 
       <Box pb="2" pt="10" px="2">
         <Heading color="gray.800" size="lg">
-          {/* <Text as="span">{currentHostName}</Text> */}
-          {/* <Text as="span" fontWeight="normal">
-            {' / '}
-          </Text> */}
           <Text as="span" fontWeight="normal">
             {activeMenuItem?.label}
           </Text>
         </Heading>
       </Box>
-    </Box>
-  );
-}
-
-function MainHeading({ name, subname }) {
-  return (
-    <Box px="3">
-      <Heading fontWeight="normal" mt="2" size="md" textAlign="center">
-        {name}
-      </Heading>
-      {subname && subname.length > 0 && (
-        <Heading
-          size={isDesktop ? 'md' : 'sm'}
-          fontWeight="light"
-          textAlign={isDesktop ? 'left' : 'center'}
-        >
-          {subname}
-        </Heading>
-      )}
     </Box>
   );
 }
