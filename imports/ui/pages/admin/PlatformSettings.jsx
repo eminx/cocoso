@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
@@ -12,6 +12,7 @@ import FormField from '../../components/FormField';
 import FileDropper from '../../components/FileDropper';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
+import FormSwitch from '../../components/FormSwitch';
 
 export default function PlatformSettings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -95,6 +96,25 @@ export default function PlatformSettings({ history }) {
     }
   };
 
+  const handleOptionsSubmit = (values) => {
+    if (!currentUser || !currentUser.isSuperAdmin) {
+      message.error(tc('message.access.deny'));
+      return;
+    }
+
+    const formValues = {
+      showFooterInAllCommunities: values.showFooterInAllCommunities,
+    };
+
+    try {
+      call('updatePlatformSettings', formValues);
+      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    }
+  };
+
   const isImage = localImage && localImage.uploadableImageLocal;
 
   const tabs = [
@@ -134,6 +154,18 @@ export default function PlatformSettings({ history }) {
               </Button>
             </Center>
           )}
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.options'),
+      path: '/superadmin/platform/settings/options',
+      content: (
+        <AlphaContainer>
+          <Text mb="3" fontWeight="bold">
+            {t('info.platform.options')}
+          </Text>
+          <PlatformOptions initialValues={localSettings} onSubmit={handleOptionsSubmit} />
         </AlphaContainer>
       ),
     },
@@ -208,6 +240,33 @@ function PlatformSettingsForm({ initialValues, onSubmit }) {
         <FormField label={t('info.platform.email')}>
           <Input type="email" {...register('email')} />
         </FormField>
+        <Flex justify="flex-end" py="4">
+          <Button isDisabled={!isDirty || isSubmitting} type="submit">
+            {tc('actions.submit')}
+          </Button>
+        </Flex>
+      </Stack>
+    </form>
+  );
+}
+
+function PlatformOptions({ initialValues, onSubmit }) {
+  const { handleSubmit, register, formState } = useForm({
+    defaultValues: initialValues,
+  });
+
+  const { isDirty, isSubmitting } = formState;
+
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  return (
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Stack spacing="4">
+        <Flex align="center">
+          <CSwitch mr="2" {...register('showFooterInAllCommunities')} />
+          <Text fontSize="sm">{t('info.platform.showfooter')}</Text>
+        </Flex>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}

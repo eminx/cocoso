@@ -135,28 +135,29 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                 <Footer currentHost={currentHost} platform={platform} tc={tc} />
               )}
 
-              {isHeaderAndFooter && (
-                <Box>
-                  <Center p="8" bg="gray.900">
-                    <Box textAlign="center" color="gray.100">
-                      <Text fontSize="lg" fontWeight="bold">
-                        {platform?.name}
-                      </Text>
-                      <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
-                        {tc('platform.title')}
-                      </CLink>
-                    </Box>
-                  </Center>
+              {isHeaderAndFooter &&
+                Boolean(platform?.showFooterInAllCommunities)(
+                  <Box>
+                    <Center p="8" bg="gray.900">
+                      <Box textAlign="center" color="gray.100">
+                        <Text fontSize="lg" fontWeight="bold">
+                          {platform?.name}
+                        </Text>
+                        <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
+                          {tc('platform.title')}
+                        </CLink>
+                      </Box>
+                    </Center>
 
-                  <PlatformDrawer
-                    isOpen={platformDrawer}
-                    hosts={allHosts}
-                    platform={platform}
-                    tc={tc}
-                    toggleOpen={() => setPlatformDrawer(!platformDrawer)}
-                  />
-                </Box>
-              )}
+                    <PlatformDrawer
+                      isOpen={platformDrawer}
+                      hosts={allHosts}
+                      platform={platform}
+                      tc={tc}
+                      toggleOpen={() => setPlatformDrawer(!platformDrawer)}
+                    />
+                  </Box>
+                )}
             </Box>
           </Box>
         </Flex>

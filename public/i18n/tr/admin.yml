@@ -8,6 +8,7 @@ settings:
     cats: Kategoriler
     menuVisibility: Görünürlük
     menuOrder: Sıra
+    options: Seçenekler
 
 logo:
   label: Logo
@@ -23,6 +24,8 @@ info:
     info: Global Platform hakkında bilgi gir
     name: İsim
     email: Eposta adresi
+    options: İstediğin seçenekleri seç ve onayla
+    showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
 
 menu:
   label: Menü

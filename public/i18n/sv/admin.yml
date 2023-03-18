@@ -8,6 +8,7 @@ settings:
     cats: Kategorier
     menuVisibility: Synlighet
     menuOrder: Ordning
+    options: Alternativ
 
 logo:
   label: Logo
@@ -23,6 +24,8 @@ info:
     info: Lägg till information om den global platformen
     name: Namn
     email: Epostadressen
+    options: Välj önskade alternativ och bekräfta
+    showfooter: Visa footern med länken för att visa communities i alla community-appar
 
 menu:
   label: Meny
