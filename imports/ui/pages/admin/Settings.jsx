@@ -59,7 +59,6 @@ export default function Settings({ history }) {
   };
 
   const setUploadableImage = (files) => {
-    setUploading(true);
     if (files.length > 1) {
       message.error(t('logo.message.fileDropper'));
       return;
@@ -80,6 +79,7 @@ export default function Settings({ history }) {
   };
 
   const uploadLogo = async () => {
+    setUploading(true);
     try {
       const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
       const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
@@ -88,6 +88,7 @@ export default function Settings({ history }) {
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
+    } finally {
       setUploading(false);
     }
   };
@@ -118,11 +119,12 @@ export default function Settings({ history }) {
           </Text>
           <Box>
             <FileDropper
-              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
               imageUrl={currentHost && currentHost.logo}
-              setUploadableImage={setUploadableImage}
-              width={isImage && '120px'}
               height={isImage && '80px'}
+              width={isImage && '120px'}
+              round={false}
+              setUploadableImage={setUploadableImage}
+              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
             />
           </Box>
           {localImage && localImage.uploadableImageLocal && (
