@@ -63,52 +63,63 @@ function UserPopup({ currentUser }) {
         <MenuList>
           {isNotification && (
             <MenuGroup title={tc('menu.notifications.label')}>
-              {notifications.map((item) => (
-                <Link key={item.contextId + item.count} to={`/${item.context}/${item.contextId}`}>
-                  <MenuItem>
-                    <Text color="gray.600" isTruncated>
-                      {item.title}{' '}
-                    </Text>
-                    <Badge colorScheme="red" size="xs">
-                      {' '}
-                      {item.count}
-                    </Badge>
-                  </MenuItem>
-                </Link>
-              ))}
+              <Box px="1">
+                {notifications.map((item) => (
+                  <Link key={item.contextId + item.count} to={`/${item.context}/${item.contextId}`}>
+                    <MenuItem>
+                      <Text color="gray.600" isTruncated>
+                        {item.title}{' '}
+                      </Text>
+                      <Badge colorScheme="red" size="xs">
+                        {' '}
+                        {item.count}
+                      </Badge>
+                    </MenuItem>
+                  </Link>
+                ))}
+              </Box>
             </MenuGroup>
           )}
+          {isNotification && <MenuDivider />}
+
           <MenuGroup title={tc('menu.member.label')}>
-            <Link to={currentUser && `/@${currentUser?.username}`}>
-              <MenuItem>{tc('menu.member.profile')}</MenuItem>
-            </Link>
-            <Link to={currentUser && `/@${currentUser?.username}/edit`}>
-              <MenuItem>{tc('menu.member.settings')}</MenuItem>
-            </Link>
+            <Box px="1">
+              <Link to={currentUser && `/@${currentUser?.username}`}>
+                <MenuItem>{tc('menu.member.profile')}</MenuItem>
+              </Link>
+              <Link to={currentUser && `/@${currentUser?.username}/edit`}>
+                <MenuItem>{tc('menu.member.settings')}</MenuItem>
+              </Link>
+              {canCreateContent && (
+                <Link to="/my-activities">
+                  <MenuItem>{tc('menu.member.activities')}</MenuItem>
+                </Link>
+              )}
+            </Box>
           </MenuGroup>
-          {canCreateContent && (
-            <Link to="/my-activities">
-              <MenuItem>{tc('menu.member.activities')}</MenuItem>
-            </Link>
-          )}
+
           {role === 'admin' && <MenuDivider />}
           {role === 'admin' && (
             <MenuGroup title={tc('menu.admin.label')}>
-              {adminMenu.map((item) => (
-                <Link key={item.key} to={item.value}>
-                  <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
-                </Link>
-              ))}
+              <Box px="1">
+                {adminMenu.map((item) => (
+                  <Link key={item.key} to={item.value}>
+                    <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                  </Link>
+                ))}
+              </Box>
             </MenuGroup>
           )}
           {isSuperAdmin && isPortalHost && <MenuDivider />}
           {isSuperAdmin && isPortalHost && (
             <MenuGroup title="Super Admin">
-              {superadminMenu.map((item) => (
-                <Link key={item.key} to={item.value}>
-                  <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
-                </Link>
-              ))}
+              <Box px="1">
+                {superadminMenu.map((item) => (
+                  <Link key={item.key} to={item.value}>
+                    <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                  </Link>
+                ))}
+              </Box>
             </MenuGroup>
           )}
 

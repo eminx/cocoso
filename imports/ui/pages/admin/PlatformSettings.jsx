@@ -1,7 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Input,
+  Stack,
+  Switch as CSwitch,
+  Text,
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
@@ -12,7 +22,6 @@ import FormField from '../../components/FormField';
 import FileDropper from '../../components/FileDropper';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
-import FormSwitch from '../../components/FormSwitch';
 
 export default function PlatformSettings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -20,7 +29,7 @@ export default function PlatformSettings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, platform } = useContext(StateContext);
+  const { currentUser, isDesktop, platform } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -191,24 +200,37 @@ export default function PlatformSettings({ history }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Box ml={isDesktop ? '0' : '4'}>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
+      <Box>
+        <Box py="4" px={isDesktop ? '4' : '8'}>
+          <Heading color="gray.800" size="lg">
+            <Text as="span" fontWeight="normal">
+              {tc('menu.admin.platform')}
+            </Text>
+          </Heading>
+        </Box>
 
-      <Tabs index={tabIndex} tabs={tabs} />
+        <Box px={isDesktop ? '0' : '4'}>
+          <Tabs index={tabIndex} tabs={tabs} />
 
-      <Switch history={history}>
-        {tabs.map((tab) => (
-          <Route
-            key={tab.title}
-            exact
-            path={tab.path}
-            render={(props) => (
-              <Box {...props} pt="2">
-                {tab.content}
-              </Box>
-            )}
-          />
-        ))}
-      </Switch>
+          <Switch history={history}>
+            {tabs.map((tab) => (
+              <Route
+                key={tab.title}
+                exact
+                path={tab.path}
+                render={(props) => (
+                  <Box {...props} pt="2">
+                    {tab.content}
+                  </Box>
+                )}
+              />
+            ))}
+          </Switch>
+        </Box>
+      </Box>
     </>
   );
 }

@@ -63,6 +63,7 @@ profile:
   join: Katıl
   joinHost: '{{ host }} topluluğuna katıl'
   joinAsParticipantQuestion: Bu topluluğa katılımcı rolü ile katılmak ister misin?
+  settings: Profil Ayarları
 
   form:
     avatar:

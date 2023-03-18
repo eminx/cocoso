@@ -12,8 +12,8 @@ import {
   Center,
   Flex,
   Heading,
-  VStack,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 
 import ProfileForm from './ProfileForm';
@@ -298,6 +298,14 @@ function EditProfile({ history }) {
     <Box>
       <Box ml={isDesktop ? '0' : '4'}>
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
+
+      <Box py="4" px={isDesktop ? '4' : '8'}>
+        <Heading color="gray.800" size="lg">
+          <Text as="span" fontWeight="normal">
+            {t('profile.settings')}
+          </Text>
+        </Heading>
       </Box>
 
       <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">

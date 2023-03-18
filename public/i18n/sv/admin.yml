@@ -21,7 +21,7 @@ info:
   label: Organisation
   info: Lägg till information om din organisation
   platform:
-    info: Lägg till information om den global platformen
+    info: Lägg till information om den global plattformen
     name: Namn
     email: Epostadressen
     options: Välj önskade alternativ och bekräfta

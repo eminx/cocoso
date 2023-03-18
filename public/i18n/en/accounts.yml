@@ -80,7 +80,7 @@ profile:
       label: Contact Info
 
   message:
-    role: You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role
+    role: You as <bold>{{ username }}</bold> are part of <bold>{{ host }}</bold> community with the <bold>{{ role }}</bold> role
     participant: You are successfully set as participant
     deny: You are not part of this community.
     notfound: User with this username within this organization not found, or chose to hide their profile
