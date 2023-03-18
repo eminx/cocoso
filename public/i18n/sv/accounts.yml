@@ -84,7 +84,7 @@ profile:
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
-    platform: Information du anger här kommer att sparas globalt i {{ platform }} och publiceras i communities du väljer.
+    platform: Information du anger här kommer att sparas globalt i platformen {{ platform }} och publiceras i communities du väljer.
 
   makePublic:
     label: Gör min profil offentlig

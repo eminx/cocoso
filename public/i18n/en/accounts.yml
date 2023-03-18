@@ -84,7 +84,7 @@ profile:
     participant: You are successfully set as participant
     deny: You are not part of this community.
     notfound: User with this username within this organization not found, or chose to hide their profile
-    platform: Information you enter here will be saved globally in the {{ platform }} and published in the communities you choose.
+    platform: Information you enter here will be saved globally in the {{ platform }} platform and published in the communities you choose.
 
   makePublic:
     label: Make my profile public
