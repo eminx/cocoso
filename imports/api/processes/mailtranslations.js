@@ -65,4 +65,37 @@ export default {
         'You are encouraged to follow the updates, register to attend meetings and join the discussion at the page',
     },
   },
+  en: {
+    general: {
+      dateAndTime: 'Zaman ve tarih',
+      dear: 'Merhaba',
+      person: 'insan',
+      people: 'insan',
+      title: 'Başlık',
+      processPage: 'Visit the page',
+      visitPage: 'Visit the page',
+    },
+    joinProcess: {
+      confirmedApprovalText: 'Başarılı şekilde katıldın',
+      confirmedApprovalTextLong:
+        'İçtenlikle güncellemeleri takip etmen, toplantılara katılmak için kaydolman ve sayfada tartışmaya katılmanı dileriz.',
+      confirmedApprovalTextLeave: 'Süreçten ayrıldın',
+      confirmedApprovalTextLongLeave: 'Eğer tekrar katılmak istersen, sayfada tekrar yapabilirsin',
+    },
+    invitePrivateProcess: {
+      confirmedApprovalText: 'Bu, seni özel bir sürece davet eden bir e-postadır.',
+      confirmedApprovalTextLong:
+        'Bu daveti kabul etmek ve katılmak istiyorsan, sayfaya git ve "Katıl" düğmesini tıkla. İçeriği görüntüleyebilmek için, bu e-postayı aldığın bu e-posta adresiyle bir hesabın olması veya bir hesap oluşturman gerekiyor. Güncellemeleri takip etmen, toplantılara katılmak için kaydolman ve bu sayfadaki tartışmalara katılman önerilir.',
+    },
+    attendMeeting: {
+      confirmedApprovalText: 'Buluşmaya kaydın başarılı şekilde gerçekleşti',
+      confirmedApprovalTextLong:
+        'Güncellemeleri takip etmen, toplantılara katılmak için kaydolman ve sayfada tartışmaya katılman önerilir.',
+    },
+    unattendMeeting: {
+      confirmedApprovalText: 'Buluşmaya kaydın silindi',
+      confirmedApprovalTextLong:
+        'Güncellemeleri takip etmen, toplantılara katılmak için kaydolman ve sayfada tartışmaya katılman önerilir.',
+    },
+  },
 };

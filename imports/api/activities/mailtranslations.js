@@ -11,7 +11,7 @@ export default {
       title: 'Title',
     },
     activityRegister: {
-      activityPage: 'To the page',
+      activityPage: 'Visit the page',
       confirmedApprovalText: 'Your registration is confirmed',
       confirmedApprovalTextUpdate: 'The update to your registration is confirmed',
       confirmedApprovalTextLong:
@@ -19,9 +19,10 @@ export default {
       visitPage: 'Visit the page',
     },
     activityUnregister: {
-      activityPage: 'To the page',
+      activityPage: 'Visit the page',
       confirmedApprovalText: 'Your registration is removed',
-      confirmedApprovalTextLong: 'If you want to RSVP again, you can do so at the activity page',
+      confirmedApprovalTextLong:
+        'If you want to register again, you can do so at the activity page',
       visitPage: 'Visit the page',
     },
   },
@@ -37,7 +38,7 @@ export default {
       title: 'Titel',
     },
     activityRegister: {
-      activityPage: 'Till sidan',
+      activityPage: 'Besök sidan',
       confirmedApprovalText: 'Din registrering är bekräftad',
       confirmedApprovalTextUpdate: 'Uppdateringen av din registrering är bekräftad',
       confirmedApprovalTextLong:
@@ -45,10 +46,36 @@ export default {
       visitPage: 'Besök sidan',
     },
     activityUnregister: {
-      activityPage: 'Till sidan',
+      activityPage: 'Besök sidan',
       confirmedApprovalText: 'Din registrering tas bort',
       confirmedApprovalTextLong: 'Om du vill OSA igen kan du göra det på aktivitetssidan',
       visitPage: 'Besök sidan',
+    },
+  },
+  tr: {
+    general: {
+      address: 'Adres',
+      attendee: 'Katılımcı',
+      attendees: 'Katılımcı',
+      dateAndTime: 'Tarih',
+      dear: 'Merhaba',
+      person: 'insan',
+      people: 'insan',
+      title: 'Başlık',
+    },
+    activityRegister: {
+      activityPage: 'Sayfayı ziyaret et',
+      confirmedApprovalText: 'Kaydına onaylandı',
+      confirmedApprovalTextUpdate: 'Kaydına yaptığın güncelleme onaylandı',
+      confirmedApprovalTextLong:
+        'Kaydında değişiklik yapmayı veya iptal etmek istersen; etkinlik sayfasına gidip, kaydolduğun tarihi seç ve ardından "Varolan kaydı güncelle ya da iptal et" bağlantısına tıkla. Ardından, bilgilerini güncellemek veya bu etkinliğe olan kaydını tamamen iptal etmek için oradaki talimatları izle.',
+      visitPage: 'Sayfayı ziyaret et',
+    },
+    activityUnregister: {
+      activityPage: 'Sayfayı ziyaret et',
+      confirmedApprovalText: 'Kaydın silindi',
+      confirmedApprovalTextLong: 'Tekrar kayıt yapmak istersen, etkinlik sayfasından yapabilirsin',
+      visitPage: 'Sayfayı ziyaret et',
     },
   },
 };
