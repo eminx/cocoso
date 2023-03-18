@@ -34,6 +34,9 @@ function Communities() {
       }
       const name = host.name?.toLowerCase();
       const city = host.city?.toLowerCase();
+      console.log(
+        name.indexOf(lowerCaseFilterWord) !== -1 || city.indexOf(lowerCaseFilterWord) !== -1
+      );
       return name.indexOf(lowerCaseFilterWord) !== -1 || city.indexOf(lowerCaseFilterWord) !== -1;
     });
   };
@@ -41,7 +44,7 @@ function Communities() {
   const getHostsSorted = () => {
     const filteredHosts = getHostsFiltered();
     if (!filteredHosts || filteredHosts.length === 0) {
-      return null;
+      return [];
     }
     return filteredHosts.sort((a, b) => {
       if (sorterValue === 'name') {
