@@ -137,32 +137,12 @@ function MembersPublic() {
       <Box px="4">
         <FiltrerSorter {...filtrerProps} />
       </Box>
-
-      <Paginate items={membersRendered} itemsPerPage={12}>
-        {(member) => (
-          <Box key={member.username} p="4" w="280px">
-            {currentHost.isPortalHost ? (
-              <Box cursor="pointer" onClick={() => setModalUser(member)}>
-                {member.avatar ? (
-                  <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
-                ) : (
-                  <Avatar
-                    borderRadius="12px"
-                    name={member.username}
-                    showBorder
-                    size="2xl"
-                    src={member.avatar}
-                  />
-                )}
-                <Box py="2" pl="2">
-                  <Text fontWeight="bold" fontSize="lg" isTruncated>
-                    {member.username}
-                  </Text>
-                </Box>
-              </Box>
-            ) : (
-              <Link to={`/@${member.username}`}>
-                <Box>
+      <Box px="2">
+        <Paginate items={membersRendered} itemsPerPage={12}>
+          {(member) => (
+            <Box key={member.username} p="4" w="280px">
+              {currentHost.isPortalHost ? (
+                <Box cursor="pointer" onClick={() => setModalUser(member)}>
                   {member.avatar ? (
                     <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
                   ) : (
@@ -180,11 +160,32 @@ function MembersPublic() {
                     </Text>
                   </Box>
                 </Box>
-              </Link>
-            )}
-          </Box>
-        )}
-      </Paginate>
+              ) : (
+                <Link to={`/@${member.username}`}>
+                  <Box>
+                    {member.avatar ? (
+                      <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
+                    ) : (
+                      <Avatar
+                        borderRadius="12px"
+                        name={member.username}
+                        showBorder
+                        size="2xl"
+                        src={member.avatar}
+                      />
+                    )}
+                    <Box py="2" pl="2">
+                      <Text fontWeight="bold" fontSize="lg" isTruncated>
+                        {member.username}
+                      </Text>
+                    </Box>
+                  </Box>
+                </Link>
+              )}
+            </Box>
+          )}
+        </Paginate>
+      </Box>
 
       {modalUser && (
         <Modal
