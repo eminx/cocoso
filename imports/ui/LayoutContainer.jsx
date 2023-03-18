@@ -137,16 +137,25 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
 
               {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                 <Box>
-                  <Center p="8" bg="gray.900">
-                    <Box textAlign="center" color="gray.100">
-                      <Text fontSize="lg" fontWeight="bold">
-                        {platform?.name}
-                      </Text>
-                      <CLink color="blue.200" onClick={() => setPlatformDrawer(true)}>
-                        {tc('platform.title')}
-                      </CLink>
-                    </Box>
-                  </Center>
+                  <Box bg="gray.300" p="4">
+                    <Center p="2">
+                      <Image w="200px" src={platform?.logo} />
+                    </Center>
+                    <Center>
+                      <Box textAlign="center" color="gray.800">
+                        <Text fontSize="lg" fontWeight="bold">
+                          {platform?.name}
+                        </Text>
+                        <CLink
+                          color="#06c"
+                          fontWeight="bold"
+                          onClick={() => setPlatformDrawer(true)}
+                        >
+                          {tc('platform.title')}
+                        </CLink>
+                      </Box>
+                    </Center>
+                  </Box>
 
                   <PlatformDrawer
                     isOpen={platformDrawer}
