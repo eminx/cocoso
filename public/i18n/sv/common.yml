@@ -25,6 +25,7 @@ actions:
   confirmRead: Jag har läst och accepterar
   toThePage: Till sidan i {{ hostName }}
   entryPage: Till sidan
+  toHost: Besök {{ host }} community appen
 
 # ACTION PAGE TITLES
 labels:

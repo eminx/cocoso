@@ -74,6 +74,7 @@ Meteor.methods({
       host: host.host,
       city: host.settings.city,
       country: host.settings.country,
+      createdAt: host.createdAt,
       membersCount: host.members.length,
     }));
   },

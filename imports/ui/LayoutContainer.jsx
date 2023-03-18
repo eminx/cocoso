@@ -92,6 +92,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
     '/forgot-password',
     '/reset-password',
     '/terms-&-privacy-policy',
+    '/communities',
   ];
 
   const isHeaderAndFooter =

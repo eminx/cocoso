@@ -12,6 +12,8 @@ import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
 
+import Communities from '../pages/hosts/Communities';
+
 // ROUTES
 const browserHistory = createBrowserHistory();
 
@@ -79,6 +81,8 @@ export default function () {
               </Switch>
               {/* Profile & Profile Related Pages */}
               <ProfileRoutes path="/@:username" history={browserHistory} />
+              {/* Communities: Only on Portal App */}
+              <Route exact path="/communities" component={Communities} />
               {/* Admin */}
               <Switch path="/admin">
                 <Route path="/admin/settings" component={Settings} />

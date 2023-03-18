@@ -19,9 +19,12 @@ function PaginatedItems({
 
   useEffect(() => {
     handlePageChange(0);
-  }, [items.length]);
+  }, [items?.length]);
 
   useEffect(() => {
+    if (!items) {
+      return;
+    }
     const newPageCount = Math.ceil(items.length / itemsPerPage);
     setPageCount(newPageCount);
     const endOffset = itemOffset + itemsPerPage;
@@ -43,7 +46,7 @@ function PaginatedItems({
       <Wrap justify={centerItems ? 'center' : 'flex-start'} shouldWrapChildren>
         {currentItems && currentItems.map((item) => children(item))}
       </Wrap>
-      {items.length > itemsPerPage && (
+      {items && items.length > itemsPerPage && (
         <Center>
           <ReactPaginate
             forcePage={currentPage}

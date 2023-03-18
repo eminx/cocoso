@@ -5,7 +5,7 @@ import moment from 'moment';
 
 moment.locale(i18n.language);
 
-export default function GridThumb({ title, image, large = false, children }) {
+export default function GridThumb({ title, image, imageFit = 'cover', large = false, children }) {
   if (!title) {
     return null;
   }
@@ -16,7 +16,7 @@ export default function GridThumb({ title, image, large = false, children }) {
         <Box flexBasis={large ? '50%' : 150}>
           <Image
             alt={title}
-            fit="cover"
+            fit={imageFit}
             mr="2"
             src={image}
             w={large ? '100%' : 'xs'}

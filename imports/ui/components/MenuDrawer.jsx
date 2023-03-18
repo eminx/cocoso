@@ -42,7 +42,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box className={menuClassName} position="fixed" bg="gray.100" h="100vh" p="2">
           {!isOpen ? (
-            <Center pt="6">
+            <Center pt="4">
               <Flex flexDirection="column" align="center">
                 <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
                 <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
