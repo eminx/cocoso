@@ -181,7 +181,7 @@ export default function PlatformSettings({ history }) {
   const furtherBreadcrumbLinks = [
     {
       label: 'Platform',
-      link: '/superadmin/platform/settings',
+      link: null,
     },
     {
       label: tabs.find((t) => t.path === pathname).title,
