@@ -169,46 +169,48 @@ function Works({ history }) {
         )}
       </Box>
 
-      <Paginate items={worksRenderedHostFiltered}>
-        {(work) => (
-          <Box key={work._id}>
-            {currentHost.isPortalHost ? (
-              <Box cursor="pointer" onClick={() => setModalWork(work)}>
-                <NewGridThumb
-                  avatar={{
-                    name: work.authorUsername,
-                    url: work.authorAvatar,
-                  }}
-                  color={
-                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
-                      .color
-                  }
-                  host={allHosts.find((h) => h.host === work.host)?.name}
-                  imageUrl={work.images[0]}
-                  tag={work.category?.label}
-                  title={work.title}
-                />
-              </Box>
-            ) : (
-              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                <NewGridThumb
-                  avatar={{
-                    name: work.authorUsername,
-                    url: work.authorAvatar,
-                  }}
-                  color={
-                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
-                      .color
-                  }
-                  imageUrl={work.images[0]}
-                  tag={work.category?.label}
-                  title={work.title}
-                />
-              </Link>
-            )}
-          </Box>
-        )}
-      </Paginate>
+      <Box px="2">
+        <Paginate items={worksRenderedHostFiltered}>
+          {(work) => (
+            <Box key={work._id}>
+              {currentHost.isPortalHost ? (
+                <Box cursor="pointer" onClick={() => setModalWork(work)}>
+                  <NewGridThumb
+                    avatar={{
+                      name: work.authorUsername,
+                      url: work.authorAvatar,
+                    }}
+                    color={
+                      categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                        .color
+                    }
+                    host={allHosts.find((h) => h.host === work.host)?.name}
+                    imageUrl={work.images[0]}
+                    tag={work.category?.label}
+                    title={work.title}
+                  />
+                </Box>
+              ) : (
+                <Link to={`/@${work.authorUsername}/works/${work._id}`}>
+                  <NewGridThumb
+                    avatar={{
+                      name: work.authorUsername,
+                      url: work.authorAvatar,
+                    }}
+                    color={
+                      categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                        .color
+                    }
+                    imageUrl={work.images[0]}
+                    tag={work.category?.label}
+                    title={work.title}
+                  />
+                </Link>
+              )}
+            </Box>
+          )}
+        </Paginate>
+      </Box>
 
       {modalWork && (
         <Modal

@@ -154,7 +154,7 @@ function Resources({ history }) {
         <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Box px="2">
+      <Box px="4">
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <FiltrerSorter {...filtrerProps}>
             <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
@@ -172,7 +172,7 @@ function Resources({ history }) {
         </Flex>
       </Box>
 
-      <Box py="4">
+      <Box p="4">
         <Paginate items={resourcesRenderedHostFiltered}>
           {(resource) => (
             <Box key={resource._id}>

@@ -235,49 +235,51 @@ function Activities({ history }) {
         </Flex>
       </Box>
 
-      <Paginate items={activitiesRenderedHostFiltered}>
-        {(activity) => {
-          const itemHost = allHosts.find((h) => h.host === activity.host)?.name;
-          return (
-            <Box key={activity._id}>
-              {currentHost.isPortalHost ? (
-                <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                  <NewGridThumb
-                    dates={
-                      showPast
-                        ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
-                        : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+      <Box px="2">
+        <Paginate items={activitiesRenderedHostFiltered}>
+          {(activity) => {
+            const itemHost = allHosts.find((h) => h.host === activity.host)?.name;
+            return (
+              <Box key={activity._id}>
+                {currentHost.isPortalHost ? (
+                  <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
+                    <NewGridThumb
+                      dates={
+                        showPast
+                          ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                          : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                      }
+                      host={itemHost}
+                      imageUrl={activity.imageUrl}
+                      subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                      title={activity.title}
+                    />
+                  </Box>
+                ) : (
+                  <Link
+                    to={
+                      activity.isProcess
+                        ? `/processes/${activity._id}`
+                        : `/activities/${activity._id}`
                     }
-                    host={itemHost}
-                    imageUrl={activity.imageUrl}
-                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                    title={activity.title}
-                  />
-                </Box>
-              ) : (
-                <Link
-                  to={
-                    activity.isProcess
-                      ? `/processes/${activity._id}`
-                      : `/activities/${activity._id}`
-                  }
-                >
-                  <NewGridThumb
-                    dates={
-                      showPast
-                        ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
-                        : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
-                    }
-                    imageUrl={activity.imageUrl}
-                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                    title={activity.title}
-                  />
-                </Link>
-              )}
-            </Box>
-          );
-        }}
-      </Paginate>
+                  >
+                    <NewGridThumb
+                      dates={
+                        showPast
+                          ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                          : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                      }
+                      imageUrl={activity.imageUrl}
+                      subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                      title={activity.title}
+                    />
+                  </Link>
+                )}
+              </Box>
+            );
+          }}
+        </Paginate>
+      </Box>
 
       {modalActivity && (
         <Modal

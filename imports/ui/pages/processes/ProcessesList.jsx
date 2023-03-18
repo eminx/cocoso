@@ -204,33 +204,35 @@ export default function ProcessesList({ history }) {
         </Flex>
       </Box>
 
-      <Paginate items={processesRenderedHostFiltered}>
-        {(process) => (
-          <Box key={process._id}>
-            {currentHost.isPortalHost ? (
-              <Box cursor="pointer" onClick={() => setModalProcess(process)}>
-                <NewGridThumb
-                  dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
-                  // dates={process.meetings?.map((m) => m.startDate)}
-                  host={allHosts.find((h) => h.host === process.host)?.name}
-                  imageUrl={process.imageUrl}
-                  subTitle={process.readingMaterial}
-                  title={process.title}
-                />
-              </Box>
-            ) : (
-              <Link to={`/processes/${process._id}`}>
-                <NewGridThumb
-                  dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
-                  imageUrl={process.imageUrl}
-                  subTitle={process.readingMaterial}
-                  title={process.title}
-                />
-              </Link>
-            )}
-          </Box>
-        )}
-      </Paginate>
+      <Box px="2">
+        <Paginate items={processesRenderedHostFiltered}>
+          {(process) => (
+            <Box key={process._id}>
+              {currentHost.isPortalHost ? (
+                <Box cursor="pointer" onClick={() => setModalProcess(process)}>
+                  <NewGridThumb
+                    dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
+                    // dates={process.meetings?.map((m) => m.startDate)}
+                    host={allHosts.find((h) => h.host === process.host)?.name}
+                    imageUrl={process.imageUrl}
+                    subTitle={process.readingMaterial}
+                    title={process.title}
+                  />
+                </Box>
+              ) : (
+                <Link to={`/processes/${process._id}`}>
+                  <NewGridThumb
+                    dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
+                    imageUrl={process.imageUrl}
+                    subTitle={process.readingMaterial}
+                    title={process.title}
+                  />
+                </Link>
+              )}
+            </Box>
+          )}
+        </Paginate>
+      </Box>
 
       {modalProcess && (
         <Modal
