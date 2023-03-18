@@ -34,9 +34,7 @@ function Communities() {
       }
       const name = host.name?.toLowerCase();
       const city = host.city?.toLowerCase();
-      console.log(
-        name.indexOf(lowerCaseFilterWord) !== -1 || city.indexOf(lowerCaseFilterWord) !== -1
-      );
+
       return name.indexOf(lowerCaseFilterWord) !== -1 || city.indexOf(lowerCaseFilterWord) !== -1;
     });
   };
