@@ -92,7 +92,7 @@ function Communities() {
 
       {modalHost && (
         <ConfirmModal
-          confirmText={tc('actions.toHost', { host: modalHost.name })}
+          confirmText={tc('actions.toHost')}
           isCentered
           scrollBehavior="inside"
           size="sm"

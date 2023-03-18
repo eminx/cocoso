@@ -25,7 +25,7 @@ actions:
   confirmRead: I have read and accept
   toThePage: To the page in {{ hostName }}
   entryPage: Go to the entry page
-  toHost: Visit {{ host }} community app
+  toHost: Visit
 
 # ACTION PAGE TITLES
 labels:

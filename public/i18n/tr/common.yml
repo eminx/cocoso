@@ -25,7 +25,7 @@ actions:
   confirmRead: Okudum ve kabul ediyorum
   toThePage: '{{ hostName }} sayfasına git'
   entryPage: Sayfaya git
-  toHost: '{{ host }} topluluk uygulamasına git'
+  toHost: Uygulamaya git
 
 # ACTION PAGE TITLES
 labels:
