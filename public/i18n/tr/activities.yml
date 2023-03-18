@@ -71,7 +71,7 @@ public:
       name:
         first: Ad
         last: Soyad
-      email: Eposta adresş
+      email: Eposta adresi
       people:
         label: Katılımcılar
         number: Katılımcı sayısı
@@ -81,9 +81,9 @@ public:
         update: Güncelle
         remove: Kaydını iptal et
     email: Bu eposta adresi zaten kayıt olunmuş, lütfen güncelleme seçeneğini seçiniz
-    notFound: Üzgünüz, kaydını bulamadık. Lütfen zamanları ve diğer bilgileri tekrar kontrol edin ve tekrar dene
+    notFound: Üzgünüz, kaydını bulamadık. Lütfen zamanları ve diğer bilgileri tekrar kontrol et ve tekrar dene
     disabled:
-      true: Kayıt devre dışı bırakıldı. Lütfen pratik bilgileri kontrol edin.
+      true: Kayıt devre dışı bırakıldı. Lütfen pratik bilgileri kontrol et.
       false: Kayıt olmak için tarihlere tıklayıp açarak, bilgilerini girebilirsin
       info: Kayıtlar şu an alınmıyor
   attandence:
