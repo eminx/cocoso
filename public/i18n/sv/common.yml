@@ -115,8 +115,9 @@ menu:
     login: Logga in
   member:
     label: Min
-    profile: Min profil
-    activities: Mina aktiviteter
+    profile: Profil
+    settings: Inställningar
+    activities: Bokningar
     works: Mina Verk
   admin:
     label: Admin

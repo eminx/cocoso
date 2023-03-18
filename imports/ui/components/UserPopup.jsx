@@ -80,17 +80,17 @@ function UserPopup({ currentUser }) {
           )}
           <MenuGroup title={tc('menu.member.label')}>
             <Link to={currentUser && `/@${currentUser?.username}`}>
-              <MenuItem>{`@${currentUser?.username}`}</MenuItem>
+              <MenuItem>{tc('menu.member.profile')}</MenuItem>
             </Link>
-            {canCreateContent && (
-              <Link to="/my-activities">
-                <MenuItem>{tc('menu.member.activities')}</MenuItem>
-              </Link>
-            )}
             <Link to={currentUser && `/@${currentUser?.username}/edit`}>
-              <MenuItem>{tc('actions.update')}</MenuItem>
+              <MenuItem>{tc('menu.member.settings')}</MenuItem>
             </Link>
           </MenuGroup>
+          {canCreateContent && (
+            <Link to="/my-activities">
+              <MenuItem>{tc('menu.member.activities')}</MenuItem>
+            </Link>
+          )}
           {role === 'admin' && <MenuDivider />}
           {role === 'admin' && (
             <MenuGroup title={tc('menu.admin.label')}>

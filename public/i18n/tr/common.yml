@@ -115,8 +115,9 @@ menu:
     login: Giriş
   member:
     label: Ben
-    profile: Profilim
-    activities: Aktivitelerim
+    profile: Profil
+    settings: Ayarlar
+    activities: Rezervasyonlar
     works: İşlerim
   admin:
     label: Admin

@@ -115,8 +115,9 @@ menu:
     login: Login
   member:
     label: My
-    profile: My Profile
-    activities: My Activities
+    profile: Profile
+    settings: Settings
+    activities: Reservations
     works: My Works
   admin:
     label: Admin
