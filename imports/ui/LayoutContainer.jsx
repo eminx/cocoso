@@ -243,33 +243,35 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
       title={tc('platform.communitiesIn', { platform: platform?.name })}
       onClose={toggleOpen}
     >
-      <Center>
-        <List spacing="6">
-          {hosts?.map((host, index) => (
-            <ListItem key={host.host}>
-              <Flex key={host.host} maxW="420px">
-                <Flex flexGrow="0" h="80px" pr="4" w="40%">
-                  <Image fit="contain" h="80px" src={host.logo} />
-                </Flex>
-                <Box flexGrow="1">
-                  <Text flexShrink="0" fontSize="lg" fontWeight="bold">
-                    {host.name}
-                  </Text>
-                  <Text>
-                    <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
-                  </Text>
-                  <Text>{host.city + ', ' + host.country}</Text>
-                  <Text>
-                    <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
-                      {host.host}
-                    </CLink>
-                  </Text>
-                </Box>
-              </Flex>
-            </ListItem>
-          ))}
-        </List>
-      </Center>
+      <List spacing="4">
+        {hosts?.map((host, index) => (
+          <ListItem key={host.host}>
+            <Flex key={host.host}>
+              <Box mr="4">
+                {host.logo ? (
+                  <Image fit="contain" w="160px" h="80px" src={host.logo} />
+                ) : (
+                  <Box bg="pink.100" w="160px" h="100%" />
+                )}
+              </Box>
+              <Box flexGrow="1">
+                <Text flexShrink="0" fontSize="lg" fontWeight="bold">
+                  {host.name}
+                </Text>
+                <Text>
+                  <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
+                </Text>
+                <Text>{host.city + ', ' + host.country}</Text>
+                <Text>
+                  <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
+                    {host.host}
+                  </CLink>
+                </Text>
+              </Box>
+            </Flex>
+          </ListItem>
+        ))}
+      </List>
     </Modal>
   );
 }
