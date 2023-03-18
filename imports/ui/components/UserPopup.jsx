@@ -26,7 +26,7 @@ import { adminMenu, superadminMenu } from '../utils/constants/general';
 function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
-  const { canCreateContent, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, role } = useContext(StateContext);
 
   if (!currentUser) {
     return (
@@ -51,7 +51,7 @@ function UserPopup({ currentUser }) {
   const isNotification = notifications && notifications.length > 0;
 
   const isSuperAdmin = currentUser.isSuperAdmin;
-
+  const { isPortalHost } = currentHost;
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
@@ -101,8 +101,8 @@ function UserPopup({ currentUser }) {
               ))}
             </MenuGroup>
           )}
-          {isSuperAdmin && <MenuDivider />}
-          {isSuperAdmin && (
+          {isSuperAdmin && isPortalHost && <MenuDivider />}
+          {isSuperAdmin && isPortalHost && (
             <MenuGroup title="Super Admin">
               {superadminMenu.map((item) => (
                 <Link key={item.key} to={item.value}>
