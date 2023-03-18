@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
@@ -8,9 +8,6 @@ import Drawer from './Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
 
 const getRoute = (item, index) => {
-  if (index === 0) {
-    return '/';
-  }
   if (item.name === 'info') {
     return '/pages/about';
   }
@@ -112,19 +109,32 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 }
 
 function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
+  const location = useLocation();
+  const { pathname } = location;
+
+  const isCurrentPage = (item) => {
+    if (item.name === 'info') {
+      const pathSplitted = pathname.split('/');
+      return pathSplitted && pathSplitted[1] === 'pages';
+    }
+    return item.route === pathname;
+  };
+
   return (
     <VStack align="flex-start">
       {menuItems.map((item) => (
         <Link key={item.label} to={item.route} onClick={onToggle}>
           <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text>{item.label}</Text>
+            <Text fontWeight={isCurrentPage(item) ? 'bold' : 'normal'}>{item.label}</Text>
           </Box>
         </Link>
       ))}
       {isPortalHost && (
         <Link key="/communities" to="/communities" onClick={onToggle}>
           <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text>{tc('platform.communities')}</Text>
+            <Text fontWeight={pathname === '/communities' ? 'bold' : 'normal'}>
+              {tc('platform.communities')}
+            </Text>
           </Box>
         </Link>
       )}
