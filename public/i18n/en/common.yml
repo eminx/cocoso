@@ -188,5 +188,6 @@ images:
 
 platform:
   title: See Communities
+  communities: Communities
   communitiesIn: Communities in {{ platform }}
   membersCount: '{{ membersCount }} members'

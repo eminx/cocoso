@@ -9,7 +9,6 @@ const SchemasHost = {
     label: { type: String },
     name: { type: String },
     isVisible: { type: Boolean },
-    isHomePage: { type: Boolean, optional: true },
   },
   emailTemplate: {
     title: { type: String },

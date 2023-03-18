@@ -188,5 +188,6 @@ images:
 
 platform:
   title: Toplulukları gör
+  communities: Topluluklar
   communitiesIn: '{{ platform }} Topluluklar'
   membersCount: '{{ membersCount }} üye'

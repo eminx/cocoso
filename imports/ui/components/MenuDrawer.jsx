@@ -40,7 +40,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
   if (isDesktop) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
-        <Box className={menuClassName} position="fixed" bg="gray.100" h="100vh">
+        <Box className={menuClassName} position="fixed" bg="gray.100" h="100vh" p="2">
           {!isOpen ? (
             <Center pt="6">
               <Flex flexDirection="column" align="center">
@@ -60,18 +60,18 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
                   <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
                 </Flex>
 
-                <VStack align="flex-start" p="4" mt="4">
-                  {menuItems.map((item) => (
-                    <Link key={item.label} to={item.route} onClick={onToggle}>
-                      <Box px="4" pb="2">
-                        <Text fontSize="lg">{item.label}</Text>
-                      </Box>
-                    </Link>
-                  ))}
-                </VStack>
+                <Box p="4">
+                  <MenuContent
+                    menuItems={menuItems}
+                    isPortalHost={currentHost?.isPortalHost}
+                    tc={tc}
+                    onToggle={onToggle}
+                  />
+                </Box>
               </Box>
-
-              <Footer />
+              <Box pl="4">
+                <Footer />
+              </Box>
             </Flex>
           )}
         </Box>
@@ -96,15 +96,12 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 
       <Drawer isOpen={isOpen} placement="right" title={tc('menu.label')} onClose={onToggle}>
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <VStack align="flex-start">
-            {menuItems.map((item) => (
-              <Link key={item.label} to={item.route} onClick={onToggle}>
-                <Box px="4" py="2">
-                  <Text fontSize="lg">{item.label}</Text>
-                </Box>
-              </Link>
-            ))}
-          </VStack>
+          <MenuContent
+            menuItems={menuItems}
+            isPortalHost={currentHost?.isPortalHost}
+            tc={tc}
+            onToggle={onToggle}
+          />
           <Box mt="4">
             <Footer />
           </Box>
@@ -114,9 +111,30 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
   );
 }
 
+function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
+  return (
+    <VStack align="flex-start">
+      {menuItems.map((item) => (
+        <Link key={item.label} to={item.route} onClick={onToggle}>
+          <Box py="1" _hover={{ textDecoration: 'underline' }}>
+            <Text>{item.label}</Text>
+          </Box>
+        </Link>
+      ))}
+      {isPortalHost && (
+        <Link key="/communities" to="/communities" onClick={onToggle}>
+          <Box py="1" _hover={{ textDecoration: 'underline' }}>
+            <Text>{tc('platform.communities')}</Text>
+          </Box>
+        </Link>
+      )}
+    </VStack>
+  );
+}
+
 function Footer() {
   return (
-    <Box p="4">
+    <Box pb="4">
       <ChangeLanguageMenu />
     </Box>
   );

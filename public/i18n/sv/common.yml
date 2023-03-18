@@ -189,5 +189,6 @@ images:
 
 platform:
   title: Se Gemenskaper
+  communities: Communities
   communitiesIn: Gemenskaper i {{ platform }}
   membersCount: '{{ membersCount }} medlemmar'
