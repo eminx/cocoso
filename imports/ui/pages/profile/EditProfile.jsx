@@ -197,6 +197,9 @@ function EditProfile({ history }) {
   ];
 
   const isMember = ['admin', 'contributor', 'participant'].includes(role);
+  const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
+  const isUserPublic = Boolean(currentMembership.isPublic);
+  const isUserPublicGlobally = currentUser.isPublic;
 
   if (!isMember) {
     return (
@@ -262,6 +265,24 @@ function EditProfile({ history }) {
         </Box>
       ),
     },
+    {
+      title: t('profile.menu.options'),
+      path: `/@${currentUser.username}/edit/options`,
+      content: (
+        <Box>
+          <Text fontSize="sm" mb="2">
+            {t('profile.makePublic.helperTextGlobal')}
+          </Text>
+
+          <FormSwitch
+            colorScheme="green"
+            isChecked={isUserPublicGlobally}
+            label={t('profile.makePublic.label')}
+            onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
+          />
+        </Box>
+      ),
+    },
   ];
 
   const pathname = location?.pathname;
@@ -271,22 +292,25 @@ function EditProfile({ history }) {
     return <Redirect to={tabs[0].path} />;
   }
 
-  const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
-  const isUserPublic = Boolean(currentMembership.isPublic);
-  const isUserPublicGlobally = currentUser.isPublic;
-
   const communityName = currentHost?.settings?.name;
 
   return (
     <Box>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Box ml={isDesktop ? '0' : '4'}>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
 
       <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
-        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">{communityName}</Heading>
+        <Box flexBasis={isDesktop ? '40%' : '100%'} ml={isDesktop ? '0' : '4'} p="4">
+          <Heading size="md">
+            {communityName}{' '}
+            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              {tc('domains.community')}
+            </Text>
+          </Heading>
 
           <Box mt="4">
-            <Alert bg="gray.200" status="info">
+            <Alert bg="white" status="info" p="0">
               <AlertIcon color="gray.800" />
               <Text fontSize="sm">
                 <Trans
@@ -303,21 +327,19 @@ function EditProfile({ history }) {
             </Alert>
           </Box>
 
-          {!currentHost.isPortalHost && (
-            <Box my="4">
-              <Text fontSize="sm" mb="2">
-                {t('profile.makePublic.helperText')}
-              </Text>
+          <Box my="4">
+            <Text fontSize="sm" mb="2">
+              {t('profile.makePublic.helperText')}
+            </Text>
 
-              <FormSwitch
-                colorScheme="green"
-                isChecked={isUserPublic}
-                isDisabled={!isUserPublicGlobally}
-                label={t('profile.makePublic.label')}
-                onChange={({ target: { checked } }) => setProfilePublic(checked)}
-              />
-            </Box>
-          )}
+            <FormSwitch
+              colorScheme="green"
+              isChecked={isUserPublic}
+              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
+              label={t('profile.makePublic.label')}
+              onChange={({ target: { checked } }) => setProfilePublic(checked)}
+            />
+          </Box>
 
           <Box my="4">
             <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
@@ -327,22 +349,14 @@ function EditProfile({ history }) {
         </Box>
 
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">{platform?.name}</Heading>
-
-          <Box mt="4" mb="8">
-            <Text fontSize="sm" mb="2">
-              {t('profile.makePublic.helperTextGlobal')}
+          <Heading size="md" ml="4">
+            {platform?.name}{' '}
+            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              {tc('domains.platform')}
             </Text>
+          </Heading>
 
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublicGlobally}
-              label={t('profile.makePublic.label')}
-              onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
-            />
-          </Box>
-
-          <Alert bg="gray.200" my="4" status="info">
+          <Alert bg="white" mb="4" ml="4" px="0" status="info">
             <AlertIcon color="gray.800" />
             <Text fontSize="sm">{t('profile.message.platform', { platform: platform?.name })}</Text>
           </Alert>

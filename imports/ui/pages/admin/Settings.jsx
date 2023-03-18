@@ -127,7 +127,9 @@ export default function Settings({ history }) {
           </Box>
           {localImage && localImage.uploadableImageLocal && (
             <Center p="2">
-              <Button onClick={() => uploadLogo()}>Confirm</Button>
+              <Button isLoading={uploading} onClick={() => uploadLogo()}>
+                {tc('actions.submit')}
+              </Button>
             </Center>
           )}
         </AlphaContainer>

@@ -151,6 +151,9 @@ domains:
   works: Arbetar
   host: Värd
   page: sida
+  profil: profil
+  community: Community
+  platform: Platform
 
   settings: Inställningar
   email: E-postmeddelanden

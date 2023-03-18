@@ -96,6 +96,7 @@ profile:
     about: Hakkımda
     contact: İletişim
     language: DİL
+    options: Seçenekler
 
 leave:
   action: Topluluktan Ayrıl

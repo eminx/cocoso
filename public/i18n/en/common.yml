@@ -152,6 +152,8 @@ domains:
   host: Host
   page: Page
   profile: profile
+  community: Community
+  platform: Platform
 
   settings: Settings
   email: Email

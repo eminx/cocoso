@@ -96,6 +96,7 @@ profile:
     about: About Me
     contact: Contact Info
     language: Language
+    options: Options
 
 leave:
   action: Leave Community

@@ -152,6 +152,8 @@ domains:
   host: host
   page: sayfa
   profile: profil
+  community: Topluluk
+  platform: Platform
 
   settings: Ayarlar
   email: eposta
