@@ -63,6 +63,7 @@ profile:
   join: Join
   joinHost: Join {{ host }}
   joinAsParticipantQuestion: Would you like to join this organization with the participant role?
+  settings: Profile Settings
 
   form:
     avatar:
