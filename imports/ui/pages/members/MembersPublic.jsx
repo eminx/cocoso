@@ -63,10 +63,10 @@ function MembersPublic({ history }) {
 
   const handleVisitUserProfile = () => {
     const firstHost = modalUser?.memberships[0]?.host;
-    if (hostFilterValue || firstHost === currentHost.host) {
+    if (hostFilterValue || firstHost === currentHost?.host) {
       history.push(`/@${modalUser?.username}`);
     } else {
-      window.location.href`http://${hostFilterValue.host}/@${modalUser?.username}`;
+      window.location.href`http://${firstHost}/@${modalUser?.username}`;
     }
   };
 
