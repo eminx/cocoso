@@ -12,6 +12,8 @@ import { StateContext } from '../../LayoutContainer';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
+import { useTranslation } from 'react-i18next';
+import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -27,7 +29,7 @@ const getFullName = (member) => {
   return firstName || lastName || '';
 };
 
-function MembersPublic() {
+function MembersPublic({ history }) {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -35,6 +37,7 @@ function MembersPublic() {
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const [t] = useTranslation('members');
 
   const getAndSetMembers = async () => {
     try {
@@ -59,6 +62,23 @@ function MembersPublic() {
     return <Loader />;
   }
 
+  const getHostNameForModal = () => {
+    if (hostFilterValue) {
+      return hostFilterValue.name;
+    }
+    const firstHost = modalUser?.memberships[0].host;
+    return allHosts.find((h) => h.host === firstHost)?.name;
+  };
+
+  const handleVisitUserProfile = () => {
+    const firstHost = modalUser?.memberships[0]?.host;
+    if (hostFilterValue || firstHost === currentHost.host) {
+      history.push(`/@${modalUser?.username}`);
+    } else {
+      window.location.href`http://${hostFilterValue.host}/@${modalUser?.username}`;
+    }
+  };
+
   const getMembersFiltered = () => {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     const membersFiltered = members.filter((member) => {
@@ -74,7 +94,7 @@ function MembersPublic() {
     return getMembersHostFiltered(membersFiltered);
   };
 
-  getMembersHostFiltered = (membersFiltered) => {
+  const getMembersHostFiltered = (membersFiltered) => {
     if (!currentHost.isPortalHost || !hostFilterValue) {
       return membersFiltered;
     }
@@ -126,84 +146,64 @@ function MembersPublic() {
         </Flex>
       </Box>
 
-      <Box px="2">
-        <Paginate items={membersRendered} itemsPerPage={12}>
+      <Box px="2" mt="2">
+        <Paginate centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
-            <Box key={member.username} p="4" w="280px">
-              {currentHost.isPortalHost ? (
-                <Box cursor="pointer" onClick={() => setModalUser(member)}>
-                  {member.avatar ? (
-                    <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
-                  ) : (
-                    <Avatar
-                      borderRadius="12px"
-                      name={member.username}
-                      showBorder
-                      size="2xl"
-                      src={member.avatar}
-                    />
-                  )}
-                  <Box py="2" pl="2">
-                    <Text fontWeight="bold" fontSize="lg" isTruncated>
-                      {member.username}
-                    </Text>
-                  </Box>
+            <Flex
+              key={member.username}
+              justifyContent={isDesktop ? 'flex-start' : 'center'}
+              p="4"
+              w={isDesktop ? '280px' : '2xs'}
+              cursor="pointer"
+              onClick={() => setModalUser(member)}
+            >
+              <MemberAvatarEtc centerItems={!isDesktop} isThumb t={t} user={member} />
+              {/* <Box>
+                {member.avatar ? (
+                  <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
+                ) : (
+                  <Avatar
+                    borderRadius="12px"
+                    name={member.username}
+                    showBorder
+                    size="2xl"
+                    src={member.avatar}
+                  />
+                )}
+                <Box py="2" pl="2">
+                  <Text
+                    fontWeight="bold"
+                    fontSize="lg"
+                    isTruncated
+                    textAlign={isDesktop ? 'left' : 'center'}
+                  >
+                    {member.username}
+                  </Text>
                 </Box>
-              ) : (
-                <Link to={`/@${member.username}`}>
-                  <Box>
-                    {member.avatar ? (
-                      <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
-                    ) : (
-                      <Avatar
-                        borderRadius="12px"
-                        name={member.username}
-                        showBorder
-                        size="2xl"
-                        src={member.avatar}
-                      />
-                    )}
-                    <Box py="2" pl="2">
-                      <Text fontWeight="bold" fontSize="lg" isTruncated>
-                        {member.username}
-                      </Text>
-                    </Box>
-                  </Box>
-                </Link>
-              )}
-            </Box>
+              </Box> */}
+            </Flex>
           )}
         </Paginate>
       </Box>
 
       {modalUser && (
         <Modal
+          actionButtonLabel={
+            currentHost.isPortalHost
+              ? t('actions.visithost', { host: getHostNameForModal() })
+              : t('actions.visit')
+          }
           h="90%"
           isCentered
           isOpen
           scrollBehavior="inside"
           size="lg"
           onClose={() => setModalUser(null)}
+          onActionButtonClick={handleVisitUserProfile}
         >
-          <Center>
+          <MemberAvatarEtc centerItems hideRole t={t} user={modalUser} />
+          <Center mt="2">
             <Box textAlign="center">
-              <Center mb="2">
-                {modalUser.avatar ? (
-                  <Image borderRadius="12px" h="240px" fit="contain" src={modalUser.avatar} />
-                ) : (
-                  <Avatar
-                    borderRadius="0"
-                    name={modalUser.username}
-                    showBorder
-                    size="2xl"
-                    src={modalUser.avatar}
-                  />
-                )}
-              </Center>
-              <Text fontSize="lg" fontWeight="bold">
-                {modalUser.username}
-              </Text>
-              <Text mb="4">{getFullName(modalUser)}</Text>
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
             </Box>
           </Center>

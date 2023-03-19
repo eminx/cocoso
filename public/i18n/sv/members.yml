@@ -25,6 +25,8 @@ actions:
   admin: Ställ in som admin
   participant: Återgå som deltagare
   usageReport: Se förbrukningsrapport
+  visit: Besök profilen
+  visithost: Besök profilen i {{ host }}
 
 message:
   success:

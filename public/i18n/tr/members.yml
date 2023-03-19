@@ -25,6 +25,8 @@ actions:
   admin: Admin yap
   participant: Katılımcı yap
   usageReport: Kullanım raporunu görüntüle
+  visit: Profili ziyaret et
+  visithost: '{{ host }} profilini ziyaret et'
 
 message:
   success:

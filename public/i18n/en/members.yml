@@ -25,6 +25,8 @@ actions:
   admin: Set as admin
   participant: Revert back as a participant
   usageReport: See usage report
+  visit: Visit Profile
+  visithost: Visit profile in {{ host }}
 
 message:
   success:
