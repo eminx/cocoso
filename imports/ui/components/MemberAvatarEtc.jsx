@@ -21,7 +21,7 @@ import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import Popover from '../components/Popover';
 
-function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
+function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, t, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,9 +34,9 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
 
   if (redirect) {
     if (redirect.host === currentHost.host) {
-      history.push(`/${redirect?.host}/@${user?.username}`);
+      history.push(`/${redirect.host}/@${user.username}`);
     } else {
-      window.location.href = `https://${redirect?.host}/@${user?.username}`;
+      window.location.href = `https://${redirect.host}/@${user.username}`;
     }
   }
 
@@ -49,9 +49,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
     name: allHosts?.find((h) => h.host === m.host)?.name,
   }));
 
-  const role = currentHost?.isPortalHost
-    ? null
-    : memberships?.find((m) => m?.host === currentHost?.host)?.role;
+  const role = memberships?.find((m) => m?.host === currentHost?.host)?.role;
 
   return (
     <>
@@ -83,7 +81,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
         <Box>
           <Text fontWeight="bold" fontSize="xl">
             {user.username}{' '}
-            {!isThumb && role && (
+            {!hideRole && role && (
               <Text as="span" fontSize="sm" fontWeight="light">
                 {role}
               </Text>

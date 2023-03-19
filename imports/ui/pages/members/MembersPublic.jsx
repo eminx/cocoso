@@ -30,9 +30,11 @@ function MembersPublic({ history }) {
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [t] = useTranslation('members');
 
+  const { isPortalHost } = currentHost;
+
   const getAndSetMembers = async () => {
     try {
-      if (currentHost.isPortalHost) {
+      if (isPortalHost) {
         setMembers(await call('getAllMembersFromAllHosts'));
       } else {
         setMembers(await call('getHostMembers'));
@@ -96,7 +98,7 @@ function MembersPublic({ history }) {
   };
 
   const getMembersHostFiltered = (membersFiltered) => {
-    if (!currentHost.isPortalHost || !hostFilterValue) {
+    if (!isPortalHost || !hostFilterValue) {
       return membersFiltered;
     }
 
@@ -135,7 +137,7 @@ function MembersPublic({ history }) {
             <FiltrerSorter {...filtrerProps} />
           </Box>
 
-          {currentHost.isPortalHost && (
+          {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
               <HostFiltrer
                 allHosts={allHosts}
@@ -159,7 +161,13 @@ function MembersPublic({ history }) {
               cursor="pointer"
               onClick={() => setModalUser(member)}
             >
-              <MemberAvatarEtc centerItems={!isDesktop} isThumb t={t} user={member} />
+              <MemberAvatarEtc
+                centerItems={!isDesktop}
+                hideRole={isPortalHost}
+                isThumb
+                t={t}
+                user={member}
+              />
             </Flex>
           )}
         </Paginate>
@@ -168,7 +176,7 @@ function MembersPublic({ history }) {
       {modalUser && (
         <Modal
           actionButtonLabel={
-            currentHost.isPortalHost
+            isPortalHost
               ? t('actions.visithost', { host: getHostNameForModal() })
               : t('actions.visit')
           }
@@ -180,7 +188,7 @@ function MembersPublic({ history }) {
           onClose={() => setModalUser(null)}
           onActionButtonClick={handleVisitUserProfile}
         >
-          <MemberAvatarEtc centerItems hideRole t={t} user={modalUser} />
+          <MemberAvatarEtc centerItems hideRole={isPortalHost} t={t} user={modalUser} />
           <Center mt="2">
             <Box textAlign="center">
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
