@@ -25,7 +25,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const history = useHistory();
 
   if (!user) {
@@ -48,6 +48,10 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
     ...m,
     name: allHosts?.find((h) => h.host === m.host)?.name,
   }));
+
+  const role = currentHost?.isPortalHost
+    ? null
+    : memberships?.find((m) => m?.host === currentHost?.host)?.role;
 
   return (
     <>
@@ -80,7 +84,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
         <Box>
           <Text fontWeight="bold" fontSize="xl">
             {user.username}{' '}
-            {!isThumb && (
+            {!isThumb && role && (
               <Text as="span" fontSize="sm" fontWeight="light">
                 {role}
               </Text>
