@@ -67,8 +67,8 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
               h={isThumb ? '128px' : '200px'}
-              src={avatar.src || avatar}
-              onClick={avatar && !isThumb ? () => setAvatarModal(true) : null}
+              src={avatarSrc}
+              onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           ) : (
             <Avatar
@@ -76,8 +76,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
               name={user.username}
               src={avatarSrc}
               size="2xl"
-              onClick={avatar ? () => setAvatarModal(true) : null}
-              style={{ cursor: avatar ? 'pointer' : 'default' }}
+              style={{ cursor: avatarSrc ? 'pointer' : 'default' }}
             />
           )}
         </Box>
@@ -151,7 +150,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
         </Modal>
       )}
 
-      {avatar && (
+      {avatarSrc && (
         <Modal
           isOpen={avatarModal}
           onClose={() => setAvatarModal(false)}
