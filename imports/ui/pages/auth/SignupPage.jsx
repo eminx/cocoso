@@ -39,12 +39,10 @@ function SignupPage() {
             {platform && (
               <Center p="2">
                 <Box>
-                  <Center>
+                  <Center mb="2">
                     <Image w="240px" src={platform?.logo} />
                   </Center>
-                  <Text fontSize="sm">
-                    {t('signup.labels.platform', { platform: platform?.name })}
-                  </Text>
+                  <Text>{t('signup.labels.platform', { platform: platform?.name })}</Text>
                 </Box>
               </Center>
             )}
