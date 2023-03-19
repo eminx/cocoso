@@ -62,16 +62,17 @@ function MembersPublic({ history }) {
   };
 
   const handleVisitUserProfile = () => {
-    const justGo = () => history.push(`/@${modalUser?.username}`);
+    const { memberships, username } = modalUser;
+    const justGo = () => history.push(`/@${username}`);
 
     if (!currentHost?.isPortalHost) {
       justGo();
-    } else if (hostFilterValue && hostFilterValue.host === currentHost?.host) {
+    } else if (hostFilterValue && hostFilterValue?.host === currentHost?.host) {
       justGo();
-    } else if (modalUser?.memberships?.some((h) => h.host === currentHost.host)) {
+    } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
     } else {
-      window.location.href = `http://${firstHost}/@${modalUser?.username}`;
+      window.location.href = `https://${memberships[0]?.host}/@${modalUser?.username}`;
     }
   };
 
