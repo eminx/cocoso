@@ -62,12 +62,14 @@ function MembersPublic({ history }) {
   };
 
   const handleVisitUserProfile = () => {
-    const firstHost = modalUser?.memberships[0]?.host;
-    if (
-      firstHost === currentHost?.host ||
-      (hostFilterValue && hostFilterValue.host === currentHost?.host)
-    ) {
-      history.push(`/@${modalUser?.username}`);
+    const justGo = () => history.push(`/@${modalUser?.username}`);
+
+    if (!currentHost?.isPortalHost) {
+      justGo();
+    } else if (hostFilterValue && hostFilterValue.host === currentHost?.host) {
+      justGo();
+    } else if (modalUser?.memberships?.some((h) => h.host === currentHost.host)) {
+      justGo();
     } else {
       window.location.href = `http://${firstHost}/@${modalUser?.username}`;
     }
