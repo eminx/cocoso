@@ -42,7 +42,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
 
   const { avatar, memberships } = user;
   const avatarSrc = avatar?.src || avatar;
-  const membershipsLength = memberships.length;
+  const membershipsLength = memberships?.length;
 
   const membershipsWithHosts = memberships?.map((m) => ({
     ...m,
@@ -52,7 +52,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
   const role = currentHost?.isPortalHost
     ? null
     : memberships?.find((m) => m?.host === currentHost?.host)?.role;
-
+  console.log(user);
   return (
     <>
       <Flex
