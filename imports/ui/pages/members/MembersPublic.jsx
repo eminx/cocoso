@@ -71,12 +71,12 @@ function MembersPublic({ history }) {
       if (hostFilterValue.host === currentHost?.host) {
         justGo();
       } else {
-        window.location.href = `https://${memberships[0]?.host}/@${modalUser?.username}`;
+        window.location.href = `https://${hostFilterValue.host}/@${username}`;
       }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
     } else {
-      window.location.href = `https://${memberships[0]?.host}/@${modalUser?.username}`;
+      window.location.href = `https://${memberships[0]?.host}/@${username}`;
     }
   };
 
