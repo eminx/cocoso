@@ -136,7 +136,7 @@ function MemberPublic({ history, match, path }) {
           <Tabs
             align={isDesktop ? 'flex-start' : 'center'}
             index={tabIndex}
-            size="sm"
+            size={isDesktop ? 'md' : 'sm'}
             tabs={tabs}
           />
 
@@ -189,7 +189,7 @@ function Bio({ isDesktop, user }) {
   return (
     <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
       {user.bio && (
-        <Box maxWidth="480px" className="text-content" p="4" fontSize="85%">
+        <Box maxWidth="480px" className="text-content" py="4" px="5" fontSize="85%">
           {renderHTML(user.bio)}
         </Box>
       )}

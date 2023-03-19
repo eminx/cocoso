@@ -159,7 +159,7 @@ function Works({ history }) {
         </Box>
 
         {currentHost.isPortalHost && (
-          <Flex p="2" justify={isDesktop ? 'flex-start' : 'center'}>
+          <Flex py="2" justify={isDesktop ? 'flex-start' : 'center'}>
             <HostFiltrer
               allHosts={allHostsFiltered}
               hostFilterValue={hostFilterValue}

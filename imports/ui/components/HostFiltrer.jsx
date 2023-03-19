@@ -16,7 +16,7 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
   };
 
   return (
-    <Box w="xs" my="2">
+    <Box w="xs" my="2" px="2">
       <AutoCompleteSelect
         components={animatedComponents}
         isClearable
