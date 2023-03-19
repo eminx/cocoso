@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -22,15 +23,31 @@ import Popover from '../components/Popover';
 
 function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
+  const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isDesktop, role } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
+  const history = useHistory();
+
   if (!user) {
     return null;
+  }
+
+  if (redirect) {
+    if (redirect.host === currentHost.host) {
+      history.push(`/${redirect?.host}/@${user?.username}`);
+    } else {
+      window.location.href = `https://${redirect?.host}/@${user?.username}`;
+    }
   }
 
   const { avatar, memberships } = user;
   const avatarSrc = avatar?.src || avatar;
   const membershipsLength = memberships.length;
+
+  const membershipsWithHosts = memberships?.map((m) => ({
+    ...m,
+    name: allHosts?.find((h) => h.host === m.host)?.name,
+  }));
 
   return (
     <>
@@ -91,18 +108,20 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
                 }
               >
                 <Box p="1">
-                  {memberships?.map((m) => (
-                    <Button
-                      key={m.host}
-                      colorScheme="gray.800"
-                      fontWeight="light"
-                      my="1"
-                      textDecoration="underline"
-                      variant="link"
-                      onClick={() => (window.location.href = `https://${m.host}/@${user.username}`)}
-                    >
-                      {t('profile.message.membership', { host: m.host, role: m.role })}
-                    </Button>
+                  {membershipsWithHosts?.map((m) => (
+                    <Box key={m.host} my="2">
+                      <Button
+                        colorScheme="gray.800"
+                        textDecoration="underline"
+                        variant="link"
+                        onClick={() => setRedirect(m)}
+                      >
+                        {m.name}
+                      </Button>
+                      <Text as="span" fontSize="sm" fontWeight="light" ml="2">
+                        ({m.role})
+                      </Text>
+                    </Box>
                   ))}
                 </Box>
               </Popover>

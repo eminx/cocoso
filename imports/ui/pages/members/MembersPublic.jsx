@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { Avatar, Box, Center, Container, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Center, Container, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -19,14 +18,6 @@ const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
   const dateB = new Date(b.date);
   return dateB - dateA;
-};
-
-const getFullName = (member) => {
-  const { firstName, lastName } = member;
-  if (firstName && lastName) {
-    return `${firstName} ${lastName}`;
-  }
-  return firstName || lastName || '';
 };
 
 function MembersPublic({ history }) {
@@ -146,41 +137,19 @@ function MembersPublic({ history }) {
         </Flex>
       </Box>
 
-      <Box px="2" mt="2">
+      <Box mt="2">
         <Paginate centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
             <Flex
               key={member.username}
               justifyContent={isDesktop ? 'flex-start' : 'center'}
-              p="4"
+              py="2"
+              px="1"
               w={isDesktop ? '280px' : '2xs'}
               cursor="pointer"
               onClick={() => setModalUser(member)}
             >
               <MemberAvatarEtc centerItems={!isDesktop} isThumb t={t} user={member} />
-              {/* <Box>
-                {member.avatar ? (
-                  <Image borderRadius="12px" h="128px" fit="contain" src={member.avatar} />
-                ) : (
-                  <Avatar
-                    borderRadius="12px"
-                    name={member.username}
-                    showBorder
-                    size="2xl"
-                    src={member.avatar}
-                  />
-                )}
-                <Box py="2" pl="2">
-                  <Text
-                    fontWeight="bold"
-                    fontSize="lg"
-                    isTruncated
-                    textAlign={isDesktop ? 'left' : 'center'}
-                  >
-                    {member.username}
-                  </Text>
-                </Box>
-              </Box> */}
             </Flex>
           )}
         </Paginate>
