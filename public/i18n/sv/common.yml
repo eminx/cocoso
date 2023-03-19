@@ -190,7 +190,7 @@ images:
   countLabel: Bilder ({{ count }})
 
 platform:
-  title: Se Gemenskaper
+  title: Se Communities
   communities: Communities
-  communitiesIn: Gemenskaper i {{ platform }}
+  communitiesIn: Communities i plattform {{ platform }}
   membersCount: '{{ membersCount }} medlemmar'
