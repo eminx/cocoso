@@ -335,11 +335,7 @@ function EditProfile({ history }) {
             </Alert>
           </Box>
 
-          <Box my="4">
-            <Text fontSize="sm" mb="2">
-              {t('profile.makePublic.helperText')}
-            </Text>
-
+          <Box my="8">
             <FormSwitch
               colorScheme="green"
               isChecked={isUserPublic}
@@ -347,9 +343,12 @@ function EditProfile({ history }) {
               label={t('profile.makePublic.label')}
               onChange={({ target: { checked } }) => setProfilePublic(checked)}
             />
+            <Text fontSize="sm" mt="2">
+              {t('profile.makePublic.helperText')}
+            </Text>
           </Box>
 
-          <Box my="4">
+          <Box my="8">
             <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
               {t('actions.leave', { host: communityName })}
             </Button>
