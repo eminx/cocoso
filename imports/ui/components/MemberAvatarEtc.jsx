@@ -52,7 +52,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, t, user }) {
   const role = currentHost?.isPortalHost
     ? null
     : memberships?.find((m) => m?.host === currentHost?.host)?.role;
-  console.log(user);
+
   return (
     <>
       <Flex
