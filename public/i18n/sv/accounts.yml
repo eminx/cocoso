@@ -88,7 +88,7 @@ profile:
     platform: Information du anger här kommer att sparas globalt i plattformen {{ platform }} och publiceras i communities du väljer.
 
   makePublic:
-    label: Gör min profil offentlig
+    label: Profilen är offentlig
     helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
     helperTextGlobal: Om den stängs av kommer din profil att vara osynlig i alla communities
 
