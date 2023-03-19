@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import {
   Avatar,
   Box,
-  Center,
+  Button,
+  Code,
   Flex,
   Image,
   Modal,
@@ -18,17 +19,19 @@ import renderHTML from 'react-render-html';
 
 import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
+import Popover from '../components/Popover';
 
 function MemberAvatarEtc({ t, tc, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currentHost, isDesktop, role } = useContext(StateContext);
-
+  const { isDesktop, role } = useContext(StateContext);
   if (!user) {
     return null;
   }
 
-  const { avatar } = user;
+  const { avatar, memberships } = user;
+
+  const membershipsLength = memberships.length;
 
   return (
     <>
@@ -37,7 +40,6 @@ function MemberAvatarEtc({ t, tc, user }) {
           {avatar && avatar.src ? (
             <Image
               borderRadius="12px"
-              // boxShadow="0 2px 5px #aaa "
               cursor="pointer"
               fit="contain"
               h="200px"
@@ -58,12 +60,45 @@ function MemberAvatarEtc({ t, tc, user }) {
           <Text fontWeight="bold" fontSize="xl">
             {user.username}{' '}
             <Text as="span" fontSize="sm" fontWeight="light">
-              ({role})
+              {role}
             </Text>
           </Text>
         </Box>
-        <Box mb="2">
+        <Box>
           <Text>{getFullName(user)}</Text>
+        </Box>
+        <Box mb="2">
+          {membershipsLength > 1 && (
+            <Popover
+              bg="gray.50"
+              placement="bottom-start"
+              trigger={
+                <Button
+                  colorScheme="gray.600"
+                  fontWeight="light"
+                  textDecoration="underline"
+                  variant="link"
+                >
+                  {t('profile.message.memberships', { count: membershipsLength })}
+                </Button>
+              }
+            >
+              <Box p="1">
+                {memberships.map((m) => (
+                  <Button
+                    colorScheme="gray.800"
+                    fontWeight="light"
+                    my="1"
+                    textDecoration="underline"
+                    variant="link"
+                    onClick={() => (window.location.href = `https://${m.host}/@${user.username}`)}
+                  >
+                    {t('profile.message.membership', { host: m.host, role: m.role })}
+                  </Button>
+                ))}
+              </Box>
+            </Popover>
+          )}
         </Box>
       </Flex>
 

@@ -57,6 +57,8 @@ profile:
       label: Contact Info
   message:
     role: You as {{username}} are part of this organisation with the {{role}} role
+    membership: '{{ role }} in {{ host }}'
+    memberships: member in {{ count }} communities
 
 works:
   label: My Works

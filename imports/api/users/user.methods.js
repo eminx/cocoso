@@ -25,6 +25,7 @@ Meteor.methods({
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
+        memberships: user.memberships,
       };
     } catch (error) {
       throw new Meteor.Error(error);
