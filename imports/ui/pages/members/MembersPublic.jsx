@@ -67,8 +67,12 @@ function MembersPublic({ history }) {
 
     if (!currentHost?.isPortalHost) {
       justGo();
-    } else if (hostFilterValue && hostFilterValue?.host === currentHost?.host) {
-      justGo();
+    } else if (hostFilterValue) {
+      if (hostFilterValue.host === currentHost?.host) {
+        justGo();
+      } else {
+        window.location.href = `https://${memberships[0]?.host}/@${modalUser?.username}`;
+      }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
     } else {
