@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Box, Center, Container, Image, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Container, Flex, Image, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -11,6 +11,7 @@ import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
+import HostFiltrer from '../../components/HostFiltrer';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -31,8 +32,9 @@ function MembersPublic() {
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
+  const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
-  const { currentHost } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
 
   const getAndSetMembers = async () => {
     try {
@@ -57,54 +59,6 @@ function MembersPublic() {
     return <Loader />;
   }
 
-  // const setAsParticipant = async (user) => {
-  //   try {
-  //     await call('setAsParticipant', user.id);
-  //     message.success(`${user.username} is now set back as a participant`);
-  //     getAndSetMembers();
-  //   } catch (error) {
-  //     console.log(error);
-  //     message.error(error.reason || error.error);
-  //   }
-  // };
-
-  // const setAsContributor = async (user) => {
-  //   try {
-  //     await call('setAsContributor', user.id);
-  //     message.success(`${user.username} is now set as a cocreator`);
-  //     getAndSetMembers();
-  //   } catch (error) {
-  //     console.log(error);
-  //     message.error(error.reason || error.error);
-  //   }
-  // };
-
-  // const membersList = members.map((member) => ({
-  //   ...member,
-  //   actions: [
-  //     {
-  //       content: 'Set as a Contributor',
-  //       handleClick: () => setAsContributor(member),
-  //       isDisabled:
-  //         ['admin', 'contributor'].includes(member.role) ||
-  //         !['admin', 'contributor'].includes(role),
-  //     },
-  //     {
-  //       content: 'Revert back as a Participant',
-  //       handleClick: () => setAsParticipant(member),
-  //       isDisabled:
-  //         !['contributor'].includes(member.role) || !['admin'].includes(role),
-  //     },
-  //   ],
-  // }));
-
-  const getMembersSorted = (membersFiltered) => {
-    if (sorterValue === 'name') {
-      return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
-    }
-    return membersFiltered.sort(compareByDate);
-  };
-
   const getMembersFiltered = () => {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     const membersFiltered = members.filter((member) => {
@@ -117,7 +71,26 @@ function MembersPublic() {
       return member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
     });
 
-    return getMembersSorted(membersFiltered);
+    return getMembersHostFiltered(membersFiltered);
+  };
+
+  getMembersHostFiltered = (membersFiltered) => {
+    if (!currentHost.isPortalHost || !hostFilterValue) {
+      return membersFiltered;
+    }
+
+    const membersHostFiltered = membersFiltered.filter((member) => {
+      return member.memberships.some((membership) => membership.host === hostFilterValue.host);
+    });
+
+    return getMembersSorted(membersHostFiltered);
+  };
+
+  const getMembersSorted = (membersFiltered) => {
+    if (sorterValue === 'name') {
+      return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
+    }
+    return membersFiltered.sort(compareByDate);
   };
 
   const filtrerProps = {
@@ -128,6 +101,7 @@ function MembersPublic() {
   };
 
   const membersRendered = getMembersFiltered();
+
   return (
     <Box mb="3">
       <Helmet>
@@ -135,8 +109,23 @@ function MembersPublic() {
       </Helmet>
 
       <Box px="4">
-        <FiltrerSorter {...filtrerProps} />
+        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+          <Box pt="2">
+            <FiltrerSorter {...filtrerProps} />
+          </Box>
+
+          {currentHost.isPortalHost && (
+            <Flex pl={isDesktop ? '8' : '0'} justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHosts}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </Flex>
       </Box>
+
       <Box px="2">
         <Paginate items={membersRendered} itemsPerPage={12}>
           {(member) => (
