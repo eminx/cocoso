@@ -193,7 +193,7 @@ export default function ProcessesList({ history }) {
           </FiltrerSorter>
 
           {currentHost.isPortalHost && (
-            <Flex pl={isDesktop ? '8' : '0'} justify="flex-start">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}
@@ -205,7 +205,7 @@ export default function ProcessesList({ history }) {
       </Box>
 
       <Box px="2">
-        <Paginate items={processesRenderedHostFiltered}>
+        <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
           {(process) => (
             <Box key={process._id}>
               {currentHost.isPortalHost ? (

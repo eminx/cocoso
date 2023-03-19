@@ -80,8 +80,8 @@ function Communities() {
         </Flex>
       </Box>
 
-      <Box p="4">
-        <Paginate items={hostsRendered}>
+      <Box p="4" pt="8">
+        <Paginate centerItems={!isDesktop} items={hostsRendered}>
           {(host) => (
             <Box key={host.host} cursor="pointer" onClick={() => setModalHost(host)}>
               <HostItem host={host} tc={tc} />

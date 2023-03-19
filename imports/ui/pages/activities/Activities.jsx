@@ -224,7 +224,7 @@ function Activities({ history }) {
           </FiltrerSorter>
 
           {currentHost.isPortalHost && (
-            <Flex pl={isDesktop ? '8' : '0'} justify="flex-start">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}
@@ -236,7 +236,7 @@ function Activities({ history }) {
       </Box>
 
       <Box px="2">
-        <Paginate items={activitiesRenderedHostFiltered}>
+        <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
           {(activity) => {
             const itemHost = allHosts.find((h) => h.host === activity.host)?.name;
             return (

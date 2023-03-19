@@ -134,7 +134,7 @@ function Works({ history }) {
       <Box px="4">
         <FiltrerSorter {...filtrerProps} />
 
-        <Box mb="2" mt="4">
+        <Box mt="4">
           <Wrap pl="2">
             <WrapItem>
               <Tag
@@ -159,7 +159,7 @@ function Works({ history }) {
         </Box>
 
         {currentHost.isPortalHost && (
-          <Flex py="2" justify={isDesktop ? 'flex-start' : 'center'}>
+          <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
             <HostFiltrer
               allHosts={allHostsFiltered}
               hostFilterValue={hostFilterValue}
@@ -170,7 +170,7 @@ function Works({ history }) {
       </Box>
 
       <Box px="2">
-        <Paginate items={worksRenderedHostFiltered}>
+        <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>
               {currentHost.isPortalHost ? (

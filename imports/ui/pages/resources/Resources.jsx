@@ -161,7 +161,7 @@ function Resources({ history }) {
           </FiltrerSorter>
 
           {currentHost.isPortalHost && (
-            <Flex pl={isDesktop ? '8' : '0'} justify="flex-start">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}
@@ -173,7 +173,7 @@ function Resources({ history }) {
       </Box>
 
       <Box p="4">
-        <Paginate items={resourcesRenderedHostFiltered}>
+        <Paginate centerItems={!isDesktop} items={resourcesRenderedHostFiltered}>
           {(resource) => (
             <Box key={resource._id}>
               {currentHost.isPortalHost ? (

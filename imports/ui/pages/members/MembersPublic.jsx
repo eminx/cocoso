@@ -126,7 +126,7 @@ function MembersPublic({ history }) {
           </Box>
 
           {currentHost.isPortalHost && (
-            <Flex pl={isDesktop ? '8' : '0'} justify={isDesktop ? 'flex-start' : 'center'}>
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
               <HostFiltrer
                 allHosts={allHosts}
                 hostFilterValue={hostFilterValue}
