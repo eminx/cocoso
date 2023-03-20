@@ -200,7 +200,7 @@ class Process extends Component {
 
     Meteor.call('joinProcess', process._id, (error, response) => {
       if (error) {
-        message.error(error.error);
+        message.error(error.reason);
       } else {
         message.success(t('message.added'));
       }

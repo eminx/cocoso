@@ -65,7 +65,7 @@ export default {
         'You are encouraged to follow the updates, register to attend meetings and join the discussion at the page',
     },
   },
-  en: {
+  tr: {
     general: {
       dateAndTime: 'Zaman ve tarih',
       dear: 'Merhaba',
