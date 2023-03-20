@@ -199,7 +199,7 @@ function Footer({ currentHost, tc }) {
         <Center w="100%">
           <Flex w="100%" direction="column" justify="center" textAlign="center">
             <Center>
-              <Box maxHeight="80px" mt="1" w="220px">
+              <Box maxHeight="80px" mt="1" w="220px" ml="2">
                 <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
               </Box>
             </Center>

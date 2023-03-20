@@ -38,7 +38,7 @@ function Header() {
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">
-            <Box>
+            <Box pl="2">
               <Image className="logo" fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>
