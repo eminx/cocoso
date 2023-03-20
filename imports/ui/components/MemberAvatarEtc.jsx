@@ -118,8 +118,14 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                       >
                         {m.name}
                       </Button>
-                      <Text as="span" fontSize="sm" fontWeight="light" ml="2">
-                        ({m.role})
+                      <Text
+                        as="span"
+                        fontSize="sm"
+                        fontWeight="light"
+                        ml="2"
+                        textTransform="lowercase"
+                      >
+                        {t(`roles.${m.role}`)}
                       </Text>
                     </Box>
                   ))}
