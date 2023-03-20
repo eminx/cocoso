@@ -154,7 +154,7 @@ function Resources({ history }) {
         <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Box px="4">
+      <Box px="4" mb="4">
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <FiltrerSorter {...filtrerProps}>
             <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />

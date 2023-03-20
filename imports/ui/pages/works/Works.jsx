@@ -131,7 +131,7 @@ function Works({ history }) {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4">
+      <Box px="4" mb="4">
         <FiltrerSorter {...filtrerProps} />
 
         <Box mt="4">

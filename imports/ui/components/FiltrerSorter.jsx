@@ -23,7 +23,7 @@ function FiltrerSorter(props) {
 
   if (isDesktop) {
     return (
-      <Box mb="2" px="1">
+      <Box px="1">
         <Inputs {...props} isDesktop={isDesktop} tc={tc} />
         <Box px="2">
           <Text fontSize="sm" mb="1" mt="1">

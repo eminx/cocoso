@@ -131,7 +131,7 @@ function MembersPublic({ history }) {
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4">
+      <Box px="4" mb="4">
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <Box pt="2">
             <FiltrerSorter {...filtrerProps} />
