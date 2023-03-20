@@ -50,6 +50,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   }));
 
   const role = memberships?.find((m) => m?.host === currentHost?.host)?.role;
+  const roleTr = t(`roles.${role}`);
 
   return (
     <>
@@ -82,8 +83,8 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           <Text fontWeight="bold" fontSize="xl">
             {user.username}{' '}
             {!hideRole && role && (
-              <Text as="span" fontSize="sm" fontWeight="light">
-                {role}
+              <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
+                {roleTr}
               </Text>
             )}
           </Text>
