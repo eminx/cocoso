@@ -113,7 +113,12 @@ function MembersPublic({ history }) {
     if (sorterValue === 'name') {
       return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
     }
-    return membersFiltered.sort(compareByDate);
+    return membersFiltered
+      .map((m) => ({
+        ...m,
+        date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
+      }))
+      .sort(compareByDate);
   };
 
   const filtrerProps = {
