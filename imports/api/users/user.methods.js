@@ -138,10 +138,7 @@ Meteor.methods({
     try {
       Meteor.users.update(user._id, {
         $set: {
-          firstName: values.firstName,
-          lastName: values.lastName,
-          bio: values.bio,
-          contactInfo: values.contactInfo,
+          ...values,
         },
       });
     } catch (error) {

@@ -93,8 +93,14 @@ function EditProfile({ history }) {
   };
 
   const handleSubmitInfo = async (values) => {
+    const formValues = {
+      firstName: values.firstName || '',
+      lastName: values.lastName || '',
+      bio: values.bio || '',
+      contactInfo: values.contactInfo || '',
+    };
     try {
-      await call('saveUserInfo', values);
+      await call('saveUserInfo', formValues);
       message.success(
         tc('message.success.save', {
           domain: `${tc('domains.your')} ${tc('domains.data')}`,

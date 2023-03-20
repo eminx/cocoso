@@ -17,10 +17,10 @@ Users.schema.AccountBase = {
   services: { type: Object, blackbox: true },
 };
 Users.schema.UserProfile = {
-  firstName: { type: String, defaultValue: '' },
-  lastName: { type: String, defaultValue: '' },
-  bio: { type: String, optional: true },
-  contactInfo: { type: String, optional: true },
+  firstName: { type: String, optional: true, defaultValue: '' },
+  lastName: { type: String, optional: true, defaultValue: '' },
+  bio: { type: String, defaultValue: '', optional: true },
+  contactInfo: { type: String, defaultValue: '', optional: true },
   lang: { type: String, optional: true },
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
   isPublic: { type: Boolean, defaultValue: true, optional: true },
