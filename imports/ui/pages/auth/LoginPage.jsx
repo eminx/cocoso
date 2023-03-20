@@ -55,7 +55,7 @@ function LoginPage() {
   return (
     <Box pb="8" minHeight="100vh">
       <Template>
-        <Center p="4">
+        <Center>
           <Box w="xs">
             {platform && (
               <Center p="4">
@@ -67,7 +67,7 @@ function LoginPage() {
               {t('login.labels.title')}
             </Heading>
 
-            <Center pt="4" mb="2">
+            <Center pt="4" mb="6">
               <Text>
                 {t('login.labels.subtitle')}{' '}
                 <Link to="/register">
@@ -78,7 +78,7 @@ function LoginPage() {
               </Text>
             </Center>
 
-            <Box p="6" bg="white" mb="4">
+            <Box p="6" bg="white" mb="4" border="1px solid" borderColor="gray.500">
               <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
             </Box>
             <Center>

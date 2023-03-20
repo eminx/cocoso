@@ -51,13 +51,15 @@ function Header() {
         </HStack>
       </Flex>
 
-      <Box pb="2" pt="10" px="2">
-        <Heading color="gray.800" size="lg">
-          <Text as="span" fontWeight="normal">
-            {activeMenuItem?.label}
-          </Text>
-        </Heading>
-      </Box>
+      {activeMenuItem && (
+        <Box pb="2" pt="10" px="2">
+          <Heading color="gray.800" size="lg">
+            <Text as="span" fontWeight="normal">
+              {activeMenuItem?.label}
+            </Text>
+          </Heading>
+        </Box>
+      )}
     </Box>
   );
 }
