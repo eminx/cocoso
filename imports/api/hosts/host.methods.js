@@ -81,7 +81,21 @@ Meteor.methods({
 
   getHostMembers() {
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
+    // const currentHost = Hosts.findOne({ host });
+
+    const hostUsers = Meteor.users.find({ 'memberships.host': host });
+    return hostUsers.map((user) => ({
+      avatar: user.avatar?.src,
+      bio: user.bio,
+      date: user.date,
+      firstName: user.firstName,
+      id: user._id,
+      isPublic: user.isPublic,
+      lastName: user.lastName,
+      memberships: user.memberships,
+      username: user.username,
+    }));
+
     return currentHost.members.filter((m) => m.isPublic);
   },
 
@@ -92,11 +106,11 @@ Meteor.methods({
         avatar: user.avatar?.src,
         bio: user.bio,
         date: user.date,
-        memberships: user.memberships,
         firstName: user.firstName,
-        lastName: user.lastName,
         id: user._id,
         isPublic: user.isPublic,
+        lastName: user.lastName,
+        memberships: user.memberships,
         username: user.username,
       }))
       .reverse();

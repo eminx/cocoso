@@ -41,9 +41,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   }
 
   const { avatar, memberships } = user;
-  const avatarSrc = avatar?.src || avatar;
   const membershipsLength = memberships?.length;
-
   const membershipsWithHosts = memberships?.map((m) => ({
     ...m,
     name: allHosts?.find((h) => h.host === m.host)?.name,
@@ -60,22 +58,22 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
         align={!centerItems && isDesktop ? 'flex-start' : 'center'}
       >
         <Box pt="4" pb="2">
-          {avatarSrc ? (
+          {avatar ? (
             <Image
               borderRadius="12px"
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
               h={isThumb ? '128px' : '200px'}
-              src={avatarSrc}
+              src={avatar}
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           ) : (
             <Avatar
               borderRadius="12px"
               name={user.username}
-              src={avatarSrc}
+              src={avatar}
               size="2xl"
-              style={{ cursor: avatarSrc ? 'pointer' : 'default' }}
+              style={{ cursor: avatar ? 'pointer' : 'default' }}
             />
           )}
         </Box>
@@ -149,7 +147,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
         </Modal>
       )}
 
-      {avatarSrc && (
+      {avatar && (
         <Modal
           isOpen={avatarModal}
           onClose={() => setAvatarModal(false)}
@@ -159,7 +157,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
         >
           <ModalOverlay />
           <ModalContent>
-            <Image src={avatarSrc} alt={user.username} fit="contain" />
+            <Image src={avatar} alt={user.username} fit="contain" />
           </ModalContent>
         </Modal>
       )}

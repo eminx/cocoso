@@ -30,11 +30,9 @@ function MembersPublic({ history }) {
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [t] = useTranslation('members');
 
-  const { isPortalHost } = currentHost;
-
   const getAndSetMembers = async () => {
     try {
-      if (isPortalHost) {
+      if (currentHost.isPortalHost) {
         setMembers(await call('getAllMembersFromAllHosts'));
       } else {
         setMembers(await call('getHostMembers'));
@@ -54,6 +52,8 @@ function MembersPublic({ history }) {
   if (loading) {
     return <Loader />;
   }
+
+  const { isPortalHost } = currentHost;
 
   const getHostNameForModal = () => {
     if (hostFilterValue) {
