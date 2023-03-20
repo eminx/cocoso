@@ -65,10 +65,10 @@ export default {
     },
     activityRegister: {
       activityPage: 'Sayfayı ziyaret et',
-      confirmedApprovalText: 'Kaydına onaylandı',
+      confirmedApprovalText: 'Kaydın onaylandı',
       confirmedApprovalTextUpdate: 'Kaydına yaptığın güncelleme onaylandı',
       confirmedApprovalTextLong:
-        'Kaydında değişiklik yapmayı veya iptal etmek istersen; etkinlik sayfasına gidip, kaydolduğun tarihi seç ve ardından "Varolan kaydı güncelle ya da iptal et" bağlantısına tıkla. Ardından, bilgilerini güncellemek veya bu etkinliğe olan kaydını tamamen iptal etmek için oradaki talimatları izle.',
+        'Kaydında değişiklik yapmak veya iptal etmek istersen; etkinlik sayfasına gidip, kaydolduğun tarihi seç ve ardından "Varolan kaydı güncelle ya da iptal et" bağlantısına tıkla. Ardından, bilgilerini güncellemek veya bu etkinliğe olan kaydını tamamen iptal etmek için oradaki talimatları izle.',
       visitPage: 'Sayfayı ziyaret et',
     },
     activityUnregister: {

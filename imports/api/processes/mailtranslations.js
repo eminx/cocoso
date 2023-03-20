@@ -72,13 +72,13 @@ export default {
       person: 'insan',
       people: 'insan',
       title: 'Başlık',
-      processPage: 'Visit the page',
-      visitPage: 'Visit the page',
+      processPage: 'Sayfayı ziyaret et',
+      visitPage: 'Sayfayı ziyaret et',
     },
     joinProcess: {
       confirmedApprovalText: 'Başarılı şekilde katıldın',
       confirmedApprovalTextLong:
-        'İçtenlikle güncellemeleri takip etmen, toplantılara katılmak için kaydolman ve sayfada tartışmaya katılmanı dileriz.',
+        'İçtenlikle, güncellemeleri takip etmeni, toplantılara katılmak için kaydolmanı ve sayfada tartışmaya katılmanı dileriz.',
       confirmedApprovalTextLeave: 'Süreçten ayrıldın',
       confirmedApprovalTextLongLeave: 'Eğer tekrar katılmak istersen, sayfada tekrar yapabilirsin',
     },
