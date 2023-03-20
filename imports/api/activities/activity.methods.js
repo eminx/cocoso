@@ -65,7 +65,7 @@ Meteor.methods({
         if (!act.isProcessPrivate) {
           return true;
         }
-        if (!userId) {
+        if (!user) {
           return false;
         }
         const process = Processes.findOne({ _id: act.processId });
