@@ -104,6 +104,9 @@ function Communities() {
           <Center>
             {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
           </Center>
+          <CTag my="2" lineBreak="anywhere">
+            {modalHost.host}
+          </CTag>
         </ConfirmModal>
       )}
     </Box>
@@ -120,7 +123,7 @@ function HostItem({ host, tc }) {
       <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
         <Text fontSize="xs">{moment(host.createdAt).format('D MMM YYYY')}</Text>
 
-        <CTag border="1px solid #2d2d2d" mt="4">
+        <CTag size="sm" mt="4" lineBreak="anywhere">
           {host.host}
         </CTag>
         <Text my="4">{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
