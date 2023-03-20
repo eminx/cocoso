@@ -99,7 +99,7 @@ function MembersPublic({ history }) {
 
   const getMembersHostFiltered = (membersFiltered) => {
     if (!isPortalHost || !hostFilterValue) {
-      return membersFiltered;
+      return getMembersSorted(membersFiltered);
     }
 
     const membersHostFiltered = membersFiltered.filter((member) => {
