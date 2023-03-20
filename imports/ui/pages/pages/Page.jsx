@@ -109,7 +109,7 @@ function Page() {
 
       <Center>
         <Box w="100%" maxW="520px">
-          <Box px="4" mb="4">
+          <Box px="8" mb="4">
             <Heading as="h2" size="lg">
               {currentPage.title}
             </Heading>
@@ -117,7 +117,7 @@ function Page() {
           <Box mb="4">
             <NiceSlider images={currentPage.images} />
           </Box>
-          <Box px="4" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
+          <Box px="8" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
             <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
           </Box>
         </Box>
