@@ -67,7 +67,7 @@ function MembersPublic({ history }) {
     const { memberships, username } = modalUser;
     const justGo = () => history.push(`/@${username}`);
 
-    if (!currentHost?.isPortalHost) {
+    if (!isPortalHost) {
       justGo();
     } else if (hostFilterValue) {
       if (hostFilterValue.host === currentHost?.host) {
@@ -163,7 +163,7 @@ function MembersPublic({ history }) {
             >
               <MemberAvatarEtc
                 centerItems={!isDesktop}
-                hideRole={!isPortalHost}
+                hideRole={isPortalHost}
                 isThumb
                 t={t}
                 user={member}
@@ -188,7 +188,7 @@ function MembersPublic({ history }) {
           onClose={() => setModalUser(null)}
           onActionButtonClick={handleVisitUserProfile}
         >
-          <MemberAvatarEtc centerItems hideRole={!isPortalHost} t={t} user={modalUser} />
+          <MemberAvatarEtc centerItems hideRole={isPortalHost} t={t} user={modalUser} />
           <Center mt="2">
             <Box textAlign="center">
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
