@@ -13,14 +13,19 @@ Meteor.methods({
   sendEmail(id, subjectEmail, textEmail) {
     check([id, subjectEmail, textEmail], [String]);
     const fromEmail = Meteor.settings.mailCredentials.smtp.fromEmail;
-    let toEmail;
 
+    let toEmail;
     if (isValidEmail(id)) {
       toEmail = id;
-    } else if (id.length === 17) {
-      toEmail = Meteor.users.findOne({ _id: id }).emails[0].address;
     } else {
-      toEmail = Meteor.users.findOne({ username: id }).emails[0].address;
+      const user = Meteor.users.findOne({ $or: [{ _id: id }, { username: id }] });
+      if (user) {
+        toEmail = user.emails[0]?.address;
+      }
+    }
+
+    if (!isValidEmail(toEmail)) {
+      return;
     }
 
     this.unblock();
