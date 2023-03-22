@@ -27,6 +27,7 @@ import { adminMenu, superadminMenu } from '../utils/constants/general';
 function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('members');
   const { canCreateContent, currentHost, role } = useContext(StateContext);
 
   if (!currentUser) {
@@ -54,6 +55,8 @@ function UserPopup({ currentUser }) {
   const isSuperAdmin = currentUser.isSuperAdmin;
   const { host, isPortalHost } = currentHost;
 
+  const roleTranslated = t(`roles.${role}`);
+
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
@@ -63,6 +66,18 @@ function UserPopup({ currentUser }) {
           </Avatar>
         </MenuButton>
         <MenuList>
+          <MenuGroup>
+            <Box bg="gray.200" px="4" py="2">
+              <Text fontWeight="bold" fontSize="xl" textAlign="right">
+                {currentUser.username}{' '}
+                <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
+                  {roleTranslated}
+                  {' | '}
+                  {currentHost.settings?.name}
+                </Text>
+              </Text>
+            </Box>
+          </MenuGroup>
           {isNotification && (
             <MenuGroup title={tc('menu.notifications.label')}>
               <Box px="1">
