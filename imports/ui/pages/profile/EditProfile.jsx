@@ -345,9 +345,7 @@ function EditProfile({ history }) {
               ))}
             </RouteSwitch>
           </Box>
-          <Box mt="36">
-            <Divider />
-          </Box>
+          <Divider />
         </Box>
 
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
@@ -358,7 +356,20 @@ function EditProfile({ history }) {
             </Text>
           </Heading>
 
-          <Box mt="4" px="2">
+          <Box my="8" px="4">
+            <FormSwitch
+              colorScheme="green"
+              isChecked={isUserPublic}
+              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
+              label={t('profile.makePublic.label')}
+              onChange={({ target: { checked } }) => setProfilePublic(checked)}
+            />
+            <Text fontSize="sm" mt="2">
+              {t('profile.makePublic.helperText')}
+            </Text>
+          </Box>
+
+          <Box mt="4" px="4">
             <Alert bg="white" status="info" p="0">
               <AlertIcon color="gray.800" />
               <Text fontSize="sm">
@@ -376,20 +387,7 @@ function EditProfile({ history }) {
             </Alert>
           </Box>
 
-          <Box my="8" px="2">
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublic}
-              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
-              label={t('profile.makePublic.label')}
-              onChange={({ target: { checked } }) => setProfilePublic(checked)}
-            />
-            <Text fontSize="sm" mt="2">
-              {t('profile.makePublic.helperText')}
-            </Text>
-          </Box>
-
-          <Box my="8" px="2">
+          <Box my="8" px="4">
             <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
               {t('actions.leave', { host: communityName })}
             </Button>

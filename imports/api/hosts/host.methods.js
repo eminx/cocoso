@@ -83,12 +83,15 @@ Meteor.methods({
     const host = getHost(this);
     const hostUsers = Meteor.users.find({ 'memberships.host': host });
 
-    return hostUsers.map((user) => ({
+    const hostUsersPublic = hostUsers.filter((member) => {
+      return Boolean(member.memberships?.find((membership) => membership.host === host)?.isPublic);
+    });
+
+    return hostUsersPublic.map((user) => ({
       avatar: user.avatar?.src,
       bio: user.bio,
       firstName: user.firstName,
       id: user._id,
-      isPublic: true,
       lastName: user.lastName,
       memberships: user.memberships,
       username: user.username,
