@@ -322,11 +322,12 @@ function EditProfile({ history }) {
             </Text>
           </Heading>
 
-          <Alert bg="white" mb="4" ml="4" px="0" status="info">
+          <Alert bg="white" mb="4" px="4" status="info">
             <AlertIcon color="gray.800" />
-            <Text fontSize="sm">{t('profile.message.platform', { platform: platform?.name })}</Text>
+            <Text fontSize="sm" mr="4">
+              {t('profile.message.platform', { platform: platform?.name })}
+            </Text>
           </Alert>
-
           <Tabs index={tabIndex} tabs={tabs} />
 
           <Box px="4">
