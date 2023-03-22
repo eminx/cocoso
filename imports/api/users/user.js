@@ -53,7 +53,7 @@ Users.schema.UserProfile = {
       contextId: Schemas.Id,
       context: { type: String },
       count: { type: SimpleSchema.Integer },
-      host: { type: String },
+      host: { type: String, optional: true },
       title: { type: String, optional: true },
       unSeenIndexes: { type: Array, defaultValue: [], optional: true },
       'unSeenIndexes.$': {
