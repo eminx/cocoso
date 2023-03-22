@@ -59,7 +59,7 @@ function MembersPublic({ history }) {
     if (hostFilterValue) {
       return hostFilterValue.name;
     }
-    const firstHost = modalUser?.memberships[0].host;
+    const firstHost = modalUser?.memberships[0]?.host;
     return allHosts.find((h) => h.host === firstHost)?.name;
   };
 

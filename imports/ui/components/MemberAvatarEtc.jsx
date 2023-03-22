@@ -55,7 +55,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   return (
     <>
       <Flex
-        px="6"
+        px="4"
         flexDirection="column"
         align={!centerItems && isDesktop ? 'flex-start' : 'center'}
       >
