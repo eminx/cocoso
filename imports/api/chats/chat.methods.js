@@ -63,14 +63,14 @@ Meteor.methods({
         }
       );
       if (values.context === 'processes') {
-        Meteor.call('createProcessNotification', values, unSeenIndex);
+        Meteor.call('createProcessNotification', host, values, unSeenIndex);
       }
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  createProcessNotification(values, unSeenIndex) {
+  createProcessNotification(host, values, unSeenIndex) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -113,6 +113,7 @@ Meteor.methods({
                 count: 1,
                 context: 'processes',
                 contextId: theProcess._id,
+                host,
                 unSeenIndexes: [unSeenIndex],
               },
             },

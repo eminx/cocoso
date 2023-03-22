@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Center,
+  Link as CLink,
   Menu,
   MenuButton,
   MenuDivider,
@@ -51,7 +52,8 @@ function UserPopup({ currentUser }) {
   const isNotification = notifications && notifications.length > 0;
 
   const isSuperAdmin = currentUser.isSuperAdmin;
-  const { isPortalHost } = currentHost;
+  const { host, isPortalHost } = currentHost;
+
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
@@ -65,7 +67,7 @@ function UserPopup({ currentUser }) {
             <MenuGroup title={tc('menu.notifications.label')}>
               <Box px="1">
                 {notifications.map((item) => (
-                  <Link key={item.contextId + item.count} to={`/${item.context}/${item.contextId}`}>
+                  <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
                     <MenuItem>
                       <Text color="gray.600" isTruncated>
                         {item.title}{' '}
@@ -75,7 +77,7 @@ function UserPopup({ currentUser }) {
                         {item.count}
                       </Badge>
                     </MenuItem>
-                  </Link>
+                  </NotificationLinkItem>
                 ))}
               </Box>
             </MenuGroup>
@@ -138,6 +140,18 @@ function UserPopup({ currentUser }) {
         <ModalOverlay />
       </Modal>
     </Box>
+  );
+}
+
+function NotificationLinkItem({ host, item, children }) {
+  if (item.host && host === item.host) {
+    return <Link to={`/${item.context}/${item.contextId}`}>{children}</Link>;
+  }
+
+  return (
+    <CLink href={`https://${item.host || host}/${item.context}/${item.contextId}`}>
+      {children}
+    </CLink>
   );
 }
 
