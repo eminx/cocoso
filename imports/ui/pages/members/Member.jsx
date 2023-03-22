@@ -110,21 +110,23 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Flex p="6">
-        <Link to="/">
-          <CLink as="span" color="#06c" fontWeight="bold">
-            {name}
-          </CLink>
-        </Link>
-        <Text mx="2">/</Text>
-        <Link to="/members">
-          <CLink as="span" color="#06c">
-            {membersInMenu.label}
-          </CLink>
-        </Link>
-        <Text mx="2">/</Text>
-        <Text>{username}</Text>
-      </Flex>
+      <Box my="6">
+        <Flex px="4" wrap="wrap">
+          <Link to="/">
+            <CLink as="span" color="#06c" fontWeight="bold">
+              {name}
+            </CLink>
+          </Link>
+          <Text mx="2">/</Text>
+          <Link to="/members">
+            <CLink as="span" color="#06c">
+              {membersInMenu.label}
+            </CLink>
+          </Link>
+          <Text mx="2">/</Text>
+          <Text>{username}</Text>
+        </Flex>
+      </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
         <GridItem>

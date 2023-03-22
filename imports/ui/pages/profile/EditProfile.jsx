@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading,
   Text,
@@ -302,11 +303,9 @@ function EditProfile({ history }) {
 
   return (
     <Box>
-      <Box ml={isDesktop ? '0' : '4'}>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
+      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
 
-      <Box py="4" px={isDesktop ? '4' : '8'}>
+      <Box py="4" px="4">
         <Heading color="gray.800" size="lg">
           <Text as="span" fontWeight="normal">
             {t('profile.settings')}
@@ -315,54 +314,8 @@ function EditProfile({ history }) {
       </Box>
 
       <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
-        <Box flexBasis={isDesktop ? '40%' : '100%'} ml={isDesktop ? '0' : '4'} p="4">
-          <Heading size="md">
-            {communityName}{' '}
-            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-              {tc('domains.community')}
-            </Text>
-          </Heading>
-
-          <Box mt="4">
-            <Alert bg="white" status="info" p="0">
-              <AlertIcon color="gray.800" />
-              <Text fontSize="sm">
-                <Trans
-                  i18nKey="accounts:profile.message.role"
-                  defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
-                  values={{
-                    host: communityName,
-                    role,
-                    username: currentUser.username,
-                  }}
-                  components={{ bold: <strong /> }}
-                />
-              </Text>
-            </Alert>
-          </Box>
-
-          <Box my="8">
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublic}
-              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
-              label={t('profile.makePublic.label')}
-              onChange={({ target: { checked } }) => setProfilePublic(checked)}
-            />
-            <Text fontSize="sm" mt="2">
-              {t('profile.makePublic.helperText')}
-            </Text>
-          </Box>
-
-          <Box my="8">
-            <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
-              {t('actions.leave', { host: communityName })}
-            </Button>
-          </Box>
-        </Box>
-
         <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md" ml="4">
+          <Heading size="md">
             {platform?.name}{' '}
             <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
               {tc('domains.platform')}
@@ -391,6 +344,55 @@ function EditProfile({ history }) {
                 />
               ))}
             </RouteSwitch>
+          </Box>
+          <Box mt="36">
+            <Divider />
+          </Box>
+        </Box>
+
+        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
+          <Heading size="md">
+            {communityName}{' '}
+            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+              {tc('domains.community')}
+            </Text>
+          </Heading>
+
+          <Box mt="4" px="2">
+            <Alert bg="white" status="info" p="0">
+              <AlertIcon color="gray.800" />
+              <Text fontSize="sm">
+                <Trans
+                  i18nKey="accounts:profile.message.role"
+                  defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
+                  values={{
+                    host: communityName,
+                    role,
+                    username: currentUser.username,
+                  }}
+                  components={{ bold: <strong /> }}
+                />
+              </Text>
+            </Alert>
+          </Box>
+
+          <Box my="8" px="2">
+            <FormSwitch
+              colorScheme="green"
+              isChecked={isUserPublic}
+              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
+              label={t('profile.makePublic.label')}
+              onChange={({ target: { checked } }) => setProfilePublic(checked)}
+            />
+            <Text fontSize="sm" mt="2">
+              {t('profile.makePublic.helperText')}
+            </Text>
+          </Box>
+
+          <Box my="8" px="2">
+            <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
+              {t('actions.leave', { host: communityName })}
+            </Button>
           </Box>
         </Box>
       </Flex>
