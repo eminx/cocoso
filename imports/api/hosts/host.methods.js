@@ -88,7 +88,7 @@ Meteor.methods({
       bio: user.bio,
       firstName: user.firstName,
       id: user._id,
-      isPublic: user.isPublic,
+      isPublic: true,
       lastName: user.lastName,
       memberships: user.memberships,
       username: user.username,
