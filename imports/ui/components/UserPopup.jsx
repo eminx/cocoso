@@ -67,13 +67,13 @@ function UserPopup({ currentUser }) {
         </MenuButton>
         <MenuList>
           <MenuGroup>
-            <Box bg="gray.200" px="4" py="2">
-              <Text fontWeight="bold" fontSize="xl" textAlign="right">
+            <Box px="4">
+              <Text fontWeight="bold" fontSize="xl" textAlign="center">
                 {currentUser.username}{' '}
                 <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
                   {roleTranslated}
-                  {' | '}
-                  {currentHost.settings?.name}
+                  {/* {' | '} */}
+                  {/* {currentHost.settings?.name} */}
                 </Text>
               </Text>
             </Box>
