@@ -34,7 +34,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
   if (redirect) {
     if (redirect.host === currentHost.host) {
-      history.push(`/${redirect.host}/@${user.username}`);
+      history.push(`/@${user.username}`);
     } else {
       window.location.href = `https://${redirect.host}/@${user.username}`;
     }
