@@ -11,7 +11,8 @@ const SchemasHost = {
     isVisible: { type: Boolean },
   },
   emailTemplate: {
-    title: { type: String },
+    title: { type: String, optional: true },
+    key: { type: String, optional: true },
     subject: { type: String },
     appeal: { type: String },
     body: { type: String },
