@@ -87,9 +87,8 @@ Meteor.methods({
     try {
       if (currentHost.isPortal) {
         return Activities.findOne(activityId);
-      } else {
-        return Activities.findOne({ _id: activityId, host });
       }
+      return Activities.findOne({ _id: activityId, host });
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -215,12 +214,11 @@ Meteor.methods({
         return Activities.find({
           isProcessMeeting: true,
         }).fetch();
-      } else {
-        return Activities.find({
-          host,
-          isProcessMeeting: true,
-        }).fetch();
       }
+      return Activities.find({
+        host,
+        isProcessMeeting: true,
+      }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }

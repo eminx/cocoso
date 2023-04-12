@@ -12,7 +12,7 @@ const getProcessRegistrationEmailBody = (process, currentHost, currentUser, isLe
     hostLogo = currentHost.logo,
     hostAddress = currentHost.settings.address;
 
-  const lang = currentUser.lang || currentHost.settings.lang || 'en';
+  const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';
   const tr = mailtranslations[lang];
   const { dear, visitPage } = tr.general;
   const {
@@ -619,7 +619,7 @@ const getInviteToPrivateProcessEmailBody = (process, currentHost, currentUser) =
     hostLogo = currentHost.logo,
     hostAddress = currentHost.settings.address;
 
-  const lang = currentUser.lang || currentHost.settings.lang || 'en';
+  const lang = currentUser?.lang || currentHost?.settings?.lang || 'en';
   const tr = mailtranslations[lang];
 
   const { dear, visitPage } = tr.general;
