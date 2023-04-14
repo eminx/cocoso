@@ -25,6 +25,7 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
                 {...tabProps}
                 onClick={tab.onClick}
                 textTransform={forceUppercase ? 'uppercase' : 'normal'}
+                fontWeight="bold"
               >
                 {tab.title}
                 {tab.badge && (

@@ -174,7 +174,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
       <Box flexBasis={isDesktop ? '100%' : '80%'}>
         <Heading
           as="h1"
-          size="xl"
+          size="1.9em"
           lineHeight={1}
           mb="3"
           mt="1"
@@ -185,7 +185,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
         {subTitle && (
           <Heading
             as="h2"
-            fontSize="24px"
+            fontSize="1.4em"
             fontWeight="light"
             lineHeight={1}
             textAlign={isDesktop ? 'right' : 'left'}
