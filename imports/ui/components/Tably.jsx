@@ -174,7 +174,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
       <Box flexBasis={isDesktop ? '100%' : '80%'}>
         <Heading
           as="h1"
-          size="1.9em"
+          fontSize="1.9em"
           lineHeight={1}
           mb="3"
           mt="1"
