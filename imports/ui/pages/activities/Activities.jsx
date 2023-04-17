@@ -238,7 +238,7 @@ function Activities({ history }) {
       <Box px="2">
         <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
           {(activity) => {
-            const itemHost = allHosts.find((h) => h.host === activity.host)?.name;
+            const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
               <Box key={activity._id}>
                 {currentHost.isPortalHost ? (
