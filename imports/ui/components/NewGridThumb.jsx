@@ -24,18 +24,21 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   return (
     <Box my="4" mx="5">
       <Box className="text-link-container" position="relative" maxWidth={420} minWidth={280}>
-        <Center mb="4" bg="gray.100">
-          <LazyLoadImage
-            alt={title}
-            effect="blur"
-            fit="contain"
-            src={imageUrl}
-            style={{
-              position: 'relative',
-              maxHeight: imageHeight,
-            }}
-          />
-        </Center>
+        <Flex flexDirection="column">
+          <Center mb="4" bg="gray.100">
+            <LazyLoadImage
+              alt={title}
+              effect="blur"
+              fit="contain"
+              src={imageUrl}
+              style={{
+                position: 'relative',
+                height: imageHeight,
+                objectFit: 'contain',
+              }}
+            />
+          </Center>
+        </Flex>
         {host && currentHost.isPortalHost && (
           <Box position="absolute" top="0" right="0" pl="2" pb="2" bg="white">
             <Tag border="1px solid #2d2d2d" label={host} />
