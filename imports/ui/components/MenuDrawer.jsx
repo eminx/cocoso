@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Divider, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -122,6 +122,7 @@ function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
 
   return (
     <VStack align="flex-start">
+      <Divider borderColor="gray.400" mb="2" />
       {menuItems.map((item) => (
         <Link key={item.label} to={item.route} onClick={onToggle}>
           <Box py="1" _hover={{ textDecoration: 'underline' }}>
@@ -129,6 +130,14 @@ function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
           </Box>
         </Link>
       ))}
+      <Divider
+        borderColor="gray.400"
+        my="4"
+        style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
+      />
+      <Text fontSize="xs" color="gray.700">
+        <em>{tc('domains.platform')}</em>
+      </Text>
       {isPortalHost && (
         <Link key="/communities" to="/communities" onClick={onToggle}>
           <Box py="1" _hover={{ textDecoration: 'underline' }}>
