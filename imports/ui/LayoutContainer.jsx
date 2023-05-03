@@ -248,14 +248,14 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
         {hosts?.map((host, index) => (
           <ListItem key={host.host}>
             <Flex key={host.host}>
-              <Box mr="4">
+              <Flex mr="4" flexShrink="0" bg="gray.100" flexDirection="column" justify="center">
                 {host.logo ? (
-                  <Image fit="contain" w="160px" h="80px" src={host.logo} />
+                  <Image fit="contain" w="120px" src={host.logo} />
                 ) : (
-                  <Box bg="pink.100" w="160px" h="100%" />
+                  <Box bg="pink.100" w="120px" h="100%" />
                 )}
-              </Box>
-              <Box flexGrow="1">
+              </Flex>
+              <Box isTruncated>
                 <Text flexShrink="0" fontSize="lg" fontWeight="bold">
                   {host.name}
                 </Text>
