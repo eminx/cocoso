@@ -8,7 +8,7 @@ import { StateContext } from '../LayoutContainer';
 import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
 
-function Header() {
+function Header({ isSmallerLogo }) {
   const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
   const history = useHistory();
@@ -33,13 +33,23 @@ function Header() {
 
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
+  let logoClass = 'logo';
+  if (isSmallerLogo || !isDesktop) {
+    logoClass += ' smaller-logo';
+  }
+
   return (
-    <Box px={isDesktop ? '8' : '4'} py="4" mt="4" w="100%">
+    <Box
+      px={isDesktop && !isSmallerLogo ? '8' : isDesktop ? '4' : isSmallerLogo ? '2' : '4'}
+      py="4"
+      mt={isDesktop || !isSmallerLogo ? '4' : '0'}
+      w="100%"
+    >
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">
             <Box pl="2">
-              <Image className="logo" fit="contain" src={currentHost && currentHost.logo} />
+              <Image className={logoClass} fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>
         </Box>

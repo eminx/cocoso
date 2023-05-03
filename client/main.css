@@ -42,6 +42,10 @@ body {
   max-height: 80px;
 }
 
+.smaller-logo.logo {
+  max-height: 44px;
+}
+
 @media (max-width: 400px) {
   .logo {
     max-width: 120px;

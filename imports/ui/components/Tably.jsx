@@ -216,7 +216,13 @@ function AvatarHolder({ author, size = 'lg' }) {
   return (
     <Box pr="2">
       <VStack justify="center" spacing="0">
-        <Avatar elevation="medium" src={author?.src} name={author?.username} size={size} />
+        <Avatar
+          borderRadius="8px"
+          elevation="medium"
+          src={author?.src}
+          name={author?.username}
+          size={size}
+        />
         {author?.link ? (
           <Link to={author?.link}>
             <CLink as="span" fontSize={size}>

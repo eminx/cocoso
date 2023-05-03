@@ -618,7 +618,13 @@ class Process extends Component {
                 {(member) => (
                   <Link to={`/@${member.username}`}>
                     <Flex align="center">
-                      <Avatar mr="2" name={member.username} size="md" src={member.avatar} />
+                      <Avatar
+                        borderRadius="8px"
+                        mr="2"
+                        name={member.username}
+                        size="md"
+                        src={member.avatar}
+                      />
                       <CLink as="span" fontWeight={member.isAdmin ? 700 : 400}>
                         {member.username}
                       </CLink>

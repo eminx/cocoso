@@ -78,7 +78,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" ml="4" position="relative">
+      <Flex align="center" flexDirection="column" position="relative">
         <IconButton icon={<HamburgerIcon fontSize="32px" />} w="44px" h="44px" onClick={onToggle} />
         <Text
           fontSize="12px"

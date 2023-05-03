@@ -125,7 +125,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
                 <PortalHostIndicator platform={platform} />
               )}
 
-              {isHeaderAndFooter && <Header />}
+              <Header isSmallerLogo={!isHeaderAndFooter} />
 
               <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
                 {children}

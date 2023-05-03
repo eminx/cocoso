@@ -74,7 +74,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
               {tag && <Tag filterColor={color} label={tag} />}
             </HStack>
           </Box>
-          {avatar && <Avatar name={avatar.name} src={avatar.url} />}
+          {avatar && <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />}
           {dates && (
             <Flex flexShrink="0">
               {dates.slice(0, 1).map((date) => (
