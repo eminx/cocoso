@@ -26,7 +26,6 @@ import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
-import moment from 'moment';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 
@@ -139,9 +138,11 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
               {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                 <Box>
                   <Box bg="gray.300" p="4">
-                    <Center p="2">
-                      <Image w="200px" src={platform?.logo} />
-                    </Center>
+                    <a href={`https://${platform.portalHost}`}>
+                      <Center p="2">
+                        <Image w="200px" src={platform?.logo} />
+                      </Center>
+                    </a>
                     <Center>
                       <Box textAlign="center" color="gray.800">
                         <Text fontSize="lg" fontWeight="bold">
@@ -234,6 +235,9 @@ function Footer({ currentHost, tc }) {
 }
 
 function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
+  const thePortalHost = hosts?.find((h) => h.host === platform.portalHost);
+  const [t] = useTranslation('hosts');
+
   return (
     <Modal
       isOpen={isOpen}
@@ -245,35 +249,50 @@ function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
       onClose={toggleOpen}
     >
       <List spacing="4">
+        <ListItem key={platform.portalHost} borderBottom="1px solid #ddd" pb="4">
+          <Text fontSize="sm" mb="2" fontWeight="bold">
+            {t('portalHost.indicatorShortText', { platform: platform.name })}:
+          </Text>
+          <HostItem host={thePortalHost} tc={tc} />
+        </ListItem>
         {hosts?.map((host, index) => (
           <ListItem key={host.host}>
-            <Flex key={host.host}>
-              <Flex mr="4" flexShrink="0" bg="gray.100" flexDirection="column" justify="center">
-                {host.logo ? (
-                  <Image fit="contain" w="120px" src={host.logo} />
-                ) : (
-                  <Box bg="pink.100" w="120px" h="100%" />
-                )}
-              </Flex>
-              <Box isTruncated>
-                <Text flexShrink="0" fontSize="lg" fontWeight="bold">
-                  {host.name}
-                </Text>
-                <Text>
-                  <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
-                </Text>
-                <Text>{host.city + ', ' + host.country}</Text>
-                <Text>
-                  <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
-                    {host.host}
-                  </CLink>
-                </Text>
-              </Box>
-            </Flex>
+            <HostItem host={host} tc={tc} />
           </ListItem>
         ))}
       </List>
     </Modal>
+  );
+}
+
+function HostItem({ host, tc }) {
+  if (!host) {
+    return null;
+  }
+  return (
+    <Flex key={host.host}>
+      <Flex mr="4" flexShrink="0" bg="gray.100" flexDirection="column" justify="center">
+        {host.logo ? (
+          <Image fit="contain" w="120px" src={host.logo} />
+        ) : (
+          <Box bg="pink.100" w="120px" h="100%" />
+        )}
+      </Flex>
+      <Box isTruncated>
+        <Text flexShrink="0" fontSize="lg" fontWeight="bold">
+          {host.name}
+        </Text>
+        <Text>
+          <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
+        </Text>
+        <Text>{host.city + ', ' + host.country}</Text>
+        <Text>
+          <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
+            {host.host}
+          </CLink>
+        </Text>
+      </Box>
+    </Flex>
   );
 }
 
