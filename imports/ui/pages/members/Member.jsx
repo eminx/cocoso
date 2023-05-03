@@ -12,6 +12,7 @@ import MemberWorks from '../works/MemberWorks';
 import MemberActivities from '../activities/MemberActivities';
 import MemberProcesses from '../processes/MemberProcesses';
 import Tabs from '../../components/Tabs';
+import { call } from '../../utils/shared';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -24,15 +25,19 @@ function MemberPublic({ history, match, path }) {
   const { currentUser, currentHost, isDesktop } = useContext(StateContext);
 
   useEffect(() => {
-    Meteor.call('getUserInfo', username, (error, respond) => {
-      if (error) {
-        setLoading(false);
-        setError(true);
-      }
+    getUserInfo();
+  }, [username]);
+
+  const getUserInfo = async () => {
+    try {
+      const respond = await call('getUserInfo', username);
       setUser(respond);
       setLoading(false);
-    });
-  }, [username]);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+    }
+  };
 
   if (loading) {
     return <Loader />;
