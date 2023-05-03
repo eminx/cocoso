@@ -51,7 +51,7 @@ function NewButton({ canCreateContent, currentHost }) {
   const showNewButton = canCreateContent && activeMenuItem && activeMenuItem.name !== 'members';
 
   return (
-    <Box zIndex="1401">
+    <Box>
       <Flex align="center">
         {showNewButton && (
           <Link to={getPathname()}>
@@ -65,11 +65,12 @@ function NewButton({ canCreateContent, currentHost }) {
               <IconButton
                 borderRadius="8px"
                 borderWidth="2px"
-                borderColor="gray.900"
+                borderColor="gray.800"
                 color="gray.900"
-                icon={<AddIcon fontSize="sm" />}
-                size="sm"
+                icon={<AddIcon fontSize="md" />}
                 variant="outline"
+                w="44px"
+                h="44px"
               />
               <Text
                 fontSize="xs"
@@ -77,7 +78,7 @@ function NewButton({ canCreateContent, currentHost }) {
                 color="gray.900"
                 position="absolute"
                 textTransform="uppercase"
-                top="2rem"
+                top="2.8rem"
               >
                 {tc('actions.create')}
               </Text>
