@@ -32,7 +32,7 @@ message:
   success:
     contributor: '{{ username }} is now set as cocreator'
     participant: '{{ username }} is now set back as participant'
-    admin: '{{ usernama }} is now set as admin'
+    admin: '{{ username }} is now set as admin'
   contact:
     empty: No contact info registered for {{ username }}
   activity:
