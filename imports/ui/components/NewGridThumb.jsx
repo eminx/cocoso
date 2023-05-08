@@ -7,17 +7,16 @@ import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-const imageHeight = 280;
-
 export default function GridThumb({ avatar, color, dates, host, imageUrl, subTitle, title, tag }) {
   // const [dimensions, { loading, error }] = useImageSize(imageUrl);
-  const { currentHost } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
 
   if (!title || !imageUrl) {
     return null;
   }
 
   const remaining = dates?.length - 1;
+  const imageHeight = 280;
 
   // const width = dimensions ? (dimensions.width * imageHeight) / dimensions.height : imageHeight;
 
@@ -30,7 +29,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
               alt={title}
               effect="blur"
               fit="contain"
-              height={imageHeight}
+              height={isDesktop ? imageHeight : 'auto'}
               src={imageUrl}
               style={{
                 position: 'relative',
