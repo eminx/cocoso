@@ -130,14 +130,18 @@ function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
           </Box>
         </Link>
       ))}
-      <Divider
-        borderColor="gray.400"
-        my="4"
-        style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
-      />
-      <Text fontSize="xs" color="gray.700">
-        <em>{tc('domains.platform')}</em>
-      </Text>
+      {isPortalHost && (
+        <Divider
+          borderColor="gray.400"
+          my="4"
+          style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
+        />
+      )}
+      {isPortalHost && (
+        <Text fontSize="xs" color="gray.700">
+          <em>{tc('domains.platform')}</em>
+        </Text>
+      )}
       {isPortalHost && (
         <Link key="/communities" to="/communities" onClick={onToggle}>
           <Box py="1" _hover={{ textDecoration: 'underline' }}>
