@@ -233,7 +233,7 @@ function ResourceItem({ resource, t }) {
           )}{' '}
           <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
         </Text>
-        <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text>
+        {/* <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text> */}
         {currentHost.isPortalHost && (
           <Flex justify="flex-start">
             <CTag border="1px solid #2d2d2d" mt="2">

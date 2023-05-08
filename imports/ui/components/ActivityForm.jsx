@@ -53,7 +53,6 @@ function ActivityForm({
   const { control, formState, handleSubmit, getValues, register } = useForm({
     defaultValues,
   });
-  const { isDirty, isSubmitting } = formState;
 
   const [tc] = useTranslation('common');
   const [t] = useTranslation('activities');
@@ -118,7 +117,7 @@ function ActivityForm({
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Box mb="8">
           <Heading mb="4" size="md">
-            {t('form.resource.label')}
+            {t('form.resource.label')}*
           </Heading>
           <FormField>
             <Select
@@ -147,7 +146,7 @@ function ActivityForm({
 
         <Box mb="8">
           <Heading mb="4" size="md">
-            {t('form.occurences.label')}
+            {t('form.occurences.label')}*
           </Heading>
 
           <Box mb="4">

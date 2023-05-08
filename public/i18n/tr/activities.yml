@@ -11,7 +11,7 @@ form:
     label: Kaynak
     holder: Ayırmak için bir kaynak seç
   occurences:
-    label: Tekrarlar*
+    label: Tekrarlar
   days:
     single: Gün
     multiple: Birden fazla gün

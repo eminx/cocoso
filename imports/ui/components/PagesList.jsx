@@ -1,6 +1,20 @@
 import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Box, Center, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Link as CLink,
+  List,
+  ListItem,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Select,
+  Text,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import { StateContext } from '../LayoutContainer';
 import { parseTitle } from '../utils/shared';
@@ -8,9 +22,7 @@ import { parseTitle } from '../utils/shared';
 const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
   const { isDesktop } = useContext(StateContext);
 
-  const currentPageTitle = () => {
-    pageTitles.find((item) => parseTitle(item) === activePageTitle);
-  };
+  const currentPageTitle = pageTitles.find((item) => parseTitle(item) === activePageTitle);
 
   return (
     <Box>
@@ -33,18 +45,23 @@ const PagesList = withRouter(({ pageTitles, activePageTitle, history }) => {
           ))}
         </List>
       ) : (
-        <Center mt="2" mb="8">
-          <Select
-            placeholder={currentPageTitle()}
-            w="xs"
-            onChange={(event) => history.push(`/pages/${parseTitle(event.target.value)}`)}
-          >
-            {pageTitles.map((title) => (
-              <option selected={parseTitle(activePageTitle) === parseTitle(title)} key={title}>
-                {title}
-              </option>
-            ))}
-          </Select>
+        <Center mt="2" mb="8" zIndex="1500">
+          <Menu placement="bottom">
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              {currentPageTitle}
+            </MenuButton>
+            <MenuList zIndex={2}>
+              {pageTitles.map((title) => (
+                <MenuItem
+                  key={title}
+                  onClick={() => history.push(`/pages/${parseTitle(title)}`)}
+                  isDisabled={activePageTitle === parseTitle(title)}
+                >
+                  {title}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
         </Center>
       )}
     </Box>

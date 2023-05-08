@@ -11,7 +11,7 @@ form:
     label: Resurser
     holder: Välj resurs att boka
   occurences:
-    label: Händelser*
+    label: Händelser
   days:
     single: Dag
     multiple: Flera olika Dagar

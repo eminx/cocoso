@@ -11,7 +11,7 @@ form:
     label: Resource
     holder: Select resource to book
   occurences:
-    label: Occurrences*
+    label: Occurrences
   days:
     single: Day
     multiple: Multiple Days
