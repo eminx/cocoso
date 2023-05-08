@@ -46,7 +46,7 @@ body {
   max-height: 44px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 460px) {
   .logo {
     max-width: 120px;
   }
