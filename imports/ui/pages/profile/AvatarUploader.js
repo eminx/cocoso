@@ -24,7 +24,6 @@ export default function AvatarUploader({
             label={t('profile.form.avatar.fileDropper')}
             height="100%"
             imageFit="cover"
-            round
             setUploadableImage={setUploadableAvatar}
           />
         </Box>

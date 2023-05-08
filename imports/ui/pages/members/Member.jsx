@@ -115,7 +115,7 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Box my="6">
+      <Box my="2">
         <Flex px="4" wrap="wrap">
           <Link to="/">
             <CLink as="span" color="#06c" fontWeight="bold">
