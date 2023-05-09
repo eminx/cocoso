@@ -122,7 +122,7 @@ function Work() {
           link: `/@${work.authorUsername}`,
         }}
         images={work.images}
-        subTitle={work.subTitle}
+        subTitle={work.shortDescription}
         tabs={tabs}
         tags={tags}
         title={work.title}

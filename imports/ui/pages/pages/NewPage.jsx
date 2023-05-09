@@ -12,7 +12,7 @@ import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 
 function NewPage() {
-  const { currentHost, currentUser, role } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [pageTitles, setPageTitles] = useState([]);
   const [images, setImages] = useState([]);
   const [newPageId, setNewPageId] = useState(null);
@@ -138,7 +138,9 @@ function NewPage() {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherItems} />
+      <Box pl={isDesktop ? '0' : '2'}>
+        <Breadcrumb furtherItems={furtherItems} />
+      </Box>
       <Template>
         <Box p="6">
           <PageForm

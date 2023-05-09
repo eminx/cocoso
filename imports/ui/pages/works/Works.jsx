@@ -232,7 +232,7 @@ function Works({ history }) {
             }}
             content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
             images={modalWork.images}
-            subTitle={modalWork.subTitle}
+            subTitle={modalWork.shortDescription}
             tags={[
               modalWork.category?.label,
               allHosts.find((h) => h.host === modalWork.host)?.name,
