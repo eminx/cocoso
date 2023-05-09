@@ -62,7 +62,7 @@ function Header({ isSmallerLogo }) {
       </Flex>
 
       {activeMenuItem && (
-        <Box pb="2" pt="10" px="2">
+        <Box pb="2" pt="10" px="4">
           <Heading color="gray.800" size="lg">
             <Text as="span" fontWeight="normal">
               {activeMenuItem?.label}
