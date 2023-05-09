@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
+  Center,
   IconButton,
   Menu,
   MenuButton,
@@ -108,19 +109,19 @@ function NewButton({ canCreateContent, currentHost }) {
           </Box>
         </MenuList>
       </Menu>
-      <Box position="relative">
+      <Center position="relative">
         <Text
           fontSize="xs"
           fontWeight="bold"
           color="gray.900"
           position="absolute"
+          textAlign="center"
           textTransform="uppercase"
           top="-1px"
-          left="12px"
         >
           {tc('actions.create')}
         </Text>
-      </Box>
+      </Center>
       <Modal isOpen={isOpen}>
         <ModalOverlay />
       </Modal>
