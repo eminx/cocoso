@@ -40,7 +40,7 @@ function Header({ isSmallerLogo }) {
 
   return (
     <Box
-      px={isSmallerLogo && !isDesktop ? '2' : !isDesktop ? '4' : '8'}
+      px={isSmallerLogo && !isDesktop ? '2' : !isDesktop ? '4' : '6'}
       py="4"
       mt={isDesktop || !isSmallerLogo ? '4' : '0'}
       w="100%"
