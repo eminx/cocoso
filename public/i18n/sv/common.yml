@@ -58,6 +58,8 @@ labels:
   notfound:
     info: Det du letade efter kunde inte hittas
     gohome: Gå tillbaka till startsidan
+  newPopupLabel: Skapa e ny post i
+  thislisting: denna lista
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

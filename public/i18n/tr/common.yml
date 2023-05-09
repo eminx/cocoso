@@ -58,6 +58,8 @@ labels:
   notfound:
     info: Aradığın içerik bulunamadı
     gohome: Ana sayfaya geri dön
+  newPopupLabel: Yeni bir içerik oluştur
+  thislisting: bu liste
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

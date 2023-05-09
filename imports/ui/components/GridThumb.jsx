@@ -28,7 +28,7 @@ export default function GridThumb({ title, image, imageFit = 'cover', large = fa
       )}
 
       <Box p="4" flexBasis={large ? '50%' : '70%'} isTruncated>
-        <Heading size={large ? 'lg' : 'md'} fontWeight="light" lineBreak="anywhere">
+        <Heading size={large ? 'lg' : 'md'} fontWeight="light" linebreak="anywhere">
           {title}
         </Heading>
         <Spacer my="1" />
