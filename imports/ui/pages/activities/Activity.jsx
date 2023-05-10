@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, forwardRef } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -30,17 +30,17 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import { StateContext } from '../../LayoutContainer';
-// import Chattery from '../../components/chattery/Chattery';
-import FancyDate, { DateJust } from '../../components/FancyDate';
-import Loader from '../../components/Loader';
-import ConfirmModal from '../../components/ConfirmModal';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
-import FormField from '../../components/FormField';
-import Tably from '../../components/Tably';
-import Modal from '../../components/Modal';
+import { StateContext } from '../../LayoutContainer';
 import Breadcrumb from '../../components/Breadcrumb';
+// import Chattery from '../../components/chattery/Chattery';
+import ConfirmModal from '../../components/ConfirmModal';
+import FancyDate, { DateJust } from '../../components/FancyDate';
+import FormField from '../../components/FormField';
+import Loader from '../../components/Loader';
+import Modal from '../../components/Modal';
+import Tably from '../../components/Tably';
 
 moment.locale(i18n.language);
 
@@ -49,6 +49,7 @@ class Activity extends PureComponent {
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
     capacityGotFullByYou: false,
+    selectedOccurrence: null,
   };
 
   addNewChatMessage = (message) => {
@@ -329,29 +330,11 @@ class Activity extends PureComponent {
               </Box>
             )}
             {canCreateContent && (
-              <Box p="1">
-                <Heading mb="1" as="h4" size="sm">
-                  {t('public.attandence.label')}
-                </Heading>
-                <span>{t('public.acceess.deny')}</span>
-                <div
-                  style={{
-                    paddingBottom: 12,
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <ReactToPrint
-                    trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
-                    content={() => this.printableElement}
-                    pageStyle={{ margin: 144 }}
-                  />
-                </div>
-                <RsvpList
-                  attendees={occurence.attendees}
-                  ref={(element) => (this.printableElement = element)}
-                />
-              </Box>
+              <Center>
+                <Button onClick={() => this.setState({ selectedOccurrence: occurence })}>
+                  Show attendees
+                </Button>
+              </Center>
             )}
           </Box>
         );
@@ -441,7 +424,7 @@ class Activity extends PureComponent {
       return <Redirect to={`/processes/${activityData.processId}/dates`} />;
     }
 
-    const { isRsvpCancelModalOn, rsvpCancelModalInfo } = this.state;
+    const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;
 
     // const messages = this.getChatMessages();
 
@@ -511,14 +494,7 @@ class Activity extends PureComponent {
           <title>{activityData.title}</title>
         </Helmet>
         {!hideBreadcrumb && <Breadcrumb />}
-        {/* <Modal
-          isCentered
-          isOpen
-          scrollBehavior="inside"
-          size="6xl"
-          h="90%"
-          // onClose={() => history.push(`/@${user.username}`)}
-        > */}
+
         <Tably
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
@@ -543,7 +519,38 @@ class Activity extends PureComponent {
         >
           {this.renderCancelRsvpModalContent()}
         </ConfirmModal>
-        {/* </Modal> */}
+
+        <Modal
+          h="90%"
+          isCentered
+          isOpen={Boolean(selectedOccurrence)}
+          scrollBehavior="inside"
+          size="3xl"
+          title={
+            <Box w="180px">
+              <FancyDate occurence={selectedOccurrence} />
+            </Box>
+          }
+          onClose={() => this.setState({ selectedOccurrence: null })}
+        >
+          <Box p="1">
+            <Heading as="h3" mb="2" size="md">
+              {t('public.attandence.label')}
+            </Heading>
+            {/* <span>{t('public.acceess.deny')}</span> */}
+            {/* <Flex justify="flex-end" py="2">
+              <ReactToPrint
+                trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
+                content={() => this.printableElement}
+                pageStyle={{ margin: 144 }}
+              />
+            </Flex> */}
+            <RsvpListPrint
+              attendees={selectedOccurrence?.attendees}
+              ref={(element) => (this.printableElement = element)}
+            />
+          </Box>
+        </Modal>
       </>
     );
   }
@@ -642,5 +649,7 @@ function RsvpList({ attendees }) {
     />
   );
 }
+
+const RsvpListPrint = forwardRef((props, ref) => <RsvpList {...props} ref={ref} />);
 
 export default Activity;
