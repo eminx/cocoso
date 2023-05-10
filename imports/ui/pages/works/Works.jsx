@@ -139,7 +139,9 @@ function Works({ history }) {
             <WrapItem>
               <Tag
                 label="ALL"
-                checkable={categoryFilter === null}
+                checkable
+                checked={categoryFilter === null}
+                filterColor="#2d2d2d"
                 onClick={() => setCategoryFilter(null)}
               />
             </WrapItem>

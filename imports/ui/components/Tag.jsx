@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
-const Tag = ({
+function Tag({
   label = '',
   gradientBackground = null,
   filterColor,
@@ -12,7 +12,7 @@ const Tag = ({
   onClick,
   onRemove,
   ...otherProps
-}) => {
+}) {
   const getBackground = () => {
     if (gradientBackground) {
       return gradientBackground;
@@ -37,7 +37,7 @@ const Tag = ({
       {...otherProps}
     >
       <Box
-        background={checkable && checked ? 'none' : 'white'}
+        bg={checkable && checked ? 'none' : 'white'}
         border={!checkable ? 'none' : checked ? 'none' : 'white'}
         cursor="pointer"
         py="0"
@@ -56,6 +56,6 @@ const Tag = ({
       {removable && <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />}
     </Flex>
   );
-};
+}
 
 export default Tag;
