@@ -171,7 +171,7 @@ function Works({ history }) {
         )}
       </Box>
 
-      <Box px="2">
+      <Box px={isDesktop ? '1' : '0'}>
         <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>

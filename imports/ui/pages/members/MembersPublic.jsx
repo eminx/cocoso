@@ -154,7 +154,7 @@ function MembersPublic({ history }) {
         </Flex>
       </Box>
 
-      <Box mt="2">
+      <Box mt="2" pl="1">
         <Paginate centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
             <Flex

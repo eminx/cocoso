@@ -235,7 +235,7 @@ function Activities({ history }) {
         </Flex>
       </Box>
 
-      <Box px="2">
+      <Box px={isDesktop ? '1' : '0'}>
         <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
