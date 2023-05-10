@@ -264,12 +264,6 @@ class Activity extends PureComponent {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
-    <Text size="sm" mb="1">
-      {activityData.isRegistrationDisabled
-        ? t('public.register.disabled.true')
-        : t('public.register.disabled.false')}
-    </Text>;
-
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
@@ -365,24 +359,29 @@ class Activity extends PureComponent {
     };
 
     return (
-      <Accordion allowToggle>
-        {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
-            <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
-              <Box flex="1" textAlign="left">
-                <FancyDate occurence={occurence} />
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel>
-              <Text m2="4" fontWeight="bold">
-                {t('public.register.label')}
-              </Text>
-              {conditionalRender(occurence, occurenceIndex)}
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <Box>
+        <Text mb="2" size="sm">
+          <em>{t('public.register.disabled.false')}</em>
+        </Text>
+        <Accordion allowToggle>
+          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
+              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+                <Box flex="1" textAlign="left">
+                  <FancyDate occurence={occurence} />
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <Text m2="4" fontWeight="bold">
+                  {t('public.register.label')}
+                </Text>
+                {conditionalRender(occurence, occurenceIndex)}
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </Box>
     );
   };
 

@@ -6,7 +6,7 @@ form:
   switch:
     public: Herkese açık etkinlik
     exclusive: Eksklusif (başkaları bu tarih ve kaynağı ayıramaz)
-    rsvp: Kayıt olma gerekmez
+    rsvp: Kayıt alınabilir
   resource:
     label: Kaynak
     holder: Ayırmak için bir kaynak seç

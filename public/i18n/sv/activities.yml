@@ -6,7 +6,7 @@ form:
   switch:
     public: Offentligt evenemang
     exclusive: Exklusiv aktivitet (andra kan inte boka)
-    rsvp: OSA inaktiverad
+    rsvp: Registrering aktiverad
   resource:
     label: Resurser
     holder: Välj resurs att boka

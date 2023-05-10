@@ -248,11 +248,10 @@ class EditActivity extends PureComponent {
     );
   };
 
-  handleRegistrationSwitch = (event) => {
-    const value = event.target.checked;
-    this.setState({
-      isRegistrationDisabled: value,
-    });
+  handleRegistrationSwitch = () => {
+    this.setState(({ isRegistrationDisabled }) => ({
+      isRegistrationDisabled: !isRegistrationDisabled,
+    }));
   };
 
   setDatesAndTimes = (datesAndTimes) => {
@@ -391,7 +390,7 @@ class EditActivity extends PureComponent {
 
                 {isPublicActivity && (
                   <FormSwitch
-                    isChecked={isRegistrationDisabled}
+                    isChecked={!isRegistrationDisabled}
                     label={t('form.switch.rsvp')}
                     onChange={this.handleRegistrationSwitch}
                   />

@@ -6,7 +6,7 @@ form:
   switch:
     public: Public Event
     exclusive: Exclusive Activity (Others cannot book)
-    rsvp: RSVP disabled
+    rsvp: Registration enabled
   resource:
     label: Resource
     holder: Select resource to book
@@ -84,7 +84,7 @@ public:
     notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
     disabled:
       true: RSVP disabled. Please check the practical information.
-      false: Please click and open the date to RSVP
+      false: Please click and open the date to register
       info: Registrations are disabled.
   attandence:
     label: Attendees
