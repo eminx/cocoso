@@ -77,7 +77,6 @@ function NewButton({ canCreateContent, currentHost }) {
           h="48px"
           icon={<AddIcon />}
           w="48px"
-          onClick={() => setIsOpen(!isOpen)}
         />
         <MenuList>
           <Text mx="3">
@@ -85,7 +84,11 @@ function NewButton({ canCreateContent, currentHost }) {
           </Text>
           {activeMenuItem && <MenuDivider />}
           {activeMenuItem && (
-            <MenuItem key={activeMenuItem.name} pl="5">
+            <MenuItem
+              key={activeMenuItem.name}
+              pl="5"
+              onClick={() => history.push(getPathname(activeMenuItem))}
+            >
               <Text fontWeight="bold" textTransform="capitalize">
                 {activeMenuItem.name}
               </Text>{' '}
