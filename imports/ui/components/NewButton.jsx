@@ -45,7 +45,9 @@ function NewButton({ canCreateContent, currentHost }) {
     return name === pathname.substring(1, pathname.length);
   };
 
-  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
+  const activeMenuItem = menuItems.find(
+    (item) => isCurrentPage(item.name) && item.name !== 'members'
+  );
 
   const getPathname = (item) => {
     if (item.name === 'calendar') {
@@ -90,7 +92,7 @@ function NewButton({ canCreateContent, currentHost }) {
               onClick={() => history.push(getPathname(activeMenuItem))}
             >
               <Text fontWeight="bold" textTransform="capitalize">
-                {activeMenuItem.name}
+                {activeMenuItem.label}
               </Text>{' '}
               <Text pl="1">({tc('labels.thislisting')})</Text>
             </MenuItem>
@@ -106,7 +108,7 @@ function NewButton({ canCreateContent, currentHost }) {
                   textTransform="capitalize"
                   onClick={() => history.push(getPathname(item))}
                 >
-                  {item.name}
+                  {item.label}
                 </MenuItem>
               ))}
           </Box>
