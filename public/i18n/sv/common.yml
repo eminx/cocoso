@@ -58,7 +58,7 @@ labels:
   notfound:
     info: Det du letade efter kunde inte hittas
     gohome: Gå tillbaka till startsidan
-  newPopupLabel: Skapa e ny post i
+  newPopupLabel: Skapa ett nytt inlägg
   thislisting: denna lista
 
 # ALL CLIENT-SIDE NOTIFICATIONS
