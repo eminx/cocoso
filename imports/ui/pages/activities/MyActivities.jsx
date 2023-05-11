@@ -75,33 +75,16 @@ function Activities({ history }) {
   return (
     <>
       <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      <Center>
-        <Heading size="md">{tc('menu.member.activities')}</Heading>
-      </Center>
-      <Template>
-        {currentUser && canCreateContent && (
-          <Center pt="4">
-            <Button
-              colorScheme="green"
-              variant="outline"
-              onClick={() => history.push('/activities/new')}
-              mb="4"
-              textTransform="uppercase"
-            >
-              {tc('actions.create')}
-            </Button>
-          </Center>
-        )}
-
+      <Template heading={tc('menu.member.activities')}>
         {currentUser && activities ? (
           <Tabs>
-            <Center>
+            <Box p="4">
               <TabList>
                 <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
                 <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
                 <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
               </TabList>
-            </Center>
+            </Box>
 
             <TabPanels>
               <TabPanel>

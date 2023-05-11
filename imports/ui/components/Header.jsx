@@ -41,8 +41,8 @@ function Header({ isSmallerLogo }) {
   return (
     <Box
       px={isSmallerLogo && !isDesktop ? '2' : !isDesktop ? '4' : '6'}
-      py="4"
-      mt={isDesktop || !isSmallerLogo ? '4' : '0'}
+      py={isDesktop ? '4' : '2'}
+      mt={isDesktop || !isSmallerLogo ? '4' : '2'}
       w="100%"
     >
       <Flex w="100%" align="flex-start" justify="space-between">

@@ -305,133 +305,135 @@ function EditProfile({ history }) {
     <Box>
       <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
 
-      <Box py="4" px="4">
-        <Heading color="gray.800" size="lg">
-          <Text as="span" fontWeight="normal">
-            {t('profile.settings')}
-          </Text>
-        </Heading>
-      </Box>
-
-      <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
-        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">
-            {platform?.name}{' '}
-            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-              {tc('domains.platform')}
+      <Box px={isDesktop ? '2' : '0'}>
+        <Box py="4" px="4">
+          <Heading color="gray.800" size="lg">
+            <Text as="span" fontWeight="normal">
+              {t('profile.settings')}
             </Text>
           </Heading>
-
-          <Alert bg="white" mb="4" px="4" status="info">
-            <AlertIcon color="gray.800" />
-            <Text fontSize="sm" mr="4">
-              {t('profile.message.platform', { platform: platform?.name })}
-            </Text>
-          </Alert>
-          <Tabs index={tabIndex} tabs={tabs} />
-
-          <Box px="4">
-            <RouteSwitch history={history}>
-              {tabs.map((tab) => (
-                <Route
-                  key={tab.title}
-                  exact
-                  path={tab.path}
-                  render={(props) => (
-                    <Box {...props} pt="2">
-                      {tab.content}
-                    </Box>
-                  )}
-                />
-              ))}
-            </RouteSwitch>
-          </Box>
-          <Divider />
         </Box>
 
-        <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-          <Heading size="md">
-            {communityName}{' '}
-            <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
-              {tc('domains.community')}
-            </Text>
-          </Heading>
+        <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
+          <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
+            <Heading size="md">
+              {platform?.name}{' '}
+              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+                {tc('domains.platform')}
+              </Text>
+            </Heading>
 
-          <Box my="8" px="4">
-            <FormSwitch
-              colorScheme="green"
-              isChecked={isUserPublic}
-              isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
-              label={t('profile.makePublic.label')}
-              onChange={({ target: { checked } }) => setProfilePublic(checked)}
-            />
-            <Text fontSize="sm" mt="2">
-              {t('profile.makePublic.helperText')}
-            </Text>
-          </Box>
-
-          <Box mt="4" px="4">
-            <Alert bg="white" status="info" p="0">
+            <Alert bg="white" mb="4" px="4" status="info">
               <AlertIcon color="gray.800" />
-              <Text fontSize="sm">
-                <Trans
-                  i18nKey="accounts:profile.message.role"
-                  defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
-                  values={{
-                    host: communityName,
-                    role,
-                    username: currentUser.username,
-                  }}
-                  components={{ bold: <strong /> }}
-                />
+              <Text fontSize="sm" mr="4">
+                {t('profile.message.platform', { platform: platform?.name })}
               </Text>
             </Alert>
+            <Tabs index={tabIndex} tabs={tabs} />
+
+            <Box px="4">
+              <RouteSwitch history={history}>
+                {tabs.map((tab) => (
+                  <Route
+                    key={tab.title}
+                    exact
+                    path={tab.path}
+                    render={(props) => (
+                      <Box {...props} pt="2">
+                        {tab.content}
+                      </Box>
+                    )}
+                  />
+                ))}
+              </RouteSwitch>
+            </Box>
+            <Divider />
           </Box>
 
-          <Box my="8" px="4">
-            <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
-              {t('actions.leave', { host: communityName })}
+          <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
+            <Heading size="md">
+              {communityName}{' '}
+              <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
+                {tc('domains.community')}
+              </Text>
+            </Heading>
+
+            <Box my="8" px="4">
+              <FormSwitch
+                colorScheme="green"
+                isChecked={isUserPublic}
+                isDisabled={!isUserPublicGlobally || currentHost.isPortalHost}
+                label={t('profile.makePublic.label')}
+                onChange={({ target: { checked } }) => setProfilePublic(checked)}
+              />
+              <Text fontSize="sm" mt="2">
+                {t('profile.makePublic.helperText')}
+              </Text>
+            </Box>
+
+            <Box mt="4" px="4">
+              <Alert bg="white" status="info" p="0">
+                <AlertIcon color="gray.800" />
+                <Text fontSize="sm">
+                  <Trans
+                    i18nKey="accounts:profile.message.role"
+                    defaults="You as <bold>{{ username }}</bold> are part of {{ host }} with the <bold>{{ role }}</bold> role"
+                    values={{
+                      host: communityName,
+                      role,
+                      username: currentUser.username,
+                    }}
+                    components={{ bold: <strong /> }}
+                  />
+                </Text>
+              </Alert>
+            </Box>
+
+            <Box my="8" px="4">
+              <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
+                {t('actions.leave', { host: communityName })}
+              </Button>
+            </Box>
+          </Box>
+        </Flex>
+
+        <Box bg="red.100" my="8">
+          <VStack spacing="4" mt="4" p="4">
+            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+              {t('delete.action')}
             </Button>
-          </Box>
+          </VStack>
         </Box>
-      </Flex>
 
-      <Box bg="red.100" my="8">
-        <VStack spacing="4" mt="4" p="4">
-          <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
-            {t('delete.action')}
-          </Button>
-        </VStack>
+        <ConfirmModal
+          visible={isLeaveModalOn}
+          title={t('leave.title')}
+          confirmText={t('leave.label')}
+          confirmButtonProps={{
+            colorScheme: 'red',
+            isLoading: isLeaving,
+          }}
+          onConfirm={leaveHost}
+          onCancel={() => setIsLeaveModalOn(false)}
+        >
+          <Text>{t('leave.body')}</Text>
+        </ConfirmModal>
+
+        <ConfirmModal
+          visible={isDeleteModalOn}
+          title={t('delete.title')}
+          confirmText={t('delete.label')}
+          confirmButtonProps={{
+            colorScheme: 'red',
+            isLoading: isDeleting,
+            isDisabled: isDeleting,
+          }}
+          onConfirm={deleteAccount}
+          onCancel={() => setIsDeleteModalOn(false)}
+        >
+          <Text>{t('delete.body')}</Text>
+        </ConfirmModal>
       </Box>
-
-      <ConfirmModal
-        visible={isLeaveModalOn}
-        title={t('leave.title')}
-        confirmText={t('leave.label')}
-        confirmButtonProps={{
-          colorScheme: 'red',
-          isLoading: isLeaving,
-        }}
-        onConfirm={leaveHost}
-        onCancel={() => setIsLeaveModalOn(false)}
-      >
-        <Text>{t('leave.body')}</Text>
-      </ConfirmModal>
-
-      <ConfirmModal
-        visible={isDeleteModalOn}
-        title={t('delete.title')}
-        confirmText={t('delete.label')}
-        confirmButtonProps={{
-          colorScheme: 'red',
-          isLoading: isDeleting,
-          isDisabled: isDeleting,
-        }}
-        onConfirm={deleteAccount}
-        onCancel={() => setIsDeleteModalOn(false)}
-      >
-        <Text>{t('delete.body')}</Text>
-      </ConfirmModal>
     </Box>
   );
 }
