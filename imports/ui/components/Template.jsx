@@ -16,7 +16,7 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
         <title>{heading || publicSettings.name}</title>
       </Helmet>
       {isDesktop ? (
-        <SimpleGrid columns={{ md: 1, lg: 3 }} p="4" templateColumns="25% 40% 30%">
+        <SimpleGrid columns={{ md: 1, lg: 3 }} p="5" templateColumns="25% 40% 30%">
           <Box>{leftContent}</Box>
 
           <Box>

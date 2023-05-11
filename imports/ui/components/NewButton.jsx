@@ -81,8 +81,8 @@ function NewButton({ canCreateContent, currentHost }) {
           w="48px"
         />
         <MenuList>
-          <Text mx="3">
-            <em>{tc('labels.newPopupLabel')}:</em>
+          <Text mx="4" mt="1">
+            {tc('labels.newPopupLabel')}:
           </Text>
           {activeMenuItem && <MenuDivider />}
           {activeMenuItem && (

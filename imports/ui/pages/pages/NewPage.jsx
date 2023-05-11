@@ -138,7 +138,7 @@ function NewPage() {
 
   return (
     <>
-      <Box pl={isDesktop ? '0' : '2'}>
+      <Box pl={isDesktop ? '0' : '4'}>
         <Breadcrumb furtherItems={furtherItems} />
       </Box>
       <Template>

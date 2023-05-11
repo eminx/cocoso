@@ -200,11 +200,11 @@ export default function PlatformSettings({ history }) {
 
   return (
     <>
-      <Box ml={isDesktop ? '0' : '4'}>
+      <Box>
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
       <Box>
-        <Box py="4" px={isDesktop ? '4' : '8'}>
+        <Box p="6">
           <Heading color="gray.800" size="lg">
             <Text as="span" fontWeight="normal">
               {tc('menu.admin.platform')}
@@ -212,7 +212,7 @@ export default function PlatformSettings({ history }) {
           </Heading>
         </Box>
 
-        <Box px={isDesktop ? '0' : '4'}>
+        <Box px="2">
           <Tabs index={tabIndex} tabs={tabs} />
 
           <Switch history={history}>
