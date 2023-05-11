@@ -116,10 +116,11 @@ menu:
   guest:
     login: Logga in
   member:
+    general: Allmän
     label: Min
-    profile: Profil
-    settings: Inställningar
-    activities: Bokningar
+    profile: Min profil
+    settings: Profilinställningar
+    activities: Mina aktiviteter
     works: Mina Verk
   admin:
     label: Admin
@@ -164,7 +165,7 @@ domains:
 
   account: konto
   data: data
-  avatar: avatar
+  avatar: profilbild
   static: statisk
   profile: profil
 

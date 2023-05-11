@@ -221,10 +221,13 @@ function EditProfile({ history }) {
 
   const tabs = [
     {
-      title: t('profile.menu.avatar'),
-      path: `/@${currentUser.username}/edit/avatar`,
+      title: tc('menu.member.general'),
+      path: `/@${currentUser.username}/edit/general`,
       content: (
         <Box>
+          <Heading my="2" size="sm">
+            {t('profile.image')}
+          </Heading>
           <AvatarUploader
             imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
             isUploading={isUploading}
@@ -233,19 +236,13 @@ function EditProfile({ history }) {
             setUploadableAvatar={handleSetUploadableAvatar}
             setUploadableAvatarLocal={setUploadableAvatarLocal}
           />
-        </Box>
-      ),
-    },
-    {
-      title: t('profile.menu.about'),
-      path: `/@${currentUser.username}/edit/about`,
-      content: (
-        <Box>
-          <Heading mb="2" size="sm">
-            {t('profile.label')}
-          </Heading>
-          <Box maxWidth={400}>
-            <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+          <Box py="2">
+            <Heading mb="2" size="sm">
+              {t('profile.label')}
+            </Heading>
+            <Box maxWidth={400}>
+              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+            </Box>
           </Box>
         </Box>
       ),
@@ -315,8 +312,8 @@ function EditProfile({ history }) {
         </Box>
 
         <Flex flexDirection={isDesktop ? 'row' : 'column'} minH="100vh">
-          <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-            <Heading size="md">
+          <Box flexBasis={isDesktop ? '40%' : '100%'}>
+            <Heading size="md" p="4">
               {platform?.name}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.platform')}
@@ -347,11 +344,11 @@ function EditProfile({ history }) {
                 ))}
               </RouteSwitch>
             </Box>
-            <Divider />
+            <Divider my="4" />
           </Box>
 
-          <Box flexBasis={isDesktop ? '40%' : '100%'} p="4">
-            <Heading size="md">
+          <Box flexBasis={isDesktop ? '40%' : '100%'}>
+            <Heading size="md" px="4" mt="4">
               {communityName}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.community')}

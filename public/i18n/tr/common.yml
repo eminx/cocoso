@@ -116,10 +116,11 @@ menu:
   guest:
     login: Giriş
   member:
+    general: Genel
     label: Ben
-    profile: Profil
-    settings: Ayarlar
-    activities: Rezervasyonlar
+    profile: Profilim
+    settings: Profil Ayarları
+    activities: Aktivitelerim
     works: İşlerim
   admin:
     label: Admin
@@ -164,7 +165,7 @@ domains:
 
   account: hesap
   data: veri
-  avatar: avatar
+  avatar: profil resmi
   static: static
 
   props:

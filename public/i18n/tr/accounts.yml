@@ -64,13 +64,13 @@ profile:
   joinHost: '{{ host }} topluluğuna katıl'
   joinAsParticipantQuestion: Bu topluluğa katılımcı rolü ile katılmak ister misin?
   settings: Profil Ayarları
-
+  image: Profil resmi
   form:
     avatar:
-      label: Avatar
+      label: Profil resmi
       fileDropper: Yüklemek için imaj tıkla ya da sürükle
       remove: Kaldır
-      changeHelper: Avatarı değiştirmek için imaja tıkla ve dosya seç
+      changeHelper: Profil resmini değiştirmek için imaja tıkla ve dosya seç
     firstname:
       label: Ad
     lastname:
@@ -93,7 +93,7 @@ profile:
     helperTextGlobal: Kapalı olduğunda profilin tüm topluluklarda ve portal uygulamada kapalı olacak
 
   menu:
-    avatar: Avatar
+    avatar: Profil resmi
     about: Hakkımda
     contact: İletişim
     language: DİL

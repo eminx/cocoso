@@ -47,7 +47,7 @@ message:
 profile:
   labels:
     info: Personal Info
-    avatar: Avatar
+    avatar: Profile image
   form:
     firstname:
       label: First name

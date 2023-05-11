@@ -47,7 +47,7 @@ message:
 profile:
   labels:
     info: Kişisel bilgiler
-    avatar: Avatar
+    avatar: Profil resmi
   form:
     firstname:
       label: Ad

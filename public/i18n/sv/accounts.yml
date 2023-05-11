@@ -64,13 +64,13 @@ profile:
   joinHost: Join {{ host }}
   joinAsParticipantQuestion: Vill du gå med i denna organisation med deltagar rollen?
   settings: Profilinställningar
-
+  image: Profilbild
   form:
     avatar:
-      label: Avatar
+      label: Profilbild
       fileDropper: Klicka/dra för att ladda upp
       remove: Ta bort
-      changeHelper: För att ändra din avatar, klicka på bilden och välj en fil
+      changeHelper: För att ändra din profilbild, klicka på bilden och välj en fil
     firstname:
       label: Förnamn
     lastname:
@@ -93,7 +93,7 @@ profile:
     helperTextGlobal: Om den stängs av kommer din profil att vara osynlig i alla communities
 
   menu:
-    avatar: Avatar
+    avatar: Profilbild
     about: Om mig
     contact: Kontaktinfo
     language: Språk

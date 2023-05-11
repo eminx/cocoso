@@ -116,10 +116,11 @@ menu:
   guest:
     login: Login
   member:
+    general: General
     label: My
-    profile: Profile
-    settings: Settings
-    activities: Reservations
+    profile: My Profile
+    settings: Profile Settings
+    activities: My Activities
     works: My Works
   admin:
     label: Admin
@@ -164,7 +165,7 @@ domains:
 
   account: account
   data: data
-  avatar: avatar
+  avatar: profile image
   static: static
 
   props:

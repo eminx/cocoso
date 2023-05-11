@@ -64,13 +64,13 @@ profile:
   joinHost: Join {{ host }}
   joinAsParticipantQuestion: Would you like to join this organization with the participant role?
   settings: Profile Settings
-
+  image: Profile image
   form:
     avatar:
-      label: Avatar
+      label: Profile image
       fileDropper: Click/Drag to upload
       remove: Remove
-      changeHelper: To change your avatar, click on the image and choose a file
+      changeHelper: To change your profile image, click on the image and choose a file
     firstname:
       label: First name
     lastname:
@@ -93,7 +93,7 @@ profile:
     helperTextGlobal: If switched off, your profile will be publicly invisible in all communities
 
   menu:
-    avatar: Avatar
+    avatar: Profile image
     about: About Me
     contact: Contact Info
     language: Language
