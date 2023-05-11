@@ -72,13 +72,11 @@ function UserPopup({ currentUser }) {
         </MenuButton>
         <MenuList>
           <MenuGroup>
-            <Box px="4" pb="1">
-              <Text fontWeight="bold" fontSize="xl" textAlign="center">
+            <Box px="4" py="1">
+              <Text fontWeight="bold" fontSize="xl">
                 {currentUser.username}{' '}
                 <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
                   {roleTranslated}
-                  {/* {' | '} */}
-                  {/* {currentHost.settings?.name} */}
                 </Text>
               </Text>
             </Box>
@@ -104,7 +102,6 @@ function UserPopup({ currentUser }) {
           )}
           {isNotification && <MenuDivider />}
 
-          {/* <MenuGroup title={tc('menu.member.label')}> */}
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
