@@ -123,7 +123,7 @@ function UserPopup({ currentUser }) {
 
           {role === 'admin' && <MenuDivider />}
           {role === 'admin' && (
-            <MenuGroup title={tc('menu.admin.label')}>
+            <MenuGroup title={tc('domains.community')}>
               <Box px="1">
                 {adminMenu.map((item) => (
                   <Link key={item.key} to={item.value}>
@@ -135,7 +135,7 @@ function UserPopup({ currentUser }) {
           )}
           {isSuperAdmin && isPortalHost && <MenuDivider />}
           {isSuperAdmin && isPortalHost && (
-            <MenuGroup title="Super Admin">
+            <MenuGroup title={tc('domains.platform')}>
               <Box px="1">
                 {superadminMenu.map((item) => (
                   <Link key={item.key} to={item.value}>
