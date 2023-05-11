@@ -98,6 +98,7 @@ profile:
     contact: Kontaktinfo
     language: Språk
     options: Alternativ
+    privacy: Integritet
 
 leave:
   action: Lämna Community

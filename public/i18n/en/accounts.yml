@@ -98,6 +98,7 @@ profile:
     contact: Contact Info
     language: Language
     options: Options
+    privacy: Privacy
 
 leave:
   action: Leave Community
