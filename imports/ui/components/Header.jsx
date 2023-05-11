@@ -48,7 +48,7 @@ function Header({ isSmallerLogo }) {
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">
-            <Box pl="2">
+            <Box pl={isDesktop ? '4' : '2'}>
               <Image className={logoClass} fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>
