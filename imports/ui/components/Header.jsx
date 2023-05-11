@@ -40,7 +40,7 @@ function Header({ isSmallerLogo }) {
 
   return (
     <Box
-      px={isSmallerLogo && !isDesktop ? '2' : !isDesktop ? '4' : '6'}
+      px={isDesktop ? '6' : '2'}
       py={isDesktop ? '4' : '2'}
       mt={isDesktop || !isSmallerLogo ? '4' : '2'}
       w="100%"
@@ -62,7 +62,7 @@ function Header({ isSmallerLogo }) {
       </Flex>
 
       {activeMenuItem && (
-        <Box pb="2" pt="10" px="4">
+        <Box pb="2" pt="10" px={isDesktop ? '4' : '2'}>
           <Heading color="gray.800" size="lg">
             <Text as="span" fontWeight="normal">
               {activeMenuItem?.label}
