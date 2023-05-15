@@ -310,7 +310,7 @@ function Activities({ history }) {
   );
 }
 
-const getDatesForAction = (activity, showPast = false) => {
+function getDatesForAction(activity, showPast = false) {
   const dates = showPast
     ? getPastOccurences(activity.datesAndTimes)
     : getFutureOccurences(activity.datesAndTimes);
@@ -318,12 +318,20 @@ const getDatesForAction = (activity, showPast = false) => {
   return (
     <Flex pt="4">
       {dates.map((occurence, occurenceIndex) => (
-        <Box key={occurence.startDate + occurence.endTime} pr="6">
-          <DateJust>{occurence.startDate}</DateJust>
-        </Box>
+        <Flex key={occurence.startDate + occurence.endTime} pr="6">
+          <Box>
+            <DateJust>{occurence.startDate}</DateJust>
+          </Box>
+          {occurence.startDate !== occurence.endDate && (
+            <Flex>
+              {'-'}
+              <DateJust>{occurence.endDate}</DateJust>
+            </Flex>
+          )}
+        </Flex>
       ))}
     </Flex>
   );
-};
+}
 
 export default Activities;
