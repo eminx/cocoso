@@ -402,11 +402,21 @@ class Activity extends PureComponent {
     return (
       <Flex pt="4">
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <Link key={occurence.startDate} to={`/activities/${activityData._id}/dates`}>
-            <Box pr="6">
-              <DateJust>{occurence.startDate}</DateJust>
-            </Box>
-          </Link>
+          <Box mr="6">
+            <Link key={occurence.startDate} to={`/activities/${activityData._id}/dates`}>
+              <Flex>
+                <Box>
+                  <DateJust>{occurence.startDate}</DateJust>
+                </Box>
+                {occurence.startDate !== occurence.endDate && (
+                  <Flex>
+                    {'-'}
+                    <DateJust>{occurence.endDate}</DateJust>
+                  </Flex>
+                )}
+              </Flex>
+            </Link>
+          </Box>
         ))}
       </Flex>
     );

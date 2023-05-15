@@ -20,8 +20,6 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
 
   // const width = dimensions ? (dimensions.width * imageHeight) / dimensions.height : imageHeight;
 
-  console.log(dates);
-
   return (
     <Box my="4" mx="5">
       <Box className="text-link-container" position="relative" maxWidth={420} minWidth={280}>
