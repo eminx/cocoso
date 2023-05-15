@@ -60,6 +60,7 @@ mongo-dev-server@1.1.0
 mongo-id@1.0.8
 npm-mongo@4.12.1
 ordered-dict@1.1.0
+ostrio:spiderable-middleware@1.6.6
 percolate:migrations@1.1.0
 promise@0.12.2
 raix:eventemitter@1.0.0
