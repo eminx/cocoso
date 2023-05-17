@@ -102,39 +102,38 @@ function Categories({ history }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      <Template
+      {/* <Template
         heading={t('categories.label')}
         leftContent={
           <Box>
             <ListMenu list={adminMenu} pathname={pathname} />
           </Box>
         }
-      >
-        <Box maxWidth={400} p="4">
-          <Text mb="3">{t('categories.info')}</Text>
-          <Wrap p="1" spacing="2" mb="2">
-            {categories.map((category) => (
-              <WrapItem key={category.label}>
-                <Tag colorScheme="messenger">
-                  <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
-                  <TagCloseButton onClick={() => removeCategory(category._id)} />
-                </Tag>
-              </WrapItem>
-            ))}
-          </Wrap>
-          <form onSubmit={addNewCategory}>
-            <HStack align="center" maxWidth={240} py="2">
-              <Input
-                placeholder="PAJAMAS"
-                value={categoryInput}
-                onChange={(event) => handleCategoryInputChange(event.target.value)}
-              />
-              <Button type="submit">{tc('actions.add')}</Button>
-            </HStack>
-          </form>
-        </Box>
-      </Template>
+      > */}
+      <Box maxWidth={400}>
+        <Text mb="3">{t('categories.info')}</Text>
+        <Wrap p="1" spacing="2" mb="2">
+          {categories.map((category) => (
+            <WrapItem key={category.label}>
+              <Tag colorScheme="messenger">
+                <TagLabel fontWeight="bold">{category.label.toUpperCase()}</TagLabel>
+                <TagCloseButton onClick={() => removeCategory(category._id)} />
+              </Tag>
+            </WrapItem>
+          ))}
+        </Wrap>
+        <form onSubmit={addNewCategory}>
+          <HStack align="center" maxWidth={240} py="2">
+            <Input
+              placeholder="PAJAMAS"
+              value={categoryInput}
+              onChange={(event) => handleCategoryInputChange(event.target.value)}
+            />
+            <Button type="submit">{tc('actions.add')}</Button>
+          </HStack>
+        </form>
+      </Box>
+      {/* </Template> */}
     </>
   );
 }

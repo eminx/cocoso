@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Divider, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -15,6 +15,7 @@ import FileDropper from '../../components/FileDropper';
 import Menu from './Menu';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
+import Categories from './Categories';
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -98,42 +99,36 @@ export default function Settings({ history }) {
 
   const tabs = [
     {
-      title: t('settings.tabs.info'),
+      title: t('settings.tabs.general'),
       path: '/admin/settings/organization',
       content: (
         <AlphaContainer>
+          <Box mb="8">
+            <Text mb="3" fontWeight="bold">
+              {t('logo.info')}
+            </Text>
+            <Box>
+              <FileDropper
+                imageUrl={currentHost && currentHost.logo}
+                height={isImage && '80px'}
+                width={isImage && '120px'}
+                round={false}
+                setUploadableImage={setUploadableImage}
+                uploadableImageLocal={localImage && localImage.uploadableImageLocal}
+              />
+            </Box>
+            {localImage && localImage.uploadableImageLocal && (
+              <Center p="2">
+                <Button isLoading={uploading} onClick={() => uploadLogo()}>
+                  {tc('actions.submit')}
+                </Button>
+              </Center>
+            )}
+          </Box>
           <Text mb="3" fontWeight="bold">
             {t('info.info')}
           </Text>
           <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
-        </AlphaContainer>
-      ),
-    },
-    {
-      title: t('settings.tabs.logo'),
-      path: '/admin/settings/logo',
-      content: (
-        <AlphaContainer>
-          <Text mb="3" fontWeight="bold">
-            {t('logo.info')}
-          </Text>
-          <Box>
-            <FileDropper
-              imageUrl={currentHost && currentHost.logo}
-              height={isImage && '80px'}
-              width={isImage && '120px'}
-              round={false}
-              setUploadableImage={setUploadableImage}
-              uploadableImageLocal={localImage && localImage.uploadableImageLocal}
-            />
-          </Box>
-          {localImage && localImage.uploadableImageLocal && (
-            <Center p="2">
-              <Button isLoading={uploading} onClick={() => uploadLogo()}>
-                {tc('actions.submit')}
-              </Button>
-            </Center>
-          )}
         </AlphaContainer>
       ),
     },
@@ -143,6 +138,15 @@ export default function Settings({ history }) {
       content: (
         <AlphaContainer>
           <Menu />
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.categories'),
+      path: '/admin/settings/categories',
+      content: (
+        <AlphaContainer>
+          <Categories />
         </AlphaContainer>
       ),
     },

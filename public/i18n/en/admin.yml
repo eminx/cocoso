@@ -2,8 +2,10 @@
 settings:
   label: Settings
   tabs:
+    general: General
     logo: Logo
     info: Info
+    categories: Categories
     menu: Menu
     cats: Categories
     menuVisibility: Visibility

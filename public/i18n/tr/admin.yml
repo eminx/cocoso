@@ -2,8 +2,10 @@
 settings:
   label: Ayarlar
   tabs:
+    general: Genel
     logo: Logo
     info: Info
+    categories: Kategoriler
     menu: Menü
     cats: Kategoriler
     menuVisibility: Görünürlük

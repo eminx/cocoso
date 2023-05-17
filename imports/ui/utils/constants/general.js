@@ -40,11 +40,11 @@ const adminMenu = [
     key: 'emails',
     value: '/admin/emails',
   },
-  {
-    menu: 'admin',
-    key: 'categories',
-    value: '/admin/categories',
-  },
+  // {
+  //   menu: 'admin',
+  //   key: 'categories',
+  //   value: '/admin/categories',
+  // },
 ];
 
 const superadminMenu = [

@@ -2,8 +2,10 @@
 settings:
   label: Inställningar
   tabs:
+    general: Allmän
     logo: Logotyp
     info: Info
+    categories: Kategorier
     menu: Meny
     cats: Kategorier
     menuVisibility: Synlighet
