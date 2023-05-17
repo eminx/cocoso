@@ -52,8 +52,8 @@ form:
 members:
   label: Mina aktiviteter
   tabs:
-    all: Allt
-    public: Offentlig
+    all: Alla
+    public: Offentligt
     private: Privat
   occurences: Händelser
 
