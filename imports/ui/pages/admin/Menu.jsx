@@ -15,9 +15,10 @@ import {
   Tr,
   Td,
   Th,
+  Code,
 } from '@chakra-ui/react';
 
-import { DragHandleIcon } from '@chakra-ui/icons';
+import { DragHandleIcon, QuestionIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
@@ -26,6 +27,7 @@ import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
+import Popover from '../../components/Popover';
 
 export default function Menu() {
   const [loading, setLoading] = useState(true);
@@ -179,11 +181,12 @@ function MenuTable({ menu, t, handleMenuItemCheck, handleMenuItemLabelChange }) 
             <Td px="0">
               <Switch
                 isChecked={item.isVisible}
-                size="sm"
+                // size="sm"
                 onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
               />
             </Td>
             <Td px="0">
+              <MenuItemHelper item={item} t={t} />
               <FormField>
                 <Input
                   isDisabled={!item.isVisible}
@@ -197,6 +200,25 @@ function MenuTable({ menu, t, handleMenuItemCheck, handleMenuItemLabelChange }) 
         ))}
       </Tbody>
     </Table>
+  );
+}
+
+function MenuItemHelper({ item, t }) {
+  return (
+    <Popover
+      trigger={
+        <Flex justifyContent="space-between">
+          <Code fontSize="xs" mr="1">
+            /{item.name}
+          </Code>
+          <QuestionIcon />
+        </Flex>
+      }
+    >
+      <Text fontSize="sm" mr="4">
+        {t(`menu.info.${item.name}`)}
+      </Text>
+    </Popover>
   );
 }
 

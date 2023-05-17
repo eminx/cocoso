@@ -37,7 +37,15 @@ menu:
       label: Sıralama
       info: Görüntüleme sırasını değiştirmek istiyorsan, öğeleri yukarı ve aşağı sürükleyerek yeniden sırala
   itemActive: Aktif
-  itemLabel: Isim
+  itemLabel: İsim
+  info:
+    activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
+    processes: Gruplar ve süreçleri içeren listeleme sayfası
+    calendar: Takvim sayfası
+    info: Bilgi sayfaları
+    works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
+    members: Topluluk üyelerini içeren listeleme sayfası
+    resources: Topluluk kaynaklarını içeren listeleme sayfası
 
 categories:
   label: İş kategorileri

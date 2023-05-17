@@ -38,6 +38,14 @@ menu:
       info: Ändra ordning på objekt genom att dra upp och ned om du vill ändra visningsordningen
   itemActive: Aktiv
   itemLabel: Etiket
+  info:
+    activities: Listasidan för offentliga evenemang och gruppmöten
+    processes: Listasidan för alla grupper
+    calendar: Kalendersidan
+    info: Informationssidor
+    works: Listningssidan för portfölj, marknadsplats eller sådana poster
+    members: Listasidan för alla communitymedlemmar
+    resources: Listasidan för resurserna i din community
 
 categories:
   label: Arbetskategorier

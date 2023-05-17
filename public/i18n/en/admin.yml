@@ -38,6 +38,14 @@ menu:
       info: Reorder items by dragging up and down, if you want to change the display order
   itemActive: Active
   itemLabel: Label
+  info:
+    activities: Listing page for public events & group meetings
+    processes: Listing page for all processes
+    calendar: Calendar page
+    info: Informational pages
+    works: Listing page for portfolio, marketplace or such entries
+    members: Listing page for all community members
+    resources: Listing page for the resources in your community
 
 categories:
   label: Work Categories

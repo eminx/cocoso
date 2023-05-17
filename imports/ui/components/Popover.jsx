@@ -13,9 +13,9 @@ import {
 
 export default function Popover({ footer, title, trigger, children, ...otherProps }) {
   return (
-    <CPopover {...otherProps}>
+    <CPopover matchWidth trigger="hover" {...otherProps}>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent bg="gray.50">
+      <PopoverContent color="white" bg="gray.800" borderColor="gray.800">
         <PopoverArrow />
         <PopoverCloseButton />
         {title && <PopoverHeader>{title}</PopoverHeader>}
