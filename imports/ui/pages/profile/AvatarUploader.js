@@ -8,6 +8,7 @@ export default function AvatarUploader({
   imageUrl,
   isUploading,
   uploadableAvatarLocal,
+  removeAvatar,
   setUploadableAvatar,
   setUploadableAvatarLocal,
   uploadAvatar,
@@ -55,11 +56,16 @@ export default function AvatarUploader({
           </Box>
         )}
       </Box>
-      <Box px="6">
-        {!uploadableAvatarLocal && (
+      {!uploadableAvatarLocal && (
+        <Box px="6">
           <Text fontSize="sm">{t('profile.form.avatar.changeHelper')}</Text>
-        )}
-      </Box>
+          {imageUrl && (
+            <Button colorScheme="red" my="4" size="sm" onClick={removeAvatar}>
+              {t('profile.form.avatar.remove')}
+            </Button>
+          )}
+        </Box>
+      )}
     </Flex>
   );
 }

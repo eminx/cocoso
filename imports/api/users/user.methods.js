@@ -169,10 +169,14 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    const newAvatar = {
-      src: avatar,
-      date: new Date(),
-    };
+    let newAvatar = null;
+
+    if (avatar) {
+      newAvatar = {
+        src: avatar,
+        date: new Date(),
+      };
+    }
 
     try {
       Meteor.users.update(userId, {
@@ -364,6 +368,8 @@ Meteor.methods({
     //   throw new Meteor.Error(error, "Couldn't update");
     // }
   },
+
+  removeAvatar: () => {},
 
   leaveHost() {
     const userId = Meteor.userId();

@@ -192,6 +192,20 @@ function EditProfile({ history }) {
     }
   };
 
+  const removeAvatar = async () => {
+    try {
+      await call('setAvatar', null);
+      message.success(
+        tc('message.success.save', {
+          domain: `${tc('domains.profile')}`,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
   const furtherBreadcrumbLinks = [
     {
       label: currentUser.username,
@@ -233,6 +247,7 @@ function EditProfile({ history }) {
             imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
             isUploading={isUploading}
             uploadableAvatarLocal={uploadableAvatarLocal}
+            removeAvatar={removeAvatar}
             uploadAvatar={uploadAvatar}
             setUploadableAvatar={handleSetUploadableAvatar}
             setUploadableAvatarLocal={setUploadableAvatarLocal}
