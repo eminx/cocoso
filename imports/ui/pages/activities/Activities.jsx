@@ -217,7 +217,7 @@ function Activities({ history }) {
         }`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
+      <Box px="4" mb="2">
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <FiltrerSorter {...filtrerProps}>
             <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
