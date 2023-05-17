@@ -161,7 +161,7 @@ function Resources({ history }) {
           </FiltrerSorter>
 
           {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}

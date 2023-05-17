@@ -191,9 +191,8 @@ export default function ProcessesList({ history }) {
           <FiltrerSorter {...filtrerProps}>
             <Tabs mx="4" size="sm" tabs={tabs} />
           </FiltrerSorter>
-
           {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
               <HostFiltrer
                 allHosts={allHostsFiltered}
                 hostFilterValue={hostFilterValue}

@@ -21,18 +21,18 @@ function FiltrerSorter(props) {
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  if (isDesktop) {
-    return (
-      <Box px="1">
-        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-        <Box px="2">
-          <Text fontSize="sm" mb="1" mt="1">
-            {tc('labels.filterAndSort')}
-          </Text>
-        </Box>
-      </Box>
-    );
-  }
+  // if (isDesktop) {
+  //   return (
+  //     <Box px="1">
+  //       <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+  //       <Box px="2">
+  //         <Text fontSize="sm" mb="1" mt="1">
+  //           {tc('labels.filterAndSort')}
+  //         </Text>
+  //       </Box>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Accordion px="2" w={isDesktop ? '2xl' : '100%'} allowToggle>
