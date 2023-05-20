@@ -91,8 +91,15 @@ message:
     title: Yeni İçerik
     description: Yeni içerik oluştur ve bu sayfada listele
     button: Yeni içerik oluştur
-    noentrytitle: Henüz bir içerik oluşturulmadı
-    noentrydescription: Henüz bu sayfada bir içerik oluşturmadın. İlk içeriğini oluştur ve bu sayfada yayınla
+    bio:
+      title: Hakkında bişeyler yaz
+      description: Kendi hakkında bilgi girmediğin anlaşılıyor. Profil ayarına gidip, kendin hakkında yazabilir; diğer topluluk üyelerinin seni daha iyi tanımasını sağlayabilirsin
+    contactInfo:
+      title: İletişim kurulabilirsin
+      description: Başkalarının seninle iletişim kurmasına izin ver
+    emptylisting:
+      noentrytitle: Henüz bir içerik oluşturulmadı
+      noentrydescription: Henüz bu sayfada bir içerik oluşturmadın. İlk içeriğini oluştur ve bu sayfada yayınla
 
 # MODAL POP-UPS
 modals:

@@ -13,6 +13,7 @@ import MemberActivities from '../activities/MemberActivities';
 import MemberProcesses from '../processes/MemberProcesses';
 import Tabs from '../../components/Tabs';
 import { call } from '../../utils/shared';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -138,7 +139,7 @@ function MemberPublic({ history, match, path }) {
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
         <GridItem p={isDesktop ? '2' : '0'}>
           <MemberAvatarEtc t={t} tc={tc} user={user} />
-          {isDesktop && <Bio isDesktop={false} user={user} />}
+          {isDesktop && <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>
 
         <GridItem pl={isDesktop ? '12' : '0'}>
@@ -154,7 +155,9 @@ function MemberPublic({ history, match, path }) {
             {!isDesktop && (
               <Route
                 path="/@:username/bio"
-                render={(props) => <Bio isDesktop={false} user={user} />}
+                render={(props) => (
+                  <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                )}
               />
             )}
             <Route
@@ -193,13 +196,7 @@ function MemberPublic({ history, match, path }) {
             <Route
               path="/@:username/contact"
               render={(props) => (
-                <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-                  <Box maxWidth="480px" className="text-content" p="4">
-                    {user.contactInfo
-                      ? renderHTML(user.contactInfo)
-                      : t('message.contact.empty', { username: user.username })}
-                  </Box>
-                </Flex>
+                <ContactInfo isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
               )}
             />
           </Switch>
@@ -209,17 +206,64 @@ function MemberPublic({ history, match, path }) {
   );
 }
 
-function Bio({ isDesktop, user }) {
+function stripHtml(html) {
+  let tmp = document.createElement('DIV');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
+function Bio({ isDesktop, isSelfAccount, tc, user }) {
   if (!user) {
     return null;
   }
+
+  const bareBio = stripHtml(user.bio);
+
+  if (isSelfAccount && (!bareBio || bareBio.length < 3)) {
+    return (
+      <NewEntryHelper
+        title={tc('message.newentryhelper.bio.title')}
+        buttonLabel={tc('menu.member.settings')}
+        buttonLink={`/@${user?.username}/edit`}
+      >
+        {tc('message.newentryhelper.bio.description')}
+      </NewEntryHelper>
+    );
+  }
+
   return (
     <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-      {user.bio && (
-        <Box maxWidth="480px" className="text-content" py="4" px="3">
-          {renderHTML(user.bio)}
-        </Box>
-      )}
+      <Box maxWidth="480px" className="text-content" py="4" px="3">
+        {renderHTML(user.bio)}
+      </Box>
+    </Flex>
+  );
+}
+
+function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
+  if (!user) {
+    return null;
+  }
+
+  const bareContactInfo = stripHtml(user.contactInfo);
+
+  if (isSelfAccount && (!bareContactInfo || bareContactInfo.length < 3)) {
+    return (
+      <NewEntryHelper
+        title={tc('message.newentryhelper.contactInfo.title')}
+        buttonLabel={tc('menu.member.settings')}
+        buttonLink={`/@${user?.username}/edit`}
+      >
+        {tc('message.newentryhelper.contactInfo.description')}
+      </NewEntryHelper>
+    );
+  }
+
+  return (
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
+      <Box maxWidth="480px" className="text-content" p="4">
+        {renderHTML(user.contactInfo)}
+      </Box>
     </Flex>
   );
 }

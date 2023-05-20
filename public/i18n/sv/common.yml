@@ -91,8 +91,15 @@ message:
     title: Nytt inlägg
     description: Skapa ditt inlägg och publicera i den här listan
     button: Skapa
-    noentrytitle: Inget inlägg publicerat än
-    noentrydescription: Du har inte lagt upp något inlägg än. Skapa ditt första inlägg och publicera här i denna lista
+    bio:
+      title: Skriv om dig
+      description: Det verkar som att du inte har angett information om dig själv. Gå till din profilinställning, skriv om dig själv, hur du vill engagera dig och låt de andra communitymedlemmarna veta om dig
+    contactInfo:
+      title: Bli kontaktad
+      description: Låt andra komma i kontakt med dig
+    emptylisting:
+      noentrytitle: Inget inlägg publicerat än
+      noentrydescription: Du har inte lagt upp något inlägg än. Skapa ditt första inlägg och publicera här i denna lista
 
 # MODAL POP-UPS
 modals:

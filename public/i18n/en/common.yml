@@ -91,6 +91,14 @@ message:
     title: New Entry
     description: Create your entry and publish here in this listing
     button: Create new entry
+    bio:
+      title: Write about yourself
+      description:
+        Looks like you haven't entered info about yourself. Go to your profile setting, write about
+        yourself, how you would like to engage, and let the other community members know about you
+    contactInfo:
+      title: Be found
+      description: Başkalarının seninle iletişim kurmasına izin ver
     emptylisting:
       title: No entry posted so far
       description: You haven't posted any entry yet. Create your first entry and publish here in this listing
