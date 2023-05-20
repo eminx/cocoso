@@ -1,13 +1,16 @@
-import React from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
+import { StateContext } from '../../LayoutContainer';
+import { Alert } from '../../components/message';
 
 function NewResourcePage({ history }) {
   const [tc] = useTranslation('common');
+  const { currentUser, role } = useContext(StateContext);
 
   const resourceModel = {
     label: '',
@@ -16,6 +19,14 @@ function NewResourcePage({ history }) {
     isCombo: false,
     resourcesForCombo: [],
   };
+
+  if (!currentUser || role !== 'admin') {
+    return (
+      <Center m="8">
+        <Alert message={tc('message.access.deny')} type="error" />
+      </Center>
+    );
+  }
 
   return (
     <Box>

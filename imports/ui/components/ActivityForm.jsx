@@ -116,10 +116,7 @@ function ActivityForm({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Box mb="8">
-          <Heading mb="4" size="md">
-            {t('form.resource.label')}*
-          </Heading>
-          <FormField>
+          <FormField label={<b>{t('form.resource.label')}</b>} isRequired>
             <Select
               {...register('resourceId', { required: true })}
               placeholder={t('form.resource.holder')}
@@ -145,9 +142,7 @@ function ActivityForm({
         </Box>
 
         <Box mb="8">
-          <Heading mb="4" size="md">
-            {t('form.occurences.label')}*
-          </Heading>
+          <FormField label={<b>{t('form.occurences.label')}</b>} isRequired />
 
           <Box mb="4">
             {datesAndTimes.map((recurrence, index) => {
@@ -186,7 +181,7 @@ function ActivityForm({
           </Heading>
 
           <VStack spacing="6">
-            <FormField label={t('form.title.label')} helperText={t('form.title.helper')}>
+            <FormField label={t('form.title.label')} helperText={t('form.title.helper')} isRequired>
               <Input
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
@@ -194,7 +189,11 @@ function ActivityForm({
             </FormField>
 
             {isPublicActivity && (
-              <FormField label={t('form.subtitle.label')} helperText={t('form.subtitle.helper')}>
+              <FormField
+                label={t('form.subtitle.label')}
+                helperText={t('form.subtitle.helper')}
+                isRequired
+              >
                 <Input
                   {...register('subTitle', { required: true })}
                   placeholder={t('form.subtitle.holder')}
@@ -202,7 +201,7 @@ function ActivityForm({
               </FormField>
             )}
 
-            <FormField label={t('form.desc.label')}>
+            <FormField label={t('form.desc.label')} isRequired={isPublicActivity}>
               <Controller
                 control={control}
                 name="longDescription"
@@ -226,6 +225,7 @@ function ActivityForm({
               <FormField
                 label={t('form.image.label')}
                 helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+                isRequired
               >
                 <Center>
                   <FileDropper

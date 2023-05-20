@@ -196,8 +196,11 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             </Box>
           )}
 
-          <FormField label={t('form.name.label')}>
-            <Input {...register('label')} placeholder={t('form.name.holder')} />
+          <FormField label={t('form.name.label')} isRequired>
+            <Input
+              {...register('label', { isRequired: true })}
+              placeholder={t('form.name.holder')}
+            />
           </FormField>
 
           <FormField label={t('form.desc.label')}>
