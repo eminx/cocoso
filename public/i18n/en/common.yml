@@ -87,6 +87,14 @@ message:
     email: '{{ field }} must be a valid email'
     min: '{{ field }} has to be at least {{ min }} characters'
 
+  newentryhelper:
+    title: New Entry
+    description: Create your entry and publish here in this listing
+    button: Create new entry
+    emptylisting:
+      title: No entry posted so far
+      description: You haven't posted any entry yet. Create your first entry and publish here in this listing
+
 # MODAL POP-UPS
 modals:
   confirm:

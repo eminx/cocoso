@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
@@ -6,12 +6,13 @@ import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberActivities({ isDesktop, match }) {
+function MemberActivities({ isDesktop, isSelfAccount, user }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { username } = match.params;
+  const { username } = user;
 
   useEffect(() => {
     Meteor.call('getActivitiesByUser', username, (error, respond) => {
@@ -29,13 +30,12 @@ function MemberActivities({ isDesktop, match }) {
     return <Loader />;
   }
 
-  if (!activities || activities.length === 0) {
-    <Alert />;
-  }
-
   const publicActivities = activities.filter((item) => item.isPublicActivity);
 
   if (!publicActivities || publicActivities.length === 0) {
+    if (isSelfAccount) {
+      return <NewEntryHelper buttonLink="/activities/new" isEmptyListing />;
+    }
     return null;
   }
 

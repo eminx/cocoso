@@ -17,6 +17,7 @@ import Tabs from '../../components/Tabs';
 import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -26,7 +27,7 @@ function Resources({ history }) {
   const [combo, setCombo] = useState('all');
   const [modalResource, setModalResource] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
@@ -148,6 +149,8 @@ function Resources({ history }) {
     return resourcesRendered.some((resource) => resource.host === host.host);
   });
 
+  const isAdmin = role === 'admin';
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
@@ -171,6 +174,8 @@ function Resources({ history }) {
           )}
         </Flex>
       </Box>
+
+      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
 
       <Box p="4">
         <Paginate centerItems={!isDesktop} items={resourcesRenderedHostFiltered}>

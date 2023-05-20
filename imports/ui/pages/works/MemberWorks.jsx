@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import { message } from '../../components/message';
 import NewGridThumb from '../../components/NewGridThumb';
 import Paginate from '../../components/Paginate';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberWorks({ isDesktop, match }) {
+function MemberWorks({ isDesktop, isSelfAccount, user }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { username } = match.params;
+  const { username } = user;
 
   useEffect(() => {
     Meteor.call('getWorksByUser', username, (error, respond) => {
@@ -30,7 +31,10 @@ function MemberWorks({ isDesktop, match }) {
   }
 
   if (!works || works.length === 0) {
-    <Alert />;
+    if (isSelfAccount) {
+      return <NewEntryHelper buttonLink="/works/new" isEmptyListing />;
+    }
+    return null;
   }
 
   return (

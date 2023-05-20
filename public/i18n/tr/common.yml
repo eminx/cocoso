@@ -87,6 +87,13 @@ message:
     email: '{{ field }} geçerli bir eposta adresi olmalı'
     min: '{{ field }} minimum {{ min }} karakterden oluşmalı'
 
+  newentryhelper:
+    title: Yeni İçerik
+    description: Yeni içerik oluştur ve bu sayfada listele
+    button: Yeni içerik oluştur
+    noentrytitle: Henüz bir içerik oluşturulmadı
+    noentrydescription: Henüz bu sayfada bir içerik oluşturmadın. İlk içeriğini oluştur ve bu sayfada yayınla
+
 # MODAL POP-UPS
 modals:
   confirm:

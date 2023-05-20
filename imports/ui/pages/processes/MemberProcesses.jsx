@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import { message } from '../../components/message';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberProcesses({ isDesktop, match }) {
+function MemberProcesses({ isDesktop, isSelfAccount, user }) {
   const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { username } = match.params;
+  const { username } = user;
 
   useEffect(() => {
     Meteor.call('getProcessesByUser', username, (error, respond) => {
@@ -29,7 +30,10 @@ function MemberProcesses({ isDesktop, match }) {
   }
 
   if (!processes || processes.length === 0) {
-    <Alert />;
+    if (isSelfAccount) {
+      return <NewEntryHelper buttonLink="/processes/new" isEmptyListing />;
+    }
+    return null;
   }
 
   return (

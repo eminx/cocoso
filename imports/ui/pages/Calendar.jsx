@@ -29,6 +29,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
 import { getNonComboResourcesWithColor, getComboResourcesWithColor } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
+import NewEntryHelper from '../components/NewEntryHelper';
 
 const publicSettings = Meteor.settings.public;
 
@@ -179,7 +180,7 @@ class Calendar extends PureComponent {
 
   render() {
     const { isLoading, allBookings, currentUser, resources, tc } = this.props;
-    const { currentHost } = this.context;
+    const { canCreateContent, currentHost } = this.context;
     const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
 
     const filteredActivities = allBookings.filter((activity) => {
@@ -340,6 +341,12 @@ class Calendar extends PureComponent {
             </Box>
           )}
         </Box>
+
+        {canCreateContent && (
+          <Box mb="4">
+            <NewEntryHelper buttonLink="/activities/new" />
+          </Box>
+        )}
 
         <ConfirmModal
           visible={Boolean(selectedActivity)}

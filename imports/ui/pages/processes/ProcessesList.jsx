@@ -19,6 +19,7 @@ import Tably from '../../components/Tably';
 import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -40,7 +41,8 @@ export default function ProcessesList({ history }) {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalProcess, setModalProcess] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const { allHosts, canCreateContent, currentHost, currentUser, isDesktop } =
+    useContext(StateContext);
 
   const [t] = useTranslation('processes');
   const [tc] = useTranslation('common');
@@ -202,6 +204,8 @@ export default function ProcessesList({ history }) {
           )}
         </Flex>
       </Box>
+
+      {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
 
       <Box px={isDesktop ? '1' : '0'}>
         <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>

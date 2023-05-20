@@ -10,6 +10,7 @@ import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import NiceSlider from '../../components/NiceSlider';
 import { parseTitle } from '../../utils/shared';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 const publicSettings = Meteor.settings.public;
 
@@ -42,8 +43,10 @@ function Page() {
 
   const pageTitles = pages && pages.map((page) => page.title);
 
+  const isAdmin = currentUser && role === 'admin';
+
   const renderEditButton = () => {
-    if (!currentUser || role !== 'admin') {
+    if (!isAdmin) {
       return null;
     }
     return (
@@ -86,6 +89,11 @@ function Page() {
               <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
             </Box>
           </Box>
+          {isAdmin && (
+            <Box ml="8">
+              <NewEntryHelper buttonLink="/pages/new" />
+            </Box>
+          )}
         </Flex>
 
         {renderEditButton()}
@@ -122,6 +130,12 @@ function Page() {
           </Box>
         </Box>
       </Center>
+
+      {isAdmin && (
+        <Box>
+          <NewEntryHelper buttonLink="/pages/new" />
+        </Box>
+      )}
 
       {renderEditButton()}
     </>

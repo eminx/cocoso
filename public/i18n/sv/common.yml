@@ -87,6 +87,13 @@ message:
     email: '{{ field }} måste vara en giltig e-postadress'
     min: '{{ field }} måste bestå av minst {{ min }} tecken'
 
+  newentryhelper:
+    title: Nytt inlägg
+    description: Skapa ditt inlägg och publicera i den här listan
+    button: Skapa
+    noentrytitle: Inget inlägg publicerat än
+    noentrydescription: Du har inte lagt upp något inlägg än. Skapa ditt första inlägg och publicera här i denna lista
+
 # MODAL POP-UPS
 modals:
   confirm:

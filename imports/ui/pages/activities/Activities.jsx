@@ -20,6 +20,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 moment.locale(i18n.language);
 
@@ -83,7 +84,7 @@ function Activities({ history }) {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalActivity, setModalActivity] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const {
     location: { search },
   } = history;
@@ -234,6 +235,8 @@ function Activities({ history }) {
           )}
         </Flex>
       </Box>
+
+      {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
 
       <Box px={isDesktop ? '1' : '0'}>
         <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>

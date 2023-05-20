@@ -113,6 +113,8 @@ function MemberPublic({ history, match, path }) {
     return <Redirect to={tabs[0].path} />;
   }
 
+  const isSelfAccount = currentUser && currentUser.username === username;
+
   return (
     <>
       <Box py="2" px={isDesktop ? '6' : '4'}>
@@ -158,18 +160,35 @@ function MemberPublic({ history, match, path }) {
             <Route
               path="/@:username/activities"
               render={(props) => (
-                <MemberActivities isDesktop={isDesktop} user={user} match={match} />
+                <MemberActivities
+                  isDesktop={isDesktop}
+                  isSelfAccount={isSelfAccount}
+                  user={user}
+                  match={match}
+                />
               )}
             />
             <Route
               path="/@:username/processes"
               render={(props) => (
-                <MemberProcesses isDesktop={isDesktop} user={user} match={match} />
+                <MemberProcesses
+                  isDesktop={isDesktop}
+                  isSelfAccount={isSelfAccount}
+                  user={user}
+                  match={match}
+                />
               )}
             />
             <Route
               path="/@:username/works"
-              render={(props) => <MemberWorks isDesktop={isDesktop} user={user} match={match} />}
+              render={(props) => (
+                <MemberWorks
+                  isDesktop={isDesktop}
+                  isSelfAccount={isSelfAccount}
+                  user={user}
+                  match={match}
+                />
+              )}
             />
             <Route
               path="/@:username/contact"

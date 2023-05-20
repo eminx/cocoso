@@ -17,6 +17,7 @@ import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
+import NewEntryHelper from '../../components/NewEntryHelper';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -32,7 +33,7 @@ function Works({ history }) {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [modalWork, setModalWork] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -170,6 +171,8 @@ function Works({ history }) {
           </Flex>
         )}
       </Box>
+
+      {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
 
       <Box px={isDesktop ? '1' : '0'}>
         <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
