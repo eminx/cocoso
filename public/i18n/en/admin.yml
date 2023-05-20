@@ -41,8 +41,8 @@ menu:
   itemActive: Active
   itemLabel: Label
   info:
-    activities: Listing page for public events & group meetings
-    processes: Listing page for all processes
+    activities: Listing page for public events & group (process) meetings
+    processes: Listing page for all groups (processes)
     calendar: Calendar page
     info: Informational pages
     works: Listing page for portfolio, marketplace or such entries
