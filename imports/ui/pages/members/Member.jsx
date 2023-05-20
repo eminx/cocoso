@@ -213,7 +213,7 @@ function stripHtml(html) {
 }
 
 function Bio({ isDesktop, isSelfAccount, tc, user }) {
-  if (!user) {
+  if (!user || !user.bio) {
     return null;
   }
 
@@ -241,7 +241,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 }
 
 function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
-  if (!user) {
+  if (!user || !user.contactInfo) {
     return null;
   }
 
