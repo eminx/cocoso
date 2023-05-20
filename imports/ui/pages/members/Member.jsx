@@ -117,7 +117,7 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Box py="2" px={isDesktop ? '6' : '4'}>
+      <Box py="4" px={isDesktop ? '6' : '4'} fontSize="130%">
         <Flex wrap="wrap">
           <Link to="/">
             <CLink as="span" color="#06c" fontWeight="bold">

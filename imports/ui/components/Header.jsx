@@ -9,7 +9,7 @@ import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
 
 function Header({ isSmallerLogo }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
   const history = useHistory();
 
@@ -38,6 +38,8 @@ function Header({ isSmallerLogo }) {
     logoClass += ' smaller-logo';
   }
 
+  const isAdmin = currentUser && role === 'admin';
+
   return (
     <Box
       px={isDesktop ? '6' : '2'}
@@ -55,7 +57,11 @@ function Header({ isSmallerLogo }) {
         </Box>
 
         <HStack align="center" justify="flex-end" spacing="4" zIndex="1403">
-          <NewButton canCreateContent={canCreateContent} currentHost={currentHost} />
+          <NewButton
+            canCreateContent={canCreateContent}
+            currentHost={currentHost}
+            isAdmin={isAdmin}
+          />
           <UserPopup currentUser={currentUser} />
           {!isDesktop && <MenuDrawer currentHost={currentHost} isDesktop={false} />}
         </HStack>
