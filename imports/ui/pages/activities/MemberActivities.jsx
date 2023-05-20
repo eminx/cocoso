@@ -41,6 +41,7 @@ function MemberActivities({ isDesktop, isSelfAccount, user }) {
 
   return (
     <>
+      {isSelfAccount && <NewEntryHelper buttonLink="/activities/new" />}
       <Paginate centerItems={!isDesktop} items={publicActivities}>
         {(activity) => (
           <Box key={activity._id}>

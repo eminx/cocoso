@@ -39,6 +39,7 @@ function MemberWorks({ isDesktop, isSelfAccount, user }) {
 
   return (
     <>
+      {isSelfAccount && <NewEntryHelper buttonLink="/works/new" />}
       <Paginate centerItems={!isDesktop} items={works}>
         {(work) => (
           <Box key={work._id}>
