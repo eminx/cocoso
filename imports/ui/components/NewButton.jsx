@@ -23,14 +23,20 @@ const getRoute = (item, index) => {
   return `/${item.name}/new`;
 };
 
-function NewButton({ canCreateContent, currentHost }) {
+function NewButton({ canCreateContent, currentHost, isAdmin }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
   const menuItems = menu
-    .filter((item) => item.isVisible)
+    .filter((item) => {
+      if (isAdmin) {
+        return item.isVisible;
+      } else {
+        return item.isVisible && !['info', 'resources'].includes(item.name);
+      }
+    })
     .map((item, index) => ({
       ...item,
       route: getRoute(item, index),
