@@ -27,7 +27,7 @@ import ReactQuill from '../../components/Quill';
 function Emails({ history }) {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
-  const { currentUser, role } = useContext(StateContext);
+  const { currentUser, isDesktop, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -95,7 +95,10 @@ function Emails({ history }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Box px={isDesktop ? '6' : '4'} pt="4">
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
+
       <Template
         heading={t('emails.label')}
         leftContent={
@@ -106,7 +109,7 @@ function Emails({ history }) {
       >
         {parsedEmails &&
           parsedEmails.map((email, index) => (
-            <Box key={email.title} p="4" mb="4" maxWidth={480}>
+            <Box key={email.title} py="4" mb="4">
               <Heading size="md" mb="4">
                 {email.title}
               </Heading>

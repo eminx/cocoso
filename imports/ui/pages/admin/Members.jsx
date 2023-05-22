@@ -202,7 +202,9 @@ function Members({ history, members, isLoading }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Box px={isDesktop ? '6' : '4'} pt="4">
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
 
       <Template
         heading={t('label')}
@@ -213,12 +215,12 @@ function Members({ history, members, isLoading }) {
         }
       >
         <Box maxWidth={480}>
-          <Tabs index={tabIndex} tabs={tabs} />
+          <Tabs index={tabIndex} ml="-4" tabs={tabs} />
 
-          <Box pl="4">
+          <Box>
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} px="4" py="2" w="100%">
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} py="2" w="100%">
             <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
               <Input
                 placeholder={t('form.holder')}
@@ -268,7 +270,7 @@ function Members({ history, members, isLoading }) {
 function MemberList({ members, roleFilter, t }) {
   const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
   return (
-    <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
+    <NiceList itemBg="white" keySelector="email" list={membersFiltered} ml="-4">
       {(member) => <MemberItem t={t} member={member} />}
     </NiceList>
   );

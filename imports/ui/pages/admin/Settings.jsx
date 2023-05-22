@@ -23,7 +23,7 @@ export default function Settings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -175,7 +175,9 @@ export default function Settings({ history }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      <Box px={isDesktop ? '6' : '4'} pt="4">
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
       <Template
         heading={t('settings.label')}
         leftContent={
@@ -184,7 +186,7 @@ export default function Settings({ history }) {
           </Box>
         }
       >
-        <Tabs index={tabIndex} tabs={tabs} />
+        <Tabs index={tabIndex} ml="-4" tabs={tabs} />
 
         <Box mb="24">
           <Switch history={history}>
@@ -208,9 +210,5 @@ export default function Settings({ history }) {
 }
 
 function AlphaContainer({ title, children }) {
-  return (
-    <Box px="4" maxWidth={400}>
-      {children}
-    </Box>
-  );
+  return <Box maxWidth={480}>{children}</Box>;
 }
