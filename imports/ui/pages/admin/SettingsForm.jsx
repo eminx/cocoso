@@ -35,7 +35,7 @@ function SettingsForm({ initialValues, onSubmit }) {
           <Input {...register('country')} />
         </FormField>
         <FormField label={tc('langs.label')}>
-          <ChangeLanguage hideHelper select="true" register={register} />
+          <ChangeLanguage hideHelper select register={register} />
         </FormField>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">

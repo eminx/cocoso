@@ -2,7 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra-ui/react';
 
-export default ChangeLanguage = ({ hideHelper = false, select, currentLang, onChange }) => {
+export default ChangeLanguage = ({
+  currentLang,
+  hideHelper = false,
+  register,
+  select,
+  onChange,
+}) => {
   const { t, i18n } = useTranslation();
 
   if (!select)
@@ -36,6 +42,7 @@ export default ChangeLanguage = ({ hideHelper = false, select, currentLang, onCh
         name="lang"
         placeholder={t('common:langs.form.holder')}
         onChange={(e) => onChange(e.target.value)}
+        {...(register && register('lang'))}
       >
         {i18n.languages.map((lang) => (
           <option key={lang} selected={lang === currentLang} value={lang}>
