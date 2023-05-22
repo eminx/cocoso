@@ -170,9 +170,9 @@ class EditProcess extends React.Component {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         <Template>
-          <Box bg="white" p="6">
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+          <Box py="6">
             <ProcessForm
               defaultValues={process}
               imageUrl={process && process.imageUrl}

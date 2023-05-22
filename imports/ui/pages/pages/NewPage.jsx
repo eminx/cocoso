@@ -138,11 +138,9 @@ function NewPage() {
 
   return (
     <>
-      <Box pl={isDesktop ? '0' : '4'}>
-        <Breadcrumb furtherItems={furtherItems} />
-      </Box>
       <Template>
-        <Box p="6">
+        <Breadcrumb furtherItems={furtherItems} />
+        <Box py="6">
           <PageForm
             images={images.map((image) => image.src)}
             isButtonLoading={isCreating}

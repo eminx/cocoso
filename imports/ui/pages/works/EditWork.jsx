@@ -262,9 +262,9 @@ class EditWork extends PureComponent {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         <Template>
-          <Box bg="white" p="6">
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+          <Box py="6">
             <WorkForm
               categories={categories}
               defaultValues={values}

@@ -15,7 +15,7 @@ export default function Breadcrumb({ furtherItems }) {
     menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
 
   return (
-    <Box pt={isDesktop ? '4' : '8'} pb="2" px={isDesktop ? '6' : '4'} fontSize="130%">
+    <Box fontSize="130%">
       <Flex wrap="wrap">
         <Link to="/">
           <CLink as="span" color="#06c" fontWeight="bold">

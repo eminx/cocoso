@@ -172,9 +172,9 @@ class NewWork extends PureComponent {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={[{ label: i18n.t('common:actions.create') }]} />
         <Template>
-          <Box p="6">
+          <Breadcrumb furtherItems={[{ label: i18n.t('common:actions.create') }]} />
+          <Box py="6">
             <WorkForm
               categories={categories}
               defaultValues={formModel}

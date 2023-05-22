@@ -385,9 +385,9 @@ class NewActivity extends PureComponent {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
         <Template>
-          <Box p="6">
+          <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
+          <Box py="6">
             <Box mb="8">
               <VStack spacing="2">
                 <FormSwitch

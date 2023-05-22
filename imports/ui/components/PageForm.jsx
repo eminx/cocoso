@@ -27,19 +27,19 @@ const PageForm = ({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
+          <FormField isRequired label={t('pages.form.title.label')}>
+            <Input
+              {...register('title', { required: true })}
+              placeholder={t('pages.form.title.holder')}
+            />
+          </FormField>
+
           <FormField label={tc('images.countLabel', { count: images.length })}>
             <ImageUploadUI
               images={images}
               onRemoveImage={onRemoveImage}
               onSelectImages={onSetUploadableImages}
               onSortImages={onSortImages}
-            />
-          </FormField>
-
-          <FormField isRequired label={t('pages.form.title.label')}>
-            <Input
-              {...register('title', { required: true })}
-              placeholder={t('pages.form.title.holder')}
             />
           </FormField>
 

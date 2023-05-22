@@ -193,9 +193,9 @@ function EditPage() {
 
   return (
     <Box>
-      <Breadcrumb furtherItems={furtherItems} />
       <Template>
-        <Box p="6">
+        <Breadcrumb furtherItems={furtherItems} />
+        <Box py="6">
           <PageForm
             defaultValues={page}
             images={images.map((image) => image.src)}

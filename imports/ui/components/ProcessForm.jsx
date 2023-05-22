@@ -43,20 +43,6 @@ function ProcessForm({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField
-            label={t('form.image.label')}
-            isRequired
-            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
-          >
-            <Center>
-              <FileDropper
-                imageUrl={imageUrl}
-                setUploadableImage={handleSetUploadableImage}
-                uploadableImageLocal={uploadableImageLocal}
-              />
-            </Center>
-          </FormField>
-
           <FormField label={t('form.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
@@ -84,6 +70,20 @@ function ProcessForm({
             <NumberInput>
               <NumberInputField {...register('capacity', { required: true })} />
             </NumberInput>
+          </FormField>
+
+          <FormField
+            label={t('form.image.label')}
+            isRequired
+            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+          >
+            <Center>
+              <FileDropper
+                imageUrl={imageUrl}
+                setUploadableImage={handleSetUploadableImage}
+                uploadableImageLocal={uploadableImageLocal}
+              />
+            </Center>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

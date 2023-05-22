@@ -209,9 +209,9 @@ class NewProcess extends React.Component {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
         <Template>
-          <Box bg="white" p="6" mb="8">
+          <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
+          <Box py="6" mb="8">
             <Popover trigger="hover">
               <PopoverTrigger>
                 <FormControl alignItems="center" display="flex" w="auto" mb="4">

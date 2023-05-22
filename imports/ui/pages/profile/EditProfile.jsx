@@ -28,6 +28,7 @@ import AvatarUploader from './AvatarUploader';
 import Tabs from '../../components/Tabs';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import FormField from '../../components/FormField';
+import Template from '../../components/Template';
 
 function EditProfile({ history }) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
@@ -256,7 +257,7 @@ function EditProfile({ history }) {
             <Heading mb="2" size="sm">
               {t('profile.label')}
             </Heading>
-            <Box maxWidth={400}>
+            <Box>
               <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
             </Box>
           </Box>
@@ -366,36 +367,39 @@ function EditProfile({ history }) {
   }
 
   return (
-    <Box>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-
-      <Box px={isDesktop ? '2' : '0'}>
-        <Box py="4" px="4">
-          <Heading color="gray.800" size="lg">
-            <Text as="span" fontWeight="normal">
-              {t('profile.settings')}
-            </Text>
-          </Heading>
+    <>
+      <Template>
+        <Box>
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         </Box>
 
-        <Box minH="100vh">
-          <Box maxWidth="480px">
-            <Heading size="md" p="4">
+        <Box>
+          <Box pt="4" mb="8">
+            <Heading color="gray.800" size="lg">
+              <Text as="span" fontWeight="normal">
+                {t('profile.settings')}
+              </Text>
+            </Heading>
+          </Box>
+
+          <Box>
+            <Heading size="md">
               {platform?.name}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.platform')}
               </Text>
             </Heading>
 
-            <Alert bg="white" mb="4" px="4" status="info">
+            <Alert bg="white" mb="4" status="info">
               <AlertIcon color="gray.800" />
               <Text fontSize="sm" mr="4">
                 {t('profile.message.platform', { platform: platform?.name })}
               </Text>
             </Alert>
-            <Tabs index={tabIndex} tabs={tabs} />
 
-            <Box px="4">
+            <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+
+            <Box>
               <RouteSwitch history={history}>
                 {tabs.map((tab) => (
                   <Route
@@ -411,48 +415,49 @@ function EditProfile({ history }) {
                 ))}
               </RouteSwitch>
             </Box>
+
             <Divider my="4" />
           </Box>
+
+          <Box bg="red.100">
+            <VStack spacing="4" p="4">
+              <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
+                {t('delete.action')}
+              </Button>
+            </VStack>
+          </Box>
+
+          <ConfirmModal
+            visible={isLeaveModalOn}
+            title={t('leave.title')}
+            confirmText={t('leave.label')}
+            confirmButtonProps={{
+              colorScheme: 'red',
+              isLoading: isLeaving,
+            }}
+            onConfirm={leaveHost}
+            onCancel={() => setIsLeaveModalOn(false)}
+          >
+            <Text>{t('leave.body')}</Text>
+          </ConfirmModal>
+
+          <ConfirmModal
+            visible={isDeleteModalOn}
+            title={t('delete.title')}
+            confirmText={t('delete.label')}
+            confirmButtonProps={{
+              colorScheme: 'red',
+              isLoading: isDeleting,
+              isDisabled: isDeleting,
+            }}
+            onConfirm={deleteAccount}
+            onCancel={() => setIsDeleteModalOn(false)}
+          >
+            <Text>{t('delete.body')}</Text>
+          </ConfirmModal>
         </Box>
-
-        <Box bg="red.100" my="8">
-          <VStack spacing="4" mt="4" p="4">
-            <Button colorScheme="red" size="sm" onClick={() => setIsDeleteModalOn(true)}>
-              {t('delete.action')}
-            </Button>
-          </VStack>
-        </Box>
-
-        <ConfirmModal
-          visible={isLeaveModalOn}
-          title={t('leave.title')}
-          confirmText={t('leave.label')}
-          confirmButtonProps={{
-            colorScheme: 'red',
-            isLoading: isLeaving,
-          }}
-          onConfirm={leaveHost}
-          onCancel={() => setIsLeaveModalOn(false)}
-        >
-          <Text>{t('leave.body')}</Text>
-        </ConfirmModal>
-
-        <ConfirmModal
-          visible={isDeleteModalOn}
-          title={t('delete.title')}
-          confirmText={t('delete.label')}
-          confirmButtonProps={{
-            colorScheme: 'red',
-            isLoading: isDeleting,
-            isDisabled: isDeleting,
-          }}
-          onConfirm={deleteAccount}
-          onCancel={() => setIsDeleteModalOn(false)}
-        >
-          <Text>{t('delete.body')}</Text>
-        </ConfirmModal>
-      </Box>
-    </Box>
+      </Template>
+    </>
   );
 }
 

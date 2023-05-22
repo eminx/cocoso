@@ -370,9 +370,9 @@ class EditActivity extends PureComponent {
 
     return (
       <Box>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         <Template>
-          <Box p="6">
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+          <Box py="6">
             <Box mb="8">
               <VStack spacing="2">
                 <FormSwitch
