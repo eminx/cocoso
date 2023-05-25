@@ -196,14 +196,14 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             </Box>
           )}
 
-          <FormField label={t('form.name.label')} isRequired>
+          <FormField helperText={t('form.name.helper')} label={t('form.name.label')} isRequired>
             <Input
               {...register('label', { isRequired: true })}
               placeholder={t('form.name.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.desc.label')}>
+          <FormField helperText={t('form.description.helper')} label={t('form.description.label')}>
             <Controller
               control={control}
               name="description"
@@ -211,7 +211,10 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             />
           </FormField>
 
-          <FormField label={t('form.images.label', { count: images.length })}>
+          <FormField
+            helperText={t('form.images.helper')}
+            label={t('form.images.label', { count: images.length })}
+          >
             <Box>
               {images && (
                 <>

@@ -20,12 +20,15 @@ form:
   name:
     label: Name
     holder: Sound Studio
-  desc:
+    helper: Please enter a name for the entry object you would like to create
+  description:
     label: Description
     holder: Using studio requires care ...
+    helper: Please provide a detailed description about this entry you are creating. For example this could include the conditions of the usage of a resource, details about how it works, and how it should be handled and handed over...
 
   images:
     label: Images ({{ count }})
+    helper: Optionally, please choose a photo or a set of photos from the gallery in your device or a photo you will take now
 
 tabs:
   info: Info

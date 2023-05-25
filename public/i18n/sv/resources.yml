@@ -20,12 +20,14 @@ form:
   name:
     label: Namn
     holder: Sound Studio
-  desc:
+    helper: Ange ett namn för det innehållselement du vill skapa
+  description:
     label: Beskrivning
     holder: Att använda studio kräver omsorg ...
-
+    helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera villkoren för användningen av en resurs, detaljer om hur den fungerar och hur den ska hanteras och överlämnas...
   images:
-    label: Images ({{ count }})
+    label: Bilder ({{ count }})
+    helper: (Valfri) Välj ett foto eller en uppsättning bilder från galleriet i din enhet eller ett foto som du ska ta nu
 
 tabs:
   info: Info

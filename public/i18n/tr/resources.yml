@@ -20,12 +20,14 @@ form:
   name:
     label: İsim
     holder: Ses stüdyosu...
-  desc:
+    helper: Lütfen oluşturmak istediğin içerik öğesi için bir isim gir
+  description:
     label: Açıklama
     holder: Stüdyoyu kullanmak için gerekli olan...
-
+    helper: İsteğe bağlı olarak, Lütfen oluşturduğun bu içerik öğesi hakkında ayrıntılı bir açıklama gir. Örneğin bir kaynak hakkında detaylı bilgi, kullanım koşulları, nasıl çalıştığı, nasıl kullanılması ve teslim edilmesi gerektiği ile ilgili ayrıntıları içerebilir...
   images:
     label: Imajlar ({{ count }})
+    helper: İsteğe bağlı olarak, lütfen cihazındaki galeriden bir fotoğraf(lar) veya şimdi çekeceğiniz bir fotoğraf seç
 
 tabs:
   info: Bilgi
