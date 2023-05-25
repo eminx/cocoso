@@ -1,17 +1,19 @@
 label:
-  new: Create a New Activity
-  edit: Edit Activity
+  new: Create a New Booking
+  edit: Edit Booking
 
 form:
   switch:
     public: Public Event
-    exclusive: Exclusive Activity (Others cannot book)
-    rsvp: Registration enabled
+    exclusive: Exclusive Activity (Others cannot book within the same date & time)
+    rsvp: Registration enabled (People can register/RSVP to attend the occurrence(s) of the event)
   resource:
-    label: Resource
-    holder: Select resource to book
-  occurences:
+    label: '{{ resources }}'
+    holder: Select
+    helper: Select an item that you want to book, to appear in the calendar
+  occurrences:
     label: Occurrences
+    helper: Whether private booking of a resource, or a public event; please enter timely details of each of the occurrences they will happen
   days:
     single: Day
     multiple: Multiple Days
@@ -28,26 +30,30 @@ form:
   title:
     label: Title
     holder: Give it a title
-    helper: This is typically title of your event
+    helper: This is typically the title of your booking to appear publicly
   subtitle:
     label: Subtitle
-    holder: give it a subtitle (artist name etc.)
+    holder: Give it a subtitle (artist name etc.)
     helper: i.e. artist, or some subtitle...
-  desc:
+  description:
     label: Description
+    helper: Please provide a detailed description that will be helpful for others to know
   place:
     label: Place
     holder: Artistosphere
+    helper: Optionally, enter generic name of the physical place where the public event will take place.
   address:
     label: Address
     holder: 17th Street, Berlin...
+    helper: Optionally, enter the detailed address of the place where the event will take place
   image:
     label: Image
+    helper: To represent the event, please choose an image from the gallery on your device or a photo you will take now
   submit: 'Confirm and Create'
-  waiting: 'Creating your activity...'
+  waiting: 'Creating your booking...'
   conflict:
-    alert: "There's already a booking for this resource at this date & time:"
-    notExclusiveInfo: 'Since both activities are not exclusive, you may go ahead and finalise your booking'
+    alert: "There's already a booking at this date & time:"
+    notExclusiveInfo: 'Since both bookings are not exclusive, you may go ahead and finalise it'
 
 members:
   label: My Activities

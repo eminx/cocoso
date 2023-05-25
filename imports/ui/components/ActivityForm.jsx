@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import FileDropper from './FileDropper';
 import FormField from './FormField';
 import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
+import { StateContext } from '../LayoutContainer';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -46,6 +47,7 @@ function ActivityForm({
   setSelectedResource,
   isButtonDisabled,
 }) {
+  const { currentHost } = useContext(StateContext);
   useEffect(() => {
     setSelectedResource(getValues('resourceId'));
   }, [defaultValues]);
@@ -112,11 +114,17 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
+  const resourcesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'resources');
+
   return (
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Box mb="8">
-          <FormField label={<b>{t('form.resource.label')}</b>} isRequired>
+          <FormField
+            helperText={t('form.resource.helper')}
+            label={<b>{t('form.resource.label', { resources: resourcesInMenu?.label })}</b>}
+            isRequired
+          >
             <Select
               {...register('resourceId', { required: true })}
               placeholder={t('form.resource.holder')}
@@ -142,9 +150,13 @@ function ActivityForm({
         </Box>
 
         <Box mb="8">
-          <FormField label={<b>{t('form.occurences.label')}</b>} isRequired />
+          <FormField
+            helperText={t('form.occurrences.helper')}
+            label={<b>{t('form.occurrences.label')}</b>}
+            isRequired
+          />
 
-          <Box mb="4">
+          <Box mb="4" mt="2">
             {datesAndTimes.map((recurrence, index) => {
               const id =
                 recurrence.startDate +
@@ -181,7 +193,7 @@ function ActivityForm({
           </Heading>
 
           <VStack spacing="6">
-            <FormField label={t('form.title.label')} helperText={t('form.title.helper')} isRequired>
+            <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
               <Input
                 {...register('title', { required: true })}
                 placeholder={t('form.title.holder')}
@@ -190,8 +202,8 @@ function ActivityForm({
 
             {isPublicActivity && (
               <FormField
-                label={t('form.subtitle.label')}
                 helperText={t('form.subtitle.helper')}
+                label={t('form.subtitle.label')}
                 isRequired
               >
                 <Input
@@ -201,7 +213,11 @@ function ActivityForm({
               </FormField>
             )}
 
-            <FormField label={t('form.desc.label')} isRequired={isPublicActivity}>
+            <FormField
+              helperText={t('form.description.helper')}
+              label={t('form.description.label')}
+              isRequired={isPublicActivity}
+            >
               <Controller
                 control={control}
                 name="longDescription"
@@ -210,13 +226,13 @@ function ActivityForm({
             </FormField>
 
             {isPublicActivity && (
-              <FormField label={t('form.place.label')}>
+              <FormField helperText={t('form.place.helper')} label={t('form.place.label')}>
                 <Input {...register('place')} placeholder={t('form.place.holder')} />
               </FormField>
             )}
 
             {isPublicActivity && (
-              <FormField label={t('form.address.label')}>
+              <FormField helperText={t('form.address.helper')} label={t('form.address.label')}>
                 <Textarea {...register('address')} placeholder={t('form.address.holder')} />
               </FormField>
             )}
@@ -224,7 +240,11 @@ function ActivityForm({
             {isPublicActivity && (
               <FormField
                 label={t('form.image.label')}
-                helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+                helperText={
+                  uploadableImageLocal || imageUrl
+                    ? tc('plugins.fileDropper.replace')
+                    : t('form.image.helper')
+                }
                 isRequired
               >
                 <Center>

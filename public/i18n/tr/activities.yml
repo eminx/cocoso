@@ -5,12 +5,13 @@ label:
 form:
   switch:
     public: Herkese açık etkinlik
-    exclusive: Eksklusif (başkaları bu tarih ve kaynağı ayıramaz)
-    rsvp: Kayıt alınabilir
+    exclusive: Eksklusif (Başkaları aynı tarih ve saati ayıramaz)
+    rsvp: Kayıt alınabilir (İnsanlar etkinliğe katılmak için kayıt olabilirler)
   resource:
-    label: Kaynak
-    holder: Ayırmak için bir kaynak seç
-  occurences:
+    label: '{{ resources }}'
+    holder: Seç
+    helper: Takvimde görünmesi için rezerve etmek istediğin bir öğeyi seç
+  occurrences:
     label: Tekrarlar
   days:
     single: Gün
@@ -33,16 +34,20 @@ form:
     label: Alt başlık
     holder: Bir alt başlık ver
     helper: Mesela sanatçının ismi ya da etkinliğin formu
-  desc:
+  description:
     label: Açıklama
+    helper: Lütfen başkalarının bilgi sahibi olmasına yardımcı olacak ayrıntılı bir açıklama sağlayın
   place:
     label: Yer
     holder: Atmosfer
+    helper: İsteğe bağlı olarak, lütfen genel etkinliğin gerçekleşeceği fiziksel yerin genel adını gir.
   address:
     label: Adres
     holder: 17. cadde, Çukurcuma...
+    helper: İsteğe bağlı olarak, lütfen etkinliğin gerçekleşeceği yerin ayrıntılı adresini girin
   image:
     label: İmaj
+    helper: Etkinliği temsilen lütfen cihazındaki galeriden ya da şimdi çekeceğin bir fotoğraf ile bir imaj seç
   submit: 'Onayla ve oluştur'
   waiting: 'Aktivite oluşturuluyor...'
   conflict:

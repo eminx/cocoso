@@ -5,12 +5,13 @@ label:
 form:
   switch:
     public: Offentligt evenemang
-    exclusive: Exklusiv aktivitet (andra kan inte boka)
-    rsvp: Registrering aktiverad
+    exclusive: Exklusiv aktivitet (Andra kan inte boka inom samma datum och tid)
+    rsvp: Registrering aktiverad (Människor kan registrera sig/OSA för att delta i händelsen/händelserna)
   resource:
-    label: Resurser
-    holder: Välj resurs att boka
-  occurences:
+    label: '{{ resources }}'
+    holder: Välj
+    helper: Välj ett objekt som du vill boka för att visas i kalendern
+  occurrences:
     label: Händelser
   days:
     single: Dag
@@ -31,18 +32,22 @@ form:
     helper: Detta är vanligtvis titeln på ditt evenemang
   subtitle:
     label: Texta
-    holder: ge den en undertitet (artistnamn etc.)
+    holder: Ge den en undertitet (artistnamn etc.)
     helper: dvs artist, eller någon undertext...
-  desc:
+  description:
     label: Beskrivning
+    helper: Ange en detaljerad beskrivning som kan vara till hjälp för andra att veta
   place:
     label: Plats
     holder: Artistosphere
+    helper: (Valfri) Ange det allmänna namnet på den fysiska plats där det offentliga evenemanget kommer att äga rum.
   address:
     label: Adress
     holder: 17th Street, Berlin...
+    helper: (Valfri) Ange adressen till platsen där evenemanget kommer att äga rum
   image:
     label: Bild
+    helper: För att representera händelsen, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   conflict:

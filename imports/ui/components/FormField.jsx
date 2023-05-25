@@ -6,7 +6,7 @@ function FormField({ children, errorMessage, helperText, label, size = 'sm', ...
     <FormControl {...otherProps}>
       <FormLabel mb="1">{label}</FormLabel>
       {children}
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {helperText && <FormHelperText color="#828282">{helperText}</FormHelperText>}
       {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
