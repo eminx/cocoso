@@ -22,18 +22,23 @@ form:
       title: Privata processer
       P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
       P2: Du kommer att kunna hantera inbjudningarna efter att du har skapat processen.
-  image:
-    label: Bild
   title:
     label: Titel
     holder: Att förstå Benjamin
+    helper: Vänligen ange titeln du vill visa offentligt
   subtitle:
     label: Texta
     holder: Genom belysningar
-  desc:
+    helper: Vänligen ange en underrubrik som kommer att stödja titeln. Det kommer att synas offentligt
+  description:
     label: Beskrivning
+    helper: Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera konceptet som fascinerar dig, samt villkoren för deltagande om det finns några
   capacity:
     label: Kapacitet
+    helper: Om det finns en maxgräns för deltagande medlemmar, vänligen gå in
+  image:
+    label: Bild
+    helper: För att representera inlägget, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu
   submit: Bekräfta och skapa process
   waiting: Skapar din process...
 

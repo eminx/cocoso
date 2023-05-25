@@ -29,18 +29,28 @@ function WorkForm({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField label={t('works.title.label')} isRequired>
+          <FormField helperText={t('works.title.helper')} label={t('works.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
               placeholder={t('works.title.holder')}
             />
           </FormField>
 
-          <FormField label={t('works.shortDesc.label')}>
-            <Textarea {...register('shortDescription')} placeholder={t('works.shortDesc.holder')} />
+          <FormField
+            helperText={t('works.shortDescription.helper')}
+            label={t('works.shortDescription.label')}
+          >
+            <Textarea
+              {...register('shortDescription')}
+              placeholder={t('works.shortDescription.holder')}
+            />
           </FormField>
 
-          <FormField label={t('works.category.label')} isRequired>
+          <FormField
+            helperText={t('works.category.helper')}
+            label={t('works.category.label')}
+            isRequired
+          >
             <Select
               {...register('categoryId', { required: true })}
               placeholder={t('works.category.holder')}
@@ -57,22 +67,29 @@ function WorkForm({
             </Select>
           </FormField>
 
-          <FormField label={t('works.longDesc.label')} isRequired>
+          <FormField
+            helperText={t('works.longDescription.helper')}
+            label={t('works.longDescription.label')}
+            isRequired
+          >
             <Controller
               control={control}
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill {...field} placeholder={t('works.longDesc.holder')} />
+                <ReactQuill {...field} placeholder={t('works.longDescription.holder')} />
               )}
             />
           </FormField>
 
-          <FormField label={t('works.addInfo.label')}>
-            <Textarea {...register('additionalInfo')} placeholder={t('works.addInfo.holder')} />
+          <FormField helperText={t('works.extra.helper')} label={t('works.extra.label')}>
+            <Textarea {...register('additionalInfo')} placeholder={t('works.extra.holder')} />
           </FormField>
 
-          <FormField label={t('works.images.label', { count: images.length })}>
+          <FormField
+            helperText={t('works.images.helper')}
+            label={t('works.images.label', { count: images.length })}
+          >
             {images && (
               <Center>
                 <NiceSlider width="300px" images={images} />

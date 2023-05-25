@@ -66,20 +66,26 @@ works:
   title:
     label: Başlık
     holder: Şişede taze nar suyu...
-  shortDesc:
+    helper: Lütfen içerik hakkında herkese açık olarak görüntülemek istediğin başlığı gir
+  shortDescription:
     label: Kısa Açıklama
     holder: Tatlı, Doğal ve Serinletici...
+    helper: İsteğe bağlı olarak, lütfen oluşturduğun içerik için çok kısa bir açıklama gir
   category:
     label: Kategori
     holder: Bir seçenek seç
-  longDesc:
+    helper: Lütfen listeden bir kategori seç. Uygun bir şey bulamazsan, senin için bir tane oluşturması için lütfen bir topluluk admini ile iletişime geç
+  longDescription:
     label: Açıklama
     holder: Nar sularımız çiftliğimizden ellerimizle toplanıp sevgiyle sıkılıp şişelenirler...
-  addInfo:
+    helper: Lütfen oluşturduğun bu giriş hakkında ayrıntılı bir açıklama sağla. Örneğin bu, topluluğa sunduğun çalışmanın, ürünün, araştırma veya sanat eseri vs gibi içeriğin ayrıntılarını ve içsel dinamiklerini içerebilir...
+  extra:
     label: Ekstra info
     holder: Bir şişenin tanesi 80TL...
+    helper: İsteğe bağlı olarak, lütfen oluşturduğun içerik öğesi için önemli olan ek bilgileri gir. Örneğin, satılıksa, maliyeti gibi...
   images:
     label: İmajlar ({{ count }})
+    helper: İçeriği temsil etmek için, lütfen cihazındaki galeriden bir resim veya bir dizi resim veya şimdi çekeceğin bir fotoğraf seç. İsteğe bağlıdır
 
 report:
   title: '{{username}} için Kullanım Raporu'

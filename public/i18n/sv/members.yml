@@ -66,20 +66,26 @@ works:
   title:
     label: Titel
     holder: Mangojuice på flaska...
-  shortDesc:
+    helper: Vänligen ange titeln du vill visa offentligt
+  shortDescription:
     label: Kort beskrivning
     holder: Söt, naturlig och uppfriskande
+    helper: (Valfri) Ange en kort beskrivning för inlägget du skapar
   category:
     label: Kategori
     holder: Välj alternativ
-  longDesc:
+    helper: Välj en kategori från listan. Om du inte hittar något som passar, kontakta en community-admin för att skapa en åt dig
+  longDescription:
     label: Beskrivning
     holder: Min mangojuice är handplockad från träden och...
-  addInfo:
+    helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera detaljerna om vad du erbjuder till samhället, eller de interna detaljerna om t.ex. studier, forskning eller konstverk etc...
+  extra:
     label: Ytterligare info
     holder: En flaska kostar...
+    helper: (Valfri) Vänligen ange extra information som är viktig för objektet i inlägget du skapar. Till exempel, om den är till salu, hur mycket kostar den...
   images:
     label: Bilder ({{ count }})
+    helper: För att representera inlägget, välj en bild eller en uppsättning bilder från galleriet i din enhet eller ett foto som du ska ta nu. Det är valfritt
 
 report:
   title: Förbrukningsrapport för {{username}}

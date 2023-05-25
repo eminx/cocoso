@@ -68,20 +68,26 @@ works:
   title:
     label: Title
     holder: Mango Juice in Bottles...
-  shortDesc:
+    helper: Please enter the title you would like to display publicly
+  shortDescription:
     label: Short description
     holder: Sweet, Natural & Refreshing
+    helper: Optionally, please enter a very short description for the entry you're creating
   category:
     label: Category
     holder: Choose option
-  longDesc:
+    helper: Please choose a category from the list. If you don't find anything that fits, please contact a community admin to create one for you.
+  longDescription:
     label: Description
     holder: My Mango juice is handpicked from the trees and...
-  addInfo:
+    helper: Please provide a detailed description about this entry you are creating. For example this could include the details of what you are offering to the community, or the internal details of the e.g. study, research or artwork etc...
+  extra:
     label: Additional info
     holder: A bottle costs...
+    helper: Optionally, please enter extra info that is important for the item in the entry you are creating. For example, if it is for sale, how much it costs
   images:
     label: Images ({{ count }})
+    helper: To represent the entry, please choose an image or a set of images from the gallery in your device or a photo you will take now. It is optional
 
 report:
   title: Consumption Report for {{username}}

@@ -43,21 +43,29 @@ function ProcessForm({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField label={t('form.title.label')} isRequired>
+          <FormField helperText={t('form.title.helper')} label={t('form.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
               placeholder={t('form.title.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.subtitle.label')} isRequired>
+          <FormField
+            helperText={t('form.subtitle.helper')}
+            label={t('form.subtitle.label')}
+            isRequired
+          >
             <Input
               {...register('readingMaterial', { required: true })}
               placeholder={t('form.subtitle.holder')}
             />
           </FormField>
 
-          <FormField label={t('form.desc.label')} isRequired>
+          <FormField
+            helperText={t('form.description.helper')}
+            label={t('form.description.label')}
+            isRequired
+          >
             <Controller
               control={control}
               name="description"
@@ -66,16 +74,24 @@ function ProcessForm({
             />
           </FormField>
 
-          <FormField label={t('form.capacity.label')} isRequired>
+          <FormField
+            helperText={t('form.capacity.helper')}
+            label={t('form.capacity.label')}
+            isRequired
+          >
             <NumberInput>
               <NumberInputField {...register('capacity', { required: true })} />
             </NumberInput>
           </FormField>
 
           <FormField
-            label={t('form.image.label')}
+            helperText={
+              uploadableImageLocal || imageUrl
+                ? tc('plugins.fileDropper.replace')
+                : t('form.image.helper')
+            }
             isRequired
-            helperText={(uploadableImageLocal || imageUrl) && tc('plugins.fileDropper.replace')}
+            label={t('form.image.label')}
           >
             <Center>
               <FileDropper

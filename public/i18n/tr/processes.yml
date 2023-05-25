@@ -20,20 +20,25 @@ form:
     label: Gizli (sadece davet ile)
     tooltip:
       title: Gizli Süreçler
-      P1: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsiniz.
-      P2: Süreci oluşturduktan sonra davetleri yönetebileceksiniz.
-  image:
-    label: İmaj
+      P1: Gizli süreçleri sadece üyeleri görebilir ve katılım sadece süreç adminlerinin daveti ile mümkündür. Oluşturduktan sonra onu herkese açık olarak değiştiremezsin.
+      P2: Süreci oluşturduktan sonra davetleri yönetebileceksin.
   title:
     label: Başlık
     holder: Benjamin'i Anlamak...
+    helper: Lütfen içerik hakkında herkese açık olarak görüntülemek istediğin başlığı gir
   subtitle:
     label: Alt Başlık
     holder: Illuminations ile...
-  desc:
+    helper: Lütfen başlığı destekleyici bir alt başlık gir. Herkese açık olacak
+  description:
     label: Açıklama
+    helper: Lütfen oluşturduğunuz bu içerik hakkında ayrıntılı bir açıklama sağla. Örneğin, ilgini çeken konsepti ve varsa katılım koşullarını içerebilir
   capacity:
     label: Kapasite
+    helper: Katılımcı üyeler için maksimum bir sınır var ise lütfen gir
+  image:
+    label: İmaj
+    helper: İçeriği temsil etmesi için lütfen cihazındaki galeriden bir resim veya şimdi çekeceğin bir fotoğraf seç
   submit: Onayla ve Oluştur
   waiting: Oluşturuluyor...
 
