@@ -84,6 +84,11 @@ pages:
     title:
       label: Title
       holder: Contributing
-    desc:
+      helper: Please enter the title for the page you would like to display publicly
+    description:
       label: Description
       holder: Contributing guidelines are...
+      helper: Please enter the entire text content you would like to publish within this page here
+    images:
+      label: Images ({{ count }})
+      helper: Optionally, please enter an image or a set of images that will be displayed within a slider in this page when published

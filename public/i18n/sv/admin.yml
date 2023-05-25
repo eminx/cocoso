@@ -84,6 +84,11 @@ pages:
     title:
       label: Titel
       holder: Bidrar
-    desc:
+      helper: Vänligen ange titeln för sidan du vill visa offentligt
+    description:
       label: Beskrivning
       holder: Bidragande riktlinjer är...
+      helper: Ange hela textinnehållet som du vill publicera på denna sida här
+    images:
+      label: Bilder ({{ count }})
+      helper: (Valfri) Ange en bild eller en uppsättning bilder som kommer att visas i ett skjutreglage på den här sidan när de publiceras

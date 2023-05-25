@@ -38,7 +38,7 @@ form:
     helper: Katılımcı üyeler için maksimum bir sınır var ise lütfen gir
   image:
     label: İmaj
-    helper: İçeriği temsil etmesi için lütfen cihazındaki galeriden bir resim veya şimdi çekeceğin bir fotoğraf seç
+    helper: İçeriği temsil etmesi için lütfen cihazındaki galeriden bir imaj veya şimdi çekeceğin bir fotoğraf seç
   submit: Onayla ve Oluştur
   waiting: Oluşturuluyor...
 

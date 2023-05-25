@@ -85,7 +85,7 @@ works:
     helper: İsteğe bağlı olarak, lütfen oluşturduğun içerik öğesi için önemli olan ek bilgileri gir. Örneğin, satılıksa, maliyeti gibi...
   images:
     label: İmajlar ({{ count }})
-    helper: İçeriği temsil etmek için, lütfen cihazındaki galeriden bir resim veya bir dizi resim veya şimdi çekeceğin bir fotoğraf seç. İsteğe bağlıdır
+    helper: İçeriği temsil etmek için, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. İsteğe bağlıdır
 
 report:
   title: '{{username}} için Kullanım Raporu'

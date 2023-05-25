@@ -84,6 +84,11 @@ pages:
     title:
       label: Başlık
       holder: Katkı sağlama
-    desc:
+      helper: Lütfen herkese açık olarak görüntülemek istediğin sayfanın başlığını gir
+    description:
       label: Açıklama
       holder: Katkı sağlama prosedürünün işleyiş şekli...
+      helper: Lütfen bu sayfada yayınlamak istediğin metin içeriğinin tamamını buraya gir
+    images:
+      label: İmajlar ({{ count }})
+      helper: Tercihen, lütfen yayınlandığında bu sayfada bir slayt içinde görüntülenecek bir imaj veya bir dizi imaj seç

@@ -27,14 +27,21 @@ const PageForm = ({
     <div>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormField isRequired label={t('pages.form.title.label')}>
+          <FormField
+            helperText={t('pages.form.title.helper')}
+            isRequired
+            label={t('pages.form.title.label')}
+          >
             <Input
               {...register('title', { required: true })}
               placeholder={t('pages.form.title.holder')}
             />
           </FormField>
 
-          <FormField label={tc('images.countLabel', { count: images.length })}>
+          <FormField
+            helperText={t('pages.form.images.helper')}
+            label={t('pages.form.images.label', { count: images.length })}
+          >
             <ImageUploadUI
               images={images}
               onRemoveImage={onRemoveImage}
@@ -43,7 +50,11 @@ const PageForm = ({
             />
           </FormField>
 
-          <FormField isRequired label={t('pages.form.desc.label')}>
+          <FormField
+            helperText={t('pages.form.description.helper')}
+            isRequired
+            label={t('pages.form.description.label')}
+          >
             <Controller
               control={control}
               name="longDescription"
