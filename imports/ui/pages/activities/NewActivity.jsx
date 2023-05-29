@@ -252,13 +252,6 @@ class NewActivity extends PureComponent {
 
   handleExclusiveSwitch = (event) => {
     const value = event.target.checked;
-    const { isPublicActivity } = this.state;
-    if (isPublicActivity) {
-      this.setState({
-        isExclusiveActivity: true,
-      });
-      return;
-    }
     this.setState(
       {
         isExclusiveActivity: value,
@@ -397,8 +390,7 @@ class NewActivity extends PureComponent {
                 />
 
                 <FormSwitch
-                  isChecked={isPublicActivity || isExclusiveActivity}
-                  isDisabled={isPublicActivity}
+                  isChecked={isExclusiveActivity}
                   label={t('form.switch.exclusive')}
                   onChange={this.handleExclusiveSwitch}
                 />
