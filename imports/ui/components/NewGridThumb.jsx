@@ -73,13 +73,17 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
               {tag && <Tag filterColor={color} label={tag} />}
             </HStack>
           </Box>
+
           {avatar && <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />}
+
           {dates && (
             <Flex flexShrink="0">
               {dates.slice(0, 1).map((date) => (
-                <DateJust key={date?.startDate + date?.startTime} date={date}>
-                  {date}
-                </DateJust>
+                <Flex key={date?.startDate + date?.startTime}>
+                  <DateJust>{date.startDate}</DateJust>
+                  {date.startDate !== date.endDate && '-'}
+                  {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
+                </Flex>
               ))}
               {remaining > 0 && (
                 <Text fontSize="xl" ml="2" wordBreak="keep-all">

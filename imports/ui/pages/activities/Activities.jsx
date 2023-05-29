@@ -29,12 +29,12 @@ const today = moment();
 
 const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
 const getLastPastOccurence = (occurence) => moment(occurence.endDate).isBefore(today);
-const getFutureOccurences = (dates) => {
+const getFutureOccurrences = (dates) => {
   return dates
     .filter((date) => moment(date.endDate).isAfter(yesterday))
     .sort((a, b) => moment(a.startDate) - moment(b.startDate));
 };
-const getPastOccurences = (dates) => {
+const getPastOccurrences = (dates) => {
   return dates
     .filter((date) => moment(date.startDate).isBefore(today))
     .sort((a, b) => moment(b.startDate) - moment(a.startDate));
@@ -249,8 +249,8 @@ function Activities({ history }) {
                     <NewGridThumb
                       dates={
                         showPast
-                          ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
-                          : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                          ? getPastOccurrences(activity.datesAndTimes)
+                          : getFutureOccurrences(activity.datesAndTimes)
                       }
                       host={itemHost}
                       imageUrl={activity.imageUrl}
@@ -269,8 +269,8 @@ function Activities({ history }) {
                     <NewGridThumb
                       dates={
                         showPast
-                          ? getPastOccurences(activity.datesAndTimes).map((d) => d.startDate)
-                          : getFutureOccurences(activity.datesAndTimes).map((d) => d.startDate)
+                          ? getPastOccurrences(activity.datesAndTimes)
+                          : getFutureOccurrences(activity.datesAndTimes)
                       }
                       imageUrl={activity.imageUrl}
                       subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
@@ -313,8 +313,8 @@ function Activities({ history }) {
 
 function getDatesForAction(activity, showPast = false) {
   const dates = showPast
-    ? getPastOccurences(activity.datesAndTimes)
-    : getFutureOccurences(activity.datesAndTimes);
+    ? getPastOccurrences(activity.datesAndTimes)
+    : getFutureOccurrences(activity.datesAndTimes);
 
   return (
     <Flex pt="4">

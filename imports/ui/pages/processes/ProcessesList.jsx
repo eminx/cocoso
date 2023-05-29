@@ -214,7 +214,7 @@ export default function ProcessesList({ history }) {
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalProcess(process)}>
                   <NewGridThumb
-                    dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
+                    dates={getFutureOccurences(process.meetings)}
                     // dates={process.meetings?.map((m) => m.startDate)}
                     host={allHosts.find((h) => h.host === process.host)?.name}
                     imageUrl={process.imageUrl}
