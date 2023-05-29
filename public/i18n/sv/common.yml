@@ -30,11 +30,11 @@ actions:
 # ACTION PAGE TITLES
 labels:
   activity: Aktiviteten
-  all: Allt
+  all: Alla
   booked: bokad
   contact: Kontakt
   create: Skapa en ny {{ domain }}
-  event: Händelsen
+  event: Arrangemang
   bookings: Bokningar
   newBooking: Ny bokning
   page: Sida
@@ -49,8 +49,8 @@ labels:
     placeholder: Sortera med
     date: Datum
     name: Namn
-  update: Redigera detta {{ domain }}
-  unselected: Ej valt resurs
+  update: Redigera detta/denna {{ domain }}
+  unselected: Du har ej valt resurs eller lokal
   admin:
     actions: Admin
   past: Tidigare
@@ -67,8 +67,8 @@ message:
   loading: läser in {{ something }} ...
 
   success:
-    create: '{{ domain }} har skapats framgångsrikt'
-    update: '{{ domain }} har uppdaterats framgångsrikt'
+    create: '{{ domain }} har skapats'
+    update: '{{ domain }} har uppdaterats'
     remove: '{{ domain }} har raderats'
     save: '{{ domain }} har sparats'
     leave: Ditt medlemskap hos {{ host }} avslutas
@@ -77,10 +77,10 @@ message:
     imageRequired: Bild krävs
 
   access:
-    deny: Du får inte
+    deny: Du har inte behörighe
     admin: Du måste vara admin för att skapa en {{ domain }}
     contributor: Du måste bli en medskapare för att skapa {{ domain }}
-    register: Du måste bli en registrerad medlem för att skapa {{ domain }}
+    register: Du måste registrera dig för att skapa {{ domain }}
 
   exists: En {{ domain }} med denna {{ property }} finns redan
   valid:
@@ -150,7 +150,7 @@ menu:
 
 plugins:
   fileDropper:
-    replace: Om du vill ersätta den med en annan, klicka på bilden för att öppna filväljaren igen
+    replace: Om du vill ersätta bilden med en annan så klickar du på bilden för att öppna filväljaren
     single: Släpp bara en fil åt gången.
     helper: Släpp eller välj bild
     helperMultiple: Släpp eller välj bild(er)
@@ -169,7 +169,7 @@ domains:
   resources: Resurser
   work: arbete
   works: Arbetar
-  host: Värd
+  host: Community
   page: sida
   profil: profil
   community: Community
@@ -190,7 +190,7 @@ domains:
 
 documents:
   label: Dokument
-  empty: Inget dokument tilldelat
+  empty: Här finns inget dokument uppladdat
   drop: Släpp dokument eller klicka för filuppladdning
   up: laddar upp
   remove: Manualen har tagits bort
@@ -199,7 +199,7 @@ documents:
   maxSize: Maximal storlek
 
 bookings:
-  empty: Ingen bokning ännu
+  empty: Ingen bokning har registrerats än
 
 terms:
   title: Användarvillkor och sekretesspolicy
@@ -208,7 +208,7 @@ images:
   countLabel: Bilder ({{ count }})
 
 platform:
-  title: Se Communities
+  title: Se alla communities
   communities: Communities
   communitiesIn: Communities i plattform {{ platform }}
   membersCount: '{{ membersCount }} medlemmar'

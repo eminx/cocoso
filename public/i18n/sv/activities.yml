@@ -5,20 +5,20 @@ label:
 form:
   switch:
     public: Offentligt evenemang
-    exclusive: Exklusiv aktivitet (Andra kan inte boka inom samma datum och tid)
+    exclusive: Exklusiv aktivitet (Andra kan inte boka samma tid)
     rsvp: Registrering aktiverad (Människor kan registrera sig/OSA för att delta i händelsen/händelserna)
   resource:
     label: '{{ resources }}'
     holder: Välj
     helper: Välj ett objekt som du vill boka för att visas i kalendern
   occurrences:
-    label: Händelser
+    label: Tid och datum
   days:
     single: Dag
-    multiple: Flera olika Dagar
+    multiple: Samma aktivitet pågår under flera dagar
   date:
     start: Startdag
-    finish: Slutdagen
+    finish: Slutdag
   time:
     start: Starttid
     finish: Sluttid
@@ -28,12 +28,12 @@ form:
     label: Detaljer
   title:
     label: Titel
-    holder: Ge det en titel
-    helper: Detta är vanligtvis titeln på ditt evenemang
+    holder: Ange en titel
+    helper: Detta är vanligtvis namnet på ditt aktivitet
   subtitle:
-    label: Texta
-    holder: Ge den en undertitet (artistnamn etc.)
-    helper: dvs artist, eller någon undertext...
+    label: Undertitel
+    holder: Ange en undertitel
+    helper: Exempelvis artistnamn, eller en undertitel…
   description:
     label: Beskrivning
     helper: Ange en detaljerad beskrivning som kan vara till hjälp för andra att veta
@@ -52,7 +52,7 @@ form:
   waiting: Skapar din aktivitet...
   conflict:
     alert: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
-    notExclusiveInfo: 'Eftersom båda bokningarna inte är exklusiva kan du gå vidare och slutföra din bokning'
+    notExclusiveInfo: 'Eftersom båda bokningarna tillåter att fler bokar samma tid kan du gå vidare och slutföra din bokning'
 
 members:
   label: Mina aktiviteter
@@ -78,14 +78,14 @@ public:
         last: Efternamn
       email: E-post
       people:
-        label: Människor
-        number: Antal Deltagare
+        label: Personer
+        number: Antal personer
       loading: Loading
       actions:
         create: Registrera
         update: Uppdatering
         remove: Ta bort din registrering
-    email: E-post redan registrerad. Uppdatera istället.
+    email: E-post redan registrerad. Var vänlig att uppdatera din befintliga bokning istället.
     notFound: Tyvärr kunde vi inte hitta din registrering. Dubbelkolla datum och stavningar och försök igen
     disabled:
       true: OSA inaktiverad. Kontrollera den praktiska informationen.
@@ -94,15 +94,15 @@ public:
   attandence:
     label: Deltagare
     create: Du har precis registrerat din närvaro. Välkommen!
-    update: Du har framgångsrikt uppdaterat din OSA
+    update: Du har nu uppdaterat din registering
     remove: Du har tagit bort din registrering
   capacity:
-    full: Kapaciteten är full nu.
-    fullByYou: Grattis! Du fyllde precis det sista utrymmet!
+    full: Arrangemanget är fullbokat
+    fullByYou: Grattis! Du bokade precis den sista platsen!
   cancel:
     label: Ändra/avbryt befintlig registrering
-    found: Fortsätt nu
+    found: Fortsätt
     notFound: Vänligen ange detaljerna för din OSA
-  past: Denna händelse har förflutit
+  past: Detta arrangemang har redan passerat
   acceess:
-    deny: Endast synlig för registrerade medlemmar
+    deny: Endast synligt för admins och medskapare

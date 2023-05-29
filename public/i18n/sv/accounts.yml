@@ -12,7 +12,7 @@ login:
     subtitle: Har du inget konto?
   form:
     username:
-      label: Användarnamn eller e-mailadress
+      label: Användarnamn eller e-postadress
     password:
       label: Lösenord
   messages:
@@ -48,11 +48,11 @@ password:
   labels:
     title: Återställ lösenord
     subtitle:
-      forgot: Om du har glömt ditt lösenord, återställ det via en länk som skickas till din e-post.
-      reset: Skapa ditt önskade lösenord
+      forgot: Om du har glömt ditt lösenord, återställ det via länken som skickas till din e-post.
+      reset: Skapa ditt nya lösenord
   form:
     email:
-      label: Skriv din e-post vänligen
+      label: Vänligen ange din e-post
   message:
     linkSend: Återställningslänk skickas till din e-post
     checkMail: Kontrollera din e-post och se om du har fått en länk för att återställa ditt lösenord
@@ -60,9 +60,9 @@ password:
 
 profile:
   label: Personlig information
-  join: Join
-  joinHost: Join {{ host }}
-  joinAsParticipantQuestion: Vill du gå med i denna organisation med deltagar rollen?
+  join: Gå med
+  joinHost: Gå med {{ host }}
+  joinAsParticipantQuestion: Vill du gå med i denna organisation?
   settings: Profilinställningar
   image: Profilbild
   form:
@@ -89,7 +89,7 @@ profile:
 
   makePublic:
     label: Profilen är offentlig
-    helperText: Om den är påslagen kommer din profil att vara synlig för allmänheten
+    helperText: Om reglaget är påslaget kommer din profil att vara synlig för allmänheten
     helperTextGlobal: Om den stängs av kommer din profil att vara osynlig i alla communities
 
   menu:

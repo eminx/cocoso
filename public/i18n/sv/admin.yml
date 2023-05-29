@@ -16,12 +16,12 @@ logo:
   label: Logo
   info: Ladda upp din logotyp
   message:
-    success: Din logotyp har angetts
-    fileDropper: Släpp bara en fil åt gången
+    success: Din logotyp har laddats upp
+    fileDropper: Släpp en bild åt gången
 
 info:
-  label: Organisation
-  info: Lägg till information om din organisation
+  label: Community
+  info: Lägg till information om din community
   platform:
     info: Lägg till information om den global plattformen
     name: Namn
@@ -33,13 +33,13 @@ menu:
   label: Meny
   tabs:
     menuitems:
-      label: Synlighet & Etiketter
-      info: Markera/avmarkera objekt för synlighet och märk dem som du föredrar för att komponera menyn
+      label: Synlighet & benämning
+      info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community.
     order:
       label: Ordning
       info: Ändra ordning på objekt genom att dra upp och ned om du vill ändra visningsordningen
   itemActive: Aktiv
-  itemLabel: Etiket
+  itemLabel: Benämning
   info:
     activities: Listasidan för offentliga evenemang och gruppmöten
     processes: Listasidan för alla grupper
@@ -63,7 +63,7 @@ emails:
       label: Ämne
       holder: Välkommen
     appeal:
-      label: Vädjan
+      label: Tilltal
       holder: Hej
       addon: '@username'
     body:
@@ -83,11 +83,11 @@ pages:
   form:
     title:
       label: Titel
-      holder: Bidrar
+      holder: Sidans titel
       helper: Vänligen ange titeln för sidan du vill visa offentligt
     description:
       label: Beskrivning
-      holder: Bidragande riktlinjer är...
+      holder: Sidans textinnehåll
       helper: Ange hela textinnehållet som du vill publicera på denna sida här
     images:
       label: Bilder ({{ count }})

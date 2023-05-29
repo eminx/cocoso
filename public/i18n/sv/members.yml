@@ -1,9 +1,9 @@
 # ADMIN MEMBERS PAGE
 label: Medlemmar
 
-all: Allt
+all: Alla
 
-joinedAt: gick med {{ date }}
+joinedAt: Gick med {{ date }}
 
 roles:
   participant: Deltagare
@@ -12,37 +12,37 @@ roles:
   plural:
     participants: Deltagare
     contributors: Medskapare
-    admins: Admin
+    admins: Admins
 
 form:
   sort:
-    date: Datum gick med
+    date: Datum för registrering
     user: Användarnamn
-  holder: användarnamn eller epost
+  holder: Användarnamn eller e-post
 
 actions:
   contributor: Ställ in som medskapare
   admin: Ställ in som admin
-  participant: Återgå som deltagare
-  usageReport: Se förbrukningsrapport
+  participant: Återställ som deltagare
+  usageReport: Se bokningsrapport
   visit: Besök profilen
   visithost: Besök profilen i {{ host }}
 
 message:
   success:
-    contributor: '{{ username }} är nu inställd som en medskapare'
+    contributor: '{{ username }} är nu verifierad som medskapare'
     participant: '{{ username }} är nu återställd som deltagare'
     admin: '{{ username }} är nu återställd som admin'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
   activity:
-    empty: Inget publicerat ännu
-    info: '{{ username }} har inte varit särskilt aktiva hittills'
+    empty: Inget har publicerats här ännu
+    info: '{{ username }} har inte varit särskilt aktiv hittills'
   access:
-    contributor: Du måste bli en medskapare till {{ action }}
+    contributor: Du måste verifieras som medskapare för att {{ action }}
   guest: Du måste skapa ett konto för att lansera din marknad
   usage:
-    noUsage: Ingen förbrukning har registrerats för denna användare
+    noUsage: Inga bokningar har registrerats för denna användare
 
 profile:
   labels:
@@ -56,7 +56,7 @@ profile:
     bio:
       label: Bio
     contact:
-      label: Kontakt info
+      label: Kontaktinfo
   message:
     role: Du som {{username}} är en del av denna organisation med rollen {{role}}
 
@@ -65,11 +65,11 @@ works:
 
   title:
     label: Titel
-    holder: Mangojuice på flaska...
+    holder: titeln på din bok, din föreställning, ditt konstverk eller din workshop…
     helper: Vänligen ange titeln du vill visa offentligt
   shortDescription:
     label: Kort beskrivning
-    holder: Söt, naturlig och uppfriskande
+    holder: upphovspersoner, undertitel eller en kort beskrivning…
     helper: (Valfri) Ange en kort beskrivning för inlägget du skapar
   category:
     label: Kategori
@@ -77,22 +77,22 @@ works:
     helper: Välj en kategori från listan. Om du inte hittar något som passar, kontakta en community-admin för att skapa en åt dig
   longDescription:
     label: Beskrivning
-    holder: Min mangojuice är handplockad från träden och...
+    holder: Plats för en längre beskrivande text…
     helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera detaljerna om vad du erbjuder till samhället, eller de interna detaljerna om t.ex. studier, forskning eller konstverk etc...
   extra:
     label: Ytterligare info
-    holder: En flaska kostar...
+    holder: Eventuella prisuppgifter, kontaktpersoner etc.
     helper: (Valfri) Vänligen ange extra information som är viktig för objektet i inlägget du skapar. Till exempel, om den är till salu, hur mycket kostar den...
   images:
     label: Bilder ({{ count }})
     helper: För att representera inlägget, välj en bild eller en uppsättning bilder från galleriet i din enhet eller ett foto som du ska ta nu. Det är valfritt
 
 report:
-  title: Förbrukningsrapport för {{username}}
+  title: Bokningsrapport för {{username}}
   table:
     title: Titel
-    resource: Resurs
-    start: Start
-    end: Slut
+    resource: Lokal eller resurs
+    start: Börjar
+    end: Slutar
     consumption: Förbrukning (h)
-    total: timmer totalt
+    total: Timmar totalt

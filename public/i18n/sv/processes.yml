@@ -21,20 +21,20 @@ form:
     tooltip:
       title: Privata processer
       P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
-      P2: Du kommer att kunna hantera inbjudningarna efter att du har skapat processen.
+      P2: Du kommer hantera inbjudningarna efter att du har skapat processen.
   title:
     label: Titel
     holder: Att förstå Benjamin
     helper: Vänligen ange titeln du vill visa offentligt
   subtitle:
-    label: Texta
-    holder: Genom belysningar
+    label: Undertitel
+    holder: Studiegrupp, kurs, öppen konstnärlig process etc…
     helper: Vänligen ange en underrubrik som kommer att stödja titeln. Det kommer att synas offentligt
   description:
     label: Beskrivning
     helper: Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera konceptet som fascinerar dig, samt villkoren för deltagande om det finns några
   capacity:
-    label: Kapacitet
+    label: Max antal deltagare
     helper: Om det finns en maxgräns för deltagande medlemmar, vänligen gå in
   image:
     label: Bild
@@ -47,7 +47,7 @@ message:
   unarchived: Processen har avarkiverats
 
   joined: Du är redan medlem!
-  added: Du läggs till i processen
+  added: Du är nu med i processen
   removed: Du tas bort från processen
 
 actions:
@@ -59,25 +59,25 @@ actions:
 
 meeting:
   attends:
-    remove: Du har tagits bort från listan!
+    remove: Du har avregistrerat dig!
     register: Din närvaro har registrerats!
   access:
-    join: Gå med i processen för att delta i mötet
+    join: Gå med i processen för att delta i möten
     logged: Logga in och gå med i processen för att delta i mötet
-    remove: Förlåt. För närvarande kan du inte ta bort möten som har deltagare registrerade för att delta
+    remove: Vi ber om ursäkt. För närvarande kan du inte ta bort möten som har deltagare registrerade.
   success:
-    add: Ditt processmöte har lagts till!
+    add: Mötet har lagts till!
     remove: Mötet har tagits bort
-    fileDropper: har laddats upp och tilldelats den här processen!
+    fileDropper: har laddats upp till den här gruppen/processen!
     admin: Ny admin har lagts till
   actions:
     remove: Ta bort det här mötet
-    makeAdmin: Gör admin
+    makeAdmin: Gör till admin
   isAttending:
     false: Kan inte klara det
     true: Registrera närvaro
   info:
-    empty: Inget möte planerat ännu
+    empty: Inga möten är planerade ännu
     member: Klicka och öppna datumet för att OSA
     admin: Öppna datumen för att se deltagarna
   form:
@@ -87,7 +87,7 @@ meeting:
       start: Starttid
       end: Sluttid
     switch: På {{ place }}?
-    resource: Välj resurs
+    resource: Välj lokal eller resurs
     location: Plats
     submit: Lägg till möte
 
@@ -96,27 +96,27 @@ confirm:
   title:
     text: Bekräfta {{ opt }}
     opts:
-      leave: lämnar
-      join: deltagande till
+      leave: Lämna
+      join:
   body:
     text: Är du säker på att du vill lämna {{ opt }}?
     opts:
       leave: lämnar
-      join: ansluta sig
+      join: Gå med
   admin:
     title: Bekräfta att du vill göra {{ admin }} till administratör.
-    body: När du bekräftar kommer du att dela samma privilegier med {{ admin }} härefter.
+    body: När du bekräftar kommer du att dela administratörsrollen och alla dess behörigheter med {{ admin }}.
 
 invite:
   info: Vänligen lägg till data för den person du vill bjuda in
-  success: Ett e-postmeddelande skickas och {{ name }} har bjudits in
+  success: Ett e-postmeddelande har skickats och {{ name }} har bjudits in
   email:
     label: e-post
     holder: samuel@skogen.pm
     already: Den här e-postadressen har redan lagts till
     valid: Vänligen ange en giltig e-postadress
   firstName:
-    label: förnamn
+    label: Förnamn
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan

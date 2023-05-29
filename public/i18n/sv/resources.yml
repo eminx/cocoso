@@ -1,7 +1,7 @@
 # RESOURCES PAGE
 label: Resurser
 
-all: Allt
+all: Alla
 
 messages:
   notfound: Ingen resurs hittades
@@ -23,7 +23,7 @@ form:
     helper: Ange ett namn för det innehållselement du vill skapa
   description:
     label: Beskrivning
-    holder: Att använda studio kräver omsorg ...
+    holder: Att använda studion kräver omsorg ...
     helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera villkoren för användningen av en resurs, detaljer om hur den fungerar och hur den ska hanteras och överlämnas...
   images:
     label: Bilder ({{ count }})
@@ -34,17 +34,17 @@ tabs:
   discussion: Diskussion
 
 cards:
-  date: lagt till av {{ username }} den {{ date }}
+  date: Tillagd av {{ username }} den {{ date }}
   isCombo: Combo
   isNotCombo: Ej Combo
-  isBookable: Bokningsbart
-  isNotBookable: Ej bokningsbart
+  isBookable: Bokningsbar
+  isNotBookable: Ej bokningsbar
 
 booking:
   labels:
     field: Bokningar
     form: Lägg till en bokning
-  multiple: Boka för flera dagar
+  multiple: Boka flera dagar
   conflict: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
   date:
     start: Startdatum
@@ -53,5 +53,5 @@ booking:
     start: Starttid
     end: Sluttid
   title: Ge ett namn
-  description: Notera, användning, syfte ..
+  description: Notera exempelvis användning, syfte…
   submit: Boka
