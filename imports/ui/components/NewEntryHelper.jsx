@@ -1,13 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Alert, AlertTitle, AlertDescription, Box, Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { StateContext } from '../LayoutContainer';
 
 function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListing = false }) {
+  const { currentHost } = useContext(StateContext);
+  const location = useLocation();
   const [tc] = useTranslation('common');
+
+  const activeMenuItem = currentHost?.settings?.menu?.find((item) =>
+    location?.pathname?.split('/').includes(item.name)
+  );
+
   const titleGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.title')
-    : tc('message.newentryhelper.title');
+    : tc('message.newentryhelper.title', { listing: activeMenuItem?.label });
 
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')

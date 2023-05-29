@@ -88,7 +88,7 @@ message:
     min: '{{ field }} has to be at least {{ min }} characters'
 
   newentryhelper:
-    title: New Entry
+    title: New Entry in {{ listing }}
     description: Create your entry and publish here in this listing
     button: Create new entry
     bio:

@@ -88,7 +88,7 @@ message:
     min: '{{ field }} minimum {{ min }} karakterden oluşmalı'
 
   newentryhelper:
-    title: Yeni İçerik
+    title: '{{ listing }} içinde yeni içerik'
     description: Yeni içerik oluştur ve bu sayfada listele
     button: Yeni içerik oluştur
     bio:

@@ -88,7 +88,7 @@ message:
     min: '{{ field }} måste bestå av minst {{ min }} tecken'
 
   newentryhelper:
-    title: Nytt inlägg
+    title: Nytt inlägg i {{ listing }}
     description: Skapa ditt inlägg och publicera i den här listan
     button: Skapa
     bio:
