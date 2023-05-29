@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
-import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 import PagesList from '../../components/PagesList';
@@ -19,6 +19,7 @@ function Page() {
   const [pages, setPages] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { pageId } = useParams();
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     Meteor.call('getPages', (error, respond) => {
@@ -53,7 +54,7 @@ function Page() {
       <Center p="2">
         <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
           <Button as="span" variant="ghost" size="sm">
-            <Trans i18nKey="common:actions.update" />
+            <Text>{tc('actions.update')}</Text>
           </Button>
         </Link>
       </Center>
@@ -91,7 +92,7 @@ function Page() {
           </Box>
           {isAdmin && (
             <Box ml="8">
-              <NewEntryHelper buttonLink="/pages/new" />
+              <NewEntryHelper title={tc('labels.newPage')} buttonLink="/pages/new" />
             </Box>
           )}
         </Flex>

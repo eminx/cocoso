@@ -38,6 +38,7 @@ labels:
   bookings: Bookings
   newBooking: New Booking
   page: Page
+  newPage: New Page
   process: Process
   remove: Remove
   info: Info
