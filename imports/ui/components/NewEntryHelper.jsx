@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Alert, AlertTitle, AlertDescription, Box, Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
+
 import { StateContext } from '../LayoutContainer';
 
 function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListing = false }) {
@@ -36,11 +38,12 @@ function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListi
         variant="subtle"
       >
         <AlertTitle mt={4} mb={1} fontSize="lg">
-          {title || titleGeneric}
+          {title ? renderHTML(title) : titleGeneric && renderHTML(titleGeneric)}
         </AlertTitle>
 
         <AlertDescription maxWidth="sm">
-          {children || descriptionGeneric}
+          {(children && renderHTML(children)) ||
+            (descriptionGeneric && renderHTML(descriptionGeneric))}
           <Center py="4">
             <Link to={buttonLink}>
               <Button colorScheme="green" as="span">
