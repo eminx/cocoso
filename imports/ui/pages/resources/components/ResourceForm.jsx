@@ -207,7 +207,9 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
             <Controller
               control={control}
               name="description"
-              render={({ field }) => <ReactQuill {...field} placeholder={t('form.desc.holder')} />}
+              render={({ field }) => (
+                <ReactQuill {...field} placeholder={t('form.description.holder')} />
+              )}
             />
           </FormField>
 
