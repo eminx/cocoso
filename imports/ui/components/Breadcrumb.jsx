@@ -4,7 +4,7 @@ import { Box, Flex, Link as CLink, Text } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
 
-export default function Breadcrumb({ furtherItems }) {
+export default function Breadcrumb({ furtherItems, ...otherProps }) {
   const { currentHost, isDesktop } = useContext(StateContext);
   const location = useLocation();
   const { menu, name } = currentHost?.settings;
@@ -15,7 +15,7 @@ export default function Breadcrumb({ furtherItems }) {
     menu.find((item) => item.name === pathItems[1] || item.name === pathItems[2]);
 
   return (
-    <Box fontSize="130%">
+    <Box fontSize="130%" {...otherProps}>
       <Flex wrap="wrap">
         <Link to="/">
           <CLink as="span" color="#06c" fontWeight="bold">

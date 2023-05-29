@@ -1010,7 +1010,7 @@ class Process extends Component {
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
-        <Breadcrumb />
+        <Breadcrumb p="4" />
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}

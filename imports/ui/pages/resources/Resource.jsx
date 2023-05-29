@@ -159,7 +159,7 @@ function ResourcePage() {
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Breadcrumb />
+      <Breadcrumb p="4" />
       <Tably
         adminMenu={role === 'admin' ? adminMenu : null}
         images={resource.images}

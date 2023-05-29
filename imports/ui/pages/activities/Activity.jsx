@@ -503,7 +503,7 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        {!hideBreadcrumb && <Breadcrumb />}
+        {!hideBreadcrumb && <Breadcrumb p="4" />}
 
         <Tably
           action={this.getDatesForAction()}

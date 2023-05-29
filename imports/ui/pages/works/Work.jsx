@@ -113,7 +113,7 @@ function Work() {
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
-      <Breadcrumb />
+      <Breadcrumb p="4" />
       <Tably
         adminMenu={isOwner ? adminMenu : null}
         author={{
