@@ -117,7 +117,7 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
         }}
       >
         <Flex>
-          {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop />}
+          {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
           <Box id="main-viewport" flexGrow="2">
             <Box w="100%">

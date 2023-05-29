@@ -14,7 +14,7 @@ const getRoute = (item, index) => {
   return `/${item.name}`;
 };
 
-export default function MenuDrawer({ currentHost, isDesktop }) {
+export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
@@ -96,6 +96,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
           <MenuContent
             menuItems={menuItems}
             isPortalHost={currentHost?.isPortalHost}
+            platform={platform}
             tc={tc}
             onToggle={onToggle}
           />
@@ -108,7 +109,7 @@ export default function MenuDrawer({ currentHost, isDesktop }) {
   );
 }
 
-function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
+function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -139,7 +140,7 @@ function MenuContent({ menuItems, isPortalHost, onToggle, tc }) {
       )}
       {isPortalHost && (
         <Text fontSize="xs" color="gray.700">
-          <em>{tc('domains.platform')}</em>
+          <em>{tc('domains.platform', { platform: platform?.name })}</em>
         </Text>
       )}
       {isPortalHost && (
