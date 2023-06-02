@@ -113,8 +113,8 @@ class NewActivity extends PureComponent {
     const { isPublicActivity, uploadableImage, selectedResource } = this.state;
     const formValues = {
       ...values,
-      resource: selectedResource.label,
-      resourceIndex: selectedResource.resourceIndex,
+      resource: selectedResource?.label,
+      resourceIndex: selectedResource?.resourceIndex,
     };
 
     if (isPublicActivity && !uploadableImage) {
