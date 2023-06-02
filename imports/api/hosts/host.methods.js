@@ -66,6 +66,12 @@ Meteor.methods({
     }
   },
 
+  getCurrentHost() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    return currentHost;
+  },
+
   getAllHosts() {
     const hosts = Hosts.find().fetch();
     return hosts.map((host, index) => ({
