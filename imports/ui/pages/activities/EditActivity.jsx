@@ -111,9 +111,9 @@ class EditActivity extends PureComponent {
     const formValues = { ...values };
     if (values.resourceId) {
       const selectedResource = resources.find((r) => r._id === values.resourceId);
-      formValues.resource = selectedResource.label;
-      formValues.resourceId = selectedResource._id;
-      formValues.resourceIndex = selectedResource.resourceIndex;
+      formValues.resource = selectedResource?.label;
+      formValues.resourceId = selectedResource?._id;
+      formValues.resourceIndex = selectedResource?.resourceIndex;
     }
 
     this.setState(
