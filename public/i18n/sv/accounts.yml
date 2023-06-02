@@ -1,5 +1,5 @@
 actions:
-  signup: Bli Medlem
+  signup: Registrera
   login: Logga in
   logout: Logga ut
   forgot: Glömt ditt lösenord?
