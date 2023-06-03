@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { onPageLoad } from 'meteor/server-render';
 import React from 'react';
 import { StaticRouter } from 'react-router';
-import { renderToNodeStream } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { Accounts } from 'meteor/accounts-base';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
@@ -12,21 +12,21 @@ import routes from '../../ui/pages/Routes';
 import './api';
 import './migrations';
 
-Meteor.startup(() => {
-  const smtp = Meteor.settings.mailCredentials.smtp;
+// Meteor.startup(() => {
+const smtp = Meteor.settings.mailCredentials.smtp;
 
-  process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${smtp.password}@${
-    smtp.host
-  }:${smtp.port}`;
-  Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.from = () => smtp.fromEmail;
-  Accounts.emailTemplates.resetPassword.text = function (user, url) {
-    const newUrl = url.replace('#/', '');
-    return `To reset your password, simply click the link below. ${newUrl}`;
-  };
-});
+process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${smtp.password}@${
+  smtp.host
+}:${smtp.port}`;
+Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
+Accounts.emailTemplates.from = () => smtp.fromEmail;
+Accounts.emailTemplates.resetPassword.text = function (user, url) {
+  const newUrl = url.replace('#/', '');
+  return `To reset your password, simply click the link below. ${newUrl}`;
+};
+// });
 
-export const render = async (sink) => {
+const render = async (sink) => {
   const context = {};
 
   const WrappedApp = (
@@ -35,18 +35,20 @@ export const render = async (sink) => {
     </StaticRouter>
   );
 
-  const sheet = new ServerStyleSheet();
   try {
-    const appJSX = sheet.collectStyles(WrappedApp);
-    const htmlStream = sheet.interleaveWithNodeStream(renderToNodeStream(appJSX));
-    sink.renderIntoElementById('render-target', htmlStream);
+    const sheet = new ServerStyleSheet();
 
-    // const html = renderToString(sheet.collectStyles(WrappedApp));
-    // const helmet = Helmet.renderStatic();
-    // sink.appendToHead(helmet.title.toString());
-    // sink.appendToHead(sheet.getStyleTags());
+    // const appJSX = sheet.collectStyles(WrappedApp);
+    // const htmlStream = sheet.interleaveWithNodeStream(renderToNodeStream(appJSX));
+    // sink.renderIntoElementById('render-target', htmlStream);
 
-    // sink.renderIntoElementById('render-target', html);
+    const html = renderToString(sheet.collectStyles(WrappedApp));
+    const helmet = Helmet.renderStatic();
+    sink.appendToHead(helmet.title.toString());
+    sink.appendToHead(helmet.meta.toString());
+    sink.appendToHead(sheet.getStyleTags());
+    // sink.appendToBody(WrappedApp);
+    sink.renderIntoElementById('render-target', html);
 
     // sink.appendToBody(`
     // <script>
