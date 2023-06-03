@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Router, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { Progress } from '@chakra-ui/react';
 
 import Home from '../Home';
@@ -15,7 +15,7 @@ import Terms from '../components/Terms';
 import Communities from '../pages/hosts/Communities';
 
 // ROUTES
-const browserHistory = createBrowserHistory();
+const browserHistory = createMemoryHistory();
 
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
@@ -54,7 +54,7 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 
 export default function () {
   return (
-    <Router history={browserHistory}>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <LayoutContainer history={browserHistory}>
           <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
@@ -110,6 +110,6 @@ export default function () {
           </Suspense>
         </LayoutContainer>
       </Switch>
-    </Router>
+    </BrowserRouter>
   );
 }

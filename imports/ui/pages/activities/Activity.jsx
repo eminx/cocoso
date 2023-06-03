@@ -3,7 +3,7 @@ import React, { PureComponent, forwardRef } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
-import ReactToPrint from 'react-to-print';
+// import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';

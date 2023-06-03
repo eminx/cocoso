@@ -32,3 +32,4 @@ force-ssl-custom              # Require this application to use HTTPS
 percolate:migrations
 webapp
 ostrio:spiderable-middleware
+server-render

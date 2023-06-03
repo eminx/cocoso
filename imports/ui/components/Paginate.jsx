@@ -2,7 +2,7 @@ import { Center, Wrap } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
-import '../utils/styles/paginate.css';
+// import '../utils/styles/paginate.css';
 
 const defaultItemsPerPage = 12;
 

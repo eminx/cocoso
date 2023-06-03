@@ -1,11 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+import { onPageLoad } from 'meteor/server-render';
+import React from 'react';
+import { StaticRouter } from 'react-router';
+import { renderToNodeStream } from 'react-dom/server';
 import { Accounts } from 'meteor/accounts-base';
-import Spiderable from 'meteor/ostrio:spiderable-middleware';
+import { Helmet } from 'react-helmet';
+import { ServerStyleSheet } from 'styled-components';
+
+import routes from '../../ui/pages/Routes';
 
 import './api';
 import './migrations';
-
-const { ostrio } = Meteor.settings;
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
@@ -21,12 +26,37 @@ Meteor.startup(() => {
   };
 });
 
-if (ostrio) {
-  WebApp.connectHandlers.use(
-    new Spiderable({
-      rootURL: Meteor.absoluteUrl(),
-      serviceURL: ostrio.serviceURL,
-      auth: `${ostrio.APIUser}:${ostrio.APIPass}`,
-    })
+export const render = async (sink) => {
+  const context = {};
+
+  const WrappedApp = (
+    <StaticRouter location={sink.request.url} context={context}>
+      {routes}
+    </StaticRouter>
   );
-}
+
+  const sheet = new ServerStyleSheet();
+  try {
+    const appJSX = sheet.collectStyles(WrappedApp);
+    const htmlStream = sheet.interleaveWithNodeStream(renderToNodeStream(appJSX));
+    sink.renderIntoElementById('render-target', htmlStream);
+
+    // const html = renderToString(sheet.collectStyles(WrappedApp));
+    // const helmet = Helmet.renderStatic();
+    // sink.appendToHead(helmet.title.toString());
+    // sink.appendToHead(sheet.getStyleTags());
+
+    // sink.renderIntoElementById('render-target', html);
+
+    // sink.appendToBody(`
+    // <script>
+    //   window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
+    // </script>
+    // `);
+  } catch (e) {
+    /* eslint no-console:0 */
+    console.error(e);
+  }
+};
+
+onPageLoad(render);
