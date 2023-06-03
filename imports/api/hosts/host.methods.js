@@ -68,21 +68,29 @@ Meteor.methods({
 
   getCurrentHost() {
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    return currentHost;
+    try {
+      const currentHost = Hosts.findOne({ host });
+      return currentHost;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
   getAllHosts() {
-    const hosts = Hosts.find().fetch();
-    return hosts.map((host, index) => ({
-      name: host.settings.name,
-      logo: host.logo,
-      host: host.host,
-      city: host.settings.city,
-      country: host.settings.country,
-      createdAt: host.createdAt,
-      membersCount: host.members.length,
-    }));
+    try {
+      const hosts = Hosts.find().fetch();
+      return hosts.map((host, index) => ({
+        name: host.settings.name,
+        logo: host.logo,
+        host: host.host,
+        city: host.settings.city,
+        country: host.settings.country,
+        createdAt: host.createdAt,
+        membersCount: host.members.length,
+      }));
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 
   getHostMembers() {

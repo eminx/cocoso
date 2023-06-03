@@ -18,23 +18,24 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import 'moment/locale/sv';
+import 'moment/locale/tr';
 
-import Hosts from '../api/hosts/host';
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
-import 'moment/locale/sv';
-import 'moment/locale/tr';
+import { call } from './utils/shared';
 
 export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
-function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, history, children }) {
+function LayoutPage({ currentUser, userLoading, hostLoading, history, children }) {
   const [platform, setPlatform] = useState(null);
+  const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [platformDrawer, setPlatformDrawer] = useState(false);
   const [tc] = useTranslation('common');
@@ -42,22 +43,46 @@ function LayoutPage({ currentUser, currentHost, userLoading, hostLoading, histor
   const { pathname, search } = history.location;
 
   useEffect(() => {
-    Meteor.call('getPlatform', (error, respond) => {
-      setPlatform(respond);
-    });
+    getCurrentHost();
+    getPlatform();
   }, []);
 
   useEffect(() => {
-    Meteor.call('getAllHosts', (error, respond) => {
-      setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
-    });
+    getAllHosts();
   }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname.split('/')[1]]);
 
-  if (hostLoading || !currentHost) {
+  const getCurrentHost = async () => {
+    try {
+      const respond = await call('getCurrentHost');
+      setCurrentHost(respond);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPlatform = async () => {
+    try {
+      const respond = await call('getPlatform');
+      setPlatform(respond);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllHosts = async () => {
+    try {
+      const respond = await call('getAllHosts');
+      setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (!currentHost) {
     return (
       <ChakraProvider>
         <Box w="100%" h="100vh">
@@ -297,9 +322,9 @@ function HostItem({ host, tc }) {
 }
 
 export default withTracker((props) => {
-  const hostSub = Meteor.subscribe('currentHost');
-  const currentHost = Hosts ? Hosts.findOne() : null;
-  const hostLoading = !hostSub.ready();
+  // const hostSub = Meteor.subscribe('currentHost');
+  // const currentHost = Hosts ? Hosts.findOne() : null;
+  // const hostLoading = !hostSub.ready();
 
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
@@ -307,8 +332,9 @@ export default withTracker((props) => {
 
   return {
     currentUser,
-    currentHost,
+    // currentHost,
     userLoading,
-    hostLoading,
+    // hostLoading,
+    ...props,
   };
 })(LayoutPage);
