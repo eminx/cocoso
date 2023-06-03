@@ -33,7 +33,7 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
-  const { currentUser, currentHost, role } = useContext(StateContext);
+  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -45,7 +45,7 @@ export default function Menu() {
     if (!currentHost) {
       return;
     }
-    setLocalSettings(currentHost.settings);
+    setLocalSettings(currentHost?.settings);
     currentHost.settings && handleSetActiveMenu();
     setLoading(false);
   }, []);
@@ -100,6 +100,7 @@ export default function Menu() {
     setLoading(true);
     try {
       await call('updateHostSettings', localSettings);
+      getCurrentHost();
       message.success(tc('message.success.save', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);

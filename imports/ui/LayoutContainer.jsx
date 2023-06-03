@@ -139,6 +139,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, history, children }
           platform,
           role,
           userLoading,
+          getCurrentHost,
         }}
       >
         <Flex>

@@ -23,7 +23,7 @@ export default function Settings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, currentHost, isDesktop, role } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, role, getCurrentHost } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -51,7 +51,8 @@ export default function Settings({ history }) {
     }
 
     try {
-      call('updateHostSettings', values);
+      await call('updateHostSettings', values);
+      getCurrentHost();
       message.success(tc('message.success.update', { domain: tc('domains.settings') }));
     } catch (error) {
       message.error(error.reason);
@@ -85,6 +86,7 @@ export default function Settings({ history }) {
       const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
       const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
+      getCurrentHost();
       message.success(t('logo.message.success'));
     } catch (error) {
       console.error('Error uploading:', error);

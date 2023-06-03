@@ -1,7 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +13,6 @@ import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
-import Hosts from '../../../api/hosts/host';
 import UsageReport from '../../components/UsageReport';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
@@ -28,21 +25,25 @@ const compareUsersByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Members({ history, members, isLoading }) {
+function Members() {
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentUser, isDesktop, role } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
+  const history = useHistory();
 
-  if (isLoading) {
+  const { members } = currentHost;
+
+  if (!members) {
     return <Loader />;
   }
 
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
+      getCurrentHost();
       message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -56,6 +57,7 @@ function Members({ history, members, isLoading }) {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
+      getCurrentHost();
       message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -69,6 +71,7 @@ function Members({ history, members, isLoading }) {
   const setAsAdmin = async (user) => {
     try {
       await call('setAsAdmin', user.id);
+      getCurrentHost();
       message.success(t('message.success.admin', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -296,16 +299,4 @@ function MemberItem({ member, t }) {
   );
 }
 
-export default MembersContainer = withTracker((props) => {
-  const membersSubscription = Meteor.subscribe('members');
-  const currentHost = Hosts.findOne();
-  const isLoading = !membersSubscription.ready();
-  const currentUser = Meteor.user();
-  const members = currentHost.members ? currentHost.members.reverse() : [];
-
-  return {
-    isLoading,
-    currentUser,
-    members,
-  };
-})(Members);
+export default Members;
