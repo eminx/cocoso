@@ -402,8 +402,8 @@ class Activity extends PureComponent {
     return (
       <Flex pt="4">
         {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <Box mr="6">
-            <Link key={occurence.startDate} to={`/activities/${activityData._id}/dates`}>
+          <Box key={occurence.startDate + occurence.startT} mr="6">
+            <Link to={`/activities/${activityData._id}/dates`}>
               <Flex>
                 <Box>
                   <DateJust>{occurence.startDate}</DateJust>
