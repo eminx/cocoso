@@ -183,9 +183,9 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
                 <Header isSmallerLogo={!isHeaderAndFooter} />
 
-                {/* <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
+                <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
                   {children}
-                </Box> */}
+                </Box>
 
                 {isHeaderAndFooter && (
                   <Footer currentHost={currentHost} platform={platform} tc={tc} />
