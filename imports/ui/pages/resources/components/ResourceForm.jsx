@@ -7,6 +7,7 @@ import {
   Center,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Switch,
@@ -166,18 +167,24 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     <Box>
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
-          <FormControl display="flex" alignItems="center">
-            <Switch {...register('isBookable')} id="is-bookable-switch" />
-            <FormLabel htmlFor="is-bookable-switch" mb="0" ml="4">
-              {t('form.bookable.switch.label')}
-            </FormLabel>
+          <FormControl>
+            <Flex alignItems="center">
+              <Switch {...register('isBookable')} id="is-bookable-switch" />
+              <FormLabel htmlFor="is-bookable-switch" my="0" ml="4">
+                {t('form.bookable.switch.label')}
+              </FormLabel>
+            </Flex>
+            <FormHelperText color="#585858">{t('form.bookable.switch.helper')}</FormHelperText>
           </FormControl>
 
-          <FormControl display="flex" alignItems="center">
-            <Switch {...register('isCombo')} isDisabled={isEditMode} id="is-combo-switch" />
-            <FormLabel htmlFor="is-combo-switch" mb="0" ml="4">
-              {t('form.combo.switch.label')}
-            </FormLabel>
+          <FormControl>
+            <Flex alignItems="center">
+              <Switch {...register('isCombo')} isDisabled={isEditMode} id="is-combo-switch" />
+              <FormLabel htmlFor="is-combo-switch" my="0" ml="4">
+                {t('form.combo.switch.label')}
+              </FormLabel>
+            </Flex>
+            <FormHelperText color="#585858">{t('form.combo.switch.helper')}</FormHelperText>
           </FormControl>
 
           {isCombo && (

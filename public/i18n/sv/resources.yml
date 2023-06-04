@@ -12,9 +12,11 @@ form:
   bookable:
     switch:
       label: Bokningsbart
+      helper: Aktivera detta om du vill att objektet ska kunna bokas i kalendern
   combo:
     switch:
       label: Combo
+      helper: Combo betyder "Kombination" av flera andra objekt i denna lista. Det kommer att göra det enklare för användare att boka flera objekt samtidigt. Bokningar kommer att visas i kalendern.
     select:
       holder: Välj alternativ
       helper: Välj flera objekt för att skapa en kombinationsobjekt

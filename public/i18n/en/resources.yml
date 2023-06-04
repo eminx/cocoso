@@ -12,9 +12,11 @@ form:
   bookable:
     switch:
       label: Bookable
+      helper: Toggle this on if you want this item to be bookable to appear in the calendar
   combo:
     switch:
       label: Combo
+      helper: Combo means "Combination" of several other items in this listing. It will make it easier for users to book several items at once. Bookings will appear in the calendar accordingly.
     select:
       holder: Select option
       helper: Please select multiple items to create a combo item
