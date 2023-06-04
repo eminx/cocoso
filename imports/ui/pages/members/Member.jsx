@@ -118,7 +118,7 @@ function MemberPublic({ history, match, path }) {
 
   return (
     <>
-      <Box py="4" px={isDesktop ? '6' : '4'} fontSize="130%">
+      <Box py="4" px="4" fontSize="130%">
         <Flex wrap="wrap">
           <Link to="/">
             <CLink as="span" color="#06c" fontWeight="bold">
@@ -137,7 +137,7 @@ function MemberPublic({ history, match, path }) {
       </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem p={isDesktop ? '2' : '0'}>
+        <GridItem>
           <MemberAvatarEtc t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>
