@@ -103,7 +103,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
     }
     try {
       await call('deleteActivity', bookingId);
-      message.success(tc('message.success.remove', { domain: tc('domains.activity') }));
+      message.success(tc('message.success.remove'));
       getResourceBookingsForUser();
     } catch (error) {
       message.error(error.reason);
@@ -147,11 +147,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
     try {
       await call('createActivity', activityValues);
-      message.success(
-        tc('message.success.create', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.create'));
       setAccordionOpen(false);
       getResourceBookingsForUser();
     } catch (error) {

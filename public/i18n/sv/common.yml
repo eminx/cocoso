@@ -67,10 +67,10 @@ message:
   loading: läser in {{ something }} ...
 
   success:
-    create: '{{ domain }} har skapats'
-    update: '{{ domain }} har uppdaterats'
-    remove: '{{ domain }} har raderats'
-    save: '{{ domain }} har sparats'
+    create: Ditt objekt har skapats
+    update: Ditt objekt har uppdaterats
+    remove: Ditt objekt har raderats
+    save: Ditt objekt har sparats
     leave: Ditt medlemskap hos {{ host }} avslutas
 
   error:

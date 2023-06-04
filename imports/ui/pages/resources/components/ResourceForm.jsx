@@ -102,11 +102,11 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
     try {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
-        message.success(tc('message.success.update', { domain: tc('domains.resource') }));
+        message.success(tc('message.success.update'));
         history.push(`/resources/${defaultValues._id}`);
       } else {
         const newResource = await call('createResource', values);
-        message.success(tc('message.success.create', { domain: tc('domains.resource') }));
+        message.success(tc('message.success.create'));
         if (newResource) {
           history.push(`/resources/${newResource}`);
         }

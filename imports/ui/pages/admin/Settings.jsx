@@ -53,7 +53,7 @@ export default function Settings({ history }) {
     try {
       await call('updateHostSettings', values);
       getCurrentHost();
-      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
+      message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

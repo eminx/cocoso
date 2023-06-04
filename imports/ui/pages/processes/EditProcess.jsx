@@ -100,7 +100,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('updateProcess', process._id, formValues, imageUrl);
-      message.success(tc('message.success.update', { domain: tc('domains.process') }));
+      message.success(tc('message.success.update'));
       this.setState({
         isSuccess: true,
       });
@@ -119,7 +119,7 @@ class EditProcess extends React.Component {
 
     try {
       await call('deleteProcess', processId);
-      message.success(tc('message.success.remove', { domain: tc('domains.process') }));
+      message.success(tc('message.success.remove'));
       this.setState({ isSuccess: true });
     } catch (error) {
       console.log(error);

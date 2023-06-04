@@ -67,10 +67,10 @@ message:
   loading: '{{ something }} yükleniyor...'
 
   success:
-    create: '{{ domain }} oluşturuldu'
-    update: '{{ domain }} güncellendi'
-    remove: '{{ domain }} silindi'
-    save: '{{ domain }} kaydedildi'
+    create: Öğen oluşturuldu
+    update: Öğen güncellendi
+    remove: Öğen silindi
+    save: Öğen kaydedildi
     leave: '{{ host }} topluluğundaki üyeliğin sonlandırıldı'
 
   error:

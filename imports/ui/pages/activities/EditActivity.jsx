@@ -80,17 +80,9 @@ class EditActivity extends PureComponent {
   successEditMessage = (isDeleted) => {
     const { tc } = this.props;
     if (isDeleted) {
-      message.success(
-        tc('message.success.remove', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.remove'));
     } else {
-      message.success(
-        tc('message.success.update', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.update'));
     }
   };
 

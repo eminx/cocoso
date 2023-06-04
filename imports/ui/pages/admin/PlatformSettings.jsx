@@ -63,7 +63,7 @@ export default function PlatformSettings({ history }) {
 
     try {
       call('updatePlatformSettings', formValues);
-      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
+      message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -117,7 +117,7 @@ export default function PlatformSettings({ history }) {
 
     try {
       call('updatePlatformSettings', formValues);
-      message.success(tc('message.success.update', { domain: tc('domains.settings') }));
+      message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

@@ -136,11 +136,7 @@ function EditProfile({ history }) {
         message.error(error.reason);
         return;
       }
-      message.success(
-        tc('message.success.remove', {
-          domain: `${tc('domains.account')}`,
-        })
-      );
+      message.success(tc('message.success.remove'));
       history.push('/');
     });
   };

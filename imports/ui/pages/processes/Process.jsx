@@ -309,11 +309,7 @@ class Process extends Component {
 
     try {
       await call('createActivity', activityValues);
-      message.success(
-        tc('message.success.create', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.create'));
     } catch (error) {
       message.error(error.reason);
     }

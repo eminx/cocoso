@@ -41,7 +41,7 @@ function EditResourcePage({ history }) {
   const deleteResource = async (resourceId) => {
     try {
       await call('deleteResource', resourceId);
-      message.success(tc('message.success.remove', { domain: tc('domains.resource') }));
+      message.success(tc('message.success.remove'));
       history.push('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
