@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -34,13 +34,15 @@ export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
-function LayoutPage({ currentUser, userLoading, hostLoading, history, children }) {
+function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [platform, setPlatform] = useState(null);
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [platformDrawer, setPlatformDrawer] = useState(false);
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
+  const history = useHistory();
+
   const { pathname, search } = history.location;
 
   useEffect(() => {
@@ -181,9 +183,9 @@ function LayoutPage({ currentUser, userLoading, hostLoading, history, children }
 
                 <Header isSmallerLogo={!isHeaderAndFooter} />
 
-                <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
+                {/* <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
                   {children}
-                </Box>
+                </Box> */}
 
                 {isHeaderAndFooter && (
                   <Footer currentHost={currentHost} platform={platform} tc={tc} />
@@ -356,9 +358,9 @@ export default withTracker((props) => {
   // const currentHost = Hosts ? Hosts.findOne() : null;
   // const hostLoading = !hostSub.ready();
 
-  const meSub = Meteor.subscribe('me');
-  const currentUser = Meteor.user();
-  const userLoading = !meSub.ready();
+  const meSub = Meteor.isClient && Meteor.subscribe('me');
+  const currentUser = Meteor.isClient && Meteor.user();
+  const userLoading = meSub && !meSub.ready();
 
   return {
     currentUser,
