@@ -11,7 +11,6 @@ import ActivityRoutes from './activities/ActivityRoutes';
 import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
-
 import Communities from '../pages/hosts/Communities';
 
 // ROUTES
@@ -49,7 +48,6 @@ const NewHost = lazy(() => import('./hosts/NewHost'));
 
 // NotFound
 const NotFoundPage = lazy(() => import('./NotFoundPage'));
-
 const MyActivities = lazy(() => import('./activities/MyActivities'));
 
 export default function () {
