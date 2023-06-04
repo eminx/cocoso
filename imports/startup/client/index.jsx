@@ -8,7 +8,7 @@ import { Progress } from '@chakra-ui/react';
 import '../i18n';
 import Routes from '../../ui/pages/Routes';
 
-const browserHistory = createMemoryHistory();
+// const browserHistory = createMemoryHistory();
 
 onPageLoad(() => {
   const container = document.getElementById('root');
@@ -16,7 +16,7 @@ onPageLoad(() => {
 
   root.render(
     <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
-      <BrowserRouter history={browserHistory}>
+      <BrowserRouter>
         <Routes />
       </BrowserRouter>
     </Suspense>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { createRoot } from 'react-dom/client';
 import {
   Alert as CAlert,
   AlertIcon,
@@ -10,6 +11,15 @@ import {
 } from '@chakra-ui/react';
 
 import { chakraTheme } from '../utils/constants/theme';
+
+const { ToastContainer, toast } = createStandaloneToast({ theme: chakraTheme });
+
+const toastContainer = document.getElementById('toast-root');
+createRoot(toastContainer).render(
+  <>
+    <ToastContainer />
+  </>
+);
 
 const timeOutTime = 5;
 
@@ -29,8 +39,6 @@ const Alert = ({ children, isClosable, message, type = 'error', ...otherProps })
     </Box>
   );
 };
-
-const toast = createStandaloneToast({ theme: chakraTheme });
 
 const renderToast = (status, text, duration) => {
   toast({
