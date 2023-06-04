@@ -83,6 +83,12 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const onSubmit = async (formValues) => {
+    const { isCombo } = formValues;
+    if (isCombo && (!resourcesForCombo || resourcesForCombo.length < 2)) {
+      message.error(t('messages.comborequires'));
+      return;
+    }
+
     const values = {
       ...formValues,
       resourcesForCombo: resourcesForCombo || [],

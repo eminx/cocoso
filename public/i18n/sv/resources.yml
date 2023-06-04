@@ -4,7 +4,8 @@ label: Resurser
 all: Alla
 
 messages:
-  notfound: Ingen resurs hittades
+  notfound: Ingen objekt hittades
+  comborequires:
 
 form:
   holder: skriv
@@ -13,10 +14,10 @@ form:
       label: Bokningsbart
   combo:
     switch:
-      label: Combo resurs
+      label: Combo
     select:
       holder: Välj alternativ
-      helper: Välj flera resurser för att skapa en kombinationsresurs
+      helper: Välj flera objekt för att skapa en kombinationsobjekt
   name:
     label: Namn
     holder: Sound Studio
@@ -45,7 +46,7 @@ booking:
     field: Bokningar
     form: Lägg till en bokning
   multiple: Boka flera dagar
-  conflict: 'Det finns redan en bokning för den här resursen vid detta datum och tid:'
+  conflict: 'Det finns redan en bokning för detta objekt vid detta datum och tid: '
   date:
     start: Startdatum
     end: Slutdatum

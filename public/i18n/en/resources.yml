@@ -4,7 +4,8 @@ label: Resources
 all: All
 
 messages:
-  notfound: No resource found
+  notfound: No item found
+  comborequires: Please select at least two items to compose a combo item. Or please toggle off "Combo" to compose a non-combo item
 
 form:
   holder: type
@@ -13,10 +14,10 @@ form:
       label: Bookable
   combo:
     switch:
-      label: Combo Resource
+      label: Combo
     select:
       holder: Select option
-      helper: Please select multiple resources to create a combo resource
+      helper: Please select multiple items to create a combo item
   name:
     label: Name
     holder: Sound Studio
@@ -46,7 +47,7 @@ booking:
     field: Bookings
     form: Add a Booking
   multiple: Book for multiple days
-  conflict: "There's already a booking for this resource at this date & time: "
+  conflict: "There's already a booking for this item at this date & time: "
   date:
     start: Start date
     end: Finish date

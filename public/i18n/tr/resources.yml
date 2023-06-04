@@ -4,7 +4,8 @@ label: Kaynaklar
 all: Tümü
 
 messages:
-  notfound: Kaynak bulunamadı
+  notfound: Öğe bulunamadı
+  comborequires: Kombo öğe oluşturmak için lütfen en az iki normal öğe seçin. Veya kombo olmayan bir öğe oluşturmak için lütfen "Kombo" seçeneğini kaldırın
 
 form:
   holder: tipi
@@ -13,10 +14,10 @@ form:
       label: Ayrılabilir
   combo:
     switch:
-      label: Kombo kaynak
+      label: Kombo
     select:
       holder: Seçenek seç
-      helper: Kombo kaynak oluşturmak için lütfen birden çok kaynak seç
+      helper: Kombo öğe oluşturmak için lütfen birden çok öğe seç
   name:
     label: İsim
     holder: Ses stüdyosu...
@@ -45,7 +46,7 @@ booking:
     field: Rezervasyonlar
     form: Rezervasyon ekle
   multiple: Birkaç günlük rezervasyon yap
-  conflict: 'Bu tarih ve saatte bu kaynak için zaten bir ayırma var: '
+  conflict: 'Bu tarih ve saatte bu öğe için zaten bir ayırma var: '
   date:
     start: Başlama günü
     end: Bitiş günü
