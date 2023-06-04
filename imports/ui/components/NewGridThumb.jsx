@@ -21,7 +21,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   // const width = dimensions ? (dimensions.width * imageHeight) / dimensions.height : imageHeight;
 
   return (
-    <Box my="4" mx="5">
+    <Box my="4" mx="4">
       <Box className="text-link-container" position="relative" maxWidth={420} minWidth={280}>
         {/* <Flex flexDirection="column"> */}
         <Box mb="2" bg="gray.50">
