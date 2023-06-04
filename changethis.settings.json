@@ -1,6 +1,7 @@
 {
   "public": {
-    "name": "Cocoso"
+    "name": "Cocoso",
+    "iconsBaseUrl": "url-where-you-have-uploaded-your-favicon-and-other-icons"
   },
   "AWSs3": {
     "AWSAccessKeyId": "your-aws-access-key-id",
