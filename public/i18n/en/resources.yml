@@ -5,7 +5,7 @@ all: All
 
 messages:
   notfound: No item found
-  comborequires: Please select at least two items to compose a combo item. Or please toggle off "Combo" to compose a non-combo item
+  comborequires: Välj minst två objekt för att skapa ett kombinerat objekt. Eller vänligen stäng av "Kombo" för att komponera ett icke-komboobjekt
 
 form:
   holder: type
