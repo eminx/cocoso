@@ -123,11 +123,7 @@ function EditPage() {
 
     try {
       await call('updatePage', page._id, formValues, imagesReadyToSave);
-      message.success(
-        tc('message.success.create', {
-          domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.create'));
       history.push(`pages/${parseTitle(formValues.title)}`);
     } catch (error) {
       setIsUpdating(false);
@@ -154,11 +150,7 @@ function EditPage() {
 
     try {
       await call('deletePage', page._id);
-      message.success(
-        tc('message.success.remove', {
-          domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.remove'));
       history.push('/pages');
     } catch (error) {
       console.log(error);

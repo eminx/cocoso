@@ -19,9 +19,9 @@ form:
   private:
     label: Privat (endast för inbjudningar)
     tooltip:
-      title: Privata processer
-      P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
-      P2: Du kommer hantera inbjudningarna efter att du har skapat processen.
+      title: Privata objekt
+      P1: Privata objekt är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
+      P2: Du kommer hantera inbjudningarna efter att du har skapat objektet.
   title:
     label: Titel
     holder: Att förstå Benjamin
@@ -43,12 +43,12 @@ form:
   waiting: Skapar din process...
 
 message:
-  archived: Processen har arkiverats
-  unarchived: Processen har avarkiverats
+  archived: Ditt objekt har arkiverats
+  unarchived: Ditt objekt har avarkiverats
 
   joined: Du är redan medlem!
-  added: Du är nu med i processen
-  removed: Du tas bort från processen
+  added: Du är nu med i objektet
+  removed: Du tas bort från objektet
 
 actions:
   this: Gå med
@@ -62,13 +62,13 @@ meeting:
     remove: Du har avregistrerat dig!
     register: Din närvaro har registrerats!
   access:
-    join: Gå med i processen för att delta i möten
-    logged: Logga in och gå med i processen för att delta i mötet
+    join: Gå med för att delta i möten
+    logged: Logga in och gå med för att delta i mötet
     remove: Vi ber om ursäkt. För närvarande kan du inte ta bort möten som har deltagare registrerade.
   success:
     add: Mötet har lagts till!
     remove: Mötet har tagits bort
-    fileDropper: har laddats upp till den här gruppen/processen!
+    fileDropper: har laddats upp till den här objektet!
     admin: Ny admin har lagts till
   actions:
     remove: Ta bort det här mötet

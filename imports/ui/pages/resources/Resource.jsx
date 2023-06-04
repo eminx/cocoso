@@ -110,7 +110,9 @@ function ResourcePage() {
         content: (
           <Wrap>
             {resource.resourcesForCombo.map((res, i) => (
-              <Badge fontSize="16px">{res.label}</Badge>
+              <Badge key={res._id} fontSize="16px">
+                {res.label}
+              </Badge>
             ))}
           </Wrap>
         ),

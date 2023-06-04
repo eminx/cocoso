@@ -41,12 +41,7 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box
-      px={isDesktop ? '6' : '2'}
-      py={isDesktop ? '4' : '2'}
-      mt={isDesktop || !isSmallerLogo ? '4' : '2'}
-      w="100%"
-    >
+    <Box p={isDesktop ? '4' : '2'} mt={isDesktop || !isSmallerLogo ? '4' : '2'} w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box>
           <Link to="/">

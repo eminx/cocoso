@@ -116,11 +116,7 @@ class NewWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(
-        i18n.t('common:message.success.create', {
-          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
-        })
-      );
+      message.success(i18n.t('common:message.success.create'));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

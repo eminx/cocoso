@@ -207,7 +207,7 @@ export default function ProcessesList({ history }) {
 
       {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
 
-      <Box px={isDesktop ? '1' : '0'}>
+      <Box>
         <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
           {(process) => (
             <Box key={process._id}>

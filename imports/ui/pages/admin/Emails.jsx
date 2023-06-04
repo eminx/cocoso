@@ -73,7 +73,7 @@ function Emails({ history }) {
     try {
       await call('updateEmail', emailIndex, values);
       getEmails();
-      message.success(tc('message.success.update', { domain: tc('domains.email') }));
+      message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {

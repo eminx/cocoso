@@ -35,7 +35,7 @@ function FiltrerSorter(props) {
   // }
 
   return (
-    <Accordion mb={isDesktop ? '0' : '2'} px="2" w={isDesktop ? '2xl' : '100%'} allowToggle>
+    <Accordion mb={isDesktop ? '0' : '2'} w={isDesktop ? '2xl' : '100%'} allowToggle>
       <AccordionItem>
         <AccordionButton>
           <Box flex="1" textAlign="left">

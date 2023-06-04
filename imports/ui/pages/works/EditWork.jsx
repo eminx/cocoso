@@ -164,11 +164,7 @@ class EditWork extends PureComponent {
         isCreating: false,
         isSuccess: true,
       });
-      message.success(
-        i18n.t('common:message.success.update', {
-          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
-        })
-      );
+      message.success(i18n.t('common:message.success.update'));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -211,11 +207,7 @@ class EditWork extends PureComponent {
         isLoading: false,
       });
       history.push(`/@${currentUser.username}/works`);
-      message.success(
-        i18n.t('common:message.success.remove', {
-          domain: `${i18n.t('common:domains.your')} ${i18n.t('common:domains.work').toLowerCase()}`,
-        })
-      );
+      message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isLoading: false });

@@ -11,6 +11,7 @@ import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
 import Breadcrumb from '../../components/Breadcrumb';
+import DocumentsField from '../resources/components/DocumentsField';
 
 function Work() {
   const [work, setWork] = useState(null);
@@ -83,6 +84,11 @@ function Work() {
         </Box>
       ),
       path: `/@${work.authorUsername}/works/${work._id}/extra`,
+    },
+    {
+      title: tc('documents.label'),
+      content: <DocumentsField contextType="works" contextId={work?._id} />,
+      path: `/@${work.authorUsername}/works/${work._id}/documents`,
     },
     {
       title: tc('labels.contact'),

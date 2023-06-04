@@ -17,6 +17,7 @@ import {
   uploadImage,
 } from '../../utils/shared';
 import { message, Alert } from '../../components/message';
+import { StateContext } from '../../LayoutContainer';
 
 const formModel = {
   resourceId: '',
@@ -79,17 +80,9 @@ class EditActivity extends PureComponent {
   successEditMessage = (isDeleted) => {
     const { tc } = this.props;
     if (isDeleted) {
-      message.success(
-        tc('message.success.remove', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.remove'));
     } else {
-      message.success(
-        tc('message.success.update', {
-          domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.update'));
     }
   };
 
@@ -201,6 +194,7 @@ class EditActivity extends PureComponent {
       await call('updateActivity', activity._id, values);
       this.setState({ isSuccess: true });
     } catch (error) {
+      message.error(error.error || error.reason);
       this.setState({
         isLoading: false,
         isError: true,
@@ -326,12 +320,13 @@ class EditActivity extends PureComponent {
 
   render() {
     const { activity, currentUser, resources, tc, t } = this.props;
+    const { role } = this.context;
 
     if (!currentUser || !activity) {
       return <Loader />;
     }
 
-    if (activity.authorId !== currentUser._id) {
+    if (activity.authorId !== currentUser._id && role !== 'admin') {
       return <Alert message={tc('message.access.deny')} />;
     }
 
@@ -435,5 +430,7 @@ class EditActivity extends PureComponent {
     );
   }
 }
+
+EditActivity.contextType = StateContext;
 
 export default EditActivity;

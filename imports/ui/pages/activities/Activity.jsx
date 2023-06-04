@@ -368,12 +368,6 @@ class Activity extends PureComponent {
     );
   };
 
-  isAdmin = () => {
-    const { activityData, t } = this.props;
-    const { currentUser } = this.context;
-    return currentUser && activityData && currentUser._id === activityData.authorId;
-  };
-
   removeNotification = (messageIndex) => {
     const { activityData, t } = this.props;
     const { currentUser } = this.context;
@@ -424,7 +418,7 @@ class Activity extends PureComponent {
 
   render() {
     const { activityData, isLoading, hideBreadcrumb, t, tc } = this.props;
-    const { currentUser } = this.context;
+    const { currentUser, role } = this.context;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -496,7 +490,7 @@ class Activity extends PureComponent {
     };
 
     const tags = [activityData.resource];
-    const isAdmin = currentUser && currentUser._id === activityData.authorId;
+    const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
 
     return (
       <>

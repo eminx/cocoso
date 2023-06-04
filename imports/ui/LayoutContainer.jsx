@@ -20,6 +20,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
+import Favicon from 'react-favicon';
 
 import FeedbackForm from './components/FeedbackForm';
 import { chakraTheme } from './utils/constants/theme';
@@ -123,82 +124,110 @@ function LayoutPage({ currentUser, userLoading, hostLoading, history, children }
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   return (
-    <ChakraProvider theme={chakraTheme}>
-      {publicSettings.faviconUrl && (
-        <Helmet>
-          <link rel="icon" href={publicSettings.faviconUrl} />
-        </Helmet>
-      )}
-      <StateContext.Provider
-        value={{
-          allHosts,
-          canCreateContent,
-          currentUser,
-          currentHost,
-          isDesktop,
-          platform,
-          role,
-          userLoading,
-          getCurrentHost,
-        }}
-      >
-        <Flex>
-          {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
+    <>
+      <Helmet>
+        <title>{currentHost?.settings?.name}</title>
+        <link
+          rel="android-chrome-192x192"
+          sizes="192x192"
+          href={`${publicSettings.iconsBaseUrl}/android-chrome-192x192.png`}
+        />
+        <link
+          rel="android-chrome-512x512"
+          sizes="512x512"
+          href={`${publicSettings.iconsBaseUrl}/android-chrome-512x512.png`}
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href={`${publicSettings.iconsBaseUrl}/apple-touch-icon.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href={`${publicSettings.iconsBaseUrl}/favicon-32x32.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href={`${publicSettings.iconsBaseUrl}/favicon-16x16.png`}
+        />
+      </Helmet>
+      <Favicon url={`${publicSettings.iconsBaseUrl}/favicon.ico`} />
+      <ChakraProvider theme={chakraTheme}>
+        <StateContext.Provider
+          value={{
+            allHosts,
+            canCreateContent,
+            currentUser,
+            currentHost,
+            isDesktop,
+            platform,
+            role,
+            userLoading,
+            getCurrentHost,
+          }}
+        >
+          <Flex>
+            {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-          <Box id="main-viewport" flexGrow="2">
-            <Box w="100%">
-              {isHeaderAndFooter && currentHost.isPortalHost && (
-                <PortalHostIndicator platform={platform} />
-              )}
+            <Box id="main-viewport" flexGrow="2">
+              <Box w="100%">
+                {isHeaderAndFooter && currentHost.isPortalHost && (
+                  <PortalHostIndicator platform={platform} />
+                )}
 
-              <Header isSmallerLogo={!isHeaderAndFooter} />
+                <Header isSmallerLogo={!isHeaderAndFooter} />
 
-              <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
-                {children}
-              </Box>
-
-              {isHeaderAndFooter && (
-                <Footer currentHost={currentHost} platform={platform} tc={tc} />
-              )}
-
-              {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
-                <Box>
-                  <Box bg="gray.300" p="4">
-                    <a href={`https://${platform.portalHost}`}>
-                      <Center p="2">
-                        <Image w="200px" src={platform?.logo} />
-                      </Center>
-                    </a>
-                    <Center>
-                      <Box textAlign="center" color="gray.800">
-                        <Text fontSize="lg" fontWeight="bold">
-                          {platform?.name}
-                        </Text>
-                        <CLink
-                          color="#06c"
-                          fontWeight="bold"
-                          onClick={() => setPlatformDrawer(true)}
-                        >
-                          {tc('platform.title')}
-                        </CLink>
-                      </Box>
-                    </Center>
-                  </Box>
-
-                  <PlatformDrawer
-                    isOpen={platformDrawer}
-                    hosts={allHosts}
-                    platform={platform}
-                    tc={tc}
-                    toggleOpen={() => setPlatformDrawer(!platformDrawer)}
-                  />
+                <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
+                  {children}
                 </Box>
-              )}
+
+                {isHeaderAndFooter && (
+                  <Footer currentHost={currentHost} platform={platform} tc={tc} />
+                )}
+
+                {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
+                  <Box>
+                    <Box bg="gray.300" p="4">
+                      <a href={`https://${platform.portalHost}`}>
+                        <Center p="2">
+                          <Image w="200px" src={platform?.logo} />
+                        </Center>
+                      </a>
+                      <Center>
+                        <Box textAlign="center" color="gray.800">
+                          <Text fontSize="lg" fontWeight="bold">
+                            {platform?.name}
+                          </Text>
+                          <CLink
+                            color="#06c"
+                            fontWeight="bold"
+                            onClick={() => setPlatformDrawer(true)}
+                          >
+                            {tc('platform.title')}
+                          </CLink>
+                        </Box>
+                      </Center>
+                    </Box>
+
+                    <PlatformDrawer
+                      isOpen={platformDrawer}
+                      hosts={allHosts}
+                      platform={platform}
+                      tc={tc}
+                      toggleOpen={() => setPlatformDrawer(!platformDrawer)}
+                    />
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Flex>
-      </StateContext.Provider>
-    </ChakraProvider>
+          </Flex>
+        </StateContext.Provider>
+      </ChakraProvider>
+    </>
   );
 }
 

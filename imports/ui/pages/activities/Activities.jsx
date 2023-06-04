@@ -238,7 +238,7 @@ function Activities({ history }) {
 
       {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
 
-      <Box px={isDesktop ? '1' : '0'}>
+      <Box>
         <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;

@@ -26,7 +26,7 @@ function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListi
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
   return (
-    <Box px="6">
+    <Box px="5">
       <Alert
         alignItems="center"
         colorScheme="green"

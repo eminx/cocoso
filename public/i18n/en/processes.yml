@@ -43,8 +43,8 @@ form:
   waiting: Creating your process...
 
 message:
-  archived: Process is successfully archived
-  unarchived: Process is successfully unarchived
+  archived: Your entry is successfully archived
+  unarchived: Your entry is successfully unarchived
 
   joined: You are already a member!
   added: You are added to the process
@@ -62,11 +62,11 @@ meeting:
     remove: You are successfully removed from the list!
     register: Your attendance is successfully registered!
   access:
-    join: Please join the process to attend the meeting
-    logged: Please login and join the process to attend the meeting
+    join: Please join to attend the meeting
+    logged: Please login and join to attend the meeting
     remove: Sorry. Currently you can not delete meetings which have attendees registered to attend
   success:
-    add: Your process meeting is added
+    add: Your meeting is added
     remove: The meeting is successfully removed
     fileDropper: is successfully uploaded and assigned to this process
     admin: New admin successfully added
@@ -105,7 +105,7 @@ confirm:
       join: join
   admin:
     title: Please confirm you want to make {{ admin }} an admin for this process.
-    body: When you confirm, you will share the same privileges with {{ admin }} for this process hereafter.
+    body: When you confirm, you will share the same privileges with {{ admin }} for this entry hereafter.
 
 invite:
   info: Please add data for the person you want to invite to the process

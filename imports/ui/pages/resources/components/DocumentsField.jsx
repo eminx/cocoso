@@ -6,7 +6,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
-import { Alert, message } from '../../../components/message';
+import { message } from '../../../components/message';
 import NiceList from '../../../components/NiceList';
 import { StateContext } from '../../../LayoutContainer';
 import { DocumentUploadHelper } from '../../../components/UploadHelpers';
@@ -41,7 +41,7 @@ export default function DocumentsField({ contextType, contextId }) {
     try {
       await call('createDocument', uploadableFile.name, downloadUrl, contextType, contextId);
       getDocuments();
-      message.success(`${uploadableFile.name} ${t('documents.fileDropper')}`);
+      message.success(`${uploadableFile.name} ${tc('documents.fileDropper')}`);
     } catch (error) {
       message.error(error.reason);
     } finally {

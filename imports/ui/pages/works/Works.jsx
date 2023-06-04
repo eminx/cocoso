@@ -174,7 +174,7 @@ function Works({ history }) {
 
       {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
 
-      <Box px={isDesktop ? '1' : '0'}>
+      <Box>
         <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>

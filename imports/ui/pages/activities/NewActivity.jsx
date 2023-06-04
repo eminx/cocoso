@@ -139,11 +139,7 @@ class NewActivity extends PureComponent {
 
   successCreation = () => {
     const { tc } = this.props;
-    message.success(
-      tc('message.success.create', {
-        domain: `${tc('domains.your')} ${tc('domains.activity').toLowerCase()}`,
-      })
-    );
+    message.success(tc('message.success.create'));
   };
 
   setUploadableImage = (files) => {
@@ -234,7 +230,7 @@ class NewActivity extends PureComponent {
         () => this.successCreation()
       );
     } catch (error) {
-      message.error(error.reason);
+      message.error(error.error || error.reason);
       this.setState({
         isCreating: false,
         isError: true,

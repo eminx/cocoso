@@ -92,11 +92,7 @@ function NewPage() {
 
     try {
       const result = await call('createPage', formValues, imagesReadyToSave);
-      message.success(
-        tc('message.success.create', {
-          domain: `${tc('domains.your')} ${tc('domains.page').toLowerCase()}`,
-        })
-      );
+      message.success(tc('message.success.create'));
       setNewPageId(parseTitle(result));
     } catch (error) {
       setIsCreating(false);

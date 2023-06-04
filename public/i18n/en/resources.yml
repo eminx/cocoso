@@ -4,19 +4,22 @@ label: Resources
 all: All
 
 messages:
-  notfound: No resource found
+  notfound: No item found
+  comborequires: Välj minst två objekt för att skapa ett kombinerat objekt. Eller vänligen stäng av "Kombo" för att komponera ett icke-komboobjekt
 
 form:
   holder: type
   bookable:
     switch:
       label: Bookable
+      helper: Toggle this on if you want this item to be bookable to appear in the calendar
   combo:
     switch:
-      label: Combo Resource
+      label: Combo
+      helper: Combo means "Combination" of several other items in this listing. It will make it easier for users to book several items at once. Bookings will appear in the calendar accordingly.
     select:
       holder: Select option
-      helper: Please select multiple resources to create a combo resource
+      helper: Please select multiple items to create a combo item
   name:
     label: Name
     holder: Sound Studio
@@ -46,7 +49,7 @@ booking:
     field: Bookings
     form: Add a Booking
   multiple: Book for multiple days
-  conflict: "There's already a booking for this resource at this date & time: "
+  conflict: "There's already a booking for this item at this date & time: "
   date:
     start: Start date
     end: Finish date

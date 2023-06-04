@@ -54,9 +54,7 @@ function NewHost() {
   }
 
   if (isSuccess) {
-    return (
-      <Alert type="success">{tc('message.success.create', { domain: tc('domains.host') })}</Alert>
-    );
+    return <Alert type="success">{tc('message.success.create')}</Alert>;
   }
 
   return (
