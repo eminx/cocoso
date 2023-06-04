@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Input, Textarea, Select, VStack } from '@chakra-ui/react';
+import { Button, Center, Flex, Input, Textarea, Select, VStack } from '@chakra-ui/react';
 
 import FormField from './FormField';
 import NiceSlider from './NiceSlider';
