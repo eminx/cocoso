@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 import { getHost } from '../_utils/shared';
-import { isContributorOrAdmin } from '../users/user.roles';
+import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
 import Processes from '../processes/process';
@@ -269,12 +269,12 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
 
     const theActivity = Activities.findOne(activityId);
-    if (user._id !== theActivity.authorId) {
+    if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
     }
 

@@ -234,7 +234,7 @@ class NewActivity extends PureComponent {
         () => this.successCreation()
       );
     } catch (error) {
-      message.error(error.reason);
+      message.error(error.error || error.reason);
       this.setState({
         isCreating: false,
         isError: true,
