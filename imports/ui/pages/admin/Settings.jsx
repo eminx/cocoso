@@ -177,7 +177,7 @@ export default function Settings({ history }) {
 
   return (
     <>
-      <Box px={isDesktop ? '6' : '4'} pt="4">
+      <Box px="4" pt="4">
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
       <Template
