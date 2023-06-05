@@ -113,7 +113,9 @@ function Communities() {
         >
           <Center bg="gray.100" pt="2">
             <Box>
-              {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
+              <Center>
+                {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
+              </Center>
               <Center>
                 <Code size="lg" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
                   {modalHost.host}
