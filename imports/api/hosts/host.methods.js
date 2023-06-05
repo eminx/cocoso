@@ -131,4 +131,19 @@ Meteor.methods({
       }))
       .reverse();
   },
+
+  getHostInfoPage(host) {
+    const infoPages = Pages.find(
+      {
+        host,
+      },
+      {
+        longDescription: 1,
+      },
+      {
+        $sort: { creationDate: 1 },
+      }
+    ).fetch();
+    return infoPages && infoPages[0] && infoPages[0].longDescription;
+  },
 });

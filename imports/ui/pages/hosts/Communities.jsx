@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex, Image, Tag as CTag, Text } from '@chakra-ui/react';
+import { Box, Center, Code, Flex, Image } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
+import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import GridThumb from '../../components/GridThumb';
@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import ConfirmModal from '../../components/ConfirmModal';
+import { call } from '../../utils/shared';
 
 function Communities() {
   const [filterWord, setFilterWord] = useState('');
@@ -18,6 +19,15 @@ function Communities() {
   const { allHosts, platform, isDesktop } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
+
+  const handleSetModalHost = async (host) => {
+    try {
+      const info = await call('getHostInfoPage', host.host);
+      setModalHost({ ...host, info });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!allHosts) {
     return <Loader />;
@@ -83,7 +93,7 @@ function Communities() {
       <Box p="4" pt="8">
         <Paginate centerItems={!isDesktop} items={hostsRendered}>
           {(host) => (
-            <Box key={host.host} cursor="pointer" onClick={() => setModalHost(host)}>
+            <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
               <HostItem host={host} tc={tc} />
             </Box>
           )}
@@ -95,18 +105,25 @@ function Communities() {
           confirmText={tc('actions.toHost')}
           isCentered
           scrollBehavior="inside"
-          size="sm"
+          size="lg"
           title={modalHost.name}
           visible
           onConfirm={handleActionButtonClick}
           onCancel={() => setModalHost(null)}
         >
-          <Center>
-            {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
+          <Center bg="gray.100" pt="2">
+            <Box>
+              {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
+              <Center>
+                <Code size="lg" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
+                  {modalHost.host}
+                </Code>
+              </Center>
+            </Box>
           </Center>
-          <CTag my="2" linebreak="anywhere">
-            {modalHost.host}
-          </CTag>
+          <Box py="4" maxW="520px">
+            {modalHost.info && <div className="text-content">{renderHTML(modalHost?.info)}</div>}
+          </Box>
         </ConfirmModal>
       )}
     </Box>
@@ -121,12 +138,12 @@ function HostItem({ host, tc }) {
   return (
     <Box>
       <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
-        <Text fontSize="xs">{moment(host.createdAt).format('D MMM YYYY')}</Text>
+        {/* <Text fontSize="xs">{moment(host.createdAt).format('D MMM YYYY')}</Text> */}
 
-        <CTag size="sm" mt="4" linebreak="anywhere">
+        <Code linebreak="anywhere" mt="4" noOfLines={2} size="sm">
           {host.host}
-        </CTag>
-        <Text my="4">{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
+        </Code>
+        {/* <Text my="4">{tc('platform.membersCount', { membersCount: host.membersCount })}</Text> */}
       </GridThumb>
     </Box>
   );

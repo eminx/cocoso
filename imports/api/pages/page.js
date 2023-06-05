@@ -26,7 +26,6 @@ Pages.schema = new SimpleSchema({
     type: Date,
     optional: true,
   },
-  isTermsPage: { type: Boolean, optional: true },
 });
 
 Pages.attachSchema(Pages.schema);
