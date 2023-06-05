@@ -205,7 +205,7 @@ function Members() {
 
   return (
     <>
-      <Box px={isDesktop ? '6' : '4'} pt="4">
+      <Box p="4">
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
 
