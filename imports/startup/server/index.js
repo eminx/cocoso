@@ -28,12 +28,11 @@ Meteor.startup(() => {
   };
 });
 
-const cdnserver = 'https://d1z8c86c2ad49r.cloudfront.net';
+const cdnserver = 'https://cdnserver.cocoso.info';
 
 if (Meteor.isProduction) {
   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
-    console.log(url);
-    return `${cdnserver}${url}&app_v_=${process.env.npm_package_version}`;
+    return cdnserver + url;
   });
 }
 
