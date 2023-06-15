@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { WebAppInternals } from 'meteor/webapp';
+
 // import { onPageLoad } from 'meteor/server-render';
 // import React from 'react';
 // import { StaticRouter } from 'react-router';
@@ -25,6 +27,15 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
 });
+
+const cdnserver = 'https://d1z8c86c2ad49r.cloudfront.net';
+
+if (Meteor.isProduction) {
+  WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
+    console.log(url);
+    return `${cdnserver}${url}&app_v_=${process.env.npm_package_version}`;
+  });
+}
 
 // const render = async (sink) => {
 //   const context = {};
