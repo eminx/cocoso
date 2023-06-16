@@ -6,7 +6,7 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-import Hosts from '../api/hosts/host';
+const cdnserver = 'https://cdnserver.cocoso.info';
 
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
@@ -25,7 +25,7 @@ const namespaces = [
 const options = {
   allowMultiLoading: true,
   backend: {
-    loadPath: '/i18n/{{lng}}/{{ns}}.yml',
+    loadPath: `${cdnserver}/i18n/{{lng}}/{{ns}}.yml`,
     parse: function (data) {
       return yaml.load(data);
     },
@@ -60,10 +60,11 @@ if (!i18n.isInitialized) {
         preferedLang = Meteor.user()?.lang;
       }
     } else {
-      const handler = Meteor.subscribe('currentHost');
-      if (handler.ready()) {
-        preferedLang = Hosts.findOne().settings.lang;
-      }
+      Meteor.call('getCurrentHost', (error, respond) => {
+        if (respond) {
+          preferedLang = respond?.settings?.lang;
+        }
+      });
     }
     i18n.changeLanguage(preferedLang);
   });
