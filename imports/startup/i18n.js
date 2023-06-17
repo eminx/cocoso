@@ -6,7 +6,7 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-const cdnserver = 'https://cdnserver.cocoso.info';
+const cdnserver = 'https://d1z8c86c2ad49r.cloudfront.net';
 const loadPath = '/i18n/{{lng}}/{{ns}}.yml';
 
 const defaultLang = 'en';
