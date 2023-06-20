@@ -1,7 +1,6 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Box, Button, Center, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Box, Button, Center } from '@chakra-ui/react';
 
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import ProcessForm from '../../components/ProcessForm';
@@ -11,7 +10,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message, Alert } from '../../components/message';
 
-class EditProcess extends React.Component {
+class EditProcess extends PureComponent {
   state = {
     formValues: {
       title: '',
@@ -38,17 +37,19 @@ class EditProcess extends React.Component {
       capacity: Number(values.capacity),
     };
 
-    this.setState({
-      isUpdating: true,
-      formValues: parsedValues,
-    });
-
-    if (!uploadableImage) {
-      this.updateProcess();
-      return;
-    }
-
-    this.uploadImage();
+    this.setState(
+      {
+        isUpdating: true,
+        formValues: parsedValues,
+      },
+      () => {
+        if (uploadableImage) {
+          this.uploadImage();
+        } else {
+          this.updateProcess();
+        }
+      }
+    );
   };
 
   setUploadableImage = (files) => {
