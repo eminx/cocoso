@@ -14,6 +14,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
 
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
@@ -122,7 +123,13 @@ function ActivityForm({
         <Box mb="8">
           <FormField
             helperText={t('form.resource.helper')}
-            label={<b>{t('form.resource.label', { resources: resourcesInMenu?.label })}</b>}
+            label={
+              <b>
+                {t('form.resource.label', {
+                  resources: resourcesInMenu.label,
+                })}
+              </b>
+            }
             isRequired
           >
             <Select

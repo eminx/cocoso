@@ -6,7 +6,6 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-const loadPath = '/i18n/{{lng}}/{{ns}}.yml';
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
 const namespaces = [
@@ -24,7 +23,7 @@ const namespaces = [
 const options = {
   allowMultiLoading: true,
   backend: {
-    loadPath,
+    loadPath: '/i18n/{{lng}}/{{ns}}.yml',
     parse: function (data) {
       return yaml.load(data);
     },
