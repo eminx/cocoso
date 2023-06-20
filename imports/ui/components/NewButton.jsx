@@ -78,12 +78,14 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
+          _hover={{ bg: 'gray.700' }}
           as={IconButton}
+          bg="gray.800"
           borderColor="#fff"
           borderRadius="8px"
           borderWidth="2px"
           h="48px"
-          icon={<AddIcon />}
+          icon={<AddIcon color="gray.50" />}
           w="48px"
         />
         <MenuList>

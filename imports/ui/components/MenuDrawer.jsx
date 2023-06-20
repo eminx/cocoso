@@ -37,11 +37,24 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isDesktop) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
-        <Box className={menuClassName} position="fixed" bg="gray.100" h="100vh" p="2">
+        <Box
+          bg="gray.800"
+          className={menuClassName}
+          color="gray.50"
+          h="100vh"
+          p="2"
+          position="fixed"
+        >
           {!isOpen ? (
             <Center pt="4">
               <Flex flexDirection="column" align="center">
-                <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
+                <IconButton
+                  _hover={{ bg: 'gray.50', color: 'gray.800' }}
+                  bg="gray.800"
+                  color="gray.50"
+                  icon={<HamburgerIcon fontSize="36px" />}
+                  onClick={onToggle}
+                />
                 <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
                   {tc('menu.label')}
                 </Text>
@@ -54,7 +67,14 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                   <Heading fontSize="24px" px="4" mt="2">
                     {tc('menu.label')}
                   </Heading>
-                  <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
+                  <IconButton
+                    _hover={{ bg: 'gray.50', color: 'gray.800' }}
+                    bg="gray.800"
+                    color="gray.50"
+                    icon={<CloseIcon />}
+                    mr="4"
+                    onClick={onToggle}
+                  />
                 </Flex>
 
                 <Box p="4">

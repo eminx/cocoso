@@ -51,7 +51,7 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
-        <HStack align="center" justify="flex-end" spacing="4" zIndex="1403">
+        <HStack align="center" justify="flex-end" p="4" spacing="4" zIndex="1403">
           <NewButton
             canCreateContent={canCreateContent}
             currentHost={currentHost}

@@ -62,6 +62,8 @@ function UserPopup({ currentUser }) {
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton>
           <Avatar
+            _hover={{ bg: 'gray.700' }}
+            bg="gray.800"
             borderRadius="8px"
             showBorder
             size="md"
