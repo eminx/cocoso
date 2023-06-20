@@ -44,7 +44,7 @@ function PaginatedItems({
 
   return (
     <>
-      <Wrap justify={centerItems ? 'center' : 'flex-start'} shouldWrapChildren>
+      <Wrap justify={centerItems ? 'center' : 'flex-start'} spacing="4" shouldWrapChildren>
         {currentItems && currentItems.map((item) => children(item))}
       </Wrap>
       {items && items.length > itemsPerPage && (

@@ -17,7 +17,7 @@ export default function PortalHostIndicator({ platform }) {
   const { t } = useTranslation('hosts');
 
   return (
-    <Box bg="gray.800">
+    <Box bg="hsl(300deg 20% 20%)">
       <Accordion allowToggle>
         <AccordionItem border="none">
           <AccordionButton
@@ -27,7 +27,7 @@ export default function PortalHostIndicator({ platform }) {
             justifyContent="center"
             p="1"
             w="100%"
-            _expanded={{ bg: 'gray.50', color: 'gray.800' }}
+            _expanded={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
           >
             <Center>
               <Flex alignItems="center">
@@ -38,7 +38,7 @@ export default function PortalHostIndicator({ platform }) {
               </Flex>
             </Center>
           </AccordionButton>
-          <AccordionPanel bg="gray.100" color="gray.800" pb={4}>
+          <AccordionPanel bg="gray.100" color="hsl(300deg 20% 20%)" pb={4}>
             <Center>
               <Container>
                 <Text fontSize="sm" textAlign="center">

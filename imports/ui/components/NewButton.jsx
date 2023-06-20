@@ -78,9 +78,9 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          _hover={{ bg: 'gray.700' }}
+          _hover={{ bg: 'hsl(300deg 20% 20%)' }}
           as={IconButton}
-          bg="gray.800"
+          bg="hsl(300deg 20% 20%)"
           borderColor="#fff"
           borderRadius="8px"
           borderWidth="2px"

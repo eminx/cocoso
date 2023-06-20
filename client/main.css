@@ -152,3 +152,44 @@ input::placeholder {
   width: 300px;
   transition: all 0.2s ease-in-out;
 }
+
+/* Sexy Thumb */
+
+.thumb-cover-container {
+  height: 280px;
+  width: 300px;
+}
+
+.thumb-cover-container:hover .thumb-cover {
+  filter: brightness(60%);
+}
+
+.thumb-cover-child-lazy-image {
+  width: 30px;
+}
+
+.thumb-cover {
+  position: absolute;
+  filter: brightness(40%);
+  transition: all ease-in-out 200ms;
+}
+
+.cover-highlight-title {
+  background-color: rgba(234, 57, 36, 0.9);
+}
+
+.thumb-title {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 6px;
+  line-height: 32px;
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+
+.thumb-subtitle {
+  color: #fff;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: normal;
+}

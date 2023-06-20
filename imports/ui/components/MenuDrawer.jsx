@@ -38,7 +38,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box
-          bg="gray.800"
+          bg="hsl(300deg 20% 20%)"
           className={menuClassName}
           color="gray.50"
           h="100vh"
@@ -49,8 +49,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             <Center pt="4">
               <Flex flexDirection="column" align="center">
                 <IconButton
-                  _hover={{ bg: 'gray.50', color: 'gray.800' }}
-                  bg="gray.800"
+                  _hover={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
+                  bg="hsl(300deg 20% 20%)"
                   color="gray.50"
                   icon={<HamburgerIcon fontSize="36px" />}
                   onClick={onToggle}
@@ -68,8 +68,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                     {tc('menu.label')}
                   </Heading>
                   <IconButton
-                    _hover={{ bg: 'gray.50', color: 'gray.800' }}
-                    bg="gray.800"
+                    _hover={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
+                    bg="hsl(300deg 20% 20%)"
                     color="gray.50"
                     icon={<CloseIcon />}
                     mr="4"

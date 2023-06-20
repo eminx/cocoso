@@ -175,7 +175,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-            <Box id="main-viewport" flexGrow="2">
+            <Box id="main-viewport" flexGrow="2" bg="hsl(300deg 60% 90%)">
               <Box w="100%">
                 {isHeaderAndFooter && currentHost.isPortalHost && (
                   <PortalHostIndicator platform={platform} />
@@ -194,7 +194,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
                     <Box bg="gray.300" p="4">
-                      <a href={`https://${platform.portalHost}`}>
+                      <a href={`https://${platform?.portalHost}`}>
                         <Center p="2">
                           <Image w="200px" src={platform?.logo} />
                         </Center>

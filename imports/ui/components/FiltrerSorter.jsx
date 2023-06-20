@@ -21,6 +21,8 @@ function FiltrerSorter(props) {
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
+  return null;
+
   // if (isDesktop) {
   //   return (
   //     <Box px="1">

@@ -41,8 +41,8 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box p={isDesktop ? '4' : '2'} mt={isDesktop || !isSmallerLogo ? '4' : '2'} w="100%">
-      <Flex w="100%" align="flex-start" justify="space-between">
+    <Box p={isDesktop ? '4' : '2'} w="100%">
+      <Flex w="100%" align="center" justify="space-between">
         <Box>
           <Link to="/">
             <Box pl={isDesktop ? '4' : '2'}>
@@ -63,7 +63,7 @@ function Header({ isSmallerLogo }) {
       </Flex>
 
       {activeMenuItem && (
-        <Box pb="2" pt="10" px={isDesktop ? '4' : '2'}>
+        <Box pb="2" pt="4" px={isDesktop ? '4' : '2'}>
           <Heading color="gray.800" size="lg">
             <Text as="span" fontWeight="normal">
               {activeMenuItem?.label}

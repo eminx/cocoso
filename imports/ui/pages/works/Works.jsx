@@ -18,6 +18,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -133,10 +134,20 @@ function Works({ history }) {
       </Helmet>
 
       <Box px="4" mb="4">
-        <FiltrerSorter {...filtrerProps} />
+        <FiltrerSorter {...filtrerProps}>
+          {currentHost.isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </FiltrerSorter>
 
         <Box mt="4">
-          <Wrap pl="2">
+          <Wrap>
             <WrapItem>
               <Tag
                 label="ALL"
@@ -160,25 +171,15 @@ function Works({ history }) {
             ))}
           </Wrap>
         </Box>
-
-        {currentHost.isPortalHost && (
-          <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
-            <HostFiltrer
-              allHosts={allHostsFiltered}
-              hostFilterValue={hostFilterValue}
-              onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-            />
-          </Flex>
-        )}
       </Box>
 
       <Box>
-        <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
+        <Paginate centerItems items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalWork(work)}>
-                  <NewGridThumb
+                  <SexyThumb
                     avatar={{
                       name: work.authorUsername,
                       url: work.authorAvatar,
@@ -195,7 +196,7 @@ function Works({ history }) {
                 </Box>
               ) : (
                 <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                  <NewGridThumb
+                  <SexyThumb
                     avatar={{
                       name: work.authorUsername,
                       url: work.authorAvatar,

@@ -21,6 +21,7 @@ import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
 
 moment.locale(i18n.language);
 
@@ -222,29 +223,29 @@ function Activities({ history }) {
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <FiltrerSorter {...filtrerProps}>
             <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
-          </FiltrerSorter>
 
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+          </FiltrerSorter>
         </Flex>
       </Box>
 
       <Box>
-        <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
+        <Paginate centerItems items={activitiesRenderedHostFiltered}>
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
               <Box key={activity._id}>
                 {currentHost.isPortalHost ? (
                   <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                    <NewGridThumb
+                    <SexyThumb
                       dates={
                         showPast
                           ? getPastOccurrences(activity.datesAndTimes)
@@ -264,7 +265,7 @@ function Activities({ history }) {
                         : `/activities/${activity._id}`
                     }
                   >
-                    <NewGridThumb
+                    <SexyThumb
                       dates={
                         showPast
                           ? getPastOccurrences(activity.datesAndTimes)
