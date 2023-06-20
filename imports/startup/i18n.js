@@ -6,9 +6,7 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-const cdnserver = 'https://d1z8c86c2ad49r.cloudfront.net';
 const loadPath = '/i18n/{{lng}}/{{ns}}.yml';
-
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
 const namespaces = [
@@ -26,7 +24,7 @@ const namespaces = [
 const options = {
   allowMultiLoading: true,
   backend: {
-    loadPath: Meteor.isProduction ? cdnserver + loadPath : loadPath,
+    loadPath,
     parse: function (data) {
       return yaml.load(data);
     },
