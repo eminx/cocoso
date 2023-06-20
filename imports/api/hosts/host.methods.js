@@ -69,7 +69,17 @@ Meteor.methods({
   getCurrentHost() {
     const host = getHost(this);
     try {
-      const currentHost = Hosts.findOne({ host });
+      const currentHost = Hosts.findOne(
+        { host },
+        {
+          fields: {
+            host: 1,
+            settings: 1,
+            logo: 1,
+            isPortalHost: 1,
+          },
+        }
+      );
       return currentHost;
     } catch (error) {
       throw new Meteor.Error(error);

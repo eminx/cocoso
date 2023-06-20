@@ -6,8 +6,7 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
-import Hosts from '../api/hosts/host';
-import { cdnserver } from './server';
+const { cdnserver } = Meteor.settings;
 
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
@@ -24,7 +23,6 @@ const namespaces = [
 ];
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction ? cdnserver + path : path;
-console.log(loadPath);
 
 const options = {
   allowMultiLoading: true,

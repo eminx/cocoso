@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebAppInternals } from 'meteor/webapp';
+const { cdnserver } = Meteor.settings;
 
 // import { onPageLoad } from 'meteor/server-render';
 // import React from 'react';
@@ -28,9 +29,7 @@ Meteor.startup(() => {
   };
 });
 
-const cdnserver = 'https://d1z8c86c2ad49r.cloudfront.net';
-
-if (Meteor.isProduction) {
+if (Meteor.isProduction && cdnserver) {
   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
     return cdnserver + url;
   });
@@ -63,5 +62,3 @@ if (Meteor.isProduction) {
 // };
 
 // onPageLoad(render);
-
-export { cdnserver };
