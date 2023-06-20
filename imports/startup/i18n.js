@@ -6,6 +6,8 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import yaml from 'js-yaml';
 
+import Hosts from '../api/hosts/host';
+
 const defaultLang = 'en';
 const allLangs = [defaultLang, 'sv', 'tr'];
 const namespaces = [
@@ -58,11 +60,10 @@ if (!i18n.isInitialized) {
         preferedLang = Meteor.user()?.lang;
       }
     } else {
-      Meteor.call('getCurrentHost', (error, respond) => {
-        if (respond) {
-          preferedLang = respond?.settings?.lang;
-        }
-      });
+      const handler = Meteor.subscribe('currentHost');
+      if (handler.ready()) {
+        preferedLang = Hosts.findOne()?.settings?.lang;
+      }
     }
     i18n.changeLanguage(preferedLang);
   });

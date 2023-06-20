@@ -14,7 +14,6 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
 
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
