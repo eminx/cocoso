@@ -22,7 +22,7 @@ const namespaces = [
   'resources',
 ];
 const path = '/i18n/{{lng}}/{{ns}}.yml';
-const loadPath = Meteor.isProduction ? cdnserver + path : path;
+const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
 const options = {
   allowMultiLoading: true,
