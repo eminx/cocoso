@@ -172,8 +172,6 @@ function Works({ history }) {
         )}
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
-
       <Box>
         <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
           {(work) => (
@@ -215,6 +213,7 @@ function Works({ history }) {
             </Box>
           )}
         </Paginate>
+        {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
       </Box>
 
       {modalWork && (

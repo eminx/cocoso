@@ -205,8 +205,6 @@ export default function ProcessesList({ history }) {
         </Flex>
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
-
       <Box>
         <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
           {(process) => (
@@ -235,6 +233,8 @@ export default function ProcessesList({ history }) {
             </Box>
           )}
         </Paginate>
+
+        {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
       </Box>
 
       {modalProcess && (

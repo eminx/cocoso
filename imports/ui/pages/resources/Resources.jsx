@@ -175,8 +175,6 @@ function Resources({ history }) {
         </Flex>
       </Box>
 
-      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
-
       <Box p="4">
         <Paginate centerItems={!isDesktop} items={resourcesRenderedHostFiltered}>
           {(resource) => (
@@ -216,6 +214,8 @@ function Resources({ history }) {
           />
         </Modal>
       )}
+
+      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
     </Box>
   );
 }

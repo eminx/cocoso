@@ -236,8 +236,6 @@ function Activities({ history }) {
         </Flex>
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
-
       <Box>
         <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
           {(activity) => {
@@ -282,6 +280,7 @@ function Activities({ history }) {
             );
           }}
         </Paginate>
+        {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
       </Box>
 
       {modalActivity && (
