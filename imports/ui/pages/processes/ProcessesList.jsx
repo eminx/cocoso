@@ -20,6 +20,7 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -211,7 +212,7 @@ export default function ProcessesList({ history }) {
             <Box key={process._id}>
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalProcess(process)}>
-                  <NewGridThumb
+                  <SexyThumb
                     dates={getFutureOccurences(process.meetings)}
                     // dates={process.meetings?.map((m) => m.startDate)}
                     host={allHosts.find((h) => h.host === process.host)?.name}
@@ -222,7 +223,7 @@ export default function ProcessesList({ history }) {
                 </Box>
               ) : (
                 <Link to={`/processes/${process._id}`}>
-                  <NewGridThumb
+                  <SexyThumb
                     dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
                     imageUrl={process.imageUrl}
                     subTitle={process.readingMaterial}

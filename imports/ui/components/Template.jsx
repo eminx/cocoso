@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext } from 'react';
-import { Box, Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Center, Container, Heading, SimpleGrid } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../LayoutContainer';
@@ -16,7 +16,7 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
         <title>{heading || publicSettings.name}</title>
       </Helmet>
       {isDesktop ? (
-        <SimpleGrid columns={{ md: 1, lg: 3 }} p="3" templateColumns="25% 40% 30%">
+        <SimpleGrid columns={{ md: 1, lg: 3 }} p="3" templateColumns="30% 40% 30%">
           <Box>{leftContent}</Box>
 
           <Box>
@@ -27,13 +27,15 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
                 </Heading>
               </Box>
             )}
-            <Box>{children}</Box>
+            <Box bg="white" maxW="520px" p="4">
+              {children}
+            </Box>
           </Box>
 
           <Box>{rightContent}</Box>
         </SimpleGrid>
       ) : (
-        <Box p="4">
+        <Center bg="white" p="4">
           <Box>{leftContent}</Box>
           <Box>
             {heading && (
@@ -43,10 +45,10 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
                 </Heading>
               </Box>
             )}
-            <Box>{children}</Box>
+            <Box maxW="520px">{children}</Box>
           </Box>
           <Box>{rightContent}</Box>
-        </Box>
+        </Center>
       )}
     </>
   );

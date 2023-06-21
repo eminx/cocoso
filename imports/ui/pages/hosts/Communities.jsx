@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Flex, Image } from '@chakra-ui/react';
+import { Box, Center, Code, Flex, Image, Link } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -117,8 +117,8 @@ function Communities() {
                 {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
               </Center>
               <Center>
-                <Code size="lg" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  {modalHost.host}
+                <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
+                  <Link onClick={handleActionButtonClick}>{modalHost.host}</Link>
                 </Code>
               </Center>
             </Box>
@@ -140,12 +140,9 @@ function HostItem({ host, tc }) {
   return (
     <Box>
       <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
-        {/* <Text fontSize="xs">{moment(host.createdAt).format('D MMM YYYY')}</Text> */}
-
-        <Code linebreak="anywhere" mt="4" noOfLines={2} size="sm">
+        <Code linebreak="anywhere" mt="4" noOfLines={2} fontSize="xs">
           {host.host}
         </Code>
-        {/* <Text my="4">{tc('platform.membersCount', { membersCount: host.membersCount })}</Text> */}
       </GridThumb>
     </Box>
   );

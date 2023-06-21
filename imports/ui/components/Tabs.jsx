@@ -3,21 +3,22 @@ import { Link } from 'react-router-dom';
 import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
 
 const tabProps = {
+  // _focus: { boxShadow: 'none' },
   as: 'span',
-  _focus: { boxShadow: 'none' },
-  pb: '0',
-  paddingInline: '0',
+  bg: 'white',
+  // pb: '0',
+  paddingInline: '4',
 };
 
 const linkStyle = {
-  marginBottom: 4,
-  marginInline: 8,
+  marginBottom: 0,
+  // marginRight: 8,
 };
 
 function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   return (
-    <CTabs colorScheme="gray.800" flexShrink="0" mt="2" {...otherProps}>
-      <TabList flexWrap="wrap" mb="4" borderBottom="none" ml="2">
+    <CTabs colorScheme="gray.800" flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
+      <TabList flexWrap="wrap" borderBottom="none" ml="4">
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle}>

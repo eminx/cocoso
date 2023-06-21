@@ -348,8 +348,8 @@ class Activity extends PureComponent {
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
-              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
+              <AccordionButton bg="gray.100" _expanded={{ bg: 'green.100' }}>
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
@@ -444,7 +444,9 @@ class Activity extends PureComponent {
               }}
               className="text-content"
             >
-              <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
+              <Box bg="white" px="4" py="3">
+                {activityData.longDescription && renderHTML(activityData.longDescription)}
+              </Box>
             </div>
           </Box>
         ),
@@ -464,7 +466,7 @@ class Activity extends PureComponent {
       tabs.push({
         title: t('public.labels.location'),
         content: (
-          <Box mb="1">
+          <Box>
             {activityData.place && (
               <Text fontWeight="bold" fontSize="lg" mb="2">
                 {activityData.place}
@@ -497,7 +499,7 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />}
+        {/* {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />} */}
 
         <Tably
           action={this.getDatesForAction()}

@@ -67,7 +67,7 @@ function Tably({
               </Box>
             )}
             {tabs && (
-              <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs}>
+              <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs} mb="0">
                 {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
               </Tabs>
             )}
