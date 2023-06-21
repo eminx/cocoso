@@ -4,7 +4,6 @@ import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/rea
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
-import Template from '../../components/Template';
 import { Signup } from './index';
 import { createAccount } from './functions';
 
@@ -18,43 +17,41 @@ function SignupPage() {
 
   return (
     <Box pb="8" minHeight="100vh">
-      <Template>
-        <Center p="4">
-          <Box w="sm">
-            <Heading size="md" textAlign="center">
-              {t('signup.labels.title')}
-            </Heading>
+      <Center p="4">
+        <Box w="sm">
+          <Heading size="md" textAlign="center">
+            {t('signup.labels.title')}
+          </Heading>
 
+          <Center py="4">
+            <Text>
+              {t('signup.labels.subtitle')}{' '}
+              <Link to="/login">
+                <CLink as="span">
+                  <b>{t('actions.login')}</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+
+          {platform && (
             <Center py="4">
-              <Text>
-                {t('signup.labels.subtitle')}{' '}
-                <Link to="/login">
-                  <CLink as="span">
-                    <b>{t('actions.login')}</b>
-                  </CLink>
-                </Link>
-              </Text>
+              <Box>
+                <Center mb="4">
+                  <Image w="240px" src={platform?.logo} />
+                </Center>
+                <Text textAlign="center">
+                  {t('signup.labels.platform', { platform: platform?.name })}
+                </Text>
+              </Box>
             </Center>
+          )}
 
-            {platform && (
-              <Center py="4">
-                <Box>
-                  <Center mb="4">
-                    <Image w="240px" src={platform?.logo} />
-                  </Center>
-                  <Text textAlign="center">
-                    {t('signup.labels.platform', { platform: platform?.name })}
-                  </Text>
-                </Box>
-              </Center>
-            )}
-
-            <Box p="6" bg="white" mb="4" border="1px solid" borderColor="gray.500">
-              <Signup onSubmit={(values) => createAccount(values)} />
-            </Box>
+          <Box bg="white" border="1px solid" borderColor="gray.500" mb="4" p="6">
+            <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
-        </Center>
-      </Template>
+        </Box>
+      </Center>
     </Box>
   );
 }

@@ -4,7 +4,6 @@ import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/reac
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
-import Template from '../../components/Template';
 import { ForgotPassword } from './index';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -30,37 +29,35 @@ function ForgotPasswordPage() {
 
   return (
     <Box pb="8" minHeight="100vh">
-      <Template>
-        <Center p="4">
-          <Box w="xs">
-            <Heading size="md" textAlign="center">
-              {t('password.labels.title')}
-            </Heading>
-            <Center pt="4" px="4">
-              <Text mb="4" textAlign="center">
-                {t('password.labels.subtitle.forgot')}
-              </Text>
-            </Center>
+      <Center p="4">
+        <Box w="xs">
+          <Heading size="md" textAlign="center">
+            {t('password.labels.title')}
+          </Heading>
+          <Center pt="4" px="4">
+            <Text mb="4" textAlign="center">
+              {t('password.labels.subtitle.forgot')}
+            </Text>
+          </Center>
 
-            <Box bg="white" p="6">
-              {emailSent ? (
-                <Text>{t('password.message.linkSend')}</Text>
-              ) : (
-                <ForgotPassword onForgotPassword={handleForgotPassword} />
-              )}
-            </Box>
-
-            <Flex justify="space-around" mt="4">
-              <Link to="/login">
-                <CLink as="span">{t('actions.login')}</CLink>
-              </Link>
-              <Link to="/register">
-                <CLink as="span">{t('actions.signup')}</CLink>
-              </Link>
-            </Flex>
+          <Box bg="white" border="1px solid" borderColor="gray.500" p="6">
+            {emailSent ? (
+              <Text>{t('password.message.linkSend')}</Text>
+            ) : (
+              <ForgotPassword onForgotPassword={handleForgotPassword} />
+            )}
           </Box>
-        </Center>
-      </Template>
+
+          <Flex justify="space-around" mt="4">
+            <Link to="/login">
+              <CLink as="span">{t('actions.login')}</CLink>
+            </Link>
+            <Link to="/register">
+              <CLink as="span">{t('actions.signup')}</CLink>
+            </Link>
+          </Flex>
+        </Box>
+      </Center>
     </Box>
   );
 }

@@ -5,7 +5,6 @@ import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/rea
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
-import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Login } from './index';
 import { message } from '../../components/message';
@@ -54,47 +53,45 @@ function LoginPage() {
 
   return (
     <Box pb="8" minHeight="100vh">
-      <Template>
-        <Center>
-          <Box w="xs">
-            {platform && (
-              <Center p="4">
-                <Image w="200px" src={platform?.logo} />
-              </Center>
-            )}
-
-            <Heading size="md" textAlign="center">
-              {t('login.labels.title')}
-            </Heading>
-
-            <Center pt="4" mb="6">
-              <Text>
-                {t('login.labels.subtitle')}{' '}
-                <Link to="/register">
-                  <CLink as="span">
-                    <b>{t('actions.signup')}</b>
-                  </CLink>
-                </Link>
-              </Text>
+      <Center>
+        <Box w="xs">
+          {platform && (
+            <Center p="4">
+              <Image w="200px" src={platform?.logo} />
             </Center>
+          )}
 
-            <Box p="6" bg="white" mb="4" border="1px solid" borderColor="gray.500">
-              <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
-            </Box>
-            <Center>
-              <Text>
-                {t('actions.forgot')}
-                <br />
-                <Link to="/forgot-password">
-                  <CLink as="span">
-                    <b>{t('actions.reset')}</b>
-                  </CLink>
-                </Link>
-              </Text>
-            </Center>
+          <Heading size="md" textAlign="center">
+            {t('login.labels.title')}
+          </Heading>
+
+          <Center pt="4" mb="6">
+            <Text>
+              {t('login.labels.subtitle')}{' '}
+              <Link to="/register">
+                <CLink as="span">
+                  <b>{t('actions.signup')}</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+
+          <Box bg="white" border="1px solid" borderColor="gray.500" mb="4" p="6">
+            <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
           </Box>
-        </Center>
-      </Template>
+          <Center>
+            <Text>
+              {t('actions.forgot')}
+              <br />
+              <Link to="/forgot-password">
+                <CLink as="span">
+                  <b>{t('actions.reset')}</b>
+                </CLink>
+              </Link>
+            </Text>
+          </Center>
+        </Box>
+      </Center>
 
       <ConfirmModal
         title={t('profile.joinHost', { host: currentHost?.settings?.name })}
