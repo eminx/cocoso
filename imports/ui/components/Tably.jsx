@@ -44,10 +44,12 @@ function Tably({
     return <Redirect to={tabs[0].path} />;
   }
 
+  const desktopGridColumns = author ? '3fr 4fr 1fr' : '3fr 4fr 0fr';
+
   if (isDesktop) {
     return (
       <>
-        <Grid templateColumns="3fr 4fr 1fr">
+        <Grid templateColumns={desktopGridColumns}>
           <GridItem>
             <Box>
               <Header
