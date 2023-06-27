@@ -28,7 +28,7 @@ function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, hue, role } = useContext(StateContext);
 
   if (!currentUser) {
     return (
@@ -57,13 +57,16 @@ function UserPopup({ currentUser }) {
 
   const roleTranslated = t(`roles.${role}`);
 
+  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
+  const hoverColor = hue ? `hsl(${hue}deg, 40%, 40%)` : 'gray.700';
+
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton>
           <Avatar
-            _hover={{ bg: 'hsl(300deg 20% 20%)' }}
-            bg="hsl(300deg 20% 20%)"
+            _hover={{ bg: hoverColor }}
+            bg={backgroundColor}
             borderRadius="8px"
             showBorder
             size="md"

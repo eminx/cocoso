@@ -76,13 +76,13 @@ function Tably({
           </GridItem>
           <GridItem>{author && <AvatarHolder author={author} />}</GridItem>
 
-          <GridItem>
+          <GridItem mt="2">
             <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
               <NiceSlider images={images} width="550px" max />
             </Flex>
           </GridItem>
 
-          <GridItem pl="12">
+          <GridItem pl="12" mt="2">
             <Box mb="24">
               {tabs ? (
                 <Switch history={history}>

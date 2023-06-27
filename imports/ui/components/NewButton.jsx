@@ -23,7 +23,7 @@ const getRoute = (item, index) => {
   return `/${item.name}/new`;
 };
 
-function NewButton({ canCreateContent, currentHost, isAdmin }) {
+function NewButton({ canCreateContent, currentHost, hue, isAdmin }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +69,9 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
     return null;
   }
 
+  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
+  const hoverColor = hue ? `hsl(${hue}deg, 40%, 40%)` : 'gray.700';
+
   return (
     <Box>
       <Menu
@@ -78,9 +81,9 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          _hover={{ bg: 'hsl(300deg 20% 20%)' }}
+          _hover={{ bg: hoverColor }}
           as={IconButton}
-          bg="hsl(300deg 20% 20%)"
+          bg={backgroundColor}
           borderColor="#fff"
           borderRadius="8px"
           borderWidth="2px"

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Link as CLink, Tabs as CTabs, Tab, TabIndicator, TabList } from '@chakra-ui/react';
+import { StateContext } from '../LayoutContainer';
 
 const tabProps = {
   // _focus: { boxShadow: 'none' },
@@ -16,6 +17,11 @@ const linkStyle = {
 };
 
 function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
+  const { hue } = useContext(StateContext);
+  const backgroundColor = hue ? `hsl(${hue}deg, 60%, 90%)` : 'gray.200';
+  const hoverColor = hue ? `hsl(${hue}deg, 70%, 95%)` : 'gray.100';
+  const activeColor = hue ? `hsl(${hue}deg, 60%, 80%)` : 'gray.300';
+
   return (
     <CTabs colorScheme="gray.800" flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
       <TabList flexWrap="wrap" borderBottom="none" ml="4">
@@ -24,7 +30,7 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
             <Link key={tab.title} to={tab.path} style={linkStyle}>
               <Tab
                 {...tabProps}
-                bg="purple.200"
+                bg={backgroundColor}
                 // color="white"
                 fontWeight="bold"
                 textTransform={forceUppercase ? 'uppercase' : 'normal'}
@@ -32,14 +38,12 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
                 _selected={{
                   bg: 'white',
                 }}
-                // _hover={{
-                //   bg: 'purple.200',
-                //   color: 'gray.900',
-                // }}
-                // _active={{
-                //   bg: 'purple.800',
-                //   color: 'white',
-                // }}
+                _hover={{
+                  bg: hoverColor,
+                }}
+                _active={{
+                  bg: activeColor,
+                }}
               >
                 {tab.title}
                 {tab.badge && (

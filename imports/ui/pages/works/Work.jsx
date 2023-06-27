@@ -62,16 +62,15 @@ function Work() {
     {
       title: tc('labels.info'),
       content: (
-        <Box>
-          <div
-            style={{
-              whiteSpace: 'pre-line',
-              color: 'rgba(0,0,0, .85)',
-            }}
-            className="text-content"
-          >
-            {renderHTML(work.longDescription)}
-          </div>
+        <Box
+          bg="white"
+          className="text-content"
+          color="rgba(0,0,0, .85)"
+          px="4"
+          py="3"
+          whiteSpace="pre-line"
+        >
+          {renderHTML(work.longDescription)}
         </Box>
       ),
       path: `/@${work.authorUsername}/works/${work._id}/info`,
@@ -119,7 +118,6 @@ function Work() {
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
-      <Breadcrumb p="4" />
       <Tably
         adminMenu={isOwner ? adminMenu : null}
         author={{

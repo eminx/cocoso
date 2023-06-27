@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -286,25 +286,27 @@ function Activities({ history }) {
 
       {modalActivity && (
         <Modal
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
+          })}
           h="90%"
           isCentered
           isOpen
           scrollBehavior="inside"
           size="6xl"
-          onClose={() => setModalActivity(null)}
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
-          })}
           onActionButtonClick={() => handleActionButtonClick()}
+          onClose={() => setModalActivity(null)}
         >
-          <Tably
-            action={getDatesForAction(modalActivity, showPast)}
-            content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
-            images={[modalActivity.imageUrl]}
-            subTitle={modalActivity.subTitle}
-            tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
-            title={modalActivity.title}
-          />
+          <ModalBody>
+            <Tably
+              action={getDatesForAction(modalActivity, showPast)}
+              content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
+              images={[modalActivity.imageUrl]}
+              subTitle={modalActivity.subTitle}
+              tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
+              title={modalActivity.title}
+            />
+          </ModalBody>
         </Modal>
       )}
     </Box>

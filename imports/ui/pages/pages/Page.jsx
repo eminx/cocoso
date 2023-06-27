@@ -86,8 +86,8 @@ function Page() {
             <Box mb="4">
               <NiceSlider images={currentPage.images} />
             </Box>
-            <Box p="4" maxW="520px">
-              <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+            <Box bg="white" className="text-content" maxW="520px" p="4">
+              {renderHTML(currentPage.longDescription)}
             </Box>
           </Box>
           {isAdmin && (
@@ -126,8 +126,8 @@ function Page() {
           <Box mb="4">
             <NiceSlider images={currentPage.images} />
           </Box>
-          <Box px="6" className={currentPage.isTermsPage && 'is-terms-page'} maxW="520px">
-            <div className="text-content">{renderHTML(currentPage.longDescription)}</div>
+          <Box bg="white" className="text-content" maxW="520px" p="4">
+            {renderHTML(currentPage.longDescription)}
           </Box>
         </Box>
       </Center>

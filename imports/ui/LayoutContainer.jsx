@@ -39,6 +39,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [platformDrawer, setPlatformDrawer] = useState(false);
+  const [hue, setHue] = useState(null);
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
@@ -125,6 +126,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const isHeaderAndFooter =
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
+  const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
+
   return (
     <>
       <Helmet>
@@ -165,20 +168,22 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             canCreateContent,
             currentUser,
             currentHost,
+            hue,
             isDesktop,
             platform,
             role,
             userLoading,
             getCurrentHost,
+            setHue,
           }}
         >
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-            <Box id="main-viewport" flexGrow="2" bg="hsl(300deg 10% 90%)">
+            <Box id="main-viewport" flexGrow="2" bg={backgroundColor}>
               <Box w="100%">
                 {isHeaderAndFooter && currentHost.isPortalHost && (
-                  <PortalHostIndicator platform={platform} />
+                  <PortalHostIndicator hue={hue} platform={platform} />
                 )}
 
                 <Header isSmallerLogo={!isHeaderAndFooter} />
@@ -188,24 +193,24 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
                 </Box>
 
                 {isHeaderAndFooter && (
-                  <Footer currentHost={currentHost} platform={platform} tc={tc} />
+                  <Footer currentHost={currentHost} hue={hue} platform={platform} tc={tc} />
                 )}
 
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
-                    <Box bg="gray.300" p="4">
+                    <Box bg={hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800'} p="4">
                       <a href={`https://${platform?.portalHost}`}>
                         <Center p="2">
                           <Image w="200px" src={platform?.logo} />
                         </Center>
                       </a>
                       <Center>
-                        <Box textAlign="center" color="gray.800">
+                        <Box textAlign="center" color="gray.200">
                           <Text fontSize="lg" fontWeight="bold">
                             {platform?.name}
                           </Text>
                           <CLink
-                            color="#06c"
+                            color="blue.200"
                             fontWeight="bold"
                             onClick={() => setPlatformDrawer(true)}
                           >
@@ -233,15 +238,18 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   );
 }
 
-function Footer({ currentHost, tc }) {
+function Footer({ currentHost, hue, tc }) {
   if (!currentHost) {
     return null;
   }
 
+  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 20%)` : 'gray.700';
+  const color = hue ? `hsl(${hue}deg, 50%, 90%)` : 'gray.200';
+
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg="gray.200" color="gray.800" pt="4">
+    <Box w="100%" bg={backgroundColor} color={color} pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (

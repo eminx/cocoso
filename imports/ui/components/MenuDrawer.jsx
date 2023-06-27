@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Divider, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
+import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -17,7 +18,9 @@ const getRoute = (item, index) => {
 export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
+  const { hue } = useContext(StateContext);
 
+  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
   const { menu } = currentHost?.settings;
 
   const menuItems = menu
@@ -38,7 +41,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box
-          bg="hsl(300deg 20% 20%)"
+          bg={backgroundColor}
           className={menuClassName}
           color="gray.50"
           h="100vh"
@@ -49,8 +52,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             <Center pt="4">
               <Flex flexDirection="column" align="center">
                 <IconButton
-                  _hover={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
-                  bg="hsl(300deg 20% 20%)"
+                  _hover={{ bg: 'gray.50', color: backgroundColor }}
+                  bg={backgroundColor}
                   color="gray.50"
                   icon={<HamburgerIcon fontSize="36px" />}
                   onClick={onToggle}
@@ -68,8 +71,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                     {tc('menu.label')}
                   </Heading>
                   <IconButton
-                    _hover={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
-                    bg="hsl(300deg 20% 20%)"
+                    _hover={{ bg: 'gray.50', color: backgroundColor }}
+                    bg={backgroundColor}
                     color="gray.50"
                     icon={<CloseIcon />}
                     mr="4"

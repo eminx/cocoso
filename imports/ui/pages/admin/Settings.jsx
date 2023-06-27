@@ -16,6 +16,7 @@ import Menu from './Menu';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import Categories from './Categories';
+import ColorPicker from './ColorPicker';
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -149,6 +150,15 @@ export default function Settings({ history }) {
       content: (
         <AlphaContainer>
           <Categories />
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: 'Theme Color',
+      path: '/admin/settings/color',
+      content: (
+        <AlphaContainer>
+          <ColorPicker />
         </AlphaContainer>
       ),
     },

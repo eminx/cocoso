@@ -402,7 +402,12 @@ class Process extends Component {
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
               }}
             >
-              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+              <AccordionButton
+                _expanded={{ bg: 'green.200' }}
+                _hover={{ bg: 'gray.100' }}
+                bg="white"
+                mb="4"
+              >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
@@ -461,7 +466,7 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+          <AccordionButton bg="white" mb="4" _expanded={{ bg: 'green.200' }}>
             <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
@@ -604,7 +609,7 @@ class Process extends Component {
       <Box>
         {process?.members && (
           <Box mb="8">
-            <Box mb="4" bg="white">
+            <Box mb="4">
               <NiceList
                 actionsDisabled={!isAdmin}
                 keySelector="username"
@@ -670,8 +675,13 @@ class Process extends Component {
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
-                <Code fontWeight="bold">
-                  <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
+                <Code bg="white" fontWeight="bold">
+                  <CLink
+                    color="blue.600"
+                    href={document.downloadUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {document.name}
                   </CLink>
                 </Code>
@@ -689,7 +699,7 @@ class Process extends Component {
             <Center my="2">
               <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
-                  <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
                     {isUploading ? (
                       <div style={{ textAlign: 'center' }}>
                         <Loader />
@@ -910,7 +920,18 @@ class Process extends Component {
     const tabs = [
       {
         title: tc('labels.info'),
-        content: <div className="text-content">{renderHTML(process.description)}</div>,
+        content: (
+          <Box
+            bg="white"
+            className="text-content"
+            color="rgba(0,0,0, .85)"
+            px="4"
+            py="3"
+            whiteSpace="pre-line"
+          >
+            {renderHTML(process.description)}
+          </Box>
+        ),
         path: `/processes/${process._id}/info`,
       },
       {
@@ -1006,7 +1027,7 @@ class Process extends Component {
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
-        <Breadcrumb p="4" />
+
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
@@ -1095,7 +1116,7 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="white" my="4">
+    <Box bg="white" p="4" my="4">
       <Text ml="2" fontWeight="bold">
         {t('meeting.form.label')}
       </Text>

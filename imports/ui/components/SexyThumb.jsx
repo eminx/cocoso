@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import { StateContext } from '../LayoutContainer';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
@@ -53,12 +54,15 @@ function SexyThumb({
   title,
   tag,
 }) {
+  const { hue } = useContext(StateContext);
+  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 50%)` : 'purple.500';
+
   const futureDates = dates && dates.filter((date) => moment(date?.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
 
   return (
-    <div className={coverContainerClass} style={{ backgroundColor: 'purple' }}>
+    <div className={coverContainerClass} style={{ backgroundColor }}>
       <div className={coverClass}>
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>
