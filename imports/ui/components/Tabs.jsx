@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
+import { Badge, Link as CLink, Tabs as CTabs, Tab, TabIndicator, TabList } from '@chakra-ui/react';
 
 const tabProps = {
   // _focus: { boxShadow: 'none' },
@@ -24,9 +24,22 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
             <Link key={tab.title} to={tab.path} style={linkStyle}>
               <Tab
                 {...tabProps}
-                onClick={tab.onClick}
-                textTransform={forceUppercase ? 'uppercase' : 'normal'}
+                bg="purple.200"
+                // color="white"
                 fontWeight="bold"
+                textTransform={forceUppercase ? 'uppercase' : 'normal'}
+                onClick={tab.onClick}
+                _selected={{
+                  bg: 'white',
+                }}
+                // _hover={{
+                //   bg: 'purple.200',
+                //   color: 'gray.900',
+                // }}
+                // _active={{
+                //   bg: 'purple.800',
+                //   color: 'white',
+                // }}
               >
                 {tab.title}
                 {tab.badge && (

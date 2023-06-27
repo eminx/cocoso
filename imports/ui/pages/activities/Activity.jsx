@@ -331,7 +331,7 @@ class Activity extends PureComponent {
             )}
             {canCreateContent && (
               <Center>
-                <Button onClick={() => this.setState({ selectedOccurrence: occurence })}>
+                <Button size="sm" onClick={() => this.setState({ selectedOccurrence: occurence })}>
                   Show attendees
                 </Button>
               </Center>
@@ -349,7 +349,7 @@ class Activity extends PureComponent {
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
-              <AccordionButton bg="gray.100" _expanded={{ bg: 'green.100' }}>
+              <AccordionButton _expanded={{ bg: 'green.100' }}>
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
@@ -393,26 +393,30 @@ class Activity extends PureComponent {
 
   getDatesForAction = () => {
     const { activityData } = this.props;
+    const { isDesktop } = this.context;
+
     return (
-      <Flex pt="4">
-        {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <Box key={occurence.startDate + occurence.startT} mr="6">
-            <Link to={`/activities/${activityData._id}/dates`}>
-              <Flex>
-                <Box>
-                  <DateJust>{occurence.startDate}</DateJust>
-                </Box>
-                {occurence.startDate !== occurence.endDate && (
-                  <Flex>
-                    {'-'}
-                    <DateJust>{occurence.endDate}</DateJust>
-                  </Flex>
-                )}
-              </Flex>
-            </Link>
-          </Box>
-        ))}
-      </Flex>
+      <Link to={`/activities/${activityData._id}/dates`}>
+        <Flex pt="4" wrap="wrap" justify={isDesktop ? 'flex-start' : 'center'}>
+          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+            <Flex
+              key={occurence.startDate + occurence.startT}
+              mx="3"
+              ml={occurenceIndex === 0 && '0'}
+            >
+              <Box>
+                <DateJust>{occurence.startDate}</DateJust>
+              </Box>
+              {occurence.startDate !== occurence.endDate && (
+                <Flex>
+                  {'-'}
+                  <DateJust>{occurence.endDate}</DateJust>
+                </Flex>
+              )}
+            </Flex>
+          ))}
+        </Flex>
+      </Link>
     );
   };
 
@@ -436,18 +440,15 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box>
-            <div
-              style={{
-                whiteSpace: 'pre-line',
-                color: 'rgba(0,0,0, .85)',
-              }}
-              className="text-content"
-            >
-              <Box bg="white" px="4" py="3">
-                {activityData.longDescription && renderHTML(activityData.longDescription)}
-              </Box>
-            </div>
+          <Box
+            bg="white"
+            className="text-content"
+            color="rgba(0,0,0, .85)"
+            px="4"
+            py="3"
+            whiteSpace="pre-line"
+          >
+            {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
         path: `/activities/${activityData._id}/info`,

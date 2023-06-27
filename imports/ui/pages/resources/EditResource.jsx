@@ -75,8 +75,8 @@ function EditResourcePage({ history }) {
   return (
     <Box>
       <Template>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-        <Box py="6">
+        <Breadcrumb p="4" furtherItems={furtherBreadcrumbLinks} />
+        <Box bg="white" p="4">
           {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
         </Box>
         <Center p="4">

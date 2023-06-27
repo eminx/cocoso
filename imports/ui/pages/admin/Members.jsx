@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -26,15 +26,27 @@ const compareUsersByDate = (a, b) => {
 };
 
 function Members() {
+  const [members, setMembers] = useState(null);
   const [sortBy, setSortBy] = useState('join-date');
   const [filterWord, setFilterWord] = useState('');
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentHost, currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
   const history = useHistory();
 
-  const { members } = currentHost;
+  useEffect(() => {
+    getMembers();
+  });
+
+  const getMembers = async () => {
+    try {
+      const respond = await call('getHostMembersForAdmin');
+      setMembers(respond);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!members) {
     return <Loader />;

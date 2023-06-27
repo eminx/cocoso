@@ -27,27 +27,27 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
                 </Heading>
               </Box>
             )}
-            <Box bg="white" maxW="520px" p="4">
-              {children}
-            </Box>
+            <Box maxW="520px">{children}</Box>
           </Box>
 
           <Box>{rightContent}</Box>
         </SimpleGrid>
       ) : (
-        <Center bg="white" p="4">
-          <Box>{leftContent}</Box>
+        <Center>
           <Box>
-            {heading && (
-              <Box mb="2" mt="4">
-                <Heading as="h3" size="md" textAlign={titleCentered ? 'center' : 'start'}>
-                  {heading}
-                </Heading>
-              </Box>
-            )}
-            <Box maxW="520px">{children}</Box>
+            <Box>{leftContent}</Box>
+            <Box>
+              {heading && (
+                <Box mb="2" mt="4">
+                  <Heading as="h3" size="md" textAlign={titleCentered ? 'center' : 'start'}>
+                    {heading}
+                  </Heading>
+                </Box>
+              )}
+              <Box maxW="520px">{children}</Box>
+            </Box>
+            <Box>{rightContent}</Box>
           </Box>
-          <Box>{rightContent}</Box>
         </Center>
       )}
     </>

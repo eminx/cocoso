@@ -3,6 +3,7 @@ import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
 import { defaultMenu, defaultEmails } from '../../startup/constants';
+import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 
 Meteor.methods({
   createNewHost(values) {
@@ -103,6 +104,18 @@ Meteor.methods({
     }
   },
 
+  getHostMembersForAdmin() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    return currentHost?.members;
+  },
+
   getHostMembers() {
     const host = getHost(this);
     const hostUsers = Meteor.users.find({ 'memberships.host': host }).fetch();
@@ -110,8 +123,6 @@ Meteor.methods({
     const hostUsersPublic = hostUsers.filter((member) => {
       return Boolean(member.memberships?.find((membership) => membership.host === host)?.isPublic);
     });
-
-    console.log(hostUsersPublic);
 
     return hostUsersPublic.map((user) => ({
       avatar: user.avatar?.src,

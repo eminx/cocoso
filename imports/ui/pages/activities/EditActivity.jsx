@@ -365,31 +365,29 @@ class EditActivity extends PureComponent {
     return (
       <Box>
         <Template>
-          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-          <Box py="6">
-            <Box mb="8">
-              <VStack spacing="2">
-                <FormSwitch
-                  isChecked={isPublicActivity}
-                  label={t('form.switch.public')}
-                  onChange={this.handlePublicActivitySwitch}
-                />
+          <Breadcrumb p="4" furtherItems={furtherBreadcrumbLinks} />
+          <Box bg="white" p="4">
+            <VStack mb="8" spacing="2">
+              <FormSwitch
+                isChecked={isPublicActivity}
+                label={t('form.switch.public')}
+                onChange={this.handlePublicActivitySwitch}
+              />
 
-                <FormSwitch
-                  isChecked={isExclusiveActivity}
-                  label={t('form.switch.exclusive')}
-                  onChange={this.handleExclusiveSwitch}
-                />
+              <FormSwitch
+                isChecked={isExclusiveActivity}
+                label={t('form.switch.exclusive')}
+                onChange={this.handleExclusiveSwitch}
+              />
 
-                {isPublicActivity && (
-                  <FormSwitch
-                    isChecked={!isRegistrationDisabled}
-                    label={t('form.switch.rsvp')}
-                    onChange={this.handleRegistrationSwitch}
-                  />
-                )}
-              </VStack>
-            </Box>
+              {isPublicActivity && (
+                <FormSwitch
+                  isChecked={!isRegistrationDisabled}
+                  label={t('form.switch.rsvp')}
+                  onChange={this.handleRegistrationSwitch}
+                />
+              )}
+            </VStack>
 
             <ActivityForm
               datesAndTimes={datesAndTimes}
