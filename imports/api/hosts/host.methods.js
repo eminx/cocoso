@@ -62,7 +62,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -113,7 +112,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    return currentHost?.members;
+    return currentHost.members;
   },
 
   getHostMembers() {
@@ -138,6 +137,7 @@ Meteor.methods({
 
   getAllMembersFromAllHosts() {
     const allUsers = Meteor.users.find().fetch();
+
     return allUsers
       .map((user) => ({
         avatar: user.avatar?.src,
@@ -165,6 +165,7 @@ Meteor.methods({
         $sort: { creationDate: 1 },
       }
     ).fetch();
+
     return infoPages && infoPages[0] && infoPages[0].longDescription;
   },
 });
