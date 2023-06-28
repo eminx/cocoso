@@ -384,6 +384,7 @@ class Process extends Component {
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
+    const { hue } = this.context;
 
     if (!process) {
       return;
@@ -391,28 +392,29 @@ class Process extends Component {
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
+    const expandedBg = hue ? `hsl(${hue}deg, 50%, 70%)` : 'gray.400';
+
     return (
       <Box>
         {process &&
           processMeetings.map((meeting, meetingIndex) => (
             <AccordionItem
               key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-              mb="2"
+              mb="4"
               style={{
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
               }}
             >
               <AccordionButton
-                _expanded={{ bg: 'green.200' }}
+                _expanded={{ bg: expandedBg }}
                 _hover={{ bg: 'gray.100' }}
                 bg="white"
-                mb="4"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel bg="white">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>

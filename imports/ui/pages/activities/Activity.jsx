@@ -257,7 +257,7 @@ class Activity extends PureComponent {
   renderDates = () => {
     const { activityData, t, tc } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent, currentUser } = this.context;
+    const { canCreateContent, currentUser, hue } = this.context;
 
     if (!activityData) {
       return;
@@ -269,7 +269,7 @@ class Activity extends PureComponent {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="gray.100" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
+            <Box bg="white" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -291,6 +291,10 @@ class Activity extends PureComponent {
       email: currentUser ? currentUser.emails[0].address : '',
       numberOfPeople: 1,
     };
+
+    const expandedBg = hue ? `hsl(${hue}deg, 50%, 50%)` : 'gray.700';
+    const expandedColor = hue ? `hsl(${hue}deg, 50%, 95%)` : 'gray.50';
+
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
@@ -349,7 +353,7 @@ class Activity extends PureComponent {
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
-              <AccordionButton _expanded={{ bg: 'green.100' }}>
+              <AccordionButton _expanded={{ bg: expandedBg, color: expandedColor }}>
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
@@ -393,7 +397,9 @@ class Activity extends PureComponent {
 
   getDatesForAction = () => {
     const { activityData } = this.props;
-    const { isDesktop } = this.context;
+    const { hue, isDesktop } = this.context;
+
+    const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'blue.700';
 
     return (
       <Link to={`/activities/${activityData._id}/dates`}>
@@ -401,7 +407,8 @@ class Activity extends PureComponent {
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Flex
               key={occurence.startDate + occurence.startT}
-              mx="3"
+              color={color}
+              mr="3"
               ml={occurenceIndex === 0 && '0'}
             >
               <Box>

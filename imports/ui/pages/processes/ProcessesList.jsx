@@ -206,7 +206,7 @@ export default function ProcessesList({ history }) {
         </Flex>
       </Box>
 
-      <Box>
+      <Box mb="8" px={isDesktop ? '4' : '0'}>
         <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
           {(process) => (
             <Box key={process._id}>

@@ -1,12 +1,16 @@
+import React, { useContext, useEffect, useState } from 'react';
 import { Center, Wrap } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import '../utils/styles/paginate.css';
 
+import NewEntryHelper from './NewEntryHelper';
+import { StateContext } from '../LayoutContainer';
+
 const defaultItemsPerPage = 12;
 
 function PaginatedItems({
+  canCreateContent = false,
   centerItems = false,
   items,
   itemsPerPage = defaultItemsPerPage,
@@ -16,6 +20,7 @@ function PaginatedItems({
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const { isDesktop } = useContext(StateContext);
 
   useEffect(() => {
     handlePageChange(0);
@@ -43,8 +48,9 @@ function PaginatedItems({
 
   return (
     <>
-      <Wrap justify={centerItems ? 'center' : 'flex-start'} spacing="4" shouldWrapChildren>
+      <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
         {currentItems && currentItems.map((item) => children(item))}
+        {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
       </Wrap>
       {items && items.length > itemsPerPage && (
         <Center>

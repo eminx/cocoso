@@ -173,7 +173,7 @@ function Works({ history }) {
         </Box>
       </Box>
 
-      <Box>
+      <Box px={isDesktop ? '4' : '0'}>
         <Paginate centerItems items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>
@@ -192,6 +192,7 @@ function Works({ history }) {
                     imageUrl={work.images[0]}
                     tag={work.category?.label}
                     title={work.title}
+                    subTitle={work.shortDescription}
                   />
                 </Box>
               ) : (

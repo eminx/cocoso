@@ -236,7 +236,7 @@ function ResourceItem({ resource, t }) {
               {t('cards.isCombo')} ({resource.resourcesForCombo?.length})
             </Badge>
           )}{' '}
-          <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
+          <Badge>{!resource.isBookable && t('cards.isNotBookable')}</Badge>
         </Text>
         {/* <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text> */}
         {currentHost.isPortalHost && (

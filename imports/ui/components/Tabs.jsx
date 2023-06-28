@@ -18,9 +18,10 @@ const linkStyle = {
 
 function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   const { hue } = useContext(StateContext);
-  const backgroundColor = hue ? `hsl(${hue}deg, 60%, 90%)` : 'gray.200';
-  const hoverColor = hue ? `hsl(${hue}deg, 70%, 95%)` : 'gray.100';
-  const activeColor = hue ? `hsl(${hue}deg, 60%, 80%)` : 'gray.300';
+  const backgroundColor = hue ? `hsl(${hue}deg, 60%, 95%)` : 'gray.400';
+  const hoverColor = hue ? `hsl(${hue}deg, 60%, 90%)` : 'gray.100';
+  const activeColor = hue ? `hsl(${hue}deg, 60%, 80%)` : 'gray.200';
+  const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'gray.800';
 
   return (
     <CTabs colorScheme="gray.800" flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
@@ -31,7 +32,7 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
               <Tab
                 {...tabProps}
                 bg={backgroundColor}
-                // color="white"
+                color={color}
                 fontWeight="bold"
                 textTransform={forceUppercase ? 'uppercase' : 'normal'}
                 onClick={tab.onClick}

@@ -237,8 +237,12 @@ function Activities({ history }) {
         </Flex>
       </Box>
 
-      <Box>
-        <Paginate centerItems items={activitiesRenderedHostFiltered}>
+      <Box px={isDesktop ? '4' : '0'}>
+        <Paginate
+          canCreateContent={canCreateContent}
+          centerItems
+          items={activitiesRenderedHostFiltered}
+        >
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
@@ -281,7 +285,6 @@ function Activities({ history }) {
             );
           }}
         </Paginate>
-        {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
       </Box>
 
       {modalActivity && (

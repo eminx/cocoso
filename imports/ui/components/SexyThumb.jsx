@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import moment from 'moment';
+import { Box } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import { StateContext } from '../LayoutContainer';
@@ -14,8 +15,8 @@ const dateStyle = {
 };
 
 const imageStyle = {
-  width: '300px',
-  height: '280px',
+  width: '375px',
+  height: '315px',
   objectFit: 'cover',
 };
 
@@ -55,14 +56,14 @@ function SexyThumb({
   tag,
 }) {
   const { hue } = useContext(StateContext);
-  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 50%)` : 'purple.500';
+  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 50%)` : 'gray.700';
 
   const futureDates = dates && dates.filter((date) => moment(date?.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
 
   return (
-    <div className={coverContainerClass} style={{ backgroundColor }}>
+    <Box bg={backgroundColor} className={coverContainerClass}>
       <div className={coverClass}>
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>
@@ -104,7 +105,7 @@ function SexyThumb({
           {(host || tag) && <em style={{ color: '#fff' }}>{host || tag}</em>}
         </div>
       </div>
-    </div>
+    </Box>
   );
 }
 

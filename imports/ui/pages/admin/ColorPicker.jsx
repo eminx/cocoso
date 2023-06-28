@@ -12,7 +12,6 @@ function ColorPicker() {
   const handleChange = (pickedColor, event) => {
     setColor(pickedColor);
     setHue(pickedColor?.hsl?.h);
-    console.log(hue);
   };
 
   return (
