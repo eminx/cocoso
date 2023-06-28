@@ -21,11 +21,11 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   const backgroundColor = hue ? `hsl(${hue}deg, 60%, 95%)` : 'gray.400';
   const hoverColor = hue ? `hsl(${hue}deg, 60%, 90%)` : 'gray.100';
   const activeColor = hue ? `hsl(${hue}deg, 60%, 80%)` : 'gray.200';
-  const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'gray.800';
+  const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'blue.700';
 
   return (
     <CTabs colorScheme="gray.800" flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
-      <TabList flexWrap="wrap" borderBottom="none" ml="4">
+      <TabList flexWrap="wrap" borderBottom="none">
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle}>
@@ -36,14 +36,16 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
                 fontWeight="bold"
                 textTransform={forceUppercase ? 'uppercase' : 'normal'}
                 onClick={tab.onClick}
-                _selected={{
-                  bg: 'white',
+                _active={{
+                  bg: activeColor,
                 }}
                 _hover={{
                   bg: hoverColor,
                 }}
-                _active={{
-                  bg: activeColor,
+                _selected={{
+                  bg: 'white',
+                  color: 'gray.800',
+                  cursor: 'default',
                 }}
               >
                 {tab.title}

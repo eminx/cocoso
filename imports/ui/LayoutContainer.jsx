@@ -198,7 +198,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
-                    <Box bg={hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800'} p="4">
+                    <Box bg={hue ? `hsl(${hue}deg, 30%, 10%)` : 'gray.800'} p="4">
                       <a href={`https://${platform?.portalHost}`}>
                         <Center p="2">
                           <Image w="200px" src={platform?.logo} />

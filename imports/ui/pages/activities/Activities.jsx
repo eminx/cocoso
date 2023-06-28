@@ -222,10 +222,10 @@ function Activities({ history }) {
       <Box px="4" mb="2">
         <Flex flexDirection={isDesktop ? 'row' : 'column'}>
           <FiltrerSorter {...filtrerProps}>
-            <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+            <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
 
             {currentHost.isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
                   hostFilterValue={hostFilterValue}

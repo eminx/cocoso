@@ -28,7 +28,7 @@ function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListi
 
   return (
     <Link to={buttonLink}>
-      <Box my="8">
+      <Box>
         <SexyThumb
           subTitle="Create a new entry that will appear here"
           title="New Entry"

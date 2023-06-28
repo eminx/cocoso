@@ -62,12 +62,8 @@ function Tably({
             </Box>
           </GridItem>
 
-          <GridItem pl="12">
-            {action && (
-              <Box mx="4" mb="8">
-                {action}
-              </Box>
-            )}
+          <GridItem pl="16">
+            {action && <Box mb="8">{action}</Box>}
             {tabs && (
               <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs} mb="0">
                 {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
