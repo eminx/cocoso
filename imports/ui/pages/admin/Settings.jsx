@@ -154,7 +154,7 @@ export default function Settings({ history }) {
       ),
     },
     {
-      title: 'Theme Color',
+      title: 'Color',
       path: '/admin/settings/color',
       content: (
         <AlphaContainer>
@@ -198,7 +198,7 @@ export default function Settings({ history }) {
           </Box>
         }
       >
-        <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+        <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
         <Box mb="24">
           <Switch history={history}>

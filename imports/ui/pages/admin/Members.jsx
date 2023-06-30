@@ -230,7 +230,7 @@ function Members() {
         }
       >
         <Box maxWidth={480}>
-          <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+          <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
           <Box>
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
@@ -285,7 +285,7 @@ function Members() {
 function MemberList({ members, roleFilter, t }) {
   const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
   return (
-    <NiceList itemBg="white" keySelector="email" list={membersFiltered} ml="-4">
+    <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
       {(member) => <MemberItem t={t} member={member} />}
     </NiceList>
   );

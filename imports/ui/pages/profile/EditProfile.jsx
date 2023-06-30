@@ -393,7 +393,7 @@ function EditProfile({ history }) {
               </Text>
             </Alert>
 
-            <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+            <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
             <Box>
               <RouteSwitch history={history}>

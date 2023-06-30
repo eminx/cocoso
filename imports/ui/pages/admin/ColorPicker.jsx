@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import { HuePicker } from 'react-color';
+
 import { StateContext } from '../../LayoutContainer';
 
 const defaultColor = { h: 180, s: 60, l: 0.1, a: 0 };
@@ -10,8 +11,12 @@ function ColorPicker() {
   const { hue, setHue } = useContext(StateContext);
 
   const handleChange = (pickedColor, event) => {
+    if (pickedColor?.hsl?.h === color?.hsl?.h) {
+      return;
+    }
     setColor(pickedColor);
-    setHue(pickedColor?.hsl?.h);
+    const parsedHue = parseInt(pickedColor?.hsl?.h) + 1;
+    setHue(parsedHue.toString());
   };
 
   return (
