@@ -38,7 +38,6 @@ function MemberProcesses({ isDesktop, isSelfAccount, user }) {
 
   return (
     <>
-      {isSelfAccount && <NewEntryHelper buttonLink="/processes/new" />}
       <Paginate centerItems={!isDesktop} items={processes}>
         {(process) => (
           <Box key={process._id}>
@@ -52,6 +51,11 @@ function MemberProcesses({ isDesktop, isSelfAccount, user }) {
           </Box>
         )}
       </Paginate>
+      {isSelfAccount && (
+        <Box p="4">
+          <NewEntryHelper buttonLink="/processes/new" />
+        </Box>
+      )}
     </>
   );
 }

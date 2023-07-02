@@ -14,6 +14,7 @@ import MemberProcesses from '../processes/MemberProcesses';
 import Tabs from '../../components/Tabs';
 import { call } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -148,7 +149,7 @@ function MemberPublic({ history, match, path }) {
             index={tabIndex}
             size={isDesktop ? 'md' : 'sm'}
             tabs={tabs}
-            px="1"
+            px="4"
           />
 
           <Switch path={path} history={history}>
@@ -196,7 +197,14 @@ function MemberPublic({ history, match, path }) {
             <Route
               path="/@:username/contact"
               render={(props) => (
-                <ContactInfo isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                <Box p="4">
+                  <ContactInfo
+                    isDesktop={false}
+                    isSelfAccount={isSelfAccount}
+                    tc={tc}
+                    user={user}
+                  />
+                </Box>
               )}
             />
           </Switch>
@@ -221,13 +229,14 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 
   if (isSelfAccount && (!bareBio || bareBio.length < 3)) {
     return (
-      <NewEntryHelper
-        title={tc('message.newentryhelper.bio.title')}
-        buttonLabel={tc('menu.member.settings')}
-        buttonLink={`/@${user?.username}/edit`}
-      >
-        {tc('message.newentryhelper.bio.description')}
-      </NewEntryHelper>
+      <Link to={`/@${user?.username}/edit`}>
+        <Box p="4">
+          <SexyThumb
+            subTitle={tc('menu.member.settings')}
+            title={tc('message.newentryhelper.bio.title')}
+          />
+        </Box>
+      </Link>
     );
   }
 
