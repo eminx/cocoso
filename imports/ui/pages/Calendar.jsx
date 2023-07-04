@@ -9,6 +9,7 @@ import {
   Button,
   Center,
   Flex,
+  Heading as CHeading,
   Link as CLink,
   Tag as CTag,
   TagLabel,
@@ -36,8 +37,6 @@ const publicSettings = Meteor.settings.public;
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 12;
-
-const localeSort = (a, b) => a.label.localeCompare(b.label);
 
 class Calendar extends PureComponent {
   state = {
@@ -245,7 +244,11 @@ class Calendar extends PureComponent {
           } | ${publicSettings.name}`}</title>
         </Helmet>
 
-        <Box bg="white" pt="1" mb="3">
+        <CHeading color="gray.800" m="4" size="lg">
+          {tc('domains.calendar')}
+        </CHeading>
+
+        <Box my="2">
           <Center p="2">
             {!selectFilterView ? (
               <Box>
@@ -332,13 +335,11 @@ class Calendar extends PureComponent {
           {isLoading ? (
             <Loader />
           ) : (
-            <Box pr="2">
-              <CalendarView
-                activities={allFilteredActsWithColors}
-                onSelect={this.handleSelectActivity}
-                onSelectSlot={this.handleSelectSlot}
-              />
-            </Box>
+            <CalendarView
+              activities={allFilteredActsWithColors}
+              onSelect={this.handleSelectActivity}
+              onSelectSlot={this.handleSelectSlot}
+            />
           )}
         </Box>
 

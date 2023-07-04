@@ -134,12 +134,12 @@ function Works({ history }) {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" my="4">
-        <Flex justify="space-between">
+      <Box px="4">
+        <Flex align="center" justify="space-between" my="4">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
             {currentHost.isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
                   hostFilterValue={hostFilterValue}
@@ -150,7 +150,7 @@ function Works({ history }) {
           </FiltrerSorter>
         </Flex>
 
-        <Wrap>
+        <Wrap mb="4">
           <WrapItem>
             <Tag
               label="ALL"

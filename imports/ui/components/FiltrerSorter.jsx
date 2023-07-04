@@ -33,13 +33,12 @@ function FiltrerSorter(props) {
 
   return (
     <>
-      <Flex justify="flex-end" pt="2">
+      <Flex justify="flex-end">
         <Button
           _active={{ backgroundColor: activeColor }}
           _hover={{ backgroundColor: hoverColor }}
           bg={backgroundColor}
           color={color}
-          mb="4"
           size={isDesktop ? 'sm' : 'xs'}
           variant="outline"
           onClick={() => setIsOpen(true)}

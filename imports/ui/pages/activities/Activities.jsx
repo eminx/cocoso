@@ -220,8 +220,8 @@ function Activities({ history }) {
         }`}</title>
       </Helmet>
 
-      <Box my="4" px="4">
-        <Flex justify="space-between">
+      <Box mb="8" mt="4" px="4">
+        <Flex align="center" justify="space-between">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
             <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />

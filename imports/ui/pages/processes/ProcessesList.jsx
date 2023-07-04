@@ -190,12 +190,12 @@ export default function ProcessesList({ history }) {
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" my="4">
-        <Flex justify="space-between">
+      <Box mb="8" mt="4" px="4">
+        <Flex align="center" justify="space-between">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
             {currentHost.isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
                   hostFilterValue={hostFilterValue}
@@ -203,7 +203,7 @@ export default function ProcessesList({ history }) {
                 />
               </Flex>
             )}
-            <Tabs mx="4" size="sm" tabs={tabs} />
+            <Tabs size="sm" tabs={tabs} />
           </FiltrerSorter>
         </Flex>
       </Box>

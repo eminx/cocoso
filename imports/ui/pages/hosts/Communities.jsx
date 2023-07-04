@@ -84,12 +84,10 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <Box px="4" my="4">
+      <Box mb="8" mt="4" px="4">
         <Flex justify="space-between">
           <CHeading color="gray.800" size="lg">
-            <Text as="span" fontWeight="normal">
-              {tc('platform.communities')}
-            </Text>
+            {tc('platform.communities')}
           </CHeading>
           <FiltrerSorter {...filtrerProps} />
         </Flex>

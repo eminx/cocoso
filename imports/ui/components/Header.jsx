@@ -66,7 +66,7 @@ function Heading() {
     return name === pathname.substring(1, pathname.length);
   };
 
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
 
   const { menu } = currentHost?.settings;
   const menuItems = menu?.filter((item) => item.isVisible);
@@ -76,9 +76,7 @@ function Heading() {
   return (
     <Box>
       <CHeading color="gray.800" size="lg">
-        <Text as="span" fontWeight="normal">
-          {activeMenuItem?.label}
-        </Text>
+        {activeMenuItem?.label}
       </CHeading>
     </Box>
   );

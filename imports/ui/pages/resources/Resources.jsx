@@ -158,12 +158,12 @@ function Resources({ history }) {
         <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Box px="4" my="4">
+      <Box mb="8" mt="4" px="4">
         <Flex justify="space-between">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
             {currentHost.isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
                   hostFilterValue={hostFilterValue}
@@ -171,7 +171,7 @@ function Resources({ history }) {
                 />
               </Flex>
             )}
-            <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
+            <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
           </FiltrerSorter>
         </Flex>
       </Box>
