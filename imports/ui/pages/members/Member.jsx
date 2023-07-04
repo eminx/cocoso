@@ -122,15 +122,13 @@ function MemberPublic({ history, match, path }) {
       <Box py="4" px="4" fontSize="130%">
         <Flex wrap="wrap">
           <Link to="/">
-            <CLink as="span" color="#06c" fontWeight="bold">
+            <CLink as="span" fontWeight="bold">
               {name}
             </CLink>
           </Link>
           <Text mx="2">/</Text>
           <Link to="/members">
-            <CLink as="span" color="#06c">
-              {membersInMenu.label}
-            </CLink>
+            <CLink as="span">{membersInMenu.label}</CLink>
           </Link>
           <Text mx="2">/</Text>
           <Text>{username}</Text>

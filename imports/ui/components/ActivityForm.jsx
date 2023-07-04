@@ -187,7 +187,7 @@ function ActivityForm({
                 />
               );
             })}
-            <Center p="6" border="1px solid #ccc">
+            <Center bg="brand.50" p="6">
               <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
           </Box>

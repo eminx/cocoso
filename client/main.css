@@ -108,7 +108,7 @@ body {
 
 a,
 .text-content a {
-  color: #06c;
+  /* color: #06c; */
   text-decoration: none;
 }
 
@@ -192,4 +192,9 @@ input::placeholder {
   font-size: 16px;
   line-height: 21px;
   font-weight: normal;
+}
+
+.chakra-input,
+.chakra-select {
+  background-color: #fff !important;
 }

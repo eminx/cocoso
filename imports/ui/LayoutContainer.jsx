@@ -23,7 +23,7 @@ import 'moment/locale/tr';
 import Favicon from 'react-favicon';
 
 import FeedbackForm from './components/FeedbackForm';
-import { chakraTheme } from './utils/constants/theme';
+import { generateTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
@@ -39,7 +39,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [platformDrawer, setPlatformDrawer] = useState(false);
-  const [hue, setHue] = useState(null);
+  const [hue, setHue] = useState('233');
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
@@ -127,6 +127,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
+
+  const chakraTheme = generateTheme(hue);
 
   return (
     <>
@@ -352,7 +354,7 @@ function HostItem({ host, tc }) {
         </Text>
         <Text>{host.city + ', ' + host.country}</Text>
         <Text>
-          <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
+          <CLink href={`https://${host.host}`} title={host.host}>
             {host.host}
           </CLink>
         </Text>
