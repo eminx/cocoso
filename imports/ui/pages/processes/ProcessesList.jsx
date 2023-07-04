@@ -21,6 +21,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
 import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
+import { Heading } from '../../components/Header';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -189,20 +190,21 @@ export default function ProcessesList({ history }) {
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box px="4" my="4">
+        <Flex justify="space-between">
+          <Heading />
           <FiltrerSorter {...filtrerProps}>
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
             <Tabs mx="4" size="sm" tabs={tabs} />
           </FiltrerSorter>
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
         </Flex>
       </Box>
 

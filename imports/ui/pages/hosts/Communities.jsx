@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Flex, Image, Link } from '@chakra-ui/react';
+import { Box, Center, Code, Flex, Heading as CHeading, Image, Link, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -84,13 +84,18 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <Box px="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box px="4" my="4">
+        <Flex justify="space-between">
+          <CHeading color="gray.800" size="lg">
+            <Text as="span" fontWeight="normal">
+              {tc('platform.communities')}
+            </Text>
+          </CHeading>
           <FiltrerSorter {...filtrerProps} />
         </Flex>
       </Box>
 
-      <Box p="4" pt="8">
+      <Box px="4">
         <Paginate centerItems={!isDesktop} items={hostsRendered}>
           {(host) => (
             <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
@@ -138,13 +143,11 @@ function HostItem({ host, tc }) {
   }
 
   return (
-    <Box>
-      <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
-        <Code linebreak="anywhere" mt="4" noOfLines={2} fontSize="xs">
-          {host.host}
-        </Code>
-      </GridThumb>
-    </Box>
+    <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
+      <Code linebreak="anywhere" mt="4" noOfLines={2} fontSize="xs">
+        {host.host}
+      </Code>
+    </GridThumb>
   );
 }
 

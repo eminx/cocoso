@@ -19,6 +19,7 @@ import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
+import { Heading } from '../../components/Header';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -133,44 +134,45 @@ function Works({ history }) {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <FiltrerSorter {...filtrerProps}>
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
-        </FiltrerSorter>
+      <Box px="4" my="4">
+        <Flex justify="space-between">
+          <Heading />
+          <FiltrerSorter {...filtrerProps}>
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+          </FiltrerSorter>
+        </Flex>
 
-        <Box mt="4">
-          <Wrap>
-            <WrapItem>
+        <Wrap>
+          <WrapItem>
+            <Tag
+              label="ALL"
+              checkable
+              checked={categoryFilter === null}
+              filterColor="#2d2d2d"
+              onClick={() => setCategoryFilter(null)}
+            />
+          </WrapItem>
+          {categoriesAssignedToWorks.map((cat) => (
+            <WrapItem key={cat.label}>
               <Tag
-                label="ALL"
                 checkable
-                checked={categoryFilter === null}
-                filterColor="#2d2d2d"
-                onClick={() => setCategoryFilter(null)}
+                checked={categoryFilter === cat.label}
+                filterColor={cat.color}
+                label={cat.label && cat.label.toUpperCase()}
+                margin={{ bottom: 'small' }}
+                onClick={() => setCategoryFilter(cat.label)}
               />
             </WrapItem>
-            {categoriesAssignedToWorks.map((cat) => (
-              <WrapItem key={cat.label}>
-                <Tag
-                  checkable
-                  checked={categoryFilter === cat.label}
-                  filterColor={cat.color}
-                  label={cat.label && cat.label.toUpperCase()}
-                  margin={{ bottom: 'small' }}
-                  onClick={() => setCategoryFilter(cat.label)}
-                />
-              </WrapItem>
-            ))}
-          </Wrap>
-        </Box>
+          ))}
+        </Wrap>
       </Box>
 
       <Box px={isDesktop ? '4' : '0'}>

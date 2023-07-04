@@ -11,7 +11,7 @@ export default function GridThumb({ title, image, imageFit = 'cover', large = fa
   }
 
   return (
-    <Flex bg="white" justify="space-between" flexDirection={large ? 'column' : 'row'} m="2" w={290}>
+    <Flex bg="white" justify="space-between" flexDirection={large ? 'column' : 'row'} w={290}>
       {image ? (
         <Box bg="gray.100" flexBasis={large ? '50%' : 150}>
           <Image

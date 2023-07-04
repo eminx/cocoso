@@ -22,6 +22,7 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
+import { Heading } from '../../components/Header';
 
 moment.locale(i18n.language);
 
@@ -219,8 +220,9 @@ function Activities({ history }) {
         }`}</title>
       </Helmet>
 
-      <Box px="4" mb="2">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box my="4" px="4">
+        <Flex justify="space-between">
+          <Heading />
           <FiltrerSorter {...filtrerProps}>
             <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
 
