@@ -292,9 +292,6 @@ class Activity extends PureComponent {
       numberOfPeople: 1,
     };
 
-    const expandedBg = hue ? `hsl(${hue}deg, 50%, 50%)` : 'gray.700';
-    const expandedColor = hue ? `hsl(${hue}deg, 50%, 95%)` : 'gray.50';
-
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
@@ -353,7 +350,11 @@ class Activity extends PureComponent {
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
-              <AccordionButton _expanded={{ bg: expandedBg, color: expandedColor }}>
+              <AccordionButton
+                _expanded={{ bg: 'brand.500', color: 'white' }}
+                _hover={{ bg: 'brand.400', color: 'white' }}
+                bg="white"
+              >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>

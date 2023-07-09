@@ -392,8 +392,6 @@ class Process extends Component {
 
     const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
-    const expandedBg = hue ? `hsl(${hue}deg, 50%, 70%)` : 'gray.400';
-
     return (
       <Box>
         {process &&
@@ -406,8 +404,8 @@ class Process extends Component {
               }}
             >
               <AccordionButton
-                _expanded={{ bg: expandedBg }}
-                _hover={{ bg: 'gray.100' }}
+                _expanded={{ bg: 'brand.500', color: 'white' }}
+                _hover={{ bg: 'brand.400', color: 'white' }}
                 bg="white"
               >
                 <Box flex="1" textAlign="left">
