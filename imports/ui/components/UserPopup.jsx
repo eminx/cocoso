@@ -28,7 +28,7 @@ function UserPopup({ currentUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, hue, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, role } = useContext(StateContext);
 
   if (!currentUser) {
     return (
@@ -57,16 +57,13 @@ function UserPopup({ currentUser }) {
 
   const roleTranslated = t(`roles.${role}`);
 
-  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
-  const hoverColor = hue ? `hsl(${hue}deg, 40%, 40%)` : 'gray.700';
-
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton>
           <Avatar
-            _hover={{ bg: hoverColor }}
-            bg={backgroundColor}
+            _hover={{ bg: 'brand.500' }}
+            bg="brand.600"
             borderRadius="8px"
             showBorder
             size="md"
@@ -92,7 +89,7 @@ function UserPopup({ currentUser }) {
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
                     <MenuItem>
-                      <Text color="gray.600" isTruncated>
+                      <Text color="brand.700" isTruncated>
                         {item.title}{' '}
                       </Text>
                       <Badge colorScheme="red" size="xs">
@@ -110,14 +107,14 @@ function UserPopup({ currentUser }) {
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem>{tc('menu.member.profile')}</MenuItem>
+                <MenuItem color="brand.700">{tc('menu.member.profile')}</MenuItem>
               </Link>
               <Link to={currentUser && `/@${currentUser?.username}/edit`}>
-                <MenuItem>{tc('menu.member.settings')}</MenuItem>
+                <MenuItem color="brand.700">{tc('menu.member.settings')}</MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
-                  <MenuItem>{tc('menu.member.activities')}</MenuItem>
+                  <MenuItem color="brand.700">{tc('menu.member.activities')}</MenuItem>
                 </Link>
               )}
             </Box>
@@ -129,7 +126,7 @@ function UserPopup({ currentUser }) {
               <Box px="1">
                 {adminMenu.map((item) => (
                   <Link key={item.key} to={item.value}>
-                    <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                    <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
                   </Link>
                 ))}
               </Box>
@@ -141,7 +138,7 @@ function UserPopup({ currentUser }) {
               <Box px="1">
                 {superadminMenu.map((item) => (
                   <Link key={item.key} to={item.value}>
-                    <MenuItem>{tc(`menu.admin.${item.key}`)}</MenuItem>
+                    <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
                   </Link>
                 ))}
               </Box>

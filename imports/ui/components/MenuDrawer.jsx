@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
-import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -145,13 +144,22 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
   return (
     <VStack align="flex-start">
       <Divider borderColor="gray.400" mb="2" />
-      {menuItems.map((item) => (
-        <Link key={item.label} to={item.route} onClick={onToggle}>
-          <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text fontWeight={isCurrentPage(item) ? 'bold' : 'normal'}>{item.label}</Text>
-          </Box>
-        </Link>
-      ))}
+      {menuItems.map((item) => {
+        const isCurrentPageLabel = isCurrentPage(item);
+        return (
+          <Link key={item.label} to={item.route} onClick={onToggle}>
+            <Box py="1">
+              <Text
+                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
+                color={isCurrentPageLabel ? 'brand.50' : 'brand.100'}
+                fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
+              >
+                {item.label}
+              </Text>
+            </Box>
+          </Link>
+        );
+      })}
       {isPortalHost && (
         <Divider
           borderColor="gray.400"
@@ -160,14 +168,18 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
         />
       )}
       {isPortalHost && (
-        <Text fontSize="xs" color="gray.700">
+        <Text color="brand.50" fontSize="xs">
           <em>{tc('domains.platform', { platform: platform?.name })}</em>
         </Text>
       )}
       {isPortalHost && (
         <Link key="/communities" to="/communities" onClick={onToggle}>
-          <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text fontWeight={pathname === '/communities' ? 'bold' : 'normal'}>
+          <Box py="1">
+            <Text
+              _hover={{ textDecoration: 'underline' }}
+              color="brand.50"
+              fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
+            >
               {tc('platform.communities')}
             </Text>
           </Box>

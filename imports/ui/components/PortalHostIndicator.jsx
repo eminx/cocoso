@@ -13,12 +13,11 @@ import {
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
-export default function PortalHostIndicator({ hue, platform }) {
+export default function PortalHostIndicator({ platform }) {
   const { t } = useTranslation('hosts');
-  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
 
   return (
-    <Box bg={backgroundColor}>
+    <Box bg="brand.800">
       <Accordion allowToggle>
         <AccordionItem border="none">
           <AccordionButton

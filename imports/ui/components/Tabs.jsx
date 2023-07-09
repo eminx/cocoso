@@ -1,39 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Link as CLink, Tabs as CTabs, Tab, TabIndicator, TabList } from '@chakra-ui/react';
-import { StateContext } from '../LayoutContainer';
 
 const linkStyle = {
   marginBottom: 0,
 };
 
 function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
-  const { hue } = useContext(StateContext);
-  const activeColor = hue ? `hsl(${hue}deg, 60%, 80%)` : 'gray.200';
-  const backgroundColor = hue ? `hsl(${hue}deg, 60%, 95%)` : 'gray.400';
-  const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'blue.700';
-  const hoverColor = hue ? `hsl(${hue}deg, 60%, 90%)` : 'gray.100';
-
-  const dynamicTabProps = {
-    activeColor,
-    backgroundColor,
-    color,
-    forceUppercase,
-    hoverColor,
-    hue,
-  };
-
   return (
-    <CTabs colorScheme="gray.800" flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
+    <CTabs flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
       <TabList flexWrap="wrap" borderBottom="none">
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle}>
-              <CoTab {...dynamicTabProps} tab={tab} />
+              <CoTab tab={tab} />
             </Link>
           ) : (
             <CLink key={tab.title} style={linkStyle} _hover={{ textDecoration: 'none' }}>
-              <CoTab {...dynamicTabProps} tab={tab} />
+              <CoTab tab={tab} />
             </CLink>
           )
         )}
@@ -43,24 +27,24 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   );
 }
 
-function CoTab({ activeColor, backgroundColor, color, forceUppercase, hoverColor, tab }) {
+function CoTab({ forceUppercase = true, tab }) {
   if (!tab) {
     return null;
   }
 
   const tabProps = {
     _active: {
-      bg: activeColor,
+      bg: 'brand.200',
     },
     _hover: {
-      bg: hoverColor,
+      bg: 'brand.200',
     },
     _focus: {
       boxShadow: 'none',
     },
     _selected: {
-      bg: color,
-      color: 'white',
+      bg: 'white',
+      color: 'gray.800',
       cursor: 'default',
     },
     as: 'span',
@@ -72,8 +56,8 @@ function CoTab({ activeColor, backgroundColor, color, forceUppercase, hoverColor
   return (
     <Tab
       {...tabProps}
-      bg={backgroundColor}
-      color={color}
+      bg="brand.100"
+      color="brand.600"
       textTransform={forceUppercase ? 'uppercase' : 'normal'}
     >
       {tab.title}

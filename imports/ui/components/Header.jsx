@@ -45,7 +45,6 @@ function Header({ isSmallerLogo }) {
           <NewButton
             canCreateContent={canCreateContent}
             currentHost={currentHost}
-            hue={hue}
             isAdmin={isAdmin}
           />
           <UserPopup currentUser={currentUser} />

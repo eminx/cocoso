@@ -127,7 +127,6 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
-
   const chakraTheme = generateTheme(hue);
 
   return (
@@ -182,10 +181,10 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-            <Box id="main-viewport" flexGrow="2" bg={backgroundColor}>
+            <Box id="main-viewport" flexGrow="2" bg="brand.50">
               <Box w="100%">
                 {isHeaderAndFooter && currentHost.isPortalHost && (
-                  <PortalHostIndicator hue={hue} platform={platform} />
+                  <PortalHostIndicator platform={platform} />
                 )}
 
                 <Header isSmallerLogo={!isHeaderAndFooter} />
@@ -195,24 +194,26 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
                 </Box>
 
                 {isHeaderAndFooter && (
-                  <Footer currentHost={currentHost} hue={hue} platform={platform} tc={tc} />
+                  <Footer currentHost={currentHost} platform={platform} tc={tc} />
                 )}
 
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
-                    <Box bg={hue ? `hsl(${hue}deg, 30%, 10%)` : 'gray.800'} p="4">
-                      <a href={`https://${platform?.portalHost}`}>
-                        <Center p="2">
-                          <Image w="200px" src={platform?.logo} />
-                        </Center>
-                      </a>
+                    <Box bg="brand.800" p="4">
+                      {!currentHost.isPortalHost && (
+                        <a href={`https://${platform?.portalHost}`}>
+                          <Center p="2">
+                            <Image w="200px" src={platform?.logo} />
+                          </Center>
+                        </a>
+                      )}
                       <Center>
                         <Box textAlign="center" color="gray.200">
-                          <Text fontSize="lg" fontWeight="bold">
+                          <Text color="brand.100" fontSize="lg" fontWeight="bold">
                             {platform?.name}
                           </Text>
                           <CLink
-                            color="blue.200"
+                            color="brand.100"
                             fontWeight="bold"
                             onClick={() => setPlatformDrawer(true)}
                           >
@@ -240,24 +241,23 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   );
 }
 
-function Footer({ currentHost, hue, tc }) {
+function Footer({ currentHost, tc }) {
   if (!currentHost) {
     return null;
   }
 
-  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 20%)` : 'gray.700';
-  const color = hue ? `hsl(${hue}deg, 50%, 90%)` : 'gray.200';
-
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg={backgroundColor} color={color} pt="4">
+    <Box w="100%" bg="brand.700" color="brand.100" pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="2" py="1">
               <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span">{item.label}</CLink>{' '}
+                <CLink as="span" color="brand.100">
+                  {item.label}
+                </CLink>{' '}
               </Link>
             </ListItem>
           ))}
@@ -284,7 +284,7 @@ function Footer({ currentHost, hue, tc }) {
             </Text>
             <Box mt="4">
               <Link to="/terms-&-privacy-policy">
-                <CLink as="span" fontSize="sm">
+                <CLink as="span" color="brand.200" fontSize="sm">
                   {tc('terms.title')}{' '}
                 </CLink>
               </Link>

@@ -240,7 +240,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 
   return (
     <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-      <Box maxWidth="480px" className="text-content" py="4" px="3">
+      <Box maxWidth="480px" className="text-content" m="4" px="4" py="2" bg="white">
         {renderHTML(user.bio)}
       </Box>
     </Flex>

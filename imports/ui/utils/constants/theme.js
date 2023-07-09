@@ -6,6 +6,10 @@ const generateTheme = (hue) => {
   const color = brand(hue, '50');
 
   return extendTheme({
+    fonts: {
+      heading: `'Raleway', sans-serif`,
+      body: `'Raleway', sans-serif`,
+    },
     colors: {
       brand: {
         50: brand(hue, '95'),
@@ -78,12 +82,6 @@ const generateTheme = (hue) => {
         },
       },
     },
-    fonts: {
-      // heading: "'Charter-bold', 'Sarabun', sans-serif",
-      heading: "'Sarabun', sans-serif",
-      body: "'Sarabun', sans-serif",
-    },
-
     styles: {
       global: {
         a: {

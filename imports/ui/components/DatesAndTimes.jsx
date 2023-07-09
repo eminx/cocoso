@@ -58,7 +58,7 @@ function DatesAndTimes({
   };
 
   return (
-    <Box bg="brand.50" borderColor={getBorderColorStyle()} mb="4" p="4">
+    <Box bg="brand.100" borderColor={getBorderColorStyle()} mb="4" p="4">
       {isDeletable && (
         <Flex justify="flex-end" mb="4">
           <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />

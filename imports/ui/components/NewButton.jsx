@@ -69,9 +69,6 @@ function NewButton({ canCreateContent, currentHost, hue, isAdmin }) {
     return null;
   }
 
-  const backgroundColor = hue ? `hsl(${hue}deg, 30%, 20%)` : 'gray.800';
-  const hoverColor = hue ? `hsl(${hue}deg, 40%, 40%)` : 'gray.700';
-
   return (
     <Box>
       <Menu
@@ -81,14 +78,14 @@ function NewButton({ canCreateContent, currentHost, hue, isAdmin }) {
         onClose={() => setIsOpen(false)}
       >
         <MenuButton
-          _hover={{ bg: hoverColor }}
+          _hover={{ bg: 'brand.500' }}
           as={IconButton}
-          bg={backgroundColor}
+          bg="brand.600"
           borderColor="#fff"
           borderRadius="8px"
           borderWidth="2px"
           h="48px"
-          icon={<AddIcon color="gray.50" />}
+          icon={<AddIcon color="brand.50" />}
           w="48px"
         />
         <MenuList>
@@ -129,7 +126,7 @@ function NewButton({ canCreateContent, currentHost, hue, isAdmin }) {
         <Text
           fontSize="xs"
           fontWeight="bold"
-          color="gray.900"
+          color="brand.800"
           position="absolute"
           textAlign="center"
           textTransform="uppercase"
