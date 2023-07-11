@@ -25,7 +25,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { allHosts, currentHost } = useContext(StateContext);
   const history = useHistory();
 
   if (!user) {
@@ -53,83 +53,79 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const roleTr = t(`roles.${role}`);
 
   return (
-    <>
-      <Flex
-        px="4"
-        flexDirection="column"
-        align={!centerItems && isDesktop ? 'flex-start' : 'center'}
-      >
-        <Box pt="4" pb="2">
+    <Box bg="brand.100" mb="8" w="100%">
+      <Flex flexDirection="column" align={centerItems ? 'center' : 'flex-start'}>
+        <Box>
           {avatarSrc ? (
             <Image
-              borderRadius="12px"
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
-              h={isThumb ? '128px' : '200px'}
               src={avatarSrc}
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           ) : (
-            <Avatar borderRadius="12px" name={user.username} size="2xl" />
+            <Avatar borderRadius="0" name={user.username} size="2xl" />
           )}
         </Box>
-        <Box>
-          <Text fontWeight="bold" fontSize="xl">
-            {user.username}{' '}
-            {!hideRole && role && (
-              <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
-                {roleTr}
-              </Text>
-            )}
-          </Text>
-        </Box>
-        <Box>
-          <Text>{getFullName(user)}</Text>
-        </Box>
-        {!isThumb && (
-          <Box mb="2">
-            {membershipsLength > 1 && (
-              <Popover
-                bg="gray.50"
-                placement={!centerItems && isDesktop ? 'bottom-start' : 'bottom'}
-                trigger={
-                  <Button
-                    colorScheme="gray.600"
-                    fontWeight="light"
-                    textDecoration="underline"
-                    variant="link"
-                  >
-                    {t('profile.message.memberships', { count: membershipsLength })}
-                  </Button>
-                }
-              >
-                <Box p="1">
-                  {membershipsWithHosts?.map((m) => (
-                    <Box key={m.host} my="2">
-                      <Button
-                        colorScheme="gray.800"
-                        textDecoration="underline"
-                        variant="link"
-                        onClick={() => setRedirect(m)}
-                      >
-                        {m.name}
-                      </Button>
-                      <Text
-                        as="span"
-                        fontSize="sm"
-                        fontWeight="light"
-                        ml="2"
-                        textTransform="lowercase"
-                      >
-                        {t(`roles.${m.role}`)}
-                      </Text>
-                    </Box>
-                  ))}
-                </Box>
-              </Popover>
-            )}
+        <Box p="4" pt="2">
+          <Box>
+            <Text fontWeight="bold" fontSize="xl" textAlign="center">
+              {user.username}{' '}
+              {!hideRole && role && (
+                <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
+                  {roleTr}
+                </Text>
+              )}
+            </Text>
           </Box>
-        )}
+          <Box>
+            <Text>{getFullName(user)}</Text>
+          </Box>
+          {!isThumb && (
+            <Box mb="2">
+              {membershipsLength > 1 && (
+                <Popover
+                  bg="gray.50"
+                  placement={!centerItems ? 'bottom-start' : 'bottom'}
+                  trigger={
+                    <Button
+                      colorScheme="gray.600"
+                      fontWeight="light"
+                      textDecoration="underline"
+                      variant="link"
+                    >
+                      {t('profile.message.memberships', { count: membershipsLength })}
+                    </Button>
+                  }
+                >
+                  <Box p="1">
+                    {membershipsWithHosts?.map((m) => (
+                      <Box key={m.host} my="2">
+                        <Button
+                          colorScheme="gray.800"
+                          textDecoration="underline"
+                          variant="link"
+                          onClick={() => setRedirect(m)}
+                        >
+                          {m.name}
+                        </Button>
+                        <Text
+                          as="span"
+                          fontSize="sm"
+                          fontWeight="light"
+                          ml="2"
+                          textTransform="lowercase"
+                        >
+                          {t(`roles.${m.role}`)}
+                        </Text>
+                      </Box>
+                    ))}
+                  </Box>
+                </Popover>
+              )}
+            </Box>
+          )}
+        </Box>
       </Flex>
 
       {!isThumb && (
@@ -163,7 +159,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           </ModalContent>
         </Modal>
       )}
-    </>
+    </Box>
   );
 }
 

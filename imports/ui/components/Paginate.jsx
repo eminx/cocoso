@@ -50,9 +50,11 @@ function PaginatedItems({
 
   const breakpointColumnsObj = {
     default: 4,
+    1900: 5,
+    1500: 4,
     1100: 3,
     700: 2,
-    500: 1,
+    480: 1,
   };
 
   return (

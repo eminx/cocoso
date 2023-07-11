@@ -16,7 +16,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   const remaining = dates?.length - 1;
 
   return (
-    <Box>
+    <Box mb="8" bg="white">
       <Box className="text-link-container" position="relative">
         <Box>
           <LazyLoadImage
@@ -40,7 +40,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
           <Box pr="3">
             <Heading
               className="text-link"
-              fontSize="1.5rem"
+              fontSize="1.4rem"
               fontWeight="bold"
               mb="1"
               overflowWrap="anywhere"

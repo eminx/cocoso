@@ -136,7 +136,7 @@ function MembersPublic({ history }) {
   const activeMenuItem = menuItems.find((item) => item.name === 'members');
 
   return (
-    <Box mb="3">
+    <Box mb="8">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
@@ -159,23 +159,15 @@ function MembersPublic({ history }) {
       </Flex>
 
       <Box mt="2" pl="1">
-        <Paginate centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
+        <Paginate isMasonry centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
             <Flex
               key={member.username}
-              justifyContent={isDesktop ? 'flex-start' : 'center'}
-              py="2"
-              w={isDesktop ? '280px' : '2xs'}
+              justifyContent="center"
               cursor="pointer"
               onClick={() => setModalUser(member)}
             >
-              <MemberAvatarEtc
-                centerItems={!isDesktop}
-                hideRole={isPortalHost}
-                isThumb
-                t={t}
-                user={member}
-              />
+              <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
             </Flex>
           )}
         </Paginate>
