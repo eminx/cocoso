@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 import Favicon from 'react-favicon';
+import '@fontsource-variable/raleway';
 
 import FeedbackForm from './components/FeedbackForm';
 import { generateTheme } from './utils/constants/theme';

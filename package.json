@@ -38,9 +38,10 @@
   "dependencies": {
     "@babel/runtime": "^7.16.7",
     "@chakra-ui/icons": "^2.0.19",
-    "@chakra-ui/react": "^2.7.0",
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
+    "@chakra-ui/react": "^2.7.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource-variable/raleway": "^5.0.6",
     "@hookform/resolvers": "^2.8.5",
     "array-move": "^2.2.2",
     "bcrypt": "^5.0.1",

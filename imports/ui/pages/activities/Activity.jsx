@@ -599,7 +599,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
     // },
   ];
   return (
-    <Box bg="white" p="1" mb="8">
+    <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Stack spacing={2}>
           {fields.map((field) => (

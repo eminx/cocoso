@@ -176,6 +176,15 @@ input::placeholder {
 }
 
 .chakra-input,
-.chakra-select {
+.chakra-select,
+.chakra-numberinput__field,
+.chakra-textarea {
   background-color: #fff !important;
+}
+
+.chakra-input:hover,
+.chakra-select:hover,
+.chakra-numberinput__field:hover,
+.chakra-textarea:hover {
+  background-color: #f7f7f7 !important;
 }

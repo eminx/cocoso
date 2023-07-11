@@ -7,8 +7,8 @@ const generateTheme = (hue) => {
 
   const theme = extendTheme({
     fonts: {
-      heading: "'Raleway', sans-serif",
-      body: "'Raleway', sans-serif",
+      heading: "'Helvetica', sans-serif",
+      body: "'Helvetica', sans-serif",
     },
     colors: {
       brand: {
@@ -42,11 +42,6 @@ const generateTheme = (hue) => {
         },
       },
       Input: {
-        baseStyle: {
-          _focus: {
-            backgroundColor: '#fff',
-          },
-        },
         defaultProps: {
           focusBorderColor: color,
           variant: 'filled',
