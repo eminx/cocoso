@@ -297,7 +297,7 @@ class Activity extends PureComponent {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box bg="white">
+          <Box>
             {eventPast ? (
               <Box p="2">
                 <Text color="gray">{t('public.past')}</Text>
@@ -360,11 +360,11 @@ class Activity extends PureComponent {
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel>
-                <Text m2="4" fontWeight="bold">
+              <AccordionPanel bg="brand.100">
+                <Text m="2" fontWeight="bold">
                   {t('public.register.label')}
                 </Text>
-                {conditionalRender(occurence, occurenceIndex)}
+                <Box px="2">{conditionalRender(occurence, occurenceIndex)}</Box>
               </AccordionPanel>
             </AccordionItem>
           ))}

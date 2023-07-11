@@ -225,7 +225,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 
   const bareBio = stripHtml(user.bio);
 
-  if (isSelfAccount && (!bareBio || bareBio.length < 3)) {
+  if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
       <Link to={`/@${user?.username}/edit`}>
         <Box p="4">
@@ -236,6 +236,10 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
         </Box>
       </Link>
     );
+  }
+
+  if (!bareBio || bareBio.length < 2) {
+    return null;
   }
 
   return (

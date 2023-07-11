@@ -126,7 +126,6 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const isHeaderAndFooter =
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
-  const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
   const chakraTheme = generateTheme(hue);
 
   return (

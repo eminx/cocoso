@@ -5,10 +5,10 @@ const brand = (hue, level) => `hsl(${hue}deg, 50%, ${level}%)`;
 const generateTheme = (hue) => {
   const color = brand(hue, '50');
 
-  return extendTheme({
+  const theme = extendTheme({
     fonts: {
-      heading: `'Raleway', sans-serif`,
-      body: `'Raleway', sans-serif`,
+      heading: "'Raleway', sans-serif",
+      body: "'Raleway', sans-serif",
     },
     colors: {
       brand: {
@@ -90,6 +90,8 @@ const generateTheme = (hue) => {
       },
     },
   });
+
+  return theme;
 };
 
 export { generateTheme };
