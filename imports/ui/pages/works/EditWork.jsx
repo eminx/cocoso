@@ -101,20 +101,28 @@ class EditWork extends PureComponent {
     });
   };
 
-  uploadImages = async (formValues) => {
+  handleSubmit = (formValues) => {
     const { images } = this.state;
-    this.setState({
-      values: formValues,
-      isCreating: true,
-    });
-
     const isThereUploadable = images.some((image) => image.type === 'not-uploaded');
-    if (!isThereUploadable) {
-      const imagesReadyToSave = images.map((image) => image.src);
-      this.updateWork(imagesReadyToSave);
-      return;
-    }
 
+    this.setState(
+      {
+        values: formValues,
+        isCreating: true,
+      },
+      () => {
+        if (!isThereUploadable) {
+          const imagesReadyToSave = images.map((image) => image.src);
+          this.updateWork(imagesReadyToSave);
+        } else {
+          this.uploadImages();
+        }
+      }
+    );
+  };
+
+  uploadImages = async () => {
+    const { images } = this.state;
     try {
       const imagesReadyToSave = await Promise.all(
         images.map(async (uploadableImage, index) => {
@@ -263,7 +271,7 @@ class EditWork extends PureComponent {
               images={images.map((image) => image.src)}
               onRemoveImage={this.handleRemoveImage}
               onSortImages={this.handleSortImages}
-              onSubmit={this.uploadImages}
+              onSubmit={this.handleSubmit}
               setUploadableImages={this.setUploadableImages}
             />
           </Box>
