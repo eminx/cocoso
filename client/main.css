@@ -8,7 +8,6 @@ body {
 #main-viewport {
   height: 100%;
   width: calc(100% - 72px);
-  /* font-family: 'Raleway', sans-serif; */
 }
 
 @media (max-width: 960px) {
@@ -187,4 +186,24 @@ input::placeholder {
 .chakra-numberinput__field:hover,
 .chakra-textarea:hover {
   background-color: #f7f7f7 !important;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -30px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > div {
+  /* change div to reference your elements you put in <Masonry> */
+  background: #fff;
+  margin-bottom: 30px;
 }

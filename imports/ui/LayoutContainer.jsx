@@ -21,15 +21,14 @@ import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 import Favicon from 'react-favicon';
-import '@fontsource-variable/raleway';
 
 import FeedbackForm from './components/FeedbackForm';
-import { generateTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
 import { call } from './utils/shared';
+import { generateTheme } from './utils/constants/theme';
 
 export const StateContext = React.createContext(null);
 

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Center, Wrap } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
+import Masonry from 'react-masonry-css';
 
 import '../utils/styles/paginate.css';
 
@@ -12,6 +13,7 @@ const defaultItemsPerPage = 12;
 function PaginatedItems({
   canCreateContent = false,
   centerItems = false,
+  isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
   children,
@@ -46,12 +48,30 @@ function PaginatedItems({
     window.scrollTo(0, 0);
   };
 
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1,
+  };
+
   return (
     <>
-      <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
-        {currentItems && currentItems.map((item) => children(item))}
-        {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
-      </Wrap>
+      {isMasonry ? (
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {currentItems?.map((item) => children(item))}
+          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+        </Masonry>
+      ) : (
+        <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
+          {currentItems?.map((item) => children(item))}
+          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+        </Wrap>
+      )}
       {items && items.length > itemsPerPage && (
         <Center>
           <ReactPaginate

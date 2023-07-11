@@ -176,12 +176,12 @@ function Works({ history }) {
       </Box>
 
       <Box px={isDesktop ? '4' : '0'}>
-        <Paginate centerItems items={worksRenderedHostFiltered}>
+        <Paginate isMasonry centerItems items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalWork(work)}>
-                  <SexyThumb
+                  <NewGridThumb
                     avatar={{
                       name: work.authorUsername,
                       url: work.authorAvatar,
@@ -199,7 +199,7 @@ function Works({ history }) {
                 </Box>
               ) : (
                 <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                  <SexyThumb
+                  <NewGridThumb
                     avatar={{
                       name: work.authorUsername,
                       url: work.authorAvatar,

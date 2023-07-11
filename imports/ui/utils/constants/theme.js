@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
 
 const brand = (hue, level) => `hsl(${hue}deg, 50%, ${level}%)`;
 
@@ -7,8 +7,8 @@ const generateTheme = (hue) => {
 
   const theme = extendTheme({
     fonts: {
-      heading: "'Helvetica', sans-serif",
-      body: "'Helvetica', sans-serif",
+      heading: `'Raleway', ${baseTheme.fonts?.heading}`,
+      body: `'Raleway', ${baseTheme.fonts?.body}`,
     },
     colors: {
       brand: {
