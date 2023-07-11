@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Center,
   Container,
   Flex,
@@ -18,7 +19,8 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
+import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
@@ -28,6 +30,7 @@ function Tably({
   action = null,
   adminMenu = null,
   author = null,
+  backLink,
   content,
   images,
   subTitle,
@@ -51,15 +54,18 @@ function Tably({
       <>
         <Grid templateColumns={desktopGridColumns}>
           <GridItem>
-            <Box>
-              <Header
-                author={author}
-                title={title}
-                subTitle={subTitle}
-                tags={tags}
-                isDesktop={isDesktop}
-              />
-            </Box>
+            <Flex>
+              {backLink && <BackLink backLink={backLink} />}
+              <Box w="100%">
+                <Header
+                  author={author}
+                  title={title}
+                  subTitle={subTitle}
+                  tags={tags}
+                  isDesktop={isDesktop}
+                />
+              </Box>
+            </Flex>
           </GridItem>
 
           <GridItem pl="16">
@@ -104,6 +110,9 @@ function Tably({
   return (
     <>
       <Box>
+        <Box mb="2">
+          <BackLink backLink={backLink} isSmall />
+        </Box>
         <Box>
           <Header
             author={author}
@@ -244,7 +253,7 @@ function AdminMenu({ adminMenu, isDesktop }) {
     <Menu direction="rtl" placement="bottom-end">
       <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '0' : '-1'}>
         {/* {adminMenu.label} */}
-        <SettingsIcon />
+        <SettingsIcon color="brand.500" />
       </MenuButton>
       <MenuList bg="gray.200">
         {adminMenu.items.map((item) =>
@@ -260,6 +269,23 @@ function AdminMenu({ adminMenu, isDesktop }) {
         )}
       </MenuList>
     </Menu>
+  );
+}
+
+function BackLink({ backLink, isSmall = false }) {
+  return (
+    <Link to={backLink?.value}>
+      <Button
+        as="span"
+        leftIcon={<ChevronLeftIcon mr="-2" fontSize="xl" />}
+        ml="2"
+        mt="1"
+        size={isSmall ? 'sm' : 'md'}
+        variant="link"
+      >
+        {backLink?.label}
+      </Button>
+    </Link>
   );
 }
 

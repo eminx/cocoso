@@ -255,9 +255,9 @@ class Activity extends PureComponent {
   };
 
   renderDates = () => {
-    const { activityData, t, tc } = this.props;
+    const { activityData, t } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent, currentUser, hue } = this.context;
+    const { canCreateContent, currentUser } = this.context;
 
     if (!activityData) {
       return;
@@ -429,8 +429,8 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, hideBreadcrumb, t, tc } = this.props;
-    const { currentUser, role } = this.context;
+    const { activityData, isLoading, t, tc } = this.props;
+    const { currentHost, currentUser, role } = this.context;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -503,6 +503,14 @@ class Activity extends PureComponent {
     const tags = [activityData.resource];
     const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
 
+    const activitiesInMenu = currentHost?.settings?.menu?.find(
+      (item) => item.name === 'activities'
+    );
+    const backLink = {
+      value: '/activities',
+      label: activitiesInMenu?.label,
+    };
+
     return (
       <>
         <Helmet>
@@ -513,6 +521,7 @@ class Activity extends PureComponent {
         <Tably
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
+          backLink={backLink}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           subTitle={activityData.subTitle}
           tabs={tabs}
@@ -598,6 +607,7 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
     //   label: 'Number of people',
     // },
   ];
+
   return (
     <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>

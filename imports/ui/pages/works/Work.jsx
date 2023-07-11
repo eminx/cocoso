@@ -17,7 +17,7 @@ function Work() {
   const [work, setWork] = useState(null);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(StateContext);
+  const { currentHost, currentUser } = useContext(StateContext);
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
@@ -113,6 +113,12 @@ function Work() {
 
   const tags = [work.category?.label];
 
+  const worksInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'works');
+  const backLink = {
+    value: '/works',
+    label: worksInMenu?.label,
+  };
+
   return (
     <>
       <Helmet>
@@ -125,6 +131,7 @@ function Work() {
           username: work.authorUsername,
           link: `/@${work.authorUsername}`,
         }}
+        backLink={backLink}
         images={work.images}
         subTitle={work.shortDescription}
         tabs={tabs}

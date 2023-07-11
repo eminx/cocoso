@@ -24,7 +24,7 @@ function ResourcePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('resources');
-  const { canCreateContent, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
@@ -156,14 +156,20 @@ function ResourcePage() {
     tags.push(t('cards.isNotBookable'));
   }
 
+  const resourcesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'resources');
+  const backLink = {
+    value: '/resources',
+    label: resourcesInMenu?.label,
+  };
+
   return (
     <>
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Breadcrumb p="4" />
       <Tably
         adminMenu={role === 'admin' ? adminMenu : null}
+        backLink={backLink}
         images={resource.images}
         tabs={tabs}
         tags={tags}

@@ -1022,6 +1022,12 @@ class Process extends Component {
       tags.push(t('labels.archived'));
     }
 
+    const processesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'processes');
+    const backLink = {
+      value: '/processes',
+      label: processesInMenu?.label,
+    };
+
     return (
       <>
         <Helmet>
@@ -1031,6 +1037,7 @@ class Process extends Component {
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
+          backLink={backLink}
           // author={{
           //   src: process.authorAvatar,
           //   username: process.authorUsername,

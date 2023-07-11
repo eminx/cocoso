@@ -9,6 +9,7 @@ const fancyDateStyle = {
   alignItems: 'flex-end',
   display: 'flex',
   flexDirection: 'column',
+  // fontFamily: `'Courier', monospace`,
   justifyContent: 'space-between',
   lineHeight: 1,
   width: '100%',

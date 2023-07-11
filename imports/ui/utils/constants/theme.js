@@ -7,8 +7,8 @@ const generateTheme = (hue) => {
 
   const theme = extendTheme({
     fonts: {
-      heading: `'Raleway', ${baseTheme.fonts?.heading}`,
-      body: `'Raleway', ${baseTheme.fonts?.body}`,
+      heading: `'Sarabun', ${baseTheme.fonts?.heading}`,
+      body: `'Sarabun', ${baseTheme.fonts?.body}`,
     },
     colors: {
       brand: {
