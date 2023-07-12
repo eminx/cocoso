@@ -6,10 +6,10 @@ const generateTheme = (hue) => {
   const color = brand(hue, '50');
 
   const theme = extendTheme({
-    fonts: {
-      heading: `'Sarabun', ${baseTheme.fonts?.heading}`,
-      body: `'Sarabun', ${baseTheme.fonts?.body}`,
-    },
+    // fontFamily: {
+    //   heading: `'Raleway', ${baseTheme.fonts?.heading}`,
+    //   body: `'Raleway', ${baseTheme.fonts?.body}`,
+    // },
     colors: {
       brand: {
         50: brand(hue, '95'),
@@ -39,6 +39,11 @@ const generateTheme = (hue) => {
       Button: {
         defaultProps: {
           colorScheme: 'brand',
+        },
+      },
+      Heading: {
+        defaultProps: {
+          fontFamily: 'Raleway',
         },
       },
       Input: {
@@ -79,6 +84,9 @@ const generateTheme = (hue) => {
     },
     styles: {
       global: {
+        body: {
+          fontFamily: 'Sarabun',
+        },
         a: {
           color,
         },

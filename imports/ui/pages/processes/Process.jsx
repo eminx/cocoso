@@ -405,8 +405,9 @@ class Process extends Component {
             >
               <AccordionButton
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                _hover={{ bg: 'brand.400', color: 'white' }}
+                _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
+                color="brand.500"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
@@ -466,7 +467,12 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <AccordionButton bg="white" mb="4" _expanded={{ bg: 'green.200' }}>
+          <AccordionButton
+            _expanded={{ bg: 'brand.500', color: 'white' }}
+            _hover={{ bg: 'brand.600', color: 'white' }}
+            bg="white"
+            color="brand.500"
+          >
             <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
@@ -482,7 +488,7 @@ class Process extends Component {
             <Center p="2" bg="white">
               <Button
                 size="sm"
-                colorScheme={isAttending ? 'gray' : 'green'}
+                colorScheme={isAttending ? 'green' : 'brand'}
                 onClick={() => this.toggleAttendance(meeting._id, meetingIndex)}
               >
                 {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}

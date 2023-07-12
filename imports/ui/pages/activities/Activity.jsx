@@ -299,8 +299,8 @@ class Activity extends PureComponent {
         return (
           <Box>
             {eventPast ? (
-              <Box p="2">
-                <Text color="gray">{t('public.past')}</Text>
+              <Box>
+                <Text color="gray.800">{t('public.past')}</Text>
               </Box>
             ) : (
               <Box>
@@ -352,8 +352,9 @@ class Activity extends PureComponent {
             <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
               <AccordionButton
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                _hover={{ bg: 'brand.400', color: 'white' }}
+                _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
+                color="brand.500"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />

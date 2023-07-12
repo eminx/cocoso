@@ -69,7 +69,7 @@ function Page() {
         </Helmet>
 
         <Flex mt="4">
-          <Box w="280px" px="6">
+          <Box w="280px" px="4">
             <PagesList
               pageTitles={pageTitles}
               onChange={this.handlePageClick}
@@ -78,8 +78,8 @@ function Page() {
           </Box>
 
           <Box w="100%" maxW="520px">
-            <Box px="4" mb="4">
-              <Heading as="h2" size="lg">
+            <Box mb="4">
+              <Heading fontFamily="'Raleway', sans-serif" as="h2" size="lg">
                 {currentPage.title}
               </Heading>
             </Box>
@@ -108,7 +108,7 @@ function Page() {
         <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
-      <Center px="4">
+      <Center px="4" mt="4">
         <PagesList
           pageTitles={pageTitles}
           onChange={this.handlePageClick}
@@ -118,7 +118,7 @@ function Page() {
 
       <Center>
         <Box w="100%" maxW="520px">
-          <Box px="6" mb="4">
+          <Box px="4" mb="4">
             <Heading as="h2" size="lg">
               {currentPage.title}
             </Heading>

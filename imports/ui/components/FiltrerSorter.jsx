@@ -26,23 +26,10 @@ function FiltrerSorter(props) {
   const { hue, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 50%)` : 'gray.600';
-  const hoverColor = hue ? `hsl(${hue}deg, 50%, 55%)` : 'gray.500';
-  const activeColor = hue ? `hsl(${hue}deg, 50%, 40%)` : 'gray.700';
-  const color = hue ? `hsl(${hue}deg, 50%, 95%)` : 'white';
-
   return (
     <>
       <Flex justify="flex-end">
-        <Button
-          _active={{ backgroundColor: activeColor }}
-          _hover={{ backgroundColor: hoverColor }}
-          bg={backgroundColor}
-          color={color}
-          size={isDesktop ? 'sm' : 'xs'}
-          variant="outline"
-          onClick={() => setIsOpen(true)}
-        >
+        <Button size={isDesktop ? 'sm' : 'xs'} variant="outline" onClick={() => setIsOpen(true)}>
           <Search2Icon mr="2" />
           {tc('labels.filterAndSort')}
         </Button>

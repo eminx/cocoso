@@ -13,11 +13,11 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
         {tabs?.map((tab) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle}>
-              <CoTab tab={tab} />
+              <CoTab forceUppercase={forceUppercase} tab={tab} />
             </Link>
           ) : (
             <CLink key={tab.title} style={linkStyle} _hover={{ textDecoration: 'none' }}>
-              <CoTab tab={tab} />
+              <CoTab forceUppercase={forceUppercase} tab={tab} />
             </CLink>
           )
         )}
@@ -49,7 +49,9 @@ function CoTab({ forceUppercase = true, tab }) {
     },
     as: 'span',
     bg: 'white',
+    fontFamily: "'Raleway', sans-serif",
     fontWeight: 'bold',
+    justifyContent: 'flex-start',
     paddingInline: '4',
   };
 
