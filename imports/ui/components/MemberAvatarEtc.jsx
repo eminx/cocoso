@@ -25,7 +25,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { allHosts, currentHost } = useContext(StateContext);
+  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const history = useHistory();
 
   if (!user) {
@@ -52,9 +52,11 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const role = memberships?.find((m) => m?.host === currentHost?.host)?.role;
   const roleTr = t(`roles.${role}`);
 
+  const isCentered = !isDesktop || centerItems;
+
   return (
-    <Box bg="brand.100" p={avatarSrc ? '0' : '4'} mb="8" w="100%">
-      <Flex flexDirection="column" align={centerItems ? 'center' : 'flex-start'}>
+    <Box mb="8" w="100%">
+      <Flex flexDirection="column" align={isCentered ? 'center' : 'flex-start'}>
         <Box>
           {avatarSrc ? (
             <Image
@@ -67,7 +69,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Avatar borderRadius="0" name={user.username} size="2xl" />
           )}
         </Box>
-        <Box p="4" pt="2" textAlign={centerItems ? 'center' : 'left'}>
+        <Box pt="2" textAlign={isCentered ? 'center' : 'left'}>
           <Box>
             <Text fontWeight="bold" fontSize="xl">
               {user.username}{' '}
@@ -86,7 +88,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               {membershipsLength > 1 && (
                 <Popover
                   bg="gray.50"
-                  placement={!centerItems ? 'bottom-start' : 'bottom'}
+                  placement={!isCentered ? 'bottom-start' : 'bottom'}
                   trigger={
                     <Button
                       colorScheme="gray.600"

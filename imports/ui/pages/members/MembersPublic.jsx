@@ -163,8 +163,11 @@ function MembersPublic({ history }) {
           {(member) => (
             <Flex
               key={member.username}
-              justifyContent="center"
+              bg="brand.100"
               cursor="pointer"
+              justifyContent="center"
+              mb="8"
+              p="4"
               onClick={() => setModalUser(member)}
             >
               <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />

@@ -9,11 +9,16 @@ const { cdnserver } = Meteor.settings;
 import { Accounts } from 'meteor/accounts-base';
 // import { Helmet } from 'react-helmet';
 // import { ServerStyleSheet } from 'styled-components';
-
 // import Routes from '../../ui/pages/Routes';
 
 import './api';
 import './migrations';
+import Hosts from '../../api/hosts/host';
+
+const randomizeHue = () => {
+  const r = Math.random();
+  return parseInt(r * 360 + 1);
+};
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
@@ -27,6 +32,20 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+
+  Hosts.find().forEach((host) => {
+    Hosts.update(
+      {
+        _id: host._id,
+        'settings.hue': { $exists: false },
+      },
+      {
+        $set: {
+          'settings.hue': randomizeHue(),
+        },
+      }
+    );
+  });
 });
 
 if (Meteor.isProduction && cdnserver) {

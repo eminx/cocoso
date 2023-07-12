@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+// import { createMemoryHistory } from 'history';
 import { onPageLoad } from 'meteor/server-render';
 import { createRoot } from 'react-dom/client';
 import { Progress } from '@chakra-ui/react';
