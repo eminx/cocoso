@@ -23,7 +23,7 @@ import Drawer from './Drawer';
 
 function FiltrerSorter(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const { hue, isDesktop } = useContext(StateContext);
+  const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   return (
@@ -36,6 +36,7 @@ function FiltrerSorter(props) {
       </Flex>
       <Drawer
         colorScheme="cyan"
+        hideOverlay
         isOpen={isOpen}
         size="sm"
         title={tc('labels.filterAndSort')}

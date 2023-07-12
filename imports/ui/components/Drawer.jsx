@@ -11,13 +11,22 @@ import {
 } from '@chakra-ui/react';
 import { StateContext } from '../LayoutContainer';
 
-function Drawer({ children, footer, placement = 'right', title, isOpen, onClose, ...otherProps }) {
+function Drawer({
+  children,
+  footer,
+  hideOverlay = false,
+  placement = 'right',
+  title,
+  isOpen,
+  onClose,
+  ...otherProps
+}) {
   const { hue } = useContext(StateContext);
   const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
 
   return (
     <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
-      <DrawerOverlay />
+      {!hideOverlay && <DrawerOverlay />}
       <DrawerContent bg={backgroundColor}>
         <DrawerCloseButton />
         {title && <DrawerHeader>{title}</DrawerHeader>}
