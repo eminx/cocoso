@@ -23,12 +23,13 @@ import 'moment/locale/tr';
 import Favicon from 'react-favicon';
 
 import FeedbackForm from './components/FeedbackForm';
-import { chakraTheme } from './utils/constants/theme';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
 import { call } from './utils/shared';
+import { generateTheme } from './utils/constants/theme';
+import { message } from './components/message';
 
 export const StateContext = React.createContext(null);
 
@@ -39,6 +40,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [platformDrawer, setPlatformDrawer] = useState(false);
+  const [hue, setHue] = useState('233');
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
@@ -62,6 +64,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     try {
       const respond = await call('getCurrentHost');
       setCurrentHost(respond);
+      setHue(respond?.settings?.hue);
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +85,16 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
       setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const setSelectedHue = async () => {
+    try {
+      await call('setHostHue', hue);
+      message.success(tc('message.success.update'));
+      await getCurrentHost();
+    } catch (error) {
+      message.error(error.reason || error.error);
     }
   };
 
@@ -125,6 +138,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const isHeaderAndFooter =
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
+  const chakraTheme = generateTheme(hue);
+
   return (
     <>
       <Helmet>
@@ -165,17 +180,20 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             canCreateContent,
             currentUser,
             currentHost,
+            hue,
             isDesktop,
             platform,
             role,
             userLoading,
             getCurrentHost,
+            setHue,
+            setSelectedHue,
           }}
         >
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-            <Box id="main-viewport" flexGrow="2">
+            <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 20%, 90%)`}>
               <Box w="100%">
                 {isHeaderAndFooter && currentHost.isPortalHost && (
                   <PortalHostIndicator platform={platform} />
@@ -193,19 +211,21 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
-                    <Box bg="gray.300" p="4">
-                      <a href={`https://${platform.portalHost}`}>
-                        <Center p="2">
-                          <Image w="200px" src={platform?.logo} />
-                        </Center>
-                      </a>
+                    <Box bg="brand.800" p="4">
+                      {!currentHost.isPortalHost && (
+                        <a href={`https://${platform?.portalHost}`}>
+                          <Center p="2">
+                            <Image w="200px" src={platform?.logo} />
+                          </Center>
+                        </a>
+                      )}
                       <Center>
-                        <Box textAlign="center" color="gray.800">
-                          <Text fontSize="lg" fontWeight="bold">
+                        <Box textAlign="center" color="gray.200">
+                          <Text color="brand.100" fontSize="lg" fontWeight="bold">
                             {platform?.name}
                           </Text>
                           <CLink
-                            color="#06c"
+                            color="brand.100"
                             fontWeight="bold"
                             onClick={() => setPlatformDrawer(true)}
                           >
@@ -241,13 +261,15 @@ function Footer({ currentHost, tc }) {
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg="gray.200" color="gray.800" pt="4">
+    <Box w="100%" bg="brand.700" color="brand.100" pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="2" py="1">
               <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span">{item.label}</CLink>{' '}
+                <CLink as="span" color="brand.100">
+                  {item.label}
+                </CLink>{' '}
               </Link>
             </ListItem>
           ))}
@@ -274,7 +296,7 @@ function Footer({ currentHost, tc }) {
             </Text>
             <Box mt="4">
               <Link to="/terms-&-privacy-policy">
-                <CLink as="span" fontSize="sm">
+                <CLink as="span" color="brand.200" fontSize="sm">
                   {tc('terms.title')}{' '}
                 </CLink>
               </Link>
@@ -344,7 +366,7 @@ function HostItem({ host, tc }) {
         </Text>
         <Text>{host.city + ', ' + host.country}</Text>
         <Text>
-          <CLink color="#06c" href={`https://${host.host}`} title={host.host}>
+          <CLink href={`https://${host.host}`} title={host.host}>
             {host.host}
           </CLink>
         </Text>

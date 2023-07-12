@@ -6,9 +6,14 @@ import i18n from 'i18next';
 moment.locale(i18n.language);
 
 const fancyDateStyle = {
-  color: '#030303',
-  // fontWeight: 700,
+  alignItems: 'flex-end',
+  display: 'flex',
+  flexDirection: 'column',
+  fontFamily: `'Raleway', sans-serif`,
+  fontWeight: 'bold',
+  justifyContent: 'space-between',
   lineHeight: 1,
+  width: '100%',
 };
 
 function DateJust({ children, ...otherProps }) {
@@ -37,15 +42,7 @@ function FancyDate({ occurence, resources, ...otherProps }) {
           </div>
         )}
       </div>
-      <div
-        style={{
-          ...fancyDateStyle,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-        }}
-      >
+      <div style={fancyDateStyle}>
         <div>
           {occurence.startTime} – {occurence.endTime}
         </div>

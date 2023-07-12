@@ -37,11 +37,24 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isDesktop) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
-        <Box className={menuClassName} position="fixed" bg="gray.100" h="100vh" p="2">
+        <Box
+          bg="brand.800"
+          className={menuClassName}
+          color="brand.100"
+          h="100vh"
+          p="2"
+          position="fixed"
+        >
           {!isOpen ? (
             <Center pt="4">
               <Flex flexDirection="column" align="center">
-                <IconButton bg="none" icon={<HamburgerIcon fontSize="36px" />} onClick={onToggle} />
+                <IconButton
+                  _hover={{ bg: 'brand.500' }}
+                  bg="brand.800"
+                  color="brand.50"
+                  icon={<HamburgerIcon fontSize="36px" />}
+                  onClick={onToggle}
+                />
                 <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
                   {tc('menu.label')}
                 </Text>
@@ -54,7 +67,14 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                   <Heading fontSize="24px" px="4" mt="2">
                     {tc('menu.label')}
                   </Heading>
-                  <IconButton bg="none" icon={<CloseIcon />} mr="4" onClick={onToggle} />
+                  <IconButton
+                    _hover={{ bg: 'brand.500' }}
+                    bg="brand.800"
+                    color="brand.50"
+                    icon={<CloseIcon />}
+                    mr="4"
+                    onClick={onToggle}
+                  />
                 </Flex>
 
                 <Box p="4">
@@ -124,13 +144,22 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
   return (
     <VStack align="flex-start">
       <Divider borderColor="gray.400" mb="2" />
-      {menuItems.map((item) => (
-        <Link key={item.label} to={item.route} onClick={onToggle}>
-          <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text fontWeight={isCurrentPage(item) ? 'bold' : 'normal'}>{item.label}</Text>
-          </Box>
-        </Link>
-      ))}
+      {menuItems.map((item) => {
+        const isCurrentPageLabel = isCurrentPage(item);
+        return (
+          <Link key={item.label} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
+            <Box py="1">
+              <Text
+                _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
+                color={isCurrentPageLabel ? 'brand.50' : 'brand.100'}
+                fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
+              >
+                {item.label}
+              </Text>
+            </Box>
+          </Link>
+        );
+      })}
       {isPortalHost && (
         <Divider
           borderColor="gray.400"
@@ -139,14 +168,23 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
         />
       )}
       {isPortalHost && (
-        <Text fontSize="xs" color="gray.700">
+        <Text color="brand.50" fontSize="xs">
           <em>{tc('domains.platform', { platform: platform?.name })}</em>
         </Text>
       )}
       {isPortalHost && (
-        <Link key="/communities" to="/communities" onClick={onToggle}>
-          <Box py="1" _hover={{ textDecoration: 'underline' }}>
-            <Text fontWeight={pathname === '/communities' ? 'bold' : 'normal'}>
+        <Link
+          key="/communities"
+          style={{ textShadow: 'none' }}
+          to="/communities"
+          onClick={onToggle}
+        >
+          <Box py="1">
+            <Text
+              _hover={{ textDecoration: 'underline' }}
+              color="brand.50"
+              fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
+            >
               {tc('platform.communities')}
             </Text>
           </Box>

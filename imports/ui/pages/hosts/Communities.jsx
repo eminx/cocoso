@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Flex, Image } from '@chakra-ui/react';
+import { Box, Center, Code, Flex, Heading as CHeading, Image, Link, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -84,13 +84,16 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <Box px="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box mb="8" mt="4" px="4">
+        <Flex justify="space-between">
+          <CHeading color="gray.800" size="lg">
+            {tc('platform.communities')}
+          </CHeading>
           <FiltrerSorter {...filtrerProps} />
         </Flex>
       </Box>
 
-      <Box p="4" pt="8">
+      <Box px="4">
         <Paginate centerItems={!isDesktop} items={hostsRendered}>
           {(host) => (
             <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
@@ -117,8 +120,8 @@ function Communities() {
                 {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
               </Center>
               <Center>
-                <Code size="lg" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  {modalHost.host}
+                <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
+                  <Link onClick={handleActionButtonClick}>{modalHost.host}</Link>
                 </Code>
               </Center>
             </Box>
@@ -138,16 +141,11 @@ function HostItem({ host, tc }) {
   }
 
   return (
-    <Box>
-      <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
-        {/* <Text fontSize="xs">{moment(host.createdAt).format('D MMM YYYY')}</Text> */}
-
-        <Code linebreak="anywhere" mt="4" noOfLines={2} size="sm">
-          {host.host}
-        </Code>
-        {/* <Text my="4">{tc('platform.membersCount', { membersCount: host.membersCount })}</Text> */}
-      </GridThumb>
-    </Box>
+    <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
+      <Code linebreak="anywhere" mt="4" noOfLines={2} fontSize="xs">
+        {host.host}
+      </Code>
+    </GridThumb>
   );
 }
 

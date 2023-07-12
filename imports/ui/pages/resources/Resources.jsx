@@ -18,6 +18,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import { Heading } from '../../components/Header';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -157,27 +158,25 @@ function Resources({ history }) {
         <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box mb="8" mt="4" px="4">
+        <Flex justify="space-between">
+          <Heading />
           <FiltrerSorter {...filtrerProps}>
-            <Tabs mx="4" size="sm" tabs={tabs} index={getTabIndex()} />
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+            <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
           </FiltrerSorter>
-
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
         </Flex>
       </Box>
 
-      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
-
-      <Box p="4">
+      <Box px="4">
         <Paginate centerItems={!isDesktop} items={resourcesRenderedHostFiltered}>
           {(resource) => (
             <Box key={resource._id}>
@@ -216,6 +215,8 @@ function Resources({ history }) {
           />
         </Modal>
       )}
+
+      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
     </Box>
   );
 }
@@ -236,7 +237,7 @@ function ResourceItem({ resource, t }) {
               {t('cards.isCombo')} ({resource.resourcesForCombo?.length})
             </Badge>
           )}{' '}
-          <Badge>{resource.isBookable ? t('cards.isBookable') : t('cards.isNotBookable')}</Badge>
+          <Badge>{!resource.isBookable && t('cards.isNotBookable')}</Badge>
         </Text>
         {/* <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text> */}
         {currentHost.isPortalHost && (

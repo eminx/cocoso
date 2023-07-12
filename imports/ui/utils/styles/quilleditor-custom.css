@@ -1,5 +1,5 @@
 .quill .ql-container.ql-snow {
-  background-color: rgb(245, 245, 245);
+  background-color: #fff;
 }
 
 .ql-container .ql-editor {
@@ -42,6 +42,6 @@
 }
 
 .quill-megacontainer:not(.is-focused) .ql-container.ql-snow .ql-editor:hover {
-  background-color: #ebebeb;
-  border-color: #ebebeb;
+  background-color: #fff;
+  border-color: #fff;
 }

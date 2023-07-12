@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Flex, Image } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-function NiceSlider({ images, width = '100%', isFade = true }) {
+const imageStyle = {
+  cursor: 'pointer',
+  objectFit: 'contain',
+  position: 'relative',
+};
+
+function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {
@@ -15,11 +22,10 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
     return (
       <Flex justify={isFade ? 'flex-start' : 'center'}>
         <Box>
-          <Image
-            cursor="pointer"
-            fit="contain"
+          <LazyLoadImage
+            alt={alt}
             src={images[0]}
-            margin="0 auto"
+            style={imageStyle}
             onClick={() => setToggler(!toggler)}
           />
         </Box>
@@ -39,15 +45,14 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
       <Box className="slide-container" w={width}>
         <Fade arrows={false} transitionDuration={400}>
           {images.map((image) => (
-            <Box key={image}>
-              <Image
-                cursor="pointer"
-                fit="contain"
-                float="right"
+            <Flex key={image} justify={floatRight ? 'flex-end' : 'center'}>
+              <LazyLoadImage
+                alt={alt}
                 src={image}
+                style={imageStyle}
                 onClick={() => setToggler(!toggler)}
               />
-            </Box>
+            </Flex>
           ))}
         </Fade>
 
@@ -66,11 +71,10 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
       <Slide arrows={false} transitionDuration={400}>
         {images.map((image) => (
           <Box key={image}>
-            <Image
-              cursor="pointer"
-              fit="contain"
+            <LazyLoadImage
+              alt={alt}
               src={image}
-              margin="0 auto"
+              style={imageStyle}
               onClick={() => setToggler(!toggler)}
             />
           </Box>

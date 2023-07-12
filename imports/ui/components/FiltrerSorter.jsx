@@ -1,53 +1,34 @@
-import React, { useContext } from 'react';
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-  Center,
-  Flex,
-  Input,
-  Link,
-  Select,
-  Text,
-} from '@chakra-ui/react';
+import React, { useContext, useState } from 'react';
+import { Box, Button, Divider, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { Search2Icon } from '@chakra-ui/icons/dist/Search2';
 
 import { StateContext } from '../LayoutContainer';
+import Drawer from './Drawer';
 
 function FiltrerSorter(props) {
+  const [isOpen, setIsOpen] = useState(false);
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  // if (isDesktop) {
-  //   return (
-  //     <Box px="1">
-  //       <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-  //       <Box px="2">
-  //         <Text fontSize="sm" mb="1" mt="1">
-  //           {tc('labels.filterAndSort')}
-  //         </Text>
-  //       </Box>
-  //     </Box>
-  //   );
-  // }
-
   return (
-    <Accordion mb={isDesktop ? '0' : '2'} w={isDesktop ? '2xl' : '100%'} allowToggle>
-      <AccordionItem>
-        <AccordionButton>
-          <Box flex="1" textAlign="left">
-            <Link as="span">{tc('labels.filterAndSort')}</Link>
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel pb={4}>
-          <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <>
+      <Flex justify="flex-end">
+        <Button size={isDesktop ? 'sm' : 'xs'} variant="outline" onClick={() => setIsOpen(true)}>
+          <Search2Icon mr="2" />
+          {tc('labels.filterAndSort')}
+        </Button>
+      </Flex>
+      <Drawer
+        hideOverlay
+        isOpen={isOpen}
+        size="sm"
+        title={tc('labels.filterAndSort')}
+        onClose={() => setIsOpen(false)}
+      >
+        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+      </Drawer>
+    </>
   );
 }
 
@@ -61,20 +42,26 @@ function Inputs({
   children,
 }) {
   return (
-    <Flex align="center" justify="flex-start" wrap={isDesktop ? 'nowrap' : 'wrap'}>
+    <Flex
+      align="flex-start"
+      direction="column"
+      justify="flex-start"
+      wrap={isDesktop ? 'nowrap' : 'wrap'}
+    >
+      <Heading fontSize="md">{tc('labels.filter')}:</Heading>
       <Input
-        flexBasis="180px"
-        mb={isDesktop ? '0' : '2'}
-        mx="1"
+        my="4"
         placeholder={tc('domains.props.title') + '...'}
         value={filterWord}
         onChange={(event) => setFilterWord(event.target.value)}
       />
-      {children}
+      <Box mb="4">{children}</Box>
+      <Divider />
+      <Heading fontSize="md" mt="4">
+        {tc('labels.sort')}:
+      </Heading>
       <Select
-        flexBasis="180px"
-        mb={isDesktop ? '0' : '2'}
-        mx={isDesktop ? '2' : '1'}
+        my="4"
         name="sorter"
         value={sorterValue}
         onChange={(e) => setSorterValue(e.target.value)}

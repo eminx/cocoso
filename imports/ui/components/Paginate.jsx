@@ -1,14 +1,19 @@
-import { Meteor } from 'meteor/meteor';
+import React, { useContext, useEffect, useState } from 'react';
 import { Center, Wrap } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import Masonry from 'react-masonry-css';
 
 import '../utils/styles/paginate.css';
+
+import NewEntryHelper from './NewEntryHelper';
+import { StateContext } from '../LayoutContainer';
 
 const defaultItemsPerPage = 12;
 
 function PaginatedItems({
+  canCreateContent = false,
   centerItems = false,
+  isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
   children,
@@ -17,6 +22,7 @@ function PaginatedItems({
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const { isDesktop } = useContext(StateContext);
 
   useEffect(() => {
     handlePageChange(0);
@@ -42,11 +48,32 @@ function PaginatedItems({
     window.scrollTo(0, 0);
   };
 
+  const breakpointColumnsObj = {
+    default: 4,
+    1900: 5,
+    1500: 4,
+    1100: 3,
+    700: 2,
+    480: 1,
+  };
+
   return (
     <>
-      <Wrap justify={centerItems ? 'center' : 'flex-start'} shouldWrapChildren>
-        {currentItems && currentItems.map((item) => children(item))}
-      </Wrap>
+      {isMasonry ? (
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {currentItems?.map((item) => children(item))}
+          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+        </Masonry>
+      ) : (
+        <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
+          {currentItems?.map((item) => children(item))}
+          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+        </Wrap>
+      )}
       {items && items.length > itemsPerPage && (
         <Center>
           <ReactPaginate

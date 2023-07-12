@@ -4,7 +4,7 @@ import { Box, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import Template from '../components/Template';
 
-const NotFoundPage = ({ domain, history }) => {
+const NotFoundPage = () => {
   const [t] = useTranslation('common');
   return (
     <Template>
@@ -17,7 +17,7 @@ const NotFoundPage = ({ domain, history }) => {
         </Text>
         <Text textAlign="center" mt="6">
           <Link to="/">
-            <CLink color="#06c">{t('labels.notfound.gohome')}</CLink>
+            <CLink>{t('labels.notfound.gohome')}</CLink>
           </Link>
         </Text>
       </Box>

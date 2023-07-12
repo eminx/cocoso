@@ -35,32 +35,28 @@ function CalendarView(props) {
     showMore: (total) => t('bigCal.showMore', { total }),
   };
 
-  // import locale from node_modules
   require('moment/locale/sv');
 
   return (
-    <div>
-      <Calendar
-        allDayAccessor="isMultipleDay"
-        culture={i18n.language}
-        defaultView="month"
-        events={activities}
-        localizer={localizer}
-        messages={messages}
-        popup
-        popupOffset={30}
-        selectable
-        showMultiDayTimes
-        step={60}
-        views={['month', 'week', 'day', 'agenda']}
-        eventPropGetter={(event) => ({
-          // className: 'category-' + event.resourceIndex,
-          style: { backgroundColor: event.resourceColor },
-        })}
-        onSelectEvent={props.onSelect}
-        onSelectSlot={props.onSelectSlot}
-      />
-    </div>
+    <Calendar
+      allDayAccessor="isMultipleDay"
+      culture={i18n.language}
+      defaultView="month"
+      events={activities}
+      localizer={localizer}
+      messages={messages}
+      popup
+      popupOffset={30}
+      selectable
+      showMultiDayTimes
+      step={60}
+      views={['month', 'week', 'day', 'agenda']}
+      eventPropGetter={(event) => ({
+        style: { backgroundColor: event.resourceColor },
+      })}
+      onSelectEvent={props.onSelect}
+      onSelectSlot={props.onSelectSlot}
+    />
   );
 }
 

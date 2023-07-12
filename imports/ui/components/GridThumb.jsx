@@ -11,7 +11,7 @@ export default function GridThumb({ title, image, imageFit = 'cover', large = fa
   }
 
   return (
-    <Flex justify="space-between" flexDirection={large ? 'column' : 'row'} m="2" w={290}>
+    <Flex bg="white" justify="space-between" flexDirection={large ? 'column' : 'row'} w={280}>
       {image ? (
         <Box bg="gray.100" flexBasis={large ? '50%' : 150}>
           <Image
@@ -27,8 +27,8 @@ export default function GridThumb({ title, image, imageFit = 'cover', large = fa
         <Box flexBasis={large ? '50%' : 150} h={large ? 300 : 150} bg="pink.100" />
       )}
 
-      <Box p="4" flexBasis={large ? '50%' : '70%'} isTruncated>
-        <Heading size={large ? 'lg' : 'md'} fontWeight="light" linebreak="anywhere">
+      <Box p="4" flexBasis={large ? '50%' : '70%'} noOfLines={3}>
+        <Heading size="1.3rem" fontWeight="bold" linebreak="anywhere">
           {title}
         </Heading>
         <Spacer my="1" />

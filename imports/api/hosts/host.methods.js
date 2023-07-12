@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
@@ -62,7 +63,6 @@ Meteor.methods({
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Meteor.Error(error);
     }
   },
@@ -138,6 +138,7 @@ Meteor.methods({
 
   getAllMembersFromAllHosts() {
     const allUsers = Meteor.users.find().fetch();
+
     return allUsers
       .map((user) => ({
         avatar: user.avatar?.src,
@@ -165,6 +166,28 @@ Meteor.methods({
         $sort: { creationDate: 1 },
       }
     ).fetch();
+
     return infoPages && infoPages[0] && infoPages[0].longDescription;
+  },
+
+  setHostHue(hue) {
+    check(hue, String);
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      Hosts.update(currentHost._id, {
+        $set: {
+          'settings.hue': hue,
+        },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });

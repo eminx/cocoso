@@ -40,7 +40,7 @@ function EditProfile({ history }) {
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
   const [lang, setLang] = useState(null);
   const location = useLocation();
-  const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
+  const { currentHost, currentUser, hue, platform, role } = useContext(StateContext);
   const { username } = useParams();
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
@@ -386,14 +386,14 @@ function EditProfile({ history }) {
               </Text>
             </Heading>
 
-            <Alert bg="white" mb="4" status="info">
+            <Alert bg="none" mb="4" status="info">
               <AlertIcon color="gray.800" />
               <Text fontSize="sm" mr="4">
                 {t('profile.message.platform', { platform: platform?.name })}
               </Text>
             </Alert>
 
-            <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+            <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
             <Box>
               <RouteSwitch history={history}>

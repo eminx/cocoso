@@ -24,7 +24,7 @@ function Modal({
   return (
     <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
-      <ModalContent h={h}>
+      <ModalContent bg="brand.50" h={h}>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{children}</ModalBody>

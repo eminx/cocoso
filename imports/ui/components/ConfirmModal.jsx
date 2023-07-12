@@ -36,7 +36,7 @@ function ConfirmModal({
       {...otherProps}
     >
       <AlertDialogOverlay zIndex="1404">
-        <AlertDialogContent>
+        <AlertDialogContent bg="brand.50">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
@@ -45,7 +45,7 @@ function ConfirmModal({
 
           {!hideFooter && (
             <AlertDialogFooter>
-              <Button ref={cancelRef} size="sm" onClick={onCancel}>
+              <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
               <Button

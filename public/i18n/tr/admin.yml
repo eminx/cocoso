@@ -55,6 +55,12 @@ categories:
   message:
     denySpecialChars: Kısa çizgi (-) dışındaki özel karakterlere izin verilmez
 
+color:
+  revert: Önceki renge dön
+  info: Web sitenizin teması olarak istediğin rengi seçmek için kaydırıcıyı kullan. Seçilen renk tonunun açık ve koyu varyasyonları, tüm kullanıcı arayüzünün farklı bölümlerinde kullanılacaktır.
+  alert1: Şimdi sitede dolaşıp bu rengi test edebilir ve ardından, beğenirsen, buraya geri gelip seçtiğin rengi onaylayabilirsin.
+  alert2: Sayfayı yenilersen veya pencereyi/sekmeyi kapatırsan, önceki renge geri döner.
+
 # ADMIN EMAILS PAGE
 emails:
   label: Otomatik Epostalar

@@ -20,6 +20,8 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
+import { Heading } from '../../components/Header';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -188,32 +190,31 @@ export default function ProcessesList({ history }) {
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box mb="8" mt="4" px="4">
+        <Flex align="center" justify="space-between">
+          <Heading />
           <FiltrerSorter {...filtrerProps}>
-            <Tabs mx="4" size="sm" tabs={tabs} />
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+            <Tabs size="sm" tabs={tabs} />
           </FiltrerSorter>
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
         </Flex>
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
-
-      <Box>
+      <Box mb="8" px={isDesktop ? '4' : '0'}>
         <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
           {(process) => (
             <Box key={process._id}>
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalProcess(process)}>
-                  <NewGridThumb
+                  <SexyThumb
                     dates={getFutureOccurences(process.meetings)}
                     // dates={process.meetings?.map((m) => m.startDate)}
                     host={allHosts.find((h) => h.host === process.host)?.name}
@@ -224,7 +225,7 @@ export default function ProcessesList({ history }) {
                 </Box>
               ) : (
                 <Link to={`/processes/${process._id}`}>
-                  <NewGridThumb
+                  <SexyThumb
                     dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
                     imageUrl={process.imageUrl}
                     subTitle={process.readingMaterial}
@@ -235,6 +236,8 @@ export default function ProcessesList({ history }) {
             </Box>
           )}
         </Paginate>
+
+        {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
       </Box>
 
       {modalProcess && (

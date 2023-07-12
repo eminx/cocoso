@@ -18,7 +18,7 @@ export default function Breadcrumb({ furtherItems, ...otherProps }) {
     <Box fontSize="130%" {...otherProps}>
       <Flex wrap="wrap">
         <Link to="/">
-          <CLink as="span" color="#06c" fontWeight="bold">
+          <CLink as="span" fontWeight="bold">
             {name}
           </CLink>
         </Link>
@@ -26,9 +26,7 @@ export default function Breadcrumb({ furtherItems, ...otherProps }) {
         {navItem && <Text mx="2">/</Text>}
 
         <Link to={`/${navItem?.name}`}>
-          <CLink as="span" color="#06c">
-            {navItem?.label}
-          </CLink>
+          <CLink as="span">{navItem?.label}</CLink>
         </Link>
 
         {!furtherItems && <Text mx="2">/</Text>}
@@ -39,9 +37,7 @@ export default function Breadcrumb({ furtherItems, ...otherProps }) {
               <Text mx="2">/</Text>
               {item.link ? (
                 <Link to={item.link}>
-                  <CLink as="span" color="#06c">
-                    {item.label}
-                  </CLink>
+                  <CLink as="span">{item.label}</CLink>
                 </Link>
               ) : (
                 <Text>{item.label}</Text>

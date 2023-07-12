@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Center, Container, Flex } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Heading as CHeading, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -13,6 +13,7 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
+import { Heading } from '../../components/Header';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -130,20 +131,23 @@ function MembersPublic({ history }) {
 
   const membersRendered = getMembersFiltered();
 
+  const { menu } = currentHost?.settings;
+  const menuItems = menu?.filter((item) => item.isVisible);
+  const activeMenuItem = menuItems.find((item) => item.name === 'members');
+
   return (
-    <Box mb="3">
+    <Box mb="8">
       <Helmet>
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
-          <Box pt="2">
-            <FiltrerSorter {...filtrerProps} />
-          </Box>
-
+      <Flex align="center" justify="space-between" my="4" px="4">
+        <CHeading color="gray.800" size="lg">
+          {activeMenuItem?.label}
+        </CHeading>
+        <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'} py="2">
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
               <HostFiltrer
                 allHosts={allHosts}
                 hostFilterValue={hostFilterValue}
@@ -151,28 +155,22 @@ function MembersPublic({ history }) {
               />
             </Flex>
           )}
-        </Flex>
-      </Box>
+        </FiltrerSorter>
+      </Flex>
 
-      <Box mt="2" pl="1">
-        <Paginate centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
+      <Box mt="2" px="4">
+        <Paginate isMasonry centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
             <Flex
               key={member.username}
-              justifyContent={isDesktop ? 'flex-start' : 'center'}
-              py="2"
-              px="1"
-              w={isDesktop ? '280px' : '2xs'}
+              bg="brand.100"
               cursor="pointer"
+              justifyContent="center"
+              mb="8"
+              p="4"
               onClick={() => setModalUser(member)}
             >
-              <MemberAvatarEtc
-                centerItems={!isDesktop}
-                hideRole={isPortalHost}
-                isThumb
-                t={t}
-                user={member}
-              />
+              <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
             </Flex>
           )}
         </Paginate>

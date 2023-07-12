@@ -91,11 +91,12 @@ public:
       true: OSA inaktiverad. Kontrollera den praktiska informationen.
       false: Klicka och öppna datumet för att OSA
       info: Registreringar är inaktiverade.
-  attandence:
+  attendance:
     label: Deltagare
     create: Du har precis registrerat din närvaro. Välkommen!
     update: Du har nu uppdaterat din registering
     remove: Du har tagit bort din registrering
+    show: Visa deltagare
   capacity:
     full: Arrangemanget är fullbokat
     fullByYou: Grattis! Du bokade precis den sista platsen!

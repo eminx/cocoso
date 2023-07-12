@@ -1,24 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap');
-/* @import url('../public/fonts/charter_regular-webfont.woff'); */
-/* @import url('../public/fonts/charter_bold-webfont.woff'); */
-
-/* @font-face {
-  font-family: 'Charter-regular';
-  src: url('../public/fonts/charter_regular-webfont.eot');
-  src: url('../public/fonts/charter_regular-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../public/fonts/charter_regular-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-} */
-
-/* @font-face {
-  font-family: 'Charter-bold';
-  src: url('../public/fonts/charter_bold-webfont.eot');
-  src: url('../public/fonts/charter_bold-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../public/fonts/charter_bold-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-} */
 
 body {
   min-height: 101vh;
@@ -108,7 +89,7 @@ body {
 
 a,
 .text-content a {
-  color: #06c;
+  /* color: #06c; */
   text-decoration: none;
 }
 
@@ -117,9 +98,9 @@ a,
 }
 
 .text-content p {
-  font-size: 1em;
-  line-height: 1.5;
-  margin-bottom: 0.9em;
+  font-size: 1.05em;
+  line-height: 1.4;
+  margin-bottom: 1em;
 }
 
 .text-content li {
@@ -151,4 +132,73 @@ input::placeholder {
 .menu-drawer.menu-drawer--open {
   width: 300px;
   transition: all 0.2s ease-in-out;
+}
+
+/* Sexy Thumb */
+
+.thumb-cover-container {
+  height: 315px;
+  width: 375px;
+}
+
+.thumb-cover-container:hover .thumb-cover {
+  filter: brightness(70%);
+}
+
+.thumb-cover-child-lazy-image {
+  width: 30px;
+}
+
+.thumb-cover {
+  position: absolute;
+  filter: brightness(50%);
+  transition: all ease-in-out 200ms;
+}
+
+.cover-highlight-title {
+  background-color: rgba(234, 57, 36, 0.9);
+}
+
+.thumb-title {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 6px;
+  line-height: 32px;
+  overflow-wrap: anywhere;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+}
+
+.thumb-subtitle {
+  color: #fff;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: normal;
+}
+
+.chakra-input,
+.chakra-select,
+.chakra-numberinput__field,
+.chakra-textarea {
+  background-color: #fff !important;
+}
+
+.chakra-input:hover,
+.chakra-select:hover,
+.chakra-numberinput__field:hover,
+.chakra-textarea:hover {
+  background-color: #f7f7f7 !important;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -32px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 32px; /* gutter size */
+  background-clip: padding-box;
 }

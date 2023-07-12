@@ -384,6 +384,7 @@ class Process extends Component {
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
+    const { hue } = this.context;
 
     if (!process) {
       return;
@@ -397,17 +398,22 @@ class Process extends Component {
           processMeetings.map((meeting, meetingIndex) => (
             <AccordionItem
               key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-              mb="2"
+              mb="4"
               style={{
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
               }}
             >
-              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+              <AccordionButton
+                _hover={{ bg: 'brand.200' }}
+                _expanded={{ bg: 'brand.500', color: 'white' }}
+                bg="white"
+                color="brand.800"
+              >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
-              <AccordionPanel>
+              <AccordionPanel bg="brand.100">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>
@@ -461,7 +467,12 @@ class Process extends Component {
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
-          <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+          <AccordionButton
+            _hover={{ bg: 'brand.200' }}
+            _expanded={{ bg: 'brand.500', color: 'white' }}
+            bg="white"
+            color="brand.800"
+          >
             <Box flex="1" textAlign="left">
               <MeetingInfo
                 isSmallViewport
@@ -474,10 +485,10 @@ class Process extends Component {
           </AccordionButton>
 
           <AccordionPanel>
-            <Center p="2" bg="white">
+            <Center p="2" bg="brand.100">
               <Button
                 size="sm"
-                colorScheme={isAttending ? 'gray' : 'green'}
+                colorScheme={isAttending ? 'green' : 'brand'}
                 onClick={() => this.toggleAttendance(meeting._id, meetingIndex)}
               >
                 {isAttending ? t('meeting.isAttending.false') : t('meeting.isAttending.true')}
@@ -604,7 +615,7 @@ class Process extends Component {
       <Box>
         {process?.members && (
           <Box mb="8">
-            <Box mb="4" bg="white">
+            <Box mb="4">
               <NiceList
                 actionsDisabled={!isAdmin}
                 keySelector="username"
@@ -670,8 +681,13 @@ class Process extends Component {
           <NiceList actionsDisabled={!isAdmin} keySelector="downloadUrl" list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
-                <Code fontWeight="bold">
-                  <CLink href={document.downloadUrl} target="_blank" rel="noreferrer">
+                <Code bg="white" fontWeight="bold">
+                  <CLink
+                    color="blue.600"
+                    href={document.downloadUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {document.name}
                   </CLink>
                 </Code>
@@ -689,7 +705,7 @@ class Process extends Component {
             <Center my="2">
               <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
-                  <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
                     {isUploading ? (
                       <div style={{ textAlign: 'center' }}>
                         <Loader />
@@ -862,7 +878,7 @@ class Process extends Component {
         <Flex pt="4">
           {futureMeetingsSorted.map((m) => (
             <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
-              <Box pr="6">
+              <Box pr="6" color="brand.700">
                 <DateJust>{m.startDate}</DateJust>
               </Box>
             </Link>
@@ -910,7 +926,18 @@ class Process extends Component {
     const tabs = [
       {
         title: tc('labels.info'),
-        content: <div className="text-content">{renderHTML(process.description)}</div>,
+        content: (
+          <Box
+            bg="white"
+            className="text-content"
+            color="rgba(0,0,0, .85)"
+            px="4"
+            py="3"
+            whiteSpace="pre-line"
+          >
+            {renderHTML(process.description)}
+          </Box>
+        ),
         path: `/processes/${process._id}/info`,
       },
       {
@@ -1001,15 +1028,22 @@ class Process extends Component {
       tags.push(t('labels.archived'));
     }
 
+    const processesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'processes');
+    const backLink = {
+      value: '/processes',
+      label: processesInMenu?.label,
+    };
+
     return (
       <>
         <Helmet>
           <title>{process.title}</title>
         </Helmet>
-        <Breadcrumb p="4" />
+
         <Tably
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
+          backLink={backLink}
           // author={{
           //   src: process.authorAvatar,
           //   username: process.authorUsername,
@@ -1095,10 +1129,8 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="white" my="4">
-      <Text ml="2" fontWeight="bold">
-        {t('meeting.form.label')}
-      </Text>
+    <Box bg="brand.100" p="4" my="4">
+      <Text fontWeight="bold">{t('meeting.form.label')}</Text>
       <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
       </Box>

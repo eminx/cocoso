@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -21,6 +21,8 @@ import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
+import { Heading } from '../../components/Header';
 
 moment.locale(i18n.language);
 
@@ -218,35 +220,38 @@ function Activities({ history }) {
         }`}</title>
       </Helmet>
 
-      <Box px="4" mb="2">
-        <Flex flexDirection={isDesktop ? 'row' : 'column'}>
+      <Box mb="8" mt="4" px="4">
+        <Flex align="center" justify="space-between">
+          <Heading />
           <FiltrerSorter {...filtrerProps}>
-            <Tabs mx="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
-          </FiltrerSorter>
+            <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
 
-          {currentHost.isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'} pl={isDesktop ? '8' : '0'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+          </FiltrerSorter>
         </Flex>
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
-
-      <Box>
-        <Paginate centerItems={!isDesktop} items={activitiesRenderedHostFiltered}>
+      <Box px={isDesktop ? '4' : '0'}>
+        <Paginate
+          canCreateContent={canCreateContent}
+          centerItems
+          items={activitiesRenderedHostFiltered}
+        >
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
               <Box key={activity._id}>
                 {currentHost.isPortalHost ? (
                   <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                    <NewGridThumb
+                    <SexyThumb
                       dates={
                         showPast
                           ? getPastOccurrences(activity.datesAndTimes)
@@ -266,7 +271,7 @@ function Activities({ history }) {
                         : `/activities/${activity._id}`
                     }
                   >
-                    <NewGridThumb
+                    <SexyThumb
                       dates={
                         showPast
                           ? getPastOccurrences(activity.datesAndTimes)
@@ -286,25 +291,27 @@ function Activities({ history }) {
 
       {modalActivity && (
         <Modal
+          actionButtonLabel={tc('actions.toThePage', {
+            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
+          })}
           h="90%"
           isCentered
           isOpen
           scrollBehavior="inside"
           size="6xl"
-          onClose={() => setModalActivity(null)}
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
-          })}
           onActionButtonClick={() => handleActionButtonClick()}
+          onClose={() => setModalActivity(null)}
         >
-          <Tably
-            action={getDatesForAction(modalActivity, showPast)}
-            content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
-            images={[modalActivity.imageUrl]}
-            subTitle={modalActivity.subTitle}
-            tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
-            title={modalActivity.title}
-          />
+          <ModalBody>
+            <Tably
+              action={getDatesForAction(modalActivity, showPast)}
+              content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
+              images={[modalActivity.imageUrl]}
+              subTitle={modalActivity.subTitle}
+              tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
+              title={modalActivity.title}
+            />
+          </ModalBody>
         </Modal>
       )}
     </Box>

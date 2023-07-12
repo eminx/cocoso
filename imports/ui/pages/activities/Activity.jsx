@@ -33,7 +33,7 @@ import {
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Breadcrumb from '../../components/Breadcrumb';
+
 // import Chattery from '../../components/chattery/Chattery';
 import ConfirmModal from '../../components/ConfirmModal';
 import FancyDate, { DateJust } from '../../components/FancyDate';
@@ -98,7 +98,7 @@ class Activity extends PureComponent {
 
     try {
       await call('registerAttendance', activityData._id, values, occurenceIndex);
-      message.success(t('public.attandence.create'));
+      message.success(t('public.attendance.create'));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -221,7 +221,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
-      message.success(t('public.attandence.update'));
+      message.success(t('public.attendance.update'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -243,7 +243,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.email
       );
-      message.success(t('public.attandence.remove'));
+      message.success(t('public.attendance.remove'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -255,9 +255,9 @@ class Activity extends PureComponent {
   };
 
   renderDates = () => {
-    const { activityData, t, tc } = this.props;
+    const { activityData, t } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent, currentUser } = this.context;
+    const { canCreateContent, currentUser, isDesktop } = this.context;
 
     if (!activityData) {
       return;
@@ -269,7 +269,7 @@ class Activity extends PureComponent {
       return (
         <div>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="gray.100" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
+            <Box bg="white" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -291,15 +291,16 @@ class Activity extends PureComponent {
       email: currentUser ? currentUser.emails[0].address : '',
       numberOfPeople: 1,
     };
+
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
         const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
-          <Box bg="white">
+          <Box>
             {eventPast ? (
-              <Box p="2">
-                <Text color="gray">{t('public.past')}</Text>
+              <Box>
+                <Text color="gray.800">{t('public.past')}</Text>
               </Box>
             ) : (
               <Box>
@@ -331,8 +332,8 @@ class Activity extends PureComponent {
             )}
             {canCreateContent && (
               <Center>
-                <Button onClick={() => this.setState({ selectedOccurrence: occurence })}>
-                  Show attendees
+                <Button size="sm" onClick={() => this.setState({ selectedOccurrence: occurence })}>
+                  {t('public.attendance.show')}
                 </Button>
               </Center>
             )}
@@ -343,23 +344,28 @@ class Activity extends PureComponent {
 
     return (
       <Box>
-        <Text mb="2" size="sm">
-          <em>{t('public.register.disabled.false')}</em>
+        <Text mb="2" ml={isDesktop ? '0' : '4'} size="sm">
+          {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="2">
-              <AccordionButton bg="gray.100" mb="4" _expanded={{ bg: 'green.100' }}>
+            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
+              <AccordionButton
+                _hover={{ bg: 'brand.200' }}
+                _expanded={{ bg: 'brand.500', color: 'white' }}
+                bg="white"
+                color="brand.800"
+              >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel>
-                <Text m2="4" fontWeight="bold">
+              <AccordionPanel bg="brand.100">
+                <Text m="2" fontWeight="bold">
                   {t('public.register.label')}
                 </Text>
-                {conditionalRender(occurence, occurenceIndex)}
+                <Box px="2">{conditionalRender(occurence, occurenceIndex)}</Box>
               </AccordionPanel>
             </AccordionItem>
           ))}
@@ -393,32 +399,43 @@ class Activity extends PureComponent {
 
   getDatesForAction = () => {
     const { activityData } = this.props;
+    const { isDesktop } = this.context;
+
     return (
-      <Flex pt="4">
-        {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-          <Box key={occurence.startDate + occurence.startT} mr="6">
-            <Link to={`/activities/${activityData._id}/dates`}>
-              <Flex>
-                <Box>
-                  <DateJust>{occurence.startDate}</DateJust>
-                </Box>
-                {occurence.startDate !== occurence.endDate && (
-                  <Flex>
-                    {'-'}
-                    <DateJust>{occurence.endDate}</DateJust>
-                  </Flex>
-                )}
-              </Flex>
-            </Link>
-          </Box>
-        ))}
-      </Flex>
+      <Link to={`/activities/${activityData._id}/dates`}>
+        <Flex
+          justify={isDesktop ? 'flex-start' : 'center'}
+          mb={isDesktop ? '0' : '4'}
+          pt="4"
+          wrap="wrap"
+        >
+          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+            <Flex
+              key={occurence.startDate + occurence.startT}
+              color="brand.700"
+              mr="3"
+              ml={occurenceIndex === 0 && '0'}
+              textShadow="1px 1px 1px #fff"
+            >
+              <Box>
+                <DateJust>{occurence.startDate}</DateJust>
+              </Box>
+              {occurence.startDate !== occurence.endDate && (
+                <Flex>
+                  {'-'}
+                  <DateJust>{occurence.endDate}</DateJust>
+                </Flex>
+              )}
+            </Flex>
+          ))}
+        </Flex>
+      </Link>
     );
   };
 
   render() {
-    const { activityData, isLoading, hideBreadcrumb, t, tc } = this.props;
-    const { currentUser, role } = this.context;
+    const { activityData, isLoading, t, tc } = this.props;
+    const { currentHost, currentUser, role } = this.context;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -436,16 +453,15 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box>
-            <div
-              style={{
-                whiteSpace: 'pre-line',
-                color: 'rgba(0,0,0, .85)',
-              }}
-              className="text-content"
-            >
-              <Box>{activityData.longDescription && renderHTML(activityData.longDescription)}</Box>
-            </div>
+          <Box
+            bg="white"
+            className="text-content"
+            color="rgba(0,0,0, .85)"
+            px="4"
+            py="3"
+            whiteSpace="pre-line"
+          >
+            {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
         path: `/activities/${activityData._id}/info`,
@@ -464,7 +480,7 @@ class Activity extends PureComponent {
       tabs.push({
         title: t('public.labels.location'),
         content: (
-          <Box mb="1">
+          <Box>
             {activityData.place && (
               <Text fontWeight="bold" fontSize="lg" mb="2">
                 {activityData.place}
@@ -492,16 +508,25 @@ class Activity extends PureComponent {
     const tags = [activityData.resource];
     const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
 
+    const activitiesInMenu = currentHost?.settings?.menu?.find(
+      (item) => item.name === 'activities'
+    );
+    const backLink = {
+      value: '/activities',
+      label: activitiesInMenu?.label,
+    };
+
     return (
       <>
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        {!hideBreadcrumb && <Breadcrumb p="4" />}
+        {/* {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />} */}
 
         <Tably
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
+          backLink={backLink}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           subTitle={activityData.subTitle}
           tabs={tabs}
@@ -531,7 +556,7 @@ class Activity extends PureComponent {
           scrollBehavior="inside"
           size="3xl"
           title={
-            <Box w="180px">
+            <Box mr="8">
               <FancyDate occurence={selectedOccurrence} />
             </Box>
           }
@@ -539,7 +564,7 @@ class Activity extends PureComponent {
         >
           <Box p="1">
             <Heading as="h3" mb="2" size="md">
-              {t('public.attandence.label')}
+              {t('public.attendance.label')}
             </Heading>
             {/* <span>{t('public.acceess.deny')}</span> */}
             {/* <Flex justify="flex-end" py="2">
@@ -587,8 +612,9 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
     //   label: 'Number of people',
     // },
   ];
+
   return (
-    <Box bg="white" p="1" mb="8">
+    <Box mb="8">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <Stack spacing={2}>
           {fields.map((field) => (

@@ -55,6 +55,12 @@ categories:
   message:
     denySpecialChars: Specialtecken, förutom bindestreck (-), är inte tillåtna
 
+color:
+  revert: Revert
+  info: Justera reglaget för att välja önskad färg för din community-webbplats. De ljusa och mörka variationerna av den valda nyansfärgen kommer att användas i olika delar av hela användargränssnittet.
+  alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
+  alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
+
 # ADMIN EMAILS PAGE
 emails:
   label: E-postmeddelanden

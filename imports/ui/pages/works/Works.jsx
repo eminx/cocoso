@@ -18,6 +18,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import { Heading } from '../../components/Header';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -132,50 +133,49 @@ function Works({ history }) {
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4" mb="4">
-        <FiltrerSorter {...filtrerProps} />
+      <Box px="4">
+        <Flex align="center" justify="space-between" my="4">
+          <Heading />
+          <FiltrerSorter {...filtrerProps}>
+            {currentHost.isPortalHost && (
+              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+                <HostFiltrer
+                  allHosts={allHostsFiltered}
+                  hostFilterValue={hostFilterValue}
+                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+                />
+              </Flex>
+            )}
+          </FiltrerSorter>
+        </Flex>
 
-        <Box mt="4">
-          <Wrap pl="2">
-            <WrapItem>
+        <Wrap mb="8">
+          <WrapItem>
+            <Tag
+              label="ALL"
+              checkable
+              checked={categoryFilter === null}
+              filterColor="#2d2d2d"
+              onClick={() => setCategoryFilter(null)}
+            />
+          </WrapItem>
+          {categoriesAssignedToWorks.map((cat) => (
+            <WrapItem key={cat.label}>
               <Tag
-                label="ALL"
                 checkable
-                checked={categoryFilter === null}
-                filterColor="#2d2d2d"
-                onClick={() => setCategoryFilter(null)}
+                checked={categoryFilter === cat.label}
+                filterColor={cat.color}
+                label={cat.label && cat.label.toUpperCase()}
+                margin={{ bottom: 'small' }}
+                onClick={() => setCategoryFilter(cat.label)}
               />
             </WrapItem>
-            {categoriesAssignedToWorks.map((cat) => (
-              <WrapItem key={cat.label}>
-                <Tag
-                  checkable
-                  checked={categoryFilter === cat.label}
-                  filterColor={cat.color}
-                  label={cat.label && cat.label.toUpperCase()}
-                  margin={{ bottom: 'small' }}
-                  onClick={() => setCategoryFilter(cat.label)}
-                />
-              </WrapItem>
-            ))}
-          </Wrap>
-        </Box>
-
-        {currentHost.isPortalHost && (
-          <Flex justify={isDesktop ? 'flex-start' : 'center'} py="2">
-            <HostFiltrer
-              allHosts={allHostsFiltered}
-              hostFilterValue={hostFilterValue}
-              onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-            />
-          </Flex>
-        )}
+          ))}
+        </Wrap>
       </Box>
 
-      {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
-
-      <Box>
-        <Paginate centerItems={!isDesktop} items={worksRenderedHostFiltered}>
+      <Box px={isDesktop ? '4' : '0'}>
+        <Paginate isMasonry centerItems items={worksRenderedHostFiltered}>
           {(work) => (
             <Box key={work._id}>
               {currentHost.isPortalHost ? (
@@ -193,6 +193,7 @@ function Works({ history }) {
                     imageUrl={work.images[0]}
                     tag={work.category?.label}
                     title={work.title}
+                    subTitle={work.shortDescription}
                   />
                 </Box>
               ) : (
@@ -215,6 +216,7 @@ function Works({ history }) {
             </Box>
           )}
         </Paginate>
+        {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
       </Box>
 
       {modalWork && (

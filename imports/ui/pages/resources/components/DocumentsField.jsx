@@ -108,7 +108,7 @@ export default function DocumentsField({ contextType, contextId }) {
 
   return (
     <Box>
-      <Box bg="white" mb="4">
+      <Box mb="4">
         {documents && documents.length > 0 ? (
           <NiceList actionsDisabled={!isAdmin} list={documentsList}>
             {(document) => (
@@ -122,7 +122,7 @@ export default function DocumentsField({ contextType, contextId }) {
             )}
           </NiceList>
         ) : (
-          <Text fontSize="sm" mb="4" textAlign="center">
+          <Text fontSize="sm" fontWeight="bold" mb="4" textAlign="center">
             {tc('documents.empty')}
           </Text>
         )}
@@ -132,7 +132,7 @@ export default function DocumentsField({ contextType, contextId }) {
           <Box mb="2">
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box bg="gray.200" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />

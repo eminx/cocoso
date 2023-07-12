@@ -16,6 +16,7 @@ import Menu from './Menu';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import Categories from './Categories';
+import ColorPicker from './ColorPicker';
 
 export default function Settings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -152,6 +153,15 @@ export default function Settings({ history }) {
         </AlphaContainer>
       ),
     },
+    {
+      title: 'Color',
+      path: '/admin/settings/color',
+      content: (
+        <AlphaContainer>
+          <ColorPicker />
+        </AlphaContainer>
+      ),
+    },
   ];
   const pathname = history?.location?.pathname;
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
@@ -188,7 +198,7 @@ export default function Settings({ history }) {
           </Box>
         }
       >
-        <Tabs index={tabIndex} ml="-4" tabs={tabs} />
+        <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
         <Box mb="24">
           <Switch history={history}>

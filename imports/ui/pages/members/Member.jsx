@@ -14,6 +14,7 @@ import MemberProcesses from '../processes/MemberProcesses';
 import Tabs from '../../components/Tabs';
 import { call } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import SexyThumb from '../../components/SexyThumb';
 
 function MemberPublic({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -121,15 +122,13 @@ function MemberPublic({ history, match, path }) {
       <Box py="4" px="4" fontSize="130%">
         <Flex wrap="wrap">
           <Link to="/">
-            <CLink as="span" color="#06c" fontWeight="bold">
+            <CLink as="span" fontWeight="bold">
               {name}
             </CLink>
           </Link>
           <Text mx="2">/</Text>
           <Link to="/members">
-            <CLink as="span" color="#06c">
-              {membersInMenu.label}
-            </CLink>
+            <CLink as="span">{membersInMenu.label}</CLink>
           </Link>
           <Text mx="2">/</Text>
           <Text>{username}</Text>
@@ -137,7 +136,7 @@ function MemberPublic({ history, match, path }) {
       </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem>
+        <GridItem ml="4">
           <MemberAvatarEtc t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>
@@ -148,58 +147,67 @@ function MemberPublic({ history, match, path }) {
             index={tabIndex}
             size={isDesktop ? 'md' : 'sm'}
             tabs={tabs}
-            px="1"
+            px="4"
           />
 
-          <Switch path={path} history={history}>
-            {!isDesktop && (
+          <Box pt="4" px={isDesktop ? '4' : '0'}>
+            <Switch path={path} history={history}>
+              {!isDesktop && (
+                <Route
+                  path="/@:username/bio"
+                  render={(props) => (
+                    <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                  )}
+                />
+              )}
               <Route
-                path="/@:username/bio"
+                path="/@:username/activities"
                 render={(props) => (
-                  <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                  <MemberActivities
+                    isDesktop={isDesktop}
+                    isSelfAccount={isSelfAccount}
+                    user={user}
+                    match={match}
+                  />
                 )}
               />
-            )}
-            <Route
-              path="/@:username/activities"
-              render={(props) => (
-                <MemberActivities
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/processes"
-              render={(props) => (
-                <MemberProcesses
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/works"
-              render={(props) => (
-                <MemberWorks
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/contact"
-              render={(props) => (
-                <ContactInfo isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
-              )}
-            />
-          </Switch>
+              <Route
+                path="/@:username/processes"
+                render={(props) => (
+                  <MemberProcesses
+                    isDesktop={isDesktop}
+                    isSelfAccount={isSelfAccount}
+                    user={user}
+                    match={match}
+                  />
+                )}
+              />
+              <Route
+                path="/@:username/works"
+                render={(props) => (
+                  <MemberWorks
+                    isDesktop={isDesktop}
+                    isSelfAccount={isSelfAccount}
+                    user={user}
+                    match={match}
+                  />
+                )}
+              />
+              <Route
+                path="/@:username/contact"
+                render={(props) => (
+                  <Box p="4">
+                    <ContactInfo
+                      isDesktop={false}
+                      isSelfAccount={isSelfAccount}
+                      tc={tc}
+                      user={user}
+                    />
+                  </Box>
+                )}
+              />
+            </Switch>
+          </Box>
         </GridItem>
       </Grid>
     </>
@@ -219,21 +227,26 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 
   const bareBio = stripHtml(user.bio);
 
-  if (isSelfAccount && (!bareBio || bareBio.length < 3)) {
+  if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
-      <NewEntryHelper
-        title={tc('message.newentryhelper.bio.title')}
-        buttonLabel={tc('menu.member.settings')}
-        buttonLink={`/@${user?.username}/edit`}
-      >
-        {tc('message.newentryhelper.bio.description')}
-      </NewEntryHelper>
+      <Link to={`/@${user?.username}/edit`}>
+        <Box p="4">
+          <SexyThumb
+            subTitle={tc('menu.member.settings')}
+            title={tc('message.newentryhelper.bio.title')}
+          />
+        </Box>
+      </Link>
     );
+  }
+
+  if (!bareBio || bareBio.length < 2) {
+    return null;
   }
 
   return (
     <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-      <Box maxWidth="480px" className="text-content" py="4" px="3">
+      <Box maxWidth="480px" className="text-content" px="4" py="2" bg="white">
         {renderHTML(user.bio)}
       </Box>
     </Flex>

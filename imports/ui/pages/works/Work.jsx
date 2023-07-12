@@ -17,7 +17,7 @@ function Work() {
   const [work, setWork] = useState(null);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useContext(StateContext);
+  const { currentHost, currentUser } = useContext(StateContext);
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
@@ -62,16 +62,15 @@ function Work() {
     {
       title: tc('labels.info'),
       content: (
-        <Box>
-          <div
-            style={{
-              whiteSpace: 'pre-line',
-              color: 'rgba(0,0,0, .85)',
-            }}
-            className="text-content"
-          >
-            {renderHTML(work.longDescription)}
-          </div>
+        <Box
+          bg="white"
+          className="text-content"
+          color="rgba(0,0,0, .85)"
+          px="4"
+          py="3"
+          whiteSpace="pre-line"
+        >
+          {renderHTML(work.longDescription)}
         </Box>
       ),
       path: `/@${work.authorUsername}/works/${work._id}/info`,
@@ -79,7 +78,7 @@ function Work() {
     {
       title: tc('labels.extra'),
       content: (
-        <Box>
+        <Box px="4">
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
@@ -114,12 +113,17 @@ function Work() {
 
   const tags = [work.category?.label];
 
+  const worksInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'works');
+  const backLink = {
+    value: '/works',
+    label: worksInMenu?.label,
+  };
+
   return (
     <>
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
-      <Breadcrumb p="4" />
       <Tably
         adminMenu={isOwner ? adminMenu : null}
         author={{
@@ -127,6 +131,7 @@ function Work() {
           username: work.authorUsername,
           link: `/@${work.authorUsername}`,
         }}
+        backLink={backLink}
         images={work.images}
         subTitle={work.shortDescription}
         tabs={tabs}

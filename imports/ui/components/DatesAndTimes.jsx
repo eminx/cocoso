@@ -17,7 +17,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import DatePicker from './DatePicker';
 import { useTranslation } from 'react-i18next';
 
-const DatesAndTimes = ({
+function DatesAndTimes({
   recurrence,
   id,
   handleStartDateChange,
@@ -29,7 +29,7 @@ const DatesAndTimes = ({
   removeRecurrence,
   isDeletable,
   isPublicActivity,
-}) => {
+}) {
   if (!recurrence) {
     return null;
   }
@@ -58,7 +58,7 @@ const DatesAndTimes = ({
   };
 
   return (
-    <Box p="4" mb="4" border="1px solid #ccc" borderColor={getBorderColorStyle()}>
+    <Box bg="brand.100" borderColor={getBorderColorStyle()} mb="4" p="4">
       {isDeletable && (
         <Flex justify="flex-end" mb="4">
           <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
@@ -132,7 +132,7 @@ const DatesAndTimes = ({
       {recurrence.conflict && <ConflictMarker recurrence={recurrence} t={t} />}
     </Box>
   );
-};
+}
 
 function ConflictMarker({ recurrence, t }) {
   return (

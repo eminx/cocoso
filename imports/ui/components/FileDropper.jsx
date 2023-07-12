@@ -34,7 +34,7 @@ function FileDropper({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          bg={isDragActive ? 'gray.300' : 'gray.100'}
+          bg={isDragActive ? 'gray.300' : 'white'}
           h={height}
           style={containerStyle}
           // w="xs"

@@ -56,6 +56,8 @@ labels:
   past: Past
   upcoming: Upcoming
   filterAndSort: Filter & Sort
+  filter: Filter
+  sort: Sort
   notfound:
     info: What you look for could not be found
     gohome: Back to home page

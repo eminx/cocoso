@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../LayoutContainer';
+import SexyThumb from './SexyThumb';
 
 function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListing = false }) {
   const { currentHost } = useContext(StateContext);
@@ -24,6 +25,18 @@ function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListi
     : tc('message.newentryhelper.description');
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
+
+  return (
+    <Link to={buttonLink}>
+      <Box>
+        <SexyThumb
+          subTitle="Create a new entry that will appear here"
+          title="New Entry"
+          // onClick={() => history.push(buttonLink)}
+        />
+      </Box>
+    </Link>
+  );
 
   return (
     <Box px="4">

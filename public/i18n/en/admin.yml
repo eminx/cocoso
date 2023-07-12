@@ -55,6 +55,12 @@ categories:
   message:
     denySpecialChars: Special characters, except dash (-), are not allowed
 
+color:
+  revert: Revert
+  info: Adjust the slider to select your desired color for your community website. The light and dark variations of the hue color selected will be used in different parts of the entire user interface.
+  alert1: Now you can surf around the site and test this color, and then come back here and confirm if you like it.
+  alert2: If you refresh the page or close the window/tab, it will revert to the original color.
+
 # ADMIN EMAILS PAGE
 emails:
   label: Emails
