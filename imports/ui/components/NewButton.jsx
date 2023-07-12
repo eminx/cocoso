@@ -23,7 +23,7 @@ const getRoute = (item, index) => {
   return `/${item.name}/new`;
 };
 
-function NewButton({ canCreateContent, currentHost, hue, isAdmin }) {
+function NewButton({ canCreateContent, currentHost, isAdmin }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);

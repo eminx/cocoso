@@ -5,6 +5,12 @@ import { Fade, Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
+const imageStyle = {
+  cursor: 'pointer',
+  objectFit: 'contain',
+  position: 'relative',
+};
+
 function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
 
@@ -19,11 +25,7 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
           <LazyLoadImage
             alt={alt}
             src={images[0]}
-            style={{
-              cursor: 'pointer',
-              objectFit: 'contain',
-              position: 'relative',
-            }}
+            style={imageStyle}
             onClick={() => setToggler(!toggler)}
           />
         </Box>
@@ -47,11 +49,7 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
               <LazyLoadImage
                 alt={alt}
                 src={image}
-                style={{
-                  cursor: 'pointer',
-                  objectFit: 'contain',
-                  position: 'relative',
-                }}
+                style={imageStyle}
                 onClick={() => setToggler(!toggler)}
               />
             </Flex>
@@ -76,11 +74,7 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
             <LazyLoadImage
               alt={alt}
               src={image}
-              style={{
-                cursor: 'pointer',
-                objectFit: 'contain',
-                position: 'relative',
-              }}
+              style={imageStyle}
               onClick={() => setToggler(!toggler)}
             />
           </Box>
