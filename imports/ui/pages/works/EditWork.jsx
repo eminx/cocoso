@@ -157,13 +157,12 @@ class EditWork extends PureComponent {
 
     const selectedCategory = categories.find((category) => category._id === values.categoryId);
 
-    const parsedValues = {
-      ...values,
-      category: {
-        label: selectedCategory.label,
-        color: selectedCategory.color,
-        categoryId: selectedCategory._id,
-      },
+    const { _id, categoryId, ...parsedValues } = values;
+
+    parsedValues.category = {
+      label: selectedCategory?.label,
+      color: selectedCategory?.color,
+      categoryId: selectedCategory?._id,
     };
 
     try {
