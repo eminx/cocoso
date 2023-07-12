@@ -56,14 +56,18 @@ function SexyThumb({
   tag,
 }) {
   const { hue } = useContext(StateContext);
-  const backgroundColor = hue ? `hsl(${hue}deg, 50%, 50%)` : 'gray.700';
 
   const futureDates = dates && dates.filter((date) => moment(date?.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
 
   return (
-    <Box bg={backgroundColor} className={coverContainerClass} fontWeight="bold">
+    <Box
+      _hover={{ bg: 'brand.400' }}
+      bg="brand.500"
+      className={coverContainerClass}
+      fontWeight="bold"
+    >
       <div className={coverClass}>
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>

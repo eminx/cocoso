@@ -345,7 +345,7 @@ class Activity extends PureComponent {
     return (
       <Box>
         <Text mb="2" size="sm">
-          <em>{t('public.register.disabled.false')}</em>
+          {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (

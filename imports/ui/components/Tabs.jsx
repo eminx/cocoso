@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Link as CLink, Tabs as CTabs, Tab, TabIndicator, TabList } from '@chakra-ui/react';
+import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
 
 const linkStyle = {
   marginBottom: 0,
@@ -49,7 +49,7 @@ function CoTab({ forceUppercase = true, tab }) {
     },
     as: 'span',
     bg: 'white',
-    fontFamily: "'Raleway', sans-serif",
+    fontFamily: "'Sarabun', sans-serif",
     fontWeight: 'bold',
     justifyContent: 'flex-start',
     paddingInline: '4',
