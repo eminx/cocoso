@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AlertDialog,
@@ -9,8 +9,6 @@ import {
   AlertDialogOverlay,
   Button,
 } from '@chakra-ui/react';
-
-import { StateContext } from '../LayoutContainer';
 
 function ConfirmModal({
   visible,
@@ -24,8 +22,6 @@ function ConfirmModal({
   children,
   ...otherProps
 }) {
-  const { hue } = useContext(StateContext);
-  const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
   const cancelRef = useRef();
   const [tc] = useTranslation('common');
 
@@ -40,7 +36,7 @@ function ConfirmModal({
       {...otherProps}
     >
       <AlertDialogOverlay zIndex="1404">
-        <AlertDialogContent bg={backgroundColor}>
+        <AlertDialogContent bg="brand.50">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
@@ -49,7 +45,7 @@ function ConfirmModal({
 
           {!hideFooter && (
             <AlertDialogFooter>
-              <Button ref={cancelRef} size="sm" onClick={onCancel}>
+              <Button ref={cancelRef} size="sm" variant="outline" onClick={onCancel}>
                 {cancelText || tc('actions.cancel')}
               </Button>
               <Button
