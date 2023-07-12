@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Box } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
@@ -66,7 +66,7 @@ function SexyThumb({
       fontWeight="bold"
     >
       <div className={coverClass}>
-        <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="blur" />
+        <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>
 
       <div
