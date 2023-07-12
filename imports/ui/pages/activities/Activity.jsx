@@ -551,7 +551,7 @@ class Activity extends PureComponent {
           scrollBehavior="inside"
           size="3xl"
           title={
-            <Box w="180px">
+            <Box mr="8">
               <FancyDate occurence={selectedOccurrence} />
             </Box>
           }
