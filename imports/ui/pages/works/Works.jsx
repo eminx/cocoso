@@ -18,7 +18,6 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import NewEntryHelper from '../../components/NewEntryHelper';
-import SexyThumb from '../../components/SexyThumb';
 import { Heading } from '../../components/Header';
 
 const compareByDate = (a, b) => {

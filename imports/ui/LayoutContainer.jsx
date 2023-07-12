@@ -193,7 +193,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
-            <Box id="main-viewport" flexGrow="2" bg="brand.50">
+            <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 20%, 90%)`}>
               <Box w="100%">
                 {isHeaderAndFooter && currentHost.isPortalHost && (
                   <PortalHostIndicator platform={platform} />

@@ -123,7 +123,7 @@ function Tably({
           />
 
           <Center bg="gray.900">
-            <NiceSlider images={images} width="100vw" isFade={false} />
+            <NiceSlider alt={title} images={images} width="100vw" isFade={false} />
           </Center>
           <Center mb="4" mx="4">
             {action}
@@ -189,7 +189,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           mb="3"
           mt="1"
           textAlign={isDesktop ? 'right' : 'left'}
-          textShadow="0 2px 2px #fff"
+          textShadow="1px 1px 1px #fff"
         >
           {title}
         </Heading>

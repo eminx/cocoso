@@ -29,7 +29,7 @@ export default function PlatformSettings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, isDesktop, platform } = useContext(StateContext);
+  const { currentUser, platform } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');

@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { Avatar, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
 export default function GridThumb({ avatar, color, dates, host, imageUrl, subTitle, title, tag }) {
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
 
   if (!title || !imageUrl) {
     return null;
@@ -21,7 +22,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
         <Box>
           <LazyLoadImage
             alt={title}
-            effect="blur"
+            effect="black-and-white"
             fit="contain"
             src={imageUrl}
             style={{

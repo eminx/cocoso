@@ -23,7 +23,7 @@ function Drawer({
   return (
     <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
       {!hideOverlay && <DrawerOverlay />}
-      <DrawerContent bg="brand.200">
+      <DrawerContent bg="brand.50">
         <DrawerCloseButton />
         {title && <DrawerHeader>{title}</DrawerHeader>}
 

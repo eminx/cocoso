@@ -147,7 +147,7 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         return (
-          <Link key={item.label} to={item.route} onClick={onToggle}>
+          <Link key={item.label} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
             <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
@@ -173,7 +173,12 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
         </Text>
       )}
       {isPortalHost && (
-        <Link key="/communities" to="/communities" onClick={onToggle}>
+        <Link
+          key="/communities"
+          style={{ textShadow: 'none' }}
+          to="/communities"
+          onClick={onToggle}
+        >
           <Box py="1">
             <Text
               _hover={{ textDecoration: 'underline' }}

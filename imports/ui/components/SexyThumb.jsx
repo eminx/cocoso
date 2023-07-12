@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Box } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import { StateContext } from '../LayoutContainer';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
@@ -55,8 +54,6 @@ function SexyThumb({
   title,
   tag,
 }) {
-  const { hue } = useContext(StateContext);
-
   const futureDates = dates && dates.filter((date) => moment(date?.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
@@ -69,7 +66,7 @@ function SexyThumb({
       fontWeight="bold"
     >
       <div className={coverClass}>
-        <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
+        <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="blur" />
       </div>
 
       <div
