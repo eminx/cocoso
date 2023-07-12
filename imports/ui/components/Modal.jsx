@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Button,
   Modal as CModal,
@@ -9,8 +9,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-
-import { StateContext } from '../LayoutContainer';
 
 function Modal({
   actionButtonLabel,
@@ -23,9 +21,6 @@ function Modal({
   onActionButtonClick,
   ...otherProps
 }) {
-  const { hue } = useContext(StateContext);
-  const backgroundColor = hue ? `hsl(${hue}deg, 10%, 90%)` : 'gray.200';
-
   return (
     <CModal isOpen={isOpen} onClose={onClose} {...otherProps}>
       <ModalOverlay />
