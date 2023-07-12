@@ -35,6 +35,7 @@ Hosts.schema = new SimpleSchema({
   'settings.menu': { type: Array },
   'settings.menu.$': new SimpleSchema(SchemasHost.menu),
   'settings.mainColor': { type: Object, optional: true },
+  'settings.hue': { type: String, optional: true },
 
   members: { type: Array },
   'members.$': { type: Object, optional: true },

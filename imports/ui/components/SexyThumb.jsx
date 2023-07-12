@@ -72,7 +72,14 @@ function SexyThumb({
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>
 
-      <div style={{ position: 'relative', padding: '24px 16px', height: '100%' }}>
+      <div
+        style={{
+          fontFamily: `'Raleway', sans-serif`,
+          height: '100%',
+          padding: '24px 16px',
+          position: 'relative',
+        }}
+      >
         {dates && (
           <div
             style={{

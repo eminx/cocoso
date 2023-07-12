@@ -1,23 +1,43 @@
-import React, { useContext, useState } from 'react';
-import { Box, Center } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Box, Button, Center } from '@chakra-ui/react';
 import { HuePicker } from 'react-color';
+import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
+import { message } from '../../components/message';
+import { call } from '../../utils/shared';
 
-const defaultColor = { h: 180, s: 60, l: 0.1, a: 0 };
+const getDefaultColor = (hue) => ({ h: hue, s: 40, l: 0.1, a: 0 });
+
+const getHue = (pickedColor) => {
+  const hue = parseInt(pickedColor?.hsl?.h) + 1;
+  return hue.toString();
+};
 
 function ColorPicker() {
-  const [color, setColor] = useState(defaultColor);
-  const { hue, setHue } = useContext(StateContext);
+  const { currentHost, hue, setHue } = useContext(StateContext);
+  const [color, setColor] = useState(getDefaultColor(Number(hue) || 233));
+  const [tc] = useTranslation('common');
 
   const handleChange = (pickedColor, event) => {
     if (pickedColor?.hsl?.h === color?.hsl?.h) {
       return;
     }
     setColor(pickedColor);
-    const parsedHue = parseInt(pickedColor?.hsl?.h) + 1;
-    setHue(parsedHue.toString());
+    const parsedHue = getHue(pickedColor);
+    setHue(parsedHue);
   };
+
+  const setSelectedHue = async () => {
+    try {
+      await call('setHostHue', hue);
+      message.success(tc('message.success.update'));
+    } catch (error) {
+      message.error(error.reason || error.error);
+    }
+  };
+
+  const originalHostHue = currentHost?.settings?.hue;
 
   return (
     <>
@@ -32,19 +52,26 @@ function ColorPicker() {
           borderRadius="50%"
           borderWidth="3px"
           borderColor="white"
-          backgroundColor={parseHue(color.hsl)}
+          backgroundColor={parseHue(color)}
         />
       </Center>
+
+      {hue !== originalHostHue && <Button onClick={setSelectedHue}>{tc('actions.submit')}</Button>}
     </>
   );
 }
 
-const parseHue = (hsl) => {
-  if (!hsl) {
+const parseHue = (color) => {
+  if (!color) {
     return null;
   }
-  const { h } = hsl;
-  return `hsla(${h}deg, 50%, 50%, 1)`;
+  if (color.hsl) {
+    const { h } = color.hsl;
+    return `hsla(${h}deg, 50%, 50%, 1)`;
+  } else {
+    const { h } = color;
+    return `hsla(${h}deg, 50%, 50%, 1)`;
+  }
 };
 
 export default ColorPicker;

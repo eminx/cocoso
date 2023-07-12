@@ -257,7 +257,7 @@ class Activity extends PureComponent {
   renderDates = () => {
     const { activityData, t } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent, currentUser } = this.context;
+    const { canCreateContent, currentUser, isDesktop } = this.context;
 
     if (!activityData) {
       return;
@@ -344,15 +344,15 @@ class Activity extends PureComponent {
 
     return (
       <Box>
-        <Text mb="2" size="sm">
+        <Text mb="2" ml={isDesktop ? '0' : '4'} size="sm">
           {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
               <AccordionButton
+                _hover={{ bg: 'brand.200' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
                 color="brand.800"
               >
@@ -399,17 +399,23 @@ class Activity extends PureComponent {
 
   getDatesForAction = () => {
     const { activityData } = this.props;
-    const { hue, isDesktop } = this.context;
+    const { isDesktop } = this.context;
 
     return (
       <Link to={`/activities/${activityData._id}/dates`}>
-        <Flex pt="4" wrap="wrap" justify={isDesktop ? 'flex-start' : 'center'}>
+        <Flex
+          justify={isDesktop ? 'flex-start' : 'center'}
+          mb={isDesktop ? '0' : '4'}
+          pt="4"
+          wrap="wrap"
+        >
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Flex
               key={occurence.startDate + occurence.startT}
               color="brand.700"
               mr="3"
               ml={occurenceIndex === 0 && '0'}
+              textShadow="1px 1px 1px #fff"
             >
               <Box>
                 <DateJust>{occurence.startDate}</DateJust>

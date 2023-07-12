@@ -3,24 +3,24 @@ import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
 const brand = (hue, level) => `hsl(${hue}deg, 50%, ${level}%)`;
 
 const generateTheme = (hue) => {
-  const color = brand(hue, '50');
+  const color = brand(hue, '32');
 
   const theme = extendTheme({
-    // fontFamily: {
-    //   heading: `'Raleway', ${baseTheme.fonts?.heading}`,
-    //   body: `'Raleway', ${baseTheme.fonts?.body}`,
-    // },
+    fontFamily: {
+      heading: `'Raleway', ${baseTheme.fonts?.heading}`,
+      body: `'Sarabun', ${baseTheme.fonts?.body}`,
+    },
     colors: {
       brand: {
         50: brand(hue, '95'),
         100: brand(hue, '90'),
-        200: brand(hue, '80'),
-        300: brand(hue, '70'),
-        400: brand(hue, '60'),
-        500: brand(hue, '50'),
-        600: brand(hue, '40'),
-        700: brand(hue, '30'),
-        800: brand(hue, '20'),
+        200: brand(hue, '75'),
+        300: brand(hue, '60'),
+        400: brand(hue, '40'),
+        500: brand(hue, '32'),
+        600: brand(hue, '25'),
+        700: brand(hue, '18'),
+        800: brand(hue, '14'),
         900: brand(hue, '10'),
       },
       gray: {
@@ -89,6 +89,7 @@ const generateTheme = (hue) => {
         },
         a: {
           color,
+          textShadow: '0.5px 0.5px 0.5px #fff',
         },
       },
     },

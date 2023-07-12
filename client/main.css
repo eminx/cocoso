@@ -98,9 +98,9 @@ a,
 }
 
 .text-content p {
-  font-size: 1em;
+  font-size: 1.05em;
   line-height: 1.5;
-  margin-bottom: 0.9em;
+  margin-bottom: 1em;
 }
 
 .text-content li {

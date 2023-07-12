@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
@@ -167,5 +168,26 @@ Meteor.methods({
     ).fetch();
 
     return infoPages && infoPages[0] && infoPages[0].longDescription;
+  },
+
+  setHostHue(hue) {
+    check(hue, String);
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      Hosts.update(currentHost._id, {
+        $set: {
+          'settings.hue': hue,
+        },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
   },
 });

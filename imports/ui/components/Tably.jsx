@@ -153,7 +153,7 @@ function Tably({
                     path={tab.path}
                     render={(props) => (
                       <Center>
-                        <Container margin={'auto'} pt="2">
+                        <Container margin={'auto'} p="0" pt="4">
                           {tab.content}
                         </Container>
                       </Center>
@@ -189,6 +189,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           mb="3"
           mt="1"
           textAlign={isDesktop ? 'right' : 'left'}
+          textShadow="0 2px 2px #fff"
         >
           {title}
         </Heading>

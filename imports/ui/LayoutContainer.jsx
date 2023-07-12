@@ -63,6 +63,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     try {
       const respond = await call('getCurrentHost');
       setCurrentHost(respond);
+      setHue(respond?.settings?.hue);
     } catch (error) {
       console.log(error);
     }

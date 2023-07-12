@@ -404,8 +404,8 @@ class Process extends Component {
               }}
             >
               <AccordionButton
+                _hover={{ bg: 'brand.200' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
                 color="brand.800"
               >
@@ -468,8 +468,8 @@ class Process extends Component {
           }}
         >
           <AccordionButton
+            _hover={{ bg: 'brand.200' }}
             _expanded={{ bg: 'brand.500', color: 'white' }}
-            _hover={{ bg: 'brand.600', color: 'white' }}
             bg="white"
             color="brand.800"
           >
