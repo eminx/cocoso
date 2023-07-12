@@ -122,7 +122,7 @@ function Tably({
             isDesktop={isDesktop}
           />
 
-          <Center>
+          <Center bg="gray.900">
             <NiceSlider images={images} width="100vw" isFade={false} />
           </Center>
           <Center mb="4" mx="4">

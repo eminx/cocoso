@@ -78,7 +78,7 @@ function Work() {
     {
       title: tc('labels.extra'),
       content: (
-        <Box>
+        <Box px="4">
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),

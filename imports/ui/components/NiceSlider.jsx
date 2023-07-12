@@ -4,7 +4,7 @@ import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 
-function NiceSlider({ images, width = '100%', isFade = true }) {
+function NiceSlider({ floatRight = true, images, width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {
@@ -43,7 +43,8 @@ function NiceSlider({ images, width = '100%', isFade = true }) {
               <Image
                 cursor="pointer"
                 fit="contain"
-                float="right"
+                float={floatRight ? 'right' : 'none'}
+                margin="auto"
                 src={image}
                 onClick={() => setToggler(!toggler)}
               />

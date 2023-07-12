@@ -1,20 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-  Button,
-  Center,
-  Flex,
-  IconButton,
-  Input,
-  Link,
-  Select,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Search2Icon } from '@chakra-ui/icons/dist/Search2';
 
@@ -35,7 +20,6 @@ function FiltrerSorter(props) {
         </Button>
       </Flex>
       <Drawer
-        colorScheme="cyan"
         hideOverlay
         isOpen={isOpen}
         size="sm"
@@ -64,13 +48,18 @@ function Inputs({
       justify="flex-start"
       wrap={isDesktop ? 'nowrap' : 'wrap'}
     >
+      <Heading fontSize="md">{tc('labels.filter')}:</Heading>
       <Input
         my="4"
         placeholder={tc('domains.props.title') + '...'}
         value={filterWord}
         onChange={(event) => setFilterWord(event.target.value)}
       />
-      {children}
+      <Box mb="4">{children}</Box>
+      <Divider />
+      <Heading fontSize="md" mt="4">
+        {tc('labels.sort')}:
+      </Heading>
       <Select
         my="4"
         name="sorter"

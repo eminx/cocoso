@@ -56,6 +56,8 @@ labels:
   past: Tidigare
   upcoming: Kommande
   filterAndSort: Filtrera & sortera
+  filter: Filtrera
+  sort: Sortera
   notfound:
     info: Det du letade efter kunde inte hittas
     gohome: Gå tillbaka till startsidan

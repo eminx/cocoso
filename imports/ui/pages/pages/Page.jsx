@@ -83,9 +83,9 @@ function Page() {
                 {currentPage.title}
               </Heading>
             </Box>
-            <Box mb="4">
-              <NiceSlider images={currentPage.images} />
-            </Box>
+            <Center bg="gray.900">
+              <NiceSlider floatRight={false} images={currentPage.images} />
+            </Center>
             <Box bg="white" className="text-content" maxW="520px" p="4">
               {renderHTML(currentPage.longDescription)}
             </Box>
@@ -123,8 +123,8 @@ function Page() {
               {currentPage.title}
             </Heading>
           </Box>
-          <Box mb="4">
-            <NiceSlider images={currentPage.images} />
+          <Box bg="gray.900">
+            <NiceSlider floatRight={false} images={currentPage.images} />
           </Box>
           <Box bg="white" className="text-content" maxW="520px" p="4">
             {renderHTML(currentPage.longDescription)}
