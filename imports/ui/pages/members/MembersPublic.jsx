@@ -158,7 +158,7 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </Flex>
 
-      <Box mt="2" pl="1">
+      <Box mt="2" px="4">
         <Paginate isMasonry centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
           {(member) => (
             <Flex

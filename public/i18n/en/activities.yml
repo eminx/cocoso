@@ -92,11 +92,12 @@ public:
       true: RSVP disabled. Please check the practical information.
       false: Please click and open the date to register
       info: Registrations are disabled.
-  attandence:
+  attendance:
     label: Attendees
     create: You have just successfully registered your attendance. Welcome!
     update: You have successfully updated your RSVP
     remove: You have successfully removed your registration
+    show: Show attendees
   capacity:
     full: Capacity is full now.
     fullByYou: Congrats! You just filled the last space!

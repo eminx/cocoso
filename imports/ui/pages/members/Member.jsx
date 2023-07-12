@@ -136,7 +136,7 @@ function MemberPublic({ history, match, path }) {
       </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem>
+        <GridItem ml="4">
           <MemberAvatarEtc t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>
@@ -150,62 +150,64 @@ function MemberPublic({ history, match, path }) {
             px="4"
           />
 
-          <Switch path={path} history={history}>
-            {!isDesktop && (
+          <Box pt="4" px={isDesktop ? '4' : '0'}>
+            <Switch path={path} history={history}>
+              {!isDesktop && (
+                <Route
+                  path="/@:username/bio"
+                  render={(props) => (
+                    <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                  )}
+                />
+              )}
               <Route
-                path="/@:username/bio"
+                path="/@:username/activities"
                 render={(props) => (
-                  <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
+                  <MemberActivities
+                    isDesktop={isDesktop}
+                    isSelfAccount={isSelfAccount}
+                    user={user}
+                    match={match}
+                  />
                 )}
               />
-            )}
-            <Route
-              path="/@:username/activities"
-              render={(props) => (
-                <MemberActivities
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/processes"
-              render={(props) => (
-                <MemberProcesses
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/works"
-              render={(props) => (
-                <MemberWorks
-                  isDesktop={isDesktop}
-                  isSelfAccount={isSelfAccount}
-                  user={user}
-                  match={match}
-                />
-              )}
-            />
-            <Route
-              path="/@:username/contact"
-              render={(props) => (
-                <Box p="4">
-                  <ContactInfo
-                    isDesktop={false}
+              <Route
+                path="/@:username/processes"
+                render={(props) => (
+                  <MemberProcesses
+                    isDesktop={isDesktop}
                     isSelfAccount={isSelfAccount}
-                    tc={tc}
                     user={user}
+                    match={match}
                   />
-                </Box>
-              )}
-            />
-          </Switch>
+                )}
+              />
+              <Route
+                path="/@:username/works"
+                render={(props) => (
+                  <MemberWorks
+                    isDesktop={isDesktop}
+                    isSelfAccount={isSelfAccount}
+                    user={user}
+                    match={match}
+                  />
+                )}
+              />
+              <Route
+                path="/@:username/contact"
+                render={(props) => (
+                  <Box p="4">
+                    <ContactInfo
+                      isDesktop={false}
+                      isSelfAccount={isSelfAccount}
+                      tc={tc}
+                      user={user}
+                    />
+                  </Box>
+                )}
+              />
+            </Switch>
+          </Box>
         </GridItem>
       </Grid>
     </>

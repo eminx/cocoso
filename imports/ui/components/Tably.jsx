@@ -176,11 +176,14 @@ function Tably({
 }
 
 function Header({ title, subTitle, tags, isDesktop, author }) {
+  const fontFamily = "'Raleway', sans-serif";
+
   return (
     <Flex mb={isDesktop ? '8' : '8'} pl="4" pr="0" justify="space-between">
       <Box flexBasis={isDesktop ? '100%' : '80%'}>
         <Heading
           as="h1"
+          fontFamily={fontFamily}
           fontSize="1.8em"
           lineHeight={1}
           mb="3"
@@ -203,7 +206,14 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
         {tags && tags.length > 0 && (
           <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt={isDesktop ? '6' : '4'}>
             {tags.map((tag) => (
-              <Badge fontSize="14px" key={tag} ml={isDesktop && '2'} mr={!isDesktop && '2'}>
+              <Badge
+                bg="brand.100"
+                color="gray.800"
+                fontSize="14px"
+                key={tag}
+                ml={isDesktop && '2'}
+                mr={!isDesktop && '2'}
+              >
                 {tag}
               </Badge>
             ))}

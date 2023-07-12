@@ -407,13 +407,13 @@ class Process extends Component {
                 _expanded={{ bg: 'brand.500', color: 'white' }}
                 _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
-                color="brand.500"
+                color="brand.800"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
-              <AccordionPanel bg="white">
+              <AccordionPanel bg="brand.100">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>
@@ -471,7 +471,7 @@ class Process extends Component {
             _expanded={{ bg: 'brand.500', color: 'white' }}
             _hover={{ bg: 'brand.600', color: 'white' }}
             bg="white"
-            color="brand.500"
+            color="brand.800"
           >
             <Box flex="1" textAlign="left">
               <MeetingInfo
@@ -485,7 +485,7 @@ class Process extends Component {
           </AccordionButton>
 
           <AccordionPanel>
-            <Center p="2" bg="white">
+            <Center p="2" bg="brand.100">
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'green' : 'brand'}
@@ -878,7 +878,7 @@ class Process extends Component {
         <Flex pt="4">
           {futureMeetingsSorted.map((m) => (
             <Link key={m.startDate} to={`/processes/${process._id}/meetings`}>
-              <Box pr="6">
+              <Box pr="6" color="brand.700">
                 <DateJust>{m.startDate}</DateJust>
               </Box>
             </Link>
@@ -1129,10 +1129,8 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="white" p="4" my="4">
-      <Text ml="2" fontWeight="bold">
-        {t('meeting.form.label')}
-      </Text>
+    <Box bg="brand.100" p="4" my="4">
+      <Text fontWeight="bold">{t('meeting.form.label')}</Text>
       <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
       </Box>

@@ -91,11 +91,12 @@ public:
       true: Kayıt devre dışı bırakıldı. Lütfen pratik bilgileri kontrol et.
       false: Kayıt olmak için tarihlere tıklayıp açarak, bilgilerini girebilirsin
       info: Kayıtlar şu an alınmıyor
-  attandence:
+  attendance:
     label: Katılımcılar
     create: Katılımını başarıyla kaydettik. Hoş gelirsin!
     update: Katılımını başarıyla güncelledik. Hoş gelirsin!
     remove: Katılımını başarıyla iptal ettik. Gene bekleriz!
+    show: Katılımcıları göster
   capacity:
     full: Kapasite doldu.
     fullByYou: Tebrikler! Sonuncu yeri kaptın!

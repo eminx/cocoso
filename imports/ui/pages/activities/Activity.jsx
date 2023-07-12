@@ -98,7 +98,7 @@ class Activity extends PureComponent {
 
     try {
       await call('registerAttendance', activityData._id, values, occurenceIndex);
-      message.success(t('public.attandence.create'));
+      message.success(t('public.attendance.create'));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -221,7 +221,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
-      message.success(t('public.attandence.update'));
+      message.success(t('public.attendance.update'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -243,7 +243,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.email
       );
-      message.success(t('public.attandence.remove'));
+      message.success(t('public.attendance.remove'));
       this.setState({
         rsvpCancelModalInfo: null,
         isRsvpCancelModalOn: false,
@@ -333,7 +333,7 @@ class Activity extends PureComponent {
             {canCreateContent && (
               <Center>
                 <Button size="sm" onClick={() => this.setState({ selectedOccurrence: occurence })}>
-                  Show attendees
+                  {t('public.attendance.show')}
                 </Button>
               </Center>
             )}
@@ -354,7 +354,7 @@ class Activity extends PureComponent {
                 _expanded={{ bg: 'brand.500', color: 'white' }}
                 _hover={{ bg: 'brand.600', color: 'white' }}
                 bg="white"
-                color="brand.500"
+                color="brand.800"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
@@ -401,15 +401,13 @@ class Activity extends PureComponent {
     const { activityData } = this.props;
     const { hue, isDesktop } = this.context;
 
-    const color = hue ? `hsl(${hue}deg, 50%, 30%)` : 'blue.700';
-
     return (
       <Link to={`/activities/${activityData._id}/dates`}>
         <Flex pt="4" wrap="wrap" justify={isDesktop ? 'flex-start' : 'center'}>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Flex
               key={occurence.startDate + occurence.startT}
-              color={color}
+              color="brand.700"
               mr="3"
               ml={occurenceIndex === 0 && '0'}
             >
@@ -560,7 +558,7 @@ class Activity extends PureComponent {
         >
           <Box p="1">
             <Heading as="h3" mb="2" size="md">
-              {t('public.attandence.label')}
+              {t('public.attendance.label')}
             </Heading>
             {/* <span>{t('public.acceess.deny')}</span> */}
             {/* <Flex justify="flex-end" py="2">

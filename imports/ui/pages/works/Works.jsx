@@ -150,7 +150,7 @@ function Works({ history }) {
           </FiltrerSorter>
         </Flex>
 
-        <Wrap mb="4">
+        <Wrap mb="8">
           <WrapItem>
             <Tag
               label="ALL"

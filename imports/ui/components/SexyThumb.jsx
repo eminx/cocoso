@@ -63,12 +63,7 @@ function SexyThumb({
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
 
   return (
-    <Box
-      bg={backgroundColor}
-      className={coverContainerClass}
-      fontFamily="'Raleway', sans-serif"
-      fontWeight="bold"
-    >
+    <Box bg={backgroundColor} className={coverContainerClass} fontWeight="bold">
       <div className={coverClass}>
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>

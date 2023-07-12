@@ -53,7 +53,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const roleTr = t(`roles.${role}`);
 
   return (
-    <Box bg="brand.100" mb="8" w="100%">
+    <Box bg="brand.100" p={avatarSrc ? '0' : '4'} mb="8" w="100%">
       <Flex flexDirection="column" align={centerItems ? 'center' : 'flex-start'}>
         <Box>
           {avatarSrc ? (
@@ -67,9 +67,9 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Avatar borderRadius="0" name={user.username} size="2xl" />
           )}
         </Box>
-        <Box p="4" pt="2">
+        <Box p="4" pt="2" textAlign={centerItems ? 'center' : 'left'}>
           <Box>
-            <Text fontWeight="bold" fontSize="xl" textAlign="center">
+            <Text fontWeight="bold" fontSize="xl">
               {user.username}{' '}
               {!hideRole && role && (
                 <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">

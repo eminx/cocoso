@@ -40,6 +40,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
           <Box pr="3">
             <Heading
               className="text-link"
+              fontFamily="'Raleway', sans-serif"
               fontSize="1.4rem"
               fontWeight="bold"
               mb="1"

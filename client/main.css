@@ -165,6 +165,7 @@ input::placeholder {
   margin-bottom: 6px;
   line-height: 32px;
   overflow-wrap: anywhere;
+  font-family: 'Raleway', sans-serif;
   font-weight: bold;
 }
 
