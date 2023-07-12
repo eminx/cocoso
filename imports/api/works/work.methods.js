@@ -110,6 +110,12 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
+    const theWork = Works.findOne(workId);
+
+    if (user._id !== theWork.authorId) {
+      throw new Meteor.Error(error, 'You are not allowed');
+    }
+
     try {
       Works.update(workId, {
         $set: {
