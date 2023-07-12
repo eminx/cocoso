@@ -193,7 +193,6 @@ function Works({ history }) {
                     imageUrl={work.images[0]}
                     tag={work.category?.label}
                     title={work.title}
-                    subTitle={work.shortDescription}
                   />
                 </Box>
               ) : (

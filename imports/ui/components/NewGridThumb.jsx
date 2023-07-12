@@ -38,7 +38,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
         )}
 
         <Flex align="flex-start" justify="space-between" py="2" px="4">
-          <Box pr="3">
+          <Box pr="3" color="gray.900">
             <Heading
               className="text-link"
               fontFamily="'Raleway', sans-serif"
