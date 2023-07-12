@@ -29,6 +29,7 @@ import MenuDrawer from './components/MenuDrawer';
 import PortalHostIndicator from './components/PortalHostIndicator';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
+import { message } from './components/message';
 
 export const StateContext = React.createContext(null);
 
@@ -84,6 +85,16 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
       setAllHosts(respond.sort((a, b) => a.name.localeCompare(b.name)));
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const setSelectedHue = async () => {
+    try {
+      await call('setHostHue', hue);
+      message.success(tc('message.success.update'));
+      await getCurrentHost();
+    } catch (error) {
+      message.error(error.reason || error.error);
     }
   };
 
@@ -176,6 +187,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             userLoading,
             getCurrentHost,
             setHue,
+            setSelectedHue,
           }}
         >
           <Flex>
