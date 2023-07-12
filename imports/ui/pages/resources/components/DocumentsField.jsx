@@ -19,7 +19,6 @@ export default function DocumentsField({ contextType, contextId }) {
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
   const getDocuments = async () => {

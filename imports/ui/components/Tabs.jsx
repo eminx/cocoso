@@ -12,11 +12,16 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
       <TabList flexWrap="wrap" borderBottom="none">
         {tabs?.map((tab) =>
           tab.path ? (
-            <Link key={tab.title} to={tab.path} style={linkStyle}>
+            <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
               <CoTab forceUppercase={forceUppercase} tab={tab} />
             </Link>
           ) : (
-            <CLink key={tab.title} style={linkStyle} _hover={{ textDecoration: 'none' }}>
+            <CLink
+              key={tab.title}
+              _hover={{ textDecoration: 'none' }}
+              style={linkStyle}
+              onClick={tab.onClick}
+            >
               <CoTab forceUppercase={forceUppercase} tab={tab} />
             </CLink>
           )

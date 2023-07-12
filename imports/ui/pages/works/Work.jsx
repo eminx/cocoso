@@ -84,22 +84,24 @@ function Work() {
       ),
       path: `/@${work.authorUsername}/works/${work._id}/extra`,
     },
-    {
-      title: tc('documents.label'),
-      content: <DocumentsField contextType="works" contextId={work?._id} />,
-      path: `/@${work.authorUsername}/works/${work._id}/documents`,
-    },
-    {
-      title: tc('labels.contact'),
-      content: authorContactInfo ? (
-        <Box className="text-content">{renderHTML(authorContactInfo)}</Box>
-      ) : (
-        <Loader />
-      ),
-      onClick: () => getUserContactInfo(),
-      path: `/@${work.authorUsername}/works/${work._id}/contact`,
-    },
   ];
+
+  tabs.push({
+    title: tc('documents.label'),
+    content: <DocumentsField contextType="works" contextId={work?._id} />,
+    path: `/@${work.authorUsername}/works/${work._id}/documents`,
+  });
+
+  tabs.push({
+    title: tc('labels.contact'),
+    content: authorContactInfo ? (
+      <Box className="text-content">{renderHTML(authorContactInfo)}</Box>
+    ) : (
+      <Loader />
+    ),
+    onClick: () => getUserContactInfo(),
+    path: `/@${work.authorUsername}/works/${work._id}/contact`,
+  });
 
   const adminMenu = {
     label: 'Admin',
