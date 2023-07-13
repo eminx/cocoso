@@ -16,14 +16,13 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
   };
 
   return (
-    <Box w="xs">
+    <Box w="xs" pr="12" pt="2">
       <AutoCompleteSelect
         components={animatedComponents}
         isClearable
         options={allHosts}
         placeholder={t('portalHost.selectHost')}
         value={hostFilterValue}
-        style={{ width: '100%', marginTop: '1rem' }}
         styles={{
           option: (styles, { data }) => ({
             ...styles,

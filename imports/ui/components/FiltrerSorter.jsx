@@ -22,7 +22,7 @@ function FiltrerSorter(props) {
       <Drawer
         hideOverlay
         isOpen={isOpen}
-        size="sm"
+        size="xs"
         title={tc('labels.filterAndSort')}
         onClose={() => setIsOpen(false)}
       >

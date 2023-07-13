@@ -21,6 +21,11 @@ function LoginPage() {
   }
 
   const handleSubmit = (values) => {
+    if (values?.username?.length < 4 || values?.password?.length < 8) {
+      console.log('fdslj');
+      return;
+    }
+
     setIsSubmitted(true);
     Meteor.loginWithPassword(values.username, values.password, (error) => {
       if (error) {
@@ -76,7 +81,7 @@ function LoginPage() {
             </Text>
           </Center>
 
-          <Box bg="white" border="1px solid" borderColor="gray.500" mb="4" p="6">
+          <Box bg="brand.50" mb="4" p="6">
             <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
           </Box>
           <Center>

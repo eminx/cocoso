@@ -24,14 +24,14 @@ function FeedbackForm() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   return (
-    <Flex align="center" bg="" justify="space-between" p="2">
+    <Flex align="center" justify="space-between" p="2">
       <Button colorScheme="gray.600" variant="ghost" onClick={() => setShowFeedbackModal(true)}>
         {tc('modals.feedback.label')}
       </Button>
 
       <Modal isOpen={showFeedbackModal} onClose={() => setShowFeedbackModal(false)}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg="brand.50">
           <ModalHeader>{tc('modals.feedback.label')}</ModalHeader>
           <ModalCloseButton />
           <form action="https://formspree.io/f/xdopweon" method="POST">

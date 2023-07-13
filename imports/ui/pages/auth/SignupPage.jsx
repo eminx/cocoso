@@ -47,7 +47,7 @@ function SignupPage() {
             </Center>
           )}
 
-          <Box bg="white" border="1px solid" borderColor="gray.500" mb="4" p="6">
+          <Box bg="brand.50" mb="4" p="6">
             <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
         </Box>

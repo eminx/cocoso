@@ -111,7 +111,14 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         </Text>
       </Flex>
 
-      <Drawer isOpen={isOpen} placement="right" title={tc('menu.label')} onClose={onToggle}>
+      <Drawer
+        bg="brand.800"
+        isOpen={isOpen}
+        placement="right"
+        title={tc('menu.label')}
+        titleColor="brand.50"
+        onClose={onToggle}
+      >
         <Flex flexDirection="column" h="100%" justify="space-between">
           <MenuContent
             menuItems={menuItems}

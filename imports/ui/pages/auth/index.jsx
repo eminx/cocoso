@@ -14,6 +14,7 @@ import {
   forgotPasswordModel,
   resetPasswordModel,
   usernameSchema,
+  usernameOrEmailSchema,
   emailSchema,
   passwordSchema,
 } from './account.helpers';
@@ -23,8 +24,13 @@ const Joi = require('joi');
 const Login = ({ isSubmitted, onSubmit }) => {
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
+  const schema = Joi.object({
+    ...usernameOrEmailSchema,
+    ...passwordSchema,
+  });
   const { handleSubmit, register } = useForm({
     defaultValues: loginModel,
+    resolver: joiResolver(schema),
   });
 
   return (

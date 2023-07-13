@@ -35,6 +35,10 @@ const emailSchema = {
   email: Joi.string().email({ tlds: { allow: false } }),
 };
 
+const usernameOrEmailSchema = {
+  username: Joi.allow(usernameSchema, emailSchema),
+};
+
 const passwordSchema = {
   password: Joi.string().pattern(new RegExp(regexPassword)).message(passwordErrorMessage),
 };
@@ -47,5 +51,6 @@ export {
   resetPasswordModel,
   usernameSchema,
   emailSchema,
+  usernameOrEmailSchema,
   passwordSchema,
 };

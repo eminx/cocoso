@@ -11,11 +11,13 @@ import {
 } from '@chakra-ui/react';
 
 function Drawer({
+  bg = 'brand.200',
   children,
   footer,
   hideOverlay = false,
   placement = 'right',
   title,
+  titleColor = 'gray.900',
   isOpen,
   onClose,
   ...otherProps
@@ -23,9 +25,9 @@ function Drawer({
   return (
     <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
       {!hideOverlay && <DrawerOverlay />}
-      <DrawerContent bg="brand.50">
+      <DrawerContent bg={bg}>
         <DrawerCloseButton />
-        {title && <DrawerHeader>{title}</DrawerHeader>}
+        {title && <DrawerHeader color={titleColor}>{title}</DrawerHeader>}
 
         <DrawerBody>{children}</DrawerBody>
 

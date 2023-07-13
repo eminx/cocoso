@@ -37,7 +37,7 @@ const ResetPasswordPage = ({ history, match }) => {
           <Text fontSize="lg" mb="6" textAlign="center">
             {t('password.labels.subtitle.reset')}
           </Text>
-          <Box bg="white" border="1px solid" borderColor="gray.500" mb="4" p="6">
+          <Box bg="brand.50" mb="4" p="6">
             <ResetPassword onResetPassword={handleResetPassword} />
           </Box>
           <Flex justify="space-around" mt="4">

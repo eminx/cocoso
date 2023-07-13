@@ -179,6 +179,7 @@ input::placeholder {
 .chakra-input,
 .chakra-select,
 .chakra-numberinput__field,
+.chakra-checkbox__control:not([data-checked]),
 .chakra-textarea {
   background-color: #fff !important;
 }

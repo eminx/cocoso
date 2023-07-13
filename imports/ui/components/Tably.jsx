@@ -69,7 +69,11 @@ function Tably({
           </GridItem>
 
           <GridItem pl="16">
-            {action && <Box mb="8">{action}</Box>}
+            {action && (
+              <Container m="0" p="0">
+                <Box mb="8">{action}</Box>
+              </Container>
+            )}
             {tabs && (
               <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs} mb="0">
                 {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
@@ -208,7 +212,7 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt={isDesktop ? '6' : '4'}>
             {tags.map((tag) => (
               <Badge
-                bg="brand.100"
+                bg="gray.50"
                 color="gray.800"
                 fontSize="14px"
                 key={tag}

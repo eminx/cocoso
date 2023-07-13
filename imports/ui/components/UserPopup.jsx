@@ -42,6 +42,11 @@ function UserPopup({ currentUser }) {
     );
   }
 
+  const handleLogout = () => {
+    setIsOpen(false);
+    Meteor.logout();
+  };
+
   const { notifications } = currentUser;
   let notificationsCounter = 0;
   if (notifications && notifications.length > 0) {
@@ -149,7 +154,7 @@ function UserPopup({ currentUser }) {
 
           <MenuGroup>
             <Center py="2">
-              <Button variant="outline" onClick={() => Meteor.logout()}>
+              <Button variant="outline" onClick={() => handleLogout()}>
                 {tc('actions.logout')}
               </Button>
             </Center>
