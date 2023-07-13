@@ -13,12 +13,6 @@ import { Accounts } from 'meteor/accounts-base';
 
 import './api';
 import './migrations';
-import Hosts from '../../api/hosts/host';
-
-const randomizeHue = () => {
-  const r = Math.random();
-  return parseInt(r * 360 + 1);
-};
 
 Meteor.startup(() => {
   const smtp = Meteor.settings.mailCredentials.smtp;
