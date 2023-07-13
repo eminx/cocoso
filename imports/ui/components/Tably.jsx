@@ -288,6 +288,9 @@ function AdminMenu({ adminMenu, isDesktop }) {
 }
 
 function BackLink({ backLink, isSmall = false }) {
+  if (!backLink) {
+    return null;
+  }
   return (
     <Link to={backLink?.value}>
       <Button

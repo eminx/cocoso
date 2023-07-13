@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 function Drawer({
-  bg = 'brand.200',
+  bg = 'brand.100',
   children,
   footer,
   hideOverlay = false,
@@ -26,7 +26,7 @@ function Drawer({
     <CDrawer isOpen={isOpen} onClose={onClose} placement={placement} {...otherProps}>
       {!hideOverlay && <DrawerOverlay />}
       <DrawerContent bg={bg}>
-        <DrawerCloseButton />
+        <DrawerCloseButton color={titleColor} />
         {title && <DrawerHeader color={titleColor}>{title}</DrawerHeader>}
 
         <DrawerBody>{children}</DrawerBody>

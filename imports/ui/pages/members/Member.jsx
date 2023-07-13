@@ -196,14 +196,12 @@ function MemberPublic({ history, match, path }) {
               <Route
                 path="/@:username/contact"
                 render={(props) => (
-                  <Box p="4">
-                    <ContactInfo
-                      isDesktop={false}
-                      isSelfAccount={isSelfAccount}
-                      tc={tc}
-                      user={user}
-                    />
-                  </Box>
+                  <ContactInfo
+                    isDesktop={false}
+                    isSelfAccount={isSelfAccount}
+                    tc={tc}
+                    user={user}
+                  />
                 )}
               />
             </Switch>
@@ -245,8 +243,8 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-      <Box maxWidth="480px" className="text-content" px="4" py="2" bg="white">
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} bg="white">
+      <Box maxWidth="480px" className="text-content" px="4" py="2">
         {renderHTML(user.bio)}
       </Box>
     </Flex>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Avatar, Box, Flex, Heading, HStack, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
@@ -17,9 +17,9 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   const remaining = dates?.length - 1;
 
   return (
-    <Box mb="8" bg="white">
+    <Box mb="8">
       <Box className="text-link-container" position="relative">
-        <Box>
+        <Center bg="brand.900">
           <LazyLoadImage
             alt={title}
             effect="black-and-white"
@@ -30,14 +30,14 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
               objectFit: 'contain',
             }}
           />
-        </Box>
+        </Center>
         {host && currentHost.isPortalHost && (
           <Box position="absolute" top="0" right="0" pl="1" pb="1" bg="rgba(255, 255, 255, 0.4)">
             <Tag border="none" label={host} />
           </Box>
         )}
 
-        <Flex align="flex-start" justify="space-between" py="2" px="4">
+        <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
           <Box pr="3" color="gray.900">
             <Heading
               className="text-link"
