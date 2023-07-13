@@ -11,7 +11,6 @@ import renderHTML from 'react-render-html';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
-import NewGridThumb from '../../components/NewGridThumb';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
@@ -20,7 +19,6 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
-import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
 import { Heading } from '../../components/Header';
 

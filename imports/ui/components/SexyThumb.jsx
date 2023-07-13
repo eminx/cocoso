@@ -54,7 +54,7 @@ function SexyThumb({
   title,
   tag,
 }) {
-  const futureDates = dates && dates.filter((date) => moment(date?.startDate).isAfter(yesterday));
+  const futureDates = dates && dates.filter((date) => moment(date?.endDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates = dates && dates.filter((date) => moment(date?.startDate).isBefore(today));
 
