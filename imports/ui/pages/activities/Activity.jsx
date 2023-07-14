@@ -405,8 +405,8 @@ class Activity extends PureComponent {
       <Link to={`/activities/${activityData._id}/dates`}>
         <Flex
           justify={isDesktop ? 'flex-start' : 'center'}
-          mb={isDesktop ? '0' : '4'}
-          pt="4"
+          mb={isDesktop ? '0' : '2'}
+          pt={isDesktop ? '2' : '4'}
           wrap="wrap"
         >
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
@@ -453,14 +453,7 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box
-            bg="white"
-            className="text-content"
-            color="rgba(0,0,0, .85)"
-            px="4"
-            py="3"
-            whiteSpace="pre-line"
-          >
+          <Box bg="white" className="text-content" p="4">
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),

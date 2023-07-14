@@ -80,13 +80,8 @@ function ResourcePage() {
     {
       title: tc('labels.info'),
       content: (
-        <Box>
-          {resource.description && (
-            <div className="text-content">{renderHTML(resource.description)}</div>
-          )}
-          <Text as="p" fontSize="xs">
-            {moment(resource.createdAt).format('D MMM YYYY')}
-          </Text>
+        <Box bg="white" className="text-content" p="4">
+          {resource.description && renderHTML(resource.description)}
         </Box>
       ),
       path: `/resources/${resource._id}/info`,

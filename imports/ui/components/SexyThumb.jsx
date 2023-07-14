@@ -10,7 +10,6 @@ const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
 
 const dateStyle = {
-  color: '#fff',
   fontWeight: 700,
   lineHeight: 1,
 };
@@ -28,8 +27,15 @@ function ThumbDate({ date }) {
   if (!date) {
     return null;
   }
+
+  const isPast = moment(date.endDate).isBefore(today);
+
   return (
-    <Flex key={date.startDate + date.startTime} align="center" color="brand.50">
+    <Flex
+      key={date.startDate + date.startTime}
+      align="center"
+      color={isPast ? 'gray.400' : 'brand.50'}
+    >
       <DateJust>{date.startDate}</DateJust>
       {date.startDate !== date.endDate && <span style={{ margin: '0 2px' }}>–</span>}
       {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
@@ -37,17 +43,7 @@ function ThumbDate({ date }) {
   );
 }
 
-function SexyThumb({
-  avatar,
-  color,
-  dates,
-  host,
-  imageUrl,
-  subTitle,
-  showPast = false,
-  title,
-  tag,
-}) {
+function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, title, tag }) {
   const futureDates =
     dates &&
     dates
@@ -87,8 +83,8 @@ function SexyThumb({
               alignItems: 'center',
             }}
           >
-            {futureDates && (
-              <HStack spacing="4" mb="4">
+            {!showPast && futureDates && (
+              <HStack align="center" color="brand.50" mb="4" spacing="4">
                 {futureDates.slice(0, 3).map((date) => (
                   <ThumbDate key={date?.startDate + date?.startTime} date={date} />
                 ))}
@@ -100,7 +96,7 @@ function SexyThumb({
             {showPast && (
               <HStack spacing="4" mb="4">
                 {pastDates.slice(0, 3).map((date) => (
-                  <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                  <ThumbDate key={date?.startDate + date?.startTime} date={date} color="gray.400" />
                 ))}
               </HStack>
             )}
