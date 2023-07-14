@@ -1,8 +1,10 @@
 import React from 'react';
 import moment from 'moment';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+
+import { DateJust } from './FancyDate';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
@@ -26,20 +28,12 @@ function ThumbDate({ date }) {
   if (!date) {
     return null;
   }
-
-  const isPastEvent = !moment(date?.startDate).isAfter(yesterday);
-
-  if (isPastEvent) {
-    dateStyle.color = '#aaa';
-  } else {
-    dateStyle.color = '#fff';
-  }
-
   return (
-    <div style={{ marginRight: 16, marginBottom: 16 }}>
-      <div style={{ ...dateStyle, fontSize: 24 }}>{moment(date?.startDate).format('DD')}</div>
-      <div style={{ ...dateStyle, fontSize: 17 }}>{moment(date?.startDate).format('MMM')}</div>
-    </div>
+    <Flex key={date.startDate + date.startTime} align="center" color="brand.50">
+      <DateJust>{date.startDate}</DateJust>
+      {date.startDate !== date.endDate && <span style={{ margin: '0 2px' }}>–</span>}
+      {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
+    </Flex>
   );
 }
 
@@ -54,9 +48,17 @@ function SexyThumb({
   title,
   tag,
 }) {
-  const futureDates = dates && dates.filter((date) => moment(date?.endDate).isAfter(yesterday));
+  const futureDates =
+    dates &&
+    dates
+      .filter((date) => moment(date?.endDate).isAfter(yesterday))
+      .sort((a, b) => moment(a.startDate) - moment(b.startDate));
   const remaining = futureDates && futureDates.length - 3;
-  const pastDates = dates && dates.filter((date) => moment(date?.endDate).isBefore(today));
+  const pastDates =
+    dates &&
+    dates
+      .filter((date) => moment(date?.endDate).isBefore(today))
+      .sort((a, b) => moment(a.startDate) - moment(b.startDate));
 
   return (
     <Box
@@ -85,21 +87,29 @@ function SexyThumb({
               alignItems: 'center',
             }}
           >
-            {futureDates &&
-              futureDates
-                .slice(0, 3)
-                .map((date) => <ThumbDate key={date?.startDate + date?.startTime} date={date} />)}
-            {remaining > 0 && (
-              <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>+ {remaining}</div>
+            {futureDates && (
+              <HStack spacing="4" mb="4">
+                {futureDates.slice(0, 3).map((date) => (
+                  <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                ))}
+                {remaining > 0 && (
+                  <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>+ {remaining}</div>
+                )}
+              </HStack>
             )}
-            {showPast &&
-              pastDates
-                .slice(0, 3)
-                .map((date) => <ThumbDate key={date?.startDate + date?.startTime} date={date} />)}
+            {showPast && (
+              <HStack spacing="4" mb="4">
+                {pastDates.slice(0, 3).map((date) => (
+                  <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                ))}
+              </HStack>
+            )}
           </div>
         )}
+
         <h3 className="thumb-title">{title}</h3>
         <h4 className="thumb-subtitle">{subTitle}</h4>
+
         <div
           style={{
             display: 'flex',

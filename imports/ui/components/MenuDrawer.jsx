@@ -49,7 +49,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             <Center pt="4">
               <Flex flexDirection="column" align="center">
                 <IconButton
-                  _hover={{ bg: 'brand.500' }}
+                  _hover={{ bg: 'brand.600' }}
                   bg="brand.800"
                   color="brand.50"
                   icon={<HamburgerIcon fontSize="36px" />}
@@ -68,7 +68,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                     {tc('menu.label')}
                   </Heading>
                   <IconButton
-                    _hover={{ bg: 'brand.500' }}
+                    _hover={{ bg: 'brand.600' }}
                     bg="brand.800"
                     color="brand.50"
                     icon={<CloseIcon />}
@@ -86,8 +86,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                   />
                 </Box>
               </Box>
-              <Box pl="4">
-                <Footer />
+              <Box color="brand.50" pl="4">
+                <MenuFooter />
               </Box>
             </Flex>
           )}
@@ -99,7 +99,16 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   return (
     <Box>
       <Flex align="center" flexDirection="column" position="relative">
-        <IconButton icon={<HamburgerIcon fontSize="32px" />} w="44px" h="44px" onClick={onToggle} />
+        <IconButton
+          _hover={{
+            bg: 'brand.500',
+          }}
+          bg="brand.600"
+          icon={<HamburgerIcon fontSize="32px" />}
+          w="44px"
+          h="44px"
+          onClick={onToggle}
+        />
         <Text
           fontSize="12px"
           fontWeight="bold"
@@ -127,8 +136,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             tc={tc}
             onToggle={onToggle}
           />
-          <Box mt="4">
-            <Footer />
+          <Box color="brand.100" mt="4">
+            <MenuFooter />
           </Box>
         </Flex>
       </Drawer>
@@ -201,7 +210,7 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
   );
 }
 
-function Footer() {
+function MenuFooter() {
   return (
     <Box pb="4">
       <ChangeLanguageMenu />

@@ -19,7 +19,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   return (
     <Box mb="8">
       <Box className="text-link-container" position="relative">
-        <Center bg="brand.900">
+        <Center bg="brand.500">
           <LazyLoadImage
             alt={title}
             effect="black-and-white"

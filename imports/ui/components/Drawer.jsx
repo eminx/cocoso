@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 function Drawer({
-  bg = 'brand.100',
+  bg = 'brand.50',
   children,
   footer,
   hideOverlay = false,

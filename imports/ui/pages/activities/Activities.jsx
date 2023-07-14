@@ -29,6 +29,7 @@ const today = moment();
 
 const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
 const getLastPastOccurence = (occurence) => moment(occurence.endDate).isBefore(today);
+
 const getFutureOccurrences = (dates) => {
   return dates
     .filter((date) => moment(date.endDate).isAfter(yesterday))
@@ -250,11 +251,8 @@ function Activities({ history }) {
                 {currentHost.isPortalHost ? (
                   <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
                     <SexyThumb
-                      dates={
-                        showPast
-                          ? getPastOccurrences(activity.datesAndTimes)
-                          : getFutureOccurrences(activity.datesAndTimes)
-                      }
+                      dates={activity.datesAndTimes}
+                      showPast={showPast}
                       host={itemHost}
                       imageUrl={activity.imageUrl}
                       subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
@@ -270,11 +268,7 @@ function Activities({ history }) {
                     }
                   >
                     <SexyThumb
-                      dates={
-                        showPast
-                          ? getPastOccurrences(activity.datesAndTimes)
-                          : getFutureOccurrences(activity.datesAndTimes)
-                      }
+                      dates={activity.datesAndTimes}
                       imageUrl={activity.imageUrl}
                       subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
                       title={activity.title}

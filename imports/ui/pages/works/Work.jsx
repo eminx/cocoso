@@ -17,7 +17,7 @@ function Work() {
   const [work, setWork] = useState(null);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { currentHost, currentUser } = useContext(StateContext);
+  const { currentHost, currentUser, isDesktop } = useContext(StateContext);
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
@@ -95,7 +95,9 @@ function Work() {
   tabs.push({
     title: tc('labels.contact'),
     content: authorContactInfo ? (
-      <Box className="text-content">{renderHTML(authorContactInfo)}</Box>
+      <Box className="text-content" px={isDesktop ? '0' : '4'}>
+        {renderHTML(authorContactInfo)}
+      </Box>
     ) : (
       <Loader />
     ),
