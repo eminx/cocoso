@@ -261,15 +261,13 @@ function Footer({ currentHost, tc }) {
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
 
   return (
-    <Box w="100%" bg="brand.700" color="brand.100" pt="4">
+    <Box w="100%" bg="brand.50" color="brand.900" pt="4">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
             <ListItem key={item.name} px="2" py="1">
               <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span" color="brand.100">
-                  {item.label}
-                </CLink>{' '}
+                <CLink as="span">{item.label}</CLink>{' '}
               </Link>
             </ListItem>
           ))}
@@ -296,7 +294,7 @@ function Footer({ currentHost, tc }) {
             </Text>
             <Box mt="4">
               <Link to="/terms-&-privacy-policy">
-                <CLink as="span" color="brand.200" fontSize="sm">
+                <CLink as="span" fontSize="sm">
                   {tc('terms.title')}{' '}
                 </CLink>
               </Link>
