@@ -5,9 +5,15 @@ import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../LayoutContainer';
-import SexyThumb from './SexyThumb';
 
-function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListing = false }) {
+function NewEntryHelper({
+  buttonLabel,
+  buttonLink,
+  children,
+  isEmptyListing = false,
+  isMasonry = false,
+  title,
+}) {
   const { currentHost } = useContext(StateContext);
   const location = useLocation();
   const [tc] = useTranslation('common');
@@ -26,14 +32,14 @@ function NewEntryHelper({ buttonLabel, buttonLink, title, children, isEmptyListi
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
+  const w = isMasonry ? 'auto' : '375px';
+  const h = isMasonry ? '320px' : '315px';
+
   return (
     <Link to={buttonLink}>
-      <Box>
-        <SexyThumb
-          subTitle="Create a new entry that will appear here"
-          title="New Entry"
-          // onClick={() => history.push(buttonLink)}
-        />
+      <Box _hover={{ bg: 'brand.400' }} bg="brand.500" fontWeight="bold" h={h} px="4" py="8" w={w}>
+        <h3 className="thumb-title">{titleGeneric}</h3>
+        <h4 className="thumb-subtitle">{descriptionGeneric}</h4>
       </Box>
     </Link>
   );

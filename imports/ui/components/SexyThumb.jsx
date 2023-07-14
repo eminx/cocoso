@@ -15,8 +15,8 @@ const dateStyle = {
 };
 
 const imageStyle = {
-  width: '375px',
   height: '315px',
+  width: '375px',
   objectFit: 'cover',
 };
 

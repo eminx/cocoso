@@ -175,7 +175,13 @@ function Works({ history }) {
       </Box>
 
       <Box px={isDesktop ? '4' : '0'}>
-        <Paginate isMasonry centerItems items={worksRenderedHostFiltered}>
+        <Paginate
+          canCreateContent={canCreateContent}
+          centerItems
+          isMasonry
+          items={worksRenderedHostFiltered}
+          newHelperLink="/works/new"
+        >
           {(work) => (
             <Box key={work._id}>
               {currentHost.isPortalHost ? (
@@ -215,7 +221,6 @@ function Works({ history }) {
             </Box>
           )}
         </Paginate>
-        {canCreateContent && <NewEntryHelper buttonLink="/works/new" />}
       </Box>
 
       {modalWork && (

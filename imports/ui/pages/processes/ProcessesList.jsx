@@ -209,14 +209,18 @@ export default function ProcessesList({ history }) {
       </Box>
 
       <Box mb="8" px={isDesktop ? '4' : '0'}>
-        <Paginate centerItems={!isDesktop} items={processesRenderedHostFiltered}>
+        <Paginate
+          canCreateContent={canCreateContent}
+          centerItems={!isDesktop}
+          items={processesRenderedHostFiltered}
+          newHelperLink="/processes/new"
+        >
           {(process) => (
             <Box key={process._id}>
               {currentHost.isPortalHost ? (
                 <Box cursor="pointer" onClick={() => setModalProcess(process)}>
                   <SexyThumb
                     dates={getFutureOccurences(process.meetings)}
-                    // dates={process.meetings?.map((m) => m.startDate)}
                     host={allHosts.find((h) => h.host === process.host)?.name}
                     imageUrl={process.imageUrl}
                     subTitle={process.readingMaterial}

@@ -243,6 +243,7 @@ function Activities({ history }) {
           canCreateContent={canCreateContent}
           centerItems
           items={activitiesRenderedHostFiltered}
+          newHelperLink="/activities/new"
         >
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;

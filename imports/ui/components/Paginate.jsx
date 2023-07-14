@@ -16,6 +16,7 @@ function PaginatedItems({
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,
+  newHelperLink,
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(0);
@@ -66,12 +67,16 @@ function PaginatedItems({
           columnClassName="my-masonry-grid_column"
         >
           {currentItems?.map((item) => children(item))}
-          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+          {canCreateContent && currentPage + 1 === pageCount && (
+            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+          )}
         </Masonry>
       ) : (
         <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
           {currentItems?.map((item) => children(item))}
-          {canCreateContent && <NewEntryHelper buttonLink="/activities/new" />}
+          {canCreateContent && currentPage + 1 === pageCount && (
+            <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+          )}
         </Wrap>
       )}
       {items && items.length > itemsPerPage && (

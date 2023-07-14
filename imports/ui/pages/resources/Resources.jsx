@@ -177,7 +177,12 @@ function Resources({ history }) {
       </Box>
 
       <Box px="4">
-        <Paginate centerItems={!isDesktop} items={resourcesRenderedHostFiltered}>
+        <Paginate
+          canCreateContent={isAdmin}
+          centerItems={!isDesktop}
+          items={resourcesRenderedHostFiltered}
+          newHelperLink="/resources/new"
+        >
           {(resource) => (
             <Box key={resource._id}>
               {currentHost.isPortalHost ? (
@@ -215,8 +220,6 @@ function Resources({ history }) {
           />
         </Modal>
       )}
-
-      {isAdmin && <NewEntryHelper buttonLink="/resources/new" />}
     </Box>
   );
 }
