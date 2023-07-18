@@ -19,6 +19,7 @@ const Schemas = {
   Email: {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
+    optional: true,
   },
   Src: {
     type: String,
@@ -29,6 +30,7 @@ const Schemas = {
       type: String,
     },
     date: { type: Date },
+    optional: true,
   },
 };
 
