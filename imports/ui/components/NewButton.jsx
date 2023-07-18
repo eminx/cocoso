@@ -29,6 +29,10 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
 
+  if (!canCreateContent) {
+    return null;
+  }
+
   const menuItems = menu
     .filter((item) => {
       if (isAdmin) {

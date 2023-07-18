@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
@@ -29,6 +29,13 @@ function UserPopup({ currentUser }) {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const history = useHistory();
+
+  const handleLogout = () => {
+    setIsOpen(false);
+    Meteor.logout();
+    history.push('/');
+  };
 
   if (!currentUser) {
     return (
@@ -41,11 +48,6 @@ function UserPopup({ currentUser }) {
       </Box>
     );
   }
-
-  const handleLogout = () => {
-    setIsOpen(false);
-    Meteor.logout();
-  };
 
   const { notifications } = currentUser;
   let notificationsCounter = 0;
