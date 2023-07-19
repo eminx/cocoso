@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
@@ -70,14 +70,16 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
     <Box className="slide-container" w={width}>
       <Slide arrows={false} transitionDuration={400}>
         {images.map((image) => (
-          <Box key={image}>
-            <LazyLoadImage
-              alt={alt}
-              src={image}
-              style={imageStyle}
-              onClick={() => setToggler(!toggler)}
-            />
-          </Box>
+          <Center key={image}>
+            <Flex flexDirection="column" justify="center">
+              <LazyLoadImage
+                alt={alt}
+                src={image}
+                style={imageStyle}
+                onClick={() => setToggler(!toggler)}
+              />
+            </Flex>
+          </Center>
         ))}
       </Slide>
 
