@@ -435,7 +435,7 @@ class Activity extends PureComponent {
 
   render() {
     const { activityData, isLoading, t, tc } = this.props;
-    const { currentHost, currentUser, role } = this.context;
+    const { currentHost, currentUser, isDesktop, role } = this.context;
 
     if (!activityData || isLoading) {
       return <Loader />;
@@ -473,7 +473,7 @@ class Activity extends PureComponent {
       tabs.push({
         title: t('public.labels.location'),
         content: (
-          <Box>
+          <Box px={isDesktop ? '0' : '4'}>
             {activityData.place && (
               <Text fontWeight="bold" fontSize="lg" mb="2">
                 {activityData.place}
