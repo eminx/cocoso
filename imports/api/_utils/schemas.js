@@ -28,9 +28,9 @@ const Schemas = {
   Avatar: {
     src: {
       type: String,
+      optional: true,
     },
     date: { type: Date },
-    optional: true,
   },
 };
 
