@@ -12,13 +12,14 @@ import {
 
 function Modal({
   actionButtonLabel,
-  closeButtonLabel,
+  secondaryButtonLabel,
   children,
   h,
   isOpen,
   title,
   onClose,
   onActionButtonClick,
+  onSecondaryButtonClick,
   ...otherProps
 }) {
   return (
@@ -30,9 +31,9 @@ function Modal({
         <ModalBody>{children}</ModalBody>
 
         <ModalFooter>
-          {closeButtonLabel && (
-            <Button variant="ghost" mr={3} onClick={onClose}>
-              {closeButtonLabel}
+          {secondaryButtonLabel && (
+            <Button mr={3} variant="ghost" onClick={onSecondaryButtonClick || onClose}>
+              {secondaryButtonLabel}
             </Button>
           )}
           {actionButtonLabel && <Button onClick={onActionButtonClick}>{actionButtonLabel}</Button>}

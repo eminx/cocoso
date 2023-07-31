@@ -26,6 +26,8 @@ actions:
   toThePage: To the page in {{ hostName }}
   entryPage: Go to the entry page
   toHost: Visit
+  share: Share Link
+  copied: Link copied!
 
 # ACTION PAGE TITLES
 labels:

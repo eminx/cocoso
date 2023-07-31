@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
+import { LinkIcon } from '@chakra-ui/icons/dist/Link';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';

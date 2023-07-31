@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
+import useClipboard from 'react-use-clipboard';
 
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
@@ -34,14 +35,17 @@ function Works({ history }) {
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
+  const [isCopied, setCopied] = useState(false);
 
   useEffect(() => {
     getAllWorks();
   }, []);
 
+  const isPortalHost = currentHost.isPortalHost;
+
   const getAllWorks = async () => {
     try {
-      if (currentHost.isPortalHost) {
+      if (isPortalHost) {
         setWorks(await call('getAllWorksFromAllHosts'));
       } else {
         setWorks(await call('getAllWorks'));
@@ -98,7 +102,7 @@ function Works({ history }) {
   });
 
   const getWorksRenderedHostFiltered = (worksRendered) => {
-    if (!currentHost.isPortalHost || !hostFilterValue) {
+    if (!isPortalHost || !hostFilterValue) {
       return worksRendered;
     }
     return worksRendered.filter((work) => work.host === hostFilterValue.host);
@@ -109,6 +113,16 @@ function Works({ history }) {
       history.push(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
     } else {
       window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+    }
+  };
+
+  const handleCopyLink = async () => {
+    const link = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -135,7 +149,7 @@ function Works({ history }) {
         <Flex align="center" justify="space-between" my="4">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
-            {currentHost.isPortalHost && (
+            {isPortalHost && (
               <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
@@ -205,20 +219,22 @@ function Works({ history }) {
 
       {modalWork && (
         <Modal
-          h="90%"
-          isCentered
-          isOpen
-          scrollBehavior="inside"
-          size="6xl"
-          onClose={() => setModalWork(null)}
           actionButtonLabel={
-            currentHost.isPortalHost
+            isPortalHost
               ? tc('actions.toThePage', {
                   hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
                 })
               : tc('actions.entryPage')
           }
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
+          size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
+          onClose={() => setModalWork(null)}
+          onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
             author={{
@@ -230,7 +246,7 @@ function Works({ history }) {
             subTitle={modalWork.shortDescription}
             tags={[
               modalWork.category?.label,
-              allHosts.find((h) => h.host === modalWork.host)?.name,
+              isPortalHost ? allHosts.find((h) => h.host === modalWork.host)?.name : null,
             ]}
             title={modalWork.title}
           />

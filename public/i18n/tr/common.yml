@@ -26,6 +26,8 @@ actions:
   toThePage: '{{ hostName }} sayfasına git'
   entryPage: Sayfaya git
   toHost: Uygulamaya git
+  share: Linki paylaş
+  copied: Link kopyalandı!
 
 # ACTION PAGE TITLES
 labels:
