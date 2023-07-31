@@ -271,7 +271,6 @@ export default function ProcessesList({ history }) {
           <Tably
             action={getDatesForAction(modalProcess)}
             content={modalProcess.description && renderHTML(modalProcess.description)}
-            host={currentHost?.host}
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
             tags={isPortalHost && [allHosts.find((h) => h.host === modalProcess.host)?.name]}

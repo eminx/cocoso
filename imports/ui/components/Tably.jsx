@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar,
@@ -34,20 +34,21 @@ function Tably({
   author = null,
   backLink,
   content,
-  host,
   images,
   subTitle,
   tabs,
   title,
   tags = null,
 }) {
-  console.log(host);
-
   const [copied, setCopied] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const { isDesktop } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
+
+  useEffect(() => {
+    setCopied(false);
+  }, [location.pathname]);
 
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
 
@@ -59,7 +60,7 @@ function Tably({
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(host + location.pathname);
+      await navigator.clipboard.writeText(`https://${currentHost.host}${location.pathname}`);
       setCopied(true);
     } catch (error) {
       console.log(error);
@@ -91,15 +92,18 @@ function Tably({
               </Tabs>
             )}
           </GridItem>
+
           <GridItem>
-            {author && <AvatarHolder author={author} />}
-            {backLink && (
-              <Box p="4">
-                <Button leftIcon={<LinkIcon />} variant="link" onClick={handleCopyLink}>
-                  {copied ? tc('actions.copied') : tc('actions.share')}
-                </Button>
-              </Box>
-            )}
+            <Flex flexDirection="column" justify="center">
+              {author && <AvatarHolder author={author} />}
+              {backLink && (
+                <Center p="4" mr="2">
+                  <Button leftIcon={<LinkIcon />} variant="link" w="100px" onClick={handleCopyLink}>
+                    {copied ? tc('actions.copied') : tc('actions.share')}
+                  </Button>
+                </Center>
+              )}
+            </Flex>
           </GridItem>
 
           <GridItem mt="4">
@@ -125,6 +129,7 @@ function Tably({
               )}
             </Box>
           </GridItem>
+
           <GridItem />
         </Grid>
       </>

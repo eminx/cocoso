@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { PureComponent, forwardRef } from 'react';
+import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -675,6 +675,6 @@ function RsvpList({ attendees }) {
   );
 }
 
-const RsvpListPrint = forwardRef((props, ref) => <RsvpList {...props} ref={ref} />);
+const RsvpListPrint = React.forwardRef((props, ref) => <RsvpList {...props} ref={ref} />);
 
 export default Activity;

@@ -305,7 +305,6 @@ function Activities({ history }) {
             <Tably
               action={getDatesForAction(modalActivity, showPast)}
               content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
-              host={currentHost?.host}
               images={[modalActivity.imageUrl]}
               subTitle={modalActivity.subTitle}
               tags={isPortalHost && [allHosts.find((h) => h.host === modalActivity.host)?.name]}
