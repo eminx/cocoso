@@ -41,6 +41,7 @@ export default function ProcessesList({ history }) {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalProcess, setModalProcess] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
+  const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, currentUser, isDesktop } =
     useContext(StateContext);
 
@@ -162,6 +163,16 @@ export default function ProcessesList({ history }) {
     }
   };
 
+  const handleCopyLink = async () => {
+    const link = `https://${modalProcess.host}/processes/${modalProcess._id}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const tabs = [
     {
       title: t('tabs.active'),
@@ -235,12 +246,6 @@ export default function ProcessesList({ history }) {
 
       {modalProcess && (
         <Modal
-          h="90%"
-          isCentered
-          isOpen
-          scrollBehavior="inside"
-          size="6xl"
-          onClose={() => setModalProcess(null)}
           actionButtonLabel={
             isPortalHost
               ? tc('actions.toThePage', {
@@ -248,7 +253,15 @@ export default function ProcessesList({ history }) {
                 })
               : tc('actions.entryPage')
           }
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
+          size="6xl"
+          onClose={() => setModalProcess(null)}
           onActionButtonClick={() => handleActionButtonClick()}
+          onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
             action={getDatesForAction(modalProcess)}

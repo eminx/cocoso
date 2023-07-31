@@ -84,6 +84,7 @@ function Activities({ history }) {
   const [sorterValue, setSorterValue] = useState('date');
   const [modalActivity, setModalActivity] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
+  const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const {
     location: { search },
@@ -187,6 +188,16 @@ function Activities({ history }) {
     }
   };
 
+  const handleCopyLink = async () => {
+    const link = `https://${modalActivity.host}/activities/${modalActivity._id}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const tabs = [
     {
       path: '/activities?showPast=true',
@@ -279,9 +290,11 @@ function Activities({ history }) {
           isCentered
           isOpen
           scrollBehavior="inside"
+          secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={() => setModalActivity(null)}
+          onSecondaryButtonClick={handleCopyLink}
         >
           <ModalBody>
             <Tably

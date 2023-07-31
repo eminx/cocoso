@@ -26,6 +26,7 @@ function Resources({ history }) {
   const [combo, setCombo] = useState('all');
   const [modalResource, setModalResource] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
+  const [isCopied, setCopied] = useState(false);
   const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
 
   const [t] = useTranslation('resources');
@@ -100,6 +101,16 @@ function Resources({ history }) {
       history.push(`/resources/${modalResource._id}`);
     } else {
       window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`;
+    }
+  };
+
+  const handleCopyLink = async () => {
+    const link = `https://${modalResource.host}/resources/${modalResource._id}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -195,12 +206,6 @@ function Resources({ history }) {
 
       {modalResource && (
         <Modal
-          h="90%"
-          isCentered
-          isOpen
-          scrollBehavior="inside"
-          size="6xl"
-          onClose={() => setModalResource(null)}
           actionButtonLabel={
             isPortalHost
               ? tc('actions.toThePage', {
@@ -208,7 +213,15 @@ function Resources({ history }) {
                 })
               : tc('actions.entryPage')
           }
+          h="90%"
+          isCentered
+          isOpen
+          scrollBehavior="inside"
+          secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
+          size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
+          onClose={() => setModalResource(null)}
+          onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
             content={modalResource.description && renderHTML(modalResource.description)}

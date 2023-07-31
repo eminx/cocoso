@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
-import useClipboard from 'react-use-clipboard';
 
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
@@ -33,9 +32,9 @@ function Works({ history }) {
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [modalWork, setModalWork] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
+  const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
-  const [isCopied, setCopied] = useState(false);
 
   useEffect(() => {
     getAllWorks();
