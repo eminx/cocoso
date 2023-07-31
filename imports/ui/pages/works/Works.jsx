@@ -125,6 +125,11 @@ function Works({ history }) {
     }
   };
 
+  const handleCloseModal = () => {
+    setCopied(false);
+    setModalWork(null);
+  };
+
   const worksRenderedHostFiltered = getWorksRenderedHostFiltered(worksWithCategoryColors);
 
   const allHostsFiltered = allHosts?.filter((host) => {
@@ -232,7 +237,7 @@ function Works({ history }) {
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
-          onClose={() => setModalWork(null)}
+          onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably

@@ -198,6 +198,11 @@ function Activities({ history }) {
     }
   };
 
+  const handleCloseModal = () => {
+    setCopied(false);
+    setModalActivity(null);
+  };
+
   const tabs = [
     {
       path: '/activities?showPast=true',
@@ -293,7 +298,7 @@ function Activities({ history }) {
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
-          onClose={() => setModalActivity(null)}
+          onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
         >
           <ModalBody>

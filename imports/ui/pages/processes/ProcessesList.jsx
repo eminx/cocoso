@@ -173,6 +173,11 @@ export default function ProcessesList({ history }) {
     }
   };
 
+  const handleCloseModal = () => {
+    setCopied(false);
+    setModalProcess(null);
+  };
+
   const tabs = [
     {
       title: t('tabs.active'),
@@ -259,7 +264,7 @@ export default function ProcessesList({ history }) {
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size="6xl"
-          onClose={() => setModalProcess(null)}
+          onClose={handleCloseModal}
           onActionButtonClick={() => handleActionButtonClick()}
           onSecondaryButtonClick={handleCopyLink}
         >

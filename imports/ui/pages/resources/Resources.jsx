@@ -154,6 +154,11 @@ function Resources({ history }) {
     return resourcesRendered.filter((resource) => resource.host === hostFilterValue.host);
   };
 
+  const handleCloseModal = () => {
+    setCopied(false);
+    setModalResource(null);
+  };
+
   const resourcesRendered = getResourcesSorted();
   const resourcesRenderedHostFiltered = getResourcesRenderedHostFiltered(resourcesRendered);
 
@@ -220,7 +225,7 @@ function Resources({ history }) {
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size="6xl"
           onActionButtonClick={() => handleActionButtonClick()}
-          onClose={() => setModalResource(null)}
+          onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
