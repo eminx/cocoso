@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -17,7 +16,6 @@ import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
-import NewEntryHelper from '../../components/NewEntryHelper';
 import { Heading } from '../../components/Header';
 
 const compareByDate = (a, b) => {
@@ -184,40 +182,22 @@ function Works({ history }) {
         >
           {(work) => (
             <Box key={work._id}>
-              {currentHost.isPortalHost ? (
-                <Box cursor="pointer" onClick={() => setModalWork(work)}>
-                  <NewGridThumb
-                    avatar={{
-                      name: work.authorUsername,
-                      url: work.authorAvatar,
-                    }}
-                    color={
-                      categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
-                        .color
-                    }
-                    host={allHosts.find((h) => h.host === work.host)?.name}
-                    imageUrl={work.images[0]}
-                    tag={work.category?.label}
-                    title={work.title}
-                  />
-                </Box>
-              ) : (
-                <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                  <NewGridThumb
-                    avatar={{
-                      name: work.authorUsername,
-                      url: work.authorAvatar,
-                    }}
-                    color={
-                      categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
-                        .color
-                    }
-                    imageUrl={work.images[0]}
-                    tag={work.category?.label}
-                    title={work.title}
-                  />
-                </Link>
-              )}
+              <Box cursor="pointer" onClick={() => setModalWork(work)}>
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  color={
+                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                      .color
+                  }
+                  host={allHosts.find((h) => h.host === work.host)?.name}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
+              </Box>
             </Box>
           )}
         </Paginate>
@@ -231,9 +211,13 @@ function Works({ history }) {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalWork(null)}
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
-          })}
+          actionButtonLabel={
+            currentHost.isPortalHost
+              ? tc('actions.toThePage', {
+                  hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
+                })
+              : tc('actions.entryPage')
+          }
           onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -11,7 +10,6 @@ import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
 import { call, compareForSort } from '../../utils/shared';
-import NewGridThumb from '../../components/NewGridThumb';
 import { message } from '../../components/message';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
@@ -53,10 +51,12 @@ export default function ProcessesList({ history }) {
     getProcesses();
   }, []);
 
+  const isPortalHost = Boolean(currentHost.isPortalHost);
+
   const getProcesses = async () => {
     try {
-      const meetings = await call('getAllProcessMeetings', Boolean(currentHost.isPortalHost));
-      const retrievedProcesses = await call('getProcesses', Boolean(currentHost.isPortalHost));
+      const meetings = await call('getAllProcessMeetings', isPortalHost);
+      const retrievedProcesses = await call('getProcesses', isPortalHost);
       const parsedProcesses = parseProcessesWithMeetings(retrievedProcesses, meetings);
       setProcesses(parsedProcesses);
     } catch (error) {
@@ -141,7 +141,7 @@ export default function ProcessesList({ history }) {
   }
 
   const getProcessesRenderedHostFiltered = (processesRendered) => {
-    if (!currentHost.isPortalHost || !hostFilterValue) {
+    if (!isPortalHost || !hostFilterValue) {
       return processesRendered;
     }
     return processesRendered.filter((process) => process.host === hostFilterValue.host);
@@ -194,7 +194,7 @@ export default function ProcessesList({ history }) {
         <Flex align="center" justify="space-between">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
-            {currentHost.isPortalHost && (
+            {isPortalHost && (
               <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
@@ -217,26 +217,15 @@ export default function ProcessesList({ history }) {
         >
           {(process) => (
             <Box key={process._id}>
-              {currentHost.isPortalHost ? (
-                <Box cursor="pointer" onClick={() => setModalProcess(process)}>
-                  <SexyThumb
-                    dates={getFutureOccurences(process.meetings)}
-                    host={allHosts.find((h) => h.host === process.host)?.name}
-                    imageUrl={process.imageUrl}
-                    subTitle={process.readingMaterial}
-                    title={process.title}
-                  />
-                </Box>
-              ) : (
-                <Link to={`/processes/${process._id}`}>
-                  <SexyThumb
-                    dates={getFutureOccurences(process.meetings).map((d) => d.startDate)}
-                    imageUrl={process.imageUrl}
-                    subTitle={process.readingMaterial}
-                    title={process.title}
-                  />
-                </Link>
-              )}
+              <Box cursor="pointer" onClick={() => setModalProcess(process)}>
+                <SexyThumb
+                  dates={getFutureOccurences(process.meetings)}
+                  host={isPortalHost && allHosts.find((h) => h.host === process.host)?.name}
+                  imageUrl={process.imageUrl}
+                  subTitle={process.readingMaterial}
+                  title={process.title}
+                />
+              </Box>
             </Box>
           )}
         </Paginate>
@@ -252,9 +241,13 @@ export default function ProcessesList({ history }) {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalProcess(null)}
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalProcess.host)?.name,
-          })}
+          actionButtonLabel={
+            isPortalHost
+              ? tc('actions.toThePage', {
+                  hostName: allHosts.find((h) => h.host === modalProcess.host)?.name,
+                })
+              : tc('actions.entryPage')
+          }
           onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
@@ -262,7 +255,7 @@ export default function ProcessesList({ history }) {
             content={modalProcess.description && renderHTML(modalProcess.description)}
             images={[modalProcess.imageUrl]}
             subTitle={modalProcess.readingMaterial}
-            tags={[allHosts.find((h) => h.host === modalProcess.host)?.name]}
+            tags={isPortalHost && [allHosts.find((h) => h.host === modalProcess.host)?.name]}
             title={modalProcess.title}
           />
         </Modal>

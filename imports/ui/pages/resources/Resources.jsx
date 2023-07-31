@@ -1,9 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge, Box, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
 import renderHTML from 'react-render-html';
 
 import { call } from '../../utils/shared';
@@ -17,7 +15,7 @@ import Tabs from '../../components/Tabs';
 import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
-import NewEntryHelper from '../../components/NewEntryHelper';
+
 import { Heading } from '../../components/Header';
 
 function Resources({ history }) {
@@ -37,9 +35,11 @@ function Resources({ history }) {
     getResources();
   }, []);
 
+  const isPortalHost = currentHost.isPortalHost;
+
   const getResources = async () => {
     try {
-      if (currentHost.isPortalHost) {
+      if (isPortalHost) {
         setResources(await call('getResourcesFromAllHosts'));
       } else {
         setResources(await call('getResources'));
@@ -137,7 +137,7 @@ function Resources({ history }) {
   };
 
   const getResourcesRenderedHostFiltered = (resourcesRendered) => {
-    if (!currentHost.isPortalHost || !hostFilterValue) {
+    if (!isPortalHost || !hostFilterValue) {
       return resourcesRendered;
     }
     return resourcesRendered.filter((resource) => resource.host === hostFilterValue.host);
@@ -162,7 +162,7 @@ function Resources({ history }) {
         <Flex justify="space-between">
           <Heading />
           <FiltrerSorter {...filtrerProps}>
-            {currentHost.isPortalHost && (
+            {isPortalHost && (
               <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
@@ -185,15 +185,9 @@ function Resources({ history }) {
         >
           {(resource) => (
             <Box key={resource._id}>
-              {currentHost.isPortalHost ? (
-                <Box cursor="pointer" onClick={() => setModalResource(resource)}>
-                  <ResourceItem resource={resource} t={t} />
-                </Box>
-              ) : (
-                <Link to={`/resources/${resource._id}`}>
-                  <ResourceItem resource={resource} t={t} />
-                </Link>
-              )}{' '}
+              <Box cursor="pointer" onClick={() => setModalResource(resource)}>
+                <ResourceItem isPortalHost={isPortalHost} resource={resource} t={t} />
+              </Box>
             </Box>
           )}
         </Paginate>
@@ -207,15 +201,19 @@ function Resources({ history }) {
           scrollBehavior="inside"
           size="6xl"
           onClose={() => setModalResource(null)}
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
-          })}
+          actionButtonLabel={
+            isPortalHost
+              ? tc('actions.toThePage', {
+                  hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
+                })
+              : tc('actions.entryPage')
+          }
           onActionButtonClick={() => handleActionButtonClick()}
         >
           <Tably
             content={modalResource.description && renderHTML(modalResource.description)}
             images={modalResource.images}
-            tags={[allHosts.find((h) => h.host === modalResource.host)?.name]}
+            tags={isPortalHost && [allHosts.find((h) => h.host === modalResource.host)?.name]}
             title={modalResource.label}
           />
         </Modal>
@@ -224,8 +222,8 @@ function Resources({ history }) {
   );
 }
 
-function ResourceItem({ resource, t }) {
-  const { allHosts, currentHost } = useContext(StateContext);
+function ResourceItem({ isPortalHost, resource, t }) {
+  const { allHosts } = useContext(StateContext);
 
   if (!resource) {
     return null;
@@ -243,7 +241,7 @@ function ResourceItem({ resource, t }) {
           <Badge>{!resource.isBookable && t('cards.isNotBookable')}</Badge>
         </Text>
         {/* <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text> */}
-        {currentHost.isPortalHost && (
+        {isPortalHost && (
           <Flex justify="flex-start">
             <CTag border="1px solid #2d2d2d" mt="2">
               {allHosts.find((h) => h.host === resource.host)?.name}

@@ -106,18 +106,20 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
         <h3 className="thumb-title">{title}</h3>
         <h4 className="thumb-subtitle">{subTitle}</h4>
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            position: 'absolute',
-            right: 12,
-            bottom: 12,
-          }}
-        >
-          {(host || tag) && <em style={{ color: '#fff' }}>{host || tag}</em>}
-        </div>
+        {(host || tag) && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'absolute',
+              right: 12,
+              bottom: 12,
+            }}
+          >
+            <em style={{ color: '#fff' }}>{host || tag}</em>
+          </div>
+        )}
       </div>
     </Box>
   );

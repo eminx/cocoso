@@ -335,18 +335,20 @@ class Calendar extends PureComponent {
           {isLoading ? (
             <Loader />
           ) : (
-            <CalendarView
-              activities={allFilteredActsWithColors}
-              onSelect={this.handleSelectActivity}
-              onSelectSlot={this.handleSelectSlot}
-            />
+            <Box mb="4">
+              <CalendarView
+                activities={allFilteredActsWithColors}
+                onSelect={this.handleSelectActivity}
+                onSelectSlot={this.handleSelectSlot}
+              />
+            </Box>
           )}
         </Box>
 
         {canCreateContent && (
-          <Box mb="4">
+          <Center mb="4">
             <NewEntryHelper buttonLink="/activities/new" />
-          </Box>
+          </Center>
         )}
 
         <ConfirmModal

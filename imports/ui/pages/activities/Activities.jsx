@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -96,9 +95,11 @@ function Activities({ history }) {
     getActivities();
   }, []);
 
+  const isPortalHost = currentHost.isPortalHost;
+
   const getActivities = async () => {
     try {
-      if (currentHost.isPortalHost) {
+      if (isPortalHost) {
         const allActivities = await call('getAllActivitiesFromAllHosts', true);
         const allActivitiesParsed = parseProcessActivities(allActivities);
         setActivities(allActivitiesParsed);
@@ -164,7 +165,7 @@ function Activities({ history }) {
   };
 
   const getActivitiesRenderedHostFiltered = (activitiesRendered) => {
-    if (!currentHost.isPortalHost || !hostFilterValue) {
+    if (!isPortalHost || !hostFilterValue) {
       return activitiesRendered;
     }
     return activitiesRendered.filter((activity) => activity.host === hostFilterValue.host);
@@ -225,7 +226,7 @@ function Activities({ history }) {
           <FiltrerSorter {...filtrerProps}>
             <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
 
-            {currentHost.isPortalHost && (
+            {isPortalHost && (
               <Flex justify={isDesktop ? 'flex-start' : 'center'}>
                 <HostFiltrer
                   allHosts={allHostsFiltered}
@@ -249,33 +250,16 @@ function Activities({ history }) {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
               <Box key={activity._id}>
-                {currentHost.isPortalHost ? (
-                  <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                    <SexyThumb
-                      dates={activity.datesAndTimes}
-                      showPast={showPast}
-                      host={itemHost}
-                      imageUrl={activity.imageUrl}
-                      subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                      title={activity.title}
-                    />
-                  </Box>
-                ) : (
-                  <Link
-                    to={
-                      activity.isProcess
-                        ? `/processes/${activity._id}`
-                        : `/activities/${activity._id}`
-                    }
-                  >
-                    <SexyThumb
-                      dates={activity.datesAndTimes}
-                      imageUrl={activity.imageUrl}
-                      subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                      title={activity.title}
-                    />
-                  </Link>
-                )}
+                <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
+                  <SexyThumb
+                    dates={activity.datesAndTimes}
+                    showPast={showPast}
+                    host={isPortalHost ? itemHost : null}
+                    imageUrl={activity.imageUrl}
+                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                    title={activity.title}
+                  />
+                </Box>
               </Box>
             );
           }}
@@ -284,9 +268,13 @@ function Activities({ history }) {
 
       {modalActivity && (
         <Modal
-          actionButtonLabel={tc('actions.toThePage', {
-            hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
-          })}
+          actionButtonLabel={
+            isPortalHost
+              ? tc('actions.toThePage', {
+                  hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
+                })
+              : tc('actions.entryPage')
+          }
           h="90%"
           isCentered
           isOpen
@@ -301,7 +289,7 @@ function Activities({ history }) {
               content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
               images={[modalActivity.imageUrl]}
               subTitle={modalActivity.subTitle}
-              tags={[allHosts.find((h) => h.host === modalActivity.host)?.name]}
+              tags={isPortalHost && [allHosts.find((h) => h.host === modalActivity.host)?.name]}
               title={modalActivity.title}
             />
           </ModalBody>

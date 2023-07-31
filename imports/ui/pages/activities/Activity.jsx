@@ -507,8 +507,8 @@ class Activity extends PureComponent {
     const calendarInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'calendar');
 
     const backLink = {
-      value: activityData.isPublic ? '/activities' : '/calendar',
-      label: activityData.isPublic ? activitiesInMenu?.label : calendarInMenu?.label,
+      value: activityData.isPublicActivity ? '/activities' : '/calendar',
+      label: activityData.isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
     };
 
     return (
