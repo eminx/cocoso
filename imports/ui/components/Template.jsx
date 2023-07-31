@@ -33,7 +33,7 @@ function Template({ heading, leftContent, rightContent, titleCentered = false, c
           <Box>{rightContent}</Box>
         </SimpleGrid>
       ) : (
-        <Center>
+        <Center px="4">
           <Box>
             <Box>{leftContent}</Box>
             <Box>

@@ -365,8 +365,8 @@ class EditActivity extends PureComponent {
     return (
       <Box>
         <Template>
-          <Breadcrumb p="4" furtherItems={furtherBreadcrumbLinks} />
-          <Box p="4">
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} py="4" />
+          <Box>
             <VStack mb="8" spacing="2">
               <FormSwitch
                 isChecked={isPublicActivity}

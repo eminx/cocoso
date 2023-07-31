@@ -172,8 +172,8 @@ class EditProcess extends PureComponent {
     return (
       <Box>
         <Template>
-          <Breadcrumb p="4" furtherItems={furtherBreadcrumbLinks} />
-          <Box p="4">
+          <Breadcrumb furtherItems={furtherBreadcrumbLinks} py="4" />
+          <Box>
             <ProcessForm
               defaultValues={process}
               imageUrl={process && process.imageUrl}
