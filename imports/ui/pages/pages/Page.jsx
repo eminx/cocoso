@@ -51,7 +51,7 @@ function Page() {
       return null;
     }
     return (
-      <Center p="2">
+      <Center m="4">
         <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
           <Button as="span" variant="ghost" size="sm">
             <Text>{tc('actions.update')}</Text>
@@ -68,13 +68,9 @@ function Page() {
           <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
         </Helmet>
 
-        <Flex mt="4">
+        <Flex mt="4" mb="8">
           <Box w="280px" px="4">
-            <PagesList
-              pageTitles={pageTitles}
-              onChange={this.handlePageClick}
-              activePageTitle={pageId}
-            />
+            <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
           </Box>
 
           <Box w="100%" maxW="520px">
@@ -89,6 +85,8 @@ function Page() {
             <Box bg="white" className="text-content" maxW="520px" p="4">
               {renderHTML(currentPage.longDescription)}
             </Box>
+
+            {renderEditButton()}
           </Box>
           {isAdmin && (
             <Box ml="8">
@@ -96,8 +94,6 @@ function Page() {
             </Box>
           )}
         </Flex>
-
-        {renderEditButton()}
       </>
     );
   }
@@ -109,14 +105,10 @@ function Page() {
       </Helmet>
 
       <Center px="4" mt="4">
-        <PagesList
-          pageTitles={pageTitles}
-          onChange={this.handlePageClick}
-          activePageTitle={pageId}
-        />
+        <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Center>
 
-      <Center>
+      <Center mb="4">
         <Box w="100%" maxW="520px">
           <Box px="4" mb="4">
             <Heading as="h2" size="lg">
@@ -132,13 +124,13 @@ function Page() {
         </Box>
       </Center>
 
-      {isAdmin && (
-        <Box>
-          <NewEntryHelper buttonLink="/pages/new" />
-        </Box>
-      )}
-
       {renderEditButton()}
+
+      {isAdmin && (
+        <Center mb="8">
+          <NewEntryHelper buttonLink="/pages/new" />
+        </Center>
+      )}
     </>
   );
 }
