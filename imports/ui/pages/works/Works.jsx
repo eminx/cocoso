@@ -246,6 +246,7 @@ function Works({ history }) {
               username: modalWork.authorUsername,
             }}
             content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
+            host={currentHost?.host}
             images={modalWork.images}
             subTitle={modalWork.shortDescription}
             tags={[

@@ -230,6 +230,7 @@ function Resources({ history }) {
         >
           <Tably
             content={modalResource.description && renderHTML(modalResource.description)}
+            host={currentHost?.host}
             images={modalResource.images}
             tags={isPortalHost && [allHosts.find((h) => h.host === modalResource.host)?.name]}
             title={modalResource.label}

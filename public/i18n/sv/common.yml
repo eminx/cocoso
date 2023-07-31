@@ -26,7 +26,7 @@ actions:
   toThePage: Till sidan i {{ hostName }}
   entryPage: Till sidan
   toHost: Besök
-  share: Dela länken
+  share: Dela
   copied: Kopierade länken!
 
 # ACTION PAGE TITLES

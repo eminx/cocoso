@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar,
@@ -22,6 +22,7 @@ import {
 import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
 import { LinkIcon } from '@chakra-ui/icons/dist/Link';
+import { useTranslation } from 'react-i18next';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
@@ -33,15 +34,21 @@ function Tably({
   author = null,
   backLink,
   content,
+  host,
   images,
   subTitle,
   tabs,
   title,
   tags = null,
 }) {
+  console.log(host);
+
+  const [copied, setCopied] = useState(false);
   const history = useHistory();
   const location = useLocation();
   const { isDesktop } = useContext(StateContext);
+  const [tc] = useTranslation('common');
+
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
@@ -49,6 +56,15 @@ function Tably({
   }
 
   const desktopGridColumns = author ? '3fr 4fr 1fr' : '3fr 4fr 0fr';
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(host + location.pathname);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (isDesktop) {
     return (
@@ -58,13 +74,7 @@ function Tably({
             <Flex>
               {backLink && <BackLink backLink={backLink} />}
               <Box w="100%">
-                <Header
-                  author={author}
-                  title={title}
-                  subTitle={subTitle}
-                  tags={tags}
-                  isDesktop={isDesktop}
-                />
+                <Header author={author} isDesktop subTitle={subTitle} tags={tags} title={title} />
               </Box>
             </Flex>
           </GridItem>
@@ -81,7 +91,16 @@ function Tably({
               </Tabs>
             )}
           </GridItem>
-          <GridItem>{author && <AvatarHolder author={author} />}</GridItem>
+          <GridItem>
+            {author && <AvatarHolder author={author} />}
+            {backLink && (
+              <Box p="4">
+                <Button leftIcon={<LinkIcon />} variant="link" onClick={handleCopyLink}>
+                  {copied ? tc('actions.copied') : tc('actions.share')}
+                </Button>
+              </Box>
+            )}
+          </GridItem>
 
           <GridItem mt="4">
             <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
@@ -115,16 +134,18 @@ function Tably({
   return (
     <>
       <Box>
-        <Box mb="2">
-          <BackLink backLink={backLink} isSmall />
-        </Box>
+        <Box mb="2">{backLink && <BackLink backLink={backLink} isSmall />}</Box>
         <Box>
           <Header
             author={author}
-            title={title}
+            backLink={backLink}
+            copied={copied}
+            isDesktop={false}
             subTitle={subTitle}
             tags={tags}
-            isDesktop={isDesktop}
+            tc={tc}
+            title={title}
+            handleCopyLink={handleCopyLink}
           />
 
           <Center bg="gray.900">
@@ -180,7 +201,17 @@ function Tably({
   );
 }
 
-function Header({ title, subTitle, tags, isDesktop, author }) {
+function Header({
+  author,
+  backLink,
+  copied,
+  isDesktop,
+  subTitle,
+  tags,
+  tc,
+  title,
+  handleCopyLink,
+}) {
   const fontFamily = "'Raleway', sans-serif";
 
   return (
@@ -210,7 +241,11 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           </Heading>
         )}
         {tags && tags.length > 0 && (
-          <Flex justify={isDesktop ? 'flex-end' : 'flex-start'} mt={isDesktop ? '6' : '4'}>
+          <Flex
+            flexGrow="0"
+            justify={isDesktop ? 'flex-end' : 'flex-start'}
+            mt={isDesktop ? '6' : '4'}
+          >
             {tags.map((tag) => (
               <Badge
                 bg="gray.50"
@@ -226,10 +261,21 @@ function Header({ title, subTitle, tags, isDesktop, author }) {
           </Flex>
         )}
       </Box>
-      {!isDesktop && author && (
-        <Box flexBasis="64px" align="center">
-          <AvatarHolder size="md" author={author} />
-        </Box>
+      {!isDesktop && (
+        <Flex flexDirection="column" justify="center">
+          {author && (
+            <Box flexBasis="64px" align="center">
+              <AvatarHolder size="md" author={author} />
+            </Box>
+          )}
+          {backLink && (
+            <Box px="4">
+              <Button leftIcon={<LinkIcon />} variant="link" onClick={handleCopyLink}>
+                {copied ? tc('actions.copied') : tc('actions.share')}
+              </Button>
+            </Box>
+          )}
+        </Flex>
       )}
     </Flex>
   );
