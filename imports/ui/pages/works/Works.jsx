@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
+import { parse, stringify } from 'query-string';
 
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
@@ -29,12 +30,16 @@ function Works({ history }) {
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
-  const [categoryFilter, setCategoryFilter] = useState(null);
   const [modalWork, setModalWork] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
+  const {
+    location: { search },
+  } = history;
+
+  const { category } = parse(search);
 
   useEffect(() => {
     getAllWorks();
@@ -69,12 +74,10 @@ function Works({ history }) {
 
   const getFilteredWorks = () => {
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
-    if (categoryFilter) {
+    if (category) {
       return getSortedWorks().filter((work) => {
         const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
-        return (
-          work.category && work.category.label === categoryFilter.toLowerCase() && workWordFiltered
-        );
+        return work.category && work.category.label === category.toLowerCase() && workWordFiltered;
       });
     } else {
       return getSortedWorks().filter((work) => {
@@ -82,6 +85,11 @@ function Works({ history }) {
         return workWordFiltered;
       });
     }
+  };
+
+  const setCategoryFilter = (categoryFilter) => {
+    const params = stringify({ category: categoryFilter });
+    history.push({ search: params });
   };
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
@@ -170,7 +178,7 @@ function Works({ history }) {
             <Tag
               label="ALL"
               checkable
-              checked={categoryFilter === null}
+              checked={Boolean(category) === false}
               filterColor="#2d2d2d"
               onClick={() => setCategoryFilter(null)}
             />
@@ -179,7 +187,7 @@ function Works({ history }) {
             <WrapItem key={cat.label}>
               <Tag
                 checkable
-                checked={categoryFilter === cat.label}
+                checked={category === cat.label}
                 filterColor={cat.color}
                 label={cat.label && cat.label.toUpperCase()}
                 margin={{ bottom: 'small' }}
