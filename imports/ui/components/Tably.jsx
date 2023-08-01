@@ -98,7 +98,7 @@ function Tably({
               {author && <AvatarHolder author={author} />}
               {backLink && (
                 <Center p="4" mr="2">
-                  <Button leftIcon={<LinkIcon />} variant="link" w="100px" onClick={handleCopyLink}>
+                  <Button leftIcon={<LinkIcon />} variant="link" size="sm" onClick={handleCopyLink}>
                     {copied ? tc('actions.copied') : tc('actions.share')}
                   </Button>
                 </Center>
@@ -274,8 +274,8 @@ function Header({
             </Box>
           )}
           {backLink && (
-            <Box px="4">
-              <Button leftIcon={<LinkIcon />} variant="link" onClick={handleCopyLink}>
+            <Box px="4" pt="2">
+              <Button leftIcon={<LinkIcon />} size="sm" variant="link" onClick={handleCopyLink}>
                 {copied ? tc('actions.copied') : tc('actions.share')}
               </Button>
             </Box>

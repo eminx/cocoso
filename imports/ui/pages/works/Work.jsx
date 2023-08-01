@@ -10,7 +10,6 @@ import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import Tably from '../../components/Tably';
-import Breadcrumb from '../../components/Breadcrumb';
 import DocumentsField from '../resources/components/DocumentsField';
 
 function Work() {
