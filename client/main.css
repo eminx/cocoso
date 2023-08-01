@@ -205,3 +205,8 @@ input::placeholder {
   padding-left: 32px; /* gutter size */
   background-clip: padding-box;
 }
+
+.chakra-switch__track {
+  margin-right: 8px;
+  border: 1px solid #464646;
+}

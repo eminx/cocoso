@@ -21,6 +21,7 @@ Works.schema = new SimpleSchema({
   latestUpdate: { type: Date, optional: true },
   longDescription: { type: String, defaultValue: '' },
   shortDescription: { type: String, defaultValue: '', optional: true },
+  showAvatar: { type: Boolean, defaultValue: true, optional: true },
   title: { type: String },
 });
 

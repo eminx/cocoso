@@ -1,7 +1,17 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Button, Center, Flex, Input, Textarea, Select, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Flex,
+  FormLabel,
+  Input,
+  Textarea,
+  Select,
+  Switch,
+  VStack,
+} from '@chakra-ui/react';
 
 import FormField from './FormField';
 import NiceSlider from './NiceSlider';
@@ -101,6 +111,13 @@ function WorkForm({
               onSelectImages={setUploadableImages}
               onSortImages={onSortImages}
             />
+          </FormField>
+
+          <FormField helperText="Check to show your profile image along with viewing this entry">
+            <Flex align="center">
+              <Switch defaultChecked id="avatar" mb="2" {...register('showAvatar')} />
+              <FormLabel htmlFor="avatar">Show Avatar</FormLabel>
+            </Flex>
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">

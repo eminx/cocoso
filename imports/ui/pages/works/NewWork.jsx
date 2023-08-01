@@ -98,6 +98,8 @@ class NewWork extends PureComponent {
 
   createWork = async (imagesReadyToSave) => {
     const { values, categories } = this.state;
+    console.log(values);
+    return;
 
     const selectedCategory = categories.find((category) => category._id === values.categoryId);
 
