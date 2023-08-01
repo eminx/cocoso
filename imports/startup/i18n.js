@@ -60,15 +60,16 @@ if (!i18n.isInitialized) {
       const handler = Meteor.subscribe('me');
       if (handler.ready()) {
         preferedLang = Meteor.user()?.lang;
+        i18n.changeLanguage(preferedLang);
       }
     } else {
       Meteor.call('getCurrentHost', (error, respond) => {
         if (!error) {
           preferedLang = respond?.settings?.lang;
+          i18n.changeLanguage(preferedLang);
         }
       });
     }
-    i18n.changeLanguage(preferedLang);
   });
 }
 
