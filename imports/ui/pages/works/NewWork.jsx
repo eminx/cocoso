@@ -175,6 +175,7 @@ class NewWork extends PureComponent {
               categories={categories}
               defaultValues={formModel}
               images={uploadableImagesLocal}
+              isNew
               onRemoveImage={this.handleRemoveImage}
               onSortImages={this.handleSortImages}
               onSubmit={this.uploadImages}

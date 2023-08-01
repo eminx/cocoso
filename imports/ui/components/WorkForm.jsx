@@ -22,6 +22,7 @@ function WorkForm({
   categories,
   defaultValues,
   images,
+  isNew,
   onRemoveImage,
   onSortImages,
   onSubmit,
@@ -115,7 +116,7 @@ function WorkForm({
 
           <FormField helperText="Check to show your profile image along with viewing this entry">
             <Flex align="center">
-              <Switch id="avatar" mb="2" {...register('showAvatar')} />
+              <Switch defaultChecked={isNew} id="avatar" mb="2" {...register('showAvatar')} />
               <FormLabel htmlFor="avatar">Show Avatar</FormLabel>
             </Flex>
           </FormField>
