@@ -202,10 +202,12 @@ function Works({ history }) {
             <Box key={work._id}>
               <Box cursor="pointer" onClick={() => setModalWork(work)}>
                 <NewGridThumb
-                  avatar={{
-                    name: work.authorUsername,
-                    url: work.authorAvatar,
-                  }}
+                  avatar={
+                    work.showAvatar && {
+                      name: work.authorUsername,
+                      url: work.authorAvatar,
+                    }
+                  }
                   color={
                     categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
                       .color
@@ -241,10 +243,12 @@ function Works({ history }) {
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
-            author={{
-              src: modalWork.authorAvatar,
-              username: modalWork.authorUsername,
-            }}
+            author={
+              modalWork.showAvatar && {
+                src: modalWork.authorAvatar,
+                username: modalWork.authorUsername,
+              }
+            }
             content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
             images={modalWork.images}
             subTitle={modalWork.shortDescription}

@@ -115,7 +115,7 @@ function WorkForm({
 
           <FormField helperText="Check to show your profile image along with viewing this entry">
             <Flex align="center">
-              <Switch defaultChecked id="avatar" mb="2" {...register('showAvatar')} />
+              <Switch id="avatar" mb="2" {...register('showAvatar')} />
               <FormLabel htmlFor="avatar">Show Avatar</FormLabel>
             </Flex>
           </FormField>

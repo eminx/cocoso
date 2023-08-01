@@ -123,11 +123,13 @@ function Work() {
       </Helmet>
       <Tably
         adminMenu={isOwner ? adminMenu : null}
-        author={{
-          src: work.authorAvatar,
-          username: work.authorUsername,
-          link: `/@${work.authorUsername}`,
-        }}
+        author={
+          work.showAvatar && {
+            src: work.authorAvatar,
+            username: work.authorUsername,
+            link: `/@${work.authorUsername}`,
+          }
+        }
         backLink={backLink}
         images={work.images}
         subTitle={work.shortDescription}
