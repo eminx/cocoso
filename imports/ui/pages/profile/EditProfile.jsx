@@ -297,7 +297,7 @@ function EditProfile({ history }) {
             <FormSwitch
               colorScheme="green"
               isChecked={isUserPublicGlobally}
-              label={t('profile.makePublic.label')}
+              label={t('profile.makePublic.labelGlobal')}
               onChange={({ target: { checked } }) => setProfilePublicGlobally(checked)}
             />
             <Text fontSize="sm" my="2">
@@ -344,7 +344,7 @@ function EditProfile({ history }) {
               </Text>
             </Box>
 
-            <Box py="8">
+            <Box py="2">
               <Button colorScheme="red" size="sm" onClick={() => setIsLeaveModalOn(true)}>
                 {t('actions.leave', { host: communityName })}
               </Button>

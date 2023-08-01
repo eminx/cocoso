@@ -88,7 +88,8 @@ profile:
     platform: Information you enter here will be saved globally in the {{ platform }} platform and published in the communities you choose.
 
   makePublic:
-    label: Profile is public
+    labelGlobal: Profile is public globally
+    label: Profile is public in this community
     helperText: If switched on, your profile will be publicly visible in this community
     helperTextGlobal: If switched off, your profile will be publicly invisible in all communities
 
