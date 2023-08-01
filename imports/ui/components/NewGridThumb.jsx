@@ -45,6 +45,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
               fontSize="1.4rem"
               fontWeight="bold"
               mb="1"
+              mt="2"
               overflowWrap="anywhere"
             >
               {title}
