@@ -167,11 +167,11 @@ class EditWork extends PureComponent {
 
     try {
       await call('updateWork', workId, parsedValues, imagesReadyToSave);
+      message.success(i18n.t('common:message.success.update'));
       this.setState({
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.update'));
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
