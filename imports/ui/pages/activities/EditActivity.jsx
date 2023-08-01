@@ -77,15 +77,6 @@ class EditActivity extends PureComponent {
     );
   };
 
-  successEditMessage = (isDeleted) => {
-    const { tc } = this.props;
-    if (isDeleted) {
-      message.success(tc('message.success.remove'));
-    } else {
-      message.success(tc('message.success.update'));
-    }
-  };
-
   handleFormValueChange = (formValues) => {
     this.setState({
       formValues,
@@ -193,6 +184,7 @@ class EditActivity extends PureComponent {
     try {
       await call('updateActivity', activity._id, values);
       this.setState({ isSuccess: true });
+      message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.error || error.reason);
       this.setState({
@@ -206,14 +198,16 @@ class EditActivity extends PureComponent {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteActivity = async () => {
-    const activityId = this.props.activity._id;
+    const { activity, history } = this.props;
 
     try {
-      await call('deleteActivity', activityId);
-      this.setState({
-        isLoading: false,
-        isSuccess: true,
-      });
+      await call('deleteActivity', activity._id);
+      if (activity.isPublicActivity) {
+        history.push('/activities');
+      } else {
+        history.push('/calendar');
+      }
+      message.success(tc('message.success.remove'));
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -342,10 +336,6 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      this.successEditMessage(isDeleteModalOn);
-      if (isDeleteModalOn) {
-        return <Redirect to="/calendar" />;
-      }
       return <Redirect to={`/activities/${activity._id}`} />;
     }
 

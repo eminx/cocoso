@@ -307,6 +307,7 @@ Meteor.methods({
 
     try {
       Activities.remove(activityId);
+      return true;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
