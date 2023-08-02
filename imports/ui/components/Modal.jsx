@@ -12,10 +12,10 @@ import {
 
 function Modal({
   actionButtonLabel,
-  secondaryButtonLabel,
   children,
   h,
   isOpen,
+  secondaryButtonLabel,
   title,
   onClose,
   onActionButtonClick,

@@ -263,7 +263,7 @@ export default function ProcessesList({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="6xl"
+          size="full"
           onClose={handleCloseModal}
           onActionButtonClick={() => handleActionButtonClick()}
           onSecondaryButtonClick={handleCopyLink}

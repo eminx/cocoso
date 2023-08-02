@@ -223,7 +223,7 @@ function Resources({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="6xl"
+          size="full"
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
