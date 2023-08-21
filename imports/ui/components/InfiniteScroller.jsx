@@ -31,7 +31,7 @@ function InfiniteScroller({
 
   useEffect(() => {
     setCurrentItems(items.slice(0, itemsPerPage));
-  }, []);
+  }, [items.length]);
 
   const handleLoad = () => {
     setTimeout(() => {
