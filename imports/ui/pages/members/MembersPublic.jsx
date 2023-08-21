@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Center, Container, Flex, Heading as CHeading, Text } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Heading as CHeading } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
-import Paginate from '../../components/Paginate';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
@@ -13,7 +12,7 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
-import { Heading } from '../../components/Header';
+import InfiniteScroller from '../../components/InfiniteScroller';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -159,7 +158,7 @@ function MembersPublic({ history }) {
       </Flex>
 
       <Box mt="2" px="4">
-        <Paginate isMasonry centerItems={!isDesktop} items={membersRendered} itemsPerPage={12}>
+        <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
           {(member) => (
             <Flex
               key={member.username}
@@ -172,7 +171,7 @@ function MembersPublic({ history }) {
               <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
             </Flex>
           )}
-        </Paginate>
+        </InfiniteScroller>
       </Box>
 
       {modalUser && (

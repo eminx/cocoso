@@ -15,7 +15,7 @@ const breakpointColumnsObj = {
   480: 1,
 };
 
-const defaultItemsPerPage = 3;
+const defaultItemsPerPage = 12;
 
 function InfiniteScroller({
   canCreateContent = false,
