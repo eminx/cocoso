@@ -35,6 +35,8 @@ function Works({ history }) {
   const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('members');
+
   const {
     location: { search },
   } = history;
@@ -176,7 +178,7 @@ function Works({ history }) {
         <Wrap mb="8">
           <WrapItem>
             <Tag
-              label="ALL"
+              label={t('all')}
               checkable
               checked={Boolean(category) === false}
               filterColor="#2d2d2d"
