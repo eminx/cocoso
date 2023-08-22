@@ -23,7 +23,6 @@ import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Header from '../../components/Header';
 
 class NewProcess extends React.Component {
   state = {
