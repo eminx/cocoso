@@ -9,7 +9,6 @@ import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
-import Paginate from '../../components/Paginate';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
@@ -20,6 +19,7 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import SexyThumb from '../../components/SexyThumb';
 import { Heading } from '../../components/Header';
+import InfiniteScroller from '../../components/InfiniteScroller';
 
 moment.locale(i18n.language);
 
@@ -256,7 +256,7 @@ function Activities({ history }) {
       </Box>
 
       <Box px={isDesktop ? '4' : '0'}>
-        <Paginate
+        <InfiniteScroller
           canCreateContent={canCreateContent}
           centerItems
           items={activitiesRenderedHostFiltered}
@@ -265,21 +265,19 @@ function Activities({ history }) {
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
-              <Box key={activity._id}>
-                <Box cursor="pointer" onClick={() => setModalActivity(activity)}>
-                  <SexyThumb
-                    dates={activity.datesAndTimes}
-                    showPast={showPast}
-                    host={isPortalHost ? itemHost : null}
-                    imageUrl={activity.imageUrl}
-                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-                    title={activity.title}
-                  />
-                </Box>
+              <Box key={activity._id} cursor="pointer" onClick={() => setModalActivity(activity)}>
+                <SexyThumb
+                  dates={activity.datesAndTimes}
+                  showPast={showPast}
+                  host={isPortalHost ? itemHost : null}
+                  imageUrl={activity.imageUrl}
+                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  title={activity.title}
+                />
               </Box>
             );
           }}
-        </Paginate>
+        </InfiniteScroller>
       </Box>
 
       {modalActivity && (
@@ -296,7 +294,7 @@ function Activities({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="full"
+          size={isDesktop ? '6xl' : 'full'}
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}

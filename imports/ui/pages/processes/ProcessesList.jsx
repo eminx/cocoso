@@ -7,7 +7,6 @@ import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
 import Loader from '../../components/Loader';
-import Paginate from '../../components/Paginate';
 import { StateContext } from '../../LayoutContainer';
 import { call, compareForSort } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -17,9 +16,9 @@ import Tably from '../../components/Tably';
 import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
-import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
 import { Heading } from '../../components/Header';
+import InfiniteScroller from '../../components/InfiniteScroller';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -225,28 +224,24 @@ export default function ProcessesList({ history }) {
       </Box>
 
       <Box mb="8" px={isDesktop ? '4' : '0'}>
-        <Paginate
+        <InfiniteScroller
           canCreateContent={canCreateContent}
           centerItems={!isDesktop}
           items={processesRenderedHostFiltered}
           newHelperLink="/processes/new"
         >
           {(process) => (
-            <Box key={process._id}>
-              <Box cursor="pointer" onClick={() => setModalProcess(process)}>
-                <SexyThumb
-                  dates={getFutureOccurences(process.meetings)}
-                  host={isPortalHost && allHosts.find((h) => h.host === process.host)?.name}
-                  imageUrl={process.imageUrl}
-                  subTitle={process.readingMaterial}
-                  title={process.title}
-                />
-              </Box>
+            <Box key={process._id} cursor="pointer" onClick={() => setModalProcess(process)}>
+              <SexyThumb
+                dates={getFutureOccurences(process.meetings)}
+                host={isPortalHost && allHosts.find((h) => h.host === process.host)?.name}
+                imageUrl={process.imageUrl}
+                subTitle={process.readingMaterial}
+                title={process.title}
+              />
             </Box>
           )}
-        </Paginate>
-
-        {canCreateContent && <NewEntryHelper buttonLink="/resources/new" />}
+        </InfiniteScroller>
       </Box>
 
       {modalProcess && (
@@ -263,7 +258,7 @@ export default function ProcessesList({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="full"
+          size={isDesktop ? '6xl' : 'full'}
           onClose={handleCloseModal}
           onActionButtonClick={() => handleActionButtonClick()}
           onSecondaryButtonClick={handleCopyLink}

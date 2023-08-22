@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 import { parse, stringify } from 'query-string';
 
-import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -18,6 +17,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import { Heading } from '../../components/Header';
+import InfiniteScroller from '../../components/InfiniteScroller';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -199,7 +199,7 @@ function Works({ history }) {
       </Box>
 
       <Box px={isDesktop ? '4' : '0'}>
-        <Paginate
+        <InfiniteScroller
           canCreateContent={canCreateContent}
           centerItems
           isMasonry
@@ -207,28 +207,26 @@ function Works({ history }) {
           newHelperLink="/works/new"
         >
           {(work) => (
-            <Box key={work._id}>
-              <Box cursor="pointer" onClick={() => setModalWork(work)}>
-                <NewGridThumb
-                  avatar={
-                    work.showAvatar && {
-                      name: work.authorUsername,
-                      url: work.authorAvatar,
-                    }
+            <Box key={work._id} cursor="pointer" onClick={() => setModalWork(work)}>
+              <NewGridThumb
+                avatar={
+                  work.showAvatar && {
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
                   }
-                  color={
-                    categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
-                      .color
-                  }
-                  host={allHosts.find((h) => h.host === work.host)?.name}
-                  imageUrl={work.images[0]}
-                  tag={work.category?.label}
-                  title={work.title}
-                />
-              </Box>
+                }
+                color={
+                  categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
+                    ?.color
+                }
+                host={allHosts.find((h) => h.host === work.host)?.name}
+                imageUrl={work.images && work.images[0]}
+                tag={work.category?.label}
+                title={work.title}
+              />
             </Box>
           )}
-        </Paginate>
+        </InfiniteScroller>
       </Box>
 
       {modalWork && (
@@ -245,7 +243,7 @@ function Works({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="full"
+          size={isDesktop ? '6xl' : 'full'}
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}

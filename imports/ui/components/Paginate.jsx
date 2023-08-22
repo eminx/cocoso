@@ -12,7 +12,6 @@ const defaultItemsPerPage = 12;
 
 function PaginatedItems({
   canCreateContent = false,
-  centerItems = false,
   isMasonry = false,
   items,
   itemsPerPage = defaultItemsPerPage,

@@ -9,12 +9,12 @@ import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
-import Paginate from '../../components/Paginate';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Tabs from '../../components/Tabs';
 import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
+import InfiniteScroller from '../../components/InfiniteScroller';
 
 import { Heading } from '../../components/Header';
 
@@ -193,20 +193,18 @@ function Resources({ history }) {
       </Box>
 
       <Box px="4">
-        <Paginate
+        <InfiniteScroller
           canCreateContent={isAdmin}
           centerItems={!isDesktop}
           items={resourcesRenderedHostFiltered}
           newHelperLink="/resources/new"
         >
           {(resource) => (
-            <Box key={resource._id}>
-              <Box cursor="pointer" onClick={() => setModalResource(resource)}>
-                <ResourceItem isPortalHost={isPortalHost} resource={resource} t={t} />
-              </Box>
+            <Box key={resource._id} cursor="pointer" onClick={() => setModalResource(resource)}>
+              <ResourceItem isPortalHost={isPortalHost} resource={resource} t={t} />
             </Box>
           )}
-        </Paginate>
+        </InfiniteScroller>
       </Box>
 
       {modalResource && (
@@ -223,7 +221,7 @@ function Resources({ history }) {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="full"
+          size={isDesktop ? '6xl' : 'full'}
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
