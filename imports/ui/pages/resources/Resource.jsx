@@ -16,7 +16,6 @@ import { StateContext } from '../../LayoutContainer';
 import useChattery from '../../components/chattery/useChattery';
 import Tably from '../../components/Tably';
 import Chattery from '../../components/chattery/Chattery';
-import Breadcrumb from '../../components/Breadcrumb';
 
 function ResourcePage() {
   const { resourceId } = useParams();
@@ -88,7 +87,13 @@ function ResourcePage() {
     },
     {
       title: tc('documents.label'),
-      content: <DocumentsField contextType="resource" contextId={resource?._id} />,
+      content: (
+        <DocumentsField
+          contextType="resource"
+          contextId={resource?._id}
+          isAllowed={role === 'admin'}
+        />
+      ),
       path: `/resources/${resource._id}/documents`,
     },
   ];

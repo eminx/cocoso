@@ -67,7 +67,10 @@ function Work() {
       ),
       path: `/@${work.authorUsername}/works/${work._id}/info`,
     },
-    {
+  ];
+
+  if (work.additionalInfo?.length > 2) {
+    tabs.push({
       title: tc('labels.extra'),
       content: (
         <Box px="4">
@@ -75,12 +78,18 @@ function Work() {
         </Box>
       ),
       path: `/@${work.authorUsername}/works/${work._id}/extra`,
-    },
-  ];
+    });
+  }
 
   tabs.push({
     title: tc('documents.label'),
-    content: <DocumentsField contextType="works" contextId={work?._id} />,
+    content: (
+      <DocumentsField
+        contextType="works"
+        contextId={work?._id}
+        isAllowed={work.authorId === currentUser._id}
+      />
+    ),
     path: `/@${work.authorUsername}/works/${work._id}/documents`,
   });
 

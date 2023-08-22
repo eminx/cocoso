@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
@@ -8,13 +8,9 @@ import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import NiceList from '../../../components/NiceList';
-import { StateContext } from '../../../LayoutContainer';
 import { DocumentUploadHelper } from '../../../components/UploadHelpers';
 
-export default function DocumentsField({ contextType, contextId }) {
-  const { role, canCreateContent } = useContext(StateContext);
-  const isAdmin = role === 'admin';
-
+export default function DocumentsField({ contextType, contextId, isAllowed = false }) {
   const [documents, setDocuments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +45,7 @@ export default function DocumentsField({ contextType, contextId }) {
   };
 
   const removeDocument = async (documentId) => {
-    if (!isAdmin) {
+    if (!isAllowed) {
       message.error(tc('message.access.deny'));
       return;
     }
@@ -109,7 +105,7 @@ export default function DocumentsField({ contextType, contextId }) {
     <Box>
       <Box mb="4">
         {documents && documents.length > 0 ? (
-          <NiceList actionsDisabled={!isAdmin} list={documentsList}>
+          <NiceList actionsDisabled={!isAllowed} list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
                 <Code fontWeight="bold">
@@ -126,7 +122,7 @@ export default function DocumentsField({ contextType, contextId }) {
           </Text>
         )}
       </Box>
-      {canCreateContent && (
+      {isAllowed && (
         <Box>
           <Box mb="2">
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
