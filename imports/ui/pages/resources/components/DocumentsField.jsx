@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
@@ -9,11 +9,13 @@ import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import NiceList from '../../../components/NiceList';
 import { DocumentUploadHelper } from '../../../components/UploadHelpers';
+import { StateContext } from '../../../LayoutContainer';
 
 export default function DocumentsField({ contextType, contextId, isAllowed = false }) {
   const [documents, setDocuments] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { isDesktop } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
@@ -103,13 +105,18 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
 
   return (
     <Box>
-      <Box mb="4">
+      <Box mb="4" px={isDesktop ? '0' : '4'}>
         {documents && documents.length > 0 ? (
           <NiceList actionsDisabled={!isAllowed} list={documentsList}>
             {(document) => (
               <Box style={{ width: '100%' }}>
                 <Code fontWeight="bold">
-                  <CLink href={document.documentUrl} target="_blank" rel="noreferrer">
+                  <CLink
+                    color="blue.600"
+                    href={document.documentUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
                 </Code>

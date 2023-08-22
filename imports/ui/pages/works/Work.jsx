@@ -87,7 +87,7 @@ function Work() {
       <DocumentsField
         contextType="works"
         contextId={work?._id}
-        isAllowed={work.authorId === currentUser._id}
+        isAllowed={work?.authorId === currentUser?._id}
       />
     ),
     path: `/@${work.authorUsername}/works/${work._id}/documents`,
