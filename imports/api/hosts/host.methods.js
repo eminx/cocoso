@@ -27,6 +27,8 @@ Meteor.methods({
           city: values.city,
           country: values.country,
           menu: defaultMenu,
+          lang: 'en',
+          hue: Math.ceil(Math.random() * 360).toString(),
         },
         members: [
           {
