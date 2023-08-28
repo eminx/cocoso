@@ -6,6 +6,7 @@ import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import Works from '../works/work';
 import Processes from '../processes/process';
+import { call } from '../../ui/utils/shared';
 
 Meteor.methods({
   getUserInfo(username) {
@@ -397,6 +398,19 @@ Meteor.methods({
     } catch {
       throw new Meteor.Error(error);
     }
+  },
+
+  resetUserPassword(email) {
+    const host = getHost(this);
+    Accounts.urls.resetPassword = function (token) {
+      console.log(`https://${host}/reset-password/${token}`);
+      return `https://${host}/reset-password/${token}`;
+    };
+    Meteor.call('forgotPassword', email, (respond, error) => {
+      if (error) {
+        console.log(error);
+      }
+    });
   },
 
   deleteAccount() {

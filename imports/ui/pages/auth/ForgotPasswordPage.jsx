@@ -15,7 +15,7 @@ function ForgotPasswordPage() {
 
   const handleForgotPassword = async (email) => {
     try {
-      await call('forgotPassword', email);
+      await call('resetUserPassword', email);
       message.success(t('password.message.checkMail'));
       setEmailSent(true);
     } catch (error) {
