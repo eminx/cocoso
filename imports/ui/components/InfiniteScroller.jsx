@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { Box, Center, Flex, Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
@@ -26,17 +26,15 @@ function InfiniteScroller({
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentItems, setCurrentItems] = useState([items.slice()]);
   const { isDesktop } = useContext(StateContext);
 
-  useEffect(() => {
-    setCurrentItems(items.slice(0, itemsPerPage));
-  }, [items]);
+  const currentItems = useMemo(
+    () => items.slice(0, itemsPerPage * currentPage),
+    [items, currentPage]
+  );
 
   const handleLoad = () => {
     setTimeout(() => {
-      const newItems = items.slice(0, (currentPage + 1) * itemsPerPage);
-      setCurrentItems(newItems);
       setCurrentPage(currentPage + 1);
     }, 500);
   };
