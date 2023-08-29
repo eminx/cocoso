@@ -28,6 +28,7 @@ info:
     email: Epostadressen
     options: Välj önskade alternativ och bekräfta
     showfooter: Visa footern med länken för att visa communities i alla community-appar
+    showCommunities: Visa communities länkobjekt i menyn för att visa communities i alla community-appar
 
 menu:
   label: Meny

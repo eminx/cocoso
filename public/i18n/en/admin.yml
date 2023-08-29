@@ -28,6 +28,7 @@ info:
     email: Email address
     options: Select desired options and confirm
     showfooter: Show the footer bar with the link to view communities in all community apps
+    showCommunities: Show the Communities link item in the menu to view communities in all community apps
 
 menu:
   label: Menu

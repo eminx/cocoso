@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
-  Center,
   Flex,
   Heading,
   Input,

@@ -45,7 +45,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
 
-  const { pathname, search } = history.location;
+  const { pathname } = history.location;
 
   useEffect(() => {
     getCurrentHost();

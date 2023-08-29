@@ -11,6 +11,7 @@ Platform.schema = new SimpleSchema({
   portalHost: { type: String },
   logo: { type: String, optional: true },
   showFooterInAllCommunities: { type: Boolean, optional: true },
+  showCommunitiesInMenu: { type: Boolean, optional: true },
   createdAt: { type: Date },
 
   lastUpdatedAt: { type: Date, optional: true },

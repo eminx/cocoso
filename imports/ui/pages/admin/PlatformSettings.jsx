@@ -62,7 +62,7 @@ export default function PlatformSettings({ history }) {
     };
 
     try {
-      call('updatePlatformSettings', formValues);
+      await call('updatePlatformSettings', formValues);
       message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason);
@@ -113,6 +113,7 @@ export default function PlatformSettings({ history }) {
 
     const formValues = {
       showFooterInAllCommunities: values.showFooterInAllCommunities,
+      showCommunitiesInMenu: values.showCommunitiesInMenu,
     };
 
     try {
@@ -288,6 +289,10 @@ function PlatformOptions({ initialValues, onSubmit }) {
         <Flex align="center">
           <CSwitch mr="2" {...register('showFooterInAllCommunities')} />
           <Text fontSize="sm">{t('info.platform.showfooter')}</Text>
+        </Flex>
+        <Flex align="center">
+          <CSwitch mr="2" {...register('showCommunitiesInMenu')} />
+          <Text fontSize="sm">{t('info.platform.showCommunities')}</Text>
         </Flex>
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">

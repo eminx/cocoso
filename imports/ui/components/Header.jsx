@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading as CHeading, HStack, Image } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import UserPopup from './UserPopup';
@@ -9,13 +9,15 @@ import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
 
 function Header({ isSmallerLogo }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
+    useContext(StateContext);
   const [tc] = useTranslation('common');
 
   const { menu } = currentHost?.settings;
   const menuItems = menu.filter((item) => item.isVisible);
 
-  if (currentHost?.isPortalHost) {
+  if (platform.showCommunitiesInMenu) {
+    console.log(platform);
     menuItems.push({
       name: 'communities',
       label: tc('platform.communities'),

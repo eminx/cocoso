@@ -80,7 +80,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                 <Box p="4">
                   <MenuContent
                     menuItems={menuItems}
-                    isPortalHost={currentHost?.isPortalHost}
+                    platform={platform}
                     tc={tc}
                     onToggle={onToggle}
                   />
@@ -145,7 +145,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   );
 }
 
-function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
+function MenuContent({ menuItems, platform, tc, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -156,6 +156,8 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
     }
     return item.route === pathname;
   };
+
+  const showPlatformItems = platform?.showCommunitiesInMenu;
 
   return (
     <VStack align="flex-start">
@@ -176,19 +178,19 @@ function MenuContent({ menuItems, isPortalHost, platform, tc, onToggle }) {
           </Link>
         );
       })}
-      {isPortalHost && (
+      {showPlatformItems && (
         <Divider
           borderColor="gray.400"
           my="4"
           style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
         />
       )}
-      {isPortalHost && (
+      {showPlatformItems && (
         <Text color="brand.50" fontSize="xs">
           <em>{tc('domains.platform', { platform: platform?.name })}</em>
         </Text>
       )}
-      {isPortalHost && (
+      {showPlatformItems && (
         <Link
           key="/communities"
           style={{ textShadow: 'none' }}

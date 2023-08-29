@@ -28,6 +28,7 @@ info:
     email: Eposta adresi
     options: İstediğin seçenekleri seç ve onayla
     showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
+    showCommunities: Tüm topluluk uygulamalarında toplulukları görüntülemek için menüdeki Topluluklar bağlantı öğesi gösterilsin
 
 menu:
   label: Menü
