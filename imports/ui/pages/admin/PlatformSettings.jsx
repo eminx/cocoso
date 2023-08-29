@@ -201,11 +201,11 @@ export default function PlatformSettings({ history }) {
 
   return (
     <>
-      <Box>
+      <Box px="4">
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
       <Box>
-        <Box p="6">
+        <Box p="4">
           <Heading color="gray.800" size="lg">
             <Text as="span" fontWeight="normal">
               {tc('menu.admin.platform')}
@@ -213,7 +213,7 @@ export default function PlatformSettings({ history }) {
           </Heading>
         </Box>
 
-        <Box px="2">
+        <Box px="4">
           <Tabs index={tabIndex} tabs={tabs} />
 
           <Switch history={history}>
