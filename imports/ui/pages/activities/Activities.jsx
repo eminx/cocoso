@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -97,8 +97,6 @@ function Activities({ history }) {
     getActivities();
   }, []);
 
-  const isPortalHost = currentHost.isPortalHost;
-
   const getActivities = async () => {
     try {
       if (isPortalHost) {
@@ -117,6 +115,8 @@ function Activities({ history }) {
       setLoading(false);
     }
   };
+
+  const isPortalHost = currentHost.isPortalHost;
 
   const getFuturePublicActivities = () => {
     if (!activities) {
@@ -173,6 +173,12 @@ function Activities({ history }) {
     return activitiesRendered.filter((activity) => activity.host === hostFilterValue.host);
   };
 
+  const activitiesRendered = useMemo(() => {
+    const activitiesFilteredSorted = getActivitiesFilteredSorted();
+    const activitiesHostFiltered = getActivitiesRenderedHostFiltered(activitiesFilteredSorted);
+    return activitiesHostFiltered;
+  }, [activities, filterWord, hostFilterValue, showPast, sorterValue]);
+
   if (loading) {
     return (
       <Box width="100%" mb="50px">
@@ -222,9 +228,6 @@ function Activities({ history }) {
     setSorterValue,
   };
 
-  const activitiesRendered = getActivitiesFilteredSorted();
-  const activitiesRenderedHostFiltered = getActivitiesRenderedHostFiltered(activitiesRendered);
-
   const allHostsFiltered = allHosts?.filter((host) => {
     return activitiesRendered.some((act) => act.host === host.host);
   });
@@ -260,7 +263,7 @@ function Activities({ history }) {
         <InfiniteScroller
           canCreateContent={canCreateContent}
           centerItems
-          items={activitiesRenderedHostFiltered}
+          items={activitiesRendered}
           newHelperLink="/activities/new"
         >
           {(activity) => {
