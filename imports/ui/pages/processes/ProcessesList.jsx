@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -136,23 +136,26 @@ export default function ProcessesList({ history }) {
     }
   };
 
-  if (loading || !processes || !processes.length === 0) {
-    return <Loader />;
-  }
-
-  const getProcessesRenderedHostFiltered = (processesRendered) => {
+  const getProcessesHostFiltered = (processesRendered) => {
     if (!isPortalHost || !hostFilterValue) {
       return processesRendered;
     }
     return processesRendered.filter((process) => process.host === hostFilterValue.host);
   };
 
-  const processesRendered = getFilteredProcesses();
-  const processesRenderedHostFiltered = getProcessesRenderedHostFiltered(processesRendered);
+  const processesRendered = useMemo(() => {
+    const processesFiltered = getFilteredProcesses();
+    const processesHostFiltered = getProcessesHostFiltered(processesFiltered);
+    return processesHostFiltered;
+  }, [filter, filterWord, hostFilterValue, sorterValue, processes]);
 
   const allHostsFiltered = allHosts?.filter((host) => {
     return processesRendered.some((process) => process.host === host.host);
   });
+
+  if (loading || !processes || !processes.length === 0) {
+    return <Loader />;
+  }
 
   const handleActionButtonClick = () => {
     if (modalProcess.host === currentHost.host) {
@@ -227,7 +230,7 @@ export default function ProcessesList({ history }) {
         <InfiniteScroller
           canCreateContent={canCreateContent}
           centerItems={!isDesktop}
-          items={processesRenderedHostFiltered}
+          items={processesRendered}
           newHelperLink="/processes/new"
         >
           {(process) => (
