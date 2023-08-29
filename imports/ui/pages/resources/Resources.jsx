@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge, Box, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -36,7 +36,7 @@ function Resources({ history }) {
     getResources();
   }, []);
 
-  const isPortalHost = currentHost.isPortalHost;
+  const isPortalHost = currentHost?.isPortalHost;
 
   const getResources = async () => {
     try {
@@ -52,10 +52,6 @@ function Resources({ history }) {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   const getComboFilteredResources = () => {
     return resources.filter((r) => {
@@ -95,6 +91,27 @@ function Resources({ history }) {
       }
     });
   };
+
+  const getResourcesHostFiltered = (items) => {
+    if (!isPortalHost || !hostFilterValue) {
+      return items;
+    }
+    return items.filter((resource) => resource.host === hostFilterValue.host);
+  };
+
+  const resourcesRendered = useMemo(() => {
+    const resourcesSorted = getResourcesSorted();
+    const resourcesHostFiltered = getResourcesHostFiltered(resourcesSorted);
+    return resourcesHostFiltered;
+  }, [combo, filterWord, hostFilterValue, resources, sorterValue]);
+
+  const allHostsFiltered = allHosts?.filter((host) => {
+    return resourcesRendered.some((resource) => resource.host === host.host);
+  });
+
+  if (loading) {
+    return <Loader />;
+  }
 
   const handleActionButtonClick = () => {
     if (modalResource.host === currentHost.host) {
@@ -147,24 +164,10 @@ function Resources({ history }) {
     }
   };
 
-  const getResourcesRenderedHostFiltered = (resourcesRendered) => {
-    if (!isPortalHost || !hostFilterValue) {
-      return resourcesRendered;
-    }
-    return resourcesRendered.filter((resource) => resource.host === hostFilterValue.host);
-  };
-
   const handleCloseModal = () => {
     setCopied(false);
     setModalResource(null);
   };
-
-  const resourcesRendered = getResourcesSorted();
-  const resourcesRenderedHostFiltered = getResourcesRenderedHostFiltered(resourcesRendered);
-
-  const allHostsFiltered = allHosts?.filter((host) => {
-    return resourcesRendered.some((resource) => resource.host === host.host);
-  });
 
   const isAdmin = role === 'admin';
 
@@ -196,7 +199,7 @@ function Resources({ history }) {
         <InfiniteScroller
           canCreateContent={isAdmin}
           centerItems={!isDesktop}
-          items={resourcesRenderedHostFiltered}
+          items={resourcesRendered}
           newHelperLink="/resources/new"
         >
           {(resource) => (
@@ -256,7 +259,6 @@ function ResourceItem({ isPortalHost, resource, t }) {
           )}{' '}
           <Badge>{!resource.isBookable && t('cards.isNotBookable')}</Badge>
         </Text>
-        {/* <Text fontSize="xs">{moment(resource.createdAt).format('D MMM YYYY')}</Text> */}
         {isPortalHost && (
           <Flex justify="flex-start">
             <CTag border="1px solid #2d2d2d" mt="2">

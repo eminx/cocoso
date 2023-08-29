@@ -17,7 +17,6 @@ function Header({ isSmallerLogo }) {
   const menuItems = menu.filter((item) => item.isVisible);
 
   if (platform.showCommunitiesInMenu) {
-    console.log(platform);
     menuItems.push({
       name: 'communities',
       label: tc('platform.communities'),
