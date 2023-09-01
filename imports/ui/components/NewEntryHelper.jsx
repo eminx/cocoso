@@ -32,7 +32,7 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = isMasonry ? 'auto' : '375px';
+  const w = isMasonry ? 'auto' : '355px';
   const h = isMasonry ? '320px' : '315px';
 
   return (
