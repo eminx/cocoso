@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Box, Button, Center, VStack } from '@chakra-ui/react';
+import i18n from 'i18next';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
@@ -119,7 +120,7 @@ class EditActivity extends PureComponent {
   setUploadableImage = (files) => {
     const { tc } = this.props;
     if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
+      message.error(i18n.t('common:plugins.fileDropper.single'));
       return;
     }
     const theImageFile = files[0];
@@ -183,9 +184,11 @@ class EditActivity extends PureComponent {
 
     try {
       await call('updateActivity', activity._id, values);
-      this.setState({ isSuccess: true });
-      message.success(tc('message.success.update'));
+      this.setState({ isSuccess: true }, () => {
+        message.success(i18n.t('common:message.success.update'));
+      });
     } catch (error) {
+      console.log(error);
       message.error(error.error || error.reason);
       this.setState({
         isLoading: false,
@@ -207,7 +210,7 @@ class EditActivity extends PureComponent {
       } else {
         history.push('/calendar');
       }
-      message.success(tc('message.success.remove'));
+      message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -321,7 +324,7 @@ class EditActivity extends PureComponent {
     }
 
     if (activity.authorId !== currentUser._id && role !== 'admin') {
-      return <Alert message={tc('message.access.deny')} />;
+      return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
     const {
@@ -347,7 +350,7 @@ class EditActivity extends PureComponent {
         link: `/activities/${activity._id}`,
       },
       {
-        label: tc('actions.update'),
+        label: i18n.t('common:actions.update'),
         link: null,
       },
     ];
@@ -398,19 +401,19 @@ class EditActivity extends PureComponent {
 
           <Center p="4">
             <Button colorScheme="red" size="sm" variant="ghost" onClick={this.showDeleteModal}>
-              {tc('actions.remove')}
+              {i18n.t('common:actions.remove')}
             </Button>
           </Center>
 
           <ConfirmModal
-            title={tc('actions.submit')}
+            title={i18n.t('common:actions.submit')}
             visible={isDeleteModalOn}
             onConfirm={this.deleteActivity}
             onCancel={this.hideDeleteModal}
-            confirmText={tc('modals.confirm.delete.yes')}
+            confirmText={i18n.t('common:modals.confirm.delete.yes')}
           >
-            {tc('modals.confirm.delete.body', {
-              domain: tc('domains.activity').toLowerCase(),
+            {i18n.t('common:modals.confirm.delete.body', {
+              domain: i18n.t('common:domains.activity').toLowerCase(),
             })}
           </ConfirmModal>
         </Template>

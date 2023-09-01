@@ -296,7 +296,13 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    if (!user || !isContributorOrAdmin(user, currentHost)) {
+    if (!user) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    const theActivity = Activities.findOne(activityId);
+
+    if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
 
