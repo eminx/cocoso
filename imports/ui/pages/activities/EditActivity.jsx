@@ -205,13 +205,14 @@ class EditActivity extends PureComponent {
 
     try {
       await call('deleteActivity', activity._id);
+      message.success(tc('message.success.remove'));
       if (activity.isPublicActivity) {
         history.push('/activities');
       } else {
         history.push('/calendar');
       }
-      message.success(tc('message.success.remove'));
     } catch (error) {
+      console.log(error);
       this.setState({
         isLoading: false,
         isError: true,

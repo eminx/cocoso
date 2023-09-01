@@ -274,6 +274,7 @@ Meteor.methods({
     }
 
     const theActivity = Activities.findOne(activityId);
+
     if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('You are not allowed!');
     }
@@ -304,11 +305,6 @@ Meteor.methods({
 
     if (user._id !== theActivity.authorId && !isAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
-    }
-
-    const activityToDelete = Activities.findOne(activityId);
-    if (activityToDelete.authorId !== user._id) {
-      throw new Meteor.Error('You are not allowed!');
     }
 
     try {
