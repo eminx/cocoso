@@ -50,14 +50,14 @@ function InfiniteScroller({
         loader={
           isDesktop && !isMasonry ? (
             <Flex>
-              <Skeleton endColor="brand.500" w="375px" h="315px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="375px" h="315px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="375px" h="315px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
             </Flex>
           ) : !isMasonry ? (
             <Box>
               <Center>
-                <Skeleton endColor="brand.500" w="375px" h="315px" mt="8" />
+                <Skeleton endColor="brand.500" w="355px" h="315px" mt="8" />
               </Center>
             </Box>
           ) : null
