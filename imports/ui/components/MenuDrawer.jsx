@@ -79,6 +79,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
                 <Box p="4">
                   <MenuContent
+                    currentHost={currentHost}
                     menuItems={menuItems}
                     platform={platform}
                     tc={tc}
@@ -129,7 +130,13 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         onClose={onToggle}
       >
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent menuItems={menuItems} platform={platform} tc={tc} onToggle={onToggle} />
+          <MenuContent
+            currentHost={currentHost}
+            menuItems={menuItems}
+            platform={platform}
+            tc={tc}
+            onToggle={onToggle}
+          />
           <Box color="brand.100" mt="4">
             <MenuFooter />
           </Box>
@@ -139,7 +146,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   );
 }
 
-function MenuContent({ menuItems, platform, tc, onToggle }) {
+function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -155,7 +162,10 @@ function MenuContent({ menuItems, platform, tc, onToggle }) {
 
   return (
     <VStack align="flex-start">
-      <Divider borderColor="gray.400" mb="2" />
+      <Text color="brand.50" fontSize="xs" mt="2">
+        <em>{currentHost?.settings?.name}</em>
+      </Text>
+
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         return (
@@ -172,36 +182,31 @@ function MenuContent({ menuItems, platform, tc, onToggle }) {
           </Link>
         );
       })}
-      {showPlatformItems && (
-        <Divider
-          borderColor="gray.400"
-          my="4"
-          style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
-        />
-      )}
-      {showPlatformItems && (
-        <Text color="brand.50" fontSize="xs">
-          <em>{tc('domains.platform', { platform: platform?.name })}</em>
-        </Text>
-      )}
-      {showPlatformItems && (
-        <Link
-          key="/communities"
-          style={{ textShadow: 'none' }}
-          to="/communities"
-          onClick={onToggle}
-        >
-          <Box py="1">
-            <Text
-              _hover={{ textDecoration: 'underline' }}
-              color="brand.50"
-              fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
-            >
-              {tc('platform.communities')}
-            </Text>
-          </Box>
-        </Link>
-      )}
+      <Box pt="8">
+        {showPlatformItems && (
+          <Text color="brand.50" fontSize="xs" mb="2">
+            <em>{platform?.name}</em>
+          </Text>
+        )}
+        {showPlatformItems && (
+          <Link
+            key="/communities"
+            style={{ textShadow: 'none' }}
+            to="/communities"
+            onClick={onToggle}
+          >
+            <Box py="1">
+              <Text
+                _hover={{ textDecoration: 'underline' }}
+                color="brand.50"
+                fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
+              >
+                {tc('platform.communities')}
+              </Text>
+            </Box>
+          </Link>
+        )}
+      </Box>
     </VStack>
   );
 }
