@@ -129,13 +129,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         onClose={onToggle}
       >
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent
-            menuItems={menuItems}
-            isPortalHost={currentHost?.isPortalHost}
-            platform={platform}
-            tc={tc}
-            onToggle={onToggle}
-          />
+          <MenuContent menuItems={menuItems} platform={platform} tc={tc} onToggle={onToggle} />
           <Box color="brand.100" mt="4">
             <MenuFooter />
           </Box>

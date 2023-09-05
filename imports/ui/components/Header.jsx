@@ -49,7 +49,9 @@ function Header({ isSmallerLogo }) {
             />
           )}
           <UserPopup currentUser={currentUser} />
-          {!isDesktop && <MenuDrawer currentHost={currentHost} isDesktop={false} />}
+          {!isDesktop && (
+            <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
+          )}
         </HStack>
       </Flex>
     </Box>
