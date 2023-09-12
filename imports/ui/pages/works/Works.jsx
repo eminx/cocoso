@@ -69,7 +69,7 @@ function Works({ history }) {
 
   const getSortedWorks = () => {
     if (sorterValue === 'name') {
-      return works.sort((a, b) => a.title.localeCompare(b.title));
+      return works.sort((a, b) => a.title?.localeCompare(b.title));
     }
     return works.sort(compareByDate);
   };
@@ -221,7 +221,7 @@ function Works({ history }) {
                   categoriesAssignedToWorks.find((cat) => cat?.label === work.category?.label)
                     ?.color
                 }
-                host={allHosts.find((h) => h.host === work.host)?.name}
+                host={isPortalHost && allHosts?.find((h) => h.host === work.host)?.name}
                 imageUrl={work.images && work.images[0]}
                 tag={work.category?.label}
                 title={work.title}
@@ -236,7 +236,7 @@ function Works({ history }) {
           actionButtonLabel={
             isPortalHost
               ? tc('actions.toThePage', {
-                  hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
+                  hostName: allHosts?.find((h) => h.host === modalWork.host)?.name,
                 })
               : tc('actions.entryPage')
           }
@@ -262,7 +262,7 @@ function Works({ history }) {
             subTitle={modalWork.shortDescription}
             tags={[
               modalWork.category?.label,
-              isPortalHost ? allHosts.find((h) => h.host === modalWork.host)?.name : null,
+              isPortalHost ? allHosts?.find((h) => h.host === modalWork.host)?.name : null,
             ]}
             title={modalWork.title}
           />
