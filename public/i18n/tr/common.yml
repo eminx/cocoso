@@ -10,7 +10,7 @@ langs:
 
 # ALL ACTION BUTTON LABELS
 actions:
-  create: YENİ
+  create: YENİ İÇERİK
   update: Düzenle
   remove: Sil
   submit: Onayla

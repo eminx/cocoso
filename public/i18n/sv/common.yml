@@ -10,7 +10,7 @@ langs:
 
 # ALL ACTION BUTTON LABELS
 actions:
-  create: Ny
+  create: Nytt inlägg
   update: Redigera
   remove: Radera
   submit: Bekräfta

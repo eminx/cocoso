@@ -10,7 +10,7 @@ langs:
 
 # ALL ACTION BUTTON LABELS
 actions:
-  create: New
+  create: New Entry
   update: Edit
   remove: Delete
   submit: Confirm

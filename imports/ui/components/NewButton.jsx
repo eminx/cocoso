@@ -86,7 +86,7 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
           as={IconButton}
           bg="brand.600"
           borderColor="#fff"
-          borderRadius="8px"
+          borderRadius="50%"
           borderWidth="2px"
           h="48px"
           icon={<AddIcon color="brand.50" />}
@@ -128,9 +128,11 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
       </Menu>
       <Center position="relative">
         <Text
+          color="brand.800"
           fontSize="xs"
           fontWeight="bold"
-          color="brand.800"
+          lineHeight="1"
+          mt="1"
           position="absolute"
           textAlign="center"
           textTransform="uppercase"
