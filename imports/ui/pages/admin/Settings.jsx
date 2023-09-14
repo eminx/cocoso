@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Divider, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Divider, Text, Textarea } from '@chakra-ui/react';
+import ReactQuill from '../../components/Quill';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -45,7 +46,7 @@ export default function Settings({ history }) {
     return <Loader />;
   }
 
-  const handleFormSubmit = async (values) => {
+  const updateHostSettings = async (values) => {
     if (!currentUser || role !== 'admin') {
       message.error(tc('message.access.deny'));
       return;
@@ -131,7 +132,7 @@ export default function Settings({ history }) {
           <Text mb="3" fontWeight="bold">
             {t('info.info')}
           </Text>
-          <SettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
+          <SettingsForm initialValues={localSettings} onSubmit={updateHostSettings} />
         </AlphaContainer>
       ),
     },
@@ -154,11 +155,32 @@ export default function Settings({ history }) {
       ),
     },
     {
-      title: 'Color',
+      title: t('settings.tabs.color'),
       path: '/admin/settings/color',
       content: (
         <AlphaContainer>
           <ColorPicker />
+        </AlphaContainer>
+      ),
+    },
+    {
+      title: t('settings.tabs.footer'),
+      path: '/admin/settings/footer',
+      content: (
+        <AlphaContainer>
+          <Text mb="4">{t('info.footer')}</Text>
+          <ReactQuill
+            className="ql-editor-text-align-center"
+            placeholder={t('pages.form.description.holder')}
+            value={localSettings.footer}
+            onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
+          />
+
+          <Center p="4">
+            <Button onClick={() => updateHostSettings(localSettings)}>
+              {tc('actions.submit')}
+            </Button>
+          </Center>
         </AlphaContainer>
       ),
     },

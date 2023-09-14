@@ -11,6 +11,8 @@ settings:
     menuVisibility: Görünürlük
     menuOrder: Sıra
     options: Seçenekler
+    color: Renk
+    footer: Footer
 
 logo:
   label: Logo
@@ -29,6 +31,7 @@ info:
     options: İstediğin seçenekleri seç ve onayla
     showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
     showCommunities: Tüm topluluk uygulamalarında toplulukları görüntülemek için menüdeki Topluluklar bağlantı öğesi gösterilsin
+  footer: Burada zengin metin editörüyle footer oluşturabilirsin
 
 menu:
   label: Menü

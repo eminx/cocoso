@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 import Favicon from 'react-favicon';
+import renderHTML from 'react-render-html';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -211,7 +212,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
                 {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
                   <Box>
-                    <Box bg="brand.800" p="4">
+                    <Box bg="brand.100" p="4">
                       {!currentHost.isPortalHost && (
                         <a href={`https://${platform?.portalHost}`}>
                           <Center p="2">
@@ -220,12 +221,12 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
                         </a>
                       )}
                       <Center>
-                        <Box textAlign="center" color="gray.200">
-                          <Text color="brand.100" fontSize="lg" fontWeight="bold">
+                        <Box textAlign="center">
+                          <Text color="brand.800" fontSize="lg" fontWeight="bold">
                             {platform?.name}
                           </Text>
                           <CLink
-                            color="brand.100"
+                            color="brand.500"
                             fontWeight="bold"
                             onClick={() => setPlatformDrawer(true)}
                           >
@@ -254,11 +255,12 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 }
 
 function Footer({ currentHost, tc }) {
-  if (!currentHost) {
+  if (!currentHost || !currentHost.settings) {
     return null;
   }
 
   const activeMenu = currentHost.settings?.menu?.filter((item) => item.isVisible);
+  const { settings } = currentHost;
 
   return (
     <Box w="100%" bg="brand.50" color="brand.900" pt="4">
@@ -281,17 +283,26 @@ function Footer({ currentHost, tc }) {
                 <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
               </Box>
             </Center>
-            <Heading my="2" size="md">
-              {currentHost.settings?.name}
+            <Heading mb="2" mt="4" size="md">
+              {settings.name}
             </Heading>
-            <Text fontSize="sm">
-              {currentHost.settings?.address}
-              {', '} {currentHost.settings?.city}
-            </Text>
-            <Text fontSize="sm">{currentHost.settings?.email}</Text>
-            <Text fontSize="sm" fontWeight="bold">
-              {currentHost.host}
-            </Text>
+            <Center>
+              {settings.footer ? (
+                <Box
+                  bg="brand.100"
+                  className="text-content"
+                  maxWidth="480px"
+                  pb="2"
+                  pt="4"
+                  textAlign="center"
+                  w="100%"
+                >
+                  {renderHTML(settings?.footer)}
+                </Box>
+              ) : (
+                <OldFooter host={currentHost.host} settings={settings} />
+              )}
+            </Center>
             <Box mt="4">
               <Link to="/terms-&-privacy-policy">
                 <CLink as="span" fontSize="sm">
@@ -307,6 +318,21 @@ function Footer({ currentHost, tc }) {
           </Box>
         </Flex>
       </Box>
+    </Box>
+  );
+}
+
+function OldFooter({ host, settings }) {
+  return (
+    <Box border="1px solid #fff" textAlign="center">
+      <Text fontSize="sm">
+        {settings?.address}
+        {', '} {settings?.city}
+      </Text>
+      <Text fontSize="sm">{settings?.email}</Text>
+      <Text fontSize="sm" fontWeight="bold">
+        {host}
+      </Text>
     </Box>
   );
 }

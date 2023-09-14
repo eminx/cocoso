@@ -45,3 +45,7 @@
   background-color: #fff;
   border-color: #fff;
 }
+
+.quill.ql-editor-text-align-center .ql-editor {
+  text-align: center;
+}

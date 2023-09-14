@@ -11,6 +11,8 @@ settings:
     menuVisibility: Synlighet
     menuOrder: Ordning
     options: Alternativ
+    color: Färg
+    footer: Footer
 
 logo:
   label: Logo
@@ -29,6 +31,7 @@ info:
     options: Välj önskade alternativ och bekräfta
     showfooter: Visa footern med länken för att visa communities i alla community-appar
     showCommunities: Visa communities länkobjekt i menyn för att visa communities i alla community-appar
+  footer: Här kan du komponera footern med RTF-redigeraren
 
 menu:
   label: Meny

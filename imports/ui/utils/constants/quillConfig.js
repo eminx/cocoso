@@ -10,6 +10,6 @@ const editorModules = {
   },
 };
 
-const editorFormats = ['bold', 'italic', 'underline', 'list', 'link', 'bullet'];
+const editorFormats = ['align', 'bold', 'bullet', 'italic', 'link', 'list', 'underline'];
 
 export { editorModules, editorFormats };

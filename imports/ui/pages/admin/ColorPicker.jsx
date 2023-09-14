@@ -32,9 +32,7 @@ function ColorPicker() {
   return (
     <>
       <Box>
-        <Text fontSize="lg" mb="4">
-          {t('color.info')}
-        </Text>
+        <Text mb="4">{t('color.info')}</Text>
       </Box>
       <Center py="4" position="relative">
         <HuePicker color={color} height="20px" width="100%" onChange={handleChange} />

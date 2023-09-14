@@ -11,6 +11,8 @@ settings:
     menuVisibility: Visibility
     menuOrder: Order
     options: Options
+    color: Color
+    footer: Footer
 
 logo:
   label: Logo
@@ -29,6 +31,7 @@ info:
     options: Select desired options and confirm
     showfooter: Show the footer bar with the link to view communities in all community apps
     showCommunities: Show the Communities link item in the menu to view communities in all community apps
+  footer: Here you can compose the footer with the rich text editor
 
 menu:
   label: Menu

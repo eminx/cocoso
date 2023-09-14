@@ -25,7 +25,7 @@ function FeedbackForm() {
 
   return (
     <Flex align="center" justify="space-between" p="2">
-      <Button colorScheme="gray.600" variant="ghost" onClick={() => setShowFeedbackModal(true)}>
+      <Button color="brand.500" variant="link" onClick={() => setShowFeedbackModal(true)}>
         {tc('modals.feedback.label')}
       </Button>
 
