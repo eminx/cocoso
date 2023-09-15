@@ -31,7 +31,7 @@ export default function PlatformSettings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, platform } = useContext(StateContext);
+  const { currentUser, platform, getPlatform } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -62,6 +62,7 @@ export default function PlatformSettings({ history }) {
 
     try {
       await call('updatePlatformSettings', values);
+      await getPlatform();
       message.success(tc('message.success.update', { domain: 'Platform settings' }));
     } catch (error) {
       message.error(error.reason);

@@ -187,6 +187,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             role,
             userLoading,
             getCurrentHost,
+            getPlatform,
             setHue,
             setSelectedHue,
           }}
