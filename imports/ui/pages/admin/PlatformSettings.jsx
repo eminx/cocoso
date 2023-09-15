@@ -199,7 +199,7 @@ export default function PlatformSettings({ history }) {
       ),
     },
     {
-      title: t('settings.tabs.footer'),
+      title: t('settings.tabs.topbar'),
       path: '/superadmin/platform/settings/topbar',
       content: (
         <AlphaContainer>
