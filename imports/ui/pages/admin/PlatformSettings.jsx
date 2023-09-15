@@ -11,6 +11,7 @@ import {
   Stack,
   Switch as CSwitch,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
@@ -22,6 +23,7 @@ import FormField from '../../components/FormField';
 import FileDropper from '../../components/FileDropper';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
+import ReactQuill from '../../components/Quill';
 
 export default function PlatformSettings({ history }) {
   const [localSettings, setLocalSettings] = useState(null);
@@ -50,24 +52,61 @@ export default function PlatformSettings({ history }) {
     return <Loader />;
   }
 
-  const handleFormSubmit = async (values) => {
+  const updatePlatformSettings = async (values) => {
     if (!currentUser || !currentUser.isSuperAdmin) {
       message.error(tc('message.access.deny'));
       return;
     }
 
+    setLoading(true);
+
+    try {
+      await call('updatePlatformSettings', values);
+      message.success(tc('message.success.update', { domain: 'Platform settings' }));
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFormSubmit = (values) => {
     const formValues = {
       name: values.name,
       email: values.email,
     };
 
-    try {
-      await call('updatePlatformSettings', formValues);
-      message.success(tc('message.success.update'));
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
-    }
+    updatePlatformSettings(formValues);
+  };
+
+  const handleOptionsSubmit = (values) => {
+    const formValues = {
+      showFooterInAllCommunities: values.showFooterInAllCommunities,
+      showCommunitiesInMenu: values.showCommunitiesInMenu,
+    };
+
+    updatePlatformSettings(formValues);
+  };
+
+  const handleTopbarChange = (key, value) => {
+    const newTopbar = {
+      ...localSettings.topbar,
+    };
+    newTopbar[key] = value;
+
+    setLocalSettings({
+      ...localSettings,
+      topbar: newTopbar,
+    });
+  };
+
+  const handleTopbarSubmit = () => {
+    const formValues = {
+      topbar: localSettings.topbar,
+    };
+
+    updatePlatformSettings(formValues);
   };
 
   const setUploadableImage = (files) => {
@@ -102,26 +141,6 @@ export default function PlatformSettings({ history }) {
       message.error(error.reason);
     } finally {
       setUploading(false);
-    }
-  };
-
-  const handleOptionsSubmit = (values) => {
-    if (!currentUser || !currentUser.isSuperAdmin) {
-      message.error(tc('message.access.deny'));
-      return;
-    }
-
-    const formValues = {
-      showFooterInAllCommunities: values.showFooterInAllCommunities,
-      showCommunitiesInMenu: values.showCommunitiesInMenu,
-    };
-
-    try {
-      call('updatePlatformSettings', formValues);
-      message.success(tc('message.success.update'));
-    } catch (error) {
-      message.error(error.reason);
-      console.log(error);
     }
   };
 
@@ -179,6 +198,41 @@ export default function PlatformSettings({ history }) {
         </AlphaContainer>
       ),
     },
+    {
+      title: t('settings.tabs.footer'),
+      path: '/superadmin/platform/settings/topbar',
+      content: (
+        <AlphaContainer>
+          <Text fontWeight="bold" mb="3" w="100%">
+            {t('info.platform.topbar.label')}
+          </Text>
+          <VStack spacing="4">
+            <Box w="100%">
+              <Text fontSize="sm">{t('info.platform.topbar.closed')}</Text>
+              <Input
+                value={localSettings.topbar?.closed}
+                onChange={(event) => {
+                  event.preventDefault();
+                  handleTopbarChange('closed', event.target.value);
+                }}
+              />
+            </Box>
+            <Box w="100%">
+              <Text fontSize="sm">{t('info.platform.topbar.open')}</Text>
+              <ReactQuill
+                value={localSettings.topbar?.open}
+                onChange={(value) => handleTopbarChange('open', value)}
+              />
+            </Box>
+            <Flex justify="flex-end" w="100%">
+              <Button type="submit" onClick={() => handleTopbarSubmit(localSettings)}>
+                {tc('actions.submit')}
+              </Button>
+            </Flex>
+          </VStack>
+        </AlphaContainer>
+      ),
+    },
   ];
 
   const pathname = history?.location?.pathname;
@@ -213,23 +267,27 @@ export default function PlatformSettings({ history }) {
           </Heading>
         </Box>
 
-        <Box px="4">
-          <Tabs index={tabIndex} tabs={tabs} />
+        <Box>
+          <Box px="4">
+            <Tabs index={tabIndex} tabs={tabs} />
+          </Box>
 
-          <Switch history={history}>
-            {tabs.map((tab) => (
-              <Route
-                key={tab.title}
-                exact
-                path={tab.path}
-                render={(props) => (
-                  <Box {...props} pt="2">
-                    {tab.content}
-                  </Box>
-                )}
-              />
-            ))}
-          </Switch>
+          <Box pt="4">
+            <Switch history={history}>
+              {tabs.map((tab) => (
+                <Route
+                  key={tab.title}
+                  exact
+                  path={tab.path}
+                  render={(props) => (
+                    <Box {...props} pt="2">
+                      {tab.content}
+                    </Box>
+                  )}
+                />
+              ))}
+            </Switch>
+          </Box>
         </Box>
       </Box>
     </>

@@ -31,6 +31,10 @@ info:
     options: Select desired options and confirm
     showfooter: Show the footer bar with the link to view communities in all community apps
     showCommunities: Show the Communities link item in the menu to view communities in all community apps
+    topbar:
+      label: Platform Topbar
+      closed: Text when closed
+      open: Text when opened
   footer: Here you can compose the footer with the rich text editor
 
 menu:

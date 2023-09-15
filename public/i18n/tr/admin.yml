@@ -31,6 +31,10 @@ info:
     options: İstediğin seçenekleri seç ve onayla
     showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
     showCommunities: Tüm topluluk uygulamalarında toplulukları görüntülemek için menüdeki Topluluklar bağlantı öğesi gösterilsin
+    topbar:
+      label: Platform tepe barı
+      closed: Kapalı haldeki metin
+      open: Açık haldeki metin
   footer: Burada zengin metin editörüyle footer oluşturabilirsin
 
 menu:

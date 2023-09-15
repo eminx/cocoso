@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionButton,
@@ -11,10 +11,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
 
 export default function PortalHostIndicator({ platform }) {
-  const { t } = useTranslation('hosts');
+  const { topbar } = platform;
 
   return (
     <Box bg="brand.800">
@@ -27,24 +27,25 @@ export default function PortalHostIndicator({ platform }) {
             justifyContent="center"
             p="1"
             w="100%"
-            _expanded={{ bg: 'gray.50', color: 'hsl(300deg 20% 20%)' }}
+            _hover={{ bg: 'brand.600' }}
+            _expanded={{ bg: 'brand.50', color: 'hsl(300deg 20% 20%)' }}
           >
             <Center>
               <Flex alignItems="center">
                 <Text fontWeight="bold" mr="2">
-                  {t('portalHost.indicatorShortText', { platform: platform?.name })}
+                  {topbar?.closed}
                 </Text>
                 <InfoOutlineIcon />
               </Flex>
             </Center>
           </AccordionButton>
-          <AccordionPanel bg="gray.100" color="hsl(300deg 20% 20%)" pb={4}>
+          <AccordionPanel bg="brand.50" color="hsl(300deg 20% 20%)" pb={4}>
             <Center>
-              <Container>
-                <Text fontSize="sm" textAlign="center">
-                  {t('portalHost.indicatorLongText', { platform: platform?.name })}
-                </Text>
-              </Container>
+              {topbar.open && (
+                <Container fontSize="sm" textAlign="center">
+                  {renderHTML(topbar.open)}
+                </Container>
+              )}
             </Center>
           </AccordionPanel>
         </AccordionItem>
