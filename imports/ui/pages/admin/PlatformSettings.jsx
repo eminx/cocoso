@@ -37,7 +37,7 @@ export default function PlatformSettings({ history }) {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    if (!currentUser || !currentUser.isSuperAdmin) {
+    if (!platform || !currentUser || !currentUser.isSuperAdmin) {
       return;
     }
     setLocalSettings(platform);
@@ -91,7 +91,7 @@ export default function PlatformSettings({ history }) {
 
   const handleTopbarChange = (key, value) => {
     const newTopbar = {
-      ...localSettings.topbar,
+      ...localSettings?.topbar,
     };
     newTopbar[key] = value;
 
@@ -103,7 +103,7 @@ export default function PlatformSettings({ history }) {
 
   const handleTopbarSubmit = () => {
     const formValues = {
-      topbar: localSettings.topbar,
+      topbar: localSettings?.topbar,
     };
 
     updatePlatformSettings(formValues);

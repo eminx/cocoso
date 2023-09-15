@@ -14,7 +14,7 @@ import { InfoOutlineIcon } from '@chakra-ui/icons';
 import renderHTML from 'react-render-html';
 
 export default function PortalHostIndicator({ platform }) {
-  const { topbar } = platform;
+  const topbar = platform?.topbar;
 
   return (
     <Box bg="brand.800">
@@ -41,7 +41,7 @@ export default function PortalHostIndicator({ platform }) {
           </AccordionButton>
           <AccordionPanel bg="brand.50" color="hsl(300deg 20% 20%)" pb={4}>
             <Center>
-              {topbar.open && (
+              {topbar?.open && (
                 <Container fontSize="sm" textAlign="center">
                   {renderHTML(topbar.open)}
                 </Container>
