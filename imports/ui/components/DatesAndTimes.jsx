@@ -17,6 +17,8 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import DatePicker from './DatePicker';
 import { useTranslation } from 'react-i18next';
 
+const maxAttendees = 1000;
+
 function DatesAndTimes({
   recurrence,
   id,
@@ -117,7 +119,7 @@ function DatesAndTimes({
               <Text fontSize="sm">{t('form.capacity.label')}</Text>
               <NumberInput
                 min={1}
-                max={40}
+                max={maxAttendees}
                 value={recurrence.capacity}
                 variant="filled"
                 onChange={handleCapacityChange}
