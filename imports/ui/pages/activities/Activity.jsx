@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
-// import ReactToPrint from 'react-to-print';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
 import 'react-table/react-table.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
+import { CSVLink } from 'react-csv';
 import {
   Accordion,
   AccordionButton,
@@ -569,10 +569,7 @@ class Activity extends PureComponent {
                 pageStyle={{ margin: 144 }}
               />
             </Flex> */}
-            <RsvpListPrint
-              attendees={selectedOccurrence?.attendees}
-              ref={(element) => (this.printableElement = element)}
-            />
+            <RsvpListPrint occurence={selectedOccurrence} title={activityData.title} />
           </Box>
         </Modal>
       </>
@@ -648,32 +645,66 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
   );
 }
 
-function RsvpList({ attendees }) {
+function RsvpList({ occurence, title }) {
   const [t] = useTranslation('activities');
+  const [tc] = useTranslation('common');
+
+  const { attendees } = occurence;
+
   return (
-    <ReactTable
-      data={attendees}
-      columns={[
-        {
-          Header: t('public.register.form.name.first'),
-          accessor: 'firstName',
-        },
-        {
-          Header: t('public.register.form.name.last'),
-          accessor: 'lastName',
-        },
-        {
-          Header: t('public.register.form.people.label'),
-          accessor: 'numberOfPeople',
-        },
-        {
-          Header: t('public.register.form.email'),
-          accessor: 'email',
-        },
-      ]}
-    />
+    <Box>
+      <Center p="2">
+        <CSVLink data={attendees} filename={getFileName(occurence, title)} target="_blank">
+          <Button as="span" size="sm">
+            {tc('actions.downloadCSV')}
+          </Button>
+        </CSVLink>
+      </Center>
+      <ReactTable
+        data={attendees}
+        columns={[
+          {
+            Header: t('public.register.form.name.first'),
+            accessor: 'firstName',
+          },
+          {
+            Header: t('public.register.form.name.last'),
+            accessor: 'lastName',
+          },
+          {
+            Header: t('public.register.form.people.label'),
+            accessor: 'numberOfPeople',
+          },
+          {
+            Header: t('public.register.form.email'),
+            accessor: 'email',
+          },
+        ]}
+      />
+    </Box>
   );
 }
+
+const getFileName = (occurence, title) => {
+  console.log(`${title} | ${occurence.startDate}, ${occurence.startTime}-${occurence.endTime}`);
+  if (occurence.startDate !== occurence.endDate) {
+    return (
+      title +
+      ' | ' +
+      occurence.startDate +
+      '-' +
+      occurence.endDate +
+      ', ' +
+      occurence.startTime +
+      '-' +
+      occurence.endTime
+    );
+  } else {
+    return (
+      title + ' | ' + occurence.startDate + ', ' + occurence.startTime + '-' + occurence.endTime
+    );
+  }
+};
 
 const RsvpListPrint = React.forwardRef((props, ref) => <RsvpList {...props} ref={ref} />);
 

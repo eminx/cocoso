@@ -89,7 +89,7 @@ const generateTheme = (hue) => {
         },
         a: {
           color,
-          textShadow: '0.5px 0.5px 0.5px #fff',
+          // textShadow: '0.5px 0.5px 0.5px #fff',
         },
       },
     },
