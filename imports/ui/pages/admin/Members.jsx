@@ -22,7 +22,7 @@ moment.locale(i18n.language);
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
   const dateB = new Date(b.createdAt);
-  return dateB - dateA;
+  return dateA - dateB;
 };
 
 function Members() {
@@ -178,7 +178,7 @@ function Members() {
       break;
     case 'join-date':
     default:
-      membersSorted = membersFilteredWithType.sort(compareUsersByDate);
+      membersSorted = membersFilteredWithType.sort(compareUsersByDate).reverse();
       break;
   }
 
