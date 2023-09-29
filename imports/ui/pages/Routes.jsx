@@ -28,6 +28,7 @@ const MembersPublic = lazy(() => import('./members/MembersPublic'));
 const Settings = lazy(() => import('./admin/Settings'));
 const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
+const EmailNewsletter = lazy(() => import('./admin/EmailNewsletter'));
 const Categories = lazy(() => import('./admin/Categories'));
 
 // Super admin
@@ -81,6 +82,7 @@ export default function () {
               <Route path="/admin/settings" component={Settings} />
               <Route path="/admin/members" component={Members} />
               <Route exact path="/admin/emails" component={Emails} />
+              <Route exact path="/admin/email-newsletter" component={EmailNewsletter} />
               <Route path="/admin/categories" component={Categories} />
             </Switch>
             {/* Super Admin */}

@@ -136,7 +136,7 @@ function MemberPublic({ history, match, path }) {
       </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem ml="4">
+        <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="8">
           <MemberAvatarEtc t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>

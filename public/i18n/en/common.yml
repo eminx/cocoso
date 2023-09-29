@@ -149,6 +149,7 @@ menu:
     members: Members
     resources: Resources
     emails: Emails
+    email-newsletter: Email Newsletter
     categories: Categories
     platform: Platform Settings
   notifications:

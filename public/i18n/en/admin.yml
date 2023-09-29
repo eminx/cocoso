@@ -89,6 +89,10 @@ emails:
   admin:
     new: New Admin
 
+# ADMIN EMAILS NEWSLETTER PAGE
+email-newsletter:
+  label: Email Newsletter
+
 # ADMIN STATIC PAGES
 pages:
   actions:

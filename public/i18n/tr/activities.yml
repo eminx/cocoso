@@ -36,11 +36,11 @@ form:
     helper: Mesela sanatçının ismi ya da etkinliğin formu
   description:
     label: Açıklama
-    helper: Lütfen başkalarının bilgi sahibi olmasına yardımcı olacak ayrıntılı bir açıklama sağlayın
+    helper: Lütfen başkalarının bilgi sahibi olmasına yardımcı olacak ayrıntılı bir açıklama sağla
   place:
     label: Yer
     holder: Atmosfer
-    helper: İsteğe bağlı olarak, lütfen genel etkinliğin gerçekleşeceği fiziksel yerin genel adını gir.
+    helper: İsteğe bağlı olarak, lütfen genel etkinliğin gerçekleşeceği fiziksel yerin genel adını gir
   address:
     label: Adres
     holder: 17. cadde, Çukurcuma...

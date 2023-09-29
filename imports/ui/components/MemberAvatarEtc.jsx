@@ -63,6 +63,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
               src={avatarSrc}
+              w="md"
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           </Box>
