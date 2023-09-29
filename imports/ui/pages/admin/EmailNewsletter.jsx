@@ -8,6 +8,7 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,7 +20,6 @@ import {
   Heading as EmHeading,
   Html,
   Img,
-  Preview,
   Text as EmText,
 } from '@react-email/components';
 import renderHTML from 'react-render-html';
@@ -27,7 +27,7 @@ import { render as renderEmail } from '@react-email/render';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
-import { call, resizeImage } from '../../utils/shared';
+import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
@@ -43,28 +43,36 @@ const emailModel = {
   body: '',
   image: {
     imageUrl: '',
+    uploadableImage: null,
     uploadableImageLocal: null,
-    setUploadableImage: null,
   },
   subject: '',
   items: [],
 };
 
 function EmailNewsletter({ history }) {
-  const [loading, setLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
   const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  if (loading || !email) {
+  if (!email) {
     return <Loader />;
   }
 
   if (!currentUser || role !== 'admin') {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
+
+  const handleFormConfirm = (values) => {
+    setEmail({
+      ...email,
+      ...values,
+    });
+    setIsPreview(true);
+  };
 
   const setUploadableImage = (files) => {
     if (files.length > 1) {
@@ -90,55 +98,34 @@ function EmailNewsletter({ history }) {
     );
   };
 
-  const uploadImage = async () => {
-    setButtonLoading(true);
+  const uploadLocalImage = async () => {
+    setIsSending(true);
+    setIsPreview(false);
+
     const { image } = email;
     const { uploadableImage } = image;
 
     try {
       const resizedImage = await resizeImage(uploadableImage, 800);
       const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      setEmail(
-        {
-          ...email,
-          image: {
-            ...email.image,
-            imageUrl: uploadedImage,
-          },
-        },
-        () => handleSendEmail()
-      );
+      handleSendEmail(uploadedImage);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
-      this.setState({
-        isCreating: false,
-      });
     }
   };
 
-  const handleFormConfirm = (values) => {
-    console.log(values);
-    setEmail({
-      ...email,
-      ...values,
-    });
-    setIsPreview(true);
-    // try {
-    //   await call('sendEmail', values);
-    //   getEmails();
-    //   message.success(tc('message.success.update'));
-    // } catch (error) {
-    //   message.error(error.reason || error.error);
-    // } finally {
-    //   setLoading(false);
-    // }
-  };
+  const handleSendEmail = async (imageUrl) => {
+    const emailHtml = renderEmail(<EmailPreview email={email} imageUrl={imageUrl} />);
 
-  const handleSendEmail = () => {
-    const emailHtml = renderEmail(<EmailPreview email={email} />);
-
-    Meteor.call('sendEmail', 'emin@tuta.io', email.subject, emailHtml);
+    try {
+      await call('sendEmail', 'emin@tuta.io', email.subject, emailHtml);
+      message.success(tc('message.success.update'));
+    } catch (error) {
+      message.error(error.reason || error.error);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const pathname = history && history.location.pathname;
@@ -154,33 +141,35 @@ function EmailNewsletter({ history }) {
     },
   ];
 
-  // const { image, items, ...emailForm } = email;
-
   return (
     <>
       <Box p="4">
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
 
-      <Template
-        heading={t('emails.label')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={adminMenu} />
+      {isSending ? (
+        <Text>Sending the email...</Text>
+      ) : (
+        <Template
+          heading={t('emails.label')}
+          leftContent={
+            <Box>
+              <ListMenu pathname={pathname} list={adminMenu} />
+            </Box>
+          }
+        >
+          <Box py="4" mb="4">
+            <Heading size="md" mb="4">
+              {email.subject}
+            </Heading>
+            <EmailForm
+              email={email}
+              onSubmit={(values) => handleFormConfirm(values)}
+              setUploadableImage={setUploadableImage}
+            />
           </Box>
-        }
-      >
-        <Box py="4" mb="4">
-          <Heading size="md" mb="4">
-            {email.subject}
-          </Heading>
-          <EmailForm
-            email={email}
-            onSubmit={(values) => handleFormConfirm(values)}
-            setUploadableImage={setUploadableImage}
-          />
-        </Box>
-      </Template>
+        </Template>
+      )}
 
       <Modal
         actionButtonLabel="Send email"
@@ -190,7 +179,7 @@ function EmailNewsletter({ history }) {
         scrollBehavior="inside"
         size="lg"
         title="Preview Email"
-        onActionButtonClick={() => handleSendEmail()}
+        onActionButtonClick={() => uploadLocalImage()}
         onClose={() => setIsPreview(false)}
       >
         <EmailPreview email={email} />
@@ -216,11 +205,11 @@ function EmailForm({ email, onSubmit, setUploadableImage }) {
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="4">
           <FormField
-            label={t('form.image.label')}
+            label={t('emails.form.image.label')}
             helperText={
               uploadableImageLocal || imageUrl
                 ? tc('plugins.fileDropper.replace')
-                : t('form.image.helper')
+                : t('emails.form.image.helper')
             }
           >
             <Center>
@@ -262,23 +251,22 @@ function EmailForm({ email, onSubmit, setUploadableImage }) {
   );
 }
 
-function EmailPreview({ email }) {
+function EmailPreview({ email, imageUrl }) {
   if (!email) {
     return null;
   }
 
-  const { appeal, body, subject, image } = email;
-  const { imageUrl, uploadableImageLocal } = image;
+  const { appeal, body, subject } = email;
 
   return (
     <Html>
       <Head />
       <Body>
         <Container>
-          <Img src={uploadableImageLocal || imageUrl} alt={subject} width="300" />
+          {imageUrl && <Img src={imageUrl} alt={subject} width="400" />}
           <EmHeading>{subject}</EmHeading>
           <EmText>{`${appeal} [username]`}</EmText>
-          <EmText>{renderHTML(body)}</EmText>
+          <EmText>{body && renderHTML(body)}</EmText>
         </Container>
       </Body>
     </Html>

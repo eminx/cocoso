@@ -82,6 +82,9 @@ emails:
       addon: '@username'
     body:
       label: Beskrivning
+    image:
+      label: Bild
+      helper: Välj en bild som ska visas överst i e-postmeddelandet
   participant:
     new: Ny deltagare
   cocreator:

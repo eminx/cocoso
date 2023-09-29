@@ -82,6 +82,9 @@ emails:
       addon: '@username'
     body:
       label: Açıklama
+    image:
+      label: Imaj
+      helper: E-postanın üst kısmında görünecek bir imaj seç
   participant:
     new: Yeni Katılımcı
   cocreator:

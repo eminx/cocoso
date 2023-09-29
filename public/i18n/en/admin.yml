@@ -82,6 +82,9 @@ emails:
       addon: '@username'
     body:
       label: Body
+    image:
+      label: Image
+      helper: Select an image to appear at the top of the email
   participant:
     new: New Participant
   cocreator:
