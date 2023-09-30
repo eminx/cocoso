@@ -294,7 +294,7 @@ function Footer({ currentHost, tc }) {
                   className="text-content"
                   maxWidth="480px"
                   pb="2"
-                  pt="4"
+                  p="4"
                   textAlign="center"
                   w="100%"
                 >

@@ -120,6 +120,7 @@ function EmailNewsletter({ history }) {
 
     try {
       await call('sendEmail', 'emin@tuta.io', email.subject, emailHtml);
+      setEmail(emailModel);
       message.success(tc('message.success.update'));
     } catch (error) {
       message.error(error.reason || error.error);
@@ -177,7 +178,7 @@ function EmailNewsletter({ history }) {
         // placement="center"
         motionPreset="slideInBottom"
         scrollBehavior="inside"
-        size="lg"
+        size="2xl"
         title="Preview Email"
         onActionButtonClick={() => uploadLocalImage()}
         onClose={() => setIsPreview(false)}
@@ -256,17 +257,24 @@ function EmailPreview({ email, imageUrl }) {
     return null;
   }
 
-  const { appeal, body, subject } = email;
-
+  const { appeal, body, image, subject } = email;
+  const { uploadableImageLocal } = image;
   return (
     <Html>
       <Head />
-      <Body>
+      <Body style={{ padding: 12 }}>
         <Container>
-          {imageUrl && <Img src={imageUrl} alt={subject} width="400" />}
+          {image && (
+            <Img
+              style={{ margin: '0 auto', marginBottom: 12 }}
+              src={imageUrl || uploadableImageLocal}
+              alt={subject}
+              width="400"
+            />
+          )}
           <EmHeading>{subject}</EmHeading>
-          <EmText>{`${appeal} [username]`}</EmText>
-          <EmText>{body && renderHTML(body)}</EmText>
+          <EmText style={{ fontSize: 16, fontWeight: 'bold' }}>{`${appeal} [username]`}</EmText>
+          <EmText style={{ fontSize: 16 }}>{body && renderHTML(body)}</EmText>
         </Container>
       </Body>
     </Html>
