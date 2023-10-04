@@ -3,11 +3,21 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Flex,
   Heading,
+  HStack,
+  Image,
   Input,
   InputGroup,
   InputRightAddon,
+  List,
+  ListItem,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -50,11 +60,32 @@ const emailModel = {
   items: [],
 };
 
+function parseProcessActivities(activities) {
+  const activitiesParsed = [];
+
+  activities?.forEach((act, index) => {
+    if (!act.isProcessMeeting) {
+      activitiesParsed.push(act);
+    } else {
+      const indexParsed = activitiesParsed.findIndex((actP, indexP) => {
+        return actP.processId === act.processId;
+      });
+      if (indexParsed === -1) {
+        activitiesParsed.push(act);
+      } else {
+        activitiesParsed[indexParsed].datesAndTimes.push(act.datesAndTimes[0]);
+      }
+    }
+  });
+
+  return activitiesParsed;
+}
+
 function EmailNewsletter({ history }) {
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
-  const { currentUser, role } = useContext(StateContext);
+  const { currentHost, currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -164,6 +195,7 @@ function EmailNewsletter({ history }) {
               {email.subject}
             </Heading>
             <EmailForm
+              currentHost={currentHost}
               email={email}
               onSubmit={(values) => handleFormConfirm(values)}
               setUploadableImage={setUploadableImage}
@@ -175,7 +207,6 @@ function EmailNewsletter({ history }) {
       <Modal
         actionButtonLabel="Send email"
         isOpen={isPreview}
-        // placement="center"
         motionPreset="slideInBottom"
         scrollBehavior="inside"
         size="2xl"
@@ -189,7 +220,7 @@ function EmailNewsletter({ history }) {
   );
 }
 
-function EmailForm({ email, onSubmit, setUploadableImage }) {
+function EmailForm({ currentHost, email, onSubmit, setUploadableImage }) {
   const { control, handleSubmit, register, formState } = useForm({
     email,
   });
@@ -241,6 +272,14 @@ function EmailForm({ email, onSubmit, setUploadableImage }) {
             />
           </FormField>
 
+          <FormField bg="brand.100" label="Insert Content into the Email" p="4">
+            <ContentInserter
+              currentHost={currentHost}
+              onSelectActivities={(activities) => console.log(activities)}
+              onSelectWorks={(works) => console.log(works)}
+            />
+          </FormField>
+
           <Flex justify="flex-end" py="2" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
               {tc('actions.submit')}
@@ -278,6 +317,204 @@ function EmailPreview({ email, imageUrl }) {
         </Container>
       </Body>
     </Html>
+  );
+}
+
+function ContentInserter({ currentHost, onConfirm }) {
+  const [isContentInserterOpen, setIsContentInserterOpen] = useState(false);
+  const [activities, setActivities] = useState([]);
+  const [works, setWorks] = useState([]);
+  const [activitiesLoading, setActivitiesLoading] = useState(false);
+  const [worksLoading, setWorksLoading] = useState(false);
+
+  useEffect(() => {
+    getActivities();
+    getWorks();
+  }, [isContentInserterOpen]);
+
+  const isPortalHost = currentHost?.isPortalHost;
+
+  const getActivities = async () => {
+    setActivitiesLoading(true);
+    try {
+      if (isPortalHost) {
+        const allActivities = await call('getAllActivitiesFromAllHosts', true);
+        const allActivitiesParsed = parseProcessActivities(allActivities);
+        setActivities(allActivitiesParsed);
+      } else {
+        const allActivities = await call('getAllActivities', true);
+        const allActivitiesParsed = parseProcessActivities(allActivities);
+        setActivities(allActivitiesParsed);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    } finally {
+      setActivitiesLoading(false);
+    }
+  };
+
+  const getWorks = async () => {
+    setWorksLoading(true);
+    try {
+      if (isPortalHost) {
+        setWorks(await call('getAllWorksFromAllHosts'));
+      } else {
+        setWorks(await call('getAllWorks'));
+      }
+    } catch (error) {
+      message.error(error.reason);
+    } finally {
+      setWorksLoading(false);
+    }
+  };
+
+  const getFuturePublicActivities = () => {
+    if (!activities) {
+      return null;
+    }
+    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    return activities.filter((activity) => {
+      const activityWordFiltered =
+        activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+
+      return (
+        activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
+        activityWordFiltered
+      );
+    });
+  };
+
+  const handleSelectItem = (item, type) => {
+    if (type === 'activities') {
+      const newActivities = activities.map((activity) => {
+        if (activity._id === item._id) {
+          activity.isSelected = !Boolean(activity.isSelected);
+        }
+        return activity;
+      });
+      setActivities(newActivities);
+    } else {
+      const newWorks = works.map((work) => {
+        if (work._id === item._id) {
+          work.isSelected = !Boolean(work.isSelected);
+        }
+        return work;
+      });
+      setWorks(newWorks);
+    }
+  };
+
+  const handleConfirm = () => {};
+
+  return (
+    <Box>
+      <Center>
+        <Button mt="2" size="lg" onClick={() => setIsContentInserterOpen(true)}>
+          Insert Content
+        </Button>
+      </Center>
+      <Modal
+        actionButtonLabel="Confirm"
+        isOpen={isContentInserterOpen}
+        motionPreset="slideInTop"
+        scrollBehavior="inside"
+        size="xl"
+        title="Insert Existing Content"
+        onActionButtonClick={() => console.log(items)}
+        onClose={() => setIsContentInserterOpen(false)}
+      >
+        <Tabs>
+          <TabList>
+            <Tab>Activities</Tab>
+            <Tab>Works</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              {!activitiesLoading ? (
+                <List bg="white">
+                  {activities.map((activity) => (
+                    <ListItem
+                      key={activity._id}
+                      _hover={{
+                        bg: activity.isSelected ? 'green.200' : 'green.50',
+                        cursor: 'pointer',
+                      }}
+                      bg={activity.isSelected ? 'green.200' : 'transparent'}
+                      borderBottom="1px solid #eee"
+                      px="2"
+                      py="4"
+                      onClick={() => handleSelectItem(activity, 'activities')}
+                    >
+                      <Checkbox
+                        colorScheme="green"
+                        isChecked={Boolean(activity.isSelected)}
+                        size="lg"
+                        onChange={(e) => handleSelectItem(activity, 'activities')}
+                      >
+                        <HStack>
+                          <Image
+                            bg="brand.100"
+                            fit="cover"
+                            h="80px"
+                            src={activity.imageUrl}
+                            w="80px"
+                          />
+                          <Text>{activity.title}</Text>
+                        </HStack>
+                      </Checkbox>
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Loader />
+              )}
+            </TabPanel>
+            <TabPanel>
+              {!worksLoading ? (
+                <List bg="white">
+                  {works.map((work) => (
+                    <ListItem
+                      key={work._id}
+                      _hover={{
+                        bg: work.isSelected ? 'green.200' : 'green.50',
+                        cursor: 'pointer',
+                      }}
+                      bg={work.isSelected ? 'green.200' : 'transparent'}
+                      borderBottom="1px solid #eee"
+                      px="2"
+                      py="4"
+                      onClick={() => handleSelectItem(work, 'works')}
+                    >
+                      <Checkbox
+                        colorScheme="green"
+                        isChecked={Boolean(work.isSelected)}
+                        size="lg"
+                        onChange={(e) => handleSelectItem(work, 'works')}
+                      >
+                        <HStack>
+                          <Image
+                            bg="brand.100"
+                            fit="cover"
+                            h="80px"
+                            src={work.images && work.images[0]}
+                            w="80px"
+                          />
+                          <Text>{work.title}</Text>
+                        </HStack>
+                      </Checkbox>
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Loader />
+              )}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Modal>
+    </Box>
   );
 }
 
