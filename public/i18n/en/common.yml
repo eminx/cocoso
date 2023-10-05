@@ -28,6 +28,7 @@ actions:
   toHost: Visit
   share: Share
   copied: Link copied!
+  preview: Preview
 
 # ACTION PAGE TITLES
 labels:

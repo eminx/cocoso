@@ -92,9 +92,13 @@ emails:
   admin:
     new: New Admin
 
-# ADMIN EMAILS NEWSLETTER PAGE
-email-newsletter:
-  label: Email Newsletter
+# ADMIN EMAIL NEWSLETTER PAGE
+newsletter:
+  title: Email Newsletter
+  subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
+  contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
+  labels:
+    insertcontent: Insert Content
 
 # ADMIN STATIC PAGES
 pages:

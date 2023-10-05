@@ -92,6 +92,14 @@ emails:
   admin:
     new: Yeni Admin
 
+# ADMIN EMAIL NEWSLETTER PAGE
+newsletter:
+  title: Eposta Bülteni
+  subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsiniz.
+  contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsiniz.
+  labels:
+    insertcontent: İçerik ekle
+
 # ADMIN STATIC PAGES
 pages:
   actions:

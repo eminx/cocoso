@@ -28,6 +28,7 @@ actions:
   toHost: Uygulamaya git
   share: Paylaş
   copied: Link kopyalandı!
+  preview: Ön izleme
 
 # ACTION PAGE TITLES
 labels:

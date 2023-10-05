@@ -28,6 +28,7 @@ actions:
   toHost: Besök
   share: Dela
   copied: Kopierade länken!
+  preview: Förhandsvisa
 
 # ACTION PAGE TITLES
 labels:

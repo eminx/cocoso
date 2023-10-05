@@ -25,11 +25,16 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
   Body,
+  Button as EmButton,
   Container,
   Head,
   Heading as EmHeading,
+  Hr,
   Html,
   Img,
+  Link as EmLink,
+  Row,
+  Section,
   Text as EmText,
 } from '@react-email/components';
 import renderHTML from 'react-render-html';
@@ -57,7 +62,7 @@ const emailModel = {
     uploadableImageLocal: null,
   },
   subject: '',
-  items: [],
+  items: null,
 };
 
 function parseProcessActivities(activities) {
@@ -146,11 +151,22 @@ function EmailNewsletter({ history }) {
     }
   };
 
+  const handleSelectItems = (items) => {
+    setEmail({
+      ...email,
+      items,
+    });
+  };
+
   const handleSendEmail = async (imageUrl) => {
-    const emailHtml = renderEmail(<EmailPreview email={email} imageUrl={imageUrl} />);
+    const emailHtml = renderEmail(
+      <EmailPreview email={email} host={currentHost.host} imageUrl={imageUrl} />
+    );
+
+    const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
 
     try {
-      await call('sendEmail', 'emin@tuta.io', email.subject, emailHtml);
+      await call('sendEmail', myEmail, email.subject, emailHtml);
       setEmail(emailModel);
       message.success(tc('message.success.update'));
     } catch (error) {
@@ -179,30 +195,25 @@ function EmailNewsletter({ history }) {
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
 
-      {isSending ? (
-        <Text>Sending the email...</Text>
-      ) : (
-        <Template
-          heading={t('emails.label')}
-          leftContent={
-            <Box>
-              <ListMenu pathname={pathname} list={adminMenu} />
-            </Box>
-          }
-        >
-          <Box py="4" mb="4">
-            <Heading size="md" mb="4">
-              {email.subject}
-            </Heading>
-            <EmailForm
-              currentHost={currentHost}
-              email={email}
-              onSubmit={(values) => handleFormConfirm(values)}
-              setUploadableImage={setUploadableImage}
-            />
+      <Template
+        heading={t('newsletter.title')}
+        leftContent={
+          <Box>
+            <ListMenu pathname={pathname} list={adminMenu} />
           </Box>
-        </Template>
-      )}
+        }
+      >
+        <Text mb="4">{t('newsletter.subtitle')}</Text>
+        <Box pb="4" mb="4">
+          <EmailForm
+            currentHost={currentHost}
+            email={email}
+            onSelectItems={handleSelectItems}
+            onSubmit={(values) => handleFormConfirm(values)}
+            setUploadableImage={setUploadableImage}
+          />
+        </Box>
+      </Template>
 
       <Modal
         actionButtonLabel="Send email"
@@ -210,17 +221,21 @@ function EmailNewsletter({ history }) {
         motionPreset="slideInBottom"
         scrollBehavior="inside"
         size="2xl"
-        title="Preview Email"
+        title={email?.subject}
         onActionButtonClick={() => uploadLocalImage()}
         onClose={() => setIsPreview(false)}
       >
-        <EmailPreview email={email} />
+        <EmailPreview email={email} host={currentHost.host} />
       </Modal>
     </>
   );
 }
 
-function EmailForm({ currentHost, email, onSubmit, setUploadableImage }) {
+const getFirst40Words = (string) => {
+  return string.replace(/((\s*\S+){40})([\s\S]*)/);
+};
+
+function EmailForm({ currentHost, email, onSelectItems, onSubmit, setUploadableImage }) {
   const { control, handleSubmit, register, formState } = useForm({
     email,
   });
@@ -272,17 +287,16 @@ function EmailForm({ currentHost, email, onSubmit, setUploadableImage }) {
             />
           </FormField>
 
-          <FormField bg="brand.100" label="Insert Content into the Email" p="4">
-            <ContentInserter
-              currentHost={currentHost}
-              onSelectActivities={(activities) => console.log(activities)}
-              onSelectWorks={(works) => console.log(works)}
-            />
+          <FormField label={t('newsletter.labels.insertcontent')} mt="4">
+            <Text color="gray.600" fontSize="sm">
+              {t('newsletter.contenthelper')}
+            </Text>
+            <ContentInserter currentHost={currentHost} onSelect={onSelectItems} />
           </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-              {tc('actions.submit')}
+              {tc('actions.preview')}
             </Button>
           </Flex>
         </VStack>
@@ -291,37 +305,90 @@ function EmailForm({ currentHost, email, onSubmit, setUploadableImage }) {
   );
 }
 
-function EmailPreview({ email, imageUrl }) {
+function EmailPreview({ email, host, imageUrl }) {
   if (!email) {
     return null;
   }
 
-  const { appeal, body, image, subject } = email;
+  const { appeal, body, image, items, subject } = email;
   const { uploadableImageLocal } = image;
+  const { activities, works } = items;
+
   return (
     <Html>
       <Head />
       <Body style={{ padding: 12 }}>
-        <Container>
+        <Section>
           {image && (
             <Img
-              style={{ margin: '0 auto', marginBottom: 12 }}
+              style={{ marginBottom: 12 }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
-              width="400"
+              width={300}
             />
           )}
-          <EmHeading>{subject}</EmHeading>
-          <EmText style={{ fontSize: 16, fontWeight: 'bold' }}>{`${appeal} [username]`}</EmText>
-          <EmText style={{ fontSize: 16 }}>{body && renderHTML(body)}</EmText>
-        </Container>
+          <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>
+          <EmText style={{ fontSize: 14 }}>{body && renderHTML(body)}</EmText>
+        </Section>
+        <Hr />
+        <>
+          {activities?.map((activity) => (
+            <Section key={activity._id} style={{ marginBottom: 24, marginTop: 24 }}>
+              <EmLink
+                href={`https://${host}/activities/${activity._id}`}
+                style={{ color: '#0f64c0' }}
+              >
+                <EmHeading as="h3" style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  {activity?.title}
+                </EmHeading>
+              </EmLink>
+              <EmText style={{ fontSize: 16, marginTop: 4 }}>{activity?.subTitle}</EmText>
+              <Img src={activity?.imageUrl} width={300} style={{ marginBottom: 12 }} />
+              <EmText style={{ fontSize: 14 }}>
+                {activity?.longDescription && renderHTML(activity.longDescription)}
+              </EmText>
+              <EmButton
+                href={`https://${host}/activities/${activity._id}`}
+                style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
+              >
+                Visit page
+              </EmButton>
+              <Hr />
+            </Section>
+          ))}
+        </>
+        <>
+          {works?.map((work) => (
+            <Section key={work._id} style={{ marginBottom: 24 }}>
+              <EmLink
+                href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
+                style={{ color: '#0f64c0' }}
+              >
+                <EmHeading as="h3" style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  {work?.title}
+                </EmHeading>
+              </EmLink>
+              <EmText style={{ fontSize: 16, marginTop: 4 }}>{work?.shortDescription}</EmText>
+              {work.images && <Img src={work.images[0]} width={300} style={{ marginBottom: 12 }} />}
+              <EmText style={{ fontSize: 14 }}>
+                {work?.longDescription && renderHTML(work.longDescription)}
+              </EmText>
+              <EmButton
+                href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
+                style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
+              >
+                Visit page
+              </EmButton>
+              <Hr />
+            </Section>
+          ))}
+        </>
       </Body>
     </Html>
   );
 }
 
-function ContentInserter({ currentHost, onConfirm }) {
-  const [isContentInserterOpen, setIsContentInserterOpen] = useState(false);
+function ContentInserter({ currentHost, onSelect }) {
   const [activities, setActivities] = useState([]);
   const [works, setWorks] = useState([]);
   const [activitiesLoading, setActivitiesLoading] = useState(false);
@@ -330,7 +397,7 @@ function ContentInserter({ currentHost, onConfirm }) {
   useEffect(() => {
     getActivities();
     getWorks();
-  }, [isContentInserterOpen]);
+  }, []);
 
   const isPortalHost = currentHost?.isPortalHost;
 
@@ -395,6 +462,10 @@ function ContentInserter({ currentHost, onConfirm }) {
         return activity;
       });
       setActivities(newActivities);
+      onSelect({
+        activities: newActivities.filter((a) => a.isSelected),
+        works: works.filter((w) => w.isSelected),
+      });
     } else {
       const newWorks = works.map((work) => {
         if (work._id === item._id) {
@@ -403,35 +474,32 @@ function ContentInserter({ currentHost, onConfirm }) {
         return work;
       });
       setWorks(newWorks);
+      onSelect({
+        activities: activities.filter((a) => a.isSelected),
+        works: newWorks.filter((w) => w.isSelected),
+      });
     }
   };
 
-  const handleConfirm = () => {};
+  const activitiesLabel =
+    currentHost?.settings?.menu?.find((item) => item.name === 'activities')?.label || 'Activities';
+  const worksLabel =
+    currentHost?.settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
 
   return (
-    <Box>
-      <Center>
-        <Button mt="2" size="lg" onClick={() => setIsContentInserterOpen(true)}>
-          Insert Content
-        </Button>
-      </Center>
-      <Modal
-        actionButtonLabel="Confirm"
-        isOpen={isContentInserterOpen}
-        motionPreset="slideInTop"
-        scrollBehavior="inside"
-        size="xl"
-        title="Insert Existing Content"
-        onActionButtonClick={() => console.log(items)}
-        onClose={() => setIsContentInserterOpen(false)}
-      >
-        <Tabs>
-          <TabList>
-            <Tab>Activities</Tab>
-            <Tab>Works</Tab>
-          </TabList>
+    <>
+      <Tabs mt="4">
+        <TabList>
+          <Tab px="0" mr="4">
+            <Text>{activitiesLabel}</Text>
+          </Tab>
+          <Tab px="0">
+            <Text>{worksLabel}</Text>
+          </Tab>
+        </TabList>
+        <Box maxH="800px" overflowY="scroll">
           <TabPanels>
-            <TabPanel>
+            <TabPanel px="0">
               {!activitiesLoading ? (
                 <List bg="white">
                   {activities.map((activity) => (
@@ -461,7 +529,7 @@ function ContentInserter({ currentHost, onConfirm }) {
                             src={activity.imageUrl}
                             w="80px"
                           />
-                          <Text>{activity.title}</Text>
+                          <Text fontSize="md">{activity.title}</Text>
                         </HStack>
                       </Checkbox>
                     </ListItem>
@@ -471,7 +539,7 @@ function ContentInserter({ currentHost, onConfirm }) {
                 <Loader />
               )}
             </TabPanel>
-            <TabPanel>
+            <TabPanel px="0">
               {!worksLoading ? (
                 <List bg="white">
                   {works.map((work) => (
@@ -501,7 +569,7 @@ function ContentInserter({ currentHost, onConfirm }) {
                             src={work.images && work.images[0]}
                             w="80px"
                           />
-                          <Text>{work.title}</Text>
+                          <Text fontSize="md">{work.title}</Text>
                         </HStack>
                       </Checkbox>
                     </ListItem>
@@ -512,9 +580,9 @@ function ContentInserter({ currentHost, onConfirm }) {
               )}
             </TabPanel>
           </TabPanels>
-        </Tabs>
-      </Modal>
-    </Box>
+        </Box>
+      </Tabs>
+    </>
   );
 }
 

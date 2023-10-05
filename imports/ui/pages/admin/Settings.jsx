@@ -244,5 +244,5 @@ export default function Settings({ history }) {
 }
 
 function AlphaContainer({ title, children }) {
-  return <Box maxWidth={480}>{children}</Box>;
+  return <Box>{children}</Box>;
 }

@@ -229,7 +229,7 @@ function Members() {
           </Box>
         }
       >
-        <Box maxWidth={480}>
+        <Box>
           <Tabs index={tabIndex} mb="8" tabs={tabs} />
 
           <Box>
