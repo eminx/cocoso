@@ -324,10 +324,11 @@ function EmailPreview({ email, host, imageUrl }) {
               style={{ marginBottom: 12 }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
-              width={300}
+              width="100%"
+              height="auto"
             />
           )}
-          <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>
+          <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>
           <EmText style={{ fontSize: 14 }}>{body && renderHTML(body)}</EmText>
         </Section>
         <Hr />
@@ -343,7 +344,12 @@ function EmailPreview({ email, host, imageUrl }) {
                 </EmHeading>
               </EmLink>
               <EmText style={{ fontSize: 16, marginTop: 4 }}>{activity?.subTitle}</EmText>
-              <Img src={activity?.imageUrl} width={300} style={{ marginBottom: 12 }} />
+              <Img
+                src={activity?.imageUrl}
+                width="100%"
+                height="auto"
+                style={{ marginBottom: 12 }}
+              />
               <EmText style={{ fontSize: 14 }}>
                 {activity?.longDescription && renderHTML(activity.longDescription)}
               </EmText>
@@ -369,7 +375,9 @@ function EmailPreview({ email, host, imageUrl }) {
                 </EmHeading>
               </EmLink>
               <EmText style={{ fontSize: 16, marginTop: 4 }}>{work?.shortDescription}</EmText>
-              {work.images && <Img src={work.images[0]} width={300} style={{ marginBottom: 12 }} />}
+              {work.images && (
+                <Img src={work.images[0]} width="100%" height="auto" style={{ marginBottom: 12 }} />
+              )}
               <EmText style={{ fontSize: 14 }}>
                 {work?.longDescription && renderHTML(work.longDescription)}
               </EmText>
