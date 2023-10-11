@@ -45,9 +45,9 @@ Activities.schema = new SimpleSchema({
       type: new SimpleSchema({
         email: Schemas.Email,
         username: { type: String, optional: true },
-        firstName: { type: String },
-        lastName: { type: String },
-        numberOfPeople: { type: SimpleSchema.Integer },
+        firstName: { type: String, optional: true },
+        lastName: { type: String, optional: true },
+        numberOfPeople: { type: SimpleSchema.Integer, optional: true },
         registerDate: { type: Date },
       }),
       optional: true,
