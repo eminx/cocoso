@@ -70,10 +70,10 @@ function Tably({
   if (isDesktop) {
     return (
       <>
+        {backLink && <BackLink backLink={backLink} />}
         <Grid templateColumns={desktopGridColumns}>
           <GridItem>
             <Flex>
-              {backLink && <BackLink backLink={backLink} />}
               <Box w="100%">
                 <Header author={author} isDesktop subTitle={subTitle} tags={tags} title={title} />
               </Box>
