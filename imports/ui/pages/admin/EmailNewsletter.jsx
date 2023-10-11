@@ -160,7 +160,7 @@ function EmailNewsletter({ history }) {
 
   const handleSendEmail = async (imageUrl) => {
     const emailHtml = renderEmail(
-      <EmailPreview email={email} host={currentHost.host} imageUrl={imageUrl} />
+      <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
     );
 
     const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
@@ -225,7 +225,7 @@ function EmailNewsletter({ history }) {
         onActionButtonClick={() => uploadLocalImage()}
         onClose={() => setIsPreview(false)}
       >
-        <EmailPreview email={email} host={currentHost.host} />
+        <EmailPreview email={email} currentHost={currentHost} />
       </Modal>
     </>
   );
@@ -305,20 +305,26 @@ function EmailForm({ currentHost, email, onSelectItems, onSubmit, setUploadableI
   );
 }
 
-function EmailPreview({ email, host, imageUrl }) {
+function EmailPreview({ currentHost, email, imageUrl }) {
   if (!email) {
     return null;
   }
+  const [tc] = useTranslation('common');
 
   const { appeal, body, image, items, subject } = email;
   const { uploadableImageLocal } = image;
   const { activities, works } = items;
 
+  const { host, settings } = currentHost;
+  const activitiesLabel =
+    settings?.menu?.find((item) => item.name === 'activities')?.label || 'Activities';
+  const worksLabel = settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
+
   return (
     <Html>
       <Head />
       <Body style={{ padding: 12 }}>
-        <Section>
+        <Section style={{ marginBottom: 12 }}>
           {image && (
             <Img
               style={{ marginBottom: 12 }}
@@ -330,11 +336,14 @@ function EmailPreview({ email, host, imageUrl }) {
           )}
           <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>
           <EmText style={{ fontSize: 14 }}>{body && renderHTML(body)}</EmText>
+          <Hr />
         </Section>
-        <Hr />
         <>
+          <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+            {activitiesLabel}:
+          </EmHeading>
           {activities?.map((activity) => (
-            <Section key={activity._id} style={{ marginBottom: 24, marginTop: 24 }}>
+            <Section key={activity._id} style={{ marginBottom: 24 }}>
               <EmLink
                 href={`https://${host}/activities/${activity._id}`}
                 style={{ color: '#0f64c0' }}
@@ -357,13 +366,16 @@ function EmailPreview({ email, host, imageUrl }) {
                 href={`https://${host}/activities/${activity._id}`}
                 style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
               >
-                Visit page
+                {tc('actions.entryPage')}
               </EmButton>
               <Hr />
             </Section>
           ))}
         </>
         <>
+          <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+            {worksLabel}:
+          </EmHeading>
           {works?.map((work) => (
             <Section key={work._id} style={{ marginBottom: 24 }}>
               <EmLink
@@ -385,7 +397,7 @@ function EmailPreview({ email, host, imageUrl }) {
                 href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                 style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
               >
-                Visit page
+                {tc('actions.entryPage')}
               </EmButton>
               <Hr />
             </Section>
