@@ -228,7 +228,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
       <Link to={`/@${user?.username}/edit`}>
-        <Box p="4">
+        <Box p="4" mb="8">
           <SexyThumb
             subTitle={tc('menu.member.settings')}
             title={tc('message.newentryhelper.bio.title')}
@@ -243,8 +243,8 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} bg="white">
-      <Box maxWidth="480px" className="text-content" px="4" py="2">
+    <Flex bg="white" justifyContent={isDesktop ? 'flex-start' : 'center'} maxWidth="480px">
+      <Box className="text-content" px="4" py="2">
         {renderHTML(user.bio)}
       </Box>
     </Flex>

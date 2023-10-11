@@ -55,7 +55,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const isCentered = !isDesktop || centerItems;
 
   return (
-    <Box mb="8" w="100%">
+    <Box mb="4" w="100%">
       <Flex flexDirection="column" align={isCentered ? 'center' : 'flex-start'}>
         {avatarSrc ? (
           <Box>
@@ -106,7 +106,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                 >
                   <Box p="1">
                     {membershipsWithHosts?.map((m) => (
-                      <Box key={m.host} my="2">
+                      <Box key={m.host} my="2" textAlign="left">
                         <Button
                           colorScheme="gray.800"
                           textDecoration="underline"
