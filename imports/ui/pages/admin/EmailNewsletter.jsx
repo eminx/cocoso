@@ -11,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  InputRightElement,
   List,
   ListItem,
   Tabs,
@@ -21,6 +22,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -39,6 +41,7 @@ import {
 } from '@react-email/components';
 import renderHTML from 'react-render-html';
 import { render as renderEmail } from '@react-email/render';
+import moment from 'moment';
 
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
@@ -64,6 +67,8 @@ const emailModel = {
   subject: '',
   items: null,
 };
+
+const yesterday = moment(new Date()).add(-1, 'days');
 
 function parseProcessActivities(activities) {
   const activitiesParsed = [];
@@ -340,7 +345,7 @@ function EmailPreview({ currentHost, email, imageUrl }) {
         </Section>
         <>
           <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
-            {activitiesLabel}:
+            {activitiesLabel}
           </EmHeading>
           {activities?.map((activity) => (
             <Section key={activity._id} style={{ marginBottom: 24 }}>
@@ -374,7 +379,7 @@ function EmailPreview({ currentHost, email, imageUrl }) {
         </>
         <>
           <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
-            {worksLabel}:
+            {worksLabel}
           </EmHeading>
           {works?.map((work) => (
             <Section key={work._id} style={{ marginBottom: 24 }}>
@@ -413,6 +418,8 @@ function ContentInserter({ currentHost, onSelect }) {
   const [works, setWorks] = useState([]);
   const [activitiesLoading, setActivitiesLoading] = useState(false);
   const [worksLoading, setWorksLoading] = useState(false);
+  const [filterWord, setFilterWord] = useState('');
+  const [tc] = useTranslation('common');
 
   useEffect(() => {
     getActivities();
@@ -456,7 +463,7 @@ function ContentInserter({ currentHost, onSelect }) {
     }
   };
 
-  const getFuturePublicActivities = () => {
+  const getActivitiesFiltered = () => {
     if (!activities) {
       return null;
     }
@@ -470,6 +477,20 @@ function ContentInserter({ currentHost, onSelect }) {
         activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
         activityWordFiltered
       );
+    });
+  };
+
+  const getWorksFiltered = () => {
+    if (!works) {
+      return null;
+    }
+    const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
+    return works.filter((work) => {
+      const workWordFiltered =
+        work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        work?.shortDescription?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+
+      return workWordFiltered;
     });
   };
 
@@ -506,9 +527,12 @@ function ContentInserter({ currentHost, onSelect }) {
   const worksLabel =
     currentHost?.settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
 
+  const activitiesFiltered = getActivitiesFiltered();
+  const worksFiltered = getWorksFiltered();
+
   return (
     <>
-      <Tabs mt="4">
+      <Tabs mt="4" onChange={() => setFilterWord('')}>
         <TabList>
           <Tab px="0" mr="4">
             <Text>{activitiesLabel}</Text>
@@ -517,12 +541,26 @@ function ContentInserter({ currentHost, onSelect }) {
             <Text>{worksLabel}</Text>
           </Tab>
         </TabList>
+
+        <InputGroup mt="2" size="sm" w="sm">
+          <Input
+            placeholder={tc('labels.filter')}
+            value={filterWord}
+            onChange={(event) => setFilterWord(event.target.value)}
+          />
+          {filterWord !== '' && (
+            <InputRightElement>
+              <CloseIcon cursor="pointer" fontSize="2xs" onClick={() => setFilterWord('')} />
+            </InputRightElement>
+          )}
+        </InputGroup>
+
         <Box maxH="800px" overflowY="scroll">
           <TabPanels>
             <TabPanel px="0">
               {!activitiesLoading ? (
                 <List bg="white">
-                  {activities.map((activity) => (
+                  {activitiesFiltered?.map((activity) => (
                     <ListItem
                       key={activity._id}
                       _hover={{
@@ -562,7 +600,7 @@ function ContentInserter({ currentHost, onSelect }) {
             <TabPanel px="0">
               {!worksLoading ? (
                 <List bg="white">
-                  {works.map((work) => (
+                  {worksFiltered?.map((work) => (
                     <ListItem
                       key={work._id}
                       _hover={{
