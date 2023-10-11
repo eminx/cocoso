@@ -29,6 +29,7 @@ import {
   Body,
   Button as EmButton,
   Container,
+  Column,
   Head,
   Heading as EmHeading,
   Hr,
@@ -357,14 +358,15 @@ function EmailPreview({ currentHost, email, imageUrl }) {
                   {activity?.title}
                 </EmHeading>
               </EmLink>
-              <EmText style={{ fontSize: 16, marginTop: 4 }}>{activity?.subTitle}</EmText>
+              <EmText style={{ fontSize: 16 }}>{activity?.subTitle}</EmText>
               <Img
                 src={activity?.imageUrl}
                 width="100%"
                 height="auto"
                 style={{ marginBottom: 12 }}
               />
-              <EmText style={{ fontSize: 14 }}>
+              <ActivityDates activity={activity} />
+              <EmText style={{ fontSize: 12 }}>
                 {activity?.longDescription && renderHTML(activity.longDescription)}
               </EmText>
               <EmButton
@@ -395,7 +397,7 @@ function EmailPreview({ currentHost, email, imageUrl }) {
               {work.images && (
                 <Img src={work.images[0]} width="100%" height="auto" style={{ marginBottom: 12 }} />
               )}
-              <EmText style={{ fontSize: 14 }}>
+              <EmText style={{ fontSize: 12 }}>
                 {work?.longDescription && renderHTML(work.longDescription)}
               </EmText>
               <EmButton
@@ -587,7 +589,12 @@ function ContentInserter({ currentHost, onSelect }) {
                             src={activity.imageUrl}
                             w="80px"
                           />
-                          <Text fontSize="md">{activity.title}</Text>
+                          <Box>
+                            <Text fontSize="md" fontWeight="bold">
+                              {activity.title}
+                            </Text>
+                            <ActivityDates activity={activity} />
+                          </Box>
                         </HStack>
                       </Checkbox>
                     </ListItem>
@@ -627,7 +634,12 @@ function ContentInserter({ currentHost, onSelect }) {
                             src={work.images && work.images[0]}
                             w="80px"
                           />
-                          <Text fontSize="md">{work.title}</Text>
+                          <Box>
+                            <Text fontSize="md" fontWeight="bold">
+                              {work.title}
+                            </Text>
+                            <Text fontSize="sm">{work.shortDescription}</Text>
+                          </Box>
                         </HStack>
                       </Checkbox>
                     </ListItem>
@@ -641,6 +653,41 @@ function ContentInserter({ currentHost, onSelect }) {
         </Box>
       </Tabs>
     </>
+  );
+}
+
+function ActivityDates({ activity }) {
+  if (!activity) {
+    return null;
+  }
+  const length = activity.datesAndTimes?.length;
+
+  return (
+    <Row style={{ marginLeft: 0, marginTop: 4, width: 'auto' }}>
+      {length < 4
+        ? activity?.datesAndTimes?.map((date) => (
+            <ActivityDate key={date.startDate + date.endTime} date={date} />
+          ))
+        : activity?.datesAndTimes
+            ?.filter((d, i) => i < 3)
+            .map((date) => <ActivityDate key={date.startDate + date.endTime} date={date} />)}
+      <Column>
+        <EmText>{length > 3 && '+' + (length - 3).toString()}</EmText>
+      </Column>
+    </Row>
+  );
+}
+
+function ActivityDate({ date }) {
+  return (
+    <Column style={{ paddingRight: 8 }}>
+      <EmText style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
+        {moment(date.startDate).format('DD')}
+      </EmText>
+      <EmText style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
+        {moment(date.startDate).format('MMMM')}
+      </EmText>
+    </Column>
   );
 }
 
