@@ -7,8 +7,6 @@ import Hosts from '../../../hosts/host';
 import { isValidEmail, getEmailBody } from './mail.helpers';
 import { getWelcomeEmailBody } from './templates.mails';
 
-const publicSettings = Meteor.settings.public;
-
 Meteor.methods({
   sendEmail(id, subjectEmail, textEmail) {
     check([id, subjectEmail, textEmail], [String]);
@@ -33,13 +31,8 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
 
-    let fromEmailWithHostName = `${publicSettings.name} ${fromEmail}`;
-    if (
-      currentHost &&
-      currentHost.settings &&
-      currentHost.settings.name &&
-      currentHost.settings.name.length > 2
-    ) {
+    let fromEmailWithHostName = fromEmail;
+    if (currentHost && currentHost.settings && currentHost.settings.name) {
       fromEmailWithHostName = `${currentHost.settings.name} ${fromEmail}`;
     }
 
