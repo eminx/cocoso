@@ -85,6 +85,8 @@ emails:
     image:
       label: Image
       helper: Select an image to appear at the top of the email
+    footer:
+      label: Footer
   participant:
     new: New Participant
   cocreator:

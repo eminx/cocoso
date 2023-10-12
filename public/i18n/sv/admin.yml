@@ -85,6 +85,8 @@ emails:
     image:
       label: Bild
       helper: Välj en bild som ska visas överst i e-postmeddelandet
+    footer:
+      label: E-postsidfot
   participant:
     new: Ny deltagare
   cocreator:

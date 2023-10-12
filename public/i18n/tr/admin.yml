@@ -85,6 +85,8 @@ emails:
     image:
       label: Imaj
       helper: E-postanın üst kısmında görünecek bir imaj seç
+    footer:
+      label: Altbilgi
   participant:
     new: Yeni Katılımcı
   cocreator:

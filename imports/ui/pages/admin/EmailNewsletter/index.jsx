@@ -1,0 +1,175 @@
+import React, { useContext, useState } from 'react';
+import { Box, Text } from '@chakra-ui/react';
+import { render as renderEmail } from '@react-email/render';
+import { useTranslation } from 'react-i18next';
+
+import Template from '../../../components/Template';
+import ListMenu from '../../../components/ListMenu';
+import { call, resizeImage, uploadImage } from '../../../utils/shared';
+import Loader from '../../../components/Loader';
+import { message, Alert } from '../../../components/message';
+import { StateContext } from '../../../LayoutContainer';
+import { adminMenu } from '../../../utils/constants/general';
+import Breadcrumb from '../../../components/Breadcrumb';
+import Modal from '../../../components/Modal';
+import EmailPreview from './EmailPreview';
+import EmailForm from './EmailForm';
+
+const emailModel = {
+  appeal: '',
+  body: '',
+  image: {
+    imageUrl: '',
+    uploadableImage: null,
+    uploadableImageLocal: null,
+  },
+  subject: '',
+  items: null,
+};
+
+function EmailNewsletter({ history }) {
+  const [isSending, setIsSending] = useState(false);
+  const [email, setEmail] = useState(emailModel);
+  const [isPreview, setIsPreview] = useState(false);
+  const { currentHost, currentUser, role } = useContext(StateContext);
+  const [t] = useTranslation('admin');
+  const [tc] = useTranslation('common');
+
+  if (!email) {
+    return <Loader />;
+  }
+
+  if (!currentUser || role !== 'admin') {
+    return <Alert>{tc('message.access.deny')}</Alert>;
+  }
+
+  const handleFormConfirm = (values) => {
+    setEmail({
+      ...email,
+      ...values,
+    });
+    setIsPreview(true);
+  };
+
+  const setUploadableImage = (files) => {
+    if (files.length > 1) {
+      message.error(tc('plugins.fileDropper.single'));
+      return;
+    }
+    const uploadableImage = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadableImage);
+    reader.addEventListener(
+      'load',
+      () => {
+        setEmail({
+          ...email,
+          image: {
+            uploadableImage,
+            uploadableImageLocal: reader.result,
+            imageUrl: null,
+          },
+        });
+      },
+      false
+    );
+  };
+
+  const uploadLocalImage = async () => {
+    setIsSending(true);
+    setIsPreview(false);
+
+    const { image } = email;
+    const { uploadableImage } = image;
+
+    try {
+      const resizedImage = await resizeImage(uploadableImage, 800);
+      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
+      handleSendEmail(uploadedImage);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+    }
+  };
+
+  const handleSelectItems = (items) => {
+    setEmail({
+      ...email,
+      items,
+    });
+  };
+
+  const handleSendEmail = async (imageUrl) => {
+    const emailHtml = renderEmail(
+      <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
+    );
+
+    const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
+
+    try {
+      await call('sendEmail', myEmail, email.subject, emailHtml);
+      setEmail(emailModel);
+      message.success(tc('message.success.update'));
+    } catch (error) {
+      message.error(error.reason || error.error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const pathname = history && history.location.pathname;
+
+  const furtherBreadcrumbLinks = [
+    {
+      label: 'Admin',
+      link: '/admin/settings',
+    },
+    {
+      label: t('emails.label'),
+      link: null,
+    },
+  ];
+
+  return (
+    <>
+      <Box p="4">
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
+      </Box>
+
+      <Template
+        heading={t('newsletter.title')}
+        leftContent={
+          <Box>
+            <ListMenu pathname={pathname} list={adminMenu} />
+          </Box>
+        }
+      >
+        <Text mb="4">{t('newsletter.subtitle')}</Text>
+        <Box pb="4" mb="4">
+          <EmailForm
+            currentHost={currentHost}
+            email={email}
+            onSelectItems={handleSelectItems}
+            onSubmit={(values) => handleFormConfirm(values)}
+            setUploadableImage={setUploadableImage}
+          />
+        </Box>
+      </Template>
+
+      <Modal
+        actionButtonLabel="Send email"
+        isOpen={isPreview}
+        motionPreset="slideInBottom"
+        scrollBehavior="inside"
+        size="2xl"
+        title={email?.subject}
+        onActionButtonClick={() => uploadLocalImage()}
+        onClose={() => setIsPreview(false)}
+      >
+        <EmailPreview email={email} currentHost={currentHost} />
+      </Modal>
+    </>
+  );
+}
+
+export default EmailNewsletter;
