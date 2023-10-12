@@ -12,6 +12,7 @@ import {
 
 function Modal({
   actionButtonLabel,
+  actionButtonProps,
   children,
   h,
   isOpen,
@@ -36,7 +37,11 @@ function Modal({
               {secondaryButtonLabel}
             </Button>
           )}
-          {actionButtonLabel && <Button onClick={onActionButtonClick}>{actionButtonLabel}</Button>}
+          {actionButtonLabel && (
+            <Button onClick={onActionButtonClick} {...actionButtonProps}>
+              {actionButtonLabel}
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </CModal>

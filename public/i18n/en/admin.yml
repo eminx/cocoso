@@ -101,6 +101,12 @@ newsletter:
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
   labels:
     insertcontent: Insert Content
+  modals:
+    title: Confirm Sending to {count} people
+    body: You are about to send this email to {count} members of your community. You cannot revert this action once you have sent this email to your members.
+    yes: Yes, send please
+  error:
+    required: You can not send an empty email. You have to enter either body text or image, or insert content items for the email to be sent.
 
 # ADMIN STATIC PAGES
 pages:

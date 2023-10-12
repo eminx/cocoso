@@ -14,6 +14,7 @@ import Breadcrumb from '../../../components/Breadcrumb';
 import Modal from '../../../components/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const emailModel = {
   appeal: '',
@@ -31,6 +32,7 @@ function EmailNewsletter({ history }) {
   const [isSending, setIsSending] = useState(false);
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
+  const [isLastConfirm, setIsLastConfirm] = useState(false);
   const { currentHost, currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -43,11 +45,15 @@ function EmailNewsletter({ history }) {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
-  const handleFormConfirm = (values) => {
-    setEmail({
+  const handleFormChange = (field, value) => {
+    const newEmail = {
       ...email,
-      ...values,
-    });
+    };
+    newEmail[field] = value;
+    setEmail(newEmail);
+  };
+
+  const handleFormConfirm = () => {
     setIsPreview(true);
   };
 
@@ -85,7 +91,7 @@ function EmailNewsletter({ history }) {
     try {
       const resizedImage = await resizeImage(uploadableImage, 800);
       const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      handleSendEmail(uploadedImage);
+      sendEmail(uploadedImage);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -99,13 +105,32 @@ function EmailNewsletter({ history }) {
     });
   };
 
-  const handleSendEmail = async (imageUrl) => {
+  const handleConfirmSendingEmail = () => {
+    if (!appeal || !subject) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    if ((!body || body.length < 3) && !image && items.length === 0) {
+      message.error(t('newsletter.error.required'));
+      return;
+    }
+
+    setIsSending(true);
+
+    if (email?.image?.uploadableImage) {
+      uploadLocalImage();
+    } else {
+      sendEmail();
+    }
+  };
+
+  const sendEmail = async (imageUrl) => {
     const emailHtml = renderEmail(
       <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
     );
 
     const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
-    // const myEmail = 'e10durak@gmail.com';
 
     try {
       await call('sendEmail', myEmail, email.subject, emailHtml);
@@ -115,6 +140,7 @@ function EmailNewsletter({ history }) {
       message.error(error.reason || error.error);
     } finally {
       setIsSending(false);
+      setIsLastConfirm(false);
     }
   };
 
@@ -151,6 +177,7 @@ function EmailNewsletter({ history }) {
             currentHost={currentHost}
             email={email}
             onSelectItems={handleSelectItems}
+            onChange={handleFormChange}
             onSubmit={handleFormConfirm}
             setUploadableImage={setUploadableImage}
           />
@@ -164,11 +191,28 @@ function EmailNewsletter({ history }) {
         scrollBehavior="inside"
         size="2xl"
         title={email?.subject}
-        onActionButtonClick={() => uploadLocalImage()}
+        onActionButtonClick={() => {
+          setIsPreview(false);
+          setIsLastConfirm(true);
+        }}
         onClose={() => setIsPreview(false)}
       >
         <EmailPreview email={email} currentHost={currentHost} />
       </Modal>
+
+      <ConfirmModal
+        confirmButtonProps={{
+          isLoading: isSending,
+        }}
+        confirmText={t('newsletter.modals.yes')}
+        title={t('newsletter.modals.title', { count: currentHost?.members?.length })}
+        visible={isLastConfirm}
+        zIndex={99999}
+        onConfirm={() => handleConfirmSendingEmail()}
+        onCancel={() => setIsLastConfirm(false)}
+      >
+        {t('newsletter.modals.body', { count: currentHost?.members?.length })}
+      </ConfirmModal>
     </>
   );
 }

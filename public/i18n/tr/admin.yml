@@ -101,6 +101,12 @@ newsletter:
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsiniz.
   labels:
     insertcontent: İçerik ekle
+  modals:
+    title: '{count} kişiye göndermeyi onayla'
+    body: Bu e-postayı topluluğunuzun {count} üyesine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
+    yes: Evet, lütfen gönder
+  error:
+    required: Boş bir e-posta gönderemezsin. Gönderilecek e-posta için gövde metni veya resim girmen ya da içerik öğeleri eklemen gerekir.
 
 # ADMIN STATIC PAGES
 pages:

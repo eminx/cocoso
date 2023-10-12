@@ -20,6 +20,7 @@ import ContentInserter from './ContentInserter';
 export default function EmailForm({
   currentHost,
   email,
+  onChange,
   onSelectItems,
   onSubmit,
   setUploadableImage,
@@ -32,12 +33,19 @@ export default function EmailForm({
 
   const { isDirty, isSubmitting } = formState;
 
-  const { image } = email;
+  const { appeal, body, image, items, subject } = email;
   const { imageUrl, uploadableImageLocal } = image;
+
+  const isButtonDisabled =
+    !appeal || !subject || ((!body || body.length < 3) && !image && items.length === 0);
+
+  const handleChange = (field, value) => {
+    onChange(field, value);
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <form onSubmit={handleSubmit((data) => onSubmit())}>
         <VStack spacing="4">
           <FormField
             label={t('emails.form.image.label')}
@@ -56,23 +64,27 @@ export default function EmailForm({
             </Center>
           </FormField>
 
-          <FormField label={t('emails.form.subject.label')}>
-            <Input {...register('subject')} placeholder={t('emails.form.subject.holder')} />
+          <FormField label={t('emails.form.subject.label')} isRequired>
+            <Input
+              placeholder={t('emails.form.subject.holder')}
+              value={email.subject}
+              onChange={(event) => handleChange('subject', event.target.value)}
+            />
           </FormField>
 
-          <FormField label={t('emails.form.appeal.label')}>
+          <FormField label={t('emails.form.appeal.label')} isRequired>
             <InputGroup w="280px">
-              <Input {...register('appeal')} placeholder={t('emails.form.appeal.holder')} />
+              <Input
+                placeholder={t('emails.form.appeal.holder')}
+                value={email.appeal}
+                onChange={(event) => handleChange('appeal', event.target.value)}
+              />
               <InputRightAddon children={t('emails.form.appeal.addon')} />
             </InputGroup>
           </FormField>
 
           <FormField label={t('emails.form.body.label')}>
-            <Controller
-              control={control}
-              name="body"
-              render={({ field }) => <ReactQuill {...field} />}
-            />
+            <ReactQuill value={email.body} onChange={(value) => handleChange('body', value)} />
           </FormField>
 
           <FormField label={t('newsletter.labels.insertcontent')} mt="4">
@@ -83,15 +95,15 @@ export default function EmailForm({
           </FormField>
 
           <FormField label={t('emails.form.footer.label')}>
-            <Controller
-              control={control}
-              name="footer"
-              render={({ field }) => <ReactQuill {...field} />}
+            <ReactQuill
+              className="ql-editor-text-align-center"
+              value={email.footer}
+              onChange={(value) => handleChange('footer', value)}
             />
           </FormField>
 
           <Flex justify="flex-end" py="2" w="100%">
-            <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
+            <Button isDisabled={isButtonDisabled} type="submit">
               {tc('actions.preview')}
             </Button>
           </Flex>

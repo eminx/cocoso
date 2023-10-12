@@ -4,7 +4,9 @@ import { FormControl, FormLabel, FormErrorMessage, FormHelperText } from '@chakr
 function FormField({ children, errorMessage, helperText, label, size = 'sm', ...otherProps }) {
   return (
     <FormControl {...otherProps}>
-      <FormLabel mb="1">{label}</FormLabel>
+      <FormLabel mb="1" requiredIndicator={'*'}>
+        {label}
+      </FormLabel>
       {children}
       {helperText && <FormHelperText color="#585858">{helperText}</FormHelperText>}
       {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
