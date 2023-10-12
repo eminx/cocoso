@@ -105,6 +105,7 @@ function EmailNewsletter({ history }) {
     );
 
     const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
+    // const myEmail = 'e10durak@gmail.com';
 
     try {
       await call('sendEmail', myEmail, email.subject, emailHtml);
@@ -150,7 +151,7 @@ function EmailNewsletter({ history }) {
             currentHost={currentHost}
             email={email}
             onSelectItems={handleSelectItems}
-            onSubmit={(values) => handleFormConfirm(values)}
+            onSubmit={handleFormConfirm}
             setUploadableImage={setUploadableImage}
           />
         </Box>

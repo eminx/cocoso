@@ -23,7 +23,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   }
   const [tc] = useTranslation('common');
 
-  const { appeal, body, image, items, subject } = email;
+  const { appeal, body, footer, image, items, subject } = email;
   const { uploadableImageLocal } = image;
   const { activities, works } = items;
 
@@ -47,7 +47,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             />
           )}
           <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>
-          <EmText style={{ fontSize: 14 }}>{body && renderHTML(body)}</EmText>
+          {body && <EmText>{renderHTML(body)}</EmText>}
           <Hr />
         </Section>
         <>
@@ -72,9 +72,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 style={{ marginBottom: 12 }}
               />
               <ActivityDates activity={activity} />
-              <EmText style={{ fontSize: 12 }}>
-                {activity?.longDescription && renderHTML(activity.longDescription)}
-              </EmText>
+              <EmText>{activity?.longDescription && renderHTML(activity.longDescription)}</EmText>
               <EmButton
                 href={`https://${host}/activities/${activity._id}`}
                 style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
@@ -103,9 +101,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
               {work.images && (
                 <Img src={work.images[0]} width="100%" height="auto" style={{ marginBottom: 12 }} />
               )}
-              <EmText style={{ fontSize: 12 }}>
-                {work?.longDescription && renderHTML(work.longDescription)}
-              </EmText>
+              <EmText>{work?.longDescription && renderHTML(work.longDescription)}</EmText>
               <EmButton
                 href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                 style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
@@ -116,6 +112,9 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             </Section>
           ))}
         </>
+        <Section>
+          {footer && <EmText style={{ fontSize: 14 }}>{renderHTML(footer)}</EmText>}
+        </Section>
       </Body>
     </Html>
   );

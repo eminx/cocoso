@@ -24,7 +24,7 @@ export default function EmailForm({
   onSubmit,
   setUploadableImage,
 }) {
-  const { control, handleSubmit, register, formState } = useForm({
+  const { control, handleSubmit, register, formState, reset } = useForm({
     email,
   });
   const [t] = useTranslation('admin');
