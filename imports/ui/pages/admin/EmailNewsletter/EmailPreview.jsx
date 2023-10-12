@@ -144,7 +144,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           </>
         )}
 
-        <Section>
+        <Section style={{ textAlign: 'center' }}>
           {footer && (
             <EmText style={{ fontSize: 14, textAlign: 'center' }}>{renderHTML(footer)}</EmText>
           )}

@@ -106,12 +106,18 @@ function EmailNewsletter({ history }) {
   };
 
   const handleConfirmSendingEmail = () => {
+    const { appeal, body, image, items, subject } = email;
     if (!appeal || !subject) {
       message.error(t('newsletter.error.required'));
       return;
     }
 
-    if ((!body || body.length < 3) && !image && items.length === 0) {
+    if (
+      (!body || body.length < 3) &&
+      !image &&
+      !image?.uploadableImageLocal &&
+      items.length === 0
+    ) {
       message.error(t('newsletter.error.required'));
       return;
     }
@@ -135,7 +141,7 @@ function EmailNewsletter({ history }) {
     try {
       await call('sendEmail', myEmail, email.subject, emailHtml);
       setEmail(emailModel);
-      message.success(tc('message.success.update'));
+      message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
       message.error(error.reason || error.error);
     } finally {
@@ -206,13 +212,13 @@ function EmailNewsletter({ history }) {
           isLoading: isSending,
         }}
         confirmText={t('newsletter.modals.yes')}
-        title={t('newsletter.modals.title', { count: currentHost?.members?.length })}
+        title={t('newsletter.modals.title')}
         visible={isLastConfirm}
         zIndex={99999}
         onConfirm={() => handleConfirmSendingEmail()}
         onCancel={() => setIsLastConfirm(false)}
       >
-        {t('newsletter.modals.body', { count: currentHost?.members?.length })}
+        {t('newsletter.modals.body')}
       </ConfirmModal>
     </>
   );

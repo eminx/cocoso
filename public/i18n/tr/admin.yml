@@ -103,8 +103,8 @@ newsletter:
   labels:
     insertcontent: İçerik ekle
   modals:
-    title: '{count} kişiye göndermeyi onayla'
-    body: Bu e-postayı topluluğunuzun {count} üyesine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
+    title: Herkese göndermeyi onayla
+    body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
     yes: Evet, lütfen gönder
   error:
     required: Boş bir e-posta gönderemezsin. Gönderilecek e-posta için gövde metni veya resim girmen ya da içerik öğeleri eklemen gerekir.
@@ -117,6 +117,9 @@ newsletter:
       helper: Lütfen e-postanın gövde metnini oluştur (içerik öğeleri ve yanı sıra resim seçilmemiş ise gerekli)
     image:
       helper: Lütfen e-postanın en üstünde görünecek bir resim seçin (gövde metni sağlanmadıysa ve içerik öğesi seçilmediyse gereklidir)
+  notification:
+    success:
+      emailsent: Eposta başarıyla tüm üyelere gönderildi.
 
 # ADMIN STATIC PAGES
 pages:

@@ -103,8 +103,8 @@ newsletter:
   labels:
     insertcontent: Bifoga innehåll
   modals:
-    title: Bekräfta sändning till {count} personer
-    body: Du är på väg att skicka detta e-postmeddelande till {count} medlemmar i din grupp. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.
+    title: Bekräfta sändning till alla personer
+    body: Du är på väg att skicka detta e-postmeddelande till alla medlemmar i din community. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.
     yes: Ja, skicka gärna
   error:
     required: Du kan inte skicka ett tomt e-postmeddelande. Du måste ange antingen brödtext eller bild, eller infoga innehållsobjekt för att e-postmeddelandet ska skickas.
@@ -117,6 +117,9 @@ newsletter:
       helper: Skriv brödtexten i e-postmeddelandet (obligatoriskt om ingen bild, samt innehållsobjekt har valts)
     image:
       helper: Välj en bild som ska visas högst upp i e-postmeddelandet (krävs om ingen brödtext tillhandahålls, samt inga innehållsobjekt har valts)
+  notification:
+    success:
+      emailsent: Ditt e-postmeddelande har skickats till alla medlemmar.
 
 # ADMIN STATIC PAGES
 pages:

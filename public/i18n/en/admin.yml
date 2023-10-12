@@ -103,8 +103,8 @@ newsletter:
   labels:
     insertcontent: Insert Content
   modals:
-    title: Confirm Sending to {count} people
-    body: You are about to send this email to {count} members of your community. You cannot revert this action once you have sent this email to your members.
+    title: Confirm Sending to everyone
+    body: You are about to send this email to all members of your community. You cannot revert this action once you have sent this email to your members.
     yes: Yes, send please
   error:
     required: You can not send an empty email. You have to enter either body text or image, or insert content items for the email to be sent.
@@ -117,6 +117,9 @@ newsletter:
       helper: Compose the body text of the email (required if no image, as well as content items selected)
     image:
       helper: Select an image to appear at the top of the email (required if no body text is provided, as well as no content items selected)
+  notification:
+    success:
+      emailsent: Your email is successfully sent to all members
 
 # ADMIN STATIC PAGES
 pages:
