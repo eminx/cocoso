@@ -218,7 +218,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                         size="lg"
                         onChange={(e) => handleSelectItem(activity, 'activities')}
                       >
-                        <HStack>
+                        <HStack alignItems="flex-start">
                           <Image
                             bg="brand.100"
                             fit="cover"
@@ -226,7 +226,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             src={activity.imageUrl}
                             w="80px"
                           />
-                          <Box>
+                          <Box ml="2">
                             <Text fontSize="md" fontWeight="bold">
                               {activity.title}
                             </Text>
@@ -263,7 +263,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                         size="lg"
                         onChange={(e) => handleSelectItem(work, 'works')}
                       >
-                        <HStack>
+                        <HStack alignItems="flex-start">
                           <Image
                             bg="brand.100"
                             fit="cover"
@@ -271,7 +271,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                             src={work.images && work.images[0]}
                             w="80px"
                           />
-                          <Box>
+                          <Box ml="2">
                             <Text fontSize="md" fontWeight="bold">
                               {work.title}
                             </Text>

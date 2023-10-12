@@ -186,7 +186,7 @@ export function ActivityDate({ date }) {
         {moment(date.startDate).format('DD')}
       </EmText>
       <EmText style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
-        {moment(date.startDate).format('MMMM')}
+        {moment(date.startDate).format('MMM')}
       </EmText>
     </Column>
   );

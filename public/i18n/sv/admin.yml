@@ -98,6 +98,7 @@ emails:
 newsletter:
   title: Nyhetsbrev
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
+  subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
   contenthelper: Du kan infoga befintligt innehåll från listningssidorna genom att välja de poster som du vill bifoga i e-postmeddelandet nedan.
   labels:
     insertcontent: Bifoga innehåll
@@ -107,6 +108,15 @@ newsletter:
     yes: Ja, skicka gärna
   error:
     required: Du kan inte skicka ett tomt e-postmeddelande. Du måste ange antingen brödtext eller bild, eller infoga innehållsobjekt för att e-postmeddelandet ska skickas.
+  form:
+    subject:
+      helper: Ange texten som kommer att vara ämnet för e-postmeddelandet (obligatoriskt)
+    appeal:
+      helper: Ange hur du vill ringa varje medlem i början av e-postmeddelandet (obligatoriskt)
+    body:
+      helper: Skriv brödtexten i e-postmeddelandet (obligatoriskt om ingen bild, samt innehållsobjekt har valts)
+    image:
+      helper: Välj en bild som ska visas högst upp i e-postmeddelandet (krävs om ingen brödtext tillhandahålls, samt inga innehållsobjekt har valts)
 
 # ADMIN STATIC PAGES
 pages:

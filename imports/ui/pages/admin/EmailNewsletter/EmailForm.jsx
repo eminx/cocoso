@@ -25,19 +25,21 @@ export default function EmailForm({
   onSubmit,
   setUploadableImage,
 }) {
-  const { control, handleSubmit, register, formState, reset } = useForm({
+  const { handleSubmit } = useForm({
     email,
   });
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  const { isDirty, isSubmitting } = formState;
-
   const { appeal, body, image, items, subject } = email;
   const { imageUrl, uploadableImageLocal } = image;
 
   const isButtonDisabled =
-    !appeal || !subject || ((!body || body.length < 3) && !image && items.length === 0);
+    !appeal ||
+    !subject ||
+    ((!body || body.length < 3) &&
+      (!image || !uploadableImageLocal) &&
+      (!items || items.length === 0));
 
   const handleChange = (field, value) => {
     onChange(field, value);
@@ -48,23 +50,10 @@ export default function EmailForm({
       <form onSubmit={handleSubmit((data) => onSubmit())}>
         <VStack spacing="4">
           <FormField
-            label={t('emails.form.image.label')}
-            helperText={
-              uploadableImageLocal || imageUrl
-                ? tc('plugins.fileDropper.replace')
-                : t('emails.form.image.helper')
-            }
+            helperText={t('newsletter.form.subject.helper')}
+            isRequired
+            label={t('emails.form.subject.label')}
           >
-            <Center>
-              <FileDropper
-                imageUrl={imageUrl}
-                setUploadableImage={setUploadableImage}
-                uploadableImageLocal={uploadableImageLocal}
-              />
-            </Center>
-          </FormField>
-
-          <FormField label={t('emails.form.subject.label')} isRequired>
             <Input
               placeholder={t('emails.form.subject.holder')}
               value={email.subject}
@@ -72,7 +61,11 @@ export default function EmailForm({
             />
           </FormField>
 
-          <FormField label={t('emails.form.appeal.label')} isRequired>
+          <FormField
+            helperText={t('newsletter.form.appeal.helper')}
+            isRequired
+            label={t('emails.form.appeal.label')}
+          >
             <InputGroup w="280px">
               <Input
                 placeholder={t('emails.form.appeal.holder')}
@@ -83,7 +76,27 @@ export default function EmailForm({
             </InputGroup>
           </FormField>
 
-          <FormField label={t('emails.form.body.label')}>
+          <FormField
+            helperText={
+              uploadableImageLocal || imageUrl
+                ? tc('plugins.fileDropper.replace')
+                : t('newsletter.form.image.helper')
+            }
+            label={t('emails.form.image.label')}
+          >
+            <Center>
+              <FileDropper
+                imageUrl={imageUrl}
+                setUploadableImage={setUploadableImage}
+                uploadableImageLocal={uploadableImageLocal}
+              />
+            </Center>
+          </FormField>
+
+          <FormField
+            helperText={t('newsletter.form.body.helper')}
+            label={t('emails.form.body.label')}
+          >
             <ReactQuill value={email.body} onChange={(value) => handleChange('body', value)} />
           </FormField>
 

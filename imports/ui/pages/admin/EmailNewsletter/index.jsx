@@ -172,6 +172,7 @@ function EmailNewsletter({ history }) {
         }
       >
         <Text mb="4">{t('newsletter.subtitle')}</Text>
+        {/* <Text mb="4">{t('newsletter.subtitle2')}</Text> */}
         <Box pb="4" mb="4">
           <EmailForm
             currentHost={currentHost}

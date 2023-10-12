@@ -98,6 +98,7 @@ emails:
 newsletter:
   title: Eposta Bülteni
   subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsiniz.
+  subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik öğeleri.'
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsiniz.
   labels:
     insertcontent: İçerik ekle
@@ -107,6 +108,15 @@ newsletter:
     yes: Evet, lütfen gönder
   error:
     required: Boş bir e-posta gönderemezsin. Gönderilecek e-posta için gövde metni veya resim girmen ya da içerik öğeleri eklemen gerekir.
+  form:
+    subject:
+      helper: Lütfen e-postanın konusu olacak metni gir (gerekli)
+    appeal:
+      helper: Lütfen e-postanın başında her bir üyeyi nasıl çağırmak istediğini gir (gerekli)
+    body:
+      helper: Lütfen e-postanın gövde metnini oluştur (içerik öğeleri ve yanı sıra resim seçilmemiş ise gerekli)
+    image:
+      helper: Lütfen e-postanın en üstünde görünecek bir resim seçin (gövde metni sağlanmadıysa ve içerik öğesi seçilmediyse gereklidir)
 
 # ADMIN STATIC PAGES
 pages:

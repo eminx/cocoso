@@ -98,6 +98,7 @@ emails:
 newsletter:
   title: Email Newsletter
   subtitle: Here you can compose an email and easily attach published content from the website, and then send out to all members of your community.
+  subtitle2: 'To compose the email below, you have to enter at least one of: body text, an image and/or selected content items listed in the community app.'
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
   labels:
     insertcontent: Insert Content
@@ -107,6 +108,15 @@ newsletter:
     yes: Yes, send please
   error:
     required: You can not send an empty email. You have to enter either body text or image, or insert content items for the email to be sent.
+  form:
+    subject:
+      helper: Enter the text that will be the subject of the email (required)
+    appeal:
+      helper: Enter how you would like to call each member in the beginning of the email (required)
+    body:
+      helper: Compose the body text of the email (required if no image, as well as content items selected)
+    image:
+      helper: Select an image to appear at the top of the email (required if no body text is provided, as well as no content items selected)
 
 # ADMIN STATIC PAGES
 pages:
