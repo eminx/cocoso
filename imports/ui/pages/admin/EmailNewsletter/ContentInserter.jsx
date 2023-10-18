@@ -24,6 +24,7 @@ import { call } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import { ActivityDates } from './EmailPreview';
+import FormField from '../../../components/FormField';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -48,16 +49,13 @@ function parseProcessActivities(activities) {
   return activitiesParsed;
 }
 
-const getFirst40Words = (string) => {
-  return string.replace(/((\s*\S+){40})([\s\S]*)/);
-};
-
 export default function ContentInserter({ currentHost, onSelect }) {
   const [activities, setActivities] = useState([]);
   const [works, setWorks] = useState([]);
   const [activitiesLoading, setActivitiesLoading] = useState(false);
   const [worksLoading, setWorksLoading] = useState(false);
   const [filterWord, setFilterWord] = useState('');
+  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -66,9 +64,16 @@ export default function ContentInserter({ currentHost, onSelect }) {
   }, []);
 
   const isPortalHost = currentHost?.isPortalHost;
+  const menu = currentHost?.settings?.menu;
+  const activitiesInMenu = menu?.find((item) => item.name === 'activities');
+  const worksInMenu = menu?.find((item) => item.name === 'works');
 
   const getActivities = async () => {
+    if (!activitiesInMenu.isVisible) {
+      return;
+    }
     setActivitiesLoading(true);
+
     try {
       if (isPortalHost) {
         const allActivities = await call('getAllActivitiesFromAllHosts', true);
@@ -88,6 +93,10 @@ export default function ContentInserter({ currentHost, onSelect }) {
   };
 
   const getWorks = async () => {
+    if (!worksInMenu.isVisible) {
+      return;
+    }
+
     setWorksLoading(true);
     try {
       if (isPortalHost) {
@@ -161,134 +170,147 @@ export default function ContentInserter({ currentHost, onSelect }) {
     }
   };
 
-  const activitiesLabel =
-    currentHost?.settings?.menu?.find((item) => item.name === 'activities')?.label || 'Activities';
-  const worksLabel =
-    currentHost?.settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
+  const activitiesFiltered = activitiesInMenu.isVisible && getActivitiesFiltered();
+  const worksFiltered = worksInMenu.isVisible && getWorksFiltered();
 
-  const activitiesFiltered = getActivitiesFiltered();
-  const worksFiltered = getWorksFiltered();
+  if (!activitiesInMenu.isVisible && !worksInMenu.isVisible) {
+    return null;
+  }
 
   return (
     <>
-      <Tabs mt="4" onChange={() => setFilterWord('')}>
-        <TabList>
-          <Tab px="0" mr="4">
-            <Text>{activitiesLabel}</Text>
-          </Tab>
-          <Tab px="0">
-            <Text>{worksLabel}</Text>
-          </Tab>
-        </TabList>
+      <FormField label={t('newsletter.labels.insertcontent')} mt="4" mb="4">
+        <Text color="gray.600" fontSize="sm">
+          {t('newsletter.contenthelper')}
+        </Text>
+        <Tabs mt="4" onChange={() => setFilterWord('')}>
+          <TabList>
+            {activitiesInMenu?.isVisible && (
+              <Tab px="0" mr="4">
+                <Text>{activitiesInMenu?.label}</Text>
+              </Tab>
+            )}
+            {worksInMenu?.isVisible && (
+              <Tab px="0">
+                <Text>{worksInMenu?.label}</Text>
+              </Tab>
+            )}
+          </TabList>
 
-        <InputGroup mt="2" size="sm" w="240px">
-          <Input
-            placeholder={tc('labels.filter')}
-            value={filterWord}
-            onChange={(event) => setFilterWord(event.target.value)}
-          />
-          {filterWord !== '' && (
-            <InputRightElement>
-              <CloseIcon cursor="pointer" fontSize="2xs" onClick={() => setFilterWord('')} />
-            </InputRightElement>
-          )}
-        </InputGroup>
+          <InputGroup mt="2" size="sm" w="240px">
+            <Input
+              placeholder={tc('labels.filter')}
+              value={filterWord}
+              onChange={(event) => setFilterWord(event.target.value)}
+            />
+            {filterWord !== '' && (
+              <InputRightElement>
+                <CloseIcon cursor="pointer" fontSize="2xs" onClick={() => setFilterWord('')} />
+              </InputRightElement>
+            )}
+          </InputGroup>
 
-        <Box maxH="800px" overflowY="scroll">
-          <TabPanels>
-            <TabPanel px="0">
-              {!activitiesLoading ? (
-                <List bg="white">
-                  {activitiesFiltered?.map((activity) => (
-                    <ListItem
-                      key={activity._id}
-                      _hover={{
-                        bg: activity.isSelected ? 'green.200' : 'green.50',
-                        cursor: 'pointer',
-                      }}
-                      bg={activity.isSelected ? 'green.200' : 'transparent'}
-                      borderBottom="1px solid #eee"
-                      px="2"
-                      py="4"
-                      onClick={() => handleSelectItem(activity, 'activities')}
-                    >
-                      <Checkbox
-                        colorScheme="green"
-                        isChecked={Boolean(activity.isSelected)}
-                        size="lg"
-                        onChange={(e) => handleSelectItem(activity, 'activities')}
-                      >
-                        <HStack alignItems="flex-start">
-                          <Image
-                            bg="brand.100"
-                            fit="cover"
-                            h="80px"
-                            src={activity.imageUrl}
-                            w="80px"
-                          />
-                          <Box ml="2">
-                            <Text fontSize="md" fontWeight="bold">
-                              {activity.title}
-                            </Text>
-                            <ActivityDates activity={activity} />
-                          </Box>
-                        </HStack>
-                      </Checkbox>
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Loader />
+          <Box maxH="800px" overflowY="scroll">
+            <TabPanels>
+              {activitiesInMenu?.isVisible && (
+                <TabPanel px="0">
+                  {!activitiesLoading ? (
+                    <List bg="white">
+                      {activitiesFiltered?.map((activity) => (
+                        <ListItem
+                          key={activity._id}
+                          _hover={{
+                            bg: activity.isSelected ? 'green.200' : 'green.50',
+                            cursor: 'pointer',
+                          }}
+                          bg={activity.isSelected ? 'green.200' : 'transparent'}
+                          borderBottom="1px solid #eee"
+                          px="2"
+                          py="4"
+                          onClick={() => handleSelectItem(activity, 'activities')}
+                        >
+                          <Checkbox
+                            colorScheme="green"
+                            isChecked={Boolean(activity.isSelected)}
+                            size="lg"
+                            onChange={(e) => handleSelectItem(activity, 'activities')}
+                          >
+                            <HStack alignItems="flex-start">
+                              <Image
+                                bg="brand.100"
+                                fit="cover"
+                                h="80px"
+                                src={activity.imageUrl}
+                                w="80px"
+                              />
+                              <Box ml="2">
+                                <Text fontSize="md" fontWeight="bold">
+                                  {activity.title}
+                                </Text>
+                                <ActivityDates activity={activity} />
+                              </Box>
+                            </HStack>
+                          </Checkbox>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Loader />
+                  )}
+                </TabPanel>
               )}
-            </TabPanel>
-            <TabPanel px="0">
-              {!worksLoading ? (
-                <List bg="white">
-                  {worksFiltered?.map((work) => (
-                    <ListItem
-                      key={work._id}
-                      _hover={{
-                        bg: work.isSelected ? 'green.200' : 'green.50',
-                        cursor: 'pointer',
-                      }}
-                      bg={work.isSelected ? 'green.200' : 'transparent'}
-                      borderBottom="1px solid #eee"
-                      px="2"
-                      py="4"
-                      onClick={() => handleSelectItem(work, 'works')}
-                    >
-                      <Checkbox
-                        colorScheme="green"
-                        isChecked={Boolean(work.isSelected)}
-                        size="lg"
-                        onChange={(e) => handleSelectItem(work, 'works')}
-                      >
-                        <HStack alignItems="flex-start">
-                          <Image
-                            bg="brand.100"
-                            fit="cover"
-                            h="80px"
-                            src={work.images && work.images[0]}
-                            w="80px"
-                          />
-                          <Box ml="2">
-                            <Text fontSize="md" fontWeight="bold">
-                              {work.title}
-                            </Text>
-                            <Text fontSize="sm">{work.shortDescription}</Text>
-                          </Box>
-                        </HStack>
-                      </Checkbox>
-                    </ListItem>
-                  ))}
-                </List>
-              ) : (
-                <Loader />
+
+              {worksInMenu?.isVisible && (
+                <TabPanel px="0">
+                  {!worksLoading ? (
+                    <List bg="white">
+                      {worksFiltered?.map((work) => (
+                        <ListItem
+                          key={work._id}
+                          _hover={{
+                            bg: work.isSelected ? 'green.200' : 'green.50',
+                            cursor: 'pointer',
+                          }}
+                          bg={work.isSelected ? 'green.200' : 'transparent'}
+                          borderBottom="1px solid #eee"
+                          px="2"
+                          py="4"
+                          onClick={() => handleSelectItem(work, 'works')}
+                        >
+                          <Checkbox
+                            colorScheme="green"
+                            isChecked={Boolean(work.isSelected)}
+                            size="lg"
+                            onChange={(e) => handleSelectItem(work, 'works')}
+                          >
+                            <HStack alignItems="flex-start">
+                              <Image
+                                bg="brand.100"
+                                fit="cover"
+                                h="80px"
+                                src={work.images && work.images[0]}
+                                w="80px"
+                              />
+                              <Box ml="2">
+                                <Text fontSize="md" fontWeight="bold">
+                                  {work.title}
+                                </Text>
+                                <Text fontSize="sm">{work.shortDescription}</Text>
+                              </Box>
+                            </HStack>
+                          </Checkbox>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Loader />
+                  )}
+                </TabPanel>
               )}
-            </TabPanel>
-          </TabPanels>
-        </Box>
-      </Tabs>
+            </TabPanels>
+          </Box>
+        </Tabs>
+      </FormField>
     </>
   );
 }

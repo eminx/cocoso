@@ -53,6 +53,7 @@ export default function EmailForm({
             helperText={t('newsletter.form.subject.helper')}
             isRequired
             label={t('emails.form.subject.label')}
+            mb="4"
           >
             <Input
               placeholder={t('emails.form.subject.holder')}
@@ -65,6 +66,7 @@ export default function EmailForm({
             helperText={t('newsletter.form.appeal.helper')}
             isRequired
             label={t('emails.form.appeal.label')}
+            mb="4"
           >
             <InputGroup w="280px">
               <Input
@@ -83,6 +85,7 @@ export default function EmailForm({
                 : t('newsletter.form.image.helper')
             }
             label={t('emails.form.image.label')}
+            mb="4"
           >
             <Center>
               <FileDropper
@@ -96,18 +99,14 @@ export default function EmailForm({
           <FormField
             helperText={t('newsletter.form.body.helper')}
             label={t('emails.form.body.label')}
+            mb="4"
           >
             <ReactQuill value={email.body} onChange={(value) => handleChange('body', value)} />
           </FormField>
 
-          <FormField label={t('newsletter.labels.insertcontent')} mt="4">
-            <Text color="gray.600" fontSize="sm">
-              {t('newsletter.contenthelper')}
-            </Text>
-            <ContentInserter currentHost={currentHost} onSelect={onSelectItems} />
-          </FormField>
+          <ContentInserter currentHost={currentHost} onSelect={onSelectItems} />
 
-          <FormField label={t('emails.form.footer.label')}>
+          <FormField label={t('emails.form.footer.label')} mb="4">
             <ReactQuill
               className="ql-editor-text-align-center"
               value={email.footer}
