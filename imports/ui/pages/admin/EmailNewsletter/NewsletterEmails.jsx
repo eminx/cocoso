@@ -42,8 +42,8 @@ export default function NewsletterEmails() {
       <NiceList actionsDisabled list={emails} keySelector="_id" spacing="0">
         {(email) => (
           <>
-            <Flex mb="4">
-              <Image mr="4" src={email.imageUrl} w="100px" />
+            <Flex alignItems="flex-start" mb="4">
+              <Image fit="contain" mr="4" src={email.imageUrl} w="100px" />
               <Box>
                 <Link to={`/newsletters/${email._id}`}>
                   <CLink as="span">
