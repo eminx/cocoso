@@ -100,9 +100,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
     setWorksLoading(true);
     try {
       if (isPortalHost) {
-        setWorks(await call('getAllWorksFromAllHosts'));
+        const respond = await call('getAllWorksFromAllHosts');
+        setWorks(respond.revert());
       } else {
-        setWorks(await call('getAllWorks'));
+        const respond = await call('getAllWorks');
+        setWorks(respond.revert());
       }
     } catch (error) {
       message.error(error.reason);
