@@ -79,7 +79,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         {items && activities && (
           <>
             {activities && activities.length > 0 && (
-              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
                 {activitiesLabel}
               </EmHeading>
             )}
@@ -90,17 +90,28 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   href={`https://${host}/activities/${activity._id}`}
                   style={{ color: '#0f64c0' }}
                 >
-                  <EmHeading as="h3" style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  <EmHeading
+                    as="h3"
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      lineHeight: 1.2,
+                    }}
+                  >
                     {activity?.title}
                   </EmHeading>
                 </EmLink>
-                <EmText style={{ fontSize: 16 }}>{activity?.subTitle}</EmText>
-                <Img
-                  src={activity?.imageUrl}
-                  width="100%"
-                  height="auto"
-                  style={{ marginBottom: 12, maxWidth: '480px' }}
-                />
+                <EmText style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                  {activity?.subTitle}
+                </EmText>
+                <EmLink href={`https://${host}/activities/${activity._id}`}>
+                  <Img
+                    src={activity?.imageUrl}
+                    width="100%"
+                    height="auto"
+                    style={{ marginBottom: 12, maxWidth: '480px' }}
+                  />
+                </EmLink>
                 <ActivityDates activity={activity} />
                 <EmText>{activity?.longDescription && renderHTML(activity.longDescription)}</EmText>
                 <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
@@ -123,7 +134,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         {items && works && (
           <>
             {works && works.length > 0 && (
-              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
                 {worksLabel}
               </EmHeading>
             )}
@@ -133,18 +144,29 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                   style={{ color: '#0f64c0' }}
                 >
-                  <EmHeading as="h3" style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  <EmHeading
+                    as="h3"
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      lineHeight: 1.2,
+                    }}
+                  >
                     {work?.title}
                   </EmHeading>
                 </EmLink>
-                <EmText style={{ fontSize: 16, marginTop: 4 }}>{work?.shortDescription}</EmText>
+                <EmText style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                  {work?.shortDescription}
+                </EmText>
                 {work.images && (
-                  <Img
-                    src={work.images[0]}
-                    width="100%"
-                    height="auto"
-                    style={{ marginBottom: 12, maxWidth: '480px' }}
-                  />
+                  <EmLink href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
+                    <Img
+                      src={work.images[0]}
+                      width="100%"
+                      height="auto"
+                      style={{ marginBottom: 12, maxWidth: '480px' }}
+                    />
+                  </EmLink>
                 )}
                 <EmText>{work?.longDescription && renderHTML(work.longDescription)}</EmText>
                 <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
@@ -165,14 +187,11 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         )}
 
         <Section style={{ maxWidth: '480px', textAlign: 'center' }}>
-          {footer && (
+          <EmHeading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
+            {settings?.name}
+          </EmHeading>
+          {footer && footer.length > 0 && (
             <Container style={{ color: '#424242' }}>
-              <EmHeading
-                as="h1"
-                style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}
-              >
-                {settings?.name}
-              </EmHeading>
               <EmText style={{ textAlign: 'center' }}>{renderHTML(footer)}</EmText>
             </Container>
           )}
