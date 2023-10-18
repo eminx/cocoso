@@ -5,6 +5,7 @@ import { check } from 'meteor/check';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
+import NewsletterEmails from '../newsletter_emails/newsletter_email';
 import { defaultMenu, defaultEmails } from '../../startup/constants';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 
@@ -189,6 +190,30 @@ Meteor.methods({
         $set: {
           'settings.hue': hue,
         },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  saveNewsletterEmail(email) {
+    check(email, Object);
+
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      NewsletterEmails.insert({
+        ...email,
+        authorId: currentUser._id,
+        authorUsername: currentUser.username,
+        creationDate: new Date(),
+        host,
+        hostId: currentHost.hostId,
       });
     } catch (error) {
       throw new Meteor.Error(error);

@@ -101,6 +101,9 @@ export default function () {
             <Route path="*">
               <NotFoundPage />
             </Route>
+            {/* Newsletter Emails */}
+            <Route exact path="/newsletter-emails" component={NewsletterEmails} />
+            <Route exact path="/newsletter-emails/:emailId" component={NewsletterEmails} />
           </Switch>
         </Suspense>
       </LayoutContainer>

@@ -47,3 +47,5 @@ import '../../api/activities/activity.publications';
 
 import '../../api/platform/platform';
 import '../../api/platform/platform.methods';
+
+import '../../api/newsletter_emails/newsletter_email';
