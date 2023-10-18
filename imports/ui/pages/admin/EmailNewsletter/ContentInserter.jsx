@@ -69,9 +69,6 @@ export default function ContentInserter({ currentHost, onSelect }) {
   const worksInMenu = menu?.find((item) => item.name === 'works');
 
   const getActivities = async () => {
-    if (!activitiesInMenu.isVisible) {
-      return;
-    }
     setActivitiesLoading(true);
 
     try {
@@ -85,7 +82,6 @@ export default function ContentInserter({ currentHost, onSelect }) {
         setActivities(allActivitiesParsed);
       }
     } catch (error) {
-      console.log(error);
       message.error(error.reason);
     } finally {
       setActivitiesLoading(false);
@@ -93,15 +89,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
   };
 
   const getWorks = async () => {
-    if (!worksInMenu.isVisible) {
-      return;
-    }
-
     setWorksLoading(true);
     try {
       if (isPortalHost) {
         const respond = await call('getAllWorksFromAllHosts');
-        setWorks(respond.revert());
+        setWorks(respond.reverse());
       } else {
         const respond = await call('getAllWorks');
         setWorks(respond.revert());
