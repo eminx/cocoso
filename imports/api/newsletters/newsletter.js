@@ -16,34 +16,31 @@ Newsletters.schema = new SimpleSchema({
   host: { type: String },
   hostId: { type: String },
   imageUrl: { type: String, optional: true },
-  items: { type: Array, optional: true },
-  'items.$': new SimpleSchema({
-    type: new SimpleSchema({
-      activities: { type: Array },
-      'activities.$': new SimpleSchema({
-        _id: { type: String },
-        datesAndTimes: { type: Array },
-        'datesAndTimes.$': new SimpleSchema({
-          startDate: { type: String },
-          startTime: { type: String },
-          endDate: { type: String },
-          endTime: { type: String },
-        }),
-        imageUrl: { type: String },
-        longDescription: { type: String },
-        subTitle: { type: String },
-        title: { type: String },
+  items: new SimpleSchema({
+    activities: { type: Array },
+    'activities.$': new SimpleSchema({
+      _id: { type: String },
+      datesAndTimes: { type: Array },
+      'datesAndTimes.$': new SimpleSchema({
+        startDate: { type: String },
+        startTime: { type: String },
+        endDate: { type: String },
+        endTime: { type: String },
       }),
-      works: { type: String },
-      'works.$': new SimpleSchema({
-        _id: { type: String },
-        authorUsername: { type: String },
-        images: { type: Array, optional: true },
-        'images.$': { type: String },
-        longDescription: { type: String, optional: true },
-        shortDescription: { type: String, optional: true },
-        title: { type: String },
-      }),
+      imageUrl: { type: String },
+      longDescription: { type: String },
+      subTitle: { type: String },
+      title: { type: String },
+    }),
+    works: { type: Array },
+    'works.$': new SimpleSchema({
+      _id: { type: String },
+      authorUsername: { type: String },
+      images: { type: Array, optional: true },
+      'images.$': { type: String },
+      longDescription: { type: String, optional: true },
+      shortDescription: { type: String, optional: true },
+      title: { type: String },
     }),
   }),
 

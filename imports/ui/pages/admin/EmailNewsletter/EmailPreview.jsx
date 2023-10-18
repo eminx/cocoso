@@ -78,9 +78,12 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
 
         {items && activities && (
           <>
-            <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
-              {activitiesLabel}
-            </EmHeading>
+            {activities && activities.length > 0 && (
+              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+                {activitiesLabel}
+              </EmHeading>
+            )}
+
             {activities?.map((activity) => (
               <Section key={activity._id} style={{ marginBottom: 24 }}>
                 <EmLink
@@ -119,9 +122,11 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
 
         {items && works && (
           <>
-            <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
-              {worksLabel}
-            </EmHeading>
+            {works && works.length > 0 && (
+              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 12 }}>
+                {worksLabel}
+              </EmHeading>
+            )}
             {works?.map((work) => (
               <Section key={work._id} style={{ marginBottom: 24 }}>
                 <EmLink
