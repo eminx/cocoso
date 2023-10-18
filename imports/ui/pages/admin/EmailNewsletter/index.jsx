@@ -138,7 +138,7 @@ function EmailNewsletter({ history }) {
     );
 
     try {
-      await call('sendNewsletterEmails', emailHtml, imageUrl);
+      await call('sendNewsletterEmails', email, emailHtml, imageUrl);
       setEmail(emailModel);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {

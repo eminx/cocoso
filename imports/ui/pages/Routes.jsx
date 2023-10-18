@@ -30,6 +30,7 @@ const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
 const EmailNewsletter = lazy(() => import('./admin/EmailNewsletter'));
 const Categories = lazy(() => import('./admin/Categories'));
+const NewsletterEmails = lazy(() => import('./admin/EmailNewsletter/NewsletterEmails'));
 
 // Super admin
 const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
@@ -54,56 +55,84 @@ export default function () {
         <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
           <Switch>
             {/* Home */}
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" render={(props) => <Home {...props} />} />
+
             {/* Members list public */}
-            <Route exact path="/members" component={MembersPublic} />
+            <Route exact path="/members" render={(props) => <MembersPublic {...props} />} />
+
             {/* Calendar */}
-            <Route exact path="/calendar" component={CalendarContainer} />
+            <Route exact path="/calendar" render={(props) => <CalendarContainer {...props} />} />
+
             {/* Activities */}
             <ActivityRoutes path="/activities" />
-            <Route exact path="/my-activities" component={MyActivities} />
+            <Route exact path="/my-activities" render={(props) => <MyActivities {...props} />} />
+
             {/* Processes */}
             <ProcessRoutes path="/processes" />
+
             {/* Resources */}
             <ResourceRoutes path="/resources" />
+
             {/* Pages */}
             <PageRoutes path="/pages" />
+
             {/* Works */}
             <Switch path="/works">
-              <Route exact path="/works" component={Works} />
-              <Route exact path="/works/new" component={NewWork} />
+              <Route exact path="/works" render={(props) => <Works {...props} />} />
+              <Route exact path="/works/new" render={(props) => <NewWork {...props} />} />
             </Switch>
+
             {/* Profile & Profile Related Pages */}
             <ProfileRoutes path="/@:username" />
+
             {/* Communities: Only on Portal App */}
-            <Route exact path="/communities" component={Communities} />
+            <Route exact path="/communities" render={(props) => <Communities {...props} />} />
+
+            {/* Newsletter Emails */}
+            <Route path="/newsletter-emails" render={(props) => <NewsletterEmails {...props} />} />
+
             {/* Admin */}
             <Switch path="/admin">
-              <Route path="/admin/settings" component={Settings} />
-              <Route path="/admin/members" component={Members} />
-              <Route exact path="/admin/emails" component={Emails} />
-              <Route exact path="/admin/email-newsletter" component={EmailNewsletter} />
-              <Route path="/admin/categories" component={Categories} />
+              <Route path="/admin/settings" render={(props) => <Settings {...props} />} />
+              <Route path="/admin/members" render={(props) => <Members {...props} />} />
+              <Route exact path="/admin/emails" render={(props) => <Emails {...props} />} />
+              <Route
+                exact
+                path="/admin/email-newsletter"
+                render={(props) => <EmailNewsletter {...props} />}
+              />
+              <Route path="/admin/categories" render={(props) => <Categories {...props} />} />
             </Switch>
+
             {/* Super Admin */}
-            <Route path="/superadmin/platform/settings" component={PlatformSettings} />
+            <Route
+              path="/superadmin/platform/settings"
+              render={(props) => <PlatformSettings {...props} />}
+            />
+
             {/* Auth */}
-            <Route exact path="/register" component={SignupPage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/forgot-password" component={ForgotPasswordPage} />
-            <Route path="/reset-password/:token" component={ResetPasswordPage} />
+            <Route exact path="/register" render={(props) => <SignupPage {...props} />} />
+            <Route exact path="/login" render={(props) => <LoginPage {...props} />} />
+            <Route
+              exact
+              path="/forgot-password"
+              render={(props) => <ForgotPasswordPage {...props} />}
+            />
+            <Route
+              path="/reset-password/:token"
+              render={(props) => <ResetPasswordPage {...props} />}
+            />
+
             {/* SuperAdmin */}
-            <Route exact path="/new-host" component={NewHost} />
-            <Route exact path="/terms-&-privacy-policy" component={Terms} />
+            <Route exact path="/new-host" render={(props) => <NewHost {...props} />} />
+            <Route exact path="/terms-&-privacy-policy" render={(props) => <Terms {...props} />} />
+
             {/* NotFoundPage */}
-            <Route exact path="/not-found" component={NotFoundPage} />
-            <Route exact path="/404" component={NotFoundPage} />
+            <Route exact path="/not-found" render={(props) => <NotFoundPage {...props} />} />
+            <Route exact path="/404" render={(props) => <NotFoundPage {...props} />} />
             <Route path="*">
               <NotFoundPage />
             </Route>
-            {/* Newsletter Emails */}
-            <Route exact path="/newsletter-emails" component={NewsletterEmails} />
-            <Route exact path="/newsletter-emails/:emailId" component={NewsletterEmails} />
           </Switch>
         </Suspense>
       </LayoutContainer>

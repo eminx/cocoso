@@ -6,11 +6,10 @@ const NewsletterEmails = new Mongo.Collection('newsletter_emails');
 
 NewsletterEmails.schema = new SimpleSchema({
   _id: Schemas.Id,
+  appeal: { type: String },
   host: Schemas.Hostname,
-
   authorId: Schemas.Id,
   authorUsername: { type: String },
-
   body: { type: String, optional: true },
   creationDate: { type: Date },
   footer: { type: String, optional: true },

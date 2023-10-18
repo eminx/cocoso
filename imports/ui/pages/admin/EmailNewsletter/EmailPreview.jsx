@@ -39,13 +39,13 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   return (
     <Html>
       <Head />
-      <Body style={{ padding: 12 }}>
+      <Body style={{ maxWidth: '480px', padding: 12 }}>
         <Container>
           <Img
             alt={settings?.name}
             height="50px"
             src={logo}
-            style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
+            style={{ height: '50px', maxWidth: '180px', margin: '8px auto 24px', width: 'auto' }}
             width="auto"
           />
         </Container>
@@ -53,7 +53,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         <Section style={{ marginBottom: 12 }}>
           {(imageUrl || uploadableImageLocal) && (
             <Img
-              style={{ marginBottom: 12 }}
+              style={{ marginBottom: 12, maxWidth: '480px' }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
               width="100%"
@@ -61,7 +61,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             />
           )}
 
-          <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>
+          {body && <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>}
 
           {body && <EmText>{renderHTML(body)}</EmText>}
 
@@ -88,7 +88,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   src={activity?.imageUrl}
                   width="100%"
                   height="auto"
-                  style={{ marginBottom: 12 }}
+                  style={{ marginBottom: 12, maxWidth: '480px' }}
                 />
                 <ActivityDates activity={activity} />
                 <EmText>{activity?.longDescription && renderHTML(activity.longDescription)}</EmText>
@@ -125,7 +125,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     src={work.images[0]}
                     width="100%"
                     height="auto"
-                    style={{ marginBottom: 12 }}
+                    style={{ marginBottom: 12, maxWidth: '480px' }}
                   />
                 )}
                 <EmText>{work?.longDescription && renderHTML(work.longDescription)}</EmText>

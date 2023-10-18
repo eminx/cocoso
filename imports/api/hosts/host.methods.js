@@ -196,6 +196,17 @@ Meteor.methods({
     }
   },
 
+  getNewsletterEmailsForHost() {
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    return NewsletterEmails.find({ host }).fetch();
+  },
+
   saveNewsletterEmail(email) {
     check(email, Object);
 
@@ -207,7 +218,7 @@ Meteor.methods({
     }
 
     try {
-      NewsletterEmails.insert({
+      const newEmailId = NewsletterEmails.insert({
         ...email,
         authorId: currentUser._id,
         authorUsername: currentUser.username,
@@ -215,12 +226,13 @@ Meteor.methods({
         host,
         hostId: currentHost.hostId,
       });
+      return newEmailId;
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  sendNewsletterEmails(emailHtml) {
+  sendNewsletterEmails(email, emailHtml, imageUrl) {
     check(emailHtml, String);
 
     const host = getHost(this);
@@ -231,14 +243,33 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
+    const newEmailId = NewsletterEmails.insert({
+      ...email,
+      authorId: currentUser._id,
+      authorUsername: currentUser.username,
+      creationDate: new Date(),
+      host,
+      hostId: currentHost._id,
+      imageUrl,
+    });
+
+    console.log(newEmailId);
+
     try {
+      console.log('basladi');
       currentHost.members.forEach((member) => {
         const emailHtmlWithUsername = emailHtml.replace('[username]', member.username);
-        Meteor.call('sendEmail', emailHtmlWithUsername, (error, respond) => {
-          if (error) {
-            console.log(error);
+        Meteor.call(
+          'sendEmail',
+          member.email,
+          email.subject,
+          emailHtmlWithUsername,
+          (error, respond) => {
+            if (error) {
+              console.log(error);
+            }
           }
-        });
+        );
       });
     } catch (error) {
       throw new Meteor.Error(error);

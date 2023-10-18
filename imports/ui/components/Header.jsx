@@ -77,7 +77,7 @@ function Heading() {
 
   return (
     <Box>
-      <CHeading fontFamily="'Raleway', sans-serif" color="gray.800" size="lg">
+      <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
         {activeMenuItem?.label}
       </CHeading>
     </Box>
