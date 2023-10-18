@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Center, Link as CLink, Text } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
@@ -138,7 +140,7 @@ function EmailNewsletter({ history }) {
     );
 
     try {
-      await call('sendNewsletterEmails', email, emailHtml, imageUrl);
+      await call('sendNewsletter', email, emailHtml, imageUrl);
       setEmail(emailModel);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
@@ -176,6 +178,13 @@ function EmailNewsletter({ history }) {
           </Box>
         }
       >
+        <Box mb="4">
+          <Link target="_blank" to="/newsletters">
+            <CLink as="span">
+              {t('newsletter.labels.previouslink')} <ExternalLinkIcon mt="-1" />
+            </CLink>
+          </Link>
+        </Box>
         <Text mb="4">{t('newsletter.subtitle')}</Text>
         {/* <Text mb="4">{t('newsletter.subtitle2')}</Text> */}
         <Box pb="4" mb="4">

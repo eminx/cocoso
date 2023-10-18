@@ -66,6 +66,7 @@ labels:
     gohome: Back to home page
   newPopupLabel: Create a new entry in
   thislisting: this listing
+  newsletters: Previous Newsletters
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

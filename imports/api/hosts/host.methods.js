@@ -5,7 +5,7 @@ import { check } from 'meteor/check';
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
-import NewsletterEmails from '../newsletter_emails/newsletter_email';
+import Newsletters from '../newsletters/newsletter';
 import { defaultMenu, defaultEmails } from '../../startup/constants';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 
@@ -196,7 +196,7 @@ Meteor.methods({
     }
   },
 
-  getNewsletterEmailsForHost() {
+  getNewslettersForHost() {
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const currentUser = Meteor.user();
@@ -204,35 +204,10 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    return NewsletterEmails.find({ host }).fetch();
+    return Newsletters.find({ host }).fetch();
   },
 
-  saveNewsletterEmail(email) {
-    check(email, Object);
-
-    const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    const currentUser = Meteor.user();
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
-      throw new Meteor.Error('You are not allowed!');
-    }
-
-    try {
-      const newEmailId = NewsletterEmails.insert({
-        ...email,
-        authorId: currentUser._id,
-        authorUsername: currentUser.username,
-        creationDate: new Date(),
-        host,
-        hostId: currentHost.hostId,
-      });
-      return newEmailId;
-    } catch (error) {
-      throw new Meteor.Error(error);
-    }
-  },
-
-  sendNewsletterEmails(email, emailHtml, imageUrl) {
+  sendNewsletter(email, emailHtml, imageUrl) {
     check(emailHtml, String);
 
     const host = getHost(this);
@@ -243,7 +218,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
 
-    const newEmailId = NewsletterEmails.insert({
+    const newEmailId = Newsletters.insert({
       ...email,
       authorId: currentUser._id,
       authorUsername: currentUser.username,
@@ -253,9 +228,14 @@ Meteor.methods({
       imageUrl,
     });
 
+    const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
+
     try {
       currentHost.members.forEach((member) => {
-        const emailHtmlWithUsername = emailHtml.replace('[username]', member.username);
+        const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
+          '[username]',
+          member.username
+        );
         Meteor.call(
           'sendEmail',
           member.email,

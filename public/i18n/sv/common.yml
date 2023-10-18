@@ -66,6 +66,7 @@ labels:
     gohome: Gå tillbaka till startsidan
   newPopupLabel: Skapa ett nytt inlägg
   thislisting: denna lista
+  newsletters: Tidigare nyhetsbrev
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -66,6 +66,7 @@ labels:
     gohome: Ana sayfaya geri dön
   newPopupLabel: Yeni bir içerik oluştur
   thislisting: bu liste
+  newsletters: Önceki Bültenler
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

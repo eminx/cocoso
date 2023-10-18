@@ -30,7 +30,7 @@ const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
 const EmailNewsletter = lazy(() => import('./admin/EmailNewsletter'));
 const Categories = lazy(() => import('./admin/Categories'));
-const NewsletterEmails = lazy(() => import('./admin/EmailNewsletter/NewsletterEmails'));
+const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/NewsletterEmails'));
 
 // Super admin
 const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
@@ -89,7 +89,7 @@ export default function () {
             <Route exact path="/communities" render={(props) => <Communities {...props} />} />
 
             {/* Newsletter Emails */}
-            <Route path="/newsletter-emails" render={(props) => <NewsletterEmails {...props} />} />
+            <Route path="/newsletters" render={(props) => <PreviousNewsletters {...props} />} />
 
             {/* Admin */}
             <Switch path="/admin">

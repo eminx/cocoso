@@ -103,6 +103,7 @@ newsletter:
   labels:
     insertcontent: Insert Content
     browserlink: Click here to view this email in browser
+    previouslink: View Previous Newsletters
   modals:
     title: Confirm Sending to everyone
     body: You are about to send this email to all members of your community. You cannot revert this action once you have sent this email to your members.

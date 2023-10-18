@@ -41,7 +41,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     <Html>
       <Head />
       <Body style={{ maxWidth: '480px', padding: 12 }}>
-        <EmLink href={`https://${host}/newsletter-emails/[newsletter-id]`}>
+        <EmLink href={`https://${host}/newsletters/[newsletter-id]`}>
           <EmText
             style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
           >
@@ -100,12 +100,17 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 />
                 <ActivityDates activity={activity} />
                 <EmText>{activity?.longDescription && renderHTML(activity.longDescription)}</EmText>
-                <EmButton
-                  href={`https://${host}/activities/${activity._id}`}
-                  style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
-                >
-                  {tc('actions.entryPage')}
-                </EmButton>
+                <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
+                  <EmButton
+                    href={`https://${host}/activities/${activity._id}`}
+                    style={{
+                      color: '#0f64c0',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {tc('actions.entryPage')}
+                  </EmButton>
+                </EmText>
                 <Hr />
               </Section>
             ))}
@@ -137,12 +142,17 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   />
                 )}
                 <EmText>{work?.longDescription && renderHTML(work.longDescription)}</EmText>
-                <EmButton
-                  href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
-                  style={{ color: '#0f64c0', fontWeight: 'bold', marginBottom: 12 }}
-                >
-                  {tc('actions.entryPage')}
-                </EmButton>
+                <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
+                  <EmButton
+                    href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
+                    style={{
+                      color: '#0f64c0',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {tc('actions.entryPage')}
+                  </EmButton>
+                </EmText>
                 <Hr />
               </Section>
             ))}

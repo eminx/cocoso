@@ -103,6 +103,7 @@ newsletter:
   labels:
     insertcontent: Bifoga innehåll
     browserlink: Klicka här för att se detta e-postmeddelande i webbläsaren
+    previouslink: Visa tidigare nyhetsbrev
   modals:
     title: Bekräfta sändning till alla personer
     body: Du är på väg att skicka detta e-postmeddelande till alla medlemmar i din community. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.

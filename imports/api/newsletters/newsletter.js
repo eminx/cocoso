@@ -2,9 +2,9 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Schemas } from '../_utils/schemas';
 
-const NewsletterEmails = new Mongo.Collection('newsletter_emails');
+const Newsletters = new Mongo.Collection('newsletters');
 
-NewsletterEmails.schema = new SimpleSchema({
+Newsletters.schema = new SimpleSchema({
   _id: Schemas.Id,
   appeal: { type: String },
   host: Schemas.Hostname,
@@ -50,6 +50,6 @@ NewsletterEmails.schema = new SimpleSchema({
   subject: { type: String },
 });
 
-NewsletterEmails.attachSchema(NewsletterEmails.schema);
+Newsletters.attachSchema(Newsletters.schema);
 
-export default NewsletterEmails;
+export default Newsletters;

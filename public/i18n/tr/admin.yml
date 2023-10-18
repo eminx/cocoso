@@ -103,6 +103,7 @@ newsletter:
   labels:
     insertcontent: İçerik ekle
     browserlink: Bu e-postayı tarayıcıda görüntülemek için buraya tıklayın
+    previouslink: Önceki Bültenleri Görüntüle
   modals:
     title: Herkese göndermeyi onayla
     body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
