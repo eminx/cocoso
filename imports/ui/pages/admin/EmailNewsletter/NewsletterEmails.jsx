@@ -80,6 +80,10 @@ function NewsletterEmail({ currentHost, emails, history, match }) {
 
   const email = emails.find((e) => e._id === emailId);
 
+  if (!email) {
+    return null;
+  }
+
   return (
     <Modal
       isOpen
