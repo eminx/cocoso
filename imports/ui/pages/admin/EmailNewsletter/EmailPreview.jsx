@@ -53,7 +53,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             alt={settings?.name}
             height="50px"
             src={logo}
-            style={{ height: '50px', maxWidth: '180px', margin: '8px auto 24px', width: 'auto' }}
+            style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
             width="auto"
           />
         </Container>
