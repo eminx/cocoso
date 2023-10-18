@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import React from 'react';
 import { check } from 'meteor/check';
+
 import { getHost } from '../_utils/shared';
 import Hosts from './host';
 import Pages from '../pages/page';
@@ -187,6 +189,31 @@ Meteor.methods({
         $set: {
           'settings.hue': hue,
         },
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  sendNewsletterEmails(emailHtml) {
+    check(emailHtml, String);
+
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+    const currentUser = Meteor.user();
+
+    if (!currentUser || !isAdmin(currentUser, currentHost)) {
+      throw new Meteor.Error('You are not allowed!');
+    }
+
+    try {
+      currentHost.members.forEach((member) => {
+        const emailHtmlWithUsername = emailHtml.replace('[username]', member.username);
+        Meteor.call('sendEmail', emailHtmlWithUsername, (error, respond) => {
+          if (error) {
+            console.log(error);
+          }
+        });
       });
     } catch (error) {
       throw new Meteor.Error(error);

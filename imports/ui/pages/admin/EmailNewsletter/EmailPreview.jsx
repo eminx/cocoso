@@ -34,6 +34,8 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     settings?.menu?.find((item) => item.name === 'activities')?.label || 'Activities';
   const worksLabel = settings?.menu?.find((item) => item.name === 'works')?.label || 'Works';
 
+  const address = `${settings.address}, ${settings.city}, ${settings.country}`;
+
   return (
     <Html>
       <Head />
@@ -43,19 +45,12 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             alt={settings?.name}
             height="50px"
             src={logo}
-            style={{ height: '50px', margin: '0 auto', width: 'auto' }}
+            style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
             width="auto"
           />
-          <EmHeading
-            as="h1"
-            style={{ fontSize: '20px', marginBottom: '12px', textAlign: 'center' }}
-          >
-            {settings?.name}
-          </EmHeading>
         </Container>
 
         <Section style={{ marginBottom: 12 }}>
-          <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>
           {(imageUrl || uploadableImageLocal) && (
             <Img
               style={{ marginBottom: 12 }}
@@ -65,6 +60,8 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
               height="auto"
             />
           )}
+
+          <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>
 
           {body && <EmText>{renderHTML(body)}</EmText>}
 
@@ -144,13 +141,26 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           </>
         )}
 
-        <Section style={{ textAlign: 'center' }}>
+        <Section style={{ maxWidth: '480px', textAlign: 'center' }}>
           {footer && (
-            <EmText style={{ fontSize: 14, textAlign: 'center' }}>{renderHTML(footer)}</EmText>
+            <Container style={{ color: '#424242' }}>
+              <EmHeading
+                as="h1"
+                style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}
+              >
+                {settings?.name}
+              </EmHeading>
+              <EmText style={{ textAlign: 'center' }}>{renderHTML(footer)}</EmText>
+            </Container>
           )}
-          <EmLink href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
-            <EmText>{host}</EmText>
-          </EmLink>
+
+          <Container style={{ color: '#6b6b6b' }}>
+            <EmText style={{ margin: 0 }}>{address}</EmText>
+            <EmText style={{ margin: 0 }}>{settings.email}</EmText>
+            <EmLink href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
+              <EmText>{host}</EmText>
+            </EmLink>
+          </Container>
         </Section>
       </Body>
     </Html>

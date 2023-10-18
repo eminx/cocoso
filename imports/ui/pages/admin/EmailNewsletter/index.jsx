@@ -19,6 +19,7 @@ import ConfirmModal from '../../../components/ConfirmModal';
 const emailModel = {
   appeal: '',
   body: '',
+  footer: '',
   image: {
     imageUrl: '',
     uploadableImage: null,
@@ -136,10 +137,8 @@ function EmailNewsletter({ history }) {
       <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
     );
 
-    const myEmail = currentUser?.emails && currentUser?.emails[0]?.address;
-
     try {
-      await call('sendEmail', myEmail, email.subject, emailHtml);
+      await call('sendNewsletterEmails', emailHtml, imageUrl);
       setEmail(emailModel);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {
