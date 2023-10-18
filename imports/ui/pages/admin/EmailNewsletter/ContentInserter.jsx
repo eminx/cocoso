@@ -181,7 +181,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
           </Tab>
         </TabList>
 
-        <InputGroup mt="2" size="sm" w="sm">
+        <InputGroup mt="2" size="sm" w="240px">
           <Input
             placeholder={tc('labels.filter')}
             value={filterWord}
