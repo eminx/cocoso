@@ -253,10 +253,7 @@ Meteor.methods({
       imageUrl,
     });
 
-    console.log(newEmailId);
-
     try {
-      console.log('basladi');
       currentHost.members.forEach((member) => {
         const emailHtmlWithUsername = emailHtml.replace('[username]', member.username);
         Meteor.call(

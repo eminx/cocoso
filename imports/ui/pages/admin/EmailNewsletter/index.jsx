@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
@@ -203,7 +203,9 @@ function EmailNewsletter({ history }) {
         }}
         onClose={() => setIsPreview(false)}
       >
-        <EmailPreview email={email} currentHost={currentHost} />
+        <Center>
+          <EmailPreview email={email} currentHost={currentHost} />
+        </Center>
       </Modal>
 
       <ConfirmModal

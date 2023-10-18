@@ -102,6 +102,7 @@ newsletter:
   contenthelper: Du kan infoga befintligt innehåll från listningssidorna genom att välja de poster som du vill bifoga i e-postmeddelandet nedan.
   labels:
     insertcontent: Bifoga innehåll
+    browserlink: Klicka här för att se detta e-postmeddelande i webbläsaren
   modals:
     title: Bekräfta sändning till alla personer
     body: Du är på väg att skicka detta e-postmeddelande till alla medlemmar i din community. Du kan inte återställa denna åtgärd när du har skickat detta e-postmeddelande till dina medlemmar.

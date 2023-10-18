@@ -102,6 +102,7 @@ newsletter:
   contenthelper: You may insert existing content from the listing pages by selecting the entries you want to attach within the email below.
   labels:
     insertcontent: Insert Content
+    browserlink: Click here to view this email in browser
   modals:
     title: Confirm Sending to everyone
     body: You are about to send this email to all members of your community. You cannot revert this action once you have sent this email to your members.

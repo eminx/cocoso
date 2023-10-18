@@ -23,6 +23,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     return null;
   }
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('admin');
 
   const { appeal, body, footer, image, items, subject } = email;
   const uploadableImageLocal = image?.uploadableImageLocal;
@@ -40,6 +41,13 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     <Html>
       <Head />
       <Body style={{ maxWidth: '480px', padding: 12 }}>
+        <EmLink href={`https://${host}/newsletter-emails/[newsletter-id]`}>
+          <EmText
+            style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
+          >
+            {t('newsletter.labels.browserlink')}
+          </EmText>
+        </EmLink>
         <Container>
           <Img
             alt={settings?.name}
@@ -53,7 +61,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         <Section style={{ marginBottom: 12 }}>
           {(imageUrl || uploadableImageLocal) && (
             <Img
-              style={{ marginBottom: 12, maxWidth: '480px' }}
+              style={{ marginBottom: 24, maxWidth: '480px' }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
               width="100%"
@@ -61,7 +69,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             />
           )}
 
-          {body && <EmText style={{ fontSize: 16 }}>{`${appeal} [username]`}</EmText>}
+          {body && <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>}
 
           {body && <EmText>{renderHTML(body)}</EmText>}
 

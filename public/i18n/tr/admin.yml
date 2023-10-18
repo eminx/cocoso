@@ -102,6 +102,7 @@ newsletter:
   contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsiniz.
   labels:
     insertcontent: İçerik ekle
+    browserlink: Bu e-postayı tarayıcıda görüntülemek için buraya tıklayın
   modals:
     title: Herkese göndermeyi onayla
     body: Bu e-postayı topluluğunuzun tüm üyelerine göndermek üzeresin. Bu e-postayı üyelerinize gönderdikten sonra bu işlemi geri alamazsın.
