@@ -30,7 +30,7 @@ const Members = lazy(() => import('./admin/Members'));
 const Emails = lazy(() => import('./admin/Emails'));
 const EmailNewsletter = lazy(() => import('./admin/EmailNewsletter'));
 const Categories = lazy(() => import('./admin/Categories'));
-const PreviousNewsletters = lazy(() => import('../components/PreviousNewsletters'));
+const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousNewsletters'));
 
 // Super admin
 const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));

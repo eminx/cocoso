@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import { Box, Center, Divider, Flex, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import NiceList from './NiceList';
-import { call } from '../utils/shared';
-import { message } from './message';
-import Loader from './Loader';
-import Modal from './Modal';
-import EmailPreview from '../pages/admin/EmailNewsletter/EmailPreview';
-import { StateContext } from '../LayoutContainer';
+import NiceList from '../../../components/NiceList';
+import { call } from '../../../utils/shared';
+import { message } from '../../../components/message';
+import Loader from '../../../components/Loader';
+import Modal from '../../../components/Modal';
+import EmailPreview from './EmailPreview';
+import { StateContext } from '../../../LayoutContainer';
 
 export default function PreviousNewsletters() {
   const [emails, setEmails] = useState(null);
