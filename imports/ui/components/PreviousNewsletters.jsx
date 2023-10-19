@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import { Box, Center, Divider, Flex, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
