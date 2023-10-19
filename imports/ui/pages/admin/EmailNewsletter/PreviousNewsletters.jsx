@@ -11,10 +11,9 @@ import Modal from '../../../components/Modal';
 import EmailPreview from './EmailPreview';
 import { StateContext } from '../../../LayoutContainer';
 
-export default function NewsletterEmails() {
+export default function PreviousNewsletters() {
   const [emails, setEmails] = useState(null);
   const { currentHost } = useContext(StateContext);
-  const history = useHistory();
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function NewsletterEmails() {
       </Heading>
       <NiceList actionsDisabled list={emails} keySelector="_id" spacing="0">
         {(email) => (
-          <>
+          <Box>
             <Flex alignItems="flex-start" mb="4">
               <Image fit="contain" mr="4" src={email.imageUrl} w="100px" />
               <Box>
@@ -59,11 +58,11 @@ export default function NewsletterEmails() {
               </Box>
             </Flex>
             <Divider />
-          </>
+          </Box>
         )}
       </NiceList>
 
-      <Switch history={history}>
+      <Switch>
         <Route
           path="/newsletters/:emailId"
           render={(props) => (

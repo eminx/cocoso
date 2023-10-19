@@ -198,11 +198,6 @@ Meteor.methods({
 
   getNewslettersForHost() {
     const host = getHost(this);
-    const currentHost = Hosts.findOne({ host });
-    const currentUser = Meteor.user();
-    if (!currentUser || !isAdmin(currentUser, currentHost)) {
-      throw new Meteor.Error('You are not allowed!');
-    }
 
     return Newsletters.find({ host }).fetch();
   },
