@@ -30,11 +30,11 @@ Meteor.startup(() => {
   };
 });
 
-if (cdnserver) {
-  WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
-    return cdnserver + url;
-  });
-}
+// if (cdnserver) {
+//   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
+//     return cdnserver + url;
+//   });
+// }
 
 // const render = async (sink) => {
 //   const context = {};
