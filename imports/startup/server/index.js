@@ -30,7 +30,7 @@ Meteor.startup(() => {
   };
 });
 
-// if (cdnserver) {
+// if (Meteor.isProduction && cdnserver) {
 //   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
 //     return cdnserver + url;
 //   });
