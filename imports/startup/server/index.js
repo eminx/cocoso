@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebAppInternals } from 'meteor/webapp';
-const { cdnserver } = Meteor.settings.public;
+const publicSettings = Meteor.settings?.public;
 
 // import { onPageLoad } from 'meteor/server-render';
 // import React from 'react';
@@ -14,8 +14,10 @@ import { Accounts } from 'meteor/accounts-base';
 import './api';
 import './migrations';
 
+const cdnserver = publicSettings?.cdnserver;
+
 Meteor.startup(() => {
-  const smtp = Meteor.settings.mailCredentials.smtp;
+  const smtp = Meteor.settings?.mailCredentials?.smtp;
 
   process.env.MAIL_URL = `smtps://${encodeURIComponent(smtp.userName)}:${smtp.password}@${
     smtp.host
@@ -28,8 +30,9 @@ Meteor.startup(() => {
   };
 });
 
-if (Meteor.isProduction && cdnserver) {
+if (cdnserver) {
   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
+    console.log(url);
     return cdnserver + url;
   });
 }
