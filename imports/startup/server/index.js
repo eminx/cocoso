@@ -32,7 +32,6 @@ Meteor.startup(() => {
 
 if (cdnserver) {
   WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
-    console.log(url);
     return cdnserver + url;
   });
 }
