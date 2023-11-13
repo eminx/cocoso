@@ -22,6 +22,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   if (!email) {
     return null;
   }
+
   const [tc] = useTranslation('common');
   const [t] = useTranslation('admin');
 

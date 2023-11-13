@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebAppInternals } from 'meteor/webapp';
-const { cdnserver } = Meteor.settings;
+const { cdnserver } = Meteor.settings.public;
 
 // import { onPageLoad } from 'meteor/server-render';
 // import React from 'react';
