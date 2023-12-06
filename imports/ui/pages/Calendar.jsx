@@ -36,7 +36,7 @@ const publicSettings = Meteor.settings.public;
 
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
-const maxResourceLabelsToShow = 12;
+const maxResourceLabelsToShow = 13;
 
 class Calendar extends PureComponent {
   state = {
