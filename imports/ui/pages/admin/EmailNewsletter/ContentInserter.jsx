@@ -96,6 +96,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         setWorks(respond.reverse());
       } else {
         const respond = await call('getAllWorks');
+        console.log(respond);
         setWorks(respond.revert());
       }
     } catch (error) {
