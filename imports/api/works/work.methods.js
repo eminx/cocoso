@@ -21,6 +21,7 @@ Meteor.methods({
 
       return works;
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error, 'Could not retrieve data');
     }
   },

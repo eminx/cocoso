@@ -70,7 +70,6 @@ export default function ContentInserter({ currentHost, onSelect }) {
 
   const getActivities = async () => {
     setActivitiesLoading(true);
-
     try {
       if (isPortalHost) {
         const allActivities = await call('getAllActivitiesFromAllHosts', true);
@@ -82,6 +81,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         setActivities(allActivitiesParsed);
       }
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     } finally {
       setActivitiesLoading(false);
@@ -99,6 +99,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         setWorks(respond.revert());
       }
     } catch (error) {
+      console.log(error);
       message.error(error.reason);
     } finally {
       setWorksLoading(false);
