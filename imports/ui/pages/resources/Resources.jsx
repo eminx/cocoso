@@ -17,6 +17,7 @@ import Tably from '../../components/Tably';
 import InfiniteScroller from '../../components/InfiniteScroller';
 
 import { Heading } from '../../components/Header';
+import NewGridThumb from '../../components/NewGridThumb';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -199,12 +200,18 @@ function Resources({ history }) {
         <InfiniteScroller
           canCreateContent={isAdmin}
           centerItems={!isDesktop}
+          isMasonry
           items={resourcesRendered}
           newHelperLink="/resources/new"
         >
           {(resource) => (
             <Box key={resource._id} cursor="pointer" onClick={() => setModalResource(resource)}>
-              <ResourceItem isPortalHost={isPortalHost} resource={resource} t={t} />
+              <NewGridThumb
+                host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}
+                imageUrl={resource.images?.[0]}
+                tag={!resource.isBookable && t('cards.isNotBookable')}
+                title={resource.label}
+              />
             </Box>
           )}
         </InfiniteScroller>

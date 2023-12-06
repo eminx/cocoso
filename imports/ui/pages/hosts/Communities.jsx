@@ -8,7 +8,6 @@ import {
   Heading as CHeading,
   Image,
   Link as CLink,
-  Text,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
