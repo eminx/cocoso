@@ -25,7 +25,7 @@ function Communities() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalHost, setModalHost] = useState(null);
-  const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
+  const { allHosts, currentHost, currentUser, platform, isDesktop } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
@@ -107,12 +107,12 @@ function Communities() {
           canCreateContent={currentUser && currentUser.isSuperAdmin}
           centerItems
           isMasonry
-          items={hostsRendered}
+          items={hostsRendered.filter((h) => h.isPortalHost)}
           newHelperLink="/new-host"
         >
           {(host) => (
-            <Box key={host._id} cursor="pointer" onClick={() => handleSetModalHost(host)}>
-              <NewGridThumb imageUrl={host.logo} tag={host.host} title={host.name} />
+            <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
+              <NewGridThumb bg="white" imageUrl={host.logo} tag={host.host} title={host.name} />
             </Box>
           )}
         </InfiniteScroller>
@@ -136,7 +136,7 @@ function Communities() {
               </Center>
               <Center>
                 <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  <CLink as="span" color="blue.500" onClick={handleActionButtonClick}>
+                  <CLink as="span" color="brand.500" onClick={handleActionButtonClick}>
                     {modalHost.host}
                   </CLink>
                 </Code>

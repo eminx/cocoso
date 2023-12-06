@@ -7,7 +7,17 @@ import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-export default function GridThumb({ avatar, color, dates, host, imageUrl, subTitle, title, tag }) {
+export default function NewGridThumb({
+  avatar,
+  bg = 'brand.500',
+  color,
+  dates,
+  host,
+  imageUrl,
+  subTitle,
+  title,
+  tag,
+}) {
   const { currentHost } = useContext(StateContext);
 
   if (!title || !imageUrl) {
@@ -19,7 +29,7 @@ export default function GridThumb({ avatar, color, dates, host, imageUrl, subTit
   return (
     <Box mb="8">
       <Box className="text-link-container" position="relative">
-        <Center bg="brand.500">
+        <Center bg={bg}>
           <LazyLoadImage
             alt={title}
             effect="black-and-white"
