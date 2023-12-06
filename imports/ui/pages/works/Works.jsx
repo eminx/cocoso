@@ -203,7 +203,6 @@ function Works({ history }) {
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={canCreateContent}
-          centerItems
           isMasonry
           items={worksRenderedHostFiltered}
           newHelperLink="/works/new"

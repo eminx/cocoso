@@ -36,7 +36,7 @@ function InfiniteScroller({
   const handleLoad = () => {
     setTimeout(() => {
       setCurrentPage(currentPage + 1);
-    }, 500);
+    }, 300);
   };
 
   const hasMore = items.length > currentItems.length;

@@ -24,7 +24,7 @@ function Communities() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalHost, setModalHost] = useState(null);
-  const { allHosts, currentHost, currentUser, platform, isDesktop } = useContext(StateContext);
+  const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
@@ -104,9 +104,8 @@ function Communities() {
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={currentUser && currentUser.isSuperAdmin}
-          centerItems
           isMasonry
-          items={hostsRendered.filter((h) => h.isPortalHost)}
+          items={hostsRendered}
           newHelperLink="/new-host"
         >
           {(host) => (
