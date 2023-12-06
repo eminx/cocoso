@@ -49,6 +49,12 @@ function parseProcessActivities(activities) {
   return activitiesParsed;
 }
 
+const compareByDate = (a, b) => {
+  const dateA = new Date(a.creationDate);
+  const dateB = new Date(b.creationDate);
+  return dateB - dateA;
+};
+
 export default function ContentInserter({ currentHost, onSelect }) {
   const [activities, setActivities] = useState([]);
   const [works, setWorks] = useState([]);
@@ -74,15 +80,14 @@ export default function ContentInserter({ currentHost, onSelect }) {
       if (isPortalHost) {
         const allActivities = await call('getAllActivitiesFromAllHosts', true);
         const allActivitiesParsed = parseProcessActivities(allActivities);
-        setActivities(allActivitiesParsed);
+        allActivitiesParsed && setActivities(allActivitiesParsed);
       } else {
         const allActivities = await call('getAllActivities', true);
         const allActivitiesParsed = parseProcessActivities(allActivities);
-        setActivities(allActivitiesParsed);
+        allActivitiesParsed && setActivities(allActivitiesParsed);
       }
     } catch (error) {
-      console.log(error);
-      message.error(error.reason);
+      message.error(error.error || error.reason);
     } finally {
       setActivitiesLoading(false);
     }
@@ -93,15 +98,13 @@ export default function ContentInserter({ currentHost, onSelect }) {
     try {
       if (isPortalHost) {
         const respond = await call('getAllWorksFromAllHosts');
-        setWorks(respond.reverse());
+        respond && setWorks(respond.sort(compareByDate));
       } else {
         const respond = await call('getAllWorks');
-        console.log(respond);
-        setWorks(respond.revert());
+        respond && setWorks(respond.sort(compareByDate));
       }
     } catch (error) {
-      console.log(error);
-      message.error(error.reason);
+      message.error(error.error || error.reason);
     } finally {
       setWorksLoading(false);
     }
