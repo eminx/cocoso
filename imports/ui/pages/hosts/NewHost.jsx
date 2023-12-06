@@ -7,6 +7,7 @@ import NewHostForm from '../../components/NewHostForm';
 import { message, Alert } from '../../components/message';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const hostModel = {
   host: '',
@@ -58,11 +59,13 @@ function NewHost() {
   }
 
   return (
-    <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
-      <Box py="4" bg="white">
-        <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
-      </Box>
-    </Template>
+    <Box w="100%">
+      <Template heading={tc('labels.create', { domain: tc('domains.host') })}>
+        <Box py="6">
+          <NewHostForm defaultValues={hostModel} onSubmit={handleSubmit} />
+        </Box>
+      </Template>
+    </Box>
   );
 }
 

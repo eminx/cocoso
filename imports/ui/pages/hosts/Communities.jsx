@@ -1,22 +1,31 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Flex, Heading as CHeading, Image, Link, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Code,
+  Flex,
+  Heading as CHeading,
+  Image,
+  Link as CLink,
+  Text,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
-import GridThumb from '../../components/GridThumb';
 import Loader from '../../components/Loader';
-import Paginate from '../../components/Paginate';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import ConfirmModal from '../../components/ConfirmModal';
+import InfiniteScroller from '../../components/InfiniteScroller';
+import NewGridThumb from '../../components/NewGridThumb';
 import { call } from '../../utils/shared';
 
 function Communities() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalHost, setModalHost] = useState(null);
-  const { allHosts, platform, isDesktop } = useContext(StateContext);
+  const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
 
   const [tc] = useTranslation('common');
 
@@ -93,14 +102,20 @@ function Communities() {
         </Flex>
       </Box>
 
-      <Box px="4">
-        <Paginate centerItems={!isDesktop} items={hostsRendered}>
+      <Box px={isDesktop ? '4' : '0'}>
+        <InfiniteScroller
+          canCreateContent={currentUser && currentUser.isSuperAdmin}
+          centerItems
+          isMasonry
+          items={hostsRendered}
+          newHelperLink="/new-host"
+        >
           {(host) => (
-            <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
-              <HostItem host={host} tc={tc} />
+            <Box key={host._id} cursor="pointer" onClick={() => handleSetModalHost(host)}>
+              <NewGridThumb imageUrl={host.logo} tag={host.host} title={host.name} />
             </Box>
           )}
-        </Paginate>
+        </InfiniteScroller>
       </Box>
 
       {modalHost && (
@@ -121,7 +136,9 @@ function Communities() {
               </Center>
               <Center>
                 <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  <Link onClick={handleActionButtonClick}>{modalHost.host}</Link>
+                  <CLink as="span" color="blue.500" onClick={handleActionButtonClick}>
+                    {modalHost.host}
+                  </CLink>
                 </Code>
               </Center>
             </Box>
@@ -132,20 +149,6 @@ function Communities() {
         </ConfirmModal>
       )}
     </Box>
-  );
-}
-
-function HostItem({ host, tc }) {
-  if (!host) {
-    return null;
-  }
-
-  return (
-    <GridThumb alt={host.name} image={host.logo} imageFit="contain" title={host.name}>
-      <Code linebreak="anywhere" mt="4" noOfLines={2} fontSize="xs">
-        {host.host}
-      </Code>
-    </GridThumb>
   );
 }
 

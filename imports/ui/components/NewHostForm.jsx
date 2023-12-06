@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Input, Textarea, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { hostFields } from '../utils/constants/general';
@@ -18,7 +18,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
   const the = 'submit';
 
   return (
-    <div>
+    <Box minW="300px">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <VStack spacing="6">
           {hostFields.map((props) => (
@@ -46,7 +46,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
           </Flex>
         </VStack>
       </form>
-    </div>
+    </Box>
   );
 }
 
