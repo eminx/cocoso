@@ -95,15 +95,17 @@ Meteor.methods({
   getAllHosts() {
     try {
       const hosts = Hosts.find().fetch();
-      return hosts.map((host, index) => ({
-        name: host.settings.name,
-        logo: host.logo,
-        host: host.host,
-        city: host.settings.city,
-        country: host.settings.country,
-        createdAt: host.createdAt,
-        membersCount: host.members.length,
-      }));
+      return hosts
+        .filter((h) => !h.isPortalHost)
+        .map((host, index) => ({
+          name: host.settings.name,
+          logo: host.logo,
+          host: host.host,
+          city: host.settings.city,
+          country: host.settings.country,
+          createdAt: host.createdAt,
+          membersCount: host.members.length,
+        }));
     } catch (error) {
       throw new Meteor.Error(error);
     }
