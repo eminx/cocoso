@@ -20,7 +20,7 @@ export default function NewGridThumb({
 }) {
   const { currentHost } = useContext(StateContext);
 
-  if (!title || !imageUrl) {
+  if (!title && !imageUrl) {
     return null;
   }
 
@@ -29,7 +29,7 @@ export default function NewGridThumb({
   return (
     <Box mb="8">
       <Box className="text-link-container" position="relative">
-        <Center bg={bg}>
+        <Center bg={'brand.100'}>
           <LazyLoadImage
             alt={title}
             effect="black-and-white"
