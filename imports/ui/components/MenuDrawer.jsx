@@ -38,7 +38,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box
-          bg="brand.800"
+          bg="brand.700"
           className={menuClassName}
           color="brand.100"
           h="100vh"
@@ -50,7 +50,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
               <Flex flexDirection="column" align="center">
                 <IconButton
                   _hover={{ bg: 'brand.600' }}
-                  bg="brand.800"
+                  bg="brand.700"
                   color="brand.50"
                   icon={<HamburgerIcon fontSize="36px" />}
                   onClick={onToggle}
@@ -102,9 +102,9 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       <Flex align="center" flexDirection="column" position="relative">
         <IconButton
           _hover={{
-            bg: 'brand.500',
+            bg: 'brand.600',
           }}
-          bg="brand.600"
+          bg="brand.500"
           icon={<HamburgerIcon fontSize="32px" />}
           w="44px"
           h="44px"

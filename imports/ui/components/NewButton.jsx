@@ -83,12 +83,12 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
       >
         <MenuButton>
           <IconButton
-            _hover={{ bg: 'brand.500' }}
-            bg="brand.600"
+            _hover={{ bg: 'brand.300' }}
+            bg="brand.500"
             borderColor="#fff"
             borderWidth="2px"
             isRound
-            icon={<AddIcon color="brand.50" />}
+            icon={<AddIcon color="white" />}
             size="lg"
           />
         </MenuButton>

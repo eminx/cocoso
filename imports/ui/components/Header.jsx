@@ -31,7 +31,7 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box p="2" w="100%">
+    <Box px="2" py="4" w="100%">
       <Flex w="100%" align="center" justify="space-between">
         <Box>
           <Link to="/">
