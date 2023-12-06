@@ -31,6 +31,7 @@ import PortalHostIndicator from './components/PortalHostIndicator';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
+import TopBar from './components/TopBar';
 
 export const StateContext = React.createContext(null);
 
@@ -192,15 +193,13 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             setSelectedHue,
           }}
         >
+          <TopBar platform={platform} currentUser={currentUser} />
+
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
 
             <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 10%, 90%)`}>
               <Box w="100%">
-                {isHeaderAndFooter && currentHost.isPortalHost && (
-                  <PortalHostIndicator platform={platform} />
-                )}
-
                 <Header isSmallerLogo={!isHeaderAndFooter} />
 
                 <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>

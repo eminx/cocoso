@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,13 +22,12 @@ import {
 } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
-import { adminMenu, superadminMenu } from '../utils/constants/general';
 
-function UserPopup({ currentUser }) {
+function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const history = useHistory();
 
   const handleLogout = () => {
@@ -39,10 +38,16 @@ function UserPopup({ currentUser }) {
 
   if (!currentUser) {
     return (
-      <Box px="1">
+      <Box px="1" pt="2">
         <Link to="/login">
-          <Button as="span" size="sm" variant="ghost">
+          <Button as="span" color="brand.100" mx="4" size="sm" variant="link">
             {tc('menu.guest.login')}
+          </Button>
+        </Link>
+
+        <Link to="/register">
+          <Button as="span" color="brand.100" mx="4" size="sm" variant="link">
+            {tc('menu.guest.register')}
           </Button>
         </Link>
       </Box>
@@ -59,19 +64,18 @@ function UserPopup({ currentUser }) {
 
   const isNotification = notifications && notifications.length > 0;
 
-  const isSuperAdmin = currentUser.isSuperAdmin;
-  const { host, isPortalHost } = currentHost;
+  const { host } = currentHost;
 
   const roleTranslated = t(`roles.${role}`);
 
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
-        <MenuButton>
+        <MenuButton zIndex="1403">
           <Avatar
             _hover={{ bg: 'brand.500' }}
             bg="brand.600"
-            borderRadius="8px"
+            borderRadius="4px"
             showBorder
             size="md"
             src={currentUser.avatar && currentUser.avatar.src}
@@ -79,7 +83,7 @@ function UserPopup({ currentUser }) {
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex="1403">
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">
@@ -126,31 +130,6 @@ function UserPopup({ currentUser }) {
               )}
             </Box>
           </MenuGroup>
-
-          {role === 'admin' && <MenuDivider />}
-          {role === 'admin' && (
-            <MenuGroup title={tc('domains.community')}>
-              <Box px="1">
-                {adminMenu.map((item) => (
-                  <Link key={item.key} to={item.value}>
-                    <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
-                  </Link>
-                ))}
-              </Box>
-            </MenuGroup>
-          )}
-          {isSuperAdmin && isPortalHost && <MenuDivider />}
-          {isSuperAdmin && isPortalHost && (
-            <MenuGroup title={tc('domains.platform')}>
-              <Box px="1">
-                {superadminMenu.map((item) => (
-                  <Link key={item.key} to={item.value}>
-                    <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
-                  </Link>
-                ))}
-              </Box>
-            </MenuGroup>
-          )}
 
           <MenuDivider />
 

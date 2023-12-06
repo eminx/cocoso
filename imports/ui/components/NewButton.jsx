@@ -81,18 +81,18 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
         onOpen={() => setIsOpen(true)}
         onClose={() => setIsOpen(false)}
       >
-        <MenuButton
-          _hover={{ bg: 'brand.500' }}
-          as={IconButton}
-          bg="brand.600"
-          borderColor="#fff"
-          borderRadius="50%"
-          borderWidth="2px"
-          h="48px"
-          icon={<AddIcon color="brand.50" />}
-          w="48px"
-        />
-        <MenuList>
+        <MenuButton>
+          <IconButton
+            _hover={{ bg: 'brand.500' }}
+            bg="brand.600"
+            borderColor="#fff"
+            borderWidth="2px"
+            isRound
+            icon={<AddIcon color="brand.50" />}
+            size="lg"
+          />
+        </MenuButton>
+        <MenuList zIndex="1403">
           <Text mx="4" mt="1">
             {tc('labels.newPopupLabel')}:
           </Text>

@@ -136,6 +136,7 @@ menu:
   label: Meny
   guest:
     login: Logga in
+    register: Registrera
   member:
     general: Allmän
     label: Min

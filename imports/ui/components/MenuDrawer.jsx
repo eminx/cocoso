@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Box, Center, Divider, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -42,7 +42,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           className={menuClassName}
           color="brand.100"
           h="100vh"
-          p="2"
+          px="2"
           position="fixed"
         >
           {!isOpen ? (

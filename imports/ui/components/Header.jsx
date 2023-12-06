@@ -3,10 +3,10 @@ import { Link, useHistory } from 'react-router-dom';
 import { Box, Flex, Heading as CHeading, HStack, Image } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
 import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
+import UserPopupAdmin from './UserPopupAdmin';
 
 function Header({ isSmallerLogo }) {
   const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
@@ -31,7 +31,7 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box p={isDesktop ? '4' : '2'} w="100%">
+    <Box p="2" w="100%">
       <Flex w="100%" align="center" justify="space-between">
         <Box>
           <Link to="/">
@@ -40,7 +40,7 @@ function Header({ isSmallerLogo }) {
             </Box>
           </Link>
         </Box>
-        <HStack align="center" justify="flex-end" p="4" spacing="4" zIndex="1403">
+        <HStack align="center" justify="flex-end" p="2" spacing="4">
           {currentUser && (
             <NewButton
               canCreateContent={canCreateContent}
@@ -48,7 +48,7 @@ function Header({ isSmallerLogo }) {
               isAdmin={isAdmin}
             />
           )}
-          <UserPopup currentUser={currentUser} />
+          <UserPopupAdmin currentUser={currentUser} />
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
           )}

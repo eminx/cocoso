@@ -138,6 +138,7 @@ menu:
   label: Menu
   guest:
     login: Login
+    register: Register
   member:
     general: General
     label: My

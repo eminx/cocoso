@@ -136,6 +136,7 @@ menu:
   label: Menü
   guest:
     login: Giriş
+    register: Kayıt ol
   member:
     general: Genel
     label: Ben
