@@ -12,6 +12,7 @@ settings:
     menuOrder: Order
     options: Options
     color: Color
+    footer: Footer
     topbar: Topbar
 
 logo:

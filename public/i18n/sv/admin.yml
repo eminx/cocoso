@@ -13,6 +13,7 @@ settings:
     options: Alternativ
     color: Färg
     footer: Sidfot
+    topbar: Topbar
 
 logo:
   label: Logo

@@ -13,6 +13,7 @@ settings:
     options: Seçenekler
     color: Renk
     footer: Footer
+    topbar: Topbar
 
 logo:
   label: Logo
