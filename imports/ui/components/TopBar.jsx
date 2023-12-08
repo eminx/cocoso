@@ -16,7 +16,7 @@ import UserPopup from './UserPopup';
 
 export default function TopBar({ platform, currentUser }) {
   return (
-    <Box bg="brand.800">
+    <Box bg="brand.800" zIndex="2" position="relative">
       <Flex justify="space-between">
         <Box w="72px">
           <Center>
