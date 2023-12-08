@@ -117,7 +117,6 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
                 <MenuItem
                   key={item.name}
                   fontWeight="bold"
-                  textTransform="capitalize"
                   onClick={() => history.push(getPathname(item))}
                 >
                   {item.label}
