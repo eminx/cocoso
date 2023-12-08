@@ -30,16 +30,18 @@ export default function NewGridThumb({
     <Box mb="8">
       <Box className="text-link-container" position="relative">
         <Center bg={'brand.100'}>
-          <LazyLoadImage
-            alt={title}
-            effect="black-and-white"
-            fit="contain"
-            src={imageUrl}
-            style={{
-              position: 'relative',
-              objectFit: 'contain',
-            }}
-          />
+          {imageUrl && (
+            <LazyLoadImage
+              alt={title}
+              effect="black-and-white"
+              fit="contain"
+              src={imageUrl}
+              style={{
+                position: 'relative',
+                objectFit: 'contain',
+              }}
+            />
+          )}
         </Center>
         {host && currentHost.isPortalHost && (
           <Box position="absolute" top="0" right="0" pl="1" pb="1" bg="rgba(255, 255, 255, 0.4)">
