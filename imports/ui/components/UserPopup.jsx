@@ -38,7 +38,7 @@ function UserPopup() {
 
   if (!currentUser) {
     return (
-      <Box px="1" pt="2">
+      <Box pt="2">
         <Link to="/login">
           <Button as="span" color="brand.100" mx="4" size="sm" variant="link">
             {tc('menu.guest.login')}
@@ -46,7 +46,7 @@ function UserPopup() {
         </Link>
 
         <Link to="/register">
-          <Button as="span" color="brand.100" mx="4" size="sm" variant="link">
+          <Button as="span" color="brand.100" size="sm" variant="link">
             {tc('menu.guest.register')}
           </Button>
         </Link>
