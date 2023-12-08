@@ -1,19 +1,17 @@
 import React from 'react';
-import {
-  Body,
-  Button as EmButton,
-  Column,
-  Container,
-  Head,
-  Heading as EmHeading,
-  Hr,
-  Html,
-  Img,
-  Link as EmLink,
-  Row,
-  Section,
-  Text as EmText,
-} from '@react-email/components';
+import { Body } from '@react-email/body';
+import { Button } from '@react-email/button';
+import { Column } from '@react-email/column';
+import { Container } from '@react-email/container';
+import { Head } from '@react-email/head';
+import { Heading } from '@react-email/heading';
+import { Hr } from '@react-email/hr';
+import { Html } from '@react-email/html';
+import { Img } from '@react-email/img';
+import { Link } from '@react-email/link';
+import { Row } from '@react-email/row';
+import { Section } from '@react-email/section';
+import { Text } from '@react-email/text';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -42,13 +40,13 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
     <Html>
       <Head />
       <Body style={{ maxWidth: '480px', padding: 12 }}>
-        <EmLink href={`https://${host}/newsletters/[newsletter-id]`}>
-          <EmText
+        <Link href={`https://${host}/newsletters/[newsletter-id]`}>
+          <Text
             style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
           >
             {t('newsletter.labels.browserlink')}
-          </EmText>
-        </EmLink>
+          </Text>
+        </Link>
         <Container>
           <Img
             alt={settings?.name}
@@ -70,9 +68,9 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             />
           )}
 
-          {body && <EmText style={{ fontSize: 16 }}>{`${appeal} [username],`}</EmText>}
+          {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
 
-          {body && <EmText>{renderHTML(body)}</EmText>}
+          {body && <Text>{renderHTML(body)}</Text>}
 
           <Hr />
         </Section>
@@ -80,18 +78,18 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         {items && activities && (
           <>
             {activities && activities.length > 0 && (
-              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
+              <Heading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
                 {activitiesLabel}
-              </EmHeading>
+              </Heading>
             )}
 
             {activities?.map((activity) => (
               <Section key={activity._id} style={{ marginBottom: 24 }}>
-                <EmLink
+                <Link
                   href={`https://${host}/activities/${activity._id}`}
                   style={{ color: '#0f64c0' }}
                 >
-                  <EmHeading
+                  <Heading
                     as="h3"
                     style={{
                       fontSize: 20,
@@ -100,23 +98,23 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {activity?.title}
-                  </EmHeading>
-                </EmLink>
-                <EmText style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                  </Heading>
+                </Link>
+                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
                   {activity?.subTitle}
-                </EmText>
-                <EmLink href={`https://${host}/activities/${activity._id}`}>
+                </Text>
+                <Link href={`https://${host}/activities/${activity._id}`}>
                   <Img
                     src={activity?.imageUrl}
                     width="100%"
                     height="auto"
                     style={{ marginBottom: 12, maxWidth: '480px' }}
                   />
-                </EmLink>
+                </Link>
                 <ActivityDates activity={activity} />
-                <EmText>{activity?.longDescription && renderHTML(activity.longDescription)}</EmText>
-                <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
-                  <EmButton
+                <Text>{activity?.longDescription && renderHTML(activity.longDescription)}</Text>
+                <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+                  <Button
                     href={`https://${host}/activities/${activity._id}`}
                     style={{
                       color: '#0f64c0',
@@ -124,8 +122,8 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {tc('actions.entryPage')}
-                  </EmButton>
-                </EmText>
+                  </Button>
+                </Text>
                 <Hr />
               </Section>
             ))}
@@ -135,17 +133,17 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         {items && works && (
           <>
             {works && works.length > 0 && (
-              <EmHeading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
+              <Heading as="h2" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
                 {worksLabel}
-              </EmHeading>
+              </Heading>
             )}
             {works?.map((work) => (
               <Section key={work._id} style={{ marginBottom: 24 }}>
-                <EmLink
+                <Link
                   href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                   style={{ color: '#0f64c0' }}
                 >
-                  <EmHeading
+                  <Heading
                     as="h3"
                     style={{
                       fontSize: 20,
@@ -154,24 +152,24 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {work?.title}
-                  </EmHeading>
-                </EmLink>
-                <EmText style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
+                  </Heading>
+                </Link>
+                <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
                   {work?.shortDescription}
-                </EmText>
+                </Text>
                 {work.images && (
-                  <EmLink href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
+                  <Link href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
                     <Img
                       src={work.images[0]}
                       width="100%"
                       height="auto"
                       style={{ marginBottom: 12, maxWidth: '480px' }}
                     />
-                  </EmLink>
+                  </Link>
                 )}
-                <EmText>{work?.longDescription && renderHTML(work.longDescription)}</EmText>
-                <EmText style={{ marginBottom: 12, textAlign: 'right' }}>
-                  <EmButton
+                <Text>{work?.longDescription && renderHTML(work.longDescription)}</Text>
+                <Text style={{ marginBottom: 12, textAlign: 'right' }}>
+                  <Button
                     href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                     style={{
                       color: '#0f64c0',
@@ -179,8 +177,8 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {tc('actions.entryPage')}
-                  </EmButton>
-                </EmText>
+                  </Button>
+                </Text>
                 <Hr />
               </Section>
             ))}
@@ -188,21 +186,21 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
         )}
 
         <Section style={{ maxWidth: '480px', textAlign: 'center' }}>
-          <EmHeading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
+          <Heading as="h1" style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>
             {settings?.name}
-          </EmHeading>
+          </Heading>
           {footer && footer.length > 0 && (
             <Container style={{ color: '#424242' }}>
-              <EmText style={{ textAlign: 'center' }}>{renderHTML(footer)}</EmText>
+              <Text style={{ textAlign: 'center' }}>{renderHTML(footer)}</Text>
             </Container>
           )}
 
           <Container style={{ color: '#6b6b6b' }}>
-            <EmText style={{ margin: 0 }}>{address}</EmText>
-            <EmText style={{ margin: 0 }}>{settings.email}</EmText>
-            <EmLink href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
-              <EmText>{host}</EmText>
-            </EmLink>
+            <Text style={{ margin: 0 }}>{address}</Text>
+            <Text style={{ margin: 0 }}>{settings.email}</Text>
+            <Link href={`https://${host}`} style={{ color: '#0f64c0', textAlign: 'center' }}>
+              <Text>{host}</Text>
+            </Link>
           </Container>
         </Section>
       </Body>
@@ -226,7 +224,7 @@ export function ActivityDates({ activity }) {
             ?.filter((d, i) => i < 3)
             .map((date) => <ActivityDate key={date.startDate + date.endTime} date={date} />)}
       <Column>
-        <EmText>{length > 3 && '+' + (length - 3).toString()}</EmText>
+        <Text>{length > 3 && '+' + (length - 3).toString()}</Text>
       </Column>
     </Row>
   );
@@ -235,12 +233,12 @@ export function ActivityDates({ activity }) {
 export function ActivityDate({ date }) {
   return (
     <Column style={{ paddingRight: 8 }}>
-      <EmText style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
+      <Text style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
         {moment(date.startDate).format('DD')}
-      </EmText>
-      <EmText style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
+      </Text>
+      <Text style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
         {moment(date.startDate).format('MMM')}
-      </EmText>
+      </Text>
     </Column>
   );
 }
