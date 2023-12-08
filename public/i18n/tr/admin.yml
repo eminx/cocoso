@@ -35,7 +35,7 @@ info:
       label: Platform tepe barı
       closed: Kapalı haldeki metin
       open: Açık haldeki metin
-  footer: Burada zengin metin editörüyle footer oluşturabilirsin
+  footer: Burada bir altbilgi oluşturabilirsiniz. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsiniz. Altbilgi tüm sayfaların alt kısmına döner.
 
 menu:
   label: Menü

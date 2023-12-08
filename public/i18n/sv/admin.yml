@@ -35,7 +35,7 @@ info:
       label: Plattform topbarn
       closed: Textinnehåll när stängd
       open: Textinnehåll när öppnad
-  footer: Här kan du komponera en sidfot med RTF-redigeraren
+  footer: Här kan du komponera en sidfot. Du kan exempelvis lägga in kontaktuppgifter, adress, länkar eller lägga in en kort text som beskriver din community. Sidfoten återkommer längst ner på alla sidor.
 
 menu:
   label: Meny
@@ -45,17 +45,17 @@ menu:
       info: Välj vilka funktioner du vill använda genom att markera/avmarkera menyns rubriker. Benämn menyns rubriker som det passar din community.
     order:
       label: Ordning
-      info: Ändra ordning på objekt genom att dra upp och ned om du vill ändra visningsordningen
+      info: Du kan ändra ordning i menyn genom att dra de olika sidorna uppåt eller neråt. Den sida du lägger överst kommer fungera som er hemsida (här landar nya besökare när de kommer till er community)
   itemActive: Aktiv
   itemLabel: Benämning
   info:
-    activities: Listasidan för offentliga evenemang och gruppmöten
-    processes: Listasidan för alla grupper
-    calendar: Kalendersidan
-    info: Informationssidor
-    works: Listningssidan för portfölj, marknadsplats eller sådana poster
-    members: Listasidan för alla communitymedlemmar
-    resources: Listasidan för resurserna i din community
+    activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
+    processes: Den här funktionen listar grupper eller processer. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller processer
+    calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
+    info: Den här funktionen används för att skapa informationssidor.
+    works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
+    members: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
+    resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
 
 categories:
   label: Arbetskategorier
@@ -65,7 +65,7 @@ categories:
 
 color:
   revert: Revert
-  info: Justera reglaget för att välja önskad färg för din community-webbplats. De ljusa och mörka variationerna av den valda nyansfärgen kommer att användas i olika delar av hela användargränssnittet.
+  info: Dra i reglaget för att välja önskad färg för din community. Den valda nyansen kommer att användas i olika delar av hela användargränssnittet.
   alert1: Nu kan du surfa runt på sidan och testa den här färgen, och sedan komma tillbaka hit och bekräfta om du gillar den.
   alert2: Om du uppdaterar sidan eller stänger fönstret/fliken kommer den att återgå till den ursprungliga färgen.
 

@@ -35,7 +35,7 @@ info:
       label: Platform Topbar
       closed: Text when closed
       open: Text when opened
-  footer: Here you can compose the footer with the rich text editor
+  footer: Here you can compose a footer. For example, you can enter contact details, address, links or enter a short text that describes your community. The footer is located at the bottom of all pages.
 
 menu:
   label: Menu
