@@ -37,7 +37,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   if (isDesktop) {
     return (
-      <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
+      <Box bg="brand.100" className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box
           bg="brand.100"
           position="fixed"
