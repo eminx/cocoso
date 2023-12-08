@@ -80,6 +80,7 @@
     "react-render-html": "^0.6.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
+    "react-scroll": "^1.9.0",
     "react-select": "^5.2.2",
     "react-simple-image-slider": "^2.4.1",
     "react-slick": "^0.26.1",
