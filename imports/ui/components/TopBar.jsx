@@ -16,11 +16,11 @@ import UserPopup from './UserPopup';
 
 export default function TopBar({ platform, currentUser }) {
   return (
-    <Box bg="brand.800" zIndex="2" position="relative">
+    <Box bg="brand.800" zIndex="1405" position="relative">
       <Flex justify="space-between">
         <Box w="72px">
           <Center>
-            <Text color="brand.200" fontSize="36px" fontWeight="bold">
+            <Text color="brand.50" fontSize="36px" fontWeight="bold">
               {platform?.name?.substring(0, 1)?.toUpperCase()}
             </Text>
           </Center>

@@ -121,19 +121,12 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           _hover={{
             bg: 'brand.600',
           }}
-          bg="brand.500"
-          icon={<HamburgerIcon fontSize="32px" />}
-          w="44px"
-          h="44px"
+          bg="gray.800"
+          icon={<HamburgerIcon fontSize="24px" />}
+          size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
         />
-        <Text
-          fontSize="12px"
-          fontWeight="bold"
-          position="absolute"
-          top="2.8rem"
-          textTransform="uppercase"
-        >
+        <Text fontSize="12px" position="absolute" top="2rem" textTransform="uppercase">
           {tc('menu.label')}
         </Text>
       </Flex>
@@ -154,7 +147,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             tc={tc}
             onToggle={onToggle}
           />
-          <Box color="brand.100" mt="4">
+          <Box color="brand.50" mt="4">
             <MenuFooter />
           </Box>
         </Flex>
@@ -190,7 +183,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
             <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
-                color={isCurrentPageLabel ? 'brand.50' : 'brand.100'}
+                color={isCurrentPageLabel ? 'white' : 'brand.50'}
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}

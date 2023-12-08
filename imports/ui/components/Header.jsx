@@ -46,9 +46,10 @@ function Header({ isSmallerLogo }) {
               canCreateContent={canCreateContent}
               currentHost={currentHost}
               isAdmin={isAdmin}
+              isDesktop={isDesktop}
             />
           )}
-          <UserPopupAdmin currentUser={currentUser} />
+          {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
           )}

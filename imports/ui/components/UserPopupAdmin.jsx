@@ -22,11 +22,7 @@ import { adminMenu, superadminMenu } from '../utils/constants/general';
 function UserPopupAdmin() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
-  const { currentHost, currentUser, platform, role } = useContext(StateContext);
-
-  if (!currentUser || role !== 'admin') {
-    return null;
-  }
+  const { currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
 
   const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
   const { isPortalHost } = currentHost;
@@ -34,16 +30,25 @@ function UserPopupAdmin() {
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
-        <MenuButton zIndex="1403">
+        <MenuButton position="relative" zIndex={isOpen ? '1403' : '10'}>
           <IconButton
+            bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
-            icon={<SettingsIcon fontSize="2xl" />}
+            icon={<SettingsIcon fontSize="lg" />}
             isRound
-            size="lg"
+            size={isDesktop ? 'md' : 'sm'}
           />
+          <Text
+            fontSize="12px"
+            position="absolute"
+            top={isDesktop ? '2.5rem' : '2rem'}
+            textTransform="uppercase"
+          >
+            Admin
+          </Text>
         </MenuButton>
-        <MenuList zIndex="1403">
+        <MenuList zIndex={isOpen ? '1403' : '10'}>
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="lg">

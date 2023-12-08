@@ -71,7 +71,7 @@ function UserPopup() {
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
-        <MenuButton zIndex="1403">
+        <MenuButton>
           <Avatar
             _hover={{ bg: 'brand.500' }}
             bg="brand.600"
@@ -83,7 +83,7 @@ function UserPopup() {
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
-        <MenuList zIndex="1403">
+        <MenuList>
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">

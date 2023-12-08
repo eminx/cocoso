@@ -23,7 +23,7 @@ const getRoute = (item, index) => {
   return `/${item.name}/new`;
 };
 
-function NewButton({ canCreateContent, currentHost, isAdmin }) {
+function NewButton({ canCreateContent, currentHost, isAdmin, isDesktop }) {
   const menu = currentHost.settings.menu;
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
@@ -84,15 +84,16 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
         <MenuButton>
           <IconButton
             _hover={{ bg: 'brand.300' }}
-            bg="brand.500"
+            bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
             isRound
             icon={<AddIcon color="white" />}
-            size="lg"
+            size={isDesktop ? 'md' : 'sm'}
+            zIndex={isOpen ? '1403' : '10'}
           />
         </MenuButton>
-        <MenuList zIndex="1403">
+        <MenuList zIndex={isOpen ? '1403' : '10'}>
           <Text mx="4" mt="1">
             {tc('labels.newPopupLabel')}:
           </Text>
@@ -127,9 +128,7 @@ function NewButton({ canCreateContent, currentHost, isAdmin }) {
       </Menu>
       <Center position="relative">
         <Text
-          color="brand.800"
-          fontSize="xs"
-          fontWeight="bold"
+          fontSize="12px"
           lineHeight="1"
           mt="1"
           position="absolute"
