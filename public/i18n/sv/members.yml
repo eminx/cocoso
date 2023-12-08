@@ -31,8 +31,8 @@ actions:
 message:
   success:
     contributor: '{{ username }} är nu verifierad som medskapare'
-    participant: '{{ username }} är nu återställd som deltagare'
-    admin: '{{ username }} är nu återställd som admin'
+    participant: '{{ username }} är nu deltagare'
+    admin: '{{ username }} är nu admin'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
   activity:
@@ -66,11 +66,11 @@ works:
   title:
     label: Titel
     holder: titeln på din bok, din föreställning, ditt konstverk eller din workshop…
-    helper: Vänligen ange titeln du vill visa offentligt
+    helper: Ange en titel
   shortDescription:
     label: Kort beskrivning
     holder: upphovspersoner, undertitel eller en kort beskrivning…
-    helper: (Valfri) Ange en kort beskrivning för inlägget du skapar
+    helper: Lägg till en kort beskrivning (ej obligatoriskt)
   category:
     label: Kategori
     holder: Välj alternativ
@@ -78,14 +78,14 @@ works:
   longDescription:
     label: Beskrivning
     holder: Plats för en längre beskrivande text…
-    helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera detaljerna om vad du erbjuder till samhället, eller de interna detaljerna om t.ex. studier, forskning eller konstverk etc...
+    helper: Lägg till en längre beskrivning (ej obligatoriskt)
   extra:
     label: Ytterligare info
     holder: Eventuella prisuppgifter, kontaktpersoner etc.
-    helper: (Valfri) Vänligen ange extra information som är viktig för objektet i inlägget du skapar. Till exempel, om den är till salu, hur mycket kostar den...
+    helper: Lägg till eventuell extra information. Det kan exempelvis vara prisuppgifter eller liknande. Information hamnar under fliken ”extra”.
   images:
     label: Bilder ({{ count }})
-    helper: För att representera inlägget, välj en bild eller en uppsättning bilder från galleriet i din enhet eller ett foto som du ska ta nu. Det är valfritt
+    helper: Välj en eller flera bilder som du vill ska representera ditt inlägg (ej obligatoriskt)
 
 report:
   title: Bokningsrapport för {{username}}

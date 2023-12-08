@@ -10,9 +10,10 @@ form:
   resource:
     label: '{{ resources }}'
     holder: Välj
-    helper: Välj ett objekt som du vill boka för att visas i kalendern
+    helper: Välj den resurs du vill boka
   occurrences:
     label: Tid och datum
+    helper: Lägg in start och sluttid för din bokning eller ditt publika evenemang. Vill du skapa flera identiska bokningar eller evenemang som sker vid upprepade tillfällen klickar du på + tecknet.
   days:
     single: Dag
     multiple: Samma aktivitet pågår under flera dagar
@@ -29,25 +30,25 @@ form:
   title:
     label: Titel
     holder: Ange en titel
-    helper: Detta är vanligtvis namnet på ditt aktivitet
+    helper: Ange ett namn på din aktivitet eller bokning
   subtitle:
     label: Undertitel
     holder: Ange en undertitel
     helper: Exempelvis artistnamn, eller en undertitel…
   description:
     label: Beskrivning
-    helper: Ange en detaljerad beskrivning som kan vara till hjälp för andra att veta
+    helper: Lägg till en beskrivning av din aktivitet eller bokning
   place:
     label: Plats
     holder: Artistosphere
-    helper: (Valfri) Ange det allmänna namnet på den fysiska plats där det offentliga evenemanget kommer att äga rum.
+    helper: Ange namnet platsen där ditt evenemang kommer äga rum (ej obligatoriskt)
   address:
     label: Adress
     holder: 17th Street, Berlin...
-    helper: (Valfri) Ange adressen till platsen där evenemanget kommer att äga rum
+    helper: Ange adressen till den plats där ditt evenemang kommer äga rum (ej obligatoriskt)
   image:
     label: Bild
-    helper: För att representera händelsen, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu
+    helper: Välj en bild som du vill ska representera ditt evenemang
   submit: Bekräfta och Skapa
   waiting: Skapar din aktivitet...
   conflict:

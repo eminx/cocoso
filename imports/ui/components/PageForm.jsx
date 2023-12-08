@@ -60,7 +60,7 @@ const PageForm = ({
               name="longDescription"
               rules={{ required: true }}
               render={({ field }) => (
-                <ReactQuill {...field} placeholder={t('pages.form.desc.holder')} />
+                <ReactQuill {...field} placeholder={t('pages.form.description.holder')} />
               )}
             />
           </FormField>

@@ -67,6 +67,9 @@ labels:
   newPopupLabel: Yeni bir içerik oluştur
   thislisting: bu liste
   newsletters: Önceki Bültenler
+  avatar:
+    checklabel: Profil imajını görüntüle
+    helper: Bu içerik ile profil imajını görüntülemek için işaretle
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

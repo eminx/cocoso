@@ -16,21 +16,22 @@ form:
   combo:
     switch:
       label: Combo
-      helper: Combo betyder "Kombination" av flera andra objekt i denna lista. Det kommer att göra det enklare för användare att boka flera objekt samtidigt. Bokningar kommer att visas i kalendern.
+      helper: Combo innebär att du skapar en kombination av flera resurser. Det kommer göra det enklare för användare att boka flera objekt samtidigt.
     select:
       holder: Välj alternativ
       helper: Välj flera objekt för att skapa en kombinationsobjekt
   name:
     label: Namn
     holder: Sound Studio
-    helper: Ange ett namn för det innehållselement du vill skapa
+    helper: Ange ett namn på den resurs du vill lägga till
   description:
     label: Beskrivning
     holder: Att använda studion kräver omsorg ...
-    helper: (Valfri) Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera villkoren för användningen av en resurs, detaljer om hur den fungerar och hur den ska hanteras och överlämnas...
+    helper: Ange en beskrivning av den post du skapar. Detta kan till exempel inkludera villkoren för användningen av en resurs, detaljer om hur den fungerar och hur den ska hanteras och överlämnas… (ej obligatoriskt)
+
   images:
     label: Bilder ({{ count }})
-    helper: (Valfri) Välj ett foto eller en uppsättning bilder från galleriet i din enhet eller ett foto som du ska ta nu
+    helper: Välj en eller fler bilder
 
 tabs:
   info: Info

@@ -2,7 +2,7 @@
 settings:
   label: Inställningar
   tabs:
-    general: Allmän
+    general: Allmänt
     logo: Logotyp
     info: Info
     categories: Kategorier
@@ -12,7 +12,7 @@ settings:
     menuOrder: Ordning
     options: Alternativ
     color: Färg
-    footer: Footer
+    footer: Sidfot
 
 logo:
   label: Logo
@@ -29,13 +29,13 @@ info:
     name: Namn
     email: Epostadressen
     options: Välj önskade alternativ och bekräfta
-    showfooter: Visa footern med länken för att visa communities i alla community-appar
+    showfooter: Visa sidfoten med länken för att visa communities i alla community-appar
     showCommunities: Visa communities länkobjekt i menyn för att visa communities i alla community-appar
     topbar:
       label: Plattform topbarn
       closed: Textinnehåll när stängd
       open: Textinnehåll när öppnad
-  footer: Här kan du komponera footer med RTF-redigeraren
+  footer: Här kan du komponera en sidfot med RTF-redigeraren
 
 menu:
   label: Meny
@@ -99,7 +99,7 @@ newsletter:
   title: Nyhetsbrev
   subtitle: Här kan du skapa ett nyhetsbrev som går ut till alla medlemmar i er community. Du kan enkelt komponera brevet med egen text och bifoga material som är publicerade på er sida.
   subtitle2: 'För att skriva e-postmeddelandet nedan måste du ange minst en av: brödtext, en bild och/eller valda innehållsobjekt som listas i community-appen.'
-  contenthelper: Du kan infoga befintligt innehåll från listningssidorna genom att välja de poster som du vill bifoga i e-postmeddelandet nedan.
+  contenthelper: Du kan infoga befintligt innehåll från din sida genom att välja poster i listan här nedanför. Text och bild samt länk till posterna läggs automatiskt in i nyhetsbrevet.
   labels:
     insertcontent: Bifoga innehåll
     browserlink: Klicka här för att se detta e-postmeddelande i webbläsaren
@@ -112,13 +112,13 @@ newsletter:
     required: Du kan inte skicka ett tomt e-postmeddelande. Du måste ange antingen brödtext eller bild, eller infoga innehållsobjekt för att e-postmeddelandet ska skickas.
   form:
     subject:
-      helper: Ange texten som kommer att vara ämnet för e-postmeddelandet (obligatoriskt)
+      helper: Ange en rubrik till nyhetsbrevet (obligatoriskt)
     appeal:
-      helper: Ange hur du vill ringa varje medlem i början av e-postmeddelandet (obligatoriskt)
+      helper: Ange hur du vill tilltala de som kommer ta emot ditt nyhetsbrev
     body:
-      helper: Skriv brödtexten i e-postmeddelandet (obligatoriskt om ingen bild, samt innehållsobjekt har valts)
+      helper: Lägg till en text till nyhetsbrevet (ej obligatoriskt)
     image:
-      helper: Välj en bild som ska visas högst upp i e-postmeddelandet (krävs om ingen brödtext tillhandahålls, samt inga innehållsobjekt har valts)
+      helper: Lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet (ej obligatoriskt)
   notification:
     success:
       emailsent: Ditt e-postmeddelande har skickats till alla medlemmar.
@@ -132,11 +132,11 @@ pages:
     title:
       label: Titel
       holder: Sidans titel
-      helper: Vänligen ange titeln för sidan du vill visa offentligt
+      helper: Ange en titel för sidan du skapar
     description:
       label: Beskrivning
       holder: Sidans textinnehåll
-      helper: Ange hela textinnehållet som du vill publicera på denna sida här
+      helper: Lägg till textinnehållet som du vill publicera här
     images:
       label: Bilder ({{ count }})
-      helper: (Valfri) Ange en bild eller en uppsättning bilder som kommer att visas i ett skjutreglage på den här sidan när de publiceras
+      helper: Ange en eller flera bilder. Om du väljer flera bilder kommer de visas som ett bildspel

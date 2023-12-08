@@ -67,6 +67,9 @@ labels:
   newPopupLabel: Skapa ett nytt inlägg
   thislisting: denna lista
   newsletters: Tidigare nyhetsbrev
+  avatar:
+    checklabel: Visa din profilbild
+    helper: Dra reglaget för att visa din profilbild vid det här inlägget
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
@@ -138,7 +141,7 @@ menu:
     login: Logga in
     register: Registrera
   member:
-    general: Allmän
+    general: Allmänt
     label: Min
     profile: Min profil
     settings: Profilinställningar

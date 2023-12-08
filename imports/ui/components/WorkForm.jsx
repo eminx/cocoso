@@ -114,10 +114,10 @@ function WorkForm({
             />
           </FormField>
 
-          <FormField helperText="Check to show your profile image along with viewing this entry">
+          <FormField helperText={tc('labels.avatar.helper')}>
             <Flex align="center">
               <Switch defaultChecked={isNew} id="avatar" mb="2" {...register('showAvatar')} />
-              <FormLabel htmlFor="avatar">Show Avatar</FormLabel>
+              <FormLabel htmlFor="avatar">{tc('labels.avatar.checklabel')}</FormLabel>
             </Flex>
           </FormField>
 

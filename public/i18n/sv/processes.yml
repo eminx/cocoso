@@ -20,22 +20,22 @@ form:
     label: Privat (endast för inbjudningar)
     tooltip:
       title: Privata objekt
-      P1: Privata objekt är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
+      P1: Privata processer är endast synliga för deras medlemmar, och deltagande är endast möjligt via inbjudningar från deras administratörer. Du kan inte ändra den till offentlig efter att du har skapat den.
       P2: Du kommer hantera inbjudningarna efter att du har skapat objektet.
   title:
     label: Titel
     holder: Att förstå Benjamin
-    helper: Vänligen ange titeln du vill visa offentligt
+    helper: Ange en titel på ditt inlägg
   subtitle:
     label: Undertitel
     holder: Studiegrupp, kurs, öppen konstnärlig process etc…
-    helper: Vänligen ange en underrubrik som kommer att stödja titeln. Det kommer att synas offentligt
+    helper: Ange en underrubrik
   description:
     label: Beskrivning
-    helper: Ange en detaljerad beskrivning av denna post du skapar. Detta kan till exempel inkludera konceptet som fascinerar dig, samt villkoren för deltagande om det finns några
+    helper: Ange en beskrivning av din process/grupp
   capacity:
     label: Max antal deltagare
-    helper: Om det finns en maxgräns för deltagande medlemmar, vänligen gå in
+    helper: Ange om det finns en maxgräns för deltagare
   image:
     label: Bild
     helper: För att representera inlägget, välj en bild från galleriet på din enhet eller ett foto som du ska ta nu

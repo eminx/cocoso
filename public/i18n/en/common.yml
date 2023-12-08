@@ -67,6 +67,9 @@ labels:
   newPopupLabel: Create a new entry in
   thislisting: this listing
   newsletters: Previous Newsletters
+  avatar:
+    checklabel: Show profile image
+    helper: Check to show your profile image with this entry
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
