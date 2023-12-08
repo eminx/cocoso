@@ -23,7 +23,7 @@ import { call } from '../../utils/shared';
 
 function Communities() {
   const [filterWord, setFilterWord] = useState('');
-  const [sorterValue, setSorterValue] = useState('date');
+  const [sorterValue, setSorterValue] = useState('name');
   const [modalHost, setModalHost] = useState(null);
   const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
 

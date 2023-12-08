@@ -23,7 +23,7 @@ function Resources({ history }) {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
-  const [sorterValue, setSorterValue] = useState('date');
+  const [sorterValue, setSorterValue] = useState('name');
   const [combo, setCombo] = useState('all');
   const [modalResource, setModalResource] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
