@@ -37,8 +37,17 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isDesktop) {
     return (
       <Box className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
-        <Box bg="brand.100" position="fixed" top="0" w="72px" h="56px">
-          <Center cursor="pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <Box
+          bg="brand.100"
+          position="fixed"
+          top="0"
+          w="72px"
+          h="56px"
+          _hover={{ bg: 'brand.50' }}
+          cursor="pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <Center>
             <Text color="brand.500" fontSize="36px" fontWeight="bold">
               {platform?.name?.substring(0, 1)?.toUpperCase()}
             </Text>
