@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
+import { StateContext } from '../LayoutContainer';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -23,15 +24,19 @@ const getRoute = (item, index) => {
   return `/${item.name}/new`;
 };
 
-function NewButton({ canCreateContent, currentHost, isAdmin, isDesktop }) {
-  const menu = currentHost.settings.menu;
+function NewButton() {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  if (!canCreateContent) {
+  const menu = currentHost?.settings.menu;
+
+  if (!currentUser || !canCreateContent) {
     return null;
   }
+
+  const isAdmin = role === 'admin';
 
   const menuItems = menu
     .filter((item) => {
@@ -74,7 +79,7 @@ function NewButton({ canCreateContent, currentHost, isAdmin, isDesktop }) {
   }
 
   return (
-    <Box>
+    <Box pl="2">
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -83,7 +88,7 @@ function NewButton({ canCreateContent, currentHost, isAdmin, isDesktop }) {
       >
         <MenuButton>
           <IconButton
-            _hover={{ bg: 'brand.300' }}
+            _hover={{ bg: 'gray.300' }}
             bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
