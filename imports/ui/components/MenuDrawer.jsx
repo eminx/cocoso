@@ -37,9 +37,9 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   if (isDesktop) {
     return (
-      <Box bg="brand.100" className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
+      <Box bg="brand.700" className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
         <Box
-          bg="brand.100"
+          bg="brand.700"
           position="fixed"
           top="0"
           w="72px"
@@ -48,11 +48,11 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           cursor="pointer"
           onClick={() => scroll.scrollToTop({ duration: 200 })}
         >
-          <Center>
+          {/* <Center>
             <Text color="brand.500" fontSize="36px" fontWeight="bold">
               {platform?.name?.substring(0, 1)?.toUpperCase()}
             </Text>
-          </Center>
+          </Center> */}
         </Box>
         <Box
           bg="brand.700"

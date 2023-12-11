@@ -70,6 +70,7 @@ labels:
   avatar:
     checklabel: Profil imajını görüntüle
     helper: Bu içerik ile profil imajını görüntülemek için işaretle
+  items: öğe
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

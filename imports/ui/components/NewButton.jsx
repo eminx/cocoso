@@ -79,7 +79,7 @@ function NewButton() {
   }
 
   return (
-    <Box pl="2">
+    <Box pl="2" pt="1">
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -88,8 +88,8 @@ function NewButton() {
       >
         <MenuButton>
           <IconButton
-            _hover={{ bg: 'gray.300' }}
-            bg="gray.800"
+            _hover={{ bg: 'brand.300' }}
+            bg="brand.700"
             borderColor="#fff"
             borderWidth="2px"
             isRound

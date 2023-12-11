@@ -70,6 +70,7 @@ labels:
   avatar:
     checklabel: Visa din profilbild
     helper: Dra reglaget för att visa din profilbild vid det här inlägget
+  items: artiklar
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

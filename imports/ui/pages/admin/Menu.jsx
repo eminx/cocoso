@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Heading,
   Input,
@@ -10,11 +11,13 @@ import {
   Text,
   Table,
   Tbody,
+  Textarea,
   Thead,
   Tr,
   Td,
   Th,
   Code,
+  VStack,
 } from '@chakra-ui/react';
 
 import { DragHandleIcon, QuestionIcon } from '@chakra-ui/icons';
@@ -84,6 +87,19 @@ export default function Menu() {
     setLocalSettings({ ...localSettings, menu: newMenu });
   };
 
+  const handleMenuItemDescriptionChange = (changedItemIndex, value) => {
+    const newMenu = localSettings.menu.map((item, index) => {
+      if (changedItemIndex === index) {
+        return {
+          ...item,
+          description: value,
+        };
+      }
+      return item;
+    });
+    setLocalSettings({ ...localSettings, menu: newMenu });
+  };
+
   const onSortMenuEnd = ({ oldIndex, newIndex }) => {
     const { menu } = localSettings;
     const visibleItems = menu.filter((item) => item.isVisible);
@@ -119,14 +135,13 @@ export default function Menu() {
           <Heading as="h4" fontSize="18px" mb="2">
             {t('menu.tabs.menuitems.label')}
           </Heading>
-          <Text mb="4" fontSize="sm">
-            {t('menu.tabs.menuitems.info')}
-          </Text>
+          <Text mb="8">{t('menu.tabs.menuitems.info')}</Text>
           <MenuTable
             menu={localSettings.menu}
             t={t}
             handleMenuItemCheck={handleMenuItemCheck}
             handleMenuItemLabelChange={handleMenuItemLabelChange}
+            handleMenuItemDescriptionChange={handleMenuItemDescriptionChange}
           />
 
           <Flex justify="flex-end" py="4">
@@ -164,61 +179,71 @@ export default function Menu() {
   );
 }
 
-function MenuTable({ menu, t, handleMenuItemCheck, handleMenuItemLabelChange }) {
+function MenuTable({
+  menu,
+  t,
+  handleMenuItemCheck,
+  handleMenuItemLabelChange,
+  handleMenuItemDescriptionChange,
+}) {
   return (
-    <Table size="sm" variant="simple" w="100%">
-      <Thead>
-        <Tr>
-          <Th w="60px" px="0">
-            {t('menu.itemActive')}
-          </Th>
-          <Th px="0">{t('menu.itemLabel')}</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {menu.map((item, index) => (
-          <Tr key={item.name}>
-            <Td px="0">
-              <Switch
-                isChecked={item.isVisible}
-                // size="sm"
-                onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
-              />
-            </Td>
-            <Td px="0">
-              <MenuItemHelper item={item} t={t} />
-              <FormField>
-                <Input
-                  isDisabled={!item.isVisible}
-                  size="sm"
-                  value={item.label}
-                  onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
-                />
-              </FormField>
-            </Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  );
-}
-
-function MenuItemHelper({ item, t }) {
-  return (
-    <Popover
-      trigger={
-        <Flex justifyContent="space-between">
-          <Code fontSize="xs" mr="1">
+    <VStack align="stretch" spacing="8">
+      {menu.map((item, index) => (
+        <Box pb="2" pt="1">
+          <Code fontSize="md" fontWeight="bold">
             /{item.name}
           </Code>
-          <QuestionIcon />
-        </Flex>
-      }
-    >
-      <Text fontSize="sm" mr="4">
-        {t(`menu.info.${item.name}`)}
-      </Text>
-    </Popover>
+          <Text fontWeight="light" mb="2" mt="1" textTransform="none">
+            {t(`menu.info.${item.name}`)}
+          </Text>
+          <Table size="sm" variant="simple" w="100%">
+            <Tbody>
+              <Tr key={item.name}>
+                <Td w="120px">
+                  <Text>Active</Text>
+                </Td>
+                <Td px="0">
+                  <Switch
+                    isChecked={item.isVisible}
+                    onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
+                  />
+                </Td>
+              </Tr>
+              <Tr>
+                <Td w="120px">
+                  <Text>Label</Text>
+                </Td>
+                <Td px="0">
+                  <FormField>
+                    <Input
+                      isDisabled={!item.isVisible}
+                      size="sm"
+                      value={item.label}
+                      onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
+                    />
+                  </FormField>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td w="120px">
+                  <Text>Description</Text>
+                </Td>
+                <Td px="0">
+                  <FormField>
+                    <Textarea
+                      isDisabled={!item.isVisible}
+                      size="sm"
+                      value={item.description}
+                      onChange={(e) => handleMenuItemDescriptionChange(index, e.target.value)}
+                    />
+                  </FormField>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Box>
+      ))}
+    </VStack>
   );
 }
 

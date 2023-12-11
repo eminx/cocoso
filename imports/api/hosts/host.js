@@ -6,10 +6,11 @@ const Hosts = new Mongo.Collection('hosts');
 
 const SchemasHost = {
   menu: {
+    description: { type: String, optional: true },
+    isHomePage: { type: Boolean, optional: true },
+    isVisible: { type: Boolean },
     label: { type: String },
     name: { type: String },
-    isVisible: { type: Boolean },
-    isHomePage: { type: Boolean, optional: true },
   },
   emailTemplate: {
     title: { type: String, optional: true },

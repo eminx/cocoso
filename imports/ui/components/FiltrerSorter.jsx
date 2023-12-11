@@ -23,10 +23,15 @@ function FiltrerSorter(props) {
   return (
     <Box position="relative" mt="6" w="100px">
       <Menu>
-        <MenuButton as="span" style={{ position: 'absolute', bottom: '2px' }}>
-          <Button rightIcon={<Search2Icon mr="2" />} mt="3.5" size="xs" variant="link">
-            {tc('labels.filterAndSort')}
-          </Button>
+        <MenuButton
+          as={Button}
+          leftIcon={<Search2Icon />}
+          mt="3.5"
+          size="xs"
+          style={{ position: 'absolute', bottom: '4px' }}
+          variant="link"
+        >
+          {tc('labels.filterAndSort')}
         </MenuButton>
         <MenuList bg="gray.200" p="4" border="1px solid #aaa">
           <Inputs {...props} isDesktop={isDesktop} tc={tc} />

@@ -233,16 +233,16 @@ function Activities({ history }) {
     return activitiesRendered.some((act) => act.host === host.host);
   });
 
+  const { settings } = currentHost;
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${
-          currentHost.settings.name
-        }`}</title>
+        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${settings.name}`}</title>
       </Helmet>
 
       <Box mb="8" mt="4" px="4" maxW="780px">
-        <Flex justify="space-between">
+        <Flex>
           <Flex align="center" justify="flex-start">
             <Box>
               <Flex wrap="wrap">
@@ -263,9 +263,8 @@ function Activities({ history }) {
               </Flex>
               <Box pt="2" pr="2">
                 <Divider borderColor="gray.500" maxW="690px" />
-                <Text fontSize={isDesktop ? 'md' : 'sm'} mt="1">
-                  Here you can view events and happenings in our community, based on the concepts of
-                  departure, true feeling, love and sincerity
+                <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
+                  {settings.menu.find((item) => item.name === 'activities')?.description}
                 </Text>
               </Box>
             </Box>

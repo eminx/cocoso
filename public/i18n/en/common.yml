@@ -70,6 +70,7 @@ labels:
   avatar:
     checklabel: Show profile image
     helper: Check to show your profile image with this entry
+  items: items
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

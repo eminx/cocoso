@@ -4,13 +4,11 @@ import { Box, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
-import NewButton from './NewButton';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 
 function Header({ isSmallerLogo }) {
-  const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
-    useContext(StateContext);
+  const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   const { menu } = currentHost?.settings;
@@ -53,6 +51,8 @@ function Header({ isSmallerLogo }) {
 
 function Heading({ numberOfItems }) {
   const history = useHistory();
+  const [tc] = useTranslation('common');
+
   const pathname = history.location.pathname;
   const isCurrentPage = (name) => {
     if (name === 'info') {
@@ -74,7 +74,7 @@ function Heading({ numberOfItems }) {
         {activeMenuItem?.label}{' '}
         {numberOfItems && (
           <Text as="span" fontSize="xs">
-            {numberOfItems} items
+            {numberOfItems} {tc('labels.items')}
           </Text>
         )}
       </CHeading>

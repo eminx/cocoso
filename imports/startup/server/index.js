@@ -10,6 +10,7 @@ import { Accounts } from 'meteor/accounts-base';
 // import { Helmet } from 'react-helmet';
 // import { ServerStyleSheet } from 'styled-components';
 // import Routes from '../../ui/pages/Routes';
+import Hosts from '../../api/hosts/host';
 
 import './api';
 import './migrations';
