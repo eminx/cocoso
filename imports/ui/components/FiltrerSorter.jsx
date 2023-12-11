@@ -1,34 +1,38 @@
-import React, { useContext, useState } from 'react';
-import { Box, Button, Divider, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Input,
+  Menu,
+  MenuButton,
+  MenuList,
+  Select,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { Search2Icon } from '@chakra-ui/icons/dist/Search2';
 
 import { StateContext } from '../LayoutContainer';
-import Drawer from './Drawer';
 
 function FiltrerSorter(props) {
-  const [isOpen, setIsOpen] = useState(false);
   const { isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   return (
-    <>
-      <Flex justify="flex-end">
-        <Button size={isDesktop ? 'sm' : 'xs'} variant="outline" onClick={() => setIsOpen(true)}>
-          <Search2Icon mr="2" />
-          {tc('labels.filterAndSort')}
-        </Button>
-      </Flex>
-      <Drawer
-        hideOverlay
-        isOpen={isOpen}
-        size="xs"
-        title={tc('labels.filterAndSort')}
-        onClose={() => setIsOpen(false)}
-      >
-        <Inputs {...props} isDesktop={isDesktop} tc={tc} />
-      </Drawer>
-    </>
+    <Box position="relative" mt="6" w="100px">
+      <Menu>
+        <MenuButton as="span" style={{ position: 'absolute', bottom: '2px' }}>
+          <Button rightIcon={<Search2Icon mr="2" />} mt="3.5" size="xs" variant="link">
+            {tc('labels.filterAndSort')}
+          </Button>
+        </MenuButton>
+        <MenuList bg="gray.200" p="4" border="1px solid #aaa">
+          <Inputs {...props} isDesktop={isDesktop} tc={tc} />
+        </MenuList>
+      </Menu>
+    </Box>
   );
 }
 
