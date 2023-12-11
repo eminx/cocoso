@@ -122,6 +122,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             bg: 'brand.600',
           }}
           bg="gray.800"
+          borderColor="#fff"
+          borderWidth="2px"
           icon={<HamburgerIcon fontSize="24px" />}
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}

@@ -58,7 +58,7 @@ labels:
     actions: Admin
   past: GEÇMİŞ
   upcoming: Gelecek
-  filterAndSort: Filtrele & Sırala
+  filterAndSort: Filtrele / Sırala
   filter: Filtrele
   sort: Sırala
   notfound:

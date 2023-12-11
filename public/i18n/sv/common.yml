@@ -58,7 +58,7 @@ labels:
     actions: Admin
   past: Tidigare
   upcoming: Kommande
-  filterAndSort: Filtrera & sortera
+  filterAndSort: Filtrera / sortera
   filter: Filtrera
   sort: Sortera
   notfound:

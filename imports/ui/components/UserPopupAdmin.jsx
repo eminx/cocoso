@@ -36,7 +36,7 @@ function UserPopupAdmin() {
             borderColor="#fff"
             borderWidth="2px"
             icon={<SettingsIcon fontSize="lg" />}
-            isRound
+            // isRound
             size={isDesktop ? 'md' : 'sm'}
           />
           <Text

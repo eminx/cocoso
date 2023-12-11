@@ -92,7 +92,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               {membershipsLength > 1 && (
                 <Popover
                   bg="gray.50"
-                  placement={!isCentered ? 'bottom-start' : 'bottom'}
+                  placement={!isCentered ? 'bottom-start' : 'bottom-end'}
                   trigger={
                     <Button
                       colorScheme="gray.600"
