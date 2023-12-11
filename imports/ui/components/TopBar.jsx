@@ -37,7 +37,9 @@ export default function TopBar({ platform, currentUser }) {
                 </MenuButton>
                 <MenuList zIndex="1405">
                   {currentUser.memberships.map((m) => (
-                    <MenuItem key={m.host}>{m.host}</MenuItem>
+                    <MenuItem key={m.host} onClick={() => (window.location = `https://${m.host}`)}>
+                      {m.hostname}
+                    </MenuItem>
                   ))}
                 </MenuList>
               </Menu>
