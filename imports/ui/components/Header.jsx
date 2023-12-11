@@ -31,7 +31,7 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box px="2" pb="4" w="100%">
+    <Box px="2" w="100%">
       <Flex w="100%" align="center" justify="space-between">
         <Box>
           <Link to="/">
@@ -72,9 +72,11 @@ function Heading({ numberOfItems }) {
     <Flex mr="4">
       <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
         {activeMenuItem?.label}{' '}
-        <Text as="span" fontSize="xs">
-          {numberOfItems} items
-        </Text>
+        {numberOfItems && (
+          <Text as="span" fontSize="xs">
+            {numberOfItems} items
+          </Text>
+        )}
       </CHeading>
     </Flex>
   );

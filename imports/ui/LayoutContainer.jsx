@@ -202,7 +202,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
               <Box w="100%">
                 <Header isSmallerLogo={!isHeaderAndFooter} />
 
-                <Box minHeight="90vh" px={isDesktop ? '4' : '0'}>
+                <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
                   {children}
                 </Box>
 
