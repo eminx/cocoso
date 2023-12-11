@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Flex, Heading as CHeading, HStack, Image } from '@chakra-ui/react';
+import { Box, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
@@ -31,7 +31,7 @@ function Header({ isSmallerLogo }) {
   const isAdmin = currentUser && role === 'admin';
 
   return (
-    <Box px="2" pt="2" pb="4" w="100%">
+    <Box px="2" pb="4" w="100%">
       <Flex w="100%" align="center" justify="space-between">
         <Box>
           <Link to="/">
@@ -41,14 +41,6 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
         <HStack align="center" justify="flex-end" p="2" spacing="4">
-          {currentUser && (
-            <NewButton
-              canCreateContent={canCreateContent}
-              currentHost={currentHost}
-              isAdmin={isAdmin}
-              isDesktop={isDesktop}
-            />
-          )}
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
@@ -59,7 +51,7 @@ function Header({ isSmallerLogo }) {
   );
 }
 
-function Heading() {
+function Heading({ numberOfItems }) {
   const history = useHistory();
   const pathname = history.location.pathname;
   const isCurrentPage = (name) => {
@@ -77,11 +69,14 @@ function Heading() {
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
   return (
-    <Box>
+    <Flex mr="4">
       <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
-        {activeMenuItem?.label}
+        {activeMenuItem?.label}{' '}
+        <Text as="span" fontSize="xs">
+          {numberOfItems} items
+        </Text>
       </CHeading>
-    </Box>
+    </Flex>
   );
 }
 
