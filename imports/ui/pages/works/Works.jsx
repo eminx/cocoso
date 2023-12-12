@@ -181,7 +181,7 @@ function Works({ history }) {
         )}
       </PageHeader>
 
-      <Wrap mb="8" px="4">
+      <Wrap mb="8" mt="4" px="4">
         <WrapItem>
           <Tag
             label={t('all')}

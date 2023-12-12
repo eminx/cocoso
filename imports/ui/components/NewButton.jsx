@@ -89,10 +89,9 @@ function NewButton() {
         <MenuButton>
           <IconButton
             _hover={{ bg: 'brand.300' }}
-            bg="brand.700"
+            bg="brand.400"
             borderColor="#fff"
             borderWidth="2px"
-            isRound
             icon={<AddIcon color="white" />}
             size={isDesktop ? 'md' : 'sm'}
             zIndex={isOpen ? '1403' : '10'}

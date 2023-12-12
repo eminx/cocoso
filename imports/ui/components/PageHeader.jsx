@@ -13,7 +13,7 @@ function PageHeader({ description, numberOfItems, showNewButton = true, children
       <Flex>
         <Flex align="center" justify="flex-start">
           <Box>
-            <Flex wrap="wrap">
+            <Flex wrap="wrap" mr="8">
               <Heading numberOfItems={numberOfItems} />
               {children}
             </Flex>
