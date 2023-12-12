@@ -51,7 +51,7 @@ function Header({ isSmallerLogo }) {
   );
 }
 
-function Heading({ numberOfItems }) {
+function Heading({ title, numberOfItems }) {
   const history = useHistory();
   const [tc] = useTranslation('common');
 
@@ -73,7 +73,7 @@ function Heading({ numberOfItems }) {
   return (
     <Flex mr="4">
       <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
-        {activeMenuItem?.label}{' '}
+        {title || activeMenuItem?.label}{' '}
         {numberOfItems > 0 && (
           <Text as="span" fontSize="xs">
             {numberOfItems} {tc('labels.items')}

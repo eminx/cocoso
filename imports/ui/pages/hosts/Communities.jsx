@@ -1,15 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Center,
-  Code,
-  Flex,
-  Heading as CHeading,
-  Image,
-  Link as CLink,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Center, Code, Heading as CHeading, Image, Link as CLink } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -20,6 +11,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import NewGridThumb from '../../components/NewGridThumb';
 import { call } from '../../utils/shared';
+import PageHeader from '../../components/PageHeader';
 
 function Communities() {
   const [filterWord, setFilterWord] = useState('');
@@ -93,14 +85,13 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <Box mb="8" mt="4" px="4">
-        <Flex justify="space-between">
-          <CHeading color="gray.800" size="lg">
-            {tc('platform.communities')}
-          </CHeading>
-          <FiltrerSorter {...filtrerProps} />
-        </Flex>
-      </Box>
+      <PageHeader
+        // description={settings.menu.find((item) => item.name === 'resources')?.description}
+        heading={tc('platform.communities')}
+        numberOfItems={hostsRendered?.length}
+      >
+        <FiltrerSorter {...filtrerProps} />
+      </PageHeader>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

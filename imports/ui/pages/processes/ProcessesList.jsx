@@ -214,20 +214,18 @@ export default function ProcessesList({ history }) {
         description={settings.menu.find((item) => item.name === 'processes')?.description}
         numberOfItems={processesRendered?.length}
       >
-        {processesRendered?.length > 3 && (
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-            <Tabs size="sm" tabs={tabs} />
-          </FiltrerSorter>
-        )}
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+          <Tabs size="sm" tabs={tabs} />
+        </FiltrerSorter>
       </PageHeader>
 
       <Box mb="8" px={isDesktop ? '4' : '0'}>

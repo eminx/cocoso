@@ -5,7 +5,7 @@ import NewButton from './NewButton';
 import { Heading } from './Header';
 import { StateContext } from '../LayoutContainer';
 
-function PageHeader({ description, numberOfItems, showNewButton = true, children }) {
+function PageHeader({ description, heading, numberOfItems, showNewButton = true, children }) {
   const { isDesktop } = useState(StateContext);
 
   return (
@@ -14,7 +14,7 @@ function PageHeader({ description, numberOfItems, showNewButton = true, children
         <Flex align="center" justify="flex-start">
           <Box>
             <Flex wrap="wrap" mr="8">
-              <Heading numberOfItems={numberOfItems} />
+              {<Heading title={heading} numberOfItems={numberOfItems} />}
               {children}
             </Flex>
             <Box pt="2" pr="2">

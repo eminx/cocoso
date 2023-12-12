@@ -166,19 +166,17 @@ function Works({ history }) {
         description={settings.menu.find((item) => item.name === 'works')?.description}
         numberOfItems={worksRenderedHostFiltered?.length}
       >
-        {worksRenderedHostFiltered?.length > 3 && (
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-          </FiltrerSorter>
-        )}
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </FiltrerSorter>
       </PageHeader>
 
       <Wrap mb="8" mt="4" px="4">

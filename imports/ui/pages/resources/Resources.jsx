@@ -183,20 +183,18 @@ function Resources({ history }) {
         description={settings.menu.find((item) => item.name === 'resources')?.description}
         numberOfItems={resourcesRendered?.length}
       >
-        {resourcesRendered?.length > 3 && (
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-            <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
-          </FiltrerSorter>
-        )}
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+          <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
+        </FiltrerSorter>
       </PageHeader>
 
       <Box px="4">

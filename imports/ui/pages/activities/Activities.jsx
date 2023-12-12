@@ -244,19 +244,17 @@ function Activities({ history }) {
         description={settings.menu.find((item) => item.name === 'activities')?.description}
         numberOfItems={activitiesRendered?.length}
       >
-        {activitiesRendered?.length > 3 && (
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-          </FiltrerSorter>
-        )}
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </FiltrerSorter>
       </PageHeader>
 
       <Tabs m="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
