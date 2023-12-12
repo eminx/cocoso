@@ -77,6 +77,7 @@ const generateTheme = (hue) => {
       },
       Textarea: {
         defaultProps: {
+          focusBorderColor: color,
           variant: 'filled',
           colorScheme: 'brand',
         },

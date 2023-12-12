@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Box,
   Button,
-  Divider,
   Flex,
   Heading,
   Input,
@@ -12,15 +16,12 @@ import {
   Table,
   Tbody,
   Textarea,
-  Thead,
   Tr,
   Td,
-  Th,
   Code,
-  VStack,
 } from '@chakra-ui/react';
 
-import { DragHandleIcon, QuestionIcon } from '@chakra-ui/icons';
+import { DragHandleIcon } from '@chakra-ui/icons';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 
@@ -29,7 +30,6 @@ import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
-import Popover from '../../components/Popover';
 
 export default function Menu() {
   const [loading, setLoading] = useState(true);
@@ -148,6 +148,7 @@ export default function Menu() {
             <Button onClick={handleMenuSave}>{tc('actions.submit')}</Button>
           </Flex>
         </Box>
+
         <Box>
           <Heading as="h4" fontSize="18px" mb="2">
             {t('settings.tabs.menuOrder')}
@@ -187,63 +188,73 @@ function MenuTable({
   handleMenuItemDescriptionChange,
 }) {
   return (
-    <VStack align="stretch" spacing="8">
+    <Accordion allowToggle>
       {menu.map((item, index) => (
-        <Box pb="2" pt="1">
-          <Code fontSize="md" fontWeight="bold">
-            /{item.name}
-          </Code>
-          <Text fontWeight="light" mb="2" mt="1" textTransform="none">
-            {t(`menu.info.${item.name}`)}
-          </Text>
-          <Table size="sm" variant="simple" w="100%">
-            <Tbody>
-              <Tr key={item.name}>
-                <Td w="120px">
-                  <Text>Active</Text>
-                </Td>
-                <Td px="0">
-                  <Switch
-                    isChecked={item.isVisible}
-                    onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td w="120px">
-                  <Text>Label</Text>
-                </Td>
-                <Td px="0">
-                  <FormField>
-                    <Input
-                      isDisabled={!item.isVisible}
-                      size="sm"
-                      value={item.label}
-                      onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
-                    />
-                  </FormField>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td w="120px">
-                  <Text>Description</Text>
-                </Td>
-                <Td px="0">
-                  <FormField>
-                    <Textarea
-                      isDisabled={!item.isVisible}
-                      size="sm"
-                      value={item.description}
-                      onChange={(e) => handleMenuItemDescriptionChange(index, e.target.value)}
-                    />
-                  </FormField>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </Box>
+        <AccordionItem>
+          <AccordionButton bg="white">
+            <Box as="span" flex="1" textAlign="left" textTransform="capitalize">
+              {item.name}
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel bg="brand.50" pb={4}>
+            <Box pb="2" pt="1">
+              <Code fontSize="md" fontWeight="bold">
+                /{item.name}
+              </Code>
+              <Text fontWeight="light" mb="2" mt="1" textTransform="none">
+                {t(`menu.info.${item.name}`)}
+              </Text>
+              <Table size="sm" variant="simple" w="100%">
+                <Tbody>
+                  <Tr key={item.name}>
+                    <Td w="120px">
+                      <Text>Active</Text>
+                    </Td>
+                    <Td px="0">
+                      <Switch
+                        isChecked={item.isVisible}
+                        onChange={(event) => handleMenuItemCheck(index, event.target.checked)}
+                      />
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td w="120px">
+                      <Text>Label</Text>
+                    </Td>
+                    <Td px="0">
+                      <FormField>
+                        <Input
+                          isDisabled={!item.isVisible}
+                          size="sm"
+                          value={item.label}
+                          onChange={(e) => handleMenuItemLabelChange(index, e.target.value)}
+                        />
+                      </FormField>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td w="120px">
+                      <Text>Description</Text>
+                    </Td>
+                    <Td px="0">
+                      <FormField>
+                        <Textarea
+                          isDisabled={!item.isVisible}
+                          size="sm"
+                          value={item.description}
+                          onChange={(e) => handleMenuItemDescriptionChange(index, e.target.value)}
+                        />
+                      </FormField>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </Box>
+          </AccordionPanel>
+        </AccordionItem>
       ))}
-    </VStack>
+    </Accordion>
   );
 }
 
