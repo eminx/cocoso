@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
+import UserPopup from './UserPopup';
 
 function Header({ isSmallerLogo }) {
   const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
@@ -39,6 +40,7 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
         <HStack align="center" justify="flex-end" p="2" spacing="4">
+          {platform && !platform.isFederationLayout && <UserPopup />}
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
