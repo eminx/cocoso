@@ -13,6 +13,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
+import PageHeader from '../../components/PageHeader';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -130,7 +131,8 @@ function MembersPublic({ history }) {
 
   const membersRendered = getMembersFiltered();
 
-  const { menu } = currentHost?.settings;
+  const { settings } = currentHost;
+  const menu = settings?.menu;
   const menuItems = menu?.filter((item) => item.isVisible);
   const activeMenuItem = menuItems.find((item) => item.name === 'members');
 
@@ -140,10 +142,10 @@ function MembersPublic({ history }) {
         <title>{`Members | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Flex align="center" justify="space-between" my="4" px="4">
-        <CHeading color="gray.800" size="lg">
-          {activeMenuItem?.label}
-        </CHeading>
+      <PageHeader
+        description={settings.menu.find((item) => item.name === 'members')?.description}
+        showNewButton={false}
+      >
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>
@@ -155,7 +157,7 @@ function MembersPublic({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </Flex>
+      </PageHeader>
 
       <Box mt="2" px="4">
         <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>

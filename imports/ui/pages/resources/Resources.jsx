@@ -15,9 +15,8 @@ import HostFiltrer from '../../components/HostFiltrer';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import InfiniteScroller from '../../components/InfiniteScroller';
-
-import { Heading } from '../../components/Header';
 import NewGridThumb from '../../components/NewGridThumb';
+import PageHeader from '../../components/PageHeader';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -172,29 +171,31 @@ function Resources({ history }) {
 
   const isAdmin = role === 'admin';
 
+  const { settings } = currentHost;
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
         <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
       </Helmet>
 
-      <Box mb="8" mt="4" px="4">
-        <Flex justify="space-between">
-          <Heading />
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-            <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
-          </FiltrerSorter>
-        </Flex>
-      </Box>
+      <PageHeader
+        description={settings.menu.find((item) => item.name === 'resources')?.description}
+        numberOfItems={resourcesRendered?.length}
+      >
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+          <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
+        </FiltrerSorter>
+      </PageHeader>
 
       <Box px="4">
         <InfiniteScroller

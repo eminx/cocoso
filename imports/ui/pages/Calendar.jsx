@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading as CHeading,
   Link as CLink,
@@ -179,7 +180,7 @@ class Calendar extends PureComponent {
 
   render() {
     const { isLoading, allBookings, currentUser, resources, tc } = this.props;
-    const { canCreateContent, currentHost } = this.context;
+    const { canCreateContent, currentHost, isDesktop } = this.context;
     const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
 
     const filteredActivities = allBookings.filter((activity) => {
@@ -236,6 +237,8 @@ class Calendar extends PureComponent {
         ? `/processes/${selectedActivity.processId}`
         : `/activities/${selectedActivity.activityId}`);
 
+    const { settings } = currentHost;
+
     return (
       <Box>
         <Helmet>
@@ -244,9 +247,16 @@ class Calendar extends PureComponent {
           } | ${publicSettings.name}`}</title>
         </Helmet>
 
-        <CHeading color="gray.800" m="4" size="lg">
+        <CHeading color="gray.800" mx="4" mt="4" size="lg">
           {tc('domains.calendar')}
         </CHeading>
+
+        <Box pt="2" px="4">
+          <Divider borderColor="gray.500" maxW="690px" />
+          <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
+            {settings.menu.find((item) => item.name === 'calendar')?.description}
+          </Text>
+        </Box>
 
         <Box my="2">
           <Center p="2">

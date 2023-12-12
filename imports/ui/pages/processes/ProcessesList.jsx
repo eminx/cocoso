@@ -17,8 +17,8 @@ import Modal from '../../components/Modal';
 import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
 import SexyThumb from '../../components/SexyThumb';
-import { Heading } from '../../components/Header';
 import InfiniteScroller from '../../components/InfiniteScroller';
+import PageHeader from '../../components/PageHeader';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -202,29 +202,31 @@ export default function ProcessesList({ history }) {
     setSorterValue,
   };
 
+  const { settings } = currentHost;
+
   return (
     <Box w="100%">
       <Helmet>
         <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box mb="8" mt="4" px="4">
-        <Flex align="center" justify="space-between">
-          <Heading />
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-            <Tabs size="sm" tabs={tabs} />
-          </FiltrerSorter>
-        </Flex>
-      </Box>
+      <PageHeader
+        description={settings.menu.find((item) => item.name === 'processes')?.description}
+        numberOfItems={processesRendered?.length}
+      >
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+          <Tabs size="sm" tabs={tabs} />
+        </FiltrerSorter>
+      </PageHeader>
 
       <Box mb="8" px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

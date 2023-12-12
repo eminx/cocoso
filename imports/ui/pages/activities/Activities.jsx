@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, AbsoluteCenter, Divider, Flex, ModalBody, Text } from '@chakra-ui/react';
+import { Box, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -18,9 +18,8 @@ import Tably from '../../components/Tably';
 import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import SexyThumb from '../../components/SexyThumb';
-import { Heading } from '../../components/Header';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import NewButton from '../../components/NewButton';
+import PageHeader from '../../components/PageHeader';
 
 moment.locale(i18n.language);
 
@@ -241,37 +240,24 @@ function Activities({ history }) {
         <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${settings.name}`}</title>
       </Helmet>
 
-      <Box mb="8" mt="4" px="4" maxW="780px">
-        <Flex>
-          <Flex align="center" justify="flex-start">
-            <Box>
-              <Flex wrap="wrap">
-                <Heading numberOfItems={activitiesRendered.length} />
-                <FiltrerSorter {...filtrerProps}>
-                  <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+      <PageHeader
+        description={settings.menu.find((item) => item.name === 'activities')?.description}
+        numberOfItems={activitiesRendered?.length}
+      >
+        <FiltrerSorter {...filtrerProps}>
+          <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
 
-                  {isPortalHost && (
-                    <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                      <HostFiltrer
-                        allHosts={allHostsFiltered}
-                        hostFilterValue={hostFilterValue}
-                        onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                      />
-                    </Flex>
-                  )}
-                </FiltrerSorter>
-              </Flex>
-              <Box pt="2" pr="2">
-                <Divider borderColor="gray.500" maxW="690px" />
-                <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
-                  {settings.menu.find((item) => item.name === 'activities')?.description}
-                </Text>
-              </Box>
-            </Box>
-          </Flex>
-          <NewButton />
-        </Flex>
-      </Box>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </FiltrerSorter>
+      </PageHeader>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

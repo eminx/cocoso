@@ -18,6 +18,7 @@ import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import { Heading } from '../../components/Header';
 import InfiniteScroller from '../../components/InfiniteScroller';
+import PageHeader from '../../components/PageHeader';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -153,52 +154,54 @@ function Works({ history }) {
     setSorterValue,
   };
 
+  const { settings } = currentHost;
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
         <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
       </Helmet>
 
-      <Box px="4">
-        <Flex align="center" justify="space-between" my="4">
-          <Heading />
-          <FiltrerSorter {...filtrerProps}>
-            {isPortalHost && (
-              <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-                <HostFiltrer
-                  allHosts={allHostsFiltered}
-                  hostFilterValue={hostFilterValue}
-                  onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-                />
-              </Flex>
-            )}
-          </FiltrerSorter>
-        </Flex>
+      <PageHeader
+        description={settings.menu.find((item) => item.name === 'works')?.description}
+        numberOfItems={worksRenderedHostFiltered?.length}
+      >
+        <FiltrerSorter {...filtrerProps}>
+          {isPortalHost && (
+            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+              <HostFiltrer
+                allHosts={allHostsFiltered}
+                hostFilterValue={hostFilterValue}
+                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
+              />
+            </Flex>
+          )}
+        </FiltrerSorter>
+      </PageHeader>
 
-        <Wrap mb="8">
-          <WrapItem>
+      <Wrap mb="8" px="4">
+        <WrapItem>
+          <Tag
+            label={t('all')}
+            checkable
+            checked={Boolean(category) === false}
+            filterColor="#2d2d2d"
+            onClick={() => setCategoryFilter(null)}
+          />
+        </WrapItem>
+        {categoriesAssignedToWorks.map((cat) => (
+          <WrapItem key={cat.label}>
             <Tag
-              label={t('all')}
               checkable
-              checked={Boolean(category) === false}
-              filterColor="#2d2d2d"
-              onClick={() => setCategoryFilter(null)}
+              checked={category === cat.label}
+              filterColor={cat.color}
+              label={cat.label && cat.label.toUpperCase()}
+              margin={{ bottom: 'small' }}
+              onClick={() => setCategoryFilter(cat.label)}
             />
           </WrapItem>
-          {categoriesAssignedToWorks.map((cat) => (
-            <WrapItem key={cat.label}>
-              <Tag
-                checkable
-                checked={category === cat.label}
-                filterColor={cat.color}
-                label={cat.label && cat.label.toUpperCase()}
-                margin={{ bottom: 'small' }}
-                onClick={() => setCategoryFilter(cat.label)}
-              />
-            </WrapItem>
-          ))}
-        </Wrap>
-      </Box>
+        ))}
+      </Wrap>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
