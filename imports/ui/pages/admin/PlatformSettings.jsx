@@ -26,23 +26,30 @@ import Tabs from '../../components/Tabs';
 import ReactQuill from '../../components/Quill';
 
 export default function PlatformSettings({ history }) {
-  const [localSettings, setLocalSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
+  const [platform, setPlatform] = useState(null);
 
-  const { currentUser, platform, getPlatform } = useContext(StateContext);
+  const { currentUser, getPlatform } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    if (!platform || !currentUser || !currentUser.isSuperAdmin) {
-      return;
-    }
-    setLocalSettings(platform);
-    setLoading(false);
+    getPlatformNow();
   }, []);
+
+  const getPlatformNow = async () => {
+    try {
+      const respond = await call('getPlatform');
+      setPlatform(respond);
+      getPlatform();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!currentUser || !currentUser.isSuperAdmin) {
     return <Alert>{tc('message.access.deny')}</Alert>;
@@ -62,7 +69,7 @@ export default function PlatformSettings({ history }) {
 
     try {
       await call('updatePlatformSettings', values);
-      await getPlatform();
+      await getPlatformNow();
       message.success(tc('message.success.update', { domain: 'Platform settings' }));
     } catch (error) {
       message.error(error.reason);
@@ -83,8 +90,9 @@ export default function PlatformSettings({ history }) {
 
   const handleOptionsSubmit = (values) => {
     const formValues = {
-      showFooterInAllCommunities: values.showFooterInAllCommunities,
-      showCommunitiesInMenu: values.showCommunitiesInMenu,
+      isFederationLayout: values.isFederationLayout,
+      // showFooterInAllCommunities: values.showFooterInAllCommunities,
+      // showCommunitiesInMenu: values.showCommunitiesInMenu,
     };
 
     updatePlatformSettings(formValues);
@@ -92,19 +100,19 @@ export default function PlatformSettings({ history }) {
 
   const handleTopbarChange = (key, value) => {
     const newTopbar = {
-      ...localSettings?.topbar,
+      ...platform?.topbar,
     };
     newTopbar[key] = value;
 
-    setLocalSettings({
-      ...localSettings,
+    setPlatform({
+      ...platform,
       topbar: newTopbar,
     });
   };
 
   const handleTopbarSubmit = () => {
     const formValues = {
-      topbar: localSettings?.topbar,
+      topbar: platform?.topbar,
     };
 
     updatePlatformSettings(formValues);
@@ -156,7 +164,7 @@ export default function PlatformSettings({ history }) {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.info')}
           </Text>
-          <PlatformSettingsForm initialValues={localSettings} onSubmit={handleFormSubmit} />
+          <PlatformSettingsForm initialValues={platform} onSubmit={handleFormSubmit} />
         </AlphaContainer>
       ),
     },
@@ -195,7 +203,7 @@ export default function PlatformSettings({ history }) {
           <Text mb="3" fontWeight="bold">
             {t('info.platform.options')}
           </Text>
-          <PlatformOptions initialValues={localSettings} onSubmit={handleOptionsSubmit} />
+          <PlatformOptions initialValues={platform} onSubmit={handleOptionsSubmit} />
         </AlphaContainer>
       ),
     },
@@ -211,7 +219,7 @@ export default function PlatformSettings({ history }) {
             <Box w="100%">
               <Text fontSize="sm">{t('info.platform.topbar.closed')}</Text>
               <Input
-                value={localSettings.topbar?.closed}
+                value={platform.topbar?.closed}
                 onChange={(event) => {
                   event.preventDefault();
                   handleTopbarChange('closed', event.target.value);
@@ -221,12 +229,12 @@ export default function PlatformSettings({ history }) {
             <Box w="100%">
               <Text fontSize="sm">{t('info.platform.topbar.open')}</Text>
               <ReactQuill
-                value={localSettings.topbar?.open}
+                value={platform.topbar?.open}
                 onChange={(value) => handleTopbarChange('open', value)}
               />
             </Box>
             <Flex justify="flex-end" w="100%">
-              <Button type="submit" onClick={() => handleTopbarSubmit(localSettings)}>
+              <Button type="submit" onClick={() => handleTopbarSubmit(platform)}>
                 {tc('actions.submit')}
               </Button>
             </Flex>
@@ -345,14 +353,21 @@ function PlatformOptions({ initialValues, onSubmit }) {
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
-        <Flex align="center">
+        <Flex>
+          <CSwitch mr="2" mt="4" {...register('isFederationLayout')} />
+          <Box>
+            <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
+            <Text fontSize="sm">{t('info.platform.federationText')}</Text>
+          </Box>
+        </Flex>
+        {/* <Flex align="center">
           <CSwitch mr="2" {...register('showFooterInAllCommunities')} />
           <Text fontSize="sm">{t('info.platform.showfooter')}</Text>
         </Flex>
         <Flex align="center">
           <CSwitch mr="2" {...register('showCommunitiesInMenu')} />
           <Text fontSize="sm">{t('info.platform.showCommunities')}</Text>
-        </Flex>
+        </Flex> */}
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}

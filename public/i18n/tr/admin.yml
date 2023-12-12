@@ -12,8 +12,8 @@ settings:
     menuOrder: Sıra
     options: Seçenekler
     color: Renk
-    footer: Footer
-    topbar: Topbar
+    footer: Alt bilgi
+    topbar: Tepe sekmesş
 
 logo:
   label: Logo
@@ -33,10 +33,12 @@ info:
     showfooter: Tüm topluluk uygulamalarında, toplulukları görüntülemek için bağlantı içeren altbilgi gösterilsin
     showCommunities: Tüm topluluk uygulamalarında toplulukları görüntülemek için menüdeki Topluluklar bağlantı öğesi gösterilsin
     topbar:
-      label: Platform tepe barı
+      label: Platform tepe sekmesi
       closed: Kapalı haldeki metin
       open: Açık haldeki metin
   footer: Burada bir altbilgi oluşturabilirsiniz. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsiniz. Altbilgi tüm sayfaların alt kısmına döner.
+  federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
+  federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
 
 menu:
   label: Menü

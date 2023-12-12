@@ -12,6 +12,7 @@ Platform.schema = new SimpleSchema({
   logo: { type: String, optional: true },
   showFooterInAllCommunities: { type: Boolean, optional: true },
   showCommunitiesInMenu: { type: Boolean, optional: true },
+  isFederationLayout: { type: Boolean, optional: true },
   createdAt: { type: Date },
   topbar: { type: Object, optional: true },
   'topbar.closed': { type: String, optional: true },

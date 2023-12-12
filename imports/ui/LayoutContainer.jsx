@@ -193,7 +193,9 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             setSelectedHue,
           }}
         >
-          <TopBar platform={platform} currentUser={currentUser} />
+          {platform && platform.isFederationLayout && (
+            <TopBar platform={platform} currentUser={currentUser} />
+          )}
 
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
