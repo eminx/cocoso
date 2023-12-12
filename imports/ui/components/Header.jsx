@@ -74,7 +74,7 @@ function Heading({ numberOfItems }) {
     <Flex mr="4">
       <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
         {activeMenuItem?.label}{' '}
-        {numberOfItems && (
+        {numberOfItems && numberOfItems > 0 && (
           <Text as="span" fontSize="xs">
             {numberOfItems} {tc('labels.items')}
           </Text>
