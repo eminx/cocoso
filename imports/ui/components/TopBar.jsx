@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Button,
@@ -13,26 +13,38 @@ import {
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import UserPopup from './UserPopup';
+import { StateContext } from '../LayoutContainer';
+import { useTranslation } from 'react-i18next';
 
-export default function TopBar({ platform, currentUser }) {
+export default function TopBar() {
+  const { currentUser, isDesktop, platform } = useContext(StateContext);
+  const [t] = useTranslation('members');
+
   return (
     <Box bg="brand.800" zIndex="1405" position="relative">
       <Flex justify="space-between">
-        <Box w="72px">
+        <Box w={isDesktop ? '72px' : '48px'}>
           <Center>
-            <Text color="brand.50" fontSize="36px" fontWeight="bold">
+            <Text color="brand.50" fontSize={isDesktop ? '36px' : '28px'} fontWeight="bold">
               {platform?.name?.substring(0, 1)?.toUpperCase()}
             </Text>
           </Center>
         </Box>
 
-        <Flex>
+        <Flex align="center">
           {currentUser && (
             <Box py="1">
               <Menu placement="bottom-end">
                 <MenuButton>
-                  <Button color="brand.50" rightIcon={<ChevronDownIcon />} variant="ghost" mt="1">
-                    My Communities
+                  <Button
+                    color="brand.50"
+                    fontWeight="normal"
+                    mt="1"
+                    rightIcon={<ChevronDownIcon />}
+                    size={isDesktop ? 'md' : 'sm'}
+                    variant="ghost"
+                  >
+                    {t('profile.myCommunities')}
                   </Button>
                 </MenuButton>
                 <MenuList zIndex="1405">
@@ -46,7 +58,7 @@ export default function TopBar({ platform, currentUser }) {
             </Box>
           )}
 
-          <Box px="4" py="1" zIndex="1403">
+          <Box pr="18px" py="1" zIndex="1403">
             <UserPopup />
           </Box>
         </Flex>

@@ -12,7 +12,7 @@ function NiceList({
   ...otherProps
 }) {
   return (
-    <List spacing={spacing} {...otherProps}>
+    <List spacing={spacing} {...otherProps} p="0">
       {list.map((listItem) => (
         <ListItem key={listItem[keySelector]} bg={itemBg} mb="2">
           {' '}

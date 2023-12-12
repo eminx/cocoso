@@ -61,6 +61,7 @@ profile:
     role: You as {{username}} are part of this organisation with the {{role}} role
     membership: '{{ role }} in {{ host }}'
     memberships: member in {{ count }} communities
+  myCommunities: My Communities
 
 works:
   label: My Works

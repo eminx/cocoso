@@ -32,9 +32,9 @@ function Header({ isSmallerLogo }) {
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="center" justify="space-between">
-        <Box>
+        <Box py="4">
           <Link to="/">
-            <Box pl={isDesktop ? '4' : '2'}>
+            <Box pl={isDesktop ? '4' : '2'} pt="2">
               <Image className={logoClass} fit="contain" src={currentHost && currentHost.logo} />
             </Box>
           </Link>

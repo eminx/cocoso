@@ -22,10 +22,8 @@ import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
 import Breadcrumb from '../../components/Breadcrumb';
-import ListMenu from '../../components/ListMenu';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
-import { userMenu } from '../../utils/constants/general';
 
 const focusStyle = {
   boxShadow: 'none',
@@ -74,20 +72,18 @@ function Activities({ history }) {
 
   return (
     <>
-      <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       <Template heading={tc('menu.member.activities')}>
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} mb="4" />
         {currentUser && activities ? (
           <Tabs>
-            <Box p="4">
-              <TabList>
-                <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
-                <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
-                <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
-              </TabList>
-            </Box>
+            <TabList>
+              <Tab _focus={focusStyle}>{t('members.tabs.all')}</Tab>
+              <Tab _focus={focusStyle}>{t('members.tabs.public')}</Tab>
+              <Tab _focus={focusStyle}>{t('members.tabs.private')}</Tab>
+            </TabList>
 
             <TabPanels>
-              <TabPanel>
+              <TabPanel px="0">
                 <NiceList actionsDisabled list={activities}>
                   {(act) => (
                     <Link to={`/activities/${act._id}`}>
@@ -96,7 +92,7 @@ function Activities({ history }) {
                   )}
                 </NiceList>
               </TabPanel>
-              <TabPanel>
+              <TabPanel px="0">
                 <NiceList actionsDisabled list={activities.filter((act) => act.isPublicActivity)}>
                   {(act) => (
                     <Link to={`/activities/${act._id}`}>
@@ -105,7 +101,7 @@ function Activities({ history }) {
                   )}
                 </NiceList>
               </TabPanel>
-              <TabPanel>
+              <TabPanel px="0">
                 <NiceList actionsDisabled list={activities.filter((act) => !act.isPublicActivity)}>
                   {(act) => <ActivityItem act={act} history={history} />}
                 </NiceList>

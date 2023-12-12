@@ -9,7 +9,7 @@ function PageHeader({ description, numberOfItems, showNewButton = true, children
   const { isDesktop } = useState(StateContext);
 
   return (
-    <Box mb="12" mt="4" px="4" maxW="780px">
+    <Box mb="8" mt="4" px="4" maxW="780px">
       <Flex>
         <Flex align="center" justify="flex-start">
           <Box>

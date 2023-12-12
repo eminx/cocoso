@@ -27,7 +27,7 @@ function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const history = useHistory();
 
   const handleLogout = () => {
@@ -77,7 +77,7 @@ function UserPopup() {
             bg="brand.600"
             borderRadius="4px"
             showBorder
-            size="md"
+            size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}
           >
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}

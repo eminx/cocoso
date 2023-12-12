@@ -27,7 +27,6 @@ import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
-import PortalHostIndicator from './components/PortalHostIndicator';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
@@ -193,9 +192,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
             setSelectedHue,
           }}
         >
-          {platform && platform.isFederationLayout && (
-            <TopBar platform={platform} currentUser={currentUser} />
-          )}
+          {platform && platform.isFederationLayout && <TopBar />}
 
           <Flex>
             {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
