@@ -102,7 +102,7 @@ function Communities() {
         >
           {(host) => (
             <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
-              <NewGridThumb bg="white" imageUrl={host.logo} tag={host.host} title={host.name} />
+              <NewGridThumb fixedHeight imageUrl={host.logo} title={host.name} />
             </Box>
           )}
         </InfiniteScroller>
