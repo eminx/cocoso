@@ -110,9 +110,16 @@ export default function PlatformSettings({ history }) {
     });
   };
 
-  const handleTopbarSubmit = () => {
+  const handleFooterChange = (value) => {
+    setPlatform({
+      ...platform,
+      footer: value,
+    });
+  };
+
+  const handleFooterSubmit = () => {
     const formValues = {
-      topbar: platform?.topbar,
+      footer: platform?.footer,
     };
 
     updatePlatformSettings(formValues);
@@ -208,37 +215,24 @@ export default function PlatformSettings({ history }) {
       ),
     },
     {
-      title: t('settings.tabs.topbar'),
-      path: '/superadmin/platform/settings/topbar',
+      title: t('settings.tabs.footer'),
+      path: '/superadmin/platform/settings/footer',
       content: (
         <AlphaContainer>
-          <Text fontWeight="bold" mb="3" w="100%">
-            {t('info.platform.topbar.label')}
+          <Text mb="3" fontWeight="bold">
+            {t('info.platform.footer.label')}
           </Text>
-          <VStack spacing="4">
-            <Box w="100%">
-              <Text fontSize="sm">{t('info.platform.topbar.closed')}</Text>
-              <Input
-                value={platform.topbar?.closed}
-                onChange={(event) => {
-                  event.preventDefault();
-                  handleTopbarChange('closed', event.target.value);
-                }}
-              />
-            </Box>
-            <Box w="100%">
-              <Text fontSize="sm">{t('info.platform.topbar.open')}</Text>
-              <ReactQuill
-                value={platform.topbar?.open}
-                onChange={(value) => handleTopbarChange('open', value)}
-              />
-            </Box>
-            <Flex justify="flex-end" w="100%">
-              <Button type="submit" onClick={() => handleTopbarSubmit(platform)}>
+          <Text mb="4" w="100%">
+            {t('info.platform.footer.description')}
+          </Text>
+          <Box w="100%">
+            <ReactQuill value={platform.footer} onChange={(value) => handleFooterChange(value)} />
+            <Flex justify="flex-end" mt="4" w="100%">
+              <Button type="submit" onClick={() => handleFooterSubmit(platform)}>
                 {tc('actions.submit')}
               </Button>
             </Flex>
-          </VStack>
+          </Box>
         </AlphaContainer>
       ),
     },

@@ -230,12 +230,12 @@ function Members() {
         }
       >
         <Box>
-          <Tabs index={tabIndex} mb="8" tabs={tabs} />
+          <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
-          <Box>
+          <Box px="2">
             <Text fontSize="sm">{tc('labels.filterAndSort')}</Text>
           </Box>
-          <Flex flexDirection={isDesktop ? 'row' : 'column'} py="2" w="100%">
+          <Flex flexDirection={isDesktop ? 'row' : 'column'} p="2" w="100%">
             <Box pr={isDesktop ? '4' : '0'} pb={isDesktop ? '0' : '2'} flexBasis="60%">
               <Input
                 placeholder={t('form.holder')}
@@ -293,7 +293,7 @@ function MemberList({ members, roleFilter, t }) {
 
 function MemberItem({ member, t }) {
   return (
-    <Box key={member.username} p="2">
+    <Box key={member.username} p="4">
       <Heading size="md" fontWeight="bold">
         {member.username}
       </Heading>

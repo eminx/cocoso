@@ -36,8 +36,10 @@ info:
       label: Plattform topbarn
       closed: Textinnehåll när stängd
       open: Textinnehåll när öppnad
-  footer: Här kan du komponera en sidfot. Du kan exempelvis lägga in kontaktuppgifter, adress, länkar eller lägga in en kort text som beskriver din community. Sidfoten återkommer längst ner på alla sidor.
-  federationLabel: Use Federation Layout (with topbar and footer)
+  footer:
+    label: Lägg till sidfot
+    description: Här kan du komponera en sidfot. Du kan exempelvis lägga in kontaktuppgifter, adress, länkar eller lägga in en kort text som beskriver din community. Sidfoten återkommer längst ner på alla sidor.
+  federationLabel: Använda federationslayout (med topbarn och sidfoten)
   federationText: Fosters federation layout by showing a dedicated topbar and footer to navigate in between different member communities and get informed about the federation
 
 menu:

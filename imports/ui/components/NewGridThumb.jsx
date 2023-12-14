@@ -9,9 +9,9 @@ import Tag from './Tag';
 
 export default function NewGridThumb({
   avatar,
-  bg = 'brand.500',
   color,
   dates,
+  fixedHeight = false,
   host,
   imageUrl,
   subTitle,
@@ -30,18 +30,17 @@ export default function NewGridThumb({
     <Box mb="8">
       <Box className="text-link-container" position="relative">
         <Center bg={'brand.100'}>
-          {imageUrl && (
-            <LazyLoadImage
-              alt={title}
-              effect="black-and-white"
-              fit="contain"
-              src={imageUrl}
-              style={{
-                position: 'relative',
-                objectFit: 'contain',
-              }}
-            />
-          )}
+          <LazyLoadImage
+            alt={title}
+            effect="black-and-white"
+            fit="contain"
+            src={imageUrl}
+            style={{
+              position: 'relative',
+              objectFit: 'contain',
+              height: fixedHeight ? '200px' : 'auto',
+            }}
+          />
         </Center>
         {host && currentHost.isPortalHost && (
           <Box position="absolute" top="0" right="0" pl="1" pb="1" bg="rgba(255, 255, 255, 0.4)">
@@ -50,9 +49,19 @@ export default function NewGridThumb({
         )}
 
         <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
-          <Box pr="3" color="gray.900">
+          <Box
+            color="gray.900"
+            pr="3"
+            pb="2"
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             <Heading
               className="text-link"
+              isTruncated
               fontFamily="'Raleway', sans-serif"
               fontSize="1.4rem"
               fontWeight="bold"
@@ -73,9 +82,7 @@ export default function NewGridThumb({
                 {subTitle}
               </Heading>
             )}
-            <HStack py="2" spacing="4">
-              {tag && <Tag filterColor={color} label={tag} />}
-            </HStack>
+            {tag && <Tag filterColor={color} label={tag} />}
           </Box>
 
           {avatar && <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />}

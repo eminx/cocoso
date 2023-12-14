@@ -13,7 +13,7 @@ settings:
     options: Seçenekler
     color: Renk
     footer: Alt bilgi
-    topbar: Tepe sekmesş
+    topbar: Tepe sekmesi
 
 logo:
   label: Logo
@@ -36,9 +36,11 @@ info:
       label: Platform tepe sekmesi
       closed: Kapalı haldeki metin
       open: Açık haldeki metin
-  footer: Burada bir altbilgi oluşturabilirsiniz. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsiniz. Altbilgi tüm sayfaların alt kısmına döner.
-  federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
-  federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
+    footer:
+      label: Alt bilgi ekle
+      description: Burada bir altbilgi oluşturabilirsin. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsin. Altbilgi tüm sayfaların alt kısmına döner.
+    federationLabel: Federasyon düzenini kullan (tepe sekmesi ve altbilgi ile)
+    federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
 
 menu:
   label: Menü
@@ -100,9 +102,9 @@ emails:
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:
   title: Eposta Bülteni
-  subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsiniz.
+  subtitle: Burada bir e-posta oluşturabilir, web sitesinde yayınlanan içeriği kolayca ekleyebilir ve ardından topluluğunuzun tüm üyelerine gönderebilirsin.
   subtitle2: 'Aşağıda e-postayı oluşturmak için şunlardan en az birini girmen gerekir: gövde metni, bir resim ve/veya topluluk uygulamasında listelenmiş seçeceğin içerik ögeleri.'
-  contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsiniz.
+  contenthelper: E-postaya eklemek istediğiniz mevcut içerikleri aşağıdaki listelerden seçerek ekleyebilirsin.
   labels:
     insertcontent: İçerik ekle
     browserlink: Bu e-postayı tarayıcıda görüntülemek için buraya tıklayın

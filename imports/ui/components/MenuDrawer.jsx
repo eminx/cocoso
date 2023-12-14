@@ -17,7 +17,7 @@ const getRoute = (item, index) => {
 
 export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [tc] = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const { menu } = currentHost?.settings;
 
@@ -34,6 +34,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isOpen) {
     menuClassName += ' menu-drawer--open';
   }
+
+  const isFederationLayout = platform?.isFederationLayout;
 
   if (isDesktop) {
     return (
@@ -63,26 +65,42 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           position="fixed"
         >
           {!isOpen ? (
-            <Center pt="4">
-              <Flex flexDirection="column" align="center">
-                <IconButton
-                  _hover={{ bg: 'brand.600' }}
-                  bg="brand.700"
-                  color="brand.50"
-                  icon={<HamburgerIcon fontSize="36px" />}
-                  onClick={onToggle}
-                />
-                <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
-                  {tc('menu.label')}
-                </Text>
+            <Center h="100%" pt="4">
+              <Flex flexDirection="column" h="100%" justify="space-between">
+                <Flex flexDirection="column" align="center">
+                  <IconButton
+                    _hover={{ bg: 'brand.600' }}
+                    bg="brand.700"
+                    color="brand.50"
+                    icon={<HamburgerIcon fontSize="36px" />}
+                    onClick={onToggle}
+                  />
+                  <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
+                    {t('common:menu.label')}
+                  </Text>
+                </Flex>
+                <Center
+                  cursor="pointer"
+                  mb={isFederationLayout ? '20' : '4'}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Text color="white" fontWeight="bold">
+                    {i18n.language?.toUpperCase()}
+                  </Text>
+                </Center>
               </Flex>
             </Center>
           ) : (
-            <Flex flexDirection="column" h="100%" justify="space-between" overflowY="auto">
+            <Flex
+              flexDirection="column"
+              h={isFederationLayout ? 'calc(100% - 60px)' : '100%'}
+              justify="space-between"
+              overflowY="auto"
+            >
               <Box pt="4">
                 <Flex align="flex-start" justify="space-between">
                   <Heading fontSize="24px" px="4" mt="2">
-                    {tc('menu.label')}
+                    {t('common:menu.label')}
                   </Heading>
                   <IconButton
                     _hover={{ bg: 'brand.600' }}
@@ -99,12 +117,12 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                     currentHost={currentHost}
                     menuItems={menuItems}
                     platform={platform}
-                    tc={tc}
+                    t={t}
                     onToggle={onToggle}
                   />
                 </Box>
               </Box>
-              <Box color="brand.50" pl="4">
+              <Box color="brand.50" pl="4" mt="-8">
                 <MenuFooter />
               </Box>
             </Flex>
@@ -129,7 +147,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           onClick={onToggle}
         />
         <Text fontSize="12px" position="absolute" top="2rem" textTransform="uppercase">
-          {tc('menu.label')}
+          {t('common:menu.label')}
         </Text>
       </Flex>
 
@@ -137,7 +155,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         bg="brand.800"
         isOpen={isOpen}
         placement="right"
-        title={tc('menu.label')}
+        title={t('common:menu.label')}
         titleColor="brand.50"
         onClose={onToggle}
       >
@@ -146,7 +164,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             currentHost={currentHost}
             menuItems={menuItems}
             platform={platform}
-            tc={tc}
+            t={t}
             onToggle={onToggle}
           />
           <Box color="brand.50" mt="4">
@@ -158,7 +176,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   );
 }
 
-function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
+function MenuContent({ currentHost, menuItems, platform, t, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -170,7 +188,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
     return item.route === pathname;
   };
 
-  const showPlatformItems = platform?.isFederationLayout;
+  const showPlatformItems = platform?.isFederationLayout && currentHost.isPortalHost;
 
   return (
     <VStack align="flex-start">
@@ -213,7 +231,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
                 color="brand.50"
                 fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
               >
-                {tc('platform.communities')}
+                {t('common:platform.communities')}
               </Text>
             </Box>
           </Link>
