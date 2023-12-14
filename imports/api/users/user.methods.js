@@ -83,6 +83,7 @@ Meteor.methods({
       Meteor.users.update(user._id, {
         $addToSet: {
           memberships: {
+            hostname: currentHost?.settings?.name,
             host,
             role: 'participant',
             date: new Date(),
