@@ -4,30 +4,30 @@ label: Kaynaklar
 all: Tümü
 
 messages:
-  notfound: Öğe bulunamadı
-  comborequires: Kombo öğe oluşturmak için lütfen en az iki normal öğe seçin. Veya kombo olmayan bir öğe oluşturmak için lütfen "Kombo" seçeneğini kaldırın
+  notfound: öge bulunamadı
+  comborequires: Kombo öge oluşturmak için lütfen en az iki normal öge seçin. Veya kombo olmayan bir öge oluşturmak için lütfen "Kombo" seçeneğini kaldırın
 
 form:
   holder: tipi
   bookable:
     switch:
       label: Ayrılabilir
-      helper: Bu öğenin takvimde görünebilmesi ve rezerve edilebilir olmasını istiyorsan bunu seç
+      helper: Bu ögenin takvimde görünebilmesi ve rezerve edilebilir olmasını istiyorsan bunu seç
   combo:
     switch:
       label: Kombo
-      helper: Kombo, bu listedeki diğer birkaç öğenin "Kombinasyonu" anlamına gelir. Kullanıcıların aynı anda birkaç öğeyi ayırabilmesini sağlar. Rezervasyonlar buna göre takvimde görünecektir.
+      helper: Kombo, bu listedeki diğer birkaç ögenin "Kombinasyonu" anlamına gelir. Kullanıcıların aynı anda birkaç ögeyi ayırabilmesini sağlar. Rezervasyonlar buna göre takvimde görünecektir.
     select:
       holder: Seçenek seç
-      helper: Kombo öğe oluşturmak için lütfen birden çok öğe seç
+      helper: Kombo öge oluşturmak için lütfen birden çok öge seç
   name:
     label: İsim
     holder: Ses stüdyosu...
-    helper: Lütfen oluşturmak istediğin içerik öğesi için bir isim gir
+    helper: Lütfen oluşturmak istediğin içerik ögesi için bir isim gir
   description:
     label: Açıklama
     holder: Stüdyoyu kullanmak için gerekli olan...
-    helper: İsteğe bağlı olarak, Lütfen oluşturduğun bu içerik öğesi hakkında ayrıntılı bir açıklama gir. Örneğin bir kaynak hakkında detaylı bilgi, kullanım koşulları, nasıl çalıştığı, nasıl kullanılması ve teslim edilmesi gerektiği ile ilgili ayrıntıları içerebilir...
+    helper: İsteğe bağlı olarak, Lütfen oluşturduğun bu içerik ögesi hakkında ayrıntılı bir açıklama gir. Örneğin bir kaynak hakkında detaylı bilgi, kullanım koşulları, nasıl çalıştığı, nasıl kullanılması ve teslim edilmesi gerektiği ile ilgili ayrıntıları içerebilir...
   images:
     label: Imajlar ({{ count }})
     helper: İsteğe bağlı olarak, lütfen cihazındaki galeriden fotoğraf/fotoğraflar veya şimdi çekeceğin bir fotoğraf seç
@@ -48,7 +48,7 @@ booking:
     field: Rezervasyonlar
     form: Rezervasyon ekle
   multiple: Birkaç günlük rezervasyon yap
-  conflict: 'Bu tarih ve saatte bu öğe için zaten bir ayırma var: '
+  conflict: 'Bu tarih ve saatte bu öge için zaten bir ayırma var: '
   date:
     start: Başlama günü
     end: Bitiş günü

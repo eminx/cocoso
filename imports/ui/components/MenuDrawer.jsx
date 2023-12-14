@@ -170,7 +170,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
     return item.route === pathname;
   };
 
-  const showPlatformItems = platform?.showCommunitiesInMenu;
+  const showPlatformItems = platform?.isFederationLayout;
 
   return (
     <VStack align="flex-start">

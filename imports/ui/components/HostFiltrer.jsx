@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
@@ -28,6 +28,7 @@ export default function HostFiltrer({ allHosts, hostFilterValue, onHostFilterVal
             ...styles,
             borderLeft: `8px solid ${data.color}`,
             paddingLeft: 6,
+            fontSize: 14,
           }),
         }}
         onChange={onSelect}

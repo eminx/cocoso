@@ -70,17 +70,17 @@ labels:
   avatar:
     checklabel: Profil imajını görüntüle
     helper: Bu içerik ile profil imajını görüntülemek için işaretle
-  items: öğe
+  items: öge
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:
   loading: '{{ something }} yükleniyor...'
 
   success:
-    create: Öğen oluşturuldu
-    update: Öğen güncellendi
-    remove: Öğen silindi
-    save: Öğen kaydedildi
+    create: ögen oluşturuldu
+    update: ögen güncellendi
+    remove: ögen silindi
+    save: ögen kaydedildi
     leave: '{{ host }} topluluğundaki üyeliğin sonlandırıldı'
 
   error:

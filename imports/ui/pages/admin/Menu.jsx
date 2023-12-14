@@ -154,9 +154,7 @@ export default function Menu() {
             {t('settings.tabs.menuOrder')}
           </Heading>
 
-          <Text mb="4" fontSize="sm">
-            {t('menu.tabs.order.info')}
-          </Text>
+          <Text mb="4">{t('menu.tabs.order.info')}</Text>
           <Box>
             {localSettings && localSettings.menu && (
               <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">

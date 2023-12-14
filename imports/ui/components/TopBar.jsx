@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Menu,
   MenuButton,
@@ -11,14 +13,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 import UserPopup from './UserPopup';
 import { StateContext } from '../LayoutContainer';
-import { useTranslation } from 'react-i18next';
 
 export default function TopBar() {
-  const { currentUser, isDesktop, platform } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, platform } = useContext(StateContext);
   const [t] = useTranslation('members');
+  const [tc] = useTranslation('common');
+  const history = useHistory();
 
   return (
     <Box bg="brand.800" zIndex="1405" position="relative">
@@ -49,10 +53,21 @@ export default function TopBar() {
                 </MenuButton>
                 <MenuList zIndex="1405">
                   {currentUser.memberships.map((m) => (
-                    <MenuItem key={m.host} onClick={() => (window.location = `https://${m.host}`)}>
+                    <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
                       {m.hostname}
                     </MenuItem>
                   ))}
+                  <Divider colorScheme="gray.700" mt="2" />
+                  <MenuItem
+                    key="all-communities"
+                    onClick={() =>
+                      currentHost?.isPortalHost
+                        ? history.push('/communities')
+                        : (location.href = `https://${platform?.portalHost}/communities`)
+                    }
+                  >
+                    {tc('labels.allCommunities')}
+                  </MenuItem>
                 </MenuList>
               </Menu>
             </Box>

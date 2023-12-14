@@ -57,21 +57,23 @@ function Inputs({
       justify="flex-start"
       wrap={isDesktop ? 'nowrap' : 'wrap'}
     >
-      <Heading fontSize="md">{tc('labels.filter')}:</Heading>
+      <Heading fontSize="sm">{tc('labels.filter')}:</Heading>
       <Input
-        my="4"
+        my="2"
         placeholder={tc('domains.props.title') + '...'}
+        size="sm"
         value={filterWord}
         onChange={(event) => setFilterWord(event.target.value)}
       />
-      <Box mb="4">{children}</Box>
+      <Box>{children}</Box>
       <Divider />
-      <Heading fontSize="md" mt="4">
+      <Heading fontSize="sm" mt="4">
         {tc('labels.sort')}:
       </Heading>
       <Select
-        my="4"
+        my="2"
         name="sorter"
+        size="sm"
         value={sorterValue}
         onChange={(e) => setSorterValue(e.target.value)}
       >

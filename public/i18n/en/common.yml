@@ -71,6 +71,7 @@ labels:
     checklabel: Show profile image
     helper: Check to show your profile image with this entry
   items: items
+  allCommunities: All Communities
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

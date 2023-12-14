@@ -10,7 +10,7 @@ form:
   resource:
     label: '{{ resources }}'
     holder: Seç
-    helper: Takvimde görünmesi için rezerve etmek istediğin bir öğeyi seç
+    helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç
   occurrences:
     label: Tekrarlar
   days:
