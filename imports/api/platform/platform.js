@@ -6,18 +6,19 @@ const Platform = new Mongo.Collection('platform');
 
 Platform.schema = new SimpleSchema({
   _id: Schemas.Id,
-  name: { type: String },
+  createdAt: { type: Date },
   email: Schemas.Email,
-  portalHost: { type: String },
+  footer: { type: String, optional: true },
+  isFederationLayout: { type: Boolean, optional: true },
+  lastUpdatedAt: { type: Date, optional: true },
   logo: { type: String, optional: true },
+  name: { type: String },
+  portalHost: { type: String },
   showFooterInAllCommunities: { type: Boolean, optional: true },
   showCommunitiesInMenu: { type: Boolean, optional: true },
-  isFederationLayout: { type: Boolean, optional: true },
-  createdAt: { type: Date },
   topbar: { type: Object, optional: true },
   'topbar.closed': { type: String, optional: true },
   'topbar.open': { type: String, optional: true },
-  lastUpdatedAt: { type: Date, optional: true },
 });
 
 Platform.attachSchema(Platform.schema);
