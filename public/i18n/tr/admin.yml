@@ -36,11 +36,11 @@ info:
       label: Platform tepe sekmesi
       closed: Kapalı haldeki metin
       open: Açık haldeki metin
-  footer:
-    label: Alt bilgi ekle
-    description: Burada bir altbilgi oluşturabilirsin. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsin. Altbilgi tüm sayfaların alt kısmına döner.
-  federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
-  federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
+    footer:
+      label: Alt bilgi ekle
+      description: Burada bir altbilgi oluşturabilirsin. Örneğin iletişim bilgilerini, adresi, bağlantıları girebilir veya topluluğunuzu tanımlayan kısa bir metin girebilirsin. Altbilgi tüm sayfaların alt kısmına döner.
+    federationLabel: Federasyon şablonunu kullan (tepe sekmesi ve altbilgi ile)
+    federationText: Tepe sekmesi ve alt bilgiyi görüntüleyerek topluluklar arasında gidip gelmeyi ve federasyon hakkında bilgi edinebilmeyi sağlar
 
 menu:
   label: Menü
