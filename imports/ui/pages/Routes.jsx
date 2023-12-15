@@ -49,7 +49,6 @@ const NotFoundPage = lazy(() => import('./NotFoundPage'));
 const MyActivities = lazy(() => import('./activities/MyActivities'));
 
 export default function () {
-  console.log('routes load');
   return (
     <Switch>
       <LayoutContainer>
