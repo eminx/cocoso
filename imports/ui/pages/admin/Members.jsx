@@ -293,7 +293,7 @@ function MemberList({ members, roleFilter, t }) {
 
 function MemberItem({ member, t }) {
   return (
-    <Box key={member.username} p="2">
+    <Box key={member.username} p="4">
       <Heading size="md" fontWeight="bold">
         {member.username}
       </Heading>
