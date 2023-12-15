@@ -173,7 +173,9 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
           href={`${publicSettings.iconsBaseUrl}/favicon-16x16.png`}
         />
       </Helmet>
+
       <Favicon url={`${publicSettings.iconsBaseUrl}/favicon.ico`} />
+
       <ChakraProvider theme={chakraTheme}>
         <StateContext.Provider
           value={{

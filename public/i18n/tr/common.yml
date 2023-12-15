@@ -77,10 +77,10 @@ message:
   loading: '{{ something }} yükleniyor...'
 
   success:
-    create: ögen oluşturuldu
-    update: ögen güncellendi
-    remove: ögen silindi
-    save: ögen kaydedildi
+    create: Öge oluşturuldu
+    update: Öge güncellendi
+    remove: Öge silindi
+    save: Öge kaydedildi
     leave: '{{ host }} topluluğundaki üyeliğin sonlandırıldı'
 
   error:
