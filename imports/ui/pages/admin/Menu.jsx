@@ -191,7 +191,7 @@ function MenuTable({
         <AccordionItem>
           <AccordionButton bg="white">
             <Box as="span" flex="1" textAlign="left" textTransform="capitalize">
-              {item.name}
+              {item.label}
             </Box>
             <AccordionIcon />
           </AccordionButton>
