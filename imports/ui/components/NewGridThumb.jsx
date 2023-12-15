@@ -50,9 +50,19 @@ export default function NewGridThumb({
         )}
 
         <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
-          <Box pr="3" color="gray.900">
+          <Box
+            color="gray.900"
+            pb="2"
+            pr="3"
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             <Heading
               className="text-link"
+              isTruncated
               fontFamily="'Raleway', sans-serif"
               fontSize="1.4rem"
               fontWeight="bold"
@@ -73,9 +83,7 @@ export default function NewGridThumb({
                 {subTitle}
               </Heading>
             )}
-            <HStack py="2" spacing="4">
-              {tag && <Tag filterColor={color} label={tag} />}
-            </HStack>
+            {tag && <Tag filterColor={color} label={tag} />}
           </Box>
 
           {avatar && <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />}
