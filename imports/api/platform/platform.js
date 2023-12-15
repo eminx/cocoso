@@ -8,6 +8,7 @@ Platform.schema = new SimpleSchema({
   _id: Schemas.Id,
   name: { type: String },
   email: Schemas.Email,
+  footer: { type: String, optional: true },
   portalHost: { type: String },
   logo: { type: String, optional: true },
   showFooterInAllCommunities: { type: Boolean, optional: true },
