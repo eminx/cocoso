@@ -52,7 +52,7 @@ export default function TopBar() {
                   </Button>
                 </MenuButton>
                 <MenuList zIndex="1405">
-                  {currentUser.memberships.map((m) => (
+                  {currentUser?.memberships?.map((m) => (
                     <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
                       {m.hostname}
                     </MenuItem>
