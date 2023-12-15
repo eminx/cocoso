@@ -18,6 +18,7 @@ const getRoute = (item, index) => {
 export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
+  const { i18n } = useTranslation();
 
   const { menu } = currentHost?.settings;
 
@@ -34,6 +35,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isOpen) {
     menuClassName += ' menu-drawer--open';
   }
+
+  const isFederationLayout = platform?.isFederationLayout;
 
   if (isDesktop) {
     return (
@@ -63,22 +66,38 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           position="fixed"
         >
           {!isOpen ? (
-            <Center pt="4">
-              <Flex flexDirection="column" align="center">
-                <IconButton
-                  _hover={{ bg: 'brand.600' }}
-                  bg="brand.700"
-                  color="brand.50"
-                  icon={<HamburgerIcon fontSize="36px" />}
-                  onClick={onToggle}
-                />
-                <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
-                  {tc('menu.label')}
-                </Text>
+            <Center h="100%" pt="4">
+              <Flex flexDirection="column" h="100%" justify="space-between">
+                <Flex flexDirection="column" align="center">
+                  <IconButton
+                    _hover={{ bg: 'brand.600' }}
+                    bg="brand.700"
+                    color="brand.50"
+                    icon={<HamburgerIcon fontSize="36px" />}
+                    onClick={onToggle}
+                  />
+                  <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
+                    {tc('menu.label')}
+                  </Text>
+                </Flex>
+                <Center
+                  cursor="pointer"
+                  mb={isFederationLayout ? '20' : '4'}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Text color="white" fontWeight="bold">
+                    {i18n.language?.toUpperCase()}
+                  </Text>
+                </Center>
               </Flex>
             </Center>
           ) : (
-            <Flex flexDirection="column" h="100%" justify="space-between" overflowY="auto">
+            <Flex
+              flexDirection="column"
+              h={isFederationLayout ? 'calc(100% - 60px)' : '100%'}
+              justify="space-between"
+              overflowY="auto"
+            >
               <Box pt="4">
                 <Flex align="flex-start" justify="space-between">
                   <Heading fontSize="24px" px="4" mt="2">
@@ -90,6 +109,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                     color="brand.50"
                     icon={<CloseIcon />}
                     mr="4"
+                    tc={tc}
                     onClick={onToggle}
                   />
                 </Flex>
@@ -104,7 +124,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                   />
                 </Box>
               </Box>
-              <Box color="brand.50" pl="4">
+              <Box color="brand.50" pl="4" mt="-8">
                 <MenuFooter />
               </Box>
             </Flex>
@@ -170,7 +190,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
     return item.route === pathname;
   };
 
-  const showPlatformItems = platform?.isFederationLayout;
+  const showPlatformItems = platform?.isFederationLayout && currentHost.isPortalHost;
 
   return (
     <VStack align="flex-start">
