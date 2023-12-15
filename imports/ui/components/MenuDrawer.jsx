@@ -22,6 +22,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   const { menu } = currentHost?.settings;
 
+  console.log('menu load');
+
   const menuItems = menu
     .filter((item) => item.isVisible)
     .map((item, index) => ({

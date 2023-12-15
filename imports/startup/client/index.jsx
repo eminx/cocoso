@@ -14,6 +14,8 @@ onPageLoad(() => {
   const container = document.getElementById('root');
   const root = createRoot(container);
 
+  console.log('first load');
+
   root.render(
     <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
       <BrowserRouter>

@@ -100,6 +100,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   };
 
   if (!currentHost) {
+    console.log('third load');
     return (
       <ChakraProvider>
         <Box w="100%" h="100vh">
@@ -140,6 +141,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   const chakraTheme = generateTheme(hue);
+
+  console.log('fourth load');
 
   return (
     <>
