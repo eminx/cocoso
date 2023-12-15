@@ -31,7 +31,7 @@ function Header({ isSmallerLogo }) {
 
   return (
     <Box px="2" w="100%">
-      <Flex w="100%" align="center" justify="space-between">
+      <Flex w="100%" align="flex-start" justify="space-between">
         <Box py={isDesktop ? '4' : '3'}>
           <Link to="/">
             <Box pl={isDesktop ? '4' : '2'} pt="2">

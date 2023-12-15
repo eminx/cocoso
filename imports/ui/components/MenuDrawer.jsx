@@ -68,7 +68,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           {!isOpen ? (
             <Center h="100%" pt="4">
               <Flex flexDirection="column" h="100%" justify="space-between">
-                <Flex flexDirection="column" align="center">
+                <Flex align="center" flexDirection="column">
                   <IconButton
                     _hover={{ bg: 'brand.600' }}
                     bg="brand.700"
@@ -136,7 +136,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" position="relative">
+      <Flex align="center" flexDirection="column" position="relative" pt="2">
         <IconButton
           _hover={{
             bg: 'brand.600',
@@ -148,7 +148,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
         />
-        <Text fontSize="12px" position="absolute" top="2rem" textTransform="uppercase">
+        <Text fontSize="12px" position="absolute" top="2.5rem" textTransform="uppercase">
           {tc('menu.label')}
         </Text>
       </Flex>

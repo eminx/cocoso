@@ -168,7 +168,7 @@ export default function Settings({ history }) {
       path: '/admin/settings/footer',
       content: (
         <AlphaContainer>
-          <Text mb="4">{t('info.footer')}</Text>
+          <Text mb="4">{t('info.platform.footer.description')}</Text>
           <ReactQuill
             className="ql-editor-text-align-center"
             placeholder={t('pages.form.description.holder')}
