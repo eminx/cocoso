@@ -94,7 +94,7 @@ function NewButton() {
             borderWidth="2px"
             icon={<AddIcon color="white" />}
             size={isDesktop ? 'md' : 'sm'}
-            zIndex={isOpen ? '1403' : '10'}
+            zIndex={isOpen ? '1403' : '0'}
           />
         </MenuButton>
         <MenuList zIndex={isOpen ? '1403' : '10'}>
