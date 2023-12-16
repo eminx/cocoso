@@ -23,6 +23,7 @@ function InfiniteScroller({
   items,
   itemsPerPage = defaultItemsPerPage,
   newHelperLink,
+  smallThumb,
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,19 +49,19 @@ function InfiniteScroller({
         loadMore={handleLoad}
         hasMore={hasMore}
         loader={
-          isDesktop && !isMasonry ? (
-            <Flex>
-              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="355px" h="315px" mr="8" mt="8" />
-            </Flex>
-          ) : !isMasonry ? (
+          !isDesktop ? (
             <Box>
               <Center>
                 <Skeleton endColor="brand.500" w="355px" h="315px" mt="8" />
               </Center>
             </Box>
-          ) : null
+          ) : (
+            <Flex>
+              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
+            </Flex>
+          )
         }
       >
         {isMasonry ? (
@@ -79,7 +80,7 @@ function InfiniteScroller({
           <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8">
             {currentItems?.map((item) => children(item))}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+              <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
           </Wrap>
         )}

@@ -96,13 +96,19 @@ function Communities() {
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={currentUser && currentUser.isSuperAdmin}
-          isMasonry
+          // isMasonry
           items={hostsRendered}
           newHelperLink="/new-host"
+          smallThumb
         >
           {(host) => (
             <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
-              <NewGridThumb bg="white" imageUrl={host.logo} tag={host.host} title={host.name} />
+              <NewGridThumb
+                fixedImageHeight
+                imageUrl={host.logo}
+                // tag={host.host}
+                title={host.name}
+              />
             </Box>
           )}
         </InfiniteScroller>

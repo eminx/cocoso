@@ -9,9 +9,9 @@ import Tag from './Tag';
 
 export default function NewGridThumb({
   avatar,
-  bg = 'brand.500',
   color,
   dates,
+  fixedImageHeight = false,
   host,
   imageUrl,
   subTitle,
@@ -27,9 +27,9 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box mb="8">
+    <Box mb="8" w={fixedImageHeight ? '2xs' : 'auto'}>
       <Box className="text-link-container" position="relative">
-        <Center bg={'brand.100'}>
+        <Center bg={'brand.100'} h={fixedImageHeight ? '120px' : 'auto'}>
           {imageUrl && (
             <LazyLoadImage
               alt={title}
@@ -37,8 +37,9 @@ export default function NewGridThumb({
               fit="contain"
               src={imageUrl}
               style={{
-                position: 'relative',
+                height: fixedImageHeight ? '120px' : 'auto',
                 objectFit: 'contain',
+                position: 'relative',
               }}
             />
           )}
@@ -64,7 +65,7 @@ export default function NewGridThumb({
               className="text-link"
               isTruncated
               fontFamily="'Raleway', sans-serif"
-              fontSize="1.4rem"
+              fontSize="1.2rem"
               fontWeight="bold"
               mb="1"
               mt="2"

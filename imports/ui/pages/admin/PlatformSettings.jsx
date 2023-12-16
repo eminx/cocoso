@@ -11,7 +11,6 @@ import {
   Stack,
   Switch as CSwitch,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 

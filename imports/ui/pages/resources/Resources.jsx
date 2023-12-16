@@ -200,16 +200,18 @@ function Resources({ history }) {
       <Box px="4">
         <InfiniteScroller
           canCreateContent={isAdmin}
-          isMasonry
+          // isMasonry
           items={resourcesRendered}
           newHelperLink="/resources/new"
+          smallThumb
         >
           {(resource) => (
             <Box key={resource._id} cursor="pointer" onClick={() => setModalResource(resource)}>
               <NewGridThumb
+                fixedImageHeight
                 host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}
                 imageUrl={resource.images?.[0]}
-                tag={!resource.isBookable && t('cards.isNotBookable')}
+                // tag={!resource.isBookable && t('cards.isNotBookable')}
                 title={resource.label}
               />
             </Box>

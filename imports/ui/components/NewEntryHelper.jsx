@@ -11,7 +11,7 @@ function NewEntryHelper({
   buttonLink,
   children,
   isEmptyListing = false,
-  isMasonry = false,
+  small = false,
   title,
 }) {
   const { currentHost } = useContext(StateContext);
@@ -32,8 +32,8 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = isMasonry ? 'auto' : '355px';
-  const h = isMasonry ? '320px' : '315px';
+  const w = small ? '2xs' : '355px';
+  const h = small ? '180px' : '315px';
 
   return (
     <Link to={buttonLink}>
