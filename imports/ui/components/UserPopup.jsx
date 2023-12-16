@@ -89,11 +89,12 @@ function UserPopup() {
             showBorder
             size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}
+            zIndex={isOpen ? '1403' : '10'}
           >
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
-        <MenuList>
+        <MenuList zIndex={isOpen ? '1403' : '10'}>
           <MenuGroup>
             <Box px="4" py="1">
               <Text fontWeight="bold" fontSize="xl">
