@@ -136,7 +136,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   return (
     <Box>
-      <Flex align="center" flexDirection="column" position="relative" pt="2">
+      <Flex align="center" flexDirection="column" position="relative">
         <IconButton
           _hover={{
             bg: 'brand.600',
@@ -148,7 +148,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
         />
-        <Text fontSize="12px" position="absolute" top="2.5rem" textTransform="uppercase">
+        <Text fontSize="12px" position="absolute" top="2rem" textTransform="uppercase">
           {tc('menu.label')}
         </Text>
       </Flex>

@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Link as CLink,
   Menu,
   MenuButton,
@@ -27,7 +28,8 @@ function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
+    useContext(StateContext);
   const history = useHistory();
 
   const handleLogout = () => {
@@ -36,21 +38,29 @@ function UserPopup() {
     history.push('/');
   };
 
+  const isFed = platform?.isFederationLayout;
+
+  const buttonProps = {
+    as: 'span',
+    color: isFed ? 'brand.100' : 'brand.500',
+    fontWeight: 'normal',
+    size: isDesktop ? 'sm' : 'xs',
+    variant: 'link',
+  };
+
   if (!currentUser) {
     return (
-      <Box pt="2">
+      <Flex wrap="wrap" justify="flex-end" px="4">
         <Link to="/login">
-          <Button as="span" color="brand.100" mx="4" size="sm" variant="link">
-            {tc('menu.guest.login')}
-          </Button>
+          <Button {...buttonProps}>{tc('menu.guest.login')}</Button>
         </Link>
 
         <Link to="/register">
-          <Button as="span" color="brand.100" size="sm" variant="link">
+          <Button {...buttonProps} ml="4">
             {tc('menu.guest.register')}
           </Button>
         </Link>
-      </Box>
+      </Flex>
     );
   }
 

@@ -29,7 +29,7 @@ signup:
   labels:
     title: Yeni Hesap Aç
     subtitle: Hesabın var mı?
-    platform: Hesabın {{ platform }} platformu içerisinde global olacaktır
+    platform: Hesabın {{ platform }} platformunda global olacaktır. Bir hesabın olduğunda platform içerisindeki çeşitli topluluklara katılabilirsin.
   form:
     username:
       label: Kullanıcı adı

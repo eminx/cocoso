@@ -29,7 +29,7 @@ signup:
   labels:
     title: Register New Account
     subtitle: Have an account?
-    platform: Your account will be global in the {{ platform }} platform
+    platform: Your account will be global in the platform {{ platform }}. Once you have an account, you can join any of the various communities within the platform.
   form:
     username:
       label: Username

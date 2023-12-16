@@ -28,7 +28,7 @@ function UserPopupAdmin() {
   const { isPortalHost } = currentHost;
 
   return (
-    <Box pt="2">
+    <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton position="relative" zIndex={isOpen ? '1403' : '10'}>
           <IconButton

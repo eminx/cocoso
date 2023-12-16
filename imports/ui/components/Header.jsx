@@ -39,9 +39,10 @@ function Header({ isSmallerLogo }) {
             </Box>
           </Link>
         </Box>
-        <HStack align="center" justify="flex-end" p="2" spacing="4">
+        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
           {platform && !platform.isFederationLayout && <UserPopup />}
           {currentUser && isAdmin && <UserPopupAdmin />}
+          {/* {platform && !platform.isFederationLayout && !currentUser && <LoginHandler />} */}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
           )}
