@@ -42,6 +42,9 @@ function InfiniteScroller({
 
   const hasMore = items.length > currentItems.length;
 
+  const w = smallThumb || isMasonry ? '2xs' : '355px';
+  const h = smallThumb || isMasonry ? '180px' : '315px';
+
   return (
     <>
       <InfiniteScroll
@@ -49,17 +52,17 @@ function InfiniteScroller({
         loadMore={handleLoad}
         hasMore={hasMore}
         loader={
-          !isDesktop ? (
+          !isDesktop || isMasonry ? (
             <Box>
               <Center>
-                <Skeleton endColor="brand.500" w="355px" h="315px" mt="8" />
+                <Skeleton endColor="brand.500" w={w} h={h} mt="8" />
               </Center>
             </Box>
           ) : (
             <Flex>
-              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w="2xs" h="180px" mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
             </Flex>
           )
         }
@@ -73,14 +76,14 @@ function InfiniteScroller({
             {currentItems?.map((item) => children(item))}
             {hasMore && <Skeleton endColor="brand.500" h="315px" mt="8" />}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />
+              <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
           </Masonry>
         ) : (
           <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8">
             {currentItems?.map((item) => children(item))}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
+              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
             )}
           </Wrap>
         )}
