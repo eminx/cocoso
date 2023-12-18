@@ -139,7 +139,7 @@ modals:
 menu:
   label: Menü
   guest:
-    login: Giriş
+    login: Giriş yap
     register: Kayıt ol
   member:
     general: Genel

@@ -1,6 +1,6 @@
 actions:
   signup: Kayıt ol
-  login: Giriş
+  login: Giriş yap
   logout: Çıkış
   forgot: Şifreni unuttun mu?
   reset: Şifreni yenile
