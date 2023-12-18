@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  Center,
   Flex,
   Input,
   Modal,
@@ -19,15 +20,22 @@ import { useTranslation } from 'react-i18next';
 
 import FormField from './FormField';
 
-function FeedbackForm() {
+function FeedbackForm({ isDarkText = true }) {
   const [tc] = useTranslation('common');
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   return (
-    <Flex align="center" justify="space-between" p="2">
-      <Button color="brand.500" variant="link" onClick={() => setShowFeedbackModal(true)}>
-        {tc('modals.feedback.label')}
-      </Button>
+    <>
+      <Center p="2">
+        <Button
+          color={isDarkText ? 'brand.500' : 'brand.50'}
+          size="sm"
+          variant="link"
+          onClick={() => setShowFeedbackModal(true)}
+        >
+          {tc('modals.feedback.label')}
+        </Button>
+      </Center>
 
       <Modal isOpen={showFeedbackModal} onClose={() => setShowFeedbackModal(false)}>
         <ModalOverlay />
@@ -71,7 +79,7 @@ function FeedbackForm() {
           </form>
         </ModalContent>
       </Modal>
-    </Flex>
+    </>
   );
 }
 

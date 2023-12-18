@@ -89,7 +89,7 @@ function Page() {
             {renderEditButton()}
           </Box>
           {isAdmin && (
-            <Box ml="8">
+            <Box m="5" p="8">
               <NewEntryHelper title={tc('labels.newPage')} buttonLink="/pages/new" />
             </Box>
           )}
@@ -109,8 +109,8 @@ function Page() {
       </Center>
 
       <Center mb="4">
-        <Box w="100%" maxW="520px">
-          <Box px="4" mb="4">
+        <Box w="100%" maxW="520px" pt="2">
+          <Box p="4">
             <Heading as="h2" size="lg">
               {currentPage.title}
             </Heading>

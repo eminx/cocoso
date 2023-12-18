@@ -136,10 +136,12 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
     '/communities',
   ];
 
-  const isHeaderAndFooter =
+  const chakraTheme = generateTheme(hue);
+
+  const isLargerLogo =
     pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
-  const chakraTheme = generateTheme(hue);
+  const isFederationFooter = platform?.isFederationLayout && platform.footer;
 
   return (
     <>
@@ -201,49 +203,25 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
             <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 10%, 90%)`}>
               <Box w="100%">
-                <Header isSmallerLogo={!isHeaderAndFooter} />
+                <Header isSmallerLogo={!isLargerLogo} />
 
                 <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
                   {children}
                 </Box>
 
-                {isHeaderAndFooter && (
-                  <Footer currentHost={currentHost} platform={platform} tc={tc} />
-                )}
+                <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
 
-                {isHeaderAndFooter && Boolean(platform?.showFooterInAllCommunities) && (
-                  <Box>
-                    <Box bg="brand.100" p="4">
-                      {!currentHost.isPortalHost && (
+                {isFederationFooter && (
+                  <Box color="white">
+                    <PlatformFooter platform={platform}>
+                      <Box p="4">
                         <a href={`https://${platform?.portalHost}`}>
                           <Center p="2">
                             <Image w="200px" src={platform?.logo} />
                           </Center>
                         </a>
-                      )}
-                      <Center>
-                        <Box textAlign="center">
-                          <Text color="brand.800" fontSize="lg" fontWeight="bold">
-                            {platform?.name}
-                          </Text>
-                          <CLink
-                            color="brand.500"
-                            fontWeight="bold"
-                            onClick={() => setPlatformDrawer(true)}
-                          >
-                            {tc('platform.title')}
-                          </CLink>
-                        </Box>
-                      </Center>
-                    </Box>
-
-                    <PlatformDrawer
-                      isOpen={platformDrawer}
-                      hosts={allHosts}
-                      platform={platform}
-                      tc={tc}
-                      toggleOpen={() => setPlatformDrawer(!platformDrawer)}
-                    />
+                      </Box>
+                    </PlatformFooter>
                   </Box>
                 )}
               </Box>
@@ -255,7 +233,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   );
 }
 
-function Footer({ currentHost, tc }) {
+function Footer({ currentHost, isFederationFooter, tc }) {
   if (!currentHost || !currentHost.settings) {
     return null;
   }
@@ -264,7 +242,7 @@ function Footer({ currentHost, tc }) {
   const { settings } = currentHost;
 
   return (
-    <Box w="100%" bg="brand.50" color="brand.900" pt="4">
+    <Box bg="brand.50" color="brand.900" pt="4" w="100%">
       <Center p="2">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
@@ -280,52 +258,68 @@ function Footer({ currentHost, tc }) {
         <Center w="100%">
           <Flex w="100%" direction="column" justify="center" textAlign="center">
             <Center>
-              <Box maxHeight="80px" mt="1" w="220px" ml="2">
+              <Box maxHeight="80px" w="220px">
                 <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
               </Box>
             </Center>
-            <Heading mb="2" mt="4" size="md">
+            <Heading m="2" size="md">
               {settings.name}
             </Heading>
             <Center>
               {settings.footer ? (
-                <Box
-                  bg="brand.100"
-                  className="text-content"
-                  maxWidth="480px"
-                  pb="2"
-                  p="4"
-                  textAlign="center"
-                  w="100%"
-                >
+                <Box className="text-content" maxWidth="480px" p="4" textAlign="center" w="100%">
                   {renderHTML(settings?.footer)}
                 </Box>
               ) : (
                 <OldFooter host={currentHost.host} settings={settings} />
               )}
             </Center>
-            <Box mt="4">
-              <Link to="/terms-&-privacy-policy">
-                <CLink as="span" fontSize="sm">
-                  {tc('terms.title')}{' '}
-                </CLink>
-              </Link>
-            </Box>
+            {!isFederationFooter && (
+              <>
+                <Box>
+                  <Link to="/terms-&-privacy-policy">
+                    <CLink as="span" fontSize="sm">
+                      {tc('terms.title')}{' '}
+                    </CLink>
+                  </Link>
+                </Box>
+                <FeedbackForm />
+              </>
+            )}
           </Flex>
         </Center>
-        <Flex align="center" direction="row-reverse" justify="center" mt="2" w="100%">
-          <Box size="sm">
-            <FeedbackForm />
-          </Box>
-        </Flex>
       </Box>
+    </Box>
+  );
+}
+
+function PlatformFooter({ platform, children }) {
+  const [tc] = useTranslation('common');
+  if (!platform) {
+    return null;
+  }
+  return (
+    <Box bg="brand.800" color="white" py="4" textAlign="center">
+      <Box p="4">{renderHTML(platform.footer)}</Box>
+      <Box p="4">{children}</Box>
+
+      <>
+        <Box>
+          <Link to="/terms-&-privacy-policy">
+            <CLink as="span" color="brand.50" fontSize="sm">
+              {tc('terms.title')}{' '}
+            </CLink>
+          </Link>
+        </Box>
+        <FeedbackForm isDarkText={false} />
+      </>
     </Box>
   );
 }
 
 function OldFooter({ host, settings }) {
   return (
-    <Box border="1px solid #fff" textAlign="center">
+    <Box textAlign="center" p="4">
       <Text fontSize="sm">
         {settings?.address}
         {', '} {settings?.city}
@@ -338,82 +332,14 @@ function OldFooter({ host, settings }) {
   );
 }
 
-function PlatformDrawer({ isOpen, platform, hosts, tc, toggleOpen }) {
-  const thePortalHost = hosts?.find((h) => h.host === platform.portalHost);
-  const [t] = useTranslation('hosts');
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      placement="bottom"
-      motionPreset="slideInBottom"
-      scrollBehavior="inside"
-      size="lg"
-      title={tc('platform.communitiesIn', { platform: platform?.name })}
-      onClose={toggleOpen}
-    >
-      <List spacing="4">
-        <ListItem key={platform.portalHost} borderBottom="1px solid #ddd" pb="4">
-          <Text fontSize="sm" mb="2" fontWeight="bold">
-            {t('portalHost.indicatorShortText', { platform: platform.name })}:
-          </Text>
-          <HostItem host={thePortalHost} tc={tc} />
-        </ListItem>
-        {hosts?.map((host, index) => (
-          <ListItem key={host.host}>
-            <HostItem host={host} tc={tc} />
-          </ListItem>
-        ))}
-      </List>
-    </Modal>
-  );
-}
-
-function HostItem({ host, tc }) {
-  if (!host) {
-    return null;
-  }
-  return (
-    <Flex key={host.host}>
-      <Flex mr="4" flexShrink="0" bg="gray.100" flexDirection="column" justify="center">
-        {host.logo ? (
-          <Image fit="contain" w="120px" src={host.logo} />
-        ) : (
-          <Box bg="pink.100" w="120px" h="100%" />
-        )}
-      </Flex>
-      <Box isTruncated>
-        <Text flexShrink="0" fontSize="lg" fontWeight="bold">
-          {host.name}
-        </Text>
-        <Text>
-          <Text>{tc('platform.membersCount', { membersCount: host.membersCount })}</Text>
-        </Text>
-        <Text>{host.city + ', ' + host.country}</Text>
-        <Text>
-          <CLink href={`https://${host.host}`} title={host.host}>
-            {host.host}
-          </CLink>
-        </Text>
-      </Box>
-    </Flex>
-  );
-}
-
 export default withTracker((props) => {
-  // const hostSub = Meteor.subscribe('currentHost');
-  // const currentHost = Hosts ? Hosts.findOne() : null;
-  // const hostLoading = !hostSub.ready();
-
   const meSub = Meteor.isClient && Meteor.subscribe('me');
   const currentUser = Meteor.isClient && Meteor.user();
   const userLoading = meSub && !meSub.ready();
 
   return {
     currentUser,
-    // currentHost,
     userLoading,
-    // hostLoading,
     ...props,
   };
 })(LayoutPage);
