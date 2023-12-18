@@ -29,7 +29,7 @@ function FeedbackForm({ isDarkText = true }) {
       <Center p="2">
         <Button
           color={isDarkText ? 'brand.500' : 'brand.50'}
-          size="sm"
+          size="xs"
           variant="link"
           onClick={() => setShowFeedbackModal(true)}
         >

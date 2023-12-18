@@ -212,7 +212,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
                 <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
 
                 {isFederationFooter && (
-                  <Box color="white">
+                  <Box>
                     <PlatformFooter platform={platform}>
                       <Box p="4">
                         <a href={`https://${platform?.portalHost}`}>
@@ -267,7 +267,14 @@ function Footer({ currentHost, isFederationFooter, tc }) {
             </Heading>
             <Center>
               {settings.footer ? (
-                <Box className="text-content" maxWidth="480px" p="4" textAlign="center" w="100%">
+                <Box
+                  className="text-content"
+                  fontSize="85%"
+                  maxWidth="480px"
+                  p="4"
+                  textAlign="center"
+                  w="100%"
+                >
                   {renderHTML(settings?.footer)}
                 </Box>
               ) : (
@@ -278,7 +285,7 @@ function Footer({ currentHost, isFederationFooter, tc }) {
               <>
                 <Box>
                   <Link to="/terms-&-privacy-policy">
-                    <CLink as="span" fontSize="sm">
+                    <CLink as="span" fontSize="xs">
                       {tc('terms.title')}{' '}
                     </CLink>
                   </Link>
@@ -299,27 +306,27 @@ function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Box bg="brand.800" color="white" py="4" textAlign="center">
-      <Box p="4">{renderHTML(platform.footer)}</Box>
-      <Box p="4">{children}</Box>
+    <Center bg="brand.800" p="4">
+      <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
+        <Box p="2">{renderHTML(platform.footer)}</Box>
+        <Box p="2">{children}</Box>
 
-      <>
         <Box>
           <Link to="/terms-&-privacy-policy">
-            <CLink as="span" color="brand.50" fontSize="sm">
+            <CLink as="span" color="brand.50" fontSize="xs">
               {tc('terms.title')}{' '}
             </CLink>
           </Link>
         </Box>
         <FeedbackForm isDarkText={false} />
-      </>
-    </Box>
+      </Box>
+    </Center>
   );
 }
 
 function OldFooter({ host, settings }) {
   return (
-    <Box textAlign="center" p="4">
+    <Box textAlign="center" p="4" fontSize="85%">
       <Text fontSize="sm">
         {settings?.address}
         {', '} {settings?.city}
