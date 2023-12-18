@@ -211,19 +211,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
 
                 <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
 
-                {isFederationFooter && (
-                  <Box>
-                    <PlatformFooter platform={platform}>
-                      <Box p="4">
-                        <a href={`https://${platform?.portalHost}`}>
-                          <Center p="2">
-                            <Image w="200px" src={platform?.logo} />
-                          </Center>
-                        </a>
-                      </Box>
-                    </PlatformFooter>
-                  </Box>
-                )}
+                {isFederationFooter && <PlatformFooter platform={platform} />}
               </Box>
             </Box>
           </Flex>
@@ -308,7 +296,17 @@ function PlatformFooter({ platform, children }) {
   return (
     <Center bg="brand.800" p="4">
       <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
-        <Box p="2">{renderHTML(platform.footer)}</Box>
+        <Box p="4">
+          <a href={`https://${platform?.portalHost}`}>
+            <Center p="2">
+              <Image w="200px" src={platform?.logo} />
+            </Center>
+          </a>
+        </Box>
+
+        <Box p="2" className="text-content">
+          {renderHTML(platform.footer)}
+        </Box>
         <Box p="2">{children}</Box>
 
         <Box>

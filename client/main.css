@@ -98,7 +98,7 @@ a,
 }
 
 .text-content p {
-  color: rgba(0, 0, 0, 0.85);
+  /* color: rgba(0, 0, 0, 0.85); */
   font-size: 1.05em;
   line-height: 1.4;
   margin-bottom: 0.8em;
