@@ -29,6 +29,10 @@ actions:
   share: Share
   copied: Link copied!
   preview: Preview
+  next: Next
+  previous: Previous
+  skip: Skip
+  start: Start using
 
 # ACTION PAGE TITLES
 labels:

@@ -29,6 +29,10 @@ actions:
   share: Dela
   copied: Kopierade länken!
   preview: Förhandsvisa
+  next: Nästa
+  previous: Tidigare
+  skip: Hoppa
+  start: Börja användning
 
 # ACTION PAGE TITLES
 labels:

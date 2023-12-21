@@ -146,7 +146,7 @@ export default function PlatformRegistrationIntro({ history }) {
                       setRegistrationIntro(registrationIntro.filter((s, i) => i !== index))
                     }
                   >
-                    Remove
+                    {tc('actions.remove')}
                   </Button>
                 </Center>
               )}
@@ -160,7 +160,7 @@ export default function PlatformRegistrationIntro({ history }) {
 
         <Center mb="8">
           <Button isLoading={saving} onClick={() => updatePlatformRegistrationIntro()}>
-            Confirm
+            {tc('actions.submit')}
           </Button>
         </Center>
       </Template>

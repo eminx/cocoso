@@ -11,8 +11,8 @@ import 'react-slideshow-image/dist/styles.css';
 
 function RegistrationIntro() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { currentUser, isDesktop, platform } = useContext(StateContext);
-  const [t] = useTranslation('accounts');
+  const { currentUser, platform } = useContext(StateContext);
+  const [tc] = useTranslation('common');
 
   if (!currentUser) {
     return <Redirect to="/register" />;
@@ -54,7 +54,7 @@ function RegistrationIntro() {
                   isDisabled={isLastSlide}
                   rightIcon={<ChevronRightIcon />}
                 >
-                  Next
+                  {tc('actions.next')}
                 </Button>
               }
               prevArrow={
@@ -64,7 +64,7 @@ function RegistrationIntro() {
                   isDisabled={currentSlide === 0}
                   leftIcon={<ChevronLeftIcon />}
                 >
-                  Previous
+                  {tc('actions.previous')}
                 </Button>
               }
               transitionDuration={400}
@@ -80,10 +80,10 @@ function RegistrationIntro() {
         </Center>
       </Box>
 
-      <Center p="4" mt="-84px">
-        <Link to={`/@${currentUser.username}/edit`}>
-          <Button as="span" colorScheme="green" variant={isLastSlide ? 'solid' : 'ghost'}>
-            {isLastSlide ? 'Start using' : 'Skip'}
+      <Center p="4" mt="-82px">
+        <Link to={isLastSlide ? `/@${currentUser.username}/edit` : '/'}>
+          <Button as="span" colorScheme="green" size="sm" variant={isLastSlide ? 'solid' : 'ghost'}>
+            {isLastSlide ? tc('actions.start') : tc('actions.skip')}
           </Button>
         </Link>
       </Center>

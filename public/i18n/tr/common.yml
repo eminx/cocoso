@@ -29,6 +29,10 @@ actions:
   share: Paylaş
   copied: Link kopyalandı!
   preview: Ön izleme
+  next: Sonraki
+  previous: Önceki
+  skip: Atla
+  start: Kullanıma başla
 
 # ACTION PAGE TITLES
 labels:
