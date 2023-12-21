@@ -219,6 +219,10 @@ terms:
 images:
   countLabel: Bilder ({{ count }})
 
+communities:
+  member: Du är medlem
+  join: Join
+
 platform:
   title: Se alla communities
   communities: Communities

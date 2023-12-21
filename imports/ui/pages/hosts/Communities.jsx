@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
@@ -67,6 +67,19 @@ function Communities() {
     });
   };
 
+  const getHostsDivided = (hostsSorted) => {
+    if (!currentUser) {
+      return hostsSorted;
+    }
+    const myHosts = currentUser.memberships;
+    return [
+      ...myHosts.map((mh) => ({ ...mh, isMember: true })),
+      ...hostsSorted.filter((h) => {
+        return myHosts.some((mh) => h.host === mh.host);
+      }),
+    ];
+  };
+
   const handleActionButtonClick = () => {
     window.location.href = `https://${modalHost.host}`;
   };
@@ -78,7 +91,8 @@ function Communities() {
     setSorterValue,
   };
 
-  const hostsRendered = getHostsSorted();
+  const hostsSorted = getHostsSorted();
+  const hostsRendered = getHostsDivided(hostsSorted);
 
   return (
     <Box width="100%" mb="100px">
@@ -102,25 +116,28 @@ function Communities() {
           smallThumb
         >
           {(host) => (
-            <Box
-              key={host.host}
-              cursor="pointer"
-              mb="4"
-              mr="4"
-              onClick={() => handleSetModalHost(host)}
-            >
-              <NewGridThumb
-                fixedImageHeight
-                footer={
-                  <Box bg="gray.50" p="2">
-                    <Text textAlign="center">
-                      You are a member <CheckIcon color="green.700" fontSize="sm" ml="2" />
-                    </Text>
-                  </Box>
-                }
-                imageUrl={host.logo}
-                title={host.name}
-              />
+            <Box key={host.host} mb="4" mr="4">
+              <Box onClick={() => handleSetModalHost(host)}>
+                <NewGridThumb
+                  fixedImageHeight
+                  imageUrl={host.logo}
+                  title={host.name || host.hostname}
+                />
+              </Box>
+
+              <Box bg="gray.100" p="2">
+                {host.isMember ? (
+                  <Text textAlign="center" my="1">
+                    {tc('communities.member')} <CheckIcon color="green.700" fontSize="md" mt="-1" />
+                  </Text>
+                ) : (
+                  <Center>
+                    <Button size="sm" variant="outline" onClick={() => console.log('vaybe')}>
+                      {tc('communities.join')}
+                    </Button>
+                  </Center>
+                )}
+              </Box>
             </Box>
           )}
         </InfiniteScroller>

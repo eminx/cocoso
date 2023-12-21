@@ -221,6 +221,10 @@ terms:
 images:
   countLabel: Images ({{ count }})
 
+communities:
+  member: You are a member
+  join: Join
+
 platform:
   title: See Communities
   communities: Communities

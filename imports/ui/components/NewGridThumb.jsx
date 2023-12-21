@@ -34,7 +34,7 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box w={fixedImageHeight ? '2xs' : 'auto'}>
+    <Box cursor="pointer" w={fixedImageHeight ? '2xs' : 'auto'}>
       <Box className="text-link-container" position="relative">
         <Center bg={'brand.100'} h={fixedImageHeight ? '120px' : 'auto'}>
           {imageUrl ? (

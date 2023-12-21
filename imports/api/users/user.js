@@ -29,6 +29,7 @@ Users.schema.UserProfile = {
   'memberships.$': {
     type: new SimpleSchema({
       host: Schemas.Hostname,
+      hostname: { type: String },
       role: { type: String },
       date: { type: Date },
       isPublic: { type: Boolean, optional: true, defaultValue: true },

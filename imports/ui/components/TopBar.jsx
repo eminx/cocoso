@@ -51,6 +51,7 @@ export default function TopBar() {
                     {t('profile.myCommunities')}
                   </Button>
                 </MenuButton>
+
                 <MenuList zIndex="1405">
                   {currentUser?.memberships?.map((m) => (
                     <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>

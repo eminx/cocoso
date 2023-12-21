@@ -217,6 +217,10 @@ terms:
 images:
   countLabel: Imajlar ({{ count }})
 
+communities:
+  member: Üyesin
+  join: Katıl
+
 platform:
   title: Toplulukları gör
   communities: Topluluklar
