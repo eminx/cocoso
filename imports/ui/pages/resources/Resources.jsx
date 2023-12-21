@@ -200,7 +200,6 @@ function Resources({ history }) {
       <Box px="4">
         <InfiniteScroller
           canCreateContent={isAdmin}
-          // isMasonry
           items={resourcesRendered}
           newHelperLink="/resources/new"
           smallThumb
@@ -217,7 +216,6 @@ function Resources({ history }) {
                 fixedImageHeight
                 host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}
                 imageUrl={resource.images?.[0]}
-                // tag={!resource.isBookable && t('cards.isNotBookable')}
                 title={resource.label}
               />
             </Box>

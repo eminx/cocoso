@@ -37,16 +37,15 @@ export default function NewGridThumb({
   return (
     <Box cursor="pointer" w={fixedImageHeight ? '2xs' : 'auto'}>
       <Box className="text-link-container" position="relative">
-        <Center bg={'brand.100'} h={fixedImageHeight ? '120px' : 'auto'}>
+        <Center bg={'brand.100'} h={fixedImageHeight ? '120px' : 'auto'} overflow="hidden">
           {imageUrl ? (
             <LazyLoadImage
               alt={title}
               effect="black-and-white"
-              fit="contain"
+              fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
-                height: fixedImageHeight ? '120px' : 'auto',
-                objectFit: 'contain',
+                // height: fixedImageHeight ? '120px' : 'auto',
                 position: 'relative',
               }}
             />
