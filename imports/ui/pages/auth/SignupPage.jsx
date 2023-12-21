@@ -19,11 +19,23 @@ function SignupPage() {
     <Box pb="8" minHeight="100vh">
       <Center p="4">
         <Box w="sm">
-          <Heading size="md" textAlign="center">
-            {t('signup.labels.title')}
-          </Heading>
+          {platform && (
+            <Center py="4">
+              <Box>
+                <Center mb="4">
+                  <Image w="240px" src={platform?.logo} />
+                </Center>
+                <Heading mb="4" size="md" textAlign="center">
+                  {t('signup.labels.title')}
+                </Heading>
+                <Text textAlign="center">
+                  {t('signup.labels.platform', { platform: platform?.name })}
+                </Text>
+              </Box>
+            </Center>
+          )}
 
-          <Center py="4">
+          <Center pb="4">
             <Text>
               {t('signup.labels.subtitle')}{' '}
               <Link to="/login">
@@ -33,19 +45,6 @@ function SignupPage() {
               </Link>
             </Text>
           </Center>
-
-          {platform && (
-            <Center py="4">
-              <Box>
-                <Center mb="4">
-                  <Image w="240px" src={platform?.logo} />
-                </Center>
-                <Text textAlign="center">
-                  {t('signup.labels.platform', { platform: platform?.name })}
-                </Text>
-              </Box>
-            </Center>
-          )}
 
           <Box bg="brand.50" mb="4" p="6">
             <Signup onSubmit={(values) => createAccount(values)} />
