@@ -89,7 +89,11 @@ function Communities() {
 
     const myHosts = currentUser.memberships;
     return [
-      ...myHosts.map((mh) => ({ ...mh, isMember: true })),
+      ...myHosts.map((mh) => ({
+        ...mh,
+        logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
+        isMember: true,
+      })),
       ...hostsSorted.filter((h) => !myHosts.some((mh) => h.host === mh.host)),
     ];
   };
