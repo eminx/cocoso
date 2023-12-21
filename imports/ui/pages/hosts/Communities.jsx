@@ -121,7 +121,7 @@ function Communities() {
   };
 
   const hostsSorted = getHostsSorted();
-  const hostsRendered = getHostsDivided(hostsSorted);
+  const hostsRendered = getHostsDivided(hostsSorted).filter((h) => h.host !== platform.portalHost);
 
   return (
     <Box width="100%" mb="100px">

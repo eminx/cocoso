@@ -55,6 +55,8 @@ Hosts.schema = new SimpleSchema({
 
   createdAt: { type: Date },
 
+  isPortalHost: { type: Boolean, optional: true },
+
   registeredBy: { type: Object, optional: true },
   'registeredBy.username': { type: String },
   'registeredBy.userId': { type: String },
