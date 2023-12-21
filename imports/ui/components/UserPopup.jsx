@@ -42,7 +42,7 @@ function UserPopup() {
 
   const buttonProps = {
     as: 'span',
-    color: isFed ? 'brand.100' : 'brand.500',
+    color: isFed ? 'brand.50' : 'brand.500',
     fontWeight: 'normal',
     size: isDesktop ? 'sm' : 'xs',
     variant: 'link',
@@ -50,7 +50,7 @@ function UserPopup() {
 
   if (!currentUser) {
     return (
-      <Flex wrap="wrap" justify="flex-end" px="4">
+      <Flex wrap="wrap" justify="flex-end" pl="4" pr={isDesktop ? '2' : '0'}>
         <Link to="/login">
           <Button {...buttonProps}>{tc('menu.guest.login')}</Button>
         </Link>
