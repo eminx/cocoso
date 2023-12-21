@@ -160,6 +160,9 @@ menu:
     email-newsletter: Email Newsletter
     categories: Categories
     platform: Platform Settings
+  superadmin:
+    platform: Settings
+    registrationIntro: Intro
   notifications:
     label: Notifications
 

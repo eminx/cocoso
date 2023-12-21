@@ -45,11 +45,6 @@ const adminMenu = [
     key: 'email-newsletter',
     value: '/admin/email-newsletter',
   },
-  // {
-  //   menu: 'admin',
-  //   key: 'categories',
-  //   value: '/admin/categories',
-  // },
 ];
 
 const superadminMenu = [
@@ -57,6 +52,11 @@ const superadminMenu = [
     menu: 'superadmin',
     key: 'platform',
     value: '/superadmin/platform/settings',
+  },
+  {
+    menu: 'superadmin',
+    key: 'registrationIntro',
+    value: '/superadmin/platform/registration-intro',
   },
 ];
 

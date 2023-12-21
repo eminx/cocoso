@@ -14,6 +14,8 @@ Platform.schema = new SimpleSchema({
   logo: { type: String, optional: true },
   name: { type: String },
   portalHost: { type: String },
+  registrationIntro: { type: Array, defaultValue: [], optional: true },
+  'registrationIntro.$': { type: String, optional: true },
   showFooterInAllCommunities: { type: Boolean, optional: true },
   showCommunitiesInMenu: { type: Boolean, optional: true },
   topbar: { type: Object, optional: true },

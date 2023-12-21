@@ -159,6 +159,9 @@ menu:
     platform: Plattformsinställningar
   notifications:
     label: Aviseringar
+  superadmin:
+    platform: Inställningar
+    registrationIntro: Intro
 
 plugins:
   fileDropper:

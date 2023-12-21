@@ -23,6 +23,9 @@ import FileDropper from '../../components/FileDropper';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import ReactQuill from '../../components/Quill';
+import Template from '../../components/Template';
+import ListMenu from '../../components/ListMenu';
+import { superadminMenu } from '../../utils/constants/general';
 
 export default function PlatformSettings({ history }) {
   const [loading, setLoading] = useState(true);
@@ -42,7 +45,6 @@ export default function PlatformSettings({ history }) {
   const getPlatformNow = async () => {
     try {
       const respond = await call('getPlatform');
-      console.log(respond);
       setPlatform(respond);
       getPlatform();
       setLoading(false);
@@ -96,18 +98,6 @@ export default function PlatformSettings({ history }) {
     };
 
     updatePlatformSettings(formValues);
-  };
-
-  const handleTopbarChange = (key, value) => {
-    const newTopbar = {
-      ...platform?.topbar,
-    };
-    newTopbar[key] = value;
-
-    setPlatform({
-      ...platform,
-      topbar: newTopbar,
-    });
   };
 
   const handleFooterChange = (value) => {
@@ -257,52 +247,44 @@ export default function PlatformSettings({ history }) {
   ];
 
   return (
-    <>
-      <Box px="4">
+    <Box>
+      <Box p="4">
         <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
-      <Box>
-        <Box p="4">
-          <Heading color="gray.800" size="lg">
-            <Text as="span" fontWeight="normal">
-              {tc('menu.admin.platform')}
-            </Text>
-          </Heading>
-        </Box>
 
-        <Box>
-          <Box px="4">
-            <Tabs index={tabIndex} tabs={tabs} />
+      <Template
+        heading={tc('menu.admin.platform')}
+        leftContent={
+          <Box>
+            <ListMenu pathname={pathname} list={superadminMenu} />
           </Box>
+        }
+      >
+        <Tabs index={tabIndex} tabs={tabs} />
 
-          <Box pt="4">
-            <Switch history={history}>
-              {tabs.map((tab) => (
-                <Route
-                  key={tab.title}
-                  exact
-                  path={tab.path}
-                  render={(props) => (
-                    <Box {...props} pt="2">
-                      {tab.content}
-                    </Box>
-                  )}
-                />
-              ))}
-            </Switch>
-          </Box>
+        <Box pt="4">
+          <Switch history={history}>
+            {tabs.map((tab) => (
+              <Route
+                key={tab.title}
+                exact
+                path={tab.path}
+                render={(props) => (
+                  <Box {...props} pt="2">
+                    {tab.content}
+                  </Box>
+                )}
+              />
+            ))}
+          </Switch>
         </Box>
-      </Box>
-    </>
+      </Template>
+    </Box>
   );
 }
 
 function AlphaContainer({ title, children }) {
-  return (
-    <Box px="4" maxWidth={400}>
-      {children}
-    </Box>
-  );
+  return <Box maxWidth={400}>{children}</Box>;
 }
 
 function PlatformSettingsForm({ initialValues, onSubmit }) {
@@ -354,14 +336,6 @@ function PlatformOptions({ initialValues, onSubmit }) {
             <Text fontSize="sm">{t('info.platform.federationText')}</Text>
           </Box>
         </Flex>
-        {/* <Flex align="center">
-          <CSwitch mr="2" {...register('showFooterInAllCommunities')} />
-          <Text fontSize="sm">{t('info.platform.showfooter')}</Text>
-        </Flex>
-        <Flex align="center">
-          <CSwitch mr="2" {...register('showCommunitiesInMenu')} />
-          <Text fontSize="sm">{t('info.platform.showCommunities')}</Text>
-        </Flex> */}
         <Flex justify="flex-end" py="4">
           <Button isDisabled={!isDirty || isSubmitting} type="submit">
             {tc('actions.submit')}

@@ -34,6 +34,7 @@ const PreviousNewsletters = lazy(() => import('./admin/EmailNewsletter/PreviousN
 
 // Super admin
 const PlatformSettings = lazy(() => import('./admin/PlatformSettings'));
+const PlatformRegistrationIntro = lazy(() => import('./admin/PlatformRegistrationIntro'));
 
 // Auth
 const SignupPage = lazy(() => import('./auth/SignupPage'));
@@ -108,6 +109,10 @@ export default function () {
             <Route
               path="/superadmin/platform/settings"
               render={(props) => <PlatformSettings {...props} />}
+            />
+            <Route
+              path="/superadmin/platform/registration-intro"
+              render={(props) => <PlatformRegistrationIntro {...props} />}
             />
 
             {/* Auth */}

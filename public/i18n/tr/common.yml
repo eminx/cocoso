@@ -158,6 +158,9 @@ menu:
     platform: Platform Ayarları
   notifications:
     label: Bildirimler
+  superadmin:
+    platform: Ayarlar
+    registrationIntro: Intro
 
 plugins:
   fileDropper:
