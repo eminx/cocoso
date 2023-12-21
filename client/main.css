@@ -202,7 +202,7 @@ input::placeholder {
   width: auto;
 }
 .my-masonry-grid_column {
-  padding-left: 16px; /* gutter size */
+  padding-left: 32px; /* gutter size */
   background-clip: padding-box;
 }
 

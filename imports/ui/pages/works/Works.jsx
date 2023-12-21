@@ -203,7 +203,7 @@ function Works({ history }) {
         ))}
       </Wrap>
 
-      <Box px={isDesktop ? '8' : '0'}>
+      <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={canCreateContent}
           isMasonry
@@ -211,7 +211,7 @@ function Works({ history }) {
           newHelperLink="/works/new"
         >
           {(work) => (
-            <Box key={work._id} cursor="pointer" mb="4" onClick={() => setModalWork(work)}>
+            <Box key={work._id} cursor="pointer" mb="8" onClick={() => setModalWork(work)}>
               <NewGridThumb
                 avatar={
                   work.showAvatar && {
