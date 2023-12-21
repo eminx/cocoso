@@ -160,7 +160,7 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </PageHeader>
 
-      <Box mt="2" px="4">
+      <Box mt="2" px="8">
         <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
           {(member) => (
             <Flex
@@ -168,7 +168,7 @@ function MembersPublic({ history }) {
               bg={member.avatar ? 'white' : 'brand.50'}
               cursor="pointer"
               justifyContent="center"
-              mb="8"
+              mb="4"
               onClick={() => setModalUser(member)}
             >
               <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
