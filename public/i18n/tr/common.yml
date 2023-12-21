@@ -232,3 +232,7 @@ platform:
   communities: Topluluklar
   communitiesIn: '{{ platform }} Topluluklar'
   membersCount: '{{ membersCount }} üye'
+  registrationIntro:
+    notice1: Aşağıda oluşturulacak olan bu bilgi blokları, {{ platform }} platformundaki topluluklardan herhangi birinin parçası olmak üzere kaydolan kullanıcılara ilk katılım yönlendirmesi olarak gösterilecektir..
+    notice2: Bu link üzerinden görünümünü inceleyebilirsiniz
+    linkLabel: İncele

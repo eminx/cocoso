@@ -234,3 +234,7 @@ platform:
   communities: Communities
   communitiesIn: Communities i plattform {{ platform }}
   membersCount: '{{ membersCount }} medlemmar'
+  registrationIntro:
+    notice1: Dessa informationsblock som sammanställs nedan kommer att visas som en introduktionsorientering för de användare som registrerar sig för att vara en del av någon av gemenskaperna inom {{ platform }}-plattformen.
+    notice2: Du kan förhandsgranska här
+    linkLabel: Preview

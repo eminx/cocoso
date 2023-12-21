@@ -1,18 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  Image,
-  Link as CLink,
-  Text,
-  Flex,
-  IconButton,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading, Image } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { useSSR, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';

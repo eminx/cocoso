@@ -236,3 +236,7 @@ platform:
   communities: Communities
   communitiesIn: Communities in {{ platform }}
   membersCount: '{{ membersCount }} members'
+  registrationIntro:
+    notice1: These blocks of information composed below will be shown as an onboarding orientation to the users who register themselves to be part of any of the communities within the {{ platform }} platform.
+    notice2: You may preview via here
+    linkLabel: Preview

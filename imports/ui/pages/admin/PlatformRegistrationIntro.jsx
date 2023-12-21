@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
-import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -22,7 +21,6 @@ export default function PlatformRegistrationIntro({ history }) {
 
   const { currentUser, getPlatform } = useContext(StateContext);
 
-  const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -114,17 +112,19 @@ export default function PlatformRegistrationIntro({ history }) {
           </Box>
         }
       >
-        <Text mb="2">
-          These blocks of information composed below will be shown as an onboarding orientation to
-          the users who register themselves to be part of Samarbetet, at any of the communities...
-        </Text>
+        <Text mb="2">{tc('platform.registrationIntro.notice1', { platform: platform.name })}</Text>
 
         <Text mb="4">
-          You may preview{' '}
-          <a href={`https://${platform.portalHost}/intro`} target="_blank">
-            here
-          </a>
-          .
+          {tc('platform.registrationIntro.notice2')}:
+          <Button
+            as="a"
+            href={`https://${platform.portalHost}/intro`}
+            ml="2"
+            target="_blank"
+            variant="link"
+          >
+            {tc('platform.registrationIntro.linkLabel')}
+          </Button>
         </Text>
         <VStack spacing="4">
           {registrationIntro.map((slide, index) => (
