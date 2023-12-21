@@ -7,11 +7,18 @@ import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+};
+
 export default function NewGridThumb({
   avatar,
   color,
   dates,
   fixedImageHeight = false,
+  footer = null,
   host,
   imageUrl,
   subTitle,
@@ -27,10 +34,10 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box mb="8" w={fixedImageHeight ? '2xs' : 'auto'}>
+    <Box w={fixedImageHeight ? '2xs' : 'auto'}>
       <Box className="text-link-container" position="relative">
         <Center bg={'brand.100'} h={fixedImageHeight ? '120px' : 'auto'}>
-          {imageUrl && (
+          {imageUrl ? (
             <LazyLoadImage
               alt={title}
               effect="black-and-white"
@@ -42,6 +49,10 @@ export default function NewGridThumb({
                 position: 'relative',
               }}
             />
+          ) : (
+            <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4" style={ellipsisStyle}>
+              {title}
+            </Text>
           )}
         </Center>
         {host && currentHost.isPortalHost && (
@@ -51,22 +62,13 @@ export default function NewGridThumb({
         )}
 
         <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
-          <Box
-            color="gray.900"
-            pb="2"
-            pr="3"
-            style={{
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
+          <Box color="gray.900" pb="2" pr="3" style={ellipsisStyle}>
             <Heading
               className="text-link"
-              isTruncated
               fontFamily="'Raleway', sans-serif"
               fontSize="1.2rem"
               fontWeight="bold"
+              isTruncated
               mb="1"
               mt="2"
               overflowWrap="anywhere"
@@ -106,6 +108,7 @@ export default function NewGridThumb({
             </Flex>
           )}
         </Flex>
+        {footer}
       </Box>
     </Box>
   );

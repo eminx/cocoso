@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Code, Heading as CHeading, Image, Link as CLink } from '@chakra-ui/react';
+import { Box, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -96,17 +97,28 @@ function Communities() {
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={currentUser && currentUser.isSuperAdmin}
-          // isMasonry
           items={hostsRendered}
           newHelperLink="/new-host"
           smallThumb
         >
           {(host) => (
-            <Box key={host.host} cursor="pointer" onClick={() => handleSetModalHost(host)}>
+            <Box
+              key={host.host}
+              cursor="pointer"
+              mb="6"
+              mx="3"
+              onClick={() => handleSetModalHost(host)}
+            >
               <NewGridThumb
                 fixedImageHeight
+                footer={
+                  <Box bg="gray.50" p="2">
+                    <Text textAlign="center">
+                      You are a member <CheckIcon color="green.700" fontSize="sm" ml="2" />
+                    </Text>
+                  </Box>
+                }
                 imageUrl={host.logo}
-                // tag={host.host}
                 title={host.name}
               />
             </Box>

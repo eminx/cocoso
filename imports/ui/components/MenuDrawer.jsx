@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
-import { animateScroll as scroll } from 'react-scroll';
 
 import Drawer from './Drawer';
 import ChangeLanguageMenu from './ChangeLanguageMenu';
@@ -41,22 +40,6 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   if (isDesktop) {
     return (
       <Box bg="brand.700" className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
-        <Box
-          bg="brand.700"
-          position="fixed"
-          top="0"
-          w="72px"
-          h="56px"
-          _hover={{ bg: 'brand.50' }}
-          cursor="pointer"
-          onClick={() => scroll.scrollToTop({ duration: 200 })}
-        >
-          {/* <Center>
-            <Text color="brand.500" fontSize="36px" fontWeight="bold">
-              {platform?.name?.substring(0, 1)?.toUpperCase()}
-            </Text>
-          </Center> */}
-        </Box>
         <Box
           bg="brand.700"
           className={menuClassName}
@@ -201,7 +184,7 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         return (
-          <Link key={item.label} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
+          <Link key={item.name} style={{ textShadow: 'none' }} to={item.route} onClick={onToggle}>
             <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}

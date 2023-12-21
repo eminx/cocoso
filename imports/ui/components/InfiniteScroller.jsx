@@ -53,16 +53,14 @@ function InfiniteScroller({
         hasMore={hasMore}
         loader={
           !isDesktop || isMasonry ? (
-            <Box>
-              <Center>
-                <Skeleton endColor="brand.500" w={w} h={h} mt="8" />
-              </Center>
-            </Box>
+            <Center>
+              <Skeleton endColor="brand.500" w={w} h={h} mt="2" />
+            </Center>
           ) : (
             <Flex>
-              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
-              <Skeleton endColor="brand.500" w={w} h={h} mr="8" mt="8" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
+              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
             </Flex>
           )
         }
@@ -74,13 +72,13 @@ function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item) => children(item))}
-            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="8" />}
+            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="2" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
           </Masonry>
         ) : (
-          <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8">
+          <Wrap justify={isDesktop ? 'flex-start' : 'center'}>
             {currentItems?.map((item) => children(item))}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
