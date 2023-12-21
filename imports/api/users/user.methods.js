@@ -49,9 +49,9 @@ Meteor.methods({
     }
   },
 
-  setSelfAsParticipant() {
+  setSelfAsParticipant(hostToJoin) {
     const user = Meteor.user();
-    const host = getHost(this);
+    const host = hostToJoin || getHost(this);
     const currentHost = Hosts.findOne({ host });
 
     if (currentHost.members && currentHost.members.some((member) => member.id === user._id)) {
@@ -87,6 +87,7 @@ Meteor.methods({
             role: 'participant',
             date: new Date(),
             isPublic: true,
+            hostname: currentHost.settings?.name,
           },
         },
       });

@@ -222,6 +222,8 @@ images:
 communities:
   member: Du är medlem
   join: Join
+  success: Nu har du joinat {{ community }}
+  info: Genom att gå med i {{ community }} kommer du att registrera dig för deras e-postnyhetsbrev och bli informerad om interna angelägenheter, enkelt delta i evenemang och möten och vara en del av deras community. Du kan lämna när du vill.
 
 platform:
   title: Se alla communities

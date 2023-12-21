@@ -16,6 +16,7 @@ const ellipsisStyle = {
 export default function NewGridThumb({
   avatar,
   color,
+  coverText,
   dates,
   fixedImageHeight = false,
   footer = null,
@@ -50,9 +51,11 @@ export default function NewGridThumb({
               }}
             />
           ) : (
-            <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4" style={ellipsisStyle}>
-              {title}
-            </Text>
+            coverText && (
+              <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4" style={ellipsisStyle}>
+                {coverText}
+              </Text>
+            )
           )}
         </Center>
         {host && currentHost.isPortalHost && (

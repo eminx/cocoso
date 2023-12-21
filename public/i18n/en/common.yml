@@ -224,6 +224,8 @@ images:
 communities:
   member: You are a member
   join: Join
+  success: Now you joined {{ community }}
+  info: By joining {{ community }}, you will sign up to their email newsletter and get informed about internal affairs, easily attend events and meetups, and be a part of their community. You can leave whenever you like.
 
 platform:
   title: See Communities

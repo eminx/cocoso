@@ -15,7 +15,7 @@ actions:
   remove: Sil
   submit: Onayla
   send: Gönder
-  cancel: İptal et
+  cancel: İptal
   close: Kapat
   reset: Yenile
   add: Ekle
@@ -220,6 +220,8 @@ images:
 communities:
   member: Üyesin
   join: Katıl
+  success: '{{ community }} topluluğuna katıldın'
+  info: '{{ community }}a katılarak e-posta bültenlerine kaydolacak ve iç dinamikler hakkında bilgi alacak, etkinliklere ve buluşmalara kolayca katılabilecek ve topluluğun bir parçası olacaksın. Dilediğin zaman ayrılabilirsin.'
 
 platform:
   title: Toplulukları gör
