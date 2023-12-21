@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Box, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
@@ -29,13 +29,32 @@ function Header({ isSmallerLogo }) {
 
   const isAdmin = currentUser && role === 'admin';
 
+  if (!currentHost) {
+    return null;
+  }
+
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
         <Box py={isDesktop ? '4' : '3'}>
           <Link to="/">
-            <Box pl={isDesktop ? '4' : '2'} pt="2">
-              <Image className={logoClass} fit="contain" src={currentHost && currentHost.logo} />
+            <Box pl={isDesktop ? '4' : '2'}>
+              {currentHost.logo ? (
+                <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
+              ) : (
+                <Box>
+                  <CHeading color="brand.800" fontWeight="light">
+                    {currentHost.settings?.name}
+                  </CHeading>
+                  {isAdmin && (
+                    <Link to="/admin/settings/organization">
+                      <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
+                        Add logo
+                      </Button>
+                    </Link>
+                  )}
+                </Box>
+              )}
             </Box>
           </Link>
         </Box>
