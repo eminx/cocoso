@@ -41,6 +41,7 @@ const SignupPage = lazy(() => import('./auth/SignupPage'));
 const LoginPage = lazy(() => import('./auth/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./auth/ResetPasswordPage'));
+const RegistrationIntro = lazy(() => import('./auth/RegistrationIntro'));
 
 // SuperAdmin
 const NewHost = lazy(() => import('./hosts/NewHost'));
@@ -127,6 +128,8 @@ export default function () {
               path="/reset-password/:token"
               render={(props) => <ResetPasswordPage {...props} />}
             />
+
+            <Route path="/intro" render={(props) => <RegistrationIntro {...props} />} />
 
             {/* SuperAdmin */}
             <Route exact path="/new-host" render={(props) => <NewHost {...props} />} />

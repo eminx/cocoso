@@ -156,11 +156,12 @@ menu:
     resources: Resurser
     emails: E-postmeddelanden
     categories: Kategorier
-    platform: Plattformsinställningar
   notifications:
     label: Aviseringar
   superadmin:
     platform: Inställningar
+    settings: Plattformsinställningar
+    intro: Registrationsintro
     registrationIntro: Intro
 
 plugins:

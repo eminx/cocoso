@@ -155,11 +155,12 @@ menu:
     resources: Kaynaklar
     emails: Epostalar
     categories: Kategoriler
-    platform: Platform Ayarları
   notifications:
     label: Bildirimler
   superadmin:
     platform: Ayarlar
+    settings: Platform Ayarları
+    intro: Kayıt İntrosu
     registrationIntro: Intro
 
 plugins:

@@ -159,9 +159,10 @@ menu:
     emails: Emails
     email-newsletter: Email Newsletter
     categories: Categories
-    platform: Platform Settings
   superadmin:
     platform: Settings
+    settings: Platform Settings
+    intro: Registration Intro
     registrationIntro: Intro
   notifications:
     label: Notifications

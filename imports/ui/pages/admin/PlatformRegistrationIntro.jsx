@@ -89,23 +89,42 @@ export default function PlatformRegistrationIntro({ history }) {
 
   const pathname = history?.location?.pathname;
 
+  const furtherBreadcrumbLinks = [
+    {
+      label: 'Platform',
+      link: null,
+    },
+    {
+      label: tc('menu.superadmin.intro'),
+      link: null,
+    },
+  ];
+
   return (
     <Box>
       <Box p="4">
-        <Breadcrumb />
+        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
       </Box>
 
       <Template
-        heading={tc('menu.admin.platform')}
+        heading={tc('menu.superadmin.intro')}
         leftContent={
           <Box>
             <ListMenu pathname={pathname} list={superadminMenu} />
           </Box>
         }
       >
+        <Text mb="2">
+          These blocks of information composed below will be shown as an onboarding orientation to
+          the users who register themselves to be part of Samarbetet, at any of the communities...
+        </Text>
+
         <Text mb="4">
-          These blocks of information you will compose will be shown as an intro for the people who
-          newly signup
+          You may preview{' '}
+          <a href={`https://${platform.portalHost}/intro`} target="_blank">
+            here
+          </a>
+          .
         </Text>
         <VStack spacing="4">
           {registrationIntro.map((slide, index) => (

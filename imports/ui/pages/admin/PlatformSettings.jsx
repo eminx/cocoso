@@ -253,7 +253,7 @@ export default function PlatformSettings({ history }) {
       </Box>
 
       <Template
-        heading={tc('menu.admin.platform')}
+        heading={tc('menu.superadmin.settings')}
         leftContent={
           <Box>
             <ListMenu pathname={pathname} list={superadminMenu} />

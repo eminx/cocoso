@@ -73,7 +73,7 @@ function UserPopupAdmin() {
               <Box px="1">
                 {superadminMenu.map((item) => (
                   <Link key={item.key} to={item.value}>
-                    <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
+                    <MenuItem color="brand.700">{tc(`menu.${item.menu}.${item.key}`)}</MenuItem>
                   </Link>
                 ))}
               </Box>
