@@ -209,8 +209,8 @@ function Resources({ history }) {
             <Box
               key={resource._id}
               cursor="pointer"
-              mb="6"
-              mx="3"
+              mb="4"
+              mr="4"
               onClick={() => setModalResource(resource)}
             >
               <NewGridThumb

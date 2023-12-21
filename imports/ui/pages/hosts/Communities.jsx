@@ -105,8 +105,8 @@ function Communities() {
             <Box
               key={host.host}
               cursor="pointer"
-              mb="6"
-              mx="3"
+              mb="4"
+              mr="4"
               onClick={() => handleSetModalHost(host)}
             >
               <NewGridThumb
@@ -144,7 +144,7 @@ function Communities() {
               </Center>
               <Center>
                 <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  <CLink as="span" color="brand.500" onClick={handleActionButtonClick}>
+                  <CLink as="span" color="blue.600" onClick={handleActionButtonClick}>
                     {modalHost.host}
                   </CLink>
                 </Code>

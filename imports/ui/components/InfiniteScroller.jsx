@@ -81,7 +81,9 @@ function InfiniteScroller({
           <Wrap justify={isDesktop ? 'flex-start' : 'center'}>
             {currentItems?.map((item) => children(item))}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
+              <Box>
+                <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
+              </Box>
             )}
           </Wrap>
         )}
