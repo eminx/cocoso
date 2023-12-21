@@ -203,7 +203,7 @@ function Works({ history }) {
         ))}
       </Wrap>
 
-      <Box px={isDesktop ? '8' : '4'}>
+      <Box pr="4">
         <InfiniteScroller
           canCreateContent={canCreateContent}
           isMasonry

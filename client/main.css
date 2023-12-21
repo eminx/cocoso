@@ -198,7 +198,6 @@ input::placeholder {
   display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
   flex-wrap: wrap;
-  margin-left: -32px; /* gutter size offset */
   width: auto;
 }
 .my-masonry-grid_column {
