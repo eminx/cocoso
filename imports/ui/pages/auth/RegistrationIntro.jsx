@@ -34,18 +34,18 @@ function RegistrationIntro() {
 
   return (
     <Box mt="4">
-      <Center pb="4">
+      {/* <Center pb="4">
         <Image className="logo" fit="contain" src={platform.logo} />
-      </Center>
-      <Box bg="gray.800" mx="4" pt="6" pb="20">
-        <Center pb="4">
+      </Center> */}
+      <Box bg="gray.800" mx="4" pt="8" pb="20">
+        {/* <Center pb="4">
           <Heading color="gray.50">{platform.name}</Heading>
-        </Center>
+        </Center> */}
         <Center>
           <Box bg="white" className="slide-container" maxW="420px" p="4" w="100%">
             <Slide
               autoplay={false}
-              easing="cubic-in"
+              easing="cubic-out"
               infinite={false}
               nextArrow={
                 <Button
