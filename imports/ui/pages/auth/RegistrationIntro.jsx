@@ -37,7 +37,7 @@ function RegistrationIntro() {
       {/* <Center pb="4">
         <Image className="logo" fit="contain" src={platform.logo} />
       </Center> */}
-      <Box bg="gray.800" mx="4" pt="8" pb="20">
+      <Box bg="brand.900" mx="4" pt="8" pb="20">
         {/* <Center pb="4">
           <Heading color="gray.50">{platform.name}</Heading>
         </Center> */}
@@ -81,7 +81,7 @@ function RegistrationIntro() {
       </Box>
 
       <Center p="4" mt="-82px">
-        <Link to={isLastSlide ? `/@${currentUser.username}/edit` : '/'}>
+        <Link to={isLastSlide ? '/communities' : '/'}>
           <Button as="span" colorScheme="green" size="sm" variant={isLastSlide ? 'solid' : 'ghost'}>
             {isLastSlide ? tc('actions.start') : tc('actions.skip')}
           </Button>

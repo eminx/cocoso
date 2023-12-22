@@ -12,7 +12,7 @@ function SignupPage() {
   const { currentUser, platform } = useContext(StateContext);
 
   if (currentUser) {
-    return <Redirect to={`/@${currentUser.username}/profile`} />;
+    return <Redirect to="/intro" />;
   }
 
   return (
