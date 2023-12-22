@@ -160,7 +160,7 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </PageHeader>
 
-      <Box mt="2" px="8">
+      <Box pr="3">
         <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
           {(member) => (
             <Flex
