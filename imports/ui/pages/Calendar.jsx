@@ -10,7 +10,6 @@ import {
   Center,
   Divider,
   Flex,
-  Heading as CHeading,
   Link as CLink,
   Tag as CTag,
   TagLabel,
@@ -32,6 +31,7 @@ import Tag from '../components/Tag';
 import { getNonComboResourcesWithColor, getComboResourcesWithColor } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import NewEntryHelper from '../components/NewEntryHelper';
+import PageHeader from '../components/PageHeader';
 
 const publicSettings = Meteor.settings.public;
 
@@ -247,16 +247,9 @@ class Calendar extends PureComponent {
           } | ${publicSettings.name}`}</title>
         </Helmet>
 
-        <CHeading color="gray.800" mx="4" mt="4" size="lg">
-          {tc('domains.calendar')}
-        </CHeading>
-
-        <Box pt="2" px="4">
-          <Divider borderColor="gray.500" maxW="690px" />
-          <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
-            {settings.menu.find((item) => item.name === 'calendar')?.description}
-          </Text>
-        </Box>
+        <PageHeader
+          description={settings.menu.find((item) => item.name === 'calendar')?.description}
+        />
 
         <Box my="2">
           <Center p="2">

@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import NiceSlider from '../../components/NiceSlider';
 import { parseTitle } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
+import PageHeader from '../../components/PageHeader';
 
 const publicSettings = Meteor.settings.public;
 
@@ -61,12 +62,16 @@ function Page() {
     );
   };
 
+  const { settings } = currentHost;
+
   if (isDesktop) {
     return (
       <>
         <Helmet>
           <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
         </Helmet>
+
+        <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
         <Flex mt="4" mb="8">
           <Box w="280px" px="4">
@@ -101,8 +106,10 @@ function Page() {
   return (
     <>
       <Helmet>
-        <title>{`${currentPage.title} | ${currentHost.settings.name} | ${publicSettings.name}`}</title>
+        <title>{`${currentPage.title} | ${settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
+
+      <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
       <Center px="4" mt="4">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
