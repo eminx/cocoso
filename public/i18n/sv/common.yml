@@ -24,7 +24,7 @@ actions:
   downloadCSV: Ladda ner CSV
   confirmRead: Jag har läst och accepterar
   toThePage: Till sidan i {{ hostName }}
-  entryPage: Till sidan
+  entryPage: Besök sidan
   toHost: Besök
   share: Dela
   copied: Kopierade länken!

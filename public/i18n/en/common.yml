@@ -24,7 +24,7 @@ actions:
   downloadCSV: Download CSV
   confirmRead: I have read and accept
   toThePage: To the page in {{ hostName }}
-  entryPage: Go to the entry page
+  entryPage: Visit page
   toHost: Visit
   share: Share
   copied: Link copied!
