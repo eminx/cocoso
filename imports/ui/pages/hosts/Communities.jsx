@@ -77,7 +77,7 @@ function Communities() {
       if (sorterValue === 'name') {
         const nameA = a?.name;
         const nameB = b?.name;
-        return nameA.localeCompare(nameB);
+        return nameA?.localeCompare(nameB);
       } else {
         return new Date(b.createdAt) - new Date(a.createdAt);
       }
@@ -94,7 +94,7 @@ function Communities() {
       if (sorterValue === 'name') {
         const nameA = a?.name;
         const nameB = b?.name;
-        return nameA.localeCompare(nameB);
+        return nameA?.localeCompare(nameB);
       } else {
         return new Date(b.createdAt) - new Date(a.createdAt);
       }
