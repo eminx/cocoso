@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { Box, Center, Flex, Skeleton, Wrap } from '@chakra-ui/react';
+import { Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
@@ -42,29 +42,12 @@ function InfiniteScroller({
 
   const hasMore = items.length > currentItems.length;
 
-  const w = smallThumb || isMasonry ? '2xs' : '355px';
+  const w = smallThumb || isMasonry ? 'auto' : '355px';
   const h = smallThumb || isMasonry ? '180px' : '315px';
 
   return (
     <>
-      <InfiniteScroll
-        pageStart={1}
-        loadMore={handleLoad}
-        hasMore={hasMore}
-        loader={
-          !isDesktop || isMasonry ? (
-            <Center>
-              <Skeleton endColor="brand.500" w={w} h={h} mt="2" />
-            </Center>
-          ) : (
-            <Flex>
-              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
-              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
-              <Skeleton endColor="brand.500" w={w} h={h} mr="2" mt="2" />
-            </Flex>
-          )
-        }
-      >
+      <InfiniteScroll pageStart={1} loadMore={handleLoad} hasMore={hasMore}>
         {isMasonry ? (
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -72,17 +55,17 @@ function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item) => children(item))}
+            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="4" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
           </Masonry>
         ) : (
-          <Wrap justify={isDesktop ? 'flex-start' : 'center'}>
+          <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="2">
             {currentItems?.map((item) => children(item))}
+            {hasMore && <Skeleton endColor="brand.500" h={h} w={w} />}
             {!hasMore && canCreateContent && (
-              <Box>
-                <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
-              </Box>
+              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
             )}
           </Wrap>
         )}
