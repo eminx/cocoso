@@ -44,10 +44,6 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const avatarSrc = avatar?.src || avatar;
 
   const membershipsLength = memberships?.length;
-  const membershipsWithHosts = memberships?.map((m) => ({
-    ...m,
-    name: allHosts?.find((h) => h.host === m.host)?.name,
-  }));
 
   const role = memberships?.find((m) => m?.host === currentHost?.host)?.role;
   const roleTr = t(`roles.${role}`);
@@ -105,7 +101,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                   }
                 >
                   <Box p="1">
-                    {membershipsWithHosts?.map((m) => (
+                    {memberships?.map((m) => (
                       <Box key={m.host} my="2" textAlign="left">
                         <Button
                           colorScheme="gray.800"
@@ -113,7 +109,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                           variant="link"
                           onClick={() => setRedirect(m)}
                         >
-                          {m.name}
+                          {m.hostname}
                         </Button>
                         <Text
                           as="span"
