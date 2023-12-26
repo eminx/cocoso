@@ -32,7 +32,7 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = small ? '2xs' : 'auto';
+  const w = small ? '2xs' : '100%';
   const h = small ? '180px' : '315px';
 
   return (

@@ -42,7 +42,7 @@ function InfiniteScroller({
 
   const hasMore = items.length > currentItems.length;
 
-  const w = smallThumb || isMasonry ? 'auto' : '355px';
+  const w = smallThumb || isMasonry ? '2xs' : 'auto';
   const h = smallThumb || isMasonry ? '180px' : '315px';
 
   return (
