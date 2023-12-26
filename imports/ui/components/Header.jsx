@@ -93,7 +93,7 @@ function Heading({ title, numberOfItems }) {
 
   return (
     <Flex mr="4">
-      <CHeading color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
+      <CHeading as="h1" color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
         {title || activeMenuItem?.label}{' '}
         {numberOfItems > 0 && (
           <Text as="span" fontSize="xs">

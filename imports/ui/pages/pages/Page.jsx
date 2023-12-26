@@ -79,8 +79,8 @@ function Page() {
           </Box>
 
           <Box w="100%" maxW="520px">
-            <Box mb="4">
-              <Heading fontFamily="'Raleway', sans-serif" as="h2" size="lg">
+            <Box py="4">
+              <Heading as="h2" fontFamily="'Raleway', sans-serif" fontSize="24px">
                 {currentPage.title}
               </Heading>
             </Box>
@@ -111,17 +111,12 @@ function Page() {
 
       <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Center px="4" mt="4">
+      <Box px="4" pb="4">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
-      </Center>
+      </Box>
 
       <Center mb="4">
-        <Box w="100%" maxW="520px" pt="2">
-          <Box p="4">
-            <Heading as="h2" size="lg">
-              {currentPage.title}
-            </Heading>
-          </Box>
+        <Box w="100%" maxW="520px">
           <Box bg="gray.900">
             <NiceSlider floatRight={false} images={currentPage.images} />
           </Box>
