@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -21,6 +22,7 @@ function Communities() {
   const [modalHost, setModalHost] = useState(null);
   const [joinHostModal, setJoinHostModal] = useState(null);
   const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
+  const history = useHistory();
 
   const [tc] = useTranslation('common');
 
@@ -88,8 +90,18 @@ function Communities() {
     }
 
     const myHosts = currentUser.memberships;
+    const myHostsSorted = myHosts.sort((a, b) => {
+      if (sorterValue === 'name') {
+        const nameA = a?.name;
+        const nameB = b?.name;
+        return nameA.localeCompare(nameB);
+      } else {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+    });
+
     return [
-      ...myHosts.map((mh) => ({
+      ...myHostsSorted.map((mh) => ({
         ...mh,
         logo: hostsSorted.find((h) => mh.host === h.host)?.logo,
         isMember: true,
@@ -99,7 +111,13 @@ function Communities() {
   };
 
   const joinCommunity = async () => {
+    if (!currentUser) {
+      history.push('/register');
+      return;
+    }
+
     const host = joinHostModal.host;
+
     try {
       await call('setSelfAsParticipant', host);
       message.success(tc('communities.success', { community: joinHostModal.name }));

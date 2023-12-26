@@ -51,6 +51,9 @@ Meteor.methods({
 
   setSelfAsParticipant(hostToJoin) {
     const user = Meteor.user();
+    if (!user) {
+      return;
+    }
     const host = hostToJoin || getHost(this);
     const currentHost = Hosts.findOne({ host });
 
