@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
 import { check } from 'meteor/check';
 
 import { getHost } from '../_utils/shared';
@@ -7,7 +6,7 @@ import Hosts from './host';
 import Pages from '../pages/page';
 import Newsletters from '../newsletters/newsletter';
 import { defaultMenu, defaultEmails } from '../../startup/constants';
-import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
+import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
   createNewHost(values) {
@@ -227,15 +226,21 @@ Meteor.methods({
 
     const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
 
+    const isPortalHost = currentHost.isPortalHost;
+    const members = isPortalHost ? Meteor.users.find() : currentHost.members;
+
     try {
-      currentHost.members.forEach((member) => {
+      members.forEach((member) => {
         const emailHtmlWithUsername = emailHtmlWithBrowserLink.replace(
           '[username]',
           member.username
         );
+
+        const emailAddress = isPortalHost ? member.email : member.emails[0].address;
+
         Meteor.call(
           'sendEmail',
-          member.email,
+          emailAddress,
           email.subject,
           emailHtmlWithUsername,
           (error, respond) => {
