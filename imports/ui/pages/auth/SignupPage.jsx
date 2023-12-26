@@ -11,7 +11,7 @@ function SignupPage() {
   const [t] = useTranslation('accounts');
   const { currentUser, platform } = useContext(StateContext);
 
-  if (currentUser) {
+  if (currentUser && platform.isFederationLayout) {
     return <Redirect to="/intro" />;
   }
 
