@@ -236,7 +236,11 @@ export default function ProcessesList({ history }) {
           newHelperLink="/processes/new"
         >
           {(process) => (
-            <Box key={process._id} cursor="pointer" onClick={() => setModalProcess(process)}>
+            <Box
+              key={process._id}
+              className="sexy-thumb-container"
+              onClick={() => setModalProcess(process)}
+            >
               <SexyThumb
                 dates={getFutureOccurences(process.meetings)}
                 host={isPortalHost && allHosts.find((h) => h.host === process.host)?.name}

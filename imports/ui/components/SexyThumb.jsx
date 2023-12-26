@@ -16,8 +16,9 @@ const dateStyle = {
 
 const imageStyle = {
   height: '315px',
-  width: '355px',
+  maxWidth: '550px',
   objectFit: 'cover',
+  width: '100%',
 };
 
 const coverClass = 'thumb-cover';
@@ -34,7 +35,7 @@ function ThumbDate({ date }) {
     <Flex
       key={date.startDate + date.startTime}
       align="center"
-      color={isPast ? 'gray.400' : 'brand.50'}
+      color={isPast ? 'gray.400' : 'white'}
     >
       <DateJust>{date.startDate}</DateJust>
       {date.startDate !== date.endDate && <span style={{ margin: '0 2px' }}>–</span>}
@@ -72,7 +73,9 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
           fontFamily: `'Raleway', sans-serif`,
           height: '100%',
           padding: '24px 16px',
-          position: 'relative',
+          position: 'absolute',
+          zIndex: 1,
+          top: 0,
         }}
       >
         {dates && (

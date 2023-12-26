@@ -32,11 +32,11 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = small ? '2xs' : '355px';
+  const w = small ? '2xs' : 'auto';
   const h = small ? '180px' : '315px';
 
   return (
-    <Link to={buttonLink}>
+    <Link className="sexy-thumb-container" to={buttonLink}>
       <Box _hover={{ bg: 'brand.400' }} bg="brand.500" fontWeight="bold" h={h} px="4" py="8" w={w}>
         <h3 className="thumb-title">{titleGeneric}</h3>
         <h4 className="thumb-subtitle">{descriptionGeneric}</h4>

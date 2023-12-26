@@ -140,7 +140,8 @@ input::placeholder {
 
 .thumb-cover-container {
   height: 315px;
-  width: 355px;
+  position: relative;
+  /* width: 355px; */
 }
 
 .thumb-cover-container:hover .thumb-cover {
@@ -152,9 +153,18 @@ input::placeholder {
 }
 
 .thumb-cover {
-  position: absolute;
+  width: 100%;
   filter: brightness(50%);
   transition: all ease-in-out 200ms;
+}
+
+.lazy-load-image-background {
+  width: 100%;
+}
+
+.sexy-thumb-container {
+  cursor: pointer;
+  flex: 1 1 355px;
 }
 
 .cover-highlight-title {

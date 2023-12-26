@@ -269,7 +269,11 @@ function Activities({ history }) {
           {(activity) => {
             const itemHost = allHosts?.find((h) => h.host === activity.host)?.name;
             return (
-              <Box key={activity._id} cursor="pointer" onClick={() => setModalActivity(activity)}>
+              <Box
+                key={activity._id}
+                className="sexy-thumb-container"
+                onClick={() => setModalActivity(activity)}
+              >
                 <SexyThumb
                   dates={activity.datesAndTimes}
                   showPast={showPast}
