@@ -126,7 +126,9 @@ newsletter:
       helper: Lägg till en bild eller logotyp som kommer visas högst upp i nyhetsbrevet (ej obligatoriskt)
   notification:
     success:
-      emailsent: Ditt e-postmeddelande har skickats till alla medlemmar.
+      emailsent: Ditt e-postmeddelande har skickats till alla medlemmar
+  portalHost:
+    info: Eftersom detta är federationens portalapp kommer din e-post att skickas till alla {{ platform }} plattformsmedlemmar
 
 # ADMIN STATIC PAGES
 pages:

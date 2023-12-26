@@ -36,7 +36,7 @@ function EmailNewsletter({ history }) {
   const [email, setEmail] = useState(emailModel);
   const [isPreview, setIsPreview] = useState(false);
   const [isLastConfirm, setIsLastConfirm] = useState(false);
-  const { currentHost, currentUser, role } = useContext(StateContext);
+  const { currentHost, currentUser, role, platform } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -178,6 +178,15 @@ function EmailNewsletter({ history }) {
           </Box>
         }
       >
+        {currentHost.isPortalHost && (
+          <Box mb="4">
+            <Alert
+              message={t('newsletter.portalHost.info', { platform: platform.name })}
+              type="info"
+            />
+          </Box>
+        )}
+
         <Box mb="4">
           <Link target="_blank" to="/newsletters">
             <CLink as="span">

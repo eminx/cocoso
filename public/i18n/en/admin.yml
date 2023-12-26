@@ -127,6 +127,8 @@ newsletter:
   notification:
     success:
       emailsent: Your email is successfully sent to all members
+  portalHost:
+    info: Since this is the portal app of the federation, your email will be sent to all {{ platform }} platform members
 
 # ADMIN STATIC PAGES
 pages:
