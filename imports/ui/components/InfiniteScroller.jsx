@@ -72,7 +72,6 @@ function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item) => children(item))}
-            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="2" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
