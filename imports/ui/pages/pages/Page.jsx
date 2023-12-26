@@ -111,7 +111,7 @@ function Page() {
 
       <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Box px="4" pb="4">
+      <Box pb="2">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Box>
 

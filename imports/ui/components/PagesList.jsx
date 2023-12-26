@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
-import { Box, Button, Center, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Button, Center, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import { StateContext } from '../LayoutContainer';
@@ -31,9 +31,9 @@ const PagesList = withRouter(({ activePageTitle, currentPage, pageTitles }) => {
   }
 
   return (
-    <Box zIndex="1400">
+    <Center zIndex="1400">
       <Menu placement="bottom">
-        <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />} variant="outline">
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />} size="lg" variant="ghost">
           {currentPage?.title}
         </MenuButton>
         <MenuList zIndex={2}>
@@ -48,7 +48,7 @@ const PagesList = withRouter(({ activePageTitle, currentPage, pageTitles }) => {
           ))}
         </MenuList>
       </Menu>
-    </Box>
+    </Center>
   );
 });
 
