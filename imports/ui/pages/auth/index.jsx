@@ -137,6 +137,7 @@ const Signup = ({ onSubmit }) => {
           </Flex>
         </VStack>
       </form>
+
       <ConfirmModal
         title="Terms of Service & Privacy Policy"
         visible={modalOpen}

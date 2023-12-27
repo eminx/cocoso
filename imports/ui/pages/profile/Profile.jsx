@@ -16,7 +16,7 @@ import { call } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
 
-function MemberPublic({ history, match, path }) {
+function Profile({ history, match, path }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [user, setUser] = useState(null);
@@ -279,4 +279,4 @@ function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
   );
 }
 
-export default MemberPublic;
+export default Profile;

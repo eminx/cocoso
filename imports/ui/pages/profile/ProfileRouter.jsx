@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 const EditProfile = lazy(() => import('./EditProfile'));
 const Work = lazy(() => import('../works/Work'));
 const EditWork = lazy(() => import('../works/EditWork'));
-const MemberPublic = lazy(() => import('../members/Member'));
+const Profile = lazy(() => import('./Profile'));
 
 export default function PageRoutes({ path, history }) {
   return (
@@ -12,8 +12,8 @@ export default function PageRoutes({ path, history }) {
       <Route path="/@:username/edit" component={EditProfile} />
       <Route path="/@:username/works/:workId/edit" component={EditWork} />
       <Route path="/@:username/works/:workId" component={Work} />
-      <Route path="/@:username/:profileRoute" history={history} component={MemberPublic} />
-      <Route path="/@:username" history={history} component={MemberPublic} />
+      <Route path="/@:username/:profileRoute" history={history} component={Profile} />
+      <Route path="/@:username" history={history} component={Profile} />
     </Switch>
   );
 }
