@@ -39,7 +39,6 @@ export default function NewGridThumb({
               fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
-                // height: fixedImageHeight ? '120px' : 'auto',
                 position: 'relative',
               }}
             />
@@ -64,7 +63,6 @@ export default function NewGridThumb({
               fontFamily="'Raleway', sans-serif"
               fontSize="1.2rem"
               fontWeight="bold"
-              isTruncated
               mb="1"
               mt="2"
               overflowWrap="anywhere"

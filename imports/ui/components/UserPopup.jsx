@@ -111,9 +111,7 @@ function UserPopup() {
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
                     <MenuItem>
-                      <Text color="brand.700" isTruncated>
-                        {item.title}{' '}
-                      </Text>
+                      <Text color="brand.700">{item.title} </Text>
                       <Badge colorScheme="red" size="xs">
                         {' '}
                         {item.count}
