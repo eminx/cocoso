@@ -100,7 +100,10 @@ profile:
     language: DİL
     options: Seçenekler
     privacy: GİZLİLİK
-    keywords: Anahtar kelimeler
+    keywords:
+      label: Anahtar kelimeler
+      description: Burada sizi ve becerilerinizi iyi açıklayan bazı anahtar kelimeleri seçip oluşturabilirsin. Bunlar profil sayfanda gösterilecek ve üyeler sayfasında filtrelenebilecektir.
+      placeholder: Birşeyler yaz...
 
 leave:
   action: Topluluktan Ayrıl

@@ -100,7 +100,10 @@ profile:
     language: Language
     options: Options
     privacy: Privacy
-    keywords: Keywords
+    keywords:
+      label: Keywords
+      description: Here you can select and create some keywords that explains you and your skills well. They will be shown on your profile page, as well as be filterable on the members page.
+      placeholder: Type something...
 
 leave:
   action: Leave Community

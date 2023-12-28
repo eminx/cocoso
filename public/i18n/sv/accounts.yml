@@ -100,7 +100,10 @@ profile:
     language: Språk
     options: Alternativ
     privacy: Integritet
-    keywords: Nyckelord
+    keywords:
+      label: Nyckelord
+      description: Här kan du välja och skapa några nyckelord som förklarar dig och dina kunskaper väl. De kommer att visas på din profilsida, samt att kunna filtreras på medlemssidan.
+      placeholder: Skriv något...
 
 leave:
   action: Lämna Community

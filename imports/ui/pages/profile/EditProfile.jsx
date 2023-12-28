@@ -29,7 +29,6 @@ import { StateContext } from '../../LayoutContainer';
 import AvatarUploader from './AvatarUploader';
 import Tabs from '../../components/Tabs';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
-import FormField from '../../components/FormField';
 import Template from '../../components/Template';
 
 function EditProfile({ history }) {
@@ -239,7 +238,7 @@ function EditProfile({ history }) {
       path: `/@${currentUser.username}/edit/general`,
       content: (
         <Box>
-          <Heading my="2" size="sm">
+          <Heading mb="4" size="sm">
             {t('profile.image')}
           </Heading>
           <AvatarUploader
@@ -267,14 +266,15 @@ function EditProfile({ history }) {
       path: `/@${currentUser.username}/edit/language`,
       content: (
         <Box>
-          <FormField label={tc('langs.form.label')}>
-            <ChangeLanguage
-              currentLang={currentUser?.lang}
-              hideHelper
-              select
-              onChange={(lang) => setLang(lang)}
-            />
-          </FormField>
+          <Heading mb="4" size="sm">
+            {tc('langs.form.label')}
+          </Heading>
+          <ChangeLanguage
+            currentLang={currentUser?.lang}
+            hideHelper
+            select
+            onChange={(lang) => setLang(lang)}
+          />
 
           <Flex justify="flex-end" mt="4">
             <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>
@@ -356,7 +356,7 @@ function EditProfile({ history }) {
       ),
     },
     {
-      title: t('profile.menu.keywords'),
+      title: t('profile.menu.keywords.label'),
       path: `/@${currentUser.username}/edit/keywords`,
       content: (
         <Box>
@@ -404,7 +404,7 @@ function EditProfile({ history }) {
               </Text>
             </Alert>
 
-            <Tabs index={tabIndex} mb="8" tabs={tabs} />
+            <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
             <Box>
               <RouteSwitch history={history}>
@@ -474,6 +474,7 @@ function KeywordsManager({ currentUser }) {
   const [allKeywords, setAllKeywords] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [creating, setCreating] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -498,6 +499,7 @@ function KeywordsManager({ currentUser }) {
   const saveKeywords = async () => {
     try {
       await call('saveKeywords', selectedKeywords);
+      setIsChanged(false);
       message.success('success');
     } catch (error) {
       console.log(error);
@@ -531,35 +533,37 @@ function KeywordsManager({ currentUser }) {
     }
   };
 
+  const handleChange = (value) => {
+    setSelectedKeywords(value);
+    setIsChanged(true);
+  };
+
   return (
     <Box>
-      <FormField label={t('profile.menu.keywords')}>
-        <CreatableSelect
-          components={animatedComponents}
-          isClearable
-          isLoading={creating}
-          isMulti
-          options={allKeywords}
-          placeholder="Type something and press enter..."
-          style={{ width: '100%', marginTop: '1rem' }}
-          value={selectedKeywords}
-          getOptionValue={(option) => option._id}
-          onChange={(newValue) => setSelectedKeywords(newValue)}
-          onCreateOption={(newKeyword) => createKeyword(newKeyword)}
-          // styles={{
-          //   option: (styles, { data }) => ({
-          //     ...styles,
-          //     borderLeft: `8px solid ${data.color}`,
-          //     // background: data.color.replace('40%', '90%'),
-          //     paddingLeft: !data.isCombo && 6,
-          //     fontWeight: data.isCombo ? 'bold' : 'normal',
-          //   }),
-          // }}
-        />
-      </FormField>
+      <Heading mb="2" size="sm">
+        {t('profile.menu.keywords.label')}
+      </Heading>
+      <Text fontSize="sm" mb="4">
+        {t('profile.menu.keywords.description')}
+      </Text>
+      <CreatableSelect
+        components={animatedComponents}
+        isClearable
+        isLoading={creating}
+        isMulti
+        options={allKeywords}
+        placeholder="Type something and press enter..."
+        style={{ width: '100%', marginTop: '1rem' }}
+        value={selectedKeywords}
+        getOptionValue={(option) => option._id}
+        onChange={(newValue) => handleChange(newValue)}
+        onCreateOption={(newKeyword) => createKeyword(newKeyword)}
+      />
 
       <Flex justify="flex-end" mt="4">
-        <Button onClick={() => saveKeywords()}>{tc('actions.submit')}</Button>
+        <Button isDisabled={!isChanged} onClick={() => saveKeywords()}>
+          {tc('actions.submit')}
+        </Button>
       </Flex>
     </Box>
   );
