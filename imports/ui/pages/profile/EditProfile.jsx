@@ -380,7 +380,7 @@ function EditProfile({ history }) {
           <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
         </Box>
 
-        <Box>
+        <Box mb="8">
           <Box pt="4" mb="8">
             <Heading color="gray.800" size="lg">
               <Text as="span" fontWeight="normal">

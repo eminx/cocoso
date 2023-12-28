@@ -253,10 +253,10 @@ function Header({
           >
             {tags.map((tag) => (
               <Badge
+                key={tag}
                 bg="gray.50"
                 color="gray.800"
                 fontSize="14px"
-                key={tag}
                 ml={isDesktop && '2'}
                 mr={!isDesktop && '2'}
               >

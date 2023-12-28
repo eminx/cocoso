@@ -89,7 +89,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
           <Wrap justify={isDesktop ? 'flex-start' : 'center'} py="2" px={isDesktop ? '0' : '2'}>
             {user.keywords?.map((k) => (
-              <WrapItem key={k._id}>
+              <WrapItem key={k.keywordId}>
                 <Tag colorScheme="gray">{k.keywordLabel}</Tag>
               </WrapItem>
             ))}
