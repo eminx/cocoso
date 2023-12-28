@@ -5,7 +5,7 @@ import { SmallCloseIcon } from '@chakra-ui/icons';
 function Tag({
   label = '',
   gradientBackground = null,
-  filterColor,
+  filterColor = '#2d2d2d',
   checkable = false,
   checked = false,
   removable = false,

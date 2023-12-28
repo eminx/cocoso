@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Center, Container, Flex, Heading as CHeading } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  Heading as CHeading,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -14,6 +22,8 @@ import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeader from '../../components/PageHeader';
+import Tag from '../../components/Tag';
+import { getHslValuesFromLength } from '../../utils/constants/colors';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -23,13 +33,23 @@ const compareByDate = (a, b) => {
 
 function MembersPublic({ history }) {
   const [members, setMembers] = useState([]);
+  const [keywords, setKeywords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
+  const [filterKeyword, setFilterKeyword] = useState(null);
   const [sorterValue, setSorterValue] = useState('date');
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [t] = useTranslation('members');
+
+  useEffect(() => {
+    getAndSetMembers();
+  }, []);
+
+  useEffect(() => {
+    getKeywords();
+  }, [members.length]);
 
   const getAndSetMembers = async () => {
     try {
@@ -46,9 +66,18 @@ function MembersPublic({ history }) {
     }
   };
 
-  useEffect(() => {
-    getAndSetMembers();
-  }, []);
+  const getKeywords = async () => {
+    try {
+      const respond = await call('getKeywords');
+      const selectedKeywords = respond.filter((k) =>
+        members.some((m) => m?.keywords?.map((kw) => kw.keywordId).includes(k._id))
+      );
+      setKeywords(selectedKeywords);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
 
   if (loading) {
     return <Loader />;
@@ -95,7 +124,13 @@ function MembersPublic({ history }) {
       return member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
     });
 
-    return getMembersHostFiltered(membersFiltered);
+    const membersKeywordFiltered = filterKeyword
+      ? membersFiltered.filter((m) =>
+          m?.keywords?.some((k) => keywords.map((kw) => kw._id).includes(k.keywordId))
+        )
+      : membersFiltered;
+
+    return getMembersHostFiltered(membersKeywordFiltered);
   };
 
   const getMembersHostFiltered = (membersFiltered) => {
@@ -136,6 +171,8 @@ function MembersPublic({ history }) {
   const menuItems = menu?.filter((item) => item.isVisible);
   const activeMenuItem = menuItems.find((item) => item.name === 'members');
 
+  const coloredKeywords = getColoredKeywords(keywords);
+
   return (
     <Box mb="8">
       <Helmet>
@@ -159,6 +196,31 @@ function MembersPublic({ history }) {
           )}
         </FiltrerSorter>
       </PageHeader>
+
+      <Center pb="4">
+        <Wrap>
+          <WrapItem>
+            <Tag
+              label={t('all')}
+              checkable
+              checked={Boolean(filterKeyword) === false}
+              onClick={() => setFilterKeyword(null)}
+            />
+          </WrapItem>
+          {coloredKeywords.map((k) => (
+            <WrapItem key={k._id}>
+              <Tag
+                checkable
+                checked={filterKeyword?._id === k?._id}
+                filterColor={k.color}
+                label={k.label}
+                margin={{ bottom: 'small' }}
+                onClick={() => setFilterKeyword(k)}
+              />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
 
       <Box pr="3">
         <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
@@ -203,5 +265,15 @@ function MembersPublic({ history }) {
     </Box>
   );
 }
+
+const getColoredKeywords = (keywords) => {
+  const hslValues = getHslValuesFromLength(keywords.length);
+  return keywords
+    .map((k, i) => ({
+      ...k,
+      color: hslValues[i],
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+};
 
 export default MembersPublic;

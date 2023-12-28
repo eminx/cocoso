@@ -16,7 +16,6 @@ import FiltrerSorter from '../../components/FiltrerSorter';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
-import { Heading } from '../../components/Header';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeader from '../../components/PageHeader';
 
@@ -104,7 +103,7 @@ function Works({ history }) {
         category.label === (work.category && work.category.label && work.category.label)
       );
     });
-    const categoryColor = category && category.color;
+    const categoryColor = category?.color;
     return {
       ...work,
       categoryColor,
@@ -185,7 +184,6 @@ function Works({ history }) {
             label={t('all')}
             checkable
             checked={Boolean(category) === false}
-            filterColor="#2d2d2d"
             onClick={() => setCategoryFilter(null)}
           />
         </WrapItem>
