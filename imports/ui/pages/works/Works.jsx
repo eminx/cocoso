@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 import { parse, stringify } from 'query-string';
@@ -178,28 +178,30 @@ function Works({ history }) {
         </FiltrerSorter>
       </PageHeader>
 
-      <Wrap mb="8" mt="4" px="4">
-        <WrapItem>
-          <Tag
-            label={t('all')}
-            checkable
-            checked={Boolean(category) === false}
-            onClick={() => setCategoryFilter(null)}
-          />
-        </WrapItem>
-        {categoriesAssignedToWorks.map((cat) => (
-          <WrapItem key={cat.label}>
+      <Center p="4" pt="0">
+        <Wrap>
+          <WrapItem>
             <Tag
+              label={t('all')}
               checkable
-              checked={category === cat.label}
-              filterColor={cat.color}
-              label={cat.label && cat.label.toUpperCase()}
-              margin={{ bottom: 'small' }}
-              onClick={() => setCategoryFilter(cat.label)}
+              checked={Boolean(category) === false}
+              onClick={() => setCategoryFilter(null)}
             />
           </WrapItem>
-        ))}
-      </Wrap>
+          {categoriesAssignedToWorks.map((cat) => (
+            <WrapItem key={cat.label}>
+              <Tag
+                checkable
+                checked={category === cat.label}
+                filterColor={cat.color}
+                label={cat.label && cat.label.toUpperCase()}
+                margin={{ bottom: 'small' }}
+                onClick={() => setCategoryFilter(cat.label)}
+              />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Center>
 
       <Box pr="4">
         <InfiniteScroller

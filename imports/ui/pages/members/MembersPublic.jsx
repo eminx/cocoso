@@ -197,7 +197,7 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </PageHeader>
 
-      <Center pb="4">
+      <Center p="4" pt="0">
         <Wrap>
           <WrapItem>
             <Tag
