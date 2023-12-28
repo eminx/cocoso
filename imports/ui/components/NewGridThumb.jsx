@@ -7,12 +7,6 @@ import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
-const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-};
-
 export default function NewGridThumb({
   avatar,
   color,
@@ -51,7 +45,7 @@ export default function NewGridThumb({
             />
           ) : (
             coverText && (
-              <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4" style={ellipsisStyle}>
+              <Text color="brand.600" fontSize="3xl" fontWeight="light" m="4">
                 {coverText}
               </Text>
             )
@@ -64,7 +58,7 @@ export default function NewGridThumb({
         )}
 
         <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
-          <Box color="gray.900" pb="2" pr="3" style={ellipsisStyle}>
+          <Box color="gray.900" pb="2" pr="3">
             <Heading
               className="text-link"
               fontFamily="'Raleway', sans-serif"

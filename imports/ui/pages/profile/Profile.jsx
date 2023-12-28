@@ -136,7 +136,7 @@ function Profile({ history, match, path }) {
       </Box>
 
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="8">
+        <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4">
           <MemberAvatarEtc t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
         </GridItem>
@@ -228,7 +228,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
       <Link to={`/@${user?.username}/edit`}>
-        <Box p="4" mb="8">
+        <Box p="4" mb="4">
           <SexyThumb
             subTitle={tc('menu.member.settings')}
             title={tc('message.newentryhelper.bio.title')}
@@ -243,8 +243,8 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex bg="white" justifyContent={isDesktop ? 'flex-start' : 'center'} maxWidth="480px">
-      <Box className="text-content" px="4" py="2">
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
+      <Box bg="white" className="text-content" maxW="480px" px="4" py="2" w="100%">
         {renderHTML(user.bio)}
       </Box>
     </Flex>

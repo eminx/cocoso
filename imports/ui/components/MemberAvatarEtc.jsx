@@ -12,7 +12,10 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
+  Tag,
   Text,
+  Wrap,
+  WrapItem,
   useDisclosure,
 } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
@@ -51,7 +54,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const isCentered = !isDesktop || centerItems;
 
   return (
-    <Box mb="4" w="100%">
+    <Box w="100%">
       <Flex flexDirection="column" align={isCentered ? 'center' : 'flex-start'}>
         {avatarSrc ? (
           <Box>
@@ -59,7 +62,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
               src={avatarSrc}
-              w="md"
+              maxW="280px"
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           </Box>
@@ -83,6 +86,15 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           <Box>
             <Text>{getFullName(user)}</Text>
           </Box>
+
+          <Wrap justify={isDesktop ? 'flex-start' : 'center'} py="2" px={isDesktop ? '0' : '2'}>
+            {user.keywords?.map((k) => (
+              <WrapItem key={k._id}>
+                <Tag colorScheme="gray">{k.keywordLabel}</Tag>
+              </WrapItem>
+            ))}
+          </Wrap>
+
           {!isThumb && (
             <Box mb="2">
               {membershipsLength > 1 && (

@@ -23,6 +23,7 @@ Meteor.methods({
         bio: user.bio,
         contactInfo: user.contactInfo,
         firstName: user.firstName,
+        keywords: user.keywords,
         lastName: user.lastName,
         username: user.username,
         memberships: user.memberships,
