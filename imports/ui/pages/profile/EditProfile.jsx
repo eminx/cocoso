@@ -485,8 +485,8 @@ function KeywordsManager({ currentUser }) {
     try {
       const respond = await call('getKeywords');
       setAllKeywords(respond);
-      const selfKeywords = respond.filter(
-        (k) => currentUser?.keywords?.map((kw) => kw.keywordId).indexOf(k._id) !== -1
+      const selfKeywords = respond.filter((k) =>
+        currentUser?.keywords?.map((kw) => kw.keywordId).includes(k._id)
       );
       setSelectedKeywords(selfKeywords);
     } catch (error) {

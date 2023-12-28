@@ -126,7 +126,7 @@ function MembersPublic({ history }) {
 
     const membersKeywordFiltered = filterKeyword
       ? membersFiltered.filter((m) =>
-          m?.keywords?.some((k) => keywords.map((kw) => kw._id).includes(k.keywordId))
+          m?.keywords?.map((k) => k.keywordId).includes(filterKeyword._id)
         )
       : membersFiltered;
 
