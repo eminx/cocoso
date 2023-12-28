@@ -60,9 +60,11 @@ Meteor.methods({
       Meteor.users.update(currentUser._id, {
         $push: {
           memberships: {
-            host: values.host,
-            role: 'admin',
             date: new Date(),
+            host: values.host,
+            hostname: values.name,
+            isPublic: true,
+            role: 'admin',
           },
         },
       });
