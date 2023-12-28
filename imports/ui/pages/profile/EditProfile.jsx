@@ -485,8 +485,8 @@ function KeywordsManager({ currentUser }) {
     try {
       const respond = await call('getKeywords');
       setAllKeywords(respond);
-      const selfKeywords = respond.filter((k) =>
-        k.assignedMembers.some((m) => m.userId === currentUser._id)
+      const selfKeywords = respond.filter(
+        (k) => currentUser?.keywords?.map((kw) => kw.keywordId).indexOf(k._id) !== -1
       );
       setSelectedKeywords(selfKeywords);
     } catch (error) {
@@ -509,6 +509,7 @@ function KeywordsManager({ currentUser }) {
     setCreating(true);
     try {
       const respond = await call('createKeyword', keyword);
+      message.success('success created');
       setSelectedKeywords([
         ...selectedKeywords,
         {

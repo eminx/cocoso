@@ -13,27 +13,9 @@ Meteor.methods({
     if (!user) {
       return;
     }
-
-    keywords.forEach((keyword) => {
-      try {
-        Keywords.update(
-          { _id: keyword._id },
-          {
-            $addToSet: {
-              assignedMembers: {
-                userId: user._id,
-                username: user.username,
-              },
-            },
-          }
-        );
-      } catch (error) {
-        throw new Meteor.Error(error);
-      }
-    });
     try {
       Meteor.users.update(user._id, {
-        $addToSet: {
+        $set: {
           keywords: keywords.map((k) => ({
             keywordId: k._id,
             keywordLabel: k.label,
@@ -60,7 +42,6 @@ Meteor.methods({
 
     try {
       const keywordId = Keywords.insert({
-        assignedMembers: [],
         creatorId: user._id,
         creatorUsername: user.username,
         creationDate: new Date(),
