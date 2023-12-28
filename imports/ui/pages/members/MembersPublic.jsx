@@ -112,6 +112,23 @@ function MembersPublic({ history }) {
     }
   };
 
+  const getButtonLabelForModal = () => {
+    const { memberships } = modalUser;
+    if (!isPortalHost) {
+      return t('actions.visit');
+    } else if (hostFilterValue) {
+      if (hostFilterValue.host === currentHost?.host) {
+        return t('actions.visit');
+      } else {
+        return t('actions.visithost', { host: getHostNameForModal() });
+      }
+    } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
+      return t('actions.visit');
+    } else {
+      return t('actions.visithost', { host: getHostNameForModal() });
+    }
+  };
+
   const getMembersFiltered = () => {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     const membersFiltered = members.filter((member) => {
@@ -241,11 +258,7 @@ function MembersPublic({ history }) {
 
       {modalUser && (
         <Modal
-          actionButtonLabel={
-            isPortalHost
-              ? t('actions.visithost', { host: getHostNameForModal() })
-              : t('actions.visit')
-          }
+          actionButtonLabel={getButtonLabelForModal()}
           h="90%"
           isCentered
           isOpen
