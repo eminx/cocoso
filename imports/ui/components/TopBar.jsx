@@ -24,12 +24,20 @@ export default function TopBar() {
   const [tc] = useTranslation('common');
   const history = useHistory();
 
+  const { isPortalHost } = currentHost;
+
   return (
     <Box bg="brand.800" zIndex="1405" position="relative">
       <Flex justify="space-between">
-        <Box w={isDesktop ? '72px' : '48px'}>
+        <Box
+          _hover={{ bg: 'brand.100', color: 'brand.600' }}
+          color="brand.50"
+          cursor={isPortalHost ? 'auto' : 'pointer'}
+          w={isDesktop ? '72px' : '48px'}
+          onClick={isPortalHost ? null : () => (window.location = `https://${platform.portalHost}`)}
+        >
           <Center>
-            <Text color="brand.50" fontSize={isDesktop ? '36px' : '28px'} fontWeight="bold">
+            <Text fontSize={isDesktop ? '36px' : '28px'} fontWeight="bold">
               {platform?.name?.substring(0, 1)?.toUpperCase()}
             </Text>
           </Center>
