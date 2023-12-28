@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Redirect, Route, Switch as RouteSwitch, useLocation, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,8 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import CreatableSelect from 'react-select/creatable';
+import makeAnimated from 'react-select/animated';
 
 import ProfileForm from './ProfileForm';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -353,6 +355,15 @@ function EditProfile({ history }) {
         </Box>
       ),
     },
+    {
+      title: t('profile.menu.keywords'),
+      path: `/@${currentUser.username}/edit/keywords`,
+      content: (
+        <Box>
+          <KeywordsManager currentUser={currentUser} />
+        </Box>
+      ),
+    },
   ];
 
   const pathname = location?.pathname;
@@ -454,6 +465,102 @@ function EditProfile({ history }) {
         </Box>
       </Template>
     </>
+  );
+}
+
+const animatedComponents = makeAnimated();
+
+function KeywordsManager({ currentUser }) {
+  const [allKeywords, setAllKeywords] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [creating, setCreating] = useState(false);
+  const [t] = useTranslation('accounts');
+  const [tc] = useTranslation('common');
+
+  useEffect(() => {
+    getKeywords();
+  }, []);
+
+  const getKeywords = async () => {
+    try {
+      const respond = await call('getKeywords');
+      setAllKeywords(respond);
+      const selfKeywords = respond.filter((k) =>
+        k.assignedMembers.some((m) => m.userId === currentUser._id)
+      );
+      setSelectedKeywords(selfKeywords);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  const saveKeywords = async () => {
+    try {
+      await call('saveKeywords', selectedKeywords);
+      message.success('success');
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  const createKeyword = async (keyword) => {
+    setCreating(true);
+    try {
+      const respond = await call('createKeyword', keyword);
+      setSelectedKeywords([
+        ...selectedKeywords,
+        {
+          label: keyword,
+          _id: respond,
+        },
+      ]);
+      setAllKeywords([
+        ...allKeywords,
+        {
+          label: keyword,
+          _id: respond,
+        },
+      ]);
+      setCreating(false);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+    }
+  };
+
+  return (
+    <Box>
+      <FormField label={t('profile.menu.keywords')}>
+        <CreatableSelect
+          components={animatedComponents}
+          isClearable
+          isLoading={creating}
+          isMulti
+          options={allKeywords}
+          placeholder="Type something and press enter..."
+          style={{ width: '100%', marginTop: '1rem' }}
+          value={selectedKeywords}
+          getOptionValue={(option) => option._id}
+          onChange={(newValue) => setSelectedKeywords(newValue)}
+          onCreateOption={(newKeyword) => createKeyword(newKeyword)}
+          // styles={{
+          //   option: (styles, { data }) => ({
+          //     ...styles,
+          //     borderLeft: `8px solid ${data.color}`,
+          //     // background: data.color.replace('40%', '90%'),
+          //     paddingLeft: !data.isCombo && 6,
+          //     fontWeight: data.isCombo ? 'bold' : 'normal',
+          //   }),
+          // }}
+        />
+      </FormField>
+
+      <Flex justify="flex-end" mt="4">
+        <Button onClick={() => saveKeywords()}>{tc('actions.submit')}</Button>
+      </Flex>
+    </Box>
   );
 }
 

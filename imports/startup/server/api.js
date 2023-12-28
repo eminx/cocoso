@@ -48,4 +48,7 @@ import '../../api/activities/activity.publications';
 import '../../api/platform/platform';
 import '../../api/platform/platform.methods';
 
+import '../../api/keywords/keyword';
+import '../../api/keywords/keywords.methods';
+
 import '../../api/newsletters/newsletter';

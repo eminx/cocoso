@@ -76,6 +76,15 @@ Users.schema.UserProfile = {
     optional: true,
   },
 
+  keywords: { type: Array, optional: true },
+  'keywords.$': {
+    type: new SimpleSchema({
+      keywordId: Schemas.Id,
+      keywordLabel: { type: String },
+    }),
+    optional: true,
+  },
+
   verifiedBy: {
     type: new SimpleSchema({
       userId: Schemas.Id,

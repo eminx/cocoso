@@ -6,7 +6,6 @@ import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import Works from '../works/work';
 import Processes from '../processes/process';
-import { call } from '../../ui/utils/shared';
 
 Meteor.methods({
   getUserInfo(username) {

@@ -100,6 +100,7 @@ profile:
     language: Language
     options: Options
     privacy: Privacy
+    keywords: Keywords
 
 leave:
   action: Leave Community

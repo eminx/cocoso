@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Flex,
   Link as CLink,
   Tag as CTag,
