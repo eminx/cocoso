@@ -68,16 +68,7 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
         <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
       </div>
 
-      <div
-        style={{
-          fontFamily: `'Raleway', sans-serif`,
-          height: '100%',
-          padding: '24px 16px',
-          position: 'absolute',
-          zIndex: 1,
-          top: 0,
-        }}
-      >
+      <div className="thumb-text-container">
         {dates && (
           <div
             style={{

@@ -158,6 +158,16 @@ input::placeholder {
   transition: all ease-in-out 200ms;
 }
 
+.thumb-text-container {
+  font-family: Raleway, sans-serif;
+  height: 100%;
+  padding: 24px 16px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  width: 100%;
+}
+
 .lazy-load-image-background {
   width: 100%;
 }
