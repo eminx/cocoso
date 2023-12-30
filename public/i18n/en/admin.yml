@@ -61,6 +61,10 @@ menu:
     works: Listing page for portfolio, marketplace or such entries
     members: Listing page for all community members
     resources: Listing page for the resources in your community
+  headerMenu:
+    title: Header Menu
+    label: Header Menu active on desktop
+    text: Activates the menu to show up on the top of the page on desktop, rather than the drawer showing by clicking menu icon
 
 categories:
   label: Work Categories

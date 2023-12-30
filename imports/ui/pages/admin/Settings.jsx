@@ -13,7 +13,7 @@ import { call, resizeImage, uploadImage } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
-import Menu from './Menu';
+import Menu from './MenuSettings';
 import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import Categories from './Categories';

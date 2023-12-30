@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Box, Button, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,17 +8,32 @@ import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
 
+const getRoute = (item, index) => {
+  if (item.name === 'info') {
+    return '/pages/about';
+  }
+  return `/${item.name}`;
+};
+
 function Header({ isSmallerLogo }) {
   const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
+  const location = useLocation();
+  const pathname = location?.pathname;
 
   const { menu } = currentHost?.settings;
-  const menuItems = menu.filter((item) => item.isVisible);
+  const menuItems = menu
+    .filter((item) => item.isVisible)
+    .map((item, index) => ({
+      ...item,
+      route: getRoute(item, index),
+    }));
 
   if (platform?.showCommunitiesInMenu) {
     menuItems.push({
       name: 'communities',
       label: tc('platform.communities'),
+      route: '/communities',
     });
   }
 
@@ -32,6 +47,14 @@ function Header({ isSmallerLogo }) {
   if (!currentHost) {
     return null;
   }
+
+  const isCurrentPage = (item) => {
+    if (item.name === 'info') {
+      const pathSplitted = pathname.split('/');
+      return pathSplitted && pathSplitted[1] === 'pages';
+    }
+    return item.route === pathname;
+  };
 
   return (
     <Box px="2" w="100%">
@@ -58,6 +81,28 @@ function Header({ isSmallerLogo }) {
             </Box>
           </Link>
         </Box>
+
+        <HStack alignItems="flex-start" pt="8" px="4" wrap="wrap">
+          {menuItems.map((item) => {
+            const isCurrentPageLabel = isCurrentPage(item);
+            return (
+              <Link key={item.name} to={item.route}>
+                <Box px="2">
+                  <Text
+                    _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
+                    borderBottom={isCurrentPageLabel ? 'none' : '2px solid'}
+                    borderColor="brand.600"
+                    color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
+                    fontFamily="Raleway, Sarabun, sans"
+                    fontWeight="bold"
+                  >
+                    {item.label}
+                  </Text>
+                </Box>
+              </Link>
+            );
+          })}
+        </HStack>
 
         <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
           {platform && !platform.isFederationLayout && <UserPopup />}

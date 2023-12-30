@@ -61,6 +61,10 @@ menu:
     works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning
     members: Den här funktionen listar alla som gått med i er community. Om ni klickar bort funktionen blir listan inte synlig. Det går då heller inte att nå era medlemmars profilsidor
     resources: Den här funktionen listar resurserna i er community. Om ni klickar bort funktionen blir listan inte synlig, och ni kan inte lägga till nya resurser. Befintliga resurser fortfarande kan ses och bokas i er kalender
+  headerMenu:
+    title: Huvudmeny
+    label: Huvudmeny aktiv på skrivbordet
+    text: Aktiverar menyn så att den visas överst på sidan på skrivbordet, istället för att lådan visas genom att klicka på menyikonen
 
 categories:
   label: Arbetskategorier

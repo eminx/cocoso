@@ -31,7 +31,7 @@ import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 
-export default function Menu() {
+export default function MenuSettings() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -51,6 +51,13 @@ export default function Menu() {
     currentHost.settings && handleSetActiveMenu();
     setLoading(false);
   }, []);
+
+  const handleSwitchHeaderMenu = (checked) => {
+    setLocalSettings({
+      ...localSettings,
+      isHeaderMenu: checked,
+    });
+  };
 
   const handleSetActiveMenu = (key, label) => {
     const newActiveMenu = {};
@@ -131,11 +138,44 @@ export default function Menu() {
   return (
     <Box>
       <Box mb="24">
-        <Box mb="4">
+        <Box mb="8">
+          <Heading as="h4" fontSize="18px" mb="2">
+            {t('menu.headerMenu.title')}
+          </Heading>
+
+          <Text mb="4">{t('menu.headerMenu.text')}</Text>
+
+          <Flex>
+            <Switch
+              mr="2"
+              mt="1"
+              name="isHeaderMenu"
+              isChecked={localSettings.isHeaderMenu}
+              onChange={(event) => handleSwitchHeaderMenu(event.target.checked)}
+            />
+
+            <Box>
+              <Text fontWeight="bold">{t('menu.headerMenu.label')}</Text>
+            </Box>
+          </Flex>
+
+          <Flex justify="flex-end" pb="2">
+            <Button
+              isDisabled={currentHost?.settings?.isHeaderMenu === localSettings?.isHeaderMenu}
+              onClick={() => handleMenuSave()}
+            >
+              {tc('actions.submit')}
+            </Button>
+          </Flex>
+        </Box>
+
+        <Box mb="8">
           <Heading as="h4" fontSize="18px" mb="2">
             {t('menu.tabs.menuitems.label')}
           </Heading>
+
           <Text mb="8">{t('menu.tabs.menuitems.info')}</Text>
+
           <MenuTable
             menu={localSettings.menu}
             t={t}
@@ -155,6 +195,7 @@ export default function Menu() {
           </Heading>
 
           <Text mb="4">{t('menu.tabs.order.info')}</Text>
+
           <Box>
             {localSettings && localSettings.menu && (
               <SortableContainer onSortEnd={onSortMenuEnd} helperClass="sortableHelper">
@@ -188,8 +229,8 @@ function MenuTable({
   return (
     <Accordion allowToggle>
       {menu.map((item, index) => (
-        <AccordionItem>
-          <AccordionButton bg="white">
+        <AccordionItem key={item.name}>
+          <AccordionButton _expanded={{ bg: 'brand.600', color: '#fff' }} bg="white">
             <Box as="span" flex="1" textAlign="left" textTransform="capitalize">
               {item.label}
             </Box>

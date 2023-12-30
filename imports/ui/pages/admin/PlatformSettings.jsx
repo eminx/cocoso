@@ -330,7 +330,7 @@ function PlatformOptions({ initialValues, onSubmit }) {
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Stack spacing="4">
         <Flex>
-          <CSwitch mr="2" mt="4" {...register('isFederationLayout')} />
+          <CSwitch mr="2" mt="2" {...register('isFederationLayout')} />
           <Box>
             <Text fontSize="lg">{t('info.platform.federationLabel')}</Text>
             <Text fontSize="sm">{t('info.platform.federationText')}</Text>

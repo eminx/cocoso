@@ -61,6 +61,10 @@ menu:
     works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası
     members: Topluluk üyelerini içeren listeleme sayfası
     resources: Topluluk kaynaklarını içeren listeleme sayfası
+  headerMenu:
+    title: Başlık Menüsü
+    label: Başlık Menüsü masaüstü görünümde etkin
+    text: Menü simgesine tıklandığında çekmecenin gösterilmesi yerine, menünün masaüstünde sayfanın üst kısmında görünmesini sağlar
 
 categories:
   label: İş kategorileri
