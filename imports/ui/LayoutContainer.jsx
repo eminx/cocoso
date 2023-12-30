@@ -40,7 +40,6 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [platform, setPlatform] = useState(null);
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
-  const [platformDrawer, setPlatformDrawer] = useState(false);
   const [hue, setHue] = useState('233');
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
