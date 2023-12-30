@@ -17,7 +17,7 @@ function PageHeader({ description, heading, numberOfItems, showNewButton = true,
               {<Heading title={heading} numberOfItems={numberOfItems} />}
               {children}
             </Flex>
-            <Box pt="2" pr="2">
+            <Box pt="2" pr="2" pb="2">
               <Divider borderColor="gray.500" maxW="690px" />
               <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
                 {description}
