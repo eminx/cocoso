@@ -29,7 +29,7 @@ function Header({ isSmallerLogo }) {
       route: getRoute(item, index),
     }));
 
-  if (platform?.showCommunitiesInMenu) {
+  if (platform?.showCommunitiesInMenu && currentHost?.isPortalHost) {
     menuItems.push({
       name: 'communities',
       label: tc('platform.communities'),

@@ -64,7 +64,7 @@ menu:
   headerMenu:
     title: Huvudmeny
     label: Huvudmeny aktiv på skrivbordet
-    text: Aktiverar menyn så att den visas överst på sidan på skrivbordet, istället för att lådan visas genom att klicka på menyikonen
+    text: Aktivera att menyn visas överst på sidan i desktop format, istället för att menyn öppnas genom att klicka på meny-ikonen i vänstermarginalen. I mobilformat visas menyn alltid via menyknappen längst upp till höger.
 
 categories:
   label: Arbetskategorier
