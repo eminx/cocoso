@@ -91,8 +91,7 @@ function Header({ isSmallerLogo }) {
                   <Box px="2">
                     <Text
                       _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
-                      borderBottom={isCurrentPageLabel ? 'none' : '2px solid'}
-                      borderColor="brand.600"
+                      borderBottom={isCurrentPageLabel ? '2px solid' : 'none'}
                       color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
                       fontFamily="Raleway, Sarabun, sans"
                       fontWeight="bold"
