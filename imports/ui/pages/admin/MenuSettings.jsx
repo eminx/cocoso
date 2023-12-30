@@ -159,7 +159,7 @@ export default function MenuSettings() {
             </Box>
           </Flex>
 
-          <Flex justify="flex-end" pb="2">
+          <Flex justify="flex-end" pt="2">
             <Button
               isDisabled={currentHost?.settings?.isHeaderMenu === localSettings?.isHeaderMenu}
               onClick={() => handleMenuSave()}
@@ -174,7 +174,7 @@ export default function MenuSettings() {
             {t('menu.tabs.menuitems.label')}
           </Heading>
 
-          <Text mb="8">{t('menu.tabs.menuitems.info')}</Text>
+          <Text mb="4">{t('menu.tabs.menuitems.info')}</Text>
 
           <MenuTable
             menu={localSettings.menu}
