@@ -85,7 +85,7 @@ message:
     create: Your entry is successfully created
     update: Your entry is successfully updated
     remove: Your entry is successfully deleted
-    save: '{{ domain }} is successfully saved'
+    save: '{{ domain }} successfully saved'
     leave: Your membership at {{ host }} is terminated
 
   error:
