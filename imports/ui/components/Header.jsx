@@ -21,7 +21,7 @@ function Header({ isSmallerLogo }) {
   const location = useLocation();
   const pathname = location?.pathname;
 
-  const { menu } = currentHost?.settings;
+  const { isHeaderMenu, menu } = currentHost?.settings;
   const menuItems = menu
     .filter((item) => item.isVisible)
     .map((item, index) => ({
@@ -82,32 +82,33 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
-        <HStack alignItems="flex-start" pt="8" px="4" wrap="wrap">
-          {menuItems.map((item) => {
-            const isCurrentPageLabel = isCurrentPage(item);
-            return (
-              <Link key={item.name} to={item.route}>
-                <Box px="2">
-                  <Text
-                    _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
-                    borderBottom={isCurrentPageLabel ? 'none' : '2px solid'}
-                    borderColor="brand.600"
-                    color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
-                    fontFamily="Raleway, Sarabun, sans"
-                    fontWeight="bold"
-                  >
-                    {item.label}
-                  </Text>
-                </Box>
-              </Link>
-            );
-          })}
-        </HStack>
+        {isDesktop && isHeaderMenu && (
+          <HStack alignItems="flex-start" pt="8" px="4" wrap="wrap">
+            {menuItems.map((item) => {
+              const isCurrentPageLabel = isCurrentPage(item);
+              return (
+                <Link key={item.name} to={item.route}>
+                  <Box px="2">
+                    <Text
+                      _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
+                      borderBottom={isCurrentPageLabel ? 'none' : '2px solid'}
+                      borderColor="brand.600"
+                      color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
+                      fontFamily="Raleway, Sarabun, sans"
+                      fontWeight="bold"
+                    >
+                      {item.label}
+                    </Text>
+                  </Box>
+                </Link>
+              );
+            })}
+          </HStack>
+        )}
 
         <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
           {platform && !platform.isFederationLayout && <UserPopup />}
           {currentUser && isAdmin && <UserPopupAdmin />}
-          {/* {platform && !platform.isFederationLayout && !currentUser && <LoginHandler />} */}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
           )}

@@ -21,7 +21,7 @@ function FiltrerSorter(props) {
   const [tc] = useTranslation('common');
 
   return (
-    <Box position="relative" mt="6" w="100px">
+    <Box position="relative" mt="6" w="100px" zIndex="2">
       <Menu>
         <MenuButton
           as={Button}

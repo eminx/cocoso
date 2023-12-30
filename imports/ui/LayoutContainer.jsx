@@ -125,7 +125,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const { menu } = currentHost?.settings;
+  const { isHeaderMenu, menu } = currentHost?.settings;
   const pagesWithHeaderAndFooter = [
     ...menu?.map((item) => '/' + item.name),
     '/login',
@@ -199,7 +199,9 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
           {platform && platform.isFederationLayout && <TopBar />}
 
           <Flex>
-            {isDesktop && <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />}
+            {isDesktop && !isHeaderMenu && (
+              <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />
+            )}
 
             <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 10%, 90%)`}>
               <Box w="100%">
