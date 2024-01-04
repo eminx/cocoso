@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Avatar, Box, Center, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
-import { StateContext } from '../LayoutContainer';
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
 
@@ -20,8 +19,6 @@ export default function NewGridThumb({
   title,
   tag,
 }) {
-  const { currentHost } = useContext(StateContext);
-
   if (!title && !imageUrl) {
     return null;
   }
@@ -50,7 +47,7 @@ export default function NewGridThumb({
             )
           )}
         </Center>
-        {host && currentHost.isPortalHost && (
+        {host && (
           <Box position="absolute" top="0" right="0" pl="1" pb="1" bg="rgba(255, 255, 255, 0.4)">
             <Tag border="none" label={host} />
           </Box>
