@@ -87,7 +87,11 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Text>{getFullName(user)}</Text>
           </Box>
 
-          <Wrap justify={isDesktop ? 'flex-start' : 'center'} py="2" px={isDesktop ? '0' : '2'}>
+          <Wrap
+            justify={!isThumb && isDesktop ? 'flex-start' : 'center'}
+            py="2"
+            px={!isThumb && isDesktop ? '0' : '2'}
+          >
             {user.keywords?.map((k) => (
               <WrapItem key={k.keywordId}>
                 <Tag colorScheme="gray">{k.keywordLabel}</Tag>
