@@ -34,8 +34,7 @@ import FormField from '../../components/FormField';
 export default function MenuSettings() {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] = useState(null);
-  const [activeMenu, setActiveMenu] = useState(null);
-  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, currentHost, platform, role, getCurrentHost } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -47,25 +46,30 @@ export default function MenuSettings() {
     if (!currentHost) {
       return;
     }
-    setLocalSettings(currentHost?.settings);
-    currentHost.settings && handleSetActiveMenu();
+    handleSetLocalSettings();
     setLoading(false);
   }, []);
+
+  const handleSetLocalSettings = () => {
+    const theLocalSettings = currentHost?.settings;
+    // if (currentHost?.isPortalHost && platform?.isFederationLayout) {
+    //   if (!currentHost?.settings?.menu?.some((item) => item.name === 'communities')) {
+    //     theLocalSettings.menu.push({
+    //       description: '',
+    //       label: 'Communities',
+    //       name: 'communities',
+    //       isVisible: true,
+    //     });
+    //   }
+    // }
+    setLocalSettings(theLocalSettings);
+  };
 
   const handleSwitchHeaderMenu = (checked) => {
     setLocalSettings({
       ...localSettings,
       isHeaderMenu: checked,
     });
-  };
-
-  const handleSetActiveMenu = (key, label) => {
-    const newActiveMenu = {};
-    currentHost.settings.menu.forEach((item) => {
-      newActiveMenu[item.name] = item.label;
-    });
-
-    setActiveMenu(newActiveMenu);
   };
 
   const handleMenuItemCheck = (changedItemIndex, value) => {
@@ -131,7 +135,7 @@ export default function MenuSettings() {
     }
   };
 
-  if (loading || !localSettings || !localSettings.menu || !activeMenu) {
+  if (loading || !localSettings || !localSettings.menu) {
     return <Loader />;
   }
 
