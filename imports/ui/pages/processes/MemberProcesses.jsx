@@ -8,7 +8,13 @@ import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberProcesses({ isDesktop, isSelfAccount, user }) {
+function MemberProcesses({
+  currentHost,
+  isDesktop,
+  isFederationLayout = false,
+  isSelfAccount,
+  user,
+}) {
   const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const { username } = user;
@@ -36,13 +42,22 @@ function MemberProcesses({ isDesktop, isSelfAccount, user }) {
     return null;
   }
 
+  const getItemLink = (item) => {
+    if (item.host === currentHost.host) {
+      return `/processes/${item._id}`;
+    } else {
+      window.location.href = `https://${item.host}/processes/${item._id}`;
+    }
+  };
+
   return (
     <>
       <Paginate centerItems={!isDesktop} items={processes}>
         {(process) => (
           <Box key={process._id}>
-            <Link to={`/processes/${process._id}`}>
+            <Link to={getItemLink(process)}>
               <NewGridThumb
+                host={isFederationLayout && process.host}
                 imageUrl={process.imageUrl}
                 subTitle={process.readingMaterial}
                 title={process.title}

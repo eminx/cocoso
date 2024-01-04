@@ -24,7 +24,7 @@ function Profile({ history, match, path }) {
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
   const { username } = match.params;
-  const { currentUser, currentHost, isDesktop } = useContext(StateContext);
+  const { currentUser, currentHost, isDesktop, platform } = useContext(StateContext);
 
   useEffect(() => {
     getUserInfo();
@@ -117,6 +117,8 @@ function Profile({ history, match, path }) {
 
   const isSelfAccount = currentUser && currentUser.username === username;
 
+  const isFederationLayout = platform?.isFederationLayout;
+
   return (
     <>
       <Box py="4" px="4" fontSize="130%">
@@ -164,10 +166,11 @@ function Profile({ history, match, path }) {
                 path="/@:username/activities"
                 render={(props) => (
                   <MemberActivities
+                    currentHost={currentHost}
                     isDesktop={isDesktop}
+                    isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
-                    match={match}
                   />
                 )}
               />
@@ -175,10 +178,11 @@ function Profile({ history, match, path }) {
                 path="/@:username/processes"
                 render={(props) => (
                   <MemberProcesses
+                    currentHost={currentHost}
                     isDesktop={isDesktop}
+                    isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
-                    match={match}
                   />
                 )}
               />
@@ -186,10 +190,11 @@ function Profile({ history, match, path }) {
                 path="/@:username/works"
                 render={(props) => (
                   <MemberWorks
+                    currentHost={currentHost}
                     isDesktop={isDesktop}
+                    isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
-                    match={match}
                   />
                 )}
               />

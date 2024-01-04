@@ -1,14 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
-import { message, Alert } from '../../components/message';
+import { message } from '../../components/message';
 import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberActivities({ isDesktop, isSelfAccount, user }) {
+function MemberActivities({
+  currentHost,
+  isDesktop,
+  isFederationLayout = false,
+  isSelfAccount,
+  user,
+}) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,13 +45,22 @@ function MemberActivities({ isDesktop, isSelfAccount, user }) {
     return null;
   }
 
+  const getItemLink = (item) => {
+    if (item.host === currentHost.host) {
+      return `/activities/${item._id}`;
+    } else {
+      window.location.href = `https://${item.host}/activities/${item._id}`;
+    }
+  };
+
   return (
     <>
       <Paginate centerItems={!isDesktop} items={publicActivities}>
         {(activity) => (
           <Box key={activity._id}>
-            <Link to={`/activities/${activity._id}`}>
+            <Link to={getItemLink(activity)}>
               <NewGridThumb
+                host={isFederationLayout && activity.host}
                 imageUrl={activity.imageUrl}
                 title={activity.title}
                 subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}

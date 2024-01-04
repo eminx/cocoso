@@ -8,7 +8,7 @@ import NewGridThumb from '../../components/NewGridThumb';
 import Paginate from '../../components/Paginate';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberWorks({ isDesktop, isSelfAccount, user }) {
+function MemberWorks({ currentHost, isDesktop, isFederationLayout = false, isSelfAccount, user }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,17 +37,26 @@ function MemberWorks({ isDesktop, isSelfAccount, user }) {
     return null;
   }
 
+  const getItemLink = (item) => {
+    if (item.host === currentHost.host) {
+      return `/@${item.authorUsername}/works/${item._id}`;
+    } else {
+      window.location.href = `https://${item.host}/@${item.authorUsername}/works/${item._id}`;
+    }
+  };
+
   return (
     <>
       <Paginate centerItems={!isDesktop} items={works}>
         {(work) => (
           <Box key={work._id}>
-            <Link to={`/@${work.authorUsername}/works/${work._id}`}>
+            <Link to={getItemLink(work)}>
               <NewGridThumb
                 avatar={{
                   name: work.authorUsername,
                   url: work.authorAvatar,
                 }}
+                host={isFederationLayout && work.host}
                 imageUrl={work.images[0]}
                 tag={work.category?.label}
                 title={work.title}
