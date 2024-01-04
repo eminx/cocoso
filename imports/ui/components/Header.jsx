@@ -83,7 +83,7 @@ function Header({ isSmallerLogo }) {
         </Box>
 
         {isDesktop && isHeaderMenu && (
-          <HStack alignItems="flex-start" p="4" pl="8" wrap="wrap">
+          <HStack alignItems="flex-start" p="4" pl="8" mt="2" wrap="wrap">
             {menuItems.map((item) => {
               const isCurrentPageLabel = isCurrentPage(item);
               return (
