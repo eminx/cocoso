@@ -45,29 +45,35 @@ function MemberActivities({
     return null;
   }
 
-  const getItemLink = (item) => {
-    if (item.host === currentHost.host) {
-      return `/activities/${item._id}`;
-    } else {
-      window.location.href = `https://${item.host}/activities/${item._id}`;
-    }
-  };
-
   return (
     <>
       <Paginate centerItems={!isDesktop} items={publicActivities}>
-        {(activity) => (
-          <Box key={activity._id}>
-            <Link to={getItemLink(activity)}>
-              <NewGridThumb
-                host={isFederationLayout && activity.host}
-                imageUrl={activity.imageUrl}
-                title={activity.title}
-                subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
-              />
-            </Link>
-          </Box>
-        )}
+        {(activity) => {
+          const isExternal = activity.host !== currentHost.host;
+          return (
+            <Box key={activity._id}>
+              {isExternal ? (
+                <a href={`https://${activity.host}/activities/${activity._id}`}>
+                  <NewGridThumb
+                    host={isFederationLayout && activity.host}
+                    imageUrl={activity.imageUrl}
+                    title={activity.title}
+                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  />
+                </a>
+              ) : (
+                <Link to={`/activities/${activity._id}`}>
+                  <NewGridThumb
+                    host={isFederationLayout && activity.host}
+                    imageUrl={activity.imageUrl}
+                    title={activity.title}
+                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  />
+                </Link>
+              )}
+            </Box>
+          );
+        }}
       </Paginate>
       {isSelfAccount && (
         <Box p="4">

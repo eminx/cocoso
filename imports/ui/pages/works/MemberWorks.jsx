@@ -37,33 +37,43 @@ function MemberWorks({ currentHost, isDesktop, isFederationLayout = false, isSel
     return null;
   }
 
-  const getItemLink = (item) => {
-    if (item.host === currentHost.host) {
-      return `/@${item.authorUsername}/works/${item._id}`;
-    } else {
-      window.location.href = `https://${item.host}/@${item.authorUsername}/works/${item._id}`;
-    }
-  };
-
   return (
     <>
       <Paginate centerItems={!isDesktop} items={works}>
-        {(work) => (
-          <Box key={work._id}>
-            <Link to={getItemLink(work)}>
-              <NewGridThumb
-                avatar={{
-                  name: work.authorUsername,
-                  url: work.authorAvatar,
-                }}
-                host={isFederationLayout && work.host}
-                imageUrl={work.images[0]}
-                tag={work.category?.label}
-                title={work.title}
-              />
-            </Link>
-          </Box>
-        )}
+        {(work) => {
+          const isExternal = work.host !== currentHost.host;
+          return (
+            <Box key={work._id}>
+              {isExternal ? (
+                <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
+                  <NewGridThumb
+                    avatar={{
+                      name: work.authorUsername,
+                      url: work.authorAvatar,
+                    }}
+                    host={isFederationLayout && work.host}
+                    imageUrl={work.images[0]}
+                    tag={work.category?.label}
+                    title={work.title}
+                  />
+                </a>
+              ) : (
+                <Link to={isExternal && `/@${work.authorUsername}/works/${work._id}`}>
+                  <NewGridThumb
+                    avatar={{
+                      name: work.authorUsername,
+                      url: work.authorAvatar,
+                    }}
+                    host={isFederationLayout && work.host}
+                    imageUrl={work.images[0]}
+                    tag={work.category?.label}
+                    title={work.title}
+                  />
+                </Link>
+              )}
+            </Box>
+          );
+        }}
       </Paginate>
       {isSelfAccount && (
         <Box p="4">

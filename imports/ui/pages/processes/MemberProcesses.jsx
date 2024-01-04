@@ -42,29 +42,35 @@ function MemberProcesses({
     return null;
   }
 
-  const getItemLink = (item) => {
-    if (item.host === currentHost.host) {
-      return `/processes/${item._id}`;
-    } else {
-      window.location.href = `https://${item.host}/processes/${item._id}`;
-    }
-  };
-
   return (
     <>
       <Paginate centerItems={!isDesktop} items={processes}>
-        {(process) => (
-          <Box key={process._id}>
-            <Link to={getItemLink(process)}>
-              <NewGridThumb
-                host={isFederationLayout && process.host}
-                imageUrl={process.imageUrl}
-                subTitle={process.readingMaterial}
-                title={process.title}
-              />
-            </Link>
-          </Box>
-        )}
+        {(process) => {
+          const isExternal = process.host !== currentHost.host;
+          return (
+            <Box key={process._id}>
+              {isExternal ? (
+                <a href={`https://${process.host}/processes/${process._id}`}>
+                  <NewGridThumb
+                    host={isFederationLayout && process.host}
+                    imageUrl={process.imageUrl}
+                    subTitle={process.readingMaterial}
+                    title={process.title}
+                  />
+                </a>
+              ) : (
+                <Link to={`/processes/${process._id}`}>
+                  <NewGridThumb
+                    host={isFederationLayout && process.host}
+                    imageUrl={process.imageUrl}
+                    subTitle={process.readingMaterial}
+                    title={process.title}
+                  />
+                </Link>
+              )}
+            </Box>
+          );
+        }}
       </Paginate>
       {isSelfAccount && (
         <Box p="4">
