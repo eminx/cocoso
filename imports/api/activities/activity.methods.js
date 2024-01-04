@@ -7,6 +7,7 @@ import Hosts from '../hosts/host';
 import Activities from './activity';
 import Processes from '../processes/process';
 import Resources from '../resources/resource';
+import Platform from '../platform/platform';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
 Meteor.methods({
@@ -118,13 +119,18 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
+    const platform = Platform.findOne();
 
     try {
-      const activities = Activities.find({
+      if (platform?.isFederationLayout) {
+        return Activities.find({
+          authorName: username,
+        }).fetch();
+      }
+      return Activities.find({
         host,
         authorName: username,
       }).fetch();
-      return activities;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch activities");
     }

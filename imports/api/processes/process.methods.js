@@ -6,6 +6,7 @@ import { isAdmin, isContributorOrAdmin, isMember } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Processes from './process';
 import Activities from '../activities/activity';
+import Platform from '../platform/platform';
 import {
   getProcessRegistrationEmailBody,
   getInviteToPrivateProcessEmailBody,
@@ -62,15 +63,22 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
+    const platform = Platform.findOne();
 
     try {
-      const processes = Processes.find({
+      if (platform?.isFederationLayout) {
+        return Processes.find({
+          isPrivate: { $ne: true },
+          isArchived: { $ne: true },
+          $or: [{ authorUsername: username }, { 'members.username': username }],
+        }).fetch();
+      }
+      return Processes.find({
         isPrivate: { $ne: true },
         isArchived: { $ne: true },
         $or: [{ authorUsername: username }, { 'members.username': username }],
         host,
       }).fetch();
-      return processes;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch processes");
     }

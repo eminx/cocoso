@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { getHost } from '../_utils/shared';
 import Works from './work';
+import Platform from '../platform/platform';
 
 Meteor.methods({
   getAllWorksFromAllHosts() {
@@ -31,13 +32,18 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
     const host = getHost(this);
+    const platform = Platform.findOne();
 
     try {
-      const works = Works.find({
+      if (platform.isFederationLayout) {
+        return Works.find({
+          authorUsername: username,
+        }).fetch();
+      }
+      return Works.find({
         host,
         authorUsername: username,
       }).fetch();
-      return works;
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch works");
     }
