@@ -251,18 +251,21 @@ function Header({
             justify={isDesktop ? 'flex-end' : 'flex-start'}
             mt={isDesktop ? '6' : '4'}
           >
-            {tags.map((tag) => (
-              <Badge
-                key={tag}
-                bg="gray.50"
-                color="gray.800"
-                fontSize="14px"
-                ml={isDesktop && '2'}
-                mr={!isDesktop && '2'}
-              >
-                {tag}
-              </Badge>
-            ))}
+            {tags.map(
+              (tag) =>
+                tag && (
+                  <Badge
+                    key={tag}
+                    bg="gray.50"
+                    color="gray.800"
+                    fontSize="14px"
+                    ml={isDesktop && '2'}
+                    mr={!isDesktop && '2'}
+                  >
+                    {tag}
+                  </Badge>
+                )
+            )}
           </Flex>
         )}
       </Box>
