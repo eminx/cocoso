@@ -83,7 +83,11 @@ export default function NewGridThumb({
             {tag && <Tag filterColor={color} label={tag} />}
           </Box>
 
-          {avatar && <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />}
+          {avatar && (
+            <Box pt="2">
+              <Avatar borderRadius="8px" name={avatar.name} src={avatar.url} />
+            </Box>
+          )}
 
           {dates && (
             <Flex flexShrink="0">
