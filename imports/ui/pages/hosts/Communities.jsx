@@ -92,7 +92,6 @@ function Communities() {
     const myHosts = currentUser.memberships;
     const myHostsSorted = myHosts.sort((a, b) => {
       if (sorterValue === 'name') {
-        console.log(a.hostname);
         const nameA = a?.hostname;
         const nameB = b?.hostname;
         return nameA?.localeCompare(nameB);
