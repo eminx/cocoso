@@ -92,8 +92,9 @@ function Communities() {
     const myHosts = currentUser.memberships;
     const myHostsSorted = myHosts.sort((a, b) => {
       if (sorterValue === 'name') {
-        const nameA = a?.name;
-        const nameB = b?.name;
+        console.log(a.hostname);
+        const nameA = a?.hostname;
+        const nameB = b?.hostname;
         return nameA?.localeCompare(nameB);
       } else {
         return new Date(b.createdAt) - new Date(a.createdAt);
@@ -147,11 +148,7 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <PageHeader
-        // description={settings.menu.find((item) => item.name === 'resources')?.description}
-        heading={tc('platform.communities')}
-        numberOfItems={hostsRendered?.length}
-      >
+      <PageHeader heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
         <FiltrerSorter {...filtrerProps} />
       </PageHeader>
 
