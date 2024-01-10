@@ -43,6 +43,7 @@ message:
   guest: İşlerini yayınlaman için oluşturucu ya da admin olman gerek
   usage:
     noUsage: Bu kullanıcı henüz bir kaynak kullanmamış
+  sortedRandomly: Rastgele sıralandı
 
 profile:
   labels:

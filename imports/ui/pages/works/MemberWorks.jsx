@@ -58,7 +58,7 @@ function MemberWorks({ currentHost, isDesktop, isFederationLayout = false, isSel
                   />
                 </a>
               ) : (
-                <Link to={isExternal && `/@${work.authorUsername}/works/${work._id}`}>
+                <Link to={`/@${work.authorUsername}/works/${work._id}`}>
                   <NewGridThumb
                     avatar={{
                       name: work.authorUsername,

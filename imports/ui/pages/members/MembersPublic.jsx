@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Box,
-  Center,
-  Container,
-  Flex,
-  Heading as CHeading,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 
@@ -37,7 +29,7 @@ function MembersPublic({ history }) {
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
   const [filterKeyword, setFilterKeyword] = useState(null);
-  const [sorterValue, setSorterValue] = useState('date');
+  const [sorterValue, setSorterValue] = useState('random');
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
@@ -165,13 +157,16 @@ function MembersPublic({ history }) {
   const getMembersSorted = (membersFiltered) => {
     if (sorterValue === 'name') {
       return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
+    } else if (sorterValue === 'random') {
+      return membersFiltered.sort(() => 0.5 - Math.random());
+    } else {
+      return membersFiltered
+        .map((m) => ({
+          ...m,
+          date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
+        }))
+        .sort(compareByDate);
     }
-    return membersFiltered
-      .map((m) => ({
-        ...m,
-        date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
-      }))
-      .sort(compareByDate);
   };
 
   const filtrerProps = {
@@ -184,10 +179,6 @@ function MembersPublic({ history }) {
   const membersRendered = getMembersFiltered();
 
   const { settings } = currentHost;
-  const menu = settings?.menu;
-  const menuItems = menu?.filter((item) => item.isVisible);
-  const activeMenuItem = menuItems.find((item) => item.name === 'members');
-
   const coloredKeywords = getColoredKeywords(keywords);
 
   return (
@@ -237,6 +228,10 @@ function MembersPublic({ history }) {
             </WrapItem>
           ))}
         </Wrap>
+      </Center>
+
+      <Center mb="2">
+        <Text>Sorted randomly</Text>
       </Center>
 
       <Box pr="3">

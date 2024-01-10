@@ -55,14 +55,13 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
   return (
     <Box w="100%">
-      <Flex flexDirection="column" align={isCentered ? 'center' : 'flex-start'}>
+      <Flex align={isCentered ? 'center' : 'flex-start'} flexDirection="column" overflow="hidden">
         {avatarSrc ? (
           <Box>
             <Image
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
               src={avatarSrc}
-              maxW="280px"
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
           </Box>

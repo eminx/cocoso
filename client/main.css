@@ -141,7 +141,6 @@ input::placeholder {
 .thumb-cover-container {
   height: 315px;
   position: relative;
-  /* width: 355px; */
 }
 
 .thumb-cover-container:hover .thumb-cover {
@@ -175,6 +174,7 @@ input::placeholder {
 .sexy-thumb-container {
   cursor: pointer;
   flex: 1 1 355px;
+  max-width: 550px;
 }
 
 .cover-highlight-title {

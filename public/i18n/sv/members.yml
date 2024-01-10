@@ -43,6 +43,7 @@ message:
   guest: Du måste skapa ett konto för att lansera din marknad
   usage:
     noUsage: Inga bokningar har registrerats för denna användare
+  sortedRandomly: Sorteras slumpmässigt
 
 profile:
   labels:

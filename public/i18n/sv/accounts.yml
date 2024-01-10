@@ -85,7 +85,7 @@ profile:
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
-    platform: Information du anger här kommer att sparas globalt i plattformen {{ platform }} och publiceras i communities du väljer.
+    platform: Information du anger här kommer att sparas globalt i plattformen Samarbetet och publiceras i de communities du väljer att vara med i.
 
   makePublic:
     labelGlobal: Profilen är offentlig globalt
@@ -102,7 +102,7 @@ profile:
     privacy: Integritet
     keywords:
       label: Nyckelord
-      description: Här kan du välja och skapa några nyckelord som förklarar dig och dina kunskaper väl. De kommer att visas på din profilsida, samt att kunna filtreras på medlemssidan.
+      description: Här kan du lägga till nyckelord som visar dina kunskaper och intressen, eller vad du vill att andra personer i Samarbetet kontaktar dig om. Nyckelorden kommer fungera som sökord för att hitta din profil. Skriv ett ord i taget!
       placeholder: Skriv något...
 
 leave:

@@ -140,11 +140,11 @@ function Heading({ title, numberOfItems }) {
     <Flex mr="4">
       <CHeading as="h1" color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
         {title || activeMenuItem?.label}{' '}
-        {numberOfItems > 0 && (
+        {/* {numberOfItems > 0 && (
           <Text as="span" fontSize="xs">
             {numberOfItems} {tc('labels.items')}
           </Text>
-        )}
+        )} */}
       </CHeading>
     </Flex>
   );

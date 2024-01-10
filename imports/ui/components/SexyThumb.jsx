@@ -21,9 +21,6 @@ const imageStyle = {
   width: '100%',
 };
 
-const coverClass = 'thumb-cover';
-const coverContainerClass = 'thumb-cover-container ';
-
 function ThumbDate({ date }) {
   if (!date) {
     return null;
@@ -61,20 +58,20 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
     <Box
       _hover={{ bg: 'brand.400' }}
       bg="brand.500"
-      className={coverContainerClass}
+      className="thumb-cover-container"
       fontWeight="bold"
     >
-      <div className={coverClass}>
-        <LazyLoadImage alt={title} src={imageUrl} style={imageStyle} effect="black-and-white" />
+      <div className="thumb-cover">
+        <LazyLoadImage alt={title} effect="black-and-white" src={imageUrl} style={imageStyle} />
       </div>
 
       <div className="thumb-text-container">
         {dates && (
           <div
             style={{
+              alignItems: 'center',
               display: 'flex',
               flexWrap: 'wrap',
-              alignItems: 'center',
             }}
           >
             {!showPast && futureDates && (
@@ -90,7 +87,7 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
             {showPast && (
               <HStack spacing="4" mb="4">
                 {pastDates.slice(0, 3).map((date) => (
-                  <ThumbDate key={date?.startDate + date?.startTime} date={date} color="gray.400" />
+                  <ThumbDate key={date?.startDate + date?.startTime} color="gray.400" date={date} />
                 ))}
               </HStack>
             )}
@@ -103,12 +100,12 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
         {(host || tag) && (
           <div
             style={{
+              alignItems: 'center',
+              bottom: 12,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
               position: 'absolute',
               right: 12,
-              bottom: 12,
             }}
           >
             <em style={{ color: '#fff' }}>{host || tag}</em>

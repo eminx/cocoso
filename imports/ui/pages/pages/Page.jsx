@@ -47,21 +47,6 @@ function Page() {
 
   const isAdmin = currentUser && role === 'admin';
 
-  const renderEditButton = () => {
-    if (!isAdmin) {
-      return null;
-    }
-    return (
-      <Center m="4">
-        <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-          <Button as="span" variant="ghost" size="sm">
-            <Text>{tc('actions.update')}</Text>
-          </Button>
-        </Link>
-      </Center>
-    );
-  };
-
   const { settings } = currentHost;
 
   if (isDesktop) {
@@ -91,13 +76,16 @@ function Page() {
               {renderHTML(currentPage.longDescription)}
             </Box>
 
-            {renderEditButton()}
+            {isAdmin && (
+              <Center m="4">
+                <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+                  <Button as="span" variant="ghost" size="sm">
+                    <Text>{tc('actions.update')}</Text>
+                  </Button>
+                </Link>
+              </Center>
+            )}
           </Box>
-          {isAdmin && (
-            <Box m="7" p="8">
-              <NewEntryHelper title={tc('labels.newPage')} buttonLink="/pages/new" />
-            </Box>
-          )}
         </Flex>
       </>
     );
