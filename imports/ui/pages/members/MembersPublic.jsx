@@ -231,7 +231,7 @@ function MembersPublic({ history }) {
       </Center>
 
       <Center mb="2">
-        <Text>Sorted randomly</Text>
+        <Text>{t('message.sortedRandomly')}</Text>
       </Center>
 
       <Box pr="3">
