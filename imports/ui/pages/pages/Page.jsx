@@ -58,12 +58,12 @@ function Page() {
 
         <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-        <Flex mt="4" mb="8">
-          <Box w="280px" px="4">
+        <Flex mb="8">
+          <Box w="280px" px="4" pt="53px">
             <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
           </Box>
 
-          <Box w="100%" maxW="520px">
+          <Box maxW="520px" pl="4" w="100%">
             <Box py="4">
               <Heading as="h2" fontFamily="'Raleway', sans-serif" fontSize="24px">
                 {currentPage.title}
@@ -114,11 +114,13 @@ function Page() {
         </Box>
       </Center>
 
-      {renderEditButton()}
-
       {isAdmin && (
-        <Center mb="8">
-          <NewEntryHelper buttonLink="/pages/new" />
+        <Center m="4">
+          <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
+            <Button as="span" variant="ghost" size="sm">
+              <Text>{tc('actions.update')}</Text>
+            </Button>
+          </Link>
         </Center>
       )}
     </>
