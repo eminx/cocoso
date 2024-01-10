@@ -76,7 +76,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
           return image;
         })
       );
-      console.log(imagesReadyToSave);
       return imagesReadyToSave;
     } catch (error) {
       console.error('Error uploading:', error);
@@ -96,7 +95,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
       resourcesForCombo: resourcesForCombo || [],
     };
 
-    if (values.images?.length > 0) {
+    if (images?.length > 0) {
       values.images = await handleUploadImage();
     }
 
@@ -131,6 +130,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const setFileDropperImage = (files) => {
+    console.log(files);
     files.forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
