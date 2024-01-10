@@ -40,7 +40,7 @@ function EditProfile({ history }) {
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
   const [lang, setLang] = useState(null);
   const location = useLocation();
-  const { currentHost, currentUser, hue, platform, role } = useContext(StateContext);
+  const { currentHost, currentUser, platform, role } = useContext(StateContext);
   const { username } = useParams();
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
@@ -256,6 +256,7 @@ function EditProfile({ history }) {
             <Box>
               <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
             </Box>
+            <KeywordsManager currentUser={currentUser} />
           </Box>
         </Box>
       ),
@@ -351,15 +352,6 @@ function EditProfile({ history }) {
               </Button>
             </Box>
           </Box>
-        </Box>
-      ),
-    },
-    {
-      title: t('profile.menu.keywords.label'),
-      path: `/@${currentUser.username}/edit/keywords`,
-      content: (
-        <Box>
-          <KeywordsManager currentUser={currentUser} />
         </Box>
       ),
     },

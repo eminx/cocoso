@@ -38,7 +38,7 @@ function KeywordsManager({ currentUser }) {
     try {
       await call('saveKeywords', selectedKeywords);
       setIsChanged(false);
-      message.success('success');
+      message.success(tc('message.success.update'));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -49,7 +49,7 @@ function KeywordsManager({ currentUser }) {
     setCreating(true);
     try {
       const respond = await call('createKeyword', keyword);
-      message.success('success created');
+      message.success(tc('message.success.create'));
       setSelectedKeywords([
         ...selectedKeywords,
         {
