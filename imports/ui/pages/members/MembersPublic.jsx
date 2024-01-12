@@ -47,10 +47,10 @@ function MembersPublic({ history }) {
     try {
       if (currentHost.isPortalHost) {
         const allMembers = await call('getAllMembersFromAllHosts');
-        setMembers(getMembersSorted(allMembers));
+        setMembers(allMembers.sort(() => 0.5 - Math.random()));
       } else {
         const allMembers = await call('getHostMembers');
-        setMembers(getMembersSorted(allMembers));
+        setMembers(allMembers.sort(() => 0.5 - Math.random()));
       }
     } catch (error) {
       message.error(error.error);
@@ -126,15 +126,15 @@ function MembersPublic({ history }) {
   const getMembersSorted = (membersFiltered) => {
     if (sorterValue === 'name') {
       return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
-    } else if (sorterValue === 'random') {
-      return membersFiltered.sort(() => 0.5 - Math.random());
-    } else {
+    } else if (sorterValue === 'date') {
       return membersFiltered
         .map((m) => ({
           ...m,
           date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
         }))
         .sort(compareByDate);
+    } else {
+      return membersFiltered;
     }
   };
 
@@ -161,11 +161,14 @@ function MembersPublic({ history }) {
 
   const getMembersHostFiltered = (membersFiltered) => {
     if (!isPortalHost || !hostFilterValue) {
-      return membersFiltered;
+      return getMembersSorted(membersFiltered);
     }
-    return membersFiltered.filter((member) => {
+
+    const membersHostFiltered = membersFiltered.filter((member) => {
       return member.memberships.some((membership) => membership.host === hostFilterValue.host);
     });
+
+    return getMembersSorted(membersHostFiltered);
   };
 
   const filtrerProps = {
@@ -230,9 +233,11 @@ function MembersPublic({ history }) {
         </Wrap>
       </Center>
 
-      <Center mb="2">
-        <Text>{t('message.sortedRandomly')}</Text>
-      </Center>
+      {sorterValue === 'random' && (
+        <Center mb="2">
+          <Text>{t('message.sortedRandomly')}</Text>
+        </Center>
+      )}
 
       <Box pr="3">
         <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>

@@ -56,6 +56,7 @@ labels:
     placeholder: Sortera med
     date: Datum
     name: Namn
+    random: Slumpmässigt
   update: Redigera detta/denna {{ domain }}
   unselected: Du har ej valt resurs eller lokal
   admin:

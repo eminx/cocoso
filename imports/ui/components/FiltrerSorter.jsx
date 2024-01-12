@@ -79,6 +79,7 @@ function Inputs({
       >
         <option value="date">{tc('labels.sortBy.date')}</option>
         <option value="name">{tc('labels.sortBy.name')}</option>
+        {/* <option value="random">{tc('labels.sortBy.random')}</option> */}
       </Select>
     </Flex>
   );
