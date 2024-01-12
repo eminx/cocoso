@@ -46,9 +46,11 @@ function MembersPublic({ history }) {
   const getAndSetMembers = async () => {
     try {
       if (currentHost.isPortalHost) {
-        setMembers(await call('getAllMembersFromAllHosts'));
+        const allMembers = await call('getAllMembersFromAllHosts');
+        setMembers(getMembersSorted(allMembers));
       } else {
-        setMembers(await call('getHostMembers'));
+        const allMembers = await call('getHostMembers');
+        setMembers(getMembersSorted(allMembers));
       }
     } catch (error) {
       message.error(error.error);
@@ -121,6 +123,21 @@ function MembersPublic({ history }) {
     }
   };
 
+  const getMembersSorted = (membersFiltered) => {
+    if (sorterValue === 'name') {
+      return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
+    } else if (sorterValue === 'random') {
+      return membersFiltered.sort(() => 0.5 - Math.random());
+    } else {
+      return membersFiltered
+        .map((m) => ({
+          ...m,
+          date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
+        }))
+        .sort(compareByDate);
+    }
+  };
+
   const getMembersFiltered = () => {
     const lowerCaseFilterWord = filterWord?.toLowerCase();
     const membersFiltered = members.filter((member) => {
@@ -144,29 +161,11 @@ function MembersPublic({ history }) {
 
   const getMembersHostFiltered = (membersFiltered) => {
     if (!isPortalHost || !hostFilterValue) {
-      return getMembersSorted(membersFiltered);
+      return membersFiltered;
     }
-
-    const membersHostFiltered = membersFiltered.filter((member) => {
+    return membersFiltered.filter((member) => {
       return member.memberships.some((membership) => membership.host === hostFilterValue.host);
     });
-
-    return getMembersSorted(membersHostFiltered);
-  };
-
-  const getMembersSorted = (membersFiltered) => {
-    if (sorterValue === 'name') {
-      return membersFiltered.sort((a, b) => a.username.localeCompare(b.username));
-    } else if (sorterValue === 'random') {
-      return membersFiltered.sort(() => 0.5 - Math.random());
-    } else {
-      return membersFiltered
-        .map((m) => ({
-          ...m,
-          date: m?.memberships?.find((m) => m.host === currentHost?.host)?.date,
-        }))
-        .sort(compareByDate);
-    }
   };
 
   const filtrerProps = {
@@ -179,12 +178,13 @@ function MembersPublic({ history }) {
   const membersRendered = getMembersFiltered();
 
   const { settings } = currentHost;
+  const title = settings?.menu.find((item) => item.name === 'members')?.label;
   const coloredKeywords = getColoredKeywords(keywords);
 
   return (
     <Box mb="8">
       <Helmet>
-        <title>{`Members | ${currentHost.settings.name}`}</title>
+        <title>{title}</title>
       </Helmet>
 
       <PageHeader

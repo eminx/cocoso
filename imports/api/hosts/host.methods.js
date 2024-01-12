@@ -73,6 +73,15 @@ Meteor.methods({
     }
   },
 
+  getPortalHost() {
+    try {
+      const portalHost = Hosts.findOne({ isPortalHost: true });
+      return portalHost;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
   getCurrentHost() {
     const host = getHost(this);
     try {

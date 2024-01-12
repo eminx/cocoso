@@ -154,11 +154,12 @@ function Works({ history }) {
   };
 
   const { settings } = currentHost;
+  const title = settings?.menu.find((item) => item.name === 'works')?.label;
 
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.works')} | ${currentHost.settings.name}`}</title>
+        <title>{title}</title>
       </Helmet>
 
       <PageHeader

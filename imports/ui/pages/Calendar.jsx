@@ -237,13 +237,12 @@ class Calendar extends PureComponent {
         : `/activities/${selectedActivity.activityId}`);
 
     const { settings } = currentHost;
+    const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
 
     return (
       <Box>
         <Helmet>
-          <title>{`${tc('domains.activity')} ${tc('domains.calendar')} | ${
-            currentHost.settings.name
-          } | ${publicSettings.name}`}</title>
+          <title>{title}</title>
         </Helmet>
 
         <PageHeader
@@ -346,12 +345,6 @@ class Calendar extends PureComponent {
             </Box>
           )}
         </Box>
-
-        {canCreateContent && (
-          <Center mb="4">
-            <NewEntryHelper buttonLink="/activities/new" />
-          </Center>
-        )}
 
         <ConfirmModal
           visible={Boolean(selectedActivity)}

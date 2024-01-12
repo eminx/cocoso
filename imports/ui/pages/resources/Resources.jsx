@@ -172,11 +172,12 @@ function Resources({ history }) {
   const isAdmin = role === 'admin';
 
   const { settings } = currentHost;
+  const title = settings?.menu.find((item) => item.name === 'resources')?.label;
 
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.resources')} | ${currentHost?.settings?.name}`}</title>
+        <title>{title}</title>
       </Helmet>
 
       <PageHeader

@@ -234,10 +234,12 @@ function Activities({ history }) {
 
   const { settings } = currentHost;
 
+  const title = settings?.menu.find((item) => item.name === 'activities')?.label;
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
-        <title>{`${tc('domains.public')} ${tc('domains.activities')} | ${settings.name}`}</title>
+        <title>{title}</title>
       </Helmet>
 
       <PageHeader

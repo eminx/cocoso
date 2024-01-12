@@ -203,11 +203,12 @@ export default function ProcessesList({ history }) {
   };
 
   const { settings } = currentHost;
+  const title = settings?.menu.find((item) => item.name === 'processes')?.label;
 
   return (
     <Box w="100%">
       <Helmet>
-        <title>{`${tc('domains.processes')} | ${currentHost.settings.name}`}</title>
+        <title>{title}</title>
       </Helmet>
 
       <PageHeader

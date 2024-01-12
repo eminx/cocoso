@@ -23,7 +23,7 @@ actions:
   logout: Logout
   downloadCSV: Download CSV
   confirmRead: I have read and accept
-  toThePage: Visit page {{ hostName }}
+  toThePage: Visit page in {{ hostName }}
   entryPage: Visit page
   toHost: Visit
   share: Share
