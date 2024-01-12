@@ -19,6 +19,11 @@ Meteor.methods({
     }
   },
 
+  getPortalHostPages() {
+    const portalHost = Hosts.findOne({ isPortalHost: true });
+    return Pages.find({ host: portalHost.host }).fetch();
+  },
+
   createPage(formValues, images) {
     const user = Meteor.user();
     const host = getHost(this);
