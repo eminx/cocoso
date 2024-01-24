@@ -100,11 +100,11 @@ function Activities({ history }) {
   const getActivities = async () => {
     try {
       if (isPortalHost) {
-        const allActivities = await call('getAllActivitiesFromAllHosts', true);
+        const allActivities = await call('getAllPublicActivitiesFromAllHosts');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         setActivities(allActivitiesParsed);
       } else {
-        const allActivities = await call('getAllActivities', true);
+        const allActivities = await call('getAllActivities');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         setActivities(allActivitiesParsed);
       }

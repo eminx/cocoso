@@ -78,11 +78,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
     setActivitiesLoading(true);
     try {
       if (isPortalHost) {
-        const allActivities = await call('getAllActivitiesFromAllHosts', true);
+        const allActivities = await call('getAllPublicActivitiesFromAllHosts');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       } else {
-        const allActivities = await call('getAllActivities', true);
+        const allActivities = await call('getAllActivities');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       }

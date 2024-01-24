@@ -10,73 +10,73 @@ import Resources from '../resources/resource';
 import Platform from '../platform/platform';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
+const filterPrivateProcesses = (activities, user) => {
+  return activities.filter((act) => {
+    if (!act.isProcessPrivate) {
+      return true;
+    }
+    if (!user) {
+      return false;
+    }
+    const process = Processes.findOne({ _id: act.processId });
+    const userId = user?._id;
+    console.log(process);
+    return (
+      process.adminId === userId ||
+      process.members.some((member) => member.memberId === userId) ||
+      process.peopleInvited.some((person) => person.email === user.emails[0].address)
+    );
+  });
+};
+
 Meteor.methods({
-  getAllActivitiesFromAllHosts(onlyPublic = false) {
+  getAllPublicActivitiesFromAllHosts() {
     const user = Meteor.user();
     try {
-      let allActs = [];
-      if (onlyPublic) {
-        allActs = Activities.find({
-          $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
-        }).fetch();
-      } else {
-        allActs = Activities.find({
-          $ne: {
-            isPublicActivity: true,
-          },
-        });
-      }
-      return allActs.filter((act) => {
-        if (!act.isProcessPrivate) {
-          return true;
-        }
-        if (!user) {
-          return false;
-        }
-        const process = Processes.findOne({ _id: act.processId });
-        const userId = user?._id;
-        return (
-          process.adminId === userId ||
-          process.members.some((member) => member.memberId === userId) ||
-          process.peopleInvited.some((person) => person.email === user.emails[0].address)
-        );
-      });
+      const allActs = Activities.find({
+        $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+      }).fetch();
+
+      return filterPrivateProcesses(allActs, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
   },
 
-  getAllActivities(onlyPublic = false) {
+  getAllActivitiesFromAllHosts() {
+    const user = Meteor.user();
+    try {
+      const allActs = Activities.find().fetch();
+      return filterPrivateProcesses(allActs, user);
+    } catch (error) {
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getAllPublicActivities() {
     const host = getHost(this);
     const user = Meteor.user();
     try {
-      let allActs = [];
-      if (onlyPublic) {
-        allActs = Activities.find({
-          host,
-          $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
-        }).fetch();
-      } else {
-        allActs = Activities.find({
-          host,
-          isPublicActivity: false,
-        });
-      }
-      return allActs.filter((act) => {
-        if (!act.isProcessPrivate) {
-          return true;
-        }
-        if (!user) {
-          return false;
-        }
-        const process = Processes.findOne({ _id: act.processId });
-        const userId = user?._id;
-        return (
-          process.adminId === userId ||
-          process.members.some((member) => member.memberId === userId) ||
-          process.peopleInvited.some((person) => person.email === user.emails[0].address)
-        );
-      });
+      const allActs = Activities.find({
+        host,
+        $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+      }).fetch();
+      return filterPrivateProcesses(allActs, user);
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, "Couldn't fetch data");
+    }
+  },
+
+  getAllActivities() {
+    const host = getHost(this);
+    const user = Meteor.user();
+    try {
+      const allActs = Activities.find({
+        host,
+        $ne: { isPublicActivity: true },
+      }).fetch();
+      return filterPrivateProcesses(allActs, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
