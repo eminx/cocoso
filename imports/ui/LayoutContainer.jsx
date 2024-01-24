@@ -245,48 +245,39 @@ function Footer({ currentHost, isFederationFooter, tc }) {
       </Center>
 
       {!currentHost.isPortalHost && (
-        <Box p="2" w="100%">
-          <Center w="100%">
-            <Flex w="100%" direction="column" justify="center" textAlign="center">
-              <Center>
-                <Box maxHeight="80px" w="220px">
-                  <Image fit="contain" src={currentHost.logo} maxHeight="80px" margin="0 auto" />
+        <Center pt="2">
+          <Flex direction="column" justify="center" textAlign="center">
+            <Heading size="md">{settings.name}</Heading>
+            <Center>
+              {settings.footer ? (
+                <Box
+                  className="text-content"
+                  fontSize="85%"
+                  maxWidth="480px"
+                  mt="4"
+                  textAlign="center"
+                  w="100%"
+                >
+                  {renderHTML(settings?.footer)}
                 </Box>
-              </Center>
-              <Heading m="2" size="md">
-                {settings.name}
-              </Heading>
-              <Center>
-                {settings.footer ? (
-                  <Box
-                    className="text-content"
-                    fontSize="85%"
-                    maxWidth="480px"
-                    p="4"
-                    textAlign="center"
-                    w="100%"
-                  >
-                    {renderHTML(settings?.footer)}
-                  </Box>
-                ) : (
-                  <OldFooter host={currentHost.host} settings={settings} />
-                )}
-              </Center>
-              {!isFederationFooter && (
-                <>
-                  <Box>
-                    <Link to="/terms-&-privacy-policy">
-                      <CLink as="span" fontSize="xs">
-                        {tc('terms.title')}{' '}
-                      </CLink>
-                    </Link>
-                  </Box>
-                  <FeedbackForm />
-                </>
+              ) : (
+                <OldFooter host={currentHost.host} settings={settings} />
               )}
-            </Flex>
-          </Center>
-        </Box>
+            </Center>
+            {!isFederationFooter && (
+              <>
+                <Box>
+                  <Link to="/terms-&-privacy-policy">
+                    <CLink as="span" fontSize="xs">
+                      {tc('terms.title')}{' '}
+                    </CLink>
+                  </Link>
+                </Box>
+                <FeedbackForm />
+              </>
+            )}
+          </Flex>
+        </Center>
       )}
     </Box>
   );
@@ -298,19 +289,15 @@ function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Center bg="brand.800" p="4">
+    <Center bg="brand.800">
       <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>
-            <Center p="2">
-              <Image w="200px" src={platform?.logo} />
-            </Center>
+            <Heading color="white" size="md">
+              {platform.name}
+            </Heading>
           </a>
         </Box>
-
-        <Heading m="2" size="md" fontWeight="light">
-          {platform.name}
-        </Heading>
 
         <Box p="2" className="text-content">
           {renderHTML(platform.footer)}
