@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
@@ -27,12 +26,14 @@ import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
-import { getNonComboResourcesWithColor, getComboResourcesWithColor } from '../utils/shared';
+import {
+  call,
+  getNonComboResourcesWithColor,
+  getComboResourcesWithColor,
+  parseAllBookingsWithResources,
+} from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
-import NewEntryHelper from '../components/NewEntryHelper';
 import PageHeader from '../components/PageHeader';
-
-const publicSettings = Meteor.settings.public;
 
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
@@ -40,12 +41,41 @@ const maxResourceLabelsToShow = 13;
 
 class Calendar extends PureComponent {
   state = {
+    activities: [],
     calendarFilter: null,
     editActivity: null,
-    selectedActivity: null,
-    selectedSlot: null,
+    isLoading: true,
     mode: 'list',
+    resources: [],
+    selectedActivity: null,
     selectedResource: null,
+    selectedSlot: null,
+  };
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = async () => {
+    const { currentHost } = this.context;
+    const { isPortalHost } = currentHost;
+    try {
+      const allActivities = isPortalHost
+        ? await call('getAllActivitiesFromAllHosts')
+        : await call('getAllActivities');
+      const resources = isPortalHost
+        ? await call('getResourcesFromAllHosts')
+        : await call('getResources');
+
+      const activities = parseAllBookingsWithResources(allActivities, resources);
+      this.setState({
+        activities,
+        resources,
+        isLoading: false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleModeChange = (e) => {
@@ -178,11 +208,19 @@ class Calendar extends PureComponent {
   };
 
   render() {
-    const { isLoading, allBookings, currentUser, resources, tc } = this.props;
-    const { canCreateContent, currentHost, isDesktop } = this.context;
-    const { editActivity, calendarFilter, selectedActivity, selectedSlot } = this.state;
+    const { currentUser, tc } = this.props;
+    const { currentHost } = this.context;
+    const {
+      activities,
+      calendarFilter,
+      editActivity,
+      isLoading,
+      resources,
+      selectedActivity,
+      selectedSlot,
+    } = this.state;
 
-    const filteredActivities = allBookings.filter((activity) => {
+    const filteredActivities = activities.filter((activity) => {
       return (
         !calendarFilter ||
         calendarFilter._id === activity.resourceId ||

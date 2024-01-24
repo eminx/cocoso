@@ -82,7 +82,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
         const allActivitiesParsed = parseProcessActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       } else {
-        const allActivities = await call('getAllActivities');
+        const allActivities = await call('getAllPublicActivities');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       }

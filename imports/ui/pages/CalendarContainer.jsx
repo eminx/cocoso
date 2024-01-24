@@ -12,21 +12,10 @@ import Activities from '../../api/activities/activity';
 
 moment.locale(i18n.language);
 const CalendarContainer = withTracker((props) => {
-  const activitiesSub = Meteor.subscribe('activities');
-  const activities = Activities ? Activities.find().fetch() : null;
-  const resourcesSub = Meteor.subscribe('resources');
-  const resources = Resources ? Resources.find().fetch() : null;
-
-  const allBookings = parseAllBookingsWithResources(activities, resources);
-
   const currentUser = Meteor.user();
-  const isLoading = !activitiesSub.ready() || !resourcesSub.ready();
 
   return {
-    allBookings,
     currentUser,
-    resources,
-    isLoading,
   };
 })(Calendar);
 

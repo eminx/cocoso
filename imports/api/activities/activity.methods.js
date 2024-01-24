@@ -74,7 +74,6 @@ Meteor.methods({
     try {
       const allActs = Activities.find({
         host,
-        $ne: { isPublicActivity: true },
       }).fetch();
       return filterPrivateProcesses(allActs, user);
     } catch (error) {
