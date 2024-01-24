@@ -104,7 +104,7 @@ function Activities({ history }) {
         const allActivitiesParsed = parseProcessActivities(allActivities);
         setActivities(allActivitiesParsed);
       } else {
-        const allActivities = await call('getAllActivities');
+        const allActivities = await call('getAllPublicActivities');
         const allActivitiesParsed = parseProcessActivities(allActivities);
         setActivities(allActivitiesParsed);
       }
