@@ -67,7 +67,6 @@ function ActivityForm({
 
   const removeRecurrence = (index) => {
     const newDatesAndTimes = datesAndTimes.filter((item, i) => {
-      console.log(index, i);
       return i !== index;
     });
 
@@ -129,10 +128,9 @@ function ActivityForm({
                 })}
               </b>
             }
-            isRequired
           >
             <Select
-              {...register('resourceId', { required: true })}
+              {...register('resourceId')}
               placeholder={t('form.resource.holder')}
               variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}

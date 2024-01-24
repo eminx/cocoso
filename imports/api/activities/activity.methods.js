@@ -20,7 +20,6 @@ const filterPrivateProcesses = (activities, user) => {
     }
     const process = Processes.findOne({ _id: act.processId });
     const userId = user?._id;
-    console.log(process);
     return (
       process.adminId === userId ||
       process.members.some((member) => member.memberId === userId) ||

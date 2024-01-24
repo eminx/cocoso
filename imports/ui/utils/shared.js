@@ -117,11 +117,17 @@ function parseAllBookingsWithResources(activities, resources) {
     if (!activity.datesAndTimes) {
       return;
     }
+    const resourceSelected = resources.find((res) => res?._id === activity.resourceId);
+    if (!resourceSelected) {
+      activity.datesAndTimes.forEach((recurrence) => {
+        allBookings.push({
+          ...helper_parseAllBookingsWithResources(activity, recurrence),
+          isNoResource: true,
+        });
+      });
+      return;
+    }
     activity.datesAndTimes.forEach((recurrence) => {
-      const resourceSelected = resources.find((res) => res?._id === activity.resourceId);
-      if (!resourceSelected) {
-        return;
-      }
       if (resourceSelected.isCombo) {
         resourceSelected.resourcesForCombo.forEach((resourceForCombo) => {
           if (!resourceForCombo) {
@@ -132,29 +138,13 @@ function parseAllBookingsWithResources(activities, resources) {
             return;
           }
           allBookings.push({
-            title: activity.title,
-            start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
-            end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
-            startDate: recurrence.startDate,
-            startTime: recurrence.startTime,
-            endDate: recurrence.endDate,
-            endTime: recurrence.endTime,
-            authorName: activity.authorName,
-            longDescription: activity.longDescription,
-            isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+            ...helper_parseAllBookingsWithResources(activity, recurrence),
+            isWithComboResource: true,
             resource: resourceForCombo.label,
             resourceId: resourceForCombo._id,
             resourceIndex: resourceForCombo.resourceIndex,
-            isExclusiveActivity: activity.isExclusiveActivity,
-            isPublicActivity: activity.isPublicActivity,
-            isProcessMeeting: activity.isProcessMeeting,
-            processId: activity.processId,
-            isProcessPrivate: activity.isProcessPrivate,
-            isWithComboResource: true,
             comboResource: activity.resource,
             comboResourceId: resourceSelected._id,
-            imageUrl: activity.imageUrl,
-            activityId: activity._id,
           });
         });
       } else {
@@ -162,27 +152,11 @@ function parseAllBookingsWithResources(activities, resources) {
           return;
         }
         allBookings.push({
-          title: activity.title,
-          start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
-          end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
-          startDate: recurrence.startDate,
-          startTime: recurrence.startTime,
-          endDate: recurrence.endDate,
-          endTime: recurrence.endTime,
-          authorName: activity.authorName,
-          longDescription: activity.longDescription,
-          isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+          ...helper_parseAllBookingsWithResources(activity, recurrence),
+          isWithComboResource: false,
           resource: resourceSelected.label,
           resourceId: resourceSelected._id,
           resourceIndex: resourceSelected.resourceIndex,
-          isExclusiveActivity: activity.isExclusiveActivity,
-          isPublicActivity: activity.isPublicActivity,
-          isProcessMeeting: activity.isProcessMeeting,
-          processId: activity.processId,
-          isProcessPrivate: activity.isProcessPrivate,
-          isWithComboResource: false,
-          imageUrl: activity.imageUrl,
-          activityId: activity._id,
         });
       }
     });
@@ -191,8 +165,33 @@ function parseAllBookingsWithResources(activities, resources) {
   return allBookings;
 }
 
+function helper_parseAllBookingsWithResources(activity, recurrence) {
+  return {
+    title: activity.title,
+    start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
+    end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
+    startDate: recurrence.startDate,
+    startTime: recurrence.startTime,
+    endDate: recurrence.endDate,
+    endTime: recurrence.endTime,
+    authorName: activity.authorName,
+    longDescription: activity.longDescription,
+    isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+    isExclusiveActivity: activity.isExclusiveActivity,
+    isPublicActivity: activity.isPublicActivity,
+    isProcessMeeting: activity.isProcessMeeting,
+    processId: activity.processId,
+    isProcessPrivate: activity.isProcessPrivate,
+    imageUrl: activity.imageUrl,
+    activityId: activity._id,
+  };
+}
+
 function getAllBookingsWithSelectedResource(selectedResource, allBookings) {
   return allBookings.filter((booking) => {
+    if (!selectedResource) {
+      return true;
+    }
     if (selectedResource.isCombo) {
       return selectedResource.resourcesForCombo.some(
         (resourceForCombo) => resourceForCombo._id === booking.resourceId

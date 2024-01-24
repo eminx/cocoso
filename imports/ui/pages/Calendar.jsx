@@ -107,7 +107,7 @@ class Calendar extends PureComponent {
   };
 
   handleSelectSlot = (slotInfo) => {
-    const { resources } = this.props;
+    const { resources } = this.state;
     const { canCreateContent } = this.context;
 
     if (!canCreateContent) {

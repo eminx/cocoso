@@ -19,9 +19,9 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
 import { LinkIcon } from '@chakra-ui/icons/dist/Link';
+import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { useTranslation } from 'react-i18next';
 
 import NiceSlider from './NiceSlider';

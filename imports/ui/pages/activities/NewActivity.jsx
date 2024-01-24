@@ -116,6 +116,10 @@ class NewActivity extends PureComponent {
       resource: selectedResource?.label,
       resourceIndex: selectedResource?.resourceIndex,
     };
+    if (selectedResource) {
+      (formValues.resource = selectedResource.label),
+        (formValues.resourceIndex = selectedResource.resourceIndex);
+    }
 
     if (isPublicActivity && !uploadableImage) {
       message.error(tc('message.error.imageRequired'));
@@ -290,9 +294,10 @@ class NewActivity extends PureComponent {
     const { allBookings } = this.props;
     const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
 
-    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
+    if (!datesAndTimes || datesAndTimes.length === 0) {
       return;
     }
+
     const allBookingsWithSelectedResource = getAllBookingsWithSelectedResource(
       selectedResource,
       allBookings
@@ -340,7 +345,7 @@ class NewActivity extends PureComponent {
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
             message={tc('message.access.contributor', {
-              doamin: 'an activity',
+              domain: 'an activity',
             })}
             type="error"
           />
@@ -349,16 +354,16 @@ class NewActivity extends PureComponent {
     }
 
     const {
+      datesAndTimes,
       formValues,
       isSuccess,
       isCreating,
-      newActivityId,
-      uploadableImageLocal,
       isPublicActivity,
       isExclusiveActivity,
       isReady,
       isRegistrationDisabled,
-      datesAndTimes,
+      newActivityId,
+      uploadableImageLocal,
     } = this.state;
 
     if (isSuccess) {
@@ -369,7 +374,6 @@ class NewActivity extends PureComponent {
       return null;
     }
 
-    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const isFormValid = this.isFormValid();
 
     return (
@@ -404,6 +408,9 @@ class NewActivity extends PureComponent {
             <ActivityForm
               datesAndTimes={datesAndTimes}
               defaultValues={formValues}
+              isButtonDisabled={!isFormValid || isCreating}
+              isCreating={isCreating}
+              isFormValid={isFormValid}
               isPublicActivity={isPublicActivity}
               resources={resources}
               uploadableImageLocal={uploadableImageLocal}
@@ -411,9 +418,6 @@ class NewActivity extends PureComponent {
               setDatesAndTimes={this.setDatesAndTimes}
               setUploadableImage={this.setUploadableImage}
               setSelectedResource={this.handleSelectedResource}
-              isButtonDisabled={!isFormValid || isCreating}
-              isCreating={isCreating}
-              isFormValid={isFormValid}
             />
           </Box>
         </Template>
