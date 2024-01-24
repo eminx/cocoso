@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
   Box,
@@ -24,7 +24,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 
-class NewProcess extends React.Component {
+class NewProcess extends PureComponent {
   state = {
     formValues: {
       title: '',
@@ -201,7 +201,6 @@ class NewProcess extends React.Component {
       return <Redirect to={`/processes/${newProcessId}`} />;
     }
 
-    const buttonLabel = isCreating ? t('form.waiting') : t('form.submit');
     const { title, description } = formValues;
     const isFormValid =
       formValues && title.length > 3 && description.length > 10 && uploadableImageLocal;

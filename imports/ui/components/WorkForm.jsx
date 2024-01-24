@@ -17,6 +17,7 @@ import FormField from './FormField';
 import NiceSlider from './NiceSlider';
 import ReactQuill from './Quill';
 import ImageUploadUI from './ImageUploadUI';
+import DocumentsField from '../pages/resources/components/DocumentsField';
 
 function WorkForm({
   categories,
@@ -111,6 +112,18 @@ function WorkForm({
               onRemoveImage={onRemoveImage}
               onSelectImages={setUploadableImages}
               onSortImages={onSortImages}
+            />
+          </FormField>
+
+          <FormField
+            helperText={t('works.images.helper')}
+            label={t('works.images.label', { count: images.length })}
+          >
+            <DocumentsField
+              contextType="works"
+              contextId="flkfpo132"
+              // isAllowed={work?.authorId === currentUser?._id}
+              isAllowed
             />
           </FormField>
 
