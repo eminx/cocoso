@@ -68,7 +68,7 @@ function Header({ isSmallerLogo }) {
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
-        {isDesktop && <Box w="56px" />}
+        {isDesktop && <Box w="120px" />}
         <Box pt="3" px="2">
           <Link to="/">
             <Box>
@@ -92,7 +92,7 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
-        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
+        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
           {platform && !platform.isFederationLayout && <UserPopup />}
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (

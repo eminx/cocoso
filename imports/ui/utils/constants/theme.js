@@ -79,6 +79,14 @@ const generateTheme = (hue) => {
           luxx: luxxStyle,
         },
       },
+      Menu: {
+        baseStyle: {
+          list: {
+            borderColor: 'brand.500',
+            borderRadius: 0,
+          },
+        },
+      },
       NumberInput: {
         defaultProps: {
           colorScheme: 'brand',

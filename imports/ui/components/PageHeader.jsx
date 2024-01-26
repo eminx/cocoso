@@ -21,8 +21,8 @@ function PageHeader({ description, heading, numberOfItems, showNewButton = true,
             size="sm"
             fontWeight="normal"
             lineHeight="1.5"
-            maxW="480px"
-            my="1"
+            maxW="520px"
+            my="2"
             textAlign="center"
           >
             {description}

@@ -9,14 +9,12 @@ import {
   ColorModeProvider,
   Flex,
   Heading,
-  Image,
   Link as CLink,
   List,
   ListItem,
   Spinner,
   Text,
   useMediaQuery,
-  useColorMode,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +25,6 @@ import renderHTML from 'react-render-html';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
-import Modal from './components/Modal';
 import MenuDrawer from './components/MenuDrawer';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
@@ -38,7 +35,7 @@ export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
-function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
+function LayoutPage({ currentUser, userLoading, children }) {
   const [platform, setPlatform] = useState(null);
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
@@ -46,7 +43,6 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
-  const { colorMode, toggleColorMode } = useColorMode();
   const { pathname } = history.location;
 
   useEffect(() => {
@@ -59,10 +55,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
-    console.log(colorMode);
-
     window.scrollTo(0, 0);
-  }, [pathname.split('/')[1]]);
+  }, [pathname.split('/')[2]]);
 
   const getCurrentHost = async () => {
     try {

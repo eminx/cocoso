@@ -27,7 +27,6 @@ function ConfirmModal({
 
   return (
     <AlertDialog
-      bg="white"
       isCentered
       isOpen={visible}
       leastDestructiveRef={cancelRef}
@@ -37,7 +36,7 @@ function ConfirmModal({
       {...otherProps}
     >
       <AlertDialogOverlay zIndex="1404">
-        <AlertDialogContent bg="white">
+        <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
