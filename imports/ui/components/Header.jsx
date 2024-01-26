@@ -1,6 +1,15 @@
 import React, { useContext } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Box, Button, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading as CHeading,
+  HStack,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
@@ -59,9 +68,10 @@ function Header({ isSmallerLogo }) {
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between">
-        <Box py={isDesktop ? '4' : '3'}>
+        {isDesktop && <Box w="56px" />}
+        <Box pt="3" px="2">
           <Link to="/">
-            <Box pl={isDesktop ? '4' : '2'}>
+            <Box>
               {currentHost.logo ? (
                 <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
               ) : (
@@ -82,6 +92,15 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
+        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
+          {platform && !platform.isFederationLayout && <UserPopup />}
+          {currentUser && isAdmin && <UserPopupAdmin />}
+          {!isDesktop && (
+            <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
+          )}
+        </HStack>
+      </Flex>
+      <Center>
         {isDesktop && isHeaderMenu && (
           <HStack alignItems="flex-start" p="4" pl="8" mt="2" wrap="wrap">
             {menuItems.map((item) => {
@@ -90,9 +109,9 @@ function Header({ isSmallerLogo }) {
                 <Link key={item.name} to={item.route}>
                   <Box px="2">
                     <Text
-                      _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
+                      _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
                       borderBottom={isCurrentPageLabel ? '2px solid' : 'none'}
-                      color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
+                      color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
                       fontFamily="Raleway, Sarabun, sans"
                       fontWeight="bold"
                     >
@@ -104,15 +123,7 @@ function Header({ isSmallerLogo }) {
             })}
           </HStack>
         )}
-
-        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
-          {platform && !platform.isFederationLayout && <UserPopup />}
-          {currentUser && isAdmin && <UserPopupAdmin />}
-          {!isDesktop && (
-            <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
-          )}
-        </HStack>
-      </Flex>
+      </Center>
     </Box>
   );
 }
@@ -137,8 +148,8 @@ function Heading({ title, numberOfItems }) {
   const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
 
   return (
-    <Flex mr="4">
-      <CHeading as="h1" color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
+    <Flex>
+      <CHeading as="h1" fontFamily="'Raleway', sans-serif" size="lg">
         {title || activeMenuItem?.label}{' '}
         {/* {numberOfItems > 0 && (
           <Text as="span" fontSize="xs">

@@ -60,11 +60,7 @@ function Work() {
   const tabs = [
     {
       title: tc('labels.info'),
-      content: (
-        <Box bg="white" className="text-content" p="4">
-          {renderHTML(work.longDescription)}
-        </Box>
-      ),
+      content: <Box className="text-content">{renderHTML(work.longDescription)}</Box>,
       path: `/@${work.authorUsername}/works/${work._id}/info`,
     },
   ];

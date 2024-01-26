@@ -159,7 +159,7 @@ function Communities() {
           smallThumb
         >
           {(host) => (
-            <Box key={host.host} alignSelf="center" width={300}>
+            <Box key={host.host} alignSelf="center" m="2" width={300}>
               <Box onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
@@ -169,10 +169,10 @@ function Communities() {
                 />
               </Box>
 
-              <Box bg="gray.100" p="2">
+              <Box bg="brand.700" p="2">
                 {host.isMember ? (
-                  <Text textAlign="center" my="1">
-                    {tc('communities.member')} <CheckIcon color="green.700" fontSize="md" mt="-1" />
+                  <Text color="white" textAlign="center" my="1">
+                    {tc('communities.member')} <CheckIcon color="green.200" fontSize="md" mt="-1" />
                   </Text>
                 ) : (
                   <Center>

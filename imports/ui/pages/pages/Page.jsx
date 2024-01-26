@@ -49,7 +49,7 @@ function Page() {
 
   const { settings } = currentHost;
 
-  if (isDesktop) {
+  if (false) {
     return (
       <>
         <Helmet>
@@ -105,10 +105,22 @@ function Page() {
 
       <Center mb="4">
         <Box w="100%" maxW="520px">
-          <Box bg="gray.900">
-            <NiceSlider floatRight={false} images={currentPage.images} />
-          </Box>
-          <Box bg="white" className="text-content" maxW="520px" p="4">
+          {currentPage.images && currentPage.images.length > 0 && (
+            <Center>
+              <Flex flexDirection="column" justify="center">
+                <NiceSlider alt={currentPage.title} images={currentPage.images} />
+              </Flex>
+            </Center>
+          )}
+          <Box
+            // bg="white"
+            border="1px solid"
+            borderColor="brand.500"
+            className="text-content"
+            maxW="520px"
+            m="2"
+            p="4"
+          >
             {renderHTML(currentPage.longDescription)}
           </Box>
         </Box>

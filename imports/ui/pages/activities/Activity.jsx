@@ -349,11 +349,11 @@ class Activity extends PureComponent {
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
+            <AccordionItem key={occurence.startDate + occurence.startTime} mb="4">
               <AccordionButton
-                _hover={{ bg: 'brand.200' }}
+                _hover={{ bg: 'brand.100' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="white"
+                bg="brand.50"
                 color="brand.800"
               >
                 <Box flex="1" textAlign="left">
@@ -453,7 +453,7 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box bg="white" className="text-content" p="4">
+          <Box className="text-content">
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),

@@ -404,9 +404,9 @@ class Process extends Component {
               }}
             >
               <AccordionButton
-                _hover={{ bg: 'brand.200' }}
+                _hover={{ bg: 'brand.100' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="white"
+                bg="brand.50"
                 color="brand.800"
               >
                 <Box flex="1" textAlign="left">
@@ -926,11 +926,7 @@ class Process extends Component {
     const tabs = [
       {
         title: tc('labels.info'),
-        content: (
-          <Box bg="white" className="text-content" p="4">
-            {renderHTML(process.description)}
-          </Box>
-        ),
+        content: <Box className="text-content">{renderHTML(process.description)}</Box>,
         path: `/processes/${process._id}/info`,
       },
       {
@@ -1047,7 +1043,6 @@ class Process extends Component {
           tabs={tabs}
           tags={tags}
           title={process.title}
-          noGridAdjust={!isMember}
         />
 
         <ConfirmModal

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Divider, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading as CHeading, Divider, Text } from '@chakra-ui/react';
 
 import NewButton from './NewButton';
 import { Heading } from './Header';
@@ -9,25 +9,21 @@ function PageHeader({ description, heading, numberOfItems, showNewButton = true,
   const { isDesktop } = useState(StateContext);
 
   return (
-    <Box mb="6" mt="4" px="4" maxW="780px">
-      <Flex>
-        <Flex align="center" justify="flex-start">
-          <Box>
-            <Flex wrap="wrap" mr="8">
-              {<Heading title={heading} numberOfItems={numberOfItems} />}
-              {children}
-            </Flex>
-            <Box pt="2" pr="2" pb="2">
-              <Divider borderColor="gray.500" maxW="690px" />
-              <Text fontSize={isDesktop ? 'lg' : 'md'} fontWeight="light" mt="1">
-                {description}
-              </Text>
-            </Box>
-          </Box>
-        </Flex>
-        {showNewButton && <NewButton />}
-      </Flex>
-    </Box>
+    <Center p="4">
+      <Box>
+        <Center wrap="wrap">
+          {<Heading title={heading} numberOfItems={numberOfItems} textAlign="center" />}
+          {/* {children} */}
+        </Center>
+        <Box pt="2" pb="2">
+          <Divider borderColor="gray.500" />
+          <CHeading size="sm" fontWeight="normal" mt="2">
+            {description}
+          </CHeading>
+        </Box>
+      </Box>
+    </Center>
+    // {showNewButton && <NewButton />}
   );
 }
 

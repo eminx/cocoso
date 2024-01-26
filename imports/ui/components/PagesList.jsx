@@ -11,7 +11,7 @@ const PagesList = withRouter(({ activePageTitle, currentPage, pageTitles }) => {
   const { isDesktop } = useContext(StateContext);
   const history = useHistory();
 
-  if (isDesktop) {
+  if (false) {
     const tabs = pageTitles.map((title) => ({
       title: title,
       path: `/pages/${parseTitle(title)}`,

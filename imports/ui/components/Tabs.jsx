@@ -6,14 +6,14 @@ const linkStyle = {
   marginBottom: 0,
 };
 
-function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
+function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProps }) {
   return (
-    <CTabs flexShrink="0" mt="2" variant="unstyled" {...otherProps}>
+    <CTabs flexShrink="0" size={size} variant="unstyled" {...otherProps}>
       <TabList flexWrap="wrap" borderBottom="none">
-        {tabs?.map((tab) =>
+        {tabs?.map((tab, index) =>
           tab.path ? (
             <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
-              <CoTab forceUppercase={forceUppercase} tab={tab} />
+              <CoTab forceUppercase={forceUppercase} index={index} tab={tab} />
             </Link>
           ) : (
             <CLink
@@ -32,24 +32,24 @@ function Tabs({ forceUppercase = true, tabs, children, ...otherProps }) {
   );
 }
 
-function CoTab({ forceUppercase = true, tab }) {
+function CoTab({ forceUppercase = true, index, tab }) {
   if (!tab) {
     return null;
   }
 
   const tabProps = {
     _active: {
-      bg: 'brand.200',
+      bg: 'brand.50',
     },
     _hover: {
-      bg: 'brand.200',
+      bg: 'brand.50',
     },
     _focus: {
       boxShadow: 'none',
     },
     _selected: {
-      bg: 'white',
-      color: 'gray.800',
+      bg: 'brand.500',
+      color: 'white',
       cursor: 'default',
     },
     as: 'span',
@@ -63,8 +63,12 @@ function CoTab({ forceUppercase = true, tab }) {
   return (
     <Tab
       {...tabProps}
-      bg="brand.100"
-      color="brand.600"
+      borderTop="1px solid"
+      borderRight="1px solid"
+      borderBottom="1px solid"
+      borderLeft={index === 0 ? '1px solid' : '0.5px solid'}
+      borderColor="brand.500"
+      color="brand.500"
       textTransform={forceUppercase ? 'uppercase' : 'normal'}
     >
       {tab.title}

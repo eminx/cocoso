@@ -17,7 +17,7 @@ function getHslValuesFromLength(length) {
     return null;
   }
 
-  const saturation = '75%';
+  const saturation = '90%';
   const lightness = '40%';
 
   const colorValues = [];

@@ -11,24 +11,24 @@ const imageStyle = {
   position: 'relative',
 };
 
-function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = true }) {
+function NiceSlider({ alt, images, h = '400px', width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
-
   if (!images || images.length === 0) {
     return null;
   }
 
   if (images.length === 1) {
     return (
-      <Flex justify={isFade ? 'flex-start' : 'center'}>
-        <Box>
+      <Flex h={h} justify={isFade ? 'flex-start' : 'center'}>
+        <Flex flexDirection="column" justify="center">
           <LazyLoadImage
             alt={alt}
             src={images[0]}
-            style={imageStyle}
+            height={h}
+            style={{ ...imageStyle, height: h }}
             onClick={() => setToggler(!toggler)}
           />
-        </Box>
+        </Flex>
 
         <FsLightbox
           toggler={toggler}
@@ -42,17 +42,19 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
 
   if (isFade) {
     return (
-      <Box className="slide-container" w={width}>
+      <Box className="slide-container" h={h} w={width}>
         <Fade arrows={false} transitionDuration={400}>
           {images.map((image) => (
-            <Flex key={image} justify={floatRight ? 'flex-end' : 'center'}>
-              <LazyLoadImage
-                alt={alt}
-                src={image}
-                style={imageStyle}
-                onClick={() => setToggler(!toggler)}
-              />
-            </Flex>
+            <Center key={image}>
+              <Flex key={image} flexDirection="column" justify="center">
+                <LazyLoadImage
+                  alt={alt}
+                  src={image}
+                  style={{ ...imageStyle, height: h }}
+                  onClick={() => setToggler(!toggler)}
+                />
+              </Flex>
+            </Center>
           ))}
         </Fade>
 
@@ -67,7 +69,7 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
   }
 
   return (
-    <Box className="slide-container" w={width}>
+    <Box className="slide-container" h={h} w={width}>
       <Slide arrows={false} transitionDuration={400}>
         {images.map((image) => (
           <Center key={image}>
@@ -75,7 +77,7 @@ function NiceSlider({ alt, floatRight = true, images, width = '100%', isFade = t
               <LazyLoadImage
                 alt={alt}
                 src={image}
-                style={imageStyle}
+                style={{ ...imageStyle, height: h }}
                 onClick={() => setToggler(!toggler)}
               />
             </Flex>

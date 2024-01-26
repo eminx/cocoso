@@ -26,9 +26,9 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box cursor="pointer">
+    <Box cursor="pointer" border="1px solid" borderColor="brand.500">
       <Box className="text-link-container" position="relative">
-        <Center bg={'brand.100'} h={fixedImageHeight ? '180px' : 'auto'} overflow="hidden">
+        <Center bg={'brand.50'} h={fixedImageHeight ? '180px' : 'auto'} overflow="hidden">
           {imageUrl ? (
             <LazyLoadImage
               alt={title}
@@ -54,8 +54,8 @@ export default function NewGridThumb({
           </Box>
         )}
 
-        <Flex align="flex-start" bg="white" justify="space-between" py="2" px="4">
-          <Box color="gray.900" pb="2" pr="3">
+        <Flex align="flex-start" justify="space-between" py="2" px="4">
+          <Box pb="2" pr="3">
             <Heading
               className="text-link"
               fontFamily="'Raleway', sans-serif"

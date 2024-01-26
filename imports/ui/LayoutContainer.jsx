@@ -6,6 +6,7 @@ import {
   Box,
   Center,
   ChakraProvider,
+  ColorModeProvider,
   Flex,
   Heading,
   Image,
@@ -15,6 +16,7 @@ import {
   Spinner,
   Text,
   useMediaQuery,
+  useColorMode,
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +46,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
-
+  const { colorMode, toggleColorMode } = useColorMode();
   const { pathname } = history.location;
 
   useEffect(() => {
@@ -57,6 +59,8 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
+    console.log(colorMode);
+
     window.scrollTo(0, 0);
   }, [pathname.split('/')[1]]);
 
@@ -178,45 +182,51 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
       <Favicon url={`${publicSettings.iconsBaseUrl}/favicon.ico`} />
 
       <ChakraProvider theme={chakraTheme}>
-        <StateContext.Provider
-          value={{
-            allHosts,
-            canCreateContent,
-            currentUser,
-            currentHost,
-            hue,
-            isDesktop,
-            platform,
-            role,
-            userLoading,
-            getCurrentHost,
-            getPlatform,
-            setHue,
-            setSelectedHue,
-          }}
-        >
-          {platform && platform.isFederationLayout && <TopBar />}
+        <ColorModeProvider>
+          <StateContext.Provider
+            value={{
+              allHosts,
+              canCreateContent,
+              currentUser,
+              currentHost,
+              hue,
+              isDesktop,
+              platform,
+              role,
+              userLoading,
+              getCurrentHost,
+              getPlatform,
+              setHue,
+              setSelectedHue,
+            }}
+          >
+            {platform && platform.isFederationLayout && <TopBar />}
 
-          <Flex>
-            {isDesktop && !isHeaderMenu && (
-              <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />
-            )}
+            <Flex>
+              {isDesktop && !isHeaderMenu && (
+                <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />
+              )}
 
-            <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 10%, 90%)`}>
-              <Box w="100%">
-                <Header isSmallerLogo={!isLargerLogo} />
+              <Box id="main-viewport" flexGrow="2">
+                <Box w="100%">
+                  <Header isSmallerLogo={!isLargerLogo} />
 
-                <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                  {children}
+                  <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                    {children}
+                  </Box>
+
+                  <Footer
+                    currentHost={currentHost}
+                    isFederationFooter={isFederationFooter}
+                    tc={tc}
+                  />
+
+                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-
-                <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
-
-                {isFederationFooter && <PlatformFooter platform={platform} />}
               </Box>
-            </Box>
-          </Flex>
-        </StateContext.Provider>
+            </Flex>
+          </StateContext.Provider>
+        </ColorModeProvider>
       </ChakraProvider>
     </>
   );

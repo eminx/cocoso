@@ -244,7 +244,10 @@ function MembersPublic({ history }) {
           {(member) => (
             <Flex
               key={member.username}
-              bg={member.avatar ? 'white' : 'brand.50'}
+              // bg={member.avatar ? 'white' : 'brand.50'}
+              bg="brand.50"
+              border="1px solid"
+              borderColor="brand.500"
               cursor="pointer"
               justifyContent="center"
               mb="4"

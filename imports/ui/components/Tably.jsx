@@ -43,7 +43,7 @@ function Tably({
   const [copied, setCopied] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost, hue, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function Tably({
     }
   };
 
-  if (isDesktop) {
+  if (false) {
     return (
       <>
         {backLink && <BackLink backLink={backLink} />}
@@ -137,15 +137,14 @@ function Tably({
   }
 
   return (
-    <>
-      <Box>
-        <Box mb="2">{backLink && <BackLink backLink={backLink} isSmall />}</Box>
+    <Center p="4" w="100%">
+      <Box w="100%">
         <Box>
           <Header
             author={author}
             backLink={backLink}
             copied={copied}
-            isDesktop={false}
+            isDesktop={isDesktop}
             subTitle={subTitle}
             tags={tags}
             tc={tc}
@@ -153,56 +152,53 @@ function Tably({
             handleCopyLink={handleCopyLink}
           />
 
-          <Center bg="gray.900">
-            <NiceSlider alt={title} images={images} width="100vw" isFade={false} />
+          <Center py="4">
+            <NiceSlider alt={title} images={images} />
           </Center>
           <Center mb="4" mx="4">
             {action}
           </Center>
         </Box>
 
-        <Box minH="100vh">
-          {tabs && (
-            <Tabs
-              align="center"
-              colorScheme="gray.800"
-              index={tabIndex}
-              mt="2"
-              size="sm"
-              tabs={tabs}
-            >
-              {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-            </Tabs>
-          )}
+        <Center>
+          <Box maxW="540px" w="100%">
+            <Box w="100%" minH="100vh">
+              {tabs && (
+                <Tabs
+                  // align="center"
+                  colorScheme="gray.800"
+                  index={tabIndex}
+                  mt="2"
+                  tabs={tabs}
+                >
+                  {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+                </Tabs>
+              )}
 
-          <Box mb="24">
-            {tabs ? (
-              <Switch history={history}>
-                {tabs.map((tab) => (
-                  <Route
-                    key={tab.title}
-                    path={tab.path}
-                    render={(props) => (
-                      <Center>
-                        <Container margin={'auto'} p="0" pt="4">
-                          {tab.content}
-                        </Container>
-                      </Center>
-                    )}
-                  />
-                ))}
-              </Switch>
-            ) : (
-              <Center>
-                <Container margin={'auto'} pt="2">
-                  {content}
-                </Container>
-              </Center>
-            )}
+              <Box mb="24">
+                {tabs ? (
+                  <Switch history={history}>
+                    {tabs.map((tab) => (
+                      <Route
+                        key={tab.title}
+                        path={tab.path}
+                        render={(props) => (
+                          <Box border="1px solid" borderColor="brand.500" p="4">
+                            {tab.content}
+                          </Box>
+                        )}
+                      />
+                    ))}
+                  </Switch>
+                ) : (
+                  <Box pt="2">{content}</Box>
+                )}
+              </Box>
+            </Box>
           </Box>
-        </Box>
+        </Center>
       </Box>
-    </>
+    </Center>
   );
 }
 
@@ -219,79 +215,71 @@ function Header({
 }) {
   const fontFamily = "'Raleway', sans-serif";
 
-  return (
-    <Flex mb={isDesktop ? '8' : '8'} pl="4" pr="0" justify="space-between">
-      <Box flexBasis={isDesktop ? '100%' : '80%'}>
-        <Heading
-          as="h1"
-          fontFamily={fontFamily}
-          fontSize="1.8em"
-          lineHeight={1}
-          mb="3"
-          mt="1"
-          textAlign={isDesktop ? 'right' : 'left'}
-          textShadow="1px 1px 1px #fff"
-        >
-          {title}
-        </Heading>
-        {subTitle && (
+  const renderTitles = () => {
+    return (
+      <Flex w="100%" justify={!isDesktop && author ? 'space-between' : 'center'}>
+        <Box>
           <Heading
-            as="h2"
-            fontSize="1.3em"
-            fontWeight="light"
+            as="h1"
+            fontFamily={fontFamily}
+            fontSize="1.8em"
             lineHeight={1}
-            textAlign={isDesktop ? 'right' : 'left'}
+            mb="2"
+            mt="1"
+            textAlign={!isDesktop && author ? 'left' : 'center'}
+            textShadow="1px 1px 1px #fff"
           >
-            {subTitle}
+            {title}
           </Heading>
-        )}
-        {tags && tags.length > 0 && (
-          <Flex
-            flexGrow="0"
-            justify={isDesktop ? 'flex-end' : 'flex-start'}
-            mt={isDesktop ? '6' : '4'}
-          >
-            {tags.map(
-              (tag) =>
-                tag && (
-                  <Badge
-                    key={tag}
-                    bg="gray.50"
-                    color="gray.800"
-                    fontSize="14px"
-                    ml={isDesktop && '2'}
-                    mr={!isDesktop && '2'}
-                  >
-                    {tag}
-                  </Badge>
-                )
-            )}
-          </Flex>
-        )}
-      </Box>
-      {!isDesktop && (
-        <Flex flexDirection="column" justify="center">
-          {author && (
-            <Box flexBasis="64px" align="center">
-              <AvatarHolder size="md" author={author} />
-            </Box>
+          {subTitle && (
+            <Heading
+              as="h2"
+              fontSize="1.3em"
+              fontWeight="light"
+              lineHeight={1}
+              textAlign={!isDesktop && author ? 'left' : 'center'}
+            >
+              {subTitle}
+            </Heading>
           )}
-          {backLink && (
-            <Box px="4" pt="2">
-              <Button leftIcon={<LinkIcon />} size="sm" variant="link" onClick={handleCopyLink}>
-                {copied ? tc('actions.copied') : tc('actions.share')}
-              </Button>
-            </Box>
+          {tags && tags.length > 0 && (
+            <Flex flexGrow="0" justify={!isDesktop && author ? 'flex-start' : 'center'} mt="2">
+              {tags.map(
+                (tag) =>
+                  tag && (
+                    <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
+                      {tag}
+                    </Badge>
+                  )
+              )}
+            </Flex>
           )}
+        </Box>
+        {!isDesktop && author && <AvatarHolder size="md" author={author} />}
+      </Flex>
+    );
+  };
+
+  return (
+    <Box w="100%" mb="4">
+      <Flex justify="space-between">
+        <Box flexBasis="120px">{backLink && <BackLink backLink={backLink} isSmall />}</Box>
+        {isDesktop && renderTitles()}
+        <Flex flexBasis="120px" flexDirection="column" align="flex-end">
+          <Button leftIcon={<LinkIcon />} mb="4" size="sm" variant="link" onClick={handleCopyLink}>
+            {copied ? tc('actions.copied') : tc('actions.share')}
+          </Button>
+          {isDesktop && author && <AvatarHolder size="md" author={author} />}
         </Flex>
-      )}
-    </Flex>
+      </Flex>
+      {!isDesktop && renderTitles()}
+    </Box>
   );
 }
 
 function AvatarHolder({ author, size = 'lg' }) {
   return (
-    <Box pr="2">
+    <Box>
       <VStack justify="center" spacing="0">
         <Avatar
           borderRadius="8px"
@@ -321,11 +309,11 @@ function AdminMenu({ adminMenu, isDesktop }) {
 
   return (
     <Menu direction="rtl" placement="bottom-end">
-      <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '0' : '-1'}>
+      <MenuButton fontSize="md" px="4" pb="1">
         {/* {adminMenu.label} */}
         <SettingsIcon color="brand.500" />
       </MenuButton>
-      <MenuList bg="gray.200">
+      <MenuList>
         {adminMenu.items.map((item) =>
           item.link ? (
             <Link to={item.link} key={item.label}>
@@ -351,8 +339,6 @@ function BackLink({ backLink, isSmall = false }) {
       <Button
         as="span"
         leftIcon={<ChevronLeftIcon mr="-2" fontSize="xl" />}
-        ml="2"
-        mt="1"
         size={isSmall ? 'sm' : 'md'}
         variant="link"
       >

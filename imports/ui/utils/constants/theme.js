@@ -1,15 +1,33 @@
-import { extendTheme } from '@chakra-ui/react';
+import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+import { mode } from '@chakra-ui/theme-tools';
 
-const brand = (hue, level) => `hsl(${hue}deg, 50%, ${level}%)`;
+const brand = (hue, level) => `hsl(${hue}deg, 80%, ${level}%)`;
 
 const generateTheme = (hue) => {
   const color = brand(hue, '32');
+
+  const Input = defineStyleConfig({
+    variants: {
+      outline: {
+        borderRadius: '0',
+        backgroundColor: 'brand.50',
+        borderColor: 'brand',
+      },
+    },
+    defaultProps: {
+      colorScheme: 'brand',
+      focusBorderColor: color,
+      variant: 'outline',
+      _placeholderShown: { opacity: 0.7, color: 'gray.700' },
+    },
+  });
 
   const theme = extendTheme({
     // fontFamily: {
     //   heading: `'Raleway', ${baseTheme.fonts?.heading}`,
     //   body: `'Sarabun', ${baseTheme.fonts?.body}`,
     // },
+    initialColorMode: 'dark',
     colors: {
       brand: {
         50: brand(hue, '95'),
@@ -17,10 +35,10 @@ const generateTheme = (hue) => {
         200: brand(hue, '85'),
         300: brand(hue, '75'),
         400: brand(hue, '65'),
-        500: brand(hue, '32'),
-        600: brand(hue, '25'),
-        700: brand(hue, '18'),
-        800: brand(hue, '14'),
+        500: brand(hue, '50'),
+        600: brand(hue, '35'),
+        700: brand(hue, '25'),
+        800: brand(hue, '15'),
         900: brand(hue, '10'),
       },
       gray: {
@@ -46,17 +64,12 @@ const generateTheme = (hue) => {
           fontFamily: 'Raleway',
         },
       },
-      Input: {
-        defaultProps: {
-          focusBorderColor: color,
-          variant: 'filled',
-          _placeholderShown: { opacity: 0.7, color: 'gray.700' },
-        },
-      },
+      Input,
       Select: {
         defaultProps: {
+          colorScheme: 'brand',
           focusBorderColor: color,
-          variant: 'filled',
+          variant: 'outline',
           colorScheme: 'brand',
         },
       },
@@ -78,21 +91,19 @@ const generateTheme = (hue) => {
       Textarea: {
         defaultProps: {
           focusBorderColor: color,
-          variant: 'filled',
+          variant: 'outline',
           colorScheme: 'brand',
         },
       },
     },
     styles: {
-      global: {
+      global: (props) => ({
         body: {
+          // color: mode('gray.800', 'whiteAlpha.900')(props),
+          // bg: mode('gray.100', '#141214')(props),
           fontFamily: 'Sarabun',
         },
-        a: {
-          color,
-          // textShadow: '0.5px 0.5px 0.5px #fff',
-        },
-      },
+      }),
     },
   });
 
