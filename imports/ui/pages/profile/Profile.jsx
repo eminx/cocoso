@@ -144,13 +144,7 @@ function Profile({ history, match, path }) {
         </GridItem>
 
         <GridItem pl={isDesktop ? '12' : '0'}>
-          <Tabs
-            align={isDesktop ? 'flex-start' : 'center'}
-            index={tabIndex}
-            size={isDesktop ? 'md' : 'sm'}
-            tabs={tabs}
-            px="4"
-          />
+          <Tabs align={isDesktop ? 'flex-start' : 'center'} index={tabIndex} tabs={tabs} px="4" />
 
           <Box pt="4" px={isDesktop ? '4' : '0'}>
             <Switch path={path} history={history}>

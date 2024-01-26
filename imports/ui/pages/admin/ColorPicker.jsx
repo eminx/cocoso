@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../../LayoutContainer';
 
-const getDefaultColor = (hue) => ({ h: hue, s: 40, l: 0.1, a: 0 });
+const getDefaultColor = (hue) => ({ h: hue, s: 80, l: 0.1, a: 0 });
 
 const getHue = (pickedColor) => {
   const hue = parseInt(pickedColor?.hsl?.h) + 1;
@@ -39,7 +39,7 @@ function ColorPicker() {
       </Center>
 
       <Center bg={parseHue(hue, 90)} p="4">
-        <Center borderRadius="50%" bg={parseHue(hue, 32)} height="120px" width="120px">
+        <Center borderRadius="50%" bg={parseHue(hue, 40)} height="120px" width="120px">
           <Code bg="none" color="white" fontWeight="bold">
             hue: {hue}
           </Code>
@@ -71,7 +71,7 @@ const parseHue = (hue, lightness) => {
   if (!hue) {
     return null;
   }
-  return `hsla(${hue}deg, 50%,${lightness}%, 1)`;
+  return `hsla(${hue}deg, 80%,${lightness}%, 1)`;
 };
 
 export default ColorPicker;

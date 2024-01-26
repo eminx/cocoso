@@ -17,7 +17,14 @@ function PageHeader({ description, heading, numberOfItems, showNewButton = true,
         </Center>
         <Box pt="2" pb="2">
           <Divider borderColor="gray.500" />
-          <CHeading size="sm" fontWeight="normal" mt="2">
+          <CHeading
+            size="sm"
+            fontWeight="normal"
+            lineHeight="1.5"
+            maxW="480px"
+            my="1"
+            textAlign="center"
+          >
             {description}
           </CHeading>
         </Box>

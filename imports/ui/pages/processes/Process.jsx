@@ -37,7 +37,7 @@ import FancyDate, { DateJust } from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert, message } from '../../components/message';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 import {
   call,
   checkAndSetBookingsWithConflict,
@@ -384,7 +384,6 @@ class Process extends Component {
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
-    const { hue } = this.context;
 
     if (!process) {
       return;
@@ -1029,7 +1028,7 @@ class Process extends Component {
           <title>{process.title}</title>
         </Helmet>
 
-        <Tably
+        <TablyCentered
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}

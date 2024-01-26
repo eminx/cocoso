@@ -14,7 +14,7 @@ import DocumentsField from './components/DocumentsField';
 import BookingsField from './components/BookingsField';
 import { StateContext } from '../../LayoutContainer';
 import useChattery from '../../components/chattery/useChattery';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 import Chattery from '../../components/chattery/Chattery';
 
 function ResourcePage() {
@@ -167,7 +167,7 @@ function ResourcePage() {
       <Helmet>
         <title>{resource.label}</title>
       </Helmet>
-      <Tably
+      <TablyCentered
         adminMenu={role === 'admin' ? adminMenu : null}
         backLink={backLink}
         images={resource.images}

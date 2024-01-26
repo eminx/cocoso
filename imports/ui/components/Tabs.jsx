@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
+import { Badge, Box, Link as CLink, Tabs as CTabs, Tab, TabList } from '@chakra-ui/react';
 
 const linkStyle = {
   marginBottom: 0,
@@ -8,27 +8,29 @@ const linkStyle = {
 
 function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProps }) {
   return (
-    <CTabs flexShrink="0" size={size} variant="unstyled" {...otherProps}>
-      <TabList flexWrap="wrap" borderBottom="none">
-        {tabs?.map((tab, index) =>
-          tab.path ? (
-            <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
-              <CoTab forceUppercase={forceUppercase} index={index} tab={tab} />
-            </Link>
-          ) : (
-            <CLink
-              key={tab.title}
-              _hover={{ textDecoration: 'none' }}
-              style={linkStyle}
-              onClick={tab.onClick}
-            >
-              <CoTab forceUppercase={forceUppercase} tab={tab} />
-            </CLink>
-          )
-        )}
-        {children}
-      </TabList>
-    </CTabs>
+    <Box position="relative" top="1px">
+      <CTabs flexShrink="0" size={size} variant="unstyled" {...otherProps}>
+        <TabList flexWrap="wrap" borderBottom="none">
+          {tabs?.map((tab, index) =>
+            tab.path ? (
+              <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
+                <CoTab forceUppercase={forceUppercase} index={index} tab={tab} />
+              </Link>
+            ) : (
+              <CLink
+                key={tab.title}
+                _hover={{ textDecoration: 'none' }}
+                style={linkStyle}
+                onClick={tab.onClick}
+              >
+                <CoTab forceUppercase={forceUppercase} tab={tab} />
+              </CLink>
+            )
+          )}
+          {children}
+        </TabList>
+      </CTabs>
+    </Box>
   );
 }
 

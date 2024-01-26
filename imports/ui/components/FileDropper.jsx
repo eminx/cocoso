@@ -4,10 +4,7 @@ import { Box, Center, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const containerStyle = {
-  borderWidth: 1,
-  borderStyle: 'dashed',
-  cursor: 'pointer',
-  width: '100%',
+  borderRadius: 0,
 };
 
 function FileDropper({
@@ -24,8 +21,6 @@ function FileDropper({
   if (round) {
     containerStyle.borderRadius = '50%';
     containerStyle.overflow = 'hidden';
-  } else {
-    containerStyle.borderRadius = '4px';
   }
 
   const [tc] = useTranslation('common');
@@ -34,10 +29,14 @@ function FileDropper({
       {({ getRootProps, getInputProps, isDragActive }) => (
         <Box
           {...getRootProps()}
-          bg={isDragActive ? 'gray.300' : 'white'}
+          bg={isDragActive ? 'gray.300' : 'gray.100'}
+          border="1px dashed"
+          borderColor="brand.500"
+          borderRadius="0px"
+          cursor="grab"
           h={height}
-          style={containerStyle}
-          // w="xs"
+          w="100%"
+          {...containerStyle}
           {...otherProps}
         >
           {uploadableImageLocal || imageUrl ? (

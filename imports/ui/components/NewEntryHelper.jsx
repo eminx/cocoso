@@ -32,8 +32,8 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = small ? '2xs' : '100%';
-  const h = small ? '180px' : '315px';
+  const w = small ? 'xs' : '100%';
+  const h = small ? '240px' : '315px';
 
   return (
     <Link className="sexy-thumb-container" to={buttonLink}>

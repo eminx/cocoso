@@ -286,14 +286,14 @@ function MemberList({ members, roleFilter, t }) {
   const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
   return (
     <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
-      {(member) => <MemberItem t={t} member={member} />}
+      {(member) => <MemberItem key={member.username} t={t} member={member} />}
     </NiceList>
   );
 }
 
 function MemberItem({ member, t }) {
   return (
-    <Box key={member.username} p="4">
+    <Box border="1px solid" borderColor="brand.500" p="4">
       <Heading size="md" fontWeight="bold">
         {member.username}
       </Heading>

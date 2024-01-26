@@ -40,7 +40,7 @@ import FancyDate, { DateJust } from '../../components/FancyDate';
 import FormField from '../../components/FormField';
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 
 moment.locale(i18n.language);
 
@@ -518,7 +518,7 @@ class Activity extends PureComponent {
         </Helmet>
         {/* {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />} */}
 
-        <Tably
+        <TablyCentered
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}

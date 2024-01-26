@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, ModalBody } from '@chakra-ui/react';
+import { Box, Center, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -259,7 +259,9 @@ function Activities({ history }) {
         </FiltrerSorter>
       </PageHeader>
 
-      <Tabs m="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+      <Center>
+        <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+      </Center>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

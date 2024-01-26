@@ -54,7 +54,7 @@ export default function NewGridThumb({
           </Box>
         )}
 
-        <Flex align="flex-start" justify="space-between" py="2" px="4">
+        <Flex align="flex-start" bg="brand.50" justify="space-between" py="2" px="4">
           <Box pb="2" pr="3">
             <Heading
               className="text-link"

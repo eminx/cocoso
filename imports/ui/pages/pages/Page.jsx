@@ -106,10 +106,10 @@ function Page() {
       <Center mb="4">
         <Box w="100%" maxW="520px">
           {currentPage.images && currentPage.images.length > 0 && (
-            <Center>
-              <Flex flexDirection="column" justify="center">
-                <NiceSlider alt={currentPage.title} images={currentPage.images} />
-              </Flex>
+            <Center py="4">
+              {/* <Flex flexDirection="column" justify="center"> */}
+              <NiceSlider alt={currentPage.title} images={currentPage.images} />
+              {/* </Flex> */}
             </Center>
           )}
           <Box

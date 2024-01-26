@@ -58,7 +58,7 @@ labels:
     name: Namn
     random: Slumpmässigt
   update: Redigera detta/denna {{ domain }}
-  unselected: Du har ej valt resurs eller lokal
+  unselected: Ej resurs
   admin:
     actions: Admin
   past: Tidigare

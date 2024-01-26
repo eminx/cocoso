@@ -13,6 +13,7 @@ const imageStyle = {
 
 function NiceSlider({ alt, images, h = '400px', width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
+
   if (!images || images.length === 0) {
     return null;
   }

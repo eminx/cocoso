@@ -102,15 +102,16 @@ function Header({ isSmallerLogo }) {
       </Flex>
       <Center>
         {isDesktop && isHeaderMenu && (
-          <HStack alignItems="flex-start" p="4" pl="8" mt="2" wrap="wrap">
+          <HStack alignItems="flex-start" p="6" wrap="wrap">
             {menuItems.map((item) => {
               const isCurrentPageLabel = isCurrentPage(item);
               return (
                 <Link key={item.name} to={item.route}>
                   <Box px="2">
                     <Text
+                      as="span"
                       _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
-                      borderBottom={isCurrentPageLabel ? '2px solid' : 'none'}
+                      borderBottom={isCurrentPageLabel ? '2px solid' : '2px transparent'}
                       color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
                       fontFamily="Raleway, Sarabun, sans"
                       fontWeight="bold"

@@ -44,6 +44,7 @@ function WorkForm({
           <FormField helperText={t('works.title.helper')} label={t('works.title.label')} isRequired>
             <Input
               {...register('title', { required: true })}
+              // borderColor="brand.500"
               placeholder={t('works.title.holder')}
             />
           </FormField>

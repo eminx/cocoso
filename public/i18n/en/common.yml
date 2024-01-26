@@ -58,7 +58,7 @@ labels:
     name: Name
     random: Random
   update: Edit this {{ domain }}
-  unselected: Not selected resource
+  unselected: No resource
   admin:
     actions: Admin
   past: Past

@@ -1,26 +1,20 @@
-import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
-import { mode } from '@chakra-ui/theme-tools';
+import { extendTheme } from '@chakra-ui/react';
 
-const brand = (hue, level) => `hsl(${hue}deg, 80%, ${level}%)`;
+const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
+
+const luxxStyle = {
+  field: {
+    borderColor: 'brand.500',
+    borderWidth: '1px',
+    borderRadius: '0px',
+    _focus: {
+      borderWidth: '2px',
+    },
+  },
+};
 
 const generateTheme = (hue) => {
-  const color = brand(hue, '32');
-
-  const Input = defineStyleConfig({
-    variants: {
-      outline: {
-        borderRadius: '0',
-        backgroundColor: 'brand.50',
-        borderColor: 'brand',
-      },
-    },
-    defaultProps: {
-      colorScheme: 'brand',
-      focusBorderColor: color,
-      variant: 'outline',
-      _placeholderShown: { opacity: 0.7, color: 'gray.700' },
-    },
-  });
+  const color = brand(hue, '40');
 
   const theme = extendTheme({
     // fontFamily: {
@@ -35,11 +29,11 @@ const generateTheme = (hue) => {
         200: brand(hue, '85'),
         300: brand(hue, '75'),
         400: brand(hue, '65'),
-        500: brand(hue, '50'),
-        600: brand(hue, '35'),
-        700: brand(hue, '25'),
-        800: brand(hue, '15'),
-        900: brand(hue, '10'),
+        500: brand(hue, '40'),
+        600: brand(hue, '32'),
+        700: brand(hue, '20'),
+        800: brand(hue, '12'),
+        900: brand(hue, '8'),
       },
       gray: {
         100: 'rgb(245, 245, 245)',
@@ -55,8 +49,19 @@ const generateTheme = (hue) => {
     },
     components: {
       Button: {
+        baseStyle: {
+          borderRadius: 0,
+        },
         defaultProps: {
           colorScheme: 'brand',
+        },
+      },
+      Modal: {
+        baseStyle: {
+          dialog: {
+            backgroundColor: '#fff',
+            borderRadius: 0,
+          },
         },
       },
       Heading: {
@@ -64,13 +69,34 @@ const generateTheme = (hue) => {
           fontFamily: 'Raleway',
         },
       },
-      Input,
+      Input: {
+        defaultProps: {
+          _placeholderShown: { opacity: 0.71, color: 'gray.700' },
+          focusBorderColor: color,
+          variant: 'luxx',
+        },
+        variants: {
+          luxx: luxxStyle,
+        },
+      },
+      NumberInput: {
+        defaultProps: {
+          colorScheme: 'brand',
+          focusBorderColor: color,
+          variant: 'luxx',
+        },
+        variants: {
+          luxx: luxxStyle,
+        },
+      },
       Select: {
         defaultProps: {
           colorScheme: 'brand',
           focusBorderColor: color,
-          variant: 'outline',
-          colorScheme: 'brand',
+          variant: 'luxx',
+        },
+        variants: {
+          luxx: luxxStyle,
         },
       },
       Switch: {
@@ -91,8 +117,10 @@ const generateTheme = (hue) => {
       Textarea: {
         defaultProps: {
           focusBorderColor: color,
-          variant: 'outline',
-          colorScheme: 'brand',
+          variant: 'luxx',
+        },
+        variants: {
+          luxx: luxxStyle.field,
         },
       },
     },
