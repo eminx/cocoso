@@ -37,6 +37,7 @@ export default function NewGridThumb({
               src={imageUrl}
               style={{
                 position: 'relative',
+                margin: '0 auto',
               }}
             />
           ) : (
