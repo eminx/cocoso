@@ -159,7 +159,7 @@ function Communities() {
           smallThumb
         >
           {(host) => (
-            <Box key={host.host} mb="4" mr="4">
+            <Box key={host.host} flexBasis={280} flexGrow={1}>
               <Box onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
