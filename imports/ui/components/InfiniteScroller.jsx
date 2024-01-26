@@ -61,7 +61,7 @@ function InfiniteScroller({
             )}
           </Masonry>
         ) : (
-          <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="2">
+          <Wrap justify="center" spacing="2">
             {currentItems?.map((item) => children(item))}
             {hasMore && (
               <Skeleton className="sexy-thumb-container" endColor="brand.500" h={h} w={w} />
