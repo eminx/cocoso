@@ -28,7 +28,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
   const history = useHistory();
 
   if (!user) {
@@ -61,6 +61,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Image
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
+              h={isThumb ? 'auto' : '280px'}
               src={avatarSrc}
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />

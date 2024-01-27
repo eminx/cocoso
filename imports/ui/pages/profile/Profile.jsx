@@ -15,6 +15,7 @@ import Tabs from '../../components/Tabs';
 import { call } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
+import BackLink from '../../components/BackLink';
 
 function Profile({ history, match, path }) {
   const [loading, setLoading] = useState(true);
@@ -73,8 +74,7 @@ function Profile({ history, match, path }) {
   //   }
   // };
 
-  const { menu, name } = currentHost?.settings;
-  const membersInMenu = menu.find((item) => item.name === 'members');
+  const { menu } = currentHost?.settings;
 
   const tabs = [];
 
@@ -119,24 +119,13 @@ function Profile({ history, match, path }) {
 
   const isFederationLayout = platform?.isFederationLayout;
 
+  const members = menu?.find((item) => item.name === 'members');
+
   return (
     <>
-      <Box py="4" px="4" fontSize="130%">
-        <Flex wrap="wrap">
-          <Link to="/">
-            <CLink as="span" fontWeight="bold">
-              {name}
-            </CLink>
-          </Link>
-          <Text mx="2">/</Text>
-          <Link to="/members">
-            <CLink as="span">{membersInMenu.label}</CLink>
-          </Link>
-          <Text mx="2">/</Text>
-          <Text>{username}</Text>
-        </Flex>
+      <Box p="2">
+        <BackLink backLink={{ label: members.label, value: '/members' }} />
       </Box>
-
       <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
         <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4">
           <MemberAvatarEtc t={t} tc={tc} user={user} />

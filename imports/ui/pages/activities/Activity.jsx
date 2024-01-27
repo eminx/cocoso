@@ -508,7 +508,6 @@ class Activity extends PureComponent {
       ],
     };
 
-    const tags = [activityData.resource];
     const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
 
     const activitiesInMenu = currentHost?.settings?.menu?.find(
@@ -534,7 +533,6 @@ class Activity extends PureComponent {
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           subTitle={activityData.subTitle}
           tabs={tabs}
-          tags={tags}
           title={activityData.title}
         />
 
