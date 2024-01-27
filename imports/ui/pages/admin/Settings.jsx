@@ -113,8 +113,8 @@ export default function Settings({ history }) {
             <Box>
               <FileDropper
                 imageUrl={currentHost && currentHost.logo}
-                height={isImage && '80px'}
-                width={isImage && '120px'}
+                height={isImage && '120px'}
+                width={isImage && '280px'}
                 round={false}
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={localImage && localImage.uploadableImageLocal}
