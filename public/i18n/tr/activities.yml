@@ -10,7 +10,7 @@ form:
   resource:
     label: '{{ resources }}'
     holder: Seç
-    helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç
+    helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç. Zorunlu değil
   occurrences:
     label: Tekrarlar
   days:
@@ -44,7 +44,7 @@ form:
   address:
     label: Adres
     holder: 17. cadde, Çukurcuma...
-    helper: İsteğe bağlı olarak, lütfen etkinliğin gerçekleşeceği yerin ayrıntılı adresini girin
+    helper: İsteğe bağlı olarak, lütfen etkinliğin gerçekleşeceği yerin ayrıntılı adresini gir
   image:
     label: İmaj
     helper: Etkinliği temsilen lütfen cihazındaki galeriden ya da şimdi çekeceğin bir fotoğraf ile bir imaj seç
