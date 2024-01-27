@@ -99,21 +99,18 @@ function Page() {
 
       <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Box pb="2">
+      <Box>
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Box>
 
-      <Center mb="4">
-        <Box w="100%" maxW="520px">
-          {currentPage.images && currentPage.images.length > 0 && (
-            <Center py="4">
-              {/* <Flex flexDirection="column" justify="center"> */}
-              <NiceSlider alt={currentPage.title} images={currentPage.images} />
-              {/* </Flex> */}
-            </Center>
-          )}
+      <Box>
+        {currentPage.images && currentPage.images.length > 0 && (
+          <Center py="4">
+            <NiceSlider alt={currentPage.title} images={currentPage.images} />
+          </Center>
+        )}
+        <Center>
           <Box
-            // bg="white"
             border="1px solid"
             borderColor="brand.500"
             className="text-content"
@@ -123,8 +120,8 @@ function Page() {
           >
             {renderHTML(currentPage.longDescription)}
           </Box>
-        </Box>
-      </Center>
+        </Center>
+      </Box>
 
       {isAdmin && (
         <Center m="4">
