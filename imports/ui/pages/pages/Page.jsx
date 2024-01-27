@@ -63,7 +63,12 @@ function Page() {
       <Box>
         {currentPage.images && currentPage.images.length > 0 && (
           <Center py="4">
-            <NiceSlider alt={currentPage.title} images={currentPage.images} />
+            <NiceSlider
+              alt={currentPage.title}
+              isFade={isDesktop}
+              h={isDesktop ? '400px' : 'auto'}
+              images={currentPage.images}
+            />
           </Center>
         )}
         <Center>
@@ -71,11 +76,12 @@ function Page() {
             border="1px solid"
             borderColor="brand.500"
             className="text-content"
-            maxW="520px"
+            maxWidth="520px"
+            overflow="auto"
             m="2"
             p="4"
           >
-            {renderHTML(currentPage.longDescription)}
+            {currentPage.longDescription && renderHTML(currentPage.longDescription)}
           </Box>
         </Center>
       </Box>

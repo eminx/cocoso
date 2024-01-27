@@ -143,7 +143,7 @@ function Header({
 
   const renderTitles = () => {
     return (
-      <Flex justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
+      <Flex px="4" justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
         <Box>
           <Heading
             as="h1"
@@ -187,13 +187,20 @@ function Header({
   };
 
   return (
-    <Box mb="4" pl="2" pr="4" w="100%">
+    <Box mb="4" w="100%">
       <Flex justify="space-between">
-        <Box width="120px" flexGrow={0} flexShrink={0}>
+        <Box flexGrow={0} flexShrink={0} pl="2" width="120px">
           {backLink && <BackLink backLink={backLink} isSmall={!isDesktop} />}
         </Box>
         {isDesktop && renderTitles()}
-        <Flex width="120px" flexGrow={0} flexShrink={0} flexDirection="column" align="flex-end">
+        <Flex
+          align="flex-end"
+          flexGrow={0}
+          flexShrink={0}
+          flexDirection="column"
+          pr="4"
+          width="120px"
+        >
           <Button
             leftIcon={<LinkIcon />}
             mb="4"

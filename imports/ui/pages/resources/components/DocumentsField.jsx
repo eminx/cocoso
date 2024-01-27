@@ -134,7 +134,14 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
           <Box mb="2">
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                <Box
+                  bg={isDragActive ? 'gray.300' : 'gray.100'}
+                  cursor="grab"
+                  h="180px"
+                  p="4"
+                  w="100%"
+                  {...getRootProps()}
+                >
                   {isUploading ? (
                     <div style={{ textAlign: 'center' }}>
                       <Loader />
