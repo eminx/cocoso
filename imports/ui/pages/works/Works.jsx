@@ -17,7 +17,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -162,7 +162,7 @@ function Works({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'works')?.description}
         numberOfItems={worksRenderedHostFiltered?.length}
       >
@@ -177,7 +177,7 @@ function Works({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Center p="4" pt="0">
         <Wrap>

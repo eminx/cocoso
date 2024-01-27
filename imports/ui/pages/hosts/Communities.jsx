@@ -13,7 +13,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import NewGridThumb from '../../components/NewGridThumb';
 import { call } from '../../utils/shared';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 import { message } from '../../components/message';
 
 function Communities() {
@@ -147,9 +147,9 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <PageHeader heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
+      <PageHeading heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
         <FiltrerSorter {...filtrerProps} />
-      </PageHeader>
+      </PageHeading>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

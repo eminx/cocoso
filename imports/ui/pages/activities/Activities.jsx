@@ -19,7 +19,7 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 moment.locale(i18n.language);
 
@@ -242,7 +242,7 @@ function Activities({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'activities')?.description}
         numberOfItems={activitiesRendered?.length}
       >
@@ -257,7 +257,7 @@ function Activities({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Center>
         <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />

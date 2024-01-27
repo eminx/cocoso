@@ -13,7 +13,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 import Tag from '../../components/Tag';
 import { getHslValuesFromLength } from '../../utils/constants/colors';
 
@@ -190,7 +190,7 @@ function MembersPublic({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'members')?.description}
         numberOfItems={membersRendered.length}
       >
@@ -205,7 +205,7 @@ function MembersPublic({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Center p="4" pt="0">
         <Wrap>

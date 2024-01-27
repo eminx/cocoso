@@ -10,7 +10,7 @@ import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import NiceSlider from '../../components/NiceSlider';
 import { parseTitle } from '../../utils/shared';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 const publicSettings = Meteor.settings.public;
 
@@ -54,7 +54,7 @@ function Page() {
         <title>{`${currentPage.title} | ${settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
-      <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
+      <PageHeading description={settings.menu.find((item) => item.name === 'info')?.description} />
 
       <Box>
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
