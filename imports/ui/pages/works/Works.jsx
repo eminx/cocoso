@@ -264,7 +264,7 @@ function Works({ history }) {
             images={modalWork.images}
             subTitle={modalWork.shortDescription}
             tags={[
-              modalWork.category?.label,
+              // modalWork.category?.label,
               isPortalHost ? allHosts?.find((h) => h.host === modalWork.host)?.name : null,
             ]}
             title={modalWork.title}

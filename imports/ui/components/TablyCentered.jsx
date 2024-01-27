@@ -79,7 +79,12 @@ function TablyCentered({
           />
 
           <Center py="2">
-            <NiceSlider alt={title} h={isDesktop ? '400px' : 'auto'} images={images} />
+            <NiceSlider
+              alt={title}
+              height={isDesktop ? '400px' : 'auto'}
+              images={images}
+              isFade={isDesktop}
+            />
           </Center>
           <Center mb="4" mx="4">
             {action}
@@ -144,7 +149,7 @@ function Header({
   const renderTitles = () => {
     return (
       <Flex px="4" justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
-        <Box>
+        <Box pr="4">
           <Heading
             as="h1"
             fontFamily={fontFamily}

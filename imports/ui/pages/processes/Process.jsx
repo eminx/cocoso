@@ -49,17 +49,13 @@ import { DocumentUploadHelper } from '../../components/UploadHelpers';
 
 moment.locale(i18n.language);
 
-const defaultMeetingResource = 'Office';
-
 const yesterday = moment(new Date()).add(-1, 'days');
 
 class Process extends Component {
   state = {
     modalOpen: false,
     redirectToLogin: false,
-    newMeeting: {
-      resource: defaultMeetingResource,
-    },
+    newMeeting: null,
     isFormValid: false,
     isUploading: false,
     droppedDocuments: null,
@@ -800,16 +796,18 @@ class Process extends Component {
     const { allActivities } = this.props;
     const { newMeeting, resources } = this.state;
 
-    if (
-      !newMeeting ||
-      !newMeeting.resourceId ||
-      !newMeeting.startDate ||
-      !newMeeting.startTime ||
-      !newMeeting.endTime
-    ) {
+    if (!newMeeting || !newMeeting.startDate || !newMeeting.startTime || !newMeeting.endTime) {
       this.setState({
         conflictingBooking: null,
         isFormValid: false,
+      });
+      return;
+    }
+
+    if (!newMeeting.resourceId) {
+      this.setState({
+        conflictingBooking: null,
+        isFormValid: true,
       });
       return;
     }
@@ -1121,7 +1119,7 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="white" border="1px solid" borderColor="brand.500" p="4" my="4">
+    <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
       <Text fontWeight="bold">{t('meeting.form.label')}</Text>
       <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
@@ -1169,7 +1167,7 @@ function CreateMeetingForm({
       )}
 
       <Flex justify="flex-end" my="4">
-        <Button disabled={buttonDisabled} size="sm" onClick={handleSubmit}>
+        <Button isDisabled={buttonDisabled} size="sm" onClick={handleSubmit}>
           {t('meeting.form.submit')}
         </Button>
       </Flex>

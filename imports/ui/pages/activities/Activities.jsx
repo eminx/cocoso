@@ -304,6 +304,7 @@ function Activities({ history }) {
           h="90%"
           isCentered
           isOpen
+          p="0"
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size={isDesktop ? '6xl' : 'full'}
@@ -311,7 +312,7 @@ function Activities({ history }) {
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
         >
-          <ModalBody>
+          <ModalBody p="0">
             <Tably
               action={getDatesForAction(modalActivity, showPast)}
               content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}

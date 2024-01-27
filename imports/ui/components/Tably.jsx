@@ -106,13 +106,19 @@ function Tably({
             </Flex>
           </GridItem>
 
-          <GridItem mt="4">
-            <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
-              <NiceSlider images={images} width="550px" max />
+          <GridItem>
+            <Flex justify="flex-end">
+              <NiceSlider
+                alt={title}
+                height="auto"
+                width={isDesktop ? '500px' : '100%'}
+                isFade={isDesktop}
+                images={images}
+              />
             </Flex>
           </GridItem>
 
-          <GridItem pl="12" mt="4">
+          <GridItem pl="12">
             <Box mb="24">
               {tabs ? (
                 <Switch history={history}>
@@ -154,7 +160,7 @@ function Tably({
           />
 
           <Center bg="gray.900">
-            <NiceSlider alt={title} images={images} width="100vw" isFade={false} />
+            <NiceSlider alt={title} height="auto" images={images} width="100vw" isFade={false} />
           </Center>
           <Center mb="4" mx="4">
             {action}

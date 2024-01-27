@@ -11,89 +11,63 @@ const imageStyle = {
   position: 'relative',
 };
 
-function NiceSlider({ alt, images, h = '400px', width = '100%', isFade = true }) {
+function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {
     return null;
   }
 
-  if (images.length === 1) {
-    return (
-      <Flex h={h} justify={isFade ? 'flex-start' : 'center'}>
-        <Flex flexDirection="column" justify="center">
-          <LazyLoadImage
-            alt={alt}
-            src={images[0]}
-            height={h}
-            style={{ ...imageStyle, height: h }}
-            onClick={() => setToggler(!toggler)}
-          />
-        </Flex>
-
-        <FsLightbox
-          toggler={toggler}
-          sources={images.map((img) => (
-            <img src={img} />
-          ))}
-        />
-      </Flex>
-    );
-  }
-
-  if (isFade) {
-    return (
-      <Box className="slide-container" h={h} w={width}>
-        <Fade arrows={false} transitionDuration={400}>
-          {images.map((image) => (
-            <Center key={image}>
-              <Flex key={image} flexDirection="column" justify="center">
-                <LazyLoadImage
-                  alt={alt}
-                  src={image}
-                  style={{ ...imageStyle, height: h }}
-                  onClick={() => setToggler(!toggler)}
-                />
-              </Flex>
-            </Center>
-          ))}
-        </Fade>
-
-        <FsLightbox
-          toggler={toggler}
-          sources={images.map((img) => (
-            <img src={img} />
-          ))}
-        />
-      </Box>
-    );
-  }
-
   return (
-    <Box className="slide-container" h={h} w={width}>
-      <Slide arrows={false} transitionDuration={400}>
-        {images.map((image) => (
+    <>
+      <ImageHandler height={height} images={images} isFade={isFade} width={width}>
+        {(image, index) => (
           <Center key={image}>
             <Flex flexDirection="column" justify="center">
               <LazyLoadImage
-                alt={alt}
+                alt={alt + image}
                 src={image}
-                style={{ ...imageStyle, height: h }}
+                style={{ ...imageStyle, height }}
                 onClick={() => setToggler(!toggler)}
               />
             </Flex>
           </Center>
-        ))}
-      </Slide>
-
+        )}
+      </ImageHandler>
       <FsLightbox
         toggler={toggler}
         sources={images.map((img) => (
           <img src={img} />
         ))}
       />
-    </Box>
+    </>
   );
+}
+
+function ImageHandler({ height, width, images, isFade, children }) {
+  if (images?.length === 1) {
+    return (
+      <Flex h={height} justify={isFade ? 'flex-start' : 'center'}>
+        {images.map((image, index) => children(image, index))}
+      </Flex>
+    );
+  } else if (isFade) {
+    return (
+      <Box className="slide-container" h={height} w={width}>
+        <Fade arrows={false} transitionDuration={400}>
+          {images.map((image, index) => children(image, index))}
+        </Fade>
+      </Box>
+    );
+  } else {
+    return (
+      <Box className="slide-container" h={height} w={width}>
+        <Slide arrows={false} transitionDuration={400}>
+          {images.map((image, index) => children(image, index))}
+        </Slide>
+      </Box>
+    );
+  }
 }
 
 export default NiceSlider;
