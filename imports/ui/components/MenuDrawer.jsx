@@ -59,7 +59,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           zIndex={1420}
         >
           {!isOpen ? (
-            <Box p="4" pt="6">
+            <Box p="4">
               <IconButton
                 _hover={{ bg: 'brand.500' }}
                 bg="gray.800"

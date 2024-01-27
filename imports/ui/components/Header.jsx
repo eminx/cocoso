@@ -66,7 +66,7 @@ function Header({ isSmallerLogo }) {
   };
 
   return (
-    <Box px="2" pt="2" w="100%">
+    <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between" mb="2">
         {isDesktop && <Box w="120px" />}
         <Box pt="3" px="2">
