@@ -66,7 +66,7 @@ function Page() {
             <NiceSlider
               alt={currentPage.title}
               isFade={isDesktop}
-              h={isDesktop ? '400px' : 'auto'}
+              height={isDesktop ? '400px' : 'auto'}
               images={currentPage.images}
             />
           </Center>
