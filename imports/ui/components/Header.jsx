@@ -58,11 +58,11 @@ function Header({ isSmallerLogo }) {
   }
 
   const isCurrentPage = (item) => {
+    const pathSplitted = pathname.split('/');
     if (item.name === 'info') {
-      const pathSplitted = pathname.split('/');
       return pathSplitted && pathSplitted[1] === 'pages';
     }
-    return item.route === pathname;
+    return pathSplitted.includes(item.name);
   };
 
   return (
@@ -129,38 +129,4 @@ function Header({ isSmallerLogo }) {
   );
 }
 
-function Heading({ title, numberOfItems }) {
-  const history = useHistory();
-  const [tc] = useTranslation('common');
-
-  const pathname = history.location.pathname;
-  const isCurrentPage = (name) => {
-    if (name === 'info') {
-      return pathname.substring(0, 6) === '/pages';
-    }
-    return name === pathname.substring(1, pathname.length);
-  };
-
-  const { currentHost } = useContext(StateContext);
-
-  const { menu } = currentHost?.settings;
-  const menuItems = menu?.filter((item) => item.isVisible);
-
-  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
-
-  return (
-    <Flex>
-      <CHeading as="h1" fontFamily="'Raleway', sans-serif" size="lg">
-        {title || activeMenuItem?.label}{' '}
-        {/* {numberOfItems > 0 && (
-          <Text as="span" fontSize="xs">
-            {numberOfItems} {tc('labels.items')}
-          </Text>
-        )} */}
-      </CHeading>
-    </Flex>
-  );
-}
-
-export { Heading };
 export default Header;

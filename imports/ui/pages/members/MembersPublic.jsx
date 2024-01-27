@@ -193,7 +193,6 @@ function MembersPublic({ history }) {
       <PageHeader
         description={settings.menu.find((item) => item.name === 'members')?.description}
         numberOfItems={membersRendered.length}
-        showNewButton={false}
       >
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (

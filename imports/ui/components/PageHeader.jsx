@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
-import { Box, Center, Flex, Heading as CHeading, Divider, Text } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 
-import NewButton from './NewButton';
-import { Heading } from './Header';
 import { StateContext } from '../LayoutContainer';
 
-function PageHeader({ description, heading, numberOfItems, showNewButton = true, children }) {
-  const { isDesktop } = useState(StateContext);
+function PageHeader({ description, heading }) {
+  const location = useLocation();
+  const { currentHost } = useContext(StateContext);
+
+  const pathname = location.pathname;
+  const { menu } = currentHost?.settings;
+
+  if (!pathname || !menu) {
+    return null;
+  }
+
+  const activeMenuItem =
+    !heading &&
+    menu.find((item) => {
+      if (item.name === 'info') {
+        return pathname.substring(0, 6) === '/pages';
+      }
+      return pathname.split('/')?.includes(item.name);
+      // return item.name === pathname.substring(1, pathname.length);
+    });
 
   return (
     <Center p="4">
       <Box>
         <Center wrap="wrap">
-          {<Heading title={heading} numberOfItems={numberOfItems} textAlign="center" />}
-          {/* {children} */}
+          <Heading as="h1" fontFamily="'Raleway', sans-serif" size="lg" textAlign="center">
+            {heading || activeMenuItem?.label}
+          </Heading>
         </Center>
         <Box pt="2" pb="2">
           <Divider borderColor="gray.500" />
-          <CHeading
+          <Heading
+            as="h2"
             size="sm"
             fontWeight="normal"
             lineHeight="1.5"
@@ -26,11 +45,10 @@ function PageHeader({ description, heading, numberOfItems, showNewButton = true,
             textAlign="center"
           >
             {description}
-          </CHeading>
+          </Heading>
         </Box>
       </Box>
     </Center>
-    // {showNewButton && <NewButton />}
   );
 }
 
