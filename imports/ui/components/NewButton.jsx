@@ -79,7 +79,7 @@ function NewButton() {
   }
 
   return (
-    <Box pl="2" pt="1" position="fixed" bottom="72px" right="48px" zIndex={isOpen ? '1403' : '0'}>
+    <Box pl="2" pt="1" position="fixed" bottom="72px" right="48px" zIndex={isOpen ? '1403' : '10'}>
       <Menu
         isOpen={isOpen}
         placement="bottom-end"

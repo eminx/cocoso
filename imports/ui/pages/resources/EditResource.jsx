@@ -8,10 +8,10 @@ import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import NotFoundPage from '../NotFoundPage';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert } from '../../components/message';
+import FormTitle from '../../components/FormTitle';
 
 function EditResourcePage({ history }) {
   const { role } = useContext(StateContext);
@@ -61,21 +61,10 @@ function EditResourcePage({ history }) {
     return null;
   }
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: resource.label,
-      link: `/resources/${resource._id}`,
-    },
-    {
-      label: tc('actions.update'),
-      link: null,
-    },
-  ];
-
   return (
     <Box>
+      <FormTitle context="resources" />
       <Template>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} py="4" />
         <Box>
           {!isLoading && <ResourceForm defaultValues={resource} isEditMode history={history} />}
         </Box>

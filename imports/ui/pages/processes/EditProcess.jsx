@@ -6,9 +6,9 @@ import { call, resizeImage, uploadImage } from '../../utils/shared';
 import ProcessForm from '../../components/ProcessForm';
 import Template from '../../components/Template';
 import Loader from '../../components/Loader';
-import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message, Alert } from '../../components/message';
+import FormTitle from '../../components/FormTitle';
 
 class EditProcess extends PureComponent {
   state = {
@@ -171,8 +171,8 @@ class EditProcess extends PureComponent {
 
     return (
       <Box>
+        <FormTitle context="processes" />
         <Template>
-          <Breadcrumb furtherItems={furtherBreadcrumbLinks} py="4" />
           <Box>
             <ProcessForm
               defaultValues={process}

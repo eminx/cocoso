@@ -6,13 +6,13 @@ import { useTranslation } from 'react-i18next';
 
 import PageForm from '../../components/PageForm';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
+import FormTitle from '../../components/FormTitle';
 
 function NewPage() {
-  const { currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { currentUser, role } = useContext(StateContext);
   const [pageTitles, setPageTitles] = useState([]);
   const [images, setImages] = useState([]);
   const [newPageId, setNewPageId] = useState(null);
@@ -127,16 +127,12 @@ function NewPage() {
   if (newPageId) {
     return <Redirect to={`/pages/${newPageId}`} />;
   }
-  const { menu } = currentHost?.settings;
-  const navItem = menu.find((item) => item.name === 'info');
-
-  const furtherItems = [{ label: navItem.label, link: '/pages' }, { label: tc('actions.create') }];
 
   return (
     <>
+      <FormTitle context="pages" isNew />
       <Template>
-        <Breadcrumb furtherItems={furtherItems} />
-        <Box py="6">
+        <Box>
           <PageForm
             images={images.map((image) => image.src)}
             isButtonLoading={isCreating}

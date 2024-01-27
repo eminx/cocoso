@@ -3,10 +3,10 @@ import { Box, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import ResourceForm from './components/ResourceForm';
 import { StateContext } from '../../LayoutContainer';
 import { Alert } from '../../components/message';
+import FormTitle from '../../components/FormTitle';
 
 function NewResourcePage({ history }) {
   const [tc] = useTranslation('common');
@@ -30,9 +30,9 @@ function NewResourcePage({ history }) {
 
   return (
     <Box>
+      <FormTitle context="resources" isNew />
       <Template>
-        <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
-        <Box py="6">
+        <Box>
           <ResourceForm defaultValues={resourceModel} history={history} />
         </Box>
       </Template>

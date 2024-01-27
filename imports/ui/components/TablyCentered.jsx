@@ -16,7 +16,6 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
 import { LinkIcon } from '@chakra-ui/icons/dist/Link';
 import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
+import BackLink from './BackLink';
 
 function Tably({
   action = null,
@@ -261,24 +261,6 @@ function AdminMenu({ adminMenu, isDesktop }) {
         )}
       </MenuList>
     </Menu>
-  );
-}
-
-function BackLink({ backLink, isSmall = false }) {
-  if (!backLink) {
-    return null;
-  }
-  return (
-    <Link to={backLink?.value}>
-      <Button
-        as="span"
-        leftIcon={<ChevronLeftIcon mr="-2" fontSize="xl" />}
-        size={isSmall ? 'sm' : 'md'}
-        variant="link"
-      >
-        {backLink?.label}
-      </Button>
-    </Link>
   );
 }
 

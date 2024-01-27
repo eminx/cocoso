@@ -70,6 +70,8 @@ labels:
     info: What you look for could not be found
     gohome: Back to home page
   newPopupLabel: Create a new entry in
+  newFormEntry: New Entry in {{ context }}
+  editFormEntry: Edit Entry in {{ context }}
   thislisting: this listing
   newsletters: Previous Newsletters
   avatar:
