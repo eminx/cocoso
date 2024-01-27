@@ -25,7 +25,7 @@ export default function FormTitle({ context, isNew = false }) {
           isSmall={false}
         />
       </Flex>
-      <Heading size="lg" textAlign="center">
+      <Heading mb="4" size="lg" textAlign="center">
         {isNew
           ? tc('labels.newFormEntry', { context: currentContext?.label })
           : tc('labels.editFormEntry', { context: currentContext?.label })}
