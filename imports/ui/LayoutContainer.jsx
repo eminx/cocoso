@@ -30,6 +30,7 @@ import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
+import NewButton from './components/NewButton';
 
 export const StateContext = React.createContext(null);
 
@@ -219,6 +220,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
                 </Box>
               </Box>
             </Flex>
+
+            <NewButton />
           </StateContext.Provider>
         </ColorModeProvider>
       </ChakraProvider>
@@ -236,12 +239,14 @@ function Footer({ currentHost, isFederationFooter, tc }) {
 
   return (
     <Box bg="brand.50" color="brand.900" w="100%">
-      <Center p="2">
+      <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
-            <ListItem key={item.name} px="2" py="1">
+            <ListItem key={item.name} px="4" py="2">
               <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span">{item.label}</CLink>{' '}
+                <CLink as="span" color="brand.500" fontWeight="bold">
+                  {item.label}
+                </CLink>{' '}
               </Link>
             </ListItem>
           ))}
@@ -293,7 +298,7 @@ function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Center bg="brand.800">
+    <Center bg="black" className="platform-footer">
       <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>

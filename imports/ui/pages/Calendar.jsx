@@ -287,8 +287,8 @@ class Calendar extends PureComponent {
           description={settings.menu.find((item) => item.name === 'calendar')?.description}
         />
 
-        <Box my="2">
-          <Center p="2">
+        <Box>
+          <Center>
             {!selectFilterView ? (
               <Box>
                 <Wrap justify="center" px="1" pb="1" mb="3">

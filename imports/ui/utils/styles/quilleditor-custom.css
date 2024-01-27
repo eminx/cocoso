@@ -25,13 +25,14 @@
 
 .quill-megacontainer .ql-container.ql-snow .ql-editor {
   border-width: 1px;
-  border-color: #3182ce;
+  border-color: var(--chakra-colors-brand-500);
   border-radius: 0px;
 }
 
 .quill-megacontainer.is-focused .ql-container.ql-snow .ql-editor {
   border-width: 2px;
-  background: #fff;
+  background: var(--chakra-colors-gray-50);
+
   border-radius: 0px;
 }
 
@@ -41,7 +42,7 @@
 
 .quill-megacontainer:not(.is-focused) .ql-container.ql-snow .ql-editor:hover {
   background-color: #fff;
-  border-color: #3182ce;
+  border-color: var(--chakra-colors-brand-600);
 }
 
 .quill.ql-editor-text-align-center .ql-editor {

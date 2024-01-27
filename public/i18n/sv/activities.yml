@@ -89,7 +89,7 @@ public:
     email: E-post redan registrerad. Var vänlig att uppdatera din befintliga bokning istället.
     notFound: Tyvärr kunde vi inte hitta din registrering. Dubbelkolla datum och stavningar och försök igen
     disabled:
-      true: OSA inaktiverad. Kontrollera den praktiska informationen.
+      true: OSA inaktiverad. Se fliken "Info" för detaljer
       false: Klicka och öppna datumet för att OSA
       info: Registreringar är inaktiverade.
   attendance:

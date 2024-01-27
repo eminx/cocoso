@@ -268,8 +268,19 @@ class Activity extends PureComponent {
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
+          {activityData.isRegistrationDisabled && (
+            <Text mb="2" size="sm">
+              {t('public.register.disabled.true')}
+            </Text>
+          )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="white" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
+            <Box
+              bg="brand.50"
+              color="brand.800"
+              p="2"
+              mb="4"
+              key={occurence.startDate + occurence.startTime}
+            >
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -344,7 +355,7 @@ class Activity extends PureComponent {
 
     return (
       <Box>
-        <Text mb="2" ml={isDesktop ? '0' : '4'} size="sm">
+        <Text mb="2" size="sm">
           {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
@@ -460,10 +471,9 @@ class Activity extends PureComponent {
         path: `/activities/${activityData._id}/info`,
       },
       {
-        title:
-          activityData.isPublicActivity && !activityData.isRegistrationDisabled
-            ? t('public.labels.datesAndRegistration')
-            : t('public.labels.dates'),
+        title: activityData.isPublicActivity
+          ? t('public.labels.datesAndRegistration')
+          : t('public.labels.dates'),
         content: this.renderDates(),
         path: `/activities/${activityData._id}/dates`,
       },

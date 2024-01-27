@@ -51,7 +51,7 @@ function DatePicker({
   return (
     <RDC
       calendarStartDay={1}
-      customInput={<Input variant="filled" />}
+      customInput={<Input />}
       dateFormat={
         onlyTime
           ? t('datePicker.formats.time')

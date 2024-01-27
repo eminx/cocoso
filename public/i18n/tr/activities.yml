@@ -88,7 +88,7 @@ public:
     email: Bu eposta adresi zaten kayıt olunmuş, lütfen güncelleme seçeneğini seçiniz
     notFound: Üzgünüz, kaydını bulamadık. Lütfen zamanları ve diğer bilgileri tekrar kontrol et ve tekrar dene
     disabled:
-      true: Kayıt devre dışı bırakıldı. Lütfen pratik bilgileri kontrol et.
+      true: Kayıt aktif değil. Ayrıntılar için lütfen "Bilgi" sekmesini kontrol edin.
       false: Kayıt olmak için tarihlere tıklayıp açarak, bilgilerini girebilirsin
       info: Kayıtlar şu an alınmıyor
   attendance:

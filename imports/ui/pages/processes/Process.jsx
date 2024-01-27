@@ -460,16 +460,15 @@ class Process extends Component {
       return (
         <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          bg="white"
           mb="2"
           style={{
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
           <AccordionButton
-            _hover={{ bg: 'brand.200' }}
+            _hover={{ bg: 'brand.100' }}
             _expanded={{ bg: 'brand.500', color: 'white' }}
-            bg="white"
+            bg="brand.50"
             color="brand.800"
           >
             <Box flex="1" textAlign="left">
@@ -483,8 +482,8 @@ class Process extends Component {
             </Box>
           </AccordionButton>
 
-          <AccordionPanel>
-            <Center p="2" bg="brand.100">
+          <AccordionPanel bg="brand.100">
+            <Center p="2">
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'green' : 'brand'}
@@ -704,7 +703,14 @@ class Process extends Component {
             <Center my="2">
               <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
-                  <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  <Box
+                    bg={isDragActive ? 'gray.300' : 'gray.100'}
+                    cursor="grab"
+                    h="180px"
+                    p="4"
+                    w="100%"
+                    {...getRootProps()}
+                  >
                     {isUploading ? (
                       <div style={{ textAlign: 'center' }}>
                         <Loader />
@@ -1116,7 +1122,7 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="brand.100" p="4" my="4">
+    <Box bg="white" border="1px solid" borderColor="brand.500" p="4" my="4">
       <Text fontWeight="bold">{t('meeting.form.label')}</Text>
       <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
@@ -1149,7 +1155,6 @@ function CreateMeetingForm({
         <Select
           name="resource"
           placeholder={t('meeting.form.resource')}
-          variant="filled"
           onChange={({ target: { value } }) => handleResourceChange(value)}
         >
           {resources.map((part, i) => (
@@ -1165,7 +1170,7 @@ function CreateMeetingForm({
       )}
 
       <Flex justify="flex-end" my="4">
-        <Button colorScheme="green" disabled={buttonDisabled} size="sm" onClick={handleSubmit}>
+        <Button disabled={buttonDisabled} size="sm" onClick={handleSubmit}>
           {t('meeting.form.submit')}
         </Button>
       </Flex>

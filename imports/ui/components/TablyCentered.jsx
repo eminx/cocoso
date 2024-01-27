@@ -6,11 +6,8 @@ import {
   Box,
   Button,
   Center,
-  Container,
   Flex,
   Heading,
-  Grid,
-  GridItem,
   Link as CLink,
   Menu,
   MenuList,
@@ -56,8 +53,6 @@ function Tably({
     return <Redirect to={tabs[0].path} />;
   }
 
-  const desktopGridColumns = author ? '3fr 4fr 1fr' : '3fr 4fr 0fr';
-
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(`https://${currentHost.host}${location.pathname}`);
@@ -67,77 +62,8 @@ function Tably({
     }
   };
 
-  if (false) {
-    return (
-      <>
-        {backLink && <BackLink backLink={backLink} />}
-        <Grid templateColumns={desktopGridColumns}>
-          <GridItem>
-            <Flex>
-              <Box w="100%">
-                <Header author={author} isDesktop subTitle={subTitle} tags={tags} title={title} />
-              </Box>
-            </Flex>
-          </GridItem>
-
-          <GridItem pl="16">
-            {action && (
-              <Container m="0" p="0">
-                <Box mb="8">{action}</Box>
-              </Container>
-            )}
-            {tabs && (
-              <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs} mb="0">
-                {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-              </Tabs>
-            )}
-          </GridItem>
-
-          <GridItem>
-            <Flex flexDirection="column" justify="center">
-              {author && <AvatarHolder author={author} />}
-              {backLink && (
-                <Center p="4" mr="2">
-                  <Button leftIcon={<LinkIcon />} variant="link" size="sm" onClick={handleCopyLink}>
-                    {copied ? tc('actions.copied') : tc('actions.share')}
-                  </Button>
-                </Center>
-              )}
-            </Flex>
-          </GridItem>
-
-          <GridItem mt="4">
-            <Flex flexGrow="0" justify={isDesktop ? 'flex-end' : 'center'} mb="4">
-              <NiceSlider images={images} width="550px" max />
-            </Flex>
-          </GridItem>
-
-          <GridItem pl="12" mt="4">
-            <Box mb="24">
-              {tabs ? (
-                <Switch history={history}>
-                  {tabs.map((tab) => (
-                    <Route
-                      key={tab.title}
-                      path={tab.path}
-                      render={(props) => <Container m="0">{tab.content}</Container>}
-                    />
-                  ))}
-                </Switch>
-              ) : (
-                <Container m="0">{content}</Container>
-              )}
-            </Box>
-          </GridItem>
-
-          <GridItem />
-        </Grid>
-      </>
-    );
-  }
-
   return (
-    <Center p="4" w="100%">
+    <Center p="4" mt={isDesktop ? '0' : '4'} w="100%">
       <Box w="100%">
         <Box>
           <Header
@@ -264,11 +190,17 @@ function Header({
     <Box w="100%" mb="4">
       <Flex justify="space-between">
         <Box width="120px" flexGrow={0} flexShrink={0}>
-          {backLink && <BackLink backLink={backLink} isSmall />}
+          {backLink && <BackLink backLink={backLink} isSmall={!isDesktop} />}
         </Box>
         {isDesktop && renderTitles()}
         <Flex width="120px" flexGrow={0} flexShrink={0} flexDirection="column" align="flex-end">
-          <Button leftIcon={<LinkIcon />} mb="4" size="sm" variant="link" onClick={handleCopyLink}>
+          <Button
+            leftIcon={<LinkIcon />}
+            mb="4"
+            size={isDesktop ? 'md' : 'sm'}
+            variant="link"
+            onClick={handleCopyLink}
+          >
             {copied ? tc('actions.copied') : tc('actions.share')}
           </Button>
           {isDesktop && author && <AvatarHolder size="md" author={author} />}

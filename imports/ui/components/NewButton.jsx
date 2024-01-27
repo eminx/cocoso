@@ -79,7 +79,7 @@ function NewButton() {
   }
 
   return (
-    <Box pl="2" pt="1">
+    <Box pl="2" pt="1" position="fixed" bottom="72px" right="48px" zIndex={isOpen ? '1403' : '0'}>
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -88,13 +88,14 @@ function NewButton() {
       >
         <MenuButton>
           <IconButton
-            _hover={{ bg: 'brand.300' }}
-            bg="brand.400"
+            _hover={{ bg: 'brand.200' }}
+            boxShadow="dark-lg"
+            bg="brand.500"
             borderColor="#fff"
             borderWidth="2px"
+            borderRadius="50%"
             icon={<AddIcon color="white" />}
-            size={isDesktop ? 'md' : 'sm'}
-            zIndex={isOpen ? '1403' : '0'}
+            size={isDesktop ? 'lg' : 'md'}
           />
         </MenuButton>
         <MenuList zIndex={isOpen ? '1403' : '10'}>
@@ -105,6 +106,7 @@ function NewButton() {
           {activeMenuItem && (
             <MenuItem
               key={activeMenuItem.name}
+              color="brand.600"
               pl="5"
               onClick={() => history.push(getPathname(activeMenuItem))}
             >
@@ -121,6 +123,7 @@ function NewButton() {
               .map((item) => (
                 <MenuItem
                   key={item.name}
+                  color="brand.600"
                   fontWeight="bold"
                   onClick={() => history.push(getPathname(item))}
                 >
@@ -132,11 +135,14 @@ function NewButton() {
       </Menu>
       <Center position="relative">
         <Text
-          fontSize="12px"
+          color="brand.600"
+          fontSize="14px"
+          fontWeight="bold"
           lineHeight="1"
           mt="1"
           position="absolute"
           textAlign="center"
+          textShadow="rgb(255, 255, 255) 1px 1px 1px"
           textTransform="uppercase"
           top="-1px"
         >

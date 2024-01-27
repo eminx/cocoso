@@ -27,7 +27,7 @@ export default function TopBar() {
   const { isPortalHost } = currentHost;
 
   return (
-    <Box bg="brand.800" zIndex="1405" position="relative">
+    <Box bg="black" zIndex="1405" position="relative">
       <Flex justify="space-between">
         <Box
           _hover={{ bg: 'brand.100', color: 'brand.600' }}

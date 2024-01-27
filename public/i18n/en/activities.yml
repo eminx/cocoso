@@ -89,7 +89,7 @@ public:
     email: Email already registered. Please update instead.
     notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
     disabled:
-      true: RSVP disabled. Please check the practical information.
+      true: Registration disabled. Please check the "Info" tab for details.
       false: Please click and open the date to register
       info: Registrations are disabled.
   attendance:
