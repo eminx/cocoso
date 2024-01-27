@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Box, Center, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  Modal,
+  ModalOverlay,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
@@ -39,65 +49,58 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
 
   if (isDesktop) {
     return (
-      <Box bg="brand.700" className={menuClassName} position="relative" flexGrow="0" flexShrink="0">
+      <Box position="relative">
         <Box
-          bg="brand.700"
           className={menuClassName}
-          color="brand.100"
+          flexGrow="0"
+          flexShrink="0"
           h="100vh"
-          px="2"
-          position="fixed"
+          position="absolute"
+          zIndex={1420}
         >
           {!isOpen ? (
-            <Center h="100%" pt="4">
-              <Flex flexDirection="column" h="100%" justify="space-between">
-                <Flex align="center" flexDirection="column">
-                  <IconButton
-                    _hover={{ bg: 'brand.600' }}
-                    bg="brand.700"
-                    color="brand.50"
-                    icon={<HamburgerIcon fontSize="36px" />}
-                    onClick={onToggle}
-                  />
-                  <Text fontSize="xs" fontWeight="bold" textTransform="uppercase">
-                    {tc('menu.label')}
-                  </Text>
-                </Flex>
-                <Center
-                  cursor="pointer"
-                  mb={isFederationLayout ? '20' : '4'}
-                  onClick={() => setIsOpen(true)}
-                >
-                  <Text color="white" fontWeight="bold">
-                    {i18n.language?.toUpperCase()}
-                  </Text>
-                </Center>
-              </Flex>
-            </Center>
+            <Box p="4">
+              <IconButton
+                _hover={{ bg: 'brand.500' }}
+                bg="gray.800"
+                icon={<HamburgerIcon fontSize="24px" />}
+                width="40px"
+                height="40px"
+                borderColor="#fff"
+                borderWidth="2px"
+                onClick={onToggle}
+              />
+              <Center>
+                <Text color="gray.800" fontSize="xs" fontWeight="bold" textTransform="uppercase">
+                  {tc('menu.label')}
+                </Text>
+              </Center>
+            </Box>
           ) : (
             <Flex
+              bg="white"
+              boxShadow="dark-lg"
               flexDirection="column"
               h={isFederationLayout ? 'calc(100% - 60px)' : '100%'}
               justify="space-between"
               overflowY="auto"
             >
-              <Box pt="4">
+              <Box p="6">
                 <Flex align="flex-start" justify="space-between">
-                  <Heading fontSize="24px" px="4" mt="2">
+                  <Heading fontSize="24px" mt="2" mb="4">
                     {tc('menu.label')}
                   </Heading>
                   <IconButton
-                    _hover={{ bg: 'brand.600' }}
-                    bg="brand.800"
-                    color="brand.50"
+                    _hover={{ bg: 'brand.100' }}
+                    bg="bg.50"
+                    color="brand.900"
                     icon={<CloseIcon />}
-                    mr="4"
                     tc={tc}
                     onClick={onToggle}
                   />
                 </Flex>
 
-                <Box p="4">
+                <Box py="2">
                   <MenuContent
                     currentHost={currentHost}
                     menuItems={menuItems}
@@ -107,15 +110,24 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
                   />
                 </Box>
               </Box>
-              <Box color="brand.50" pl="4" mt="-8">
+              <Box color="brand.600" pl="4" mt="-8">
                 <MenuFooter />
               </Box>
+              <Modal isOpen={isOpen}>
+                <ModalOverlay onClick={() => setIsOpen(false)} />
+              </Modal>
             </Flex>
           )}
         </Box>
       </Box>
     );
   }
+
+  <Center cursor="pointer" mb={isFederationLayout ? '20' : '4'} onClick={() => setIsOpen(true)}>
+    <Text color="white" fontWeight="bold">
+      {i18n.language?.toUpperCase()}
+    </Text>
+  </Center>;
 
   return (
     <Box>
@@ -137,11 +149,11 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       </Flex>
 
       <Drawer
-        bg="brand.800"
+        bg="white"
         isOpen={isOpen}
         placement="right"
         title={tc('menu.label')}
-        titleColor="brand.50"
+        titleColor="brand.900"
         onClose={onToggle}
       >
         <Flex flexDirection="column" h="100%" justify="space-between">
@@ -152,7 +164,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
             tc={tc}
             onToggle={onToggle}
           />
-          <Box color="brand.50" mt="4">
+          <Box color="brand.600" mt="4">
             <MenuFooter />
           </Box>
         </Flex>
@@ -177,9 +189,9 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
 
   return (
     <VStack align="flex-start">
-      <Text color="brand.50" fontSize="xs" mt="2">
+      {/* <Text color="brand.900" fontSize="xs" mt="2">
         <em>{currentHost?.settings?.name}</em>
-      </Text>
+      </Text> */}
 
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
@@ -188,7 +200,8 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
             <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
-                color={isCurrentPageLabel ? 'white' : 'brand.50'}
+                // color={isCurrentPageLabel ? 'brand' : 'brand.50'}
+                color="brand.600"
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
                 {item.label}
@@ -197,31 +210,24 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
           </Link>
         );
       })}
-      <Box pt="8">
-        {showPlatformItems && (
-          <Text color="brand.50" fontSize="xs" mb="2">
-            <em>{platform?.name}</em>
-          </Text>
-        )}
-        {showPlatformItems && (
-          <Link
-            key="/communities"
-            style={{ textShadow: 'none' }}
-            to="/communities"
-            onClick={onToggle}
-          >
-            <Box py="1">
-              <Text
-                _hover={{ textDecoration: 'underline' }}
-                color="brand.50"
-                fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
-              >
-                {tc('platform.communities')}
-              </Text>
-            </Box>
-          </Link>
-        )}
-      </Box>
+      {showPlatformItems && (
+        <Link
+          key="/communities"
+          style={{ textShadow: 'none' }}
+          to="/communities"
+          onClick={onToggle}
+        >
+          <Box py="1">
+            <Text
+              _hover={{ textDecoration: 'underline' }}
+              color="brand.600"
+              fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
+            >
+              {tc('platform.communities')}
+            </Text>
+          </Box>
+        </Link>
+      )}
     </VStack>
   );
 }

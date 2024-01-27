@@ -31,6 +31,7 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import NewButton from './components/NewButton';
+import ChangeLanguageMenu from './components/ChangeLanguageMenu';
 
 export const StateContext = React.createContext(null);
 
@@ -288,6 +289,9 @@ function Footer({ currentHost, isFederationFooter, tc }) {
           </Flex>
         </Center>
       )}
+      <Center p="4">
+        <ChangeLanguageMenu isCentered />
+      </Center>
     </Box>
   );
 }
