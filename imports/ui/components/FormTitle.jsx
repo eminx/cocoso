@@ -6,7 +6,7 @@ import { StateContext } from '../LayoutContainer';
 import BackLink from './BackLink';
 
 export default function FormTitle({ context, isNew = false }) {
-  const { currentHost } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   const menu = currentHost?.settings?.menu;
@@ -18,7 +18,7 @@ export default function FormTitle({ context, isNew = false }) {
   });
 
   return (
-    <Box py="6">
+    <Box>
       <Flex px="2" mb="2">
         <BackLink
           backLink={{ label: currentContext?.label, value: '/' + context }}

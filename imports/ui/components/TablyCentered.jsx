@@ -25,7 +25,7 @@ import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
 
-function Tably({
+function TablyCentered({
   action = null,
   adminMenu = null,
   author = null,
@@ -40,7 +40,7 @@ function Tably({
   const [copied, setCopied] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  const { currentHost, hue, isDesktop } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function Tably({
   };
 
   return (
-    <Center p="4" mt={isDesktop ? '0' : '4'} w="100%">
+    <Center py="4" w="100%">
       <Box w="100%">
         <Box>
           <Header
@@ -78,17 +78,17 @@ function Tably({
             handleCopyLink={handleCopyLink}
           />
 
-          <Center py="4">
-            <NiceSlider alt={title} images={images} />
+          <Center py="2">
+            <NiceSlider alt={title} h={isDesktop ? '400px' : 'auto'} images={images} />
           </Center>
           <Center mb="4" mx="4">
             {action}
           </Center>
         </Box>
 
-        <Center>
+        <Center px="4">
           <Box maxW="540px" w="100%">
-            <Box w="100%" minH="100vh">
+            <Box minH="100vh" w="100%">
               {tabs && (
                 <Tabs
                   // align="center"
@@ -143,7 +143,7 @@ function Header({
 
   const renderTitles = () => {
     return (
-      <Flex w="100%" justify={!isDesktop && author ? 'space-between' : 'center'}>
+      <Flex justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
         <Box>
           <Heading
             as="h1"
@@ -187,7 +187,7 @@ function Header({
   };
 
   return (
-    <Box w="100%" mb="4">
+    <Box mb="4" pl="2" pr="4" w="100%">
       <Flex justify="space-between">
         <Box width="120px" flexGrow={0} flexShrink={0}>
           {backLink && <BackLink backLink={backLink} isSmall={!isDesktop} />}
@@ -264,4 +264,4 @@ function AdminMenu({ adminMenu, isDesktop }) {
   );
 }
 
-export default Tably;
+export default TablyCentered;
