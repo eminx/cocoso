@@ -180,13 +180,18 @@ export default function BookingsField({ currentUser, selectedResource }) {
           <AccordionItem>
             {({ isExpanded }) => (
               <>
-                <AccordionButton bg="gray.100">
+                <AccordionButton
+                  _hover={{ bg: 'brand.100' }}
+                  _expanded={{ bg: 'brand.500', color: 'white' }}
+                  bg="brand.50"
+                  color="brand.800"
+                >
                   <Box flex="1" textAlign="left">
                     {t('booking.labels.form')}
                   </Box>
                   {isExpanded ? <MinusIcon fontSize="12px" /> : <AddIcon fontSize="12px" />}
                 </AccordionButton>
-                <AccordionPanel pb={4}>
+                <AccordionPanel bg="brand.100" pb={4}>
                   <FormControl display="flex" alignItems="center" mb="2">
                     <Switch
                       id="book-multiple-days"
