@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 
 import ProfileForm from './ProfileForm';
-import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -203,17 +202,6 @@ function EditProfile({ history }) {
     }
   };
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: currentUser.username,
-      link: `/@${currentUser.username}`,
-    },
-    {
-      label: tc('actions.update'),
-      link: null,
-    },
-  ];
-
   const isMember = ['admin', 'contributor', 'participant'].includes(role);
   const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
   const isUserPublic = Boolean(currentMembership.isPublic);
@@ -367,10 +355,6 @@ function EditProfile({ history }) {
   return (
     <>
       <Template>
-        <Box>
-          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-        </Box>
-
         <Box mb="8">
           <Box pt="4" mb="8">
             <Heading color="gray.800" size="lg">

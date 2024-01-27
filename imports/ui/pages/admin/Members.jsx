@@ -14,7 +14,6 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { adminMenu } from '../../utils/constants/general';
 import UsageReport from '../../components/UsageReport';
-import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 
 moment.locale(i18n.language);
@@ -200,27 +199,8 @@ function Members() {
     return <Redirect to={tabs[0].path} />;
   }
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Admin',
-      link: '/admin/settings',
-    },
-    {
-      label: t('label'),
-      link: 'admin/members',
-    },
-    {
-      label: tabs.find((t) => t.path === pathname).title,
-      link: null,
-    },
-  ];
-
   return (
     <>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
-
       <Template
         heading={t('label')}
         leftContent={

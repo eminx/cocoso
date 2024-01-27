@@ -158,17 +158,6 @@ class EditProcess extends PureComponent {
       return <Redirect to={`/processes/${process._id}`} />;
     }
 
-    const furtherBreadcrumbLinks = [
-      {
-        label: process.title,
-        link: `/processes/${process._id}`,
-      },
-      {
-        label: tc('actions.update'),
-        link: null,
-      },
-    ];
-
     return (
       <Box>
         <FormTitle context="processes" />

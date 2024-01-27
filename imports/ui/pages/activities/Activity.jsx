@@ -526,7 +526,6 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        {/* {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />} */}
 
         <TablyCentered
           action={this.getDatesForAction()}

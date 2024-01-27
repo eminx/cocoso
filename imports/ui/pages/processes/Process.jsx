@@ -46,7 +46,6 @@ import {
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { DocumentUploadHelper } from '../../components/UploadHelpers';
-import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
 

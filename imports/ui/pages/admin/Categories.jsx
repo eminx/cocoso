@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Button,
-  Heading,
   HStack,
   Input,
   Tag,
@@ -18,10 +17,6 @@ import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-import Breadcrumb from '../../components/Breadcrumb';
-import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
-import { adminMenu } from '../../utils/constants/general';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -87,29 +82,8 @@ function Categories({ history }) {
     return <Alert>{tc('message.access.deny')}</Alert>;
   }
 
-  const pathname = history?.location?.pathname;
-
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Admin',
-      link: '/admin/settings',
-    },
-    {
-      label: t('categories.label'),
-      link: null,
-    },
-  ];
-
   return (
     <>
-      {/* <Template
-        heading={t('categories.label')}
-        leftContent={
-          <Box>
-            <ListMenu list={adminMenu} pathname={pathname} />
-          </Box>
-        }
-      > */}
       <Box maxWidth={400}>
         <Text mb="3">{t('categories.info')}</Text>
         <Wrap p="1" spacing="2" mb="2">

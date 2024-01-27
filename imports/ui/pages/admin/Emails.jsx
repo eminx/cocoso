@@ -21,7 +21,6 @@ import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
 import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
-import Breadcrumb from '../../components/Breadcrumb';
 import ReactQuill from '../../components/Quill';
 
 function Emails({ history }) {
@@ -83,23 +82,8 @@ function Emails({ history }) {
 
   const pathname = history && history.location.pathname;
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Admin',
-      link: '/admin/settings',
-    },
-    {
-      label: t('emails.label'),
-      link: null,
-    },
-  ];
-
   return (
     <>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
-
       <Template
         heading={t('emails.label')}
         leftContent={

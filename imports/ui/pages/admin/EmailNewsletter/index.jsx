@@ -12,7 +12,6 @@ import Loader from '../../../components/Loader';
 import { message, Alert } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';
 import { adminMenu } from '../../../utils/constants/general';
-import Breadcrumb from '../../../components/Breadcrumb';
 import Modal from '../../../components/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
@@ -153,23 +152,8 @@ function EmailNewsletter({ history }) {
 
   const pathname = history && history.location.pathname;
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Admin',
-      link: '/admin/settings',
-    },
-    {
-      label: t('emails.label'),
-      link: null,
-    },
-  ];
-
   return (
     <>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
-
       <Template
         heading={t('newsletter.title')}
         leftContent={

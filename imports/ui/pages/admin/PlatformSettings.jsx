@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Input,
-  Stack,
-  Switch as CSwitch,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
 import { StateContext } from '../../LayoutContainer';
@@ -20,7 +10,6 @@ import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FormField from '../../components/FormField';
 import FileDropper from '../../components/FileDropper';
-import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import ReactQuill from '../../components/Quill';
 import Template from '../../components/Template';
@@ -235,23 +224,8 @@ export default function PlatformSettings({ history }) {
     return <Redirect to={tabs[0].path} />;
   }
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Platform',
-      link: null,
-    },
-    {
-      label: tabs.find((t) => t.path === pathname).title,
-      link: null,
-    },
-  ];
-
   return (
     <Box>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
-
       <Template
         heading={tc('menu.superadmin.settings')}
         leftContent={
