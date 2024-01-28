@@ -32,14 +32,7 @@ export function MainLoader() {
     <ChakraProvider>
       <Box w="100%" h="100vh" p="4">
         <Flex justify="space-between" mb="64px">
-          <Skeleton
-            {...skeletonProps.color}
-            w="40px"
-            h="40px"
-            style={{ border: '1px solid', borderColor: 'pink.500' }}
-          />
-          <Skeleton {...skeletonProps.color} w="280px" h="60px" />
-          <Skeleton {...skeletonProps.color} w="40px" h="40px" />
+          <Skeleton {...skeletonProps.color} w="100%" h="60px" />
         </Flex>
         <ContentLoader />
       </Box>

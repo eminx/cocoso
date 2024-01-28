@@ -56,7 +56,7 @@ function Page() {
 
       <PageHeading description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Box>
+      <Box mt="-2">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Box>
 

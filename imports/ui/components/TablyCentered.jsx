@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading,
   Link as CLink,
@@ -24,7 +25,6 @@ import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
-import { TablyLoader } from './SkeletonLoaders';
 
 function TablyCentered({
   action = null,
@@ -64,7 +64,7 @@ function TablyCentered({
   };
 
   return (
-    <Center py="4" w="100%">
+    <Center py="5" w="100%">
       <Box w="100%">
         <Box>
           <Header
@@ -96,13 +96,7 @@ function TablyCentered({
           <Box maxW="540px" w="100%">
             <Box minH="100vh" w="100%">
               {tabs && (
-                <Tabs
-                  // align="center"
-                  colorScheme="gray.800"
-                  index={tabIndex}
-                  mt="2"
-                  tabs={tabs}
-                >
+                <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" tabs={tabs}>
                   {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
                 </Tabs>
               )}
@@ -145,19 +139,15 @@ function Header({
   title,
   handleCopyLink,
 }) {
-  const fontFamily = "'Raleway', sans-serif";
-
   const renderTitles = () => {
     return (
       <Flex px="4" justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
-        <Box px="4">
+        <Box pr="2" pl={!isDesktop && author ? '0' : '2'}>
           <Heading
             as="h1"
-            fontFamily={fontFamily}
-            fontSize="1.8em"
             lineHeight={1}
-            mb="2"
-            mt="1"
+            mb="3"
+            size="lg"
             textAlign={!isDesktop && author ? 'left' : 'center'}
             textShadow="1px 1px 1px #fff"
           >
@@ -166,9 +156,10 @@ function Header({
           {subTitle && (
             <Heading
               as="h2"
-              fontSize="1.3em"
-              fontWeight="light"
+              size="md"
+              fontWeight="400"
               lineHeight={1}
+              my="2"
               textAlign={!isDesktop && author ? 'left' : 'center'}
             >
               {subTitle}

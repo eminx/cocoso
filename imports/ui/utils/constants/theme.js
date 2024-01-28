@@ -1,4 +1,4 @@
-import { extendTheme } from '@chakra-ui/react';
+import { defineStyle, extendTheme } from '@chakra-ui/react';
 
 const brand = (hue, lightness) => `hsl(${hue}deg, 80%, ${lightness}%)`;
 
@@ -56,19 +56,11 @@ const generateTheme = (hue) => {
           colorScheme: 'brand',
         },
       },
-      Modal: {
+      Heading: defineStyle({
         baseStyle: {
-          dialog: {
-            backgroundColor: '#fff',
-            borderRadius: 0,
-          },
-        },
-      },
-      Heading: {
-        defaultProps: {
           fontFamily: 'Raleway',
         },
-      },
+      }),
       Input: {
         defaultProps: {
           _placeholderShown: { opacity: 0.71, color: 'gray.700' },
@@ -83,6 +75,14 @@ const generateTheme = (hue) => {
         baseStyle: {
           list: {
             borderColor: 'brand.500',
+            borderRadius: 0,
+          },
+        },
+      },
+      Modal: {
+        baseStyle: {
+          dialog: {
+            backgroundColor: '#fff',
             borderRadius: 0,
           },
         },

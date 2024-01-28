@@ -29,18 +29,19 @@ export default function PageHeading({ description, heading, children }) {
       <Center p="4">
         <Box>
           <Center wrap="wrap">
-            <Heading as="h1" fontFamily="'Raleway', sans-serif" size="lg" textAlign="center">
+            <Heading as="h1" size="lg" textAlign="center">
               {heading || activeMenuItem?.label}
             </Heading>
           </Center>
-          <Box pt="2" pb="2">
-            <Divider borderColor="gray.500" />
+          <Box py="2">
+            <Divider borderColor="brand.500" />
             {/* <Center>{children}</Center> */}
             <Heading
               as="h2"
-              size="sm"
-              fontWeight="normal"
-              lineHeight="1.5"
+              fontFamily="'Sarabun', sans-serif"
+              fontSize="1.17em"
+              fontWeight="300"
+              lineHeight="1.3"
               maxW="520px"
               my="2"
               textAlign="center"
