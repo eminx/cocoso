@@ -150,7 +150,7 @@ function Header({
   const renderTitles = () => {
     return (
       <Flex px="4" justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
-        <Box pr="4">
+        <Box px="4">
           <Heading
             as="h1"
             fontFamily={fontFamily}
