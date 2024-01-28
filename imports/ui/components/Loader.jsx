@@ -1,6 +1,6 @@
 import React from 'react';
-import { Progress } from '@chakra-ui/react';
+import { TablyLoader } from './SkeletonLoaders';
 
-const Loader = () => <Progress size="xs" colorScheme="pink" isIndeterminate />;
+const Loader = () => <TablyLoader />;
 
 export default Loader;

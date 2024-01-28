@@ -24,6 +24,7 @@ import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
 import Tabs from './Tabs';
 import BackLink from './BackLink';
+import { TablyLoader } from './SkeletonLoaders';
 
 function TablyCentered({
   action = null,

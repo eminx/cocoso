@@ -12,7 +12,6 @@ import {
   Link as CLink,
   List,
   ListItem,
-  Spinner,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
@@ -32,6 +31,7 @@ import { message } from './components/message';
 import TopBar from './components/TopBar';
 import NewButton from './components/NewButton';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
 
@@ -99,21 +99,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   };
 
   if (!currentHost) {
-    return (
-      <ChakraProvider>
-        <Box w="100%" h="100vh">
-          <Center h="100%">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="gray.800"
-              size="xl"
-            />
-          </Center>
-        </Box>
-      </ChakraProvider>
-    );
+    return <MainLoader />;
   }
 
   const hostWithinUser =

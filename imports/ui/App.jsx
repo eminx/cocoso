@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react';
 import Routes from './pages/Routes';
-import { Progress } from '@chakra-ui/react';
 import '/imports/startup/i18n';
+
+import { MainLoader } from './components/SkeletonLoaders';
 
 export default function () {
   return (
-    <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
+    <Suspense fallback={<MainLoader />}>
       <Routes />
     </Suspense>
   );

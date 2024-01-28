@@ -138,8 +138,17 @@ function EmailNewsletter({ history }) {
       <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
     );
 
+    const emailValues = {
+      appeal: email.appeal,
+      body: email.body,
+      footer: email.footer,
+      items: email.items,
+      imageUrl,
+      subject: email.subject,
+    };
+
     try {
-      await call('sendNewsletter', email, emailHtml, imageUrl);
+      await call('sendNewsletter', emailValues, emailHtml, imageUrl);
       setEmail(emailModel);
       message.success(t('newsletter.notification.success.emailsent'));
     } catch (error) {

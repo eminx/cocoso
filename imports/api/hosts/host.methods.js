@@ -216,9 +216,8 @@ Meteor.methods({
     return Newsletters.find({ host }).fetch();
   },
 
-  sendNewsletter(email, emailHtml, imageUrl) {
+  sendNewsletter(email, emailHtml) {
     check(emailHtml, String);
-
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const currentUser = Meteor.user();
@@ -234,7 +233,6 @@ Meteor.methods({
       creationDate: new Date(),
       host,
       hostId: currentHost._id,
-      imageUrl,
     });
 
     const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
@@ -249,7 +247,7 @@ Meteor.methods({
           member.username
         );
 
-        const emailAddress = isPortalHost ? member.email : member.emails[0].address;
+        const emailAddress = isPortalHost ? member.emails[0].address : member.email;
 
         Meteor.call(
           'sendEmail',
