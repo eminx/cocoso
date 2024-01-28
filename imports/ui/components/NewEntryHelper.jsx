@@ -32,14 +32,29 @@ function NewEntryHelper({
 
   const buttonLabelGeneric = tc('message.newentryhelper.button');
 
-  const w = small ? 'xs' : '100%';
+  const w = '100%';
   const h = small ? '240px' : '315px';
 
   return (
     <Link className="sexy-thumb-container" to={buttonLink}>
-      <Box _hover={{ bg: 'brand.400' }} bg="brand.500" fontWeight="bold" h={h} px="4" py="8" w={w}>
-        <h3 className="thumb-title">{titleGeneric}</h3>
-        <h4 className="thumb-subtitle">{descriptionGeneric}</h4>
+      <Box
+        _hover={{ bg: 'brand.100' }}
+        _active={{ bg: 'brand.200' }}
+        bg="brand.50"
+        border="1px solid"
+        borderColor="brand.500"
+        fontWeight="bold"
+        h={h}
+        px="4"
+        py="8"
+        w={w}
+      >
+        <h3 className="thumb-title" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+          {titleGeneric}
+        </h3>
+        <h4 className="thumb-subtitle" style={{ color: 'var(--chakra-colors-brand-500)' }}>
+          {descriptionGeneric}
+        </h4>
       </Box>
     </Link>
   );

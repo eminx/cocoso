@@ -67,7 +67,7 @@ function InfiniteScroller({
               <Skeleton className="sexy-thumb-container" endColor="brand.500" h={h} w={w} />
             )}
             {!hasMore && canCreateContent && (
-              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb} />
+              <NewEntryHelper buttonLink={newHelperLink} small={smallThumb || isMasonry} />
             )}
           </Wrap>
         )}
