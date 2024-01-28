@@ -46,7 +46,6 @@ import {
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { DocumentUploadHelper } from '../../components/UploadHelpers';
-import { TablyLoader } from '../../components/SkeletonLoaders.jsx';
 
 moment.locale(i18n.language);
 
@@ -896,7 +895,7 @@ class Process extends Component {
     const { currentHost } = this.context;
 
     if (!process || isLoading) {
-      return <TablyLoader />;
+      return <Loader />;
     }
 
     const {
