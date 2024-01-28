@@ -146,7 +146,7 @@ function Header({
           <Heading
             as="h1"
             lineHeight={1}
-            mb="3"
+            mb="2"
             size="lg"
             textAlign={!isDesktop && author ? 'left' : 'center'}
             textShadow="1px 1px 1px #fff"
