@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
+  Flex,
   IconButton,
   Menu,
   MenuButton,
@@ -30,23 +31,20 @@ function UserPopupAdmin() {
   return (
     <Box>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
-        <MenuButton position="relative" zIndex={isOpen ? '1403' : '10'}>
-          <IconButton
-            bg="gray.800"
-            borderColor="#fff"
-            borderWidth="2px"
-            icon={<SettingsIcon fontSize="lg" />}
-            // isRound
-            size={isDesktop ? 'md' : 'sm'}
-          />
-          <Text
-            fontSize="12px"
-            position="absolute"
-            top={isDesktop ? '2.5rem' : '2rem'}
-            textTransform="uppercase"
-          >
-            Admin
-          </Text>
+        <MenuButton zIndex={isOpen ? '1403' : '10'}>
+          <Flex flexDirection="column" justify="center">
+            <IconButton
+              alignSelf="center"
+              bg="gray.800"
+              borderColor="#fff"
+              borderWidth="2px"
+              icon={<SettingsIcon fontSize="md" />}
+              size={isDesktop ? 'md' : 'sm'}
+            />
+            <Text fontSize="12px" textAlign="center" textTransform="uppercase">
+              Admin
+            </Text>
+          </Flex>
         </MenuButton>
         <MenuList zIndex={isOpen ? '1403' : '10'}>
           <MenuGroup>

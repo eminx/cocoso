@@ -185,10 +185,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
             {platform && platform.isFederationLayout && <TopBar />}
 
             <Flex>
-              {isDesktop && !isHeaderMenu && (
-                <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />
-              )}
-
               <Box id="main-viewport" flexGrow="2">
                 <Box w="100%">
                   <Header isSmallerLogo={!isLargerLogo} />

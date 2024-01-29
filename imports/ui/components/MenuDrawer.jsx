@@ -27,7 +27,6 @@ const getRoute = (item, index) => {
 export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
-  const { i18n } = useTranslation();
 
   const { menu } = currentHost?.settings;
 
@@ -45,96 +44,12 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
     menuClassName += ' menu-drawer--open';
   }
 
-  const isFederationLayout = platform?.isFederationLayout;
-
-  if (isDesktop) {
-    return (
-      <Box position="relative">
-        <Box
-          className={menuClassName}
-          flexGrow="0"
-          flexShrink="0"
-          h="100vh"
-          position="absolute"
-          zIndex={1420}
-        >
-          {!isOpen ? (
-            <Box p="4">
-              <IconButton
-                _hover={{ bg: 'brand.500' }}
-                bg="gray.800"
-                icon={<HamburgerIcon fontSize="24px" />}
-                width="40px"
-                height="40px"
-                borderColor="#fff"
-                borderWidth="2px"
-                onClick={onToggle}
-              />
-              <Center>
-                <Text color="gray.800" fontSize="xs" fontWeight="bold" textTransform="uppercase">
-                  {tc('menu.label')}
-                </Text>
-              </Center>
-            </Box>
-          ) : (
-            <Flex
-              bg="white"
-              boxShadow="dark-lg"
-              flexDirection="column"
-              h={isFederationLayout ? 'calc(100% - 60px)' : '100%'}
-              justify="space-between"
-              overflowY="auto"
-            >
-              <Box p="6">
-                <Flex align="flex-start" justify="space-between">
-                  <Heading fontSize="24px" mt="2" mb="4">
-                    {tc('menu.label')}
-                  </Heading>
-                  <IconButton
-                    _hover={{ bg: 'brand.100' }}
-                    bg="bg.50"
-                    color="brand.900"
-                    icon={<CloseIcon />}
-                    tc={tc}
-                    onClick={onToggle}
-                  />
-                </Flex>
-
-                <Box py="2">
-                  <MenuContent
-                    currentHost={currentHost}
-                    menuItems={menuItems}
-                    platform={platform}
-                    tc={tc}
-                    onToggle={onToggle}
-                  />
-                </Box>
-              </Box>
-              <Box color="brand.600" pl="4" mt="-8">
-                <MenuFooter />
-              </Box>
-              <Modal isOpen={isOpen}>
-                <ModalOverlay onClick={() => setIsOpen(false)} />
-              </Modal>
-            </Flex>
-          )}
-        </Box>
-      </Box>
-    );
-  }
-
-  <Center cursor="pointer" mb={isFederationLayout ? '20' : '4'} onClick={() => setIsOpen(true)}>
-    <Text color="white" fontWeight="bold">
-      {i18n.language?.toUpperCase()}
-    </Text>
-  </Center>;
-
   return (
     <Box>
-      <Flex align="center" flexDirection="column" position="relative">
+      <Flex align="center" flexDirection="column">
         <IconButton
           _hover={{
-            bg: 'brand.600',
+            bg: 'brand.500',
           }}
           bg="gray.800"
           borderColor="#fff"
@@ -143,7 +58,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
         />
-        <Text fontSize="12px" position="absolute" top="2rem" textTransform="uppercase">
+        <Text fontSize="12px" textAlign="center" textTransform="uppercase">
           {tc('menu.label')}
         </Text>
       </Flex>
@@ -151,7 +66,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       <Drawer
         bg="white"
         isOpen={isOpen}
-        placement="right"
+        placement={isDesktop ? 'left' : 'right'}
         title={tc('menu.label')}
         titleColor="brand.900"
         onClose={onToggle}
