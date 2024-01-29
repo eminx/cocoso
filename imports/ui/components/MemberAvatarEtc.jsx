@@ -93,11 +93,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Text>{getFullName(user)}</Text>
           </Box>
 
-          <Wrap
-            justify={!isThumb && isDesktop ? 'flex-start' : 'center'}
-            py="2"
-            px={!isThumb && isDesktop ? '0' : '2'}
-          >
+          <Wrap justify="center" py="4" px={!isThumb && isDesktop ? '0' : '2'}>
             {user.keywords?.map((k) => (
               <WrapItem key={k.keywordId}>
                 <Tag {...tagProps}>{k.keywordLabel}</Tag>
@@ -106,7 +102,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           </Wrap>
 
           {!isThumb && (
-            <Box mb="2">
+            <Box my="2">
               {membershipsLength > 1 && (
                 <Popover
                   trigger={

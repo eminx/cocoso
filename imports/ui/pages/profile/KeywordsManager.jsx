@@ -78,7 +78,7 @@ function KeywordsManager({ currentUser }) {
 
   return (
     <Box>
-      <Heading mb="2" size="sm">
+      <Heading mb="2" size="sm" textAlign="center">
         {t('profile.menu.keywords.label')}
       </Heading>
       <Text fontSize="sm" mb="4">

@@ -129,9 +129,15 @@ function Profile({ history, match, path }) {
       {/* <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}> */}
       {/* <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4"> */}
       <Center>
-        <Box>
-          <MemberAvatarEtc centerItems t={t} tc={tc} user={user} />
-          {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
+        <Box maxW="600px">
+          <Center>
+            <Box>
+              <MemberAvatarEtc centerItems t={t} tc={tc} user={user} />
+            </Box>
+          </Center>
+          <Center>
+            {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
+          </Center>
         </Box>
       </Center>
       {/* </GridItem> */}
