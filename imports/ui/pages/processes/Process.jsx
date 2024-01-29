@@ -398,16 +398,17 @@ class Process extends Component {
               }}
             >
               <AccordionButton
-                _hover={{ bg: 'brand.100' }}
+                _hover={{ bg: 'brand.50' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="brand.50"
+                border="1px solid"
+                borderColor="brand.500"
                 color="brand.800"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
-              <AccordionPanel bg="brand.100">
+              <AccordionPanel bg="brand.50" border="1px solid" borderColor="brand.500">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>
