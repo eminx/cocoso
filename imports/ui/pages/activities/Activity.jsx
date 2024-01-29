@@ -44,6 +44,13 @@ import TablyCentered from '../../components/TablyCentered';
 
 moment.locale(i18n.language);
 
+const sexyBorder = {
+  bg: 'white',
+  border: '1px solid',
+  borderColor: 'brand.500',
+  color: 'brand.800',
+};
+
 class Activity extends PureComponent {
   state = {
     isRsvpCancelModalOn: false,
@@ -275,7 +282,7 @@ class Activity extends PureComponent {
           )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
-              bg="brand.50"
+              {...sexyBorder}
               color="brand.800"
               p="2"
               mb="4"
@@ -362,17 +369,16 @@ class Activity extends PureComponent {
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} mb="4">
               <AccordionButton
-                _hover={{ bg: 'brand.100' }}
+                _hover={{ bg: 'brand.50' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="brand.50"
-                color="brand.800"
+                {...sexyBorder}
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel bg="brand.100">
+              <AccordionPanel {...sexyBorder} bg="brand.50">
                 <Text m="2" fontWeight="bold">
                   {t('public.register.label')}
                 </Text>
