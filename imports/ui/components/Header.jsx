@@ -16,6 +16,7 @@ import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
+import NewButton from './NewButton';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -98,8 +99,9 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
-        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
+        <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
           {platform && !platform.isFederationLayout && <UserPopup />}
+          <NewButton />
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
             <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />

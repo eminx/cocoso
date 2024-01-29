@@ -29,7 +29,7 @@ function UserPopupAdmin() {
   const { isPortalHost } = currentHost;
 
   return (
-    <Box>
+    <Box zIndex={isOpen ? '1403' : '10'}>
       <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
         <MenuButton zIndex={isOpen ? '1403' : '10'}>
           <Flex flexDirection="column" justify="center">

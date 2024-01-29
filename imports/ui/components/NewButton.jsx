@@ -79,7 +79,7 @@ function NewButton() {
   }
 
   return (
-    <Box pl="2" pt="1" position="fixed" bottom="72px" right="48px" zIndex={isOpen ? '1403' : '10'}>
+    <Box zIndex={isOpen ? '1403' : '10'}>
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -89,13 +89,12 @@ function NewButton() {
         <MenuButton>
           <IconButton
             _hover={{ bg: 'brand.200' }}
-            boxShadow="dark-lg"
-            bg="brand.500"
+            bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
-            borderRadius="50%"
-            icon={<AddIcon color="white" />}
-            size={isDesktop ? 'lg' : 'md'}
+            // borderRadius="50%"
+            icon={<AddIcon />}
+            size={isDesktop ? 'md' : 'sm'}
           />
         </MenuButton>
         <MenuList zIndex={isOpen ? '1403' : '10'}>
@@ -134,18 +133,7 @@ function NewButton() {
         </MenuList>
       </Menu>
       <Center position="relative">
-        <Text
-          color="brand.600"
-          fontSize="14px"
-          fontWeight="bold"
-          lineHeight="1"
-          mt="1"
-          position="absolute"
-          textAlign="center"
-          textShadow="rgb(255, 255, 255) 1px 1px 1px"
-          textTransform="uppercase"
-          top="-1px"
-        >
+        <Text fontSize="12px" lineHeight="1" textAlign="center" textTransform="uppercase">
           {tc('actions.create')}
         </Text>
       </Center>

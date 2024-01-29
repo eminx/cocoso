@@ -85,7 +85,7 @@ function UserPopup() {
           <Avatar
             _hover={{ bg: 'brand.500' }}
             bg="brand.600"
-            borderRadius="4px"
+            borderRadius="0"
             showBorder
             size={isDesktop ? 'md' : 'sm'}
             src={currentUser.avatar && currentUser.avatar.src}

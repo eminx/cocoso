@@ -24,6 +24,12 @@ import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import Popover from '../components/Popover';
 
+const tagProps = {
+  borderRadius: '0',
+  border: '1px solid',
+  borderColor: 'brand.500',
+};
+
 function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, t, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
@@ -57,7 +63,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
     <Box w="100%">
       <Flex align={isCentered ? 'center' : 'flex-start'} flexDirection="column" overflow="hidden">
         {avatarSrc ? (
-          <Box>
+          <Box {...(!isThumb && tagProps)}>
             <Image
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
@@ -94,7 +100,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           >
             {user.keywords?.map((k) => (
               <WrapItem key={k.keywordId}>
-                <Tag colorScheme="gray">{k.keywordLabel}</Tag>
+                <Tag {...tagProps}>{k.keywordLabel}</Tag>
               </WrapItem>
             ))}
           </Wrap>
@@ -103,11 +109,9 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Box mb="2">
               {membershipsLength > 1 && (
                 <Popover
-                  bg="gray.50"
-                  placement={!isCentered ? 'bottom-start' : 'bottom-end'}
                   trigger={
                     <Button
-                      colorScheme="gray.600"
+                      colorScheme="gray.700"
                       fontWeight="light"
                       textDecoration="underline"
                       variant="link"

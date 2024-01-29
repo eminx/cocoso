@@ -126,14 +126,20 @@ function Profile({ history, match, path }) {
       <Box p="2">
         <BackLink backLink={{ label: members.label, value: '/members' }} />
       </Box>
-      <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}>
-        <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4">
-          <MemberAvatarEtc t={t} tc={tc} user={user} />
+      {/* <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}> */}
+      {/* <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4"> */}
+      <Center>
+        <Box>
+          <MemberAvatarEtc centerItems t={t} tc={tc} user={user} />
           {isDesktop && <Bio isDesktop isSelfAccount={isSelfAccount} tc={tc} user={user} />}
-        </GridItem>
+        </Box>
+      </Center>
+      {/* </GridItem> */}
 
-        <GridItem pl={isDesktop ? '12' : '0'}>
-          <Tabs align={isDesktop ? 'flex-start' : 'center'} index={tabIndex} tabs={tabs} px="4" />
+      {/* <GridItem pl={isDesktop ? '12' : '0'}> */}
+      <Center>
+        <Box maxW="600px">
+          <Tabs align="center" index={tabIndex} tabs={tabs} px="4" />
 
           <Box pt="4" px={isDesktop ? '4' : '0'}>
             <Switch path={path} history={history}>
@@ -194,8 +200,10 @@ function Profile({ history, match, path }) {
               />
             </Switch>
           </Box>
-        </GridItem>
-      </Grid>
+        </Box>
+      </Center>
+      {/* </GridItem> */}
+      {/* </Grid> */}
     </>
   );
 }
@@ -231,8 +239,16 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
-      <Box bg="white" className="text-content" maxW="480px" px="4" py="2" w="100%">
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} mb="4">
+      <Box
+        bg="white"
+        className="text-content"
+        maxW="480px"
+        px="4"
+        py="2"
+        textAlign="center"
+        w="100%"
+      >
         {renderHTML(user.bio)}
       </Box>
     </Flex>

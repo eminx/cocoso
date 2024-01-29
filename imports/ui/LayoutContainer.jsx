@@ -24,12 +24,10 @@ import renderHTML from 'react-render-html';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
-import MenuDrawer from './components/MenuDrawer';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
-import NewButton from './components/NewButton';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
 import { MainLoader } from './components/SkeletonLoaders';
 
@@ -57,6 +55,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
   }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
+    if (pathname?.split('/')[1][0] === '@') {
+      return;
+    }
     window.scrollTo(0, 0);
   }, [pathname.split('/')[2]]);
 
@@ -110,7 +111,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const { isHeaderMenu, menu } = currentHost?.settings;
+  const { menu } = currentHost?.settings;
   const pagesWithHeaderAndFooter = [
     ...menu?.map((item) => '/' + item.name),
     '/login',
@@ -203,8 +204,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
                 </Box>
               </Box>
             </Flex>
-
-            <NewButton />
           </StateContext.Provider>
         </ColorModeProvider>
       </ChakraProvider>

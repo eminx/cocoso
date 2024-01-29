@@ -122,6 +122,13 @@ const generateTheme = (hue) => {
           flexWrap: 'wrap',
         },
       },
+      Tag: {
+        defaultProps: {
+          borderRadius: '0',
+          border: '1px solid',
+          borderColor: 'brand.500',
+        },
+      },
       Textarea: {
         defaultProps: {
           focusBorderColor: color,
