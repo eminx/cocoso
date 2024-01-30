@@ -103,7 +103,9 @@ class NewActivity extends PureComponent {
         isReady: true,
       },
       () => {
-        this.validateBookings();
+        setTimeout(() => {
+          this.validateBookings();
+        }, 800);
       }
     );
   };
@@ -294,7 +296,7 @@ class NewActivity extends PureComponent {
     const { allBookings } = this.props;
     const { selectedResource, datesAndTimes, isExclusiveActivity } = this.state;
 
-    if (!datesAndTimes || datesAndTimes.length === 0) {
+    if (!selectedResource || !datesAndTimes || datesAndTimes.length === 0) {
       return;
     }
 
