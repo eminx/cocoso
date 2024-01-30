@@ -134,9 +134,7 @@ function EmailNewsletter({ history }) {
   };
 
   const sendEmail = async (imageUrl) => {
-    const emailHtml = renderEmail(
-      <EmailPreview email={email} currentHost={currentHost} imageUrl={imageUrl} />
-    );
+    const emailHtml = renderEmail(<EmailPreview email={email} imageUrl={imageUrl} />);
 
     const emailValues = {
       appeal: email.appeal,
@@ -214,7 +212,7 @@ function EmailNewsletter({ history }) {
         onClose={() => setIsPreview(false)}
       >
         <Center>
-          <EmailPreview email={email} currentHost={currentHost} />
+          <EmailPreview email={email} />
         </Center>
       </Modal>
 

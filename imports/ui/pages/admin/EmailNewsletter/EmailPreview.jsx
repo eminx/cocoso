@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Body } from '@react-email/body';
 import { Button } from '@react-email/button';
 import { Column } from '@react-email/column';
@@ -16,7 +16,10 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-export default function EmailPreview({ currentHost, email, imageUrl }) {
+import { StateContext } from '../../../LayoutContainer';
+
+export default function EmailPreview({ email, imageUrl }) {
+  const { currentHost } = useContext(StateContext);
   if (!email) {
     return null;
   }
@@ -231,6 +234,10 @@ export function ActivityDates({ activity }) {
 }
 
 export function ActivityDate({ date }) {
+  const { currentHost } = useContext(StateContext);
+
+  moment.locale(currentHost.settings?.lang || 'en');
+
   return (
     <Column style={{ paddingRight: 8 }}>
       <Text style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
