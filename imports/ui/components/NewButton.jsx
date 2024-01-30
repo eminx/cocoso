@@ -132,15 +132,15 @@ function NewButton() {
           </Box>
         </MenuList>
       </Menu>
-      <Center position="relative" w="32px">
+      <Center position="relative">
         <Text
           fontSize="12px"
-          isTruncated
           lineHeight="1"
           position="absolute"
           top="3px"
           textAlign="center"
           textTransform="uppercase"
+          w="36px"
         >
           {tc('actions.create')}
         </Text>

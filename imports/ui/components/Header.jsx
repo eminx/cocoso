@@ -112,8 +112,10 @@ function Header({ isSmallerLogo }) {
         </HStack>
       </Flex>
       <Show breakpoint="(max-width: 519px)">
-        <Flex justify="flex-end" mt="-4" pr="2">
-          <UserPopup />
+        <Flex justify="flex-end" mt="-2" pr="2" position="relative">
+          <Box position="absolute">
+            <UserPopup />
+          </Box>
         </Flex>
       </Show>
       <Center p="4">
