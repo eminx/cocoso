@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
