@@ -208,28 +208,28 @@ function MembersPublic({ history }) {
       </PageHeading>
 
       <Center p="4" pt="0">
-        <Wrap>
-          <WrapItem>
-            <Tag
-              label={t('all')}
-              checkable
-              checked={Boolean(filterKeyword) === false}
-              onClick={() => setFilterKeyword(null)}
-            />
-          </WrapItem>
+        <Flex justify="center" wrap="wrap">
+          <Tag
+            checkable
+            checked={Boolean(filterKeyword) === false}
+            label={t('all')}
+            mb="2"
+            mr="2"
+            onClick={() => setFilterKeyword(null)}
+          />
           {coloredKeywords.map((k) => (
-            <WrapItem key={k._id}>
-              <Tag
-                checkable
-                checked={filterKeyword?._id === k?._id}
-                filterColor={k.color}
-                label={k.label}
-                margin={{ bottom: 'small' }}
-                onClick={() => setFilterKeyword(k)}
-              />
-            </WrapItem>
+            <Tag
+              key={k._id}
+              checkable
+              checked={filterKeyword?._id === k?._id}
+              filterColor={k.color}
+              label={k.label}
+              mb="2"
+              mr="2"
+              onClick={() => setFilterKeyword(k)}
+            />
           ))}
-        </Wrap>
+        </Flex>
       </Center>
 
       {sorterValue === 'random' && (
