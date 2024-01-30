@@ -1,12 +1,23 @@
 import React, { useContext } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Box, Button, Flex, Heading as CHeading, HStack, Image, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading as CHeading,
+  HStack,
+  Image,
+  Show,
+  Text,
+} from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
+import NewButton from './NewButton';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -49,19 +60,26 @@ function Header({ isSmallerLogo }) {
   }
 
   const isCurrentPage = (item) => {
+    const pathSplitted = pathname.split('/');
     if (item.name === 'info') {
-      const pathSplitted = pathname.split('/');
       return pathSplitted && pathSplitted[1] === 'pages';
     }
-    return item.route === pathname;
+    return pathSplitted.includes(item.name);
   };
 
   return (
     <Box px="2" w="100%">
-      <Flex w="100%" align="flex-start" justify="space-between">
-        <Box py={isDesktop ? '4' : '3'}>
+      <Flex w="100%" align="flex-start" justify="space-between" mb="2">
+        {isDesktop && (
+          <Flex w="120px" pl="2" pt="4">
+            {!isHeaderMenu && (
+              <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
+            )}
+          </Flex>
+        )}
+        <Box pt="3" px="2">
           <Link to="/">
-            <Box pl={isDesktop ? '4' : '2'}>
+            <Box>
               {currentHost.logo ? (
                 <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
               ) : (
@@ -82,17 +100,35 @@ function Header({ isSmallerLogo }) {
           </Link>
         </Box>
 
+        <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
+          <Show breakpoint="(min-width: 520px)">
+            {platform && !platform.isFederationLayout && <UserPopup />}
+          </Show>
+          <NewButton />
+          {currentUser && isAdmin && <UserPopupAdmin />}
+          {!isDesktop && (
+            <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
+          )}
+        </HStack>
+      </Flex>
+      <Show breakpoint="(max-width: 519px)">
+        <Flex justify="flex-end" mt="-4" pr="2">
+          <UserPopup />
+        </Flex>
+      </Show>
+      <Center p="4">
         {isDesktop && isHeaderMenu && (
-          <HStack alignItems="flex-start" p="4" pl="8" mt="2" wrap="wrap">
+          <HStack alignItems="flex-start" mb="2" wrap="wrap">
             {menuItems.map((item) => {
               const isCurrentPageLabel = isCurrentPage(item);
               return (
                 <Link key={item.name} to={item.route}>
                   <Box px="2">
                     <Text
-                      _hover={!isCurrentPageLabel && { borderBottom: '3px solid' }}
-                      borderBottom={isCurrentPageLabel ? '2px solid' : 'none'}
-                      color={isCurrentPageLabel ? 'gray.800' : 'brand.600'}
+                      as="span"
+                      _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
+                      borderBottom={isCurrentPageLabel ? '2px solid' : '2px transparent'}
+                      color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
                       fontFamily="Raleway, Sarabun, sans"
                       fontWeight="bold"
                     >
@@ -104,51 +140,9 @@ function Header({ isSmallerLogo }) {
             })}
           </HStack>
         )}
-
-        <HStack align="center" justify="flex-end" p="2" pt="4" spacing="4">
-          {platform && !platform.isFederationLayout && <UserPopup />}
-          {currentUser && isAdmin && <UserPopupAdmin />}
-          {!isDesktop && (
-            <MenuDrawer currentHost={currentHost} isDesktop={false} platform={platform} />
-          )}
-        </HStack>
-      </Flex>
+      </Center>
     </Box>
   );
 }
 
-function Heading({ title, numberOfItems }) {
-  const history = useHistory();
-  const [tc] = useTranslation('common');
-
-  const pathname = history.location.pathname;
-  const isCurrentPage = (name) => {
-    if (name === 'info') {
-      return pathname.substring(0, 6) === '/pages';
-    }
-    return name === pathname.substring(1, pathname.length);
-  };
-
-  const { currentHost } = useContext(StateContext);
-
-  const { menu } = currentHost?.settings;
-  const menuItems = menu?.filter((item) => item.isVisible);
-
-  const activeMenuItem = menuItems.find((item) => isCurrentPage(item.name));
-
-  return (
-    <Flex mr="4">
-      <CHeading as="h1" color="gray.800" fontFamily="'Raleway', sans-serif" size="lg">
-        {title || activeMenuItem?.label}{' '}
-        {/* {numberOfItems > 0 && (
-          <Text as="span" fontSize="xs">
-            {numberOfItems} {tc('labels.items')}
-          </Text>
-        )} */}
-      </CHeading>
-    </Flex>
-  );
-}
-
-export { Heading };
 export default Header;

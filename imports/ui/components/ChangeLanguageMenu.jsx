@@ -5,6 +5,7 @@ import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra
 export default ChangeLanguage = ({
   currentLang,
   hideHelper = false,
+  isCentered = false,
   register,
   select,
   onChange,
@@ -13,7 +14,7 @@ export default ChangeLanguage = ({
 
   if (!select)
     return (
-      <Box>
+      <Box textAlign={isCentered ? 'center' : 'initial'}>
         {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
         <Menu>
           <MenuButton fontWeight="bold" textDecoration="underline">

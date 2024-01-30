@@ -46,11 +46,11 @@
 }
 
 .rbc-day-bg:not(rbc-off-range-bg) {
-  background-color: #f5f5f5;
+  background-color: #fff;
 }
 
 .rbc-day-bg.rbc-selected-cell:not(rbc-off-range-bg) {
-  background-color: #fff;
+  background-color: #f0f0f0;
 }
 
 .rbc-calendar .rbc-row-bg .rbc-day-bg.rbc-today,

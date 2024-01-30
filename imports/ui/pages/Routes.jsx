@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Progress } from '@chakra-ui/react';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
@@ -11,6 +10,7 @@ import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
 import Communities from '../pages/hosts/Communities';
+import { ContentLoader } from '../components/SkeletonLoaders';
 
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
@@ -54,7 +54,7 @@ export default function () {
   return (
     <Switch>
       <LayoutContainer>
-        <Suspense fallback={<Progress size="xs" colorScheme="pink" isIndeterminate />}>
+        <Suspense fallback={<ContentLoader />}>
           <Switch>
             {/* Home */}
             <Route exact path="/" render={(props) => <Home {...props} />} />

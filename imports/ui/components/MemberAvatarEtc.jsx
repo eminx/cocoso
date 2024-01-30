@@ -24,11 +24,17 @@ import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import Popover from '../components/Popover';
 
+const tagProps = {
+  borderRadius: '0',
+  border: '1px solid',
+  borderColor: 'brand.500',
+};
+
 function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, t, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost, isDesktop } = useContext(StateContext);
   const history = useHistory();
 
   if (!user) {
@@ -57,10 +63,11 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
     <Box w="100%">
       <Flex align={isCentered ? 'center' : 'flex-start'} flexDirection="column" overflow="hidden">
         {avatarSrc ? (
-          <Box>
+          <Box {...(!isThumb && tagProps)}>
             <Image
               cursor={isThumb ? 'normal' : 'pointer'}
               fit="contain"
+              h={isThumb ? 'auto' : '280px'}
               src={avatarSrc}
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
@@ -86,27 +93,21 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             <Text>{getFullName(user)}</Text>
           </Box>
 
-          <Wrap
-            justify={!isThumb && isDesktop ? 'flex-start' : 'center'}
-            py="2"
-            px={!isThumb && isDesktop ? '0' : '2'}
-          >
+          <Wrap justify="center" py="4" px={!isThumb && isDesktop ? '0' : '2'}>
             {user.keywords?.map((k) => (
               <WrapItem key={k.keywordId}>
-                <Tag colorScheme="gray">{k.keywordLabel}</Tag>
+                <Tag {...tagProps}>{k.keywordLabel}</Tag>
               </WrapItem>
             ))}
           </Wrap>
 
           {!isThumb && (
-            <Box mb="2">
+            <Box my="2">
               {membershipsLength > 1 && (
                 <Popover
-                  bg="gray.50"
-                  placement={!isCentered ? 'bottom-start' : 'bottom-end'}
                   trigger={
                     <Button
-                      colorScheme="gray.600"
+                      colorScheme="gray.700"
                       fontWeight="light"
                       textDecoration="underline"
                       variant="link"

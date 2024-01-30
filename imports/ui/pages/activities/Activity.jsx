@@ -40,9 +40,16 @@ import FancyDate, { DateJust } from '../../components/FancyDate';
 import FormField from '../../components/FormField';
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 
 moment.locale(i18n.language);
+
+const sexyBorder = {
+  bg: 'white',
+  border: '1px solid',
+  borderColor: 'brand.500',
+  color: 'brand.800',
+};
 
 class Activity extends PureComponent {
   state = {
@@ -268,8 +275,19 @@ class Activity extends PureComponent {
     if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
       return (
         <div>
+          {activityData.isRegistrationDisabled && (
+            <Text mb="2" size="sm">
+              {t('public.register.disabled.true')}
+            </Text>
+          )}
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <Box bg="white" p="2" mb="4" key={occurence.startDate + occurence.startTime}>
+            <Box
+              {...sexyBorder}
+              color="brand.800"
+              p="2"
+              mb="4"
+              key={occurence.startDate + occurence.startTime}
+            >
               <FancyDate occurence={occurence} />
             </Box>
           ))}
@@ -344,24 +362,23 @@ class Activity extends PureComponent {
 
     return (
       <Box>
-        <Text mb="2" ml={isDesktop ? '0' : '4'} size="sm">
+        <Text mb="2" size="sm">
           {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
           {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
-            <AccordionItem key={occurence.startDate + occurence.startTime} bg="white" mb="4">
+            <AccordionItem key={occurence.startDate + occurence.startTime} mb="4">
               <AccordionButton
-                _hover={{ bg: 'brand.200' }}
+                _hover={{ bg: 'brand.50' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="white"
-                color="brand.800"
+                {...sexyBorder}
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={occurence} />
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel bg="brand.100">
+              <AccordionPanel {...sexyBorder} bg="brand.50">
                 <Text m="2" fontWeight="bold">
                   {t('public.register.label')}
                 </Text>
@@ -453,17 +470,16 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box bg="white" className="text-content" p="4">
+          <Box className="text-content">
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
         path: `/activities/${activityData._id}/info`,
       },
       {
-        title:
-          activityData.isPublicActivity && !activityData.isRegistrationDisabled
-            ? t('public.labels.datesAndRegistration')
-            : t('public.labels.dates'),
+        title: activityData.isPublicActivity
+          ? t('public.labels.datesAndRegistration')
+          : t('public.labels.dates'),
         content: this.renderDates(),
         path: `/activities/${activityData._id}/dates`,
       },
@@ -498,7 +514,6 @@ class Activity extends PureComponent {
       ],
     };
 
-    const tags = [activityData.resource];
     const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
 
     const activitiesInMenu = currentHost?.settings?.menu?.find(
@@ -516,16 +531,14 @@ class Activity extends PureComponent {
         <Helmet>
           <title>{activityData.title}</title>
         </Helmet>
-        {/* {!hideBreadcrumb && <Breadcrumb p="4" pt="0" />} */}
 
-        <Tably
+        <TablyCentered
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}
           images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
           subTitle={activityData.subTitle}
           tabs={tabs}
-          tags={tags}
           title={activityData.title}
         />
 

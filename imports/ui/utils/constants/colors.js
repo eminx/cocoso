@@ -17,8 +17,8 @@ function getHslValuesFromLength(length) {
     return null;
   }
 
-  const saturation = '75%';
-  const lightness = '40%';
+  const saturation = '90%';
+  const lightness = '35%';
 
   const colorValues = [];
   const share = Math.round(360 / length);

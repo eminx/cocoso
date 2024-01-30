@@ -1,34 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { Button, Center, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
-import { StateContext } from '../LayoutContainer';
 import { parseTitle } from '../utils/shared';
-import Tabs from './Tabs';
 
-const PagesList = withRouter(({ activePageTitle, currentPage, pageTitles }) => {
-  const { isDesktop } = useContext(StateContext);
+const PagesList = withRouter(({ currentPage, pageTitles }) => {
   const history = useHistory();
-
-  if (isDesktop) {
-    const tabs = pageTitles.map((title) => ({
-      title: title,
-      path: `/pages/${parseTitle(title)}`,
-    }));
-
-    const tabIndex = tabs?.findIndex((tab) => tab.path === history?.location?.pathname);
-
-    return (
-      <Tabs
-        forceUppercase={false}
-        index={tabIndex}
-        orientation="vertical"
-        tabs={tabs}
-        textAlign="left"
-      />
-    );
-  }
 
   return (
     <Center zIndex="1400">

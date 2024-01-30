@@ -37,7 +37,7 @@ import FancyDate, { DateJust } from '../../components/FancyDate';
 import NiceList from '../../components/NiceList';
 import ConfirmModal from '../../components/ConfirmModal';
 import { Alert, message } from '../../components/message';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 import {
   call,
   checkAndSetBookingsWithConflict,
@@ -46,11 +46,8 @@ import {
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
 import { DocumentUploadHelper } from '../../components/UploadHelpers';
-import Breadcrumb from '../../components/Breadcrumb';
 
 moment.locale(i18n.language);
-
-const defaultMeetingResource = 'Office';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -58,9 +55,7 @@ class Process extends Component {
   state = {
     modalOpen: false,
     redirectToLogin: false,
-    newMeeting: {
-      resource: defaultMeetingResource,
-    },
+    newMeeting: null,
     isFormValid: false,
     isUploading: false,
     droppedDocuments: null,
@@ -384,7 +379,6 @@ class Process extends Component {
   renderDates = () => {
     const { process, processMeetings, t } = this.props;
     const { resources } = this.state;
-    const { hue } = this.context;
 
     if (!process) {
       return;
@@ -404,16 +398,17 @@ class Process extends Component {
               }}
             >
               <AccordionButton
-                _hover={{ bg: 'brand.200' }}
+                _hover={{ bg: 'brand.50' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
-                bg="white"
+                border="1px solid"
+                borderColor="brand.500"
                 color="brand.800"
               >
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
               </AccordionButton>
-              <AccordionPanel bg="brand.100">
+              <AccordionPanel bg="brand.50" border="1px solid" borderColor="brand.500">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
                 {meeting.attendees && (
                   <List>
@@ -461,16 +456,15 @@ class Process extends Component {
       return (
         <AccordionItem
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
-          bg="white"
           mb="2"
           style={{
             display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
           <AccordionButton
-            _hover={{ bg: 'brand.200' }}
+            _hover={{ bg: 'brand.100' }}
             _expanded={{ bg: 'brand.500', color: 'white' }}
-            bg="white"
+            bg="brand.50"
             color="brand.800"
           >
             <Box flex="1" textAlign="left">
@@ -484,8 +478,8 @@ class Process extends Component {
             </Box>
           </AccordionButton>
 
-          <AccordionPanel>
-            <Center p="2" bg="brand.100">
+          <AccordionPanel bg="brand.100">
+            <Center p="2">
               <Button
                 size="sm"
                 colorScheme={isAttending ? 'green' : 'brand'}
@@ -705,7 +699,14 @@ class Process extends Component {
             <Center my="2">
               <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
-                  <Box bg="white" cursor="grab" h="180px" p="4" w="100%" {...getRootProps()}>
+                  <Box
+                    bg={isDragActive ? 'gray.300' : 'gray.100'}
+                    cursor="grab"
+                    h="180px"
+                    p="4"
+                    w="100%"
+                    {...getRootProps()}
+                  >
                     {isUploading ? (
                       <div style={{ textAlign: 'center' }}>
                         <Loader />
@@ -796,16 +797,18 @@ class Process extends Component {
     const { allActivities } = this.props;
     const { newMeeting, resources } = this.state;
 
-    if (
-      !newMeeting ||
-      !newMeeting.resourceId ||
-      !newMeeting.startDate ||
-      !newMeeting.startTime ||
-      !newMeeting.endTime
-    ) {
+    if (!newMeeting || !newMeeting.startDate || !newMeeting.startTime || !newMeeting.endTime) {
       this.setState({
         conflictingBooking: null,
         isFormValid: false,
+      });
+      return;
+    }
+
+    if (!newMeeting.resourceId) {
+      this.setState({
+        conflictingBooking: null,
+        isFormValid: true,
       });
       return;
     }
@@ -926,11 +929,7 @@ class Process extends Component {
     const tabs = [
       {
         title: tc('labels.info'),
-        content: (
-          <Box bg="white" className="text-content" p="4">
-            {renderHTML(process.description)}
-          </Box>
-        ),
+        content: <Box className="text-content">{renderHTML(process.description)}</Box>,
         path: `/processes/${process._id}/info`,
       },
       {
@@ -1033,7 +1032,7 @@ class Process extends Component {
           <title>{process.title}</title>
         </Helmet>
 
-        <Tably
+        <TablyCentered
           action={this.renderAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}
@@ -1047,7 +1046,6 @@ class Process extends Component {
           tabs={tabs}
           tags={tags}
           title={process.title}
-          noGridAdjust={!isMember}
         />
 
         <ConfirmModal
@@ -1122,7 +1120,7 @@ function CreateMeetingForm({
   const [ta] = useTranslation('activities');
 
   return (
-    <Box bg="brand.100" p="4" my="4">
+    <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
       <Text fontWeight="bold">{t('meeting.form.label')}</Text>
       <Box py="2">
         <DatePicker noTime onChange={handleDateChange} />
@@ -1155,7 +1153,6 @@ function CreateMeetingForm({
         <Select
           name="resource"
           placeholder={t('meeting.form.resource')}
-          variant="filled"
           onChange={({ target: { value } }) => handleResourceChange(value)}
         >
           {resources.map((part, i) => (
@@ -1171,7 +1168,7 @@ function CreateMeetingForm({
       )}
 
       <Flex justify="flex-end" my="4">
-        <Button colorScheme="green" disabled={buttonDisabled} size="sm" onClick={handleSubmit}>
+        <Button isDisabled={buttonDisabled} size="sm" onClick={handleSubmit}>
           {t('meeting.form.submit')}
         </Button>
       </Flex>

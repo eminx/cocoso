@@ -13,7 +13,7 @@ import {
 
 export default function Popover({ footer, title, trigger, children, ...otherProps }) {
   return (
-    <CPopover matchWidth trigger="hover" {...otherProps}>
+    <CPopover trigger="hover" {...otherProps}>
       <PopoverTrigger>{trigger}</PopoverTrigger>
       <PopoverContent color="white" bg="gray.800" borderColor="gray.800">
         <PopoverArrow />

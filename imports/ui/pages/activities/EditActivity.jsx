@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Box, Button, Center, VStack } from '@chakra-ui/react';
-import i18n from 'i18next';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
 import ConfirmModal from '../../components/ConfirmModal';
 import FormSwitch from '../../components/FormSwitch';
 import Loader from '../../components/Loader';
-import Breadcrumb from '../../components/Breadcrumb';
 import {
   call,
   compareDatesWithStartDateForSort,
@@ -19,6 +17,7 @@ import {
 } from '../../utils/shared';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
+import FormTitle from '../../components/FormTitle';
 
 const formModel = {
   resourceId: '',
@@ -345,21 +344,10 @@ class EditActivity extends PureComponent {
 
     const isFormValid = this.isFormValid();
 
-    const furtherBreadcrumbLinks = [
-      {
-        label: activity.title,
-        link: `/activities/${activity._id}`,
-      },
-      {
-        label: tc('actions.update'),
-        link: null,
-      },
-    ];
-
     return (
       <Box>
+        <FormTitle context="activities" />
         <Template>
-          <Breadcrumb furtherItems={furtherBreadcrumbLinks} py="4" />
           <Box>
             <VStack mb="8" spacing="2">
               <FormSwitch

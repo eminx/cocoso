@@ -16,7 +16,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import NewGridThumb from '../../components/NewGridThumb';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -180,7 +180,7 @@ function Resources({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'resources')?.description}
         numberOfItems={resourcesRendered?.length}
       >
@@ -196,7 +196,7 @@ function Resources({ history }) {
           )}
           <Tabs size="sm" tabs={tabs} index={getTabIndex()} />
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Box px="4">
         <InfiniteScroller
@@ -208,6 +208,7 @@ function Resources({ history }) {
           {(resource) => (
             <Box
               key={resource._id}
+              alignSelf="center"
               cursor="pointer"
               flexBasis={280}
               flexGrow={1}

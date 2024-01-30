@@ -132,7 +132,6 @@ function ActivityForm({
             <Select
               {...register('resourceId')}
               placeholder={t('form.resource.holder')}
-              variant="filled"
               onChange={(e) => setSelectedResource(e.target.value)}
             >
               {resources

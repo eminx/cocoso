@@ -7,7 +7,6 @@ import NewHostForm from '../../components/NewHostForm';
 import { message, Alert } from '../../components/message';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
-import Breadcrumb from '../../components/Breadcrumb';
 
 const hostModel = {
   host: '',

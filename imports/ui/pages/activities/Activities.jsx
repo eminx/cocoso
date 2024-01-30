@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, ModalBody } from '@chakra-ui/react';
+import { Box, Center, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
@@ -19,7 +19,7 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 moment.locale(i18n.language);
 
@@ -242,7 +242,7 @@ function Activities({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'activities')?.description}
         numberOfItems={activitiesRendered?.length}
       >
@@ -257,9 +257,11 @@ function Activities({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
-      <Tabs m="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+      <Center>
+        <Tabs mb="4" size="sm" tabs={tabs} index={showPast ? 0 : 1} />
+      </Center>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
@@ -302,6 +304,7 @@ function Activities({ history }) {
           h="90%"
           isCentered
           isOpen
+          p="0"
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
           size={isDesktop ? '6xl' : 'full'}
@@ -309,7 +312,7 @@ function Activities({ history }) {
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}
         >
-          <ModalBody>
+          <ModalBody p="0">
             <Tably
               action={getDatesForAction(modalActivity, showPast)}
               content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}

@@ -17,33 +17,20 @@ export default function Breadcrumb({ furtherItems, ...otherProps }) {
   return (
     <Box fontSize="130%" {...otherProps}>
       <Flex wrap="wrap">
-        <Link to="/">
-          <CLink as="span" fontWeight="bold">
-            {name}
-          </CLink>
-        </Link>
-
-        {navItem && <Text mx="2">/</Text>}
-
+        {furtherItems &&
+          furtherItems.map((item) =>
+            item.link ? (
+              <Link to={item.link}>
+                <CLink as="span">{item.label}</CLink>
+              </Link>
+            ) : (
+              <Text>{item.label}</Text>
+            )
+          )}
+        <Text mx="2">in</Text>
         <Link to={`/${navItem?.name}`}>
           <CLink as="span">{navItem?.label}</CLink>
         </Link>
-
-        {!furtherItems && <Text mx="2">/</Text>}
-
-        {furtherItems &&
-          furtherItems.map((item) => (
-            <Fragment key={item.label}>
-              <Text mx="2">/</Text>
-              {item.link ? (
-                <Link to={item.link}>
-                  <CLink as="span">{item.label}</CLink>
-                </Link>
-              ) : (
-                <Text>{item.label}</Text>
-              )}
-            </Fragment>
-          ))}
       </Flex>
     </Box>
   );

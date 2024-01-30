@@ -20,9 +20,9 @@ import ProcessForm from '../../components/ProcessForm';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
+import FormTitle from '../../components/FormTitle';
 
 class NewProcess extends PureComponent {
   state = {
@@ -207,9 +207,9 @@ class NewProcess extends PureComponent {
 
     return (
       <Box>
+        <FormTitle context="processes" isNew />
         <Template>
-          <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
-          <Box py="6" mb="8">
+          <Box mb="8">
             <Popover trigger="hover">
               <PopoverTrigger>
                 <FormControl alignItems="center" display="flex" w="auto" mb="4">

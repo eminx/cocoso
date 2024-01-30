@@ -13,7 +13,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import NewGridThumb from '../../components/NewGridThumb';
 import { call } from '../../utils/shared';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 import { message } from '../../components/message';
 
 function Communities() {
@@ -147,9 +147,9 @@ function Communities() {
         <title>{`${tc('platform.communities')} | ${platform?.name}`}</title>
       </Helmet>
 
-      <PageHeader heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
+      <PageHeading heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
         <FiltrerSorter {...filtrerProps} />
-      </PageHeader>
+      </PageHeading>
 
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
@@ -159,7 +159,7 @@ function Communities() {
           smallThumb
         >
           {(host) => (
-            <Box key={host.host} flexBasis={280} flexGrow={1}>
+            <Box key={host.host} alignSelf="center" m="2" width={300}>
               <Box onClick={() => handleSetModalHost(host)}>
                 <NewGridThumb
                   coverText={host.host}
@@ -169,10 +169,10 @@ function Communities() {
                 />
               </Box>
 
-              <Box bg="gray.100" p="2">
+              <Box bg="brand.700" p="2">
                 {host.isMember ? (
-                  <Text textAlign="center" my="1">
-                    {tc('communities.member')} <CheckIcon color="green.700" fontSize="md" mt="-1" />
+                  <Text color="white" textAlign="center" my="1">
+                    {tc('communities.member')} <CheckIcon color="green.200" fontSize="md" mt="-1" />
                   </Text>
                 ) : (
                   <Center>

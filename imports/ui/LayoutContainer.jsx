@@ -6,13 +6,12 @@ import {
   Box,
   Center,
   ChakraProvider,
+  ColorModeProvider,
   Flex,
   Heading,
-  Image,
   Link as CLink,
   List,
   ListItem,
-  Spinner,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
@@ -25,18 +24,18 @@ import renderHTML from 'react-render-html';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
-import Modal from './components/Modal';
-import MenuDrawer from './components/MenuDrawer';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
+import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
 
 const publicSettings = Meteor.settings.public;
 
-function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
+function LayoutPage({ currentUser, userLoading, children }) {
   const [platform, setPlatform] = useState(null);
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
@@ -44,7 +43,6 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const history = useHistory();
-
   const { pathname } = history.location;
 
   useEffect(() => {
@@ -57,8 +55,11 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   }, [currentHost && currentHost.isPortalHost]);
 
   useEffect(() => {
+    if (pathname?.split('/')[1][0] === '@') {
+      return;
+    }
     window.scrollTo(0, 0);
-  }, [pathname.split('/')[1]]);
+  }, [pathname.split('/')[2]]);
 
   const getCurrentHost = async () => {
     try {
@@ -99,21 +100,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   };
 
   if (!currentHost) {
-    return (
-      <ChakraProvider>
-        <Box w="100%" h="100vh">
-          <Center h="100%">
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="gray.800"
-              size="xl"
-            />
-          </Center>
-        </Box>
-      </ChakraProvider>
-    );
+    return <MainLoader />;
   }
 
   const hostWithinUser =
@@ -124,7 +111,7 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const { isHeaderMenu, menu } = currentHost?.settings;
+  const { menu } = currentHost?.settings;
   const pagesWithHeaderAndFooter = [
     ...menu?.map((item) => '/' + item.name),
     '/login',
@@ -178,45 +165,47 @@ function LayoutPage({ currentUser, userLoading, hostLoading, children }) {
       <Favicon url={`${publicSettings.iconsBaseUrl}/favicon.ico`} />
 
       <ChakraProvider theme={chakraTheme}>
-        <StateContext.Provider
-          value={{
-            allHosts,
-            canCreateContent,
-            currentUser,
-            currentHost,
-            hue,
-            isDesktop,
-            platform,
-            role,
-            userLoading,
-            getCurrentHost,
-            getPlatform,
-            setHue,
-            setSelectedHue,
-          }}
-        >
-          {platform && platform.isFederationLayout && <TopBar />}
+        <ColorModeProvider>
+          <StateContext.Provider
+            value={{
+              allHosts,
+              canCreateContent,
+              currentUser,
+              currentHost,
+              hue,
+              isDesktop,
+              platform,
+              role,
+              userLoading,
+              getCurrentHost,
+              getPlatform,
+              setHue,
+              setSelectedHue,
+            }}
+          >
+            {platform && platform.isFederationLayout && <TopBar />}
 
-          <Flex>
-            {isDesktop && !isHeaderMenu && (
-              <MenuDrawer currentHost={currentHost} isDesktop platform={platform} />
-            )}
+            <Flex>
+              <Box id="main-viewport" flexGrow="2">
+                <Box w="100%">
+                  <Header isSmallerLogo={!isLargerLogo} />
 
-            <Box id="main-viewport" flexGrow="2" bg={`hsl(${hue}deg, 10%, 90%)`}>
-              <Box w="100%">
-                <Header isSmallerLogo={!isLargerLogo} />
+                  <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                    {children}
+                  </Box>
 
-                <Box minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                  {children}
+                  <Footer
+                    currentHost={currentHost}
+                    isFederationFooter={isFederationFooter}
+                    tc={tc}
+                  />
+
+                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-
-                <Footer currentHost={currentHost} isFederationFooter={isFederationFooter} tc={tc} />
-
-                {isFederationFooter && <PlatformFooter platform={platform} />}
               </Box>
-            </Box>
-          </Flex>
-        </StateContext.Provider>
+            </Flex>
+          </StateContext.Provider>
+        </ColorModeProvider>
       </ChakraProvider>
     </>
   );
@@ -232,12 +221,14 @@ function Footer({ currentHost, isFederationFooter, tc }) {
 
   return (
     <Box bg="brand.50" color="brand.900" w="100%">
-      <Center p="2">
+      <Center p="4">
         <List direction="row" display="flex" flexWrap="wrap" justifyContent="center">
           {activeMenu.map((item) => (
-            <ListItem key={item.name} px="2" py="1">
+            <ListItem key={item.name} px="4" py="2">
               <Link to={item.name === 'info' ? '/pages/about' : `/${item.name}`}>
-                <CLink as="span">{item.label}</CLink>{' '}
+                <CLink as="span" color="brand.500" fontWeight="bold">
+                  {item.label}
+                </CLink>{' '}
               </Link>
             </ListItem>
           ))}
@@ -279,6 +270,9 @@ function Footer({ currentHost, isFederationFooter, tc }) {
           </Flex>
         </Center>
       )}
+      <Center p="4">
+        <ChangeLanguageMenu isCentered />
+      </Center>
     </Box>
   );
 }
@@ -289,7 +283,7 @@ function PlatformFooter({ platform, children }) {
     return null;
   }
   return (
-    <Center bg="brand.800">
+    <Center bg="black" className="platform-footer">
       <Box color="white" fontSize="85%" maxW="480px" py="4" textAlign="center">
         <Box p="4">
           <a href={`https://${platform?.portalHost}`}>

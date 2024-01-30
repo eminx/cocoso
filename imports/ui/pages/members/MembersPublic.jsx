@@ -13,7 +13,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 import Tag from '../../components/Tag';
 import { getHslValuesFromLength } from '../../utils/constants/colors';
 
@@ -190,10 +190,9 @@ function MembersPublic({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'members')?.description}
         numberOfItems={membersRendered.length}
-        showNewButton={false}
       >
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
@@ -206,31 +205,31 @@ function MembersPublic({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Center p="4" pt="0">
-        <Wrap>
-          <WrapItem>
-            <Tag
-              label={t('all')}
-              checkable
-              checked={Boolean(filterKeyword) === false}
-              onClick={() => setFilterKeyword(null)}
-            />
-          </WrapItem>
+        <Flex justify="center" wrap="wrap">
+          <Tag
+            checkable
+            checked={Boolean(filterKeyword) === false}
+            label={t('all')}
+            mb="2"
+            mr="2"
+            onClick={() => setFilterKeyword(null)}
+          />
           {coloredKeywords.map((k) => (
-            <WrapItem key={k._id}>
-              <Tag
-                checkable
-                checked={filterKeyword?._id === k?._id}
-                filterColor={k.color}
-                label={k.label}
-                margin={{ bottom: 'small' }}
-                onClick={() => setFilterKeyword(k)}
-              />
-            </WrapItem>
+            <Tag
+              key={k._id}
+              checkable
+              checked={filterKeyword?._id === k?._id}
+              filterColor={k.color}
+              label={k.label}
+              mb="2"
+              mr="2"
+              onClick={() => setFilterKeyword(k)}
+            />
           ))}
-        </Wrap>
+        </Flex>
       </Center>
 
       {sorterValue === 'random' && (
@@ -244,7 +243,10 @@ function MembersPublic({ history }) {
           {(member) => (
             <Flex
               key={member.username}
-              bg={member.avatar ? 'white' : 'brand.50'}
+              // bg={member.avatar ? 'white' : 'brand.50'}
+              bg="brand.50"
+              border="1px solid"
+              borderColor="brand.500"
               cursor="pointer"
               justifyContent="center"
               mb="4"

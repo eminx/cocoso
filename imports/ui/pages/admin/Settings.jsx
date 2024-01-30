@@ -14,7 +14,6 @@ import { adminMenu } from '../../utils/constants/general';
 import SettingsForm from './SettingsForm';
 import FileDropper from '../../components/FileDropper';
 import Menu from './MenuSettings';
-import Breadcrumb from '../../components/Breadcrumb';
 import Tabs from '../../components/Tabs';
 import Categories from './Categories';
 import ColorPicker from './ColorPicker';
@@ -114,8 +113,8 @@ export default function Settings({ history }) {
             <Box>
               <FileDropper
                 imageUrl={currentHost && currentHost.logo}
-                height={isImage && '80px'}
-                width={isImage && '120px'}
+                height={isImage && '120px'}
+                width={isImage && '280px'}
                 round={false}
                 setUploadableImage={setUploadableImage}
                 uploadableImageLocal={localImage && localImage.uploadableImageLocal}
@@ -192,26 +191,8 @@ export default function Settings({ history }) {
     return <Redirect to={tabs[0].path} />;
   }
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Admin',
-      link: '/admin/settings',
-    },
-    {
-      label: t('settings.label'),
-      link: 'admin/settings',
-    },
-    {
-      label: tabs.find((t) => t.path === pathname).title,
-      link: null,
-    },
-  ];
-
   return (
     <>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
       <Template
         heading={t('settings.label')}
         leftContent={

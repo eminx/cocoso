@@ -8,13 +8,13 @@ import PageForm from '../../components/PageForm';
 import { call, parseTitle, resizeImage, uploadImage } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import ConfirmModal from '../../components/ConfirmModal';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import Template from '../../components/Template';
+import FormTitle from '../../components/FormTitle';
 
 function EditPage() {
-  const { currentHost, currentUser, role } = useContext(StateContext);
+  const { currentUser, role } = useContext(StateContext);
 
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(null);
@@ -174,20 +174,11 @@ function EditPage() {
     return <Loader />;
   }
 
-  const { menu } = currentHost?.settings;
-  const navItem = menu.find((item) => item.name === 'info');
-
-  const furtherItems = [
-    { label: navItem.label, link: '/pages' },
-    { label: page.title, link: `/pages/${parseTitle(page.title)}` },
-    { label: tc('actions.update') },
-  ];
-
   return (
     <Box>
+      <FormTitle context="pages" />
       <Template>
-        <Breadcrumb furtherItems={furtherItems} />
-        <Box py="6">
+        <Box>
           <PageForm
             defaultValues={page}
             images={images.map((image) => image.src)}

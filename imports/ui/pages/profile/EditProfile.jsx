@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 
 import ProfileForm from './ProfileForm';
-import Breadcrumb from '../../components/Breadcrumb';
 import ConfirmModal from '../../components/ConfirmModal';
 import { message } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -29,6 +28,7 @@ import Tabs from '../../components/Tabs';
 import ChangeLanguage from '../../components/ChangeLanguageMenu';
 import Template from '../../components/Template';
 import KeywordsManager from './KeywordsManager';
+import BackLink from '../../components/BackLink';
 
 function EditProfile({ history }) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
@@ -203,17 +203,6 @@ function EditProfile({ history }) {
     }
   };
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: currentUser.username,
-      link: `/@${currentUser.username}`,
-    },
-    {
-      label: tc('actions.update'),
-      link: null,
-    },
-  ];
-
   const isMember = ['admin', 'contributor', 'participant'].includes(role);
   const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
   const isUserPublic = Boolean(currentMembership.isPublic);
@@ -236,29 +225,31 @@ function EditProfile({ history }) {
       title: tc('menu.member.general'),
       path: `/@${currentUser.username}/edit/general`,
       content: (
-        <Box>
-          <Heading mb="4" size="sm">
-            {t('profile.image')}
-          </Heading>
-          <AvatarUploader
-            imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
-            isUploading={isUploading}
-            uploadableAvatarLocal={uploadableAvatarLocal}
-            removeAvatar={removeAvatar}
-            uploadAvatar={uploadAvatar}
-            setUploadableAvatar={handleSetUploadableAvatar}
-            setUploadableAvatarLocal={setUploadableAvatarLocal}
-          />
-          <Box py="2">
-            <Heading mb="2" size="sm">
-              {t('profile.label')}
+        <Center>
+          <Box>
+            <Heading mb="4" size="sm" textAlign="center">
+              {t('profile.image')}
             </Heading>
-            <Box>
-              <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+            <AvatarUploader
+              imageUrl={uploadableAvatarLocal || (currentUser.avatar && currentUser.avatar.src)}
+              isUploading={isUploading}
+              uploadableAvatarLocal={uploadableAvatarLocal}
+              removeAvatar={removeAvatar}
+              uploadAvatar={uploadAvatar}
+              setUploadableAvatar={handleSetUploadableAvatar}
+              setUploadableAvatarLocal={setUploadableAvatarLocal}
+            />
+            <Box py="4">
+              <Heading mb="2" size="sm" textAlign="center">
+                {t('profile.label')}
+              </Heading>
+              <Box mb="4">
+                <ProfileForm defaultValues={currentUser} onSubmit={handleSubmitInfo} />
+              </Box>
+              <KeywordsManager currentUser={currentUser} />
             </Box>
-            <KeywordsManager currentUser={currentUser} />
           </Box>
-        </Box>
+        </Center>
       ),
     },
     {
@@ -266,7 +257,7 @@ function EditProfile({ history }) {
       path: `/@${currentUser.username}/edit/language`,
       content: (
         <Box>
-          <Heading mb="4" size="sm">
+          <Heading mb="4" size="sm" textAlign="center">
             {tc('langs.form.label')}
           </Heading>
           <ChangeLanguage
@@ -290,7 +281,7 @@ function EditProfile({ history }) {
       content: (
         <Box>
           <Box mb="4">
-            <Heading size="md" pb="4">
+            <Heading size="md" pb="4" textAlign="center">
               {platform?.name}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.platform')}
@@ -366,14 +357,13 @@ function EditProfile({ history }) {
 
   return (
     <>
+      <Box p="2">
+        <BackLink backLink={{ label: currentUser.username, value: `/@${currentUser.username}` }} />
+      </Box>
       <Template>
-        <Box>
-          <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-        </Box>
-
         <Box mb="8">
           <Box pt="4" mb="8">
-            <Heading color="gray.800" size="lg">
+            <Heading color="gray.800" size="lg" textAlign="center">
               <Text as="span" fontWeight="normal">
                 {t('profile.settings')}
               </Text>
@@ -381,7 +371,7 @@ function EditProfile({ history }) {
           </Box>
 
           <Box>
-            <Heading size="md">
+            <Heading size="md" textAlign="center">
               {platform?.name}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.platform')}
@@ -390,12 +380,12 @@ function EditProfile({ history }) {
 
             <Alert bg="none" mb="4" status="info">
               <AlertIcon color="gray.800" />
-              <Text fontSize="sm" mr="4">
+              <Text fontSize="sm" mr="4" textAlign="center">
                 {t('profile.message.platform', { platform: platform?.name })}
               </Text>
             </Alert>
 
-            <Tabs index={tabIndex} mb="4" tabs={tabs} />
+            <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
 
             <Box>
               <RouteSwitch history={history}>

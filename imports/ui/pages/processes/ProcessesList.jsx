@@ -18,7 +18,7 @@ import HostFiltrer from '../../components/HostFiltrer';
 import { DateJust } from '../../components/FancyDate';
 import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -211,7 +211,7 @@ export default function ProcessesList({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'processes')?.description}
         numberOfItems={processesRendered?.length}
       >
@@ -227,7 +227,7 @@ export default function ProcessesList({ history }) {
           )}
           <Tabs size="sm" tabs={tabs} />
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Box mb="8" px={isDesktop ? '4' : '0'}>
         <InfiniteScroller

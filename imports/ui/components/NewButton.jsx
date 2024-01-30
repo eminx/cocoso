@@ -79,7 +79,7 @@ function NewButton() {
   }
 
   return (
-    <Box pl="2" pt="1">
+    <Box zIndex={isOpen ? '1403' : '10'}>
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -88,13 +88,13 @@ function NewButton() {
       >
         <MenuButton>
           <IconButton
-            _hover={{ bg: 'brand.300' }}
-            bg="brand.400"
+            _hover={{ bg: 'brand.200' }}
+            bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
-            icon={<AddIcon color="white" />}
+            // borderRadius="50%"
+            icon={<AddIcon />}
             size={isDesktop ? 'md' : 'sm'}
-            zIndex={isOpen ? '1403' : '0'}
           />
         </MenuButton>
         <MenuList zIndex={isOpen ? '1403' : '10'}>
@@ -105,6 +105,7 @@ function NewButton() {
           {activeMenuItem && (
             <MenuItem
               key={activeMenuItem.name}
+              color="brand.600"
               pl="5"
               onClick={() => history.push(getPathname(activeMenuItem))}
             >
@@ -121,6 +122,7 @@ function NewButton() {
               .map((item) => (
                 <MenuItem
                   key={item.name}
+                  color="brand.600"
                   fontWeight="bold"
                   onClick={() => history.push(getPathname(item))}
                 >
@@ -131,15 +133,7 @@ function NewButton() {
         </MenuList>
       </Menu>
       <Center position="relative">
-        <Text
-          fontSize="12px"
-          lineHeight="1"
-          mt="1"
-          position="absolute"
-          textAlign="center"
-          textTransform="uppercase"
-          top="-1px"
-        >
+        <Text fontSize="12px" lineHeight="1" textAlign="center" textTransform="uppercase">
           {tc('actions.create')}
         </Text>
       </Center>

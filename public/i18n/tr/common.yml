@@ -70,6 +70,8 @@ labels:
     info: Aradığın içerik bulunamadı
     gohome: Ana sayfaya geri dön
   newPopupLabel: Yeni bir içerik oluştur
+  newFormEntry: '{{ context }} içerisinde yeni içerik'
+  editFormEntry: '{{ context }} içerisinde içerik düzenle'
   thislisting: bu liste
   newsletters: Önceki Bültenler
   avatar:

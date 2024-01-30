@@ -58,7 +58,7 @@ labels:
     name: Namn
     random: Slumpmässigt
   update: Redigera detta/denna {{ domain }}
-  unselected: Du har ej valt resurs eller lokal
+  unselected: Ej resurs
   admin:
     actions: Admin
   past: Tidigare
@@ -70,6 +70,8 @@ labels:
     info: Det du letade efter kunde inte hittas
     gohome: Gå tillbaka till startsidan
   newPopupLabel: Skapa ett nytt inlägg
+  newFormEntry: Ny inlägg i {{ context }}
+  editFormEntry: Redigera inlägget i {{ context }}
   thislisting: denna lista
   newsletters: Tidigare nyhetsbrev
   avatar:

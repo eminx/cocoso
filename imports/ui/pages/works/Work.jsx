@@ -9,7 +9,7 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
-import Tably from '../../components/Tably';
+import TablyCentered from '../../components/TablyCentered';
 import DocumentsField from '../resources/components/DocumentsField';
 
 function Work() {
@@ -60,11 +60,7 @@ function Work() {
   const tabs = [
     {
       title: tc('labels.info'),
-      content: (
-        <Box bg="white" className="text-content" p="4">
-          {renderHTML(work.longDescription)}
-        </Box>
-      ),
+      content: <Box className="text-content">{renderHTML(work.longDescription)}</Box>,
       path: `/@${work.authorUsername}/works/${work._id}/info`,
     },
   ];
@@ -73,7 +69,7 @@ function Work() {
     tabs.push({
       title: tc('labels.extra'),
       content: (
-        <Box px="4">
+        <Box>
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
@@ -96,7 +92,7 @@ function Work() {
   tabs.push({
     title: tc('labels.contact'),
     content: authorContactInfo ? (
-      <Box className="text-content" px={isDesktop ? '0' : '4'}>
+      <Box className="text-content" textAlign="center">
         {renderHTML(authorContactInfo)}
       </Box>
     ) : (
@@ -129,7 +125,7 @@ function Work() {
       <Helmet>
         <title>{work.title}</title>
       </Helmet>
-      <Tably
+      <TablyCentered
         adminMenu={isOwner ? adminMenu : null}
         author={
           work.showAvatar && {

@@ -7,7 +7,6 @@ import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { call } from '../../utils/shared';
-import Breadcrumb from '../../components/Breadcrumb';
 import ReactQuill from '../../components/Quill';
 import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
@@ -87,23 +86,8 @@ export default function PlatformRegistrationIntro({ history }) {
 
   const pathname = history?.location?.pathname;
 
-  const furtherBreadcrumbLinks = [
-    {
-      label: 'Platform',
-      link: null,
-    },
-    {
-      label: tc('menu.superadmin.intro'),
-      link: null,
-    },
-  ];
-
   return (
     <Box>
-      <Box p="4">
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} />
-      </Box>
-
       <Template
         heading={tc('menu.superadmin.intro')}
         leftContent={

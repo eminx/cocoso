@@ -33,7 +33,7 @@ import {
   parseAllBookingsWithResources,
 } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
-import PageHeader from '../components/PageHeader';
+import PageHeading from '../components/PageHeading';
 
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
@@ -283,12 +283,12 @@ class Calendar extends PureComponent {
           <title>{title}</title>
         </Helmet>
 
-        <PageHeader
+        <PageHeading
           description={settings.menu.find((item) => item.name === 'calendar')?.description}
         />
 
-        <Box my="2">
-          <Center p="2">
+        <Box>
+          <Center>
             {!selectFilterView ? (
               <Box>
                 <Wrap justify="center" px="1" pb="1" mb="3">

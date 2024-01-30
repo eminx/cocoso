@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
-import { Box, Button, Center, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +10,7 @@ import PagesList from '../../components/PagesList';
 import Loader from '../../components/Loader';
 import NiceSlider from '../../components/NiceSlider';
 import { parseTitle } from '../../utils/shared';
-import NewEntryHelper from '../../components/NewEntryHelper';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 const publicSettings = Meteor.settings.public;
 
@@ -49,70 +48,43 @@ function Page() {
 
   const { settings } = currentHost;
 
-  if (isDesktop) {
-    return (
-      <>
-        <Helmet>
-          <title>{`${currentPage.title} | ${currentHost.settings.name}`}</title>
-        </Helmet>
-
-        <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
-
-        <Flex mb="8">
-          <Box w="280px" px="4" pt="53px">
-            <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
-          </Box>
-
-          <Box maxW="520px" pl="4" w="100%">
-            <Box py="4">
-              <Heading as="h2" fontFamily="'Raleway', sans-serif" fontSize="24px">
-                {currentPage.title}
-              </Heading>
-            </Box>
-            <Center bg="gray.900">
-              <NiceSlider floatRight={false} images={currentPage.images} />
-            </Center>
-            <Box bg="white" className="text-content" maxW="520px" p="4">
-              {renderHTML(currentPage.longDescription)}
-            </Box>
-
-            {isAdmin && (
-              <Center m="4">
-                <Link to={`/pages/${parseTitle(currentPage.title)}/edit`}>
-                  <Button as="span" variant="ghost" size="sm">
-                    <Text>{tc('actions.update')}</Text>
-                  </Button>
-                </Link>
-              </Center>
-            )}
-          </Box>
-        </Flex>
-      </>
-    );
-  }
-
   return (
     <>
       <Helmet>
         <title>{`${currentPage.title} | ${settings.name} | ${publicSettings.name}`}</title>
       </Helmet>
 
-      <PageHeader description={settings.menu.find((item) => item.name === 'info')?.description} />
+      <PageHeading description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Box pb="2">
+      <Box mt="-2">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Box>
 
-      <Center mb="4">
-        <Box w="100%" maxW="520px">
-          <Box bg="gray.900">
-            <NiceSlider floatRight={false} images={currentPage.images} />
+      <Box>
+        {currentPage.images && currentPage.images.length > 0 && (
+          <Center py="4">
+            <NiceSlider
+              alt={currentPage.title}
+              isFade={isDesktop}
+              height={isDesktop ? '400px' : 'auto'}
+              images={currentPage.images}
+            />
+          </Center>
+        )}
+        <Center>
+          <Box
+            border="1px solid"
+            borderColor="brand.500"
+            className="text-content"
+            maxWidth="520px"
+            overflow="auto"
+            m="2"
+            p="4"
+          >
+            {currentPage.longDescription && renderHTML(currentPage.longDescription)}
           </Box>
-          <Box bg="white" className="text-content" maxW="520px" p="4">
-            {renderHTML(currentPage.longDescription)}
-          </Box>
-        </Box>
-      </Center>
+        </Center>
+      </Box>
 
       {isAdmin && (
         <Center m="4">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 import { parse, stringify } from 'query-string';
@@ -17,7 +17,7 @@ import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeader from '../../components/PageHeader';
+import PageHeading from '../../components/PageHeading';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -162,7 +162,7 @@ function Works({ history }) {
         <title>{title}</title>
       </Helmet>
 
-      <PageHeader
+      <PageHeading
         description={settings.menu.find((item) => item.name === 'works')?.description}
         numberOfItems={worksRenderedHostFiltered?.length}
       >
@@ -177,31 +177,31 @@ function Works({ history }) {
             </Flex>
           )}
         </FiltrerSorter>
-      </PageHeader>
+      </PageHeading>
 
       <Center p="4" pt="0">
-        <Wrap>
-          <WrapItem>
-            <Tag
-              label={t('all')}
-              checkable
-              checked={Boolean(category) === false}
-              onClick={() => setCategoryFilter(null)}
-            />
-          </WrapItem>
+        <Flex justify="center" wrap="wrap">
+          <Tag
+            label={t('all')}
+            checkable
+            checked={Boolean(category) === false}
+            mb="2"
+            mr="2"
+            onClick={() => setCategoryFilter(null)}
+          />
           {categoriesAssignedToWorks.map((cat) => (
-            <WrapItem key={cat.label}>
-              <Tag
-                checkable
-                checked={category === cat.label}
-                filterColor={cat.color}
-                label={cat.label && cat.label.toUpperCase()}
-                margin={{ bottom: 'small' }}
-                onClick={() => setCategoryFilter(cat.label)}
-              />
-            </WrapItem>
+            <Tag
+              key={cat.label}
+              checkable
+              checked={category === cat.label}
+              filterColor={cat.color}
+              label={cat.label && cat.label.toUpperCase()}
+              mb="2"
+              mr="2"
+              onClick={() => setCategoryFilter(cat.label)}
+            />
           ))}
-        </Wrap>
+        </Flex>
       </Center>
 
       <Box pr="4">
@@ -264,7 +264,7 @@ function Works({ history }) {
             images={modalWork.images}
             subTitle={modalWork.shortDescription}
             tags={[
-              modalWork.category?.label,
+              // modalWork.category?.label,
               isPortalHost ? allHosts?.find((h) => h.host === modalWork.host)?.name : null,
             ]}
             title={modalWork.title}

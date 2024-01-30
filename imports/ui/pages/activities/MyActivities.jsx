@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
-  Button,
-  Center,
   Heading,
   HStack,
   Image,
@@ -21,7 +19,6 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import Loader from '../../components/Loader';
 import { Alert } from '../../components/message';
 
@@ -32,7 +29,7 @@ const focusStyle = {
 function Activities({ history }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentHost, currentUser, canCreateContent } = useContext(StateContext);
+  const { currentUser } = useContext(StateContext);
 
   const [t] = useTranslation('activities');
   const [tm] = useTranslation('members');
@@ -53,27 +50,9 @@ function Activities({ history }) {
     return <Loader />;
   }
 
-  const membersInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'members');
-
-  const furtherBreadcrumbLinks = [
-    {
-      label: membersInMenu?.label,
-      link: '/members',
-    },
-    {
-      label: currentUser.username,
-      link: `/@${currentUser.username}`,
-    },
-    {
-      label: tc('domains.activities'),
-      link: null,
-    },
-  ];
-
   return (
     <>
       <Template heading={tc('menu.member.activities')}>
-        <Breadcrumb furtherItems={furtherBreadcrumbLinks} mb="4" />
         {currentUser && activities ? (
           <Tabs>
             <TabList>

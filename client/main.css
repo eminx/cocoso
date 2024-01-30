@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap');
 
 body {
@@ -18,8 +18,8 @@ body {
 }
 
 .logo {
-  max-width: 220px;
-  max-height: 80px;
+  max-width: 280px;
+  max-height: 120px;
 }
 
 .smaller-logo.logo {
@@ -28,7 +28,7 @@ body {
 
 @media (max-width: 460px) {
   .logo {
-    max-width: 120px;
+    max-width: 180px;
   }
 }
 
@@ -91,6 +91,11 @@ a,
 .text-content a {
   /* color: #06c; */
   text-decoration: none;
+}
+
+.platform-footer a,
+.platform-footer .text-content a {
+  color: var(--chakra-colors-brand-100);
 }
 
 .hoverable:hover {

@@ -58,6 +58,8 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
     <Box
       _hover={{ bg: 'brand.400' }}
       bg="brand.500"
+      border="1px solid"
+      borderColor="brand.500"
       className="thumb-cover-container"
       fontWeight="bold"
     >

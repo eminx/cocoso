@@ -7,9 +7,9 @@ import i18n from 'i18next';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
+import FormTitle from '../../components/FormTitle';
 
 const formModel = {
   title: '',
@@ -168,9 +168,9 @@ class NewWork extends PureComponent {
 
     return (
       <Box>
+        <FormTitle context="works" isNew />
         <Template>
-          <Breadcrumb furtherItems={[{ label: i18n.t('common:actions.create') }]} />
-          <Box py="6">
+          <Box>
             <WorkForm
               categories={categories}
               defaultValues={formModel}

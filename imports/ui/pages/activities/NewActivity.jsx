@@ -7,7 +7,6 @@ import { parse } from 'query-string';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
-import Breadcrumb from '../../components/Breadcrumb';
 import { message, Alert } from '../../components/message';
 import FormSwitch from '../../components/FormSwitch';
 import {
@@ -19,6 +18,7 @@ import {
   uploadImage,
 } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
+import FormTitle from '../../components/FormTitle';
 
 moment.locale(i18n.language);
 
@@ -378,9 +378,9 @@ class NewActivity extends PureComponent {
 
     return (
       <Box>
+        <FormTitle context="activities" isNew />
         <Template>
-          <Breadcrumb furtherItems={[{ label: tc('actions.create') }]} />
-          <Box py="6">
+          <Box>
             <Box mb="8">
               <VStack spacing="2">
                 <FormSwitch

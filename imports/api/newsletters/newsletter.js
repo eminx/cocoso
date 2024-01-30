@@ -7,13 +7,12 @@ const Newsletters = new Mongo.Collection('newsletters');
 Newsletters.schema = new SimpleSchema({
   _id: Schemas.Id,
   appeal: { type: String },
-  host: Schemas.Hostname,
   authorId: Schemas.Id,
   authorUsername: { type: String },
   body: { type: String, optional: true },
   creationDate: { type: Date },
   footer: { type: String, optional: true },
-  host: { type: String },
+  host: Schemas.Hostname,
   hostId: { type: String },
   imageUrl: { type: String, optional: true },
   items: new SimpleSchema({
@@ -43,7 +42,6 @@ Newsletters.schema = new SimpleSchema({
       title: { type: String },
     }),
   }),
-
   subject: { type: String },
 });
 
