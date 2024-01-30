@@ -73,7 +73,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
             />
           </Box>
         ) : (
-          <Box bg="brand.50" p="4" pb="0">
+          <Box p="4" pb="0">
             <Avatar borderRadius="0" name={user.username} size="2xl" />
           </Box>
         )}

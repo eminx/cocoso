@@ -172,11 +172,12 @@ function Communities() {
               <Box bg="brand.700" p="2">
                 {host.isMember ? (
                   <Text color="white" textAlign="center" my="1">
-                    {tc('communities.member')} <CheckIcon color="green.200" fontSize="md" mt="-1" />
+                    {tc('communities.member')} <CheckIcon color="green.100" fontSize="md" mt="-1" />
                   </Text>
                 ) : (
                   <Center>
                     <Button
+                      bg="white"
                       size="sm"
                       variant="outline"
                       onClick={() => handleSetModalHostJoin(host)}
