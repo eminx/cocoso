@@ -56,7 +56,7 @@ function Page() {
 
       <PageHeading description={settings.menu.find((item) => item.name === 'info')?.description} />
 
-      <Box mt="-2">
+      <Box mt="-2" mb="2">
         <PagesList activePageTitle={pageId} currentPage={currentPage} pageTitles={pageTitles} />
       </Box>
 
@@ -80,6 +80,7 @@ function Page() {
             overflow="auto"
             m="2"
             p="4"
+            w="100%"
           >
             {currentPage.longDescription && renderHTML(currentPage.longDescription)}
           </Box>

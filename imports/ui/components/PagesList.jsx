@@ -11,15 +11,23 @@ const PagesList = withRouter(({ currentPage, pageTitles }) => {
   return (
     <Center zIndex="1400">
       <Menu placement="bottom">
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />} size="lg" variant="ghost">
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          size="lg"
+          variant="ghost"
+          whiteSpace="normal"
+        >
           {currentPage?.title}
         </MenuButton>
         <MenuList zIndex={2}>
           {pageTitles.map((title) => (
             <MenuItem
               key={title}
-              onClick={() => history.push(`/pages/${parseTitle(title)}`)}
               isDisabled={currentPage?.title === parseTitle(title)}
+              maxW="320px"
+              whiteSpace="normal"
+              onClick={() => history.push(`/pages/${parseTitle(title)}`)}
             >
               {title}
             </MenuItem>
