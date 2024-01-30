@@ -8,6 +8,7 @@ import {
   Heading as CHeading,
   HStack,
   Image,
+  Show,
   Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -100,7 +101,9 @@ function Header({ isSmallerLogo }) {
         </Box>
 
         <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
-          {platform && !platform.isFederationLayout && <UserPopup />}
+          <Show breakpoint="(min-width: 520px)">
+            {platform && !platform.isFederationLayout && <UserPopup />}
+          </Show>
           <NewButton />
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
@@ -108,6 +111,11 @@ function Header({ isSmallerLogo }) {
           )}
         </HStack>
       </Flex>
+      <Show breakpoint="(max-width: 519px)">
+        <Flex justify="flex-end" mt="-4" pr="2">
+          <UserPopup />
+        </Flex>
+      </Show>
       <Center p="4">
         {isDesktop && isHeaderMenu && (
           <HStack alignItems="flex-start" mb="2" wrap="wrap">
