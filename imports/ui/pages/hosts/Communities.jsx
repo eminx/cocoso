@@ -169,7 +169,7 @@ function Communities() {
                 />
               </Box>
 
-              <Box bg="brand.700" p="2">
+              <Box bg="brand.500" p="2">
                 {host.isMember ? (
                   <Text color="white" textAlign="center" my="1">
                     {tc('communities.member')} <CheckIcon color="green.100" fontSize="md" mt="-1" />

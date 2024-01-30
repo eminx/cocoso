@@ -36,6 +36,7 @@ export default function NewGridThumb({
               fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
+                backgroundColor: 'var(--chakra-colors-brand-500)',
                 position: 'relative',
                 margin: '0 auto',
               }}
