@@ -54,12 +54,13 @@ function LayoutPage({ currentUser, userLoading, children }) {
     getAllHosts();
   }, [currentHost && currentHost.isPortalHost]);
 
+  const pathnameSplitted = pathname.split('/');
   useEffect(() => {
-    if (pathname?.split('/')[1][0] === '@') {
+    if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
       return;
     }
     window.scrollTo(0, 0);
-  }, [pathname.split('/')[2]]);
+  }, [pathnameSplitted[2]]);
 
   const getCurrentHost = async () => {
     try {
