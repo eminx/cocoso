@@ -243,6 +243,7 @@ function MembersPublic({ history }) {
           {(member) => (
             <Flex
               key={member.username}
+              _hover={{ bg: 'brand.50' }}
               border="1px solid"
               borderColor="brand.500"
               cursor="pointer"
@@ -250,7 +251,9 @@ function MembersPublic({ history }) {
               mb="4"
               onClick={() => setModalUser(member)}
             >
-              <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
+              <Box>
+                <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
+              </Box>
             </Flex>
           )}
         </InfiniteScroller>

@@ -25,6 +25,7 @@ import { StateContext } from '../LayoutContainer';
 import Popover from '../components/Popover';
 
 const tagProps = {
+  bg: 'white',
   borderRadius: '0',
   border: '1px solid',
   borderColor: 'brand.500',
