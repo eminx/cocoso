@@ -28,7 +28,11 @@ export default function NewGridThumb({
   return (
     <Box _hover={{ bg: 'brand.50' }} cursor="pointer" border="1px solid" borderColor="brand.500">
       <Box className="text-link-container" position="relative">
-        <Center h={fixedImageHeight ? '180px' : 'auto'} overflow="hidden">
+        <Center
+          bg={imageUrl ? 'brand.500' : 'none'}
+          h={fixedImageHeight ? '180px' : 'auto'}
+          overflow="hidden"
+        >
           {imageUrl ? (
             <LazyLoadImage
               alt={title}
@@ -36,7 +40,6 @@ export default function NewGridThumb({
               fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
-                backgroundColor: 'var(--chakra-colors-brand-500)',
                 position: 'relative',
                 margin: '0 auto',
               }}
