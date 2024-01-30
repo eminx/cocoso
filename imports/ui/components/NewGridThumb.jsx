@@ -29,7 +29,7 @@ export default function NewGridThumb({
     <Box _hover={{ bg: 'brand.50' }} cursor="pointer" border="1px solid" borderColor="brand.500">
       <Box className="text-link-container" position="relative">
         <Center
-          bg={imageUrl ? 'brand.500' : 'none'}
+          bg={imageUrl ? 'brand.100' : 'none'}
           h={fixedImageHeight ? '180px' : 'auto'}
           overflow="hidden"
         >
