@@ -470,7 +470,7 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box className="text-content">
+          <Box className="text-content" p="4">
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),

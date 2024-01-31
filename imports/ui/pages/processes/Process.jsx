@@ -930,7 +930,11 @@ class Process extends Component {
     const tabs = [
       {
         title: tc('labels.info'),
-        content: <Box className="text-content">{renderHTML(process.description)}</Box>,
+        content: (
+          <Box className="text-content" p="4">
+            {renderHTML(process.description)}
+          </Box>
+        ),
         path: `/processes/${process._id}/info`,
       },
       {
