@@ -67,6 +67,8 @@ function Header({ isSmallerLogo }) {
     return pathSplitted.includes(item.name);
   };
 
+  const isFederationLayout = platform && platform.isFederationLayout;
+
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between" mb="2">
@@ -101,9 +103,7 @@ function Header({ isSmallerLogo }) {
         </Box>
 
         <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
-          <Show breakpoint="(min-width: 520px)">
-            {platform && !platform.isFederationLayout && <UserPopup />}
-          </Show>
+          <Show breakpoint="(min-width: 520px)">{!isFederationLayout && <UserPopup />}</Show>
           <NewButton />
           {currentUser && isAdmin && <UserPopupAdmin />}
           {!isDesktop && (
@@ -111,13 +111,15 @@ function Header({ isSmallerLogo }) {
           )}
         </HStack>
       </Flex>
-      <Show breakpoint="(max-width: 519px)">
-        <Flex justify="flex-end" mt="-2" pr="2">
-          <Box>
-            <UserPopup />
-          </Box>
-        </Flex>
-      </Show>
+      {!isFederationLayout && (
+        <Show breakpoint="(max-width: 519px)">
+          <Flex justify="flex-end" mt="-2" pr="2">
+            <Box>
+              <UserPopup />
+            </Box>
+          </Flex>
+        </Show>
+      )}
       <Show breakpoint="(min-width: 520px)">
         <Box mb={isDesktop ? '0' : '6'}></Box>
       </Show>
