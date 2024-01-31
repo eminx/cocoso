@@ -140,7 +140,6 @@ function NewButton() {
           top="3px"
           textAlign="center"
           textTransform="uppercase"
-          w="36px"
         >
           {tc('actions.create')}
         </Text>

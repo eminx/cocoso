@@ -245,14 +245,14 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} mb="4">
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} mb="4" py="2">
       <Box
         bg="white"
         className="text-content"
         maxW="480px"
         px="4"
-        py="2"
-        textAlign="center"
+        borderLeft="4px solid"
+        borderColor="brand.500"
         w="100%"
       >
         {renderHTML(user.bio)}
