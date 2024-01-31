@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Center, Flex, Heading, HStack, Text } from '@chakra-ui/react';
+import { Avatar, Box, Center, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 

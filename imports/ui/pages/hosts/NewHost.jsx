@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 
 import Template from '../../components/Template';
 import NewHostForm from '../../components/NewHostForm';
@@ -47,14 +47,18 @@ function NewHost() {
 
   if (!currentUser || !currentUser.isSuperAdmin) {
     return (
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <Alert message={tc('message.access.deny')} type="error" />
-      </div>
+      <Center>
+        <Alert type="error">{tc('message.access.deny')}</Alert>
+      </Center>
     );
   }
 
   if (isSuccess) {
-    return <Alert type="success">{tc('message.success.create')}</Alert>;
+    return (
+      <Center>
+        <Alert type="success">{tc('message.success.create')}</Alert>
+      </Center>
+    );
   }
 
   return (

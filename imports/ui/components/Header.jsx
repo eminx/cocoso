@@ -112,14 +112,18 @@ function Header({ isSmallerLogo }) {
         </HStack>
       </Flex>
       <Show breakpoint="(max-width: 519px)">
-        <Flex justify="flex-end" mt="-2" pr="2" position="relative">
-          <Box position="absolute">
+        <Flex justify="flex-end" mt="-2" pr="2">
+          <Box>
             <UserPopup />
           </Box>
         </Flex>
       </Show>
-      <Center p="4">
-        {isDesktop && isHeaderMenu && (
+      <Show breakpoint="(min-width: 520px)">
+        <Box mb={isDesktop ? '0' : '6'}></Box>
+      </Show>
+
+      {isDesktop && isHeaderMenu && (
+        <Center p="4">
           <HStack alignItems="flex-start" mb="2" wrap="wrap">
             {menuItems.map((item) => {
               const isCurrentPageLabel = isCurrentPage(item);
@@ -141,8 +145,8 @@ function Header({ isSmallerLogo }) {
               );
             })}
           </HStack>
-        )}
-      </Center>
+        </Center>
+      )}
     </Box>
   );
 }

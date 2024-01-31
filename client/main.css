@@ -89,7 +89,7 @@ body {
 
 a,
 .text-content a {
-  /* color: #06c; */
+  color: var(--chakra-colors-brand-500);
   text-decoration: none;
 }
 
