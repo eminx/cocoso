@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Flex,
   Heading,
   Link as CLink,

@@ -49,11 +49,11 @@ export function TablyLoader() {
       <Center mb="48px">
         <Skeleton {...skeletonProps.color} w="300px" h="40px" />
       </Center>
-      <Center>
+      <Center mb="36px">
         <Skeleton {...skeletonProps.color} w="720px" h="400px" />
       </Center>
       <Center>
-        <Skeleton {...skeletonProps.color} w="5400px" h="600px" />
+        <Skeleton {...skeletonProps.color} w="540px" h="600px" />
       </Center>
     </ChakraProvider>
   );
