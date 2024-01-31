@@ -185,7 +185,7 @@ function Header({
   return (
     <Box mb="4" w="100%">
       <Flex justify="space-between">
-        <Box flexGrow={0} flexShrink={0} pl="2" width="120px">
+        <Box flexGrow={0} flexShrink={0} pl="2" width="150px">
           {backLink && <BackLink backLink={backLink} isSmall={!isDesktop} />}
         </Box>
         {isDesktop && renderTitles()}
@@ -195,7 +195,7 @@ function Header({
           flexShrink={0}
           flexDirection="column"
           pr="4"
-          width="120px"
+          width="150px"
         >
           <Button
             leftIcon={<LinkIcon />}

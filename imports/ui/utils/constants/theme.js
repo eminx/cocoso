@@ -51,6 +51,7 @@ const generateTheme = (hue) => {
       Button: {
         baseStyle: {
           borderRadius: 0,
+          whiteSpace: 'normal',
         },
         defaultProps: {
           colorScheme: 'brand',
