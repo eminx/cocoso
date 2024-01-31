@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex, Grid, GridItem, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
@@ -229,14 +229,14 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
 
   if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
-      <Link to={`/@${user?.username}/edit`}>
-        <Box p="4" mb="4">
+      <Center p="4" mb="4" w="100%">
+        <Link to={`/@${user?.username}/edit`} style={{ width: '100%' }}>
           <SexyThumb
             subTitle={tc('menu.member.settings')}
             title={tc('message.newentryhelper.bio.title')}
           />
-        </Box>
-      </Link>
+        </Link>
+      </Center>
     );
   }
 

@@ -146,6 +146,7 @@ input::placeholder {
 .thumb-cover-container {
   height: 315px;
   position: relative;
+  width: 100%;
 }
 
 .thumb-cover-container:hover .thumb-cover {
