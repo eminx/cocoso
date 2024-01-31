@@ -114,8 +114,9 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
                   <CLink
                     color="blue.600"
                     href={document.documentUrl}
-                    target="_blank"
+                    overflowWrap="anywhere"
                     rel="noreferrer"
+                    target="_blank"
                   >
                     {document.documentLabel} <ExternalLinkIcon mr="2px" fontSize="sm" />
                   </CLink>
