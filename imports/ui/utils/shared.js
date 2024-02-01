@@ -315,6 +315,10 @@ function getFullName(user) {
   return firstName || lastName || '';
 }
 
+function parseHtmlEntities(input) {
+  return input.replace(/\\+u([0-9a-fA-F]{4})/g, (a, b) => String.fromCharCode(parseInt(b, 16)));
+}
+
 export {
   localeSort,
   getInitials,
@@ -335,4 +339,5 @@ export {
   getNonComboResourcesWithColor,
   getComboResourcesWithColor,
   getFullName,
+  parseHtmlEntities,
 };

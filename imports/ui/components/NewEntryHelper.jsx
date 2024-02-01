@@ -23,8 +23,8 @@ function NewEntryHelper({
   );
 
   const titleGeneric = isEmptyListing
-    ? tc('message.newentryhelper.emptylisting.title')
-    : tc('message.newentryhelper.title', { listing: activeMenuItem?.label });
+    ? renderHTML(tc('message.newentryhelper.emptylisting.title'))
+    : renderHTML(tc('message.newentryhelper.title', { listing: activeMenuItem?.label }));
 
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import BackLink from './BackLink';
+import renderHTML from 'react-render-html';
 
 export default function FormTitle({ context, isNew = false }) {
   const { currentHost, isDesktop } = useContext(StateContext);
@@ -27,8 +28,8 @@ export default function FormTitle({ context, isNew = false }) {
       </Flex>
       <Heading mb="4" size="lg" textAlign="center">
         {isNew
-          ? tc('labels.newFormEntry', { context: currentContext?.label })
-          : tc('labels.editFormEntry', { context: currentContext?.label })}
+          ? renderHTML(tc('labels.newFormEntry', { context: currentContext?.label }))
+          : renderHTML(tc('labels.editFormEntry', { context: currentContext?.label }))}
       </Heading>
     </Box>
   );
