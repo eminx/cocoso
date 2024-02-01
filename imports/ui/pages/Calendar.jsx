@@ -276,6 +276,14 @@ class Calendar extends PureComponent {
     const { settings } = currentHost;
     const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
 
+    if (isLoading) {
+      return (
+        <Center>
+          <Loader />
+        </Center>
+      );
+    }
+
     return (
       <Box>
         <Helmet>
@@ -370,17 +378,13 @@ class Calendar extends PureComponent {
             )}
           </Center>
 
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Box mb="4">
-              <CalendarView
-                activities={allFilteredActsWithColors}
-                onSelect={this.handleSelectActivity}
-                onSelectSlot={this.handleSelectSlot}
-              />
-            </Box>
-          )}
+          <Box mb="4">
+            <CalendarView
+              activities={allFilteredActsWithColors}
+              onSelect={this.handleSelectActivity}
+              onSelectSlot={this.handleSelectSlot}
+            />
+          </Box>
         </Box>
 
         <ConfirmModal
