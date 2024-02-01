@@ -42,7 +42,7 @@ export function MainLoader() {
 
 export function TablyLoader() {
   return (
-    <ChakraProvider>
+    <Flex direction="column">
       <Center my="24px">
         <Skeleton {...skeletonProps.color} w="140px" h="40px" />
       </Center>
@@ -55,6 +55,6 @@ export function TablyLoader() {
       <Center>
         <Skeleton {...skeletonProps.color} w="540px" h="600px" />
       </Center>
-    </ChakraProvider>
+    </Flex>
   );
 }

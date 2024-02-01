@@ -21,7 +21,6 @@ import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-import Loader from '../components/Loader';
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
 import Tag from '../components/Tag';
@@ -33,6 +32,7 @@ import {
 } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import PageHeading from '../components/PageHeading';
+import Loader from '../components/Loader';
 
 moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
