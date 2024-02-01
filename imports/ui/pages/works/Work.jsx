@@ -61,7 +61,7 @@ function Work() {
     {
       title: tc('labels.info'),
       content: (
-        <Box className="text-content" p="4">
+        <Box className="text-content" p="2">
           {renderHTML(work.longDescription)}
         </Box>
       ),

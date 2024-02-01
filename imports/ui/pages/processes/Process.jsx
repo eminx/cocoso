@@ -931,7 +931,7 @@ class Process extends Component {
       {
         title: tc('labels.info'),
         content: (
-          <Box className="text-content" p="4">
+          <Box className="text-content" p="2">
             {renderHTML(process.description)}
           </Box>
         ),
