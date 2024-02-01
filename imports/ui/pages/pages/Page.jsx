@@ -79,7 +79,7 @@ function Page() {
             maxWidth="520px"
             overflow="auto"
             m="2"
-            p="4"
+            p="6"
             w="100%"
           >
             {currentPage.longDescription && renderHTML(currentPage.longDescription)}
