@@ -55,6 +55,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   }, [currentHost && currentHost.isPortalHost]);
 
   const pathnameSplitted = pathname.split('/');
+
   useEffect(() => {
     if (pathnameSplitted[1][0] === '@' && !pathnameSplitted[3]) {
       return;

@@ -17,6 +17,7 @@ import FormField from './FormField';
 import NiceSlider from './NiceSlider';
 import ReactQuill from './Quill';
 import ImageUploadUI from './ImageUploadUI';
+import DocumentsField from '../pages/resources/components/DocumentsField';
 
 function WorkForm({
   categories,
@@ -112,6 +113,14 @@ function WorkForm({
               onSelectImages={setUploadableImages}
               onSortImages={onSortImages}
             />
+          </FormField>
+
+          <FormField helperText="Documents belonging to this item" label="Documents">
+            {isNew ? (
+              'For document upload, please first create the item, and then click edit'
+            ) : (
+              <DocumentsField contextType="works" contextId={defaultValues?._id} isAllowed />
+            )}
           </FormField>
 
           <FormField helperText={tc('labels.avatar.helper')}>

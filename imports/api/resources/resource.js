@@ -11,6 +11,15 @@ Resources.schema = new SimpleSchema({
 
   label: { type: String },
   description: { type: String, optional: true },
+  documents: { type: Array, optional: true, defaultValue: [] },
+  'documents.$': {
+    type: new SimpleSchema({
+      documentId: { type: String },
+      downloadUrl: { type: String },
+      label: { type: String },
+    }),
+    optional: true,
+  },
   images: { type: Array, optional: true },
   'images.$': { type: String },
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { Box, Center, Image, Text } from '@chakra-ui/react';
+import { Center, Flex, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 const containerStyle = {
@@ -8,7 +8,7 @@ const containerStyle = {
 };
 
 function FileDropper({
-  height = '100%',
+  height = '120px',
   imageFit = 'contain',
   imageUrl,
   label,
@@ -27,13 +27,17 @@ function FileDropper({
   return (
     <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => (
-        <Box
+        <Flex
           {...getRootProps()}
-          bg={isDragActive ? 'gray.300' : 'gray.100'}
-          border="1px dashed"
+          _hover={{ bg: 'brand.50' }}
+          align="center"
+          bg={isDragActive ? 'gray.300' : 'white'}
+          border="2px dashed"
           borderColor="brand.500"
           borderRadius="0px"
           cursor="grab"
+          direction="column"
+          justify="center"
           h={height}
           w="100%"
           {...containerStyle}
@@ -57,7 +61,7 @@ function FileDropper({
             </Center>
           )}
           <input {...getInputProps()} />
-        </Box>
+        </Flex>
       )}
     </Dropzone>
   );

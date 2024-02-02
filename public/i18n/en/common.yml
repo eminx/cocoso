@@ -216,7 +216,7 @@ domains:
 documents:
   label: Documents
   empty: No document assigned
-  drop: Drop documents or click for file upload
+  drop: Drop document or click for file upload
   up: uploading
   remove: The document is successfully removed
   fileDropper: is successfully uploaded and assigned

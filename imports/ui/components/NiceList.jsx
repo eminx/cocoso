@@ -34,12 +34,12 @@ function ListItemWithActions({ listItem, actionsDisabled, renderChildren }) {
       <Box>
         {!actionsDisabled && (
           <Menu placement="bottom-end">
-            <MenuButton>
+            <MenuButton type="button">
               <ChevronDownIcon boxSize="6" />
             </MenuButton>
             <MenuList>
-              {listItem.actions &&
-                listItem.actions.map((action) => (
+              {listItem?.actions &&
+                listItem?.actions.map((action) => (
                   <MenuItem
                     key={action.content}
                     isDisabled={action.isDisabled}

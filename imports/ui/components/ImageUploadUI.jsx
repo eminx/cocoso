@@ -18,9 +18,7 @@ function ImageUploader({ images = [], onRemoveImage, onSortImages, onSelectImage
               onRemoveImage={() => onRemoveImage(index)}
             />
           ))}
-          <Center w="100%">
-            <FileDropper setUploadableImage={onSelectImages} isMultiple />
-          </Center>
+          <FileDropper setUploadableImage={onSelectImages} isMultiple />
         </SortableContainer>
       ) : (
         <Center>

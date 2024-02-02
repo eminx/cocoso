@@ -212,7 +212,7 @@ domains:
 documents:
   label: Dokümanlar
   empty: Doküman eklenmedi
-  drop: Doküman eklemek için sürükleyin ya da tıklayıp seçin
+  drop: Doküman eklemek için sürükle ya da tıklayıp seç
   up: yükleniyor
   remove: Belge başarıyla kaldırıldı
   fileDropper: başarıyla yüklendi ve atandı

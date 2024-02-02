@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Documents from './document';
+import Processes from '../processes/process';
+import Works from '../works/work';
+import Resources from '../resources/resource';
 import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
 
@@ -39,7 +42,7 @@ Meteor.methods({
     }
   },
 
-  removeManual(documentId) {
+  removeDocument(documentId) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 
@@ -14,6 +14,7 @@ import DocumentsField from '../resources/components/DocumentsField';
 
 function Work() {
   const [work, setWork] = useState(null);
+  const [documents, setDocuments] = useState([]);
   const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentHost, currentUser, isDesktop } = useContext(StateContext);
@@ -30,6 +31,8 @@ function Work() {
     try {
       const response = await call('getWork', workId, username);
       setWork(response);
+      const docs = await call('getDocumentsByAttachments', response._id);
+      setDocuments(docs);
       setLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -81,17 +84,13 @@ function Work() {
     });
   }
 
-  tabs.push({
-    title: tc('documents.label'),
-    content: (
-      <DocumentsField
-        contextType="works"
-        contextId={work?._id}
-        isAllowed={work?.authorId === currentUser?._id}
-      />
-    ),
-    path: `/@${work.authorUsername}/works/${work._id}/documents`,
-  });
+  if (documents && documents[0]) {
+    tabs.push({
+      title: tc('documents.label'),
+      content: <DocumentsField contextType="works" contextId={work._id} />,
+      path: `/@${work.authorUsername}/works/${work._id}/documents`,
+    });
+  }
 
   tabs.push({
     title: tc('labels.contact'),

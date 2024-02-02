@@ -15,6 +15,15 @@ Works.schema = new SimpleSchema({
   'category.label': { type: String },
   'category.color': { type: String },
   creationDate: { type: Date },
+  documents: { type: Array, optional: true, defaultValue: [] },
+  'documents.$': {
+    type: new SimpleSchema({
+      documentId: { type: String },
+      downloadUrl: { type: String },
+      label: { type: String },
+    }),
+    optional: true,
+  },
   host: Schemas.Hostname,
   images: { type: Array, optional: true },
   'images.$': { type: String },

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ReactDropzone from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
@@ -17,9 +17,16 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
   const [isLoading, setIsLoading] = useState(true);
   const { isDesktop } = useContext(StateContext);
 
+  useEffect(() => {
+    getDocuments();
+  }, [documents.length]);
+
   const [tc] = useTranslation('common');
 
   const getDocuments = async () => {
+    if (!contextId) {
+      return;
+    }
     try {
       const response = await call('getDocumentsByAttachments', contextId);
       setDocuments(response.reverse());
@@ -29,10 +36,6 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getDocuments();
-  }, [documents.length]);
 
   const createDocument = async (uploadableFile, downloadUrl) => {
     try {
@@ -53,7 +56,7 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
     }
 
     try {
-      await call('removeManual', documentId);
+      await call('removeDocument', documentId);
       getDocuments();
       message.success(tc('documents.remove'));
     } catch (error) {
@@ -135,24 +138,29 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
           <Box mb="2">
             <ReactDropzone onDrop={handleFileDrop} multiple={false}>
               {({ getRootProps, getInputProps, isDragActive }) => (
-                <Box
-                  bg={isDragActive ? 'gray.300' : 'gray.100'}
+                <Flex
+                  _hover={{ bg: 'brand.50' }}
+                  align="center"
+                  bg={isDragActive ? 'gray.300' : 'white'}
+                  border="2px dashed"
+                  borderColor="brand.500"
                   cursor="grab"
-                  h="180px"
+                  direction="column"
+                  h="120px"
+                  justify="center"
                   p="4"
                   w="100%"
                   {...getRootProps()}
                 >
                   {isUploading ? (
-                    <div style={{ textAlign: 'center' }}>
-                      <Loader />
-                      {tc('documents.up')}
-                    </div>
+                    <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />
                   ) : (
-                    <div style={{ textAlign: 'center' }}>{tc('documents.drop')}</div>
+                    <Text textAlign="center" fontSize="sm">
+                      {tc('documents.drop')}
+                    </Text>
                   )}
                   <input {...getInputProps()} />
-                </Box>
+                </Flex>
               )}
             </ReactDropzone>
           </Box>
