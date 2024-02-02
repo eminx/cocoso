@@ -115,15 +115,18 @@ function WorkForm({
             />
           </FormField>
 
-          <FormField helperText="Documents belonging to this item" label="Documents">
+          <FormField
+            helperText={!isNew && t('works.documents.helper')}
+            label={t('works.documents.helper')}
+          >
             {isNew ? (
-              'For document upload, please first create the item, and then click edit'
+              t('works.documents.newNotice')
             ) : (
               <DocumentsField contextType="works" contextId={defaultValues?._id} isAllowed />
             )}
           </FormField>
 
-          <FormField helperText={tc('labels.avatar.helper')}>
+          <FormField label={t('profile.labels.avatar')} helperText={tc('labels.avatar.helper')}>
             <Flex align="center">
               <Switch defaultChecked={isNew} id="avatar" mb="2" {...register('showAvatar')} />
               <FormLabel htmlFor="avatar">{tc('labels.avatar.checklabel')}</FormLabel>

@@ -75,8 +75,8 @@ labels:
   thislisting: this listing
   newsletters: Previous Newsletters
   avatar:
-    checklabel: Show profile image
-    helper: Check to show your profile image with this entry
+    checklabel: Show Avatar
+    helper: Check to show your avatar with this entry
   items: items
   allCommunities: All Communities
 
@@ -206,7 +206,7 @@ domains:
 
   account: account
   data: data
-  avatar: profile image
+  avatar: avatar
   static: static
 
   props:

@@ -75,8 +75,8 @@ labels:
   thislisting: bu liste
   newsletters: Önceki Bültenler
   avatar:
-    checklabel: Profil imajını görüntüle
-    helper: Bu içerik ile profil imajını görüntülemek için işaretle
+    checklabel: Avatarını görüntüle
+    helper: Bu içerik ile avatarını görüntülemek için işaretle
   items: öge
 
 # ALL CLIENT-SIDE NOTIFICATIONS
@@ -202,7 +202,7 @@ domains:
 
   account: hesap
   data: veri
-  avatar: profil resmi
+  avatar: avatar
   static: static
 
   props:

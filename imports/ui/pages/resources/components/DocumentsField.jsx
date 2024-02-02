@@ -5,7 +5,6 @@ import { Box, Code, Flex, Link as CLink, Text, Skeleton } from '@chakra-ui/react
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { call } from '../../../utils/shared';
-import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import NiceList from '../../../components/NiceList';
 import { DocumentUploadHelper } from '../../../components/UploadHelpers';
@@ -89,7 +88,7 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
   };
 
   if (isLoading) {
-    return <Loader />;
+    return <Skeleton w="100%" h="100%" startColor="brand.100" endColor="brand.200" />;
   }
 
   if (!documents) {

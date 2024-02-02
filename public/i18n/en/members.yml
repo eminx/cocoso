@@ -48,7 +48,7 @@ message:
 profile:
   labels:
     info: Personal Info
-    avatar: Profile image
+    avatar: Avatar
   form:
     firstname:
       label: First name
@@ -90,6 +90,10 @@ works:
   images:
     label: Images ({{ count }})
     helper: To represent the entry, please choose an image or a set of images from the gallery in your device or a photo you will take now. It is optional
+  documents:
+    label: Documents
+    helper: Documents uploaded for this item
+    newNotice: For document upload, please first create the entry, and then go to edit page to upload documents
 
 report:
   title: Consumption Report for {{username}}

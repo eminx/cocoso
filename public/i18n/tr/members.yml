@@ -48,7 +48,7 @@ message:
 profile:
   labels:
     info: Kişisel bilgiler
-    avatar: Profil resmi
+    avatar: Avatar
   form:
     firstname:
       label: Ad
@@ -90,6 +90,10 @@ works:
   images:
     label: İmajlar ({{ count }})
     helper: İçeriği temsil etmek için, lütfen cihazındaki galeriden bir imaj veya bir dizi imaj veya şimdi çekeceğin bir fotoğraf seç. İsteğe bağlıdır
+  documents:
+    label: Dokümanlar
+    helper: Bu içerik için yüklenmiş dokümanlar
+    newNotice: Lütfen önce içeriği oluştur ve ardından belgeleri yüklemek için düzenleme sayfasına git
 
 report:
   title: '{{username}} için Kullanım Raporu'
