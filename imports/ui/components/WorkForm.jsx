@@ -117,7 +117,7 @@ function WorkForm({
 
           <FormField
             helperText={!isNew && t('works.documents.helper')}
-            label={t('works.documents.helper')}
+            label={t('works.documents.label')}
           >
             {isNew ? (
               t('works.documents.newNotice')
