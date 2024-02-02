@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Code, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
 

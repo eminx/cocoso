@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Badge, Box, Button, Center, Text, Wrap } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+import { Badge, Box, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
-import moment from 'moment';
 import { Helmet } from 'react-helmet';
 
 import { call } from '../../utils/shared';
@@ -20,6 +19,7 @@ import Chattery from '../../components/chattery/Chattery';
 function ResourcePage() {
   const { resourceId } = useParams();
   const [resource, setResource] = useState(null);
+  const [documents, setDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('resources');
@@ -36,6 +36,8 @@ function ResourcePage() {
     try {
       const response = await call('getResourceById', resourceId);
       setResource(response);
+      const docs = await call('getDocumentsByAttachments', response._id);
+      setDocuments(docs);
       setIsLoading(false);
     } catch (error) {
       message.error(error.reason);
@@ -85,18 +87,15 @@ function ResourcePage() {
       ),
       path: `/resources/${resource._id}/info`,
     },
-    {
-      title: tc('documents.label'),
-      content: (
-        <DocumentsField
-          contextType="resource"
-          contextId={resource?._id}
-          isAllowed={role === 'admin'}
-        />
-      ),
-      path: `/resources/${resource._id}/documents`,
-    },
   ];
+
+  if (documents && documents[0]) {
+    tabs.push({
+      title: tc('documents.label'),
+      content: <DocumentsField contextType="resource" contextId={resource?._id} />,
+      path: `/resources/${resource._id}/documents`,
+    });
+  }
 
   if (currentUser && canCreateContent && resource.isBookable) {
     tabs.push({

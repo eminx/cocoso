@@ -115,12 +115,9 @@ function WorkForm({
             />
           </FormField>
 
-          <FormField
-            helperText={!isNew && t('works.documents.helper')}
-            label={t('works.documents.label')}
-          >
+          <FormField helperText={!isNew && tc('documents.helper')} label={tc('documents.label')}>
             {isNew ? (
-              t('works.documents.newNotice')
+              tc('documents.newNotice')
             ) : (
               <DocumentsField contextType="works" contextId={defaultValues?._id} isAllowed />
             )}

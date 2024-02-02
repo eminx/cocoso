@@ -211,6 +211,8 @@ domains:
 
 documents:
   label: Dokümanlar
+  helper: Bu içerik için yüklenmiş dokümanlar
+  newNotice: Lütfen önce içeriği oluştur ve ardından belgeleri yüklemek için düzenleme sayfasına git
   empty: Doküman eklenmedi
   drop: Doküman eklemek için sürükle ya da tıklayıp seç
   up: yükleniyor

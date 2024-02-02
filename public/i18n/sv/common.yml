@@ -213,6 +213,8 @@ domains:
 
 documents:
   label: Dokument
+  helper: Dokument uppladdade för detta inlägg
+  newNotice: För dokumentuppladdning, skapa först posten och gå sedan till redigeringssidan för att ladda upp dokument
   empty: Här finns inget dokument uppladdat
   drop: Släpp dokument eller klicka för filuppladdning
   up: laddar upp

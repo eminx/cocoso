@@ -215,6 +215,8 @@ domains:
 
 documents:
   label: Documents
+  helper: Documents uploaded for this item
+  newNotice: For document upload, please first create the entry, and then go to edit page to upload documents
   empty: No document assigned
   drop: Drop document or click for file upload
   up: uploading

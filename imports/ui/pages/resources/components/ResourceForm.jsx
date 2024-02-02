@@ -30,6 +30,7 @@ import FileDropper from '../../../components/FileDropper';
 import NiceSlider from '../../../components/NiceSlider';
 import Loader from '../../../components/Loader';
 import ReactQuill from '../../../components/Quill';
+import DocumentsField from './DocumentsField';
 
 const animatedComponents = makeAnimated();
 
@@ -130,7 +131,6 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
   };
 
   const setFileDropperImage = (files) => {
-    console.log(files);
     files.forEach((file) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -262,6 +262,17 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
                 <FileDropper setUploadableImage={setFileDropperImage} isMultiple />
               </Center>
             </Box>
+          </FormField>
+
+          <FormField
+            helperText={isEditMode && tc('documents.helper')}
+            label={tc('documents.label')}
+          >
+            {!isEditMode ? (
+              tc('documents.newNotice')
+            ) : (
+              <DocumentsField contextType="resources" contextId={defaultValues?._id} isAllowed />
+            )}
           </FormField>
 
           <Flex justify="flex-end" py="4" w="100%">
