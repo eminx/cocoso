@@ -70,7 +70,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
 
           {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
 
-          {body && <Text>{renderHTML(body)}</Text>}
+          {body && <Text style={{ fontSize: 16 }}>{renderHTML(body)}</Text>}
 
           <Hr />
         </Section>
