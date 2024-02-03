@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Body } from '@react-email/body';
 import { Button } from '@react-email/button';
 import { Column } from '@react-email/column';
@@ -15,8 +15,6 @@ import { Text } from '@react-email/text';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-
-import { StateContext } from '../../../LayoutContainer';
 
 export default function EmailPreview({ currentHost, email, imageUrl }) {
   if (!email || !currentHost) {
@@ -113,7 +111,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     style={{ marginBottom: 12, maxWidth: '480px' }}
                   />
                 </Link>
-                <ActivityDates activity={activity} />
+                <ActivityDates activity={activity} currentHost={currentHost} />
                 <Text>{activity?.longDescription && renderHTML(activity.longDescription)}</Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
@@ -210,7 +208,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   );
 }
 
-export function ActivityDates({ activity }) {
+export function ActivityDates({ activity, currentHost }) {
   if (!activity) {
     return null;
   }
@@ -224,7 +222,13 @@ export function ActivityDates({ activity }) {
           ))
         : activity?.datesAndTimes
             ?.filter((d, i) => i < 3)
-            .map((date) => <ActivityDate key={date.startDate + date.endTime} date={date} />)}
+            .map((date) => (
+              <ActivityDate
+                key={date.startDate + date.endTime}
+                currentHost={currentHost}
+                date={date}
+              />
+            ))}
       <Column>
         <Text>{length > 3 && '+' + (length - 3).toString()}</Text>
       </Column>
@@ -232,10 +236,8 @@ export function ActivityDates({ activity }) {
   );
 }
 
-export function ActivityDate({ date }) {
-  const { currentHost } = useContext(StateContext);
-
-  moment.locale(currentHost.settings?.lang || 'en');
+export function ActivityDate({ currentHost, date }) {
+  moment.locale(currentHost?.settings?.lang || 'en');
 
   return (
     <Column style={{ paddingRight: 8 }}>
