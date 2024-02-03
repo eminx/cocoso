@@ -18,9 +18,8 @@ import moment from 'moment';
 
 import { StateContext } from '../../../LayoutContainer';
 
-export default function EmailPreview({ email, imageUrl }) {
-  const { currentHost } = useContext(StateContext);
-  if (!email) {
+export default function EmailPreview({ currentHost, email, imageUrl }) {
+  if (!email || !currentHost) {
     return null;
   }
 

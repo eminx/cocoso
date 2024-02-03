@@ -27,7 +27,10 @@ const emailModel = {
     uploadableImageLocal: null,
   },
   subject: '',
-  items: null,
+  items: {
+    activities: [],
+    works: [],
+  },
 };
 
 function EmailNewsletter({ history }) {
@@ -134,7 +137,9 @@ function EmailNewsletter({ history }) {
   };
 
   const sendEmail = async (imageUrl) => {
-    const emailHtml = renderEmail(<EmailPreview email={email} imageUrl={imageUrl} />);
+    const emailHtml = renderEmail(
+      <EmailPreview currentHost={currentHost} email={email} imageUrl={imageUrl} />
+    );
 
     const emailValues = {
       appeal: email.appeal,
@@ -212,7 +217,7 @@ function EmailNewsletter({ history }) {
         onClose={() => setIsPreview(false)}
       >
         <Center>
-          <EmailPreview email={email} />
+          <EmailPreview currentHost={currentHost} email={email} />
         </Center>
       </Modal>
 
