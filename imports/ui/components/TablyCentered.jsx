@@ -63,7 +63,7 @@ function TablyCentered({
   };
 
   return (
-    <Center py="5" w="100%">
+    <Center py="3" w="100%">
       <Box w="100%">
         <Box>
           <Header
@@ -145,7 +145,7 @@ function Header({
           <Heading
             as="h1"
             lineHeight={1}
-            mb="2"
+            my="2"
             size="lg"
             textAlign={!isDesktop && author ? 'left' : 'center'}
             textShadow="1px 1px 1px #fff"
