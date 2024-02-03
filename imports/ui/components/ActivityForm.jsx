@@ -21,6 +21,7 @@ import FormField from './FormField';
 import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
+import renderHTML from 'react-render-html';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -123,9 +124,11 @@ function ActivityForm({
             helperText={t('form.resource.helper')}
             label={
               <b>
-                {t('form.resource.label', {
-                  resources: resourcesInMenu.label,
-                })}
+                {renderHTML(
+                  t('form.resource.label', {
+                    resources: resourcesInMenu.label,
+                  })
+                )}
               </b>
             }
           >
