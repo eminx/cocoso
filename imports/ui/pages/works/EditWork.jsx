@@ -54,7 +54,7 @@ class EditWork extends PureComponent {
           category: assignedCategory?.label?.toUpperCase(),
           categoryId: assignedCategory?.categoryId,
         },
-        images: response.images.map((image) => ({
+        images: response.images?.map((image) => ({
           src: image,
           type: 'uploaded',
         })),
@@ -103,7 +103,7 @@ class EditWork extends PureComponent {
 
   handleSubmit = (formValues) => {
     const { images } = this.state;
-    const isThereUploadable = images.some((image) => image.type === 'not-uploaded');
+    const isThereUploadable = images?.some((image) => image.type === 'not-uploaded');
 
     this.setState(
       {
@@ -112,7 +112,7 @@ class EditWork extends PureComponent {
       },
       () => {
         if (!isThereUploadable) {
-          const imagesReadyToSave = images.map((image) => image.src);
+          const imagesReadyToSave = images?.map((image) => image.src);
           this.updateWork(imagesReadyToSave);
         } else {
           this.uploadImages();
@@ -256,7 +256,7 @@ class EditWork extends PureComponent {
             <WorkForm
               categories={categories}
               defaultValues={values}
-              images={images.map((image) => image.src)}
+              images={images?.map((image) => image.src)}
               onRemoveImage={this.handleRemoveImage}
               onSortImages={this.handleSortImages}
               onSubmit={this.handleSubmit}

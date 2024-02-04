@@ -98,9 +98,19 @@ function WorkForm({
             <Textarea {...register('additionalInfo')} placeholder={t('works.extra.holder')} />
           </FormField>
 
+          <FormField helperText={t('works.contact.helper')} label={t('works.contact.label')}>
+            <Controller
+              control={control}
+              name="contactInfo"
+              render={({ field }) => (
+                <ReactQuill {...field} placeholder={t('works.contact.holder')} />
+              )}
+            />
+          </FormField>
+
           <FormField
             helperText={t('works.images.helper')}
-            label={t('works.images.label', { count: images.length })}
+            label={t('works.images.label', { count: images?.length })}
           >
             {images && (
               <Center>

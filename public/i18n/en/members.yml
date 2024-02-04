@@ -87,6 +87,10 @@ works:
     label: Additional info
     holder: A bottle costs...
     helper: Optionally, please enter extra info that is important for the item in the entry you are creating. For example, if it is for sale, how much it costs
+  contact:
+    label: Contact info
+    holder: myemail@mydomain.com
+    helper: Optionally, please enter the contact details that can be used to communicate about this item. If you prefer that it doesn't appear, please delete the default value.
   images:
     label: Images ({{ count }})
     helper: To represent the entry, please choose an image or a set of images from the gallery in your device or a photo you will take now. It is optional

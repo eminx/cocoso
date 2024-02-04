@@ -15,9 +15,8 @@ import DocumentsField from '../resources/components/DocumentsField';
 function Work() {
   const [work, setWork] = useState(null);
   const [documents, setDocuments] = useState([]);
-  const [authorContactInfo, setAuthorContactInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { currentHost, currentUser, isDesktop } = useContext(StateContext);
+  const { currentHost, currentUser } = useContext(StateContext);
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
@@ -44,20 +43,6 @@ function Work() {
     return <Loader />;
   }
 
-  const getUserContactInfo = async () => {
-    try {
-      const info = await call('getUserContactInfo', work.authorUsername);
-      if (!info) {
-        setAuthorContactInfo(tm('message.contact.empty', { username: work.authorUsername }));
-        return;
-      }
-      setAuthorContactInfo(info);
-    } catch (error) {
-      console.log(error);
-      message.error(error.reason);
-    }
-  };
-
   const isOwner = currentUser && currentUser.username === username;
 
   const tabs = [
@@ -76,7 +61,7 @@ function Work() {
     tabs.push({
       title: tc('labels.extra'),
       content: (
-        <Box>
+        <Box p="2">
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
@@ -87,23 +72,26 @@ function Work() {
   if (documents && documents[0]) {
     tabs.push({
       title: tc('documents.label'),
-      content: <DocumentsField contextType="works" contextId={work._id} />,
+      content: (
+        <Box p="2">
+          <DocumentsField contextType="works" contextId={work._id} />
+        </Box>
+      ),
       path: `/@${work.authorUsername}/works/${work._id}/documents`,
     });
   }
 
-  tabs.push({
-    title: tc('labels.contact'),
-    content: authorContactInfo ? (
-      <Box className="text-content" textAlign="center">
-        {renderHTML(authorContactInfo)}
-      </Box>
-    ) : (
-      <Loader />
-    ),
-    onClick: () => getUserContactInfo(),
-    path: `/@${work.authorUsername}/works/${work._id}/contact`,
-  });
+  if (work.contactInfo) {
+    tabs.push({
+      title: tc('labels.contact'),
+      content: (
+        <Box className="text-content" p="2">
+          {renderHTML(work.contactInfo)}
+        </Box>
+      ),
+      path: `/@${work.authorUsername}/works/${work._id}/contact`,
+    });
+  }
 
   const adminMenu = {
     label: 'Admin',

@@ -87,6 +87,10 @@ works:
     label: Ytterligare info
     holder: Eventuella prisuppgifter, kontaktpersoner etc.
     helper: Lägg till eventuell extra information. Det kan exempelvis vara prisuppgifter eller liknande. Information hamnar under fliken ”extra”.
+  contact:
+    label: Kontaktinfo
+    holder: minepost@mindoman.com
+    helper: Om du vill kan du ange kontaktuppgifterna som kan användas för att kommunicera om detta objekt. Om du föredrar att det inte visas, vänligen ta bort standardvärdet.
   images:
     label: Bilder ({{ count }})
     helper: Välj en eller flera bilder som du vill ska representera ditt inlägg (ej obligatoriskt)

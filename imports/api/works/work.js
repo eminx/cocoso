@@ -14,6 +14,7 @@ Works.schema = new SimpleSchema({
   'category.categoryId': { type: Schemas.Id },
   'category.label': { type: String },
   'category.color': { type: String },
+  contactInfo: { type: String, optional: true },
   creationDate: { type: Date },
   documents: { type: Array, optional: true, defaultValue: [] },
   'documents.$': {

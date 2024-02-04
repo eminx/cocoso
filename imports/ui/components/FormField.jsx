@@ -3,7 +3,7 @@ import { FormControl, FormLabel, FormErrorMessage, FormHelperText } from '@chakr
 
 function FormField({ children, errorMessage, helperText, label, size = 'sm', ...otherProps }) {
   return (
-    <FormControl my="4" {...otherProps}>
+    <FormControl my="2" {...otherProps}>
       <FormLabel color="gray.800" fontWeight="bold" requiredIndicator={'*'}>
         {label}
       </FormLabel>

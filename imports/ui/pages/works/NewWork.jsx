@@ -10,13 +10,16 @@ import Template from '../../components/Template';
 import { message, Alert } from '../../components/message';
 import { call, resizeImage, uploadImage } from '../../utils/shared';
 import FormTitle from '../../components/FormTitle';
+import Loader from '../../components/Loader';
 
 const formModel = {
-  title: '',
-  shortDescription: '',
-  longDescription: '',
   additionalInfo: '',
-  category: '',
+  categoryId: '',
+  contactInfo: '',
+  longDescription: '',
+  shortDescription: '',
+  showAvatar: true,
+  title: '',
 };
 
 class NewWork extends PureComponent {
@@ -26,14 +29,22 @@ class NewWork extends PureComponent {
     uploadableImagesLocal: [],
     isLocalising: false,
     isCreating: false,
-    isLoading: false,
+    isLoading: true,
     isSuccess: false,
     isError: false,
     newWorkId: null,
-    values: formModel,
+    values: null,
   };
 
   componentDidMount() {
+    const { currentUser } = this.context;
+    const valuesWithContact = {
+      ...formModel,
+      contactInfo: currentUser.contactInfo,
+    };
+    this.setState({
+      values: valuesWithContact,
+    });
     this.getCategories();
   }
 
@@ -41,6 +52,7 @@ class NewWork extends PureComponent {
     const categories = await call('getCategories');
     this.setState({
       categories,
+      isLoading: false,
     });
   };
 
@@ -146,6 +158,12 @@ class NewWork extends PureComponent {
 
   render() {
     const { currentUser, canCreateContent } = this.context;
+    const { uploadableImagesLocal, isSuccess, newWorkId, isLoading, categories, values } =
+      this.state;
+
+    if (isLoading) {
+      return <Loader />;
+    }
 
     if (!currentUser || !canCreateContent) {
       return (
@@ -160,8 +178,6 @@ class NewWork extends PureComponent {
       );
     }
 
-    const { uploadableImagesLocal, isSuccess, newWorkId, isCreating, categories } = this.state;
-
     if (isSuccess && newWorkId) {
       return <Redirect to={`/@${currentUser.username}/works/${newWorkId}`} />;
     }
@@ -173,7 +189,7 @@ class NewWork extends PureComponent {
           <Box>
             <WorkForm
               categories={categories}
-              defaultValues={formModel}
+              defaultValues={values}
               images={uploadableImagesLocal}
               isNew
               onRemoveImage={this.handleRemoveImage}
