@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Center, Container, Flex, Text, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
+import Cascader from 'antd/lib/cascader';
 
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
@@ -21,6 +22,10 @@ const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
   const dateB = new Date(b.date);
   return dateB - dateA;
+};
+
+const onChange = (value) => {
+  console.log(value);
 };
 
 function MembersPublic({ history }) {
@@ -184,6 +189,17 @@ function MembersPublic({ history }) {
   const title = settings?.menu.find((item) => item.name === 'members')?.label;
   const coloredKeywords = getColoredKeywords(keywords);
 
+  const cascaderOptions = coloredKeywords.map((kw) => ({
+    label: kw.label,
+    value: kw._id,
+    children: members
+      .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(filterKeyword?._id))
+      ?.map((m) => ({
+        label: m.username,
+        value: m._id,
+      })),
+  }));
+
   return (
     <Box mb="8">
       <Helmet>
@@ -207,7 +223,11 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </PageHeading>
 
-      <Center p="4" pt="0">
+      <Center pb="4">
+        <Cascader options={cascaderOptions} onChange={onChange} placeholder="Please select" />
+      </Center>
+
+      {/* <Center p="4" pt="0">
         <Flex justify="center" wrap="wrap">
           <Tag
             checkable
@@ -230,7 +250,7 @@ function MembersPublic({ history }) {
             />
           ))}
         </Flex>
-      </Center>
+      </Center> */}
 
       {sorterValue === 'random' && (
         <Center mb="2">
