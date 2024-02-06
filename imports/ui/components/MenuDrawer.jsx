@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  IconButton,
-  Modal,
-  ModalOverlay,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';
@@ -80,13 +70,8 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
         onClose={onToggle}
       >
         <Flex flexDirection="column" h="100%" justify="space-between">
-          <MenuContent
-            currentHost={currentHost}
-            menuItems={menuItems}
-            platform={platform}
-            tc={tc}
-            onToggle={onToggle}
-          />
+          <MenuContent menuItems={menuItems} onToggle={onToggle} />
+
           <Box color="brand.600" mt="4">
             <MenuFooter />
           </Box>
@@ -96,7 +81,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
   );
 }
 
-function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
+function MenuContent({ menuItems, onToggle }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -108,14 +93,8 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
     return item.route === pathname;
   };
 
-  const showPlatformItems = platform?.isFederationLayout && currentHost.isPortalHost;
-
   return (
     <VStack align="flex-start">
-      {/* <Text color="brand.900" fontSize="xs" mt="2">
-        <em>{currentHost?.settings?.name}</em>
-      </Text> */}
-
       {menuItems.map((item) => {
         const isCurrentPageLabel = isCurrentPage(item);
         return (
@@ -123,7 +102,6 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
             <Box py="1">
               <Text
                 _hover={!isCurrentPageLabel && { textDecoration: 'underline' }}
-                // color={isCurrentPageLabel ? 'brand' : 'brand.50'}
                 color="brand.600"
                 fontWeight={isCurrentPageLabel ? 'bold' : 'normal'}
               >
@@ -133,24 +111,6 @@ function MenuContent({ currentHost, menuItems, platform, tc, onToggle }) {
           </Link>
         );
       })}
-      {showPlatformItems && (
-        <Link
-          key="/communities"
-          style={{ textShadow: 'none' }}
-          to="/communities"
-          onClick={onToggle}
-        >
-          <Box py="1">
-            <Text
-              _hover={{ textDecoration: 'underline' }}
-              color="brand.600"
-              fontWeight={pathname === '/communities' ? 'bold' : 'normal'}
-            >
-              {tc('platform.communities')}
-            </Text>
-          </Box>
-        </Link>
-      )}
     </VStack>
   );
 }
