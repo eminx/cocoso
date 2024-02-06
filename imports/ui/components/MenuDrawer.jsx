@@ -27,7 +27,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       route: getRoute(item, index),
     }));
 
-  if (platform?.showCommunitiesInMenu && currentHost?.isPortalHost) {
+  if (platform?.isFederationLayout && currentHost?.isPortalHost) {
     menuItems.push({
       name: 'communities',
       label: tc('platform.communities'),
