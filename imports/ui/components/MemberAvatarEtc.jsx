@@ -23,6 +23,7 @@ import renderHTML from 'react-render-html';
 import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
 import Popover from '../components/Popover';
+import { useTranslation } from 'react-i18next';
 
 const tagProps = {
   bg: 'white',
@@ -31,12 +32,13 @@ const tagProps = {
   borderColor: 'brand.500',
 };
 
-function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, t, user }) {
+function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentHost, isDesktop } = useContext(StateContext);
   const history = useHistory();
+  const [t] = useTranslation('members');
 
   if (!user) {
     return null;

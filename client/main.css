@@ -235,3 +235,59 @@ input::placeholder {
   margin-right: 8px;
   border: 1px solid #464646;
 }
+
+/* @media (max-width: 910px) { */
+.cascader-container.cascader-container--open.ant-cascader-dropdown {
+  .ant-cascader-menus {
+    ul.ant-cascader-menu {
+      width: 180px;
+      height: 320px;
+      overflow-y: visible;
+    }
+  }
+}
+/* } */
+
+.ant-select-dropdown {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+ul.ant-cascader-menu {
+  border-radius: 0;
+  border: 1px solid;
+  border-color: var(--chakra-colors-brand-500);
+}
+
+.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: 0;
+  border: 1px solid;
+}
+
+ul.ant-cascader-menu,
+.show-thumb {
+  overflow-y: auto;
+  line-height: 1em;
+}
+
+ul.ant-cascader-menu::-webkit-scrollbar,
+.show-thumb {
+  -webkit-appearance: none;
+}
+
+ul.ant-cascader-menu::-webkit-scrollbar:vertical,
+.show-thumb {
+  width: 11px;
+}
+
+ul.ant-cascader-menu::-webkit-scrollbar:horizontal,
+.show-thumb {
+  height: 11px;
+}
+
+ul.ant-cascader-menu::-webkit-scrollbar-thumb,
+.show-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Center, Container, Flex, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 import Cascader from 'antd/lib/cascader';
+import { parse } from 'query-string';
 
 import Loader from '../../components/Loader';
 import { message } from '../../components/message';
@@ -15,17 +17,12 @@ import { useTranslation } from 'react-i18next';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
-import Tag from '../../components/Tag';
-import { getHslValuesFromLength } from '../../utils/constants/colors';
+import Tabs from '../../components/Tabs';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
   const dateB = new Date(b.date);
   return dateB - dateA;
-};
-
-const onChange = (value) => {
-  console.log(value);
 };
 
 function MembersPublic({ history }) {
@@ -37,8 +34,14 @@ function MembersPublic({ history }) {
   const [sorterValue, setSorterValue] = useState('random');
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
+  const [selectedProfile, setSelectedProfile] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [t] = useTranslation('members');
+  const {
+    location: { search },
+  } = history;
+  const { showKeywordSearch } = parse(search, { parseBooleans: true });
+  console.log(showKeywordSearch);
 
   useEffect(() => {
     getAndSetMembers();
@@ -176,6 +179,87 @@ function MembersPublic({ history }) {
     return getMembersSorted(membersHostFiltered);
   };
 
+  const filterCascaderOptions = (inputValue, path) => {
+    return path.some((option) => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+  };
+
+  const handleCascaderSelect = (value, selectedOptions) => {
+    const username = value[1];
+    if (username) {
+      getSelectedProfile(username);
+    } else {
+      setSelectedProfile(null);
+    }
+  };
+
+  const getSelectedProfile = async (username) => {
+    if (!username) {
+      return;
+    }
+    try {
+      const profile = await call('getUserInfo', username);
+      console.log(profile);
+      setSelectedProfile(profile);
+    } catch (error) {
+      console.log(error);
+      message.error(error.error);
+    }
+  };
+
+  const cascaderRender = (menus) => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          position: 'relative',
+        }}
+      >
+        <div>{menus}</div>
+        <Divider orientation="vertical" />
+        {selectedProfile && (
+          <div
+            style={{
+              width: 310,
+              maxHeight: 480,
+              overflow: 'scroll',
+              padding: 12,
+              paddingTop: 0,
+            }}
+          >
+            <Box>
+              <Center py="2">
+                <Link to={`@${selectedProfile.username}`}>
+                  <Button variant="link">Go to profile</Button>
+                </Link>
+              </Center>
+              <Center>
+                <Box px="2">
+                  <Center>
+                    <Avatar
+                      borderRadius="0"
+                      name={selectedProfile.username}
+                      size="2xl"
+                      src={selectedProfile.avatar?.src}
+                    />
+                  </Center>
+                  <Text textAlign="center" fontSize="xl">
+                    {selectedProfile.username}
+                  </Text>
+                  <Divider my="2" />
+                  {selectedProfile.bio && (
+                    <Text textAlign="center">{renderHTML(selectedProfile.bio)}</Text>
+                  )}
+                </Box>
+              </Center>
+              {/* <MemberAvatarEtc centerItems user={selectedProfile} /> */}
+            </Box>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const filtrerProps = {
     filterWord,
     setFilterWord,
@@ -187,18 +271,28 @@ function MembersPublic({ history }) {
 
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'members')?.label;
-  const coloredKeywords = getColoredKeywords(keywords);
 
-  const cascaderOptions = coloredKeywords.map((kw) => ({
+  const cascaderOptions = keywords.map((kw) => ({
     label: kw.label,
     value: kw._id,
     children: members
-      .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(filterKeyword?._id))
-      ?.map((m) => ({
-        label: m.username,
-        value: m._id,
+      .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
+      ?.map((mx) => ({
+        label: mx.username,
+        value: mx.username,
       })),
   }));
+
+  const tabs = [
+    {
+      path: '/members',
+      title: 'See people',
+    },
+    {
+      path: '/members?showKeywordSearch=true',
+      title: 'Find people',
+    },
+  ];
 
   return (
     <Box mb="8">
@@ -223,61 +317,76 @@ function MembersPublic({ history }) {
         </FiltrerSorter>
       </PageHeading>
 
-      <Center pb="4">
-        <Cascader options={cascaderOptions} onChange={onChange} placeholder="Please select" />
+      <Center>
+        <Tabs index={showKeywordSearch ? 1 : 0} mb="4" size="sm" tabs={tabs} />
       </Center>
 
-      {/* <Center p="4" pt="0">
-        <Flex justify="center" wrap="wrap">
-          <Tag
-            checkable
-            checked={Boolean(filterKeyword) === false}
-            label={t('all')}
-            mb="2"
-            mr="2"
-            onClick={() => setFilterKeyword(null)}
+      {showKeywordSearch ? (
+        <Flex justify="space-around">
+          <Cascader
+            changeOnSelect
+            dropdownRender={cascaderRender}
+            open
+            options={cascaderOptions}
+            popupClassName="cascader-container cascader-container--open"
+            showSearch={{ filterCascaderOptions }}
+            size="large"
+            style={{ borderRadius: 0, width: 240 }}
+            onChange={handleCascaderSelect}
           />
-          {coloredKeywords.map((k) => (
-            <Tag
-              key={k._id}
-              checkable
-              checked={filterKeyword?._id === k?._id}
-              filterColor={k.color}
-              label={k.label}
-              mb="2"
-              mr="2"
-              onClick={() => setFilterKeyword(k)}
-            />
-          ))}
+          <Box>
+            {/* {selectedProfile && (
+              <div
+                style={{
+                  width: 310,
+                  maxHeight: 480,
+                  overflow: 'scroll',
+                  padding: 12,
+                  paddingTop: 0,
+                }}
+              >
+                <Box pt="8">
+                  <Center py="1">
+                    <Link to={`@${selectedProfile.username}`}>
+                      <Button variant="link">Go to profile</Button>
+                    </Link>
+                  </Center>
+                  <MemberAvatarEtc centerItems user={selectedProfile} />
+                </Box>
+              </div>
+            )} */}
+          </Box>
         </Flex>
-      </Center> */}
-
-      {sorterValue === 'random' && (
-        <Center mb="2">
-          <Text>{t('message.sortedRandomly')}</Text>
-        </Center>
-      )}
-
-      <Box pr="3">
-        <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
-          {(member) => (
-            <Flex
-              key={member.username}
-              _hover={{ bg: 'brand.50' }}
-              border="1px solid"
-              borderColor="brand.500"
-              cursor="pointer"
-              justifyContent="center"
-              mb="4"
-              onClick={() => setModalUser(member)}
-            >
-              <Box>
-                <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb t={t} user={member} />
-              </Box>
-            </Flex>
+      ) : (
+        <Box>
+          {sorterValue === 'random' && (
+            <Center mb="2">
+              <Text>{t('message.sortedRandomly')}</Text>
+            </Center>
           )}
-        </InfiniteScroller>
-      </Box>
+
+          <Box pr="3">
+            <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
+              {(member) => (
+                <Flex
+                  key={member.username}
+                  _hover={{ bg: 'brand.50' }}
+                  border="1px solid"
+                  borderColor="brand.500"
+                  cursor="pointer"
+                  justifyContent="center"
+                  mb="4"
+                  onClick={() => setModalUser(member)}
+                >
+                  <Box>
+                    <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb user={member} />
+                  </Box>
+                </Flex>
+              )}
+            </InfiniteScroller>
+          </Box>
+        </Box>
+      )}
 
       {modalUser && (
         <Modal
@@ -290,7 +399,7 @@ function MembersPublic({ history }) {
           onClose={() => setModalUser(null)}
           onActionButtonClick={handleVisitUserProfile}
         >
-          <MemberAvatarEtc centerItems hideRole={isPortalHost} t={t} user={modalUser} />
+          <MemberAvatarEtc centerItems hideRole={isPortalHost} user={modalUser} />
           <Center mt="2">
             <Box textAlign="center">
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
@@ -301,15 +410,5 @@ function MembersPublic({ history }) {
     </Box>
   );
 }
-
-const getColoredKeywords = (keywords) => {
-  const hslValues = getHslValuesFromLength(keywords.length);
-  return keywords
-    .map((k, i) => ({
-      ...k,
-      color: hslValues[i],
-    }))
-    .sort((a, b) => a.label.localeCompare(b.label));
-};
 
 export default MembersPublic;

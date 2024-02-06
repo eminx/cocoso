@@ -132,7 +132,7 @@ function Profile({ history, match, path }) {
         <Box maxW="600px">
           <Center>
             <Box>
-              <MemberAvatarEtc centerItems t={t} tc={tc} user={user} />
+              <MemberAvatarEtc centerItems user={user} />
             </Box>
           </Center>
           <Center>
