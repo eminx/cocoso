@@ -244,9 +244,13 @@ function MembersPublic({ history }) {
                         </Text>
                       </Button>
                     </Center>
+
                     <Divider my="2" />
+
                     {selectedProfile.bio && (
-                      <Text textAlign="center">{renderHTML(selectedProfile.bio)}</Text>
+                      <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
+                        {renderHTML(selectedProfile.bio)}
+                      </Box>
                     )}
                   </Box>
                 </Center>
