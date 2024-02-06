@@ -108,3 +108,7 @@ report:
     end: Slutar
     consumption: Förbrukning (h)
     total: Timmar totalt
+
+labels:
+  seePeople: Se människor
+  findPeople: Hitta människor

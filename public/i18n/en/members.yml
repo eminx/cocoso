@@ -26,7 +26,7 @@ actions:
   participant: Revert back as a participant
   usageReport: See usage report
   visit: Visit Profile
-  visithost: Visit profile in {{ host }}
+  visithost: Visit T in {{ host }}
 
 message:
   success:
@@ -108,3 +108,7 @@ report:
     end: End
     consumption: Consumption
     total: hours in total
+
+labels:
+  seePeople: See people
+  findPeople: Find people

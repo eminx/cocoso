@@ -108,3 +108,7 @@ report:
     end: Bitiş
     consumption: Kullanım
     total: toplam saat
+
+labels:
+  seePeople: İnsanları gör
+  findPeople: İnsanları bul

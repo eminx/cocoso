@@ -41,7 +41,6 @@ function MembersPublic({ history }) {
     location: { search },
   } = history;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
-  console.log(showKeywordSearch);
 
   useEffect(() => {
     getAndSetMembers();
@@ -198,7 +197,6 @@ function MembersPublic({ history }) {
     }
     try {
       const profile = await call('getUserInfo', username);
-      console.log(profile);
       setSelectedProfile(profile);
     } catch (error) {
       console.log(error);
@@ -228,31 +226,31 @@ function MembersPublic({ history }) {
             }}
           >
             <Box>
-              <Center py="2">
-                <Link to={`@${selectedProfile.username}`}>
-                  <Button variant="link">Go to profile</Button>
-                </Link>
-              </Center>
-              <Center>
-                <Box px="2">
-                  <Center>
-                    <Avatar
-                      borderRadius="0"
-                      name={selectedProfile.username}
-                      size="2xl"
-                      src={selectedProfile.avatar?.src}
-                    />
-                  </Center>
-                  <Text textAlign="center" fontSize="xl">
-                    {selectedProfile.username}
-                  </Text>
-                  <Divider my="2" />
-                  {selectedProfile.bio && (
-                    <Text textAlign="center">{renderHTML(selectedProfile.bio)}</Text>
-                  )}
-                </Box>
-              </Center>
-              {/* <MemberAvatarEtc centerItems user={selectedProfile} /> */}
+              <Link to={`@${selectedProfile.username}`}>
+                <Center>
+                  <Box px="2">
+                    <Center>
+                      <Avatar
+                        borderRadius="0"
+                        name={selectedProfile.username}
+                        size="2xl"
+                        src={selectedProfile.avatar?.src}
+                      />
+                    </Center>
+                    <Center pt="2">
+                      <Button variant="link">
+                        <Text textAlign="center" fontSize="xl">
+                          {selectedProfile.username}
+                        </Text>
+                      </Button>
+                    </Center>
+                    <Divider my="2" />
+                    {selectedProfile.bio && (
+                      <Text textAlign="center">{renderHTML(selectedProfile.bio)}</Text>
+                    )}
+                  </Box>
+                </Center>
+              </Link>
             </Box>
           </div>
         )}
@@ -286,11 +284,11 @@ function MembersPublic({ history }) {
   const tabs = [
     {
       path: '/members',
-      title: 'See people',
+      title: t('labels.seePeople'),
     },
     {
       path: '/members?showKeywordSearch=true',
-      title: 'Find people',
+      title: t('labels.findPeople'),
     },
   ];
 
