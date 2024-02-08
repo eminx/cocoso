@@ -110,5 +110,5 @@ report:
     total: hours in total
 
 labels:
-  seePeople: See people
-  findPeople: Find people
+  list: List
+  search: Search

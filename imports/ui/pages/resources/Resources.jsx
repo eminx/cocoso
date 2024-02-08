@@ -208,7 +208,7 @@ function Resources({ history }) {
           {(resource) => (
             <Box
               key={resource._id}
-              alignSelf="center"
+              alignSelf="flex-start"
               cursor="pointer"
               flexBasis={280}
               flexGrow={1}

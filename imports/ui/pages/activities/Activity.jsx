@@ -349,7 +349,7 @@ class Activity extends PureComponent {
               </Box>
             )}
             {canCreateContent && (
-              <Center>
+              <Center mt="2">
                 <Button size="sm" onClick={() => this.setState({ selectedOccurrence: occurence })}>
                   {t('public.attendance.show')}
                 </Button>
@@ -543,16 +543,16 @@ class Activity extends PureComponent {
         />
 
         <ConfirmModal
-          visible={isRsvpCancelModalOn}
+          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
           title={
             rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound
               ? t('public.cancel.found')
               : t('public.cancel.notFound')
           }
-          onConfirm={this.findRsvpInfo}
+          visible={isRsvpCancelModalOn}
           onCancel={() => this.setState({ isRsvpCancelModalOn: false })}
-          hideFooter={rsvpCancelModalInfo && rsvpCancelModalInfo.isInfoFound}
           onClickOutside={() => this.setState({ isRsvpCancelModalOn: false })}
+          onConfirm={this.findRsvpInfo}
         >
           {this.renderCancelRsvpModalContent()}
         </ConfirmModal>

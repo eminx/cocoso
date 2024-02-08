@@ -110,5 +110,5 @@ report:
     total: toplam saat
 
 labels:
-  seePeople: İnsanları gör
-  findPeople: İnsanları bul
+  list: Listele
+  search: Ara

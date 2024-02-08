@@ -288,11 +288,11 @@ function MembersPublic({ history }) {
   const tabs = [
     {
       path: '/members',
-      title: t('labels.seePeople'),
+      title: t('labels.list'),
     },
     {
       path: '/members?showKeywordSearch=true',
-      title: t('labels.findPeople'),
+      title: t('labels.search'),
     },
   ];
 

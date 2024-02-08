@@ -110,5 +110,5 @@ report:
     total: Timmar totalt
 
 labels:
-  seePeople: Se människor
-  findPeople: Hitta människor
+  list: Lista
+  search: Sök

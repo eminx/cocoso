@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import {
   Accordion,
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Avatar,
@@ -407,6 +408,7 @@ class Process extends Component {
                 <Box flex="1" textAlign="left">
                   <FancyDate occurence={meeting} resources={resources} />
                 </Box>
+                <AccordionIcon />
               </AccordionButton>
               <AccordionPanel bg="brand.50" border="1px solid" borderColor="brand.500">
                 <Text fontWeight="bold">{t('labels.attendees')}</Text>
