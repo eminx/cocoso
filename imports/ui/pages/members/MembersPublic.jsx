@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
@@ -73,7 +72,7 @@ function MembersPublic({ history }) {
       const selectedKeywords = respond.filter((k) =>
         members.some((m) => m?.keywords?.map((kw) => kw.keywordId).includes(k._id))
       );
-      setKeywords(selectedKeywords);
+      setKeywords(selectedKeywords.sort((a, b) => a.label.localeCompare(b.label)));
     } catch (error) {
       console.log(error);
       message.error(error.reason);
@@ -223,7 +222,6 @@ function MembersPublic({ history }) {
             cursor="pointer"
             maxH="480px"
             mx="2"
-            overflow="scroll"
             p="2"
             w="310px"
             onClick={() => setModalUser(selectedProfile)}

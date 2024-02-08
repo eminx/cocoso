@@ -236,18 +236,6 @@ input::placeholder {
   border: 1px solid #464646;
 }
 
-/* @media (max-width: 910px) { */
-.cascader-container.cascader-container--open.ant-cascader-dropdown {
-  .ant-cascader-menus {
-    ul.ant-cascader-menu {
-      width: 150px;
-      height: 320px;
-      overflow-y: visible;
-    }
-  }
-}
-/* } */
-
 .ant-select-dropdown {
   box-shadow: none;
   border-radius: 0;
@@ -257,6 +245,8 @@ ul.ant-cascader-menu {
   border-radius: 0;
   border: 1px solid;
   border-color: var(--chakra-colors-brand-500);
+  width: 150px;
+  overflow-y: visible;
 }
 
 .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
