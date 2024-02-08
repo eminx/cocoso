@@ -64,6 +64,7 @@ function KeywordsManager({ currentUser }) {
           _id: respond,
         },
       ]);
+      setIsChanged(true);
       setCreating(false);
     } catch (error) {
       console.log(error);

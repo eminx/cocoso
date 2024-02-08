@@ -240,7 +240,7 @@ input::placeholder {
 .cascader-container.cascader-container--open.ant-cascader-dropdown {
   .ant-cascader-menus {
     ul.ant-cascader-menu {
-      width: 180px;
+      width: 150px;
       height: 320px;
       overflow-y: visible;
     }

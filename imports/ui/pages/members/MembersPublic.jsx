@@ -197,7 +197,7 @@ function MembersPublic({ history }) {
     }
     try {
       const profile = await call('getUserInfo', username);
-      setSelectedProfile(profile);
+      isDesktop ? setSelectedProfile(profile) : setModalUser(profile);
     } catch (error) {
       console.log(error);
       message.error(error.error);
@@ -216,47 +216,46 @@ function MembersPublic({ history }) {
         <div>{menus}</div>
         <Divider orientation="vertical" />
         {selectedProfile && (
-          <div
-            style={{
-              width: 310,
-              maxHeight: 480,
-              overflow: 'scroll',
-              padding: 12,
-              paddingTop: 0,
-            }}
+          <Box
+            _hover={{ bg: 'brand.50' }}
+            border="1px solid"
+            borderColor="brand.500"
+            cursor="pointer"
+            maxH="480px"
+            mx="2"
+            overflow="scroll"
+            p="2"
+            w="310px"
+            onClick={() => setModalUser(selectedProfile)}
           >
-            <Box>
-              <Link to={`@${selectedProfile.username}`}>
+            <Center>
+              <Box>
                 <Center>
-                  <Box px="2">
-                    <Center>
-                      <Avatar
-                        borderRadius="0"
-                        name={selectedProfile.username}
-                        size="2xl"
-                        src={selectedProfile.avatar?.src}
-                      />
-                    </Center>
-                    <Center pt="2">
-                      <Button variant="link">
-                        <Text textAlign="center" fontSize="xl">
-                          {selectedProfile.username}
-                        </Text>
-                      </Button>
-                    </Center>
-
-                    <Divider my="2" />
-
-                    {selectedProfile.bio && (
-                      <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
-                        {renderHTML(selectedProfile.bio)}
-                      </Box>
-                    )}
-                  </Box>
+                  <Avatar
+                    borderRadius="0"
+                    name={selectedProfile.username}
+                    size="2xl"
+                    src={selectedProfile.avatar?.src}
+                  />
                 </Center>
-              </Link>
-            </Box>
-          </div>
+                <Center pt="2">
+                  <Button variant="link">
+                    <Text textAlign="center" fontSize="xl">
+                      {selectedProfile.username}
+                    </Text>
+                  </Button>
+                </Center>
+
+                <Divider my="2" />
+
+                {selectedProfile.bio && (
+                  <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
+                    {renderHTML(selectedProfile.bio)}
+                  </Box>
+                )}
+              </Box>
+            </Center>
+          </Box>
         )}
       </div>
     );
@@ -297,7 +296,7 @@ function MembersPublic({ history }) {
   ];
 
   return (
-    <Box mb="8">
+    <Box mb="8" minHeight="200vh">
       <Helmet>
         <title>{title}</title>
       </Helmet>
@@ -325,6 +324,7 @@ function MembersPublic({ history }) {
 
       {showKeywordSearch ? (
         <Flex justify="space-around">
+          <Box flex="1" />
           <Cascader
             changeOnSelect
             dropdownRender={cascaderRender}
@@ -336,7 +336,7 @@ function MembersPublic({ history }) {
             style={{ borderRadius: 0, width: 240 }}
             onChange={handleCascaderSelect}
           />
-          <Box>
+          <Box flex="2">
             {/* {selectedProfile && (
               <div
                 style={{
