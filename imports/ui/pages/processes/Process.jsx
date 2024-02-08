@@ -479,6 +479,7 @@ class Process extends Component {
                 resources={resources}
               />
             </Box>
+            <AccordionIcon />
           </AccordionButton>
 
           <AccordionPanel bg="brand.100">
