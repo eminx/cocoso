@@ -32,6 +32,7 @@ function FiltrerSorter(props) {
           size="xs"
           style={{ position: 'absolute', bottom: '6px' }}
           variant="link"
+          w="110px"
         >
           {/* <Flex bg="white" justify="center">
             <ArrowUpNarrowWide size="20px" />
