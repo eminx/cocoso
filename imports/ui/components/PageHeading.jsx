@@ -34,7 +34,7 @@ export default function PageHeading({ description, heading, children }) {
             </Heading>
           </Center>
           <Box py="2">
-            <Divider borderColor="brand.500" />
+            <Divider borderColor="brand.500" minW="280px" />
             <Center>{children}</Center>
             <Heading
               as="h2"
