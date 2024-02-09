@@ -245,8 +245,8 @@ ul.ant-cascader-menu {
   border-radius: 0;
   border: 1px solid;
   border-color: var(--chakra-colors-brand-500);
-  width: 150px;
   overflow-y: visible;
+  width: 150px;
 }
 
 .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   Heading,
@@ -10,9 +11,10 @@ import {
   MenuButton,
   MenuList,
   Select,
+  Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { Search2Icon } from '@chakra-ui/icons/dist/Search2';
+// import { ArrowUpNarrowWide, Search } from 'lucide-react';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -21,42 +23,41 @@ function FiltrerSorter(props) {
   const [tc] = useTranslation('common');
 
   return (
-    <Box position="relative" mt="6" w="100px" zIndex="2">
-      <Menu>
+    <Center position="relative" mt="4" w="100px" zIndex="2">
+      <Menu placement="bottom">
         <MenuButton
           as={Button}
-          leftIcon={<Search2Icon />}
-          mt="3.5"
+          bg="white"
+          p="1"
           size="xs"
-          style={{ position: 'absolute', bottom: '4px' }}
+          style={{ position: 'absolute', bottom: '6px' }}
           variant="link"
         >
-          {tc('labels.filterAndSort')}
+          {/* <Flex bg="white" justify="center">
+            <ArrowUpNarrowWide size="20px" />
+            <Search size="20px" />
+          </Flex> */}
+          <Text>{tc('labels.filterAndSort')}</Text>
         </MenuButton>
-        <MenuList bg="gray.200" p="4" border="1px solid #aaa">
+        <MenuList bg="brand.50" p="4" border="1px solid #aaa">
           <Inputs {...props} isDesktop={isDesktop} tc={tc} />
         </MenuList>
       </Menu>
-    </Box>
+    </Center>
   );
 }
 
 function Inputs({
   filterWord,
+  isDesktop,
   setFilterWord,
   sorterValue,
   setSorterValue,
   tc,
-  isDesktop,
   children,
 }) {
   return (
-    <Flex
-      align="flex-start"
-      direction="column"
-      justify="flex-start"
-      wrap={isDesktop ? 'nowrap' : 'wrap'}
-    >
+    <Flex align="flex-start" direction="column" justify="flex-start">
       <Heading fontSize="sm">{tc('labels.filter')}:</Heading>
       <Input
         my="2"

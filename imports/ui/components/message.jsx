@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
 import {
   Alert as CAlert,
   AlertIcon,
@@ -7,21 +6,27 @@ import {
   AlertDescription,
   Box,
   CloseButton,
-  createStandaloneToast,
 } from '@chakra-ui/react';
 
-import { chakraTheme } from '../utils/constants/theme';
+import { toast } from '../../startup/client/index';
 
-const { ToastContainer, toast } = createStandaloneToast({ theme: chakraTheme });
+const timeOutTime = 5000;
 
-const toastContainer = document.getElementById('toast-root');
-createRoot(toastContainer).render(
-  <>
-    <ToastContainer />
-  </>
-);
+const renderToast = (status, text, duration) => {
+  toast({
+    description: text,
+    duration: duration || timeOutTime,
+    isClosable: true,
+    position: 'top',
+    status,
+  });
+};
 
-const timeOutTime = 5;
+const message = {
+  success: (text, duration) => renderToast('success', text, duration),
+  error: (text, duration) => renderToast('error', text, duration),
+  info: (text, duration = timeOutTime) => renderToast('info', text, duration),
+};
 
 const Alert = ({ children, isClosable, message, type = 'error', ...otherProps }) => {
   return (
@@ -38,24 +43,6 @@ const Alert = ({ children, isClosable, message, type = 'error', ...otherProps })
       </CAlert>
     </Box>
   );
-};
-
-const renderToast = (status, text, duration) => {
-  toast({
-    description: text,
-    duration: (duration || timeOutTime) * 1000,
-    isClosable: true,
-    position: 'top',
-    status,
-  });
-};
-
-const message = {
-  success: (text, duration) => renderToast('success', text, duration * 1000),
-
-  error: (text, duration) => renderToast('error', text, duration),
-
-  info: (text, duration = timeOutTime) => renderToast('info', text, duration),
 };
 
 export { message, Alert };

@@ -197,15 +197,19 @@ function Header({
           pr="4"
           width="150px"
         >
-          <Button
-            leftIcon={<LinkIcon />}
-            mb="4"
-            size={isDesktop ? 'md' : 'sm'}
-            variant="link"
-            onClick={handleCopyLink}
-          >
-            {copied ? tc('actions.copied') : tc('actions.share')}
-          </Button>
+          {copied ? (
+            <Text fontSize="sm">{tc('actions.copied')}</Text>
+          ) : (
+            <Button
+              leftIcon={<LinkIcon />}
+              mb="4"
+              size={isDesktop ? 'md' : 'sm'}
+              variant="link"
+              onClick={handleCopyLink}
+            >
+              {tc('actions.share')}
+            </Button>
+          )}
           {isDesktop && author && <AvatarHolder size="md" author={author} />}
         </Flex>
       </Flex>

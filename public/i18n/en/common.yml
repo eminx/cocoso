@@ -63,7 +63,7 @@ labels:
     actions: Admin
   past: Past
   upcoming: Upcoming
-  filterAndSort: Filter / Sort
+  filterAndSort: Filter & Sort
   filter: Filter
   sort: Sort
   notfound:

@@ -123,12 +123,12 @@ class NewWork extends PureComponent {
     };
     try {
       const respond = await call('createWork', parsedValues, imagesReadyToSave);
+      message.success(i18n.t('common:message.success.create'));
       this.setState({
         newWorkId: respond,
         isCreating: false,
         isSuccess: true,
       });
-      message.success(i18n.t('common:message.success.create'));
     } catch (error) {
       message.error(error.reason);
       console.log(error);

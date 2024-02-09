@@ -148,7 +148,7 @@ function Communities() {
       </Helmet>
 
       <PageHeading heading={tc('platform.communities')} numberOfItems={hostsRendered?.length}>
-        <FiltrerSorter {...filtrerProps} />
+        {/* <FiltrerSorter {...filtrerProps} /> */}
       </PageHeading>
 
       <Box px={isDesktop ? '4' : '0'}>

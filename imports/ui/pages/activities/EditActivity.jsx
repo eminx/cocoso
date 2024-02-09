@@ -183,9 +183,8 @@ class EditActivity extends PureComponent {
 
     try {
       await call('updateActivity', activity._id, values);
-      this.setState({ isSuccess: true }, () => {
-        message.success(tc('message.success.update'));
-      });
+      message.success(tc('message.success.update'));
+      this.setState({ isSuccess: true });
     } catch (error) {
       console.log(error);
       message.error(error.error || error.reason);

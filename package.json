@@ -67,6 +67,7 @@
     "i18next-http-backend": "^2.1.1",
     "joi": "^17.5.0",
     "js-yaml": "^4.1.0",
+    "lucide-react": "^0.323.0",
     "masonic": "^3.7.0",
     "meteor-node-stubs": "^1.1.0",
     "moment": "^2.26.0",

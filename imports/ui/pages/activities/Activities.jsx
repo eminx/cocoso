@@ -231,9 +231,7 @@ function Activities({ history }) {
   const allHostsFiltered = allHosts?.filter((host) => {
     return activitiesRendered.some((act) => act.host === host.host);
   });
-
   const { settings } = currentHost;
-
   const title = settings?.menu.find((item) => item.name === 'activities')?.label;
 
   return (
