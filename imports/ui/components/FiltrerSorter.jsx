@@ -28,11 +28,11 @@ function FiltrerSorter(props) {
         <MenuButton
           as={Button}
           bg="white"
-          p="1"
+          // px="2"
           size="xs"
-          style={{ position: 'absolute', bottom: '6px' }}
+          style={{ position: 'absolute', bottom: '8px' }}
           variant="link"
-          w="110px"
+          w="120px"
         >
           {/* <Flex bg="white" justify="center">
             <ArrowUpNarrowWide size="20px" />
