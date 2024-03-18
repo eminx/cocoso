@@ -74,7 +74,7 @@ function LoginPage() {
             <Text>
               {t('login.labels.subtitle')}{' '}
               <Link to="/register">
-                <CLink as="span">
+                <CLink as="span" color="brand.500">
                   <b>{t('actions.signup')}</b>
                 </CLink>
               </Link>

@@ -28,9 +28,11 @@ function SignupPage() {
                 <Heading mb="4" size="md" textAlign="center">
                   {t('signup.labels.title')}
                 </Heading>
-                <Text textAlign="center">
-                  {t('signup.labels.platform', { platform: platform?.name })}
-                </Text>
+                {platform?.isFederationLayout && (
+                  <Text textAlign="center">
+                    {t('signup.labels.platform', { platform: platform?.name })}
+                  </Text>
+                )}
               </Box>
             </Center>
           )}
@@ -39,7 +41,7 @@ function SignupPage() {
             <Text>
               {t('signup.labels.subtitle')}{' '}
               <Link to="/login">
-                <CLink as="span">
+                <CLink as="span" color="brand.500">
                   <b>{t('actions.login')}</b>
                 </CLink>
               </Link>
