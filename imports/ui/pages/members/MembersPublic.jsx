@@ -153,7 +153,15 @@ function MembersPublic({ history }) {
       if (!member.username) {
         return false;
       }
-      return member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
+      return (
+        member.username.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
+        (member.firstName && member.firstName.toLowerCase().indexOf(lowerCaseFilterWord) !== -1) ||
+        (member.lastName && member.lastName.toLowerCase().indexOf(lowerCaseFilterWord) !== -1) ||
+        (member.firstName &&
+          member.lastName &&
+          (member.firstName + ' ' + member.lastName).toLowerCase().indexOf(lowerCaseFilterWord) !==
+            -1)
+      );
     });
 
     const membersKeywordFiltered = filterKeyword
