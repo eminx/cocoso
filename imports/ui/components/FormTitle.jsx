@@ -6,12 +6,15 @@ import { StateContext } from '../LayoutContainer';
 import BackLink from './BackLink';
 import renderHTML from 'react-render-html';
 
-export default function FormTitle({ context, isNew = false }) {
+export default function FormTitle({ context, isCalendar, isNew = false }) {
   const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   const menu = currentHost?.settings?.menu;
   let currentContext = menu?.find((item) => {
+    if (isCalendar) {
+      return item.name === 'calendar';
+    }
     if (context === 'pages') {
       return item.name === 'info';
     }

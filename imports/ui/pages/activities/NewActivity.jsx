@@ -380,7 +380,7 @@ class NewActivity extends PureComponent {
 
     return (
       <Box>
-        <FormTitle context="activities" isNew />
+        <FormTitle context="activities" isCalendar={!isPublicActivity} isNew />
         <Template>
           <Box>
             <Box mb="8">
