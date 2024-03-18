@@ -22,11 +22,9 @@ function SignupPage() {
           {platform && (
             <Center py="4">
               <Box>
-                {platform?.isFederationLayout && (
-                  <Center mb="4">
-                    <Image w="240px" src={platform?.logo} />
-                  </Center>
-                )}
+                <Center mb="4">
+                  <Image w="240px" src={platform?.logo} />
+                </Center>
                 <Heading mb="4" size="md" textAlign="center">
                   {t('signup.labels.title')}
                 </Heading>

@@ -60,7 +60,7 @@ function LoginPage() {
     <Box pb="8" minHeight="100vh">
       <Center>
         <Box w="xs">
-          {platform?.isFederationLayout && (
+          {platform && (
             <Center p="4">
               <Image w="200px" src={platform?.logo} />
             </Center>
