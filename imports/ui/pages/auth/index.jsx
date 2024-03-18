@@ -124,7 +124,12 @@ const Signup = ({ onSubmit }) => {
                   onChange={() => setTermsChecked(!termsChecked)}
                 />
               </Box>
-              <Link as="span" onClick={() => setModalOpen(true)}>
+              <Link
+                as="span"
+                color="brand.600"
+                textDecoration="underline"
+                onClick={() => setModalOpen(true)}
+              >
                 {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
               </Link>
             </Flex>
