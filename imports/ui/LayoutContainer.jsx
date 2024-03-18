@@ -116,8 +116,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const { menu } = currentHost?.settings;
   const pagesWithHeaderAndFooter = [
     ...menu?.map((item) => '/' + item.name),
-    '/login',
-    '/register',
     '/forgot-password',
     '/reset-password',
     '/terms-&-privacy-policy',
