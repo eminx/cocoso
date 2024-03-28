@@ -20,7 +20,6 @@ function Work() {
   const { username, workId } = useParams();
 
   const [tc] = useTranslation('common');
-  const [tm] = useTranslation('members');
 
   useEffect(() => {
     getWork();

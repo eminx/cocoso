@@ -1,18 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import Documents from './document';
-import Processes from '../processes/process';
-import Works from '../works/work';
-import Resources from '../resources/resource';
 import Hosts from '../hosts/host';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
   getDocumentsByAttachments(attachedTo) {
-    const host = getHost(this);
     const sort = {};
     const fields = Documents.publicFields;
-    const documents = Documents.find({ host, attachedTo }, { sort, fields }).fetch();
+    const documents = Documents.find({ attachedTo }, { sort, fields }).fetch();
     return documents;
   },
 
