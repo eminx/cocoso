@@ -257,11 +257,12 @@ export default function ProcessesList({ history }) {
       {modalProcess && (
         <Modal
           actionButtonLabel={
-            isPortalHost
-              ? tc('actions.toThePage', {
-                  hostName: allHosts.find((h) => h.host === modalProcess.host)?.name,
-                })
-              : tc('actions.entryPage')
+            tc('actions.entryPage')
+            // isPortalHost
+            //   ? tc('actions.toThePage', {
+            //       hostName: allHosts.find((h) => h.host === modalProcess.host)?.name,
+            //     })
+            //   : tc('actions.entryPage')
           }
           h="90%"
           isCentered

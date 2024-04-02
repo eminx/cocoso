@@ -237,11 +237,12 @@ function Works({ history }) {
       {modalWork && (
         <Modal
           actionButtonLabel={
-            isPortalHost
-              ? tc('actions.toThePage', {
-                  hostName: allHosts?.find((h) => h.host === modalWork.host)?.name,
-                })
-              : tc('actions.entryPage')
+            tc('actions.entryPage')
+            // isPortalHost
+            //   ? tc('actions.toThePage', {
+            //       hostName: allHosts?.find((h) => h.host === modalWork.host)?.name,
+            //     })
+            //   : tc('actions.entryPage')
           }
           h="90%"
           isCentered
