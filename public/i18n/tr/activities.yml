@@ -86,6 +86,8 @@ public:
         update: Güncelle
         remove: Kaydını iptal et
     email: Bu eposta adresi zaten kayıt olunmuş, lütfen güncelleme seçeneğini seçiniz
+    alreadyRegistered: Bu etkinliğe zaten kayıtlısınız. Kaydı değiştirmek için lütfen güncelleme seçeneğini seçiniz.
+    notEnoughSeats: Maalesef partinizin tamamına ev sahipliği yapacak yeterli kapasitemiz kalmadı. Yalnızca {{ capacityLeft }} yer kaldı. Lütfen rezervasyonunuzu buna göre yapın.
     notFound: Üzgünüz, kaydını bulamadık. Lütfen zamanları ve diğer bilgileri tekrar kontrol et ve tekrar dene
     disabled:
       true: Kayıt aktif değil. Ayrıntılar için lütfen "Bilgi" sekmesini kontrol edin.

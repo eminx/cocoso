@@ -87,6 +87,8 @@ public:
         update: Uppdatering
         remove: Ta bort din registrering
     email: E-post redan registrerad. Var vänlig att uppdatera din befintliga bokning istället.
+    alreadyRegistered: Du är redan registrerad för detta arrangemang. Var vänlig att uppdatera din befintliga bokning istället.
+    notEnoughSeats: Tyvärr finns det inte tillräckligt med kapacitet kvar för att hålla hela festen. Endast {{ capacityLeft }} plats kvar. Vänligen gör din bokning i enlighet med detta.
     notFound: Tyvärr kunde vi inte hitta din registrering. Dubbelkolla datum och stavningar och försök igen
     disabled:
       true: OSA inaktiverad. Se fliken "Info" för detaljer

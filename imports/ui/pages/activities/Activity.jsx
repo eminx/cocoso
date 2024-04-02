@@ -94,17 +94,42 @@ class Activity extends PureComponent {
   handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData, t } = this.props;
 
-    const isEmailAlreadyRegistered = activityData.datesAndTimes[occurenceIndex].attendees.some(
-      (attendee) => attendee.email.toLowerCase() === values.email.toLowerCase()
-    );
-
-    if (isEmailAlreadyRegistered) {
-      message.error(t('public.register.email'));
+    let isAlreadyRegistered = false;
+    const occurence = activityData.datesAndTimes[occurenceIndex];
+    occurence.attendees.forEach((attendee, attendeeIndex) => {
+      if (
+        attendee.lastName.trim().toLowerCase() === values.lastName.trim().toLowerCase() &&
+        attendee.email.trim().toLowerCase() === values.email.trim().toLowerCase()
+      ) {
+        isAlreadyRegistered = true;
+        return;
+      }
+    });
+    if (isAlreadyRegistered) {
+      message.error(t('public.register.alreadyRegistered'));
       return;
     }
 
+    let registeredNumberOfAttendees = 0;
+    occurence.attendees.forEach((attendee) => {
+      registeredNumberOfAttendees += attendee.numberOfPeople;
+    });
+
+    if (occurence.capacity < registeredNumberOfAttendees + values.numberOfPeople) {
+      const capacityLeft = occurence.capacity - registeredNumberOfAttendees;
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
+      return;
+    }
+
+    const parsedValues = {
+      firstName: values.firstName.trim(),
+      lastName: values.lastName.trim(),
+      email: values.email.trim(),
+      numberOfPeople: values.numberOfPeople,
+    };
+
     try {
-      await call('registerAttendance', activityData._id, values, occurenceIndex);
+      await call('registerAttendance', activityData._id, parsedValues, occurenceIndex);
       message.success(t('public.attendance.create'));
     } catch (error) {
       console.log(error);

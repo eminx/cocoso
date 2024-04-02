@@ -87,6 +87,8 @@ public:
         update: Update
         remove: Remove your registration
     email: Email already registered. Please update instead.
+    alreadyRegistered: You are already registered for this occurrence. Please update your registration instead.
+    notEnoughSeats: Unfortunately there are not sufficient capacity left to host your entire party. Only {{ capacityLeft }} space left. Please make your booking accordingly.
     notFound: Sorry we could not find your registration. Please double check the date and spellings, and try again
     disabled:
       true: Registration disabled. Please check the "Info" tab for details.
