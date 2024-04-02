@@ -17,6 +17,7 @@ import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 import Tabs from '../../components/Tabs';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.date);
@@ -80,7 +81,7 @@ function MembersPublic({ history }) {
   };
 
   if (loading) {
-    return <Loader />;
+    return <ContentLoader items={4} />;
   }
 
   const { isPortalHost } = currentHost;

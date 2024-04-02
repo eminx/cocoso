@@ -8,7 +8,7 @@ import { parse } from 'query-string';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import { call } from '../../utils/shared';
@@ -180,11 +180,7 @@ function Activities({ history }) {
   }, [activities, filterWord, hostFilterValue, showPast, sorterValue]);
 
   if (loading) {
-    return (
-      <Box width="100%" mb="50px">
-        <Loader />
-      </Box>
-    );
+    return <ContentLoader />;
   }
 
   const handleActionButtonClick = () => {

@@ -18,6 +18,7 @@ import Tably from '../../components/Tably';
 import HostFiltrer from '../../components/HostFiltrer';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -64,7 +65,7 @@ function Works({ history }) {
   };
 
   if (loading || !works) {
-    return <Loader />;
+    return <ContentLoader items={4} />;
   }
 
   const getSortedWorks = () => {

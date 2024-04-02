@@ -19,6 +19,7 @@ import { DateJust } from '../../components/FancyDate';
 import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 
 moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -154,7 +155,7 @@ export default function ProcessesList({ history }) {
   });
 
   if (loading || !processes || !processes.length === 0) {
-    return <Loader />;
+    return <ContentLoader />;
   }
 
   const handleActionButtonClick = () => {

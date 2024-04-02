@@ -2,14 +2,19 @@ import React from 'react';
 import { Box, Center, ChakraProvider, Flex, Skeleton, Wrap } from '@chakra-ui/react';
 
 const skeletonProps = {
-  flex: { flexBasis: '355px', flexGrow: 1, h: '315px' },
+  flex: { flexBasis: '320px', flexGrow: 1, h: '315px' },
   color: {
     startColor: 'red.50',
     endColor: 'red.100',
   },
 };
 
-export function ContentLoader() {
+export function ContentLoader({ items = 3 }) {
+  const skeletons = [];
+  for (let i = 1; i <= items; i++) {
+    skeletons.push(i);
+  }
+
   return (
     <Box>
       <Center mb="24px">
@@ -19,7 +24,7 @@ export function ContentLoader() {
         <Skeleton {...skeletonProps.color} w="300px" h="40px" />
       </Center>
       <Wrap justify="stretch" w="100%" spacing="2">
-        {[1, 2, 3, 4, 5, 6].map((n) => (
+        {skeletons.map((n) => (
           <Skeleton key={n} {...skeletonProps.flex} {...skeletonProps.color} />
         ))}
       </Wrap>

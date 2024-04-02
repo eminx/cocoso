@@ -17,6 +17,7 @@ import Tably from '../../components/Tably';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import NewGridThumb from '../../components/NewGridThumb';
 import PageHeading from '../../components/PageHeading';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 
 function Resources({ history }) {
   const [resources, setResources] = useState([]);
@@ -110,7 +111,7 @@ function Resources({ history }) {
   });
 
   if (loading) {
-    return <Loader />;
+    return <ContentLoader items={4} />;
   }
 
   const handleActionButtonClick = () => {
