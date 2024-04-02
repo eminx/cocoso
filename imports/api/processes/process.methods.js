@@ -51,7 +51,7 @@ Meteor.methods({
       host: process.host,
       adminUsername: process.adminUsername,
       isArchived: process.isArchived,
-      members: user ? process.members : null,
+      members: process.members,
       creationDate: process.creationDate,
       isPrivate: process.isPrivate,
       peopleInvited: process.peopleInvited,
