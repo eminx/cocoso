@@ -8,7 +8,7 @@ import NewGridThumb from '../../components/NewGridThumb';
 import Paginate from '../../components/Paginate';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberWorks({ currentHost, isDesktop, isFederationLayout = false, isSelfAccount, user }) {
+function MemberWorks({ currentHost, isFederationLayout = false, isSelfAccount, user }) {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +39,7 @@ function MemberWorks({ currentHost, isDesktop, isFederationLayout = false, isSel
 
   return (
     <>
-      <Paginate centerItems={!isDesktop} items={works}>
+      <Paginate centerItems items={works}>
         {(work) => {
           const isExternal = work.host !== currentHost.host;
           return (

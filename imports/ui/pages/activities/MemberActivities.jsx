@@ -8,13 +8,7 @@ import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberActivities({
-  currentHost,
-  isDesktop,
-  isFederationLayout = false,
-  isSelfAccount,
-  user,
-}) {
+function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccount, user }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +41,7 @@ function MemberActivities({
 
   return (
     <>
-      <Paginate centerItems={!isDesktop} items={publicActivities}>
+      <Paginate centerItems items={publicActivities}>
         {(activity) => {
           const isExternal = activity.host !== currentHost.host;
           return (

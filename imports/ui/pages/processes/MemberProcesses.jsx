@@ -8,13 +8,7 @@ import Paginate from '../../components/Paginate';
 import NewGridThumb from '../../components/NewGridThumb';
 import NewEntryHelper from '../../components/NewEntryHelper';
 
-function MemberProcesses({
-  currentHost,
-  isDesktop,
-  isFederationLayout = false,
-  isSelfAccount,
-  user,
-}) {
+function MemberProcesses({ currentHost, isFederationLayout = false, isSelfAccount, user }) {
   const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const { username } = user;
@@ -44,7 +38,7 @@ function MemberProcesses({
 
   return (
     <>
-      <Paginate centerItems={!isDesktop} items={processes}>
+      <Paginate centerItems items={processes}>
         {(process) => {
           const isExternal = process.host !== currentHost.host;
           return (

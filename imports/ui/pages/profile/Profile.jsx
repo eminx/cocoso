@@ -162,7 +162,6 @@ function Profile({ history, match, path }) {
                 render={(props) => (
                   <MemberActivities
                     currentHost={currentHost}
-                    isDesktop={isDesktop}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
@@ -174,7 +173,6 @@ function Profile({ history, match, path }) {
                 render={(props) => (
                   <MemberProcesses
                     currentHost={currentHost}
-                    isDesktop={isDesktop}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
@@ -186,7 +184,6 @@ function Profile({ history, match, path }) {
                 render={(props) => (
                   <MemberWorks
                     currentHost={currentHost}
-                    isDesktop={isDesktop}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
