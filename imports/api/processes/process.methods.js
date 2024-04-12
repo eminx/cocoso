@@ -22,6 +22,17 @@ const isUserProcessAdmin = (process, userId) => {
 };
 
 Meteor.methods({
+  getProcess(processId) {
+    check(processId, String);
+    const process = Processes.findOne({
+      _id: processId,
+    });
+    if (!process) {
+      throw new Meteor.Error('Process not found');
+    }
+    return process;
+  },
+
   getProcesses(isPortalHost = false) {
     const user = Meteor.user();
     const host = getHost(this);
