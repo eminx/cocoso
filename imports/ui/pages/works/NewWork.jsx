@@ -3,7 +3,9 @@ import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box } from '@chakra-ui/react';
 import i18n from 'i18next';
+import heic2any from 'heic2any';
 
+import convertHeic from '../../../api/_utils/heic-converter';
 import { StateContext } from '../../LayoutContainer';
 import WorkForm from '../../components/WorkForm';
 import Template from '../../components/Template';
@@ -47,6 +49,48 @@ class NewWork extends PureComponent {
     });
     this.getCategories();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.uploadableImages.length < this.state.uploadableImages.length) {
+      this.checkForHeic();
+    }
+  }
+
+  checkForHeic = async () => {
+    const { uploadableImages, uploadableImagesLocal } = this.state;
+
+    const newImages = await Promise.all(
+      uploadableImages.map(async (image, index) => {
+        if (image.type === 'image/heic') {
+          const convertedImage = await heic2any({
+            blob: image,
+            toType: 'image/jpeg',
+            quality: 1,
+          });
+          convertedImage.name = image.name;
+          return convertedImage;
+        } else {
+          return image;
+        }
+      })
+    );
+
+    const newImagesLocal = await Promise.all(
+      uploadableImagesLocal.map(async (image, index) => {
+        if (image.substring(0, 15) === 'data:image/heic') {
+          const convertedImageLocal = await convertHeic(image);
+          return convertedImageLocal;
+        } else {
+          return image;
+        }
+      })
+    );
+
+    this.setState({
+      uploadableImages: newImages,
+      uploadableImagesLocal: newImagesLocal,
+    });
+  };
 
   getCategories = async () => {
     const categories = await call('getCategories');
