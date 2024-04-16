@@ -174,14 +174,15 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    let newAvatar = null;
-
-    if (avatar) {
-      newAvatar = {
-        src: avatar,
-        date: new Date(),
-      };
+    if (!avatar) {
+      throw new Meteor.Error('Not valid file');
+      return;
     }
+
+    const newAvatar = {
+      src: avatar,
+      date: new Date(),
+    };
 
     try {
       Meteor.users.update(userId, {

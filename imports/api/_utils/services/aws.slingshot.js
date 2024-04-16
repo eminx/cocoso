@@ -4,22 +4,22 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 const s3Settings = Meteor.settings.AWSs3;
 
 Slingshot.fileRestrictions('processImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 30 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('hostLogoUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('platformLogoUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('workImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 30 * 1024 * 1024,
 });
 
@@ -38,22 +38,22 @@ Slingshot.fileRestrictions('processDocumentUpload', {
 });
 
 Slingshot.fileRestrictions('pageImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 10 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('activityImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 20 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('avatarImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 5 * 1024 * 1024,
 });
 
 Slingshot.fileRestrictions('resourceImageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+  allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/heic'],
   maxSize: 20 * 1024 * 1024,
 });
 
