@@ -16,6 +16,7 @@ export default function (props) {
   }, []);
 
   const { activityId } = props.match.params;
+
   const getActivityById = async () => {
     try {
       setActivityData(await call('getActivityById', activityId));
@@ -28,6 +29,7 @@ export default function (props) {
 
   const allProps = {
     ...props,
+    getActivityById,
     activityData,
     isLoading,
     t,

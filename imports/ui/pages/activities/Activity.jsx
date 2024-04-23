@@ -92,7 +92,7 @@ class Activity extends PureComponent {
   };
 
   handleRSVPSubmit = async (values, occurenceIndex) => {
-    const { activityData, t } = this.props;
+    const { activityData, t, getActivityById } = this.props;
 
     let isAlreadyRegistered = false;
     const occurence = activityData.datesAndTimes[occurenceIndex];
@@ -132,6 +132,7 @@ class Activity extends PureComponent {
 
     try {
       await call('registerAttendance', activityData._id, parsedValues, occurenceIndex);
+      await getActivityById();
       message.success(t('public.attendance.create'));
     } catch (error) {
       console.log(error);
@@ -182,7 +183,6 @@ class Activity extends PureComponent {
 
   renderCancelRsvpModalContent = () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { t } = this.props;
     if (!rsvpCancelModalInfo) {
       return;
     }
@@ -238,7 +238,7 @@ class Activity extends PureComponent {
 
   handleChangeRSVPSubmit = async (values) => {
     const { rsvpCancelModalInfo } = this.state;
-    const { activityData, t } = this.props;
+    const { activityData, t, getActivityById } = this.props;
 
     const { occurenceIndex } = rsvpCancelModalInfo;
     const occurence = activityData.datesAndTimes[occurenceIndex];
@@ -271,6 +271,7 @@ class Activity extends PureComponent {
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
       );
+      await getActivityById();
       message.success(t('public.attendance.update'));
       this.setState({
         rsvpCancelModalInfo: null,
@@ -284,7 +285,7 @@ class Activity extends PureComponent {
 
   handleRemoveRSVP = async () => {
     const { rsvpCancelModalInfo } = this.state;
-    const { activityData, t } = this.props;
+    const { activityData, t, getActivityById } = this.props;
 
     if (!rsvpCancelModalInfo) {
       return;
@@ -307,6 +308,7 @@ class Activity extends PureComponent {
 
     try {
       await call('removeAttendance', activityData._id, occurenceIndex, email, lastName);
+      await getActivityById();
       message.success(t('public.attendance.remove'));
       this.setState({
         rsvpCancelModalInfo: null,
@@ -449,7 +451,7 @@ class Activity extends PureComponent {
   };
 
   removeNotification = (messageIndex) => {
-    const { activityData, t } = this.props;
+    const { activityData } = this.props;
     const { currentUser } = this.context;
 
     const shouldRun = currentUser.notifications.find((notification) => {
