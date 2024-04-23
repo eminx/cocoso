@@ -115,7 +115,9 @@ class Activity extends PureComponent {
       registeredNumberOfAttendees += attendee.numberOfPeople;
     });
 
-    if (occurence.capacity < registeredNumberOfAttendees + values.numberOfPeople) {
+    const numberOfPeople = Number(values.numberOfPeople);
+
+    if (occurence.capacity < registeredNumberOfAttendees + numberOfPeople) {
       const capacityLeft = occurence.capacity - registeredNumberOfAttendees;
       message.error(t('public.register.notEnoughSeats', { capacityLeft }));
       return;
@@ -125,7 +127,7 @@ class Activity extends PureComponent {
       firstName: values.firstName.trim(),
       lastName: values.lastName.trim(),
       email: values.email.trim(),
-      numberOfPeople: values.numberOfPeople,
+      numberOfPeople,
     };
 
     try {
@@ -238,11 +240,27 @@ class Activity extends PureComponent {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData, t } = this.props;
 
+    const { occurenceIndex } = rsvpCancelModalInfo;
+    const occurence = activityData.datesAndTimes[occurenceIndex];
+
+    let registeredNumberOfAttendees = 0;
+    occurence?.attendees?.forEach((attendee) => {
+      registeredNumberOfAttendees += attendee.numberOfPeople;
+    });
+
+    const numberOfPeople = Number(values.numberOfPeople);
+
+    if (occurence.capacity < registeredNumberOfAttendees + numberOfPeople) {
+      const capacityLeft = occurence.capacity - registeredNumberOfAttendees;
+      message.error(t('public.register.notEnoughSeats', { capacityLeft }));
+      return;
+    }
+
     const parsedValues = {
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-      numberOfPeople: Number(values.numberOfPeople),
+      numberOfPeople,
     };
 
     try {
@@ -268,13 +286,27 @@ class Activity extends PureComponent {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData, t } = this.props;
 
+    if (!rsvpCancelModalInfo) {
+      return;
+    }
+    const { email, lastName, occurenceIndex } = rsvpCancelModalInfo;
+
+    if (!email || !lastName) {
+      return;
+    }
+
+    const theOccurence = activityData.datesAndTimes[occurenceIndex];
+    const theNonAttendee = theOccurence.attendees.find(
+      (a) => a.email === email && a.lastName === lastName
+    );
+
+    if (!theNonAttendee) {
+      message.error(t('public.register.notFound'));
+      return;
+    }
+
     try {
-      await call(
-        'removeAttendance',
-        activityData._id,
-        rsvpCancelModalInfo.occurenceIndex,
-        rsvpCancelModalInfo.email
-      );
+      await call('removeAttendance', activityData._id, occurenceIndex, email, lastName);
       message.success(t('public.attendance.remove'));
       this.setState({
         rsvpCancelModalInfo: null,
@@ -724,7 +756,6 @@ function RsvpList({ occurence, title }) {
 }
 
 const getFileName = (occurence, title) => {
-  console.log(`${title} | ${occurence.startDate}, ${occurence.startTime}-${occurence.endTime}`);
   if (occurence.startDate !== occurence.endDate) {
     return (
       title +
