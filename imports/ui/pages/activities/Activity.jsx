@@ -244,7 +244,10 @@ class Activity extends PureComponent {
     const occurence = activityData.datesAndTimes[occurenceIndex];
 
     let registeredNumberOfAttendees = 0;
-    occurence?.attendees?.forEach((attendee) => {
+    occurence?.attendees?.forEach((attendee, index) => {
+      if (rsvpCancelModalInfo.attendeeIndex === index) {
+        return;
+      }
       registeredNumberOfAttendees += attendee.numberOfPeople;
     });
 

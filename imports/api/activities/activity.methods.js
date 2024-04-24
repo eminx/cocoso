@@ -355,7 +355,7 @@ Meteor.methods({
     }
   },
 
-  updateAttendance(activityId, values, occurenceIndex) {
+  updateAttendance(activityId, values, occurenceIndex, attendeeIndex) {
     const theActivity = Activities.findOne(activityId);
     const rsvpValues = {
       ...values,
@@ -376,7 +376,6 @@ Meteor.methods({
       true
     );
 
-    const attendeeIndex = theOccurence.attendees.findIndex((a) => a.email === values.email);
     const field = `datesAndTimes.${occurenceIndex}.attendees.${attendeeIndex}`;
 
     try {
