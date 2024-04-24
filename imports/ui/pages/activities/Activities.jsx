@@ -27,7 +27,7 @@ const yesterday = moment().add(-1, 'days');
 const today = moment();
 
 const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
-const getLastPastOccurence = (occurence) => moment(occurence.endDate).isBefore(today);
+const getLastPastOccurence = (occurence) => moment(occurence.startDate).isBefore(today);
 
 const getFutureOccurrences = (dates) => {
   return dates

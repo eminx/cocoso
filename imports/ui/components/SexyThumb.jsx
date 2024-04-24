@@ -51,7 +51,7 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
   const pastDates =
     dates &&
     dates
-      .filter((date) => moment(date?.endDate).isBefore(today))
+      .filter((date) => moment(date?.startDate).isBefore(today))
       .sort((a, b) => moment(a.startDate) - moment(b.startDate));
 
   return (
