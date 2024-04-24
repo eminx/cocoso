@@ -5,7 +5,7 @@ langs:
   sv: Svenska
   tr: Türkçe
   form:
-    label: Önskat Språk
+    label: Önskat språk
     holder: Välj ett språk
 
 # ALL ACTION BUTTON LABELS
