@@ -85,7 +85,7 @@ Meteor.methods({
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     try {
-      if (currentHost.isPortal) {
+      if (!host || currentHost.isPortal) {
         return Activities.findOne(activityId);
       }
       return Activities.findOne({ _id: activityId, host });
