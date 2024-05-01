@@ -396,15 +396,13 @@ Meteor.methods({
     }
   },
 
-  removeAttendance(activityId, occurenceIndex, email, lastName) {
+  removeAttendance(activityId, occurenceIndex, email) {
     const theActivity = Activities.findOne(activityId);
     const newOccurences = [...theActivity.datesAndTimes];
     const theOccurence = newOccurences[occurenceIndex];
-    const theNonAttendee = theOccurence.attendees.find(
-      (a) => a.email === email && a.lastName === lastName
-    );
+    const theNonAttendee = theOccurence.attendees.find((a) => a.email === email);
     newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
-      (a) => a.email !== email || a.lastName !== lastName
+      (a) => a.email !== email
     );
 
     const host = getHost(this);

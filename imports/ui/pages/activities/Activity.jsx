@@ -33,8 +33,6 @@ import {
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
-
-// import Chattery from '../../components/chattery/Chattery';
 import ConfirmModal from '../../components/ConfirmModal';
 import FancyDate, { DateJust } from '../../components/FancyDate';
 import FormField from '../../components/FormField';
@@ -203,7 +201,7 @@ class Activity extends PureComponent {
     return (
       <Box>
         <FormControl id="lastname" mb="3" size="sm">
-          <FormLabel>Last name</FormLabel>
+          <FormLabel>{t('public.register.form.name.last')}</FormLabel>
           <Input
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.lastName}
             onChange={(e) =>
@@ -219,7 +217,7 @@ class Activity extends PureComponent {
         </FormControl>
 
         <FormControl id="email" size="sm">
-          <FormLabel>Email</FormLabel>
+          <FormLabel>{t('public.register.form.email')}</FormLabel>
           <Input
             value={rsvpCancelModalInfo && rsvpCancelModalInfo.email}
             onChange={(e) =>
@@ -310,7 +308,7 @@ class Activity extends PureComponent {
     }
 
     try {
-      await call('removeAttendance', activityData._id, occurenceIndex, email, lastName);
+      await call('removeAttendance', activityData._id, occurenceIndex, email);
       await getActivityById();
       message.success(t('public.attendance.remove'));
       this.setState({

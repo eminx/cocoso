@@ -471,13 +471,7 @@ class Process extends Component {
             color="brand.800"
           >
             <Box flex="1" textAlign="left">
-              <MeetingInfo
-                isSmallViewport
-                isAttending={isAttending}
-                meeting={meeting}
-                isFutureMeeting={isFutureMeeting(meeting)}
-                resources={resources}
-              />
+              <MeetingInfo isAttending={isAttending} meeting={meeting} resources={resources} />
             </Box>
             <AccordionIcon />
           </AccordionButton>
