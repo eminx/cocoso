@@ -57,38 +57,6 @@ class Activity extends PureComponent {
     selectedOccurrence: null,
   };
 
-  addNewChatMessage = (message) => {
-    Meteor.call(
-      'addChatMessage',
-      this.props.activityData._id,
-      message,
-      'activity',
-      (error, respond) => {
-        if (error) {
-          console.log('error', error);
-        }
-      }
-    );
-  };
-
-  getChatMessages = () => {
-    const { chatData } = this.props;
-    const { currentUser } = this.context;
-
-    let messages = [];
-
-    if (chatData) {
-      messages = [...chatData.messages];
-      messages.forEach((message) => {
-        if (message.senderId === currentUser._id) {
-          message.isFromMe = true;
-        }
-      });
-    }
-
-    return messages;
-  };
-
   handleRSVPSubmit = async (values, occurenceIndex) => {
     const { activityData, t, getActivityById } = this.props;
 
@@ -523,8 +491,6 @@ class Activity extends PureComponent {
     }
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;
-
-    // const messages = this.getChatMessages();
 
     const tabs = [
       {
