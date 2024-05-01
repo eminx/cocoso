@@ -333,7 +333,7 @@ const getRegistrationEmailBody = (
             </tr>
             <tr>
               <td style="padding: 0 15px 0 0; width: 1">${dateAndTime}:</td>
-              <td style="padding: 0 15px;"><b>${occurence.startDate}, ${occurence.startTime} - ${occurence.endTime}</b></td>
+              <td style="padding: 0 15px;"><b>${occurence?.startDate}, ${occurence?.startTime} - ${occurence?.endTime}</b></td>
             </tr>
             <tr>
               <td style="padding: 0 15px 0 0; width: 100px;">${attendingLabel}:</td>

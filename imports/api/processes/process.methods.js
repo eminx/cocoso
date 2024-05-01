@@ -69,6 +69,14 @@ Meteor.methods({
     }));
   },
 
+  getProcessMeetings(processId) {
+    check(processId, String);
+    return Activities.find({
+      isProcessMeeting: true,
+      processId,
+    }).fetch();
+  },
+
   getProcessesByUser(username) {
     if (!username) {
       throw new Meteor.Error('Not allowed!');
