@@ -277,7 +277,7 @@ class Activity extends PureComponent {
     }
 
     try {
-      await call('removeAttendance', activityData._id, occurenceIndex, email);
+      await call('removeAttendance', activityData._id, occurenceIndex, email, lastName);
       await getActivityById();
       message.success(t('public.attendance.remove'));
       this.setState({
