@@ -6,7 +6,7 @@ form:
   switch:
     public: Offentligt evenemang
     exclusive: Exklusiv aktivitet (Andra kan inte boka samma tid)
-    rsvp: Registrering aktiverad (Människor kan registrera sig/OSA för att delta i händelsen/händelserna)
+    rsvp: Bokning aktiverad (Människor kan boka sig/OSA för att delta i händelsen/händelserna)
   resource:
     label: '{{ resources }}'
     holder: Välj
@@ -67,12 +67,12 @@ public:
   labels:
     address: Adress
     dates: Datum
-    datesAndRegistration: Datum & registrering
+    datesAndRegistration: Datum & bokning
     info: Info
     location: Plats
     resource: Resurs
   register:
-    label: Registrera
+    label: Boka
     form:
       name:
         first: Förnamn
@@ -83,28 +83,28 @@ public:
         number: Antal personer
       loading: Loading
       actions:
-        create: Registrera
+        create: Boka
         update: Uppdatering
-        remove: Ta bort din registrering
-    email: E-post redan registrerad. Var vänlig att uppdatera din befintliga bokning istället.
-    alreadyRegistered: Du är redan registrerad för detta arrangemang. Var vänlig att uppdatera din befintliga bokning istället.
+        remove: Ta bort din bokning
+    email: E-post redan bokad. Var vänlig att uppdatera din befintliga bokning istället.
+    alreadyRegistered: Du är redan bokad för detta arrangemang. Var vänlig att uppdatera din befintliga bokning istället.
     notEnoughSeats: Tyvärr finns det inte tillräckligt med kapacitet kvar för att hålla hela festen. Endast {{ capacityLeft }} plats kvar. Vänligen gör din bokning i enlighet med detta.
-    notFound: Tyvärr kunde vi inte hitta din registrering. Dubbelkolla datum och stavningar och försök igen
+    notFound: Tyvärr kunde vi inte hitta din bokning. Dubbelkolla datum och stavningar och försök igen
     disabled:
       true: OSA inaktiverad. Se fliken "Info" för detaljer
       false: Klicka och öppna datumet för att OSA
-      info: Registreringar är inaktiverade.
+      info: Bokningar är inaktiverade.
   attendance:
     label: Deltagare
-    create: Du har precis registrerat din närvaro. Välkommen!
-    update: Du har nu uppdaterat din registering
-    remove: Du har tagit bort din registrering
+    create: Du har precis bokad din närvaro. Välkommen!
+    update: Du har nu uppdaterat din bokning
+    remove: Du har tagit bort din bokning
     show: Visa deltagare
   capacity:
     full: Arrangemanget är fullbokat
     fullByYou: Grattis! Du bokade precis den sista platsen!
   cancel:
-    label: Ändra/avbryt befintlig registrering
+    label: Ändra/radera befintlig bokning
     found: Fortsätt
     notFound: Vänligen ange detaljerna för din OSA
   past: Detta arrangemang har redan passerat
