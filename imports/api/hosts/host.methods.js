@@ -163,6 +163,7 @@ Meteor.methods({
       .map((user) => ({
         avatar: user.avatar?.src,
         bio: user.bio,
+        contactInfo: user.contactInfo,
         date: user.date,
         firstName: user.firstName,
         id: user._id,
