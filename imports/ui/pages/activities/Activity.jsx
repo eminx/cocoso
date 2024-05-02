@@ -148,6 +148,7 @@ class Activity extends PureComponent {
   };
 
   renderCancelRsvpModalContent = () => {
+    const { t } = this.props;
     const { rsvpCancelModalInfo } = this.state;
     if (!rsvpCancelModalInfo) {
       return;
