@@ -57,15 +57,15 @@ function compareDatesForSortReverse(a, b) {
   return dateB - dateA;
 }
 
-function parseProcessActivities(activities) {
+function parseGroupActivities(activities) {
   const activitiesParsed = [];
 
   activities?.forEach((act, index) => {
-    if (!act.isProcessMeeting) {
+    if (!act.isGroupMeeting) {
       activitiesParsed.push(act);
     } else {
       const indexParsed = activitiesParsed.findIndex((actP, indexP) => {
-        return actP.processId === act.processId;
+        return actP.groupId === act.groupId;
       });
       if (indexParsed === -1) {
         activitiesParsed.push(act);
@@ -101,11 +101,11 @@ function Activities({ history }) {
     try {
       if (isPortalHost) {
         const allActivities = await call('getAllPublicActivitiesFromAllHosts');
-        const allActivitiesParsed = parseProcessActivities(allActivities);
+        const allActivitiesParsed = parseGroupActivities(allActivities);
         setActivities(allActivitiesParsed);
       } else {
         const allActivities = await call('getAllPublicActivities');
-        const allActivitiesParsed = parseProcessActivities(allActivities);
+        const allActivitiesParsed = parseGroupActivities(allActivities);
         setActivities(allActivitiesParsed);
       }
     } catch (error) {
@@ -277,7 +277,7 @@ function Activities({ history }) {
                   showPast={showPast}
                   host={isPortalHost ? itemHost : null}
                   imageUrl={activity.imageUrl}
-                  subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                  subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}
                 />
               </Box>

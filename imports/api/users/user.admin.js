@@ -174,7 +174,7 @@ Meteor.methods({
       //   'sendEmail',
       //   memberId,
       //   `You are removed from ${hostName} as a verified member`,
-      //   `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${currentHost.name}. You are, however, still welcome to participate to the events and processes here.\n\n For questions, please contact the admin.\n\nKind regards,\n${currentHost.name} Team`
+      //   `Hi,\n\nWe're sorry to inform you that you're removed as an active member at ${currentHost.name}. You are, however, still welcome to participate to the events and groups here.\n\n For questions, please contact the admin.\n\nKind regards,\n${currentHost.name} Team`
       // );
     } catch (error) {
       throw new Meteor.Error(error, 'Did not work! :/');

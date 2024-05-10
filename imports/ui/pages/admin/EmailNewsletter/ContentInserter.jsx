@@ -28,15 +28,15 @@ import FormField from '../../../components/FormField';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-function parseProcessActivities(activities) {
+function parseGroupActivities(activities) {
   const activitiesParsed = [];
 
   activities?.forEach((act, index) => {
-    if (!act.isProcessMeeting) {
+    if (!act.isGroupMeeting) {
       activitiesParsed.push(act);
     } else {
       const indexParsed = activitiesParsed.findIndex((actP, indexP) => {
-        return actP.processId === act.processId;
+        return actP.groupId === act.groupId;
       });
       if (indexParsed === -1) {
         activitiesParsed.push(act);
@@ -79,11 +79,11 @@ export default function ContentInserter({ currentHost, onSelect }) {
     try {
       if (isPortalHost) {
         const allActivities = await call('getAllPublicActivitiesFromAllHosts');
-        const allActivitiesParsed = parseProcessActivities(allActivities);
+        const allActivitiesParsed = parseGroupActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       } else {
         const allActivities = await call('getAllPublicActivities');
-        const allActivitiesParsed = parseProcessActivities(allActivities);
+        const allActivitiesParsed = parseGroupActivities(allActivities);
         allActivitiesParsed && setActivities(allActivitiesParsed);
       }
     } catch (error) {

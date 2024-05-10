@@ -46,7 +46,7 @@ labels:
   newBooking: Ny bokning
   page: Sida
   newPage: Ny sida
-  process: Processen
+  group: Groupen
   remove: Ta bort
   info: Info
   extra: Extra
@@ -186,8 +186,8 @@ domains:
   calendar: Kalender
   activity: Aktivitet
   activities: Aktiviteter
-  process: Process
-  processes: Processer
+  group: Group
+  groups: Grouper
   resource: Resurs
   resources: Resurser
   work: arbete

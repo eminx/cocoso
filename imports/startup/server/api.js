@@ -25,9 +25,9 @@ import '../../api/works/work';
 import '../../api/works/work.methods';
 import '../../api/works/work.publications';
 
-import '../../api/processes/process';
-import '../../api/processes/process.methods';
-import '../../api/processes/process.publications';
+import '../../api/groups/group';
+import '../../api/groups/group.methods';
+import '../../api/groups/group.publications';
 
 import '../../api/chats/chat';
 import '../../api/chats/chat.methods';

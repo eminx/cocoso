@@ -6,7 +6,7 @@ import './chattery.css';
 import { ChatteryWindow } from './ChatteryWindow';
 import { ChatteryInput } from './ChatteryInput';
 
-const noMemberText = 'If you want to participate to the discussion, please join the process.';
+const noMemberText = 'If you want to participate to the discussion, please join the group.';
 
 function Chattery({ messages, onNewMessage, removeNotification, isMember, meta }) {
   return (

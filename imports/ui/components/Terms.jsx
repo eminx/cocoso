@@ -25,11 +25,11 @@ function TermsForHost({ currentHost }) {
         Terms of Service
       </Heading>
       <p>
-        With an account, you are a member and can join any one or all of our study process’s online
-        forums free of charge. If you join a study process, you will receive running updates about
-        meetings for that process and can communicate with other participants via a discussion
-        available at all times. Your username will be visible to other members on each process page
-        you are a member of, both in the list of a process’s members and in a process’s discussion
+        With an account, you are a member and can join any one or all of our study group’s online
+        forums free of charge. If you join a study group, you will receive running updates about
+        meetings for that group and can communicate with other participants via a discussion
+        available at all times. Your username will be visible to other members on each group page
+        you are a member of, both in the list of a group’s members and in a group’s discussion
         window.
       </p>
       <p>
@@ -38,9 +38,9 @@ function TermsForHost({ currentHost }) {
         visible for staff members in the list of attendees.
       </p>
       <p>
-        The discussions for each study process are visible to all members of {entities}. These
-        discussions are kept for the duration of the process and will be archived, but can be erased
-        if the process wishes.
+        The discussions for each study group are visible to all members of {entities}. These
+        discussions are kept for the duration of the group and will be archived, but can be erased
+        if the group wishes.
       </p>
       <p>
         {entities} expects all members to keep respectful and supportive language when
@@ -75,7 +75,7 @@ function TermsForHost({ currentHost }) {
         e-mail address is considered personal information. The name you choose does not have to be
         your legal name, so if you choose to use your legal name you do so at your own discretion.
         This name will be displayed on the website only to other members: in the member list of
-        processes you have joined; when sending discussion messages; and in the RSVP list when
+        groups you have joined; when sending discussion messages; and in the RSVP list when
         attending events (this latter visible only to staff).
       </p>
       <p>
@@ -98,9 +98,9 @@ function TermsForHost({ currentHost }) {
         and the website administrator.
       </p>
       <p>
-        Discussion entries in processes associated with your username are stored for the duration of
-        the process and are archived if the process ends and agrees to save its material. They are
-        deleted only if the process requests it. Note that specifically deleting only the discussion
+        Discussion entries in groups associated with your username are stored for the duration of
+        the group and are archived if the group ends and agrees to save its material. They are
+        deleted only if the group requests it. Note that specifically deleting only the discussion
         entries associated with your own account is difficult and we may not be able to provide that
         service on request.
       </p>
@@ -228,11 +228,11 @@ function TermsForHost({ currentHost }) {
         </li>
         <li>
           <p>
-            <strong>Service Provider</strong> means any natural or legal person who processes the
-            data on behalf of the Company. It refers to third-party companies or individuals
-            employed by the Company to facilitate the Service, to provide the Service on behalf of
-            the Company, to perform services related to the Service or to assist the Company in
-            analyzing how the Service is used.
+            <strong>Service Provider</strong> means any natural or legal person who groups the data
+            on behalf of the Company. It refers to third-party companies or individuals employed by
+            the Company to facilitate the Service, to provide the Service on behalf of the Company,
+            to perform services related to the Service or to assist the Company in analyzing how the
+            Service is used.
           </p>
         </li>
         <li>
@@ -502,11 +502,11 @@ function TermsForHost({ currentHost }) {
         Transfer of Your Personal Data
       </Heading>
       <p>
-        Your information, including Personal Data, is processed at the Company's operating offices
-        and in any other places where the parties involved in the processing are located. It means
-        that this information may be transferred to — and maintained on — computers located outside
-        of Your state, province, country or other governmental jurisdiction where the data
-        protection laws may differ than those from Your jurisdiction.
+        Your information, including Personal Data, is grouped at the Company's operating offices and
+        in any other places where the parties involved in the grouping are located. It means that
+        this information may be transferred to — and maintained on — computers located outside of
+        Your state, province, country or other governmental jurisdiction where the data protection
+        laws may differ than those from Your jurisdiction.
       </p>
       <p>
         Your consent to this Privacy Policy followed by Your submission of such information
@@ -578,7 +578,7 @@ function TermsForHost({ currentHost }) {
         from Our servers.
       </p>
       <p>
-        If We need to rely on consent as a legal basis for processing Your information and Your
+        If We need to rely on consent as a legal basis for grouping Your information and Your
         country requires consent from a parent, We may require Your parent's consent before We
         collect and use that information.
       </p>

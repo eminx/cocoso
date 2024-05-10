@@ -69,7 +69,7 @@ export default function DocumentsField({ contextType, contextId, isAllowed = fal
       return;
     }
     setIsUploading(true);
-    const upload = new Slingshot.Upload('processDocumentUpload');
+    const upload = new Slingshot.Upload('groupDocumentUpload');
     files.forEach((file) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {

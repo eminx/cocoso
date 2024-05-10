@@ -46,7 +46,7 @@ labels:
   newBooking: New Booking
   page: Page
   newPage: New Page
-  process: Process
+  group: Group
   remove: Remove
   info: Info
   extra: Extra
@@ -189,8 +189,8 @@ domains:
   calendar: Calendar
   activity: Activity
   activities: Activities
-  process: Process
-  processes: Processes
+  group: Group
+  groups: Groups
   resource: Resource
   resources: Resources
   work: Work

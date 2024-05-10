@@ -6,8 +6,8 @@ const defaultMenu = [
     isHomePage: true,
   },
   {
-    label: 'Processes',
-    name: 'processes',
+    label: 'Groups',
+    name: 'groups',
     isVisible: true,
     isHomePage: false,
   },
@@ -56,13 +56,13 @@ const defaultEmails = [
     key: 'participant',
     subject: 'Welcome as a participant',
     appeal: 'Dear',
-    body: 'Welcome! As a participant, you may attend our processes and activities. Look forward to hanging out with you!',
+    body: 'Welcome! As a participant, you may attend our groups and activities. Look forward to hanging out with you!',
   },
   {
     key: 'cocreator',
     subject: 'You are now a cocreator',
     appeal: 'Dear',
-    body: 'You are now verified to be a cocreator in our space. This means that you are privileged to create public activities & processes, publish your works, and book resources in our community. \nLook forward!',
+    body: 'You are now verified to be a cocreator in our space. This means that you are privileged to create public activities & groups, publish your works, and book resources in our community. \nLook forward!',
   },
   {
     key: 'admin',

@@ -5,7 +5,7 @@ import { check } from 'meteor/check';
 import { getHost } from '../_utils/shared';
 import Hosts from '../hosts/host';
 import Works from '../works/work';
-import Processes from '../processes/process';
+import Groups from '../groups/group';
 
 Meteor.methods({
   getUserInfo(username) {
@@ -223,7 +223,7 @@ Meteor.methods({
         }
       );
 
-      Processes.update(
+      Groups.update(
         {
           members: {
             $elemMatch: {
@@ -241,7 +241,7 @@ Meteor.methods({
         }
       );
 
-      Processes.update(
+      Groups.update(
         {
           authorId: userId,
         },

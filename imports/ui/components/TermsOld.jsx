@@ -8,11 +8,11 @@ function TermsOld() {
     <div>
       <h3>{publicSettings.name} user agreement</h3>
       <p>
-        With an account, you are a member and can join any one or all of our study process’s online
-        forums free of charge. If you join a study process, you will receive running updates about
-        meetings for that process and can communicate with other participants via a discussion
-        available at all times. Your username will be visible to other members on each process page
-        you are a member of, both in the list of a process’s members and in a process’s discussion
+        With an account, you are a member and can join any one or all of our study group’s online
+        forums free of charge. If you join a study group, you will receive running updates about
+        meetings for that group and can communicate with other participants via a discussion
+        available at all times. Your username will be visible to other members on each group page
+        you are a member of, both in the list of a group’s members and in a group’s discussion
         window.
       </p>
       <p>
@@ -21,9 +21,9 @@ function TermsOld() {
         username will be visible for staff members in the list of attendees.
       </p>
       <p>
-        The discussions for each study process are visible to all members of
-        {publicSettings.name}. These discussions are kept for the duration of the process and will
-        be archived, but can be erased if the process wishes.
+        The discussions for each study group are visible to all members of
+        {publicSettings.name}. These discussions are kept for the duration of the group and will be
+        archived, but can be erased if the group wishes.
       </p>
       <p>
         {publicSettings.name} expects all members to keep respectful and supportive language when
@@ -54,7 +54,7 @@ function TermsOld() {
         address. Your e-mail address is considered personal information. The name you choose does
         not have to be your legal name, so if you choose to use your legal name you do so at your
         own discretion. This name will be displayed on the website only to other members: in the
-        member list of processes you have joined; when sending discussion messages; and in the RSVP
+        member list of groups you have joined; when sending discussion messages; and in the RSVP
         list when attending events (this latter visible only to staff).
       </p>
       <p>
@@ -75,9 +75,9 @@ function TermsOld() {
         and the website administrator.
       </p>
       <p>
-        Discussion entries in processes associated with your username are stored for the duration of
-        the process and are archived if the process ends and agrees to save its material. They are
-        deleted only if the process requests it. Note that specifically deleting only the discussion
+        Discussion entries in groups associated with your username are stored for the duration of
+        the group and are archived if the group ends and agrees to save its material. They are
+        deleted only if the group requests it. Note that specifically deleting only the discussion
         entries associated with your own account is difficult and we may not be able to provide that
         service on request.
       </p>

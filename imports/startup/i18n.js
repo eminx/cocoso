@@ -17,7 +17,7 @@ const namespaces = [
   'hosts',
   'admin',
   'activities',
-  'processes',
+  'groups',
   'calendar',
   'resources',
 ];

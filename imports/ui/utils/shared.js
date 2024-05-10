@@ -179,9 +179,9 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
     isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
     isExclusiveActivity: activity.isExclusiveActivity,
     isPublicActivity: activity.isPublicActivity,
-    isProcessMeeting: activity.isProcessMeeting,
-    processId: activity.processId,
-    isProcessPrivate: activity.isProcessPrivate,
+    isGroupMeeting: activity.isGroupMeeting,
+    groupId: activity.groupId,
+    isGroupPrivate: activity.isGroupPrivate,
     imageUrl: activity.imageUrl,
     activityId: activity._id,
   };

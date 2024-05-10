@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-const Groups = lazy(() => import('./GroupsList'));
+const Groups = lazy(() => import('./GroupList'));
 const NewGroup = lazy(() => import('./NewGroupContainer'));
 const Group = lazy(() => import('./GroupContainer'));
 const EditGroup = lazy(() => import('./EditGroupContainer'));

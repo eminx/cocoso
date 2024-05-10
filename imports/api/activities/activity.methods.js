@@ -5,25 +5,25 @@ import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
 import Activities from './activity';
-import Processes from '../processes/process';
+import Groups from '../groups/group';
 import Resources from '../resources/resource';
 import Platform from '../platform/platform';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
 
-const filterPrivateProcesses = (activities, user) => {
+const filterPrivateGroups = (activities, user) => {
   return activities.filter((act) => {
-    if (!act.isProcessPrivate) {
+    if (!act.isGroupPrivate) {
       return true;
     }
     if (!user) {
       return false;
     }
-    const process = Processes.findOne({ _id: act.processId });
+    const group = Groups.findOne({ _id: act.groupId });
     const userId = user?._id;
     return (
-      process.adminId === userId ||
-      process.members.some((member) => member.memberId === userId) ||
-      process.peopleInvited.some((person) => person.email === user.emails[0].address)
+      group.adminId === userId ||
+      group.members.some((member) => member.memberId === userId) ||
+      group.peopleInvited.some((person) => person.email === user.emails[0].address)
     );
   });
 };
@@ -33,10 +33,10 @@ Meteor.methods({
     const user = Meteor.user();
     try {
       const allActs = Activities.find({
-        $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+        $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
       }).fetch();
 
-      return filterPrivateProcesses(allActs, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -46,7 +46,7 @@ Meteor.methods({
     const user = Meteor.user();
     try {
       const allActs = Activities.find().fetch();
-      return filterPrivateProcesses(allActs, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");
     }
@@ -58,9 +58,9 @@ Meteor.methods({
     try {
       const allActs = Activities.find({
         host,
-        $or: [{ isPublicActivity: true }, { isProcessMeeting: true }],
+        $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
       }).fetch();
-      return filterPrivateProcesses(allActs, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -74,7 +74,7 @@ Meteor.methods({
       const allActs = Activities.find({
         host,
       }).fetch();
-      return filterPrivateProcesses(allActs, user);
+      return filterPrivateGroups(allActs, user);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");
@@ -211,18 +211,18 @@ Meteor.methods({
     }
   },
 
-  getAllProcessMeetings(isPortalHost = false) {
+  getAllGroupMeetings(isPortalHost = false) {
     const host = getHost(this);
 
     try {
       if (isPortalHost) {
         return Activities.find({
-          isProcessMeeting: true,
+          isGroupMeeting: true,
         }).fetch();
       }
       return Activities.find({
         host,
-        isProcessMeeting: true,
+        isGroupMeeting: true,
       }).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't fetch data");

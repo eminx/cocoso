@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { getHost } from '../_utils/shared';
 import { isContributorOrAdmin } from '../users/user.roles';
 import Hosts from '../hosts/host';
-import Processes from '../processes/process';
+import Groups from '../groups/group';
 import Chats from './chat';
 
 Meteor.methods({
@@ -62,15 +62,15 @@ Meteor.methods({
           },
         }
       );
-      if (values.context === 'processes') {
-        Meteor.call('createProcessNotification', host, values, unSeenIndex);
+      if (values.context === 'groups') {
+        Meteor.call('createGroupNotification', host, values, unSeenIndex);
       }
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  createProcessNotification(host, values, unSeenIndex) {
+  createGroupNotification(host, values, unSeenIndex) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
@@ -79,8 +79,8 @@ Meteor.methods({
     const contextId = values.contextId;
 
     try {
-      const theProcess = Processes.findOne(contextId);
-      const theOthers = theProcess.members
+      const theGroup = Groups.findOne(contextId);
+      const theOthers = theGroup.members
         .filter((member) => member.memberId !== user._id)
         .map((other) => Meteor.users.findOne(other.memberId));
       theOthers.forEach((member) => {
@@ -109,10 +109,10 @@ Meteor.methods({
           Meteor.users.update(member._id, {
             $push: {
               notifications: {
-                title: theProcess.title,
+                title: theGroup.title,
                 count: 1,
-                context: 'processes',
-                contextId: theProcess._id,
+                context: 'groups',
+                contextId: theGroup._id,
                 host,
                 unSeenIndexes: [unSeenIndex],
               },

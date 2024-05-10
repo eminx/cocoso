@@ -55,7 +55,7 @@ menu:
   itemLabel: Benämning
   info:
     activities: Den här funktionen listar offentliga evenemang och gruppmöten. Om ni klickar bort funktionen kan ni inte skapa eller synliggöra publika evenemang
-    processes: Den här funktionen listar grupper eller processer. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller processer
+    groups: Den här funktionen listar grupper eller grouper. Om ni klickar bort funktionen kan ni inte längre skapa grupper eller grouper
     calendar: Den här funktionen synliggör er kalender. Om ni klickar av funktionen blir kalendern inte synlig. Ni kan då inte göra bokningar av era resurser i kalendern
     info: Den här funktionen används för att skapa informationssidor.
     works: Den här funktionen kan användas för att skapa ett arkiv eller en portfolio, eller för att skapa poster för försäljning

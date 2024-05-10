@@ -229,8 +229,8 @@ class Calendar extends PureComponent {
 
     if (editActivity) {
       if (selectedActivity?.authorName === currentUser?.username) {
-        if (selectedActivity.isProcessMeeting) {
-          return <Redirect to={`/processes/${selectedActivity.processId}/edit`} />;
+        if (selectedActivity.isGroupMeeting) {
+          return <Redirect to={`/groups/${selectedActivity.groupId}/edit`} />;
         }
         return <Redirect to={`/activities/${selectedActivity.activityId}/edit`} />;
       }
@@ -269,8 +269,8 @@ class Calendar extends PureComponent {
 
     const selectedLinkForModal =
       selectedActivity &&
-      (selectedActivity.isProcess || selectedActivity.isProcessMeeting
-        ? `/processes/${selectedActivity.processId}`
+      (selectedActivity.isGroup || selectedActivity.isGroupMeeting
+        ? `/groups/${selectedActivity.groupId}`
         : `/activities/${selectedActivity.activityId}`);
 
     const { settings } = currentHost;
@@ -395,7 +395,7 @@ class Calendar extends PureComponent {
           onConfirm={this.handleEditActivity}
           onCancel={this.handleCloseModal}
           confirmButtonProps={
-            (!this.isCreator() || selectedActivity.isProcess) && {
+            (!this.isCreator() || selectedActivity.isGroup) && {
               style: { display: 'none' },
             }
           }
@@ -420,12 +420,12 @@ class Calendar extends PureComponent {
 
           <Text fontSize="sm" mt="2" p="1">
             {selectedActivity?.longDescription &&
-              (selectedActivity?.isProcessPrivate
+              (selectedActivity?.isGroupPrivate
                 ? ''
                 : renderHTML(selectedActivity?.longDescription))}
           </Text>
 
-          {!selectedActivity?.isProcessPrivate && (
+          {!selectedActivity?.isGroupPrivate && (
             <Center>
               <Link to={selectedLinkForModal}>
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">

@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 import ResourceRoutes from './resources/ResourceRouter';
-import ProcessRoutes from './processes/ProcessRoutes';
+import GroupRoutes from './groups/GroupRoutes';
 import ActivityRoutes from './activities/ActivityRoutes';
 import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
@@ -69,8 +69,8 @@ export default function () {
             <ActivityRoutes path="/activities" />
             <Route exact path="/my-activities" render={(props) => <MyActivities {...props} />} />
 
-            {/* Processes */}
-            <ProcessRoutes path="/processes" />
+            {/* Groups */}
+            <GroupRoutes path="/groups" />
 
             {/* Resources */}
             <ResourceRoutes path="/resources" />

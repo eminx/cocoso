@@ -52,7 +52,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
                     host={isFederationLayout && activity.host}
                     imageUrl={activity.imageUrl}
                     title={activity.title}
-                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                    subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
                   />
                 </a>
               ) : (
@@ -61,7 +61,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
                     host={isFederationLayout && activity.host}
                     imageUrl={activity.imageUrl}
                     title={activity.title}
-                    subTitle={activity.isProcess ? activity.readingMaterial : activity.subTitle}
+                    subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
                   />
                 </Link>
               )}

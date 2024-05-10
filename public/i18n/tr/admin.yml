@@ -55,7 +55,7 @@ menu:
   itemLabel: İsim
   info:
     activities: Etkinlikler ve grup toplantılarını içeren listeleme sayfası
-    processes: Gruplar ve süreçleri içeren listeleme sayfası
+    groups: Gruplar ve süreçleri içeren listeleme sayfası
     calendar: Takvim sayfası
     info: Bilgi sayfaları
     works: Sunumlar, sanatsal çalışmalar veya pazar alanı için listeleme sayfası

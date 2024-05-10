@@ -3,7 +3,7 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 
 const s3Settings = Meteor.settings.AWSs3;
 
-Slingshot.fileRestrictions('processImageUpload', {
+Slingshot.fileRestrictions('groupImageUpload', {
   allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
   maxSize: 30 * 1024 * 1024,
 });
@@ -23,13 +23,13 @@ Slingshot.fileRestrictions('workImageUpload', {
   maxSize: 30 * 1024 * 1024,
 });
 
-Slingshot.fileRestrictions('processDocumentUpload', {
+Slingshot.fileRestrictions('groupDocumentUpload', {
   allowedFileTypes: [
     'application/pdf',
     'application/doc',
     'application/msword',
     'application/zip',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.wordgroupingml.document',
     'image/png',
     'image/jpg',
     'image/jpeg',
@@ -120,7 +120,7 @@ Slingshot.createDirective('resourceImageUpload', Slingshot.S3Storage, {
   },
 });
 
-Slingshot.createDirective('processImageUpload', Slingshot.S3Storage, {
+Slingshot.createDirective('groupImageUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketName,
@@ -183,7 +183,7 @@ Slingshot.createDirective('platformLogoUpload', Slingshot.S3Storage, {
   },
 });
 
-Slingshot.createDirective('processDocumentUpload', Slingshot.S3Storage, {
+Slingshot.createDirective('groupDocumentUpload', Slingshot.S3Storage, {
   AWSAccessKeyId: s3Settings.AWSAccessKeyId,
   AWSSecretAccessKey: s3Settings.AWSSecretAccessKey,
   bucket: s3Settings.AWSBucketReadingMaterials,

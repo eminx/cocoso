@@ -46,7 +46,7 @@ labels:
   newBooking: Yeni Rezervasyon
   page: Sayfa
   newPage: YENİ SAYFA
-  process: Süreç
+  group: Süreç
   remove: Kaldır
   info: BİLGİ
   extra: Ekstra
@@ -185,8 +185,8 @@ domains:
   calendar: Takvim
   activity: Aktivite
   activities: Aktiviteler
-  process: Süreç
-  processes: Süreçler
+  group: Süreç
+  groups: Süreçler
   resource: Kaynak
   resources: Kaynaklar
   work: İş

@@ -10,7 +10,7 @@ import { Alert } from '../../components/message';
 import MemberAvatarEtc from '../../components/MemberAvatarEtc';
 import MemberWorks from '../works/MemberWorks';
 import MemberActivities from '../activities/MemberActivities';
-import MemberProcesses from '../processes/MemberProcesses';
+import MemberGroups from '../groups/MemberGroups';
 import Tabs from '../../components/Tabs';
 import { call } from '../../utils/shared';
 import NewEntryHelper from '../../components/NewEntryHelper';
@@ -88,7 +88,7 @@ function Profile({ history, match, path }) {
 
   menu
     ?.filter((item) => {
-      return ['works', 'activities', 'processes'].includes(item.name) && item.isVisible;
+      return ['works', 'activities', 'groups'].includes(item.name) && item.isVisible;
     })
     ?.forEach((item) => {
       tabs.push({
@@ -169,9 +169,9 @@ function Profile({ history, match, path }) {
                 )}
               />
               <Route
-                path="/@:username/processes"
+                path="/@:username/groups"
                 render={(props) => (
-                  <MemberProcesses
+                  <MemberGroups
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}

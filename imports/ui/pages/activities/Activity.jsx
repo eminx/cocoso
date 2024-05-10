@@ -487,8 +487,8 @@ class Activity extends PureComponent {
       return <Loader />;
     }
 
-    if (activityData.isProcessMeeting) {
-      return <Redirect to={`/processes/${activityData.processId}/dates`} />;
+    if (activityData.isGroupMeeting) {
+      return <Redirect to={`/groups/${activityData.groupId}/dates`} />;
     }
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;

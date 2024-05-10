@@ -28,25 +28,25 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-import DatePicker from '../../components/DatePicker';
-import { ConflictMarker } from '../../components/DatesAndTimes';
-import InviteManager from './InviteManager';
+import DatePicker from '../../components/DatePicker.jsx';
+import { ConflictMarker } from '../../components/DatesAndTimes.jsx';
+import InviteManager from './InviteManager.jsx';
 import Drawer from '../../components/Drawer.jsx';
 import Chattery from '../../components/chattery/Chattery.jsx';
-import Loader from '../../components/Loader';
-import FancyDate, { DateJust } from '../../components/FancyDate';
-import NiceList from '../../components/NiceList';
-import ConfirmModal from '../../components/ConfirmModal';
-import { Alert, message } from '../../components/message';
-import TablyCentered from '../../components/TablyCentered';
+import Loader from '../../components/Loader.jsx';
+import FancyDate, { DateJust } from '../../components/FancyDate.jsx';
+import NiceList from '../../components/NiceList.jsx';
+import ConfirmModal from '../../components/ConfirmModal.jsx';
+import { Alert, message } from '../../components/message.jsx';
+import TablyCentered from '../../components/TablyCentered.jsx';
 import {
   call,
   checkAndSetBookingsWithConflict,
   getAllBookingsWithSelectedResource,
   parseAllBookingsWithResources,
-} from '../../utils/shared';
-import { StateContext } from '../../LayoutContainer';
-import { DocumentUploadHelper } from '../../components/UploadHelpers';
+} from '../../utils/shared.js';
+import { StateContext } from '../../LayoutContainer.jsx';
+import { DocumentUploadHelper } from '../../components/UploadHelpers.jsx';
 
 moment.locale(i18n.language);
 

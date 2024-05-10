@@ -37,10 +37,10 @@ Users.schema.UserProfile = {
     optional: true,
   },
 
-  processes: { type: Array, defaultValue: [] },
-  'processes.$': {
+  groups: { type: Array, defaultValue: [] },
+  'groups.$': {
     type: new SimpleSchema({
-      processId: Schemas.Id,
+      groupId: Schemas.Id,
       name: { type: String },
       isAdmin: { type: Boolean, defaultValue: false },
       joinDate: { type: Date },

@@ -53,13 +53,13 @@ Each entry in calendar could be assigned a different category such as a _resourc
 
 See Big Calendar: https://github.com/jquense/react-big-calendar
 
-### Processes
+### Groups
 
-A process is a concept and a series of virtual or actual activities by a group of individuals to facilitate a _purposeful conceptual activity_ together and keep track of relevant information such as meeting date&time occurrences, documents, members, discussions etc.
+A group is a concept and a series of virtual or actual activities by a group of individuals to facilitate a _purposeful conceptual activity_ together and keep track of relevant information such as meeting date&time occurrences, documents, members, discussions etc.
 
 Maybe this explanation was too abstract?
 
-This feature basically includes most of the digital tools for running, for example a learning, training, cocreation or facilitation process. Like a school, or a continuous/recurrent yoga session, or a cooperative activity of any kind.
+This feature basically includes most of the digital tools for running, for example a learning, training, cocreation or facilitation group. Like a school, or a continuous/recurrent yoga session, or a cooperative activity of any kind.
 
 You can basically keep your main information (image and text), members list, a simple discussion forum, documents, and meeting dates all in one page.
 
@@ -67,7 +67,7 @@ All in one page.
 
 ### Members
 
-If you're admin of an organisation, you can find and filter through members of the organisation. You can verify or unverify them for being able to do certain activities such as creating activities in the program/calendar or creating a process. Think of it like if you run a yoga studio, you'll have both your teachers and students in one platform. Then you will verify your teachers for them to be able to create their activities at the home page, whereas students can only participate to existing activities.
+If you're admin of an organisation, you can find and filter through members of the organisation. You can verify or unverify them for being able to do certain activities such as creating activities in the program/calendar or creating a group. Think of it like if you run a yoga studio, you'll have both your teachers and students in one platform. Then you will verify your teachers for them to be able to create their activities at the home page, whereas students can only participate to existing activities.
 
 So necessarily privileges can be meaningfully distributed amongst your community.
 

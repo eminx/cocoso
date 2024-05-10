@@ -63,9 +63,9 @@ Activities.schema = new SimpleSchema({
   isRegistrationDisabled: { type: Boolean, optional: true },
   isPublished: { type: Boolean },
 
-  processId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
-  isProcessMeeting: { type: Boolean, optional: true },
-  isProcessPrivate: { type: Boolean, optional: true },
+  groupId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  isGroupMeeting: { type: Boolean, optional: true },
+  isGroupPrivate: { type: Boolean, optional: true },
 
   latestUpdate: { type: Date, optional: true },
   creationDate: { type: Date },

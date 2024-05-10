@@ -1,11 +1,11 @@
 import mailtranslations from './mailtranslations';
 
-const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave = false) => {
-  const groupId = group._id,
-    groupTitle = group.title,
-    groupBody = group.description,
-    groupReadingMaterial = group.readingMaterial,
-    imageUrl = group.imageUrl,
+const getGroupRegistrationEmailBody = (Group, currentHost, currentUser, isLeave = false) => {
+  const GroupId = Group._id,
+    GroupTitle = Group.title,
+    GroupBody = Group.description,
+    GroupReadingMaterial = Group.readingMaterial,
+    imageUrl = Group.imageUrl,
     firstName = currentUser.firstName || currentUser.username,
     hostName = currentHost.settings.name,
     host = currentHost.host,
@@ -262,7 +262,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                     
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
-        >${confirmedApprovalBrief}: <b>${groupTitle}</b><br /></div>
+        >${confirmedApprovalBrief}: <b>${GroupTitle}</b><br /></div>
       
                   </td>
                 </tr>
@@ -369,7 +369,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                  align="center" bgcolor="#414141" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#414141;" valign="middle"
               >
                 <a
-                   href="https://${host}/groups/${groupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
+                   href="https://${host}/Groups/${GroupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
                   ${visitPage}
                 </a>
@@ -466,7 +466,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                     
         <div
            style="font-family:Sarabun, Arial;font-size:20px;line-height:1;text-align:left;color:rgb(50, 50, 50);"
-        ><b>${groupTitle}</b></div>
+        ><b>${GroupTitle}</b></div>
       
                   </td>
                 </tr>
@@ -478,7 +478,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                     
         <div
            style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:left;color:rgb(50, 50, 50);"
-        >${groupReadingMaterial}</div>
+        >${GroupReadingMaterial}</div>
       
                   </td>
                 </tr>
@@ -490,7 +490,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                     
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1.4;text-align:left;color:rgb(50, 50, 50);"
-        >${groupBody}</div>
+        >${GroupBody}</div>
       
                   </td>
                 </tr>
@@ -509,7 +509,7 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
                  align="center" bgcolor="#414141" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#414141;" valign="middle"
               >
                 <a
-                   href="https://${host}/groups/${groupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
+                   href="https://${host}/Groups/${GroupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
                   ${visitPage}
                 </a>
@@ -607,12 +607,12 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
     `;
 };
 
-const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
-  const groupId = group._id,
-    groupTitle = group.title,
-    groupBody = group.description,
-    groupReadingMaterial = group.readingMaterial,
-    imageUrl = group.imageUrl,
+const getInviteToPrivateGroupEmailBody = (Group, currentHost, currentUser) => {
+  const GroupId = Group._id,
+    GroupTitle = Group.title,
+    GroupBody = Group.description,
+    GroupReadingMaterial = Group.readingMaterial,
+    imageUrl = Group.imageUrl,
     firstName = currentUser.firstName || currentUser.username,
     hostName = currentHost.settings.name,
     host = currentHost.host,
@@ -863,7 +863,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                     
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1;text-align:center;color:rgb(50, 50, 50);"
-        >${confirmedApprovalBrief}: <b>${groupTitle}</b><br /></div>
+        >${confirmedApprovalBrief}: <b>${GroupTitle}</b><br /></div>
       
                   </td>
                 </tr>
@@ -970,7 +970,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                  align="center" bgcolor="#414141" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#414141;" valign="middle"
               >
                 <a
-                   href="https://${host}/groups/${groupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
+                   href="https://${host}/Groups/${GroupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
                   ${visitPage}
                 </a>
@@ -1067,7 +1067,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                     
         <div
            style="font-family:Sarabun, Arial;font-size:20px;line-height:1;text-align:left;color:rgb(50, 50, 50);"
-        ><b>${groupTitle}</b></div>
+        ><b>${GroupTitle}</b></div>
       
                   </td>
                 </tr>
@@ -1079,7 +1079,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                     
         <div
            style="font-family:Sarabun, Arial;font-size:18px;line-height:1;text-align:left;color:rgb(50, 50, 50);"
-        >${groupReadingMaterial}</div>
+        >${GroupReadingMaterial}</div>
       
                   </td>
                 </tr>
@@ -1091,7 +1091,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                     
         <div
            style="font-family:Sarabun, Arial;font-size:16px;line-height:1.4;text-align:left;color:rgb(50, 50, 50);"
-        >${groupBody}</div>
+        >${GroupBody}</div>
       
                   </td>
                 </tr>
@@ -1110,7 +1110,7 @@ const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
                  align="center" bgcolor="#414141" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#414141;" valign="middle"
               >
                 <a
-                   href="https://${host}/groups/${groupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
+                   href="https://${host}/Groups/${GroupId}" style="display:inline-block;background:#414141;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;" target="_blank"
                 >
                   ${visitPage}
                 </a>

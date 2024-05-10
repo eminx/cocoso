@@ -4,7 +4,7 @@ import { Migrations } from 'meteor/percolate:migrations';
 import Hosts from '../../api/hosts/host';
 import Resources from '../../api/resources/resource';
 import Activities from '../../api/activities/activity';
-import Processes from '../../api/processes/process';
+import Groups from '../../api/groups/group';
 import Pages from '../../api/pages/page';
 import Works from '../../api/works/work';
 
@@ -243,13 +243,13 @@ Migrations.add({
   },
 });
 
-// Create Activity from each Process Meeting (with a Resource)
+// Create Activity from each Group Meeting (with a Resource)
 Migrations.add({
   version: 11,
   async up() {
     console.log('up to', this.version);
-    Processes.find({ meetings: { $exists: true } }).forEach(async (process) => {
-      await process.meetings.forEach(async (meeting, meetingIndex) => {
+    Groups.find({ meetings: { $exists: true } }).forEach(async (group) => {
+      await group.meetings.forEach(async (meeting, meetingIndex) => {
         const newAttendees = [];
         await meeting.attendees.forEach((attendee) => {
           const theUser = Meteor.users.findOne(attendee.memberId);
@@ -264,11 +264,11 @@ Migrations.add({
           newAttendees.push(theAttendee);
         });
         let newActivity = {
-          host: process.host,
-          authorId: process.adminId,
-          authorName: process.adminUsername,
-          title: process.title,
-          longDescription: process.description,
+          host: group.host,
+          authorId: group.adminId,
+          authorName: group.adminUsername,
+          title: group.title,
+          longDescription: group.description,
           datesAndTimes: [
             {
               startDate: meeting.startDate,
@@ -278,13 +278,13 @@ Migrations.add({
               attendees: [...newAttendees],
             },
           ],
-          processId: process._id,
+          groupId: group._id,
           isPublicActivity: false,
           isRegistrationDisabled: true,
-          isProcessMeeting: true,
-          isSentForReview: process.isSentForReview || false,
-          isPublished: process.isPublished,
-          creationDate: process.creationDate,
+          isGroupMeeting: true,
+          isSentForReview: group.isSentForReview || false,
+          isPublished: group.isPublished,
+          creationDate: group.creationDate,
         };
         try {
           const theResource = Resources.findOne({ label: meeting.resource });
@@ -309,13 +309,13 @@ Migrations.add({
   },
 });
 
-// Clean all nested Meeting arrays from Processes
+// Clean all nested Meeting arrays from Groups
 Migrations.add({
   version: 12,
   async up() {
     console.log('up to', this.version);
-    Processes.find({ meetings: { $exists: true } }).forEach((process) => {
-      Processes.update({ _id: process._id }, { $unset: { meetings: 1 } });
+    Groups.find({ meetings: { $exists: true } }).forEach((group) => {
+      Groups.update({ _id: group._id }, { $unset: { meetings: 1 } });
     });
   },
   async down() {
@@ -344,9 +344,9 @@ Migrations.add({
   version: 14,
   async up() {
     console.log('up to', this.version);
-    Processes.find().forEach((process) => {
-      const admin = Meteor.users.findOne({ _id: process.adminId });
-      const members = process.members;
+    Groups.find().forEach((group) => {
+      const admin = Meteor.users.findOne({ _id: group.adminId });
+      const members = group.members;
       const newMembers = members.map((m) => {
         const member = Meteor.users.findOne({ _id: m.memberId });
         return {
@@ -354,15 +354,15 @@ Migrations.add({
           username: m.username,
           joinDate: m.joinDate,
           avatar: member?.avatar?.src,
-          isAdmin: process.adminId === m.memberId,
+          isAdmin: group.adminId === m.memberId,
         };
       });
-      Processes.update(
-        { _id: process._id },
+      Groups.update(
+        { _id: group._id },
         {
           $set: {
-            authorId: process.adminId,
-            authorUsername: process.adminUsername,
+            authorId: group.adminId,
+            authorUsername: group.adminUsername,
             authorAvatar: admin?.avatar?.src,
             members: newMembers,
           },
@@ -389,17 +389,17 @@ Migrations.add({
   },
   async down() {
     console.log('down to', this.version - 1);
-    Processes.find().forEach((process) => {
-      const members = process.members;
+    Groups.find().forEach((group) => {
+      const members = group.members;
       const oldMembers = members.map((m) => ({
         memberId: m.memberId,
         username: m.username,
         joinDate: m.joinDate,
         profileImage: m.avatar,
       }));
-      const admin = process.members.find((m) => m.isAdmin);
-      Processes.update(
-        { _id: process._id },
+      const admin = group.members.find((m) => m.isAdmin);
+      Groups.update(
+        { _id: group._id },
         {
           $set: {
             members: oldMembers,
