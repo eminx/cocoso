@@ -491,7 +491,7 @@ Meteor.methods({
     }
 
     const currentHostName = currentHost.settings?.name;
-    const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user);
+    const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user, person);
     try {
       Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
 
