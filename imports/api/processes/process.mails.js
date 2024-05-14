@@ -607,13 +607,13 @@ const getGroupRegistrationEmailBody = (group, currentHost, currentUser, isLeave 
     `;
 };
 
-const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser) => {
+const getInviteToPrivateGroupEmailBody = (group, currentHost, currentUser, person) => {
   const groupId = group._id,
     groupTitle = group.title,
     groupBody = group.description,
     groupReadingMaterial = group.readingMaterial,
     imageUrl = group.imageUrl,
-    firstName = currentUser.firstName || currentUser.username,
+    firstName = person?.firstName,
     hostName = currentHost.settings.name,
     host = currentHost.host,
     hostLogo = currentHost.logo,

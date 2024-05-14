@@ -7,7 +7,7 @@ import Hosts from '../hosts/host';
 import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
-import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
+import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './process.mails';
 
 const publicSettings = Meteor.settings.public;
 
@@ -491,7 +491,7 @@ Meteor.methods({
     }
 
     const currentHostName = currentHost.settings?.name;
-    const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user);
+    const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user, person);
     try {
       Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
 

@@ -26,20 +26,6 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
-
-  // Hosts.find().forEach((host) => {
-  //   const newMenu = host.settings.menu.map((item) => {
-  //     if (item.name === 'processes') {
-  //       return {
-  //         ...item,
-  //         name: 'groups',
-  //       };
-  //     }
-  //     return item;
-  //   });
-
-  //   Hosts.update({ _id: host._id }, { $set: { 'settings.menu': newMenu } });
-  // });
 });
 
 // const render = async (sink) => {
