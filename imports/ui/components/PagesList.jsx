@@ -1,12 +1,22 @@
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
-import { Button, Center, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Button, Center, Heading, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import { parseTitle } from '../utils/shared';
 
 const PagesList = withRouter(({ currentPage, pageTitles }) => {
   const history = useHistory();
+
+  if (pageTitles?.length === 1) {
+    return (
+      <Center zIndex="1400">
+        <Heading color="gray.800" size="md">
+          {currentPage?.title}
+        </Heading>
+      </Center>
+    );
+  }
 
   return (
     <Center zIndex="1400">

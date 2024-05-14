@@ -188,7 +188,7 @@ function Members() {
   const tabs = filterOptions.map((item) => {
     return {
       title: item.label,
-      path: `/admin/members/${item.value}`,
+      path: `/admin/people/${item.value}`,
       content: <MemberList roleFilter={filterInPath} members={membersSorted} t={t} />,
     };
   });

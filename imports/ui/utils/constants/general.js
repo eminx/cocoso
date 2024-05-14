@@ -33,7 +33,7 @@ const adminMenu = [
   {
     menu: 'admin',
     key: 'members',
-    value: '/admin/members',
+    value: '/admin/people',
   },
   {
     menu: 'admin',

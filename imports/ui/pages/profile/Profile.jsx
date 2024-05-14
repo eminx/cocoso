@@ -119,12 +119,12 @@ function Profile({ history, match, path }) {
 
   const isFederationLayout = platform?.isFederationLayout;
 
-  const members = menu?.find((item) => item.name === 'members');
+  const members = menu?.find((item) => item.name === 'people');
 
   return (
     <>
       <Box p="2">
-        <BackLink backLink={{ label: members.label, value: '/members' }} />
+        <BackLink backLink={{ label: members?.label, value: '/people' }} />
       </Box>
       {/* <Grid templateColumns={isDesktop ? '3fr 4fr 1fr' : '1fr'}> */}
       {/* <GridItem mx={isDesktop ? '4' : '0'} mt="2" mb="4"> */}

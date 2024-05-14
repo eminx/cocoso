@@ -104,11 +104,14 @@ function MembersPublic({ history }) {
       if (hostFilterValue.host === currentHost?.host) {
         justGo();
       } else {
-        window.location.href = `https://${hostFilterValue.host}/@${username}`;
+        window.location.href = `https://${currentHost.host}/@${username}`;
       }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
     } else {
+      if (memberships?.length === 0) {
+        return;
+      }
       window.location.href = `https://${memberships[0]?.host}/@${username}`;
     }
   };
@@ -293,11 +296,11 @@ function MembersPublic({ history }) {
 
   const tabs = [
     {
-      path: '/members',
+      path: '/people',
       title: t('labels.list'),
     },
     {
-      path: '/members?showKeywordSearch=true',
+      path: '/people?showKeywordSearch=true',
       title: t('labels.search'),
     },
   ];
