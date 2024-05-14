@@ -7,7 +7,6 @@ import { parse, stringify } from 'query-string';
 
 import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
 import Tag from '../../components/Tag';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';

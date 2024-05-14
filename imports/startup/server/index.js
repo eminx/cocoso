@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { WebAppInternals } from 'meteor/webapp';
-const publicSettings = Meteor.settings?.public;
+// import { WebAppInternals } from 'meteor/webapp';
 
 // import { onPageLoad } from 'meteor/server-render';
 // import React from 'react';
@@ -15,8 +14,6 @@ import Hosts from '../../api/hosts/host';
 import './api';
 import './migrations';
 
-const cdnserver = publicSettings?.cdnserver;
-
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
 
@@ -29,13 +26,21 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
-});
 
-if (Meteor.isProduction && cdnserver) {
-  WebAppInternals.setBundledJsCssUrlRewriteHook((url) => {
-    return cdnserver + url;
-  });
-}
+  // Hosts.find().forEach((host) => {
+  //   const newMenu = host.settings.menu.map((item) => {
+  //     if (item.name === 'processes') {
+  //       return {
+  //         ...item,
+  //         name: 'groups',
+  //       };
+  //     }
+  //     return item;
+  //   });
+
+  //   Hosts.update({ _id: host._id }, { $set: { 'settings.menu': newMenu } });
+  // });
+});
 
 // const render = async (sink) => {
 //   const context = {};
