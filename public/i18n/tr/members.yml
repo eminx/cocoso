@@ -1,13 +1,13 @@
 # ADMIN MEMBERS PAGE
-label: Üyeler
+label: Kullanıcılar
 
 all: Tümü
 
 joinedAt: '{{ date }} katıldı'
 
 roles:
-  participant: Katılımcı
-  contributor: Oluşturucu
+  participant: Onaylanmamış
+  contributor: Onaylı
   admin: Admin
   verified: Onaylı (içerik oluşturabilir)
   plural:

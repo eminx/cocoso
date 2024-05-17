@@ -32,8 +32,8 @@ const adminMenu = [
   },
   {
     menu: 'admin',
-    key: 'members',
-    value: '/admin/people',
+    key: 'users',
+    value: '/admin/users',
   },
   {
     menu: 'admin',

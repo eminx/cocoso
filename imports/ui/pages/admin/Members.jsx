@@ -135,15 +135,15 @@ function Members() {
       value: 'all',
     },
     {
-      label: t('roles.plural.participants'),
+      label: t('roles.participant'),
       value: 'participant',
     },
     {
-      label: t('roles.plural.contributors'),
+      label: t('roles.contributor'),
       value: 'contributor',
     },
     {
-      label: t('roles.plural.admins'),
+      label: t('roles.admin'),
       value: 'admin',
     },
   ];
@@ -188,7 +188,7 @@ function Members() {
   const tabs = filterOptions.map((item) => {
     return {
       title: item.label,
-      path: `/admin/people/${item.value}`,
+      path: `/admin/users/${item.value}`,
       content: <MemberList roleFilter={filterInPath} members={membersSorted} t={t} />,
     };
   });
@@ -279,7 +279,7 @@ function MemberItem({ member, t }) {
       </Heading>
       <Text>{member && member.email}</Text>
       <Text fontSize="sm" fontStyle="italic">
-        {member.role === 'contributor' ? 'cocreator' : member.role}
+        {t('roles.' + member.role).toLowerCase()}
       </Text>
       <Text fontSize="xs" color="gray.500">
         {t('joinedAt', {

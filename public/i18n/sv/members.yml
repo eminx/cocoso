@@ -1,13 +1,13 @@
 # ADMIN MEMBERS PAGE
-label: Medlemmar
+label: Användare
 
 all: Alla
 
 joinedAt: Gick med {{ date }}
 
 roles:
-  participant: Deltagare
-  contributor: Medskapare
+  participant: Ej-verifierad
+  contributor: Verifierad
   admin: Admin
   verified: Verifierad (kan skapa innehåll)
   plural:

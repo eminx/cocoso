@@ -1,13 +1,13 @@
 # ADMIN MEMBERS PAGE
-label: Members
+label: Users
 
 all: All
 
 joinedAt: joined {{ date }}
 
 roles:
-  participant: Participant
-  contributor: Cocreator
+  participant: Non-verified
+  contributor: Verified
   admin: Admin
   verified: Verified (can create content)
   plural:

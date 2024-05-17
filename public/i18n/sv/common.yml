@@ -160,6 +160,7 @@ menu:
     label: Admin
     settings: Inställningar
     members: Medlemmar
+    users: Användare
     resources: Resurser
     emails: E-postmeddelanden
     categories: Kategorier

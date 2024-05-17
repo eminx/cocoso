@@ -159,6 +159,7 @@ menu:
     label: Admin
     settings: Ayarlar
     members: Üyeler
+    users: Kullanıcılar
     resources: Kaynaklar
     emails: Epostalar
     categories: Kategoriler

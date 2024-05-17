@@ -96,7 +96,7 @@ export default function () {
             {/* Admin */}
             <Switch path="/admin">
               <Route path="/admin/settings" render={(props) => <Settings {...props} />} />
-              <Route path="/admin/people" render={(props) => <Members {...props} />} />
+              <Route path="/admin/users" render={(props) => <Members {...props} />} />
               <Route exact path="/admin/emails" render={(props) => <Emails {...props} />} />
               <Route
                 exact

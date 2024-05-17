@@ -162,6 +162,7 @@ menu:
     label: Admin
     settings: Settings
     members: Members
+    users: Users
     resources: Resources
     emails: Emails
     email-newsletter: Email Newsletter

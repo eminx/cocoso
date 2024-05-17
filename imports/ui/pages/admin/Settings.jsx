@@ -24,7 +24,7 @@ export default function Settings({ history }) {
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
 
-  const { currentUser, currentHost, isDesktop, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
 
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
