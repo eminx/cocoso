@@ -13,7 +13,7 @@ form:
     helper: Select an item that you want to book, to appear in the calendar
   occurrences:
     label: Occurrences
-    helper: Whether private booking of a resource, or a public event; please enter timely details of each of the occurrences they will happen
+    helper: Please enter timely details of each of the occurrences that will happen
   days:
     single: Day
     multiple: Multiple Days

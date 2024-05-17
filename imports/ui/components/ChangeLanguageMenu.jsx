@@ -16,7 +16,7 @@ export default ChangeLanguage = ({
     return (
       <Box textAlign={isCentered ? 'center' : 'initial'}>
         {!hideHelper && <Text fontSize="sm">{t('common:langs.form.label')}:</Text>}
-        <Menu>
+        <Menu placement="top">
           <MenuButton fontWeight="bold" textDecoration="underline">
             {t(`common:langs.${i18n.language}`)}
           </MenuButton>

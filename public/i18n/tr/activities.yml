@@ -13,6 +13,7 @@ form:
     helper: Takvimde görünmesi için rezerve etmek istediğin bir ögeyi seç. Zorunlu değil
   occurrences:
     label: Tekrarlar
+    helper: Lütfen aktivitenin zamanlarını gir
   days:
     single: Gün
     multiple: Birden fazla gün
