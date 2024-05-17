@@ -206,7 +206,15 @@ function Resources({ history }) {
           smallThumb
         >
           {(resource) => (
-            <Box key={resource._id} cursor="pointer" onClick={() => setModalResource(resource)}>
+            <Box
+              key={resource._id}
+              alignSelf="flex-start"
+              cursor="pointer"
+              flexBasis={280}
+              flexGrow={1}
+              maxW={360}
+              onClick={() => setModalResource(resource)}
+            >
               <NewGridThumb
                 fixedImageHeight
                 host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}
