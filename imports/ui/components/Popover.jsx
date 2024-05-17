@@ -11,13 +11,30 @@ import {
   //   PopoverAnchor,
 } from '@chakra-ui/react';
 
-export default function Popover({ footer, title, trigger, children, ...otherProps }) {
+export default function Popover({
+  footer,
+  isDark = true,
+  title,
+  trigger,
+  children,
+  ...otherProps
+}) {
+  const bg = isDark ? 'gray.800' : 'gray.50';
+  const borderColor = isDark ? 'gray.50' : 'gray.800';
+
   return (
     <CPopover trigger="hover" {...otherProps}>
       <PopoverTrigger>{trigger}</PopoverTrigger>
-      <PopoverContent color="white" bg="gray.800" borderColor="gray.800">
-        <PopoverArrow />
-        <PopoverCloseButton />
+      <PopoverContent
+        bg={bg}
+        borderColor={borderColor}
+        color={isDark ? 'white' : 'gray.900'}
+        px="4"
+        py="2"
+        w="auto"
+      >
+        <PopoverArrow bg={bg} />
+        <PopoverCloseButton mr="-1" />
         {title && <PopoverHeader>{title}</PopoverHeader>}
         <PopoverBody>{children}</PopoverBody>
         {footer && <PopoverFooter>{footer}</PopoverFooter>}

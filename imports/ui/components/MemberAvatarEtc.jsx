@@ -95,16 +95,16 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               </Text>
               {['contributor', 'admin'].includes(role) && (
                 <Box ml="1">
-                  <Tooltip hasArrow label={t('roles.verified')} aria-label="isVerified">
-                    <BadgeCheck color="#010101" size="20" />
-                  </Tooltip>
+                  <Popover trigger={<BadgeCheck color="#010101" size="20" />}>
+                    <Text fontWeight="bold">{t('roles.verified')}</Text>
+                  </Popover>
                 </Box>
               )}
               {role === 'admin' && (
                 <Box>
-                  <Tooltip hasArrow label={t('roles.admin')} aria-label="isAdmin">
-                    <Bolt color="#010101" size="20" />
-                  </Tooltip>
+                  <Popover trigger={<Bolt color="#010101" size="20" />}>
+                    <Text fontWeight="bold">{t('roles.admin')}</Text>
+                  </Popover>
                 </Box>
               )}
             </HStack>
@@ -141,6 +141,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                       <Box key={m.host} my="2" textAlign="left">
                         <Button
                           colorScheme="gray.800"
+                          textAlign="left"
                           textDecoration="underline"
                           variant="link"
                           onClick={() => setRedirect(m)}
@@ -152,6 +153,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                           fontSize="sm"
                           fontWeight="light"
                           ml="2"
+                          textAlign="left"
                           textTransform="lowercase"
                         >
                           {t(`roles.${m.role}`)}
