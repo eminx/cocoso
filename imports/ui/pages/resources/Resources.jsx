@@ -201,7 +201,7 @@ function Resources({ history }) {
       <Box px="4">
         <InfiniteScroller
           canCreateContent={isAdmin}
-          items={[resourcesRendered[0]]}
+          items={resourcesRendered}
           newHelperLink="/resources/new"
           smallThumb
         >
