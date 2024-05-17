@@ -95,15 +95,18 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
               </Text>
               {['contributor', 'admin'].includes(role) && (
                 <Box ml="1">
-                  <Popover trigger={<BadgeCheck color="#010101" size="20" />}>
-                    <Text fontWeight="bold">{t('roles.verified')}</Text>
-                  </Popover>
-                </Box>
-              )}
-              {role === 'admin' && (
-                <Box>
-                  <Popover trigger={<Bolt color="#010101" size="20" />}>
-                    <Text fontWeight="bold">{t('roles.admin')}</Text>
+                  <Popover
+                    trigger={
+                      role === 'contributor' ? (
+                        <BadgeCheck color="#010101" size="20" />
+                      ) : (
+                        <Bolt color="#010101" size="20" />
+                      )
+                    }
+                  >
+                    <Text fontWeight="bold">
+                      {role === 'contributor' ? t('roles.verified') : t('roles.admin')}
+                    </Text>
                   </Popover>
                 </Box>
               )}
