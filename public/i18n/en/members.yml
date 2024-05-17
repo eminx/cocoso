@@ -9,6 +9,7 @@ roles:
   participant: Participant
   contributor: Cocreator
   admin: Admin
+  verified: Verified (can create content)
   plural:
     participants: Participants
     contributors: Cocreators

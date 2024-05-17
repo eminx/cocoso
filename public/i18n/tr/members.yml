@@ -9,6 +9,7 @@ roles:
   participant: Katılımcı
   contributor: Oluşturucu
   admin: Admin
+  verified: Onaylı (içerik oluşturabilir)
   plural:
     participants: Katılımcılar
     contributors: Oluşturucular

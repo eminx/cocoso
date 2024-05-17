@@ -4,7 +4,9 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   Flex,
+  HStack,
   Image,
   Modal,
   ModalBody,
@@ -14,11 +16,13 @@ import {
   ModalOverlay,
   Tag,
   Text,
+  Tooltip,
   Wrap,
   WrapItem,
   useDisclosure,
 } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
+import { BadgeCheck, Bolt } from 'lucide-react';
 
 import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
@@ -82,16 +86,29 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
         )}
 
         <Box pt="2" textAlign={isCentered ? 'center' : 'left'}>
-          <Box>
-            <Text fontWeight="bold" fontSize="xl">
-              {user.username}{' '}
-              {!hideRole && role && (
-                <Text as="span" fontSize="sm" fontWeight="light" textTransform="lowercase">
-                  {roleTr}
-                </Text>
+          <Center>
+            <HStack spacing="0.5">
+              <Text fontWeight="bold" fontSize="xl">
+                {user.username}
+                {/* {!hideRole && role && ( */}
+                {/* )} */}
+              </Text>
+              {['contributor', 'admin'].includes(role) && (
+                <Box ml="1">
+                  <Tooltip hasArrow label={t('roles.verified')} aria-label="isVerified">
+                    <BadgeCheck color="#010101" size="20" />
+                  </Tooltip>
+                </Box>
               )}
-            </Text>
-          </Box>
+              {role === 'admin' && (
+                <Box>
+                  <Tooltip hasArrow label={t('roles.admin')} aria-label="isAdmin">
+                    <Bolt color="#010101" size="20" />
+                  </Tooltip>
+                </Box>
+              )}
+            </HStack>
+          </Center>
           <Box>
             <Text>{getFullName(user)}</Text>
           </Box>

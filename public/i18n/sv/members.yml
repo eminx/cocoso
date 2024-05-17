@@ -9,6 +9,7 @@ roles:
   participant: Deltagare
   contributor: Medskapare
   admin: Admin
+  verified: Verifierad (kan skapa innehåll)
   plural:
     participants: Deltagare
     contributors: Medskapare

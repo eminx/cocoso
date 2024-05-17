@@ -8,7 +8,6 @@ import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import GridThumb from '../../components/GridThumb';
-import Loader from '../../components/Loader';
 import FiltrerSorter from '../../components/FiltrerSorter';
 import Tabs from '../../components/Tabs';
 import HostFiltrer from '../../components/HostFiltrer';
@@ -202,19 +201,12 @@ function Resources({ history }) {
       <Box px="4">
         <InfiniteScroller
           canCreateContent={isAdmin}
-          items={resourcesRendered}
+          items={[resourcesRendered[0]]}
           newHelperLink="/resources/new"
           smallThumb
         >
           {(resource) => (
-            <Box
-              key={resource._id}
-              alignSelf="flex-start"
-              cursor="pointer"
-              flexBasis={280}
-              flexGrow={1}
-              onClick={() => setModalResource(resource)}
-            >
+            <Box key={resource._id} cursor="pointer" onClick={() => setModalResource(resource)}>
               <NewGridThumb
                 fixedImageHeight
                 host={isPortalHost ? allHosts.find((h) => h.host === resource.host)?.name : null}

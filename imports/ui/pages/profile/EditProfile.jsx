@@ -205,8 +205,8 @@ function EditProfile({ history }) {
 
   const isMember = ['admin', 'contributor', 'participant'].includes(role);
   const currentMembership = currentUser.memberships.find((m) => m.host === currentHost.host);
-  const isUserPublic = Boolean(currentMembership.isPublic);
-  const isUserPublicGlobally = currentUser.isPublic;
+  const isUserPublic = Boolean(currentMembership?.isPublic);
+  const isUserPublicGlobally = currentUser?.isPublic;
   const communityName = currentHost?.settings?.name;
 
   if (!isMember) {
