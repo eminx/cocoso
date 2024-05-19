@@ -23,7 +23,7 @@ actions:
   logout: Çıkış yap
   downloadCSV: CSV indir
   confirmRead: Okudum ve kabul ediyorum
-  toThePage: '{{ hostName }} Sayfaya git'
+  toThePage: '{{ hostName }} sayfasına git'
   entryPage: Sayfaya git
   toHost: Uygulamaya git
   share: Paylaş
