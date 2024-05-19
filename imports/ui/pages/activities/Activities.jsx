@@ -97,7 +97,7 @@ function Activities({ history }) {
     getActivities();
   }, []);
 
-  const isPortalHost = currentHost.isPortalHost;
+  const isPortalHost = currentHost?.isPortalHost;
 
   const getActivities = async () => {
     try {

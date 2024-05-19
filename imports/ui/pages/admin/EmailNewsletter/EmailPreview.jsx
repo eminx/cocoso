@@ -118,9 +118,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   />
                 </Link>
                 <ActivityDates activity={activity} currentHost={currentHost} />
-                <Text>
-                  {activity?.longDescription && renderHTML(shorten(activity.longDescription))}
-                </Text>
+                <Text>{activity?.longDescription && renderHTML(activity.longDescription)}</Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
                     href={`https://${host}/activities/${activity._id}`}
@@ -175,7 +173,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     />
                   </Link>
                 )}
-                <Text>{work?.longDescription && renderHTML(shorten(work.longDescription))} </Text>
+                <Text>{work?.longDescription && renderHTML(work.longDescription)} </Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
                     href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
