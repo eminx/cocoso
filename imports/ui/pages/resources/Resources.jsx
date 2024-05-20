@@ -29,14 +29,13 @@ function Resources({ history }) {
   const [isCopied, setCopied] = useState(false);
   const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
 
-  const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
 
   useEffect(() => {
     getResources();
   }, []);
 
-  const isPortalHost = currentHost?.isPortalHost;
+  const isPortalHost = Boolean(currentHost?.isPortalHost);
 
   const getResources = async () => {
     try {
@@ -170,11 +169,11 @@ function Resources({ history }) {
   };
 
   const getButtonLabel = () => {
-    if (!isPortalHost || modalResource.host === currentHost.host) {
+    if (!isPortalHost || modalResource?.host === currentHost?.host) {
       return tc('actions.entryPage');
     }
     return tc('actions.toThePage', {
-      hostName: allHosts?.find((h) => h.host === modalResource.host)?.name,
+      hostName: allHosts?.find((h) => h?.host === modalResource?.host)?.name,
     });
   };
 

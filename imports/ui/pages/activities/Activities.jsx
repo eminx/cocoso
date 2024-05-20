@@ -97,7 +97,7 @@ function Activities({ history }) {
     getActivities();
   }, []);
 
-  const isPortalHost = currentHost?.isPortalHost;
+  const isPortalHost = Boolean(currentHost?.isPortalHost);
 
   const getActivities = async () => {
     try {
@@ -207,11 +207,11 @@ function Activities({ history }) {
   };
 
   const getButtonLabel = () => {
-    if (!isPortalHost || modalActivity.host === currentHost.host) {
+    if (!isPortalHost || modalActivity?.host === currentHost?.host) {
       return tc('actions.entryPage');
     }
     return tc('actions.toThePage', {
-      hostName: allHosts?.find((h) => h.host === modalActivity.host)?.name,
+      hostName: allHosts?.find((h) => h?.host === modalActivity?.host)?.name,
     });
   };
 

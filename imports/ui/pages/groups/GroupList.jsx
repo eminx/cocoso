@@ -52,7 +52,7 @@ export default function GroupsList({ history }) {
     getGroups();
   }, []);
 
-  const isPortalHost = Boolean(currentHost.isPortalHost);
+  const isPortalHost = Boolean(currentHost?.isPortalHost);
 
   const getGroups = async () => {
     try {
@@ -182,11 +182,11 @@ export default function GroupsList({ history }) {
   };
 
   const getButtonLabel = () => {
-    if (!isPortalHost || modalGroup.host === currentHost.host) {
+    if (!isPortalHost || modalGroup?.host === currentHost?.host) {
       return tc('actions.entryPage');
     }
     return tc('actions.toThePage', {
-      hostName: allHosts?.find((h) => h.host === modalGroup.host)?.name,
+      hostName: allHosts?.find((h) => h?.host === modalGroup?.host)?.name,
     });
   };
 
