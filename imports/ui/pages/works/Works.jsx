@@ -245,7 +245,7 @@ function Works({ history }) {
 
       {modalWork && (
         <Modal
-          actionButtonLabel={getButtonLabel()}
+          actionButtonLabel={'Visit'}
           h="90%"
           isCentered
           isOpen

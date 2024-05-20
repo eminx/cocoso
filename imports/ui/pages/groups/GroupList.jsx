@@ -266,7 +266,7 @@ export default function GroupsList({ history }) {
 
       {modalGroup && (
         <Modal
-          actionButtonLabel={getButtonLabel()}
+          actionButtonLabel={'Visit'}
           h="90%"
           isCentered
           isOpen

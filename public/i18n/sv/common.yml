@@ -23,7 +23,7 @@ actions:
   logout: Logga ut
   downloadCSV: Ladda ner CSV
   confirmRead: Jag har läst och accepterar
-  toThePage: Besök sidan {{ hostName }}
+  toThePage: Besök sidan i {{ hostName }}
   entryPage: Besök sidan
   toHost: Besök
   share: Dela

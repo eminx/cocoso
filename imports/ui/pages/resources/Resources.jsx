@@ -236,7 +236,7 @@ function Resources({ history }) {
 
       {modalResource && (
         <Modal
-          actionButtonLabel={getButtonLabel()}
+          actionButtonLabel={'Visit'}
           h="90%"
           isCentered
           isOpen
