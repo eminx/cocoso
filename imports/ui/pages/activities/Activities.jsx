@@ -299,7 +299,7 @@ function Activities({ history }) {
 
       {modalActivity && (
         <Modal
-          actionButtonLabel={'Visit'}
+          actionButtonLabel={getButtonLabel()}
           h="90%"
           isCentered
           isOpen
