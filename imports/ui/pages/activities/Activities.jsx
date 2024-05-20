@@ -97,6 +97,8 @@ function Activities({ history }) {
     getActivities();
   }, []);
 
+  const isPortalHost = currentHost?.isPortalHost;
+
   const getActivities = async () => {
     try {
       if (isPortalHost) {
@@ -115,8 +117,6 @@ function Activities({ history }) {
       setLoading(false);
     }
   };
-
-  const isPortalHost = currentHost.isPortalHost;
 
   const getFuturePublicActivities = () => {
     if (!activities) {
@@ -206,6 +206,15 @@ function Activities({ history }) {
     setModalActivity(null);
   };
 
+  const getButtonLabel = () => {
+    if (!isPortalHost || modalActivity.host === currentHost.host) {
+      return tc('actions.entryPage');
+    }
+    return tc('actions.toThePage', {
+      hostName: allHosts?.find((h) => h.host === modalActivity.host)?.name,
+    });
+  };
+
   const tabs = [
     {
       path: '/activities?showPast=true',
@@ -288,14 +297,7 @@ function Activities({ history }) {
 
       {modalActivity && (
         <Modal
-          actionButtonLabel={
-            tc('actions.entryPage')
-            // isPortalHost
-            //   ? tc('actions.toThePage', {
-            //       hostName: allHosts.find((h) => h.host === modalActivity.host)?.name,
-            //     })
-            //   : tc('actions.entryPage')
-          }
+          actionButtonLabel={getButtonLabel()}
           h="90%"
           isCentered
           isOpen

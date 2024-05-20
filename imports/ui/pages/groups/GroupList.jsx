@@ -181,6 +181,15 @@ export default function GroupsList({ history }) {
     setModalGroup(null);
   };
 
+  const getButtonLabel = () => {
+    if (!isPortalHost || modalGroup.host === currentHost.host) {
+      return tc('actions.entryPage');
+    }
+    return tc('actions.toThePage', {
+      hostName: allHosts?.find((h) => h.host === modalGroup.host)?.name,
+    });
+  };
+
   const tabs = [
     {
       title: t('tabs.active'),
@@ -257,14 +266,7 @@ export default function GroupsList({ history }) {
 
       {modalGroup && (
         <Modal
-          actionButtonLabel={
-            tc('actions.entryPage')
-            // isPortalHost
-            //   ? tc('actions.toThePage', {
-            //       hostName: allHosts.find((h) => h.host === modalGroup.host)?.name,
-            //     })
-            //   : tc('actions.entryPage')
-          }
+          actionButtonLabel={getButtonLabel()}
           h="90%"
           isCentered
           isOpen
