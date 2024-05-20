@@ -16,18 +16,6 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-function shorten(str) {
-  const strArray = str.split(/\s+/);
-  return [...strArray.slice(0, 30)].join(' ') + '...';
-}
-
-function stripAndShorten(html) {
-  let tmp = document.createElement('DIV');
-  tmp.innerHTML = html;
-  const stripped = tmp.textContent || tmp.innerText || '';
-  return shorten(stripped);
-}
-
 export default function EmailPreview({ currentHost, email, imageUrl }) {
   if (!email || !currentHost) {
     return null;
@@ -124,9 +112,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   />
                 </Link>
                 <ActivityDates activity={activity} currentHost={currentHost} />
-                <Text>
-                  {activity?.longDescription && stripAndShorten(activity.longDescription)}
-                </Text>
+                <Text>{activity?.longDescription && renderHTML(activity.longDescription)}</Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
                     href={`https://${host}/activities/${activity._id}`}
@@ -181,7 +167,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     />
                   </Link>
                 )}
-                <Text>{work?.longDescription && stripAndShorten(work.longDescription)} </Text>
+                <Text>{work?.longDescription && renderHTML(work.longDescription)} </Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
                     href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
