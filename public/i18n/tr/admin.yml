@@ -132,7 +132,7 @@ newsletter:
     success:
       emailsent: Eposta başarıyla tüm üyelere gönderildi.
   portalHost:
-    info: Bu federasyonun portal uygulaması olduğundan, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
+    info: Bu federasyonun portal uygulaması olduğu için, e-posta tüm {{ platform }} platformu üyelerine gönderilecektir
 
 # ADMIN STATIC PAGES
 pages:
