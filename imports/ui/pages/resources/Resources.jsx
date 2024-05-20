@@ -169,15 +169,6 @@ function Resources({ history }) {
     setModalResource(null);
   };
 
-  const getButtonLabel = () => {
-    if (!isPortalHost || modalResource.host === currentHost.host) {
-      return tc('actions.entryPage');
-    }
-    return tc('actions.toThePage', {
-      hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
-    });
-  };
-
   const isAdmin = role === 'admin';
 
   const { settings } = currentHost;
@@ -237,7 +228,14 @@ function Resources({ history }) {
 
       {modalResource && (
         <Modal
-          actionButtonLabel={getButtonLabel()}
+          actionButtonLabel={
+            tc('actions.entryPage')
+            // isPortalHost
+            //   ? tc('actions.toThePage', {
+            //       hostName: allHosts.find((h) => h.host === modalResource.host)?.name,
+            //     })
+            //   : tc('actions.entryPage')
+          }
           h="90%"
           isCentered
           isOpen

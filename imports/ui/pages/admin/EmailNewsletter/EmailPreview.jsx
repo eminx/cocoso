@@ -16,12 +16,6 @@ import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-function shorten(str) {
-  const strArray = str.split(/\s+/);
-  const result = [...strArray.slice(0, 50), '...'].join(' ');
-  return result + '</p>';
-}
-
 export default function EmailPreview({ currentHost, email, imageUrl }) {
   if (!email || !currentHost) {
     return null;
@@ -173,7 +167,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     />
                   </Link>
                 )}
-                <Text>{work?.longDescription && renderHTML(work.longDescription)} </Text>
+                <Text>{work?.longDescription && renderHTML(work.longDescription)}</Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
                     href={`https://${host}/@${work.authorUsername}/works/${work._id}`}

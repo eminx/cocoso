@@ -140,15 +140,6 @@ function Works({ history }) {
     setModalWork(null);
   };
 
-  const getButtonLabel = () => {
-    if (!isPortalHost || modalWork.host === currentHost.host) {
-      return tc('actions.entryPage');
-    }
-    return tc('actions.toThePage', {
-      hostName: allHosts.find((h) => h.host === modalWork.host)?.name,
-    });
-  };
-
   const worksRenderedHostFiltered = getWorksRenderedHostFiltered(worksWithCategoryColors);
 
   const allHostsFiltered = allHosts?.filter((host) => {
@@ -245,7 +236,14 @@ function Works({ history }) {
 
       {modalWork && (
         <Modal
-          actionButtonLabel={getButtonLabel()}
+          actionButtonLabel={
+            tc('actions.entryPage')
+            // isPortalHost
+            //   ? tc('actions.toThePage', {
+            //       hostName: allHosts?.find((h) => h.host === modalWork.host)?.name,
+            //     })
+            //   : tc('actions.entryPage')
+          }
           h="90%"
           isCentered
           isOpen
