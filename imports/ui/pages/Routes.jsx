@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Home from '../Home';
@@ -10,7 +10,6 @@ import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
 import Communities from '../pages/hosts/Communities';
-import { ContentLoader } from '../components/SkeletonLoaders';
 
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
@@ -53,7 +52,6 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 export default function () {
   return (
     <LayoutContainer>
-      {/* <Suspense fallback={<ContentLoader />}> */}
       <Switch>
         {/* Home */}
         <Route exact path="/" render={(props) => <Home {...props} />} />
@@ -138,7 +136,6 @@ export default function () {
           <NotFoundPage />
         </Route>
       </Switch>
-      {/* </Suspense> */}
     </LayoutContainer>
   );
 }
