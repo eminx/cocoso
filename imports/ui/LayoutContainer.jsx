@@ -19,7 +19,6 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
-import Favicon from 'react-favicon';
 import renderHTML from 'react-render-html';
 
 import FeedbackForm from './components/FeedbackForm';
@@ -48,11 +47,12 @@ function LayoutPage({ currentUser, userLoading, children }) {
   useEffect(() => {
     getCurrentHost();
     getPlatform();
+    getAllHosts();
   }, []);
 
-  useEffect(() => {
-    getAllHosts();
-  }, [currentHost && currentHost.isPortalHost]);
+  // useEffect(() => {
+  //   getAllHosts();
+  // }, [currentHost && currentHost.isPortalHost]);
 
   const pathnameSplitted = pathname.split('/');
 
@@ -161,8 +161,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
           href={`${publicSettings.iconsBaseUrl}/favicon-16x16.png`}
         />
       </Helmet>
-
-      <Favicon url={`${publicSettings.iconsBaseUrl}/favicon.ico`} />
 
       <ChakraProvider theme={chakraTheme}>
         <ColorModeProvider>
