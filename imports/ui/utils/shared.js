@@ -320,6 +320,7 @@ function parseHtmlEntities(input) {
 }
 
 const yesterday = moment(new Date()).add(-1, 'days');
+const today = moment();
 
 function compareDatesForSortActivities(a, b) {
   const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
