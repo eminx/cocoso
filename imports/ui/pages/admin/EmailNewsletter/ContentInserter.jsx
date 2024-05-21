@@ -20,7 +20,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
-import { call } from '../../../utils/shared';
+import { call, compareDatesForSortActivities } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message } from '../../../components/message';
 import { ActivityDates } from './EmailPreview';
@@ -115,7 +115,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
       return null;
     }
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
-    return activities.filter((activity) => {
+    const filtered = activities.filter((activity) => {
       const activityWordFiltered =
         activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
@@ -125,6 +125,8 @@ export default function ContentInserter({ currentHost, onSelect }) {
         activityWordFiltered
       );
     });
+
+    return filtered.sort(compareDatesForSortActivities);
   };
 
   const getWorksFiltered = () => {

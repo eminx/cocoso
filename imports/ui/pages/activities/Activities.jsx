@@ -11,7 +11,11 @@ import { StateContext } from '../../LayoutContainer';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import Tabs from '../../components/Tabs';
 import FiltrerSorter from '../../components/FiltrerSorter';
-import { call } from '../../utils/shared';
+import {
+  call,
+  compareDatesForSortActivities,
+  compareDatesForSortActivitiesReverse,
+} from '../../utils/shared';
 import { message } from '../../components/message';
 import Modal from '../../components/Modal';
 import Tably from '../../components/Tably';
@@ -26,9 +30,6 @@ moment.locale(i18n.language);
 const yesterday = moment().add(-1, 'days');
 const today = moment();
 
-const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
-const getLastPastOccurence = (occurence) => moment(occurence.startDate).isBefore(today);
-
 const getFutureOccurrences = (dates) => {
   return dates
     .filter((date) => moment(date.endDate).isAfter(yesterday))
@@ -40,22 +41,6 @@ const getPastOccurrences = (dates) => {
     .filter((date) => moment(date.startDate).isBefore(today))
     .sort((a, b) => moment(b.startDate) - moment(a.startDate));
 };
-
-function compareDatesForSort(a, b) {
-  const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
-  const firstOccurenceB = b?.datesAndTimes?.find(getFirstFutureOccurence);
-  const dateA = new Date(`${firstOccurenceA?.startDate}T${firstOccurenceA?.startTime}:00Z`);
-  const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
-  return dateA - dateB;
-}
-
-function compareDatesForSortReverse(a, b) {
-  const firstOccurenceA = a?.datesAndTimes?.reverse().find(getLastPastOccurence);
-  const firstOccurenceB = b?.datesAndTimes?.reverse().find(getLastPastOccurence);
-  const dateA = new Date(`${firstOccurenceA?.startDate}T${firstOccurenceA?.startTime}:00Z`);
-  const dateB = new Date(`${firstOccurenceB?.startDate}T${firstOccurenceB?.startTime}:00Z`);
-  return dateB - dateA;
-}
 
 function parseGroupActivities(activities) {
   const activitiesParsed = [];
@@ -157,12 +142,12 @@ function Activities({ history }) {
       if (sorterValue === 'name') {
         return getPastPublicActivities().sort((a, b) => a.title.localeCompare(b.title));
       }
-      return getPastPublicActivities().sort(compareDatesForSortReverse);
+      return getPastPublicActivities().sort(compareDatesForSortActivitiesReverse);
     } else {
       if (sorterValue === 'name') {
         return getFuturePublicActivities().sort((a, b) => a.title.localeCompare(b.title));
       }
-      return getFuturePublicActivities().sort(compareDatesForSort);
+      return getFuturePublicActivities().sort(compareDatesForSortActivities);
     }
   };
 
