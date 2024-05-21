@@ -94,7 +94,6 @@ function Activities({ history }) {
   const [tc] = useTranslation('common');
 
   useEffect(() => {
-    console.log('activities loading');
     getActivities();
   }, []);
 
@@ -111,7 +110,6 @@ function Activities({ history }) {
         const allActivitiesParsed = parseGroupActivities(allActivities);
         setActivities(allActivitiesParsed);
       }
-      console.log('activities loaded');
     } catch (error) {
       console.log(error);
       message.error(error.reason);
