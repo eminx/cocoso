@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Home from '../Home';
@@ -10,6 +10,7 @@ import PageRoutes from './pages/PageRouter';
 import ProfileRoutes from './profile/ProfileRouter';
 import Terms from '../components/Terms';
 import Communities from '../pages/hosts/Communities';
+import { ContentLoader } from '../components/SkeletonLoaders';
 
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
@@ -52,90 +53,95 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 export default function () {
   return (
     <LayoutContainer>
-      <Switch>
-        {/* Home */}
-        <Route exact path="/" render={(props) => <Home {...props} />} />
+      <Suspense fallback={<ContentLoader />}>
+        <Switch>
+          {/* Home */}
+          <Route exact path="/" render={(props) => <Home {...props} />} />
 
-        {/* Members list public */}
-        <Route exact path="/people" render={(props) => <MembersPublic {...props} />} />
+          {/* Members list public */}
+          <Route exact path="/people" render={(props) => <MembersPublic {...props} />} />
 
-        {/* Calendar */}
-        <Route exact path="/calendar" render={(props) => <CalendarContainer {...props} />} />
+          {/* Calendar */}
+          <Route exact path="/calendar" render={(props) => <CalendarContainer {...props} />} />
 
-        {/* Activities */}
-        <ActivityRoutes path="/activities" />
-        <Route exact path="/my-activities" render={(props) => <MyActivities {...props} />} />
+          {/* Activities */}
+          <ActivityRoutes path="/activities" />
+          <Route exact path="/my-activities" render={(props) => <MyActivities {...props} />} />
 
-        {/* Groups */}
-        <GroupRoutes path="/groups" />
+          {/* Groups */}
+          <GroupRoutes path="/groups" />
 
-        {/* Resources */}
-        <ResourceRoutes path="/resources" />
+          {/* Resources */}
+          <ResourceRoutes path="/resources" />
 
-        {/* Pages */}
-        <PageRoutes path="/pages" />
+          {/* Pages */}
+          <PageRoutes path="/pages" />
 
-        {/* Works */}
-        <Switch path="/works">
-          <Route exact path="/works" render={(props) => <Works {...props} />} />
-          <Route exact path="/works/new" render={(props) => <NewWork {...props} />} />
-        </Switch>
+          {/* Works */}
+          <Switch path="/works">
+            <Route exact path="/works" render={(props) => <Works {...props} />} />
+            <Route exact path="/works/new" render={(props) => <NewWork {...props} />} />
+          </Switch>
 
-        {/* Profile & Profile Related Pages */}
-        <ProfileRoutes path="/@:username" />
+          {/* Profile & Profile Related Pages */}
+          <ProfileRoutes path="/@:username" />
 
-        {/* Communities: Only on Portal App */}
-        <Route exact path="/communities" render={(props) => <Communities {...props} />} />
+          {/* Communities: Only on Portal App */}
+          <Route exact path="/communities" render={(props) => <Communities {...props} />} />
 
-        {/* Newsletter Emails */}
-        <Route path="/newsletters" render={(props) => <PreviousNewsletters {...props} />} />
+          {/* Newsletter Emails */}
+          <Route path="/newsletters" render={(props) => <PreviousNewsletters {...props} />} />
 
-        {/* Admin */}
-        <Switch path="/admin">
-          <Route path="/admin/settings" render={(props) => <Settings {...props} />} />
-          <Route path="/admin/users" render={(props) => <Members {...props} />} />
-          <Route exact path="/admin/emails" render={(props) => <Emails {...props} />} />
+          {/* Admin */}
+          <Switch path="/admin">
+            <Route path="/admin/settings" render={(props) => <Settings {...props} />} />
+            <Route path="/admin/users" render={(props) => <Members {...props} />} />
+            <Route exact path="/admin/emails" render={(props) => <Emails {...props} />} />
+            <Route
+              exact
+              path="/admin/email-newsletter"
+              render={(props) => <EmailNewsletter {...props} />}
+            />
+            <Route path="/admin/categories" render={(props) => <Categories {...props} />} />
+          </Switch>
+
+          {/* Super Admin */}
+          <Route
+            path="/superadmin/platform/settings"
+            render={(props) => <PlatformSettings {...props} />}
+          />
+          <Route
+            path="/superadmin/platform/registration-intro"
+            render={(props) => <PlatformRegistrationIntro {...props} />}
+          />
+
+          {/* Auth */}
+          <Route exact path="/register" render={(props) => <SignupPage {...props} />} />
+          <Route exact path="/login" render={(props) => <LoginPage {...props} />} />
           <Route
             exact
-            path="/admin/email-newsletter"
-            render={(props) => <EmailNewsletter {...props} />}
+            path="/forgot-password"
+            render={(props) => <ForgotPasswordPage {...props} />}
           />
-          <Route path="/admin/categories" render={(props) => <Categories {...props} />} />
+          <Route
+            path="/reset-password/:token"
+            render={(props) => <ResetPasswordPage {...props} />}
+          />
+
+          <Route path="/intro" render={(props) => <RegistrationIntro {...props} />} />
+
+          {/* SuperAdmin */}
+          <Route exact path="/new-host" render={(props) => <NewHost {...props} />} />
+          <Route exact path="/terms-&-privacy-policy" render={(props) => <Terms {...props} />} />
+
+          {/* NotFoundPage */}
+          <Route exact path="/not-found" render={(props) => <NotFoundPage {...props} />} />
+          <Route exact path="/404" render={(props) => <NotFoundPage {...props} />} />
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
         </Switch>
-
-        {/* Super Admin */}
-        <Route
-          path="/superadmin/platform/settings"
-          render={(props) => <PlatformSettings {...props} />}
-        />
-        <Route
-          path="/superadmin/platform/registration-intro"
-          render={(props) => <PlatformRegistrationIntro {...props} />}
-        />
-
-        {/* Auth */}
-        <Route exact path="/register" render={(props) => <SignupPage {...props} />} />
-        <Route exact path="/login" render={(props) => <LoginPage {...props} />} />
-        <Route
-          exact
-          path="/forgot-password"
-          render={(props) => <ForgotPasswordPage {...props} />}
-        />
-        <Route path="/reset-password/:token" render={(props) => <ResetPasswordPage {...props} />} />
-
-        <Route path="/intro" render={(props) => <RegistrationIntro {...props} />} />
-
-        {/* SuperAdmin */}
-        <Route exact path="/new-host" render={(props) => <NewHost {...props} />} />
-        <Route exact path="/terms-&-privacy-policy" render={(props) => <Terms {...props} />} />
-
-        {/* NotFoundPage */}
-        <Route exact path="/not-found" render={(props) => <NotFoundPage {...props} />} />
-        <Route exact path="/404" render={(props) => <NotFoundPage {...props} />} />
-        <Route path="*">
-          <NotFoundPage />
-        </Route>
-      </Switch>
+      </Suspense>
     </LayoutContainer>
   );
 }
