@@ -1,17 +1,19 @@
 import React from 'react';
-import { Body } from '@react-email/body';
-import { Button } from '@react-email/button';
-import { Column } from '@react-email/column';
-import { Container } from '@react-email/container';
-import { Head } from '@react-email/head';
-import { Heading } from '@react-email/heading';
-import { Hr } from '@react-email/hr';
-import { Html } from '@react-email/html';
-import { Img } from '@react-email/img';
-import { Link } from '@react-email/link';
-import { Row } from '@react-email/row';
-import { Section } from '@react-email/section';
-import { Text } from '@react-email/text';
+import {
+  Body,
+  Button,
+  Column,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Img,
+  Link,
+  Row,
+  Section,
+  Text,
+} from '@react-email/components';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -29,12 +31,12 @@ function stripAndShorten(html) {
 }
 
 export default function EmailPreview({ currentHost, email, imageUrl }) {
+  const [tc] = useTranslation('common');
+  const [t] = useTranslation('admin');
+
   if (!email || !currentHost) {
     return null;
   }
-
-  const [tc] = useTranslation('common');
-  const [t] = useTranslation('admin');
 
   const { appeal, body, footer, image, items, subject } = email;
   const uploadableImageLocal = image?.uploadableImageLocal;
@@ -57,6 +59,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             style={{ color: '#0f64c0', fontSize: '12px', margin: '0 0 8px', textAlign: 'center' }}
           >
             {t('newsletter.labels.browserlink')}
+            {/* Browser */}
           </Text>
         </Link>
         <Container>
@@ -136,6 +139,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {tc('actions.entryPage')}
+                    {/* Visit */}
                   </Button>
                 </Text>
                 <Hr />
@@ -191,6 +195,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                     }}
                   >
                     {tc('actions.entryPage')}
+                    {/* Visit */}
                   </Button>
                 </Text>
                 <Hr />
