@@ -43,16 +43,16 @@ export default {
       visitPage: 'Besök sidan',
     },
     joinGroup: {
-      confirmedApprovalText: 'Du har nu gått med i gruppen/groupen',
+      confirmedApprovalText: 'Du har nu gått med i gruppen',
       confirmedApprovalTextLong:
         'Du kan nu följa uppdateringar, registrera dig för att delta i möten och vara i med i diskussioner på sidan.',
-      confirmedApprovalTextLeave: 'Du har nu lämnat gruppen/groupen',
+      confirmedApprovalTextLeave: 'Du har nu lämnat gruppen',
       confirmedApprovalTextLongLeave: 'Om du vill gå med igen, kan du göra det här på sidan',
     },
     invitePrivateGroup: {
       confirmedApprovalText: 'Detta mejl är en inbjudan till en privat grupp/group',
       confirmedApprovalTextLong:
-        'Om du vill acceptera denna inbjudan och gå med i gruppen/groupen, så går du till sidan och klicka ”Gå med”/”Join”. Notera att du måste ha ett konto, eller skapa ett med samma epostadress som du fick denna inbjudan till. Du är sedan välkommen att följa uppdateringar, registrera dig till kommande möten och delta i diskussionerna på gruppens/groupens sida.',
+        'Om du vill acceptera denna inbjudan och gå med i gruppen, så går du till sidan och klicka ”Gå med”/”Join”. Notera att du måste ha ett konto, eller skapa ett med samma epostadress som du fick denna inbjudan till. Du är sedan välkommen att följa uppdateringar, registrera dig till kommande möten och delta i diskussionerna på gruppens/groupens sida.',
     },
     attendMeeting: {
       confirmedApprovalText: 'Du har registrerat dig till mötet',
