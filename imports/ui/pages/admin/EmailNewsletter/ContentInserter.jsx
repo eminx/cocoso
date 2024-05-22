@@ -126,7 +126,17 @@ export default function ContentInserter({ currentHost, onSelect }) {
       );
     });
 
-    return filtered.sort(compareDatesForSortActivities);
+    const pastDatesRemoved = filtered.map((activity) => {
+      const datesAndTimes = activity.datesAndTimes.filter((date) =>
+        moment(date.endDate).isAfter(yesterday)
+      );
+      return {
+        ...activity,
+        datesAndTimes,
+      };
+    });
+
+    return pastDatesRemoved.sort(compareDatesForSortActivities);
   };
 
   const getWorksFiltered = () => {

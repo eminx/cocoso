@@ -250,14 +250,8 @@ export function ActivityDates({ activity, currentHost }) {
   );
 }
 
-const today = moment();
-
 export function ActivityDate({ currentHost, date }) {
   moment.locale(currentHost?.settings?.lang || 'en');
-
-  if (!date || moment(date.endDate).isBefore(today)) {
-    return null;
-  }
 
   return (
     <Column style={{ paddingRight: 8 }}>

@@ -424,7 +424,7 @@ class Activity extends PureComponent {
     const { activityData } = this.props;
     const { currentUser } = this.context;
 
-    const shouldRun = currentUser.notifications.find((notification) => {
+    const shouldRun = currentUser?.notifications.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
       }
