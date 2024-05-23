@@ -27,7 +27,7 @@ actions:
   participant: Revert back as a participant
   usageReport: See usage report
   visit: Visit Profile
-  visithost: Visit T in {{ host }}
+  visithost: Visit profile in {{ host }}
 
 message:
   success:

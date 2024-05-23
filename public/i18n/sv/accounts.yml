@@ -85,13 +85,13 @@ profile:
     participant: Du har angetts som deltagare
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
-    platform: Information du anger här kommer att vara publik i plattformen och publiceras i de communities du väljer att vara med i.
+    platform: Informationen du anger här kommer att vara publik. Du kan välja att dölja ditt konto, men vi rekommenderar att du är publik för att underlätta kommunikationen med andra medlemmar. Håll din information uppdaterad!
 
   makePublic:
     labelGlobal: Din profil visas publikt
     label: Din profil visas publikt i den har community
     helperText: Om reglaget är påslaget kommer din profil att vara synlig för allmänheten
-    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig i alla communities
+    helperTextGlobal: Om den stängs av kommer din profil att vara osynlig även internt
 
   menu:
     avatar: Profilbild
