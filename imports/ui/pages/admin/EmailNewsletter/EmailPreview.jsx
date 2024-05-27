@@ -227,19 +227,26 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   );
 }
 
+const yesterday = moment(new Date()).add(-1, 'days');
+
 export function ActivityDates({ activity, currentHost }) {
   if (!activity) {
     return null;
   }
-  const length = activity.datesAndTimes?.length;
+
+  const futureDates = activity.datesAndTimes.filter((date) =>
+    moment(date.endDate).isAfter(yesterday)
+  );
+
+  const length = futureDates?.length;
 
   return (
     <Row style={{ marginLeft: 0, marginTop: 4, width: 'auto' }}>
       {length < 4
-        ? activity?.datesAndTimes?.map((date) => (
+        ? futureDates?.map((date) => (
             <ActivityDate key={date.startDate + date.endTime} date={date} />
           ))
-        : activity?.datesAndTimes
+        : futureDates
             ?.filter((d, i) => i < 3)
             .map((date) => (
               <ActivityDate
