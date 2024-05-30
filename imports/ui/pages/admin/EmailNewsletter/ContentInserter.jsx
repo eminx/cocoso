@@ -163,7 +163,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
       });
       setActivities(newActivities);
       onSelect({
-        activities: newActivities.filter((a) => a.isSelected),
+        activities: newActivities.filter((a) => a.isSelected).sort(compareDatesForSortActivities),
         works: works.filter((w) => w.isSelected),
       });
     } else {

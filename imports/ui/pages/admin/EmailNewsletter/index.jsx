@@ -129,7 +129,6 @@ function EmailNewsletter({ history }) {
 
     setIsSending(true);
 
-    console.log('isSending');
     if (email?.image?.uploadableImage) {
       uploadLocalImage();
     } else {

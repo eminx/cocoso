@@ -107,6 +107,7 @@ function Activities({ history }) {
     if (!activities) {
       return null;
     }
+
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
     return activities.filter((activity) => {
       const activityWordFiltered =
