@@ -75,7 +75,7 @@ function Activities() {
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const search = { location };
+  const { search } = location;
   const { showPast } = parse(search, { parseBooleans: true });
   const [tc] = useTranslation('common');
 

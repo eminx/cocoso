@@ -39,7 +39,7 @@ function MembersPublic() {
   const [tm] = useTranslation('members');
   const navigate = useNavigate();
   const location = useLocation();
-  const search = { location };
+  const { search } = location;
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
 
   useEffect(() => {
