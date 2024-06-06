@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,12 +17,11 @@ function LoginPage() {
   const [isJoinModal, setIsJoinModal] = useState(false);
 
   if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
-    return <Redirect to={`/@${currentUser.username}/profile`} />;
+    return <Navigate to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {
     if (values?.username?.length < 4 || values?.password?.length < 8) {
-      console.log('fdslj');
       return;
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Modal from './Modal';
@@ -12,7 +12,7 @@ export default function PortalPageEntryRouter({ items, context, routeParam, chil
   };
 
   return (
-    <Switch>
+    <Routes>
       <Route
         path={`/${context}/:${routeParam}`}
         render={(props) => (
@@ -22,7 +22,7 @@ export default function PortalPageEntryRouter({ items, context, routeParam, chil
             isOpen
             scrollBehavior="inside"
             size="6xl"
-            onClose={() => props.history.push('/' + context)}
+            onClose={() => props.navigate('/' + context)}
             actionButtonLabel={tc('actions.toThePage')}
             onActionButtonClick={() =>
               (window.location.href = getActivityLink(props.match.params.activityId))
@@ -32,6 +32,6 @@ export default function PortalPageEntryRouter({ items, context, routeParam, chil
           </Modal>
         )}
       />
-    </Switch>
+    </Routes>
   );
 }

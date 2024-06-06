@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
@@ -30,12 +30,12 @@ function UserPopup() {
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
     useContext(StateContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsOpen(false);
     Meteor.logout();
-    history.push('/');
+    navigate('/');
   };
 
   const isFed = platform?.isFederationLayout;

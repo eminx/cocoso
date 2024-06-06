@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Box, Button, Center, Heading, Image } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ function RegistrationIntro() {
   const [tc] = useTranslation('common');
 
   if (!currentUser) {
-    return <Redirect to="/register" />;
+    return <Navigate to="/register" />;
   }
 
   if (!platform || !platform.registrationIntro) {

@@ -42,7 +42,7 @@ function EditResourcePage({ history }) {
     try {
       await call('deleteResource', resourceId);
       message.success(tc('message.success.remove'));
-      history.push('/resources');
+      navigate('/resources');
     } catch (error) {
       message.error(error.error || error.reason);
       console.log(error);

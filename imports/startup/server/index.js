@@ -1,4 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import React from 'react';
+import { renderWithSSR } from 'meteor/communitypackages:react-router-ssr';
+
 // import { WebAppInternals } from 'meteor/webapp';
 
 // import { onPageLoad } from 'meteor/server-render';
@@ -9,10 +12,12 @@ import { Accounts } from 'meteor/accounts-base';
 // import { Helmet } from 'react-helmet';
 // import { ServerStyleSheet } from 'styled-components';
 // import Routes from '../../ui/pages/Routes';
-import Hosts from '../../api/hosts/host';
+// import Hosts from '../../api/hosts/host';
 
 import './api';
 import './migrations';
+
+const AppRoutes = [{ path: '/', element: <div>naber lan</div> }];
 
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
@@ -26,6 +31,11 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+  // if (!Meteor.user()) {
+  //   renderWithSSR(AppRoutes, {
+  //     renderTarget: 'react-app',
+  //   });
+  // }
 });
 
 // const render = async (sink) => {

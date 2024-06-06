@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Box, Button, Center, VStack } from '@chakra-ui/react';
 
 import ActivityForm from '../../components/ActivityForm';
@@ -205,9 +205,9 @@ class EditActivity extends PureComponent {
       await call('deleteActivity', activity._id);
       message.success(tc('message.success.remove'));
       if (activity.isPublicActivity) {
-        history.push('/activities');
+        navigate('/activities');
       } else {
-        history.push('/calendar');
+        navigate('/calendar');
       }
     } catch (error) {
       console.log(error);
@@ -338,7 +338,7 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      return <Redirect to={`/activities/${activity._id}`} />;
+      return <Navigate to={`/activities/${activity._id}`} />;
     }
 
     const isFormValid = this.isFormValid();

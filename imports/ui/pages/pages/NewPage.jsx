@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Box, Center } from '@chakra-ui/react';
 import arrayMove from 'array-move';
 import { useTranslation } from 'react-i18next';
@@ -125,7 +125,7 @@ function NewPage() {
   }
 
   if (newPageId) {
-    return <Redirect to={`/pages/${newPageId}`} />;
+    return <Navigate to={`/pages/${newPageId}`} />;
   }
 
   return (

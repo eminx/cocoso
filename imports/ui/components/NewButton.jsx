@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -25,7 +25,7 @@ const getRoute = (item, index) => {
 };
 
 function NewButton() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
@@ -107,7 +107,7 @@ function NewButton() {
               key={activeMenuItem.name}
               color="brand.600"
               pl="5"
-              onClick={() => history.push(getPathname(activeMenuItem))}
+              onClick={() => navigate(getPathname(activeMenuItem))}
             >
               <Text fontWeight="bold" textTransform="capitalize">
                 {activeMenuItem.label}
@@ -124,7 +124,7 @@ function NewButton() {
                   key={item.name}
                   color="brand.600"
                   fontWeight="bold"
-                  onClick={() => history.push(getPathname(item))}
+                  onClick={() => navigate(getPathname(item))}
                 >
                   {item.label}
                 </MenuItem>

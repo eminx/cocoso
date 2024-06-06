@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 import { Helmet } from 'react-helmet';
@@ -35,7 +35,7 @@ function Page() {
   }
 
   if (!currentPage && pages && pages.length > 0) {
-    return <Redirect to={`/pages/${parseTitle(pages[0].title)}`} />;
+    return <Navigate to={`/pages/${parseTitle(pages[0].title)}`} />;
   }
 
   if (!currentPage || !currentPage.title || !currentPage.longDescription) {

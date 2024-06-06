@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -38,7 +38,6 @@ function TablyCentered({
   tags = null,
 }) {
   const [copied, setCopied] = useState(false);
-  const history = useHistory();
   const location = useLocation();
   const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
@@ -50,7 +49,7 @@ function TablyCentered({
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   const handleCopyLink = async () => {
@@ -102,19 +101,19 @@ function TablyCentered({
 
               <Box mb="24">
                 {tabs ? (
-                  <Switch history={history}>
+                  <Routes>
                     {tabs.map((tab) => (
                       <Route
                         key={tab.title}
                         path={tab.path}
-                        render={(props) => (
+                        element={
                           <Box border="1px solid" borderColor="brand.500" p="4">
                             {tab.content}
                           </Box>
-                        )}
+                        }
                       />
                     ))}
-                  </Switch>
+                  </Routes>
                 ) : (
                   <Box pt="2">{content}</Box>
                 )}

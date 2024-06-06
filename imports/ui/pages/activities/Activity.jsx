@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactTable from 'react-table';
@@ -488,7 +488,7 @@ class Activity extends PureComponent {
     }
 
     if (activityData.isGroupMeeting) {
-      return <Redirect to={`/groups/${activityData.groupId}/dates`} />;
+      return <Navigate to={`/groups/${activityData.groupId}/dates`} />;
     }
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;
@@ -501,14 +501,14 @@ class Activity extends PureComponent {
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
-        path: `/activities/${activityData._id}/info`,
+        path: `info`,
       },
       {
         title: activityData.isPublicActivity
           ? t('public.labels.datesAndRegistration')
           : t('public.labels.dates'),
         content: this.renderDates(),
-        path: `/activities/${activityData._id}/dates`,
+        path: `dates`,
       },
     ];
 
@@ -527,7 +527,7 @@ class Activity extends PureComponent {
             )}
           </Box>
         ),
-        path: `/activities/${activityData._id}/location`,
+        path: `location`,
       });
     }
 
@@ -536,7 +536,7 @@ class Activity extends PureComponent {
       items: [
         {
           label: tc('actions.update'),
-          link: `/activities/${activityData._id}/edit`,
+          link: `/edit`,
         },
       ],
     };

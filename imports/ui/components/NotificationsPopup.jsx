@@ -47,7 +47,7 @@ function NotificationsPopup({ notifications }) {
           {notifications.map((item) => (
             <MenuItem
               key={item.title}
-              onClick={() => history.push(`/${item.context}/${item.contextId}`)}
+              onClick={() => navigate(`/${item.context}/${item.contextId}`)}
             >
               {item.title} <Badge>{item.count}</Badge>
             </MenuItem>

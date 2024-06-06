@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import { Box, Center, Divider, Flex, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -62,14 +62,14 @@ export default function PreviousNewsletters() {
         )}
       </NiceList>
 
-      <Switch>
+      <Routes>
         <Route
           path="/newsletters/:emailId"
           render={(props) => (
             <NewsletterEmail {...props} currentHost={currentHost} emails={emails} />
           )}
         />
-      </Switch>
+      </Routes>
     </Box>
   );
 }
@@ -92,7 +92,7 @@ function NewsletterEmail({ currentHost, emails, history, match }) {
       scrollBehavior="inside"
       size="2xl"
       title={email.subject}
-      onClose={() => history.push('/newsletters')}
+      onClose={() => navigate('/newsletters')}
     >
       <Center>
         <Box>

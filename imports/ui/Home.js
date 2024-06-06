@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { StateContext } from './LayoutContainer';
 
 function Home() {
-  const { currentHost } = useContext(StateContext);
+  const { currentHost, currentUser } = useContext(StateContext);
+
+  if (!currentUser) {
+    return;
+  }
 
   const menu = currentHost && currentHost.settings && currentHost.settings.menu;
   if (!menu || !menu[0]) {
@@ -16,14 +20,14 @@ function Home() {
   const path = visibleMenu[0].name;
 
   if (!path) {
-    return <Redirect to="/activities" />;
+    return <Navigate to="/activities" />;
   }
 
   if (path === 'info') {
-    return <Redirect to="/pages/about" />;
+    return <Navigate to="/pages/about" />;
   }
 
-  return <Redirect to={`/${path}`} />;
+  return <Navigate to={`/${path}`} />;
 }
 
 export default Home;

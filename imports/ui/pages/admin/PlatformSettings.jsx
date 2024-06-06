@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
+import { Routes, Navigate, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -221,7 +221,7 @@ export default function PlatformSettings({ history }) {
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   return (
@@ -237,7 +237,7 @@ export default function PlatformSettings({ history }) {
         <Tabs index={tabIndex} tabs={tabs} />
 
         <Box pt="4">
-          <Switch history={history}>
+          <Routes history={history}>
             {tabs.map((tab) => (
               <Route
                 key={tab.title}
@@ -250,7 +250,7 @@ export default function PlatformSettings({ history }) {
                 )}
               />
             ))}
-          </Switch>
+          </Routes>
         </Box>
       </Template>
     </Box>

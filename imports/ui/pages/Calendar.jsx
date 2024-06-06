@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import {
@@ -230,9 +230,9 @@ class Calendar extends PureComponent {
     if (editActivity) {
       if (selectedActivity?.authorName === currentUser?.username) {
         if (selectedActivity.isGroupMeeting) {
-          return <Redirect to={`/groups/${selectedActivity.groupId}/edit`} />;
+          return <Navigate to={`/groups/${selectedActivity.groupId}/edit`} />;
         }
-        return <Redirect to={`/activities/${selectedActivity.activityId}/edit`} />;
+        return <Navigate to={`/activities/${selectedActivity.activityId}/edit`} />;
       }
     }
 
@@ -256,7 +256,7 @@ class Calendar extends PureComponent {
     });
 
     if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
-      return <Redirect to={selectedSlot.bookingUrl} />;
+      return <Navigate to={selectedSlot.bookingUrl} />;
     }
 
     const selectFilterView =

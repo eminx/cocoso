@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -198,7 +198,7 @@ class NewGroup extends PureComponent {
 
     if (isSuccess) {
       this.successCreation();
-      return <Redirect to={`/groups/${newGroupId}`} />;
+      return <Navigate to={`/groups/${newGroupId}`} />;
     }
 
     const { title, description } = formValues;

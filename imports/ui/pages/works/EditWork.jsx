@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box, Button, Center } from '@chakra-ui/react';
 import i18n from 'i18next';
@@ -213,7 +213,7 @@ class EditWork extends PureComponent {
       this.setState({
         isLoading: false,
       });
-      history.push(`/@${currentUser.username}/works`);
+      navigate(`/@${currentUser.username}/works`);
       message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       message.error(error.reason);
@@ -245,7 +245,7 @@ class EditWork extends PureComponent {
 
     const workRoute = `/@${currentUser.username}/works/${workId}`;
     if (isSuccess) {
-      return <Redirect to={workRoute} />;
+      return <Navigate to={workRoute} />;
     }
 
     return (

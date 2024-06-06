@@ -1,16 +1,31 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
-import ResourceRoutes from './resources/ResourceRouter';
-import GroupRoutes from './groups/GroupRoutes';
-import ActivityRoutes from './activities/ActivityRoutes';
-import PageRoutes from './pages/PageRouter';
-import ProfileRoutes from './profile/ProfileRouter';
+
 import Terms from '../components/Terms';
-import Communities from '../pages/hosts/Communities';
 import { ContentLoader } from '../components/SkeletonLoaders';
+
+const Communities = lazy(() => import('../pages/hosts/Communities'));
+
+// Activities
+const Activities = lazy(() => import('./activities/Activities'));
+const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
+const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
+const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
+
+// Groups
+const Groups = lazy(() => import('./groups/GroupList'));
+const NewGroup = lazy(() => import('./groups/NewGroup'));
+const Group = lazy(() => import('./groups/GroupContainer'));
+const EditGroup = lazy(() => import('./groups/EditGroup'));
+
+// Resources
+const Resources = lazy(() => import('./resources/Resources'));
+const Resource = lazy(() => import('./resources/Resource'));
+const EditResource = lazy(() => import('./resources/EditResource'));
+const NewResource = lazy(() => import('./resources/NewResource'));
 
 // Calendar
 const CalendarContainer = lazy(() => import('./CalendarContainer'));
@@ -19,7 +34,16 @@ const CalendarContainer = lazy(() => import('./CalendarContainer'));
 const Works = lazy(() => import('./works/Works'));
 const NewWork = lazy(() => import('./works/NewWork'));
 
-// Others are on profile routes
+// Profile
+const Profile = lazy(() => import('./profile/Profile'));
+const EditProfile = lazy(() => import('./profile/EditProfile'));
+const Work = lazy(() => import('./works/Work'));
+const EditWork = lazy(() => import('./works/EditWork'));
+
+// Pages
+const NewPage = lazy(() => import('./pages/NewPage'));
+const EditPage = lazy(() => import('./pages/EditPage'));
+const Page = lazy(() => import('./pages/Page'));
 
 // Members
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
@@ -52,98 +76,97 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 
 export default function () {
   return (
-    <Switch>
-      <LayoutContainer>
-        <Suspense fallback={<ContentLoader />}>
-          <Switch>
-            {/* Home */}
-            <Route exact path="/" render={(props) => <Home {...props} />} />
+    <LayoutContainer>
+      <Suspense fallback={<ContentLoader />}>
+        <Routes>
+          {/* Home */}
+          <Route exact path="/" element={<Home />} />
 
-            {/* Members list public */}
-            <Route exact path="/people" render={(props) => <MembersPublic {...props} />} />
+          {/* Members list public */}
+          <Route exact path="/people" element={<MembersPublic />} />
 
-            {/* Calendar */}
-            <Route exact path="/calendar" render={(props) => <CalendarContainer {...props} />} />
+          {/* Calendar */}
+          <Route exact path="/calendar" element={<CalendarContainer />} />
 
-            {/* Activities */}
-            <ActivityRoutes path="/activities" />
-            <Route exact path="/my-activities" render={(props) => <MyActivities {...props} />} />
+          {/* Activities */}
+          <Route exact path="/activities" element={<Activities />} />
+          <Route exact path="/activity/new" element={<NewActivityContainer />} />
+          <Route path="/activity/:activityId/edit" element={<EditActivityContainer />} />
+          <Route path="/activity/:activityId" element={<ActivityContainer />} />
+          <Route exact path="/my-activities" element={<MyActivities />} />
 
-            {/* Groups */}
-            <GroupRoutes path="/groups" />
+          {/* Groups */}
+          <Route exact path="/groups" element={<Groups />}>
+            <Route exact path="new" element={<NewGroup />} />
+            <Route path=":groupId/edit" element={<EditGroup />} />
+            <Route path=":groupId" element={<Group />} />
+          </Route>
 
-            {/* Resources */}
-            <ResourceRoutes path="/resources" />
+          {/* Resources */}
+          <Route path="/resources" element={<Resources />}>
+            <Route exact path="new" element={<NewResource />} />
+            <Route path=":resourceId/edit" element={<EditResource />} />
+            <Route path=":resourceId" element={<Resource />} />
+          </Route>
 
-            {/* Pages */}
-            <PageRoutes path="/pages" />
+          {/* Pages */}
+          <Route exact path="/pages" element={<Page />}>
+            <Route path=":pageId/edit" element={<EditPage />} />
+            <Route path=":pageId" element={<Page />} />
+          </Route>
 
-            {/* Works */}
-            <Switch path="/works">
-              <Route exact path="/works" render={(props) => <Works {...props} />} />
-              <Route exact path="/works/new" render={(props) => <NewWork {...props} />} />
-            </Switch>
+          {/* Works */}
+          <Route path="/works" element={<Works />}>
+            <Route exact path="new" element={<NewWork />} />
+          </Route>
 
-            {/* Profile & Profile Related Pages */}
-            <ProfileRoutes path="/@:username" />
+          {/* Profile & Profile Related Pages */}
+          <Route path="/@:username" element={<Profile />}>
+            <Route path="edit" element={<EditProfile />} />
+            <Route path="works/:workId/edit" element={<EditWork />} />
+            <Route path="works/:workId" element={<Work />} />
+          </Route>
 
-            {/* Communities: Only on Portal App */}
-            <Route exact path="/communities" render={(props) => <Communities {...props} />} />
+          {/* Communities: Only on Portal App */}
+          <Route exact path="/communities" element={<Communities />} />
 
-            {/* Newsletter Emails */}
-            <Route path="/newsletters" render={(props) => <PreviousNewsletters {...props} />} />
+          {/* Newsletter Emails */}
+          <Route path="/newsletters" element={<PreviousNewsletters />} />
 
-            {/* Admin */}
-            <Switch path="/admin">
-              <Route path="/admin/settings" render={(props) => <Settings {...props} />} />
-              <Route path="/admin/users" render={(props) => <Members {...props} />} />
-              <Route exact path="/admin/emails" render={(props) => <Emails {...props} />} />
-              <Route
-                exact
-                path="/admin/email-newsletter"
-                render={(props) => <EmailNewsletter {...props} />}
-              />
-              <Route path="/admin/categories" render={(props) => <Categories {...props} />} />
-            </Switch>
+          {/* Admin */}
+          <Route path="/admin">
+            <Route exact path="settings" element={<Settings />} />
+            <Route exact path="users" element={<Members />} />
+            <Route exact path="emails" element={<Emails />} />
+            <Route exact path="email-newsletter" element={<EmailNewsletter />} />
+            <Route exact path="categories" element={<Categories />} />
+          </Route>
 
-            {/* Super Admin */}
-            <Route
-              path="/superadmin/platform/settings"
-              render={(props) => <PlatformSettings {...props} />}
-            />
-            <Route
-              path="/superadmin/platform/registration-intro"
-              render={(props) => <PlatformRegistrationIntro {...props} />}
-            />
+          {/* Super Admin */}
+          <Route path="/superadmin/platform/settings" element={<PlatformSettings />} />
+          <Route
+            path="/superadmin/platform/registration-intro"
+            element={<PlatformRegistrationIntro />}
+          />
 
-            {/* Auth */}
-            <Route exact path="/register" render={(props) => <SignupPage {...props} />} />
-            <Route exact path="/login" render={(props) => <LoginPage {...props} />} />
-            <Route
-              exact
-              path="/forgot-password"
-              render={(props) => <ForgotPasswordPage {...props} />}
-            />
-            <Route
-              path="/reset-password/:token"
-              render={(props) => <ResetPasswordPage {...props} />}
-            />
+          {/* Auth */}
+          <Route exact path="/register" element={<SignupPage />} />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-            <Route path="/intro" render={(props) => <RegistrationIntro {...props} />} />
+          <Route path="/intro" element={<RegistrationIntro />} />
 
-            {/* SuperAdmin */}
-            <Route exact path="/new-host" render={(props) => <NewHost {...props} />} />
-            <Route exact path="/terms-&-privacy-policy" render={(props) => <Terms {...props} />} />
+          {/* SuperAdmin */}
+          <Route exact path="/new-host" element={<NewHost />} />
+          <Route exact path="/terms-&-privacy-policy" element={<Terms />} />
 
-            {/* NotFoundPage */}
-            <Route exact path="/not-found" render={(props) => <NotFoundPage {...props} />} />
-            <Route exact path="/404" render={(props) => <NotFoundPage {...props} />} />
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
-        </Suspense>
-      </LayoutContainer>
-    </Switch>
+          {/* NotFoundPage */}
+          <Route exact path="/not-found" element={<NotFoundPage />} />
+          <Route exact path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </LayoutContainer>
   );
 }

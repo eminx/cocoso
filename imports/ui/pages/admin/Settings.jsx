@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Divider, Text, Textarea } from '@chakra-ui/react';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 import ReactQuill from '../../components/Quill';
 
 import { StateContext } from '../../LayoutContainer';
@@ -188,7 +188,7 @@ export default function Settings({ history }) {
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   return (
@@ -204,7 +204,7 @@ export default function Settings({ history }) {
         <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
         <Box mb="24">
-          <Switch history={history}>
+          <Routes history={history}>
             {tabs.map((tab) => (
               <Route
                 key={tab.title}
@@ -217,7 +217,7 @@ export default function Settings({ history }) {
                 )}
               />
             ))}
-          </Switch>
+          </Routes>
         </Box>
       </Template>
     </>

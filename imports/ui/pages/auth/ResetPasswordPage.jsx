@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,14 +17,14 @@ const ResetPasswordPage = ({ history, match }) => {
     try {
       await call('resetPassword', token, password);
       message.success(t('password.message.reset'));
-      history.push('/login');
+      navigate('/login');
     } catch (error) {
       message.error(error.reason);
     }
   };
 
   if (currentUser) {
-    return <Redirect to={`/@${currentUser.username}/profile`} />;
+    return <Navigate to={`/@${currentUser.username}/profile`} />;
   }
 
   return (

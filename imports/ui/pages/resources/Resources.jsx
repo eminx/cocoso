@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge, Box, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -18,7 +19,7 @@ import NewGridThumb from '../../components/NewGridThumb';
 import PageHeading from '../../components/PageHeading';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 
-function Resources({ history }) {
+function Resources() {
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -28,7 +29,7 @@ function Resources({ history }) {
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [isCopied, setCopied] = useState(false);
   const { allHosts, currentHost, isDesktop, role } = useContext(StateContext);
-
+  const navigate = useNavigate();
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -114,7 +115,7 @@ function Resources({ history }) {
 
   const handleActionButtonClick = () => {
     if (modalResource.host === currentHost.host) {
-      history.push(`/resources/${modalResource._id}`);
+      navigate(`/resources/${modalResource._id}`);
     } else {
       window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`;
     }

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { Redirect, Route, Switch as RouteSwitch, useLocation, useParams } from 'react-router-dom';
+import { Navigate, Route, Switch as RouteSwitch, useLocation, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
 import {
@@ -50,7 +50,7 @@ function EditProfile({ history }) {
   }, [currentUser]);
 
   if (!currentUser || currentUser.username !== username) {
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   const handleSetUploadableAvatar = (files) => {
@@ -137,7 +137,7 @@ function EditProfile({ history }) {
         return;
       }
       message.success(tc('message.success.remove'));
-      history.push('/');
+      navigate('/');
     });
   };
 
@@ -151,7 +151,7 @@ function EditProfile({ history }) {
         })
       );
       Meteor.logout();
-      history.push('/');
+      navigate('/');
       setIsLeaveModalOn(false);
     } catch {
       console.log(error);
@@ -352,7 +352,7 @@ function EditProfile({ history }) {
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   return (

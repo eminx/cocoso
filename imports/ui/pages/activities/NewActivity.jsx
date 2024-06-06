@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
@@ -369,7 +369,7 @@ class NewActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      return <Redirect to={`/activities/${newActivityId}`} />;
+      return <Navigate to={`/activities/${newActivityId}`} />;
     }
 
     if (!isReady) {

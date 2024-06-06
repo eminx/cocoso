@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -41,7 +41,7 @@ function Tably({
   tags = null,
 }) {
   const [copied, setCopied] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
@@ -53,7 +53,7 @@ function Tably({
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === location.pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   const desktopGridColumns = author ? '3fr 4fr 1fr' : '3fr 4fr 0fr';
@@ -121,7 +121,7 @@ function Tably({
           <GridItem pl="12">
             <Box mb="24">
               {tabs ? (
-                <Switch history={history}>
+                <Routes history={history}>
                   {tabs.map((tab) => (
                     <Route
                       key={tab.title}
@@ -129,7 +129,7 @@ function Tably({
                       render={(props) => <Container m="0">{tab.content}</Container>}
                     />
                   ))}
-                </Switch>
+                </Routes>
               ) : (
                 <Container m="0">{content}</Container>
               )}
@@ -182,7 +182,7 @@ function Tably({
 
           <Box mb="24">
             {tabs ? (
-              <Switch history={history}>
+              <Routes history={history}>
                 {tabs.map((tab) => (
                   <Route
                     key={tab.title}
@@ -196,7 +196,7 @@ function Tably({
                     )}
                   />
                 ))}
-              </Switch>
+              </Routes>
             ) : (
               <Center>
                 <Container margin={'auto'} pt="2">

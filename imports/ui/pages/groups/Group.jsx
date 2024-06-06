@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
@@ -908,7 +908,7 @@ class Group extends Component {
     } = this.state;
 
     if (redirectToLogin) {
-      return <Redirect to="/login" />;
+      return <Navigate to="/login" />;
     }
 
     const isMember = this.isMember();

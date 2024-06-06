@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -63,7 +64,7 @@ function parseGroupActivities(activities) {
   return activitiesParsed;
 }
 
-function Activities({ history }) {
+function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -72,9 +73,9 @@ function Activities({ history }) {
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
-  const {
-    location: { search },
-  } = history;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const search = { location };
   const { showPast } = parse(search, { parseBooleans: true });
   const [tc] = useTranslation('common');
 
@@ -171,7 +172,7 @@ function Activities({ history }) {
 
   const handleActionButtonClick = () => {
     if (modalActivity.host === currentHost.host) {
-      history.push(`/activities/${modalActivity._id}`);
+      navigate(`/activity/${modalActivity._id}`);
     } else {
       window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`;
     }

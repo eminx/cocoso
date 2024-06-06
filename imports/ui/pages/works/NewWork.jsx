@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box } from '@chakra-ui/react';
 import i18n from 'i18next';
@@ -223,7 +223,7 @@ class NewWork extends PureComponent {
     }
 
     if (isSuccess && newWorkId) {
-      return <Redirect to={`/@${currentUser.username}/works/${newWorkId}`} />;
+      return <Navigate to={`/@${currentUser.username}/works/${newWorkId}`} />;
     }
 
     return (

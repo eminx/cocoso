@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ export default function TopBar() {
   const { currentUser, currentHost, isDesktop, platform } = useContext(StateContext);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { isPortalHost } = currentHost;
 
@@ -71,7 +71,7 @@ export default function TopBar() {
                     key="all-communities"
                     onClick={() =>
                       currentHost?.isPortalHost
-                        ? history.push('/communities')
+                        ? navigate('/communities')
                         : (location.href = `https://${platform?.portalHost}/communities`)
                     }
                   >

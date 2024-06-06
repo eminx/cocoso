@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -33,7 +34,7 @@ const getFutureOccurences = (dates) => {
     .sort((a, b) => moment(a.startDate) - moment(b.startDate));
 };
 
-export default function GroupsList({ history }) {
+export default function GroupsList() {
   const [loading, setLoading] = useState(true);
   const [groups, setGroups] = useState([]);
   const [filter, setFilter] = useState('active');
@@ -44,7 +45,7 @@ export default function GroupsList({ history }) {
   const [isCopied, setCopied] = useState(false);
   const { allHosts, canCreateContent, currentHost, currentUser, isDesktop } =
     useContext(StateContext);
-
+  const navigate = useNavigate();
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
 
@@ -160,7 +161,7 @@ export default function GroupsList({ history }) {
 
   const handleActionButtonClick = () => {
     if (modalGroup.host === currentHost.host) {
-      history.push(`/groups/${modalGroup._id}`);
+      navigate(`/groups/${modalGroup._id}`);
     } else {
       window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}`;
     }

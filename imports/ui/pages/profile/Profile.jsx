@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Center, Flex, LinkBox, LinkOverlay } from '@chakra-ui/react';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
 
 import { StateContext } from '../../LayoutContainer';
@@ -112,7 +112,7 @@ function Profile({ history, match, path }) {
   const tabIndex = tabs.findIndex((tab) => tab.path === history?.location?.pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === history?.location?.pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   const isSelfAccount = currentUser && currentUser.username === username;
@@ -148,18 +148,18 @@ function Profile({ history, match, path }) {
           <Tabs align="center" index={tabIndex} tabs={tabs} px="4" />
 
           <Box pt="4" px={isDesktop ? '4' : '0'}>
-            <Switch path={path} history={history}>
+            <Routes path={path} history={history}>
               {!isDesktop && (
                 <Route
                   path="/@:username/bio"
-                  render={(props) => (
+                  element={(props) => (
                     <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
                   )}
                 />
               )}
               <Route
                 path="/@:username/activities"
-                render={(props) => (
+                element={(props) => (
                   <MemberActivities
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
@@ -170,7 +170,7 @@ function Profile({ history, match, path }) {
               />
               <Route
                 path="/@:username/groups"
-                render={(props) => (
+                element={(props) => (
                   <MemberGroups
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
@@ -181,7 +181,7 @@ function Profile({ history, match, path }) {
               />
               <Route
                 path="/@:username/works"
-                render={(props) => (
+                element={(props) => (
                   <MemberWorks
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
@@ -192,7 +192,7 @@ function Profile({ history, match, path }) {
               />
               <Route
                 path="/@:username/contact"
-                render={(props) => (
+                element={(props) => (
                   <ContactInfo
                     isDesktop={false}
                     isSelfAccount={isSelfAccount}
@@ -201,7 +201,7 @@ function Profile({ history, match, path }) {
                   />
                 )}
               />
-            </Switch>
+            </Routes>
           </Box>
         </Box>
       </Center>

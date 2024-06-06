@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Activity from './Activity';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 
-export default function (props) {
+export default function () {
   const [activityData, setActivityData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
+  const params = useParams();
 
   useEffect(() => {
-    getActivityById(props.match.params);
+    getActivityById();
   }, []);
 
-  const { activityId } = props.match.params;
+  const { activityId } = params;
 
   const getActivityById = async () => {
     try {
@@ -28,7 +30,6 @@ export default function (props) {
   };
 
   const allProps = {
-    ...props,
     getActivityById,
     activityData,
     isLoading,

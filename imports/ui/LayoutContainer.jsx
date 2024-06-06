@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -41,8 +41,8 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [hue, setHue] = useState('233');
   const [tc] = useTranslation('common');
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
-  const history = useHistory();
-  const { pathname } = history.location;
+  const location = useLocation();
+  const { pathname } = location;
 
   useEffect(() => {
     getCurrentHost();

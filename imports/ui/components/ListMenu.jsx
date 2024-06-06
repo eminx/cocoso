@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +8,7 @@ import { parseTitle } from '../utils/shared';
 
 function ListMenu({ currentUser, list, pathname, onChange, children, ...otherProps }) {
   const { isDesktop } = useContext(StateContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [tc] = useTranslation('common');
   if (!list) {
     return null;
@@ -40,7 +40,7 @@ function ListMenu({ currentUser, list, pathname, onChange, children, ...otherPro
 
   return (
     <Box mt="2" mb="8">
-      <Select w="xs" onChange={(event) => history.push(`${parseTitle(event.target.value)}`)}>
+      <Select w="xs" onChange={(event) => navigate(`${parseTitle(event.target.value)}`)}>
         {list.map((item) => (
           <option key={item.key} value={item.value} selected={isActiveItem(item)}>
             {item.key == 'publicProfile'

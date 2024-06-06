@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-// import { createMemoryHistory } from 'history';
 import { onPageLoad } from 'meteor/server-render';
 import { createRoot } from 'react-dom/client';
 import { createStandaloneToast } from '@chakra-ui/toast';
@@ -8,8 +7,6 @@ import { createStandaloneToast } from '@chakra-ui/toast';
 import '../i18n';
 import Routes from '../../ui/pages/Routes';
 import { MainLoader } from '../../ui/components/SkeletonLoaders';
-
-// const browserHistory = createMemoryHistory();
 
 const { ToastContainer, toast } = createStandaloneToast();
 export { toast };

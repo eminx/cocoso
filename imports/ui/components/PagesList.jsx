@@ -1,12 +1,12 @@
 import React from 'react';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Center, Heading, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import { parseTitle } from '../utils/shared';
 
-const PagesList = withRouter(({ currentPage, pageTitles }) => {
-  const history = useHistory();
+function PagesList({ currentPage, pageTitles }) {
+  const navigate = useNavigate();
 
   if (pageTitles?.length === 1) {
     return (
@@ -37,7 +37,7 @@ const PagesList = withRouter(({ currentPage, pageTitles }) => {
               isDisabled={currentPage?.title === parseTitle(title)}
               maxW="320px"
               whiteSpace="normal"
-              onClick={() => history.push(`/pages/${parseTitle(title)}`)}
+              onClick={() => navigate(`/pages/${parseTitle(title)}`)}
             >
               {title}
             </MenuItem>
@@ -46,6 +46,6 @@ const PagesList = withRouter(({ currentPage, pageTitles }) => {
       </Menu>
     </Center>
   );
-});
+}
 
 export default PagesList;

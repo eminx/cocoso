@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ function Members() {
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const { currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMembers();
@@ -196,7 +196,7 @@ function Members() {
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
 
   if (tabs && !tabs.find((tab) => tab.path === pathname)) {
-    return <Redirect to={tabs[0].path} />;
+    return <Navigate to={tabs[0].path} />;
   }
 
   return (
@@ -235,7 +235,7 @@ function Members() {
           </Flex>
 
           <Box mb="24">
-            <Switch history={history}>
+            <Routes history={history}>
               {tabs.map((tab) => (
                 <Route
                   key={tab.title}
@@ -248,7 +248,7 @@ function Members() {
                   )}
                 />
               ))}
-            </Switch>
+            </Routes>
           </Box>
         </Box>
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Box, Center, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -12,7 +12,7 @@ function SignupPage() {
   const { currentUser, platform } = useContext(StateContext);
 
   if (currentUser && platform.isFederationLayout) {
-    return <Redirect to="/intro" />;
+    return <Navigate to="/intro" />;
   }
 
   return (

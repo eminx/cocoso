@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
-import Loader from '../../components/Loader';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import { StateContext } from '../../LayoutContainer';
@@ -25,7 +25,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function MembersPublic({ history }) {
+function MembersPublic() {
   const [members, setMembers] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,9 +37,9 @@ function MembersPublic({ history }) {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
   const [t] = useTranslation('members');
-  const {
-    location: { search },
-  } = history;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const search = { location };
   const { showKeywordSearch } = parse(search, { parseBooleans: true });
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function MembersPublic({ history }) {
 
   const handleVisitUserProfile = () => {
     const { memberships, username } = modalUser;
-    const justGo = () => history.push(`/@${username}`);
+    const justGo = () => navigate(`/@${username}`);
 
     if (!isPortalHost) {
       justGo();

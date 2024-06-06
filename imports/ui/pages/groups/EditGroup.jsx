@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Box, Button, Center } from '@chakra-ui/react';
 
 import { call, resizeImage, uploadImage } from '../../utils/shared';
@@ -153,9 +153,9 @@ class EditGroup extends PureComponent {
 
     if (isSuccess) {
       if (isDeleteModalOn) {
-        return <Redirect to="/groups" />;
+        return <Navigate to="/groups" />;
       }
-      return <Redirect to={`/groups/${group._id}`} />;
+      return <Navigate to={`/groups/${group._id}`} />;
     }
 
     return (

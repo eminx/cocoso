@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -41,7 +41,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentHost, isDesktop } = useContext(StateContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [t] = useTranslation('members');
 
   if (!user) {
@@ -50,7 +50,7 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
   if (redirect) {
     if (redirect.host === currentHost.host) {
-      history.push(`/@${user.username}`);
+      navigate(`/@${user.username}`);
     } else {
       window.location.href = `https://${redirect.host}/@${user.username}`;
     }

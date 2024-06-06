@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -25,7 +26,7 @@ const compareByDate = (a, b) => {
   return dateB - dateA;
 };
 
-function Works({ history }) {
+function Works() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterWord, setFilterWord] = useState('');
@@ -36,10 +37,9 @@ function Works({ history }) {
   const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-
-  const {
-    location: { search },
-  } = history;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const search = { location };
 
   const { category } = parse(search);
 
@@ -91,7 +91,7 @@ function Works({ history }) {
 
   const setCategoryFilter = (categoryFilter) => {
     const params = stringify({ category: categoryFilter });
-    history.push({ search: params });
+    navigate({ search: params });
   };
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
@@ -119,7 +119,7 @@ function Works({ history }) {
 
   const handleActionButtonClick = () => {
     if (modalWork.host === currentHost.host) {
-      history.push(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
+      navigate(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
     } else {
       window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
     }

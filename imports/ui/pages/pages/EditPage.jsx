@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import arrayMove from 'array-move';
@@ -23,7 +23,7 @@ function EditPage() {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const { pageId } = useParams();
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
@@ -124,7 +124,7 @@ function EditPage() {
     try {
       await call('updatePage', page._id, formValues, imagesReadyToSave);
       message.success(tc('message.success.create'));
-      history.push(`pages/${parseTitle(formValues.title)}`);
+      navigate(`pages/${parseTitle(formValues.title)}`);
     } catch (error) {
       setIsUpdating(false);
       console.log('error', error);
@@ -151,7 +151,7 @@ function EditPage() {
     try {
       await call('deletePage', page._id);
       message.success(tc('message.success.remove'));
-      history.push('/pages');
+      navigate('/pages');
     } catch (error) {
       console.log(error);
     }

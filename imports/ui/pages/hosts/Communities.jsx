@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -22,7 +22,7 @@ function Communities() {
   const [modalHost, setModalHost] = useState(null);
   const [joinHostModal, setJoinHostModal] = useState(null);
   const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [tc] = useTranslation('common');
 
@@ -112,7 +112,7 @@ function Communities() {
 
   const joinCommunity = async () => {
     if (!currentUser) {
-      history.push('/register');
+      navigate('/register');
       return;
     }
 
