@@ -52,7 +52,7 @@ function Work() {
           {renderHTML(work.longDescription)}
         </Box>
       ),
-      path: `/@${work.authorUsername}/works/${work._id}/info`,
+      path: 'info',
     },
   ];
 
@@ -64,7 +64,7 @@ function Work() {
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
-      path: `/@${work.authorUsername}/works/${work._id}/extra`,
+      path: 'extra',
     });
   }
 
@@ -76,7 +76,7 @@ function Work() {
           <DocumentsField contextType="works" contextId={work._id} />
         </Box>
       ),
-      path: `/@${work.authorUsername}/works/${work._id}/documents`,
+      path: 'documents',
     });
   }
 
@@ -88,7 +88,7 @@ function Work() {
           {renderHTML(work.contactInfo)}
         </Box>
       ),
-      path: `/@${work.authorUsername}/works/${work._id}/contact`,
+      path: 'contact',
     });
   }
 
@@ -97,7 +97,7 @@ function Work() {
     items: [
       {
         label: tc('actions.update'),
-        link: `/@${work.authorUsername}/works/${work._id}/edit`,
+        link: 'edit',
       },
     ],
   };

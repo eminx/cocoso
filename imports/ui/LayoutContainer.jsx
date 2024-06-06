@@ -108,7 +108,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const hostWithinUser =
     currentUser &&
     currentUser.memberships &&
-    currentUser.memberships.find((membership) => membership.host === location.host);
+    currentUser.memberships.find((membership) => membership.host === window.location.host);
 
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);

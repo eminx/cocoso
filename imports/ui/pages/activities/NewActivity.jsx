@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
@@ -57,22 +57,20 @@ class NewActivity extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { history, resources } = this.props;
+    const { location, resources } = this.props;
 
-    const { search } = history.location;
-    const prevSearch = prevProps.history.location.search;
+    const { search } = location;
+    const prevSearch = prevProps.location.search;
     if (search !== prevSearch || resources?.length !== prevProps.resources?.length) {
       this.setInitialValuesWithQueryParams();
     }
   }
 
   setInitialValuesWithQueryParams = () => {
-    const { history, resources } = this.props;
+    const { location, resources } = this.props;
     const { formValues } = this.state;
 
-    const {
-      location: { search },
-    } = history;
+    const { search } = location;
     const params = parse(search);
 
     if (!params) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Center, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import arrayMove from 'array-move';
 

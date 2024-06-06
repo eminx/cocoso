@@ -161,14 +161,14 @@ export default function GroupsList() {
 
   const handleActionButtonClick = () => {
     if (modalGroup.host === currentHost.host) {
-      navigate(`/groups/${modalGroup._id}`);
+      navigate(`/group/${modalGroup._id}`);
     } else {
-      window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}`;
+      window.location.href = `https://${modalGroup.host}/group/${modalGroup._id}`;
     }
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${modalGroup.host}/groups/${modalGroup._id}`;
+    const link = `https://${modalGroup.host}/group/${modalGroup._id}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
 
@@ -7,8 +8,7 @@ import Groups from '../../../api/groups/group';
 import Chats from '../../../api/chats/chat';
 import Activities from '../../../api/activities/activity';
 
-const GroupContainer = withTracker((props) => {
-  const groupId = props.match.params.groupId;
+const GroupContainer = withTracker(({ groupId }) => {
   const groupSubscription = Meteor.subscribe('group', groupId);
   const activitiesSubscription = Meteor.subscribe('activities');
   const isLoading = !groupSubscription.ready() || !activitiesSubscription.ready();
@@ -43,10 +43,12 @@ const GroupContainer = withTracker((props) => {
 })(Group);
 
 export default function (props) {
+  const { groupId } = useParams();
   const [t] = useTranslation('groups');
   const [tc] = useTranslation('common');
   const allProps = {
     ...props,
+    groupId,
     t,
     tc,
   };

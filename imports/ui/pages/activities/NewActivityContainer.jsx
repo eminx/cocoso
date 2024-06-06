@@ -1,5 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+
 import NewActivity from './NewActivity';
 import { parseAllBookingsWithResources } from '../../utils/shared';
 import Resources from '../../../api/resources/resource';
@@ -13,6 +15,7 @@ const NewActivityContainer = withTracker((props) => {
   const activities = Activities ? Activities.find().fetch() : null;
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
+  const location = useLocation();
 
   const allBookings = parseAllBookingsWithResources(activities, resources);
 
@@ -25,7 +28,7 @@ const NewActivityContainer = withTracker((props) => {
   return {
     allBookings,
     currentUser,
-    history: props.history,
+    location,
     resources,
     isLoading,
   };

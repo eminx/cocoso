@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Center,
@@ -25,10 +25,11 @@ const getRoute = (item, index) => {
 };
 
 function NewButton() {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const menu = currentHost?.settings.menu;
 
@@ -51,13 +52,13 @@ function NewButton() {
       route: getRoute(item, index),
     }));
 
-  const pathname = history.location.pathname;
+  const { pathname } = location;
 
   const isCurrentPage = (name) => {
     if (name === 'info') {
       return pathname.substring(0, 6) === '/pages';
     }
-    return name === pathname.substring(1, pathname.length);
+    return name === pathname?.substring(1, pathname.length);
   };
 
   const activeMenuItem = menuItems.find(

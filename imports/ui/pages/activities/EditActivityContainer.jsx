@@ -1,5 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import EditActivity from './EditActivity';
 import { parseAllBookingsWithResources } from '../../utils/shared';
 import Resources from '../../../api/resources/resource';
@@ -7,7 +9,7 @@ import Activities from '../../../api/activities/activity';
 import { useTranslation } from 'react-i18next';
 
 const EditActivityContainer = withTracker((props) => {
-  const activityId = props.match.params.activityId;
+  const activityId = props.activityId;
   const activitySub = Meteor.subscribe('activity', activityId);
   const activity = Activities ? Activities.findOne({ _id: activityId }) : null;
 
@@ -34,9 +36,11 @@ const EditActivityContainer = withTracker((props) => {
 export default function (props) {
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
+  const { activityId } = useParams();
 
   const allProps = {
     ...props,
+    activityId,
     t,
     tc,
   };

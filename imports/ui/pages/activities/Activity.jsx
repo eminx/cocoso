@@ -501,14 +501,14 @@ class Activity extends PureComponent {
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
-        path: `info`,
+        path: 'info',
       },
       {
         title: activityData.isPublicActivity
           ? t('public.labels.datesAndRegistration')
           : t('public.labels.dates'),
         content: this.renderDates(),
-        path: `dates`,
+        path: 'dates',
       },
     ];
 
@@ -527,7 +527,7 @@ class Activity extends PureComponent {
             )}
           </Box>
         ),
-        path: `location`,
+        path: 'location',
       });
     }
 
@@ -536,7 +536,7 @@ class Activity extends PureComponent {
       items: [
         {
           label: tc('actions.update'),
-          link: `/edit`,
+          link: 'edit',
         },
       ],
     };

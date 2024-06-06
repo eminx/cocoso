@@ -115,14 +115,14 @@ function Resources() {
 
   const handleActionButtonClick = () => {
     if (modalResource.host === currentHost.host) {
-      navigate(`/resources/${modalResource._id}`);
+      navigate(`/resource/${modalResource._id}`);
     } else {
-      window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`;
+      window.location.href = `https://${modalResource.host}/resource/${modalResource._id}`;
     }
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${modalResource.host}/resources/${modalResource._id}`;
+    const link = `https://${modalResource.host}/resource/${modalResource._id}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);

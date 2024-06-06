@@ -17,9 +17,9 @@ const NewActivityContainer = lazy(() => import('./activities/NewActivityContaine
 
 // Groups
 const Groups = lazy(() => import('./groups/GroupList'));
-const NewGroup = lazy(() => import('./groups/NewGroup'));
 const Group = lazy(() => import('./groups/GroupContainer'));
-const EditGroup = lazy(() => import('./groups/EditGroup'));
+const EditGroupContainer = lazy(() => import('./groups/EditGroupContainer'));
+const NewGroupContainer = lazy(() => import('./groups/NewGroupContainer'));
 
 // Resources
 const Resources = lazy(() => import('./resources/Resources'));
@@ -90,42 +90,37 @@ export default function () {
 
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
-          <Route exact path="/activity/new" element={<NewActivityContainer />} />
+          <Route exact path="/activities/new" element={<NewActivityContainer />} />
+          <Route path="/activity/:activityId/*" element={<ActivityContainer />} />
           <Route path="/activity/:activityId/edit" element={<EditActivityContainer />} />
-          <Route path="/activity/:activityId" element={<ActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}
-          <Route exact path="/groups" element={<Groups />}>
-            <Route exact path="new" element={<NewGroup />} />
-            <Route path=":groupId/edit" element={<EditGroup />} />
-            <Route path=":groupId" element={<Group />} />
-          </Route>
+          <Route exact path="/groups" element={<Groups />} />
+          <Route exact path="/groups/new" element={<NewGroupContainer />} />
+          <Route path="/group/:groupId/*" element={<Group />} />
+          <Route path="/group/:groupId/edit" element={<EditGroupContainer />} />
 
           {/* Resources */}
-          <Route path="/resources" element={<Resources />}>
-            <Route exact path="new" element={<NewResource />} />
-            <Route path=":resourceId/edit" element={<EditResource />} />
-            <Route path=":resourceId" element={<Resource />} />
-          </Route>
+          <Route exact path="/resources" element={<Resources />} />
+          <Route exact path="/resources/new" element={<NewResource />} />
+          <Route path="/resource/:resourceId/*" element={<Resource />} />
+          <Route path="/resource/:resourceId/edit" element={<EditResource />} />
 
           {/* Pages */}
-          <Route exact path="/pages" element={<Page />}>
-            <Route path=":pageId/edit" element={<EditPage />} />
-            <Route path=":pageId" element={<Page />} />
-          </Route>
+          <Route exact path="/pages" element={<Page />} />
+          <Route path="/pages/:pageId/*" element={<Page />} />
+          <Route path="/pages/:pageId/edit" element={<EditPage />} />
 
           {/* Works */}
-          <Route path="/works" element={<Works />}>
-            <Route exact path="new" element={<NewWork />} />
-          </Route>
+          <Route exact path="/works" element={<Works />} />
+          <Route exact path="/works/new" element={<NewWork />} />
 
           {/* Profile & Profile Related Pages */}
-          <Route path="/@:username" element={<Profile />}>
-            <Route path="edit" element={<EditProfile />} />
-            <Route path="works/:workId/edit" element={<EditWork />} />
-            <Route path="works/:workId" element={<Work />} />
-          </Route>
+          <Route exact path="/@:username" element={<Profile />} />
+          <Route exact path="/@:username/edit" element={<EditProfile />} />
+          <Route path="/@:username/work/:workId/*" element={<Work />} />
+          <Route path="/@:username/work/:workId/edit" element={<EditWork />} />
 
           {/* Communities: Only on Portal App */}
           <Route exact path="/communities" element={<Communities />} />

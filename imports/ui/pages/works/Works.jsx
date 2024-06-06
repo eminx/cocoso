@@ -119,14 +119,14 @@ function Works() {
 
   const handleActionButtonClick = () => {
     if (modalWork.host === currentHost.host) {
-      navigate(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
+      navigate(`/@${modalWork.authorUsername}/work/${modalWork._id}`);
     } else {
-      window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+      window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/work/${modalWork._id}`;
     }
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+    const link = `https://${modalWork.host}/@${modalWork.authorUsername}/work/${modalWork._id}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);

@@ -932,17 +932,17 @@ class Group extends Component {
             {renderHTML(group.description)}
           </Box>
         ),
-        path: `/groups/${group._id}/info`,
+        path: 'info',
       },
       {
         title: t('labels.member'),
         content: this.renderMembers(),
-        path: `/groups/${group._id}/members`,
+        path: 'members',
       },
       {
         title: tc('documents.label'),
         content: this.renderDocuments(),
-        path: `/groups/${group._id}/documents`,
+        path: 'documents',
       },
       {
         title: t('labels.meetings'),
@@ -983,12 +983,12 @@ class Group extends Component {
             )}
           </Box>
         ),
-        path: `/groups/${group._id}/meetings`,
+        path: 'meetings',
       },
       {
         title: t('tabs.group.discuss'),
         content: this.renderDiscussion(),
-        path: `/groups/${group._id}/discussion`,
+        path: 'discussion',
         badge: notificationCount,
       },
     ];
@@ -998,7 +998,7 @@ class Group extends Component {
       items: [
         {
           label: tc('actions.update'),
-          link: `/groups/${group._id}/edit`,
+          link: 'edit',
         },
         {
           label: group.isArchived ? t('actions.unarchive') : t('actions.archive'),

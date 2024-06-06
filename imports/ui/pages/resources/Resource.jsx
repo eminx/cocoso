@@ -85,7 +85,7 @@ function ResourcePage() {
           {resource.description && renderHTML(resource.description)}
         </Box>
       ),
-      path: `/resources/${resource._id}/info`,
+      path: 'info',
     },
   ];
 
@@ -93,7 +93,7 @@ function ResourcePage() {
     tabs.push({
       title: tc('documents.label'),
       content: <DocumentsField contextType="resource" contextId={resource?._id} />,
-      path: `/resources/${resource._id}/documents`,
+      path: 'documents',
     });
   }
 
@@ -101,7 +101,7 @@ function ResourcePage() {
     tabs.push({
       title: tc('labels.bookings'),
       content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
-      path: `/resources/${resource._id}/bookings`,
+      path: 'bookings',
     });
     if (resource.isCombo) {
       tabs.push({
@@ -115,7 +115,7 @@ function ResourcePage() {
             ))}
           </Wrap>
         ),
-        path: `/resources/${resource._id}/combo`,
+        path: 'combo',
       });
     }
     tabs.push({
@@ -130,7 +130,7 @@ function ResourcePage() {
           />
         </div>
       ),
-      path: `/resources/${resource._id}/discussion`,
+      path: 'discussion',
     });
   }
 
@@ -139,7 +139,7 @@ function ResourcePage() {
     items: [
       {
         label: tc('actions.update'),
-        link: `/resources/${resource._id}/edit`,
+        link: 'edit',
       },
     ],
   };
