@@ -117,10 +117,10 @@ export default function () {
           <Route exact path="/works/new" element={<NewWork />} />
 
           {/* Profile & Profile Related Pages */}
-          <Route exact path="/@:username" element={<Profile />} />
-          <Route exact path="/@:username/edit" element={<EditProfile />} />
-          <Route path="/@:username/work/:workId/*" element={<Work />} />
-          <Route path="/@:username/work/:workId/edit" element={<EditWork />} />
+          <Route path="/@/:username/*" element={<Profile />} />
+          <Route path="/@/:username/edit/*" element={<EditProfile />} />
+          <Route path="/@/:username/work/:workId/*" element={<Work />} />
+          <Route path="/@/:username/work/:workId/edit" element={<EditWork />} />
 
           {/* Communities: Only on Portal App */}
           <Route exact path="/communities" element={<Communities />} />

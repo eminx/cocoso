@@ -28,8 +28,6 @@ export default function (props) {
   const [tc] = useTranslation('common');
   const { groupId } = useParams();
 
-  console.log('groupId', groupId);
-
   const allProps = {
     ...props,
     groupId,

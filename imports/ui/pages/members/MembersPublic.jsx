@@ -36,7 +36,7 @@ function MembersPublic() {
   const [modalUser, setModalUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const { allHosts, currentHost, isDesktop } = useContext(StateContext);
-  const [t] = useTranslation('members');
+  const [tm] = useTranslation('members');
   const navigate = useNavigate();
   const location = useLocation();
   const search = { location };
@@ -96,7 +96,7 @@ function MembersPublic() {
 
   const handleVisitUserProfile = () => {
     const { memberships, username } = modalUser;
-    const justGo = () => navigate(`/@${username}`);
+    const justGo = () => navigate(`/@/${username}`);
 
     if (!isPortalHost) {
       justGo();
@@ -104,7 +104,7 @@ function MembersPublic() {
       if (hostFilterValue.host === currentHost?.host) {
         justGo();
       } else {
-        window.location.href = `https://${currentHost.host}/@${username}`;
+        window.location.href = `https://${currentHost.host}/@/${username}`;
       }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
@@ -112,24 +112,24 @@ function MembersPublic() {
       if (memberships?.length === 0) {
         return;
       }
-      window.location.href = `https://${memberships[0]?.host}/@${username}`;
+      window.location.href = `https://${memberships[0]?.host}/@/${username}`;
     }
   };
 
   const getButtonLabelForModal = () => {
     const { memberships } = modalUser;
     if (!isPortalHost) {
-      return t('actions.visit');
+      return tm('actions.visit');
     } else if (hostFilterValue) {
       if (hostFilterValue.host === currentHost?.host) {
-        return t('actions.visit');
+        return tm('actions.visit');
       } else {
-        return t('actions.visithost', { host: getHostNameForModal() });
+        return tm('actions.visithost', { host: getHostNameForModal() });
       }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
-      return t('actions.visit');
+      return tm('actions.visit');
     } else {
-      return t('actions.visithost', { host: getHostNameForModal() });
+      return tm('actions.visithost', { host: getHostNameForModal() });
     }
   };
 
@@ -297,11 +297,11 @@ function MembersPublic() {
   const tabs = [
     {
       path: '/people',
-      title: t('labels.list'),
+      title: tm('labels.list'),
     },
     {
       path: '/people?showKeywordSearch=true',
-      title: t('labels.search'),
+      title: tm('labels.search'),
     },
   ];
 
@@ -373,7 +373,7 @@ function MembersPublic() {
         <Box>
           {sorterValue === 'random' && (
             <Center mb="2">
-              <Text>{t('message.sortedRandomly')}</Text>
+              <Text>{tm('message.sortedRandomly')}</Text>
             </Center>
           )}
 

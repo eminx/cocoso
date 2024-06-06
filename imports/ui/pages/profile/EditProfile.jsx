@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { Navigate, Route, Switch as RouteSwitch, useLocation, useParams } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
 import {
@@ -40,6 +40,7 @@ function EditProfile({ history }) {
   const [uploadableAvatar, setUploadableAvatar] = useState(null);
   const [lang, setLang] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const { currentHost, currentUser, platform, role } = useContext(StateContext);
   const { username } = useParams();
   const [t] = useTranslation('accounts');
@@ -223,7 +224,7 @@ function EditProfile({ history }) {
   const tabs = [
     {
       title: tc('menu.member.general'),
-      path: `/@${currentUser.username}/edit/general`,
+      path: 'general',
       content: (
         <Center>
           <Box>
@@ -254,7 +255,7 @@ function EditProfile({ history }) {
     },
     {
       title: t('profile.menu.language'),
-      path: `/@${currentUser.username}/edit/language`,
+      path: 'language',
       content: (
         <Box>
           <Heading mb="4" size="sm" textAlign="center">
@@ -277,7 +278,7 @@ function EditProfile({ history }) {
     },
     {
       title: t('profile.menu.privacy'),
-      path: `/@${currentUser.username}/edit/privacy`,
+      path: 'privacy',
       content: (
         <Box>
           <Box mb="4">
@@ -388,20 +389,20 @@ function EditProfile({ history }) {
             <Tabs align="center" index={tabIndex} mb="4" tabs={tabs} />
 
             <Box>
-              <RouteSwitch history={history}>
+              <Routes>
                 {tabs.map((tab) => (
                   <Route
                     key={tab.title}
                     exact
                     path={tab.path}
-                    render={(props) => (
+                    element={
                       <Box {...props} pt="2">
                         {tab.content}
                       </Box>
-                    )}
+                    }
                   />
                 ))}
-              </RouteSwitch>
+              </Routes>
             </Box>
 
             <Divider my="4" />

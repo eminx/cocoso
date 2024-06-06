@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
@@ -17,14 +17,14 @@ import NewEntryHelper from '../../components/NewEntryHelper';
 import SexyThumb from '../../components/SexyThumb';
 import BackLink from '../../components/BackLink';
 
-function Profile({ history, match, path }) {
+function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [user, setUser] = useState(null);
-  const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
-  const { username } = match.params;
+  const location = useLocation();
+  const { username } = useParams();
   const { currentUser, currentHost, isDesktop, platform } = useContext(StateContext);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ function Profile({ history, match, path }) {
 
   if (!isDesktop) {
     tabs.push({
-      path: `/@${username}/bio`,
+      path: 'bio',
       title: tc('domains.bio'),
       isVisible: true,
     });
@@ -92,26 +92,26 @@ function Profile({ history, match, path }) {
     })
     ?.forEach((item) => {
       tabs.push({
-        path: `/@${username}/${item.name}`,
+        path: `${item.name}`,
         title: item.label,
       });
     });
 
   tabs.push({
-    path: `/@${username}/contact`,
+    path: 'contact',
     title: tc('labels.contact'),
   });
 
   if (currentUser && currentUser.username === username) {
     tabs.push({
-      path: `/@${username}/edit`,
+      path: 'edit',
       title: <b>{tc('actions.update')}</b>,
     });
   }
 
-  const tabIndex = tabs.findIndex((tab) => tab.path === history?.location?.pathname);
-
-  if (tabs && !tabs.find((tab) => tab.path === history?.location?.pathname)) {
+  const pathnameLastPart = location.pathname.split('/').pop();
+  const tabIndex = tabs.findIndex((tab) => tab.path === pathnameLastPart);
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
 
@@ -148,58 +148,58 @@ function Profile({ history, match, path }) {
           <Tabs align="center" index={tabIndex} tabs={tabs} px="4" />
 
           <Box pt="4" px={isDesktop ? '4' : '0'}>
-            <Routes path={path} history={history}>
+            <Routes>
               {!isDesktop && (
                 <Route
-                  path="/@:username/bio"
-                  element={(props) => (
+                  path="bio"
+                  element={
                     <Bio isDesktop={false} isSelfAccount={isSelfAccount} tc={tc} user={user} />
-                  )}
+                  }
                 />
               )}
               <Route
-                path="/@:username/activities"
-                element={(props) => (
+                path="activities"
+                element={
                   <MemberActivities
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
                   />
-                )}
+                }
               />
               <Route
-                path="/@:username/groups"
-                element={(props) => (
+                path="groups"
+                element={
                   <MemberGroups
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
                   />
-                )}
+                }
               />
               <Route
-                path="/@:username/works"
-                element={(props) => (
+                path="works"
+                element={
                   <MemberWorks
                     currentHost={currentHost}
                     isFederationLayout={isFederationLayout}
                     isSelfAccount={isSelfAccount}
                     user={user}
                   />
-                )}
+                }
               />
               <Route
-                path="/@:username/contact"
-                element={(props) => (
+                path="contact"
+                element={
                   <ContactInfo
                     isDesktop={false}
                     isSelfAccount={isSelfAccount}
                     tc={tc}
                     user={user}
                   />
-                )}
+                }
               />
             </Routes>
           </Box>
@@ -227,7 +227,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
       <Center p="4" mb="4" w="100%">
-        <Link to={`/@${user?.username}/edit`} style={{ width: '100%' }}>
+        <Link to={`/@/${user?.username}/edit`} style={{ width: '100%' }}>
           <SexyThumb
             subTitle={tc('menu.member.settings')}
             title={tc('message.newentryhelper.bio.title')}
@@ -270,7 +270,7 @@ function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
       <NewEntryHelper
         title={tc('message.newentryhelper.contactInfo.title')}
         buttonLabel={tc('menu.member.settings')}
-        buttonLink={`/@${user?.username}/edit`}
+        buttonLink={`/@/${user?.username}/edit`}
       >
         {tc('message.newentryhelper.contactInfo.description')}
       </NewEntryHelper>
