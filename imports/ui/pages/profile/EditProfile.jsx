@@ -350,16 +350,17 @@ function EditProfile({ history }) {
   ];
 
   const pathname = location?.pathname;
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+  const pathnameLastPart = pathname.split('/').pop();
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
 
   return (
     <>
       <Box p="2">
-        <BackLink backLink={{ label: currentUser.username, value: `/@${currentUser.username}` }} />
+        <BackLink backLink={{ label: currentUser.username, value: `/@/${currentUser.username}` }} />
       </Box>
       <Template>
         <Box mb="8">
@@ -393,13 +394,8 @@ function EditProfile({ history }) {
                 {tabs.map((tab) => (
                   <Route
                     key={tab.title}
-                    exact
                     path={tab.path}
-                    element={
-                      <Box {...props} pt="2">
-                        {tab.content}
-                      </Box>
-                    }
+                    element={<Box pt="2">{tab.content}</Box>}
                   />
                 ))}
               </Routes>
