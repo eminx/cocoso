@@ -136,7 +136,7 @@ export default function () {
           <Route exact path="/admin/categories" element={<Categories />} />
 
           {/* Super Admin */}
-          <Route path="/superadmin/platform/settings" element={<PlatformSettings />} />
+          <Route path="/superadmin/platform/settings/*" element={<PlatformSettings />} />
           <Route
             path="/superadmin/platform/registration-intro"
             element={<PlatformRegistrationIntro />}

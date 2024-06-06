@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Routes, Navigate, Route } from 'react-router-dom';
+import { Routes, Navigate, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Flex, Input, Stack, Switch as CSwitch, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -16,14 +16,13 @@ import Template from '../../components/Template';
 import ListMenu from '../../components/ListMenu';
 import { superadminMenu } from '../../utils/constants/general';
 
-export default function PlatformSettings({ history }) {
+export default function PlatformSettings() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
   const [platform, setPlatform] = useState(null);
-
+  const location = useLocation();
   const { currentUser, getPlatform } = useContext(StateContext);
-
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -144,7 +143,7 @@ export default function PlatformSettings({ history }) {
   const tabs = [
     {
       title: t('settings.tabs.info'),
-      path: '/superadmin/platform/settings/info',
+      path: 'info',
       content: (
         <AlphaContainer>
           <Text mb="3" fontWeight="bold">
@@ -156,7 +155,7 @@ export default function PlatformSettings({ history }) {
     },
     {
       title: t('settings.tabs.logo'),
-      path: '/superadmin/platform/settings/logo',
+      path: 'logo',
       content: (
         <AlphaContainer>
           <Text mb="3" fontWeight="bold">
@@ -183,7 +182,7 @@ export default function PlatformSettings({ history }) {
     },
     {
       title: t('settings.tabs.options'),
-      path: '/superadmin/platform/settings/options',
+      path: 'options',
       content: (
         <AlphaContainer>
           <Text mb="3" fontWeight="bold">
@@ -195,7 +194,7 @@ export default function PlatformSettings({ history }) {
     },
     {
       title: t('settings.tabs.footer'),
-      path: '/superadmin/platform/settings/footer',
+      path: 'footer',
       content: (
         <AlphaContainer>
           <Text mb="3" fontWeight="bold">
@@ -217,10 +216,11 @@ export default function PlatformSettings({ history }) {
     },
   ];
 
-  const pathname = history?.location?.pathname;
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+  const pathname = location?.pathname;
+  const pathnameLastPart = pathname.split('/').pop();
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
 
@@ -237,18 +237,9 @@ export default function PlatformSettings({ history }) {
         <Tabs index={tabIndex} tabs={tabs} />
 
         <Box pt="4">
-          <Routes history={history}>
+          <Routes>
             {tabs.map((tab) => (
-              <Route
-                key={tab.title}
-                exact
-                path={tab.path}
-                render={(props) => (
-                  <Box {...props} pt="2">
-                    {tab.content}
-                  </Box>
-                )}
-              />
+              <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
             ))}
           </Routes>
         </Box>
