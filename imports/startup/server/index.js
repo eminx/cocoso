@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { renderWithSSR } from 'meteor/communitypackages:react-router-ssr';
+import { AppRoutesSSR } from '../../ssr/AppRoutes';
 
 // import { WebAppInternals } from 'meteor/webapp';
 
@@ -17,8 +18,6 @@ import { Accounts } from 'meteor/accounts-base';
 import './api';
 import './migrations';
 
-const AppRoutes = [{ path: '/', element: <div>naber lan</div> }];
-
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
 
@@ -31,12 +30,13 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
-  // if (!Meteor.user()) {
-  //   renderWithSSR(AppRoutes, {
-  //     renderTarget: 'react-app',
-  //   });
-  // }
 });
+
+// if (!Meteor.user()) {
+renderWithSSR(AppRoutesSSR, {
+  renderTarget: 'root',
+});
+// }
 
 // const render = async (sink) => {
 //   const context = {};
