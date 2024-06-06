@@ -34,33 +34,33 @@ function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProp
   );
 }
 
+const tabProps = {
+  _active: {
+    bg: 'brand.50',
+  },
+  _hover: {
+    bg: 'brand.50',
+  },
+  _focus: {
+    boxShadow: 'none',
+  },
+  _selected: {
+    bg: 'brand.500',
+    color: 'white',
+    cursor: 'default',
+  },
+  as: 'span',
+  bg: 'white',
+  fontFamily: "'Sarabun', sans-serif",
+  fontWeight: 'bold',
+  justifyContent: 'flex-start',
+  paddingInline: '4',
+};
+
 function CoTab({ forceUppercase = true, index, tab }) {
   if (!tab) {
     return null;
   }
-
-  const tabProps = {
-    _active: {
-      bg: 'brand.50',
-    },
-    _hover: {
-      bg: 'brand.50',
-    },
-    _focus: {
-      boxShadow: 'none',
-    },
-    _selected: {
-      bg: 'brand.500',
-      color: 'white',
-      cursor: 'default',
-    },
-    as: 'span',
-    bg: 'white',
-    fontFamily: "'Sarabun', sans-serif",
-    fontWeight: 'bold',
-    justifyContent: 'flex-start',
-    paddingInline: '4',
-  };
 
   return (
     <Tab

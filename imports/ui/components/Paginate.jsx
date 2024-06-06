@@ -71,7 +71,7 @@ function PaginatedItems({
           )}
         </Masonry>
       ) : (
-        <Wrap justify={isDesktop ? 'flex-start' : 'center'} spacing="8" shouldWrapChildren>
+        <Wrap justify="center" spacing="8" shouldWrapChildren>
           {currentItems?.map((item) => children(item))}
           {canCreateContent && currentPage + 1 === pageCount && (
             <NewEntryHelper buttonLink={newHelperLink} isMasonry={isMasonry} />

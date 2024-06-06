@@ -62,7 +62,7 @@ function NewButton() {
   };
 
   const activeMenuItem = menuItems.find(
-    (item) => isCurrentPage(item.name) && item.name !== 'members'
+    (item) => isCurrentPage(item.name) && item.name !== 'people'
   );
 
   const getPathname = (item) => {
@@ -119,7 +119,7 @@ function NewButton() {
           <MenuDivider />
           <Box pl="2">
             {menuItems
-              .filter((itemm) => itemm.name !== 'members' && itemm.name !== activeMenuItem?.name)
+              .filter((itemm) => itemm.name !== 'people' && itemm.name !== activeMenuItem?.name)
               .map((item) => (
                 <MenuItem
                   key={item.name}

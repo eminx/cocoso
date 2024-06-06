@@ -205,8 +205,6 @@ function Profile() {
           </Box>
         </Box>
       </Center>
-      {/* </GridItem> */}
-      {/* </Grid> */}
     </>
   );
 }

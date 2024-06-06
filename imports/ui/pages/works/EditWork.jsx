@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Box, Button, Center } from '@chakra-ui/react';
 import i18n from 'i18next';
@@ -40,9 +40,7 @@ class EditWork extends PureComponent {
 
   getWork = async () => {
     this.setState({ isLoading: true });
-    const { match } = this.props;
-    const workId = match.params.workId;
-    const username = match.params.username;
+    const { username, workId } = this.props;
 
     try {
       const response = await call('getWork', workId, username);
@@ -146,8 +144,7 @@ class EditWork extends PureComponent {
   };
 
   updateWork = async (imagesReadyToSave) => {
-    const { match } = this.props;
-    const workId = match.params.workId;
+    const { workId } = this.props;
     const { values, categories } = this.state;
     const { currentUser } = this.context;
 
@@ -197,8 +194,7 @@ class EditWork extends PureComponent {
   };
 
   handleDeleteWork = async () => {
-    const { match, history } = this.props;
-    const workId = match.params.workId;
+    const { workId } = this.props;
     const { currentUser } = this.context;
     const { values } = this.state;
 
@@ -225,9 +221,8 @@ class EditWork extends PureComponent {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   render() {
+    const { workId } = this.props;
     const { currentUser } = this.context;
-    const { match } = this.props;
-    const workId = match.params.workId;
     const { categories, images, isCreating, isLoading, isSuccess, isDeleteModalOn, values } =
       this.state;
 
@@ -243,7 +238,7 @@ class EditWork extends PureComponent {
       return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
-    const workRoute = `/@${currentUser.username}/works/${workId}`;
+    const workRoute = `/@/${currentUser.username}/works/${workId}`;
     if (isSuccess) {
       return <Navigate to={workRoute} />;
     }
@@ -288,4 +283,7 @@ class EditWork extends PureComponent {
 
 EditWork.contextType = StateContext;
 
-export default EditWork;
+export default function EditWorkPage() {
+  const { username, workId } = useParams();
+  return <EditWork username={username} workId={workId} />;
+}

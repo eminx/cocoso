@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -46,9 +46,8 @@ function TablyCentered({
     setCopied(false);
   }, [location.pathname]);
 
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === location.pathname);
-
   const pathnameLastPart = location.pathname.split('/').pop();
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
   if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
@@ -118,7 +117,6 @@ function TablyCentered({
                 ) : (
                   <Box pt="2">{content}</Box>
                 )}
-                <Outlet />
               </Box>
             </Box>
           </Box>
