@@ -56,7 +56,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
                   />
                 </a>
               ) : (
-                <Link to={`/activities/${activity._id}`}>
+                <Link to={`/activity/${activity._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && activity.host}
                     imageUrl={activity.imageUrl}

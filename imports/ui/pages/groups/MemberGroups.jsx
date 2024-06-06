@@ -44,7 +44,7 @@ function MemberGroups({ currentHost, isFederationLayout = false, isSelfAccount, 
           return (
             <Box key={group._id}>
               {isExternal ? (
-                <a href={`https://${group.host}/groups/${group._id}`}>
+                <a href={`https://${group.host}/group/${group._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && group.host}
                     imageUrl={group.imageUrl}
@@ -53,7 +53,7 @@ function MemberGroups({ currentHost, isFederationLayout = false, isSelfAccount, 
                   />
                 </a>
               ) : (
-                <Link to={`/groups/${group._id}`}>
+                <Link to={`/group/${group._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && group.host}
                     imageUrl={group.imageUrl}
