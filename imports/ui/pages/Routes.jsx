@@ -129,13 +129,11 @@ export default function () {
           <Route path="/newsletters" element={<PreviousNewsletters />} />
 
           {/* Admin */}
-          <Route path="/admin">
-            <Route exact path="settings" element={<Settings />} />
-            <Route exact path="users" element={<Members />} />
-            <Route exact path="emails" element={<Emails />} />
-            <Route exact path="email-newsletter" element={<EmailNewsletter />} />
-            <Route exact path="categories" element={<Categories />} />
-          </Route>
+          <Route path="/admin/settings/*" element={<Settings />} />
+          <Route path="/admin/users/*" element={<Members />} />
+          <Route path="/admin/emails/*" element={<Emails />} />
+          <Route exact path="/admin/email-newsletter" element={<EmailNewsletter />} />
+          <Route exact path="/admin/categories" element={<Categories />} />
 
           {/* Super Admin */}
           <Route path="/superadmin/platform/settings" element={<PlatformSettings />} />

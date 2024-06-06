@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
 import ReactQuill from '../../components/Quill';
@@ -18,14 +18,13 @@ import Tabs from '../../components/Tabs';
 import Categories from './Categories';
 import ColorPicker from './ColorPicker';
 
-export default function Settings({ history }) {
+export default function Settings() {
   const [localSettings, setLocalSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [localImage, setLocalImage] = useState(null);
-
+  const location = useLocation();
   const { currentUser, currentHost, role, getCurrentHost } = useContext(StateContext);
-
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
@@ -103,7 +102,7 @@ export default function Settings({ history }) {
   const tabs = [
     {
       title: t('settings.tabs.general'),
-      path: '/admin/settings/organization',
+      path: 'organization',
       content: (
         <AlphaContainer>
           <Box mb="8">
@@ -137,7 +136,7 @@ export default function Settings({ history }) {
     },
     {
       title: t('settings.tabs.menu'),
-      path: '/admin/settings/menu',
+      path: 'menu',
       content: (
         <AlphaContainer>
           <Menu />
@@ -146,7 +145,7 @@ export default function Settings({ history }) {
     },
     {
       title: t('settings.tabs.categories'),
-      path: '/admin/settings/categories',
+      path: 'categories',
       content: (
         <AlphaContainer>
           <Categories />
@@ -155,7 +154,7 @@ export default function Settings({ history }) {
     },
     {
       title: t('settings.tabs.color'),
-      path: '/admin/settings/color',
+      path: 'color',
       content: (
         <AlphaContainer>
           <ColorPicker />
@@ -164,7 +163,7 @@ export default function Settings({ history }) {
     },
     {
       title: t('settings.tabs.footer'),
-      path: '/admin/settings/footer',
+      path: 'footer',
       content: (
         <AlphaContainer>
           <Text mb="4">{t('info.platform.footer.description')}</Text>
@@ -184,10 +183,12 @@ export default function Settings({ history }) {
       ),
     },
   ];
-  const pathname = history?.location?.pathname;
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+  const pathname = location?.pathname;
+  console.log(location);
+  const pathnameLastPart = pathname.split('/').pop();
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
 
@@ -204,18 +205,9 @@ export default function Settings({ history }) {
         <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
         <Box mb="24">
-          <Routes history={history}>
+          <Routes>
             {tabs.map((tab) => (
-              <Route
-                key={tab.title}
-                exact
-                path={tab.path}
-                render={(props) => (
-                  <Box {...props} pt="2">
-                    {tab.content}
-                  </Box>
-                )}
-              />
+              <Route key={tab.title} path={tab.path} element={<Box pt="2">{tab.content}</Box>} />
             ))}
           </Routes>
         </Box>

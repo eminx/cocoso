@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import { parseTitle } from '../utils/shared';
 
-function ListMenu({ currentUser, list, pathname, onChange, children, ...otherProps }) {
+function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
   const { isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname } = location;
   const [tc] = useTranslation('common');
   if (!list) {
     return null;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +32,7 @@ function Members() {
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
   const { currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
-  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     getMembers();
@@ -181,21 +181,22 @@ function Members() {
       break;
   }
 
-  const pathname = history && history.location.pathname;
+  const { pathname } = location;
   const pathParts = pathname.split('/');
   const filterInPath = pathParts[pathParts.length - 1];
 
   const tabs = filterOptions.map((item) => {
     return {
       title: item.label,
-      path: `/admin/users/${item.value}`,
+      path: item.value,
       content: <MemberList roleFilter={filterInPath} members={membersSorted} t={t} />,
     };
   });
 
-  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathname);
+  const pathnameLastPart = pathname.split('/').pop();
+  const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 
-  if (tabs && !tabs.find((tab) => tab.path === pathname)) {
+  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
     return <Navigate to={tabs[0].path} />;
   }
 
@@ -235,18 +236,9 @@ function Members() {
           </Flex>
 
           <Box mb="24">
-            <Routes history={history}>
+            <Routes>
               {tabs.map((tab) => (
-                <Route
-                  key={tab.title}
-                  exact
-                  path={tab.path}
-                  render={(props) => (
-                    <Box {...props} p="2">
-                      {tab.content}
-                    </Box>
-                  )}
-                />
+                <Route key={tab.title} path={tab.path} element={<Box p="2">{tab.content}</Box>} />
               ))}
             </Routes>
           </Box>
@@ -263,6 +255,7 @@ function Members() {
 }
 
 function MemberList({ members, roleFilter, t }) {
+  console.log(members);
   const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
   return (
     <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
