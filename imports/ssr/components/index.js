@@ -1,6 +1,8 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
+import { Helmet } from 'react-helmet';
 
 import Hosts from '../../api/hosts/host';
 import Activities from '../../api/activities/activity';
@@ -20,6 +22,8 @@ export function ActivitiesList() {
   const host = Hosts.findOne({ host: activities[0].host });
   const pageHeading = host.settings?.menu.find((item) => item.name === 'activities')?.label;
 
+  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
       <Header host={host} />
@@ -28,7 +32,7 @@ export function ActivitiesList() {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder items={activities} />
+      <Gridder metaTitle={metaTitle} items={activities} />
     </>
   );
 }
@@ -62,6 +66,8 @@ export function GroupsList() {
   const host = Hosts.findOne({ host: groups[0].host });
   const pageHeading = host.settings?.menu.find((item) => item.name === 'groups')?.label;
 
+  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
       <Header host={host} />
@@ -70,7 +76,7 @@ export function GroupsList() {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder items={groups} />
+      <Gridder metaTitle={metaTitle} items={groups} />
     </>
   );
 }
@@ -124,6 +130,8 @@ export function ResourcesList() {
   const host = Hosts.findOne({ host: resources[0].host });
   const pageHeading = host.settings?.menu.find((item) => item.name === 'resources')?.label;
 
+  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
       <Header host={host} />
@@ -132,7 +140,7 @@ export function ResourcesList() {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder items={resources} />
+      <Gridder metaTitle={metaTitle} items={resources} />
     </>
   );
 }
@@ -164,6 +172,8 @@ export function WorksList() {
   const host = Hosts.findOne({ host: works[0].host });
   const pageTitle = host.settings?.menu.find((item) => item.name === 'works')?.label;
 
+  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
       <Header host={host} />
@@ -172,7 +182,7 @@ export function WorksList() {
           {pageTitle}
         </Heading>
       </Center>
-      <Gridder items={works} />
+      <Gridder metaTitle={metaTitle} items={works} />
     </>
   );
 }
@@ -205,8 +215,19 @@ export function UsersList() {
   const users = Meteor.users.find({ 'memberships.host': host.host }).fetch();
   const pageTitle = host.settings?.menu.find((item) => item.name === 'people')?.label;
 
+  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{metaTitle}</title>
+        <meta name="title" content={metaTitle} />
+        <meta property="og:image" content={users.find((u) => u.avatar?.src)?.avatar?.src} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={host.host} />
+      </Helmet>
+
       <Header host={host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
@@ -248,22 +269,35 @@ export function User() {
   );
 }
 
-function Gridder({ items }) {
+function Gridder({ items, metaTitle }) {
+  const imageUrl =
+    items.find((item) => item.imageUrl)?.imageUrl || items.find((item) => item.images)?.images[0];
+
   return (
-    <Center>
-      <Wrap justify="center">
-        {items.map((item) => (
-          <VStack key={item._id} w={400}>
-            <Img
-              w={360}
-              h={240}
-              objectFit="cover"
-              src={item.imageUrl || (item.images && item.images[0])}
-            />
-            <Heading fontSize={22}>{item.title}</Heading>
-          </VStack>
-        ))}
-      </Wrap>
-    </Center>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{metaTitle}</title>
+        <meta name="title" content={metaTitle} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={items[0].host} />
+      </Helmet>
+      <Center>
+        <Wrap justify="center">
+          {items.map((item) => (
+            <VStack key={item._id} w={400}>
+              <Img
+                w={360}
+                h={240}
+                objectFit="cover"
+                src={item.imageUrl || (item.images && item.images[0])}
+              />
+              <Heading fontSize={22}>{item.title}</Heading>
+            </VStack>
+          ))}
+        </Wrap>
+      </Center>
+    </>
   );
 }
