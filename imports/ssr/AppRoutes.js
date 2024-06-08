@@ -60,7 +60,7 @@ export const AppRoutesSSR = [
     element: <Work />,
   },
   {
-    path: '/@/:username',
+    path: '/@/:username/*',
     element: <User />,
   },
   {

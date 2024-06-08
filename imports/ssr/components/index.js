@@ -200,30 +200,30 @@ export function Work() {
 
 export function UsersList() {
   Meteor.subscribe('membersForPublic');
-  Meteor.subscribe('works');
-  const works = Works.find().fetch();
-  Meteor.subscribe('host', works[0].host);
-  const host = Hosts.findOne({ host: works[0].host });
+  Meteor.subscribe('currentHost');
+  const host = Hosts.findOne();
   const users = Meteor.users.find({ 'memberships.host': host.host }).fetch();
   const pageTitle = host.settings?.menu.find((item) => item.name === 'people')?.label;
 
   return (
-    <Center>
+    <>
       <Header host={host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageTitle}
         </Heading>
       </Center>
-      <Wrap justify="center">
-        {users.map((user) => (
-          <VStack key={user._id}>
-            {user.avatar?.src && <Img w={240} src={user.avatar.src} />}
-            <Heading fontSize={22}>{user.username}</Heading>
-          </VStack>
-        ))}
-      </Wrap>
-    </Center>
+      <Center>
+        <Wrap justify="center">
+          {users.map((user) => (
+            <VStack key={user._id}>
+              <Img w={240} h={240} objectFit="cover" src={user.avatar?.src} />
+              <Heading fontSize={22}>{user.username}</Heading>
+            </VStack>
+          ))}
+        </Wrap>
+      </Center>
+    </>
   );
 }
 
@@ -231,16 +231,20 @@ export function User() {
   const { username } = useParams();
   Meteor.subscribe('user', username);
   const user = Meteor.users.findOne({ username });
+  Meteor.subscribe('currentHost');
+  const host = Hosts.findOne();
 
   return (
-    <Center>
+    <>
+      <Header host={host} />
       <Content
         description={user.bio}
         imageUrl={user.avatar?.src}
+        host={host}
         subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
         title={user.username}
       />
-    </Center>
+    </>
   );
 }
 
