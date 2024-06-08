@@ -11,6 +11,13 @@ Meteor.publish('currentHost', function () {
   );
 });
 
+Meteor.publish('host', function (host) {
+  return Hosts.find(
+    { host },
+    { fields: { host: true, settings: true, logo: true, isPortalHost: true } }
+  );
+});
+
 Meteor.publish('members', function () {
   const user = Meteor.user();
   const host = getHost(this);

@@ -29,8 +29,6 @@ const getRoute = (item, index) => {
 function Header({ isSmallerLogo }) {
   const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
-  const location = useLocation();
-  const pathname = location?.pathname;
 
   const { isHeaderMenu, menu } = currentHost?.settings;
   const menuItems = menu
@@ -58,14 +56,6 @@ function Header({ isSmallerLogo }) {
   if (!currentHost) {
     return null;
   }
-
-  const isCurrentPage = (item) => {
-    const pathSplitted = pathname.split('/');
-    if (item.name === 'info') {
-      return pathSplitted && pathSplitted[1] === 'pages';
-    }
-    return pathSplitted.includes(item.name);
-  };
 
   const isFederationLayout = platform && platform.isFederationLayout;
 
@@ -124,32 +114,47 @@ function Header({ isSmallerLogo }) {
         <Box mb={isDesktop ? '0' : '6'}></Box>
       </Show>
 
-      {isDesktop && isHeaderMenu && (
-        <Center p="4">
-          <HStack alignItems="flex-start" mb="2" wrap="wrap">
-            {menuItems.map((item) => {
-              const isCurrentPageLabel = isCurrentPage(item);
-              return (
-                <Link key={item.name} to={item.route}>
-                  <Box px="2">
-                    <Text
-                      as="span"
-                      _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
-                      borderBottom={isCurrentPageLabel ? '2px solid' : '2px transparent'}
-                      color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
-                      fontFamily="Raleway, Sarabun, sans"
-                      fontWeight="bold"
-                    >
-                      {item.label}
-                    </Text>
-                  </Box>
-                </Link>
-              );
-            })}
-          </HStack>
-        </Center>
-      )}
+      {isDesktop && isHeaderMenu && <WrappedMenu menuItems={menuItems} />}
     </Box>
+  );
+}
+
+export function WrappedMenu({ menuItems }) {
+  const location = useLocation();
+  const pathname = location?.pathname;
+
+  const isCurrentPage = (item) => {
+    const pathSplitted = pathname.split('/');
+    if (item.name === 'info') {
+      return pathSplitted && pathSplitted[1] === 'pages';
+    }
+    return pathSplitted.includes(item.name);
+  };
+
+  return (
+    <Center p="4">
+      <HStack alignItems="flex-start" mb="2" wrap="wrap">
+        {menuItems.map((item) => {
+          const isCurrentPageLabel = isCurrentPage(item);
+          return (
+            <Link key={item.name} to={item.route}>
+              <Box px="2">
+                <Text
+                  as="span"
+                  _hover={!isCurrentPageLabel && { borderBottom: '2px dashed' }}
+                  borderBottom={isCurrentPageLabel ? '2px solid' : '2px transparent'}
+                  color={isCurrentPageLabel ? 'gray.800' : 'brand.500'}
+                  fontFamily="Raleway, Sarabun, sans"
+                  fontWeight="bold"
+                >
+                  {item.label}
+                </Text>
+              </Box>
+            </Link>
+          );
+        })}
+      </HStack>
+    </Center>
   );
 }
 

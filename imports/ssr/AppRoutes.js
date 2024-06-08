@@ -1,52 +1,66 @@
 import React from 'react';
 
+import {
+  ActivitiesList,
+  Activity,
+  GroupsList,
+  Group,
+  Page,
+  ResourcesList,
+  Resource,
+  WorksList,
+  Work,
+  UsersList,
+  User,
+} from './components';
+
 export const AppRoutesSSR = [
   {
     path: '/activities',
-    element: <div>activities</div>,
+    element: <ActivitiesList />,
   },
   {
     path: '/groups',
-    element: <div>groups</div>,
+    element: <GroupsList />,
   },
   {
     path: '/works',
-    element: <div>works</div>,
+    element: <WorksList />,
   },
   {
     path: '/resources',
-    element: <div>resources</div>,
+    element: <ResourcesList />,
   },
   {
     path: '/calendar',
-    element: <div>calendar</div>,
+    element: <div />,
   },
   {
-    path: '/members',
-    element: <div>members</div>,
+    path: '/people',
+    element: <UsersList />,
   },
   {
     path: '/activity/:activityId/*',
-    element: <div>activity</div>,
+    element: <Activity />,
   },
   {
     path: '/group/:groupId/*',
-    element: <div>group</div>,
-  },
-  {
-    path: '/@/:username/work/:workId/*',
-    element: <div>work</div>,
-  },
-  {
-    path: '/resource/:resourceId/*',
-    element: <div>resource</div>,
+    element: <Group />,
   },
   {
     path: '/pages/:pageTitle',
-    element: <div>page</div>,
+    element: <Page />,
+  },
+  {
+    path: '/resource/:resourceId/*',
+    element: <Resource />,
+  },
+  {
+    path: '/@/:username/work/:workId/*',
+    element: <Work />,
   },
   {
     path: '/@/:username',
-    element: <div>user</div>,
+    element: <User />,
   },
 ];

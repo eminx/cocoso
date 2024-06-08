@@ -25,3 +25,8 @@ Meteor.publish('memberWorksAtHost', function (username) {
     host,
   });
 });
+
+Meteor.publish('works', function () {
+  const host = getHost(this);
+  return Works.find({ host });
+});

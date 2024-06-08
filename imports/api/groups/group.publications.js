@@ -35,9 +35,9 @@ Meteor.publish('groups', function () {
 });
 
 Meteor.publish('group', function (id) {
-  const host = getHost(this);
+  // const host = getHost(this);
   return Groups.find({
-    host,
+    // host,
     _id: id,
   });
 });
