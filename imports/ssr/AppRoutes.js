@@ -63,4 +63,8 @@ export const AppRoutesSSR = [
     path: '/@/:username',
     element: <User />,
   },
+  {
+    path: '/*',
+    element: <div />,
+  },
 ];

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
 
 import Hosts from '../../api/hosts/host';
 import Activities from '../../api/activities/activity';
@@ -10,17 +11,24 @@ import Works from '../../api/works/work';
 
 import Header from './Header';
 import Content from './Content';
+import { parseTitle } from '../../ui/utils/shared';
 
 export function ActivitiesList() {
-  Meteor.subscribe('activities');
-  const activities = Activities.find().fetch();
+  Meteor.subscribe('activities', true);
+  const activities = Activities.find({ isPublicActivity: true }).fetch();
+  Meteor.subscribe('host', activities[0].host);
+  const host = Hosts.findOne({ host: activities[0].host });
+  const pageHeading = host.settings?.menu.find((item) => item.name === 'activities')?.label;
+
   return (
     <>
-      <ul>
-        {activities.map((a) => (
-          <li>{a.title}</li>
-        ))}
-      </ul>
+      <Header host={host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageHeading}
+        </Heading>
+      </Center>
+      <Gridder items={activities} />
     </>
   );
 }
@@ -50,13 +58,19 @@ export function Activity() {
 export function GroupsList() {
   Meteor.subscribe('groups');
   const groups = Groups.find().fetch();
+  Meteor.subscribe('host', groups[0].host);
+  const host = Hosts.findOne({ host: groups[0].host });
+  const pageHeading = host.settings?.menu.find((item) => item.name === 'groups')?.label;
+
   return (
     <>
-      <ul>
-        {groups.map((a) => (
-          <li>{a.title}</li>
-        ))}
-      </ul>
+      <Header host={host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageHeading}
+        </Heading>
+      </Center>
+      <Gridder items={groups} />
     </>
   );
 }
@@ -83,10 +97,11 @@ export function Group() {
 }
 
 export function Page() {
-  const { pageId } = useParams();
-  Meteor.subscribe('page', pageId);
-  const page = Pages.findOne(pageId);
-  Meteor.subscribe('host', page.host);
+  const { pageTitle } = useParams();
+  Meteor.subscribe('pages');
+  const pages = Pages.find().fetch();
+  const page = pages.find((page) => parseTitle(page.title) === pageTitle);
+  page && Meteor.subscribe('host', page.host);
   const host = Hosts.findOne({ host: page.host });
 
   return (
@@ -105,13 +120,19 @@ export function Page() {
 export function ResourcesList() {
   Meteor.subscribe('resources');
   const resources = Resources.find().fetch();
+  Meteor.subscribe('host', resources[0].host);
+  const host = Hosts.findOne({ host: resources[0].host });
+  const pageHeading = host.settings?.menu.find((item) => item.name === 'resources')?.label;
+
   return (
     <>
-      <ul>
-        {resources.map((a) => (
-          <li>{a.label}</li>
-        ))}
-      </ul>
+      <Header host={host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageHeading}
+        </Heading>
+      </Center>
+      <Gridder items={resources} />
     </>
   );
 }
@@ -139,13 +160,19 @@ export function Resource() {
 export function WorksList() {
   Meteor.subscribe('works');
   const works = Works.find().fetch();
+  Meteor.subscribe('host', works[0].host);
+  const host = Hosts.findOne({ host: works[0].host });
+  const pageTitle = host.settings?.menu.find((item) => item.name === 'works')?.label;
+
   return (
     <>
-      <ul>
-        {works.map((a) => (
-          <li>{a.title}</li>
-        ))}
-      </ul>
+      <Header host={host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageTitle}
+        </Heading>
+      </Center>
+      <Gridder items={works} />
     </>
   );
 }
@@ -161,7 +188,7 @@ export function Work() {
     <>
       <Header host={host} />
       <Content
-        description={work.description}
+        description={work.longDescription}
         host={host}
         imageUrl={work.images && work.images[0]}
         subTitle={work.shortDescription}
@@ -173,15 +200,30 @@ export function Work() {
 
 export function UsersList() {
   Meteor.subscribe('membersForPublic');
-  const users = Meteor.users.find().fetch();
+  Meteor.subscribe('works');
+  const works = Works.find().fetch();
+  Meteor.subscribe('host', works[0].host);
+  const host = Hosts.findOne({ host: works[0].host });
+  const users = Meteor.users.find({ 'memberships.host': host.host }).fetch();
+  const pageTitle = host.settings?.menu.find((item) => item.name === 'people')?.label;
+
   return (
-    <>
-      <ul>
-        {users.map((a) => (
-          <li>{a.username}</li>
+    <Center>
+      <Header host={host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageTitle}
+        </Heading>
+      </Center>
+      <Wrap justify="center">
+        {users.map((user) => (
+          <VStack key={user._id}>
+            {user.avatar?.src && <Img w={240} src={user.avatar.src} />}
+            <Heading fontSize={22}>{user.username}</Heading>
+          </VStack>
         ))}
-      </ul>
-    </>
+      </Wrap>
+    </Center>
   );
 }
 
@@ -191,13 +233,33 @@ export function User() {
   const user = Meteor.users.findOne({ username });
 
   return (
-    <>
+    <Center>
       <Content
         description={user.bio}
         imageUrl={user.avatar?.src}
         subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
         title={user.username}
       />
-    </>
+    </Center>
+  );
+}
+
+function Gridder({ items }) {
+  return (
+    <Center>
+      <Wrap justify="center">
+        {items.map((item) => (
+          <VStack key={item._id} w={400}>
+            <Img
+              w={360}
+              h={240}
+              objectFit="cover"
+              src={item.imageUrl || (item.images && item.images[0])}
+            />
+            <Heading fontSize={22}>{item.title}</Heading>
+          </VStack>
+        ))}
+      </Wrap>
+    </Center>
   );
 }

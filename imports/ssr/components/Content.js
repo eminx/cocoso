@@ -6,14 +6,14 @@ import { Helmet } from 'react-helmet';
 const h1Style = {
   fontFamily: "'Helvetica', sans-serif",
   marginBottom: 12,
-  fontSize: 24,
+  fontSize: 28,
 };
 
 const h3Style = {
   fontFamily: "'Helvetica', sans-serif",
   marginTop: 0,
   fontSize: 18,
-  fontWeight: 400,
+  fontWeight: 300,
 };
 
 export default function Content({ description, host, imageUrl, subTitle, title }) {
@@ -39,9 +39,9 @@ export default function Content({ description, host, imageUrl, subTitle, title }
 
       <Center>{imageUrl && <Img src={imageUrl} h={400} />}</Center>
 
-      <Center>
+      <Center p={12}>
         {description && (
-          <Box w={400} fontFamily="'Helvetica', sans-serif" fontWeight={400} lineHeight={1.4}>
+          <Box fontFamily="'Helvetica', sans-serif" fontWeight={400} lineHeight={1.4} w={400}>
             {renderHTML(description)}
           </Box>
         )}
