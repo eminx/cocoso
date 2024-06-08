@@ -38,6 +38,7 @@ export function Activity() {
       <Header host={host} />
       <Content
         description={activity.longDescription}
+        host={host}
         imageUrl={activity.imageUrl}
         subTitle={activity.subTitle}
         title={activity.title}
@@ -72,6 +73,7 @@ export function Group() {
       <Header host={host} />
       <Content
         description={group.description}
+        host={host}
         imageUrl={group.imageUrl}
         subTitle={group.readingMaterial}
         title={group.title}
@@ -92,6 +94,7 @@ export function Page() {
       <Header host={host} />
       <Content
         description={page.longDescription}
+        host={host}
         imageUrl={page.images && page.images[0]}
         title={page.title}
       />
@@ -125,6 +128,7 @@ export function Resource() {
       <Header host={host} />
       <Content
         description={resource.description}
+        host={host}
         imageUrl={resource.images && resource.images[0]}
         title={resource.label}
       />
@@ -158,6 +162,7 @@ export function Work() {
       <Header host={host} />
       <Content
         description={work.description}
+        host={host}
         imageUrl={work.images && work.images[0]}
         subTitle={work.shortDescription}
         title={work.title}
