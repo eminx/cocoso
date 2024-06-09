@@ -4,6 +4,7 @@ import {
   ActivitiesList,
   Activity,
   Communities,
+  Home,
   GroupsList,
   Group,
   Page,
@@ -16,6 +17,10 @@ import {
 } from './components';
 
 export const AppRoutesSSR = (host) => [
+  {
+    path: '/',
+    element: <Home host={host} />,
+  },
   {
     path: '/activities',
     element: <ActivitiesList host={host} />,

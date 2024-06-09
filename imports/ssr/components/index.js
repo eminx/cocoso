@@ -81,6 +81,23 @@ export function Communities() {
   );
 }
 
+export function Home({ host }) {
+  const Host = Hosts.findOne({ host });
+  const pageHeading = Host.settings?.name;
+
+  return (
+    <>
+      <Header host={Host} />
+      <Content
+        host={Host}
+        imageUrl={Host.logo}
+        subTitle={Host.settings?.address}
+        title={pageHeading}
+      />
+    </>
+  );
+}
+
 export function GroupsList({ host }) {
   Meteor.subscribe('groups');
   const groups = Groups.find({ host }).fetch();
