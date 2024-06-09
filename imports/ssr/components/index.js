@@ -21,8 +21,11 @@ export function ActivitiesList({ host }) {
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+  const pageDescription = Host.settings?.menu.find(
+    (item) => item.name === 'activities'
+  )?.description;
 
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
   return (
     <>
       <Header host={Host} />
@@ -31,7 +34,7 @@ export function ActivitiesList({ host }) {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder metaTitle={metaTitle} items={activities} />
+      <Gridder metaTitle={metaTitle} items={activities} pageDescription={pageDescription} />
     </>
   );
 }
@@ -63,8 +66,9 @@ export function GroupsList({ host }) {
   const groups = Groups.find({ host }).fetch();
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
-  pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
-  metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
+  const pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
+  const pageDescription = Host?.settings?.menu.find((item) => item.name === 'groups')?.description;
+  const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
     <>
@@ -74,7 +78,7 @@ export function GroupsList({ host }) {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder metaTitle={metaTitle} items={groups} />
+      <Gridder metaTitle={metaTitle} items={groups} pageDescription={pageDescription} />
     </>
   );
 }
@@ -127,6 +131,9 @@ export function ResourcesList({ host }) {
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'resources')?.label;
+  const pageDescription = Host.settings?.menu.find(
+    (item) => item.name === 'resources'
+  )?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
@@ -137,7 +144,7 @@ export function ResourcesList({ host }) {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder metaTitle={metaTitle} items={resources} />
+      <Gridder metaTitle={metaTitle} items={resources} pageDescription={pageDescription} />
     </>
   );
 }
@@ -168,6 +175,7 @@ export function WorksList({ host }) {
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'works')?.label;
+  const pageDescription = Host.settings?.menu.find((item) => item.name === 'works')?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
@@ -178,7 +186,7 @@ export function WorksList({ host }) {
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder metaTitle={metaTitle} items={works} />
+      <Gridder metaTitle={metaTitle} items={works} pageDescription={pageDescription} />
     </>
   );
 }
@@ -210,7 +218,7 @@ export function UsersList({ host }) {
   const Host = Hosts.findOne({ host });
   const users = Meteor.users.find({ 'memberships.host': host }).fetch();
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'people')?.label;
-
+  const pageDescription = Host.settings?.menu.find((item) => item.name === 'people')?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
@@ -219,6 +227,8 @@ export function UsersList({ host }) {
         <meta charSet="utf-8" />
         <title>{metaTitle}</title>
         <meta name="title" content={metaTitle} />
+        <meta property="og:title" content={metaTitle?.substring(0, 30)} />
+        <meta property="og:description" content={pageDescription?.substring(0, 60)} />
         <meta property="og:image" content={users.find((u) => u.avatar?.src)?.avatar?.src} />
         <meta property="og:type" content="article" />
         <link rel="canonical" href={host.host} />
@@ -265,7 +275,7 @@ export function User() {
   );
 }
 
-function Gridder({ items, metaTitle }) {
+function Gridder({ items, metaTitle, pageDescription }) {
   if (!items) {
     return null;
   }
@@ -279,9 +289,11 @@ function Gridder({ items, metaTitle }) {
         <meta charSet="utf-8" />
         <title>{metaTitle}</title>
         <meta name="title" content={metaTitle} />
+        <meta property="og:title" content={metaTitle?.substring(0, 30)} />
+        <meta property="og:description" content={pageDescription?.substring(0, 60)} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={items[0].host} />
+        <link rel="canonical" href={items[0]?.host} />
       </Helmet>
       <Center>
         <Wrap justify="center">
