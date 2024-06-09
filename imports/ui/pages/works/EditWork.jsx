@@ -209,7 +209,7 @@ class EditWork extends PureComponent {
       this.setState({
         isLoading: false,
       });
-      navigate(`/@${currentUser.username}/works`);
+      navigate(`/@/${currentUser.username}/works`);
       message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       message.error(error.reason);

@@ -121,7 +121,7 @@ function Work() {
           work.showAvatar && {
             src: work.authorAvatar,
             username: work.authorUsername,
-            link: `/@${work.authorUsername}`,
+            link: `/@/${work.authorUsername}`,
           }
         }
         backLink={backLink}

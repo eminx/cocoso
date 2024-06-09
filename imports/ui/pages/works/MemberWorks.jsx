@@ -45,7 +45,7 @@ function MemberWorks({ currentHost, isFederationLayout = false, isSelfAccount, u
           return (
             <Box key={work._id}>
               {isExternal ? (
-                <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
+                <a href={`https://${work.host}/@/${work.authorUsername}/works/${work._id}`}>
                   <NewGridThumb
                     avatar={{
                       name: work.authorUsername,

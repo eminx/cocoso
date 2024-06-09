@@ -615,7 +615,7 @@ class Group extends Component {
                 spacing="0"
               >
                 {(member) => (
-                  <Link to={`/@${member.username}`}>
+                  <Link to={`/@/${member.username}`}>
                     <Flex align="center">
                       <Avatar
                         borderRadius="8px"

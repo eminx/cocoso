@@ -50,9 +50,9 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
   if (redirect) {
     if (redirect.host === currentHost.host) {
-      navigate(`/@${user.username}`);
+      navigate(`/@/${user.username}`);
     } else {
-      window.location.href = `https://${redirect.host}/@${user.username}`;
+      window.location.href = `https://${redirect.host}/@/${user.username}`;
     }
   }
 
