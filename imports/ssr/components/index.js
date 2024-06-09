@@ -17,7 +17,7 @@ import { parseTitle } from '../../ui/utils/shared';
 
 export function ActivitiesList({ host }) {
   Meteor.subscribe('activities', true);
-  const activities = Activities.find({ isPublicActivity: true }).fetch();
+  const activities = Activities.find({ host, isPublicActivity: true }).fetch();
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
@@ -164,7 +164,7 @@ export function Resource() {
 
 export function WorksList({ host }) {
   Meteor.subscribe('works');
-  const works = Works.find().fetch();
+  const works = Works.find({ host }).fetch();
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'works')?.label;

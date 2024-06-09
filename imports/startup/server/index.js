@@ -20,8 +20,8 @@ Meteor.startup(() => {
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
 
-  Meteor.onConnection(function (result) {
-    const host = result.httpHeaders.host;
+  Meteor.onConnection(function (connection) {
+    const host = connection.httpHeaders.host;
     renderWithSSR(AppRoutesSSR(host), {
       renderTarget: 'root',
     });
