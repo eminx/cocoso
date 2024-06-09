@@ -5,17 +5,11 @@ import Hosts from './host';
 
 Meteor.publish('currentHost', function () {
   const host = getHost(this);
-  return Hosts.find(
-    { host },
-    { fields: { host: true, settings: true, logo: true, isPortalHost: true } }
-  );
+  return Hosts.find({ host }, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
 });
 
 Meteor.publish('host', function (host) {
-  return Hosts.find(
-    { host },
-    { fields: { host: true, settings: true, logo: true, isPortalHost: true } }
-  );
+  return Hosts.find({ host }, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
 });
 
 Meteor.publish('members', function () {

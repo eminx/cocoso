@@ -15,18 +15,17 @@ import Header from './Header';
 import Content from './Content';
 import { parseTitle } from '../../ui/utils/shared';
 
-export function ActivitiesList() {
+export function ActivitiesList({ host }) {
   Meteor.subscribe('activities', true);
   const activities = Activities.find({ isPublicActivity: true }).fetch();
-  Meteor.subscribe('host', activities[0].host);
-  const host = Hosts.findOne({ host: activities[0].host });
-  const pageHeading = host.settings?.menu.find((item) => item.name === 'activities')?.label;
-
-  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+  Meteor.subscribe('host', host);
+  const Host = Hosts.findOne({ host });
+  const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
     <>
-      <Header host={host} />
+      <Header host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
@@ -59,18 +58,17 @@ export function Activity() {
   );
 }
 
-export function GroupsList() {
+export function GroupsList({ host }) {
   Meteor.subscribe('groups');
-  const groups = Groups.find().fetch();
-  Meteor.subscribe('host', groups[0].host);
-  const host = Hosts.findOne({ host: groups[0].host });
-  const pageHeading = host.settings?.menu.find((item) => item.name === 'groups')?.label;
-
-  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+  const groups = Groups.find({ host }).fetch();
+  Meteor.subscribe('host', host);
+  const Host = Hosts.findOne({ host });
+  pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
+  metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
     <>
-      <Header host={host} />
+      <Header host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
@@ -102,20 +100,20 @@ export function Group() {
   );
 }
 
-export function Page() {
+export function Page({ host }) {
   const { pageTitle } = useParams();
   Meteor.subscribe('pages');
-  const pages = Pages.find().fetch();
+  const pages = Pages.find({ host }).fetch();
   const page = pages.find((page) => parseTitle(page.title) === pageTitle);
   page && Meteor.subscribe('host', page.host);
-  const host = Hosts.findOne({ host: page.host });
+  const Host = Hosts.findOne({ host: page.host });
 
   return (
     <>
-      <Header host={host} />
+      <Header host={Host} />
       <Content
         description={page.longDescription}
-        host={host}
+        host={Host}
         imageUrl={page.images && page.images[0]}
         title={page.title}
       />
@@ -123,18 +121,17 @@ export function Page() {
   );
 }
 
-export function ResourcesList() {
+export function ResourcesList({ host }) {
   Meteor.subscribe('resources');
-  const resources = Resources.find().fetch();
-  Meteor.subscribe('host', resources[0].host);
-  const host = Hosts.findOne({ host: resources[0].host });
-  const pageHeading = host.settings?.menu.find((item) => item.name === 'resources')?.label;
-
-  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+  const resources = Resources.find({ host }).fetch();
+  Meteor.subscribe('host', host);
+  const Host = Hosts.findOne({ host });
+  const pageHeading = Host.settings?.menu.find((item) => item.name === 'resources')?.label;
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
     <>
-      <Header host={host} />
+      <Header host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
@@ -165,21 +162,20 @@ export function Resource() {
   );
 }
 
-export function WorksList() {
+export function WorksList({ host }) {
   Meteor.subscribe('works');
   const works = Works.find().fetch();
-  Meteor.subscribe('host', works[0].host);
-  const host = Hosts.findOne({ host: works[0].host });
-  const pageTitle = host.settings?.menu.find((item) => item.name === 'works')?.label;
-
-  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+  Meteor.subscribe('host', host);
+  const Host = Hosts.findOne({ host });
+  const pageHeading = Host.settings?.menu.find((item) => item.name === 'works')?.label;
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
     <>
-      <Header host={host} />
+      <Header host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageTitle}
+          {pageHeading}
         </Heading>
       </Center>
       <Gridder metaTitle={metaTitle} items={works} />
@@ -208,14 +204,14 @@ export function Work() {
   );
 }
 
-export function UsersList() {
+export function UsersList({ host }) {
   Meteor.subscribe('membersForPublic');
   Meteor.subscribe('currentHost');
-  const host = Hosts.findOne();
-  const users = Meteor.users.find({ 'memberships.host': host.host }).fetch();
-  const pageTitle = host.settings?.menu.find((item) => item.name === 'people')?.label;
+  const Host = Hosts.findOne({ host });
+  const users = Meteor.users.find({ 'memberships.host': host }).fetch();
+  const pageHeading = Host.settings?.menu.find((item) => item.name === 'people')?.label;
 
-  const metaTitle = `${host.settings?.name} | ${pageHeading}`;
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
     <>
@@ -228,10 +224,10 @@ export function UsersList() {
         <link rel="canonical" href={host.host} />
       </Helmet>
 
-      <Header host={host} />
+      <Header host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageTitle}
+          {pageHeading}
         </Heading>
       </Center>
       <Center>
@@ -270,6 +266,10 @@ export function User() {
 }
 
 function Gridder({ items, metaTitle }) {
+  if (!items) {
+    return null;
+  }
+
   const imageUrl =
     items.find((item) => item.imageUrl)?.imageUrl || items.find((item) => item.images)?.images[0];
 

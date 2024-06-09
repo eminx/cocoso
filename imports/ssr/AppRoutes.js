@@ -14,22 +14,22 @@ import {
   User,
 } from './components';
 
-export const AppRoutesSSR = [
+export const AppRoutesSSR = (host) => [
   {
     path: '/activities',
-    element: <ActivitiesList />,
+    element: <ActivitiesList host={host} />,
   },
   {
     path: '/groups',
-    element: <GroupsList />,
+    element: <GroupsList host={host} />,
   },
   {
     path: '/works',
-    element: <WorksList />,
+    element: <WorksList host={host} />,
   },
   {
     path: '/resources',
-    element: <ResourcesList />,
+    element: <ResourcesList host={host} />,
   },
   {
     path: '/calendar',
@@ -37,7 +37,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/people',
-    element: <UsersList />,
+    element: <UsersList host={host} />,
   },
   {
     path: '/activity/:activityId/*',
@@ -49,7 +49,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/pages/:pageTitle',
-    element: <Page />,
+    element: <Page host={host} />,
   },
   {
     path: '/resource/:resourceId/*',

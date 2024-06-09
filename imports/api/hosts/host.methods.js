@@ -268,4 +268,9 @@ Meteor.methods({
       throw new Meteor.Error(error);
     }
   },
+
+  getHostValue() {
+    const host = getHost(this);
+    return host;
+  },
 });

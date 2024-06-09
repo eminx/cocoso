@@ -8,12 +8,12 @@ export default function Header({ host }) {
   return (
     <>
       <Center p="4" mb="24px">
-        {host.logo && <Img maxW={280} maxH={120} src={host.logo} />}
+        {host?.logo && <Img maxW={280} maxH={120} src={host.logo} />}
       </Center>
 
       <Center p="4" mt="4" mb="12px">
         <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
-          {menuItems.map((item) => (
+          {menuItems?.map((item) => (
             <Link key={item.name} style={{ color: 'blue', marginRight: 12 }} to={item.route}>
               <Box px="2">
                 <Text as="span" fontFamily="'Helvetica', sans-serif">
