@@ -61,6 +61,26 @@ export function Activity() {
   );
 }
 
+export function Communities() {
+  Meteor.subscribe('hosts');
+  const hosts = Hosts.find().fetch();
+  const Host = hosts.find((h) => h.isPortalHost);
+  const pageHeading = 'Communities';
+  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+
+  return (
+    <>
+      <Header host={Host} />
+      <Center>
+        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+          {pageHeading}
+        </Heading>
+      </Center>
+      <Gridder metaTitle={metaTitle} items={hosts} />
+    </>
+  );
+}
+
 export function GroupsList({ host }) {
   Meteor.subscribe('groups');
   const groups = Groups.find({ host }).fetch();
@@ -281,7 +301,9 @@ function Gridder({ items, metaTitle, pageDescription }) {
   }
 
   const imageUrl =
-    items.find((item) => item.imageUrl)?.imageUrl || items.find((item) => item.images)?.images[0];
+    items.find((item) => item.imageUrl)?.imageUrl ||
+    items.find((item) => item.images)?.images[0] ||
+    items.find((i) => i.isPortalHost).logo;
 
   return (
     <>
@@ -303,9 +325,9 @@ function Gridder({ items, metaTitle, pageDescription }) {
                 w={360}
                 h={240}
                 objectFit="cover"
-                src={item.imageUrl || (item.images && item.images[0])}
+                src={item.imageUrl || (item.images && item.images[0]) || item.logo}
               />
-              <Heading fontSize={22}>{item.title}</Heading>
+              <Heading fontSize={22}>{item.title || item.label || item.settings?.name}</Heading>
             </VStack>
           ))}
         </Wrap>

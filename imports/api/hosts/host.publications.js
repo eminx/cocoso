@@ -12,6 +12,10 @@ Meteor.publish('host', function (host) {
   return Hosts.find({ host }, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
 });
 
+Meteor.publish('hosts', function (hos) {
+  return Hosts.find({}, { fields: { host: 1, settings: 1, logo: 1, isPortalHost: 1 } });
+});
+
 Meteor.publish('members', function () {
   const user = Meteor.user();
   const host = getHost(this);

@@ -3,6 +3,7 @@ import React from 'react';
 import {
   ActivitiesList,
   Activity,
+  Communities,
   GroupsList,
   Group,
   Page,
@@ -32,12 +33,16 @@ export const AppRoutesSSR = (host) => [
     element: <ResourcesList host={host} />,
   },
   {
-    path: '/calendar',
-    element: <div />,
-  },
-  {
     path: '/people',
     element: <UsersList host={host} />,
+  },
+  {
+    path: '/communities',
+    element: <Communities host={host} />,
+  },
+  {
+    path: '/calendar',
+    element: <div />,
   },
   {
     path: '/activity/:activityId/*',
