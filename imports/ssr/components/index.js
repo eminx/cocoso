@@ -320,10 +320,9 @@ function Gridder({ items, metaTitle, pageDescription }) {
 
   const imageUrl =
     items.find((item) => item.imageUrl)?.imageUrl ||
-    items.find((item) => item.images)?.images[0] ||
+    items.find((item) => item.images && items.images[0])?.images[0] ||
     items.find((i) => i.isPortalHost).logo;
 
-  console.log(imageUrl);
   return (
     <>
       <Helmet>
