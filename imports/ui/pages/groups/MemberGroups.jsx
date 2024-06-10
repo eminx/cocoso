@@ -37,41 +37,34 @@ function MemberGroups({ currentHost, isFederationLayout = false, isSelfAccount, 
   }
 
   return (
-    <>
-      <Paginate items={groups}>
-        {(group) => {
-          const isExternal = group.host !== currentHost.host;
-          return (
-            <Box key={group._id}>
-              {isExternal ? (
-                <a href={`https://${group.host}/groups/${group._id}`}>
-                  <NewGridThumb
-                    host={isFederationLayout && group.host}
-                    imageUrl={group.imageUrl}
-                    subTitle={group.readingMaterial}
-                    title={group.title}
-                  />
-                </a>
-              ) : (
-                <Link to={`/groups/${group._id}`}>
-                  <NewGridThumb
-                    host={isFederationLayout && group.host}
-                    imageUrl={group.imageUrl}
-                    subTitle={group.readingMaterial}
-                    title={group.title}
-                  />
-                </Link>
-              )}
-            </Box>
-          );
-        }}
-      </Paginate>
-      {isSelfAccount && (
-        <Box p="4">
-          <NewEntryHelper buttonLink="/groups/new" />
-        </Box>
-      )}
-    </>
+    <Paginate items={groups}>
+      {(group) => {
+        const isExternal = group.host !== currentHost.host;
+        return (
+          <Box key={group._id}>
+            {isExternal ? (
+              <a href={`https://${group.host}/groups/${group._id}`}>
+                <NewGridThumb
+                  host={isFederationLayout && group.host}
+                  imageUrl={group.imageUrl}
+                  subTitle={group.readingMaterial}
+                  title={group.title}
+                />
+              </a>
+            ) : (
+              <Link to={`/groups/${group._id}`}>
+                <NewGridThumb
+                  host={isFederationLayout && group.host}
+                  imageUrl={group.imageUrl}
+                  subTitle={group.readingMaterial}
+                  title={group.title}
+                />
+              </Link>
+            )}
+          </Box>
+        );
+      }}
+    </Paginate>
   );
 }
 

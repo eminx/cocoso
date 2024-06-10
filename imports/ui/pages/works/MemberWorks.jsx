@@ -38,49 +38,42 @@ function MemberWorks({ currentHost, isFederationLayout = false, isSelfAccount, u
   }
 
   return (
-    <>
-      <Paginate items={works}>
-        {(work) => {
-          const isExternal = work.host !== currentHost.host;
-          return (
-            <Box key={work._id}>
-              {isExternal ? (
-                <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
-                  <NewGridThumb
-                    avatar={{
-                      name: work.authorUsername,
-                      url: work.authorAvatar,
-                    }}
-                    host={isFederationLayout && work.host}
-                    imageUrl={work.images[0]}
-                    tag={work.category?.label}
-                    title={work.title}
-                  />
-                </a>
-              ) : (
-                <Link to={`/@${work.authorUsername}/works/${work._id}`}>
-                  <NewGridThumb
-                    avatar={{
-                      name: work.authorUsername,
-                      url: work.authorAvatar,
-                    }}
-                    host={isFederationLayout && work.host}
-                    imageUrl={work.images[0]}
-                    tag={work.category?.label}
-                    title={work.title}
-                  />
-                </Link>
-              )}
-            </Box>
-          );
-        }}
-      </Paginate>
-      {isSelfAccount && (
-        <Box p="4">
-          <NewEntryHelper buttonLink="/works/new" />
-        </Box>
-      )}
-    </>
+    <Paginate items={works}>
+      {(work) => {
+        const isExternal = work.host !== currentHost.host;
+        return (
+          <Box key={work._id}>
+            {isExternal ? (
+              <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  host={isFederationLayout && work.host}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
+              </a>
+            ) : (
+              <Link to={`/@${work.authorUsername}/works/${work._id}`}>
+                <NewGridThumb
+                  avatar={{
+                    name: work.authorUsername,
+                    url: work.authorAvatar,
+                  }}
+                  host={isFederationLayout && work.host}
+                  imageUrl={work.images[0]}
+                  tag={work.category?.label}
+                  title={work.title}
+                />
+              </Link>
+            )}
+          </Box>
+        );
+      }}
+    </Paginate>
   );
 }
 

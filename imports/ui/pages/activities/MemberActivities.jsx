@@ -40,41 +40,34 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
   }
 
   return (
-    <>
-      <Paginate items={publicActivities}>
-        {(activity) => {
-          const isExternal = activity.host !== currentHost.host;
-          return (
-            <Box key={activity._id}>
-              {isExternal ? (
-                <a href={`https://${activity.host}/activities/${activity._id}`}>
-                  <NewGridThumb
-                    host={isFederationLayout && activity.host}
-                    imageUrl={activity.imageUrl}
-                    title={activity.title}
-                    subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
-                  />
-                </a>
-              ) : (
-                <Link to={`/activities/${activity._id}`}>
-                  <NewGridThumb
-                    host={isFederationLayout && activity.host}
-                    imageUrl={activity.imageUrl}
-                    title={activity.title}
-                    subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
-                  />
-                </Link>
-              )}
-            </Box>
-          );
-        }}
-      </Paginate>
-      {isSelfAccount && (
-        <Box p="4">
-          <NewEntryHelper buttonLink="/activities/new" />
-        </Box>
-      )}
-    </>
+    <Paginate items={publicActivities}>
+      {(activity) => {
+        const isExternal = activity.host !== currentHost.host;
+        return (
+          <Box key={activity._id}>
+            {isExternal ? (
+              <a href={`https://${activity.host}/activities/${activity._id}`}>
+                <NewGridThumb
+                  host={isFederationLayout && activity.host}
+                  imageUrl={activity.imageUrl}
+                  title={activity.title}
+                  subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
+                />
+              </a>
+            ) : (
+              <Link to={`/activities/${activity._id}`}>
+                <NewGridThumb
+                  host={isFederationLayout && activity.host}
+                  imageUrl={activity.imageUrl}
+                  title={activity.title}
+                  subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
+                />
+              </Link>
+            )}
+          </Box>
+        );
+      }}
+    </Paginate>
   );
 }
 
