@@ -30,12 +30,12 @@ export const AppRoutesSSR = (host) => [
     element: <GroupsList host={host} />,
   },
   {
-    path: '/works',
-    element: <WorksList host={host} />,
-  },
-  {
     path: '/resources',
     element: <ResourcesList host={host} />,
+  },
+  {
+    path: '/works',
+    element: <WorksList host={host} />,
   },
   {
     path: '/people',
@@ -50,15 +50,11 @@ export const AppRoutesSSR = (host) => [
     element: <div />,
   },
   {
-    path: '/activities/new',
-    element: <div />,
-  },
-  {
-    path: '/activity/:activityId/*',
+    path: '/activities/:activityId/*',
     element: <Activity />,
   },
   {
-    path: '/groups/new',
+    path: '/activities/new',
     element: <div />,
   },
   {
@@ -66,7 +62,7 @@ export const AppRoutesSSR = (host) => [
     element: <Group />,
   },
   {
-    path: '/pages/new',
+    path: '/groups/new',
     element: <div />,
   },
   {
@@ -74,7 +70,7 @@ export const AppRoutesSSR = (host) => [
     element: <Page host={host} />,
   },
   {
-    path: '/resources/new',
+    path: '/pages/new',
     element: <div />,
   },
   {
@@ -82,12 +78,16 @@ export const AppRoutesSSR = (host) => [
     element: <Resource />,
   },
   {
-    path: '/works/new',
+    path: '/resources/new',
     element: <div />,
   },
   {
     path: '/:usernameSlug/works/:workId/*',
     element: <Work />,
+  },
+  {
+    path: '/works/new',
+    element: <div />,
   },
   {
     path: '/:usernameSlug/*',
