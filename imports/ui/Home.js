@@ -4,11 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { StateContext } from './LayoutContainer';
 
 function Home() {
-  const { currentHost, currentUser } = useContext(StateContext);
-
-  if (!currentUser) {
-    return;
-  }
+  const { currentHost } = useContext(StateContext);
 
   const menu = currentHost && currentHost.settings && currentHost.settings.menu;
   if (!menu || !menu[0]) {

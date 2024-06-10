@@ -203,7 +203,7 @@ function Members() {
   return (
     <>
       <Template
-        heading={t('label')}
+        heading={`${t('label')} (${membersSorted.length})`}
         leftContent={
           <Box>
             <ListMenu pathname={pathname} list={adminMenu} />
@@ -255,7 +255,6 @@ function Members() {
 }
 
 function MemberList({ members, roleFilter, t }) {
-  console.log(members);
   const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
   return (
     <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
