@@ -16,7 +16,6 @@ import Content from './Content';
 import { parseTitle } from '../../ui/utils/shared';
 
 export function ActivitiesList({ host }) {
-  Meteor.subscribe('activities', true);
   const activities = Activities.find({ host, isPublicActivity: true }).fetch();
   Meteor.subscribe('host', host);
   const Host = Hosts.findOne({ host });
@@ -24,8 +23,8 @@ export function ActivitiesList({ host }) {
   const pageDescription = Host.settings?.menu.find(
     (item) => item.name === 'activities'
   )?.description;
-
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+
   return (
     <>
       <Header host={Host} />

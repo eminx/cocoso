@@ -19,11 +19,8 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+});
 
-  Meteor.onConnection(function (connection) {
-    const host = connection.httpHeaders.host;
-    renderWithSSR(AppRoutesSSR(host), {
-      renderTarget: 'root',
-    });
-  });
+renderWithSSR(AppRoutesSSR, {
+  renderTarget: 'root',
 });

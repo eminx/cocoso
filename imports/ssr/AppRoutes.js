@@ -1,49 +1,49 @@
 import React from 'react';
 
 import {
-  ActivitiesList,
+  // ActivitiesList,
   Activity,
-  Communities,
-  Home,
-  GroupsList,
+  // Communities,
+  // Home,
+  // GroupsList,
   Group,
   Page,
-  ResourcesList,
+  // ResourcesList,
   Resource,
-  WorksList,
+  // WorksList,
   Work,
-  UsersList,
+  // UsersList,
   User,
 } from './components';
 
-export const AppRoutesSSR = (host) => [
+export const AppRoutesSSR = [
   {
     path: '/',
-    element: <Home host={host} />,
+    element: <div />,
   },
   {
     path: '/activities',
-    element: <ActivitiesList host={host} />,
+    element: <div />,
   },
   {
     path: '/groups',
-    element: <GroupsList host={host} />,
+    element: <div />,
   },
   {
     path: '/resources',
-    element: <ResourcesList host={host} />,
+    element: <div />,
   },
   {
     path: '/works',
-    element: <WorksList host={host} />,
+    element: <div />,
   },
   {
     path: '/people',
-    element: <UsersList host={host} />,
+    element: <div />,
   },
   {
     path: '/communities',
-    element: <Communities host={host} />,
+    element: <div />,
   },
   {
     path: '/calendar',
@@ -67,7 +67,7 @@ export const AppRoutesSSR = (host) => [
   },
   {
     path: '/pages/:pageTitle',
-    element: <Page host={host} />,
+    element: <Page />,
   },
   {
     path: '/pages/new',
