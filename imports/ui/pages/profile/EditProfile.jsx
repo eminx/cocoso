@@ -360,7 +360,7 @@ function EditProfile({ history }) {
   return (
     <>
       <Box p="2">
-        <BackLink backLink={{ label: currentUser.username, value: `/@/${currentUser.username}` }} />
+        <BackLink backLink={{ label: currentUser.username, value: `/@${currentUser.username}` }} />
       </Box>
       <Template>
         <Box mb="8">

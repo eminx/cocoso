@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Center, Wrap } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 import Masonry from 'react-masonry-css';
@@ -6,7 +6,6 @@ import Masonry from 'react-masonry-css';
 import '../utils/styles/paginate.css';
 
 import NewEntryHelper from './NewEntryHelper';
-import { StateContext } from '../LayoutContainer';
 
 const defaultItemsPerPage = 12;
 
@@ -22,7 +21,6 @@ function PaginatedItems({
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const { isDesktop } = useContext(StateContext);
 
   useEffect(() => {
     handlePageChange(0);

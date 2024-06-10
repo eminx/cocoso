@@ -651,12 +651,12 @@ function RsvpForm({ isUpdateMode, defaultValues, onSubmit, onDelete }) {
         <Stack spacing={2}>
           {fields.map((field) => (
             <FormField key={field.name} label={field.label}>
-              <Input {...register(field.name)} size="sm" />
+              <Input {...register(field.name, { required: true })} size="sm" />
             </FormField>
           ))}
           <FormField label={t('public.register.form.people.number')}>
             <NumberInput size="sm">
-              <NumberInputField {...register('numberOfPeople')} />
+              <NumberInputField {...register('numberOfPeople', { required: true })} />
             </NumberInput>
           </FormField>
           <Box pt="2" w="100%">

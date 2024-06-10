@@ -1,10 +1,9 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Skeleton, Wrap } from '@chakra-ui/react';
 import InfiniteScroll from 'react-infinite-scroller';
 import Masonry from 'react-masonry-css';
 
 import NewEntryHelper from './NewEntryHelper';
-import { StateContext } from '../LayoutContainer';
 
 const breakpointColumnsObj = {
   default: 4,
@@ -27,7 +26,6 @@ function InfiniteScroller({
   children,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { isDesktop } = useContext(StateContext);
 
   const currentItems = useMemo(
     () => items.slice(0, itemsPerPage * currentPage),

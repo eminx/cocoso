@@ -48,7 +48,7 @@ function MembersPublic() {
 
   useEffect(() => {
     getKeywords();
-  }, [members.length]);
+  }, [members?.length]);
 
   const getAndSetMembers = async () => {
     try {
@@ -96,7 +96,7 @@ function MembersPublic() {
 
   const handleVisitUserProfile = () => {
     const { memberships, username } = modalUser;
-    const justGo = () => navigate(`/@/${username}`);
+    const justGo = () => navigate(`/@${username}`);
 
     if (!isPortalHost) {
       justGo();
@@ -104,7 +104,7 @@ function MembersPublic() {
       if (hostFilterValue.host === currentHost?.host) {
         justGo();
       } else {
-        window.location.href = `https://${currentHost.host}/@/${username}`;
+        window.location.href = `https://${currentHost.host}/@${username}`;
       }
     } else if (memberships?.some((h) => h?.host === currentHost?.host)) {
       justGo();
@@ -112,7 +112,7 @@ function MembersPublic() {
       if (memberships?.length === 0) {
         return;
       }
-      window.location.href = `https://${memberships[0]?.host}/@/${username}`;
+      window.location.href = `https://${memberships[0]?.host}/@${username}`;
     }
   };
 
@@ -346,28 +346,6 @@ function MembersPublic() {
             style={{ borderRadius: 0, width: 240 }}
             onChange={handleCascaderSelect}
           />
-          <Box flex="2">
-            {/* {selectedProfile && (
-              <div
-                style={{
-                  width: 310,
-                  maxHeight: 480,
-                  overflow: 'scroll',
-                  padding: 12,
-                  paddingTop: 0,
-                }}
-              >
-                <Box pt="8">
-                  <Center py="1">
-                    <Link to={`@${selectedProfile.username}`}>
-                      <Button variant="link">Go to profile</Button>
-                    </Link>
-                  </Center>
-                  <MemberAvatarEtc centerItems user={selectedProfile} />
-                </Box>
-              </div>
-            )} */}
-          </Box>
         </Flex>
       ) : (
         <Box>
@@ -378,7 +356,7 @@ function MembersPublic() {
           )}
 
           <Box pr="3">
-            <InfiniteScroller isMasonry centerItems={!isDesktop} items={membersRendered}>
+            <InfiniteScroller isMasonry items={membersRendered}>
               {(member) => (
                 <Flex
                   key={member.username}
@@ -391,7 +369,7 @@ function MembersPublic() {
                   onClick={() => setModalUser(member)}
                 >
                   <Box>
-                    <MemberAvatarEtc centerItems hideRole={isPortalHost} isThumb user={member} />
+                    <MemberAvatarEtc hideRole={isPortalHost} isThumb user={member} />
                   </Box>
                 </Flex>
               )}
@@ -411,7 +389,7 @@ function MembersPublic() {
           onClose={() => setModalUser(null)}
           onActionButtonClick={handleVisitUserProfile}
         >
-          <MemberAvatarEtc centerItems hideRole={isPortalHost} user={modalUser} />
+          <MemberAvatarEtc hideRole={isPortalHost} user={modalUser} />
           <Center mt="2">
             <Box textAlign="center">
               {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}

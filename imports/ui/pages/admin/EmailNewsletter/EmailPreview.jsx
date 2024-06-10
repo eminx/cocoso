@@ -157,7 +157,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             {works?.map((work) => (
               <Section key={work._id} style={{ marginBottom: 24 }}>
                 <Link
-                  href={`https://${host}/@/${work.authorUsername}/works/${work._id}`}
+                  href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                   style={{ color: '#0f64c0' }}
                 >
                   <Heading
@@ -175,7 +175,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   {work?.shortDescription}
                 </Text>
                 {work.images && (
-                  <Link href={`https://${host}/@/${work.authorUsername}/works/${work._id}`}>
+                  <Link href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
                     <Img
                       src={work.images[0]}
                       width="100%"
@@ -187,7 +187,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 <Text>{work?.longDescription && stripAndShorten(work.longDescription)} </Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
-                    href={`https://${host}/@/${work.authorUsername}/works/${work._id}`}
+                    href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
                     style={{
                       color: '#0f64c0',
                       fontWeight: 'bold',

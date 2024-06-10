@@ -83,7 +83,7 @@ export default function () {
           <Route exact path="/" element={<Home />} />
 
           {/* Members list public */}
-          <Route exact path="/people" element={<MembersPublic />} />
+          <Route path="/people" element={<MembersPublic />} />
 
           {/* Calendar */}
           <Route exact path="/calendar" element={<CalendarContainer />} />
@@ -91,21 +91,21 @@ export default function () {
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
           <Route exact path="/activities/new" element={<NewActivityContainer />} />
-          <Route path="/activity/:activityId/*" element={<ActivityContainer />} />
-          <Route path="/activity/:activityId/edit" element={<EditActivityContainer />} />
+          <Route path="/activities/:activityId/*" element={<ActivityContainer />} />
+          <Route path="/activities/:activityId/edit" element={<EditActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}
           <Route exact path="/groups" element={<Groups />} />
           <Route exact path="/groups/new" element={<NewGroupContainer />} />
-          <Route path="/group/:groupId/*" element={<Group />} />
-          <Route path="/group/:groupId/edit" element={<EditGroupContainer />} />
+          <Route path="/groups/:groupId/*" element={<Group />} />
+          <Route path="/groups/:groupId/edit" element={<EditGroupContainer />} />
 
           {/* Resources */}
           <Route exact path="/resources" element={<Resources />} />
           <Route exact path="/resources/new" element={<NewResource />} />
-          <Route path="/resource/:resourceId/*" element={<Resource />} />
-          <Route path="/resource/:resourceId/edit" element={<EditResource />} />
+          <Route path="/resources/:resourceId/*" element={<Resource />} />
+          <Route path="/resources/:resourceId/edit" element={<EditResource />} />
 
           {/* Pages */}
           <Route exact path="/pages" element={<Page />} />
@@ -117,10 +117,10 @@ export default function () {
           <Route exact path="/works/new" element={<NewWork />} />
 
           {/* Profile & Profile Related Pages */}
-          <Route path="/@/:username/*" element={<Profile />} />
-          <Route path="/@/:username/edit/*" element={<EditProfile />} />
-          <Route path="/@/:username/work/:workId/*" element={<Work />} />
-          <Route path="/@/:username/work/:workId/edit" element={<EditWork />} />
+          <Route path="/:usernameSlug/*" element={<Profile />} />
+          <Route path="/:usernameSlug/edit/*" element={<EditProfile />} />
+          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+          <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 
           {/* Communities: Only on Portal App */}
           <Route exact path="/communities" element={<Communities />} />

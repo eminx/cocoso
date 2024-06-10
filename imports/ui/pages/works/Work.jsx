@@ -17,8 +17,8 @@ function Work() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentHost, currentUser } = useContext(StateContext);
-  const { username, workId } = useParams();
-
+  const { usernameSlug, workId } = useParams();
+  const [empty, username] = usernameSlug.split('@');
   const [tc] = useTranslation('common');
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function Work() {
           work.showAvatar && {
             src: work.authorAvatar,
             username: work.authorUsername,
-            link: `/@/${work.authorUsername}`,
+            link: `/@${work.authorUsername}`,
           }
         }
         backLink={backLink}

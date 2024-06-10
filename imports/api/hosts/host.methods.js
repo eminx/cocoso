@@ -137,42 +137,48 @@ Meteor.methods({
 
   getHostMembers() {
     const host = getHost(this);
-    const hostUsers = Meteor.users.find({ 'memberships.host': host }).fetch();
-
-    const hostUsersPublic = hostUsers.filter((member) => {
-      return Boolean(member.memberships?.find((membership) => membership.host === host)?.isPublic);
-    });
-
-    return hostUsersPublic.map((user) => ({
-      avatar: user.avatar?.src,
-      bio: user.bio,
-      firstName: user.firstName,
-      id: user._id,
-      isPublic: true,
-      keywords: user.keywords,
-      lastName: user.lastName,
-      memberships: user.memberships,
-      username: user.username,
-    }));
+    return Meteor.users
+      .find(
+        { 'memberships.host': host },
+        {
+          fields: {
+            avatar: 1,
+            bio: 1,
+            firstName: 1,
+            id: 1,
+            isPublic: true,
+            keywords: 1,
+            lastName: 1,
+            memberships: 1,
+            username: 1,
+          },
+        }
+      )
+      .fetch()
+      .reverse();
   },
 
   getAllMembersFromAllHosts() {
-    const allUsers = Meteor.users.find().fetch();
-
-    return allUsers
-      .map((user) => ({
-        avatar: user.avatar?.src,
-        bio: user.bio,
-        contactInfo: user.contactInfo,
-        date: user.date,
-        firstName: user.firstName,
-        id: user._id,
-        isPublic: user.isPublic,
-        keywords: user.keywords,
-        lastName: user.lastName,
-        memberships: user.memberships,
-        username: user.username,
-      }))
+    return Meteor.users
+      .find(
+        {},
+        {
+          fields: {
+            avatar: 1,
+            bio: 1,
+            contactInfo: 1,
+            date: 1,
+            firstName: 1,
+            id: 1,
+            isPublic: 1,
+            keywords: 1,
+            lastName: 1,
+            memberships: 1,
+            username: 1,
+          },
+        }
+      )
+      .fetch()
       .reverse();
   },
 

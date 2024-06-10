@@ -209,7 +209,7 @@ class EditWork extends PureComponent {
       this.setState({
         isLoading: false,
       });
-      navigate(`/@/${currentUser.username}/works`);
+      navigate(`/@${currentUser.username}/works`);
       message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       message.error(error.reason);
@@ -238,7 +238,7 @@ class EditWork extends PureComponent {
       return <Alert message={i18n.t('common:message.access.deny')} />;
     }
 
-    const workRoute = `/@/${currentUser.username}/works/${workId}`;
+    const workRoute = `/@${currentUser.username}/works/${workId}`;
     if (isSuccess) {
       return <Navigate to={workRoute} />;
     }

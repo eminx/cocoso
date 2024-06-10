@@ -403,7 +403,7 @@ class Calendar extends PureComponent {
         >
           <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
             <div>
-              <Link to={`/@/${selectedActivity?.authorName}`}>
+              <Link to={`/@${selectedActivity?.authorName}`}>
                 <CLink as="span" fontWeight="bold">
                   {selectedActivity && selectedActivity.authorName}
                 </CLink>{' '}

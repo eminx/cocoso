@@ -292,7 +292,8 @@ export function UsersList({ host }) {
 }
 
 export function User() {
-  const { username } = useParams();
+  const { usernameSlug } = useParams();
+  const [empty, username] = usernameSlug.split('@');
   Meteor.subscribe('user', username);
   const user = Meteor.users.findOne({ username });
   Meteor.subscribe('currentHost');

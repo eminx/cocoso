@@ -16,7 +16,6 @@ import {
   ModalOverlay,
   Tag,
   Text,
-  Tooltip,
   Wrap,
   WrapItem,
   useDisclosure,
@@ -36,7 +35,7 @@ const tagProps = {
   borderColor: 'brand.500',
 };
 
-function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = false, user }) {
+function MemberAvatarEtc({ isThumb = false, user }) {
   const [avatarModal, setAvatarModal] = useState(false);
   const [redirect, setRedirect] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,9 +49,9 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
 
   if (redirect) {
     if (redirect.host === currentHost.host) {
-      navigate(`/@/${user.username}`);
+      navigate(`/@${user.username}`);
     } else {
-      window.location.href = `https://${redirect.host}/@/${user.username}`;
+      window.location.href = `https://${redirect.host}/@${user.username}`;
     }
   }
 
@@ -62,13 +61,10 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
   const membershipsLength = memberships?.length;
 
   const role = memberships?.find((m) => m?.host === currentHost?.host)?.role;
-  const roleTr = t(`roles.${role}`);
-
-  const isCentered = !isDesktop || centerItems;
 
   return (
     <Box w="100%">
-      <Flex align={isCentered ? 'center' : 'flex-start'} flexDirection="column" overflow="hidden">
+      <Flex align="center" flexDirection="column" overflow="hidden">
         {avatarSrc ? (
           <Box {...(!isThumb && tagProps)}>
             <Image
@@ -85,13 +81,11 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
           </Box>
         )}
 
-        <Box pt="2" textAlign={isCentered ? 'center' : 'left'}>
+        <Box pt="2" textAlign="center">
           <Center>
             <HStack spacing="0.5">
               <Text fontWeight="bold" fontSize="xl">
                 {user.username}
-                {/* {!hideRole && role && ( */}
-                {/* )} */}
               </Text>
               {['contributor', 'admin'].includes(role) && (
                 <Box ml="1">
@@ -151,16 +145,6 @@ function MemberAvatarEtc({ centerItems = false, isThumb = false, hideRole = fals
                         >
                           {m.hostname}
                         </Button>
-                        <Text
-                          as="span"
-                          fontSize="sm"
-                          fontWeight="light"
-                          ml="2"
-                          textAlign="left"
-                          textTransform="lowercase"
-                        >
-                          {t(`roles.${m.role}`)}
-                        </Text>
                       </Box>
                     ))}
                   </Box>

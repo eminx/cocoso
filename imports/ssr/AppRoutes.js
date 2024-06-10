@@ -50,11 +50,11 @@ export const AppRoutesSSR = (host) => [
     element: <div />,
   },
   {
-    path: '/activity/:activityId/*',
+    path: '/activities/:activityId/*',
     element: <Activity />,
   },
   {
-    path: '/group/:groupId/*',
+    path: '/groups/:groupId/*',
     element: <Group />,
   },
   {
@@ -62,15 +62,15 @@ export const AppRoutesSSR = (host) => [
     element: <Page host={host} />,
   },
   {
-    path: '/resource/:resourceId/*',
+    path: '/resources/:resourceId/*',
     element: <Resource />,
   },
   {
-    path: '/@/:username/work/:workId/*',
+    path: '/:usernameSlug/works/:workId/*',
     element: <Work />,
   },
   {
-    path: '/@/:username/*',
+    path: '/:usernameSlug/*',
     element: <User />,
   },
   {

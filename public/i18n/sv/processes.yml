@@ -32,7 +32,7 @@ form:
     helper: Ange en underrubrik
   description:
     label: Beskrivning
-    helper: Ange en beskrivning av din group/grupp
+    helper: Ange en beskrivning av din grupp
   capacity:
     label: Max antal deltagare
     helper: Ange om det finns en maxgräns för deltagare

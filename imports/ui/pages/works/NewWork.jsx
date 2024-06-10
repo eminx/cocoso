@@ -223,7 +223,7 @@ class NewWork extends PureComponent {
     }
 
     if (isSuccess && newWorkId) {
-      return <Navigate to={`/@/${currentUser.username}/works/${newWorkId}`} />;
+      return <Navigate to={`/@${currentUser.username}/works/${newWorkId}`} />;
     }
 
     return (

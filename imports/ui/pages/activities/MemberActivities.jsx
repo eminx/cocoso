@@ -41,7 +41,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
 
   return (
     <>
-      <Paginate centerItems items={publicActivities}>
+      <Paginate items={publicActivities}>
         {(activity) => {
           const isExternal = activity.host !== currentHost.host;
           return (
@@ -56,7 +56,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
                   />
                 </a>
               ) : (
-                <Link to={`/activity/${activity._id}`}>
+                <Link to={`/activities/${activity._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && activity.host}
                     imageUrl={activity.imageUrl}

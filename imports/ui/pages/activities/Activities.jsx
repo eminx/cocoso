@@ -172,14 +172,14 @@ function Activities() {
 
   const handleActionButtonClick = () => {
     if (modalActivity.host === currentHost.host) {
-      navigate(`/activity/${modalActivity._id}`);
+      navigate(`/activities/${modalActivity._id}`);
     } else {
-      window.location.href = `https://${modalActivity.host}/activity/${modalActivity._id}`;
+      window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`;
     }
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${modalActivity.host}/activity/${modalActivity._id}`;
+    const link = `https://${modalActivity.host}/activities/${modalActivity._id}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
@@ -256,7 +256,6 @@ function Activities() {
       <Box px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={canCreateContent}
-          centerItems
           items={activitiesRendered}
           newHelperLink="/activities/new"
         >

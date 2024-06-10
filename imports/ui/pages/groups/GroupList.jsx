@@ -161,14 +161,14 @@ export default function GroupsList() {
 
   const handleActionButtonClick = () => {
     if (modalGroup.host === currentHost.host) {
-      navigate(`/group/${modalGroup._id}`);
+      navigate(`/groups/${modalGroup._id}`);
     } else {
-      window.location.href = `https://${modalGroup.host}/group/${modalGroup._id}`;
+      window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}`;
     }
   };
 
   const handleCopyLink = async () => {
-    const link = `https://${modalGroup.host}/group/${modalGroup._id}`;
+    const link = `https://${modalGroup.host}/groups/${modalGroup._id}`;
     try {
       await navigator.clipboard.writeText(link);
       setCopied(true);
@@ -243,7 +243,6 @@ export default function GroupsList() {
       <Box mb="8" px={isDesktop ? '4' : '0'}>
         <InfiniteScroller
           canCreateContent={canCreateContent}
-          centerItems={!isDesktop}
           items={groupsRendered}
           newHelperLink="/groups/new"
         >

@@ -126,10 +126,10 @@ function UserPopup() {
 
           <MenuGroup>
             <Box px="1">
-              <Link to={currentUser && `/@/${currentUser?.username}`}>
+              <Link to={currentUser && `/@${currentUser?.username}`}>
                 <MenuItem color="brand.700">{tc('menu.member.profile')}</MenuItem>
               </Link>
-              <Link to={currentUser && `/@/${currentUser?.username}/edit`}>
+              <Link to={currentUser && `/@${currentUser?.username}/edit`}>
                 <MenuItem color="brand.700">{tc('menu.member.settings')}</MenuItem>
               </Link>
               {canCreateContent && (

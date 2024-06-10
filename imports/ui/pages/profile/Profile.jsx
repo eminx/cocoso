@@ -24,7 +24,9 @@ function Profile() {
   const [tc] = useTranslation('common');
   const [ta] = useTranslation('accounts');
   const location = useLocation();
-  const { username } = useParams();
+  const { usernameSlug } = useParams();
+  const [empty, username] = usernameSlug.split('@');
+
   const { currentUser, currentHost, isDesktop, platform } = useContext(StateContext);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ function Profile() {
         <Box maxW="600px">
           <Center>
             <Box>
-              <MemberAvatarEtc centerItems user={user} />
+              <MemberAvatarEtc user={user} />
             </Box>
           </Center>
           <Center>
@@ -225,7 +227,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   if (isSelfAccount && (!bareBio || bareBio.length < 2)) {
     return (
       <Center p="4" mb="4" w="100%">
-        <Link to={`/@/${user?.username}/edit`} style={{ width: '100%' }}>
+        <Link to={`/@${user?.username}/edit`} style={{ width: '100%' }}>
           <SexyThumb
             subTitle={tc('menu.member.settings')}
             title={tc('message.newentryhelper.bio.title')}
@@ -268,7 +270,7 @@ function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
       <NewEntryHelper
         title={tc('message.newentryhelper.contactInfo.title')}
         buttonLabel={tc('menu.member.settings')}
-        buttonLink={`/@/${user?.username}/edit`}
+        buttonLink={`/@${user?.username}/edit`}
       >
         {tc('message.newentryhelper.contactInfo.description')}
       </NewEntryHelper>

@@ -15,7 +15,6 @@ const NewActivityContainer = withTracker((props) => {
   const activities = Activities ? Activities.find().fetch() : null;
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
-  const location = useLocation();
 
   const allBookings = parseAllBookingsWithResources(activities, resources);
 
@@ -28,7 +27,6 @@ const NewActivityContainer = withTracker((props) => {
   return {
     allBookings,
     currentUser,
-    location,
     resources,
     isLoading,
   };
@@ -37,11 +35,13 @@ const NewActivityContainer = withTracker((props) => {
 export default function (props) {
   const [t] = useTranslation('activities');
   const [tc] = useTranslation('common');
+  const location = useLocation();
 
   const allProps = {
     ...props,
     t,
     tc,
+    location,
   };
   return <NewActivityContainer {...allProps} />;
 }

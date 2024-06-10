@@ -38,13 +38,13 @@ function MemberGroups({ currentHost, isFederationLayout = false, isSelfAccount, 
 
   return (
     <>
-      <Paginate centerItems items={groups}>
+      <Paginate items={groups}>
         {(group) => {
           const isExternal = group.host !== currentHost.host;
           return (
             <Box key={group._id}>
               {isExternal ? (
-                <a href={`https://${group.host}/group/${group._id}`}>
+                <a href={`https://${group.host}/groups/${group._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && group.host}
                     imageUrl={group.imageUrl}
@@ -53,7 +53,7 @@ function MemberGroups({ currentHost, isFederationLayout = false, isSelfAccount, 
                   />
                 </a>
               ) : (
-                <Link to={`/group/${group._id}`}>
+                <Link to={`/groups/${group._id}`}>
                   <NewGridThumb
                     host={isFederationLayout && group.host}
                     imageUrl={group.imageUrl}

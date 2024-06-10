@@ -25,7 +25,7 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
       <List {...otherProps}>
         {list.map((item) => (
           <ListItem key={item.value} p="1">
-            <Link to={currentUser ? `/@/${currentUser?.username}${item.value}` : item.value}>
+            <Link to={currentUser ? `/@${currentUser?.username}${item.value}` : item.value}>
               <CLink as="span">
                 <Text fontWeight={isActiveItem(item) ? 'bold' : 'normal'}>
                   {item.key == 'publicProfile'

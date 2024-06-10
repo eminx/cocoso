@@ -17,7 +17,7 @@ function LoginPage() {
   const [isJoinModal, setIsJoinModal] = useState(false);
 
   if (currentUser && ['participant', 'contributor', 'admin'].includes(role)) {
-    return <Navigate to={`/@/${currentUser.username}/profile`} />;
+    return <Navigate to={`/@${currentUser.username}/profile`} />;
   }
 
   const handleSubmit = (values) => {

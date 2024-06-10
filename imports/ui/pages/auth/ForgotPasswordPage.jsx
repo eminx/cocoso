@@ -24,7 +24,7 @@ function ForgotPasswordPage() {
   };
 
   if (currentUser) {
-    return <Navigate to={`/@/${currentUser.username}/profile`} />;
+    return <Navigate to={`/@${currentUser.username}/profile`} />;
   }
 
   return (

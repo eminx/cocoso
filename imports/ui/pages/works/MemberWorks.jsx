@@ -39,13 +39,13 @@ function MemberWorks({ currentHost, isFederationLayout = false, isSelfAccount, u
 
   return (
     <>
-      <Paginate centerItems items={works}>
+      <Paginate items={works}>
         {(work) => {
           const isExternal = work.host !== currentHost.host;
           return (
             <Box key={work._id}>
               {isExternal ? (
-                <a href={`https://${work.host}/@/${work.authorUsername}/works/${work._id}`}>
+                <a href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
                   <NewGridThumb
                     avatar={{
                       name: work.authorUsername,
@@ -58,7 +58,7 @@ function MemberWorks({ currentHost, isFederationLayout = false, isSelfAccount, u
                   />
                 </a>
               ) : (
-                <Link to={`/@/${work.authorUsername}/work/${work._id}`}>
+                <Link to={`/@${work.authorUsername}/works/${work._id}`}>
                   <NewGridThumb
                     avatar={{
                       name: work.authorUsername,

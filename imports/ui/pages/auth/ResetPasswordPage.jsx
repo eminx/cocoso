@@ -24,7 +24,7 @@ const ResetPasswordPage = ({ history, match }) => {
   };
 
   if (currentUser) {
-    return <Navigate to={`/@/${currentUser.username}/profile`} />;
+    return <Navigate to={`/@${currentUser.username}/profile`} />;
   }
 
   return (
