@@ -54,7 +54,7 @@ export const AppRoutesSSR = (host) => [
     element: <div />,
   },
   {
-    path: '/activities/:activityId/*',
+    path: '/activity/:activityId/*',
     element: <Activity />,
   },
   {

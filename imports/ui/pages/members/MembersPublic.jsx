@@ -346,6 +346,7 @@ function MembersPublic() {
             style={{ borderRadius: 0, width: 240 }}
             onChange={handleCascaderSelect}
           />
+          <Box flex="2" />
         </Flex>
       ) : (
         <Box>

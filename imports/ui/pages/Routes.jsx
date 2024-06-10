@@ -91,8 +91,8 @@ export default function () {
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
           <Route exact path="/activities/new" element={<NewActivityContainer />} />
-          <Route path="/activities/:activityId/*" element={<ActivityContainer />} />
-          <Route path="/activities/:activityId/edit" element={<EditActivityContainer />} />
+          <Route path="/activity/:activityId/*" element={<ActivityContainer />} />
+          <Route path="/activity/:activityId/edit" element={<EditActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}

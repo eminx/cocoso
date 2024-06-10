@@ -171,7 +171,7 @@ export function ResourcesList({ host }) {
   const pageDescription = Host.settings?.menu.find(
     (item) => item.name === 'resources'
   )?.description;
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+  const metaTitle = `${pageHeading} | ${Host.settings?.name}`;
 
   return (
     <>
@@ -192,8 +192,6 @@ export function Resource() {
   const resource = Resources.findOne(resourceId);
   Meteor.subscribe('host', resource.host);
   const host = Hosts.findOne({ host: resource.host });
-
-  console.log(resource);
 
   return (
     <>
@@ -325,6 +323,7 @@ function Gridder({ items, metaTitle, pageDescription }) {
     items.find((item) => item.images)?.images[0] ||
     items.find((i) => i.isPortalHost).logo;
 
+  console.log(imageUrl);
   return (
     <>
       <Helmet>
