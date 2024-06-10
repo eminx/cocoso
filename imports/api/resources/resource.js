@@ -47,7 +47,7 @@ Resources.schema = new SimpleSchema({
 Resources.attachSchema(Resources.schema);
 
 Resources.publicFields = {
-  userId: 1,
+  _id: 1,
   label: 1,
   description: 1,
   images: 1,
@@ -56,6 +56,7 @@ Resources.publicFields = {
   resourcesForCombo: 1,
   resourceIndex: 1,
   createdAt: 1,
+  userId: 1,
 };
 
 export default Resources;

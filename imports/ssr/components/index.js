@@ -193,6 +193,8 @@ export function Resource() {
   Meteor.subscribe('host', resource.host);
   const host = Hosts.findOne({ host: resource.host });
 
+  console.log(resource);
+
   return (
     <>
       <Header host={host} />

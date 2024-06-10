@@ -29,7 +29,19 @@ Meteor.methods({
   getResources() {
     const host = getHost(this);
     const sort = { createdAt: -1 };
-    return Resources.find({ host }, { sort }).fetch();
+    return Resources.find(
+      { host },
+      {
+        fields: {
+          _id: 1,
+          createdAt: 1,
+          host: 1,
+          images: 1,
+          label: 1,
+        },
+        sort,
+      }
+    ).fetch();
   },
 
   getResourceById(resourceId) {

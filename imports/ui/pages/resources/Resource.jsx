@@ -23,7 +23,7 @@ function ResourcePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('resources');
-  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const { isChatLoading, discussion } = useChattery(resourceId, currentUser);
 
   useEffect(() => {
