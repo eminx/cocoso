@@ -19,6 +19,7 @@ import {
 import { LinkIcon } from '@chakra-ui/icons/dist/Link';
 import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 import NiceSlider from './NiceSlider';
 import { StateContext } from '../LayoutContainer';
@@ -61,68 +62,85 @@ function TablyCentered({
     }
   };
 
+  const description = content || tabs[0].content;
+  const imageUrl = images[0];
+
   return (
-    <Center py="3" w="100%">
-      <Box w="100%">
-        <Box>
-          <Header
-            author={author}
-            backLink={backLink}
-            copied={copied}
-            isDesktop={isDesktop}
-            subTitle={subTitle}
-            tags={tags}
-            tc={tc}
-            title={title}
-            handleCopyLink={handleCopyLink}
-          />
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description?.substring(0, 150)} />
+        <meta property="og:title" content={title?.substring(0, 30)} />
+        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={currentHost.host} />
+      </Helmet>
 
-          <Center py="2">
-            <NiceSlider
-              alt={title}
-              height={isDesktop ? '400px' : 'auto'}
-              images={images}
-              isFade={isDesktop}
+      <Center py="3" w="100%">
+        <Box w="100%">
+          <Box>
+            <Header
+              author={author}
+              backLink={backLink}
+              copied={copied}
+              isDesktop={isDesktop}
+              subTitle={subTitle}
+              tags={tags}
+              tc={tc}
+              title={title}
+              handleCopyLink={handleCopyLink}
             />
-          </Center>
-          <Center mb="4" mx="4">
-            {action}
-          </Center>
-        </Box>
 
-        <Center px="4">
-          <Box maxW="540px" w="100%">
-            <Box minH="100vh" w="100%">
-              {tabs && (
-                <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" tabs={tabs}>
-                  {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
-                </Tabs>
-              )}
+            <Center py="2">
+              <NiceSlider
+                alt={title}
+                height={isDesktop ? '400px' : 'auto'}
+                images={images}
+                isFade={isDesktop}
+              />
+            </Center>
+            <Center mb="4" mx="4">
+              {action}
+            </Center>
+          </Box>
 
-              <Box mb="24">
-                {tabs ? (
-                  <Routes>
-                    {tabs.map((tab) => (
-                      <Route
-                        key={tab.title}
-                        path={tab.path}
-                        element={
-                          <Box border="1px solid" borderColor="brand.500" p="4">
-                            {tab.content}
-                          </Box>
-                        }
-                      />
-                    ))}
-                  </Routes>
-                ) : (
-                  <Box pt="2">{content}</Box>
+          <Center px="4">
+            <Box maxW="540px" w="100%">
+              <Box minH="100vh" w="100%">
+                {tabs && (
+                  <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" tabs={tabs}>
+                    {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+                  </Tabs>
                 )}
+
+                <Box mb="24">
+                  {tabs ? (
+                    <Routes>
+                      {tabs.map((tab) => (
+                        <Route
+                          key={tab.title}
+                          path={tab.path}
+                          element={
+                            <Box border="1px solid" borderColor="brand.500" p="4">
+                              {tab.content}
+                            </Box>
+                          }
+                        />
+                      ))}
+                    </Routes>
+                  ) : (
+                    <Box pt="2">{content}</Box>
+                  )}
+                </Box>
               </Box>
             </Box>
-          </Box>
-        </Center>
-      </Box>
-    </Center>
+          </Center>
+        </Box>
+      </Center>
+    </>
   );
 }
 

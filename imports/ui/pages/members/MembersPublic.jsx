@@ -281,7 +281,9 @@ function MembersPublic() {
   const membersRendered = getMembersFiltered();
 
   const { settings } = currentHost;
-  const title = settings?.menu.find((item) => item.name === 'members')?.label;
+  const title = settings?.menu.find((item) => item.name === 'people')?.label;
+  const description = settings.menu.find((item) => item.name === 'people')?.description;
+  const imageUrl = membersRendered.find((m) => m.avatar && m.avatar.src).avatar.src;
 
   const cascaderOptions = keywords.map((kw) => ({
     label: kw.label,
@@ -308,13 +310,18 @@ function MembersPublic() {
   return (
     <Box mb="8" minHeight="200vh">
       <Helmet>
+        <meta charSet="utf-8" />
         <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description?.substring(0, 150)} />
+        <meta property="og:title" content={title?.substring(0, 30)} />
+        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading
-        description={settings.menu.find((item) => item.name === 'members')?.description}
-        numberOfItems={membersRendered.length}
-      >
+      <PageHeading description={description} numberOfItems={membersRendered.length}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>

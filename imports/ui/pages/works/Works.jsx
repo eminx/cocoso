@@ -164,17 +164,23 @@ function Works() {
 
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'works')?.label;
-
+  const description = settings.menu.find((item) => item.name === 'works')?.description;
+  const imageUrl = worksRenderedHostFiltered?.find((w) => w.images && w.images[0]).images[0];
   return (
     <Box width="100%" mb="100px">
       <Helmet>
+        <meta charSet="utf-8" />
         <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description?.substring(0, 150)} />
+        <meta property="og:title" content={title?.substring(0, 30)} />
+        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading
-        description={settings.menu.find((item) => item.name === 'works')?.description}
-        numberOfItems={worksRenderedHostFiltered?.length}
-      >
+      <PageHeading description={description} numberOfItems={worksRenderedHostFiltered?.length}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>

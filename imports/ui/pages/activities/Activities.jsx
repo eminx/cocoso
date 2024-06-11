@@ -225,17 +225,24 @@ function Activities() {
   });
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'activities')?.label;
+  const description = settings.menu.find((item) => item.name === 'activities')?.description;
+  const imageUrl = activitiesRendered[0]?.imageUrl;
 
   return (
     <Box width="100%" mb="100px">
       <Helmet>
+        <meta charSet="utf-8" />
         <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description?.substring(0, 150)} />
+        <meta property="og:title" content={title?.substring(0, 30)} />
+        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading
-        description={settings.menu.find((item) => item.name === 'activities')?.description}
-        numberOfItems={activitiesRendered?.length}
-      >
+      <PageHeading description={description} numberOfItems={activitiesRendered?.length}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>
