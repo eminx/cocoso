@@ -183,7 +183,7 @@ function Resources() {
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'resources')?.label;
   const description = settings.menu.find((item) => item.name === 'resources')?.description;
-  const imageUrl = worksRenderedHostFiltered?.find((w) => w.images && w.images[0]).images[0];
+  const imageUrl = resourcesRendered?.find((r) => r.images && r.images[0]).images[0];
 
   return (
     <Box width="100%" mb="100px">

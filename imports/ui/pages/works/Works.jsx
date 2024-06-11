@@ -166,6 +166,7 @@ function Works() {
   const title = settings?.menu.find((item) => item.name === 'works')?.label;
   const description = settings.menu.find((item) => item.name === 'works')?.description;
   const imageUrl = worksRenderedHostFiltered?.find((w) => w.images && w.images[0]).images[0];
+
   return (
     <Box width="100%" mb="100px">
       <Helmet>
