@@ -23,9 +23,9 @@ export default function Content({ description, host, imageUrl, subTitle, title }
         <meta charSet="utf-8" />
         <title>{title}</title>
         <meta name="title" content={title} />
-        <meta name="description" content={description?.substring(0, 150)} />
+        <meta name="description" content={subTitle?.substring(0, 150)} />
         <meta property="og:title" content={title?.substring(0, 30)} />
-        <meta property="og:description" content={description?.substring(0, 60)} />
+        <meta property="og:description" content={subTitle?.substring(0, 60)} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="article" />
         <link rel="canonical" href={host.host} />
