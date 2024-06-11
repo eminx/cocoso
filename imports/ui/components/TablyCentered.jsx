@@ -62,8 +62,8 @@ function TablyCentered({
     }
   };
 
-  const description = content || tabs[0].content;
-  const imageUrl = images[0];
+  const description = subTitle || content || author?.username;
+  const imageUrl = image && images[0];
 
   return (
     <>
