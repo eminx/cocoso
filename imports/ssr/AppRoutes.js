@@ -67,7 +67,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/pages/:pageTitle',
-    element: <Page />,
+    element: <div />,
   },
   {
     path: '/pages/new',
