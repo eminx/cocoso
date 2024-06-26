@@ -219,6 +219,14 @@ class Calendar extends PureComponent {
       selectedSlot,
     } = this.state;
 
+    if (isLoading) {
+      return (
+        <Center>
+          <Loader />
+        </Center>
+      );
+    }
+
     const filteredActivities = activities.filter((activity) => {
       return (
         !calendarFilter ||
@@ -275,14 +283,6 @@ class Calendar extends PureComponent {
 
     const { settings } = currentHost;
     const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
-
-    if (isLoading) {
-      return (
-        <Center>
-          <Loader />
-        </Center>
-      );
-    }
 
     return (
       <Box>

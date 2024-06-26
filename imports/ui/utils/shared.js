@@ -117,7 +117,7 @@ function parseAllBookingsWithResources(activities, resources) {
     if (!activity.datesAndTimes) {
       return;
     }
-    const resourceSelected = resources.find((res) => res?._id === activity.resourceId);
+    const resourceSelected = resources.find((res) => res?._id === activity?.resourceId);
     if (!resourceSelected) {
       activity.datesAndTimes.forEach((recurrence) => {
         allBookings.push({
