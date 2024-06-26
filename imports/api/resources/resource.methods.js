@@ -37,6 +37,7 @@ Meteor.methods({
           createdAt: 1,
           host: 1,
           images: 1,
+          isBookable: 1,
           label: 1,
         },
         sort,
