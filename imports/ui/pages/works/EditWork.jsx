@@ -42,6 +42,8 @@ class EditWork extends PureComponent {
     this.setState({ isLoading: true });
     const { username, workId } = this.props;
 
+    console.log(workId, username);
+
     try {
       const response = await call('getWork', workId, username);
       const assignedCategory = response?.category;
@@ -284,6 +286,7 @@ class EditWork extends PureComponent {
 EditWork.contextType = StateContext;
 
 export default function EditWorkPage() {
-  const { username, workId } = useParams();
+  const { usernameSlug, workId } = useParams();
+  const [empty, username] = usernameSlug.split('@');
   return <EditWork username={username} workId={workId} />;
 }
