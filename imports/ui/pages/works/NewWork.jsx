@@ -202,8 +202,15 @@ class NewWork extends PureComponent {
 
   render() {
     const { currentUser, canCreateContent } = this.context;
-    const { uploadableImagesLocal, isSuccess, newWorkId, isLoading, categories, values } =
-      this.state;
+    const {
+      categories,
+      isCreating,
+      isLoading,
+      isSuccess,
+      newWorkId,
+      values,
+      uploadableImagesLocal,
+    } = this.state;
 
     if (isLoading) {
       return <Loader />;
@@ -236,6 +243,7 @@ class NewWork extends PureComponent {
               defaultValues={values}
               images={uploadableImagesLocal}
               isNew
+              isSubmitting={isCreating}
               onRemoveImage={this.handleRemoveImage}
               onSortImages={this.handleSortImages}
               onSubmit={this.uploadImages}

@@ -23,16 +23,16 @@ function WorkForm({
   categories,
   defaultValues,
   images,
+  isSubmitting,
   isNew,
   onRemoveImage,
   onSortImages,
   onSubmit,
   setUploadableImages,
 }) {
-  const { control, formState, handleSubmit, register } = useForm({
+  const { control, handleSubmit, register } = useForm({
     defaultValues,
   });
-  const { isDirty, isSubmitting } = formState;
 
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');

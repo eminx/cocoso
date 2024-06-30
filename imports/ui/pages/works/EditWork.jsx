@@ -17,12 +17,13 @@ class EditWork extends PureComponent {
   state = {
     categories: [],
     images: [],
+    isDeleted: false,
+    isDeleteModalOn: false,
+    isError: false,
     isLocalising: false,
-    isCreating: false,
     isLoading: false,
     isSuccess: false,
-    isError: false,
-    isDeleteModalOn: false,
+    isUpdating: false,
     values: null,
   };
 
@@ -41,8 +42,6 @@ class EditWork extends PureComponent {
   getWork = async () => {
     this.setState({ isLoading: true });
     const { username, workId } = this.props;
-
-    console.log(workId, username);
 
     try {
       const response = await call('getWork', workId, username);
@@ -108,7 +107,7 @@ class EditWork extends PureComponent {
     this.setState(
       {
         values: formValues,
-        isCreating: true,
+        isUpdating: true,
       },
       () => {
         if (!isThereUploadable) {
@@ -139,7 +138,7 @@ class EditWork extends PureComponent {
       console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
-        isCreating: false,
+        isUpdating: false,
         isError: true,
       });
     }
@@ -168,12 +167,12 @@ class EditWork extends PureComponent {
       await call('updateWork', workId, parsedValues, imagesReadyToSave);
       message.success(i18n.t('common:message.success.update'));
       this.setState({
-        isCreating: false,
+        isUpdating: false,
         isSuccess: true,
       });
     } catch (error) {
       message.error(error.reason);
-      this.setState({ isCreating: false });
+      this.setState({ isUpdating: false });
     }
   };
 
@@ -210,8 +209,8 @@ class EditWork extends PureComponent {
       await call('deleteWork', workId);
       this.setState({
         isLoading: false,
+        isDeleted: true,
       });
-      navigate(`/@${currentUser.username}/works`);
       message.success(i18n.t('common:message.success.remove'));
     } catch (error) {
       message.error(error.reason);
@@ -225,8 +224,16 @@ class EditWork extends PureComponent {
   render() {
     const { workId } = this.props;
     const { currentUser } = this.context;
-    const { categories, images, isCreating, isLoading, isSuccess, isDeleteModalOn, values } =
-      this.state;
+    const {
+      categories,
+      images,
+      isUpdating,
+      isDeleted,
+      isLoading,
+      isSuccess,
+      isDeleteModalOn,
+      values,
+    } = this.state;
 
     if (!currentUser) {
       return <Alert message={i18n.t('common:message.access.deny')} />;
@@ -245,6 +252,10 @@ class EditWork extends PureComponent {
       return <Navigate to={workRoute} />;
     }
 
+    if (isDeleted) {
+      return <Navigate to={`/@${currentUser.username}`} />;
+    }
+
     return (
       <Box>
         <FormTitle context="works" />
@@ -254,6 +265,7 @@ class EditWork extends PureComponent {
               categories={categories}
               defaultValues={values}
               images={images?.map((image) => image.src)}
+              isSubmitting={isUpdating}
               onRemoveImage={this.handleRemoveImage}
               onSortImages={this.handleSortImages}
               onSubmit={this.handleSubmit}
