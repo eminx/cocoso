@@ -50,10 +50,14 @@ function ForgotPasswordPage() {
 
           <Flex justify="space-around" mt="4">
             <Link to="/login">
-              <CLink as="span">{t('actions.login')}</CLink>
+              <CLink as="span" color="blue.500">
+                {t('actions.login')}
+              </CLink>
             </Link>
             <Link to="/register">
-              <CLink as="span">{t('actions.signup')}</CLink>
+              <CLink as="span" color="blue.500">
+                {t('actions.signup')}
+              </CLink>
             </Link>
           </Flex>
         </Box>

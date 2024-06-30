@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Box, Center, Flex, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,10 +8,11 @@ import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
 
-const ResetPasswordPage = ({ history, match }) => {
+function ResetPasswordPage() {
   const [t] = useTranslation('accounts');
+  const navigate = useNavigate();
+  const { token } = useParams();
   const { currentUser } = useContext(StateContext);
-  const { token } = match.params;
 
   const handleResetPassword = async ({ password }) => {
     try {
@@ -52,6 +53,6 @@ const ResetPasswordPage = ({ history, match }) => {
       </Center>
     </Box>
   );
-};
+}
 
 export default ResetPasswordPage;

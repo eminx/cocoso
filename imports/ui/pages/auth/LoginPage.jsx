@@ -61,34 +61,34 @@ function LoginPage() {
         <Box w="xs">
           {platform && (
             <Center p="4">
-              <Image w="200px" src={platform?.logo} />
+              <Image w="240px" src={platform?.logo} />
             </Center>
           )}
 
-          <Heading size="md" textAlign="center">
+          <Heading mb="4" size="md" textAlign="center">
             {t('login.labels.title')}
           </Heading>
 
-          <Center pt="4" mb="6">
+          <Center mb="6">
             <Text>
               {t('login.labels.subtitle')}{' '}
               <Link to="/register">
-                <CLink as="span" color="brand.500">
+                <CLink as="span" color="blue.500">
                   <b>{t('actions.signup')}</b>
                 </CLink>
               </Link>
             </Text>
           </Center>
 
-          <Box bg="brand.50" mb="4" p="6">
+          <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
             <Login isSubmitted={isSubmitted} onSubmit={handleSubmit} />
           </Box>
           <Center>
-            <Text>
+            <Text textAlign="center">
               {t('actions.forgot')}
               <br />
               <Link to="/forgot-password">
-                <CLink as="span">
+                <CLink as="span" color="blue.500">
                   <b>{t('actions.reset')}</b>
                 </CLink>
               </Link>

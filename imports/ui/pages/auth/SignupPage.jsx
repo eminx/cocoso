@@ -17,12 +17,12 @@ function SignupPage() {
 
   return (
     <Box pb="8" minHeight="100vh">
-      <Center p="4">
+      <Center>
         <Box w="sm">
           {platform && (
-            <Center py="4">
+            <Center>
               <Box>
-                <Center mb="4">
+                <Center p="4">
                   <Image w="240px" src={platform?.logo} />
                 </Center>
                 <Heading mb="4" size="md" textAlign="center">
@@ -41,14 +41,14 @@ function SignupPage() {
             <Text>
               {t('signup.labels.subtitle')}{' '}
               <Link to="/login">
-                <CLink as="span" color="brand.500">
+                <CLink as="span" color="blue.500">
                   <b>{t('actions.login')}</b>
                 </CLink>
               </Link>
             </Text>
           </Center>
 
-          <Box bg="brand.50" mb="4" p="6">
+          <Box bg="gray.50" borderColor="gray.300" borderWidth={1} mb="4" p="6">
             <Signup onSubmit={(values) => createAccount(values)} />
           </Box>
         </Box>
