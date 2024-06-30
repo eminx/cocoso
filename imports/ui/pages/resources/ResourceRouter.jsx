@@ -10,8 +10,8 @@ export default function ResourceRoutes({ path, history }) {
   return (
     <Route path="/resources" component={Resources}>
       <Route exact path="/new" component={NewResource} history={history} />
-      <Route path=":resourceId/edit" component={EditResource} history={history} />
-      <Route path=":resourceId" component={Resource} />
+      <Route path="/:resourceId/edit" component={EditResource} history={history} />
+      <Route path="/:resourceId" component={Resource} />
     </Route>
   );
 }
