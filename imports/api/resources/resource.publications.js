@@ -9,7 +9,7 @@ Meteor.publish('resources', function () {
     { host },
     {
       fields: {
-        _id,
+        _id: 1,
         host: 1,
         images: 1,
         label: 1,
