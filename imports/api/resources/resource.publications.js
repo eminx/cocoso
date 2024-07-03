@@ -11,6 +11,7 @@ Meteor.publish('resources', function () {
       fields: {
         _id: 1,
         host: 1,
+        isBookable: 1,
         images: 1,
         label: 1,
       },
@@ -28,6 +29,7 @@ Meteor.publish('resource', function (id) {
         description: 1,
         host: 1,
         images: 1,
+        isBookable: 1,
         label: 1,
       },
     }
