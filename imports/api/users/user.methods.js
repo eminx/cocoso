@@ -410,6 +410,9 @@ Meteor.methods({
     Accounts.urls.resetPassword = function (token) {
       return `https://${host}/reset-password/${token}`;
     };
+    // const currentHost = Hosts.findOne({ host });
+    // Accounts.emailTemplates.siteName = currentHost.settings?.name;
+
     Accounts.emailTemplates.siteName = host;
     Meteor.call('forgotPassword', email, (respond, error) => {
       if (error) {
