@@ -184,7 +184,6 @@ export default function Settings() {
     },
   ];
   const pathname = location?.pathname;
-  console.log(location);
   const pathnameLastPart = pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
 

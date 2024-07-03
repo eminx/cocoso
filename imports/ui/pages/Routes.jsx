@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
@@ -116,12 +116,6 @@ export default function () {
           <Route exact path="/works" element={<Works />} />
           <Route exact path="/works/new" element={<NewWork />} />
 
-          {/* Profile & Profile Related Pages */}
-          <Route path="/:usernameSlug/*" element={<Profile />} />
-          <Route path="/:usernameSlug/edit/*" element={<EditProfile />} />
-          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
-          <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
-
           {/* Communities: Only on Portal App */}
           <Route exact path="/communities" element={<Communities />} />
 
@@ -141,6 +135,12 @@ export default function () {
             path="/superadmin/platform/registration-intro"
             element={<PlatformRegistrationIntro />}
           />
+
+          {/* Profile & Profile Related Pages */}
+          <Route path="/:usernameSlug/*" element={<Profile />} />
+          <Route path="/:usernameSlug/edit/*" element={<EditProfile />} />
+          <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
+          <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 
           {/* Auth */}
           <Route exact path="/register" element={<SignupPage />} />

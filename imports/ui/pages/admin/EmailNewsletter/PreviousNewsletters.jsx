@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { Box, Center, Divider, Flex, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -64,18 +64,17 @@ export default function PreviousNewsletters() {
 
       <Routes>
         <Route
-          path="/newsletters/:emailId"
-          render={(props) => (
-            <NewsletterEmail {...props} currentHost={currentHost} emails={emails} />
-          )}
+          path="/:emailId"
+          element={<NewsletterEmail currentHost={currentHost} emails={emails} />}
         />
       </Routes>
     </Box>
   );
 }
 
-function NewsletterEmail({ currentHost, emails, history, match }) {
-  const { emailId } = match.params;
+function NewsletterEmail({ currentHost, emails }) {
+  const { emailId } = useParams();
+  const navigate = useNavigate();
 
   const email = emails.find((e) => e._id === emailId);
 
