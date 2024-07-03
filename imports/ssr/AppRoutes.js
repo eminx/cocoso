@@ -7,7 +7,6 @@ import {
   // Home,
   // GroupsList,
   Group,
-  Page,
   // ResourcesList,
   Resource,
   // WorksList,
