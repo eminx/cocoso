@@ -12,7 +12,7 @@ import {
   // WorksList,
   Work,
   // UsersList,
-  User,
+  // User,
 } from './components';
 
 export const AppRoutesSSR = [
@@ -90,7 +90,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/:usernameSlug/*',
-    element: <User />,
+    element: <div />,
   },
   {
     path: '/*',
