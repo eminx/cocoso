@@ -118,6 +118,8 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed');
     }
 
+    const resource = Resources.findOne(resourceId);
+
     try {
       Resources.update(resourceId, {
         $set: {
@@ -126,6 +128,19 @@ Meteor.methods({
           updatedAt: new Date(),
         },
       });
+      if (!resource.isCombo && Resources.find({ host, 'resourcesForCombo._id': resource._id })) {
+        Resources.update(
+          { host, 'resourcesForCombo._id': resource._id },
+          {
+            $set: {
+              'resourcesForCombo.$.label': values.label,
+            },
+          },
+          {
+            multi: true,
+          }
+        );
+      }
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
