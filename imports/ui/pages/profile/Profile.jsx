@@ -110,7 +110,7 @@ function Profile() {
 
   if (currentUser && currentUser.username === username) {
     tabs.push({
-      path: 'edit',
+      path: '/edit',
       title: <b>{tc('actions.update')}</b>,
     });
   }

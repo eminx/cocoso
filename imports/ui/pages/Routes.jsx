@@ -137,8 +137,8 @@ export default function () {
           />
 
           {/* Profile & Profile Related Pages */}
+          <Route path="/edit/*" element={<EditProfile />} />
           <Route path="/:usernameSlug/*" element={<Profile />} />
-          <Route path="/:usernameSlug/edit/*" element={<EditProfile />} />
           <Route path="/:usernameSlug/works/:workId/*" element={<Work />} />
           <Route path="/:usernameSlug/works/:workId/edit" element={<EditWork />} />
 

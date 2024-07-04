@@ -30,7 +30,7 @@ import Template from '../../components/Template';
 import KeywordsManager from './KeywordsManager';
 import BackLink from '../../components/BackLink';
 
-function EditProfile({ history }) {
+function EditProfile() {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [isLeaveModalOn, setIsLeaveModalOn] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -42,7 +42,6 @@ function EditProfile({ history }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentHost, currentUser, platform, role } = useContext(StateContext);
-  const { username } = useParams();
   const [t] = useTranslation('accounts');
   const [tc] = useTranslation('common');
 
@@ -50,7 +49,7 @@ function EditProfile({ history }) {
     setLang(currentUser?.lang);
   }, [currentUser]);
 
-  if (!currentUser || currentUser.username !== username) {
+  if (!currentUser) {
     return <Navigate to="/login" />;
   }
 
@@ -221,6 +220,8 @@ function EditProfile({ history }) {
     );
   }
 
+  const { username } = currentUser;
+
   const tabs = [
     {
       title: tc('menu.member.general'),
@@ -282,7 +283,7 @@ function EditProfile({ history }) {
       content: (
         <Box>
           <Box mb="4">
-            <Heading size="md" pb="4" textAlign="center">
+            <Heading size="md" pb="4">
               {platform?.name}{' '}
               <Text as="span" fontSize="md" fontWeight="light" textTransform="lowercase">
                 {tc('domains.platform')}
@@ -318,7 +319,7 @@ function EditProfile({ history }) {
                   values={{
                     host: communityName,
                     role,
-                    username: currentUser.username,
+                    username,
                   }}
                   components={{ bold: <strong /> }}
                 />
@@ -360,7 +361,7 @@ function EditProfile({ history }) {
   return (
     <>
       <Box p="2">
-        <BackLink backLink={{ label: currentUser.username, value: `/@${currentUser.username}` }} />
+        <BackLink backLink={{ label: username, value: `/@${username}` }} />
       </Box>
       <Template>
         <Box mb="8">
