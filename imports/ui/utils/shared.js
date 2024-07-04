@@ -288,7 +288,7 @@ function getComboResourcesWithColor(comboResources, nonComboResourcesWithColor) 
   return comboResources.sort(localeSort).map((res) => {
     const colors = [];
     res.resourcesForCombo.forEach((resCo) => {
-      const resWithColor = nonComboResourcesWithColor.find((nRes) => resCo.label === nRes.label);
+      const resWithColor = nonComboResourcesWithColor.find((nRes) => resCo._id === nRes._id);
       if (!resWithColor) {
         return;
       }
