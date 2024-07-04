@@ -15,9 +15,13 @@ Meteor.methods({
 
     try {
       const user = Meteor.users.findOne({ username, 'memberships.host': host });
-      if ((!user || !user.isPublic) && user._id !== Meteor.userId()) {
+      if (
+        ((!user || !user.isPublic) && user._id !== Meteor.userId()) ||
+        !user.memberships.find((m) => m.host === host).isPublic
+      ) {
         throw new Meteor.Error('User not found in this host');
       }
+
       return {
         avatar: user.avatar,
         bio: user.bio,

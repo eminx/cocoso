@@ -137,7 +137,7 @@ Meteor.methods({
 
   getHostMembers() {
     const host = getHost(this);
-    return Meteor.users
+    const users = Meteor.users
       .find(
         { 'memberships.host': host },
         {
@@ -154,7 +154,10 @@ Meteor.methods({
           },
         }
       )
-      .fetch()
+      .fetch();
+
+    return users
+      .filter((user) => user.memberships.find((m) => m.host === host)?.isPublic)
       .reverse();
   },
 

@@ -283,7 +283,7 @@ function MembersPublic() {
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'people')?.label;
   const description = settings.menu.find((item) => item.name === 'people')?.description;
-  const imageUrl = membersRendered.find((m) => m.avatar && m.avatar.src).avatar.src;
+  const imageUrl = membersRendered.find((m) => m?.avatar && m.avatar.src)?.avatar.src;
 
   const cascaderOptions = keywords.map((kw) => ({
     label: kw.label,
