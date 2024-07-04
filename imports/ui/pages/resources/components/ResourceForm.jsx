@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -34,7 +35,7 @@ import DocumentsField from './DocumentsField';
 
 const animatedComponents = makeAnimated();
 
-function ResourceForm({ defaultValues, isEditMode, history }) {
+function ResourceForm({ defaultValues, isEditMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [resources, setResources] = useState([]);
   const [resourcesForCombo, setResourcesForCombo] = useState([]);
@@ -49,6 +50,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
 
   const [t] = useTranslation('resources');
   const [tc] = useTranslation('common');
+  const navigate = useNavigate();
 
   useEffect(() => {
     getResources();
@@ -113,6 +115,7 @@ function ResourceForm({ defaultValues, isEditMode, history }) {
         }
       }
     } catch (error) {
+      console.log(error);
       message.error(error.reason || error.error);
     }
   };

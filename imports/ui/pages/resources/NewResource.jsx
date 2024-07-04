@@ -33,7 +33,7 @@ function NewResourcePage({ history }) {
       <FormTitle context="resources" isNew />
       <Template>
         <Box>
-          <ResourceForm defaultValues={resourceModel} history={history} />
+          <ResourceForm defaultValues={resourceModel} />
         </Box>
       </Template>
     </Box>
