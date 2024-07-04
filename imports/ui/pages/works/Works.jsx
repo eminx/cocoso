@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -38,10 +38,9 @@ function Works() {
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const navigate = useNavigate();
-  const location = useLocation();
-  const search = { location };
+  let [searchParams, setSearchParams] = useSearchParams();
 
-  const { category } = parse(search);
+  const category = searchParams.get('category');
 
   useEffect(() => {
     getAllWorks();
@@ -76,22 +75,27 @@ function Works() {
 
   const getFilteredWorks = () => {
     const lowerCaseFilterWord = filterWord === '' ? '' : filterWord.toLowerCase();
-    if (category) {
+    if (!category || category === 'all') {
       return getSortedWorks().filter((work) => {
         const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
-        return work.category && work.category.label === category.toLowerCase() && workWordFiltered;
+        return workWordFiltered;
       });
     } else {
       return getSortedWorks().filter((work) => {
         const workWordFiltered = work?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
-        return workWordFiltered;
+        return work.category && work.category.label === category.toLowerCase() && workWordFiltered;
       });
     }
   };
 
   const setCategoryFilter = (categoryFilter) => {
-    const params = stringify({ category: categoryFilter });
-    navigate({ search: params });
+    setSearchParams((params) => {
+      // if (!categoryFilter) {
+      //   return params;
+      // }
+      params.set('category', categoryFilter);
+      return params;
+    });
   };
 
   const categoriesAssignedToWorks = getCategoriesAssignedToWorks(works);
@@ -165,7 +169,7 @@ function Works() {
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'works')?.label;
   const description = settings.menu.find((item) => item.name === 'works')?.description;
-  const imageUrl = worksRenderedHostFiltered?.find((w) => w.images && w.images[0]).images[0];
+  const imageUrl = worksRenderedHostFiltered?.find((w) => w?.images && w.images[0])?.images[0];
 
   return (
     <Box width="100%" mb="100px">
@@ -200,10 +204,10 @@ function Works() {
           <Tag
             label={t('all')}
             checkable
-            checked={Boolean(category) === false}
+            checked={Boolean(category) === false || category === 'all'}
             mb="2"
             mr="2"
-            onClick={() => setCategoryFilter(null)}
+            onClick={() => setCategoryFilter('all')}
           />
           {categoriesAssignedToWorks.map((cat) => (
             <Tag
@@ -241,7 +245,7 @@ function Works() {
                     ?.color
                 }
                 host={isPortalHost && allHosts?.find((h) => h.host === work.host)?.name}
-                imageUrl={work.images && work.images[0]}
+                imageUrl={work?.images && work.images[0]}
                 tag={work.category?.label}
                 title={work.title}
               />

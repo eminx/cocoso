@@ -44,6 +44,10 @@ function Profile() {
     }
   };
 
+  if (usernameSlug[0] !== '@') {
+    return null;
+  }
+
   if (loading) {
     return <Loader />;
   }
