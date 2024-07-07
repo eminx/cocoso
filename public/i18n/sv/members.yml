@@ -10,10 +10,6 @@ roles:
   contributor: Verifierad
   admin: Admin
   verified: Verifierad (kan skapa innehåll)
-  plural:
-    participants: Deltagare
-    contributors: Medskapare
-    admins: Admins
 
 form:
   sort:
@@ -22,9 +18,9 @@ form:
   holder: Användarnamn eller e-post
 
 actions:
-  contributor: Ställ in som medskapare
+  contributor: Verifiera
   admin: Ställ in som admin
-  participant: Återställ som deltagare
+  participant: Overifiera
   usageReport: Se bokningsrapport
   visit: Besök profilen
   visithost: Besök profilen i {{ host }}
@@ -32,7 +28,7 @@ actions:
 message:
   success:
     contributor: '{{ username }} är nu verifierad som medskapare'
-    participant: '{{ username }} är nu deltagare'
+    participant: '{{ username }} är nu overifierad'
     admin: '{{ username }} är nu admin'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}

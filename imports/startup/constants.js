@@ -54,15 +54,15 @@ const defaultMainColor = {
 const defaultEmails = [
   {
     key: 'participant',
-    subject: 'Welcome as a participant',
+    subject: 'Welcome!',
     appeal: 'Dear',
-    body: 'Welcome! As a participant, you may attend our groups and activities. Look forward to hanging out with you!',
+    body: 'Welcome! As new part of our community, you may attend our groups and public events. Look forward to hanging out with you!',
   },
   {
     key: 'cocreator',
-    subject: 'You are now a cocreator',
+    subject: 'You are now verified',
     appeal: 'Dear',
-    body: 'You are now verified to be a cocreator in our space. This means that you are privileged to create public activities & groups, publish your works, and book resources in our community. \nLook forward!',
+    body: 'You are now verified in our community. This means that you are privileged to create public activities & groups, publish your works, and book resources in our community. \nLook forward!',
   },
   {
     key: 'admin',

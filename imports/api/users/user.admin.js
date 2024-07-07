@@ -28,7 +28,7 @@ Meteor.methods({
           membership.host === host && ['contributor', 'participant'].includes(membership.role)
       )
     ) {
-      throw new Meteor.Error('User is not a participant or cocreator');
+      throw new Meteor.Error('User is does not have a role');
     }
 
     try {
@@ -137,7 +137,7 @@ Meteor.methods({
     const member = Meteor.users.findOne(memberId);
 
     if (!isContributor(member, currentHost)) {
-      throw new Meteor.Error('User is not a cocreator');
+      throw new Meteor.Error('User is not verified');
     }
 
     try {
@@ -314,7 +314,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed');
     }
     if (!isContributorOrAdmin(currentUser, currentHost)) {
-      throw new Meteor.Error('You can not have activities as a participant');
+      throw new Meteor.Error('You can not create activities without being verified');
     }
     if (userId !== currentUser._id && !isAdmin) {
       throw new Meteor.Error('You are not allowed');

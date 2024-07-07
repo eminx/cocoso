@@ -97,11 +97,11 @@ emails:
     footer:
       label: Altbilgi
   participant:
-    new: Yeni Katılımcı
+    title: Yeni kullanıcı
   cocreator:
-    new: Yeni Oluşturucu
+    title: Onaylanmış kullanıcı
   admin:
-    new: Yeni Admin
+    title: Yeni admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:

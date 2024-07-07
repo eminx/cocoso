@@ -243,7 +243,7 @@ Meteor.methods({
     const currentHost = Hosts.findOne({ host });
 
     if (!user || !isMember(user, currentHost)) {
-      throw new Meteor.Error('Please sign up to become a participant at this host first!');
+      throw new Meteor.Error('Please join the community first!');
     }
 
     const theGroup = Groups.findOne(groupId);

@@ -82,7 +82,7 @@ profile:
 
   message:
     role: Du som <bold>{{ username }}</bold> är en del av <bold>{{ host }}</bold> community med rollen <bold>{{ role }}</bold>
-    participant: Du har angetts som deltagare
+    participant: Du är en del av denna gemenskap. Välkommen!
     deny: Du är inte en del av denna organisation.
     notfound: Användare med detta användarnamn inom denna organisation hittades inte, eller valde att dölja sin profil
     platform: Informationen du anger här kommer att vara publik. Du kan välja att dölja ditt konto, men vi rekommenderar att du är publik för att underlätta kommunikationen med andra medlemmar. Håll din information uppdaterad!

@@ -97,11 +97,11 @@ emails:
     footer:
       label: E-postsidfot
   participant:
-    new: Ny deltagare
+    title: Ny användare
   cocreator:
-    new: Ny medskapare
+    title: Användaren verifierad
   admin:
-    new: Ny admin
+    title: Ny admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:

@@ -82,9 +82,9 @@ profile:
 
   message:
     role: <bold>{{ username }}</bold> olarak sen, <bold>{{ host }}</bold> topluluğunda <bold>{{ role }}</bold> rolündesin
-    participant: Katılımcı olarak rolün başarıyla gerçekleştirildi
+    participant: Şimdi bu topluluğun bir parçasısın. Hoş geldin!
     deny: Bu topluluğun bir üyesi değilsin
-    notfound: Bu toplulukta bu kullanıcı adına sahip bir kullanıcı bulunamadı veya aradığınız kullanıcı profilini gizli tutmayı tercih etti
+    notfound: Bu toplulukta bu kullanıcı adına sahip bir kullanıcı bulunamadı veya aradığın kullanıcı profilini gizli tutmayı tercih etti
     platform: Buraya girdiğin bilgiler {{ platform }} platformunda global olarak kaydedilecek ve tercih ettiğin topluluklarda yayınlanacaktır.
 
   makePublic:

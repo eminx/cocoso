@@ -97,11 +97,11 @@ emails:
     footer:
       label: Footer
   participant:
-    new: New Participant
+    title: New User
   cocreator:
-    new: New Cocreator
+    title: User Verified
   admin:
-    new: New Admin
+    title: New Admin
 
 # ADMIN EMAIL NEWSLETTER PAGE
 newsletter:

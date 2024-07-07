@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -23,12 +24,14 @@ import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
 import ReactQuill from '../../components/Quill';
 
-function Emails({ history }) {
+function Emails() {
   const [loading, setLoading] = useState(true);
   const [emails, setEmails] = useState([]);
-  const { currentUser, isDesktop, role } = useContext(StateContext);
+  const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
+  const location = useLocation();
+  const pathname = location?.pathname;
 
   useEffect(() => {
     getEmails();
@@ -60,14 +63,6 @@ function Emails({ history }) {
     return 'no data';
   }
 
-  const parsedEmails = emails.map((e, i) => {
-    const key = i === 2 ? 'admin' : i === 1 ? 'cocreator' : 'participant';
-    return {
-      ...e,
-      title: t(`emails.${key}.new`),
-    };
-  });
-
   const handleSubmit = async (values, emailIndex) => {
     try {
       await call('updateEmail', emailIndex, values);
@@ -80,7 +75,13 @@ function Emails({ history }) {
     }
   };
 
-  const pathname = history && history.location.pathname;
+  const parsedEmails = emails.map((e, i) => {
+    const key = i === 2 ? 'admin' : i === 1 ? 'cocreator' : 'participant';
+    return {
+      ...e,
+      title: t(`emails.${key}.title`),
+    };
+  });
 
   return (
     <>
@@ -92,15 +93,14 @@ function Emails({ history }) {
           </Box>
         }
       >
-        {parsedEmails &&
-          parsedEmails.map((email, index) => (
-            <Box key={email.title} py="4" mb="4">
-              <Heading size="md" mb="4">
-                {email.title}
-              </Heading>
-              <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
-            </Box>
-          ))}
+        {parsedEmails?.map((email, index) => (
+          <Box key={email.title} py="4" mb="4">
+            <Heading size="md" mb="4">
+              {email.title}
+            </Heading>
+            <EmailForm onSubmit={(values) => handleSubmit(values, index)} defaultValues={email} />
+          </Box>
+        ))}
       </Template>
     </>
   );
