@@ -185,11 +185,15 @@ function Members() {
   const pathParts = pathname.split('/');
   const filterInPath = pathParts[pathParts.length - 1];
 
+  const membersRendered = membersSorted.filter(
+    (m) => filterInPath === 'all' || filterInPath === m.role
+  );
+
   const tabs = filterOptions.map((item) => {
     return {
       title: item.label,
       path: item.value,
-      content: <MemberList roleFilter={filterInPath} members={membersSorted} t={t} />,
+      content: <MemberList members={membersRendered} t={t} />,
     };
   });
 
@@ -203,7 +207,7 @@ function Members() {
   return (
     <>
       <Template
-        heading={`${t('label')} (${membersSorted.length})`}
+        heading={`${t('label')} (${membersRendered.length})`}
         leftContent={
           <Box>
             <ListMenu pathname={pathname} list={adminMenu} />
@@ -254,10 +258,9 @@ function Members() {
   );
 }
 
-function MemberList({ members, roleFilter, t }) {
-  const membersFiltered = members.filter((m) => roleFilter === 'all' || roleFilter === m.role);
+function MemberList({ members, t }) {
   return (
-    <NiceList itemBg="white" keySelector="email" list={membersFiltered}>
+    <NiceList itemBg="white" keySelector="email" list={members}>
       {(member) => <MemberItem key={member.username} t={t} member={member} />}
     </NiceList>
   );
