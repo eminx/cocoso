@@ -116,7 +116,7 @@ function Activities() {
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
       return (
-        activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
+        activity.datesAndTimes.some((date) => moment(date?.endDate).isAfter(yesterday)) &&
         activityWordFiltered
       );
     });
@@ -133,7 +133,7 @@ function Activities() {
         activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
       return (
-        activity.datesAndTimes.some((date) => moment(date.startDate).isBefore(today)) &&
+        activity.datesAndTimes.some((date) => moment(date?.startDate).isBefore(today)) &&
         activityWordFiltered
       );
     });
