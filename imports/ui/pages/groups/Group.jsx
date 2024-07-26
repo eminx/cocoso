@@ -928,7 +928,7 @@ class Group extends Component {
       {
         title: tc('labels.info'),
         content: (
-          <Box className="text-content" p="2">
+          <Box bg="white" className="text-content" p="6">
             {renderHTML(group.description)}
           </Box>
         ),

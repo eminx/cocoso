@@ -88,7 +88,11 @@ function Tably({
             )}
             {tabs && (
               <Tabs colorScheme="gray.800" index={tabIndex} size="md" tabs={tabs} mb="0">
-                {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+                {adminMenu && (
+                  <Box bg="purple" mb="4">
+                    <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />
+                  </Box>
+                )}
               </Tabs>
             )}
           </GridItem>
@@ -319,15 +323,14 @@ function AvatarHolder({ author, size = 'lg' }) {
   );
 }
 
-function AdminMenu({ adminMenu, isDesktop }) {
+function AdminMenu({ adminMenu }) {
   if (!adminMenu || !adminMenu.label || !adminMenu.items) {
     return null;
   }
 
   return (
     <Menu direction="rtl" placement="bottom-end">
-      <MenuButton fontSize="md" lineHeight="1.1" px="4" mt={isDesktop ? '0' : '-1'}>
-        {/* {adminMenu.label} */}
+      <MenuButton fontSize="md" lineHeight="1.1" px="4">
         <SettingsIcon color="brand.500" />
       </MenuButton>
       <MenuList bg="gray.200">

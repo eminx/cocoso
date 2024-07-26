@@ -225,6 +225,7 @@ function Resources() {
             <Box
               key={resource._id}
               alignSelf="flex-start"
+              bg="white"
               cursor="pointer"
               flexBasis={280}
               flexGrow={1}

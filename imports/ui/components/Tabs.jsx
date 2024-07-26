@@ -8,8 +8,8 @@ const linkStyle = {
 
 function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProps }) {
   return (
-    <Box position="relative" top="1px">
-      <CTabs flexShrink="0" size={size} variant="unstyled" {...otherProps}>
+    <Box position="relative" top="1px" mb="2">
+      <CTabs flexShrink="0" size={size} variant="soft-rounded" {...otherProps}>
         <TabList flexWrap="wrap" borderBottom="none">
           {tabs?.map((tab, index) =>
             tab.path ? (
@@ -71,6 +71,8 @@ function CoTab({ forceUppercase = true, index, tab }) {
       borderLeft={index === 0 ? '1px solid' : '0.5px solid'}
       borderColor="brand.500"
       color="brand.500"
+      mb="2"
+      mr="2"
       textTransform={forceUppercase ? 'uppercase' : 'normal'}
     >
       {tab.title}

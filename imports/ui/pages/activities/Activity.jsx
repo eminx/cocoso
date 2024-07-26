@@ -293,7 +293,7 @@ class Activity extends PureComponent {
   renderDates = () => {
     const { activityData, t } = this.props;
     const { capacityGotFullByYou } = this.state;
-    const { canCreateContent, currentUser, isDesktop } = this.context;
+    const { canCreateContent, currentUser } = this.context;
 
     if (!activityData) {
       return;
@@ -305,7 +305,7 @@ class Activity extends PureComponent {
       return (
         <div>
           {activityData.isRegistrationDisabled && (
-            <Text mb="2" size="sm">
+            <Text mb="2" size="sm" textAlign="center">
               {t('public.register.disabled.true')}
             </Text>
           )}
@@ -391,7 +391,7 @@ class Activity extends PureComponent {
 
     return (
       <Box>
-        <Text mb="2" size="sm">
+        <Text mb="2" size="sm" textAlign="center">
           {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
@@ -497,7 +497,7 @@ class Activity extends PureComponent {
       {
         title: t('public.labels.info'),
         content: (
-          <Box className="text-content" p="2">
+          <Box bg="white" className="text-content" p="6">
             {activityData.longDescription && renderHTML(activityData.longDescription)}
           </Box>
         ),
@@ -516,9 +516,9 @@ class Activity extends PureComponent {
       tabs.push({
         title: t('public.labels.location'),
         content: (
-          <Box px={isDesktop ? '0' : '4'}>
+          <Box px="4">
             {activityData.place && (
-              <Text fontWeight="bold" fontSize="lg" mb="2">
+              <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
                 {activityData.place}
               </Text>
             )}

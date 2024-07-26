@@ -48,7 +48,7 @@ function Work() {
     {
       title: tc('labels.info'),
       content: (
-        <Box className="text-content" p="2">
+        <Box bg="white" className="text-content" p="6">
           {renderHTML(work.longDescription)}
         </Box>
       ),
@@ -60,7 +60,7 @@ function Work() {
     tabs.push({
       title: tc('labels.extra'),
       content: (
-        <Box p="2">
+        <Box p="4">
           <Text fontSize="lg">{work.additionalInfo}</Text>
         </Box>
       ),
@@ -72,7 +72,7 @@ function Work() {
     tabs.push({
       title: tc('documents.label'),
       content: (
-        <Box p="2">
+        <Box p="4">
           <DocumentsField contextType="works" contextId={work._id} />
         </Box>
       ),
@@ -84,7 +84,7 @@ function Work() {
     tabs.push({
       title: tc('labels.contact'),
       content: (
-        <Box className="text-content" p="2">
+        <Box className="text-content" p="4" textAlign="center">
           {renderHTML(work.contactInfo)}
         </Box>
       ),

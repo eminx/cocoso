@@ -232,7 +232,13 @@ function Works() {
           newHelperLink="/works/new"
         >
           {(work) => (
-            <Box key={work._id} cursor="pointer" mb="4" onClick={() => setModalWork(work)}>
+            <Box
+              key={work._id}
+              bg="white"
+              cursor="pointer"
+              mb="4"
+              onClick={() => setModalWork(work)}
+            >
               <NewGridThumb
                 avatar={
                   work.showAvatar && {

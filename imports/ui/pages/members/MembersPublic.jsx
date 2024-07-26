@@ -369,6 +369,7 @@ function MembersPublic() {
                 <Flex
                   key={member.username}
                   _hover={{ bg: 'brand.50' }}
+                  bg="white"
                   border="1px solid"
                   borderColor="brand.500"
                   cursor="pointer"

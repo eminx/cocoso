@@ -107,7 +107,7 @@ function TablyCentered({
             </Center>
           </Box>
 
-          <Center px="4">
+          <Center>
             <Box maxW="540px" w="100%">
               <Box minH="100vh" w="100%">
                 {tabs && (
@@ -120,15 +120,7 @@ function TablyCentered({
                   {tabs ? (
                     <Routes>
                       {tabs.map((tab) => (
-                        <Route
-                          key={tab.title}
-                          path={tab.path}
-                          element={
-                            <Box border="1px solid" borderColor="brand.500" p="4">
-                              {tab.content}
-                            </Box>
-                          }
-                        />
+                        <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
                       ))}
                     </Routes>
                   ) : (
@@ -260,15 +252,14 @@ function AvatarHolder({ author, size = 'lg' }) {
   );
 }
 
-function AdminMenu({ adminMenu, isDesktop }) {
+function AdminMenu({ adminMenu }) {
   if (!adminMenu || !adminMenu.label || !adminMenu.items) {
     return null;
   }
 
   return (
     <Menu direction="rtl" placement="bottom-end">
-      <MenuButton fontSize="md" px="4" pb="1">
-        {/* {adminMenu.label} */}
+      <MenuButton fontSize="md" mb="2" px="4" pb="1">
         <SettingsIcon color="brand.500" />
       </MenuButton>
       <MenuList>

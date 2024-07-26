@@ -73,8 +73,7 @@ function Page() {
         )}
         <Center>
           <Box
-            border="1px solid"
-            borderColor="brand.500"
+            bg="white"
             className="text-content"
             maxWidth="520px"
             overflow="auto"
