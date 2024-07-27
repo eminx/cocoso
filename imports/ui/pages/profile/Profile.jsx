@@ -246,12 +246,12 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
   }
 
   return (
-    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} mb="4" py="2">
+    <Flex justifyContent={isDesktop ? 'flex-start' : 'center'} mb="4" p="2">
       <Box
         bg="white"
         className="text-content"
         maxW="480px"
-        px="4"
+        p="4"
         borderLeft="4px solid"
         borderColor="brand.500"
         w="100%"
