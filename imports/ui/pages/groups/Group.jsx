@@ -401,6 +401,7 @@ class Group extends Component {
               <AccordionButton
                 _hover={{ bg: 'brand.50' }}
                 _expanded={{ bg: 'brand.500', color: 'white' }}
+                bg="white"
                 border="1px solid"
                 borderColor="brand.500"
                 color="brand.800"
@@ -466,6 +467,7 @@ class Group extends Component {
           <AccordionButton
             _hover={{ bg: 'brand.50' }}
             _expanded={{ bg: 'brand.500', color: 'white' }}
+            bg="white"
             border="1px solid"
             borderColor="brand.500"
             color="brand.800"

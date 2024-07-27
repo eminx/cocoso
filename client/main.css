@@ -10,6 +10,8 @@ body {
   height: 100%;
   width: calc(100% - 72px);
   background-color: #f3f3f3;
+  background: var(--chakra-colors-brand-50);
+  background: linear-gradient(0deg, var(--chakra-colors-brand-50) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
 @media (max-width: 960px) {

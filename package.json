@@ -79,7 +79,7 @@
     "react-big-calendar": "^1.6.8",
     "react-color": "^2.19.3",
     "react-csv": "^2.2.2",
-    "react-datepicker": "^4.6.0",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^9.0.0",
     "react-helmet": "^6.1.0",
