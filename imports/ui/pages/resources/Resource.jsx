@@ -81,7 +81,7 @@ function ResourcePage() {
     {
       title: tc('labels.info'),
       content: (
-        <Box bg="white" className="text-content" p="2">
+        <Box bg="white" className="text-content" p="6">
           {resource.description && renderHTML(resource.description)}
         </Box>
       ),

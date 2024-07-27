@@ -4,8 +4,8 @@ import { Box, Center, ChakraProvider, Flex, Skeleton, Wrap } from '@chakra-ui/re
 const skeletonProps = {
   flex: { flexBasis: '320px', flexGrow: 1, h: '315px' },
   color: {
-    startColor: 'red.50',
-    endColor: 'red.100',
+    startColor: 'white',
+    endColor: '#f3f3f3',
   },
 };
 
@@ -17,7 +17,7 @@ export function ContentLoader({ items = 3 }) {
 
   return (
     <Box>
-      <Center mb="24px">
+      <Center my="24px">
         <Skeleton {...skeletonProps.color} w="200px" h="40px" />
       </Center>
       <Center mb="48px">

@@ -9,7 +9,7 @@ body {
 #main-viewport {
   height: 100%;
   width: calc(100% - 72px);
-  background-color: #e8e8e8;
+  background-color: #f3f3f3;
 }
 
 @media (max-width: 960px) {
