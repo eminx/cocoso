@@ -5,7 +5,7 @@ const skeletonProps = {
   flex: { flexBasis: '320px', flexGrow: 1, h: '315px' },
   color: {
     startColor: 'white',
-    endColor: '#f3f3f3',
+    endColor: 'brand.500',
   },
 };
 
