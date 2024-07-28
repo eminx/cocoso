@@ -291,8 +291,6 @@
   top: -8px;
   bottom: auto;
   border: 32px solid;
-  border-color: var(--chakra-colors-brand-500) transparent transparent
-    var(--chakra-colors-brand-500);
 }
 .tri-right.right-top:after {
   content: ' ';
