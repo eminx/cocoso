@@ -27,8 +27,7 @@ function FiltrerSorter(props) {
       <Menu placement="bottom">
         <MenuButton
           as={Button}
-          bg="#f3f3f3"
-          // px="2"
+          bg="#fff"
           size="xs"
           style={{ position: 'absolute', bottom: '8px' }}
           variant="link"
