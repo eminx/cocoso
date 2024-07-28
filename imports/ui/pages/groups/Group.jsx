@@ -701,7 +701,7 @@ class Group extends Component {
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <Box
                     bg={isDragActive ? 'gray.300' : 'white'}
-                    border="1px dashed"
+                    border="2px dashed"
                     borderColor="brand.500"
                     cursor="grab"
                     h="180px"
