@@ -700,7 +700,9 @@ class Group extends Component {
               <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
                 {({ getRootProps, getInputProps, isDragActive }) => (
                   <Box
-                    bg={isDragActive ? 'gray.300' : 'gray.100'}
+                    bg={isDragActive ? 'gray.300' : 'white'}
+                    border="1px dashed"
+                    borderColor="brand.500"
                     cursor="grab"
                     h="180px"
                     p="4"
