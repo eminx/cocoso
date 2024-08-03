@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Center, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,7 @@ function EditResourcePage({ history }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
   const [tc] = useTranslation('common');
+  const navigate = useNavigate();
 
   useEffect(() => {
     getResourceById();
