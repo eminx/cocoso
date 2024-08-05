@@ -39,7 +39,7 @@ const options = {
   load: 'languageOnly',
   ns: namespaces,
   only: '*',
-  preload: allLangs,
+  // preload: allLangs,
   saveMissing: true,
   supportedLngs: allLangs,
   useSuspense: process && !process.release,
