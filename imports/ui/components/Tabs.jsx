@@ -6,7 +6,7 @@ const linkStyle = {
   marginBottom: 0,
 };
 
-function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProps }) {
+function Tabs({ tabs, size = 'sm', children, ...otherProps }) {
   return (
     <Box position="relative" top="1px" mb="2">
       <CTabs flexShrink="0" size={size} variant="soft-rounded" {...otherProps}>
@@ -14,7 +14,7 @@ function Tabs({ forceUppercase = true, tabs, size = 'sm', children, ...otherProp
           {tabs?.map((tab, index) =>
             tab.path ? (
               <Link key={tab.title} to={tab.path} style={linkStyle} onClick={tab.onClick}>
-                <CoTab forceUppercase={forceUppercase} index={index} tab={tab} />
+                <CoTab index={index} tab={tab} />
               </Link>
             ) : (
               <CLink
@@ -57,7 +57,7 @@ const tabProps = {
   paddingInline: '4',
 };
 
-function CoTab({ forceUppercase = true, index, tab }) {
+function CoTab({ index, tab }) {
   if (!tab) {
     return null;
   }
@@ -73,7 +73,7 @@ function CoTab({ forceUppercase = true, index, tab }) {
       color="brand.500"
       mb="2"
       mr="2"
-      textTransform={forceUppercase ? 'uppercase' : 'normal'}
+      // textTransform={forceUppercase ? 'uppercase' : 'normal'}
     >
       {tab.title}
       {tab.badge && (

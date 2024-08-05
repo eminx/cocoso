@@ -61,7 +61,7 @@ labels:
   unselected: Kaynak seçilmedi
   admin:
     actions: Admin
-  past: GEÇMİŞ
+  past: Geçmiş
   upcoming: Gelecek
   filterAndSort: Filtrele & Sırala
   filter: Filtrele
