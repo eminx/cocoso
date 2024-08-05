@@ -25,7 +25,7 @@ const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
 const options = {
-  allowMultiLoading: true,
+  allowMultiLoading: false,
   backend: {
     loadPath,
     parse: function (data) {
@@ -37,7 +37,7 @@ const options = {
   fallbackLng: allLangs,
   lng: defaultLang,
   load: 'languageOnly',
-  ns: namespaces,
+  ns: 'common',
   only: '*',
   // preload: allLangs,
   saveMissing: true,

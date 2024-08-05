@@ -23,7 +23,7 @@ function Tabs({ tabs, size = 'sm', children, ...otherProps }) {
                 style={linkStyle}
                 onClick={tab.onClick}
               >
-                <CoTab forceUppercase={forceUppercase} tab={tab} />
+                <CoTab tab={tab} />
               </CLink>
             )
           )}
