@@ -33,6 +33,7 @@ class EditActivity extends PureComponent {
     formValues: formModel,
     isDeleteModalOn: false,
     isCreating: false,
+    isDeleted: false,
     isError: false,
     isLoading: false,
     isSuccess: false,
@@ -199,16 +200,14 @@ class EditActivity extends PureComponent {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteActivity = async () => {
-    const { activity, history, tc } = this.props;
+    const { activity, tc } = this.props;
 
     try {
       await call('deleteActivity', activity._id);
       message.success(tc('message.success.remove'));
-      if (activity.isPublicActivity) {
-        navigate('/activities');
-      } else {
-        navigate('/calendar');
-      }
+      this.setState({
+        isDeleted: true,
+      });
     } catch (error) {
       console.log(error);
       this.setState({
@@ -329,6 +328,7 @@ class EditActivity extends PureComponent {
     const {
       datesAndTimes,
       isDeleteModalOn,
+      isDeleted,
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
@@ -339,6 +339,13 @@ class EditActivity extends PureComponent {
 
     if (isSuccess) {
       return <Navigate to={`/activities/${activity._id}`} />;
+    }
+    if (isDeleted) {
+      if (activity.isPublicActivity) {
+        <Navigate to="activities" />;
+      } else {
+        <Navigate to="calendar" />;
+      }
     }
 
     const isFormValid = this.isFormValid();
