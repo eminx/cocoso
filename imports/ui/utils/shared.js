@@ -21,7 +21,7 @@ function getInitials(string) {
 }
 
 function removeSpace(str) {
-  const newStr = str.replace(/\s+/g, '');
+  const newStr = str?.replace(/\s+/g, '');
   return newStr;
 }
 
@@ -38,7 +38,7 @@ const compareDatesWithStartDateForSort = (a, b) => {
 };
 
 function parseTitle(title) {
-  return title.replace(/\s+/g, '-').toLowerCase();
+  return title?.replace(/\s+/g, '-').toLowerCase();
 }
 
 function emailIsValid(email) {
