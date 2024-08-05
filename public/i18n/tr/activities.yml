@@ -68,7 +68,7 @@ public:
     address: Adres
     dates: Zaman
     datesAndRegistration: Zaman ve Kayıt
-    info: BİLGİ
+    info: Bilgi
     location: Yer
     resource: Kaynak
   register:
