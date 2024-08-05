@@ -98,6 +98,8 @@ Meteor.methods({
           },
         },
       });
+
+      Meteor.call('sendWelcomeEmail', user._id);
     } catch (error) {
       throw new Meteor.Error(error);
     }
