@@ -33,8 +33,8 @@ const today = moment();
 
 const getFutureOccurrences = (dates) => {
   return dates
-    .filter((date) => moment(date.endDate).isAfter(yesterday))
-    .sort((a, b) => moment(a.startDate) - moment(b.startDate));
+    .filter((date) => date && moment(date.endDate).isAfter(yesterday))
+    .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
 };
 
 const getPastOccurrences = (dates) => {
