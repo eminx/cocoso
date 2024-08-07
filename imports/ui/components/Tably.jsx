@@ -193,7 +193,7 @@ function Tably({
                     path={tab.path}
                     render={(props) => (
                       <Center>
-                        <Container margin={'auto'} p="0" pt="4">
+                        <Container className="text-content" margin={'auto'} p="0" pt="4">
                           {tab.content}
                         </Container>
                       </Center>
