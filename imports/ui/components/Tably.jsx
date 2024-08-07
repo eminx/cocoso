@@ -135,7 +135,9 @@ function Tably({
                   ))}
                 </Routes>
               ) : (
-                <Container m="0">{content}</Container>
+                <Container className="text-content" m="0">
+                  {content}
+                </Container>
               )}
             </Box>
           </GridItem>
@@ -193,7 +195,7 @@ function Tably({
                     path={tab.path}
                     render={(props) => (
                       <Center>
-                        <Container className="text-content" margin={'auto'} p="0" pt="4">
+                        <Container margin={'auto'} p="0" pt="4">
                           {tab.content}
                         </Container>
                       </Center>
