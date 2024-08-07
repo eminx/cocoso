@@ -205,7 +205,7 @@ function Tably({
               </Routes>
             ) : (
               <Center>
-                <Container margin={'auto'} pt="2">
+                <Container className="text-content" margin={'auto'} pt="2">
                   {content}
                 </Container>
               </Center>
