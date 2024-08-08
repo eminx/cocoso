@@ -401,7 +401,17 @@ function MembersPublic() {
           <MemberAvatarEtc hideRole={isPortalHost} user={modalUser} />
           <Center mt="2">
             <Box textAlign="center">
-              {modalUser.bio && <Container textAlign="left">{renderHTML(modalUser.bio)}</Container>}
+              {modalUser.bio && (
+                <Container
+                  borderLeft="4px solid"
+                  borderColor="brand.500"
+                  className="text-content"
+                  mb="4"
+                  textAlign="left"
+                >
+                  {renderHTML(modalUser.bio)}
+                </Container>
+              )}
             </Box>
           </Center>
         </Modal>
