@@ -97,9 +97,9 @@ profile:
     avatar: Profil resmi
     about: Hakkımda
     contact: İletişim
-    language: DİL
+    language: Dil
     options: Seçenekler
-    privacy: GİZLİLİK
+    privacy: Gizlilik
     keywords:
       label: Anahtar kelimeler
       description: Burada seni ve becerilerini iyi açıklayan bazı anahtar kelimeleri seçip oluşturabilirsin. Bunlar profil sayfanda gösterilecek ve üyeler sayfasında filtrelenebilecektir.
