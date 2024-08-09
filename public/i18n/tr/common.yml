@@ -10,7 +10,7 @@ langs:
 
 # ALL ACTION BUTTON LABELS
 actions:
-  create: YENİ İÇERİK
+  create: Yeni içerik
   update: Düzenle
   remove: Sil
   submit: Onayla
@@ -39,13 +39,13 @@ labels:
   activity: Aktivite
   all: Tümü
   booked: 'ayırdı:'
-  contact: İLETİŞİM
+  contact: İletişim
   create: Yeni {{ domain }} Oluştur
   event: Etkinlik
   bookings: Rezervasyon
   newBooking: Yeni Rezervasyon
   page: Sayfa
-  newPage: YENİ SAYFA
+  newPage: Yeni sayfa
   group: Süreç
   remove: Kaldır
   info: Bilgi

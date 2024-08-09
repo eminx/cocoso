@@ -41,7 +41,7 @@ function UserPopupAdmin() {
               icon={<SettingsIcon fontSize="md" />}
               size={isDesktop ? 'md' : 'sm'}
             />
-            <Text fontSize="12px" textAlign="center" textTransform="uppercase">
+            <Text fontSize="12px" textAlign="center">
               Admin
             </Text>
           </Flex>

@@ -50,7 +50,7 @@ function Tag({
           fontSize={otherProps.size || '14px'}
           fontWeight={checkable ? 'normal' : 'bold'}
         >
-          {checkable ? label : label && label.toUpperCase()}
+          {label}
         </Text>
       </Box>
       {removable && <IconButton icon={<SmallCloseIcon />} size="xs" onClick={onRemove} />}

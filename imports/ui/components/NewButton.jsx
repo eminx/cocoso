@@ -110,9 +110,7 @@ function NewButton() {
               pl="5"
               onClick={() => navigate(getPathname(activeMenuItem))}
             >
-              <Text fontWeight="bold" textTransform="capitalize">
-                {activeMenuItem.label}
-              </Text>{' '}
+              <Text fontWeight="bold">{activeMenuItem.label}</Text>{' '}
               <Text pl="1">({tc('labels.thislisting')})</Text>
             </MenuItem>
           )}
@@ -134,14 +132,7 @@ function NewButton() {
         </MenuList>
       </Menu>
       <Center position="relative">
-        <Text
-          fontSize="12px"
-          lineHeight="1"
-          position="absolute"
-          top="3px"
-          textAlign="center"
-          textTransform="uppercase"
-        >
+        <Text fontSize="12px" lineHeight="1" position="absolute" top="3px" textAlign="center">
           {tc('actions.create')}
         </Text>
       </Center>

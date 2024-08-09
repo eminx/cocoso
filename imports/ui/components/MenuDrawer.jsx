@@ -56,7 +56,7 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
           size={isDesktop ? 'md' : 'sm'}
           onClick={onToggle}
         />
-        <Text fontSize="12px" textAlign="center" textTransform="uppercase">
+        <Text fontSize="12px" textAlign="center">
           {tc('menu.label')}
         </Text>
       </Flex>

@@ -73,7 +73,6 @@ function CoTab({ index, tab }) {
       color="brand.500"
       mb="2"
       mr="2"
-      // textTransform={forceUppercase ? 'uppercase' : 'normal'}
     >
       {tab.title}
       {tab.badge && (
