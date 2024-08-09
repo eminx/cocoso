@@ -262,12 +262,7 @@ function EditProfile() {
           <Heading mb="4" size="sm" textAlign="center">
             {tc('langs.form.label')}
           </Heading>
-          <ChangeLanguage
-            currentLang={currentUser?.lang}
-            hideHelper
-            select
-            onChange={(lang) => setLang(lang)}
-          />
+          <ChangeLanguage hideHelper select onChange={(lang) => setLang(lang)} />
 
           <Flex justify="flex-end" mt="4">
             <Button disabled={lang === currentUser.lang} onClick={handleSetLanguage}>

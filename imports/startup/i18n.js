@@ -8,8 +8,23 @@ import yaml from 'js-yaml';
 
 const { cdnserver } = Meteor.settings;
 
+const allLangs = [
+  {
+    value: 'en',
+    label: 'English',
+  },
+  {
+    value: 'sv',
+    label: 'Svenska',
+  },
+  {
+    value: 'tr',
+    label: 'Türkçe',
+  },
+];
+
 const defaultLang = 'en';
-const allLangs = [defaultLang, 'sv', 'tr'];
+
 const namespaces = [
   'common',
   'accounts',
@@ -21,6 +36,7 @@ const namespaces = [
   'calendar',
   'resources',
 ];
+
 const path = '/i18n/{{lng}}/{{ns}}.yml';
 const loadPath = Meteor.isProduction && cdnserver ? cdnserver + path : path;
 
@@ -34,14 +50,14 @@ const options = {
   },
   debug: false,
   defaultNS: 'common',
-  fallbackLng: allLangs,
+  fallbackLng: 'en',
   lng: defaultLang,
   load: 'languageOnly',
   ns: 'common',
   only: '*',
   // preload: allLangs,
   saveMissing: true,
-  supportedLngs: allLangs,
+  supportedLngs: allLangs.map((l) => l.value),
   useSuspense: process && !process.release,
 };
 
@@ -74,4 +90,4 @@ if (!i18n.isInitialized) {
 }
 
 export default i18n;
-export { defaultLang };
+export { allLangs, defaultLang };

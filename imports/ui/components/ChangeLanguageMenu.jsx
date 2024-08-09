@@ -2,8 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Menu, MenuButton, MenuList, MenuItem, Select, Text } from '@chakra-ui/react';
 
+import { allLangs } from '../../startup/i18n';
+
 export default ChangeLanguage = ({
-  currentLang,
   hideHelper = false,
   isCentered = false,
   register,
@@ -11,6 +12,7 @@ export default ChangeLanguage = ({
   onChange,
 }) => {
   const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   if (!select)
     return (
@@ -21,14 +23,15 @@ export default ChangeLanguage = ({
             {t(`common:langs.${i18n.language}`)}
           </MenuButton>
           <MenuList>
-            {i18n.languages.map((lang) => (
+            {allLangs.map((lang) => (
               <MenuItem
-                key={lang}
+                key={lang.value}
                 color="gray.700"
-                fontWeight={lang == i18n.language ? 'bold' : 'normal'}
-                onClick={() => i18n.changeLanguage(lang)}
+                fontWeight={lang.value === currentLang ? 'bold' : 'normal'}
+                onClick={() => i18n.changeLanguage(lang.value)}
               >
-                {t(`common:langs.${lang}`)}
+                {lang.label}
+                {/* {t(`common:langs.${lang}`)} */}
               </MenuItem>
             ))}
           </MenuList>
@@ -45,9 +48,10 @@ export default ChangeLanguage = ({
         onChange={(e) => onChange(e.target.value)}
         {...(register && register('lang'))}
       >
-        {i18n.languages.map((lang) => (
-          <option key={lang} selected={lang === currentLang} value={lang}>
-            {t(`common:langs.${lang}`)}
+        {allLangs.map((lang) => (
+          <option key={lang.value} selected={lang.value === currentLang} value={lang.value}>
+            {lang.label}
+            {/* {t(`common:langs.${lang}`)} */}
           </option>
         ))}
       </Select>

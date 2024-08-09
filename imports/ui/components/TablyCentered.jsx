@@ -55,7 +55,7 @@ function TablyCentered({
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`https://${currentHost.host}${location.pathname}`);
+      await navigator.clipboard.writeText(`https://${currentHost?.host}${location.pathname}`);
       setCopied(true);
     } catch (error) {
       console.log(error);
@@ -76,7 +76,7 @@ function TablyCentered({
         <meta property="og:description" content={description?.substring(0, 60)} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={currentHost.host} />
+        <link rel="canonical" href={currentHost?.host} />
       </Helmet>
 
       <Center py="3" w="100%">
