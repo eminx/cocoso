@@ -166,7 +166,7 @@ function Works() {
     setSorterValue,
   };
 
-  const { settings } = currentHost;
+  const settings = currentHost?.settings;
   const title = settings?.menu.find((item) => item.name === 'works')?.label;
   const description = settings.menu.find((item) => item.name === 'works')?.description;
   const imageUrl = worksRenderedHostFiltered?.find((w) => w?.images && w.images[0])?.images[0];

@@ -101,9 +101,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  if (!currentHost) {
-    return <MainLoader />;
-  }
+  // if (!currentHost) {
+  //   return <MainLoader />;
+  // }
 
   const hostWithinUser =
     currentUser &&
@@ -113,9 +113,9 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const role = hostWithinUser && hostWithinUser.role;
   const canCreateContent = role && ['admin', 'contributor'].includes(role);
 
-  const { menu } = currentHost?.settings;
-  const pagesWithHeaderAndFooter = [
-    ...menu?.map((item) => '/' + item.name),
+  const menu = currentHost?.settings?.menu;
+  const pagesWithHeaderAndFooter = menu && [
+    ...menu?.map((item) => '/' + item?.name),
     '/forgot-password',
     '/reset-password',
     '/terms-&-privacy-policy',
@@ -125,7 +125,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const chakraTheme = generateTheme(hue);
 
   const isLargerLogo =
-    pagesWithHeaderAndFooter.includes(pathname) || pathname.substring(0, 6) === '/pages';
+    pagesWithHeaderAndFooter?.includes(pathname) || pathname.substring(0, 6) === '/pages';
 
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
 

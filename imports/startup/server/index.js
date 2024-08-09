@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { renderWithSSR } from 'meteor/communitypackages:react-router-ssr';
+import { Accounts } from 'meteor/accounts-base';
 
 import { AppRoutesSSR } from '../../ssr/AppRoutes';
-import { Accounts } from 'meteor/accounts-base';
 
 import './api';
 import './migrations';

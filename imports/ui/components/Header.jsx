@@ -30,13 +30,17 @@ function Header({ isSmallerLogo }) {
   const { currentHost, currentUser, isDesktop, platform, role } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
-  const { isHeaderMenu, menu } = currentHost?.settings;
-  const menuItems = menu
-    .filter((item) => item.isVisible)
-    .map((item, index) => ({
-      ...item,
-      route: getRoute(item, index),
-    }));
+  const isHeaderMenu = currentHost?.settings?.isHeaderMenu;
+  const menu = currentHost?.settings?.menu;
+
+  const menuItems =
+    menu &&
+    menu
+      .filter((item) => item.isVisible)
+      .map((item, index) => ({
+        ...item,
+        route: getRoute(item, index),
+      }));
 
   if (platform?.showCommunitiesInMenu && currentHost?.isPortalHost) {
     menuItems.push({
