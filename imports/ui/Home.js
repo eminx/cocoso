@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { MainLoader } from './components/SkeletonLoaders';
 
 import { StateContext } from './LayoutContainer';
 
@@ -8,7 +9,7 @@ function Home() {
 
   const menu = currentHost && currentHost.settings && currentHost.settings.menu;
   if (!menu || !menu[0]) {
-    return 'loading...';
+    return <MainLoader />;
   }
 
   const visibleMenu = menu.filter((item) => item.isVisible);
