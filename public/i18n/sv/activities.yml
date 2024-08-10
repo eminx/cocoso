@@ -109,4 +109,4 @@ public:
     notFound: Vänligen ange detaljerna för din OSA
   past: Detta arrangemang har redan passerat
   acceess:
-    deny: Endast synligt för admins och medskapare
+    deny: Endast synligt för admins och verifierade användare

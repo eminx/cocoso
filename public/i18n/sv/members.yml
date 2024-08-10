@@ -27,7 +27,7 @@ actions:
 
 message:
   success:
-    contributor: '{{ username }} är nu verifierad som medskapare'
+    contributor: '{{ username }} är nu verifierad'
     participant: '{{ username }} är nu overifierad'
     admin: '{{ username }} är nu admin'
   contact:
@@ -36,7 +36,7 @@ message:
     empty: Inget har publicerats här ännu
     info: '{{ username }} har inte varit särskilt aktiv hittills'
   access:
-    contributor: Du måste verifieras som medskapare för att {{ action }}
+    contributor: Du måste verifieras för att {{ action }}
   guest: Du måste skapa ett konto för att lansera din marknad
   usage:
     noUsage: Inga bokningar har registrerats för denna användare

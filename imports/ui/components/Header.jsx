@@ -84,11 +84,13 @@ function Header({ isSmallerLogo }) {
                     {currentHost.settings?.name}
                   </CHeading>
                   {isAdmin && (
-                    <Link to="/admin/settings/organization">
-                      <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
-                        Add logo
-                      </Button>
-                    </Link>
+                    <Center>
+                      <Link to="/admin/settings/organization">
+                        <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
+                          Add logo
+                        </Button>
+                      </Link>
+                    </Center>
                   )}
                 </Box>
               )}

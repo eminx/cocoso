@@ -117,7 +117,7 @@ class NewActivity extends PureComponent {
       resourceIndex: selectedResource?.resourceIndex,
     };
     if (selectedResource) {
-      (formValues.resource = selectedResource.label),
+      (formValues.resource = selectedResource?.label),
         (formValues.resourceIndex = selectedResource.resourceIndex);
     }
 

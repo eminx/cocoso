@@ -109,4 +109,4 @@ public:
     notFound: Lütfen kayıt bilgilerini gir
   past: Etkinlik geçti
   acceess:
-    deny: Sadece oluşturucu rolündeki kullanıcılara açık
+    deny: Sadece onaylanmış kullanıcılara açık

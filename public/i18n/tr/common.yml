@@ -96,7 +96,7 @@ message:
   access:
     deny: Bunun için iznin yok
     admin: Bir {{ domain }} oluşturmak için süper admin olmalısın.
-    contributor: '{{ domain }} oluşturmak için oluşturucu ya da admin olmalısın.'
+    contributor: '{{ domain }} oluşturmak için onaylanmış olmalısın.'
     register: '{{ domain }} oluşturmak için kayıt olmalısın.'
 
   exists: '{{ property }} bir {{ domain }} zaten var'

@@ -97,7 +97,7 @@ message:
   access:
     deny: Du har inte behörighe
     admin: Du måste vara admin för att skapa en {{ domain }}
-    contributor: Du måste bli en medskapare för att skapa {{ domain }}
+    contributor: Du måste bli verifierad för att skapa {{ domain }}
     register: Du måste registrera dig för att skapa {{ domain }}
 
   exists: En {{ domain }} med denna {{ property }} finns redan

@@ -126,7 +126,7 @@ function ActivityForm({
               <b>
                 {renderHTML(
                   t('form.resource.label', {
-                    resources: resourcesInMenu.label,
+                    resources: resourcesInMenu?.label,
                   })
                 )}
               </b>

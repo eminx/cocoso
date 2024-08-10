@@ -26,6 +26,7 @@ function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = tr
             <Flex bg="gray.50" flexDirection="column" justify="center">
               <LazyLoadImage
                 alt={alt + image}
+                effect="blur"
                 src={image}
                 style={{ ...imageStyle, height }}
                 onClick={() => setToggler(!toggler)}
@@ -86,7 +87,7 @@ function ImageHandler({ height, width, images, isFade, children }) {
     return (
       <Box className="slide-container" h={height} w={width}>
         <Slide
-          arrows={false}
+          arrows
           transitionDuration={400}
           onStartChange={(from, to) => setCurrentSlideIndex(to)}
         >

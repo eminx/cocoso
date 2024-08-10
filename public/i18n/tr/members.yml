@@ -18,17 +18,17 @@ form:
   holder: kullanıcı adı ya da eposta adresi
 
 actions:
-  contributor: Oluşturucu yap
+  contributor: Onayla
   admin: Admin yap
-  participant: Katılımcı yap
+  participant: Onayı geri çek
   usageReport: Kullanım raporunu görüntüle
   visit: Profili ziyaret et
   visithost: '{{ host }} profilini ziyaret et'
 
 message:
   success:
-    contributor: '{{ username }} oluşturucu yapıldı'
-    participant: '{{ username }} katılımcı yapıldı'
+    contributor: '{{ username }} onaylandı'
+    participant: '{{ username }} onayı geri alındı'
     admin: '{{ username }} admin yapıldı'
   contact:
     empty: '{{ username }} iletişim bilgisini girmemiş'
@@ -36,8 +36,8 @@ message:
     empty: Henüz hiçbir şey yayınlanmamış
     info: '{{ username }} henüz çok aktif olmamış'
   access:
-    contributor: '{{ action }} için oluşturucu olman gerek'
-  guest: İşlerini yayınlaman için oluşturucu ya da admin olman gerek
+    contributor: '{{ action }} için onaylanmış olman gerek'
+  guest: İşlerini yayınlaman için onaylanmış olman gerek
   usage:
     noUsage: Bu kullanıcı henüz bir kaynak kullanmamış
   sortedRandomly: Rastgele sıralandı
