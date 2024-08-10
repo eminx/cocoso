@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
-import { parse, stringify } from 'query-string';
 
 import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';

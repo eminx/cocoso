@@ -50,9 +50,11 @@ function MembersPublic() {
     getKeywords();
   }, [members?.length]);
 
+  const isPortalHost = Boolean(currentHost?.isPortalHost);
+
   const getAndSetMembers = async () => {
     try {
-      if (currentHost.isPortalHost) {
+      if (isPortalHost) {
         const allMembers = await call('getAllMembersFromAllHosts');
         setMembers(allMembers.sort(() => 0.5 - Math.random()));
       } else {
@@ -83,8 +85,6 @@ function MembersPublic() {
   if (loading) {
     return <ContentLoader items={4} />;
   }
-
-  const { isPortalHost } = currentHost;
 
   const getHostNameForModal = () => {
     if (hostFilterValue) {

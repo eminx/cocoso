@@ -57,7 +57,7 @@ class Calendar extends PureComponent {
 
   getData = async () => {
     const { currentHost } = this.context;
-    const { isPortalHost } = currentHost;
+    const isPortalHost = Boolean(currentHost?.isPortalHost);
     try {
       const allActivities = isPortalHost
         ? await call('getAllActivitiesFromAllHosts')
