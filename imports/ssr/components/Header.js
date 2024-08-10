@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Center, HStack, Img, Text } from '@chakra-ui/react';
+import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
 export default function Header({ host }) {
   const currentHost = host;
-
   const menuItems = host?.settings?.menu?.filter((item) => item.isVisible);
 
   if (!currentHost) {
@@ -19,9 +18,9 @@ export default function Header({ host }) {
             <Img className="smaller-logo" maxW={280} maxH={48} src={host.logo} />
           ) : (
             <Box>
-              <CHeading color="brand.800" fontWeight="light">
+              <Heading color="brand.800" fontWeight="light">
                 {currentHost.settings?.name}
-              </CHeading>
+              </Heading>
             </Box>
           )}
         </Link>

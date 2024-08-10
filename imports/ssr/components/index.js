@@ -40,7 +40,6 @@ export function ActivitiesList({ host }) {
 
 export function Activity() {
   const { activityId } = useParams();
-
   Meteor.subscribe('activity', activityId);
   const activity = Activities.findOne(activityId);
   Meteor.subscribe('host', activity.host);
