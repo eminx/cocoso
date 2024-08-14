@@ -20,7 +20,6 @@ class EditWork extends PureComponent {
     isDeleted: false,
     isDeleteModalOn: false,
     isError: false,
-    isLocalising: false,
     isLoading: false,
     isSuccess: false,
     isUpdating: false,
@@ -69,10 +68,6 @@ class EditWork extends PureComponent {
   };
 
   setUploadableImages = (files) => {
-    this.setState({
-      isLocalising: true,
-    });
-
     files.forEach((uploadableImage, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(uploadableImage);
@@ -92,11 +87,6 @@ class EditWork extends PureComponent {
         },
         false
       );
-      if (files.length === index + 1) {
-        this.setState({
-          isLocalising: false,
-        });
-      }
     });
   };
 

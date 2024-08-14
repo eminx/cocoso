@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Box, Button, Center, VStack } from '@chakra-ui/react';
+import arrayMove from 'array-move';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
@@ -32,18 +33,16 @@ class EditActivity extends PureComponent {
     datesAndTimes: [],
     formValues: formModel,
     isDeleteModalOn: false,
-    isCreating: false,
+    isUpdating: false,
     isDeleted: false,
     isError: false,
     isLoading: false,
+    images: [],
     isSuccess: false,
     isExclusiveActivity: true,
     isPublicActivity: false,
     isRegistrationDisabled: false,
     longDescription: '',
-    uploadableImage: null,
-    uploadableImageLocal: null,
-    uploadedImage: null,
   };
 
   componentDidMount() {
@@ -73,6 +72,10 @@ class EditActivity extends PureComponent {
         isPublicActivity: activity.isPublicActivity,
         isExclusiveActivity: Boolean(activity.isExclusiveActivity),
         isRegistrationDisabled: activity.isRegistrationDisabled,
+        images: activity?.images?.map((image) => ({
+          src: image,
+          type: 'uploaded',
+        })),
       },
       () => this.validateBookings()
     );
@@ -90,9 +93,33 @@ class EditActivity extends PureComponent {
     });
   };
 
+  setUploadableImages = (files) => {
+    files.forEach((uploadableImage, index) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadableImage);
+      reader.addEventListener(
+        'load',
+        () => {
+          this.setState(({ images }) => ({
+            images: [
+              ...images,
+              {
+                resizableData: uploadableImage,
+                type: 'not-uploaded',
+                src: reader.result,
+              },
+            ],
+          }));
+        },
+        false
+      );
+    });
+  };
+
   handleSubmit = (values) => {
     const { resources } = this.props;
-    const { isPublicActivity, uploadableImage } = this.state;
+    const { isPublicActivity, images } = this.state;
+
     const formValues = { ...values };
     if (values.resourceId) {
       const selectedResource = resources.find((r) => r._id === values.resourceId);
@@ -101,82 +128,64 @@ class EditActivity extends PureComponent {
       formValues.resourceIndex = selectedResource?.resourceIndex;
     }
 
+    const isThereUploadable = images?.some((image) => image.type === 'not-uploaded');
+
     this.setState(
       {
-        isLoading: true,
-        isCreating: true,
         formValues,
+        isUpdating: true,
       },
       () => {
-        if (isPublicActivity && uploadableImage) {
-          this.uploadImage();
+        if (isPublicActivity && images?.length && isThereUploadable) {
+          this.uploadImages();
         } else {
-          this.updateActivity();
+          const imagesReadyToSave = images?.map((image) => image.src);
+          this.updateActivity(imagesReadyToSave);
         }
       }
     );
   };
 
-  setUploadableImage = (files) => {
-    const { tc } = this.props;
-    if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
-      return;
-    }
-    const theImageFile = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
-  uploadImage = async () => {
-    const { uploadableImage } = this.state;
-
+  uploadImages = async () => {
+    const { images } = this.state;
     try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      this.setState(
-        {
-          uploadedImage,
-        },
-        () => this.updateActivity()
+      const imagesReadyToSave = await Promise.all(
+        images.map(async (uploadableImage, index) => {
+          if (uploadableImage.type === 'uploaded') {
+            return uploadableImage.src;
+          }
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
+          const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
+          return uploadedImage;
+        })
       );
+      this.updateActivity(imagesReadyToSave);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
-        isCreating: false,
+        isUpdating: false,
+        isError: true,
       });
     }
   };
 
-  updateActivity = async () => {
+  updateActivity = async (imagesReadyToSave) => {
     const { activity, tc } = this.props;
     const {
       formValues,
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
-      uploadedImage,
       datesAndTimes,
     } = this.state;
 
     const datesAndTimesSorted = datesAndTimes.sort(compareDatesWithStartDateForSort);
 
-    const imageUrl = uploadedImage || activity.imageUrl;
     const values = {
       ...formValues,
       datesAndTimes: datesAndTimesSorted,
-      imageUrl,
+      images: imagesReadyToSave,
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
@@ -190,10 +199,28 @@ class EditActivity extends PureComponent {
       console.log(error);
       message.error(error.error || error.reason);
       this.setState({
-        isLoading: false,
+        isUpdating: false,
         isError: true,
       });
     }
+  };
+
+  handleRemoveImage = (imageIndex) => {
+    this.setState(({ images }) => ({
+      images: images.filter((image, index) => imageIndex !== index),
+      // unSavedImageChange: true,
+    }));
+  };
+
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ images }) => ({
+      images: arrayMove(images, oldIndex, newIndex),
+      // unSavedImageChange: true,
+    }));
   };
 
   hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
@@ -211,7 +238,7 @@ class EditActivity extends PureComponent {
     } catch (error) {
       console.log(error);
       this.setState({
-        isLoading: false,
+        isUpdating: false,
         isError: true,
       });
     }
@@ -333,8 +360,8 @@ class EditActivity extends PureComponent {
       isPublicActivity,
       isRegistrationDisabled,
       isSuccess,
-      isLoading,
-      uploadableImageLocal,
+      isUpdating,
+      images,
     } = this.state;
 
     if (isSuccess) {
@@ -381,15 +408,17 @@ class EditActivity extends PureComponent {
               datesAndTimes={datesAndTimes}
               defaultValues={activity}
               imageUrl={activity && activity.imageUrl}
+              images={images?.map((image) => image.src)}
               isPublicActivity={isPublicActivity}
               resources={resources}
-              uploadableImageLocal={uploadableImageLocal}
+              onRemoveImage={this.handleRemoveImage}
+              onSortImages={this.handleSortImages}
               onSubmit={this.handleSubmit}
               setDatesAndTimes={this.setDatesAndTimes}
               setSelectedResource={this.handleSelectedResource}
-              setUploadableImage={this.setUploadableImage}
-              isButtonDisabled={!isFormValid || isLoading}
-              isCreating={isLoading}
+              setUploadableImages={this.setUploadableImages}
+              isButtonDisabled={!isFormValid || isUpdating}
+              isCreating={isUpdating}
               isFormValid={isFormValid}
             />
           </Box>

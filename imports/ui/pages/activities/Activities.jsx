@@ -278,7 +278,7 @@ function Activities() {
                   dates={activity.datesAndTimes}
                   showPast={showPast}
                   host={isPortalHost ? itemHost : null}
-                  imageUrl={activity.imageUrl}
+                  imageUrl={(activity.images && activity.images[0]) || activity.imageUrl}
                   subTitle={activity.isGroup ? activity.readingMaterial : activity.subTitle}
                   title={activity.title}
                 />
@@ -306,7 +306,7 @@ function Activities() {
             <Tably
               action={getDatesForAction(modalActivity, showPast)}
               content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
-              images={[modalActivity.imageUrl]}
+              images={modalActivity.images || [modalActivity.imageUrl]}
               subTitle={modalActivity.subTitle}
               tags={isPortalHost && [allHosts.find((h) => h.host === modalActivity.host)?.name]}
               title={modalActivity.title}

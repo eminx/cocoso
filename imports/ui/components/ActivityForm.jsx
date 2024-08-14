@@ -261,7 +261,7 @@ function ActivityForm({
                 isRequired
               >
                 {images && (
-                  <Center>
+                  <Center mb="4">
                     <NiceSlider width="300px" images={images} />
                   </Center>
                 )}
