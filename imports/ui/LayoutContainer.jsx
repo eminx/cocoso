@@ -12,6 +12,7 @@ import {
   Link as CLink,
   List,
   ListItem,
+  Progress,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
@@ -101,9 +102,15 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  // if (!currentHost) {
-  //   return <MainLoader />;
-  // }
+  const chakraTheme = generateTheme(hue);
+
+  if (!currentHost) {
+    return (
+      <ChakraProvider theme={chakraTheme}>
+        <Progress size="xs" colorScheme="brand.500" isIndeterminate />
+      </ChakraProvider>
+    );
+  }
 
   const hostWithinUser =
     currentUser &&
@@ -121,8 +128,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     '/terms-&-privacy-policy',
     '/communities',
   ];
-
-  const chakraTheme = generateTheme(hue);
 
   const isLargerLogo =
     pagesWithHeaderAndFooter?.includes(pathname) || pathname.substring(0, 6) === '/pages';

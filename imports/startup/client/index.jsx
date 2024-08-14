@@ -1,7 +1,8 @@
 import React from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { onPageLoad } from 'meteor/server-render';
-import { createRoot } from 'react-dom/client';
 import { createStandaloneToast } from '@chakra-ui/toast';
 
 import '../i18n';
@@ -12,9 +13,11 @@ export { toast };
 
 onPageLoad(() => {
   const container = document.getElementById('root');
-  const root = createRoot(container);
+  // const root = createRoot(container);
+  hydrateRoot(
+    container,
 
-  root.render(
+    // root.render(
     <>
       <BrowserRouter>
         <Routes />
@@ -23,4 +26,6 @@ onPageLoad(() => {
       <ToastContainer />
     </>
   );
+
+  // );
 });

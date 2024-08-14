@@ -15,10 +15,16 @@ export default function Header({ host }) {
       <Center mb="6">
         <Link to="/">
           {currentHost.logo ? (
-            <Img className="smaller-logo" maxW={280} maxH={48} src={host.logo} />
+            <Box maxHeight="48px">
+              <Img className="smaller-logo" maxW={280} h="48px" src={host.logo} />
+            </Box>
           ) : (
             <Box>
-              <Heading color="brand.800" fontWeight="300">
+              <Heading
+                color="brand.800"
+                fontWeight="bold"
+                fontFamily="Raleway, Sarabun, sans-serif"
+              >
                 {currentHost.settings?.name}
               </Heading>
             </Box>
@@ -31,7 +37,12 @@ export default function Header({ host }) {
           {menuItems?.map((item) => (
             <Link key={item.name} to={item.route}>
               <Box px="2">
-                <Text as="span" color="brand.500" fontWeight="bold">
+                <Text
+                  as="span"
+                  color="brand.500"
+                  fontFamily="Raleway, Sarabun, sans-serif"
+                  fontWeight="bold"
+                >
                   {item.label}
                 </Text>
               </Box>

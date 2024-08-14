@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
+import { hydrateRoot } from 'react-dom/client';
 import { Navigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
@@ -47,6 +48,7 @@ import {
 } from '../../utils/shared.js';
 import { StateContext } from '../../LayoutContainer.jsx';
 import { DocumentUploadHelper } from '../../components/UploadHelpers.jsx';
+import { MainLoader } from '../../components/SkeletonLoaders.jsx';
 
 moment.locale(i18n.language);
 
@@ -898,7 +900,7 @@ class Group extends Component {
     const { currentHost } = this.context;
 
     if (!group || isLoading) {
-      return null;
+      return <MainLoader />;
     }
 
     const {
@@ -933,7 +935,7 @@ class Group extends Component {
         title: tc('labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
-            {renderHTML(group.description)}
+            {group && renderHTML(group.description)}
           </Box>
         ),
         path: 'info',
@@ -1005,13 +1007,15 @@ class Group extends Component {
           link: 'edit',
         },
         {
-          label: group.isArchived ? t('actions.unarchive') : t('actions.archive'),
-          onClick: group.isArchived ? this.unarchiveGroup : this.archiveGroup,
+          label: group?.isArchived ? t('actions.unarchive') : t('actions.archive'),
+          onClick: group?.isArchived ? this.unarchiveGroup : this.archiveGroup,
         },
       ],
     };
 
-    if (group.isPrivate) {
+    const isPrivate = group && group.isPrivate;
+
+    if (isPrivate) {
       adminMenu.items.push({
         label: t('labels.invite'),
         onClick: this.handleOpenInviteManager,
@@ -1019,10 +1023,10 @@ class Group extends Component {
     }
 
     const tags = [];
-    if (group.isPrivate) {
+    if (isPrivate) {
       tags.push(t('private.title'));
     }
-    if (group.isArchived) {
+    if (group?.isArchived) {
       tags.push(t('labels.archived'));
     }
 
@@ -1035,7 +1039,7 @@ class Group extends Component {
     return (
       <>
         <Helmet>
-          <title>{group.title}</title>
+          <title>{group?.title}</title>
         </Helmet>
 
         <TablyCentered
@@ -1047,11 +1051,11 @@ class Group extends Component {
           //   username: group.authorUsername,
           //   link: `/@${group.authorUsername}`,
           // }}
-          images={[group.imageUrl]}
-          subTitle={group.readingMaterial}
+          images={[group?.imageUrl]}
+          subTitle={group?.readingMaterial}
           tabs={tabs}
           tags={tags}
-          title={group.title}
+          title={group?.title}
         />
 
         <ConfirmModal
@@ -1063,10 +1067,10 @@ class Group extends Component {
           <Text>
             {isMember
               ? t('modal.leave.body', {
-                  title: group.title,
+                  title: group?.title,
                 })
               : t('modal.join.body', {
-                  title: group.title,
+                  title: group?.title,
                 })}
           </Text>
         </ConfirmModal>
@@ -1082,7 +1086,7 @@ class Group extends Component {
           <Text>{t('confirm.admin.body', { admin: potentialNewAdmin })}</Text>
         </ConfirmModal>
 
-        {group && group.isPrivate && (
+        {isPrivate && (
           <Drawer
             title={t('labels.invite')}
             isOpen={inviteManagerOpen}
