@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 import renderHTML from 'react-render-html';
+import { HydrationProvider } from 'react-hydration-provider';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -29,7 +30,7 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
-import { MainLoader } from './components/SkeletonLoaders';
+// import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
 
@@ -104,14 +105,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
 
   const chakraTheme = generateTheme(hue);
 
-  if (!currentHost) {
-    return (
-      <ChakraProvider theme={chakraTheme}>
-        <Progress size="xs" colorScheme="brand.500" isIndeterminate />
-      </ChakraProvider>
-    );
-  }
-
   const hostWithinUser =
     currentUser &&
     currentUser.memberships &&
@@ -167,49 +160,52 @@ function LayoutPage({ currentUser, userLoading, children }) {
         />
       </Helmet>
 
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
-          <StateContext.Provider
-            value={{
-              allHosts,
-              canCreateContent,
-              currentUser,
-              currentHost,
-              hue,
-              isDesktop,
-              platform,
-              role,
-              userLoading,
-              getCurrentHost,
-              getPlatform,
-              setHue,
-              setSelectedHue,
-            }}
-          >
-            {platform && platform.isFederationLayout && <TopBar />}
+      <HydrationProvider>
+        <ChakraProvider theme={chakraTheme}>
+          <ColorModeProvider>
+            {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
+            <StateContext.Provider
+              value={{
+                allHosts,
+                canCreateContent,
+                currentUser,
+                currentHost,
+                hue,
+                isDesktop,
+                platform,
+                role,
+                userLoading,
+                getCurrentHost,
+                getPlatform,
+                setHue,
+                setSelectedHue,
+              }}
+            >
+              {platform && platform.isFederationLayout && <TopBar />}
 
-            <Flex>
-              <Box id="main-viewport" flexGrow="2">
-                <Box w="100%">
-                  <Header isSmallerLogo={!isLargerLogo} />
+              <Flex>
+                <Box id="main-viewport" flexGrow="2">
+                  <Box w="100%">
+                    <Header isSmallerLogo={!isLargerLogo} />
 
-                  <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                    {children}
+                    <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                      {children}
+                    </Box>
+
+                    <Footer
+                      currentHost={currentHost}
+                      isFederationFooter={isFederationFooter}
+                      tc={tc}
+                    />
+
+                    {isFederationFooter && <PlatformFooter platform={platform} />}
                   </Box>
-
-                  <Footer
-                    currentHost={currentHost}
-                    isFederationFooter={isFederationFooter}
-                    tc={tc}
-                  />
-
-                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-              </Box>
-            </Flex>
-          </StateContext.Provider>
-        </ColorModeProvider>
-      </ChakraProvider>
+              </Flex>
+            </StateContext.Provider>
+          </ColorModeProvider>
+        </ChakraProvider>
+      </HydrationProvider>
     </>
   );
 }

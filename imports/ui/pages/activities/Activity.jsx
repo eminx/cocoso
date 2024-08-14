@@ -36,7 +36,6 @@ import { StateContext } from '../../LayoutContainer';
 import ConfirmModal from '../../components/ConfirmModal';
 import FancyDate, { DateJust } from '../../components/FancyDate';
 import FormField from '../../components/FormField';
-import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import TablyCentered from '../../components/TablyCentered';
 
@@ -61,7 +60,7 @@ class Activity extends PureComponent {
     const { activityData, t, getActivityById } = this.props;
 
     let isAlreadyRegistered = false;
-    const occurence = activityData.datesAndTimes[occurenceIndex];
+    const occurence = activityData?.datesAndTimes[occurenceIndex];
     occurence.attendees.forEach((attendee, attendeeIndex) => {
       if (
         attendee.lastName.trim().toLowerCase() === values.lastName.trim().toLowerCase() &&
@@ -97,7 +96,7 @@ class Activity extends PureComponent {
     };
 
     try {
-      await call('registerAttendance', activityData._id, parsedValues, occurenceIndex);
+      await call('registerAttendance', activityData?._id, parsedValues, occurenceIndex);
       await getActivityById();
       message.success(t('public.attendance.create'));
     } catch (error) {
@@ -122,7 +121,7 @@ class Activity extends PureComponent {
   findRsvpInfo = () => {
     const { rsvpCancelModalInfo } = this.state;
     const { activityData, t } = this.props;
-    const theOccurence = activityData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
+    const theOccurence = activityData?.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
 
     const attendeeFinder = (attendee) =>
       attendee.lastName === rsvpCancelModalInfo.lastName &&
@@ -208,7 +207,7 @@ class Activity extends PureComponent {
     const { activityData, t, getActivityById } = this.props;
 
     const { occurenceIndex } = rsvpCancelModalInfo;
-    const occurence = activityData.datesAndTimes[occurenceIndex];
+    const occurence = activityData?.datesAndTimes[occurenceIndex];
 
     let registeredNumberOfAttendees = 0;
     occurence?.attendees?.forEach((attendee, index) => {
@@ -236,7 +235,7 @@ class Activity extends PureComponent {
     try {
       await call(
         'updateAttendance',
-        activityData._id,
+        activityData?._id,
         parsedValues,
         rsvpCancelModalInfo.occurenceIndex,
         rsvpCancelModalInfo.attendeeIndex
@@ -266,7 +265,7 @@ class Activity extends PureComponent {
       return;
     }
 
-    const theOccurence = activityData.datesAndTimes[occurenceIndex];
+    const theOccurence = activityData?.datesAndTimes[occurenceIndex];
     const theNonAttendee = theOccurence.attendees.find(
       (a) => a.email === email && a.lastName === lastName
     );
@@ -277,7 +276,7 @@ class Activity extends PureComponent {
     }
 
     try {
-      await call('removeAttendance', activityData._id, occurenceIndex, email, lastName);
+      await call('removeAttendance', activityData?._id, occurenceIndex, email, lastName);
       await getActivityById();
       message.success(t('public.attendance.remove'));
       this.setState({
@@ -301,15 +300,15 @@ class Activity extends PureComponent {
 
     const yesterday = moment(new Date()).add(-1, 'days');
 
-    if (activityData.isRegistrationDisabled || !activityData.isPublicActivity) {
+    if ((activityData && activityData.isRegistrationDisabled) || !activityData.isPublicActivity) {
       return (
         <div>
-          {activityData.isRegistrationDisabled && (
+          {activityData?.isRegistrationDisabled && (
             <Text mb="2" size="sm" textAlign="center">
               {t('public.register.disabled.true')}
             </Text>
           )}
-          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+          {activityData?.datesAndTimes.map((occurence, occurenceIndex) => (
             <Box
               {...sexyBorder}
               color="brand.800"
@@ -395,7 +394,7 @@ class Activity extends PureComponent {
           {t('public.register.disabled.false')}
         </Text>
         <Accordion allowToggle>
-          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+          {activityData?.datesAndTimes.map((occurence, occurenceIndex) => (
             <AccordionItem key={occurence.startDate + occurence.startTime} mb="4">
               <AccordionButton
                 _hover={{ bg: 'brand.50' }}
@@ -434,7 +433,7 @@ class Activity extends PureComponent {
       return;
     }
 
-    Meteor.call('removeNotification', activityData._id, messageIndex, (error, respond) => {
+    Meteor.call('removeNotification', activityData?._id, messageIndex, (error, respond) => {
       if (error) {
         console.log('error', error);
         message.destroy();
@@ -448,14 +447,14 @@ class Activity extends PureComponent {
     const { isDesktop } = this.context;
 
     return (
-      <Link to={`/activities/${activityData._id}/dates`}>
+      <Link to={`/activities/${activityData?._id}/dates`}>
         <Flex
           justify={isDesktop ? 'flex-start' : 'center'}
           mb={isDesktop ? '0' : '2'}
           pt={isDesktop ? '2' : '4'}
           wrap="wrap"
         >
-          {activityData.datesAndTimes.map((occurence, occurenceIndex) => (
+          {activityData?.datesAndTimes.map((occurence, occurenceIndex) => (
             <Flex
               key={occurence.startDate + occurence.startT}
               color="brand.700"
@@ -480,15 +479,13 @@ class Activity extends PureComponent {
   };
 
   render() {
-    const { activityData, isLoading, t, tc } = this.props;
-    const { currentHost, currentUser, isDesktop, role } = this.context;
+    const { activityData, t, tc } = this.props;
+    const { currentHost, currentUser, role } = this.context;
 
-    if (!activityData || isLoading) {
-      return <Loader />;
-    }
+    const isGroupMeeting = activityData?.isGroupMeeting;
 
-    if (activityData.isGroupMeeting) {
-      return <Navigate to={`/groups/${activityData.groupId}/dates`} />;
+    if (isGroupMeeting) {
+      return <Navigate to={`/groups/${activityData?.groupId}/dates`} />;
     }
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;
@@ -498,13 +495,13 @@ class Activity extends PureComponent {
         title: t('public.labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
-            {activityData.longDescription && renderHTML(activityData.longDescription)}
+            {activityData?.longDescription && renderHTML(activityData?.longDescription)}
           </Box>
         ),
         path: 'info',
       },
       {
-        title: activityData.isPublicActivity
+        title: activityData?.isPublicActivity
           ? t('public.labels.datesAndRegistration')
           : t('public.labels.dates'),
         content: this.renderDates(),
@@ -512,17 +509,17 @@ class Activity extends PureComponent {
       },
     ];
 
-    if (activityData.isPublicActivity) {
+    if (activityData?.isPublicActivity) {
       tabs.push({
         title: t('public.labels.location'),
         content: (
           <Box px="4">
-            {activityData.place && (
+            {activityData?.place && (
               <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
-                {activityData.place}
+                {activityData?.place}
               </Text>
             )}
-            {activityData.address && (
+            {activityData?.address && (
               <Text fontSize="lg">{t('public.labels.address') + ': ' + activityData.address}</Text>
             )}
           </Box>
@@ -541,7 +538,7 @@ class Activity extends PureComponent {
       ],
     };
 
-    const isAdmin = currentUser && (currentUser._id === activityData.authorId || role === 'admin');
+    const isAdmin = currentUser && (currentUser._id === activityData?.authorId || role === 'admin');
 
     const activitiesInMenu = currentHost?.settings?.menu?.find(
       (item) => item.name === 'activities'
@@ -549,24 +546,24 @@ class Activity extends PureComponent {
     const calendarInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'calendar');
 
     const backLink = {
-      value: activityData.isPublicActivity ? '/activities' : '/calendar',
-      label: activityData.isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
+      value: activityData?.isPublicActivity ? '/activities' : '/calendar',
+      label: activityData?.isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
     };
 
     return (
       <>
         <Helmet>
-          <title>{activityData.title}</title>
+          <title>{activityData?.title}</title>
         </Helmet>
 
         <TablyCentered
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}
-          images={activityData.isPublicActivity ? [activityData.imageUrl] : null}
-          subTitle={activityData.subTitle}
+          images={activityData?.isPublicActivity ? [activityData?.imageUrl] : null}
+          subTitle={activityData?.subTitle}
           tabs={tabs}
-          title={activityData.title}
+          title={activityData?.title}
         />
 
         <ConfirmModal
@@ -609,7 +606,7 @@ class Activity extends PureComponent {
                 pageStyle={{ margin: 144 }}
               />
             </Flex> */}
-            <RsvpListPrint occurence={selectedOccurrence} title={activityData.title} />
+            <RsvpListPrint occurence={selectedOccurrence} title={activityData?.title} />
           </Box>
         </Modal>
       </>
