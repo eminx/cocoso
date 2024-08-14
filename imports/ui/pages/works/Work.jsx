@@ -39,7 +39,7 @@ function Work() {
   };
 
   if (!work || loading) {
-    return <Loader />;
+    return null;
   }
 
   const isOwner = currentUser && currentUser.username === username;

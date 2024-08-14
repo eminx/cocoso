@@ -55,7 +55,7 @@ function TablyCentered({
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`https://${currentHost?.host}${location.pathname}`);
+      await navigator.clipboard.writeText(`https://${currentHost.host}${location.pathname}`);
       setCopied(true);
     } catch (error) {
       console.log(error);

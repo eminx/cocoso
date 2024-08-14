@@ -5,6 +5,7 @@ import Home from '../Home';
 import LayoutContainer from '../LayoutContainer';
 
 import Terms from '../components/Terms';
+import { ContentLoader } from '../components/SkeletonLoaders';
 
 const Communities = lazy(() => import('../pages/hosts/Communities'));
 
@@ -75,7 +76,7 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 export default function () {
   return (
     <LayoutContainer>
-      <Suspense>
+      <Suspense fallback={null}>
         <Routes>
           <Route exact path="/" element={<Home />} />
 

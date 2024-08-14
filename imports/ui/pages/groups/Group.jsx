@@ -898,7 +898,7 @@ class Group extends Component {
     const { currentHost } = this.context;
 
     if (!group || isLoading) {
-      return <Loader />;
+      return null;
     }
 
     const {

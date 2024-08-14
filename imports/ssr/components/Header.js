@@ -11,14 +11,14 @@ export default function Header({ host }) {
   }
 
   return (
-    <Box p="4" w="100%">
-      <Center px="4" py="16">
+    <Box p="3" w="100%">
+      <Center mb="6">
         <Link to="/">
           {currentHost.logo ? (
             <Img className="smaller-logo" maxW={280} maxH={48} src={host.logo} />
           ) : (
             <Box>
-              <Heading color="brand.800" fontWeight="light">
+              <Heading color="brand.800" fontWeight="300">
                 {currentHost.settings?.name}
               </Heading>
             </Box>
@@ -26,12 +26,12 @@ export default function Header({ host }) {
         </Link>
       </Center>
 
-      <Center p="4" mt="16" mb="12px">
+      <Center p="4">
         <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
           {menuItems?.map((item) => (
-            <Link key={item.name} style={{ color: 'blue', marginRight: 12 }} to={item.route}>
+            <Link key={item.name} to={item.route}>
               <Box px="2">
-                <Text as="span" fontFamily="'Helvetica', sans-serif">
+                <Text as="span" color="brand.500" fontWeight="bold">
                   {item.label}
                 </Text>
               </Box>

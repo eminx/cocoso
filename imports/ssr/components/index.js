@@ -12,7 +12,7 @@ import Resources from '../../api/resources/resource';
 import Works from '../../api/works/work';
 
 import Header from './Header';
-import Content from './Content';
+import EntrySSR from './EntrySSR';
 import { parseTitle } from '../../ui/utils/shared';
 
 export function ActivitiesList({ host }) {
@@ -46,16 +46,15 @@ export function Activity() {
   const host = Hosts.findOne({ host: activity.host });
 
   return (
-    <>
+    <EntrySSR
+      description={activity.longDescription}
+      host={host}
+      imageUrl={activity.imageUrl}
+      subTitle={activity.subTitle}
+      title={activity.title}
+    >
       <Header host={host} />
-      <Content
-        description={activity.longDescription}
-        host={host}
-        imageUrl={activity.imageUrl}
-        subTitle={activity.subTitle}
-        title={activity.title}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -84,15 +83,14 @@ export function Home({ host }) {
   const pageHeading = Host.settings?.name;
 
   return (
-    <>
+    <EntrySSR
+      host={Host}
+      imageUrl={Host.logo}
+      subTitle={Host.settings?.address}
+      title={pageHeading}
+    >
       <Header host={Host} />
-      <Content
-        host={Host}
-        imageUrl={Host.logo}
-        subTitle={Host.settings?.address}
-        title={pageHeading}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -126,16 +124,15 @@ export function Group() {
   const host = Hosts.findOne({ host: group.host });
 
   return (
-    <>
+    <EntrySSR
+      description={group.description}
+      host={host}
+      imageUrl={group.imageUrl}
+      subTitle={group.readingMaterial}
+      title={group.title}
+    >
       <Header host={host} />
-      <Content
-        description={group.description}
-        host={host}
-        imageUrl={group.imageUrl}
-        subTitle={group.readingMaterial}
-        title={group.title}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -148,15 +145,14 @@ export function Page({ host }) {
   const Host = Hosts.findOne({ host: page.host });
 
   return (
-    <>
+    <EntrySSR
+      description={page.longDescription}
+      host={Host}
+      imageUrl={page.images && page.images[0]}
+      title={page.title}
+    >
       <Header host={Host} />
-      <Content
-        description={page.longDescription}
-        host={Host}
-        imageUrl={page.images && page.images[0]}
-        title={page.title}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -192,15 +188,14 @@ export function Resource() {
   const host = Hosts.findOne({ host: resource.host });
 
   return (
-    <>
+    <EntrySSR
+      description={resource.description}
+      host={host}
+      imageUrl={resource.images && resource.images[0]}
+      title={resource.label}
+    >
       <Header host={host} />
-      <Content
-        description={resource.description}
-        host={host}
-        imageUrl={resource.images && resource.images[0]}
-        title={resource.label}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -234,16 +229,15 @@ export function Work() {
   const host = Hosts.findOne({ host: work.host });
 
   return (
-    <>
+    <EntrySSR
+      description={work.longDescription}
+      host={host}
+      imageUrl={work.images && work.images[0]}
+      subTitle={work.shortDescription}
+      title={work.title}
+    >
       <Header host={host} />
-      <Content
-        description={work.longDescription}
-        host={host}
-        imageUrl={work.images && work.images[0]}
-        subTitle={work.shortDescription}
-        title={work.title}
-      />
-    </>
+    </EntrySSR>
   );
 }
 
@@ -302,16 +296,15 @@ export function User() {
   const host = Hosts.findOne();
 
   return (
-    <>
+    <EntrySSR
+      description={user.bio}
+      imageUrl={user.avatar?.src}
+      host={host}
+      subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
+      title={user.username}
+    >
       <Header host={host} />
-      <Content
-        description={user.bio}
-        imageUrl={user.avatar?.src}
-        host={host}
-        subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
-        title={user.username}
-      />
-    </>
+    </EntrySSR>
   );
 }
 

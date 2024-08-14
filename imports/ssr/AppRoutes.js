@@ -15,6 +15,8 @@ import {
   // User,
 } from './components';
 
+// import Work from '../ui/pages/works/WorkSSR';
+
 export const AppRoutesSSR = [
   {
     path: '/',
