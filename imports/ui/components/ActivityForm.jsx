@@ -14,6 +14,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
 
 import DatesAndTimes from './DatesAndTimes';
 import FileDropper from './FileDropper';
@@ -21,7 +22,7 @@ import FormField from './FormField';
 import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
-import renderHTML from 'react-render-html';
+import { DocumentUploadHelper } from './UploadHelpers';
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
@@ -260,6 +261,7 @@ function ActivityForm({
                     setUploadableImage={setUploadableImage}
                   />
                 </Center>
+                <DocumentUploadHelper isImage />
               </FormField>
             )}
           </VStack>

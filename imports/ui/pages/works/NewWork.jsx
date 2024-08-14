@@ -50,11 +50,11 @@ class NewWork extends PureComponent {
     this.getCategories();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.uploadableImages.length < this.state.uploadableImages.length) {
-      this.checkForHeic();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.uploadableImages.length < this.state.uploadableImages.length) {
+  //     this.checkForHeic();
+  //   }
+  // }
 
   checkForHeic = async () => {
     const { uploadableImages, uploadableImagesLocal } = this.state;

@@ -103,6 +103,8 @@ const hostFields = [
   },
 ];
 
+const acceptedImageFormatsForUploads = ['.jpeg', '.jpg', '.png'];
+
 const acceptedDocumentFormatsForUploads = [
   '.doc',
   '.docx',
@@ -116,6 +118,7 @@ const acceptedDocumentFormatsForUploads = [
 const maximumDocumentSizeForUploads = '30 MB';
 
 export {
+  acceptedImageFormatsForUploads,
   acceptedDocumentFormatsForUploads,
   adminMenu,
   hostFields,

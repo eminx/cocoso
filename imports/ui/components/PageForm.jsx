@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import FormField from './FormField';
 import ReactQuill from './Quill';
 import ImageUploadUI from './ImageUploadUI';
+import { DocumentUploadHelper } from './UploadHelpers';
 
 const PageForm = ({
   defaultValues = { title: '', longDescription: '' },
@@ -48,6 +49,7 @@ const PageForm = ({
               onSelectImages={onSetUploadableImages}
               onSortImages={onSortImages}
             />
+            <DocumentUploadHelper isImage />
           </FormField>
 
           <FormField

@@ -18,6 +18,7 @@ import NiceSlider from './NiceSlider';
 import ReactQuill from './Quill';
 import ImageUploadUI from './ImageUploadUI';
 import DocumentsField from '../pages/resources/components/DocumentsField';
+import { DocumentUploadHelper } from './UploadHelpers';
 
 function WorkForm({
   categories,
@@ -123,6 +124,7 @@ function WorkForm({
               onSelectImages={setUploadableImages}
               onSortImages={onSortImages}
             />
+            <DocumentUploadHelper isImage />
           </FormField>
 
           <FormField helperText={!isNew && tc('documents.helper')} label={tc('documents.label')}>
