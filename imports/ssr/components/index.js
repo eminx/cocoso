@@ -49,7 +49,7 @@ export function Activity() {
     <EntrySSR
       description={activity.longDescription}
       host={host}
-      imageUrl={activity.imageUrl}
+      imageUrl={activity.images && activity.images[0]}
       subTitle={activity.subTitle}
       title={activity.title}
     >
