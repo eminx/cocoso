@@ -147,7 +147,7 @@ menu:
   label: Menü
   guest:
     login: Giriş yap
-    register: Kayıt ol
+    register: Hesap aç
   member:
     general: Genel
     label: Ben

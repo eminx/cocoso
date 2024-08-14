@@ -1,5 +1,5 @@
 actions:
-  signup: Kayıt ol
+  signup: Hesap aç
   login: Giriş yap
   logout: Çıkış
   forgot: Şifreni unuttun mu?
