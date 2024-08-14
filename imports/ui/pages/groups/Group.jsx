@@ -283,7 +283,7 @@ class Group extends Component {
       title: group.title,
       subTitle: group.readingMaterial,
       longDescription: group.description,
-      imageUrl: group.imageUrl,
+      images: [group.imageUrl],
       resource: newMeeting.resource,
       resourceId: newMeeting.resourceId,
       resourceIndex: newMeeting.resourceIndex,
