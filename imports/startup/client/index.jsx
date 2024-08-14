@@ -1,5 +1,5 @@
 import React from 'react';
-import { hydrateRoot } from 'react-dom/client';
+// import { hydrateRoot } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { onPageLoad } from 'meteor/server-render';
@@ -13,11 +13,9 @@ export { toast };
 
 onPageLoad(() => {
   const container = document.getElementById('root');
-  // const root = createRoot(container);
-  hydrateRoot(
-    container,
+  const root = createRoot(container);
 
-    // root.render(
+  root.render(
     <>
       <BrowserRouter>
         <Routes />
@@ -26,6 +24,4 @@ onPageLoad(() => {
       <ToastContainer />
     </>
   );
-
-  // );
 });

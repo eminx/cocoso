@@ -38,10 +38,6 @@ function Work() {
     }
   };
 
-  if (!work || loading) {
-    return null;
-  }
-
   const isOwner = currentUser && currentUser.username === username;
 
   const tabs = [
@@ -49,19 +45,19 @@ function Work() {
       title: tc('labels.info'),
       content: (
         <Box bg="white" className="text-content" p="6">
-          {renderHTML(work.longDescription)}
+          {work?.longDescription && renderHTML(work.longDescription)}
         </Box>
       ),
       path: 'info',
     },
   ];
 
-  if (work.additionalInfo?.length > 2) {
+  if (work?.additionalInfo?.length > 2) {
     tabs.push({
       title: tc('labels.extra'),
       content: (
         <Box p="4">
-          <Text fontSize="lg">{work.additionalInfo}</Text>
+          <Text fontSize="lg">{work?.additionalInfo}</Text>
         </Box>
       ),
       path: 'extra',
@@ -73,19 +69,19 @@ function Work() {
       title: tc('documents.label'),
       content: (
         <Box p="4">
-          <DocumentsField contextType="works" contextId={work._id} />
+          <DocumentsField contextType="works" contextId={work?._id} />
         </Box>
       ),
       path: 'documents',
     });
   }
 
-  if (work.contactInfo) {
+  if (work?.contactInfo) {
     tabs.push({
       title: tc('labels.contact'),
       content: (
         <Box className="text-content" p="4" textAlign="center">
-          {renderHTML(work.contactInfo)}
+          {work?.contactInfo && renderHTML(work.contactInfo)}
         </Box>
       ),
       path: 'contact',
@@ -102,7 +98,7 @@ function Work() {
     ],
   };
 
-  const tags = [work.category?.label];
+  const tags = work && [work.category?.label];
 
   const worksInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'works');
   const backLink = {
@@ -113,11 +109,12 @@ function Work() {
   return (
     <>
       <Helmet>
-        <title>{work.title}</title>
+        <title>{work?.title}</title>
       </Helmet>
       <TablyCentered
         adminMenu={isOwner ? adminMenu : null}
         author={
+          work &&
           work.showAvatar && {
             src: work.authorAvatar,
             username: work.authorUsername,
@@ -125,11 +122,11 @@ function Work() {
           }
         }
         backLink={backLink}
-        images={work.images}
-        subTitle={work.shortDescription}
+        images={work?.images}
+        subTitle={work?.shortDescription}
         tabs={tabs}
         tags={tags}
-        title={work.title}
+        title={work?.title}
       />
     </>
   );

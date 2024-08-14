@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
@@ -222,7 +222,9 @@ export function WorksList({ host }) {
 }
 
 export function Work() {
-  const { workId } = useParams();
+  const { workId, ...others } = useParams();
+  const location = useLocation();
+  console.log(location);
   Meteor.subscribe('work', workId);
   const work = Works.findOne(workId);
   Meteor.subscribe('host', work.host);

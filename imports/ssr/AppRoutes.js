@@ -1,4 +1,17 @@
 import React from 'react';
+import { ChakraProvider, Progress } from '@chakra-ui/react';
+
+import { generateTheme } from '../ui/utils/constants/theme';
+
+function LoaderSSR() {
+  const chakraTheme = generateTheme('233');
+
+  return (
+    <ChakraProvider theme={chakraTheme}>
+      <Progress size="xs" isIndeterminate colorScheme="blue" />
+    </ChakraProvider>
+  );
+}
 
 import {
   // ActivitiesList,
@@ -15,40 +28,38 @@ import {
   // User,
 } from './components';
 
-// import Work from '../ui/pages/works/WorkSSR';
-
 export const AppRoutesSSR = [
   {
     path: '/',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/activities',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/groups',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/resources',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/works',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/people',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/communities',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/calendar',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/activities/:activityId/*',
@@ -56,7 +67,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/activities/new',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/groups/:groupId/*',
@@ -64,38 +75,30 @@ export const AppRoutesSSR = [
   },
   {
     path: '/groups/new',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/pages/:pageTitle',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
-    path: '/pages/new',
-    element: <div />,
+    path: '/*',
+    element: <LoaderSSR />,
   },
   {
     path: '/resources/:resourceId/*',
     element: <Resource />,
   },
   {
-    path: '/resources/new',
-    element: <div />,
-  },
-  {
     path: '/:usernameSlug/works/:workId/*',
     element: <Work />,
   },
   {
-    path: '/works/new',
-    element: <div />,
-  },
-  {
     path: '/:usernameSlug/*',
-    element: <div />,
+    element: <LoaderSSR />,
   },
   {
     path: '/*',
-    element: <div />,
+    element: <LoaderSSR />,
   },
 ];
