@@ -40,9 +40,9 @@ const emptyDateAndTime = {
 function ActivityForm({
   datesAndTimes,
   defaultValues,
-  imageUrl,
   images,
   isNew,
+  isButtonDisabled,
   isPublicActivity,
   isSubmitting,
   resources,
@@ -50,10 +50,8 @@ function ActivityForm({
   onSortImages,
   onSubmit,
   setDatesAndTimes,
-  uploadableImageLocal,
   setUploadableImages,
   setSelectedResource,
-  isButtonDisabled,
 }) {
   const { currentHost } = useContext(StateContext);
   useEffect(() => {
@@ -254,7 +252,7 @@ function ActivityForm({
               <FormField
                 label={t('form.image.label')}
                 helperText={
-                  uploadableImageLocal || imageUrl
+                  images && images.length > 0
                     ? tc('plugins.fileDropper.replace')
                     : t('form.image.helper')
                 }
@@ -278,7 +276,7 @@ function ActivityForm({
         </Box>
 
         <Flex justify="flex-end" py="4" w="100%">
-          <Button isDisabled={isButtonDisabled} type="submit">
+          <Button isDisabled={isButtonDisabled} isLoading={isSubmitting} type="submit">
             {tc('actions.submit')}
           </Button>
         </Flex>

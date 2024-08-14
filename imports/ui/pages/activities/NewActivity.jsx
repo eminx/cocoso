@@ -40,18 +40,16 @@ class NewActivity extends PureComponent {
   state = {
     formValues: null,
     datesAndTimes: null,
+    isCreating: false,
     isLoading: false,
     isSuccess: false,
     isError: false,
     newActivityId: null,
-    uploadedImage: null,
-    uploadableImage: null,
     uploadableImages: [],
     uploadableImagesLocal: [],
     isPublicActivity: false,
     isExclusiveActivity: true,
     isRegistrationDisabled: false,
-    isCreating: false,
     isReady: false,
   };
 
@@ -147,50 +145,6 @@ class NewActivity extends PureComponent {
   successCreation = () => {
     const { tc } = this.props;
     message.success(tc('message.success.create'));
-  };
-
-  setUploadableImage = (files) => {
-    const { tc } = this.props;
-    if (files.length > 1) {
-      message.error(tc('plugins.fileDropper.single'));
-      return;
-    }
-    const uploadableImage = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadableImage);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
-  uploadImage = async () => {
-    this.setState({ isLoading: true });
-
-    const { uploadableImage } = this.state;
-
-    try {
-      const resizedImage = await resizeImage(uploadableImage, 1200);
-      const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
-      this.setState(
-        {
-          uploadedImage,
-        },
-        () => this.createActivity()
-      );
-    } catch (error) {
-      console.error('Error uploading:', error);
-      message.error(error.reason);
-      this.setState({
-        isCreating: false,
-      });
-    }
   };
 
   createActivity = async (imagesReadyToSave) => {
@@ -474,8 +428,7 @@ class NewActivity extends PureComponent {
               defaultValues={formValues}
               images={uploadableImagesLocal}
               isButtonDisabled={!isFormValid || isCreating}
-              isCreating={isCreating}
-              isFormValid={isFormValid}
+              isSubmitting={isCreating}
               isNew
               isPublicActivity={isPublicActivity}
               resources={resources}

@@ -407,7 +407,6 @@ class EditActivity extends PureComponent {
             <ActivityForm
               datesAndTimes={datesAndTimes}
               defaultValues={activity}
-              imageUrl={activity && activity.imageUrl}
               images={images?.map((image) => image.src)}
               isPublicActivity={isPublicActivity}
               resources={resources}
@@ -418,7 +417,7 @@ class EditActivity extends PureComponent {
               setSelectedResource={this.handleSelectedResource}
               setUploadableImages={this.setUploadableImages}
               isButtonDisabled={!isFormValid || isUpdating}
-              isCreating={isUpdating}
+              isSubmitting={isUpdating}
               isFormValid={isFormValid}
             />
           </Box>
