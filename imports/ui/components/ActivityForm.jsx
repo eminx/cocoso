@@ -17,11 +17,12 @@ import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
 import DatesAndTimes from './DatesAndTimes';
-import FileDropper from './FileDropper';
 import FormField from './FormField';
 import ReactQuill from './Quill';
 import { localeSort } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';
+import NiceSlider from './NiceSlider';
+import ImageUploadUI from './ImageUploadUI';
 import { DocumentUploadHelper } from './UploadHelpers';
 
 const defaultCapacity = 40;
@@ -40,12 +41,17 @@ function ActivityForm({
   datesAndTimes,
   defaultValues,
   imageUrl,
+  images,
+  isNew,
   isPublicActivity,
+  isSubmitting,
   resources,
+  onRemoveImage,
+  onSortImages,
   onSubmit,
   setDatesAndTimes,
   uploadableImageLocal,
-  setUploadableImage,
+  setUploadableImages,
   setSelectedResource,
   isButtonDisabled,
 }) {
@@ -254,13 +260,17 @@ function ActivityForm({
                 }
                 isRequired
               >
-                <Center>
-                  <FileDropper
-                    uploadableImageLocal={uploadableImageLocal}
-                    imageUrl={imageUrl}
-                    setUploadableImage={setUploadableImage}
-                  />
-                </Center>
+                {images && (
+                  <Center>
+                    <NiceSlider width="300px" images={images} />
+                  </Center>
+                )}
+                <ImageUploadUI
+                  images={images}
+                  onRemoveImage={onRemoveImage}
+                  onSelectImages={setUploadableImages}
+                  onSortImages={onSortImages}
+                />
                 <DocumentUploadHelper isImage />
               </FormField>
             )}

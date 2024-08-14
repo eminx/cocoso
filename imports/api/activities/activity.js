@@ -18,7 +18,8 @@ Activities.schema = new SimpleSchema({
   },
   longDescription: { type: String, optional: true },
   imageUrl: { type: String, optional: true },
-
+  images: { type: Array, optional: true },
+  'images.$': { type: String },
   resourceId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
   resource: { type: String, optional: true },
   resourceIndex: { type: SimpleSchema.Integer, optional: true },

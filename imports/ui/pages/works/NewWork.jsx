@@ -29,7 +29,6 @@ class NewWork extends PureComponent {
     categories: [],
     uploadableImages: [],
     uploadableImagesLocal: [],
-    isLocalising: false,
     isCreating: false,
     isLoading: true,
     isSuccess: false,
@@ -101,10 +100,6 @@ class NewWork extends PureComponent {
   };
 
   setUploadableImages = (files) => {
-    this.setState({
-      isLocalising: true,
-    });
-
     files.forEach((uploadableImage, index) => {
       const reader = new FileReader();
       reader.readAsDataURL(uploadableImage);
@@ -118,11 +113,6 @@ class NewWork extends PureComponent {
         },
         false
       );
-      if (files.length === index + 1) {
-        this.setState({
-          isLocalising: false,
-        });
-      }
     });
   };
 

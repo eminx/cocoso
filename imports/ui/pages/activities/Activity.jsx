@@ -560,7 +560,7 @@ class Activity extends PureComponent {
           action={this.getDatesForAction()}
           adminMenu={isAdmin ? adminMenu : null}
           backLink={backLink}
-          images={activityData?.isPublicActivity ? [activityData?.imageUrl] : null}
+          images={activityData?.isPublicActivity ? activityData?.images : null}
           subTitle={activityData?.subTitle}
           tabs={tabs}
           title={activityData?.title}

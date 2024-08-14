@@ -94,7 +94,7 @@ function TablyCentered({
               handleCopyLink={handleCopyLink}
             />
 
-            <Center py="2">
+            <Center py="2" mb={isDesktop ? '4' : '0'}>
               <NiceSlider
                 alt={title}
                 height={isDesktop ? '400px' : 'auto'}

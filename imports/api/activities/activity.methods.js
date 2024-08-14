@@ -229,7 +229,7 @@ Meteor.methods({
     }
   },
 
-  createActivity(values) {
+  createActivity(values, images) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -238,7 +238,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    if (values.isPublicActivity && !values.imageUrl) {
+    if (values.isPublicActivity && (!images || images.length === 0)) {
       throw new Meteor.Error('Image is required for public activities');
     }
 
@@ -248,6 +248,7 @@ Meteor.methods({
         host,
         authorId: user._id,
         authorName: user.username,
+        images,
         isSentForReview: false,
         isPublished: true,
         creationDate: new Date(),

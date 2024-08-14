@@ -4,6 +4,7 @@ import moment from 'moment';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
 import { parse } from 'query-string';
+import arrayMove from 'array-move';
 
 import ActivityForm from '../../components/ActivityForm';
 import Template from '../../components/Template';
@@ -45,6 +46,8 @@ class NewActivity extends PureComponent {
     newActivityId: null,
     uploadedImage: null,
     uploadableImage: null,
+    uploadableImages: [],
+    uploadableImagesLocal: [],
     isPublicActivity: false,
     isExclusiveActivity: true,
     isRegistrationDisabled: false,
@@ -110,7 +113,7 @@ class NewActivity extends PureComponent {
 
   handleSubmit = (values) => {
     const { tc } = this.props;
-    const { isPublicActivity, uploadableImage, selectedResource } = this.state;
+    const { isPublicActivity, uploadableImages, selectedResource } = this.state;
     const formValues = {
       ...values,
       resource: selectedResource?.label,
@@ -121,7 +124,7 @@ class NewActivity extends PureComponent {
         (formValues.resourceIndex = selectedResource.resourceIndex);
     }
 
-    if (isPublicActivity && !uploadableImage) {
+    if (isPublicActivity && (!uploadableImages || uploadableImages.length === 0)) {
       message.error(tc('message.error.imageRequired'));
       return;
     }
@@ -133,7 +136,7 @@ class NewActivity extends PureComponent {
       },
       () => {
         if (isPublicActivity) {
-          this.uploadImage();
+          this.uploadImages();
         } else {
           this.createActivity();
         }
@@ -190,14 +193,13 @@ class NewActivity extends PureComponent {
     }
   };
 
-  createActivity = async () => {
+  createActivity = async (imagesReadyToSave) => {
     const {
       datesAndTimes,
       formValues,
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
-      uploadedImage,
     } = this.state;
 
     const datesAndTimesNoConflict = datesAndTimes.map((item) => ({
@@ -220,11 +222,10 @@ class NewActivity extends PureComponent {
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
-      imageUrl: uploadedImage,
     };
 
     try {
-      const newActivityId = await call('createActivity', values);
+      const newActivityId = await call('createActivity', values, imagesReadyToSave);
       this.setState(
         {
           isCreating: false,
@@ -336,6 +337,68 @@ class NewActivity extends PureComponent {
     return !isTimesInValid && !isConflictHard;
   };
 
+  setUploadableImages = (files) => {
+    files.forEach((uploadableImage, index) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadableImage);
+      reader.addEventListener(
+        'load',
+        () => {
+          this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+            uploadableImages: [...uploadableImages, uploadableImage],
+            uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
+          }));
+        },
+        false
+      );
+    });
+  };
+
+  uploadImages = async () => {
+    const { uploadableImages } = this.state;
+    this.setState({
+      isCreating: true,
+    });
+
+    try {
+      const imagesReadyToSave = await Promise.all(
+        uploadableImages.map(async (uploadableImage, index) => {
+          const resizedImage = await resizeImage(uploadableImage, 1200);
+          const uploadedImage = await uploadImage(resizedImage, 'workImageUpload');
+          return uploadedImage;
+        })
+      );
+      this.createActivity(imagesReadyToSave);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false,
+        isError: true,
+      });
+    }
+  };
+
+  handleRemoveImage = (imageIndex) => {
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: uploadableImages.filter((image, index) => imageIndex !== index),
+      uploadableImagesLocal: uploadableImagesLocal.filter((image, index) => imageIndex !== index),
+      // unSavedImageChange: true,
+    }));
+  };
+
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
+      uploadableImagesLocal: arrayMove(uploadableImagesLocal, oldIndex, newIndex),
+      // unSavedImageChange: true,
+    }));
+  };
+
   render() {
     const { currentUser, resources, t, tc } = this.props;
     const { canCreateContent } = this.context;
@@ -364,6 +427,7 @@ class NewActivity extends PureComponent {
       isRegistrationDisabled,
       newActivityId,
       uploadableImageLocal,
+      uploadableImagesLocal,
     } = this.state;
 
     if (isSuccess) {
@@ -408,16 +472,21 @@ class NewActivity extends PureComponent {
             <ActivityForm
               datesAndTimes={datesAndTimes}
               defaultValues={formValues}
+              images={uploadableImagesLocal}
               isButtonDisabled={!isFormValid || isCreating}
               isCreating={isCreating}
               isFormValid={isFormValid}
+              isNew
               isPublicActivity={isPublicActivity}
               resources={resources}
               uploadableImageLocal={uploadableImageLocal}
+              onRemoveImage={this.handleRemoveImage}
               onSubmit={this.handleSubmit}
               setDatesAndTimes={this.setDatesAndTimes}
               setUploadableImage={this.setUploadableImage}
+              setUploadableImages={this.setUploadableImages}
               setSelectedResource={this.handleSelectedResource}
+              onSortImages={this.handleSortImages}
             />
           </Box>
         </Template>
