@@ -20,7 +20,7 @@ export default function Header({ host }) {
             </Box>
           ) : (
             <Box>
-              <Heading color="brand.800" fontFamily="Raleway, Sarabun, sans-serif">
+              <Heading color="brand.800" fontWeight="400" fontFamily="Raleway, Sarabun, sans-serif">
                 {currentHost.settings?.name}
               </Heading>
             </Box>

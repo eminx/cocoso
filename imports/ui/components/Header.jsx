@@ -80,7 +80,11 @@ function Header({ isSmallerLogo }) {
                 <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
               ) : (
                 <Box>
-                  <CHeading color="brand.800" fontFamily="Raleway, Sarabun, sans-serif">
+                  <CHeading
+                    color="brand.800"
+                    fontWeight="400"
+                    fontFamily="Raleway, Sarabun, sans-serif"
+                  >
                     {currentHost.settings?.name}
                   </CHeading>
                   {isAdmin && (
