@@ -130,10 +130,10 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   {activity?.subTitle}
                 </Text>
 
-                {activity.images && (
+                {(activity.images || activity.imageUrl) && (
                   <Link href={`https://${host}/activities/${activity._id}`}>
                     <Img
-                      src={activity.images[0]}
+                      src={activity.images[0] || activity.imageUrl}
                       width="320px"
                       height="auto"
                       style={{ marginBottom: 12 }}
