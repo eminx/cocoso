@@ -251,7 +251,7 @@ export default function ContentInserter({ currentHost, onSelect }) {
                                 bg="brand.100"
                                 fit="cover"
                                 h="80px"
-                                src={activity.imageUrl}
+                                src={(activity.images && activity.images[0]) || activity.imageUrl}
                                 w="80px"
                               />
                               <Box ml="2">

@@ -62,13 +62,26 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           </Text>
         </Link>
         <Container>
-          <Img
-            alt={settings?.name}
-            height="50px"
-            src={logo}
-            style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
-            width="auto"
-          />
+          {logo ? (
+            <Img
+              alt={settings?.name}
+              height="50px"
+              src={logo}
+              style={{ height: '50px', margin: '8px auto 24px', width: 'auto' }}
+              width="auto"
+            />
+          ) : (
+            <Heading
+              as="h1"
+              style={{
+                fontSize: '28px',
+                fontWeight: 'bold',
+                marginBottom: '24px',
+              }}
+            >
+              {settings?.name}
+            </Heading>
+          )}
         </Container>
 
         <Section style={{ marginBottom: 12 }}>
@@ -77,7 +90,6 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
               style={{ marginBottom: 24, maxWidth: '480px' }}
               src={imageUrl || uploadableImageLocal}
               alt={subject}
-              width="100%"
               height="auto"
             />
           )}
@@ -117,14 +129,17 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 <Text style={{ fontSize: 16, marginTop: 0, marginBottom: 12 }}>
                   {activity?.subTitle}
                 </Text>
-                <Link href={`https://${host}/activities/${activity._id}`}>
-                  <Img
-                    src={activity?.imageUrl}
-                    width="100%"
-                    height="auto"
-                    style={{ marginBottom: 12, maxWidth: '480px' }}
-                  />
-                </Link>
+
+                {activity.images && (
+                  <Link href={`https://${host}/activities/${activity._id}`}>
+                    <Img
+                      src={activity.images[0]}
+                      width="320px"
+                      height="auto"
+                      style={{ marginBottom: 12 }}
+                    />
+                  </Link>
+                )}
                 <ActivityDates activity={activity} currentHost={currentHost} />
                 <Text>
                   {activity?.longDescription && stripAndShorten(activity.longDescription)}
@@ -178,9 +193,9 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   <Link href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
                     <Img
                       src={work.images[0]}
-                      width="100%"
+                      width="320px"
                       height="auto"
-                      style={{ marginBottom: 12, maxWidth: '480px' }}
+                      style={{ marginBottom: 12 }}
                     />
                   </Link>
                 )}
