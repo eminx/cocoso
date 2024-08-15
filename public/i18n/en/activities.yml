@@ -47,8 +47,8 @@ form:
     holder: 17th Street, Berlin...
     helper: Optionally, enter the detailed address of the place where the event will take place
   image:
-    label: Image
-    helper: To represent the event, please choose an image from the gallery on your device or a photo you will take now
+    label: Images ({{ count }})
+    helper: To represent the event, please choose an image or a set of images from the gallery in your device or a photo you will take now. At least one is required.
   submit: 'Confirm and Create'
   waiting: 'Creating your booking...'
   conflict:

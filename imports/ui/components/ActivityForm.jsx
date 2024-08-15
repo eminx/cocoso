@@ -250,12 +250,8 @@ function ActivityForm({
 
             {isPublicActivity && (
               <FormField
-                label={t('form.image.label')}
-                helperText={
-                  images && images.length > 0
-                    ? tc('plugins.fileDropper.replace')
-                    : t('form.image.helper')
-                }
+                label={t('form.image.label', { count: images?.length || 0 })}
+                helperText={t('form.image.helper')}
                 isRequired
               >
                 {images && (
