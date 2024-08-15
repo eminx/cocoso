@@ -222,9 +222,7 @@ export function WorksList({ host }) {
 }
 
 export function Work() {
-  const { workId, ...others } = useParams();
-  const location = useLocation();
-  console.log(location);
+  const { workId } = useParams();
   Meteor.subscribe('work', workId);
   const work = Works.findOne(workId);
   Meteor.subscribe('host', work.host);
