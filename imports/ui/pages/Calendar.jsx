@@ -42,7 +42,8 @@ class Calendar extends PureComponent {
   state = {
     activities: [],
     calendarFilter: null,
-    editActivity: null,
+    editActivity: false,
+    gotoActivity: false,
     isLoading: true,
     mode: 'list',
     resources: [],
@@ -102,6 +103,12 @@ class Calendar extends PureComponent {
   handleEditActivity = () => {
     this.setState({
       editActivity: true,
+    });
+  };
+
+  handleGoToActivity = () => {
+    this.setState({
+      gotoActivity: true,
     });
   };
 
@@ -196,12 +203,16 @@ class Calendar extends PureComponent {
   isCreator = () => {
     const { currentUser } = this.props;
     const { selectedActivity } = this.state;
+    const { role } = this.context;
 
     if (!selectedActivity || !currentUser) {
       return false;
     }
 
-    if (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) {
+    if (
+      (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
+      role === 'admin'
+    ) {
       return true;
     }
   };
@@ -213,6 +224,7 @@ class Calendar extends PureComponent {
       activities,
       calendarFilter,
       editActivity,
+      gotoActivity,
       isLoading,
       resources,
       selectedActivity,
@@ -242,6 +254,13 @@ class Calendar extends PureComponent {
         }
         return <Navigate to={`/activities/${selectedActivity.activityId}/edit`} />;
       }
+    }
+
+    if (gotoActivity) {
+      if (selectedActivity.isGroupMeeting) {
+        return <Navigate to={`/groups/${selectedActivity.groupId}`} />;
+      }
+      return <Navigate to={`/activities/${selectedActivity.activityId}/`} />;
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
@@ -283,6 +302,8 @@ class Calendar extends PureComponent {
 
     const { settings } = currentHost;
     const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
+
+    const isCreator = this.isCreator();
 
     return (
       <Box>
@@ -390,15 +411,10 @@ class Calendar extends PureComponent {
         <ConfirmModal
           visible={Boolean(selectedActivity)}
           title={selectedActivity && selectedActivity.title}
-          confirmText={tc('actions.update')}
-          cancelText={tc('actions.close')}
-          onConfirm={this.handleEditActivity}
-          onCancel={this.handleCloseModal}
-          confirmButtonProps={
-            (!this.isCreator() || selectedActivity.isGroup) && {
-              style: { display: 'none' },
-            }
-          }
+          confirmText={tc('actions.entryPage')}
+          cancelText={isCreator ? tc('actions.update') : tc('actions.close')}
+          onConfirm={this.handleGoToActivity}
+          onCancel={isCreator ? this.handleEditActivity : this.handleCloseModal}
           onClickOutside={this.handleCloseModal}
         >
           <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
@@ -425,7 +441,7 @@ class Calendar extends PureComponent {
                 : renderHTML(selectedActivity?.longDescription))}
           </Text>
 
-          {!selectedActivity?.isGroupPrivate && (
+          {/* {!selectedActivity?.isGroupPrivate && (
             <Center>
               <Link to={selectedLinkForModal}>
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
@@ -434,7 +450,7 @@ class Calendar extends PureComponent {
                 </Button>
               </Link>
             </Center>
-          )}
+          )} */}
         </ConfirmModal>
 
         <ConfirmModal
