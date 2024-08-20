@@ -33,7 +33,7 @@ const today = moment();
 
 const getFutureOccurrences = (dates) => {
   return dates
-    .filter((date) => date && moment(date.endDate).isAfter(yesterday))
+    .filter((date) => date && moment(date.endDate)?.isAfter(yesterday))
     .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
 };
 
@@ -116,7 +116,7 @@ function Activities() {
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
       return (
-        activity.datesAndTimes.some((date) => moment(date?.endDate).isAfter(yesterday)) &&
+        activity.datesAndTimes.some((date) => moment(date?.endDate)?.isAfter(yesterday)) &&
         activityWordFiltered
       );
     });
