@@ -155,7 +155,7 @@ class EditGroup extends PureComponent {
       if (isDeleteModalOn) {
         return <Navigate to="/groups" />;
       }
-      return <Navigate to={`/groups/${group._id}`} />;
+      return <Navigate to={`/groups/${group._id}/info`} />;
     }
 
     return (

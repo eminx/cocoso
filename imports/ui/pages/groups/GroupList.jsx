@@ -161,9 +161,9 @@ export default function GroupsList() {
 
   const handleActionButtonClick = () => {
     if (modalGroup.host === currentHost.host) {
-      navigate(`/groups/${modalGroup._id}`);
+      navigate(`/groups/${modalGroup._id}/info`);
     } else {
-      window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}`;
+      window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}/info`;
     }
   };
 

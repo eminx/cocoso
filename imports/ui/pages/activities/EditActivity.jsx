@@ -365,7 +365,7 @@ class EditActivity extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      return <Navigate to={`/activities/${activity._id}`} />;
+      return <Navigate to={`/activities/${activity._id}/info`} />;
     }
     if (isDeleted) {
       if (activity.isPublicActivity) {

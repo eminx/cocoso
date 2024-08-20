@@ -122,9 +122,9 @@ function Works() {
 
   const handleActionButtonClick = () => {
     if (modalWork.host === currentHost.host) {
-      navigate(`/@${modalWork.authorUsername}/works/${modalWork._id}`);
+      navigate(`/@${modalWork.authorUsername}/works/${modalWork._id}/info`);
     } else {
-      window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}`;
+      window.location.href = `https://${modalWork.host}/@${modalWork.authorUsername}/works/${modalWork._id}/info`;
     }
   };
 

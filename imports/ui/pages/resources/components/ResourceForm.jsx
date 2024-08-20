@@ -106,12 +106,12 @@ function ResourceForm({ defaultValues, isEditMode }) {
       if (isEditMode) {
         await call('updateResource', defaultValues._id, values);
         message.success(tc('message.success.update'));
-        navigate(`/resources/${defaultValues._id}`);
+        navigate(`/resources/${defaultValues._id}/info`);
       } else {
         const newResource = await call('createResource', values);
         message.success(tc('message.success.create'));
         if (newResource) {
-          navigate(`/resources/${newResource}`);
+          navigate(`/resources/${newResource}/info`);
         }
       }
     } catch (error) {

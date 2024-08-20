@@ -46,7 +46,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
         return (
           <Box key={activity._id}>
             {isExternal ? (
-              <a href={`https://${activity.host}/activities/${activity._id}`}>
+              <a href={`https://${activity.host}/activities/${activity._id}/info`}>
                 <NewGridThumb
                   host={isFederationLayout && activity.host}
                   imageUrl={activity.imageUrl}
@@ -55,7 +55,7 @@ function MemberActivities({ currentHost, isFederationLayout = false, isSelfAccou
                 />
               </a>
             ) : (
-              <Link to={`/activities/${activity._id}`}>
+              <Link to={`/activities/${activity._id}/info`}>
                 <NewGridThumb
                   host={isFederationLayout && activity.host}
                   imageUrl={activity.imageUrl}

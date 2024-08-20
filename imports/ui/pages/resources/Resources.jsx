@@ -115,9 +115,9 @@ function Resources() {
 
   const handleActionButtonClick = () => {
     if (modalResource.host === currentHost.host) {
-      navigate(`/resources/${modalResource._id}`);
+      navigate(`/resources/${modalResource._id}/info`);
     } else {
-      window.location.href = `https://${modalResource.host}/resources/${modalResource._id}`;
+      window.location.href = `https://${modalResource.host}/resources/${modalResource._id}/info`;
     }
   };
 

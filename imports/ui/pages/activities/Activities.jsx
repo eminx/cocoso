@@ -172,9 +172,9 @@ function Activities() {
 
   const handleActionButtonClick = () => {
     if (modalActivity.host === currentHost.host) {
-      navigate(`/activities/${modalActivity._id}`);
+      navigate(`/activities/${modalActivity._id}/info`);
     } else {
-      window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}`;
+      window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}/info`;
     }
   };
 
