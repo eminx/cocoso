@@ -95,16 +95,9 @@ class Calendar extends PureComponent {
   };
 
   handleCloseModal = () => {
-    this.setState(
-      {
-        selectedActivity: null,
-      },
-      () => {
-        this.setState({
-          editActivity: false,
-        });
-      }
-    );
+    this.setState({
+      selectedActivity: null,
+    });
   };
 
   handleEditActivity = () => {
@@ -265,9 +258,9 @@ class Calendar extends PureComponent {
 
     if (gotoActivity) {
       if (selectedActivity.isGroupMeeting) {
-        return <Navigate to={`/groups/${selectedActivity.groupId}`} />;
+        return <Navigate to={`/groups/${selectedActivity.groupId}info`} />;
       }
-      return <Navigate to={`/activities/${selectedActivity.activityId}/`} />;
+      return <Navigate to={`/activities/${selectedActivity.activityId}/info`} />;
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
@@ -420,8 +413,10 @@ class Calendar extends PureComponent {
           title={selectedActivity && selectedActivity.title}
           confirmText={tc('actions.entryPage')}
           cancelText={isCreatorOrAdmin ? tc('actions.update') : tc('actions.close')}
-          onConfirm={this.handleGoToActivity}
-          onCancel={isCreatorOrAdmin ? this.handleEditActivity : this.handleCloseModal}
+          onConfirm={() => this.handleGoToActivity()}
+          onCancel={
+            isCreatorOrAdmin ? () => this.handleEditActivity() : () => this.handleCloseModal()
+          }
           onOverlayClick={this.handleCloseModal}
         >
           <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">

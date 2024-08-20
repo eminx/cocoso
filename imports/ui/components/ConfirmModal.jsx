@@ -28,12 +28,13 @@ function ConfirmModal({
 
   return (
     <AlertDialog
+      closeOnOverlayClick={false}
       isCentered
       isOpen={visible}
       leastDestructiveRef={cancelRef}
       scrollBehavior="inside"
       onClose={onCancel}
-      onOverlayClick={onOverlayClick}
+      onOverlayClick={onOverlayClick || onCancel}
       {...otherProps}
     >
       <AlertDialogOverlay zIndex="1404">
