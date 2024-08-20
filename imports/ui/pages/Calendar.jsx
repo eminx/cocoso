@@ -258,7 +258,7 @@ class Calendar extends PureComponent {
 
     if (gotoActivity) {
       if (selectedActivity.isGroupMeeting) {
-        return <Navigate to={`/groups/${selectedActivity.groupId}info`} />;
+        return <Navigate to={`/groups/${selectedActivity.groupId}/info`} />;
       }
       return <Navigate to={`/activities/${selectedActivity.activityId}/info`} />;
     }
