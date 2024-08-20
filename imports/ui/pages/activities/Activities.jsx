@@ -39,7 +39,7 @@ const getFutureOccurrences = (dates) => {
 
 const getPastOccurrences = (dates) => {
   return dates
-    .filter((date) => moment(date.startDate).isBefore(today))
+    .filter((date) => moment(date.startDate)?.isBefore(today))
     .sort((a, b) => moment(b.startDate) - moment(a.startDate));
 };
 

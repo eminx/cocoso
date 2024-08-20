@@ -30,7 +30,7 @@ const getFutureOccurences = (dates) => {
     return dates;
   }
   return dates
-    .filter((date) => moment(date.startDate).isAfter(yesterday))
+    .filter((date) => moment(date.startDate)?.isAfter(yesterday))
     .sort((a, b) => moment(a.startDate) - moment(b.startDate));
 };
 
@@ -124,7 +124,7 @@ export default function GroupsList() {
         if (
           meetings &&
           meetings.length > 0 &&
-          moment(meetings[meetings.length - 1].startDate).isAfter(yesterday)
+          moment(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
         ) {
           groupsWithFutureMeetings.push(group);
         } else {
@@ -318,7 +318,7 @@ function parseGroupsWithMeetings(groups, meetings) {
     const allGroupActivities = meetings.filter((meeting) => meeting.groupId === pId);
     const groupActivitiesFuture = allGroupActivities
       .map((pA) => pA.datesAndTimes[0])
-      .filter((date) => moment(date.startDate).isAfter(yesterday))
+      .filter((date) => moment(date.startDate)?.isAfter(yesterday))
       .sort(compareMeetingDatesForSort);
     return {
       ...group,
