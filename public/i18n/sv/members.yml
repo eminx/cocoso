@@ -20,7 +20,7 @@ form:
 actions:
   contributor: Verifiera
   admin: Ställ in som admin
-  participant: Overifiera
+  participant: Avverifiera
   usageReport: Se bokningsrapport
   visit: Besök profilen
   visithost: Besök profilen i {{ host }}
@@ -28,7 +28,7 @@ actions:
 message:
   success:
     contributor: '{{ username }} är nu verifierad'
-    participant: '{{ username }} är nu overifierad'
+    participant: '{{ username }} är nu avverifierad'
     admin: '{{ username }} är nu admin'
   contact:
     empty: Ingen kontaktinformation registrerad för {{ username }}
