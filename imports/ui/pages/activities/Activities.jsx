@@ -325,19 +325,22 @@ function getDatesForAction(activity, showPast = false) {
 
   return (
     <Flex pt="4">
-      {dates.map((occurence, occurenceIndex) => (
-        <Flex key={occurence.startDate + occurence.endTime} pr="6">
-          <Box>
-            <DateJust>{occurence.startDate}</DateJust>
-          </Box>
-          {occurence.startDate !== occurence.endDate && (
-            <Flex>
-              {'-'}
-              <DateJust>{occurence.endDate}</DateJust>
+      {dates.map(
+        (occurence, occurenceIndex) =>
+          occurence && (
+            <Flex key={occurence.startDate + occurence.endTime} pr="6">
+              <Box>
+                <DateJust>{occurence.startDate}</DateJust>
+              </Box>
+              {occurence.startDate !== occurence.endDate && (
+                <Flex>
+                  {'-'}
+                  <DateJust>{occurence.endDate}</DateJust>
+                </Flex>
+              )}
             </Flex>
-          )}
-        </Flex>
-      ))}
+          )
+      )}
     </Flex>
   );
 }

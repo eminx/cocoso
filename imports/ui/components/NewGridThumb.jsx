@@ -95,9 +95,9 @@ export default function NewGridThumb({
             <Flex flexShrink="0">
               {dates.slice(0, 1).map((date) => (
                 <Flex key={date?.startDate + date?.startTime}>
-                  <DateJust>{date.startDate}</DateJust>
-                  {date.startDate !== date.endDate && '-'}
-                  {date.startDate !== date.endDate && <DateJust>{date.endDate}</DateJust>}
+                  <DateJust>{date?.startDate}</DateJust>
+                  {date?.startDate !== date?.endDate && '-'}
+                  {date?.startDate !== date?.endDate && <DateJust>{date?.endDate}</DateJust>}
                 </Flex>
               ))}
               {remaining > 0 && (

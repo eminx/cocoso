@@ -166,17 +166,21 @@ function parseAllBookingsWithResources(activities, resources) {
 }
 
 function helper_parseAllBookingsWithResources(activity, recurrence) {
+  if (!recurrence) {
+    return;
+  }
+  const { startDate, startTime, endDate, endTime, isMultipleDay } = recurrence;
   return {
     title: activity.title,
-    start: moment(recurrence.startDate + recurrence.startTime, 'YYYY-MM-DD HH:mm').toDate(),
-    end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
-    startDate: recurrence.startDate,
-    startTime: recurrence.startTime,
-    endDate: recurrence.endDate,
-    endTime: recurrence.endTime,
+    start: moment(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
+    end: moment(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
+    startDate: startDate,
+    startTime: startTime,
+    endDate: endDate,
+    endTime: endTime,
     authorName: activity.authorName,
     longDescription: activity.longDescription,
-    isMultipleDay: recurrence.isMultipleDay || recurrence.startDate !== recurrence.endDate,
+    isMultipleDay: isMultipleDay || startDate !== endDate,
     isExclusiveActivity: activity.isExclusiveActivity,
     isPublicActivity: activity.isPublicActivity,
     isGroupMeeting: activity.isGroupMeeting,
@@ -338,8 +342,11 @@ function compareDatesForSortActivitiesReverse(a, b) {
   return dateB - dateA;
 }
 
-const getFirstFutureOccurence = (occurence) => moment(occurence.endDate).isAfter(yesterday);
-const getLastPastOccurence = (occurence) => moment(occurence.startDate).isBefore(today);
+const getFirstFutureOccurence = (occurence) =>
+  occurence && moment(occurence.endDate)?.isAfter(yesterday);
+
+const getLastPastOccurence = (occurence) =>
+  occurence && moment(occurence.startDate)?.isBefore(today);
 
 export {
   localeSort,
