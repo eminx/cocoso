@@ -337,14 +337,21 @@ class Group extends Component {
     };
 
     if (isAttending) {
-      Meteor.call('removeAttendance', activityId, 0, meetingAttendee.email, (error, respond) => {
-        if (error) {
-          console.log('error', error);
-          message.error(error.error);
-        } else {
-          message.success(t('meeting.attends.remove'));
+      Meteor.call(
+        'removeAttendance',
+        activityId,
+        0,
+        meetingAttendee.email,
+        meetingAttendee.lastName,
+        (error, respond) => {
+          if (error) {
+            console.log('error', error);
+            message.error(error.error);
+          } else {
+            message.success(t('meeting.attends.remove'));
+          }
         }
-      });
+      );
     } else {
       Meteor.call('registerAttendance', activityId, meetingAttendee, (error, respond) => {
         if (error) {

@@ -406,6 +406,8 @@ Meteor.methods({
       (a) => a.email !== email || a.lastName !== lastName
     );
 
+    console.log(activityId, occurenceIndex, email, lastName);
+
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;

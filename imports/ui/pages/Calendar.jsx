@@ -95,9 +95,16 @@ class Calendar extends PureComponent {
   };
 
   handleCloseModal = () => {
-    this.setState({
-      selectedActivity: null,
-    });
+    this.setState(
+      {
+        selectedActivity: null,
+      },
+      () => {
+        this.setState({
+          editActivity: false,
+        });
+      }
+    );
   };
 
   handleEditActivity = () => {
@@ -200,7 +207,7 @@ class Calendar extends PureComponent {
     ).format('DD MMM')} ${activity.endTime}`;
   };
 
-  isCreator = () => {
+  isCreatorOrAdmin = () => {
     const { currentUser } = this.props;
     const { selectedActivity } = this.state;
     const { role } = this.context;
@@ -303,7 +310,7 @@ class Calendar extends PureComponent {
     const { settings } = currentHost;
     const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
 
-    const isCreator = this.isCreator();
+    const isCreatorOrAdmin = this.isCreatorOrAdmin();
 
     return (
       <Box>
@@ -412,10 +419,10 @@ class Calendar extends PureComponent {
           visible={Boolean(selectedActivity)}
           title={selectedActivity && selectedActivity.title}
           confirmText={tc('actions.entryPage')}
-          cancelText={isCreator ? tc('actions.update') : tc('actions.close')}
+          cancelText={isCreatorOrAdmin ? tc('actions.update') : tc('actions.close')}
           onConfirm={this.handleGoToActivity}
-          onCancel={isCreator ? this.handleEditActivity : this.handleCloseModal}
-          onClickOutside={this.handleCloseModal}
+          onCancel={isCreatorOrAdmin ? this.handleEditActivity : this.handleCloseModal}
+          onOverlayClick={this.handleCloseModal}
         >
           <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
             <div>

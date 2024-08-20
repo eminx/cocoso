@@ -11,14 +11,15 @@ import {
 } from '@chakra-ui/react';
 
 function ConfirmModal({
-  visible,
-  title,
-  onConfirm,
-  onCancel,
-  confirmText,
   cancelText,
   confirmButtonProps,
+  confirmText,
   hideFooter,
+  title,
+  visible,
+  onCancel,
+  onOverlayClick,
+  onConfirm,
   children,
   ...otherProps
 }) {
@@ -32,7 +33,7 @@ function ConfirmModal({
       leastDestructiveRef={cancelRef}
       scrollBehavior="inside"
       onClose={onCancel}
-      onOverlayClick={onCancel}
+      onOverlayClick={onOverlayClick}
       {...otherProps}
     >
       <AlertDialogOverlay zIndex="1404">
