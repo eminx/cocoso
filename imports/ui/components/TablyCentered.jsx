@@ -111,7 +111,14 @@ function TablyCentered({
             <Box maxW="540px" w="100%">
               <Box minH="100vh" w="100%">
                 {tabs && (
-                  <Tabs align="center" colorScheme="gray.800" index={tabIndex} mt="2" tabs={tabs}>
+                  <Tabs
+                    align="center"
+                    colorScheme="gray.800"
+                    index={tabIndex}
+                    mt="2"
+                    mb="6"
+                    tabs={tabs}
+                  >
                     {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
                   </Tabs>
                 )}

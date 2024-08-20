@@ -13,8 +13,6 @@ const EditGroupContainer = withTracker((props) => {
   const group = Groups ? Groups.findOne({ _id: groupId }) : null;
   const currentUser = Meteor.user();
 
-  console.log('group', group);
-
   return {
     ...props,
     isLoading,
