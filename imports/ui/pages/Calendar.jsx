@@ -260,7 +260,7 @@ class Calendar extends PureComponent {
       if (selectedActivity.host === currentHost.host) {
         return <Navigate to={`/${kind}/${id}/info`} />;
       } else {
-        window.location.href = `https://${modalActivity.host}/${kind}/${id}/info`;
+        window.location.href = `https://${selectedActivity.host}/${kind}/${id}/info`;
       }
     }
 
