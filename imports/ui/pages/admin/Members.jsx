@@ -36,7 +36,7 @@ function Members() {
 
   useEffect(() => {
     getMembers();
-  });
+  }, []);
 
   const getMembers = async () => {
     try {
