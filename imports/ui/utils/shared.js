@@ -171,6 +171,7 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   }
   const { startDate, startTime, endDate, endTime, isMultipleDay } = recurrence;
   return {
+    activityId: activity._id,
     title: activity.title,
     start: moment(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
     end: moment(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
@@ -186,8 +187,8 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
     isGroupMeeting: activity.isGroupMeeting,
     groupId: activity.groupId,
     isGroupPrivate: activity.isGroupPrivate,
-    imageUrl: activity.imageUrl,
-    activityId: activity._id,
+    images: activity.images,
+    host: activity.host,
   };
 }
 

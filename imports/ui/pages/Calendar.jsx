@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import {
@@ -38,89 +38,52 @@ moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 
-class Calendar extends PureComponent {
-  state = {
-    activities: [],
-    calendarFilter: null,
-    editActivity: false,
-    gotoActivity: false,
-    isLoading: true,
-    mode: 'list',
-    resources: [],
-    selectedActivity: null,
-    selectedResource: null,
-    selectedSlot: null,
-  };
+function Calendar({ currentUser, tc }) {
+  const [activities, setActivities] = useState([]);
+  const [resources, setResources] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [calendarFilter, setCalendarFilter] = useState(null);
 
-  componentDidMount() {
-    this.getData();
-  }
+  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const navigate = useNavigate();
 
-  getData = async () => {
-    const { currentHost } = this.context;
+  const activitiesParsed = useMemo(
+    () => parseAllBookingsWithResources(activities, resources),
+    [activities, resources]
+  );
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
     const isPortalHost = Boolean(currentHost?.isPortalHost);
     try {
-      const allActivities = isPortalHost
+      const activitiesResponse = isPortalHost
         ? await call('getAllActivitiesFromAllHosts')
         : await call('getAllActivities');
-      const resources = isPortalHost
+      const resourcesResponse = isPortalHost
         ? await call('getResourcesFromAllHosts')
         : await call('getResources');
-
-      const activities = parseAllBookingsWithResources(allActivities, resources);
-      this.setState({
-        activities,
-        resources,
-        isLoading: false,
-      });
+      setActivities(activitiesResponse);
+      setResources(resourcesResponse);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  handleModeChange = (e) => {
-    const mode = e.target.value;
-    this.setState({ mode });
-  };
-
-  handleSelectActivity = (activity, e) => {
+  const handleSelectActivity = (activity, e) => {
     e.preventDefault();
-    this.setState({
-      selectedActivity: activity,
-    });
+    setSelectedActivity(activity);
   };
 
-  handleCalendarFilterChange = (value, meta) => {
-    this.setState({ calendarFilter: value });
-  };
-
-  handleCloseModal = () => {
-    this.setState({
-      selectedActivity: null,
-    });
-  };
-
-  handleEditActivity = () => {
-    this.setState({
-      editActivity: true,
-    });
-  };
-
-  handleGoToActivity = () => {
-    this.setState({
-      gotoActivity: true,
-    });
-  };
-
-  handleSelectSlot = (slotInfo) => {
-    const { resources } = this.state;
-    const { canCreateContent } = this.context;
-
+  const handleSelectSlot = (slotInfo) => {
     if (!canCreateContent) {
       return;
     }
-
-    const { calendarFilter } = this.state;
 
     const selectedResource = resources.find(
       (resource) => calendarFilter && resource._id === calendarFilter._id
@@ -129,13 +92,11 @@ class Calendar extends PureComponent {
     if (slotInfo?.slots?.length === 1) {
       // One day selected in month view
       const type = 'month-oneday';
-      this.setState({
-        selectedSlot: {
-          ...slotInfo,
-          type,
-          content: moment(slotInfo?.start).format('DD MMMM'),
-          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-        },
+      setSelectedSlot({
+        ...slotInfo,
+        type,
+        content: moment(slotInfo?.start).format('DD MMMM'),
+        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else if (
       // Multiple days selected in month view
@@ -143,50 +104,40 @@ class Calendar extends PureComponent {
       moment(slotInfo?.end).format('HH:mm') === '00:00'
     ) {
       const type = 'month-multipledays';
-      this.setState({
-        selectedSlot: {
-          ...slotInfo,
-          type,
-          content:
-            moment(slotInfo?.start).format('DD MMMM') +
-            ' – ' +
-            moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
-          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-        },
+      setSelectedSlot({
+        ...slotInfo,
+        type,
+        content:
+          moment(slotInfo?.start).format('DD MMMM') +
+          ' – ' +
+          moment(slotInfo?.end).format('DD MMMM'),
+        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else {
       // All other, i.e. weekly, daily bookings
       const type = 'other';
-      this.setState({
-        selectedSlot: {
-          ...slotInfo,
-          type,
-          content:
-            moment(slotInfo?.start).format('DD MMMM') +
-            ': ' +
-            moment(slotInfo?.start).format('HH:mm') +
-            ' – ' +
-            moment(slotInfo?.end).format('HH:mm'),
-          bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
-        },
+      setSelectedSlot({
+        ...slotInfo,
+        type,
+        content:
+          moment(slotInfo?.start).format('DD MMMM') +
+          ': ' +
+          moment(slotInfo?.start).format('HH:mm') +
+          ' – ' +
+          moment(slotInfo?.end).format('HH:mm'),
+        bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     }
   };
 
-  activateRedirectToBooking = () => {
-    this.setState(({ selectedSlot }) => ({
-      selectedSlot: {
-        ...selectedSlot,
-        isRedirectActive: true,
-      },
-    }));
+  const activateRedirectToBooking = () => {
+    setSelectedSlot({
+      ...selectedSlot,
+      isRedirectActive: true,
+    });
   };
 
-  handleCloseSelectedSlot = () => {
-    this.setState({ selectedSlot: null });
-  };
-
-  getActivityTimes = (activity) => {
+  const getActivityTimes = (activity) => {
     if (!activity) {
       return '';
     }
@@ -200,251 +151,228 @@ class Calendar extends PureComponent {
     ).format('DD MMM')} ${activity.endTime}`;
   };
 
-  isCreatorOrAdmin = () => {
-    const { currentUser } = this.props;
-    const { selectedActivity } = this.state;
-    const { role } = this.context;
-
+  const isCreatorOrAdmin = () => {
     return (
       (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
       role === 'admin'
     );
   };
 
-  render() {
-    const { currentUser, tc } = this.props;
-    const { currentHost } = this.context;
-    const {
-      activities,
-      calendarFilter,
-      editActivity,
-      gotoActivity,
-      isLoading,
-      resources,
-      selectedActivity,
-      selectedSlot,
-    } = this.state;
+  const handlePrimaryButtonClick = () => {
+    const isSameHost = selectedActivity.host === currentHost.host;
 
-    if (isLoading) {
-      return (
-        <Center>
-          <Loader />
-        </Center>
-      );
-    }
-
-    const filteredActivities = activities.filter((activity) => {
-      return (
-        !calendarFilter ||
-        calendarFilter._id === activity.resourceId ||
-        calendarFilter._id === activity.comboResourceId
-      );
-    });
-
-    if (editActivity) {
-      if (selectedActivity?.authorName === currentUser?.username) {
-        if (selectedActivity.isGroupMeeting) {
-          return <Navigate to={`/groups/${selectedActivity.groupId}/edit`} />;
-        }
-        return <Navigate to={`/activities/${selectedActivity.activityId}/edit`} />;
+    if (selectedActivity.isGroupMeeting) {
+      if (isSameHost) {
+        navigate(`/groups/${selectedActivity.groupId}/info`);
+        return;
       }
+      window.location.href = `https://${selectedActivity.host}/groups/${selectedActivity.groupId}/info`;
+      return;
+    }
+    if (isSameHost) {
+      navigate(`/activities/${selectedActivity.activityId}/info`);
+      return;
+    }
+    window.location.href = `https://${selectedActivity.host}/activities/${selectedActivity.activityId}/info`;
+  };
+
+  const handleSecondaryButtonClick = () => {
+    if (!isCreatorOrAdmin()) {
+      setSelectedActivity(null);
+      return;
     }
 
-    if (gotoActivity) {
-      let kind = 'activities';
-      let id = selectedActivity._id;
-      if (selectedActivity.isGroupMeeting) {
-        kind = 'groups';
-        id = selectedActivity.groupId;
-      }
-      if (selectedActivity.host === currentHost.host) {
-        return <Navigate to={`/${kind}/${id}/info`} />;
-      } else {
-        window.location.href = `https://${selectedActivity.host}/${kind}/${id}/info`;
-      }
+    if (selectedActivity.isGroupMeeting) {
+      navigate(`/groups/${selectedActivity.groupId}/edit`);
+    } else {
+      navigate(`/activities/${selectedActivity.activityId}/edit`);
     }
+  };
 
-    const nonComboResources = resources.filter((resource) => !resource.isCombo);
-    const nonComboResourcesWithColor = getNonComboResourcesWithColor(nonComboResources);
-
-    const comboResources = resources.filter((resource) => resource.isCombo);
-    const comboResourcesWithColor = getComboResourcesWithColor(
-      comboResources,
-      nonComboResourcesWithColor
-    );
-
-    const allFilteredActsWithColors = filteredActivities.map((act, i) => {
-      const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
-      const resourceColor = (resource && resource.color) || '#484848';
-
-      return {
-        ...act,
-        resourceColor,
-      };
-    });
-
-    if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
-      return <Navigate to={selectedSlot.bookingUrl} />;
-    }
-
-    const selectFilterView =
-      nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
-
-    const allResourcesForSelect = [
-      ...comboResourcesWithColor,
-      ...nonComboResourcesWithColor,
-    ].filter((r) => r.isBookable);
-
-    const selectedLinkForModal =
-      selectedActivity &&
-      (selectedActivity.isGroup || selectedActivity.isGroupMeeting
-        ? `/groups/${selectedActivity.groupId}`
-        : `/activities/${selectedActivity.activityId}`);
-
-    const { settings } = currentHost;
-    const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
-
-    const isCreatorOrAdmin = this.isCreatorOrAdmin();
-
+  if (isLoading) {
     return (
+      <Center>
+        <Loader />
+      </Center>
+    );
+  }
+
+  const filteredActivities = activitiesParsed.filter((activity) => {
+    return (
+      !calendarFilter ||
+      calendarFilter._id === activity.resourceId ||
+      calendarFilter._id === activity.comboResourceId
+    );
+  });
+
+  const nonComboResources = resources.filter((resource) => !resource.isCombo);
+  const nonComboResourcesWithColor = getNonComboResourcesWithColor(nonComboResources);
+
+  const comboResources = resources.filter((resource) => resource.isCombo);
+  const comboResourcesWithColor = getComboResourcesWithColor(
+    comboResources,
+    nonComboResourcesWithColor
+  );
+
+  const allFilteredActsWithColors = filteredActivities.map((act, i) => {
+    const resource = nonComboResourcesWithColor.find((res) => res._id === act.resourceId);
+    const resourceColor = (resource && resource.color) || '#484848';
+
+    return {
+      ...act,
+      resourceColor,
+    };
+  });
+
+  if (selectedSlot?.bookingUrl && selectedSlot?.isRedirectActive) {
+    return <Navigate to={selectedSlot.bookingUrl} />;
+  }
+
+  const selectFilterView =
+    nonComboResourcesWithColor.filter((r) => r.isBookable)?.length >= maxResourceLabelsToShow;
+
+  const allResourcesForSelect = [...comboResourcesWithColor, ...nonComboResourcesWithColor].filter(
+    (r) => r.isBookable
+  );
+
+  const { settings } = currentHost;
+  const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
+
+  return (
+    <Box>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+
+      <PageHeading
+        description={settings.menu.find((item) => item.name === 'calendar')?.description}
+      />
+
       <Box>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-
-        <PageHeading
-          description={settings.menu.find((item) => item.name === 'calendar')?.description}
-        />
-
-        <Box>
-          <Center>
-            {!selectFilterView ? (
-              <Box>
-                <Wrap justify="center" px="1" pb="1" mb="3">
-                  <WrapItem>
-                    <Tag
-                      alignSelf="center"
-                      checkable
-                      key="All"
-                      label={tc('labels.all')}
-                      filterColor="#484848"
-                      checked={!calendarFilter}
-                      onClick={() => this.handleCalendarFilterChange(null)}
-                    />
-                  </WrapItem>
-
-                  {nonComboResourcesWithColor
-                    .filter((r) => r.isBookable)
-                    .map((resource, i) => (
-                      <WrapItem key={resource._id}>
-                        <Tag
-                          checkable
-                          label={resource.label}
-                          filterColor={resource.color}
-                          checked={calendarFilter?._id === resource._id}
-                          onClick={() => this.handleCalendarFilterChange(resource)}
-                        />
-                      </WrapItem>
-                    ))}
-                </Wrap>
-                <Wrap justify="center" mb="2" px="1">
-                  {comboResourcesWithColor
-                    .filter((r) => r.isBookable)
-                    .map((resource, i) => (
-                      <WrapItem key={resource._id}>
-                        <Tag
-                          checkable
-                          label={resource.label}
-                          filterColor={'#2d2d2d'}
-                          gradientBackground={resource.color}
-                          checked={calendarFilter?._id === resource._id}
-                          onClick={() => this.handleCalendarFilterChange(resource)}
-                        />
-                      </WrapItem>
-                    ))}
-                </Wrap>
-              </Box>
-            ) : (
-              <Flex w="30rem" align="center">
-                <Button
-                  colorScheme="green"
-                  mr="2"
-                  size="sm"
-                  variant={calendarFilter ? 'outline' : 'solid'}
-                  onClick={() => this.handleCalendarFilterChange(null)}
-                >
-                  {tc('labels.all')}
-                </Button>
-
-                <Box w="100%" zIndex={5}>
-                  <AutoCompleteSelect
-                    isClearable
-                    onChange={this.handleCalendarFilterChange}
-                    components={animatedComponents}
-                    value={calendarFilter}
-                    options={allResourcesForSelect}
-                    getOptionValue={(option) => option._id}
-                    style={{ width: '100%', marginTop: '1rem' }}
-                    styles={{
-                      option: (styles, { data }) => ({
-                        ...styles,
-                        borderLeft: `8px solid ${data.color}`,
-                        // background: data.color.replace('40%', '90%'),
-                        paddingLeft: !data.isCombo && 6,
-                        fontWeight: data.isCombo ? 'bold' : 'normal',
-                      }),
-                    }}
+        <Center>
+          {!selectFilterView ? (
+            <Box>
+              <Wrap justify="center" px="1" pb="1" mb="3">
+                <WrapItem>
+                  <Tag
+                    alignSelf="center"
+                    checkable
+                    key="All"
+                    label={tc('labels.all')}
+                    filterColor="#484848"
+                    checked={!calendarFilter}
+                    onClick={() => setCalendarFilter(null)}
                   />
-                </Box>
-              </Flex>
-            )}
-          </Center>
+                </WrapItem>
 
-          <Box mb="4">
-            <CalendarView
-              activities={allFilteredActsWithColors}
-              onSelect={this.handleSelectActivity}
-              onSelectSlot={this.handleSelectSlot}
-            />
-          </Box>
+                {nonComboResourcesWithColor
+                  .filter((r) => r.isBookable)
+                  .map((resource, i) => (
+                    <WrapItem key={resource._id}>
+                      <Tag
+                        checkable
+                        label={resource.label}
+                        filterColor={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() => setCalendarFilter(resource)}
+                      />
+                    </WrapItem>
+                  ))}
+              </Wrap>
+              <Wrap justify="center" mb="2" px="1">
+                {comboResourcesWithColor
+                  .filter((r) => r.isBookable)
+                  .map((resource, i) => (
+                    <WrapItem key={resource._id}>
+                      <Tag
+                        checkable
+                        label={resource.label}
+                        filterColor={'#2d2d2d'}
+                        gradientBackground={resource.color}
+                        checked={calendarFilter?._id === resource._id}
+                        onClick={() => setCalendarFilter(resource)}
+                      />
+                    </WrapItem>
+                  ))}
+              </Wrap>
+            </Box>
+          ) : (
+            <Flex w="30rem" align="center">
+              <Button
+                colorScheme="green"
+                mr="2"
+                size="sm"
+                variant={calendarFilter ? 'outline' : 'solid'}
+                onClick={() => setCalendarFilter(null)}
+              >
+                {tc('labels.all')}
+              </Button>
+
+              <Box w="100%" zIndex={5}>
+                <AutoCompleteSelect
+                  isClearable
+                  onChange={(value) => setCalendarFilter(value)}
+                  components={animatedComponents}
+                  value={calendarFilter}
+                  options={allResourcesForSelect}
+                  getOptionValue={(option) => option._id}
+                  style={{ width: '100%', marginTop: '1rem' }}
+                  styles={{
+                    option: (styles, { data }) => ({
+                      ...styles,
+                      borderLeft: `8px solid ${data.color}`,
+                      // background: data.color.replace('40%', '90%'),
+                      paddingLeft: !data.isCombo && 6,
+                      fontWeight: data.isCombo ? 'bold' : 'normal',
+                    }),
+                  }}
+                />
+              </Box>
+            </Flex>
+          )}
+        </Center>
+
+        <Box mb="4">
+          <CalendarView
+            activities={allFilteredActsWithColors}
+            onSelect={handleSelectActivity}
+            onSelectSlot={handleSelectSlot}
+          />
+        </Box>
+      </Box>
+
+      <ConfirmModal
+        visible={Boolean(selectedActivity)}
+        title={selectedActivity && selectedActivity.title}
+        confirmText={tc('actions.entryPage')}
+        cancelText={isCreatorOrAdmin() ? tc('actions.update') : tc('actions.close')}
+        onConfirm={() => handlePrimaryButtonClick()}
+        onCancel={() => handleSecondaryButtonClick()}
+        onOverlayClick={() => setSelectedActivity(null)}
+      >
+        <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
+          <div>
+            <Link to={`/@${selectedActivity?.authorName}`}>
+              <CLink as="span" fontWeight="bold">
+                {selectedActivity && selectedActivity.authorName}
+              </CLink>{' '}
+            </Link>
+            <Text as="span">{tc('labels.booked')}</Text>{' '}
+            <Link to={`/resources/${selectedActivity?.resourceId}`}>
+              <CLink as="span" fontWeight="bold">
+                {selectedActivity && selectedActivity.resource}
+              </CLink>
+            </Link>
+          </div>
+          <Text>{getActivityTimes(selectedActivity)}</Text>
         </Box>
 
-        <ConfirmModal
-          visible={Boolean(selectedActivity)}
-          title={selectedActivity && selectedActivity.title}
-          confirmText={tc('actions.entryPage')}
-          cancelText={isCreatorOrAdmin ? tc('actions.update') : tc('actions.close')}
-          onConfirm={() => this.handleGoToActivity()}
-          onCancel={
-            isCreatorOrAdmin ? () => this.handleEditActivity() : () => this.handleCloseModal()
-          }
-          onOverlayClick={this.handleCloseModal}
-        >
-          <Box bg="gray.100" style={{ fontFamily: 'Courier, monospace' }} p="2" my="1">
-            <div>
-              <Link to={`/@${selectedActivity?.authorName}`}>
-                <CLink as="span" fontWeight="bold">
-                  {selectedActivity && selectedActivity.authorName}
-                </CLink>{' '}
-              </Link>
-              <Text as="span">{tc('labels.booked')}</Text>{' '}
-              <Link to={`/resources/${selectedActivity?.resourceId}`}>
-                <CLink as="span" fontWeight="bold">
-                  {selectedActivity && selectedActivity.resource}
-                </CLink>
-              </Link>
-            </div>
-            <Text>{this.getActivityTimes(selectedActivity)}</Text>
-          </Box>
+        <Text fontSize="sm" mt="2" p="1">
+          {selectedActivity?.longDescription &&
+            (selectedActivity?.isGroupPrivate ? '' : renderHTML(selectedActivity?.longDescription))}
+        </Text>
 
-          <Text fontSize="sm" mt="2" p="1">
-            {selectedActivity?.longDescription &&
-              (selectedActivity?.isGroupPrivate
-                ? ''
-                : renderHTML(selectedActivity?.longDescription))}
-          </Text>
-
-          {/* {!selectedActivity?.isGroupPrivate && (
+        {/* {!selectedActivity?.isGroupPrivate && (
             <Center>
               <Link to={selectedLinkForModal}>
                 <Button size="sm" as="span" rightIcon={<ArrowForwardIcon />} variant="ghost">
@@ -454,37 +382,36 @@ class Calendar extends PureComponent {
               </Link>
             </Center>
           )} */}
-        </ConfirmModal>
+      </ConfirmModal>
 
-        <ConfirmModal
-          visible={Boolean(selectedSlot)}
-          title={`${tc('labels.newBooking')}?`}
-          confirmText={
-            <span>
-              {tc('actions.create')} <ArrowForwardIcon />
-            </span>
-          }
-          cancelText={tc('actions.close')}
-          onConfirm={this.activateRedirectToBooking}
-          onCancel={this.handleCloseSelectedSlot}
-          onClickOutside={this.handleCloseSelectedSlot}
-        >
-          <Box bg="light-1" p="1" my="1">
-            <Box>
-              <CTag mr="2">
-                <TagLabel>
-                  {calendarFilter ? calendarFilter?.label : tc('labels.unselected')}
-                </TagLabel>
-              </CTag>
-              <Text as="span" fontWeight="bold">
-                {selectedSlot?.content}
-              </Text>
-            </Box>
+      <ConfirmModal
+        visible={Boolean(selectedSlot)}
+        title={`${tc('labels.newBooking')}?`}
+        confirmText={
+          <span>
+            {tc('actions.create')} <ArrowForwardIcon />
+          </span>
+        }
+        cancelText={tc('actions.close')}
+        onConfirm={activateRedirectToBooking}
+        onCancel={() => setSelectedSlot(null)}
+        onClickOutside={() => setSelectedSlot(null)}
+      >
+        <Box bg="light-1" p="1" my="1">
+          <Box>
+            <CTag mr="2">
+              <TagLabel>
+                {calendarFilter ? calendarFilter?.label : tc('labels.unselected')}
+              </TagLabel>
+            </CTag>
+            <Text as="span" fontWeight="bold">
+              {selectedSlot?.content}
+            </Text>
           </Box>
-        </ConfirmModal>
-      </Box>
-    );
-  }
+        </Box>
+      </ConfirmModal>
+    </Box>
+  );
 }
 
 function parseDatesForQuery(slotInfo, selectedResource, type) {
@@ -505,7 +432,5 @@ function parseDatesForQuery(slotInfo, selectedResource, type) {
   bookingUrl += stringify(params);
   return bookingUrl;
 }
-
-Calendar.contextType = StateContext;
 
 export default Calendar;
