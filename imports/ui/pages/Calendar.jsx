@@ -205,16 +205,10 @@ class Calendar extends PureComponent {
     const { selectedActivity } = this.state;
     const { role } = this.context;
 
-    if (!selectedActivity || !currentUser) {
-      return false;
-    }
-
-    if (
+    return (
       (selectedActivity && currentUser && currentUser.username === selectedActivity.authorName) ||
       role === 'admin'
-    ) {
-      return true;
-    }
+    );
   };
 
   render() {
