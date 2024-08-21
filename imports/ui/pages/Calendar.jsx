@@ -251,10 +251,17 @@ class Calendar extends PureComponent {
     }
 
     if (gotoActivity) {
+      let kind = 'activities';
+      let id = selectedActivity._id;
       if (selectedActivity.isGroupMeeting) {
-        return <Navigate to={`/groups/${selectedActivity.groupId}/info`} />;
+        kind = 'groups';
+        id = selectedActivity.groupId;
       }
-      return <Navigate to={`/activities/${selectedActivity.activityId}/info`} />;
+      if (selectedActivity.host === currentHost.host) {
+        return <Navigate to={`/${kind}/${id}/info`} />;
+      } else {
+        window.location.href = `https://${modalActivity.host}/${kind}/${id}/info`;
+      }
     }
 
     const nonComboResources = resources.filter((resource) => !resource.isCombo);
