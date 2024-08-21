@@ -43,6 +43,7 @@ const EditWork = lazy(() => import('./works/EditWork'));
 // Pages
 const EditPage = lazy(() => import('./pages/EditPage'));
 const Page = lazy(() => import('./pages/Page'));
+const NewPage = lazy(() => import('./pages/NewPage'));
 
 // Members
 const MembersPublic = lazy(() => import('./members/MembersPublic'));
@@ -90,7 +91,7 @@ export default function () {
           <Route exact path="/activities" element={<Activities />} />
           <Route exact path="/activities/new" element={<NewActivityContainer />} />
           <Route path="/activities/:activityId/*" element={<ActivityContainer />} />
-          <Route path="/activities/:activityId/edit" element={<EditActivityContainer />} />
+          <Route exact path="/activities/:activityId/edit" element={<EditActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
           {/* Groups */}
@@ -107,6 +108,7 @@ export default function () {
 
           {/* Pages */}
           <Route exact path="/pages" element={<Page />} />
+          <Route exact path="/pages/new" element={<NewPage />} />
           <Route path="/pages/:pageId/*" element={<Page />} />
           <Route path="/pages/:pageId/edit" element={<EditPage />} />
 
