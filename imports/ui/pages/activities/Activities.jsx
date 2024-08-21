@@ -171,10 +171,16 @@ function Activities() {
   }
 
   const handleActionButtonClick = () => {
+    let kind = 'activities';
+    let id = modalActivity._id;
+    if (modalActivity.isGroupMeeting) {
+      kind = 'groups';
+      id = modalActivity.groupId;
+    }
     if (modalActivity.host === currentHost.host) {
-      navigate(`/activities/${modalActivity._id}/info`);
+      navigate(`/${kind}/${id}/info`);
     } else {
-      window.location.href = `https://${modalActivity.host}/activities/${modalActivity._id}/info`;
+      window.location.href = `https://${modalActivity.host}/${kind}/${id}/info`;
     }
   };
 
