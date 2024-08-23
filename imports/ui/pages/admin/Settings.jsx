@@ -83,7 +83,7 @@ export default function Settings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
+      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
       const uploadedImage = await uploadImage(resizedImage, 'hostLogoUpload');
       await call('assignHostLogo', uploadedImage);
       getCurrentHost();

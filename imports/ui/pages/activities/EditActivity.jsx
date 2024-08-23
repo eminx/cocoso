@@ -154,7 +154,7 @@ class EditActivity extends PureComponent {
           if (uploadableImage.type === 'uploaded') {
             return uploadableImage.src;
           }
-          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 800);
           const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
           return uploadedImage;
         })
