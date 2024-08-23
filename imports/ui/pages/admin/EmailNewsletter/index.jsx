@@ -94,7 +94,7 @@ function EmailNewsletter({ history }) {
     const { uploadableImage } = image;
 
     try {
-      const resizedImage = await resizeImage(uploadableImage, 800);
+      const resizedImage = await resizeImage(uploadableImage, 1200);
       const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
       sendEmail(uploadedImage);
     } catch (error) {
