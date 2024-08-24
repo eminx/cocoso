@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
@@ -16,7 +16,7 @@ import { adminMenu } from '../../utils/constants/general';
 import UsageReport from '../../components/UsageReport';
 import Tabs from '../../components/Tabs';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -278,7 +278,7 @@ function MemberItem({ member, t }) {
       </Text>
       <Text fontSize="xs" color="gray.500">
         {t('joinedAt', {
-          date: moment(member.date).format('D MMM YYYY'),
+          date: dayjs(member.date).format('D MMM YYYY'),
         })}
         <br />
       </Text>

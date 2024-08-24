@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex, ModalBody } from '@chakra-ui/react';
@@ -26,21 +26,21 @@ import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
-const yesterday = moment().add(-1, 'days');
-const today = moment();
+const yesterday = dayjs().add(-1, 'days');
+const today = dayjs();
 
 const getFutureOccurrences = (dates) => {
   return dates
-    .filter((date) => date && moment(date.endDate)?.isAfter(yesterday))
-    .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
+    .filter((date) => date && dayjs(date.endDate)?.isAfter(yesterday))
+    .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
 };
 
 const getPastOccurrences = (dates) => {
   return dates
-    .filter((date) => moment(date.startDate)?.isBefore(today))
-    .sort((a, b) => moment(b.startDate) - moment(a.startDate));
+    .filter((date) => dayjs(date.startDate)?.isBefore(today))
+    .sort((a, b) => dayjs(b.startDate) - dayjs(a.startDate));
 };
 
 function parseGroupActivities(activities) {
@@ -116,7 +116,7 @@ function Activities() {
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
       return (
-        activity.datesAndTimes.some((date) => moment(date?.endDate)?.isAfter(yesterday)) &&
+        activity.datesAndTimes.some((date) => dayjs(date?.endDate)?.isAfter(yesterday)) &&
         activityWordFiltered
       );
     });
@@ -133,7 +133,7 @@ function Activities() {
         activity?.title?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1 ||
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
       return (
-        activity.datesAndTimes.some((date) => moment(date?.startDate).isBefore(today)) &&
+        activity.datesAndTimes.some((date) => dayjs(date?.startDate).isBefore(today)) &&
         activityWordFiltered
       );
     });

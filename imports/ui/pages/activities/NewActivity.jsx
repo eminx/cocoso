@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Navigate } from 'react-router-dom';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { Box, VStack } from '@chakra-ui/react';
 import { parse } from 'query-string';
@@ -21,7 +21,7 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import FormTitle from '../../components/FormTitle';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);

@@ -22,7 +22,7 @@ function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = tr
     <>
       <ImageHandler height={height} images={images} isFade={isFade} width={width}>
         {(image, index) => (
-          <Center key={image}>
+          <Center key={image + index}>
             <Flex bg="gray.50" flexDirection="column" justify="center">
               <LazyLoadImage
                 alt={alt + ' ' + ' ' + image}

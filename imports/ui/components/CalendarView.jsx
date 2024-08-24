@@ -1,24 +1,35 @@
-import React from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import React, { useEffect } from 'react';
+import { Calendar, dayjsLocalizer } from 'react-big-calendar';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(timezone);
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../utils/styles/bigcalendar-custom.css';
 
-moment.locale(i18n.language, {
+console.log(i18n);
+dayjs.locale(i18n.language, {
   week: {
     dow: 1, // Monday is the first day of the week.
   },
 });
 
-const localizer = momentLocalizer(moment);
+const localizer = dayjsLocalizer(dayjs);
 
 function CalendarView(props) {
   const { activities } = props;
+  const [t] = useTranslation('calendar');
 
-  const [t, i18n] = useTranslation('calendar');
+  // useEffect(() => {
+  //   dayjs.locale(i18n?.language, {
+  //     week: {
+  //       dow: 1, // Monday is the first day of the week.
+  //     },
+  //   });
+  // }, []);
+
   const messages = {
     allDay: t('bigCal.allDay'),
     previous: t('bigCal.previous'),
@@ -35,7 +46,9 @@ function CalendarView(props) {
     showMore: (total) => t('bigCal.showMore', { total }),
   };
 
-  require('moment/locale/sv');
+  require('dayjs/locale/en');
+  require('dayjs/locale/sv');
+  require('dayjs/locale/tr');
 
   return (
     <Calendar

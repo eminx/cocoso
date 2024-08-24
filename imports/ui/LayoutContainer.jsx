@@ -18,10 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import 'moment/locale/sv';
-import 'moment/locale/tr';
 import renderHTML from 'react-render-html';
-import { HydrationProvider } from 'react-hydration-provider';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -103,6 +100,10 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
+  if (!currentUser) {
+    return null;
+  }
+
   const chakraTheme = generateTheme(hue);
 
   const hostWithinUser =
@@ -160,52 +161,50 @@ function LayoutPage({ currentUser, userLoading, children }) {
         />
       </Helmet>
 
-      <HydrationProvider>
-        <ChakraProvider theme={chakraTheme}>
-          <ColorModeProvider>
-            {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
-            <StateContext.Provider
-              value={{
-                allHosts,
-                canCreateContent,
-                currentUser,
-                currentHost,
-                hue,
-                isDesktop,
-                platform,
-                role,
-                userLoading,
-                getCurrentHost,
-                getPlatform,
-                setHue,
-                setSelectedHue,
-              }}
-            >
-              {platform && platform.isFederationLayout && <TopBar />}
+      <ChakraProvider theme={chakraTheme}>
+        <ColorModeProvider>
+          {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
+          <StateContext.Provider
+            value={{
+              allHosts,
+              canCreateContent,
+              currentUser,
+              currentHost,
+              hue,
+              isDesktop,
+              platform,
+              role,
+              userLoading,
+              getCurrentHost,
+              getPlatform,
+              setHue,
+              setSelectedHue,
+            }}
+          >
+            {platform && platform.isFederationLayout && <TopBar />}
 
-              <Flex>
-                <Box id="main-viewport" flexGrow="2">
-                  <Box w="100%">
-                    <Header isSmallerLogo={!isLargerLogo} />
+            <Flex>
+              <Box id="main-viewport" flexGrow="2">
+                <Box w="100%">
+                  <Header isSmallerLogo={!isLargerLogo} />
 
-                    <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                      {children}
-                    </Box>
-
-                    <Footer
-                      currentHost={currentHost}
-                      isFederationFooter={isFederationFooter}
-                      tc={tc}
-                    />
-
-                    {isFederationFooter && <PlatformFooter platform={platform} />}
+                  <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                    {children}
                   </Box>
+
+                  <Footer
+                    currentHost={currentHost}
+                    isFederationFooter={isFederationFooter}
+                    tc={tc}
+                  />
+
+                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-              </Flex>
-            </StateContext.Provider>
-          </ColorModeProvider>
-        </ChakraProvider>
-      </HydrationProvider>
+              </Box>
+            </Flex>
+          </StateContext.Provider>
+        </ColorModeProvider>
+      </ChakraProvider>
     </>
   );
 }

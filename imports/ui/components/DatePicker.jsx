@@ -5,9 +5,7 @@ import { Input } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 // import locale from node_modules
-import { sv } from 'date-fns/locale';
-
-registerLocale('sv', sv);
+import { tr, sv } from 'date-fns/locale';
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
 // {
@@ -32,7 +30,20 @@ function DatePicker({
     if (value) {
       setSelectedDate(unFormatDate(value));
     }
-  }, []);
+    registerLocaleNow();
+  }, [i18n.language]);
+
+  const registerLocaleNow = () => {
+    if (!i18n) {
+      return;
+    } else if (i18n?.language === 'sv') {
+      registerLocale('sv', sv);
+    } else if (i18n?.language === 'tr') {
+      registerLocale('tr', tr);
+    } else {
+      registerLocale('en', en);
+    }
+  };
 
   const handleChange = (date) => {
     setSelectedDate(date);

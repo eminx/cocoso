@@ -1,12 +1,12 @@
 import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 import Calendar from './Calendar';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 const CalendarContainer = withTracker((props) => {
   const currentUser = Meteor.user();
 

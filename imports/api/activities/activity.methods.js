@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { getHost } from '../_utils/shared';
 import { isAdmin, isContributorOrAdmin } from '../users/user.roles';
@@ -166,11 +166,11 @@ Meteor.methods({
               imageUrl: activity.imageUrl,
               isPublicActivity: activity.isPublicActivity,
               isWithComboResource: false,
-              start: moment(
+              start: dayjs(
                 recurrence.startDate + recurrence.startTime,
                 'YYYY-MM-DD HH:mm'
               ).toDate(),
-              end: moment(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
+              end: dayjs(recurrence.endDate + recurrence.endTime, 'YYYY-MM-DD HH:mm').toDate(),
               startDate: recurrence.startDate,
               startTime: recurrence.startTime,
               endDate: recurrence.endDate,

@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { Slingshot } from 'meteor/edgee:slingshot';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
 function localeSort(a, b) {
   return a.label.localeCompare(b.label);
@@ -32,8 +32,8 @@ function compareForSort(a, b) {
 }
 
 const compareDatesWithStartDateForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD');
-  const dateB = moment(b.startDate, 'YYYY-MM-DD');
+  const dateA = dayjs(a.startDate, 'YYYY-MM-DD');
+  const dateB = dayjs(b.startDate, 'YYYY-MM-DD');
   return dateA.diff(dateB);
 };
 
@@ -182,8 +182,8 @@ function helper_parseAllBookingsWithResources(activity, recurrence) {
   return {
     activityId: activity._id,
     title: activity.title,
-    start: moment(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
-    end: moment(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
+    start: dayjs(startDate + startTime, 'YYYY-MM-DD HH:mm').toDate(),
+    end: dayjs(endDate + endTime, 'YYYY-MM-DD HH:mm').toDate(),
     startDate: startDate,
     startTime: startTime,
     endDate: endDate,
@@ -218,16 +218,16 @@ function getAllBookingsWithSelectedResource(selectedResource, allBookings) {
 function isDatesInConflict(existingStart, existingEnd, selectedStart, selectedEnd) {
   const dateTimeFormat = 'YYYY-MM-DD HH:mm';
 
-  // If the same values are selected, moment compare returns false. That's why we do:
+  // If the same values are selected, dayjs compare returns false. That's why we do:
   if (existingStart === selectedStart && existingEnd === selectedEnd) {
     return true;
   }
 
   return (
-    moment(selectedStart, dateTimeFormat).isBetween(existingStart, existingEnd) ||
-    moment(selectedEnd, dateTimeFormat).isBetween(existingStart, existingEnd) ||
-    moment(existingStart, dateTimeFormat).isBetween(selectedStart, selectedEnd) ||
-    moment(existingEnd, dateTimeFormat).isBetween(selectedStart, selectedEnd)
+    dayjs(selectedStart, dateTimeFormat).isBetween(existingStart, existingEnd) ||
+    dayjs(selectedEnd, dateTimeFormat).isBetween(existingStart, existingEnd) ||
+    dayjs(existingStart, dateTimeFormat).isBetween(selectedStart, selectedEnd) ||
+    dayjs(existingEnd, dateTimeFormat).isBetween(selectedStart, selectedEnd)
   );
 }
 
@@ -333,8 +333,8 @@ function parseHtmlEntities(input) {
   return input.replace(/\\+u([0-9a-fA-F]{4})/g, (a, b) => String.fromCharCode(parseInt(b, 16)));
 }
 
-const yesterday = moment(new Date()).add(-1, 'days');
-const today = moment();
+const yesterday = dayjs(new Date()).add(-1, 'days');
+const today = dayjs();
 
 function compareDatesForSortActivities(a, b) {
   const firstOccurenceA = a?.datesAndTimes?.find(getFirstFutureOccurence);
@@ -353,10 +353,10 @@ function compareDatesForSortActivitiesReverse(a, b) {
 }
 
 const getFirstFutureOccurence = (occurence) =>
-  occurence && moment(occurence.endDate)?.isAfter(yesterday);
+  occurence && dayjs(occurence.endDate)?.isAfter(yesterday);
 
 const getLastPastOccurence = (occurence) =>
-  occurence && moment(occurence.startDate)?.isBefore(today);
+  occurence && dayjs(occurence.startDate)?.isBefore(today);
 
 export {
   localeSort,

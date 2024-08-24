@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { useForm } from 'react-hook-form';
 import { useCounter } from 'rooks';
@@ -31,7 +31,7 @@ import DatePicker from '../../../components/DatePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
 const today = new Date().toISOString().substring(0, 10);
 
@@ -280,11 +280,11 @@ export default function BookingsField({ currentUser, selectedResource }) {
               {(booking) => (
                 <Box>
                   <Text fontSize="sm">
-                    {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
+                    {`From ${dayjs(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${
                       booking.startDate === booking.endDate
                         ? ''
-                        : moment(booking.endDate).format('ddd, D MMM')
+                        : dayjs(booking.endDate).format('ddd, D MMM')
                     } ${booking.endTime} `}
                   </Text>
                 </Box>

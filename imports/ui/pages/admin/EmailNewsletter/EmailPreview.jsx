@@ -15,7 +15,7 @@ import { Text } from '@react-email/text';
 
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 function shorten(str) {
   const strArray = str.split(/\s+/);
@@ -241,7 +241,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
   );
 }
 
-const yesterday = moment(new Date()).add(-1, 'days');
+const yesterday = dayjs(new Date()).add(-1, 'days');
 
 export function ActivityDates({ activity, currentHost }) {
   if (!activity) {
@@ -249,7 +249,7 @@ export function ActivityDates({ activity, currentHost }) {
   }
 
   const futureDates = activity.datesAndTimes.filter((date) =>
-    moment(date.endDate).isAfter(yesterday)
+    dayjs(date.endDate).isAfter(yesterday)
   );
 
   const length = futureDates?.length;
@@ -277,15 +277,15 @@ export function ActivityDates({ activity, currentHost }) {
 }
 
 export function ActivityDate({ currentHost, date }) {
-  moment.locale(currentHost?.settings?.lang || 'en');
+  dayjs.locale(currentHost?.settings?.lang || 'en');
 
   return (
     <Column style={{ paddingRight: 8 }}>
       <Text style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>
-        {moment(date.startDate).format('DD')}
+        {dayjs(date.startDate).format('DD')}
       </Text>
       <Text style={{ fontSize: '14px', margin: 0, marginTop: -4 }}>
-        {moment(date.startDate).format('MMM')}
+        {dayjs(date.startDate).format('MMM')}
       </Text>
     </Column>
   );

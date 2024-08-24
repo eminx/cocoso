@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import i18n from 'i18next';
 import VisibilitySensor from 'react-visibility-sensor';
 
-moment.locale(i18n.language);
+dayjs.locale(i18n.language);
 
 class ChatteryBubble extends React.Component {
   componentDidMount() {
@@ -15,18 +15,18 @@ class ChatteryBubble extends React.Component {
   }
 
   parseDate = (theDate) => {
-    const isToday = moment(theDate).isSame(moment(), 'd');
-    const isYesterday = moment(theDate).isSame(moment().add(-1, 'days'), 'd');
-    const isThisYear = moment(theDate).isSame(moment(), 'y');
+    const isToday = dayjs(theDate).isSame(dayjs(), 'd');
+    const isYesterday = dayjs(theDate).isSame(dayjs().add(-1, 'days'), 'd');
+    const isThisYear = dayjs(theDate).isSame(dayjs(), 'y');
 
     if (isToday) {
-      return moment(theDate).format('[Today,] HH:mm');
+      return dayjs(theDate).format('[Today,] HH:mm');
     } else if (isYesterday) {
-      return moment(theDate).format('[Yesterday,] HH:mm');
+      return dayjs(theDate).format('[Yesterday,] HH:mm');
     } else if (isThisYear) {
-      return moment(theDate).format('ddd, D MMM, [at] HH:mm');
+      return dayjs(theDate).format('ddd, D MMM, [at] HH:mm');
     }
-    return moment(theDate).format("D MMM [']YY, [at] HH:mm");
+    return dayjs(theDate).format("D MMM [']YY, [at] HH:mm");
   };
 
   removeNotification = (isVisible) => {
