@@ -108,7 +108,9 @@ function Calendar({ currentUser, tc }) {
         ...slotInfo,
         type,
         content:
-          dayjs(slotInfo?.start).format('DD MMMM') + ' – ' + dayjs(slotInfo?.end).format('DD MMMM'),
+          dayjs(slotInfo?.start).format('DD MMMM') +
+          ' – ' +
+          dayjs(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
         bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else {

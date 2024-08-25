@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ dayjs.extend(timezone);
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../utils/styles/bigcalendar-custom.css';
 
-console.log(i18n);
 dayjs.locale(i18n.language, {
   week: {
     dow: 1, // Monday is the first day of the week.
