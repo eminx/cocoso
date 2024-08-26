@@ -244,7 +244,7 @@ Meteor.methods({
       authorUsername: currentUser.username,
       creationDate: new Date(),
       host,
-      hostId: currentHost._id,
+      hostId: currentHost._id.toString(),
     });
 
     const emailHtmlWithBrowserLink = emailHtml.replace('[newsletter-id]', newEmailId);
