@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import i18n from 'i18next';
 import {
   Box,
   Button,
@@ -20,6 +19,8 @@ import { Helmet } from 'react-helmet';
 import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(timezone);
 
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
@@ -34,7 +35,6 @@ import { StateContext } from '../LayoutContainer';
 import PageHeading from '../components/PageHeading';
 import Loader from '../components/Loader';
 
-dayjs.locale(i18n.language);
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 

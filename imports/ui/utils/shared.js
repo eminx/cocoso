@@ -3,6 +3,8 @@ import Resizer from 'react-image-file-resizer';
 import dayjs from 'dayjs';
 import i18n from 'i18next';
 import { Slingshot } from 'meteor/edgee:slingshot';
+const isBetween = require('dayjs/plugin/isBetween');
+dayjs.extend(isBetween);
 
 dayjs.locale(i18n.language);
 

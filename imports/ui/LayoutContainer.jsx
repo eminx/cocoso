@@ -19,6 +19,14 @@ import {
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
+const localizedFormat = require('dayjs/plugin/localizedFormat');
+import dayjs from 'dayjs';
+
+dayjs.extend(localizedFormat);
+
+require('dayjs/locale/en');
+require('dayjs/locale/sv');
+require('dayjs/locale/tr');
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -30,7 +38,6 @@ import ChangeLanguageMenu from './components/ChangeLanguageMenu';
 // import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
-
 const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, userLoading, children }) {
@@ -48,10 +55,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     getPlatform();
     getAllHosts();
   }, []);
-
-  // useEffect(() => {
-  //   getAllHosts();
-  // }, [currentHost && currentHost.isPortalHost]);
 
   const pathnameSplitted = pathname.split('/');
 

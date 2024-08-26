@@ -1,13 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-import timezone from 'dayjs/plugin/timezone';
-dayjs.extend(timezone);
-
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../utils/styles/bigcalendar-custom.css';
 
 dayjs.locale(i18n.language, {
   week: {
@@ -15,19 +10,14 @@ dayjs.locale(i18n.language, {
   },
 });
 
-const localizer = dayjsLocalizer(dayjs);
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import '../utils/styles/bigcalendar-custom.css';
 
 function CalendarView(props) {
   const { activities } = props;
   const [t] = useTranslation('calendar');
 
-  // useEffect(() => {
-  //   dayjs.locale(i18n?.language, {
-  //     week: {
-  //       dow: 1, // Monday is the first day of the week.
-  //     },
-  //   });
-  // }, []);
+  const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
 
   const messages = {
     allDay: t('bigCal.allDay'),
@@ -45,15 +35,12 @@ function CalendarView(props) {
     showMore: (total) => t('bigCal.showMore', { total }),
   };
 
-  require('dayjs/locale/en');
-  require('dayjs/locale/sv');
-  require('dayjs/locale/tr');
-
   return (
     <Calendar
       allDayAccessor="isMultipleDay"
       culture={i18n.language}
       defaultView="month"
+      defaultDate={dayjs().toDate()}
       events={activities}
       localizer={localizer}
       messages={messages}
