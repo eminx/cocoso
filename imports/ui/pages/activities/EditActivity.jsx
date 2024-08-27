@@ -101,14 +101,22 @@ class EditActivity extends PureComponent {
         'load',
         () => {
           this.setState(({ images }) => ({
-            images: [
-              ...images,
-              {
-                resizableData: uploadableImage,
-                type: 'not-uploaded',
-                src: reader.result,
-              },
-            ],
+            images: images
+              ? [
+                  ...images,
+                  {
+                    resizableData: uploadableImage,
+                    type: 'not-uploaded',
+                    src: reader.result,
+                  },
+                ]
+              : [
+                  {
+                    resizableData: uploadableImage,
+                    type: 'not-uploaded',
+                    src: reader.result,
+                  },
+                ],
           }));
         },
         false
