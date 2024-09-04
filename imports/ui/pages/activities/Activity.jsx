@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import i18n from 'i18next';
 import ReactTable from 'react-table';
 import renderHTML from 'react-render-html';
@@ -39,7 +39,7 @@ import FormField from '../../components/FormField';
 import Modal from '../../components/Modal';
 import TablyCentered from '../../components/TablyCentered';
 
-dayjs.locale(i18n.language);
+moment.locale(i18n.language);
 
 const sexyBorder = {
   bg: 'white',
@@ -298,7 +298,7 @@ class Activity extends PureComponent {
       return;
     }
 
-    const yesterday = dayjs(new Date()).add(-1, 'days');
+    const yesterday = moment(new Date()).add(-1, 'days');
 
     if ((activityData && activityData.isRegistrationDisabled) || !activityData.isPublicActivity) {
       return (
@@ -340,7 +340,7 @@ class Activity extends PureComponent {
 
     const conditionalRender = (occurence, occurenceIndex) => {
       if (occurence && occurence.attendees) {
-        const eventPast = dayjs(occurence.endDate).isBefore(yesterday);
+        const eventPast = moment(occurence.endDate).isBefore(yesterday);
 
         return (
           <Box>

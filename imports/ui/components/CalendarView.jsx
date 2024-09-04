@@ -1,14 +1,8 @@
 import React, { useMemo } from 'react';
-import { Calendar, dayjsLocalizer } from 'react-big-calendar';
-import dayjs from 'dayjs';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
-
-dayjs.locale(i18n.language, {
-  week: {
-    dow: 1, // Monday is the first day of the week.
-  },
-});
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../utils/styles/bigcalendar-custom.css';
@@ -17,7 +11,7 @@ function CalendarView(props) {
   const { activities } = props;
   const [t] = useTranslation('calendar');
 
-  const localizer = useMemo(() => dayjsLocalizer(dayjs), []);
+  const localizer = useMemo(() => momentLocalizer(moment), []);
 
   const messages = {
     allDay: t('bigCal.allDay'),
@@ -40,7 +34,7 @@ function CalendarView(props) {
       allDayAccessor="isMultipleDay"
       culture={i18n.language}
       defaultView="month"
-      defaultDate={dayjs().toDate()}
+      defaultDate={moment().toDate()}
       events={activities}
       localizer={localizer}
       messages={messages}

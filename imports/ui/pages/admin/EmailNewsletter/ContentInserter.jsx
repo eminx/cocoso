@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 import { call, compareDatesForSortActivities } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
@@ -26,7 +26,7 @@ import { message } from '../../../components/message';
 import { ActivityDates } from './EmailPreview';
 import FormField from '../../../components/FormField';
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
+const yesterday = moment(new Date()).add(-1, 'days');
 
 function parseGroupActivities(activities) {
   const activitiesParsed = [];
@@ -121,14 +121,14 @@ export default function ContentInserter({ currentHost, onSelect }) {
         activity?.subTitle?.toLowerCase().indexOf(lowerCaseFilterWord) !== -1;
 
       return (
-        activity.datesAndTimes.some((date) => dayjs(date.endDate).isAfter(yesterday)) &&
+        activity.datesAndTimes.some((date) => moment(date.endDate).isAfter(yesterday)) &&
         activityWordFiltered
       );
     });
 
     const pastDatesRemoved = filtered.map((activity) => {
       const datesAndTimes = activity.datesAndTimes.filter((date) =>
-        dayjs(date.endDate).isAfter(yesterday)
+        moment(date.endDate).isAfter(yesterday)
       );
       return {
         ...activity,

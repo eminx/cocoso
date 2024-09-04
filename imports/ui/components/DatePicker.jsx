@@ -3,9 +3,13 @@ import RDC, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Input } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
+import { sv } from 'moment/locale/sv';
+import { tr } from 'moment/locale/tr';
+import { enGB } from 'moment/locale/en-gb';
 
 // import locale from node_modules
-import { tr, sv } from 'date-fns/locale';
+// import { sv } from 'date-fns/locale';
+// registerLocale('sv', sv);
 
 // ! VALUE GIVEN MUST BE AN OBJECT LIKE THIS:
 // {
@@ -23,25 +27,22 @@ function DatePicker({
 }) {
   const [selectedDate, setSelectedDate] = useState();
   const [t, i18n] = useTranslation('calendar');
-
   const locale = i18n.language;
 
   useEffect(() => {
     if (value) {
       setSelectedDate(unFormatDate(value));
     }
-    registerLocaleNow();
+    registerLocaleNow;
   }, [i18n.language]);
 
   const registerLocaleNow = () => {
-    if (!i18n) {
-      return;
-    } else if (i18n?.language === 'sv') {
+    if (locale === 'sv') {
       registerLocale('sv', sv);
-    } else if (i18n?.language === 'tr') {
+    } else if (locale === 'tr') {
       registerLocale('tr', tr);
-    } else {
-      registerLocale('en', en);
+    } else if (locale === 'en') {
+      registerLocale('en', enGB);
     }
   };
 

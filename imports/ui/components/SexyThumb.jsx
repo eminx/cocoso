@@ -1,13 +1,13 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 import { DateJust } from './FancyDate';
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
-const today = dayjs(new Date());
+const yesterday = moment(new Date()).add(-1, 'days');
+const today = moment(new Date());
 
 const dateStyle = {
   fontWeight: 700,
@@ -26,7 +26,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = dayjs(date.endDate)?.isBefore(today);
+  const isPast = moment(date.endDate)?.isBefore(today);
 
   return (
     <Flex
@@ -45,14 +45,14 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
   const futureDates =
     dates &&
     dates
-      .filter((date) => dayjs(date?.endDate)?.isAfter(yesterday))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+      .filter((date) => moment(date?.endDate)?.isAfter(yesterday))
+      .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
   const remaining = futureDates && futureDates.length - 3;
   const pastDates =
     dates &&
     dates
-      .filter((date) => dayjs(date?.startDate)?.isBefore(today))
-      .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
+      .filter((date) => moment(date?.startDate)?.isBefore(today))
+      .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
 
   return (
     <Box

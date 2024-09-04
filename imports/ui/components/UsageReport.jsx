@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import { Box, Button, Center, Code, Flex, Heading, Text } from '@chakra-ui/react';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import 'react-table/react-table.css';
 import Select from 'react-select';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 
 import Drawer from './Drawer';
 import { call } from '../utils/shared';
 import { message } from './message';
-
-dayjs.locale(i18n.language);
 
 function compareDatesForSort(a, b) {
   const dateA = new Date(`${a.startDate}T${a.startTime}:00Z`);
@@ -62,8 +59,8 @@ function UsageReport({ user, onClose }) {
         });
       }
       a.datesAndTimes.forEach((d, i) => {
-        let consumption = dayjs(d.endDate + ' ' + d.endTime).diff(
-          dayjs(d.startDate + ' ' + d.startTime),
+        let consumption = moment(d.endDate + ' ' + d.endTime).diff(
+          moment(d.startDate + ' ' + d.startTime),
           'hours',
           true
         );
@@ -156,7 +153,7 @@ function UsageReport({ user, onClose }) {
             // ref={(element) => (this.printableElement = element)}
           >
             <Heading size="md" mb="2">
-              {dayjs(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
+              {moment(activitiesPerMonth[0]?.startDate).format('MMMM YYYY')}:{' '}
               <Code fontSize="xl" fontWeight="bold">{`${totalHours && totalHours[index]} `}</Code>{' '}
               {t('report.table.total')}
             </Heading>

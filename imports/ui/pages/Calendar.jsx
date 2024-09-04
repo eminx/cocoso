@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import {
   Box,
   Button,
@@ -19,8 +19,6 @@ import { Helmet } from 'react-helmet';
 import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
 import makeAnimated from 'react-select/animated';
-import timezone from 'dayjs/plugin/timezone';
-dayjs.extend(timezone);
 
 import CalendarView from '../components/CalendarView';
 import ConfirmModal from '../components/ConfirmModal';
@@ -95,22 +93,22 @@ function Calendar({ currentUser, tc }) {
       setSelectedSlot({
         ...slotInfo,
         type,
-        content: dayjs(slotInfo?.start).format('DD MMMM'),
+        content: moment(slotInfo?.start).format('DD MMMM'),
         bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else if (
       // Multiple days selected in month view
       slotInfo?.slots?.length > 1 &&
-      dayjs(slotInfo?.end).format('HH:mm') === '00:00'
+      moment(slotInfo?.end).format('HH:mm') === '00:00'
     ) {
       const type = 'month-multipledays';
       setSelectedSlot({
         ...slotInfo,
         type,
         content:
-          dayjs(slotInfo?.start).format('DD MMMM') +
+          moment(slotInfo?.start).format('DD MMMM') +
           ' – ' +
-          dayjs(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
+          moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
         bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else {
@@ -120,11 +118,11 @@ function Calendar({ currentUser, tc }) {
         ...slotInfo,
         type,
         content:
-          dayjs(slotInfo?.start).format('DD MMMM') +
+          moment(slotInfo?.start).format('DD MMMM') +
           ': ' +
-          dayjs(slotInfo?.start).format('HH:mm') +
+          moment(slotInfo?.start).format('HH:mm') +
           ' – ' +
-          dayjs(slotInfo?.end).format('HH:mm'),
+          moment(slotInfo?.end).format('HH:mm'),
         bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     }
@@ -142,11 +140,11 @@ function Calendar({ currentUser, tc }) {
       return '';
     }
     if (activity.startDate === activity.endDate) {
-      return `${activity.startTime}–${activity.endTime} ${dayjs(activity.startDate).format(
+      return `${activity.startTime}–${activity.endTime} ${moment(activity.startDate).format(
         'DD MMMM'
       )}`;
     }
-    return `${dayjs(activity.startDate).format('DD MMM')} ${activity.startTime} – ${dayjs(
+    return `${moment(activity.startDate).format('DD MMM')} ${activity.startTime} – ${moment(
       activity.endDate
     ).format('DD MMM')} ${activity.endTime}`;
   };
@@ -417,15 +415,15 @@ function Calendar({ currentUser, tc }) {
 function parseDatesForQuery(slotInfo, selectedResource, type) {
   let bookingUrl = '/activities/new/?';
   const params = {
-    startDate: dayjs(slotInfo?.start).format('YYYY-MM-DD'),
-    endDate: dayjs(slotInfo?.end).format('YYYY-MM-DD'),
-    startTime: dayjs(slotInfo?.start).format('HH:mm'),
-    endTime: dayjs(slotInfo?.end).format('HH:mm'),
+    startDate: moment(slotInfo?.start).format('YYYY-MM-DD'),
+    endDate: moment(slotInfo?.end).format('YYYY-MM-DD'),
+    startTime: moment(slotInfo?.start).format('HH:mm'),
+    endTime: moment(slotInfo?.end).format('HH:mm'),
     resource: selectedResource ? selectedResource._id : '',
   };
 
   if (type !== 'other') {
-    params.endDate = dayjs(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
+    params.endDate = moment(slotInfo?.end).add(-1, 'days').format('YYYY-MM-DD');
     params.endTime = '23:59';
   }
 

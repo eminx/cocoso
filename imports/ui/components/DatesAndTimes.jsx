@@ -14,8 +14,10 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
-import DatePicker from './DatePicker';
 import { useTranslation } from 'react-i18next';
+
+// import DatePicker from './DatePicker';
+import DayPicker from './DayPicker';
 
 const maxAttendees = 1000;
 
@@ -60,7 +62,7 @@ function DatesAndTimes({
   };
 
   return (
-    <Box bg="brand.100" borderColor={getBorderColorStyle()} mb="4" p="4">
+    <Box bg="white" borderColor={getBorderColorStyle()} mb="4" p="4">
       {isDeletable && (
         <Flex justify="flex-end" mb="4">
           <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
@@ -80,17 +82,17 @@ function DatesAndTimes({
         <Box p="2">
           <Box mb="2">
             <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
-            <DatePicker noTime value={startDate} onChange={handleStartDateChange} />
+            <DayPicker noTime value={startDate} onChange={handleStartDateChange} />
           </Box>
 
           {isRange && (
             <Box>
               <Text fontSize="sm">{t('form.date.finish')}</Text>
-              <DatePicker
-                noTime
+              <DayPicker
+                // noTime
                 value={endDate}
                 onChange={handleEndDateChange}
-                minDate={new Date(startDate.date)}
+                // minDate={new Date(startDate.date)}
               />
             </Box>
           )}
@@ -104,15 +106,15 @@ function DatesAndTimes({
           flexGrow={0}
           flexBasis="180px"
         >
-          <Box mb="2">
+          {/* <Box mb="2">
             <Text fontSize="sm">{t('form.time.start')}</Text>
-            <DatePicker onlyTime value={startDate} onChange={handleStartTimeChange} />
+            <DayPicker onlyTime value={startDate} onChange={handleStartTimeChange} />
           </Box>
 
           <Box>
             <Text fontSize="sm">{t('form.time.finish')}</Text>
-            <DatePicker onlyTime value={endDate} onChange={handleEndTimeChange} />
-          </Box>
+            <DayPicker onlyTime value={endDate} onChange={handleEndTimeChange} />
+          </Box> */}
 
           {isPublicActivity && (
             <Box mt="4">

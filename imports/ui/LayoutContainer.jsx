@@ -19,14 +19,10 @@ import {
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
-const localizedFormat = require('dayjs/plugin/localizedFormat');
-import dayjs from 'dayjs';
-
-dayjs.extend(localizedFormat);
-
-require('dayjs/locale/en');
-require('dayjs/locale/sv');
-require('dayjs/locale/tr');
+import moment from 'moment';
+import 'moment/locale/en-GB';
+import 'moment/locale/sv';
+import 'moment/locale/tr';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -35,6 +31,7 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+
 // import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
@@ -45,10 +42,18 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [hue, setHue] = useState('233');
-  const [tc] = useTranslation('common');
+  const [tc, i18n] = useTranslation();
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const location = useLocation();
   const { pathname } = location;
+
+  useEffect(() => {
+    moment().locale(i18n?.language, {
+      week: {
+        dow: 1, // Monday is the first day of the week.
+      },
+    });
+  }, [i18n?.language]);
 
   useEffect(() => {
     getCurrentHost();

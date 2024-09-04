@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
@@ -22,16 +22,19 @@ import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 
-dayjs.locale(i18n.language);
-const yesterday = dayjs(new Date()).add(-1, 'days');
+moment.locale(i18n.language);
+const yesterday = moment(new Date()).add(-1, 'days');
 
 const getFutureOccurences = (dates) => {
   if (!dates || dates.length === 0) {
     return dates;
   }
+
   return dates
-    .filter((date) => dayjs(date.startDate)?.isAfter(yesterday))
-    .sort((a, b) => dayjs(a.startDate) - dayjs(b.startDate));
+    .filter((date) => {
+      return moment(date?.startDate)?.isAfter(yesterday);
+    })
+    .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
 };
 
 export default function GroupsList() {
@@ -124,7 +127,7 @@ export default function GroupsList() {
         if (
           meetings &&
           meetings.length > 0 &&
-          dayjs(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
+          moment(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
         ) {
           groupsWithFutureMeetings.push(group);
         } else {
@@ -285,7 +288,7 @@ export default function GroupsList() {
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
-            action={getDatesForAction(modalGroup)}
+            // action={getDatesForAction(modalGroup)}
             content={modalGroup.description && renderHTML(modalGroup.description)}
             images={[modalGroup.imageUrl]}
             subTitle={modalGroup.readingMaterial}
@@ -318,7 +321,7 @@ function parseGroupsWithMeetings(groups, meetings) {
     const allGroupActivities = meetings.filter((meeting) => meeting.groupId === pId);
     const groupActivitiesFuture = allGroupActivities
       .map((pA) => pA.datesAndTimes[0])
-      .filter((date) => dayjs(date.startDate)?.isAfter(yesterday))
+      .filter((date) => moment(date.startDate)?.isAfter(yesterday))
       .sort(compareMeetingDatesForSort);
     return {
       ...group,
