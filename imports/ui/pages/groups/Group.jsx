@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
 import renderHTML from 'react-render-html';
@@ -49,9 +49,9 @@ import { StateContext } from '../../LayoutContainer.jsx';
 import { DocumentUploadHelper } from '../../components/UploadHelpers.jsx';
 // import { MainLoader } from '../../components/SkeletonLoaders.jsx';
 
-dayjs.locale(i18n.language);
+moment.locale(i18n.language);
 
-const yesterday = dayjs(new Date()).add(-1, 'days');
+const yesterday = moment(new Date()).add(-1, 'days');
 
 class Group extends Component {
   state = {
@@ -393,7 +393,7 @@ class Group extends Component {
       return;
     }
 
-    const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
+    const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
     return (
       <Box>
@@ -456,7 +456,7 @@ class Group extends Component {
       return;
     }
 
-    const isFutureMeeting = (meeting) => dayjs(meeting.endDate).isAfter(yesterday);
+    const isFutureMeeting = (meeting) => moment(meeting.endDate).isAfter(yesterday);
 
     return groupMeetings.map((meeting, meetingIndex) => {
       const isAttending =
@@ -877,14 +877,14 @@ class Group extends Component {
       );
     } else {
       const futureMeetings = groupMeetings?.filter((meeting) =>
-        dayjs(meeting.endDate).isAfter(yesterday)
+        moment(meeting.endDate).isAfter(yesterday)
       );
       if (!futureMeetings || futureMeetings.length === 0) {
         return null;
       }
 
       const futureMeetingsSorted = futureMeetings.sort(
-        (a, b) => dayjs(a.startDate) - dayjs(b.startDate)
+        (a, b) => moment(a.startDate) - moment(b.startDate)
       );
 
       return (
@@ -934,7 +934,7 @@ class Group extends Component {
       ?.unSeenIndexes?.length;
 
     const isFutureMeetings =
-      groupMeetings?.filter((meeting) => dayjs(meeting.endDate).isAfter(yesterday)).length > 0;
+      groupMeetings?.filter((meeting) => moment(meeting.endDate).isAfter(yesterday)).length > 0;
 
     const tabs = [
       {

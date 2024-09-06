@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 import { DayPicker as DayPickerX } from 'react-day-picker';
 import 'react-day-picker/src/style.css';
-import { sv } from 'date-fns/locale';
+import { en, sv, tr } from 'date-fns/locale';
+import moment from 'moment';
+import i18n from '../../startup/i18n';
 
 export default function DayPicker({ value, onChange }) {
-  console.log(value);
-
-  const handleDayClick = (date) => {
-    console.log(date);
-    onChange(date);
-    // setCurrentMonth(date);
+  const [month, setMonth] = useState(new Date());
+  const handleSelect = (date) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    onChange(formattedDate);
   };
+  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
+  const monthShown = value?.date || month;
 
   return (
     <DayPickerX
-      locale={sv}
+      locale={locale}
       mode="single"
-      // month={currentMonth}
-      // selected={value.date}
+      month={monthShown}
+      selected={value?.date}
       showWeekNumber
       weekStartsOn={1}
-      // onMonthChange={handleDayClick}
-      onSelect={handleDayClick}
+      onMonthChange={setMonth}
+      onSelect={handleSelect}
     />
   );
 }
