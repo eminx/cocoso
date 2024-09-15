@@ -28,20 +28,21 @@ export default function Settings() {
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
 
-  if (!currentUser || role !== 'admin') {
-    return <Alert>{tc('message.access.deny')}</Alert>;
-  }
-
   useEffect(() => {
-    if (!currentHost) {
-      return;
-    }
-    setLocalSettings(currentHost.settings);
+    currentHost && setLocalSettings(currentHost.settings);
     setLoading(false);
   }, []);
 
   if (!currentHost) {
     return null;
+  }
+
+  if (!currentUser || role !== 'admin') {
+    return (
+      <Center>
+        <Alert>{tc('message.access.deny')}</Alert>
+      </Center>
+    );
   }
 
   if (loading) {
