@@ -15,7 +15,7 @@ export default function Popover({
   footer,
   isDark = true,
   title,
-  trigger,
+  triggerComponent,
   children,
   ...otherProps
 }) {
@@ -24,12 +24,13 @@ export default function Popover({
 
   return (
     <CPopover trigger="hover" {...otherProps}>
-      <PopoverTrigger>{trigger}</PopoverTrigger>
+      <PopoverTrigger>{triggerComponent}</PopoverTrigger>
       <PopoverContent
         bg={bg}
         borderColor={borderColor}
         color={isDark ? 'white' : 'gray.900'}
-        px="4"
+        maxW="95wv"
+        // px="4"
         py="2"
         w="auto"
       >

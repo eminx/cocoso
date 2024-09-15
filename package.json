@@ -61,6 +61,8 @@
     "antd": "^5.14.0",
     "array-move": "^2.2.2",
     "bcrypt": "^5.0.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^5.5.6",
@@ -114,7 +116,9 @@
     "simpl-schema": "^1.12.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
-    "tailwindcss": "^3.3.6"
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss": "^3.3.6",
+    "tailwindcss-animate": "^1.0.7"
   },
   "meteor": {
     "mainModule": {

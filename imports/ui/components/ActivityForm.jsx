@@ -71,7 +71,7 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const removeRecurrence = (index) => {
+  const removeOccurrence = (index) => {
     const newDatesAndTimes = datesAndTimes.filter((item, i) => {
       return i !== index;
     });
@@ -79,23 +79,21 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const handleDateChange = (date, recurrenceIndex, entity) => {
+  const handleDateTimeChange = (date, occurrenceIndex) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (index === recurrenceIndex) {
-        item[entity] = date;
-        if (entity === 'startDate' && !item.isRange) {
-          item.endDate = date;
-        }
+      if (index === occurrenceIndex) {
+        return date;
+      } else {
+        return item;
       }
-      return item;
     });
 
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const handleCapacityChange = (value, recurrenceIndex) => {
+  const handleCapacityChange = (value, occurrenceIndex) => {
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex === index) {
+      if (occurrenceIndex === index) {
         item.capacity = Number(value);
       }
       return item;
@@ -104,10 +102,10 @@ function ActivityForm({
     setDatesAndTimes(newDatesAndTimes);
   };
 
-  const handleRangeSwitch = (event, recurrenceIndex) => {
+  const handleRangeSwitch = (event, occurrenceIndex) => {
     const value = event.target.checked;
     const newDatesAndTimes = datesAndTimes.map((item, index) => {
-      if (recurrenceIndex === index) {
+      if (occurrenceIndex === index) {
         item.isRange = value;
         if (!value) {
           item.endDate = item.startDate;
@@ -168,26 +166,23 @@ function ActivityForm({
           />
 
           <Box mb="4" mt="2">
-            {datesAndTimes.map((recurrence, index) => {
+            {datesAndTimes.map((occurrence, index) => {
               const id =
-                recurrence.startDate +
-                recurrence.endDate +
-                recurrence.startTime +
-                recurrence.endTime +
+                occurrence.startDate +
+                occurrence.endDate +
+                occurrence.startTime +
+                occurrence.endTime +
                 index;
               return (
                 <DatesAndTimes
                   key={id}
                   id={id}
                   isPublicActivity={isPublicActivity}
-                  recurrence={recurrence}
-                  removeRecurrence={() => removeRecurrence(index)}
+                  occurrence={occurrence}
+                  removeOccurrence={() => removeOccurrence(index)}
                   isDeletable={datesAndTimes.length > 1}
                   handleCapacityChange={(value) => handleCapacityChange(value, index)}
-                  handleStartDateChange={(date) => handleDateChange(date, index, 'startDate')}
-                  handleEndDateChange={(date) => handleDateChange(date, index, 'endDate')}
-                  handleStartTimeChange={(time) => handleDateChange(time, index, 'startTime')}
-                  handleEndTimeChange={(time) => handleDateChange(time, index, 'endTime')}
+                  handleDateTimeChange={(date) => handleDateTimeChange(date, index)}
                   handleRangeSwitch={(event) => handleRangeSwitch(event, index)}
                 />
               );

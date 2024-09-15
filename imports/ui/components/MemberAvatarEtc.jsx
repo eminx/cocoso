@@ -90,7 +90,7 @@ function MemberAvatarEtc({ isThumb = false, user }) {
               {['contributor', 'admin'].includes(role) && (
                 <Box ml="1">
                   <Popover
-                    trigger={
+                    triggerComponent={
                       role === 'contributor' ? (
                         <BadgeCheck color="#010101" size="20" />
                       ) : (
@@ -122,7 +122,8 @@ function MemberAvatarEtc({ isThumb = false, user }) {
             <Box my="2">
               {membershipsLength > 1 && (
                 <Popover
-                  trigger={
+                  trigger="click"
+                  triggerComponent={
                     <Button
                       colorScheme="gray.700"
                       fontWeight="light"
