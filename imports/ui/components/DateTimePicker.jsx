@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
-import { en, sv, tr } from 'date-fns/locale';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import AntTimePicker from 'antd/lib/time-picker';
 import AntDatePicker from 'antd/lib/date-picker';
+import ConfigProvider from 'antd/lib/config-provider';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
+import en from 'antd/locale/en_US';
+import sv from 'antd/locale/sv_SE';
+import tr from 'antd/locale/tr_TR';
+
 import i18n from '../../startup/i18n';
+
+const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
 
 export default function DateTimePicker({ isRange, value, onChange }) {
   const [t] = useTranslation('activities');
 
-  console.log(value);
-
   const handleDateChange = (date, entity) => {
-    console.log(date);
     if (!date) {
       return;
     }
@@ -27,16 +30,16 @@ export default function DateTimePicker({ isRange, value, onChange }) {
 
     if (isRange) {
       if (entity === 'endDate') {
-        parsedValue.endDate = date;
+        parsedValue.endDate = date.format('YYYY-MM-DD');
       } else {
-        parsedValue.startDate = date;
+        parsedValue.startDate = date.format('YYYY-MM-DD');
         if (dayjs(parsedValue.startDate).isAfter(dayjs(parsedValue.endDate))) {
-          parsedValue.endDate = date;
+          parsedValue.endDate = date.format('YYYY-MM-DD');
         }
       }
     } else {
-      parsedValue.startDate = date;
-      parsedValue.endDate = date;
+      parsedValue.startDate = date.format('YYYY-MM-DD');
+      parsedValue.endDate = date.format('YYYY-MM-DD');
     }
 
     onChange(parsedValue);
@@ -51,9 +54,9 @@ export default function DateTimePicker({ isRange, value, onChange }) {
       ...value,
     };
 
-    parsedValue[entity] = time;
+    parsedValue[entity] = time.format('HH:mm');
     if (!isRange && dayjs(parsedValue.startTime).isAfter(dayjs(parsedValue.endTime))) {
-      parsedValue.endTime = time;
+      parsedValue.endTime = time.format('HH:mm');
     }
 
     onChange(parsedValue);
@@ -103,13 +106,14 @@ function DatePicker({ disabledDate, label, value, onChange }) {
   return (
     <Box mb="4">
       <Text mb="2">{label}</Text>
-
-      <AntDatePicker
-        disabledDate={(date) => date && date < dayjs(disabledDate)}
-        size="large"
-        value={dayjs(value, 'YYYY-MM-DD')}
-        onChange={onChange}
-      />
+      <ConfigProvider locale={locale}>
+        <AntDatePicker
+          disabledDate={(date) => date && date < dayjs(disabledDate)}
+          size="large"
+          value={dayjs(value, 'YYYY-MM-DD')}
+          onChange={onChange}
+        />
+      </ConfigProvider>
     </Box>
   );
 }

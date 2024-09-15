@@ -187,8 +187,8 @@ function ActivityForm({
                 />
               );
             })}
-            <Center bg="brand.50" p="6">
-              <IconButton size="lg" onClick={addRecurrence} icon={<AddIcon />} />
+            <Center bg="white" p="6">
+              <IconButton bg="gray.700" size="lg" onClick={addRecurrence} icon={<AddIcon />} />
             </Center>
           </Box>
         </Box>

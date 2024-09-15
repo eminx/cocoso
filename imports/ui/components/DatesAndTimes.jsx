@@ -39,8 +39,9 @@ function DatesAndTimes({
 
   const isRange = occurrence.isRange;
 
-  const getBorderColorStyle = () => {
+  const getBorderColor = () => {
     if (!occurrence.conflict) {
+      return 'green.300';
     } else if (occurrence.isConflictOK) {
       return 'orange';
     } else {
@@ -49,38 +50,45 @@ function DatesAndTimes({
   };
 
   return (
-    <Box bg="gray.50" borderColor={getBorderColorStyle()} mb="4" p="4" position="relative">
+    <Box
+      bg="white"
+      borderWidth="1px"
+      borderColor={getBorderColor()}
+      mb="4"
+      p="4"
+      position="relative"
+    >
       {isDeletable && (
-        <Flex justify="flex-end" mb="4" position="absolute" right="0" top="0">
-          <IconButton onClick={removeOccurrence} size="sm" icon={<DeleteIcon />} />
-        </Flex>
+        <IconButton
+          bg="gray.700"
+          icon={<DeleteIcon />}
+          position="absolute"
+          right="12px"
+          top="12px"
+          size="sm"
+          zIndex={9}
+          onClick={removeOccurrence}
+        />
       )}
 
-      <Center mb="2">
+      <Box mb="2">
         <FormControl w="auto" alignItems="center" display="flex">
           <Switch isChecked={isRange} id={id} onChange={handleRangeSwitch} py="2" />
           <FormLabel htmlFor={id} mb="1" ml="2">
             {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
-      </Center>
+      </Box>
 
       <Wrap>
-        <Box mb="2">
+        <Box>
           <DateTimePicker isRange={isRange} value={occurrence} onChange={handleDateTimeChange} />
         </Box>
 
-        <Box
-          flexDirection="column"
-          p="2"
-          mb="6"
-          justify="space-around"
-          flexGrow={0}
-          flexBasis="180px"
-        >
+        <Box flexDirection="column" mb="6" justify="space-around" flexGrow={0} flexBasis="180px">
           {isPublicActivity && (
             <Box mt="4">
-              <Text fontSize="sm">{t('form.capacity.label')}</Text>
+              <Text mb="2">{t('form.capacity.label')}:</Text>
               <NumberInput
                 min={1}
                 max={maxAttendees}
