@@ -23,6 +23,7 @@ form:
   time:
     start: Starttid
     finish: Sluttid
+    startFinish: Start och sluttid
   capacity:
     label: Kapacitet
   details:

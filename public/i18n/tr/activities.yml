@@ -23,6 +23,7 @@ form:
   time:
     start: Başlangıç saati
     finish: Bitiş saati
+    startFinish: Başlangıç ve bitiş saati
   capacity:
     label: Kapasite
   details:

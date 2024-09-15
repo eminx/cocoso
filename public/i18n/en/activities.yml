@@ -20,6 +20,7 @@ form:
   date:
     start: Start day
     finish: Finish day
+    startFinish: Start and finish time
   time:
     start: Start time
     finish: Finish time

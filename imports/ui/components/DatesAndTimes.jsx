@@ -49,7 +49,7 @@ function DatesAndTimes({
   };
 
   return (
-    <Box bg="brand.50" borderColor={getBorderColorStyle()} mb="4" p="4" position="relative">
+    <Box bg="gray.50" borderColor={getBorderColorStyle()} mb="4" p="4" position="relative">
       {isDeletable && (
         <Flex justify="flex-end" mb="4" position="absolute" right="0" top="0">
           <IconButton onClick={removeOccurrence} size="sm" icon={<DeleteIcon />} />

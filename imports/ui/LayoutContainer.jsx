@@ -108,10 +108,6 @@ function LayoutPage({ currentUser, userLoading, children }) {
     }
   };
 
-  if (!currentUser) {
-    return null;
-  }
-
   const chakraTheme = generateTheme(hue);
 
   const hostWithinUser =
