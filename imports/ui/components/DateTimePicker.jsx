@@ -14,8 +14,6 @@ import tr from 'antd/locale/tr_TR';
 
 import i18n from '../../startup/i18n';
 
-const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
-
 export default function DateTimePicker({ isRange, value, onChange }) {
   const [t] = useTranslation('activities');
 
@@ -103,6 +101,8 @@ export default function DateTimePicker({ isRange, value, onChange }) {
 }
 
 function DatePicker({ disabledDate, label, value, onChange }) {
+  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
+
   return (
     <Box mb="4">
       <Text mb="2">{label}</Text>
