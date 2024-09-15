@@ -40,6 +40,10 @@ export default function Settings() {
     setLoading(false);
   }, []);
 
+  if (!currentHost) {
+    return null;
+  }
+
   if (loading) {
     return <Loader />;
   }
