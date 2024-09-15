@@ -28,7 +28,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-import DatePicker from '../../components/DatePicker.jsx';
+import DateTimePicker from '../../components/DateTimePicker.jsx';
 import { ConflictMarker } from '../../components/DatesAndTimes.jsx';
 import InviteManager from './InviteManager.jsx';
 import Drawer from '../../components/Drawer.jsx';
@@ -238,14 +238,10 @@ class Group extends Component {
     });
   };
 
-  handleDateAndTimeChange = (dateOrTime, entity) => {
-    const { newMeeting } = this.state;
-    const newerMeeting = { ...newMeeting };
-    newerMeeting[entity] = dateOrTime;
-
+  handleDateAndTimeChange = (date) => {
     this.setState(
       {
-        newMeeting: newerMeeting,
+        newMeeting: date,
       },
       () => {
         this.validateBookings();
@@ -914,6 +910,7 @@ class Group extends Component {
       inviteManagerOpen,
       isFormValid,
       modalOpen,
+      newMeeting,
       potentialNewAdmin,
       redirectToLogin,
       resources,
@@ -984,13 +981,12 @@ class Group extends Component {
               <CreateMeetingForm
                 buttonDisabled={!isFormValid}
                 conflictingBooking={conflictingBooking}
-                handleDateChange={(date) => this.handleDateAndTimeChange(date, 'startDate')}
-                handleStartTimeChange={(time) => this.handleDateAndTimeChange(time, 'startTime')}
-                handleFinishTimeChange={(time) => this.handleDateAndTimeChange(time, 'endTime')}
+                hostname={currentHost?.settings?.name}
+                newMeeting={newMeeting}
+                resources={resources.filter((r) => r.isBookable)}
+                handleDateChange={(date) => this.handleDateAndTimeChange(date)}
                 handleResourceChange={this.handleResourceChange}
                 handleSubmit={this.createActivity}
-                hostname={currentHost?.settings?.name}
-                resources={resources.filter((r) => r.isBookable)}
               />
             )}
           </Box>
@@ -1123,13 +1119,12 @@ function MeetingInfo({ meeting, isAttending, resources }) {
 function CreateMeetingForm({
   buttonDisabled,
   conflictingBooking,
+  hostname,
+  newMeeting,
+  resources,
   handleDateChange,
-  handleStartTimeChange,
-  handleFinishTimeChange,
   handleResourceChange,
   handleSubmit,
-  hostname,
-  resources,
 }) {
   const [isLocal, setIsLocal] = useState(true);
   const [t] = useTranslation('groups');
@@ -1138,21 +1133,13 @@ function CreateMeetingForm({
   return (
     <Box bg="brand.50" border="1px solid" borderColor="brand.500" p="4" my="4">
       <Text fontWeight="bold">{t('meeting.form.label')}</Text>
-      <Box py="2">
-        <DatePicker noTime onChange={handleDateChange} />
-      </Box>
-      <HStack spacing="2" mb="6">
-        <DatePicker
-          onlyTime
+      <Box py="2" mb="8">
+        <DateTimePicker
           placeholder={t('meeting.form.time.start')}
-          onChange={handleStartTimeChange}
+          value={newMeeting}
+          onChange={handleDateChange}
         />
-        <DatePicker
-          onlyTime
-          placeholder={t('meeting.form.time.end')}
-          onChange={handleFinishTimeChange}
-        />
-      </HStack>
+      </Box>
 
       {/* <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch

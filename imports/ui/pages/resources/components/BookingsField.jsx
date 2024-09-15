@@ -10,7 +10,6 @@ import {
   Flex,
   Text,
   Button,
-  HStack,
   Textarea,
   Switch,
   FormControl,
@@ -27,7 +26,7 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { call } from '../../../utils/shared';
 import NiceList from '../../../components/NiceList';
 import { message } from '../../../components/message';
-import DatePicker from '../../../components/DatePicker';
+import DateTimePicker from '../../../components/DateTimePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
 
@@ -38,8 +37,8 @@ const today = new Date().toISOString().substring(0, 10);
 const datesModel = {
   startDate: today,
   endDate: today,
-  startTime: '',
-  endTime: '',
+  startTime: '08:00',
+  endTime: '16:00',
 };
 
 export default function BookingsField({ currentUser, selectedResource }) {
@@ -111,14 +110,7 @@ export default function BookingsField({ currentUser, selectedResource }) {
   };
 
   const handleDateAndTimeChange = (value, key) => {
-    const selectedDates = {
-      ...newBooking,
-    };
-    selectedDates[key] = value;
-    if (key === 'startDate' && !multipledays) {
-      selectedDates.endDate = value;
-    }
-    setNewBooking(selectedDates);
+    setNewBooking(value);
     increment();
   };
 
@@ -147,6 +139,8 @@ export default function BookingsField({ currentUser, selectedResource }) {
 
     try {
       await call('createActivity', activityValues);
+      setNewBooking(datesModel);
+      setMultipledays(false);
       message.success(tc('message.success.create'));
       setAccordionOpen(false);
       getResourceBookingsForUser();
@@ -208,32 +202,12 @@ export default function BookingsField({ currentUser, selectedResource }) {
                     mb="4"
                     border={isConflict ? '1px solid red' : 'none'}
                   >
-                    <HStack spacing="2" mb="4">
-                      <DatePicker
-                        noTime
-                        placeholder={t('booking.date.start')}
-                        onChange={(date) => handleDateAndTimeChange(date, 'startDate')}
-                      />
-                      {multipledays && (
-                        <DatePicker
-                          noTime
-                          placeholder={t('booking.date.end')}
-                          onChange={(date) => handleDateAndTimeChange(date, 'endDate')}
-                        />
-                      )}
-                    </HStack>
-                    <HStack spacing="2">
-                      <DatePicker
-                        onlyTime
-                        placeholder={t('booking.time.start')}
-                        onChange={(time) => handleDateAndTimeChange(time, 'startTime')}
-                      />
-                      <DatePicker
-                        onlyTime
-                        placeholder={t('booking.time.end')}
-                        onChange={(time) => handleDateAndTimeChange(time, 'endTime')}
-                      />
-                    </HStack>
+                    <DateTimePicker
+                      isRange={multipledays}
+                      value={newBooking}
+                      onChange={handleDateAndTimeChange}
+                    />
+
                     {isConflict && (
                       <ConflictMarker newBooking={selectedBookingsWithConflict[0]} t={t} />
                     )}
@@ -274,11 +248,11 @@ export default function BookingsField({ currentUser, selectedResource }) {
       </Box>
 
       {!isLoading && (
-        <Box bg="white" mt="2">
+        <Box mt="2">
           {resourceBookingsForUser && resourceBookingsForUser.length > 0 && (
             <NiceList actionsDisabled={!isAdmin} list={resourceBookingsForUser}>
               {(booking) => (
-                <Box>
+                <Box p="2">
                   <Text fontSize="sm">
                     {`From ${moment(booking.startDate).format('ddd, D MMM')} ${booking.startTime} 
                     to ${
