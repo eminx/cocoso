@@ -13,6 +13,8 @@ function SignupPage() {
 
   if (currentUser && platform?.isFederationLayout) {
     return <Navigate to="/intro" />;
+  } else if (currentUser) {
+    return <Navigate to={`/@${currentUser.username}`} />;
   }
 
   return (

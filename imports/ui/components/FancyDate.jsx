@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Flex } from '@chakra-ui/react';
 import moment from 'moment';
-import i18n from 'i18next';
-
-moment.locale(i18n.language);
+import { useTranslation } from 'react-i18next';
 
 const fancyDateStyle = {
   alignItems: 'flex-end',
@@ -17,6 +15,16 @@ const fancyDateStyle = {
 };
 
 function DateJust({ children, ...otherProps }) {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    moment?.locale(i18n?.language, {
+      week: {
+        dow: 1, // Monday is the first day of the week.
+      },
+    });
+  }, [i18n.language]);
+
   return (
     <div {...otherProps}>
       <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>

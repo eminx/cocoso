@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -35,7 +35,7 @@ function MembersPublic() {
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [modalUser, setModalUser] = useState(null);
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const { allHosts, currentHost, isDesktop } = useContext(StateContext);
+  const { allHosts, currentHost } = useContext(StateContext);
   const [tm] = useTranslation('members');
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,6 +51,29 @@ function MembersPublic() {
   }, [members?.length]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
+
+  const cascaderOptions = useMemo(() => {
+    return [
+      ...keywords.map((kw) => ({
+        label: kw.label,
+        value: kw._id,
+        children: members
+          .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
+          ?.map((mx) => ({
+            label: mx.username,
+            value: mx.username,
+          })),
+      })),
+      {
+        label: tm('all'),
+        value: 'allMembers',
+        children: members.map((m) => ({
+          label: m.username,
+          value: m.username,
+        })),
+      },
+    ];
+  }, [members?.length, keywords?.length]);
 
   const getAndSetMembers = async () => {
     try {
@@ -208,7 +231,7 @@ function MembersPublic() {
     }
     try {
       const profile = await call('getUserInfo', username);
-      isDesktop ? setSelectedProfile(profile) : setModalUser(profile);
+      setModalUser(profile);
     } catch (error) {
       console.log(error);
       message.error(error.error);
@@ -285,17 +308,6 @@ function MembersPublic() {
   const description = settings.menu.find((item) => item.name === 'people')?.description;
   const imageUrl = membersRendered.find((m) => m?.avatar && m.avatar.src)?.avatar.src;
 
-  const cascaderOptions = keywords.map((kw) => ({
-    label: kw.label,
-    value: kw._id,
-    children: members
-      .filter((m) => m?.keywords?.map((k) => k.keywordId)?.includes(kw._id))
-      ?.map((mx) => ({
-        label: mx.username,
-        value: mx.username,
-      })),
-  }));
-
   const tabs = [
     {
       path: '/people',
@@ -324,7 +336,7 @@ function MembersPublic() {
       <PageHeading description={description} numberOfItems={membersRendered.length}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
+            <Flex justify="center">
               <HostFiltrer
                 allHosts={allHosts}
                 hostFilterValue={hostFilterValue}
@@ -340,8 +352,7 @@ function MembersPublic() {
       </Center>
 
       {showKeywordSearch ? (
-        <Flex justify="space-around">
-          <Box flex="1" />
+        <Flex justify="center">
           <Cascader
             changeOnSelect
             dropdownRender={cascaderRender}
@@ -351,9 +362,9 @@ function MembersPublic() {
             showSearch={{ filterCascaderOptions }}
             size="large"
             style={{ borderRadius: 0, width: 240 }}
+            onRemove={() => setFilterWord('')}
             onChange={handleCascaderSelect}
           />
-          <Box flex="2" />
         </Flex>
       ) : (
         <Box>

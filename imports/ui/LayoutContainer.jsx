@@ -18,10 +18,11 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
+import moment from 'moment';
+import 'moment/locale/en-gb';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
-import renderHTML from 'react-render-html';
-import { HydrationProvider } from 'react-hydration-provider';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -30,10 +31,10 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+
 // import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
-
 const publicSettings = Meteor.settings.public;
 
 function LayoutPage({ currentUser, userLoading, children }) {
@@ -41,20 +42,24 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const [currentHost, setCurrentHost] = useState(null);
   const [allHosts, setAllHosts] = useState(null);
   const [hue, setHue] = useState('233');
-  const [tc] = useTranslation('common');
+  const [tc, i18n] = useTranslation();
   const [isDesktop] = useMediaQuery('(min-width: 960px)');
   const location = useLocation();
   const { pathname } = location;
+
+  useEffect(() => {
+    moment.locale(i18n?.language, {
+      week: {
+        dow: 1, // Monday is the first day of the week.
+      },
+    });
+  }, [i18n?.language]);
 
   useEffect(() => {
     getCurrentHost();
     getPlatform();
     getAllHosts();
   }, []);
-
-  // useEffect(() => {
-  //   getAllHosts();
-  // }, [currentHost && currentHost.isPortalHost]);
 
   const pathnameSplitted = pathname.split('/');
 
@@ -160,52 +165,50 @@ function LayoutPage({ currentUser, userLoading, children }) {
         />
       </Helmet>
 
-      <HydrationProvider>
-        <ChakraProvider theme={chakraTheme}>
-          <ColorModeProvider>
-            {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
-            <StateContext.Provider
-              value={{
-                allHosts,
-                canCreateContent,
-                currentUser,
-                currentHost,
-                hue,
-                isDesktop,
-                platform,
-                role,
-                userLoading,
-                getCurrentHost,
-                getPlatform,
-                setHue,
-                setSelectedHue,
-              }}
-            >
-              {platform && platform.isFederationLayout && <TopBar />}
+      <ChakraProvider theme={chakraTheme}>
+        <ColorModeProvider>
+          {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
+          <StateContext.Provider
+            value={{
+              allHosts,
+              canCreateContent,
+              currentUser,
+              currentHost,
+              hue,
+              isDesktop,
+              platform,
+              role,
+              userLoading,
+              getCurrentHost,
+              getPlatform,
+              setHue,
+              setSelectedHue,
+            }}
+          >
+            {platform && platform.isFederationLayout && <TopBar />}
 
-              <Flex>
-                <Box id="main-viewport" flexGrow="2">
-                  <Box w="100%">
-                    <Header isSmallerLogo={!isLargerLogo} />
+            <Flex>
+              <Box id="main-viewport" flexGrow="2">
+                <Box w="100%">
+                  <Header isSmallerLogo={!isLargerLogo} />
 
-                    <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                      {children}
-                    </Box>
-
-                    <Footer
-                      currentHost={currentHost}
-                      isFederationFooter={isFederationFooter}
-                      tc={tc}
-                    />
-
-                    {isFederationFooter && <PlatformFooter platform={platform} />}
+                  <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                    {children}
                   </Box>
+
+                  <Footer
+                    currentHost={currentHost}
+                    isFederationFooter={isFederationFooter}
+                    tc={tc}
+                  />
+
+                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-              </Flex>
-            </StateContext.Provider>
-          </ColorModeProvider>
-        </ChakraProvider>
-      </HydrationProvider>
+              </Box>
+            </Flex>
+          </StateContext.Provider>
+        </ColorModeProvider>
+      </ChakraProvider>
     </>
   );
 }

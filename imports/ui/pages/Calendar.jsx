@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import i18n from 'i18next';
 import {
   Box,
   Button,
@@ -34,7 +33,6 @@ import { StateContext } from '../LayoutContainer';
 import PageHeading from '../components/PageHeading';
 import Loader from '../components/Loader';
 
-moment.locale(i18n.language);
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 
@@ -81,7 +79,7 @@ function Calendar({ currentUser, tc }) {
   };
 
   const handleSelectSlot = (slotInfo) => {
-    if (!canCreateContent) {
+    if (!canCreateContent || !slotInfo) {
       return;
     }
 
@@ -110,7 +108,7 @@ function Calendar({ currentUser, tc }) {
         content:
           moment(slotInfo?.start).format('DD MMMM') +
           ' – ' +
-          moment(slotInfo?.end).format('DD MMMM'),
+          moment(slotInfo?.end).add(-1, 'days').format('DD MMMM'),
         bookingUrl: parseDatesForQuery(slotInfo, selectedResource, type),
       });
     } else {

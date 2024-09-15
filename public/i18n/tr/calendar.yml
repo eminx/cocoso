@@ -14,7 +14,7 @@ bigCal:
   today: Bugün
   agenda: Ajanda
   noEventsInRange: Bu aralıkta etkinlik yok
-  showMore: '{{ total }} daha fazla'
+  showMore: '{{ total }} daha'
 
 datePicker:
   labels:

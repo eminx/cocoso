@@ -1,9 +1,5 @@
 import React from 'react';
 import { Box, Heading, Flex, Image, Spacer } from '@chakra-ui/react';
-import i18n from 'i18next';
-import moment from 'moment';
-
-moment.locale(i18n.language);
 
 export default function GridThumb({ title, image, imageFit = 'cover', large = false, children }) {
   if (!title) {

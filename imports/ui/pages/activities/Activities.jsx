@@ -26,7 +26,7 @@ import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 
-moment.locale(i18n.language);
+// moment.locale(i18n.language);
 
 const yesterday = moment().add(-1, 'days');
 const today = moment();

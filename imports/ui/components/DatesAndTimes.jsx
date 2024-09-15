@@ -14,45 +14,35 @@ import {
   Wrap,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
-import DatePicker from './DatePicker';
 import { useTranslation } from 'react-i18next';
+
+// import DatePicker from './DatePicker';
+import DateTimePicker from './DateTimePicker';
 
 const maxAttendees = 1000;
 
 function DatesAndTimes({
-  recurrence,
+  occurrence,
   id,
-  handleStartDateChange,
-  handleEndDateChange,
-  handleStartTimeChange,
-  handleEndTimeChange,
+  handleDateTimeChange,
   handleCapacityChange,
   handleRangeSwitch,
-  removeRecurrence,
+  removeOccurrence,
   isDeletable,
   isPublicActivity,
 }) {
-  if (!recurrence) {
+  if (!occurrence) {
     return null;
   }
 
   const [t] = useTranslation('activities');
 
-  const isRange = recurrence.isRange;
+  const isRange = occurrence.isRange;
 
-  const startDate = {
-    date: recurrence.startDate,
-    time: recurrence.startTime,
-  };
-
-  const endDate = {
-    date: recurrence.endDate,
-    time: recurrence.endTime,
-  };
-
-  const getBorderColorStyle = () => {
-    if (!recurrence.conflict) {
-    } else if (recurrence.isConflictOK) {
+  const getBorderColor = () => {
+    if (!occurrence.conflict) {
+      return 'green.300';
+    } else if (occurrence.isConflictOK) {
       return 'orange';
     } else {
       return 'red';
@@ -60,67 +50,49 @@ function DatesAndTimes({
   };
 
   return (
-    <Box bg="brand.100" borderColor={getBorderColorStyle()} mb="4" p="4">
+    <Box
+      bg="white"
+      borderWidth="1px"
+      borderColor={getBorderColor()}
+      mb="4"
+      p="4"
+      position="relative"
+    >
       {isDeletable && (
-        <Flex justify="flex-end" mb="4">
-          <IconButton onClick={removeRecurrence} size="sm" icon={<DeleteIcon />} />
-        </Flex>
+        <IconButton
+          bg="gray.700"
+          icon={<DeleteIcon />}
+          position="absolute"
+          right="12px"
+          top="12px"
+          size="sm"
+          zIndex={9}
+          onClick={removeOccurrence}
+        />
       )}
 
-      <Center>
+      <Box mb="2">
         <FormControl w="auto" alignItems="center" display="flex">
           <Switch isChecked={isRange} id={id} onChange={handleRangeSwitch} py="2" />
           <FormLabel htmlFor={id} mb="1" ml="2">
             {t('form.days.multiple')}
           </FormLabel>
         </FormControl>
-      </Center>
+      </Box>
 
       <Wrap>
-        <Box p="2">
-          <Box mb="2">
-            <Text fontSize="sm">{isRange ? t('form.date.start') : t('form.days.single')}</Text>
-            <DatePicker noTime value={startDate} onChange={handleStartDateChange} />
-          </Box>
-
-          {isRange && (
-            <Box>
-              <Text fontSize="sm">{t('form.date.finish')}</Text>
-              <DatePicker
-                noTime
-                value={endDate}
-                onChange={handleEndDateChange}
-                minDate={new Date(startDate.date)}
-              />
-            </Box>
-          )}
+        <Box>
+          <DateTimePicker isRange={isRange} value={occurrence} onChange={handleDateTimeChange} />
         </Box>
 
-        <Box
-          flexDirection="column"
-          p="2"
-          mb="6"
-          justify="space-around"
-          flexGrow={0}
-          flexBasis="180px"
-        >
-          <Box mb="2">
-            <Text fontSize="sm">{t('form.time.start')}</Text>
-            <DatePicker onlyTime value={startDate} onChange={handleStartTimeChange} />
-          </Box>
-
-          <Box>
-            <Text fontSize="sm">{t('form.time.finish')}</Text>
-            <DatePicker onlyTime value={endDate} onChange={handleEndTimeChange} />
-          </Box>
-
+        <Box flexDirection="column" mb="6" justify="space-around" flexGrow={0} flexBasis="180px">
           {isPublicActivity && (
             <Box mt="4">
-              <Text fontSize="sm">{t('form.capacity.label')}</Text>
+              <Text mb="2">{t('form.capacity.label')}:</Text>
               <NumberInput
                 min={1}
                 max={maxAttendees}
-                value={recurrence.capacity}
+                value={occurrence.capacity}
                 variant="filled"
                 onChange={handleCapacityChange}
               >
@@ -131,12 +103,12 @@ function DatesAndTimes({
         </Box>
       </Wrap>
 
-      {recurrence.conflict && <ConflictMarker recurrence={recurrence} t={t} />}
+      {occurrence.conflict && <ConflictMarker occurrence={occurrence} t={t} />}
     </Box>
   );
 }
 
-function ConflictMarker({ recurrence, t }) {
+function ConflictMarker({ occurrence, t }) {
   return (
     <Box>
       <Text fontSize="sm" textAlign="center" fontWeight="bold">
@@ -144,19 +116,19 @@ function ConflictMarker({ recurrence, t }) {
         <br />
       </Text>
       <Code
-        colorScheme={recurrence.isConflictOK ? 'orange' : 'red'}
+        colorScheme={occurrence.isConflictOK ? 'orange' : 'red'}
         mx="auto"
         display="block"
         width="fit-content"
         mt="4"
       >
-        {recurrence.conflict.startDate === recurrence.conflict.endDate
-          ? recurrence.conflict.startDate
-          : `${recurrence.conflict.startDate}-${recurrence.conflict.endDate}`}
+        {occurrence.conflict.startDate === occurrence.conflict.endDate
+          ? occurrence.conflict.startDate
+          : `${occurrence.conflict.startDate}-${occurrence.conflict.endDate}`}
         {', '}
-        {`${recurrence.conflict.startTime} – ${recurrence.conflict.endTime}`}
+        {`${occurrence.conflict.startTime} – ${occurrence.conflict.endTime}`}
       </Code>
-      {recurrence.isConflictOK && (
+      {occurrence.isConflictOK && (
         <Text fontSize="sm" fontWeight="bold" mt="2" textAlign="center">
           {t('form.conflict.notExclusiveInfo')}
         </Text>

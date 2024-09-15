@@ -29,9 +29,12 @@ const getFutureOccurences = (dates) => {
   if (!dates || dates.length === 0) {
     return dates;
   }
+
   return dates
-    .filter((date) => moment(date.startDate)?.isAfter(yesterday))
-    .sort((a, b) => moment(a.startDate) - moment(b.startDate));
+    .filter((date) => {
+      return moment(date?.startDate)?.isAfter(yesterday);
+    })
+    .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
 };
 
 export default function GroupsList() {
@@ -285,7 +288,7 @@ export default function GroupsList() {
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
-            action={getDatesForAction(modalGroup)}
+            // action={getDatesForAction(modalGroup)}
             content={modalGroup.description && renderHTML(modalGroup.description)}
             images={[modalGroup.imageUrl]}
             subTitle={modalGroup.readingMaterial}

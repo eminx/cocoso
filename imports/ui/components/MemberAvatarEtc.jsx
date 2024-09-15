@@ -66,22 +66,22 @@ function MemberAvatarEtc({ isThumb = false, user }) {
     <Box w="100%">
       <Flex align="center" flexDirection="column" overflow="hidden">
         {avatarSrc ? (
-          <Box {...(!isThumb && tagProps)}>
+          <Center h={isThumb ? '152px' : 'auto'} {...(!isThumb && tagProps)}>
             <Image
               cursor={isThumb ? 'normal' : 'pointer'}
-              fit="contain"
+              fit={isThumb ? 'cover' : 'contain'}
               h={isThumb ? 'auto' : '280px'}
               src={avatarSrc}
               onClick={!isThumb ? () => setAvatarModal(true) : null}
             />
-          </Box>
+          </Center>
         ) : (
-          <Box p="4" pb="0">
+          <Center p="4" pb="2">
             <Avatar borderRadius="0" name={user.username} size="2xl" />
-          </Box>
+          </Center>
         )}
 
-        <Box pt="2" textAlign="center">
+        <Box bg={avatarSrc && 'rgba(255, 255, 255, .7)'} pb="4" textAlign="center" w="100%">
           <Center>
             <HStack spacing="0.5">
               <Text fontWeight="bold" fontSize="xl">
@@ -90,7 +90,7 @@ function MemberAvatarEtc({ isThumb = false, user }) {
               {['contributor', 'admin'].includes(role) && (
                 <Box ml="1">
                   <Popover
-                    trigger={
+                    triggerComponent={
                       role === 'contributor' ? (
                         <BadgeCheck color="#010101" size="20" />
                       ) : (
@@ -110,19 +110,22 @@ function MemberAvatarEtc({ isThumb = false, user }) {
             <Text>{getFullName(user)}</Text>
           </Box>
 
-          <Wrap justify="center" py="4" px={!isThumb && isDesktop ? '0' : '2'}>
-            {user.keywords?.map((k) => (
-              <WrapItem key={k.keywordId}>
-                <Tag {...tagProps}>{k.keywordLabel}</Tag>
-              </WrapItem>
-            ))}
-          </Wrap>
+          {!isThumb && (
+            <Wrap justify="center" py="4" px={!isThumb && isDesktop ? '0' : '2'}>
+              {user.keywords?.map((k) => (
+                <WrapItem key={k.keywordId}>
+                  <Tag {...tagProps}>{k.keywordLabel}</Tag>
+                </WrapItem>
+              ))}
+            </Wrap>
+          )}
 
           {!isThumb && (
             <Box my="2">
               {membershipsLength > 1 && (
                 <Popover
-                  trigger={
+                  trigger="click"
+                  triggerComponent={
                     <Button
                       colorScheme="gray.700"
                       fontWeight="light"

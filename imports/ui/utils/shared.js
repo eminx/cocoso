@@ -74,14 +74,22 @@ const call = (method, ...parameters) =>
     });
   });
 
-const resizeImage = (image, desiredImageWidth) =>
-  new Promise((resolve, reject) => {
+const resizeImage = (image, desiredMaximumImageWidth) => {
+  if (!image) {
+    return;
+  }
+
+  if (image.size < 300000) {
+    return image;
+  }
+
+  return new Promise((resolve, reject) => {
     Resizer.imageFileResizer(
       image,
-      desiredImageWidth,
+      desiredMaximumImageWidth,
       600,
       'JPEG|PNG',
-      95,
+      90,
       0,
       (uri) => {
         if (!uri) {
@@ -93,6 +101,7 @@ const resizeImage = (image, desiredImageWidth) =>
       'base64'
     );
   });
+};
 
 const slingshotUpload = (directory) => new Slingshot.Upload(directory);
 
@@ -317,7 +326,7 @@ function getFullName(user) {
   if (firstName && lastName) {
     return `${firstName} ${lastName}`;
   }
-  return firstName || lastName || '';
+  return firstName || lastName || '---';
 }
 
 function parseHtmlEntities(input) {

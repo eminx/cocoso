@@ -126,7 +126,7 @@ export default function PlatformSettings() {
   const uploadLogo = async () => {
     setUploading(true);
     try {
-      const resizedImage = await resizeImage(localImage.uploadableImage, 1000);
+      const resizedImage = await resizeImage(localImage.uploadableImage, 800);
       const uploadedImage = await uploadImage(resizedImage, 'platformLogoUpload');
       await call('updatePlatformSettings', { logo: uploadedImage });
       message.success(t('logo.message.success'));

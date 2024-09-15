@@ -44,10 +44,7 @@ Meteor.methods({
 
     try {
       const userId = Accounts.createUser(values);
-      if (userId) {
-        Meteor.call('sendWelcomeEmail', userId);
-        return userId;
-      }
+      return userId;
     } catch (error) {
       throw new Meteor.Error(error);
     }

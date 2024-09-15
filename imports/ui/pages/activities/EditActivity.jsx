@@ -101,14 +101,22 @@ class EditActivity extends PureComponent {
         'load',
         () => {
           this.setState(({ images }) => ({
-            images: [
-              ...images,
-              {
-                resizableData: uploadableImage,
-                type: 'not-uploaded',
-                src: reader.result,
-              },
-            ],
+            images: images
+              ? [
+                  ...images,
+                  {
+                    resizableData: uploadableImage,
+                    type: 'not-uploaded',
+                    src: reader.result,
+                  },
+                ]
+              : [
+                  {
+                    resizableData: uploadableImage,
+                    type: 'not-uploaded',
+                    src: reader.result,
+                  },
+                ],
           }));
         },
         false
@@ -154,7 +162,7 @@ class EditActivity extends PureComponent {
           if (uploadableImage.type === 'uploaded') {
             return uploadableImage.src;
           }
-          const resizedImage = await resizeImage(uploadableImage.resizableData, 1200);
+          const resizedImage = await resizeImage(uploadableImage.resizableData, 800);
           const uploadedImage = await uploadImage(resizedImage, 'activityImageUpload');
           return uploadedImage;
         })

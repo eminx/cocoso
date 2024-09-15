@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import i18n from 'i18next';
 import VisibilitySensor from 'react-visibility-sensor';
-
-moment.locale(i18n.language);
 
 class ChatteryBubble extends React.Component {
   componentDidMount() {
