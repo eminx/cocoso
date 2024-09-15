@@ -119,6 +119,8 @@ function DatePicker({ disabledDate, label, value, onChange }) {
 }
 
 function TimePicker({ label, value, onChange }) {
+  const locale = i18n.language === 'sv' ? sv : i18n.language === 'tr' ? tr : en;
+
   return (
     <Box>
       <Text mb="2">
@@ -126,13 +128,15 @@ function TimePicker({ label, value, onChange }) {
         {': '}
       </Text>
 
-      <AntTimePicker
-        format="HH:mm"
-        minuteStep={5}
-        size="large"
-        value={dayjs(value, 'HH:mm')}
-        onChange={onChange}
-      />
+      <ConfigProvider locale={locale}>
+        <AntTimePicker
+          format="HH:mm"
+          minuteStep={5}
+          size="large"
+          value={dayjs(value, 'HH:mm')}
+          onChange={onChange}
+        />
+      </ConfigProvider>
     </Box>
   );
 }
