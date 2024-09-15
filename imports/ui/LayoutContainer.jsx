@@ -20,7 +20,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
-import 'moment/locale/en-GB';
+import 'moment/locale/en';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 
