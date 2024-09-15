@@ -74,12 +74,14 @@ function Header({ isSmallerLogo }) {
           </Flex>
         )}
         <Box pt="3" px="2">
-          <Link to="/">
-            <Box>
-              {currentHost.logo ? (
+          <Box>
+            {currentHost.logo ? (
+              <Link to="/">
                 <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
-              ) : (
-                <Box>
+              </Link>
+            ) : (
+              <Box>
+                <Link to="/">
                   <CHeading
                     color="brand.800"
                     fontWeight="400"
@@ -87,19 +89,19 @@ function Header({ isSmallerLogo }) {
                   >
                     {currentHost.settings?.name}
                   </CHeading>
-                  {isAdmin && (
-                    <Center>
-                      <Link to="/admin/settings/organization">
-                        <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
-                          Add logo
-                        </Button>
-                      </Link>
-                    </Center>
-                  )}
-                </Box>
-              )}
-            </Box>
-          </Link>
+                </Link>
+                {isAdmin && (
+                  <Center>
+                    <Link to="/admin/settings/organization">
+                      <Button as="span" colorScheme="orange" fontWeight="light" variant="link">
+                        Add logo
+                      </Button>
+                    </Link>
+                  </Center>
+                )}
+              </Box>
+            )}
+          </Box>
         </Box>
 
         <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
