@@ -35,6 +35,7 @@ function UserPopupAdmin() {
           <Flex flexDirection="column" justify="center">
             <IconButton
               alignSelf="center"
+              as="span"
               bg="gray.800"
               borderColor="#fff"
               borderWidth="2px"
@@ -59,7 +60,9 @@ function UserPopupAdmin() {
             <Box px="1">
               {adminMenu.map((item) => (
                 <Link key={item.key} to={item.value}>
-                  <MenuItem color="brand.700">{tc(`menu.admin.${item.key}`)}</MenuItem>
+                  <MenuItem as="span" color="brand.700">
+                    {tc(`menu.admin.${item.key}`)}
+                  </MenuItem>
                 </Link>
               ))}
             </Box>

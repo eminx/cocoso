@@ -40,6 +40,7 @@ labels:
   all: Alla
   booked: bokad
   contact: Kontakt
+  content: Innehåll
   create: Skapa en ny {{ domain }}
   event: Arrangemang
   bookings: Bokningar

@@ -19,7 +19,6 @@ import {
   Center,
   Code,
   Flex,
-  HStack,
   Link as CLink,
   List,
   ListItem,
@@ -915,6 +914,10 @@ class Group extends Component {
       redirectToLogin,
       resources,
     } = this.state;
+
+    if (!group) {
+      return <Loader />;
+    }
 
     if (redirectToLogin) {
       return <Navigate to="/login" />;

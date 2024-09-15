@@ -127,14 +127,20 @@ function UserPopup() {
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem color="brand.700">{tc('menu.member.profile')}</MenuItem>
+                <MenuItem as="span" color="brand.700">
+                  {tc('menu.member.profile')}
+                </MenuItem>
               </Link>
               <Link to={'/edit'}>
-                <MenuItem color="brand.700">{tc('menu.member.settings')}</MenuItem>
+                <MenuItem as="span" color="brand.700">
+                  {tc('menu.member.settings')}
+                </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
-                  <MenuItem color="brand.700">{tc('menu.member.activities')}</MenuItem>
+                  <MenuItem as="span" color="brand.700">
+                    {tc('menu.member.activities')}
+                  </MenuItem>
                 </Link>
               )}
             </Box>
