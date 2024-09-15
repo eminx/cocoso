@@ -326,7 +326,7 @@ function getFullName(user) {
   if (firstName && lastName) {
     return `${firstName} ${lastName}`;
   }
-  return firstName || lastName || '';
+  return firstName || lastName || '---';
 }
 
 function parseHtmlEntities(input) {

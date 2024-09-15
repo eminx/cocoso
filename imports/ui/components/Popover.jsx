@@ -30,8 +30,7 @@ export default function Popover({
         borderColor={borderColor}
         color={isDark ? 'white' : 'gray.900'}
         maxW="95wv"
-        // px="4"
-        py="2"
+        py="4"
         w="auto"
       >
         <PopoverArrow bg={bg} />
