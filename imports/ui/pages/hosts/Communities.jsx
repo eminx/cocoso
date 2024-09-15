@@ -131,13 +131,6 @@ function Communities() {
     window.location.href = `https://${modalHost.host}`;
   };
 
-  const filtrerProps = {
-    filterWord,
-    setFilterWord,
-    sorterValue,
-    setSorterValue,
-  };
-
   const hostsSorted = getHostsSorted();
   const hostsRendered = getHostsDivided(hostsSorted).filter((h) => h.host !== platform.portalHost);
 
