@@ -492,7 +492,7 @@ class Activity extends PureComponent {
 
     const tabs = [
       {
-        title: t('public.labels.info'),
+        title: tc('labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
             {activityData?.longDescription && renderHTML(activityData?.longDescription)}

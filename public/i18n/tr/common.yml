@@ -40,6 +40,7 @@ labels:
   all: Tümü
   booked: 'ayırdı:'
   contact: İletişim
+  content: İçerik
   create: Yeni {{ domain }} Oluştur
   event: Etkinlik
   bookings: Rezervasyon

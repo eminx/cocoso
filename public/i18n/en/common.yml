@@ -40,6 +40,7 @@ labels:
   all: All
   booked: booked
   contact: Contact
+  content: Content
   create: Create a New {{ domain }}
   event: Event
   bookings: Bookings
