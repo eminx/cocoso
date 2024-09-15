@@ -20,7 +20,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 import moment from 'moment';
-import 'moment/locale/en';
+import 'moment/locale/en-gb';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
 
@@ -48,7 +48,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const { pathname } = location;
 
   useEffect(() => {
-    moment().locale(i18n?.language, {
+    moment.locale(i18n?.language, {
       week: {
         dow: 1, // Monday is the first day of the week.
       },

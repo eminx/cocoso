@@ -90,6 +90,7 @@ function NewButton() {
         <MenuButton>
           <IconButton
             _hover={{ bg: 'brand.200' }}
+            as="span"
             bg="gray.800"
             borderColor="#fff"
             borderWidth="2px"
