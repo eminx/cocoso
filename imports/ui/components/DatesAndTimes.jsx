@@ -17,7 +17,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 // import DatePicker from './DatePicker';
-import DateTimePicker from './DayPicker';
+import DateTimePicker from './DateTimePicker';
 
 const maxAttendees = 1000;
 
