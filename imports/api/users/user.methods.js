@@ -10,18 +10,26 @@ import Groups from '../groups/group';
 Meteor.methods({
   getUserInfo(username) {
     check(username, String);
-
     const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+
+    const user = Meteor.users.findOne({ username });
+    if (!user) {
+      throw new Meteor.Error('User not found');
+    }
+
+    if (currentHost.isPortalHost) {
+      if (!user.isPublic) {
+        throw new Meteor.Error('User not found');
+      }
+    } else if (
+      (!user.isPublic && user._id !== Meteor.userId()) ||
+      !user.memberships.find((m) => m.host === host).isPublic
+    ) {
+      throw new Meteor.Error('User not found');
+    }
 
     try {
-      const user = Meteor.users.findOne({ username, 'memberships.host': host });
-      if (
-        ((!user || !user.isPublic) && user._id !== Meteor.userId()) ||
-        !user.memberships.find((m) => m.host === host).isPublic
-      ) {
-        throw new Meteor.Error('User not found in this host');
-      }
-
       return {
         avatar: user.avatar,
         bio: user.bio,

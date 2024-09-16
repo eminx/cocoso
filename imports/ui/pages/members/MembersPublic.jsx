@@ -234,7 +234,6 @@ function MembersPublic() {
       setModalUser(profile);
     } catch (error) {
       console.log(error);
-      message.error(error.error);
     }
   };
 
