@@ -133,7 +133,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 {(activity.images || activity.imageUrl) && (
                   <Link href={`https://${host}/activities/${activity._id}`}>
                     <Img
-                      src={activity.images[0] || activity.imageUrl}
+                      src={(activity.images && activity.images[0]) || activity.imageUrl}
                       width="320px"
                       height="auto"
                       style={{ marginBottom: 12 }}
@@ -192,7 +192,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 {work.images && (
                   <Link href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
                     <Img
-                      src={work.images[0]}
+                      src={work.images && work.images[0]}
                       width="320px"
                       height="auto"
                       style={{ marginBottom: 12 }}
