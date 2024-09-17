@@ -355,6 +355,7 @@ function MembersPublic() {
           <Cascader
             changeOnSelect
             dropdownRender={cascaderRender}
+            placement="bottom-left"
             open
             options={cascaderOptions}
             popupClassName="cascader-container cascader-container--open"
