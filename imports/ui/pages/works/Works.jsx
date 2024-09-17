@@ -43,10 +43,9 @@ function Works() {
 
   useEffect(() => {
     getAllWorks();
-  }, []);
+  }, [currentHost?.isPortalHost]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
-
   const getAllWorks = async () => {
     try {
       if (isPortalHost) {

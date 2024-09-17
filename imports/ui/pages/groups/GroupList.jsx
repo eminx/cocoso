@@ -56,8 +56,11 @@ export default function GroupsList() {
     getGroups();
   }, []);
 
-  const isPortalHost = Boolean(currentHost?.isPortalHost);
+  if (!currentHost) {
+    return null;
+  }
 
+  const isPortalHost = Boolean(currentHost?.isPortalHost);
   const getGroups = async () => {
     try {
       const meetings = await call('getAllGroupMeetings', isPortalHost);

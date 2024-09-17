@@ -81,10 +81,9 @@ function Activities() {
 
   useEffect(() => {
     getActivities();
-  }, []);
+  }, [currentHost?.isPortalHost]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
-
   const getActivities = async () => {
     try {
       if (isPortalHost) {
