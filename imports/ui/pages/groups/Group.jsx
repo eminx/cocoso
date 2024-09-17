@@ -52,11 +52,23 @@ moment.locale(i18n.language);
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
+const today = new Date().toISOString().substring(0, 10);
+const emptyDateAndTime = {
+  startDate: today,
+  endDate: today,
+  startTime: '00:00',
+  endTime: '23:59',
+  attendees: [],
+  capacity: 40,
+  isRange: false,
+  conflict: null,
+};
+
 class Group extends Component {
   state = {
     modalOpen: false,
     redirectToLogin: false,
-    newMeeting: null,
+    newMeeting: emptyDateAndTime,
     isFormValid: false,
     isUploading: false,
     droppedDocuments: null,
