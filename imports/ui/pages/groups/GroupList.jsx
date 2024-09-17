@@ -54,11 +54,7 @@ export default function GroupsList() {
 
   useEffect(() => {
     getGroups();
-  }, []);
-
-  if (!currentHost) {
-    return null;
-  }
+  }, [currentHost?.isPortalHost]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
   const getGroups = async () => {
