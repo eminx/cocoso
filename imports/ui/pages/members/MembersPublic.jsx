@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
@@ -49,6 +49,12 @@ function MembersPublic() {
   useEffect(() => {
     getKeywords();
   }, [members?.length]);
+
+  useLayoutEffect(() => {
+    if (showKeywordSearch) {
+      window.scroll(0, 120);
+    }
+  }, showKeywordSearch);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
 
@@ -355,6 +361,7 @@ function MembersPublic() {
           <Cascader
             changeOnSelect
             dropdownRender={cascaderRender}
+            // placement="bottom-left"
             open
             options={cascaderOptions}
             popupClassName="cascader-container cascader-container--open"

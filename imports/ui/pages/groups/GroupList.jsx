@@ -54,10 +54,9 @@ export default function GroupsList() {
 
   useEffect(() => {
     getGroups();
-  }, []);
+  }, [currentHost?.isPortalHost]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
-
   const getGroups = async () => {
     try {
       const meetings = await call('getAllGroupMeetings', isPortalHost);

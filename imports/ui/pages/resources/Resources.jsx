@@ -34,10 +34,9 @@ function Resources() {
 
   useEffect(() => {
     getResources();
-  }, []);
+  }, [currentHost?.isPortalHost]);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
-
   const getResources = async () => {
     try {
       if (isPortalHost) {
