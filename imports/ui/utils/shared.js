@@ -1,10 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
 import moment from 'moment';
-import i18n from 'i18next';
 import { Slingshot } from 'meteor/edgee:slingshot';
-
-moment.locale(i18n.language);
 
 function localeSort(a, b) {
   return a.label.localeCompare(b.label);

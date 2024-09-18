@@ -23,6 +23,8 @@ import moment from 'moment';
 import 'moment/locale/en-gb';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
+import dayjs from 'dayjs';
+import 'dayjs/plugin/updateLocale';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -31,8 +33,6 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
-
-// import { MainLoader } from './components/SkeletonLoaders';
 
 export const StateContext = React.createContext(null);
 const publicSettings = Meteor.settings.public;
@@ -48,11 +48,14 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const { pathname } = location;
 
   useEffect(() => {
-    moment.locale(i18n?.language, {
-      week: {
-        dow: 1, // Monday is the first day of the week.
-      },
+    dayjs.locale('en_gb', {
+      weekStart: 1,
     });
+    // moment.locale(i18n?.language, {
+    //   week: {
+    //     dow: 1, // Monday is the first day of the week.
+    //   },
+    // });
   }, [i18n?.language]);
 
   useEffect(() => {

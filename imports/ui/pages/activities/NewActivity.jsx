@@ -21,8 +21,6 @@ import {
 import { StateContext } from '../../LayoutContainer';
 import FormTitle from '../../components/FormTitle';
 
-moment.locale(i18n.language);
-
 const defaultCapacity = 40;
 const today = new Date().toISOString().substring(0, 10);
 const emptyDateAndTime = {

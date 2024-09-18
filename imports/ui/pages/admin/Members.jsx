@@ -16,8 +16,6 @@ import { adminMenu } from '../../utils/constants/general';
 import UsageReport from '../../components/UsageReport';
 import Tabs from '../../components/Tabs';
 
-moment.locale(i18n.language);
-
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
   const dateB = new Date(b.createdAt);

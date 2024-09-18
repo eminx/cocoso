@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import moment from 'moment';
-import i18n from 'i18next';
 import ReactDropzone from 'react-dropzone';
 import renderHTML from 'react-render-html';
 import { useTranslation } from 'react-i18next';
@@ -47,8 +46,6 @@ import {
 import { StateContext } from '../../LayoutContainer.jsx';
 import { DocumentUploadHelper } from '../../components/UploadHelpers.jsx';
 import { MainLoader } from '../../components/SkeletonLoaders.jsx';
-
-moment.locale(i18n.language);
 
 const yesterday = moment(new Date()).add(-1, 'days');
 

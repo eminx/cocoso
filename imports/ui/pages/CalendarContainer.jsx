@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 import Calendar from './Calendar';
 
-moment.locale(i18n.language);
 const CalendarContainer = withTracker((props) => {
   const currentUser = Meteor.user();
 

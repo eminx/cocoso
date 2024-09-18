@@ -39,8 +39,6 @@ import FormField from '../../components/FormField';
 import Modal from '../../components/Modal';
 import TablyCentered from '../../components/TablyCentered';
 
-moment.locale(i18n.language);
-
 const sexyBorder = {
   bg: 'white',
   border: '1px solid',

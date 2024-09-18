@@ -30,8 +30,6 @@ import DateTimePicker from '../../../components/DateTimePicker';
 import { StateContext } from '../../../LayoutContainer';
 import useCollisionPrevention from '../../../../api/_utils/useCollisionPrevention';
 
-moment.locale(i18n.language);
-
 const today = new Date().toISOString().substring(0, 10);
 
 const datesModel = {

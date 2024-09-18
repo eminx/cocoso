@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
-import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import renderHTML from 'react-render-html';
@@ -22,7 +21,6 @@ import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 
-moment.locale(i18n.language);
 const yesterday = moment(new Date()).add(-1, 'days');
 
 const getFutureOccurences = (dates) => {
