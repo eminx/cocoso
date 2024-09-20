@@ -71,21 +71,20 @@ if (!i18n.isInitialized) {
   i18n.init(options);
   // check & set lang for user(logged) or host prefences
   Tracker.autorun(() => {
-    let preferedLang = defaultLang;
     if (Meteor.userId()) {
       const handler = Meteor.subscribe('me');
       if (handler.ready()) {
-        preferedLang = Meteor.user()?.lang;
-        i18n.changeLanguage(preferedLang);
+        const userLang = Meteor.user()?.lang;
+        i18n.changeLanguage(userLang);
       }
-    } else {
-      Meteor.call('getCurrentHost', (error, respond) => {
-        if (!error) {
-          preferedLang = respond?.settings?.lang;
-          i18n.changeLanguage(preferedLang);
-        }
-      });
+      return;
     }
+    Meteor.call('getCurrentHost', (error, respond) => {
+      if (!error) {
+        const hostLang = respond?.settings?.lang;
+        i18n.changeLanguage(hostLang);
+      }
+    });
   });
 }
 

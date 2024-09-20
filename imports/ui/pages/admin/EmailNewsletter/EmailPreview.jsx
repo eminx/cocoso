@@ -276,9 +276,7 @@ export function ActivityDates({ activity, currentHost }) {
   );
 }
 
-export function ActivityDate({ currentHost, date }) {
-  moment.locale(currentHost?.settings?.lang || 'en');
-
+export function ActivityDate({ date }) {
   return (
     <Column style={{ paddingRight: 8 }}>
       <Text style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>

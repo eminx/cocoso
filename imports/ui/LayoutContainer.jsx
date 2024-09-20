@@ -23,8 +23,6 @@ import moment from 'moment';
 import 'moment/locale/en-gb';
 import 'moment/locale/sv';
 import 'moment/locale/tr';
-import dayjs from 'dayjs';
-import 'dayjs/plugin/updateLocale';
 
 import FeedbackForm from './components/FeedbackForm';
 import Header from './components/Header';
@@ -48,9 +46,12 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const { pathname } = location;
 
   useEffect(() => {
-    dayjs.locale('en_gb', {
-      weekStart: 1,
+    moment.locale(i18n?.language || 'en-gb', {
+      week: {
+        dow: 2,
+      },
     });
+
     // moment.locale(i18n?.language, {
     //   week: {
     //     dow: 1, // Monday is the first day of the week.
