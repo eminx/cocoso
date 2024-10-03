@@ -79,7 +79,7 @@ works:
   longDescription:
     label: Beskrivning
     holder: Plats för en längre beskrivande text…
-    helper: Lägg till en längre beskrivning (ej obligatoriskt)
+    helper: Lägg till en längre beskrivning
   extra:
     label: Ytterligare info
     holder: Eventuella prisuppgifter, kontaktpersoner etc.
