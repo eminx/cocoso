@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 
 import Group from './Group';
 import Groups from '../../../api/groups/group';
@@ -17,18 +18,25 @@ const GroupContainer = withTracker(({ groupId }) => {
 
   const allActivities = Activities ? Activities.find().fetch() : null;
   const groupActivities = Activities ? Activities.find({ groupId }).fetch() : null;
-  const groupMeetings = groupActivities.map((activity) => {
-    if (!activity.datesAndTimes || activity.datesAndTimes.length === 0) {
-      return;
-    }
-    return {
-      _id: activity._id,
-      resource: activity.resource,
-      resourceId: activity.resourceId,
-      resourceIndex: activity.resourceIndex,
-      ...activity.datesAndTimes[0],
-    };
-  });
+  const groupMeetings = groupActivities
+    .sort((a, b) => {
+      if (!a?.datesAndTimes || !b?.datesAndTimes) {
+        return 1;
+      }
+      return moment(a.datesAndTimes[0].startDate) - moment(b.datesAndTimes[0].startDate);
+    })
+    .map((activity) => {
+      if (!activity.datesAndTimes || activity.datesAndTimes.length === 0) {
+        return;
+      }
+      return {
+        _id: activity._id,
+        resource: activity.resource,
+        resourceId: activity.resourceId,
+        resourceIndex: activity.resourceIndex,
+        ...activity.datesAndTimes[0],
+      };
+    });
   const chatSubscription = Meteor.subscribe('chat', groupId);
   const chatData = Chats ? Chats.findOne({ contextId: groupId }) : null;
 
