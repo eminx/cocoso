@@ -112,7 +112,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             {activities?.map((activity) => (
               <Section key={activity._id} style={{ marginBottom: 24 }}>
                 <Link
-                  href={`https://${host}/activities/${activity._id}`}
+                  href={`https://${activity.host}/activities/${activity._id}`}
                   style={{ color: '#0f64c0' }}
                 >
                   <Heading
@@ -131,7 +131,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 </Text>
 
                 {(activity.images || activity.imageUrl) && (
-                  <Link href={`https://${host}/activities/${activity._id}`}>
+                  <Link href={`https://${activity.host}/activities/${activity._id}`}>
                     <Img
                       src={(activity.images && activity.images[0]) || activity.imageUrl}
                       width="320px"
@@ -146,7 +146,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 </Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
-                    href={`https://${host}/activities/${activity._id}`}
+                    href={`https://${activity.host}/activities/${activity._id}`}
                     style={{
                       color: '#0f64c0',
                       fontWeight: 'bold',
@@ -172,7 +172,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
             {works?.map((work) => (
               <Section key={work._id} style={{ marginBottom: 24 }}>
                 <Link
-                  href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
+                  href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
                   style={{ color: '#0f64c0' }}
                 >
                   <Heading
@@ -190,7 +190,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                   {work?.shortDescription}
                 </Text>
                 {work.images && (
-                  <Link href={`https://${host}/@${work.authorUsername}/works/${work._id}`}>
+                  <Link href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}>
                     <Img
                       src={work.images && work.images[0]}
                       width="320px"
@@ -202,7 +202,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
                 <Text>{work?.longDescription && stripAndShorten(work.longDescription)} </Text>
                 <Text style={{ marginBottom: 12, textAlign: 'right' }}>
                   <Button
-                    href={`https://${host}/@${work.authorUsername}/works/${work._id}`}
+                    href={`https://${work.host}/@${work.authorUsername}/works/${work._id}`}
                     style={{
                       color: '#0f64c0',
                       fontWeight: 'bold',
@@ -252,16 +252,20 @@ export function ActivityDates({ activity, currentHost }) {
     moment(date.endDate).isAfter(yesterday)
   );
 
+  if (!futureDates || futureDates.length === 0) {
+    return null;
+  }
+
   const length = futureDates?.length;
 
   return (
     <Row style={{ marginLeft: 0, marginTop: 4, width: 'auto' }}>
       {length < 4
-        ? futureDates?.map((date) => (
+        ? futureDates.map((date) => (
             <ActivityDate key={date.startDate + date.endTime} date={date} />
           ))
         : futureDates
-            ?.filter((d, i) => i < 3)
+            .filter((d, i) => i < 3)
             .map((date) => (
               <ActivityDate
                 key={date.startDate + date.endTime}
