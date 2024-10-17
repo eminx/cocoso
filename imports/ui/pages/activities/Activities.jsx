@@ -300,7 +300,7 @@ function Activities() {
           p="0"
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size={isDesktop ? '6xl' : 'full'}
+          size="5xl"
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}

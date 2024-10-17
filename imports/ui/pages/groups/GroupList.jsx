@@ -279,7 +279,7 @@ export default function GroupsList() {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size={isDesktop ? '6xl' : 'full'}
+          size="5xl"
           onClose={handleCloseModal}
           onActionButtonClick={() => handleActionButtonClick()}
           onSecondaryButtonClick={handleCopyLink}
