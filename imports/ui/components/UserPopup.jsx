@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Link as CLink,
   Menu,
@@ -21,11 +22,13 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 import { StateContext } from '../LayoutContainer';
 
 function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubOpen, setIsSubOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
@@ -33,9 +36,14 @@ function UserPopup() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setIsOpen(false);
+    closeBothMenus();
     Meteor.logout();
     navigate('/');
+  };
+
+  const closeBothMenus = () => {
+    setIsOpen(false);
+    setIsSubOpen(false);
   };
 
   const isFed = platform?.isFederationLayout;
@@ -64,7 +72,8 @@ function UserPopup() {
     );
   }
 
-  const { notifications } = currentUser;
+  const notifications = currentUser?.notifications;
+
   let notificationsCounter = 0;
   if (notifications && notifications.length > 0) {
     notifications.forEach((notification) => {
@@ -73,14 +82,12 @@ function UserPopup() {
   }
 
   const isNotification = notifications && notifications.length > 0;
-
-  const { host } = currentHost;
-
+  const host = currentHost?.host;
   const roleTranslated = t(`roles.${role}`);
 
   return (
     <Box>
-      <Menu placement="bottom-end" onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
+      <Menu isOpen={isOpen} placement="bottom-end" onOpen={() => setIsOpen(true)}>
         <MenuButton>
           <Avatar
             _hover={{ bg: 'brand.500' }}
@@ -110,7 +117,7 @@ function UserPopup() {
               <Box px="1">
                 {notifications.map((item) => (
                   <NotificationLinkItem key={item.contextId + item.count} host={host} item={item}>
-                    <MenuItem>
+                    <MenuItem onClick={() => closeBothMenus()}>
                       <Text color="brand.700">{item.title} </Text>
                       <Badge colorScheme="red" size="xs">
                         {' '}
@@ -122,27 +129,57 @@ function UserPopup() {
               </Box>
             </MenuGroup>
           )}
+
           {isNotification && <MenuDivider />}
 
           <MenuGroup>
             <Box px="1">
               <Link to={currentUser && `/@${currentUser?.username}`}>
-                <MenuItem as="span" color="brand.700">
+                <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
                   {tc('menu.member.profile')}
                 </MenuItem>
               </Link>
               <Link to={'/edit'}>
-                <MenuItem as="span" color="brand.700">
+                <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
                   {tc('menu.member.settings')}
                 </MenuItem>
               </Link>
               {canCreateContent && (
                 <Link to="/my-activities">
-                  <MenuItem as="span" color="brand.700">
+                  <MenuItem as="span" color="brand.700" onClick={() => closeBothMenus()}>
                     {tc('menu.member.activities')}
                   </MenuItem>
                 </Link>
               )}
+
+              <MenuDivider />
+
+              <MenuItem onClick={() => setIsSubOpen(true)}>
+                <Menu isOpen={isSubOpen} placement="left-end" onOpen={() => setIsSubOpen(true)}>
+                  <MenuButton>
+                    <ChevronLeftIcon /> {t('profile.myCommunities')}
+                  </MenuButton>
+
+                  <MenuList zIndex="1405">
+                    {currentUser?.memberships?.map((m) => (
+                      <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
+                        {m.hostname}
+                      </MenuItem>
+                    ))}
+                    <Divider colorScheme="gray.700" mt="2" />
+                    <MenuItem
+                      key="all-communities"
+                      onClick={() =>
+                        currentHost?.isPortalHost
+                          ? navigate('/communities')
+                          : (location.href = `https://${platform?.portalHost}/communities`)
+                      }
+                    >
+                      {tc('labels.allCommunities')}
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </MenuItem>
             </Box>
           </MenuGroup>
 
@@ -158,7 +195,12 @@ function UserPopup() {
         </MenuList>
       </Menu>
       <Modal isOpen={isOpen}>
-        <ModalOverlay />
+        <ModalOverlay
+          onClick={() => {
+            setIsOpen(false);
+            setIsSubOpen(false);
+          }}
+        />
       </Modal>
     </Box>
   );

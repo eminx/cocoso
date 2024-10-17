@@ -80,7 +80,7 @@ function NewButton() {
   }
 
   return (
-    <Box zIndex={isOpen ? '1403' : '10'}>
+    <Box zIndex={isOpen ? '1403' : '10'} ml="2">
       <Menu
         isOpen={isOpen}
         placement="bottom-end"
@@ -91,9 +91,10 @@ function NewButton() {
           <IconButton
             _hover={{ bg: 'brand.200' }}
             as="span"
-            bg="gray.800"
+            bg="brand.100"
             borderColor="#fff"
             borderWidth="2px"
+            color="gray.800"
             // borderRadius="50%"
             icon={<AddIcon />}
             size={isDesktop ? 'md' : 'sm'}
@@ -132,11 +133,11 @@ function NewButton() {
           </Box>
         </MenuList>
       </Menu>
-      <Center position="relative">
+      {/* <Center position="relative">
         <Text fontSize="12px" lineHeight="1" position="absolute" top="3px" textAlign="center">
           {tc('actions.create')}
         </Text>
-      </Center>
+      </Center> */}
       <Modal isOpen={isOpen}>
         <ModalOverlay />
       </Modal>

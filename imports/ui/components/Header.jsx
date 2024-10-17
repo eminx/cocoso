@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -8,16 +8,22 @@ import {
   Heading as CHeading,
   HStack,
   Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Modal,
+  ModalOverlay,
   Show,
   Text,
 } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
-import NewButton from './NewButton';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -62,23 +68,40 @@ function Header({ isSmallerLogo }) {
   }
 
   const isFederationLayout = platform && platform.isFederationLayout;
+  const isPortalHost = currentHost?.isPortalHost;
 
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between" mb="2">
-        {isDesktop && (
+        {!isPortalHost && isFederationLayout && (
+          <Box w="120px" pl="2">
+            <Link to={`https://${platform.portalHost}`}>
+              <Image
+                w="64px"
+                h="64px"
+                fit="contain"
+                src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
+              />
+            </Link>
+          </Box>
+        )}
+        {/* {isDesktop && (
           <Flex w="120px" pl="2" pt="4">
             {!isHeaderMenu && (
               <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
             )}
           </Flex>
-        )}
-        <Box pt="3" px="2">
+        )} */}
+        <Box p="2">
           <Box>
             {currentHost.logo ? (
-              <Link to="/">
-                <Image className={logoClass} fit="contain" mt="2" src={currentHost.logo} />
-              </Link>
+              isPortalHost ? (
+                <PortalAppMenuLogo currentHost={currentHost} />
+              ) : (
+                <Link to="/">
+                  <Image className={logoClass} fit="contain" src={currentHost.logo} />
+                </Link>
+              )
             ) : (
               <Box>
                 <Link to="/">
@@ -104,27 +127,14 @@ function Header({ isSmallerLogo }) {
           </Box>
         </Box>
 
-        <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="4" w="120px">
-          <Show breakpoint="(min-width: 520px)">{!isFederationLayout && <UserPopup />}</Show>
-          <NewButton />
+        <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="2" w="120px">
           {currentUser && isAdmin && <UserPopupAdmin />}
-          {!isDesktop && (
+          {(!isDesktop || !isHeaderMenu) && (
             <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
           )}
+          <UserPopup />
         </HStack>
       </Flex>
-      {!isFederationLayout && (
-        <Show breakpoint="(max-width: 519px)">
-          <Flex justify="flex-end" mt="-2" pr="2">
-            <Box>
-              <UserPopup />
-            </Box>
-          </Flex>
-        </Show>
-      )}
-      <Show breakpoint="(min-width: 520px)">
-        <Box mb={isDesktop ? '0' : '6'}></Box>
-      </Show>
 
       {isDesktop && isHeaderMenu && <WrappedMenu menuItems={menuItems} />}
     </Box>
@@ -167,6 +177,42 @@ export function WrappedMenu({ menuItems }) {
         })}
       </HStack>
     </Center>
+  );
+}
+
+function PortalAppMenuLogo({ currentHost }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Box>
+        <Menu
+          isOpen={isOpen}
+          placement="bottom-end"
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
+        >
+          <MenuButton>
+            <Flex align="center">
+              <Image className="logo" fit="contain" src={currentHost?.logo} />
+              <ChevronDownIcon />
+            </Flex>
+          </MenuButton>
+
+          <MenuList zIndex={isOpen ? '1403' : '10'} ml="2">
+            <MenuItem color="brand.600" fontWeight="bold">
+              About Samarbetet
+            </MenuItem>
+            <MenuItem color="brand.600" fontWeight="bold">
+              Communities
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
+      <Modal isOpen={isOpen}>
+        <ModalOverlay />
+      </Modal>
+    </>
   );
 }
 

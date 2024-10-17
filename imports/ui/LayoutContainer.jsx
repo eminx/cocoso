@@ -190,7 +190,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            {platform && platform.isFederationLayout && <TopBar />}
+            {/* {platform && platform.isFederationLayout && <TopBar />} */}
 
             <Flex>
               <Box id="main-viewport" flexGrow="2">

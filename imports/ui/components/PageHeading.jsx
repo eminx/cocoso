@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Box, Center, Heading, Divider } from '@chakra-ui/react';
 
 import { StateContext } from '../LayoutContainer';
+import NewButton from './NewButton';
 
 export default function PageHeading({ description, heading, children }) {
   const location = useLocation();
@@ -32,6 +33,7 @@ export default function PageHeading({ description, heading, children }) {
             <Heading as="h1" size="lg" textAlign="center">
               {heading || activeMenuItem?.label}
             </Heading>
+            <NewButton />
           </Center>
           <Box py="2">
             <Divider borderColor="brand.500" minW="280px" />
