@@ -174,7 +174,7 @@ function EmailNewsletter({ history }) {
           </Box>
         }
       >
-        {currentHost.isPortalHost && (
+        {currentHost?.isPortalHost && (
           <Box mb="4">
             <Alert
               message={t('newsletter.portalHost.info', { platform: platform.name })}
