@@ -213,9 +213,6 @@ function TopLeftFederatinLogoMenu() {
           <Box className="text-content">{renderHTML(platform.footer)}</Box>
         </ConfirmModal>
       </Box>
-      {/* <Modal isOpen={isOpen}>
-        <ModalOverlay />
-      </Modal> */}
     </>
   );
 }

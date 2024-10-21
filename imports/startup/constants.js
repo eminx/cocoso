@@ -24,8 +24,8 @@ const defaultMenu = [
     isHomePage: false,
   },
   {
-    label: 'Members',
-    name: 'members',
+    label: 'People',
+    name: 'people',
     isVisible: true,
     isHomePage: false,
   },

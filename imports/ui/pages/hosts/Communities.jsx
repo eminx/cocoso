@@ -20,7 +20,6 @@ function Communities() {
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('name');
   const [modalHost, setModalHost] = useState(null);
-  const [joinHostModal, setJoinHostModal] = useState(null);
   const { allHosts, currentUser, platform, isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
 
@@ -38,15 +37,6 @@ function Communities() {
   if (!allHosts) {
     return <Loader />;
   }
-
-  const handleSetModalHostJoin = async (host) => {
-    try {
-      const info = await call('getHostInfoPage', host.host);
-      setJoinHostModal({ ...host, info });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (!allHosts) {
     return <Loader />;
@@ -116,12 +106,12 @@ function Communities() {
       return;
     }
 
-    const host = joinHostModal.host;
+    const host = modalHost.host;
 
     try {
       await call('setSelfAsParticipant', host);
-      message.success(tc('communities.success', { community: joinHostModal.name }));
-      setJoinHostModal(null);
+      message.success(tc('communities.success', { community: modalHost.name }));
+      setModalHost(null);
     } catch (error) {
       message.error(error.reason || error.error);
     }
@@ -173,7 +163,7 @@ function Communities() {
                       bg="white"
                       size="sm"
                       variant="outline"
-                      onClick={() => handleSetModalHostJoin(host)}
+                      onClick={() => handleSetModalHost(host)}
                     >
                       {tc('communities.join')}
                     </Button>
@@ -187,17 +177,20 @@ function Communities() {
 
       {modalHost && (
         <ConfirmModal
-          confirmText={tc('actions.toHost')}
+          confirmText={tc('communities.join')}
           isCentered
           scrollBehavior="inside"
           size="lg"
           title={modalHost.name}
           visible
-          onConfirm={handleActionButtonClick}
+          onConfirm={joinCommunity}
           onCancel={() => setModalHost(null)}
         >
           <Center bg="gray.100" pt="2">
             <Box>
+              <Center>
+                <Text fontSize="sm">{tc('actions.toHost')}:</Text>
+              </Center>
               <Center>
                 {modalHost.logo && <Image fit="contain" w="160px" h="80px" src={modalHost.logo} />}
               </Center>
@@ -210,50 +203,15 @@ function Communities() {
               </Center>
             </Box>
           </Center>
-          <Box py="4" maxW="520px">
-            {modalHost.info && <div className="text-content">{renderHTML(modalHost?.info)}</div>}
-          </Box>
-        </ConfirmModal>
-      )}
-
-      {joinHostModal && (
-        <ConfirmModal
-          confirmText={tc('communities.join')}
-          isCentered
-          scrollBehavior="inside"
-          size="lg"
-          title={joinHostModal.name}
-          visible
-          onConfirm={joinCommunity}
-          onCancel={() => setJoinHostModal(null)}
-        >
-          <Center bg="gray.100" pt="2">
-            <Box>
-              <Center>
-                {joinHostModal.logo && (
-                  <Image fit="contain" w="160px" h="80px" src={joinHostModal.logo} />
-                )}
-              </Center>
-              <Center>
-                <Code fontSize="md" fontWeight="bold" linebreak="anywhere" my="2" noOfLines={1}>
-                  <CLink as="span" color="blue.600" onClick={handleActionButtonClick}>
-                    {joinHostModal.host}
-                  </CLink>
-                </Code>
-              </Center>
-            </Box>
-          </Center>
 
           <Box bg="white" maxW="520px" p="4">
             <Text fontSize="sm" fontWeight="bold" textAlign="center">
-              {tc('communities.info', { community: joinHostModal.name })}
+              {tc('communities.info', { community: modalHost.name })}
             </Text>
           </Box>
 
           <Box py="4" maxW="520px">
-            {joinHostModal.info && (
-              <div className="text-content">{renderHTML(joinHostModal?.info)}</div>
-            )}
+            {modalHost.info && <div className="text-content">{renderHTML(modalHost?.info)}</div>}
           </Box>
         </ConfirmModal>
       )}

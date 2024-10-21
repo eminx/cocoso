@@ -69,6 +69,8 @@ function NewButton() {
       return '/activities/new';
     } else if (item.name === 'info') {
       return '/pages/new';
+    } else if (item.name === 'communities' && currentUser?.isSuperAdmin) {
+      return '/new-host';
     } else {
       return `/${item.name}/new`;
     }
@@ -77,6 +79,27 @@ function NewButton() {
   if (!canCreateContent) {
     return null;
   }
+
+  if (!activeMenuItem || ['members', 'people'].includes(activeMenuItem.name)) {
+    return null;
+  }
+
+  return (
+    <IconButton
+      _hover={{ bg: 'brand.200' }}
+      as="span"
+      bg="brand.100"
+      borderColor="#fff"
+      borderWidth="2px"
+      color="gray.800"
+      cursor="pointer"
+      // borderRadius="50%"
+      icon={<AddIcon />}
+      mx="2"
+      size={isDesktop ? 'md' : 'sm'}
+      onClick={() => navigate(getPathname(activeMenuItem))}
+    />
+  );
 
   return (
     <Box zIndex={isOpen ? '1403' : '10'} ml="2">
