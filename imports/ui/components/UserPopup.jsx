@@ -46,32 +46,6 @@ function UserPopup() {
     setIsSubOpen(false);
   };
 
-  const isFed = platform?.isFederationLayout;
-
-  const buttonProps = {
-    as: 'span',
-    color: isFed ? 'brand.50' : 'brand.500',
-    fontWeight: 'normal',
-    size: isDesktop ? 'sm' : 'xs',
-    variant: 'link',
-  };
-
-  if (!currentUser) {
-    return (
-      <Flex wrap="wrap" justify="flex-end" pl="4" pr={isDesktop ? '2' : '0'}>
-        <Link to="/login">
-          <Button {...buttonProps}>{tc('menu.guest.login')}</Button>
-        </Link>
-
-        <Link to="/register">
-          <Button {...buttonProps} ml="4">
-            {tc('menu.guest.register')}
-          </Button>
-        </Link>
-      </Flex>
-    );
-  }
-
   const notifications = currentUser?.notifications;
 
   let notificationsCounter = 0;

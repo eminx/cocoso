@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Center,
   IconButton,
   Menu,
   MenuButton,

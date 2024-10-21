@@ -8,22 +8,16 @@ import {
   Heading as CHeading,
   HStack,
   Image,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Modal,
-  ModalOverlay,
-  Show,
   Text,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
+import renderHTML from 'react-render-html';
 
 import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
+import ConfirmModal from './ConfirmModal';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -73,35 +67,18 @@ function Header({ isSmallerLogo }) {
   return (
     <Box px="2" w="100%">
       <Flex w="100%" align="flex-start" justify="space-between" mb="2">
-        {!isPortalHost && isFederationLayout && (
-          <Box w="120px" pl="2">
-            <Link to={`https://${platform.portalHost}`}>
-              <Image
-                w="64px"
-                h="64px"
-                fit="contain"
-                src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-              />
-            </Link>
-          </Box>
-        )}
-        {/* {isDesktop && (
-          <Flex w="120px" pl="2" pt="4">
-            {!isHeaderMenu && (
-              <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
-            )}
-          </Flex>
-        )} */}
+        <Box w="120px">
+          {!isPortalHost && isFederationLayout && (
+            <TopLeftFederatinLogoMenu currentHost={currentHost} />
+          )}
+        </Box>
+
         <Box p="2">
           <Box>
             {currentHost.logo ? (
-              isPortalHost ? (
-                <PortalAppMenuLogo currentHost={currentHost} />
-              ) : (
-                <Link to="/">
-                  <Image className={logoClass} fit="contain" src={currentHost.logo} />
-                </Link>
-              )
+              <Link to="/">
+                <Image className={logoClass} fit="contain" src={currentHost.logo} />
+              </Link>
             ) : (
               <Box>
                 <Link to="/">
@@ -129,15 +106,42 @@ function Header({ isSmallerLogo }) {
 
         <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="2" w="120px">
           {currentUser && isAdmin && <UserPopupAdmin />}
+          {!currentUser && <LoginSignupLinks />}
           {(!isDesktop || !isHeaderMenu) && (
             <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
           )}
-          <UserPopup />
+          {currentUser && <UserPopup />}
         </HStack>
       </Flex>
 
       {isDesktop && isHeaderMenu && <WrappedMenu menuItems={menuItems} />}
     </Box>
+  );
+}
+
+const linkButtonProps = {
+  as: 'span',
+  color: 'brand.500',
+  fontWeight: 'normal',
+  size: 'sm',
+  variant: 'link',
+};
+
+function LoginSignupLinks() {
+  const [tc] = useTranslation('common');
+
+  return (
+    <Flex wrap="wrap" justify="flex-end" mt="-1" pl="4" pr="2">
+      <Link to="/login">
+        <Button {...linkButtonProps}>{tc('menu.guest.login')}</Button>
+      </Link>
+
+      <Link to="/register">
+        <Button {...linkButtonProps} ml="4">
+          {tc('menu.guest.register')}
+        </Button>
+      </Link>
+    </Flex>
   );
 }
 
@@ -180,38 +184,38 @@ export function WrappedMenu({ menuItems }) {
   );
 }
 
-function PortalAppMenuLogo({ currentHost }) {
+function TopLeftFederatinLogoMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const { currentHost, platform } = useContext(StateContext);
 
   return (
     <>
-      <Box>
-        <Menu
-          isOpen={isOpen}
-          placement="bottom-end"
-          onOpen={() => setIsOpen(true)}
-          onClose={() => setIsOpen(false)}
-        >
-          <MenuButton>
-            <Flex align="center">
-              <Image className="logo" fit="contain" src={currentHost?.logo} />
-              <ChevronDownIcon />
-            </Flex>
-          </MenuButton>
-
-          <MenuList zIndex={isOpen ? '1403' : '10'} ml="2">
-            <MenuItem color="brand.600" fontWeight="bold">
-              About Samarbetet
-            </MenuItem>
-            <MenuItem color="brand.600" fontWeight="bold">
-              Communities
-            </MenuItem>
-          </MenuList>
-        </Menu>
+      <Box ml="2" onClick={() => setIsOpen(true)}>
+        <Image
+          fit="contain"
+          src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
+          w="64px"
+          h="64px"
+        />
       </Box>
-      <Modal isOpen={isOpen}>
+
+      <Box pl="2">
+        <ConfirmModal
+          confirmText="Continue to the Portal App"
+          isCentered
+          scrollBehavior="inside"
+          size="md"
+          title="Samarbetet Federation"
+          visible={isOpen}
+          onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
+          onCancel={() => setIsOpen(false)}
+        >
+          <Box className="text-content">{renderHTML(platform.footer)}</Box>
+        </ConfirmModal>
+      </Box>
+      {/* <Modal isOpen={isOpen}>
         <ModalOverlay />
-      </Modal>
+      </Modal> */}
     </>
   );
 }

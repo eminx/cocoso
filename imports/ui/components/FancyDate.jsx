@@ -14,7 +14,6 @@ const fancyDateStyle = {
 };
 
 function DateJust({ children, ...otherProps }) {
-  console.log(moment?.locale());
   return (
     <div {...otherProps}>
       <div style={{ ...fancyDateStyle, fontSize: 24 }}>{moment(children).format('DD')}</div>
