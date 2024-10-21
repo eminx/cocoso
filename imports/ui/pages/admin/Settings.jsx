@@ -175,7 +175,7 @@ export default function Settings() {
           <ReactQuill
             className="ql-editor-text-align-center"
             placeholder={t('pages.form.description.holder')}
-            value={localSettings.footer}
+            value={localSettings?.footer}
             onChange={(value) => setLocalSettings({ ...localSettings, footer: value })}
           />
 
