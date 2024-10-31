@@ -201,6 +201,23 @@ Meteor.methods({
     return infoPages && infoPages[0] && infoPages[0].longDescription;
   },
 
+  getPortalHostInfoPage() {
+    const portalHost = Hosts.findOne({ isPortalHost: true });
+    if (!portalHost) {
+      return;
+    }
+    const infoPage = Pages.findOne(
+      {
+        host: portalHost.host,
+      },
+      {
+        longDescription: 1,
+      }
+    );
+
+    return infoPage;
+  },
+
   setHostHue(hue) {
     check(hue, String);
     const host = getHost(this);

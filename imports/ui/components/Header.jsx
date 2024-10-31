@@ -18,6 +18,8 @@ import MenuDrawer from './MenuDrawer';
 import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
 import ConfirmModal from './ConfirmModal';
+import NiceSlider from './NiceSlider';
+import { call } from '../utils/shared';
 
 const getRoute = (item, index) => {
   if (item.name === 'info') {
@@ -186,11 +188,22 @@ export function WrappedMenu({ menuItems }) {
 
 function TopLeftFederatinLogoMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentHost, platform } = useContext(StateContext);
+  const { isDesktop, platform } = useContext(StateContext);
+  const [hostInfo, setHostInfo] = useState(null);
+
+  const handleSetHostInfo = async () => {
+    try {
+      const info = await call('getPortalHostInfoPage');
+      setHostInfo(info);
+      setIsOpen(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <Box ml="2" onClick={() => setIsOpen(true)}>
+      <Box ml="2" onClick={() => handleSetHostInfo()}>
         <Image
           fit="contain"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
@@ -210,7 +223,24 @@ function TopLeftFederatinLogoMenu() {
           onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
           onCancel={() => setIsOpen(false)}
         >
-          <Box className="text-content">{renderHTML(platform.footer)}</Box>
+          {hostInfo && (
+            <Box>
+              {hostInfo.images && (
+                <Center py="2">
+                  <NiceSlider
+                    alt={hostInfo.title}
+                    height={isDesktop ? '400px' : 'auto'}
+                    images={hostInfo.images}
+                    isFade={isDesktop}
+                  />
+                </Center>
+              )}
+
+              {hostInfo.longDescription && (
+                <Box className="text-content">{renderHTML(hostInfo?.longDescription)}</Box>
+              )}
+            </Box>
+          )}
         </ConfirmModal>
       </Box>
     </>
