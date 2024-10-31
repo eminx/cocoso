@@ -23,6 +23,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { Bolt } from 'lucide-react';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -46,6 +47,11 @@ function UserPopup() {
     setIsSubOpen(false);
   };
 
+  const handleClickAdmin = () => {
+    closeBothMenus();
+    navigate('/admin/settings');
+  };
+
   const notifications = currentUser?.notifications;
 
   let notificationsCounter = 0;
@@ -58,6 +64,8 @@ function UserPopup() {
   const isNotification = notifications && notifications.length > 0;
   const host = currentHost?.host;
   const roleTranslated = t(`roles.${role}`);
+
+  const isAdmin = role === 'admin';
 
   return (
     <Box>
@@ -86,6 +94,16 @@ function UserPopup() {
               </Text>
             </Box>
           </MenuGroup>
+          {isAdmin && <MenuDivider />}
+          {isAdmin && (
+            <MenuItem color="brand.700" onClick={() => handleClickAdmin()}>
+              <Flex align="center" gap="2">
+                <Bolt size="20" />
+                <Text>{tc('labels.adminDashboard')}</Text>
+              </Flex>
+            </MenuItem>
+          )}
+          {isAdmin && <MenuDivider />}
           {isNotification && (
             <MenuGroup title={tc('menu.notifications.label')}>
               <Box px="1">

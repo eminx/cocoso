@@ -6,16 +6,15 @@ import { render as renderEmail } from '@react-email/render';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../../components/Template';
-import ListMenu from '../../../components/ListMenu';
 import { call, resizeImage, uploadImage } from '../../../utils/shared';
 import Loader from '../../../components/Loader';
 import { message, Alert } from '../../../components/message';
 import { StateContext } from '../../../LayoutContainer';
-import { adminMenu } from '../../../utils/constants/general';
 import Modal from '../../../components/Modal';
 import EmailPreview from './EmailPreview';
 import EmailForm from './EmailForm';
 import ConfirmModal from '../../../components/ConfirmModal';
+import { AdminMenu } from '../Settings';
 
 const emailModel = {
   appeal: '',
@@ -162,18 +161,9 @@ function EmailNewsletter({ history }) {
     }
   };
 
-  const pathname = history && history.location.pathname;
-
   return (
     <>
-      <Template
-        heading={t('newsletter.title')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={t('newsletter.title')} leftContent={<AdminMenu />}>
         {currentHost?.isPortalHost && (
           <Box mb="4">
             <Alert

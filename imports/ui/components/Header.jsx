@@ -107,7 +107,7 @@ function Header({ isSmallerLogo }) {
         </Box>
 
         <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="2" w="120px">
-          {currentUser && isAdmin && <UserPopupAdmin />}
+          {/* {currentUser && isAdmin && <UserPopupAdmin />} */}
           {!currentUser && <LoginSignupLinks />}
           {(!isDesktop || !isHeaderMenu) && (
             <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />

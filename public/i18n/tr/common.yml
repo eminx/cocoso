@@ -79,6 +79,9 @@ labels:
     checklabel: Avatarını görüntüle
     helper: Bu içerik ile avatarını görüntülemek için işaretle
   items: öge
+  allCommunities: Tüm Topluluklar
+  select: Seç
+  adminDashboard: Admin Paneli
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

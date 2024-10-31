@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Divider, Heading, Link as CLink, Text } from '@chakra-ui/react';
 import ReactQuill from '../../components/Quill';
 
 import { StateContext } from '../../LayoutContainer';
@@ -17,6 +17,7 @@ import Menu from './MenuSettings';
 import Tabs from '../../components/Tabs';
 import Categories from './Categories';
 import ColorPicker from './ColorPicker';
+import { superadminMenu } from '../../utils/constants/general';
 
 export default function Settings() {
   const [localSettings, setLocalSettings] = useState(null);
@@ -198,14 +199,7 @@ export default function Settings() {
 
   return (
     <>
-      <Template
-        heading={t('settings.label')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={t('settings.label')} leftContent={<AdminMenu />}>
         <Tabs index={tabIndex} mb="4" tabs={tabs} />
 
         <Box mb="24">
@@ -217,6 +211,32 @@ export default function Settings() {
         </Box>
       </Template>
     </>
+  );
+}
+
+export function AdminMenu({}) {
+  const { currentHost, currentUser, platform } = useContext(StateContext);
+  const location = useLocation();
+  const [tc] = useTranslation('common');
+
+  const pathname = location?.pathname;
+  const isSuperAdmin = currentUser?.isSuperAdmin;
+  const isPortalHost = currentHost?.isPortalHost;
+
+  return (
+    <Box>
+      <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="4" size="sm">
+        {currentHost?.settings?.name}
+      </Heading>
+      <ListMenu pathname={pathname} list={adminMenu} />
+
+      {isSuperAdmin && isPortalHost && (
+        <Heading fontStyle="italic" fontWeight="normal" mb="2" mt="6" size="sm">
+          {platform?.name + ' ' + tc('domains.platform')}
+        </Heading>
+      )}
+      {isSuperAdmin && isPortalHost && <ListMenu pathname={pathname} list={superadminMenu} />}
+    </Box>
   );
 }
 

@@ -80,6 +80,8 @@ labels:
     helper: Check to show your avatar with this entry
   items: items
   allCommunities: All Communities
+  select: Select
+  adminDashboard: Admin Dashboard
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -18,15 +18,12 @@ import {
 import { SettingsIcon } from '@chakra-ui/icons';
 
 import { StateContext } from '../LayoutContainer';
-import { adminMenu, superadminMenu } from '../utils/constants/general';
+import { adminMenu } from '../utils/constants/general';
 
 function UserPopupAdmin() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const { currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
-
-  const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
-  const { isPortalHost } = currentHost;
 
   return (
     <Box zIndex={isOpen ? '1403' : '10'}>
@@ -67,19 +64,6 @@ function UserPopupAdmin() {
               ))}
             </Box>
           </MenuGroup>
-
-          {isSuperAdmin && isPortalHost && <MenuDivider />}
-          {isSuperAdmin && isPortalHost && (
-            <MenuGroup title={platform?.name + ' ' + tc('domains.platform')}>
-              <Box px="1">
-                {superadminMenu.map((item) => (
-                  <Link key={item.key} to={item.value}>
-                    <MenuItem color="brand.700">{tc(`menu.${item.menu}.${item.key}`)}</MenuItem>
-                  </Link>
-                ))}
-              </Box>
-            </MenuGroup>
-          )}
         </MenuList>
       </Menu>
       <Modal isOpen={isOpen}>

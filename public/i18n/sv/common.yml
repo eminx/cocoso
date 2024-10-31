@@ -80,6 +80,8 @@ labels:
     helper: Dra reglaget för att visa din avatar vid det här inlägget
   items: artiklar
   allCommunities: Alla communities
+  select: Välja
+  adminDashboard: Admin dashboard
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

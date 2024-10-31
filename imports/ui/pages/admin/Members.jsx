@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import moment from 'moment';
-import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Input, Select, Text } from '@chakra-ui/react';
 
 import Loader from '../../components/Loader';
 import NiceList from '../../components/NiceList';
 import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import { call } from '../../utils/shared';
-import { adminMenu } from '../../utils/constants/general';
 import UsageReport from '../../components/UsageReport';
 import Tabs from '../../components/Tabs';
+import { AdminMenu } from './Settings';
 
 const compareUsersByDate = (a, b) => {
   const dateA = new Date(a.createdAt);
@@ -204,14 +202,7 @@ function Members() {
 
   return (
     <>
-      <Template
-        heading={`${t('label')} (${membersRendered.length})`}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={`${t('label')} (${membersRendered.length})`} leftContent={<AdminMenu />}>
         <Box>
           <Tabs index={tabIndex} mb="8" tabs={tabs} />
 

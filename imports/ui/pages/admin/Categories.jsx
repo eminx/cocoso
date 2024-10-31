@@ -20,7 +20,7 @@ import { StateContext } from '../../LayoutContainer';
 
 const specialCh = /[!@#$%^&*()/\s/_+\=\[\]{};':"\\|,.<>\/?]+/;
 
-function Categories({ history }) {
+function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryInput, setCategoryInput] = useState('');
   const [loading, setLoading] = useState(true);
@@ -107,7 +107,6 @@ function Categories({ history }) {
           </HStack>
         </form>
       </Box>
-      {/* </Template> */}
     </>
   );
 }

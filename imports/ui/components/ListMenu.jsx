@@ -1,6 +1,18 @@
 import React, { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Box, Link as CLink, List, ListItem, Select, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Link as CLink,
+  List,
+  ListItem,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
@@ -19,6 +31,9 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
   const isActiveItem = (item) => {
     return pathname.includes(item.value);
   };
+  const selectedItem = list.find((item) => {
+    return pathname.includes(item.value);
+  });
 
   if (isDesktop) {
     return (
@@ -41,16 +56,21 @@ function ListMenu({ currentUser, list, onChange, children, ...otherProps }) {
   }
 
   return (
-    <Box mt="2" mb="8">
-      <Select w="xs" onChange={(event) => navigate(`${parseTitle(event.target.value)}`)}>
-        {list.map((item) => (
-          <option key={item.key} value={item.value} selected={isActiveItem(item)}>
-            {item.key == 'publicProfile'
-              ? `@${currentUser?.username}`
-              : tc(`menu.${item.menu}.${item.key}`)}
-          </option>
-        ))}
-      </Select>
+    <Box my="2">
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+          {selectedItem ? tc(`menu.${selectedItem.menu}.${selectedItem.key}`) : tc('labels.select')}
+        </MenuButton>
+        <MenuList>
+          {list.map((item) => (
+            <MenuItem key={item.key} onClick={() => navigate(`${parseTitle(item.value)}`)}>
+              {item.key == 'publicProfile'
+                ? `@${currentUser?.username}`
+                : tc(`menu.${item.menu}.${item.key}`)}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
     </Box>
   );
 }

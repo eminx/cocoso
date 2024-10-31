@@ -14,15 +14,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
 import { call } from '../../utils/shared';
 import Loader from '../../components/Loader';
 import { message, Alert } from '../../components/message';
 import { StateContext } from '../../LayoutContainer';
 import FormField from '../../components/FormField';
-import { adminMenu } from '../../utils/constants/general';
 import { defaultEmails } from '../../../startup/constants';
 import ReactQuill from '../../components/Quill';
+import { AdminMenu } from './Settings';
 
 function Emails() {
   const [loading, setLoading] = useState(true);
@@ -30,8 +29,6 @@ function Emails() {
   const { currentUser, role } = useContext(StateContext);
   const [t] = useTranslation('admin');
   const [tc] = useTranslation('common');
-  const location = useLocation();
-  const pathname = location?.pathname;
 
   useEffect(() => {
     getEmails();
@@ -85,14 +82,7 @@ function Emails() {
 
   return (
     <>
-      <Template
-        heading={t('emails.label')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={adminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={t('emails.label')} leftContent={<AdminMenu />}>
         {parsedEmails?.map((email, index) => (
           <Box key={email.title} py="4" mb="4">
             <Heading size="md" mb="4">

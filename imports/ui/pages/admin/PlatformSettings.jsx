@@ -13,8 +13,7 @@ import FileDropper from '../../components/FileDropper';
 import Tabs from '../../components/Tabs';
 import ReactQuill from '../../components/Quill';
 import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
-import { superadminMenu } from '../../utils/constants/general';
+import { AdminMenu } from './Settings';
 
 export default function PlatformSettings() {
   const [loading, setLoading] = useState(true);
@@ -226,14 +225,7 @@ export default function PlatformSettings() {
 
   return (
     <Box>
-      <Template
-        heading={tc('menu.superadmin.settings')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={superadminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={tc('menu.superadmin.settings')} leftContent={<AdminMenu />}>
         <Tabs index={tabIndex} tabs={tabs} />
 
         <Box pt="4">

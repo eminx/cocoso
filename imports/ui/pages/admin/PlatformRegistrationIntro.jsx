@@ -10,8 +10,7 @@ import { message, Alert } from '../../components/message';
 import { call } from '../../utils/shared';
 import ReactQuill from '../../components/Quill';
 import Template from '../../components/Template';
-import ListMenu from '../../components/ListMenu';
-import { superadminMenu } from '../../utils/constants/general';
+import { AdminMenu } from './Settings';
 
 export default function PlatformRegistrationIntro({ history }) {
   const [loading, setLoading] = useState(true);
@@ -89,14 +88,7 @@ export default function PlatformRegistrationIntro({ history }) {
 
   return (
     <Box>
-      <Template
-        heading={tc('menu.superadmin.intro')}
-        leftContent={
-          <Box>
-            <ListMenu pathname={pathname} list={superadminMenu} />
-          </Box>
-        }
-      >
+      <Template heading={tc('menu.superadmin.intro')} leftContent={<AdminMenu />}>
         <Text mb="2">
           {renderHTML(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
         </Text>
