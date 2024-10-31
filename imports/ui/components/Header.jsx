@@ -217,7 +217,7 @@ function TopLeftFederatinLogoMenu() {
           confirmText="Continue to the Portal App"
           isCentered
           scrollBehavior="inside"
-          size="md"
+          size="2xl"
           title="Samarbetet Federation"
           visible={isOpen}
           onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
@@ -226,7 +226,7 @@ function TopLeftFederatinLogoMenu() {
           {hostInfo && (
             <Box>
               {hostInfo.images && (
-                <Center py="2">
+                <Center py="2" mb="4">
                   <NiceSlider
                     alt={hostInfo.title}
                     height={isDesktop ? '400px' : 'auto'}
