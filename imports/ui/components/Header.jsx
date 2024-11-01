@@ -13,9 +13,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
+const publicSettings = Meteor.settings.public;
+
 import { StateContext } from '../LayoutContainer';
 import MenuDrawer from './MenuDrawer';
-import UserPopupAdmin from './UserPopupAdmin';
 import UserPopup from './UserPopup';
 import ConfirmModal from './ConfirmModal';
 import NiceSlider from './NiceSlider';
@@ -64,15 +65,12 @@ function Header({ isSmallerLogo }) {
   }
 
   const isFederationLayout = platform && platform.isFederationLayout;
-  const isPortalHost = currentHost?.isPortalHost;
 
   return (
-    <Box px="2" w="100%">
-      <Flex w="100%" align="flex-start" justify="space-between" mb="2">
+    <Box px="2" w="100%" mb="4">
+      <Flex w="100%" align="flex-start" justify="space-between">
         <Box w="120px">
-          {!isPortalHost && isFederationLayout && (
-            <TopLeftFederatinLogoMenu currentHost={currentHost} />
-          )}
+          {isFederationLayout && <TopLeftFederatinLogoMenu currentHost={currentHost} />}
         </Box>
 
         <Box p="2">
@@ -106,13 +104,19 @@ function Header({ isSmallerLogo }) {
           </Box>
         </Box>
 
-        <HStack align="flex-start" justify="flex-end" p="2" pt="4" spacing="2" w="120px">
-          {/* {currentUser && isAdmin && <UserPopupAdmin />} */}
-          {!currentUser && <LoginSignupLinks />}
+        <HStack
+          align="flex-start"
+          justify="flex-end"
+          pt="2"
+          position="relative"
+          spacing="2"
+          w="120px"
+        >
           {(!isDesktop || !isHeaderMenu) && (
             <MenuDrawer currentHost={currentHost} isDesktop={isDesktop} platform={platform} />
           )}
           {currentUser && <UserPopup />}
+          {!currentUser && <LoginSignupLinks />}
         </HStack>
       </Flex>
 
@@ -125,21 +129,34 @@ const linkButtonProps = {
   as: 'span',
   color: 'brand.500',
   fontWeight: 'normal',
-  size: 'sm',
   variant: 'link',
 };
 
 function LoginSignupLinks() {
+  const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
+  const isHeaderMenu = currentHost?.settings?.isHeaderMenu;
+
   return (
-    <Flex wrap="wrap" justify="flex-end" mt="-1" pl="4" pr="2">
-      <Link to="/login">
-        <Button {...linkButtonProps}>{tc('menu.guest.login')}</Button>
+    <Flex
+      alignContent="flex-end"
+      justifyContent="flex-end"
+      pl="2"
+      position="absolute"
+      textAlign="right"
+      top={!isDesktop ? '54px' : isHeaderMenu ? '8px' : '66px'}
+      width="320px"
+      wrap="wrap"
+    >
+      <Link to="/login" style={{ marginRight: '12px' }}>
+        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'}>
+          {tc('menu.guest.login')}
+        </Button>
       </Link>
 
       <Link to="/register">
-        <Button {...linkButtonProps} ml="4">
+        <Button {...linkButtonProps} size={isDesktop ? 'sm' : 'xs'}>
           {tc('menu.guest.register')}
         </Button>
       </Link>
@@ -188,8 +205,9 @@ export function WrappedMenu({ menuItems }) {
 
 function TopLeftFederatinLogoMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isDesktop, platform } = useContext(StateContext);
+  const { currentHost, isDesktop, platform } = useContext(StateContext);
   const [hostInfo, setHostInfo] = useState(null);
+  const [tc] = useTranslation('common');
 
   const handleSetHostInfo = async () => {
     try {
@@ -201,24 +219,28 @@ function TopLeftFederatinLogoMenu() {
     }
   };
 
+  const isFederationLayout = platform && platform.isFederationLayout;
+  const isPortalHost = currentHost?.isPortalHost;
+
   return (
-    <>
-      <Box ml="2" onClick={() => handleSetHostInfo()}>
+    <Box position="relative">
+      <Box className="federation-logo" ml="2" onClick={() => handleSetHostInfo()}>
         <Image
           fit="contain"
           src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-          w="64px"
-          h="64px"
+          w={isDesktop ? '54px' : '42px'}
+          h={isDesktop ? '54px' : '42px'}
         />
       </Box>
 
       <Box pl="2">
         <ConfirmModal
-          confirmText="Continue to the Portal App"
+          confirmText={tc('modals.toPortalApp')}
+          hideFooter={isPortalHost && isFederationLayout}
           isCentered
           scrollBehavior="inside"
           size="2xl"
-          title="Samarbetet Federation"
+          title={publicSettings.name}
           visible={isOpen}
           onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
           onCancel={() => setIsOpen(false)}
@@ -243,7 +265,7 @@ function TopLeftFederatinLogoMenu() {
           )}
         </ConfirmModal>
       </Box>
-    </>
+    </Box>
   );
 }
 

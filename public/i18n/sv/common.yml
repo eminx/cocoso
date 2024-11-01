@@ -120,8 +120,8 @@ message:
       title: Bli kontaktad
       description: Låt andra komma i kontakt med dig
     emptylisting:
-      noentrytitle: Inget inlägg publicerat än
-      noentrydescription: Du har inte lagt upp något inlägg än. Skapa ditt första inlägg och publicera här i denna lista
+      title: Inget inlägg publicerat än
+      description: Du har inte lagt upp något inlägg än. Skapa ditt första inlägg och publicera här i denna lista
 
 # MODAL POP-UPS
 modals:
@@ -145,6 +145,8 @@ modals:
           compliment: Komplimang
       details:
         label: Detaljer
+
+  toPortalApp: Fortsätt till portalappen
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:

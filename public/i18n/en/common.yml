@@ -148,6 +148,8 @@ modals:
       details:
         label: Details
 
+  toPortalApp: Continue to the Portal App
+
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:
   label: Menu

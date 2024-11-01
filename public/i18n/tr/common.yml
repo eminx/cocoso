@@ -120,8 +120,8 @@ message:
       title: İletişim kurulabilirsin
       description: Başkalarının seninle iletişim kurmasına izin ver
     emptylisting:
-      noentrytitle: Henüz bir içerik oluşturulmadı
-      noentrydescription: Henüz bu sayfada bir içerik oluşturmadın. İlk içeriğini oluştur ve bu sayfada yayınla
+      title: Henüz bir içerik oluşturulmadı
+      description: Henüz bu sayfada bir içerik oluşturmadın. İlk içeriğini oluştur ve bu sayfada yayınla
 
 # MODAL POP-UPS
 modals:
@@ -145,6 +145,8 @@ modals:
           compliment: İltifat
       details:
         label: Detaylar
+
+  toPortalApp: Portal Uygulamaya Devam et
 
 # GUEST | MEMBER | ADMIN MENU LABELS
 menu:

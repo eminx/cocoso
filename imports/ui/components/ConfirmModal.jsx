@@ -5,6 +5,7 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogCloseButton,
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
@@ -42,6 +43,8 @@ function ConfirmModal({
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             {title}
           </AlertDialogHeader>
+
+          <AlertDialogCloseButton onClick={onCancel} />
 
           <AlertDialogBody>{children}</AlertDialogBody>
 

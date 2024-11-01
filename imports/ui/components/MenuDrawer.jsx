@@ -64,7 +64,6 @@ export default function MenuDrawer({ currentHost, isDesktop, platform }) {
       <Drawer
         bg="white"
         isOpen={isOpen}
-        placement={isDesktop ? 'left' : 'right'}
         title={tc('menu.label')}
         titleColor="brand.900"
         onClose={onToggle}
