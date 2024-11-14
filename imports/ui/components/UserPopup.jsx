@@ -101,8 +101,8 @@ function UserPopup() {
 
           {isAdmin && <MenuDivider />}
           {isAdmin && (
-            <MenuItem color="brand.700" onClick={() => handleClickAdmin()}>
-              <Bolt size="20" style={{ marginRight: '6px' }} />
+            <MenuItem color="brand.700" px="4" onClick={() => handleClickAdmin()}>
+              {/* <Bolt size="20" style={{ marginRight: '6px' }} /> */}
               {t('profile.adminDashboard')}
             </MenuItem>
           )}
