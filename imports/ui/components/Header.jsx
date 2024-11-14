@@ -81,7 +81,7 @@ function Header({ isSmallerLogo }) {
           {isFederationLayout && <TopLeftFederatinLogoMenu currentHost={currentHost} />}
         </Box>
 
-        <Box p="2" mt={isDesktop ? '0' : '42px'}>
+        <Box p="2" mt={isDesktop ? '0' : isFederationLayout ? '42px' : '0'}>
           <Box>
             {currentHost.logo ? (
               <Link to="/">

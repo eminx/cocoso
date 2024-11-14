@@ -391,7 +391,7 @@ function MembersPublic() {
                   borderColor="brand.500"
                   cursor="pointer"
                   justifyContent="center"
-                  mb="4"
+                  mb="2"
                   onClick={() => setModalUser(member)}
                 >
                   <Box>
