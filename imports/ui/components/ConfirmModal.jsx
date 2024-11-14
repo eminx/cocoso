@@ -44,7 +44,7 @@ function ConfirmModal({
             {title}
           </AlertDialogHeader>
 
-          <AlertDialogCloseButton onClick={onCancel} />
+          <AlertDialogCloseButton onClick={onOverlayClick} />
 
           <AlertDialogBody>{children}</AlertDialogBody>
 
