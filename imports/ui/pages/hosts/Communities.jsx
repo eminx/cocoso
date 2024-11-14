@@ -177,13 +177,13 @@ function Communities() {
 
       {modalHost && (
         <ConfirmModal
-          confirmText={tc('communities.join')}
+          confirmText={modalHost.isMember ? tc('actions.toHost') : tc('communities.join')}
           isCentered
           scrollBehavior="inside"
           size="lg"
           title={modalHost.name}
           visible
-          onConfirm={joinCommunity}
+          onConfirm={modalHost.isMember ? handleActionButtonClick : joinCommunity}
           onCancel={() => setModalHost(null)}
         >
           <Center bg="gray.100" pt="2">
