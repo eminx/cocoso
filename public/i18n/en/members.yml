@@ -60,6 +60,7 @@ profile:
     membership: '{{ role }} in {{ host }}'
     memberships: member in {{ count }} communities
   myCommunities: My Communities
+  adminDashboard: Admin Dashboard
 
 works:
   label: My Works

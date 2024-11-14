@@ -81,7 +81,6 @@ labels:
   items: artiklar
   allCommunities: Alla communities
   select: Välja
-  adminDashboard: Admin dashboard
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

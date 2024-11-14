@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,7 +9,6 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Flex,
   Link as CLink,
   Menu,
@@ -22,19 +21,24 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { Bolt } from 'lucide-react';
 
 import { StateContext } from '../LayoutContainer';
 
 function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubOpen, setIsSubOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
   const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
     useContext(StateContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 1);
+  }, []);
 
   const handleLogout = () => {
     closeBothMenus();
@@ -44,7 +48,6 @@ function UserPopup() {
 
   const closeBothMenus = () => {
     setIsOpen(false);
-    setIsSubOpen(false);
   };
 
   const handleClickAdmin = () => {
@@ -83,6 +86,7 @@ function UserPopup() {
             {isNotification && <AvatarBadge borderColor="tomato" bg="tomato" />}
           </Avatar>
         </MenuButton>
+
         <MenuList zIndex={isOpen ? '1403' : '10'}>
           <MenuGroup>
             <Box px="4" py="1">
@@ -94,16 +98,16 @@ function UserPopup() {
               </Text>
             </Box>
           </MenuGroup>
+
           {isAdmin && <MenuDivider />}
           {isAdmin && (
             <MenuItem color="brand.700" onClick={() => handleClickAdmin()}>
-              <Flex align="center" gap="2">
-                <Bolt size="20" />
-                <Text>{tc('labels.adminDashboard')}</Text>
-              </Flex>
+              <Bolt size="20" style={{ marginRight: '6px' }} />
+              {t('profile.adminDashboard')}
             </MenuItem>
           )}
           {isAdmin && <MenuDivider />}
+
           {isNotification && (
             <MenuGroup title={tc('menu.notifications.label')}>
               <Box px="1">
@@ -121,7 +125,6 @@ function UserPopup() {
               </Box>
             </MenuGroup>
           )}
-
           {isNotification && <MenuDivider />}
 
           <MenuGroup>
@@ -143,35 +146,6 @@ function UserPopup() {
                   </MenuItem>
                 </Link>
               )}
-
-              <MenuDivider />
-
-              <MenuItem onClick={() => setIsSubOpen(true)}>
-                <Menu isOpen={isSubOpen} placement="left-end" onOpen={() => setIsSubOpen(true)}>
-                  <MenuButton>
-                    <ChevronLeftIcon /> {t('profile.myCommunities')}
-                  </MenuButton>
-
-                  <MenuList zIndex="1405">
-                    {currentUser?.memberships?.map((m) => (
-                      <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
-                        {m.hostname}
-                      </MenuItem>
-                    ))}
-                    <Divider colorScheme="gray.700" mt="2" />
-                    <MenuItem
-                      key="all-communities"
-                      onClick={() =>
-                        currentHost?.isPortalHost
-                          ? navigate('/communities')
-                          : (location.href = `https://${platform?.portalHost}/communities`)
-                      }
-                    >
-                      {tc('labels.allCommunities')}
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              </MenuItem>
             </Box>
           </MenuGroup>
 
@@ -190,7 +164,6 @@ function UserPopup() {
         <ModalOverlay
           onClick={() => {
             setIsOpen(false);
-            setIsSubOpen(false);
           }}
         />
       </Modal>

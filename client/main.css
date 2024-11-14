@@ -288,12 +288,10 @@ ul.ant-cascader-menu::-webkit-scrollbar-thumb,
 
 .federation-logo {
   animation: slidedown 400ms;
-  position: absolute;
 }
 
 .federation-logo:hover {
   cursor: pointer;
-  filter: brightness(0.7);
 }
 
 @keyframes slidedown {

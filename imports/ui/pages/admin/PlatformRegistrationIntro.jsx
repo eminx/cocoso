@@ -84,8 +84,6 @@ export default function PlatformRegistrationIntro({ history }) {
     }
   };
 
-  const pathname = history?.location?.pathname;
-
   return (
     <Box>
       <Template heading={tc('menu.superadmin.intro')} leftContent={<AdminMenu />}>

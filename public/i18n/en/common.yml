@@ -81,7 +81,6 @@ labels:
   items: items
   allCommunities: All Communities
   select: Select
-  adminDashboard: Admin Dashboard
 
 # ALL CLIENT-SIDE NOTIFICATIONS
 message:

@@ -1,15 +1,23 @@
 import React, { useContext, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   Center,
+  Divider,
   Flex,
   Heading as CHeading,
   HStack,
   Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
 import renderHTML from 'react-render-html';
 
@@ -73,7 +81,7 @@ function Header({ isSmallerLogo }) {
           {isFederationLayout && <TopLeftFederatinLogoMenu currentHost={currentHost} />}
         </Box>
 
-        <Box p="2">
+        <Box p="2" mt={isDesktop ? '0' : '42px'}>
           <Box>
             {currentHost.logo ? (
               <Link to="/">
@@ -205,9 +213,12 @@ export function WrappedMenu({ menuItems }) {
 
 function TopLeftFederatinLogoMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentHost, isDesktop, platform } = useContext(StateContext);
+  const [isMyCommunitiesMenuOpen, setIsMyCommunitiesMenuOpen] = useState(false);
+  const { currentHost, currentUser, isDesktop, platform } = useContext(StateContext);
   const [hostInfo, setHostInfo] = useState(null);
   const [tc] = useTranslation('common');
+  const [t] = useTranslation('members');
+  const navigate = useNavigate();
 
   const handleSetHostInfo = async () => {
     try {
@@ -224,13 +235,64 @@ function TopLeftFederatinLogoMenu() {
 
   return (
     <Box position="relative">
-      <Box className="federation-logo" ml="2" onClick={() => handleSetHostInfo()}>
-        <Image
-          fit="contain"
-          src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
-          w={isDesktop ? '54px' : '42px'}
-          h={isDesktop ? '54px' : '42px'}
-        />
+      <Box ml="2" className="federation-logo" position="absolute">
+        <HStack>
+          <Image
+            fit="contain"
+            src="https://samarbetet.s3.eu-central-1.amazonaws.com/emin/adaptive-icon.png"
+            w={isDesktop ? '54px' : '42px'}
+            h={isDesktop ? '54px' : '42px'}
+            onClick={() => handleSetHostInfo()}
+          />
+          {currentUser && isFederationLayout && (
+            <Box>
+              <Menu
+                isOpen={isMyCommunitiesMenuOpen}
+                onOpen={() => setIsMyCommunitiesMenuOpen(true)}
+                onClose={() => setIsMyCommunitiesMenuOpen(false)}
+              >
+                <MenuButton
+                  as={Button}
+                  fontSize="14px"
+                  lineHeight={1.2}
+                  px="2"
+                  rightIcon={<ChevronDownIcon />}
+                  textAlign="left"
+                  variant="link"
+                >
+                  {t('profile.myCommunities')}
+                </MenuButton>
+
+                <MenuList zIndex="1405">
+                  {currentUser?.memberships?.map((m) => (
+                    <MenuItem key={m.host} onClick={() => (location.href = `https://${m.host}`)}>
+                      {m.hostname}
+                    </MenuItem>
+                  ))}
+                  <Divider colorScheme="gray.700" mt="2" />
+                  <MenuItem
+                    key="all-communities"
+                    onClick={() =>
+                      currentHost?.isPortalHost
+                        ? navigate('/communities')
+                        : (location.href = `https://${platform?.portalHost}/communities`)
+                    }
+                  >
+                    {tc('labels.allCommunities')}
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+          )}
+        </HStack>
+
+        <Modal isOpen={isMyCommunitiesMenuOpen}>
+          <ModalOverlay
+            onClick={() => {
+              setIsMyCommunitiesMenuOpen(false);
+            }}
+          />
+        </Modal>
       </Box>
 
       <Box pl="2">
@@ -244,14 +306,15 @@ function TopLeftFederatinLogoMenu() {
           visible={isOpen}
           onConfirm={() => (window.location.href = `https://${platform.portalHost}`)}
           onCancel={() => setIsOpen(false)}
+          onOverlayClick={() => setIsOpen(false)}
         >
           {hostInfo && (
             <Box>
               {hostInfo.images && (
-                <Center py="2" mb="4">
+                <Center mb="6">
                   <NiceSlider
                     alt={hostInfo.title}
-                    height={isDesktop ? '400px' : 'auto'}
+                    height="auto"
                     images={hostInfo.images}
                     isFade={isDesktop}
                   />
