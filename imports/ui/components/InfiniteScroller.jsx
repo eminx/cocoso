@@ -40,8 +40,8 @@ function InfiniteScroller({
 
   const hasMore = items.length > currentItems.length;
 
-  const w = smallThumb || isMasonry ? '2xs' : 'auto';
-  const h = smallThumb || isMasonry ? '180px' : '315px';
+  const skeletonWidth = smallThumb || isMasonry ? '2xs' : 'auto';
+  const skeletonHeight = smallThumb || isMasonry ? '180px' : '315px';
 
   return (
     <>
@@ -53,7 +53,7 @@ function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item) => children(item))}
-            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="4" />}
+            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="2" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
@@ -62,7 +62,12 @@ function InfiniteScroller({
           <Wrap align="center" justify="center" spacing="2">
             {currentItems?.map((item) => children(item))}
             {hasMore && (
-              <Skeleton className="sexy-thumb-container" endColor="brand.500" h={h} w={w} />
+              <Skeleton
+                className="sexy-thumb-container"
+                endColor="brand.500"
+                h={skeletonHeight}
+                w={skeletonWidth}
+              />
             )}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={smallThumb || isMasonry} />

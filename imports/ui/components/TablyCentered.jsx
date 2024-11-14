@@ -127,7 +127,11 @@ function TablyCentered({
                   {tabs ? (
                     <Routes>
                       {tabs.map((tab) => (
-                        <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
+                        <Route
+                          key={tab.title}
+                          path={tab.path}
+                          element={<Box px="2">{tab.content}</Box>}
+                        />
                       ))}
                     </Routes>
                   ) : (

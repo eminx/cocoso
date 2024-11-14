@@ -222,7 +222,7 @@ function Works() {
         </Flex>
       </Center>
 
-      <Box pr="4">
+      <Box pr="2">
         <InfiniteScroller
           canCreateContent={canCreateContent}
           isMasonry
@@ -234,7 +234,7 @@ function Works() {
               key={work._id}
               bg="white"
               cursor="pointer"
-              mb="4"
+              mb="2"
               onClick={() => setModalWork(work)}
             >
               <NewGridThumb

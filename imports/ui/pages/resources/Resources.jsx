@@ -213,7 +213,7 @@ function Resources() {
         </FiltrerSorter>
       </PageHeading>
 
-      <Box px="4">
+      <Box px="2">
         <InfiniteScroller
           canCreateContent={isAdmin}
           items={resourcesRendered}
