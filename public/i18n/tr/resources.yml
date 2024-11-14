@@ -45,7 +45,7 @@ cards:
 
 booking:
   labels:
-    field: Rezervasyonlar
+    field: Rezervasyonlarım
     form: Rezervasyon ekle
   multiple: Birkaç günlük rezervasyon yap
   conflict: 'Bu tarih ve saatte bu öge için zaten bir ayırma var: '

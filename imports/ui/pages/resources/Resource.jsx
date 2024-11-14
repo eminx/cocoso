@@ -99,7 +99,7 @@ function ResourcePage() {
 
   if (currentUser && canCreateContent && resource.isBookable) {
     tabs.push({
-      title: tc('labels.bookings'),
+      title: t('booking.labels.field'),
       content: <BookingsField currentUser={currentUser} selectedResource={resource} />,
       path: 'bookings',
     });
@@ -149,10 +149,8 @@ function ResourcePage() {
     tags.push(t('cards.isCombo'));
   }
 
-  if (resource.isBookable) {
+  if (resource.isBookable && canCreateContent) {
     tags.push(t('cards.isBookable'));
-  } else {
-    tags.push(t('cards.isNotBookable'));
   }
 
   const resourcesInMenu = currentHost?.settings?.menu?.find((item) => item.name === 'resources');

@@ -46,7 +46,7 @@ cards:
 
 booking:
   labels:
-    field: Bookings
+    field: My Bookings
     form: Add a Booking
   multiple: Book for multiple days
   conflict: "There's already a booking for this item at this date & time: "

@@ -46,7 +46,7 @@ cards:
 
 booking:
   labels:
-    field: Bokningar
+    field: Mina bokningar
     form: Lägg till en bokning
   multiple: Boka flera dagar
   conflict: 'Det finns redan en bokning för detta objekt vid detta datum och tid: '
