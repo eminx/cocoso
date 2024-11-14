@@ -14,7 +14,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-// import { ArrowUpNarrowWide, Search } from 'lucide-react';
 
 import { StateContext } from '../LayoutContainer';
 

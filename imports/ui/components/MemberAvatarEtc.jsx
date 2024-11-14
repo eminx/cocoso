@@ -21,7 +21,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
-import { BadgeCheck, Bolt } from 'lucide-react';
+import BadgeCheck from 'lucide-react/dist/esm/icons/badge-check';
+import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
 import { getFullName } from '../utils/shared';
 import { StateContext } from '../LayoutContainer';

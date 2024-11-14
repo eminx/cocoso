@@ -9,7 +9,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Link as CLink,
   Menu,
   MenuButton,
@@ -21,7 +20,6 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import { Bolt } from 'lucide-react';
 
 import { StateContext } from '../LayoutContainer';
 
