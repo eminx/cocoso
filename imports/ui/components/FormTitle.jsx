@@ -7,7 +7,7 @@ import BackLink from './BackLink';
 import renderHTML from 'react-render-html';
 
 export default function FormTitle({ context, isCalendar, isNew = false }) {
-  const { currentHost, isDesktop } = useContext(StateContext);
+  const { currentHost } = useContext(StateContext);
   const [tc] = useTranslation('common');
 
   const menu = currentHost?.settings?.menu;
@@ -25,7 +25,7 @@ export default function FormTitle({ context, isCalendar, isNew = false }) {
     <Box>
       <Flex px="2" mb="2">
         <BackLink
-          backLink={{ label: currentContext?.label, value: '/' + context }}
+          backLink={{ label: currentContext?.label, value: '/' + currentContext?.name }}
           isSmall={false}
         />
       </Flex>
