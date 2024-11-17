@@ -91,7 +91,7 @@ message:
     update: Your entry is successfully updated
     remove: Your entry is successfully deleted
     save: '{{ domain }} successfully saved'
-    leave: Your membership at {{ host }} is terminated
+    leave: Your have now left {{ host }}
 
   error:
     imageRequired: Image is required
