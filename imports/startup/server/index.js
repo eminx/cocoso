@@ -3,9 +3,10 @@ import { renderWithSSR } from 'meteor/communitypackages:react-router-ssr';
 import { Accounts } from 'meteor/accounts-base';
 
 import { AppRoutesSSR } from '../../ssr/AppRoutes';
-
 import './api';
 import './migrations';
+
+const { cdn_server } = Meteor.settings;
 
 Meteor.startup(() => {
   const smtp = Meteor.settings?.mailCredentials?.smtp;
@@ -19,6 +20,10 @@ Meteor.startup(() => {
     const newUrl = url.replace('#/', '');
     return `To reset your password, simply click the link below. ${newUrl}`;
   };
+
+  if (cdn_server) {
+    WebAppInternals.setBundledJsCssPrefix(cdn_server);
+  }
 });
 
 renderWithSSR(AppRoutesSSR, {
