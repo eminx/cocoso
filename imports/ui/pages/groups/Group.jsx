@@ -368,14 +368,9 @@ class Group extends Component {
     }
   };
 
-  deleteActivity = (activityId, meetingIndex) => {
+  deleteActivity = (activityId) => {
     const { group, groupMeetings, t } = this.props;
     if (!group || !groupMeetings) {
-      return;
-    }
-
-    if (groupMeetings[meetingIndex].attendees.length > 0) {
-      message.error(t('meeting.access.remove'));
       return;
     }
 
@@ -404,7 +399,7 @@ class Group extends Component {
         {group &&
           groupMeetings.map((meeting, meetingIndex) => (
             <AccordionItem
-              key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+              key={meeting._id}
               mb="4"
               style={{
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
@@ -443,7 +438,7 @@ class Group extends Component {
                   <Button
                     size="xs"
                     colorScheme="red"
-                    onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
+                    onClick={() => this.deleteActivity(meeting._id)}
                   >
                     {t('meeting.actions.remove')}
                   </Button>
