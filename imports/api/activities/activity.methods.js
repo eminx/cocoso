@@ -229,7 +229,7 @@ Meteor.methods({
     }
   },
 
-  createActivity(values, images) {
+  createActivity(values) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -248,7 +248,6 @@ Meteor.methods({
         host,
         authorId: user._id,
         authorName: user.username,
-        images,
         isSentForReview: false,
         isPublished: true,
         creationDate: new Date(),
@@ -398,20 +397,23 @@ Meteor.methods({
   },
 
   removeAttendance(activityId, occurenceIndex, email, lastName) {
+    const currentUser = Meteor.user();
     const theActivity = Activities.findOne(activityId);
     const newOccurences = [...theActivity.datesAndTimes];
     const theOccurence = newOccurences[occurenceIndex];
     const theNonAttendee = theOccurence.attendees.find((a) => a.email === email);
-    newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
-      (a) => a.email !== email || a.lastName !== lastName
-    );
 
-    console.log(activityId, occurenceIndex, email, lastName);
+    newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter((a) => {
+      if (theActivity.isGroupMeeting) {
+        return email !== a.email;
+      } else {
+        return a.email !== email || a.lastName !== lastName;
+      }
+    });
 
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
     const hostName = currentHost.settings.name;
-    const currentUser = Meteor.user();
 
     try {
       Activities.update(activityId, {

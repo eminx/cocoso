@@ -174,10 +174,11 @@ class NewActivity extends PureComponent {
       isExclusiveActivity,
       isPublicActivity,
       isRegistrationDisabled,
+      images: imagesReadyToSave,
     };
 
     try {
-      const newActivityId = await call('createActivity', values, imagesReadyToSave);
+      const newActivityId = await call('createActivity', values);
       this.setState(
         {
           isCreating: false,

@@ -389,7 +389,7 @@ class Group extends Component {
     });
   };
 
-  renderDates = () => {
+  renderMeetingsForAdmin = () => {
     const { group, groupMeetings, t } = this.props;
     const { resources } = this.state;
 
@@ -432,7 +432,9 @@ class Group extends Component {
                         <Text as="span" fontWeight="bold">
                           {attendee.username}
                         </Text>
-                        <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                        {(attendee.firstName || attendee.lastName) && (
+                          <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                        )}
                       </ListItem>
                     ))}
                   </List>
@@ -986,7 +988,7 @@ class Group extends Component {
             )}
             {isFutureMeetings && (
               <Accordion allowToggle>
-                {groupMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+                {groupMeetings && isAdmin ? this.renderMeetingsForAdmin() : this.renderMeetings()}
               </Accordion>
             )}
             {isAdmin && (
