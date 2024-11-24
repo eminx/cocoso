@@ -374,6 +374,11 @@ class Group extends Component {
       return;
     }
 
+    // if (groupMeetings[meetingIndex].attendees.length > 0) {
+    //   message.error(t('meeting.access.remove'));
+    //   return;
+    // }
+
     Meteor.call('deleteActivity', activityId, (error, respond) => {
       if (error) {
         console.log(error);
