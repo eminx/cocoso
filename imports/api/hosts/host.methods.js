@@ -103,6 +103,7 @@ Meteor.methods({
   },
 
   getHost(host) {
+    console.log('getHost:', host);
     return Hosts.findOne(
       { host },
       {
