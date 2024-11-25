@@ -1,6 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { renderWithSSR } from 'meteor/communitypackages:react-router-ssr';
 import { Accounts } from 'meteor/accounts-base';
+import { onPageLoad } from 'meteor/server-render';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
+import { renderToString } from 'react-dom/server';
 
 import { AppRoutesSSR } from '../../ssr/AppRoutes';
 import './api';
@@ -24,8 +28,24 @@ Meteor.startup(() => {
   if (cdn_server) {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
-});
 
-renderWithSSR(AppRoutesSSR, {
-  renderTarget: 'root',
+  onPageLoad((sink) => {
+    const host = sink.request.headers['x-forwarded-host'];
+    const Content = (
+      <StaticRouter location={sink.request.url}>
+        <Routes>
+          {AppRoutesSSR(host).map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+              url={sink.request.url}
+            />
+          ))}
+        </Routes>
+      </StaticRouter>
+    );
+
+    sink.renderIntoElementById('root', renderToString(Content));
+  });
 });

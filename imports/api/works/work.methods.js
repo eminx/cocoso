@@ -13,8 +13,11 @@ Meteor.methods({
     }
   },
 
-  getAllWorks() {
-    const host = getHost(this);
+  getAllWorks(host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
     try {
       const works = Works.find({
         host,

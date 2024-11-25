@@ -7,8 +7,10 @@ import Pages from './page';
 import { isAdmin } from '../users/user.roles';
 
 Meteor.methods({
-  getPages() {
-    const host = getHost(this);
+  getPages(host) {
+    if (!host) {
+      host = getHost(this);
+    }
 
     try {
       return Pages.find({

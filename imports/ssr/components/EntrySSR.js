@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet';
 
 import { generateTheme } from '../../ui/utils/constants/theme';
 
-export default function EntrySSR({ description, host, imageUrl, subTitle, title, children }) {
-  const hue = host?.settings?.hue;
+export default function EntrySSR({ description, Host, imageUrl, subTitle, title, children }) {
+  const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
   return (
@@ -20,7 +20,7 @@ export default function EntrySSR({ description, host, imageUrl, subTitle, title,
         <meta property="og:description" content={subTitle?.substring(0, 60)} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={host.host} />
+        <link rel="canonical" href={Host.host} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link

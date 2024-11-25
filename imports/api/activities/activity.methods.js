@@ -52,8 +52,10 @@ Meteor.methods({
     }
   },
 
-  getAllPublicActivities() {
-    const host = getHost(this);
+  getAllPublicActivities(host) {
+    if (!host) {
+      host = getHost(this);
+    }
     const user = Meteor.user();
     try {
       const allActs = Activities.find({
@@ -67,8 +69,10 @@ Meteor.methods({
     }
   },
 
-  getAllActivities() {
-    const host = getHost(this);
+  getAllActivities(host) {
+    if (!host) {
+      host = getHost(this);
+    }
     const user = Meteor.user();
     try {
       const allActs = Activities.find({
@@ -94,12 +98,15 @@ Meteor.methods({
     }
   },
 
-  getMyActivities() {
+  getMyActivities(host) {
     const user = Meteor.user();
     if (!user) {
       throw new Meteor.Error('Not allowed!');
     }
-    const host = getHost(this);
+
+    if (!host) {
+      host = getHost(this);
+    }
 
     try {
       const activities = Activities.find({
@@ -211,8 +218,10 @@ Meteor.methods({
     }
   },
 
-  getAllGroupMeetings(isPortalHost = false) {
-    const host = getHost(this);
+  getAllGroupMeetings(isPortalHost = false, host) {
+    if (!host) {
+      host = getHost(this);
+    }
 
     try {
       if (isPortalHost) {

@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
-export default function Header({ host }) {
-  const currentHost = host;
-  const menuItems = host?.settings?.menu?.filter((item) => item.isVisible);
+export default function Header({ Host }) {
+  const currentHost = Host;
+  const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
   if (!currentHost) {
     return null;
@@ -16,7 +16,7 @@ export default function Header({ host }) {
         <Link to="/">
           {currentHost.logo ? (
             <Box maxHeight="48px">
-              <Img className="smaller-logo" maxW={280} h="48px" src={host.logo} />
+              <Img className="smaller-logo" maxW={280} h="48px" src={Host.logo} />
             </Box>
           ) : (
             <Box>

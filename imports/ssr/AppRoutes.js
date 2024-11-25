@@ -14,48 +14,48 @@ function LoaderSSR() {
 }
 
 import {
-  // ActivitiesList,
+  ActivitiesList,
   Activity,
-  // Communities,
-  // Home,
-  // GroupsList,
+  Communities,
+  Home,
+  GroupsList,
   Group,
-  // ResourcesList,
+  ResourcesList,
   Resource,
-  // WorksList,
+  WorksList,
   Work,
-  // UsersList,
-  // User,
+  UsersList,
+  User,
 } from './components';
 
-export const AppRoutesSSR = [
+export const AppRoutesSSR = (host) => [
   {
     path: '/',
-    element: <LoaderSSR />,
+    element: <Home host={host} />,
   },
   {
     path: '/activities',
-    element: <LoaderSSR />,
+    element: <ActivitiesList host={host} />,
   },
   {
     path: '/groups',
-    element: <LoaderSSR />,
+    element: <GroupsList host={host} />,
   },
   {
     path: '/resources',
-    element: <LoaderSSR />,
+    element: <ResourcesList host={host} />,
   },
   {
     path: '/works',
-    element: <LoaderSSR />,
+    element: <WorksList host={host} />,
   },
   {
     path: '/people',
-    element: <LoaderSSR />,
+    element: <UsersList host={host} />,
   },
   {
     path: '/communities',
-    element: <LoaderSSR />,
+    element: <Communities host={host} />,
   },
   {
     path: '/calendar',
@@ -66,23 +66,11 @@ export const AppRoutesSSR = [
     element: <Activity />,
   },
   {
-    path: '/activities/new',
-    element: <LoaderSSR />,
-  },
-  {
     path: '/groups/:groupId/*',
     element: <Group />,
   },
   {
-    path: '/groups/new',
-    element: <LoaderSSR />,
-  },
-  {
     path: '/pages/:pageTitle',
-    element: <LoaderSSR />,
-  },
-  {
-    path: '/*',
     element: <LoaderSSR />,
   },
   {
@@ -95,7 +83,7 @@ export const AppRoutesSSR = [
   },
   {
     path: '/:usernameSlug/*',
-    element: <LoaderSSR />,
+    element: <User />,
   },
   {
     path: '/*',

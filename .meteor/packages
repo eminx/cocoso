@@ -33,4 +33,3 @@ percolate:migrations
 webapp
 ostrio:spiderable-middleware
 server-render
-communitypackages:react-router-ssr

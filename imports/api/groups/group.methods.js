@@ -30,9 +30,11 @@ Meteor.methods({
     return group;
   },
 
-  getGroups(isPortalHost = false) {
+  getGroups(isPortalHost = false, host) {
     const user = Meteor.user();
-    const host = getHost(this);
+    if (!host) {
+      host = getHost(this);
+    }
     const allGroups = isPortalHost ? Groups.find().fetch() : Groups.find({ host }).fetch();
     const groupsFiltered = allGroups.filter((group) => {
       if (!group.isPrivate) {
