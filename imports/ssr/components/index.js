@@ -11,6 +11,7 @@ import { parseTitle } from '../../ui/utils/shared';
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
   const pageHeading = Host.settings?.name;
+  console.log(Host, pageHeading);
 
   return (
     <EntrySSR
@@ -35,7 +36,7 @@ export function ActivitiesList({ host }) {
 
   return (
     <>
-      <Header host={Host} />
+      <Header Host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
@@ -177,7 +178,7 @@ export function Work() {
       subTitle={work.shortDescription}
       title={work.title}
     >
-      <Header host={host} />
+      <Header Host={Host} />
     </EntrySSR>
   );
 }
