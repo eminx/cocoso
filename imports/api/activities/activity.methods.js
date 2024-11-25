@@ -57,6 +57,7 @@ Meteor.methods({
       host = getHost(this);
     }
     const user = Meteor.user();
+
     try {
       const allActs = Activities.find({
         host,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
-export default function Header({ Host }) {
+export default function Header({ Host, isLogoSmall = false }) {
   const currentHost = Host;
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
@@ -11,12 +11,17 @@ export default function Header({ Host }) {
   }
 
   return (
-    <Box p="3" w="100%">
-      <Center mb="6">
+    <Box w="100%">
+      <Center mb="4">
         <Link to="/">
           {currentHost.logo ? (
-            <Box maxHeight="48px">
-              <Img className="smaller-logo" maxW={280} h="48px" src={Host.logo} />
+            <Box maxHeight={isLogoSmall ? '48px' : '96px'} p="2">
+              <Img
+                h={isLogoSmall ? '48px' : '96px'}
+                maxW={280}
+                objectFit="contain"
+                src={Host.logo}
+              />
             </Box>
           ) : (
             <Box>
@@ -28,7 +33,7 @@ export default function Header({ Host }) {
         </Link>
       </Center>
 
-      <Center p="4">
+      <Center p="4" mb="8">
         <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
           {menuItems?.map((item) => (
             <Link key={item.name} to={item.route}>
@@ -44,6 +49,18 @@ export default function Header({ Host }) {
               </Box>
             </Link>
           ))}
+          {Host.isPortalHost && (
+            <Box px="2">
+              <Text
+                as="span"
+                color="brand.500"
+                fontFamily="Raleway, Sarabun, sans-serif"
+                fontWeight="bold"
+              >
+                Communities
+              </Text>
+            </Box>
+          )}
         </HStack>
       </Center>
     </Box>

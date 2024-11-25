@@ -59,7 +59,14 @@ function parseGroupActivities(activities) {
     }
   });
 
-  return activitiesParsed;
+  const activitiesSorted = activitiesParsed.map((act) => {
+    return {
+      ...act,
+      datesAndTimes: act.datesAndTimes.sort((a, b) => moment(a?.startDate) - moment(b?.startDate)),
+    };
+  });
+
+  return activitiesSorted;
 }
 
 function Activities() {

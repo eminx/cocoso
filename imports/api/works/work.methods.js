@@ -75,7 +75,6 @@ Meteor.methods({
 
     try {
       const work = Works.findOne({ _id: workId, host });
-
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }

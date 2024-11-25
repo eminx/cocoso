@@ -1,36 +1,10 @@
 import React from 'react';
-import { Badge, Box, Center, ChakraProvider, Flex, Heading, Img } from '@chakra-ui/react';
+import { Badge, Box, Center, Flex, Heading, Img } from '@chakra-ui/react';
 import renderHTML from 'react-render-html';
-import { Helmet } from 'react-helmet';
 
-import { generateTheme } from '../../ui/utils/constants/theme';
-
-export default function EntrySSR({ description, Host, imageUrl, subTitle, title, children }) {
-  const hue = Host?.settings?.hue;
-  const chakraTheme = generateTheme(hue || '233');
-
+export default function EntrySSR({ title, subTitle, description, imageUrl }) {
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="description" content={subTitle?.substring(0, 150)} />
-        <meta property="og:title" content={title?.substring(0, 30)} />
-        <meta property="og:description" content={subTitle?.substring(0, 60)} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={Host.host} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&family=Sarabun:ital,wght@0,300;0,400;0,700;1,400&display=swap"
-          rel="stylesheet"
-        />
-      </Helmet>
-
-      {children}
-
+    <>
       <Headings title={title} subTitle={subTitle} />
 
       <Center>{imageUrl && <Img src={imageUrl} h={400} />}</Center>
@@ -42,7 +16,7 @@ export default function EntrySSR({ description, Host, imageUrl, subTitle, title,
           </Box>
         )}
       </Center>
-    </ChakraProvider>
+    </>
   );
 }
 

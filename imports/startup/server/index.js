@@ -31,7 +31,7 @@ Meteor.startup(() => {
 
   onPageLoad((sink) => {
     const host = sink.request.headers['host'];
-    console.log('index server, headers:', sink.request.headers);
+
     const Content = (
       <StaticRouter location={sink.request.url}>
         <Routes>

@@ -20,6 +20,7 @@ import {
   Home,
   GroupsList,
   Group,
+  Page,
   ResourcesList,
   Resource,
   WorksList,
@@ -63,27 +64,27 @@ export const AppRoutesSSR = (host) => [
   },
   {
     path: '/activities/:activityId/*',
-    element: <Activity />,
+    element: <Activity host={host} />,
   },
   {
     path: '/groups/:groupId/*',
-    element: <Group />,
+    element: <Group host={host} />,
   },
   {
     path: '/pages/:pageTitle',
-    element: <LoaderSSR />,
+    element: <Page host={host} />,
   },
   {
     path: '/resources/:resourceId/*',
-    element: <Resource />,
+    element: <Resource host={host} />,
   },
   {
     path: '/:usernameSlug/works/:workId/*',
-    element: <Work />,
+    element: <Work host={host} />,
   },
   {
     path: '/:usernameSlug/*',
-    element: <User />,
+    element: <User host={host} />,
   },
   {
     path: '/*',

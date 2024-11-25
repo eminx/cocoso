@@ -1,33 +1,32 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
+import { Box, Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Header from './Header';
+import WrapperSSR from './WrapperSSR';
 import EntrySSR from './EntrySSR';
+import Header from './Header';
 import { parseTitle } from '../../ui/utils/shared';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
   const pageHeading = Host.settings?.name;
-  console.log(Host, pageHeading);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       Host={Host}
       imageUrl={Host.logo}
       subTitle={Host.settings?.address}
       title={pageHeading}
-    >
-      <Header Host={Host} />
-    </EntrySSR>
+    ></WrapperSSR>
   );
 }
 
 export function ActivitiesList({ host }) {
   const activities = Meteor.call('getAllPublicActivities', host);
   const Host = Meteor.call('getHost', host);
+
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
   const pageDescription = Host.settings?.menu.find(
     (item) => item.name === 'activities'
@@ -35,15 +34,17 @@ export function ActivitiesList({ host }) {
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
+    <Box>
       <Header Host={Host} />
+
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
         </Heading>
       </Center>
-      <Gridder metaTitle={metaTitle} items={activities} pageDescription={pageDescription} />
-    </>
+
+      <Gridder items={activities} metaTitle={metaTitle} pageDescription={pageDescription} />
+    </Box>
   );
 }
 
@@ -53,15 +54,21 @@ export function Activity({ host }) {
   const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={activity.longDescription}
       Host={Host}
+      isEntryPage
       imageUrl={activity.images && activity.images[0]}
       subTitle={activity.subTitle}
       title={activity.title}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={activity.longDescription}
+        imageUrl={(activity.images && activity.images[0]) || activity.imageUrl}
+        subTitle={activity.subTitle}
+        title={activity.title}
+      />
+    </WrapperSSR>
   );
 }
 
@@ -86,27 +93,33 @@ export function GroupsList({ host }) {
   );
 }
 
-export function Group() {
+export function Group({ host }) {
   const { groupId } = useParams();
   const group = Meteor.call('getGroup', groupId);
   const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={group.description}
       Host={Host}
+      isEntryPage
       imageUrl={group.imageUrl}
       subTitle={group.readingMaterial}
       title={group.title}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={group.longDescription}
+        imageUrl={group.imageUrl}
+        subTitle={group.readingMaterial}
+        title={group.title}
+      />
+    </WrapperSSR>
   );
 }
 
 export function ResourcesList({ host }) {
   const Host = Meteor.call('getHost', host);
-  const resources = Meteor.call('getResource', host);
+  const resources = Meteor.call('getResources', host);
 
   const pageHeading = Host?.settings?.menu.find((item) => item.name === 'resources')?.label;
   const pageDescription = Host?.settings?.menu.find(
@@ -127,20 +140,25 @@ export function ResourcesList({ host }) {
   );
 }
 
-export function Resource() {
+export function Resource({ host }) {
   const { resourceId } = useParams();
-  const Host = Meteor.call('getHost', host);
   const resource = Meteor.call('getResourceById', resourceId);
+  const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={resource.description}
       Host={Host}
+      isEntryPage
       imageUrl={resource.images && resource.images[0]}
       title={resource.label}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={resource.description}
+        imageUrl={resource.images && resource.images[0]}
+        title={resource.label}
+      />
+    </WrapperSSR>
   );
 }
 
@@ -165,21 +183,28 @@ export function WorksList({ host }) {
   );
 }
 
-export function Work() {
-  const { workId } = useParams();
+export function Work({ host }) {
+  const { workId, usernameSlug } = useParams();
+  const [empty, username] = usernameSlug.split('@');
+  const work = Meteor.call('getWork', workId, username);
   const Host = Meteor.call('getHost', host);
-  const work = Meteor.call('getWork', workId);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={work.longDescription}
       Host={Host}
+      isEntryPage
       imageUrl={work.images && work.images[0]}
       subTitle={work.shortDescription}
       title={work.title}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={work.longDescription}
+        imageUrl={work.images && work.images[0]}
+        subTitle={work.shortDescription}
+        title={work.title}
+      />
+    </WrapperSSR>
   );
 }
 
@@ -190,14 +215,18 @@ export function Page({ host }) {
   const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={page.longDescription}
       Host={Host}
       imageUrl={page.images && page.images[0]}
       title={page.title}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={page.longDescription}
+        imageUrl={page.images && page.images[0]}
+        title={page.title}
+      />
+    </WrapperSSR>
   );
 }
 
@@ -252,27 +281,33 @@ export function User({ host }) {
   const user = Meteor.call('getUserInfo', username, host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={user.bio}
-      imageUrl={user.avatar?.src}
       Host={Host}
+      isEntryPage
+      imageUrl={user.avatar?.src}
       subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
       title={user.username}
     >
-      <Header Host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={user.bio}
+        imageUrl={user.avatar?.src}
+        subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
+        title={user.username}
+      />
+    </WrapperSSR>
   );
 }
 
-export function Communities(host) {
+export function Communities({ host }) {
   const allHosts = Meteor.call('getAllHosts');
-  const portalHost = allHosts.find((h) => h.isPortalHost);
+  const Host = Meteor.call('getHost', host);
   const pageHeading = 'Communities';
-  const metaTitle = `${portalHost.settings?.name} | ${pageHeading}`;
+  const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
     <>
-      <Header Host={portalHost} />
+      <Header Host={Host} />
       <Center>
         <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
           {pageHeading}
@@ -314,14 +349,14 @@ function Gridder({ items, metaTitle, pageDescription }) {
       <Center>
         <Wrap justify="center">
           {items.map((item) => (
-            <VStack key={item._id} w={400}>
+            <VStack key={item._id} w={360} mb="4">
               <Img
                 w={360}
                 h={240}
                 objectFit="cover"
                 src={item.imageUrl || (item.images && item.images[0]) || item.logo}
               />
-              <Heading fontSize={22}>{item.title || item.label || item.settings?.name}</Heading>
+              <Heading fontSize={18}>{item.title || item.label || item.settings?.name}</Heading>
             </VStack>
           ))}
         </Wrap>
