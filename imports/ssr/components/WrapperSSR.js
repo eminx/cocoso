@@ -17,7 +17,7 @@ export default function WrapperSSR({
   const chakraTheme = generateTheme(hue || '233');
 
   return (
-    <ChakraProvider theme={chakraTheme}>
+    <>
       <Helmet>
         <meta charSet="utf-8" />
         <title>{title}</title>
@@ -35,10 +35,10 @@ export default function WrapperSSR({
           rel="stylesheet"
         />
       </Helmet>
-
-      <Header Host={Host} isLogoSmall={isEntryPage} />
-
-      {children}
-    </ChakraProvider>
+      <ChakraProvider theme={chakraTheme}>
+        <Header Host={Host} isLogoSmall={isEntryPage} />
+        {children}
+      </ChakraProvider>
+    </>
   );
 }

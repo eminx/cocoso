@@ -19,7 +19,7 @@ export function Home({ host }) {
       imageUrl={Host.logo}
       subTitle={Host.settings?.address}
       title={pageHeading}
-    ></WrapperSSR>
+    />
   );
 }
 
