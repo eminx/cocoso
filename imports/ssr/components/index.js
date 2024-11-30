@@ -289,7 +289,7 @@ export function Communities({ host }) {
 
 function PageHeading({ children }) {
   return (
-    <Center>
+    <Center mb="8">
       <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
         {children}
       </Heading>

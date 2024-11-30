@@ -12,12 +12,12 @@ export default function Header({ Host, isLogoSmall = false }) {
 
   return (
     <Box w="100%">
-      <Center mb="4">
+      <Center mb="3">
         <Link to="/">
           {currentHost.logo ? (
-            <Box maxHeight={isLogoSmall ? '48px' : '96px'} p="2">
+            <Box maxHeight={isLogoSmall ? '48px' : '76px'} p="2">
               <Img
-                h={isLogoSmall ? '48px' : '96px'}
+                h={isLogoSmall ? '48px' : '72px'}
                 maxW={280}
                 objectFit="contain"
                 src={Host.logo}
