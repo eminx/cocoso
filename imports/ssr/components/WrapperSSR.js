@@ -16,9 +16,11 @@ export default function WrapperSSR({
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
+  console.log(title, subTitle, imageUrl);
+
   return (
     <>
-      <Helmet>
+      <head>
         <meta charSet="utf-8" />
         <title>{title}</title>
         <meta name="title" content={title} />
@@ -34,7 +36,7 @@ export default function WrapperSSR({
           href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&family=Sarabun:ital,wght@0,300;0,400;0,700;1,400&display=swap"
           rel="stylesheet"
         />
-      </Helmet>
+      </head>
       <ChakraProvider theme={chakraTheme}>
         <Header Host={Host} isLogoSmall={isEntryPage} />
         {children}
