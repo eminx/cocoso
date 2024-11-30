@@ -16,8 +16,6 @@ export default function WrapperSSR({
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
-  console.log(title, subTitle, imageUrl);
-
   return (
     <>
       <Helmet>

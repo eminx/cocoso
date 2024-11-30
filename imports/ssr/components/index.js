@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
+import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 import WrapperSSR from './WrapperSSR';
 import EntrySSR from './EntrySSR';
-import Header from './Header';
+import Gridder from './Gridder';
 import { parseTitle } from '../../ui/utils/shared';
 
 export function Home({ host }) {
@@ -34,17 +34,10 @@ export function ActivitiesList({ host }) {
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <Box>
-      <Header Host={Host} />
-
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-
-      <Gridder items={activities} metaTitle={metaTitle} pageDescription={pageDescription} />
-    </Box>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={activities} />
+    </WrapperSSR>
   );
 }
 
@@ -81,15 +74,10 @@ export function GroupsList({ host }) {
   const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header Host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder items={groups} metaTitle={metaTitle} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={groups} />
+    </WrapperSSR>
   );
 }
 
@@ -128,15 +116,10 @@ export function ResourcesList({ host }) {
   const metaTitle = `${pageHeading} | ${Host.settings?.name}`;
 
   return (
-    <>
-      <Header Host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={resources} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={resources} />
+    </WrapperSSR>
   );
 }
 
@@ -171,15 +154,10 @@ export function WorksList({ host }) {
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header Host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={works} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={works} />
+    </WrapperSSR>
   );
 }
 
@@ -239,7 +217,7 @@ export function UsersList({ host }) {
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>{metaTitle}</title>
@@ -251,12 +229,8 @@ export function UsersList({ host }) {
         <link rel="canonical" href={host.host} />
       </Helmet>
 
-      <Header Host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
+      <PageHeading>{pageHeading}</PageHeading>
+
       <Center>
         <Wrap justify="center">
           {users.map((user) => (
@@ -267,7 +241,7 @@ export function UsersList({ host }) {
           ))}
         </Wrap>
       </Center>
-    </>
+    </WrapperSSR>
   );
 }
 
@@ -306,61 +280,19 @@ export function Communities({ host }) {
   const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header Host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={allHosts} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={allHosts} />
+    </WrapperSSR>
   );
 }
 
-function Gridder({ items, metaTitle, pageDescription }) {
-  if (!items) {
-    return null;
-  }
-
-  const imageUrl =
-    items.find((item) => item.imageUrl)?.imageUrl ||
-    items.find((item) => {
-      if (item.images) {
-        return item.images[0];
-      } else {
-        return null;
-      }
-    })?.images[0] ||
-    null;
-
+function PageHeading({ children }) {
   return (
-    <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{metaTitle}</title>
-        <meta name="title" content={metaTitle} />
-        <meta property="og:title" content={metaTitle?.substring(0, 30)} />
-        <meta property="og:description" content={pageDescription?.substring(0, 60)} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={items[0]?.host} />
-      </Helmet>
-      <Center>
-        <Wrap justify="center">
-          {items.map((item) => (
-            <VStack key={item._id} w={360} mb="4">
-              <Img
-                w={360}
-                h={240}
-                objectFit="cover"
-                src={item.imageUrl || (item.images && item.images[0]) || item.logo}
-              />
-              <Heading fontSize={18}>{item.title || item.label || item.settings?.name}</Heading>
-            </VStack>
-          ))}
-        </Wrap>
-      </Center>
-    </>
+    <Center>
+      <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+        {children}
+      </Heading>
+    </Center>
   );
 }
