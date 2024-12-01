@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+// import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 import { DateJust } from './FancyDate';
 

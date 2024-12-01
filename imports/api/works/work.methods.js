@@ -13,8 +13,11 @@ Meteor.methods({
     }
   },
 
-  getAllWorks() {
-    const host = getHost(this);
+  getAllWorks(host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
     try {
       const works = Works.find({
         host,
@@ -72,7 +75,6 @@ Meteor.methods({
 
     try {
       const work = Works.findOne({ _id: workId, host });
-
       if (work.authorUsername !== username) {
         throw new Meteor.Error('Not allowed!');
       }

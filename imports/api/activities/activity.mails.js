@@ -11,8 +11,8 @@ const getRegistrationEmailBody = (
   const activityId = activity._id,
     activityTitle = activity.title,
     activityBody = activity.longDescription,
-    imageUrl = activity.imageUrl,
-    firstName = values.firstName,
+    imageUrl = activity.images[0],
+    firstName = values.firstName || currentUser?.username,
     lastName = values.lastName,
     numberOfPeople = values.numberOfPeople,
     hostName = currentHost.settings.name,
@@ -644,7 +644,7 @@ const getRegistrationEmailBody = (
 
 const getUnregistrationEmailBody = (activity, values, currentHost, currentUser) => {
   const activityId = activity._id,
-    firstName = values.firstName,
+    firstName = values?.firstName || currentUser?.username || '',
     hostName = currentHost.settings.name,
     host = currentHost.host,
     hostLogo = currentHost.logo,

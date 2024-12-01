@@ -102,6 +102,20 @@ Meteor.methods({
     }
   },
 
+  getHost(host) {
+    return Hosts.findOne(
+      { host },
+      {
+        fields: {
+          host: 1,
+          settings: 1,
+          logo: 1,
+          isPortalHost: 1,
+        },
+      }
+    );
+  },
+
   getAllHosts() {
     try {
       const hosts = Hosts.find().fetch();
@@ -135,8 +149,11 @@ Meteor.methods({
     return currentHost.members;
   },
 
-  getHostMembers() {
-    const host = getHost(this);
+  getHostMembers(host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
     const users = Meteor.users
       .find(
         { 'memberships.host': host },

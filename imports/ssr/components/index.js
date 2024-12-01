@@ -1,24 +1,32 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
-import Hosts from '../../api/hosts/host';
-import Activities from '../../api/activities/activity';
-import Groups from '../../api/groups/group';
-import Pages from '../../api/pages/page';
-import Resources from '../../api/resources/resource';
-import Works from '../../api/works/work';
-
-import Header from './Header';
+import WrapperSSR from './WrapperSSR';
 import EntrySSR from './EntrySSR';
+import Gridder from './Gridder';
 import { parseTitle } from '../../ui/utils/shared';
 
+export function Home({ host }) {
+  const Host = Meteor.call('getHost', host);
+  const pageHeading = Host.settings?.name;
+
+  return (
+    <WrapperSSR
+      Host={Host}
+      imageUrl={Host.logo}
+      subTitle={Host.settings?.address}
+      title={pageHeading}
+    />
+  );
+}
+
 export function ActivitiesList({ host }) {
-  const activities = Activities.find({ host, isPublicActivity: true }).fetch();
-  Meteor.subscribe('host', host);
-  const Host = Hosts.findOne({ host });
+  const activities = Meteor.call('getAllPublicActivities', host);
+  const Host = Meteor.call('getHost', host);
+
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
   const pageDescription = Host.settings?.menu.find(
     (item) => item.name === 'activities'
@@ -26,232 +34,190 @@ export function ActivitiesList({ host }) {
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={activities} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={activities} />
+    </WrapperSSR>
   );
 }
 
-export function Activity() {
+export function Activity({ host }) {
   const { activityId } = useParams();
-  Meteor.subscribe('activity', activityId);
-  const activity = Activities.findOne(activityId);
-  Meteor.subscribe('host', activity.host);
-  const host = Hosts.findOne({ host: activity.host });
+  const activity = Meteor.call('getActivityById', activityId);
+  const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={activity.longDescription}
-      host={host}
+      Host={Host}
+      isEntryPage
       imageUrl={activity.images && activity.images[0]}
       subTitle={activity.subTitle}
       title={activity.title}
     >
-      <Header host={host} />
-    </EntrySSR>
-  );
-}
-
-export function Communities() {
-  Meteor.subscribe('hosts');
-  const hosts = Hosts.find().fetch();
-  const Host = hosts.find((h) => h.isPortalHost);
-  const pageHeading = 'Communities';
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
-
-  return (
-    <>
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={hosts} />
-    </>
-  );
-}
-
-export function Home({ host }) {
-  const Host = Hosts.findOne({ host });
-  const pageHeading = Host.settings?.name;
-
-  return (
-    <EntrySSR
-      host={Host}
-      imageUrl={Host.logo}
-      subTitle={Host.settings?.address}
-      title={pageHeading}
-    >
-      <Header host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={activity.longDescription}
+        imageUrl={(activity.images && activity.images[0]) || activity.imageUrl}
+        subTitle={activity.subTitle}
+        title={activity.title}
+      />
+    </WrapperSSR>
   );
 }
 
 export function GroupsList({ host }) {
-  Meteor.subscribe('groups');
-  const groups = Groups.find({ host }).fetch();
-  Meteor.subscribe('host', host);
-  const Host = Hosts.findOne({ host });
+  const Host = Meteor.call('getHost', host);
+  const groups = Meteor.call('getGroups', Host.isPortalHost, host);
+
   const pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
   const pageDescription = Host?.settings?.menu.find((item) => item.name === 'groups')?.description;
   const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={groups} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={groups} />
+    </WrapperSSR>
   );
 }
 
-export function Group() {
+export function Group({ host }) {
   const { groupId } = useParams();
-  Meteor.subscribe('group', groupId);
-  const group = Groups.findOne(groupId);
-  Meteor.subscribe('host', group.host);
-  const host = Hosts.findOne({ host: group.host });
+  const group = Meteor.call('getGroup', groupId);
+  const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={group.description}
-      host={host}
+      Host={Host}
+      isEntryPage
       imageUrl={group.imageUrl}
       subTitle={group.readingMaterial}
       title={group.title}
     >
-      <Header host={host} />
-    </EntrySSR>
-  );
-}
-
-export function Page({ host }) {
-  const { pageTitle } = useParams();
-  Meteor.subscribe('pages');
-  const pages = Pages.find({ host }).fetch();
-  const page = pages.find((page) => parseTitle(page.title) === pageTitle);
-  page && Meteor.subscribe('host', page.host);
-  const Host = Hosts.findOne({ host: page.host });
-
-  return (
-    <EntrySSR
-      description={page.longDescription}
-      host={Host}
-      imageUrl={page.images && page.images[0]}
-      title={page.title}
-    >
-      <Header host={Host} />
-    </EntrySSR>
+      <EntrySSR
+        description={group.longDescription}
+        imageUrl={group.imageUrl}
+        subTitle={group.readingMaterial}
+        title={group.title}
+      />
+    </WrapperSSR>
   );
 }
 
 export function ResourcesList({ host }) {
-  Meteor.subscribe('resources');
-  const resources = Resources.find({ host }).fetch();
-  Meteor.subscribe('host', host);
-  const Host = Hosts.findOne({ host });
-  const pageHeading = Host.settings?.menu.find((item) => item.name === 'resources')?.label;
-  const pageDescription = Host.settings?.menu.find(
+  const Host = Meteor.call('getHost', host);
+  const resources = Meteor.call('getResources', host);
+
+  const pageHeading = Host?.settings?.menu.find((item) => item.name === 'resources')?.label;
+  const pageDescription = Host?.settings?.menu.find(
     (item) => item.name === 'resources'
   )?.description;
   const metaTitle = `${pageHeading} | ${Host.settings?.name}`;
 
   return (
-    <>
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={resources} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={resources} />
+    </WrapperSSR>
   );
 }
 
-export function Resource() {
+export function Resource({ host }) {
   const { resourceId } = useParams();
-  Meteor.subscribe('resource', resourceId);
-  const resource = Resources.findOne(resourceId);
-  Meteor.subscribe('host', resource.host);
-  const host = Hosts.findOne({ host: resource.host });
+  const resource = Meteor.call('getResourceById', resourceId);
+  const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={resource.description}
-      host={host}
+      Host={Host}
+      isEntryPage
       imageUrl={resource.images && resource.images[0]}
       title={resource.label}
     >
-      <Header host={host} />
-    </EntrySSR>
+      <EntrySSR
+        description={resource.description}
+        imageUrl={resource.images && resource.images[0]}
+        title={resource.label}
+      />
+    </WrapperSSR>
   );
 }
 
 export function WorksList({ host }) {
-  Meteor.subscribe('works');
-  const works = Works.find({ host }).fetch();
-  Meteor.subscribe('host', host);
-  const Host = Hosts.findOne({ host });
+  const Host = Meteor.call('getHost', host);
+  const works = Meteor.call('getAllWorks', host);
+
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'works')?.label;
   const pageDescription = Host.settings?.menu.find((item) => item.name === 'works')?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
-      <Gridder metaTitle={metaTitle} items={works} pageDescription={pageDescription} />
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={works} />
+    </WrapperSSR>
   );
 }
 
-export function Work() {
-  const { workId } = useParams();
-  Meteor.subscribe('work', workId);
-  const work = Works.findOne(workId);
-  Meteor.subscribe('host', work.host);
-  const host = Hosts.findOne({ host: work.host });
+export function Work({ host }) {
+  const { workId, usernameSlug } = useParams();
+  const [empty, username] = usernameSlug.split('@');
+  const work = Meteor.call('getWork', workId, username);
+  const Host = Meteor.call('getHost', host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={work.longDescription}
-      host={host}
+      Host={Host}
+      isEntryPage
       imageUrl={work.images && work.images[0]}
       subTitle={work.shortDescription}
       title={work.title}
     >
-      <Header host={host} />
-    </EntrySSR>
+      <EntrySSR
+        description={work.longDescription}
+        imageUrl={work.images && work.images[0]}
+        subTitle={work.shortDescription}
+        title={work.title}
+      />
+    </WrapperSSR>
+  );
+}
+
+export function Page({ host }) {
+  const { pageTitle } = useParams();
+  const pages = Meteor.call('getPages', host);
+  const page = pages.find((page) => parseTitle(page.title) === pageTitle);
+  const Host = Meteor.call('getHost', host);
+
+  return (
+    <WrapperSSR
+      description={page.longDescription}
+      Host={Host}
+      imageUrl={page.images && page.images[0]}
+      title={page.title}
+    >
+      <EntrySSR
+        description={page.longDescription}
+        imageUrl={page.images && page.images[0]}
+        title={page.title}
+      />
+    </WrapperSSR>
   );
 }
 
 export function UsersList({ host }) {
-  Meteor.subscribe('membersForPublic');
-  Meteor.subscribe('currentHost');
-  const Host = Hosts.findOne({ host });
-  const users = Meteor.users.find({ 'memberships.host': host }).fetch();
+  const Host = Meteor.call('getHost', host);
+  const users = Meteor.call('getHostMembers', host);
+
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'people')?.label;
   const pageDescription = Host.settings?.menu.find((item) => item.name === 'people')?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>{metaTitle}</title>
@@ -263,12 +229,8 @@ export function UsersList({ host }) {
         <link rel="canonical" href={host.host} />
       </Helmet>
 
-      <Header host={Host} />
-      <Center>
-        <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-          {pageHeading}
-        </Heading>
-      </Center>
+      <PageHeading>{pageHeading}</PageHeading>
+
       <Center>
         <Wrap justify="center">
           {users.map((user) => (
@@ -279,72 +241,58 @@ export function UsersList({ host }) {
           ))}
         </Wrap>
       </Center>
-    </>
+    </WrapperSSR>
   );
 }
 
-export function User() {
+export function User({ host }) {
+  const Host = Meteor.call('getHost', host);
   const { usernameSlug } = useParams();
   if (usernameSlug[0] !== '@') {
     return null;
   }
-
   const [empty, username] = usernameSlug.split('@');
-  Meteor.subscribe('user', username);
-  const user = Meteor.users.findOne({ username });
-  Meteor.subscribe('currentHost');
-  const host = Hosts.findOne();
+  const user = Meteor.call('getUserInfo', username, host);
 
   return (
-    <EntrySSR
+    <WrapperSSR
       description={user.bio}
+      Host={Host}
+      isEntryPage
       imageUrl={user.avatar?.src}
-      host={host}
       subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
       title={user.username}
     >
-      <Header host={host} />
-    </EntrySSR>
+      <EntrySSR
+        description={user.bio}
+        imageUrl={user.avatar?.src}
+        subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
+        title={user.username}
+      />
+    </WrapperSSR>
   );
 }
 
-function Gridder({ items, metaTitle, pageDescription }) {
-  if (!items) {
-    return null;
-  }
-
-  const imageUrl =
-    items.find((item) => item.imageUrl)?.imageUrl ||
-    items.find((item) => item.images && items.images[0])?.images[0] ||
-    items.find((i) => i.isPortalHost).logo;
+export function Communities({ host }) {
+  const allHosts = Meteor.call('getAllHosts');
+  const Host = Meteor.call('getHost', host);
+  const pageHeading = 'Communities';
+  const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
-    <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{metaTitle}</title>
-        <meta name="title" content={metaTitle} />
-        <meta property="og:title" content={metaTitle?.substring(0, 30)} />
-        <meta property="og:description" content={pageDescription?.substring(0, 60)} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={items[0]?.host} />
-      </Helmet>
-      <Center>
-        <Wrap justify="center">
-          {items.map((item) => (
-            <VStack key={item._id} w={400}>
-              <Img
-                w={360}
-                h={240}
-                objectFit="cover"
-                src={item.imageUrl || (item.images && item.images[0]) || item.logo}
-              />
-              <Heading fontSize={22}>{item.title || item.label || item.settings?.name}</Heading>
-            </VStack>
-          ))}
-        </Wrap>
-      </Center>
-    </>
+    <WrapperSSR Host={Host} imageUrl={Host.logo} title={metaTitle}>
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={allHosts} />
+    </WrapperSSR>
+  );
+}
+
+function PageHeading({ children }) {
+  return (
+    <Center mb="8">
+      <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
+        {children}
+      </Heading>
+    </Center>
   );
 }

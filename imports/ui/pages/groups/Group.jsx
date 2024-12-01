@@ -368,16 +368,16 @@ class Group extends Component {
     }
   };
 
-  deleteActivity = (activityId, meetingIndex) => {
+  deleteActivity = (activityId) => {
     const { group, groupMeetings, t } = this.props;
     if (!group || !groupMeetings) {
       return;
     }
 
-    if (groupMeetings[meetingIndex].attendees.length > 0) {
-      message.error(t('meeting.access.remove'));
-      return;
-    }
+    // if (groupMeetings[meetingIndex].attendees.length > 0) {
+    //   message.error(t('meeting.access.remove'));
+    //   return;
+    // }
 
     Meteor.call('deleteActivity', activityId, (error, respond) => {
       if (error) {
@@ -389,7 +389,7 @@ class Group extends Component {
     });
   };
 
-  renderDates = () => {
+  renderMeetingsForAdmin = () => {
     const { group, groupMeetings, t } = this.props;
     const { resources } = this.state;
 
@@ -404,7 +404,7 @@ class Group extends Component {
         {group &&
           groupMeetings.map((meeting, meetingIndex) => (
             <AccordionItem
-              key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
+              key={meeting._id}
               mb="4"
               style={{
                 display: isFutureMeeting(meeting) ? 'block' : 'none',
@@ -432,7 +432,9 @@ class Group extends Component {
                         <Text as="span" fontWeight="bold">
                           {attendee.username}
                         </Text>
-                        <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                        {(attendee.firstName || attendee.lastName) && (
+                          <Text as="span"> ({attendee.firstName + ' ' + attendee.lastName})</Text>
+                        )}
                       </ListItem>
                     ))}
                   </List>
@@ -441,7 +443,7 @@ class Group extends Component {
                   <Button
                     size="xs"
                     colorScheme="red"
-                    onClick={() => this.deleteActivity(meeting._id, meetingIndex)}
+                    onClick={() => this.deleteActivity(meeting._id)}
                   >
                     {t('meeting.actions.remove')}
                   </Button>
@@ -986,7 +988,7 @@ class Group extends Component {
             )}
             {isFutureMeetings && (
               <Accordion allowToggle>
-                {groupMeetings && isAdmin ? this.renderDates() : this.renderMeetings()}
+                {groupMeetings && isAdmin ? this.renderMeetingsForAdmin() : this.renderMeetings()}
               </Accordion>
             )}
             {isAdmin && (

@@ -26,8 +26,11 @@ Meteor.methods({
     return Resources.find({}, { sort }).fetch();
   },
 
-  getResources() {
-    const host = getHost(this);
+  getResources(host) {
+    if (!host) {
+      host = getHost(this);
+    }
+
     return Resources.find(
       { host },
       {

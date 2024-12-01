@@ -91,7 +91,7 @@ message:
     update: Ditt objekt har uppdaterats
     remove: Ditt objekt har raderats
     save: Ditt objekt har sparats
-    leave: Ditt medlemskap hos {{ host }} avslutas
+    leave: Du har nu lämnat {{ host }}
 
   error:
     imageRequired: Bild krävs

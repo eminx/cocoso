@@ -1,6 +1,6 @@
 # ADMIN MEMBERS PAGE
 label: Kullanıcılar
-
+dashboard: Admin Paneli
 all: Tümü
 
 joinedAt: '{{ date }} katıldı'
@@ -60,7 +60,6 @@ profile:
     membership: '{{ host }} içerisinde {{ role }}'
     memberships: '{{ count }} toplulukta üye'
   myCommunities: Topluluklarım
-  adminDashboard: Admin Paneli
 
 works:
   label: İşlerim

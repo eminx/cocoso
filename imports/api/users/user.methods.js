@@ -8,11 +8,12 @@ import Works from '../works/work';
 import Groups from '../groups/group';
 
 Meteor.methods({
-  getUserInfo(username) {
+  getUserInfo(username, host) {
     check(username, String);
-    const host = getHost(this);
+    if (!host) {
+      host = getHost(this);
+    }
     const currentHost = Hosts.findOne({ host });
-
     const user = Meteor.users.findOne({ username });
     if (!user) {
       throw new Meteor.Error('User not found');

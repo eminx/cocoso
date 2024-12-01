@@ -17,7 +17,7 @@ function Terms() {
 }
 
 function TermsForHost({ currentHost }) {
-  const entities = publicSettings.name + ' & ' + currentHost.settings.name;
+  const entities = currentHost && publicSettings.name + ' & ' + currentHost.settings.name;
 
   return (
     <Box className="text-content" mb="24">

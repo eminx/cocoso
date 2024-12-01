@@ -1,6 +1,6 @@
 # ADMIN MEMBERS PAGE
 label: Användare
-
+dashboard: Admin dashboard
 all: Alla
 
 joinedAt: Gick med {{ date }}
@@ -60,7 +60,6 @@ profile:
     membership: '{{ role }} i {{ host }}'
     memberships: medlem i {{ count }} communities
   myCommunities: Mina Communities
-  adminDashboard: Admin dashboard
 
 works:
   label: Mina Verk

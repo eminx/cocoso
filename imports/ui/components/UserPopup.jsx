@@ -27,8 +27,7 @@ function UserPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [tc] = useTranslation('common');
   const [t] = useTranslation('members');
-  const { canCreateContent, currentHost, currentUser, isDesktop, platform, role } =
-    useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, isDesktop, role } = useContext(StateContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,7 +100,7 @@ function UserPopup() {
           {isAdmin && (
             <MenuItem color="brand.700" px="4" onClick={() => handleClickAdmin()}>
               {/* <Bolt size="20" style={{ marginRight: '6px' }} /> */}
-              {t('profile.adminDashboard')}
+              {t('dashboard')}
             </MenuItem>
           )}
           {isAdmin && <MenuDivider />}

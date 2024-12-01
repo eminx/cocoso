@@ -91,7 +91,7 @@ message:
     update: Öge güncellendi
     remove: Öge silindi
     save: Öge kaydedildi
-    leave: '{{ host }} topluluğundaki üyeliğin sonlandırıldı'
+    leave: '{{ host }} topluluğundan şimdi ayrıldın'
 
   error:
     imageRequired: İmaj gerekiyor
