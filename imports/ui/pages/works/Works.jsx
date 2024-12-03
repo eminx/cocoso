@@ -293,7 +293,7 @@ function Works() {
   );
 }
 
-getCategoriesAssignedToWorks = (works) => {
+const getCategoriesAssignedToWorks = (works) => {
   const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
 
   const hslValues = getHslValuesFromLength(labels.length);
