@@ -240,6 +240,10 @@ Meteor.methods({
   },
 
   createActivity(values) {
+    if (!values) {
+      return;
+    }
+
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -247,6 +251,8 @@ Meteor.methods({
     if (!user || !isContributorOrAdmin(user, currentHost)) {
       throw new Meteor.Error('Not allowed!');
     }
+
+    const images = values.images;
 
     if (values.isPublicActivity && (!images || images.length === 0)) {
       throw new Meteor.Error('Image is required for public activities');
