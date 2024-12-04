@@ -181,10 +181,10 @@ export default function ContentInserter({ currentHost, onSelect }) {
     }
   };
 
-  const activitiesFiltered = activitiesInMenu.isVisible && getActivitiesFiltered();
-  const worksFiltered = worksInMenu.isVisible && getWorksFiltered();
+  const activitiesFiltered = activitiesInMenu?.isVisible && getActivitiesFiltered();
+  const worksFiltered = worksInMenu?.isVisible && getWorksFiltered();
 
-  if (!activitiesInMenu.isVisible && !worksInMenu.isVisible) {
+  if (!activitiesInMenu?.isVisible && !worksInMenu?.isVisible) {
     return null;
   }
 

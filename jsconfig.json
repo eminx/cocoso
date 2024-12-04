@@ -1,0 +1,126 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "allowJs": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "/*": [
+        "./*"
+      ],
+      "meteor/mongo": [
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/local_collection_driver.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/collection.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/connection_options.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/doc_fetcher.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/mongo_driver.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/mongo_utils.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/observe_multiplex.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/oplog_observe_driver.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/oplog_tailing.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/oplog_v2_converter.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/polling_observe_driver.js",
+        "/Users/mino/.meteor/packages/mongo/1.16.3/web.browser/remote_collection_driver.js"
+      ],
+      "meteor/reactive-var": [
+        "/Users/mino/.meteor/packages/reactive-var/1.0.12/web.browser/reactive-var.js"
+      ],
+      "meteor/es5-shim": [
+        "/Users/mino/.meteor/packages/es5-shim/4.8.0/web.browser/client.js",
+        "/Users/mino/.meteor/packages/es5-shim/4.8.0/web.browser/console.js",
+        "/Users/mino/.meteor/packages/es5-shim/4.8.0/web.browser/cordova.js",
+        "/Users/mino/.meteor/packages/es5-shim/4.8.0/web.browser/export_globals.js",
+        "/Users/mino/.meteor/packages/es5-shim/4.8.0/web.browser/import_globals.js"
+      ],
+      "meteor/ecmascript": [
+        "/Users/mino/.meteor/packages/ecmascript/0.16.4/web.browser/ecmascript.js"
+      ],
+      "meteor/shell-server": [
+        "/Users/mino/.meteor/packages/shell-server/0.5.0/web.browser/main.js",
+        "/Users/mino/.meteor/packages/shell-server/0.5.0/web.browser/shell-server.js"
+      ],
+      "meteor/hot-module-replacement": [
+        "/Users/mino/.meteor/packages/hot-module-replacement/0.5.2/web.browser/hot-api.js",
+        "/Users/mino/.meteor/packages/hot-module-replacement/0.5.2/web.browser/client.js",
+        "/Users/mino/.meteor/packages/hot-module-replacement/0.5.2/web.browser/server.js"
+      ],
+      "meteor/react-meteor-data": [
+        "/Users/mino/.meteor/packages/react-meteor-data/2.6.1/web.browser/index.js"
+      ],
+      "meteor/accounts-base": [
+        "/Users/mino/.meteor/packages/accounts-base/2.2.6/web.browser/client_main.js",
+        "/Users/mino/.meteor/packages/accounts-base/2.2.6/web.browser/accounts_client.js",
+        "/Users/mino/.meteor/packages/accounts-base/2.2.6/web.browser/accounts_common.js",
+        "/Users/mino/.meteor/packages/accounts-base/2.2.6/web.browser/accounts_server.js",
+        "/Users/mino/.meteor/packages/accounts-base/2.2.6/web.browser/server_main.js"
+      ],
+      "meteor/accounts-password": [
+        "/Users/mino/.meteor/packages/accounts-password/2.3.3/web.browser/password_client.js",
+        "/Users/mino/.meteor/packages/accounts-password/2.3.3/web.browser/email_templates.js",
+        "/Users/mino/.meteor/packages/accounts-password/2.3.3/web.browser/password_server.js"
+      ],
+      "meteor/check": [
+        "/Users/mino/.meteor/packages/check/1.3.2/web.browser/match.js",
+        "/Users/mino/.meteor/packages/check/1.3.2/web.browser/isPlainObject.js"
+      ],
+      "meteor/email": [
+        "/Users/mino/.meteor/packages/email/2.2.3/web.browser/email.js"
+      ],
+      "meteor/tracker": [
+        "/Users/mino/.meteor/packages/tracker/1.2.1/web.browser/tracker.js"
+      ],
+      "meteor/appcache": [
+        "/Users/mino/.meteor/packages/appcache/1.2.7/web.browser/appcache-client.js",
+        "/Users/mino/.meteor/packages/appcache/1.2.7/web.browser/appcache-server.js"
+      ],
+      "meteor/service-configuration": [
+        "/Users/mino/.meteor/packages/service-configuration/1.3.1/web.browser/service_configuration_common.js",
+        "/Users/mino/.meteor/packages/service-configuration/1.3.1/web.browser/service_configuration_server.js"
+      ],
+      "meteor/dev-error-overlay": [
+        "/Users/mino/.meteor/packages/dev-error-overlay/0.1.1/web.browser/client.js"
+      ],
+      "meteor/edgee:slingshot": [
+        "/Users/mino/.meteor/packages/edgee_slingshot/0.7.1/web.browser//packages/edgee_slingshot.js"
+      ],
+      "meteor/aldeed:collection2": [
+        "/Users/mino/.meteor/packages/aldeed_collection2/3.5.0/web.browser/collection2.js",
+        "/Users/mino/.meteor/packages/aldeed_collection2/3.5.0/web.browser/lib.js"
+      ],
+      "meteor/percolate:migrations": [
+        "/Users/mino/.meteor/packages/percolate_migrations/1.1.0/web.browser/migrations_server.js",
+        "/Users/mino/.meteor/packages/percolate_migrations/1.1.0/web.browser/example/example.js"
+      ],
+      "meteor/webapp": [
+        "/Users/mino/.meteor/packages/webapp/1.13.2/web.browser/webapp_client.js",
+        "/Users/mino/.meteor/packages/webapp/1.13.2/web.browser/connect.js",
+        "/Users/mino/.meteor/packages/webapp/1.13.2/web.browser/socket_file.js",
+        "/Users/mino/.meteor/packages/webapp/1.13.2/web.browser/webapp_cordova.js",
+        "/Users/mino/.meteor/packages/webapp/1.13.2/web.browser/webapp_server.js"
+      ],
+      "meteor/ostrio:spiderable-middleware": [
+        "/Users/mino/.meteor/packages/ostrio_spiderable-middleware/1.6.6/web.browser/lib/index.js",
+        "/Users/mino/.meteor/packages/ostrio_spiderable-middleware/1.6.6/web.browser/examples/connect.middleware.js",
+        "/Users/mino/.meteor/packages/ostrio_spiderable-middleware/1.6.6/web.browser/examples/express.middleware.js",
+        "/Users/mino/.meteor/packages/ostrio_spiderable-middleware/1.6.6/web.browser/examples/http.middleware.js",
+        "/Users/mino/.meteor/packages/ostrio_spiderable-middleware/1.6.6/web.browser/examples/meteor.middleware.js"
+      ],
+      "meteor/server-render": [
+        "/Users/mino/.meteor/packages/server-render/0.4.1/web.browser/client.js",
+        "/Users/mino/.meteor/packages/server-render/0.4.1/web.browser/client-sink.js",
+        "/Users/mino/.meteor/packages/server-render/0.4.1/web.browser/server-register.js",
+        "/Users/mino/.meteor/packages/server-render/0.4.1/web.browser/server-sink.js",
+        "/Users/mino/.meteor/packages/server-render/0.4.1/web.browser/server.js"
+      ]
+    }
+  },
+  "typeAcquisition": {
+    "include": [
+      "meteor"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    ".meteor"
+  ]
+}
