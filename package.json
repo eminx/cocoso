@@ -78,7 +78,7 @@
     "lucide-react": "^0.323.0",
     "luxon": "^3.5.0",
     "masonic": "^3.7.0",
-    "meteor-node-stubs": "^1.1.0",
+    "meteor-node-stubs": "^1.2.1",
     "moment": "^2.30.1",
     "patch-package": "^8.0.0",
     "query-string": "^7.1.1",

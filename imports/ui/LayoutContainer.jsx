@@ -33,6 +33,7 @@ import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+import { NextUIProvider } from '@nextui-org/react';
 
 export const StateContext = React.createContext(null);
 const publicSettings = Meteor.settings.public;
@@ -170,50 +171,52 @@ function LayoutPage({ currentUser, userLoading, children }) {
         />
       </Helmet>
 
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
-          {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
-          <StateContext.Provider
-            value={{
-              allHosts,
-              canCreateContent,
-              currentUser,
-              currentHost,
-              hue,
-              isDesktop,
-              platform,
-              role,
-              userLoading,
-              getCurrentHost,
-              getPlatform,
-              setHue,
-              setSelectedHue,
-            }}
-          >
-            {/* {platform && platform.isFederationLayout && <TopBar />} */}
+      <NextUIProvider>
+        <ChakraProvider theme={chakraTheme}>
+          <ColorModeProvider>
+            {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
+            <StateContext.Provider
+              value={{
+                allHosts,
+                canCreateContent,
+                currentUser,
+                currentHost,
+                hue,
+                isDesktop,
+                platform,
+                role,
+                userLoading,
+                getCurrentHost,
+                getPlatform,
+                setHue,
+                setSelectedHue,
+              }}
+            >
+              {/* {platform && platform.isFederationLayout && <TopBar />} */}
 
-            <Flex>
-              <Box id="main-viewport" flexGrow="2">
-                <Box w="100%">
-                  <Header isSmallerLogo={!isLargerLogo} />
+              <Flex>
+                <Box id="main-viewport" flexGrow="2">
+                  <Box w="100%">
+                    <Header isSmallerLogo={!isLargerLogo} />
 
-                  <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                    {children}
+                    <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
+                      {children}
+                    </Box>
+
+                    <Footer
+                      currentHost={currentHost}
+                      isFederationFooter={isFederationFooter}
+                      tc={tc}
+                    />
+
+                    {isFederationFooter && <PlatformFooter platform={platform} />}
                   </Box>
-
-                  <Footer
-                    currentHost={currentHost}
-                    isFederationFooter={isFederationFooter}
-                    tc={tc}
-                  />
-
-                  {isFederationFooter && <PlatformFooter platform={platform} />}
                 </Box>
-              </Box>
-            </Flex>
-          </StateContext.Provider>
-        </ColorModeProvider>
-      </ChakraProvider>
+              </Flex>
+            </StateContext.Provider>
+          </ColorModeProvider>
+        </ChakraProvider>
+      </NextUIProvider>
     </>
   );
 }
