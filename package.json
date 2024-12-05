@@ -41,6 +41,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource-variable/raleway": "^5.0.6",
     "@hookform/resolvers": "^2.8.5",
+    "@nextui-org/react": "^2.4.8",
     "@react-email/body": "0.0.8",
     "@react-email/button": "0.0.15",
     "@react-email/column": "0.0.10",
@@ -65,7 +66,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
-    "framer-motion": "^5.5.6",
+    "framer-motion": "^5.6.0",
     "fslightbox-react": "^1.6.2-2",
     "heic2any": "0.0.4",
     "i18next": "^22.4.11",
@@ -117,7 +118,6 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss": "^3.3.6",
     "tailwindcss-animate": "^1.0.7"
   },
   "meteor": {
@@ -131,6 +131,7 @@
     "@meteorjs/eslint-config-meteor": "^1.0.5",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/parser": "^5.20.0",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-config-prettier": "^8.5.0",
@@ -142,7 +143,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "postcss": "^8.4.49",
     "prettier": "^2.6.2",
+    "tailwindcss": "^3.4.16",
     "typescript": "^4.6.3"
   },
   "eslintConfig": {
