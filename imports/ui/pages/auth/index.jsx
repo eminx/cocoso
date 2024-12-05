@@ -54,7 +54,7 @@ const Login = ({ isSubmitted, onSubmit }) => {
   );
 };
 
-const Signup = ({ onSubmit }) => {
+const Signup = ({ hideTermsCheck = false, onSubmit }) => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [t] = useTranslation('accounts');
@@ -115,28 +115,34 @@ const Signup = ({ onSubmit }) => {
             </Center>
           </Box>
 
-          <FormField>
-            <Flex>
-              <Box pr="2" pt="1">
-                <Checkbox
-                  isChecked={termsChecked}
-                  size="lg"
-                  onChange={() => setTermsChecked(!termsChecked)}
-                />
-              </Box>
-              <Link
-                as="span"
-                color="brand.600"
-                textDecoration="underline"
-                onClick={() => setModalOpen(true)}
-              >
-                {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
-              </Link>
-            </Flex>
-          </FormField>
+          {!hideTermsCheck && (
+            <FormField>
+              <Flex>
+                <Box pr="2" pt="1">
+                  <Checkbox
+                    isChecked={termsChecked}
+                    size="lg"
+                    onChange={() => setTermsChecked(!termsChecked)}
+                  />
+                </Box>
+                <Link
+                  as="span"
+                  color="brand.600"
+                  textDecoration="underline"
+                  onClick={() => setModalOpen(true)}
+                >
+                  {t('signup.form.terms.label', { terms: t('signup.form.terms.terms') })}
+                </Link>
+              </Flex>
+            </FormField>
+          )}
 
           <Flex justify="flex-end" py="4" w="100%">
-            <Button isDisabled={!isDirty || !termsChecked} isLoading={isSubmitting} type="submit">
+            <Button
+              isDisabled={!isDirty || (!termsChecked && !hideTermsCheck)}
+              isLoading={isSubmitting}
+              type="submit"
+            >
               {tc('actions.submit')}
             </Button>
           </Flex>

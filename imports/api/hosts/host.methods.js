@@ -34,7 +34,7 @@ Meteor.methods({
         },
         members: [
           {
-            avatar: currentUser.avatar.src,
+            avatar: currentUser.avatar?.src,
             date: new Date(),
             email: currentUser.emails[0].address,
             id: currentUser._id,
@@ -69,6 +69,7 @@ Meteor.methods({
         },
       });
     } catch (error) {
+      console.log(error);
       throw new Meteor.Error(error);
     }
   },

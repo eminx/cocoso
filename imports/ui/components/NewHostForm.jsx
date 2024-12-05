@@ -15,8 +15,6 @@ function NewHostForm({ defaultValues, onSubmit }) {
   const [t] = useTranslation('hosts');
   const [tc] = useTranslation('common');
 
-  const the = 'submit';
-
   return (
     <Box minW="300px">
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -41,7 +39,7 @@ function NewHostForm({ defaultValues, onSubmit }) {
 
           <Flex justify="flex-end" py="4" w="100%">
             <Button isDisabled={!isDirty} isLoading={isSubmitting} type="submit">
-              {tc(`actions.${the}`)}
+              {tc('actions.submit')}
             </Button>
           </Flex>
         </VStack>

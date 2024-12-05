@@ -30,6 +30,11 @@ Meteor.startup(() => {
     WebAppInternals.setBundledJsCssPrefix(cdn_server);
   }
 
+  const platform = Meteor.call('getPlatform');
+  if (!platform) {
+    return;
+  }
+
   onPageLoad((sink) => {
     const host = sink.request.headers['host'];
 

@@ -24,6 +24,7 @@ Users.schema.UserProfile = {
   lang: { type: String, optional: true },
   avatar: { type: new SimpleSchema(Schemas.Avatar), optional: true },
   isPublic: { type: Boolean, defaultValue: true, optional: true },
+  isSuperAdmin: { type: Boolean, defaultValue: false, optional: true },
 
   memberships: { type: Array, defaultValue: [] },
   'memberships.$': {

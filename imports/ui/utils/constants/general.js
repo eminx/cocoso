@@ -103,6 +103,24 @@ const hostFields = [
   },
 ];
 
+const platformFields = [
+  {
+    label: 'Email',
+    name: 'email',
+    isRequired: true,
+  },
+  {
+    label: 'Name',
+    name: 'name',
+    isRequired: true,
+  },
+  {
+    label: 'Portal Host (Main Website)',
+    name: 'portalHost',
+    isRequired: true,
+  },
+];
+
 const acceptedImageFormatsForUploads = ['.jpeg', '.jpg', '.png'];
 
 const acceptedDocumentFormatsForUploads = [
@@ -122,6 +140,7 @@ export {
   acceptedDocumentFormatsForUploads,
   adminMenu,
   hostFields,
+  platformFields,
   maximumDocumentSizeForUploads,
   superadminMenu,
   userMenu,
