@@ -41,7 +41,6 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource-variable/raleway": "^5.0.6",
     "@hookform/resolvers": "^2.8.5",
-    "@nextui-org/react": "^2.4.8",
     "@react-email/body": "0.0.8",
     "@react-email/button": "0.0.15",
     "@react-email/column": "0.0.10",
