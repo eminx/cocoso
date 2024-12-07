@@ -138,7 +138,7 @@ Meteor.methods({
         creationDate: new Date(),
       });
 
-      Meteor.call('createChat', formValues.title, newGroupId, (error) => {
+      Meteor.call('createChat', formValues.title, newGroupId, 'groups', (error) => {
         if (error) {
           console.log('Chat is not created due to error: ', error);
         }

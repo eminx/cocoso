@@ -100,7 +100,7 @@ Meteor.methods({
           createdAt: new Date(),
         },
         () => {
-          Meteor.call('createChat', values.label, newResourceId, (error) => {
+          Meteor.call('createChat', values.label, newResourceId, 'resources', (error) => {
             if (error) {
               console.log('Chat is not created due to error: ', error);
             }

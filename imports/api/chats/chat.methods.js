@@ -11,7 +11,7 @@ Meteor.methods({
     return chat;
   },
 
-  createChat(contextName, contextId) {
+  createChat(contextName, contextId, contextType) {
     const user = Meteor.user();
     const host = getHost(this);
     const currentHost = Hosts.findOne({ host });
@@ -22,8 +22,9 @@ Meteor.methods({
 
     const theChat = Chats.insert({
       host,
-      contextName,
       contextId,
+      contextName,
+      contextType,
       createdBy: {
         userId: user._id,
         username: user.username,
