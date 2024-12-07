@@ -38,6 +38,7 @@ import FancyDate, { DateJust } from '../../components/FancyDate';
 import FormField from '../../components/FormField';
 import Modal from '../../components/Modal';
 import TablyCentered from '../../components/TablyCentered';
+import Chattery from '../../components/chattery/Chattery';
 
 const sexyBorder = {
   bg: 'white',
@@ -476,9 +477,31 @@ class Activity extends PureComponent {
     );
   };
 
+  addNewChatMessage = async (messageContent) => {
+    const { activityData } = this.props;
+
+    if (!activityData) {
+      return;
+    }
+
+    const values = {
+      context: 'activities',
+      contextId: activityData._id,
+      message: messageContent,
+    };
+
+    try {
+      await call('addChatMessage', values);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  removeNotification = () => {};
+
   render() {
-    const { activityData, t, tc } = this.props;
-    const { currentHost, currentUser, role } = this.context;
+    const { activityData, discussion, t, tc } = this.props;
+    const { canCreateContent, currentHost, currentUser, role } = this.context;
 
     const isGroupMeeting = activityData?.isGroupMeeting;
 
@@ -523,6 +546,21 @@ class Activity extends PureComponent {
           </Box>
         ),
         path: 'location',
+      });
+    }
+
+    if (canCreateContent) {
+      tabs.push({
+        title: tc('labels.discussion'),
+        content: (
+          <Chattery
+            isMember
+            messages={discussion}
+            onNewMessage={this.addNewChatMessage}
+            removeNotification={this.removeNotification}
+          />
+        ),
+        path: 'discussion',
       });
     }
 
