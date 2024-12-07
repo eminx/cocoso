@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import Platform from './platform';
 
 Meteor.methods({
-  createNewPlatform(values) {
+  createPlatform(values) {
     if (Platform.findOne()) {
       throw new Meteor.Error('Platform already exists');
     }
@@ -19,9 +19,9 @@ Meteor.methods({
     }
   },
 
-  getPlatform() {
+  async getPlatform() {
     try {
-      return Platform.findOne();
+      return await Platform.findOneAsync();
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -66,5 +66,35 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
+  },
+
+  setUserSuperAdmin(userId) {
+    if (!Meteor.user()) {
+      console.log('no user');
+      return;
+    }
+
+    const currentUserId = Meteor.userId();
+    if (currentUserId !== userId) {
+      console.log('not same id');
+      return;
+    }
+
+    if (Platform.findOne()) {
+      console.log('platform exists');
+      return;
+    }
+
+    const allUsers = Meteor.users.find().fetch();
+    if (allUsers.length !== 1) {
+      console.log('user cound:', allUsers.length);
+      return;
+    }
+
+    Meteor.users.update(currentUserId, {
+      $set: {
+        isSuperAdmin: true,
+      },
+    });
   },
 });

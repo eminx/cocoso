@@ -26,7 +26,6 @@ function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = tr
             <Flex bg="gray.50" flexDirection="column" justify="center">
               <LazyLoadImage
                 alt={alt + ' ' + ' ' + image}
-                effect="blur"
                 src={image}
                 style={{ ...imageStyle, height }}
                 onClick={() => setToggler(!toggler)}

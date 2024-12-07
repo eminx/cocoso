@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { StateContext } from '../../LayoutContainer';
 import { Signup } from './index';
 import { createAccount } from './functions';
+// import NewPlatform from '';
 
 function SignupPage() {
   const [t] = useTranslation('accounts');

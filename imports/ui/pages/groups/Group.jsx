@@ -768,14 +768,12 @@ class Group extends Component {
 
     return (
       <Box>
-        <Box>
-          <Chattery
-            messages={messages}
-            onNewMessage={this.addNewChatMessage}
-            removeNotification={this.removeNotification}
-            isMember={isMember}
-          />
-        </Box>
+        <Chattery
+          messages={messages}
+          onNewMessage={this.addNewChatMessage}
+          removeNotification={this.removeNotification}
+          isMember={isMember}
+        />
         {!isMember && (
           <div
             style={{

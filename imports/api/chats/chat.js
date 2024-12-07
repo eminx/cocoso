@@ -10,6 +10,7 @@ Chats.schema = new SimpleSchema({
 
   contextId: Schemas.Id,
   contextName: { type: String },
+  contextType: { type: String },
 
   createdBy: { type: Object },
   'createdBy.userId': Schemas.Id,

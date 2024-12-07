@@ -11,7 +11,11 @@ import { parseTitle } from '../../ui/utils/shared';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
-  const pageHeading = Host.settings?.name;
+  const pageHeading = Host?.settings?.name;
+
+  if (!Host) {
+    return null;
+  }
 
   return (
     <WrapperSSR
@@ -26,6 +30,10 @@ export function Home({ host }) {
 export function ActivitiesList({ host }) {
   const activities = Meteor.call('getAllPublicActivities', host);
   const Host = Meteor.call('getHost', host);
+
+  if (!Host) {
+    return null;
+  }
 
   const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
   const pageDescription = Host.settings?.menu.find(
@@ -45,6 +53,10 @@ export function Activity({ host }) {
   const { activityId } = useParams();
   const activity = Meteor.call('getActivityById', activityId);
   const Host = Meteor.call('getHost', host);
+
+  if (!activity) {
+    return null;
+  }
 
   return (
     <WrapperSSR
@@ -85,6 +97,10 @@ export function Group({ host }) {
   const { groupId } = useParams();
   const group = Meteor.call('getGroup', groupId);
   const Host = Meteor.call('getHost', host);
+
+  if (!group) {
+    return null;
+  }
 
   return (
     <WrapperSSR
@@ -128,6 +144,10 @@ export function Resource({ host }) {
   const resource = Meteor.call('getResourceById', resourceId);
   const Host = Meteor.call('getHost', host);
 
+  if (!resource) {
+    return null;
+  }
+
   return (
     <WrapperSSR
       description={resource.description}
@@ -167,6 +187,10 @@ export function Work({ host }) {
   const work = Meteor.call('getWork', workId, username);
   const Host = Meteor.call('getHost', host);
 
+  if (!work) {
+    return null;
+  }
+
   return (
     <WrapperSSR
       description={work.longDescription}
@@ -191,6 +215,10 @@ export function Page({ host }) {
   const pages = Meteor.call('getPages', host);
   const page = pages.find((page) => parseTitle(page.title) === pageTitle);
   const Host = Meteor.call('getHost', host);
+
+  if (!page) {
+    return null;
+  }
 
   return (
     <WrapperSSR
