@@ -26,7 +26,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPast = moment(date.endDate)?.isBefore(today);
+  const isPast = moment(date.endDate)?.isBefore(yesterday);
 
   return (
     <Flex

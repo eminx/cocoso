@@ -105,7 +105,7 @@ Meteor.methods({
         },
       });
 
-      Meteor.call('sendWelcomeEmail', user._id);
+      Meteor.call('sendWelcomeEmail', user._id, host);
     } catch (error) {
       throw new Meteor.Error(error);
     }
