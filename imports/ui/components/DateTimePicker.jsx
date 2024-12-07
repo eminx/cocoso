@@ -63,7 +63,7 @@ export default function DateTimePicker({ isRange, value, onChange }) {
   return (
     <Box w="100%" py="2">
       <Flex>
-        <Box w="170px">
+        <Box w="170px" mr="2">
           <DatePicker
             label={isRange ? t('form.date.start') : t('form.days.single')}
             value={value.startDate}
@@ -108,7 +108,7 @@ function DatePicker({ disabledDate, label, value, onChange }) {
       <Text mb="2">{label}</Text>
       <ConfigProvider locale={locale}>
         <AntDatePicker
-          disabledDate={(date) => date && date < dayjs(disabledDate)}
+          disabledDate={disabledDate ? (date) => date && date < dayjs(disabledDate) : null}
           size="large"
           value={dayjs(value, 'YYYY-MM-DD')}
           onChange={onChange}
