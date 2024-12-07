@@ -46,9 +46,9 @@ Meteor.methods({
     Email.send(data);
   },
 
-  sendWelcomeEmail(userId) {
+  sendWelcomeEmail(userId, hostToJoin) {
     const user = Meteor.users.findOne(userId);
-    const host = getHost(this);
+    const host = hostToJoin || getHost(this);
     const currentHost = Hosts.findOne({ host });
     const welcomeText = currentHost && currentHost.emails[0];
 
