@@ -29,65 +29,72 @@ import {
   User,
 } from './components';
 
-export const AppRoutesSSR = (host) => [
-  {
-    path: '/',
-    element: <Home host={host} />,
-  },
-  {
-    path: '/activities',
-    element: <ActivitiesList host={host} />,
-  },
-  {
-    path: '/groups',
-    element: <GroupsList host={host} />,
-  },
-  {
-    path: '/resources',
-    element: <ResourcesList host={host} />,
-  },
-  {
-    path: '/works',
-    element: <WorksList host={host} />,
-  },
-  {
-    path: '/people',
-    element: <UsersList host={host} />,
-  },
-  {
-    path: '/communities',
-    element: <Communities host={host} />,
-  },
-  {
-    path: '/calendar',
-    element: <LoaderSSR />,
-  },
-  {
-    path: '/activities/:activityId/*',
-    element: <Activity host={host} />,
-  },
-  {
-    path: '/groups/:groupId/*',
-    element: <Group host={host} />,
-  },
-  {
-    path: '/pages/:pageTitle',
-    element: <Page host={host} />,
-  },
-  {
-    path: '/resources/:resourceId/*',
-    element: <Resource host={host} />,
-  },
-  {
-    path: '/:usernameSlug/works/:workId/*',
-    element: <Work host={host} />,
-  },
-  {
-    path: '/:usernameSlug/*',
-    element: <User host={host} />,
-  },
-  {
-    path: '/*',
-    element: <LoaderSSR />,
-  },
-];
+export const AppRoutesSSR = (host, sink) => {
+  const props = {
+    host,
+    sink,
+  };
+
+  return [
+    {
+      path: '/',
+      element: <Home {...props} />,
+    },
+    {
+      path: '/activities',
+      element: <ActivitiesList {...props} />,
+    },
+    {
+      path: '/groups',
+      element: <GroupsList {...props} />,
+    },
+    {
+      path: '/resources',
+      element: <ResourcesList {...props} />,
+    },
+    {
+      path: '/works',
+      element: <WorksList {...props} />,
+    },
+    {
+      path: '/people',
+      element: <UsersList {...props} />,
+    },
+    {
+      path: '/communities',
+      element: <Communities {...props} />,
+    },
+    {
+      path: '/calendar',
+      element: <LoaderSSR />,
+    },
+    {
+      path: '/activities/:activityId/*',
+      element: <Activity {...props} />,
+    },
+    {
+      path: '/groups/:groupId/*',
+      element: <Group {...props} />,
+    },
+    {
+      path: '/pages/:pageTitle',
+      element: <Page {...props} />,
+    },
+    {
+      path: '/resources/:resourceId/*',
+      element: <Resource {...props} />,
+    },
+    {
+      path: '/:usernameSlug/works/:workId/*',
+      element: <Work {...props} />,
+    },
+    {
+      path: '/:usernameSlug/*',
+      element: <User {...props} />,
+    },
+    {
+      path: '/*',
+      element: <LoaderSSR />,
+    },
+  ];
+};

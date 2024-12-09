@@ -36,12 +36,13 @@ Meteor.startup(() => {
     const App = (props) => (
       <StaticRouter location={sink.request.url}>
         <Routes>
-          {AppRoutesSSR(host).map((route) => (
+          {AppRoutesSSR(host, sink).map((route) => (
             <Route
               key={route.path}
               path={route.path}
               element={route.element}
               url={sink.request.url}
+              sink={sink}
             />
           ))}
         </Routes>
@@ -53,11 +54,5 @@ Meteor.startup(() => {
     const helmet = Helmet.renderStatic();
     sink.appendToHead(helmet.meta.toString());
     sink.appendToHead(helmet.title.toString());
-
-    // sink.appendToBody(`
-    //   <script>
-    //     window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
-    //   </script>
-    // `);
   });
 });
