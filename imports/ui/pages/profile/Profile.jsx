@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -256,7 +256,7 @@ function Bio({ isDesktop, isSelfAccount, tc, user }) {
         borderColor="brand.500"
         w="100%"
       >
-        {renderHTML(user.bio)}
+        {parseHtml(user.bio)}
       </Box>
     </Flex>
   );
@@ -284,7 +284,7 @@ function ContactInfo({ isDesktop, isSelfAccount, tc, user }) {
   return (
     <Flex justifyContent={isDesktop ? 'flex-start' : 'center'}>
       <Box maxWidth="480px" className="text-content" p="4">
-        {renderHTML(user.contactInfo)}
+        {parseHtml(user.contactInfo)}
       </Box>
     </Flex>
   );

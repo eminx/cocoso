@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
@@ -81,7 +81,7 @@ function Page() {
             p="6"
             w="100%"
           >
-            {currentPage.longDescription && renderHTML(currentPage.longDescription)}
+            {currentPage.longDescription && parseHtml(currentPage.longDescription)}
           </Box>
         </Center>
       </Box>

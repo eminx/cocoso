@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -88,7 +88,7 @@ export default function PlatformRegistrationIntro({ history }) {
     <Box>
       <Template heading={tc('menu.superadmin.intro')} leftContent={<AdminMenu />}>
         <Text mb="2">
-          {renderHTML(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
+          {parseHtml(tc('platform.registrationIntro.notice1', { platform: platform.name }))}
         </Text>
 
         <Text mb="4">

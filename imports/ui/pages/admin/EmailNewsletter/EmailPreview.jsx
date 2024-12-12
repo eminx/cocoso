@@ -13,7 +13,7 @@ import { Row } from '@react-email/row';
 import { Section } from '@react-email/section';
 import { Text } from '@react-email/text';
 
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
@@ -96,7 +96,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
 
           {body && <Text style={{ fontSize: 16 }}>{`${appeal} [username],`}</Text>}
 
-          {body && <Text style={{ fontSize: 16 }}>{renderHTML(body)}</Text>}
+          {body && <Text style={{ fontSize: 16 }}>{parseHtml(body)}</Text>}
 
           <Hr />
         </Section>
@@ -224,7 +224,7 @@ export default function EmailPreview({ currentHost, email, imageUrl }) {
           </Heading>
           {footer && footer.length > 0 && (
             <Container style={{ color: '#424242' }}>
-              <Text style={{ textAlign: 'center' }}>{renderHTML(footer)}</Text>
+              <Text style={{ textAlign: 'center' }}>{parseHtml(footer)}</Text>
             </Container>
           )}
 

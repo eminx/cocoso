@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Helmet } from 'react-helmet';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import Loader from '../../components/Loader';
@@ -211,7 +211,7 @@ function Communities() {
           </Box>
 
           <Box py="4" maxW="520px">
-            {modalHost.info && <div className="text-content">{renderHTML(modalHost?.info)}</div>}
+            {modalHost.info && <div className="text-content">{parseHtml(modalHost?.info)}</div>}
           </Box>
         </ConfirmModal>
       )}

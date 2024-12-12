@@ -20,7 +20,7 @@ import {
   WrapItem,
   useDisclosure,
 } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import BadgeCheck from 'lucide-react/dist/esm/icons/badge-check';
 import Bolt from 'lucide-react/dist/esm/icons/bolt';
 
@@ -168,7 +168,7 @@ function MemberAvatarEtc({ isThumb = false, user }) {
             <ModalBody>
               <Box className="text-content" margin={{ bottom: 'medium' }}>
                 {user.contactInfo
-                  ? renderHTML(user.contactInfo)
+                  ? parseHtml(user.contactInfo)
                   : t('message.contact.empty', { username: user.username })}
               </Box>
             </ModalBody>

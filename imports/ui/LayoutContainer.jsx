@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import 'moment/locale/sv';
@@ -256,7 +256,7 @@ function Footer({ currentHost, isFederationFooter, tc }) {
                   textAlign="center"
                   w="100%"
                 >
-                  {renderHTML(settings?.footer)}
+                  {parseHtml(settings?.footer)}
                 </Box>
               ) : (
                 <OldFooter host={currentHost.host} settings={settings} />
@@ -301,7 +301,7 @@ function PlatformFooter({ platform, children }) {
         </Box>
 
         <Box p="2" className="text-content">
-          {renderHTML(platform.footer)}
+          {parseHtml(platform.footer)}
         </Box>
         <Box p="2">{children}</Box>
 

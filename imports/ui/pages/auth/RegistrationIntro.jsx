@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { Box, Button, Center, Heading, Image } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import { Slide } from 'react-slideshow-image';
@@ -72,7 +72,7 @@ function RegistrationIntro() {
             >
               {registrationIntro?.map((slide) => (
                 <Box key={slide} className="text-content" h="420px" overflowY="scroll" p="4">
-                  {renderHTML(slide)}
+                  {parseHtml(slide)}
                 </Box>
               ))}
             </Slide>

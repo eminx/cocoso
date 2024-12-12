@@ -14,7 +14,7 @@ import {
   WrapItem,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 import { stringify } from 'query-string';
 import AutoCompleteSelect from 'react-select';
@@ -367,7 +367,7 @@ function Calendar({ currentUser, tc }) {
 
         <Text fontSize="sm" mt="2" p="1">
           {selectedActivity?.longDescription &&
-            (selectedActivity?.isGroupPrivate ? '' : renderHTML(selectedActivity?.longDescription))}
+            (selectedActivity?.isGroupPrivate ? '' : parseHtml(selectedActivity?.longDescription))}
         </Text>
 
         {/* {!selectedActivity?.isGroupPrivate && (

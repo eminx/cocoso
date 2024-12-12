@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge, Box, Flex, Tag as CTag, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -256,7 +256,7 @@ function Resources() {
           onSecondaryButtonClick={handleCopyLink}
         >
           <Tably
-            content={modalResource.description && renderHTML(modalResource.description)}
+            content={modalResource.description && parseHtml(modalResource.description)}
             images={modalResource.images}
             tags={isPortalHost && [allHosts.find((h) => h.host === modalResource.host)?.name]}
             title={modalResource.label}

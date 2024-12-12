@@ -4,7 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import moment from 'moment';
 import i18n from 'i18next';
 import ReactTable from 'react-table';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import 'react-table/react-table.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -516,7 +516,7 @@ class Activity extends PureComponent {
         title: tc('labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
-            {activityData?.longDescription && renderHTML(activityData?.longDescription)}
+            {activityData?.longDescription && parseHtml(activityData?.longDescription)}
           </Box>
         ),
         path: 'info',

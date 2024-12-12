@@ -3,7 +3,7 @@ import React, { Component, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import {
@@ -950,7 +950,7 @@ class Group extends Component {
         title: tc('labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
-            {group && renderHTML(group.description)}
+            {group && parseHtml(group.description)}
           </Box>
         ),
         path: 'info',
