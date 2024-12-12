@@ -553,12 +553,15 @@ class Activity extends PureComponent {
       tabs.push({
         title: tc('labels.discussion'),
         content: (
-          <Chattery
-            isMember
-            messages={discussion}
-            onNewMessage={this.addNewChatMessage}
-            removeNotification={this.removeNotification}
-          />
+          <>
+            <Text>{t('public.chat.heading')}</Text>
+            <Chattery
+              isMember
+              messages={discussion}
+              onNewMessage={this.addNewChatMessage}
+              removeNotification={this.removeNotification}
+            />
+          </>
         ),
         path: 'discussion',
       });

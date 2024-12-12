@@ -111,3 +111,5 @@ public:
   past: Etkinlik geçti
   acceess:
     deny: Sadece onaylanmış kullanıcılara açık
+  chat:
+    heading: Sadece adminler ve onaylanmış kullanıcılar için
