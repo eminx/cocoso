@@ -554,7 +554,9 @@ class Activity extends PureComponent {
         title: tc('labels.discussion'),
         content: (
           <>
-            <Text>{t('public.chat.heading')}</Text>
+            <Text mb="2" px="2" textAlign="center">
+              {t('public.chat.heading')}
+            </Text>
             <Chattery
               isMember
               messages={discussion}
