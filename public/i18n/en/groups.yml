@@ -120,6 +120,8 @@ invite:
     holder: Samuel
     valid: Please enter a valid first name
   submit: Send Invite
+  remove:
+    success: The invite is removed
 
 modal:
   join:

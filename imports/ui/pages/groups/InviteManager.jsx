@@ -1,5 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Box, Button, Heading, Input, Tag, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Input,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 import FormField from '../../components/FormField';
 import { emailIsValid, includesSpecialCharacters } from '../../utils/shared';
@@ -57,7 +67,6 @@ class InviteManager extends PureComponent {
     Meteor.call('invitePersonToPrivateGroup', group._id, person, (error, respond) => {
       if (error) {
         console.log('error', error);
-        message.destroy();
         message.error(error.reason);
       } else {
         message.success(t('invite.success', { name: firstNameInput }));
@@ -65,6 +74,19 @@ class InviteManager extends PureComponent {
           firstNameInput: '',
           emailInput: '',
         });
+      }
+    });
+  };
+
+  handleRemoveInvite = (person) => {
+    const { group, t } = this.props;
+
+    Meteor.call('removePersonFromInvitedList', group._id, person, (error, respond) => {
+      if (error) {
+        console.log('error', error);
+        message.error(error.error);
+      } else {
+        message.success(t('invite.remove.success'));
       }
     });
   };
@@ -114,11 +136,20 @@ class InviteManager extends PureComponent {
         <Box py="6">
           <EmailsContainer title="People Invited" count={peopleInvited.length}>
             {peopleInvited.map((person) => (
-              <Tag key={person.email}>
-                <Text fontWeight="bold" mr="1">
+              <Tag
+                key={person.email}
+                borderRadius="full"
+                colorScheme="green"
+                mb="2"
+                px="4"
+                py="2"
+                variant="solid"
+              >
+                <TagLabel fontWeight="bold" mr="2">
                   {person.firstName}
-                </Text>
-                {person.email}
+                </TagLabel>
+                <Text>{person.email}</Text>
+                <TagCloseButton onClick={() => this.handleRemoveInvite(person)} />
               </Tag>
             ))}
           </EmailsContainer>

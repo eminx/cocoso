@@ -120,6 +120,8 @@ invite:
     holder: Murat
     valid: Lütfen geçerli bir ad gir
   submit: Daveti gönder
+  remove:
+    success: Kişi davet listesinden çıkarıldı
 
 modal:
   join:
