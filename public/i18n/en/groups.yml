@@ -90,6 +90,8 @@ meeting:
     resource: Select resource
     location: Location
     submit: Add Meeting
+  errors:
+    noresource: Please select a resource or enter a location for the meeting (minimum 3 characters)
 
 confirm:
   check: Are you sure?

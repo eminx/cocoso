@@ -90,6 +90,8 @@ meeting:
     resource: Välj lokal eller resurs
     location: Plats
     submit: Lägg till möte
+  errors:
+    noresource: Välj en resurs eller ange en plats för mötet (minst 4 tecken)
 
 confirm:
   check: Är du säker?

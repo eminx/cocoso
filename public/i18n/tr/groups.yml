@@ -90,6 +90,8 @@ meeting:
     resource: Kaynak seç
     location: Yer
     submit: Buluşma ekle
+  errors:
+    noresource: Lütfen bir kaynak seçin veya buluşma için bir yer girin (en az 4 karakter)
 
 confirm:
   check: Emin misin?
