@@ -18,7 +18,7 @@ import {
   IconButton,
   WrapItem,
 } from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import AutoCompleteSelect from 'react-select';

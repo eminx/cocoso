@@ -9,7 +9,7 @@ import {
   MenuItem,
   Text,
 } from '@chakra-ui/react';
-import { BellIcon } from '@chakra-ui/icons';
+import BellIcon from 'lucide-react/dist/esm/icons/bell';
 
 function NotificationsPopup({ notifications }) {
   if (!notifications) {

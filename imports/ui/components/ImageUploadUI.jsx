@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Center, IconButton, Wrap } from '@chakra-ui/react';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 
 import FileDropper from './FileDropper';
 

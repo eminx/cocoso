@@ -12,7 +12,7 @@ import {
   MenuItem,
   Text,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';

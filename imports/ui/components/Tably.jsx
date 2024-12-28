@@ -19,9 +19,9 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { ChevronLeftIcon } from '@chakra-ui/icons/dist/ChevronLeft';
-import { LinkIcon } from '@chakra-ui/icons/dist/Link';
-import { SettingsIcon } from '@chakra-ui/icons/dist/Settings';
+import ChevronLeftIcon from 'lucide-react/dist/esm/icons/chevron-left';
+import LinkIcon from 'lucide-react/dist/esm/icons/link';
+import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 import { useTranslation } from 'react-i18next';
 
 import NiceSlider from './NiceSlider';

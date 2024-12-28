@@ -14,7 +14,7 @@ import {
   Switch,
   Text,
 } from '@chakra-ui/react';
-import { InfoIcon } from '@chakra-ui/icons';
+import InfoIcon from 'lucide-react/dist/esm/icons/info';
 
 import GroupForm from '../../components/GroupForm';
 import { call, resizeImage, uploadImage } from '../../utils/shared';

@@ -13,7 +13,7 @@ import {
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import ArrowForwardIcon from 'lucide-react/dist/esm/icons/move-right';
 import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 import { stringify } from 'query-string';

@@ -13,7 +13,7 @@ import {
   Text,
   Wrap,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import DeleteIcon from 'lucide-react/dist/esm/icons/x';
 import { useTranslation } from 'react-i18next';
 
 // import DatePicker from './DatePicker';

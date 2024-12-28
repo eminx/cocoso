@@ -21,7 +21,7 @@ import {
   Code,
 } from '@chakra-ui/react';
 
-import { DragHandleIcon } from '@chakra-ui/icons';
+import DragHandleIcon from 'lucide-react/dist/esm/icons/grip-horizontal';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 

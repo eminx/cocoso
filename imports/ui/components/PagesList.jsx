@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Center, Heading, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import { parseTitle } from '../utils/shared';
 

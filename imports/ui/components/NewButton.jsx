@@ -12,7 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import AddIcon from 'lucide-react/dist/esm/icons/plus-square';
 import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 

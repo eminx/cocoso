@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import HamburgerIcon from 'lucide-react/dist/esm/icons/menu';
 import { useTranslation } from 'react-i18next';
 
 import Drawer from './Drawer';

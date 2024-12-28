@@ -11,7 +11,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import AddIcon from 'lucide-react/dist/esm/icons/plus';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';

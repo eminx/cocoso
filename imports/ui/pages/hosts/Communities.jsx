@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Code, Image, Link as CLink, Text } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
+import CheckIcon from 'lucide-react/dist/esm/icons/check';
 import { Helmet } from 'react-helmet';
 import parseHtml from 'html-react-parser';
 

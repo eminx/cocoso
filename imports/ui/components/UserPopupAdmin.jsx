@@ -15,7 +15,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
+import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
 
 import { StateContext } from '../LayoutContainer';
 import { adminMenu } from '../utils/constants/general';

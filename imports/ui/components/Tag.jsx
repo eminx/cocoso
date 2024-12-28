@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import SmallCloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 
 function Tag({
   label = '',

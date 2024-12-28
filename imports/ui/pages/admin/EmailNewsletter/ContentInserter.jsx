@@ -16,7 +16,7 @@ import {
   TabPanels,
   Text,
 } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
+import CloseIcon from 'lucide-react/dist/esm/icons/x-circle';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 

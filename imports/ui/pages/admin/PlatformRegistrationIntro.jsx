@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Center, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
-import { PlusSquareIcon } from '@chakra-ui/icons';
+import PlusSquareIcon from 'lucide-react/dist/esm/icons/plus-square';
 import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';

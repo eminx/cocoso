@@ -21,7 +21,8 @@ import {
   AccordionPanel,
   Input,
 } from '@chakra-ui/react';
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+import AddIcon from 'lucide-react/dist/esm/icons/plus-square';
+import MinusIcon from 'lucide-react/dist/esm/icons/minus-square';
 
 import { call } from '../../../utils/shared';
 import NiceList from '../../../components/NiceList';

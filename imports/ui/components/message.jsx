@@ -8,18 +8,18 @@ import {
   CloseButton,
 } from '@chakra-ui/react';
 
-import { toast } from '../../startup/client/index';
-
 const timeOutTime = 5000;
 
 const renderToast = (status, text, duration) => {
-  toast({
-    description: text,
-    duration: duration || timeOutTime,
-    isClosable: true,
-    position: 'top',
-    status,
-  });
+  console.log(status + ': ' + text);
+  return;
+  // toast({
+  //   description: text,
+  //   duration: duration || timeOutTime,
+  //   isClosable: true,
+  //   position: 'top',
+  //   status,
+  // });
 };
 
 const message = {
