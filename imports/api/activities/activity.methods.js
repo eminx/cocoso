@@ -9,6 +9,10 @@ import Groups from '../groups/group';
 import Resources from '../resources/resource';
 import Platform from '../platform/platform';
 import { getRegistrationEmailBody, getUnregistrationEmailBody } from './activity.mails';
+import {
+  compareDatesForSortActivities,
+  compareDatesForSortActivitiesReverse,
+} from '/imports/ui/utils/shared';
 
 const filterPrivateGroups = (activities, user) => {
   return activities.filter((act) => {
@@ -52,18 +56,31 @@ Meteor.methods({
     }
   },
 
-  getAllPublicActivities(host) {
+  getAllPublicActivities(host, showPast = false) {
     if (!host) {
       host = getHost(this);
     }
     const user = Meteor.user();
+    const dateNow = new Date().toISOString();
 
     try {
-      const allActs = Activities.find({
-        host,
-        $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
-      }).fetch();
-      return filterPrivateGroups(allActs, user);
+      if (showPast) {
+        const pastActs = Activities.find({
+          host,
+          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
+          'datesAndTimes.startDate': { $lte: dateNow },
+        }).fetch();
+        const pastActsSorted = pastActsSorted.sort(compareDatesForSortActivitiesReverse);
+        return filterPrivateGroups(pastActs, user);
+      } else {
+        const futureActs = Activities.find({
+          host,
+          $or: [{ isPublicActivity: true }, { isGroupMeeting: true }],
+          'datesAndTimes.startDate': { $gte: dateNow },
+        }).fetch();
+        const futureActsSorted = futureActs.sort(compareDatesForSortActivities);
+        return filterPrivateGroups(futureActs, user);
+      }
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, "Couldn't fetch data");

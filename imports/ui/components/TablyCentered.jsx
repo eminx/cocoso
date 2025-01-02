@@ -270,8 +270,8 @@ function AdminMenu({ adminMenu }) {
 
   return (
     <Menu direction="rtl" placement="bottom-end">
-      <MenuButton fontSize="md" mb="2" px="4" pb="1">
-        <SettingsIcon color="brand.500" />
+      <MenuButton color="brand.500" fontSize="md" px="4" pb="2">
+        <SettingsIcon />
       </MenuButton>
       <MenuList>
         {adminMenu.items.map((item) =>
