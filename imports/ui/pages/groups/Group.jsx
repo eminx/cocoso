@@ -208,6 +208,7 @@ class Group extends Component {
 
     Meteor.call('joinGroup', group._id, (error, response) => {
       if (error) {
+        console.log(error);
         message.error(error.reason);
       } else {
         message.success(t('message.added'));
@@ -283,7 +284,7 @@ class Group extends Component {
 
   createActivity = async () => {
     const { newMeeting, isFormValid } = this.state;
-    const { group, tc } = this.props;
+    const { group, t, tc } = this.props;
 
     if (!isFormValid) {
       return;
