@@ -70,8 +70,9 @@ function parseGroupActivities(activities) {
 }
 
 function Activities() {
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
+  const [activities, setActivities] = useState(initialActivities);
+  const [loading, setLoading] = useState(false);
   const [filterWord, setFilterWord] = useState('');
   const [sorterValue, setSorterValue] = useState('date');
   const [modalActivity, setModalActivity] = useState(null);
@@ -146,14 +147,14 @@ function Activities() {
   const getActivitiesFilteredSorted = () => {
     if (showPast) {
       if (sorterValue === 'name') {
-        return getPastPublicActivities().sort((a, b) => a.title.localeCompare(b.title));
+        return getPastPublicActivities()?.sort((a, b) => a.title.localeCompare(b.title));
       }
-      return getPastPublicActivities().sort(compareDatesForSortActivitiesReverse);
+      return getPastPublicActivities()?.sort(compareDatesForSortActivitiesReverse);
     } else {
       if (sorterValue === 'name') {
-        return getFuturePublicActivities().sort((a, b) => a.title.localeCompare(b.title));
+        return getFuturePublicActivities()?.sort((a, b) => a.title.localeCompare(b.title));
       }
-      return getFuturePublicActivities().sort(compareDatesForSortActivities);
+      return getFuturePublicActivities()?.sort(compareDatesForSortActivities);
     }
   };
 

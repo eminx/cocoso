@@ -77,7 +77,8 @@ const MyActivities = lazy(() => import('./activities/MyActivities'));
 export default function () {
   return (
     <LayoutContainer>
-      <Suspense fallback={<Progress size="sm" colorScheme="brand.500" />}>
+      {/* <Suspense fallback={<Progress size="sm" colorScheme="brand.500" />}> */}
+      <Suspense>
         <Routes>
           <Route exact path="/" element={<Home />} />
 

@@ -43,7 +43,7 @@ export function ActivitiesList({ host, sink }) {
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify(activities).replace(/</g, '\\u003c')}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ activities, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
 

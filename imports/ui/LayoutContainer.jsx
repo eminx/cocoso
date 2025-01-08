@@ -40,8 +40,9 @@ const publicSettings = Meteor.settings.public;
 dayjs.extend(updateLocale);
 
 function LayoutPage({ currentUser, userLoading, children }) {
+  const initialCurrentHost = window?.__PRELOADED_STATE__?.Host || null;
   const [platform, setPlatform] = useState(null);
-  const [currentHost, setCurrentHost] = useState(null);
+  const [currentHost, setCurrentHost] = useState(initialCurrentHost);
   const [allHosts, setAllHosts] = useState(null);
   const [hue, setHue] = useState('233');
   const [tc, i18n] = useTranslation();
