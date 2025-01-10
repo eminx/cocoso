@@ -3,7 +3,7 @@ import React, { Component, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import {
@@ -18,10 +18,13 @@ import {
   Center,
   Code,
   Flex,
+  FormControl,
+  FormLabel,
   Link as CLink,
   List,
   ListItem,
   Select,
+  Switch,
   Text,
   Textarea,
 } from '@chakra-ui/react';
@@ -265,11 +268,14 @@ class Group extends Component {
         newMeeting: {
           ...newMeeting,
           resource: resourceLabel,
-          resourceId: selectedResource._id,
-          resourceIndex: selectedResource.resourceIndex,
+          resourceId: selectedResource ? selectedResource._id : null,
+          resourceIndex: selectedResource ? selectedResource.resourceIndex : null,
         },
       },
       () => {
+        if (!selectedResource) {
+          return;
+        }
         this.validateBookings();
       }
     );
@@ -280,6 +286,11 @@ class Group extends Component {
     const { group, tc } = this.props;
 
     if (!isFormValid) {
+      return;
+    }
+
+    if (!newMeeting.resource || newMeeting.resource.length < 4) {
+      message.error(t('errors.noresource'));
       return;
     }
 
@@ -950,7 +961,7 @@ class Group extends Component {
         title: tc('labels.info'),
         content: (
           <Box bg="white" className="text-content" p="6">
-            {group && renderHTML(group.description)}
+            {group && parseHtml(group.description)}
           </Box>
         ),
         path: 'info',
@@ -1153,7 +1164,7 @@ function CreateMeetingForm({
         />
       </Box>
 
-      {/* <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
+      <FormControl alignItems="center" display="flex" mb="2" ml="2" mt="4">
         <Switch
           id="is-local-switch"
           isChecked={isLocal}
@@ -1162,7 +1173,7 @@ function CreateMeetingForm({
         <FormLabel htmlFor="is-local-switch" mb="1" ml="2">
           {t('meeting.form.switch', { place: hostname })}
         </FormLabel>
-      </FormControl> */}
+      </FormControl>
 
       {isLocal ? (
         <Select

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import NewGridThumb from '../../components/NewGridThumb';
 import { StateContext } from '../../LayoutContainer';
@@ -278,7 +278,7 @@ function Works() {
                 username: modalWork.authorUsername,
               }
             }
-            content={modalWork.longDescription && renderHTML(modalWork.longDescription)}
+            content={modalWork.longDescription && parseHtml(modalWork.longDescription)}
             images={modalWork.images}
             subTitle={modalWork.shortDescription}
             tags={[

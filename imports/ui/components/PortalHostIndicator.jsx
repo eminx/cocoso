@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 export default function PortalHostIndicator({ platform }) {
   const topbar = platform?.topbar;
@@ -43,7 +43,7 @@ export default function PortalHostIndicator({ platform }) {
             <Center>
               {topbar?.open && (
                 <Container fontSize="sm" textAlign="center">
-                  {renderHTML(topbar.open)}
+                  {parseHtml(topbar.open)}
                 </Container>
               )}
             </Center>

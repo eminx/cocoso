@@ -6,7 +6,7 @@ import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex, ModalBody } from '@chakra-ui/react';
 import { parse } from 'query-string';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../../LayoutContainer';
 import { ContentLoader } from '../../components/SkeletonLoaders';
@@ -315,7 +315,7 @@ function Activities() {
           <ModalBody p="0">
             <Tably
               action={getDatesForAction(modalActivity, showPast)}
-              content={modalActivity.longDescription && renderHTML(modalActivity.longDescription)}
+              content={modalActivity.longDescription && parseHtml(modalActivity.longDescription)}
               images={modalActivity.images || [modalActivity.imageUrl]}
               subTitle={modalActivity.subTitle}
               tags={isPortalHost && [allHosts.find((h) => h.host === modalActivity.host)?.name]}

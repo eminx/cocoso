@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 const publicSettings = Meteor.settings.public;
 
@@ -322,7 +322,7 @@ function TopLeftFederatinLogoMenu() {
               )}
 
               {hostInfo.longDescription && (
-                <Box className="text-content">{renderHTML(hostInfo?.longDescription)}</Box>
+                <Box className="text-content">{parseHtml(hostInfo?.longDescription)}</Box>
               )}
             </Box>
           )}

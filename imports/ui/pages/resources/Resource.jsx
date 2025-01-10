@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Badge, Box, Wrap } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
 import { call } from '../../utils/shared';
@@ -82,7 +82,7 @@ function ResourcePage() {
       title: tc('labels.info'),
       content: (
         <Box bg="white" className="text-content" p="6">
-          {resource.description && renderHTML(resource.description)}
+          {resource.description && parseHtml(resource.description)}
         </Box>
       ),
       path: 'info',

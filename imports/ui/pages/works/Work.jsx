@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Text } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
@@ -45,7 +45,7 @@ function Work() {
       title: tc('labels.info'),
       content: (
         <Box bg="white" className="text-content" p="6">
-          {work?.longDescription && renderHTML(work.longDescription)}
+          {work?.longDescription && parseHtml(work.longDescription)}
         </Box>
       ),
       path: 'info',
@@ -81,7 +81,7 @@ function Work() {
       title: tc('labels.contact'),
       content: (
         <Box className="text-content" p="4" textAlign="center">
-          {work?.contactInfo && renderHTML(work.contactInfo)}
+          {work?.contactInfo && parseHtml(work.contactInfo)}
         </Box>
       ),
       path: 'contact',

@@ -84,7 +84,7 @@ Meteor.methods({
         (membership) => membership.host === host && membership.role === 'participant'
       )
     ) {
-      throw new Meteor.Error('Some error occured... Sorry, your inquiry could not be done');
+      throw new Meteor.Error(error, 'Some error occured... Sorry, your inquiry could not be done');
     }
 
     try {

@@ -4,7 +4,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import Loader from '../../components/Loader';
 import { StateContext } from '../../LayoutContainer';
@@ -286,7 +286,7 @@ export default function GroupsList() {
         >
           <Tably
             // action={getDatesForAction(modalGroup)}
-            content={modalGroup.description && renderHTML(modalGroup.description)}
+            content={modalGroup.description && parseHtml(modalGroup.description)}
             images={[modalGroup.imageUrl]}
             subTitle={modalGroup.readingMaterial}
             tags={isPortalHost && [allHosts.find((h) => h.host === modalGroup.host)?.name]}

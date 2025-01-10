@@ -27,7 +27,7 @@ function Members() {
   const [userForUsageReport, setUserForUsageReport] = useState(null);
   const [t] = useTranslation('members');
   const [tc] = useTranslation('common');
-  const { currentUser, isDesktop, role, getCurrentHost } = useContext(StateContext);
+  const { currentUser, isDesktop, role } = useContext(StateContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function Members() {
   const setAsParticipant = async (user) => {
     try {
       await call('setAsParticipant', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.participant', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -64,7 +64,7 @@ function Members() {
   const setAsContributor = async (user) => {
     try {
       await call('setAsContributor', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.contributor', { username: user.username }));
     } catch (error) {
       console.log(error);
@@ -78,7 +78,7 @@ function Members() {
   const setAsAdmin = async (user) => {
     try {
       await call('setAsAdmin', user.id);
-      getCurrentHost();
+      getMembers();
       message.success(t('message.success.admin', { username: user.username }));
     } catch (error) {
       console.log(error);

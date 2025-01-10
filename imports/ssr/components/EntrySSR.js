@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge, Box, Center, Flex, Heading, Img } from '@chakra-ui/react';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 export default function EntrySSR({ title, subTitle, description, imageUrl }) {
   return (
@@ -12,7 +12,7 @@ export default function EntrySSR({ title, subTitle, description, imageUrl }) {
       <Center p={12}>
         {description && (
           <Box fontFamily="'Helvetica', sans-serif" fontWeight={400} lineHeight={1.4} w={400}>
-            {renderHTML(description)}
+            {parseHtml(description)}
           </Box>
         )}
       </Center>

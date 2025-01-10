@@ -27,7 +27,7 @@ export function Home({ host }) {
   );
 }
 
-export function ActivitiesList({ host }) {
+export function ActivitiesList({ host, sink }) {
   const activities = Meteor.call('getAllPublicActivities', host);
   const Host = Meteor.call('getHost', host);
 
@@ -40,6 +40,12 @@ export function ActivitiesList({ host }) {
     (item) => item.name === 'activities'
   )?.description;
   const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify(activities).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   return (
     <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>

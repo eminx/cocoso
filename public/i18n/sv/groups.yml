@@ -90,6 +90,8 @@ meeting:
     resource: Välj lokal eller resurs
     location: Plats
     submit: Lägg till möte
+  errors:
+    noresource: Välj en resurs eller ange en plats för mötet (minst 4 tecken)
 
 confirm:
   check: Är du säker?
@@ -120,6 +122,8 @@ invite:
     holder: Samuel
     valid: Ange ett giltigt förnamn
   submit: Skicka inbjudan
+  remove:
+    success: Inbjudan tas bort
 
 modal:
   join:

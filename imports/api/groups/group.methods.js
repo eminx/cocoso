@@ -494,9 +494,8 @@ Meteor.methods({
 
     const currentHostName = currentHost.settings?.name;
     const emailBody = getInviteToPrivateGroupEmailBody(theGroup, currentHost, user, person);
-    try {
-      Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
 
+    try {
       Groups.update(groupId, {
         $addToSet: {
           peopleInvited: {
@@ -505,9 +504,50 @@ Meteor.methods({
           },
         },
       });
+
+      Meteor.call('sendEmail', person.email, `"${theGroup.title}", ${currentHostName}`, emailBody);
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error, 'Could not send the invite to the person');
+    }
+  },
+
+  removePersonFromInvitedList(groupId, person) {
+    const user = Meteor.user();
+    const host = getHost(this);
+    const currentHost = Hosts.findOne({ host });
+
+    if (!user || !isContributorOrAdmin(user, currentHost)) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    const theGroup = Groups.findOne(groupId);
+    if (!isUserGroupAdmin(theGroup, user._id)) {
+      throw new Meteor.Error('You are not admin!');
+    }
+
+    if (!theGroup.isPrivate) {
+      throw new Meteor.Error('This group is not private');
+    }
+
+    const invitedEmailsList = theGroup.peopleInvited.map((p) => p.email);
+
+    if (invitedEmailsList.indexOf(person.email) === -1) {
+      throw new Meteor.Error('The invite is not found');
+    }
+
+    try {
+      Groups.update(groupId, {
+        $pull: {
+          peopleInvited: {
+            email: person.email,
+            firstName: person.firstName,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error, 'Could not remove the invite');
     }
   },
 });

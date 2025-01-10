@@ -90,6 +90,8 @@ meeting:
     resource: Select resource
     location: Location
     submit: Add Meeting
+  errors:
+    noresource: Please select a resource or enter a location for the meeting (minimum 3 characters)
 
 confirm:
   check: Are you sure?
@@ -120,6 +122,8 @@ invite:
     holder: Samuel
     valid: Please enter a valid first name
   submit: Send Invite
+  remove:
+    success: The invite is removed
 
 modal:
   join:

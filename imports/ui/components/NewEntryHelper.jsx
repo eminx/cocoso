@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Alert, AlertTitle, AlertDescription, Box, Button, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import { StateContext } from '../LayoutContainer';
 
@@ -23,8 +23,8 @@ function NewEntryHelper({
   );
 
   const titleGeneric = isEmptyListing
-    ? renderHTML(tc('message.newentryhelper.emptylisting.title'))
-    : renderHTML(tc('message.newentryhelper.title', { listing: activeMenuItem?.label }));
+    ? parseHtml(tc('message.newentryhelper.emptylisting.title'))
+    : parseHtml(tc('message.newentryhelper.title', { listing: activeMenuItem?.label }));
 
   const descriptionGeneric = isEmptyListing
     ? tc('message.newentryhelper.emptylisting.description')
@@ -72,12 +72,12 @@ function NewEntryHelper({
         variant="subtle"
       >
         <AlertTitle mt={4} mb={1} fontSize="lg">
-          {title ? renderHTML(title) : titleGeneric && renderHTML(titleGeneric)}
+          {title ? parseHtml(title) : titleGeneric && parseHtml(titleGeneric)}
         </AlertTitle>
 
         <AlertDescription maxWidth="sm">
-          {(children && renderHTML(children)) ||
-            (descriptionGeneric && renderHTML(descriptionGeneric))}
+          {(children && parseHtml(children)) ||
+            (descriptionGeneric && parseHtml(descriptionGeneric))}
           <Center py="4">
             <Link to={buttonLink}>
               <Button colorScheme="green" as="span">

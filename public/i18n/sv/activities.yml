@@ -111,3 +111,5 @@ public:
   past: Detta arrangemang har redan passerat
   acceess:
     deny: Endast synligt för admins och verifierade användare
+  chat:
+    heading: Endast för admins och verifierade användare

@@ -110,4 +110,6 @@ public:
     notFound: Please enter the details of your RSVP
   past: This event has past
   acceess:
-    deny: Only visible to registered members
+    deny: Only visible to verified users
+  chat:
+    heading: Only for admins and verified users

@@ -14,7 +14,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 import DatesAndTimes from './DatesAndTimes';
 import FormField from './FormField';
@@ -127,7 +127,7 @@ function ActivityForm({
             helperText={t('form.resource.helper')}
             label={
               <b>
-                {renderHTML(
+                {parseHtml(
                   t('form.resource.label', {
                     resources: resourcesInMenu?.label,
                   })

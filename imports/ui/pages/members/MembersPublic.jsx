@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useMemo, useState } from
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Center, Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 import Cascader from 'antd/lib/cascader';
 import { parse } from 'query-string';
 
@@ -288,7 +288,7 @@ function MembersPublic() {
 
                 {selectedProfile.bio && (
                   <Box borderLeft="4px solid" borderColor="brand.500" pl="2">
-                    {renderHTML(selectedProfile.bio)}
+                    {parseHtml(selectedProfile.bio)}
                   </Box>
                 )}
               </Box>
@@ -426,7 +426,7 @@ function MembersPublic() {
                   mb="4"
                   textAlign="left"
                 >
-                  {renderHTML(modalUser.bio)}
+                  {parseHtml(modalUser.bio)}
                 </Container>
               )}
             </Box>

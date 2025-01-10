@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { StateContext } from '../LayoutContainer';
 import BackLink from './BackLink';
-import renderHTML from 'react-render-html';
+import parseHtml from 'html-react-parser';
 
 export default function FormTitle({ context, isCalendar, isNew = false }) {
   const { currentHost } = useContext(StateContext);
@@ -31,8 +31,8 @@ export default function FormTitle({ context, isCalendar, isNew = false }) {
       </Flex>
       <Heading mb="4" size="lg" textAlign="center">
         {isNew
-          ? renderHTML(tc('labels.newFormEntry', { context: currentContext?.label }))
-          : renderHTML(tc('labels.editFormEntry', { context: currentContext?.label }))}
+          ? parseHtml(tc('labels.newFormEntry', { context: currentContext?.label }))
+          : parseHtml(tc('labels.editFormEntry', { context: currentContext?.label }))}
       </Heading>
     </Box>
   );
