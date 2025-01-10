@@ -321,7 +321,7 @@ export function Communities({ host }) {
   );
 }
 
-function PageHeading({ children }) {
+export function PageHeading({ children }) {
   return (
     <Center mb="8">
       <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">

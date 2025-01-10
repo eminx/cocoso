@@ -25,7 +25,7 @@ export default function WrapperSSR({
         <meta name="description" content={subTitle?.substring(0, 150)} />
         <meta property="og:title" content={title?.substring(0, 30)} />
         <meta property="og:description" content={subTitle?.substring(0, 60)} />
-        <meta property="og:image" content={imageUrl} />
+        {imageUrl ? <meta property="og:image" content={imageUrl} /> : null}
         <meta property="og:type" content="article" />
         <link rel="canonical" href={Host.host} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

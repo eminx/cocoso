@@ -139,6 +139,28 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
 
   return (
+    <StateContext.Provider
+      value={{
+        allHosts,
+        canCreateContent,
+        currentUser,
+        currentHost,
+        hue,
+        isDesktop,
+        platform,
+        role,
+        userLoading,
+        getCurrentHost,
+        getPlatform,
+        setHue,
+        setSelectedHue,
+      }}
+    >
+      {children}
+    </StateContext.Provider>
+  );
+
+  return (
     <>
       <Helmet>
         <title>{currentHost?.settings?.name}</title>

@@ -24,7 +24,11 @@ import { DateJust } from '../../components/FancyDate';
 import HostFiltrer from '../../components/HostFiltrer';
 import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
-import PageHeading from '../../components/PageHeading';
+// import PageHeading from '../../components/PageHeading';
+
+import WrapperSSR from '/imports/ssr/components/WrapperSSR';
+import Gridder from '/imports/ssr/components/Gridder';
+import { PageHeading } from '/imports/ssr/components';
 
 const yesterday = moment().add(-1, 'days');
 const today = moment();
@@ -71,6 +75,7 @@ function parseGroupActivities(activities) {
 
 function Activities() {
   const initialActivities = window?.__PRELOADED_STATE__?.activities || [];
+  const currentHost = window?.__PRELOADED_STATE__?.Host || null;
   const [activities, setActivities] = useState(initialActivities);
   const [loading, setLoading] = useState(false);
   const [filterWord, setFilterWord] = useState('');
@@ -78,7 +83,7 @@ function Activities() {
   const [modalActivity, setModalActivity] = useState(null);
   const [hostFilterValue, setHostFilterValue] = useState(null);
   const [isCopied, setCopied] = useState(false);
-  const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
+  // const { allHosts, canCreateContent, currentHost, isDesktop } = useContext(StateContext);
   const navigate = useNavigate();
   const location = useLocation();
   const { search } = location;
@@ -89,7 +94,10 @@ function Activities() {
     getActivities();
   }, [currentHost?.isPortalHost]);
 
-  const isPortalHost = Boolean(currentHost?.isPortalHost);
+  const isPortalHost = false;
+  const canCreateContent = false;
+  const isDesktop = true;
+
   const getActivities = async () => {
     try {
       if (isPortalHost) {
@@ -231,13 +239,27 @@ function Activities() {
     setSorterValue,
   };
 
-  const allHostsFiltered = allHosts?.filter((host) => {
-    return activitiesRendered.some((act) => act.host === host.host);
-  });
+  // const allHostsFiltered = allHosts?.filter((host) => {
+  //   return activitiesRendered.some((act) => act.host === host.host);
+  // });
   const { settings } = currentHost;
   const title = settings?.menu.find((item) => item.name === 'activities')?.label;
   const description = settings.menu.find((item) => item.name === 'activities')?.description;
   const imageUrl = activitiesRendered[0]?.imageUrl;
+
+  const pageHeading = settings?.menu.find((item) => item.name === 'activities')?.label;
+
+  return (
+    <WrapperSSR
+      Host={currentHost}
+      imageUrl={currentHost.logo}
+      subTitle={description}
+      title={pageHeading}
+    >
+      <PageHeading>{pageHeading}</PageHeading>
+      <Gridder items={activitiesRendered} />
+    </WrapperSSR>
+  );
 
   return (
     <Box width="100%" mb="100px">
