@@ -11,6 +11,12 @@ export default function PageHeading({ description, heading, children }) {
     <>
       <Helmet>
         <title>{heading}</title>
+        <meta charSet="utf-8" />
+        <meta name="title" content={heading} />
+        <meta name="description" content={description?.substring(0, 150)} />
+        <meta property="og:title" content={heading} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="article" />
       </Helmet>
       <Center>
         <Box>

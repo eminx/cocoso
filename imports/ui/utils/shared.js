@@ -407,6 +407,18 @@ const getFirstFutureOccurence = (occurence) =>
 const getLastPastOccurence = (occurence) =>
   occurence && dayjs(occurence.startDate)?.isBefore(today);
 
+const getCategoriesAssignedToWorks = (works) => {
+  const labels = Array.from(new Set(works.map((work) => work.category && work.category.label)));
+
+  const hslValues = getHslValuesFromLength(labels.length);
+  return labels
+    .map((label, i) => ({
+      label,
+      color: hslValues[i],
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+};
+
 export {
   localeSort,
   getInitials,
@@ -432,4 +444,5 @@ export {
   parseGroupsWithMeetings,
   compareDatesForSortActivities,
   compareDatesForSortActivitiesReverse,
+  getCategoriesAssignedToWorks,
 };

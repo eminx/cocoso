@@ -9,11 +9,12 @@ import { parse } from 'query-string';
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import EntrySSR from '../../ui/entry/EntrySSR';
 import Gridder from '../../ui/layout/Gridder';
-import { parseTitle } from '../../ui/utils/shared';
+import { getCategoriesAssignedToWorks, parseTitle } from '../../ui/utils/shared';
 import TablyCentered from '/imports/ui/components/TablyCentered';
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
+import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
@@ -41,15 +42,15 @@ export function ActivitiesList({ host, sink }) {
   const activities = Meteor.call('getAllPublicActivities', Boolean(showPast), host);
   const Host = Meteor.call('getHost', host);
 
-  if (!Host) {
-    return null;
-  }
-
   sink.appendToBody(`
     <script>
       window.__PRELOADED_STATE__ = ${JSON.stringify({ activities, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
+
+  if (!Host) {
+    return null;
+  }
 
   return (
     <WrapperSSR Host={Host}>
@@ -74,15 +75,21 @@ export function Activity({ host, sink }) {
   }
 
   return (
-    <WrapperSSR isEntryPage={true} Host={Host}>
+    <WrapperSSR isEntryPage Host={Host}>
       <ActivityHybrid activity={activity} Host={Host} />
     </WrapperSSR>
   );
 }
 
-export function GroupsList({ host }) {
+export function GroupsList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const groups = Meteor.call('getGroupsWithMeetings', Host.isPortalHost, host);
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ groups, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   const pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
   const pageDescription = Host?.settings?.menu.find((item) => item.name === 'groups')?.description;
@@ -95,10 +102,16 @@ export function GroupsList({ host }) {
   );
 }
 
-export function Group({ host }) {
+export function Group({ host, sink }) {
   const { groupId } = useParams();
   const group = Meteor.call('getGroup', groupId);
   const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ group, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   if (!group) {
     return null;
@@ -123,9 +136,15 @@ export function Group({ host }) {
   );
 }
 
-export function ResourcesList({ host }) {
+export function ResourcesList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const resources = Meteor.call('getResources', host);
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ resources, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   const pageHeading = Host?.settings?.menu.find((item) => item.name === 'resources')?.label;
   const pageDescription = Host?.settings?.menu.find(
@@ -141,10 +160,16 @@ export function ResourcesList({ host }) {
   );
 }
 
-export function Resource({ host }) {
+export function Resource({ host, sink }) {
   const { resourceId } = useParams();
   const resource = Meteor.call('getResourceById', resourceId);
   const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ resource, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   if (!resource) {
     return null;
@@ -167,18 +192,19 @@ export function Resource({ host }) {
   );
 }
 
-export function WorksList({ host }) {
+export function WorksList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const works = Meteor.call('getAllWorks', host);
 
-  const pageHeading = Host.settings?.menu.find((item) => item.name === 'works')?.label;
-  const pageDescription = Host.settings?.menu.find((item) => item.name === 'works')?.description;
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ works, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
-      <PageHeading>{pageHeading}</PageHeading>
-      <Gridder items={works} />
+    <WrapperSSR Host={Host}>
+      <WorksHybrid Host={Host} works={works} />
     </WrapperSSR>
   );
 }

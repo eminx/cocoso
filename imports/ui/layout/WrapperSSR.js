@@ -16,10 +16,6 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
   const hue = Host?.settings?.hue;
   const chakraTheme = generateTheme(hue || '233');
 
-  // const subTitle = item?.subTitle || item?.readingMaterial;
-  // const title = item?.title || item?.label;
-  // const imageUrl = (item?.images && item.images[0]) || item?.imageUrl;
-
   return (
     <>
       <HelmetHybrid Host={Host} />
@@ -27,7 +23,7 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>
           <ColorModeProvider>
-            <Box bg="gray.100">
+            <Box bg="gray.100" minH="1800px">
               <Header Host={Host} />
               {children}
             </Box>

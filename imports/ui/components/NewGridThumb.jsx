@@ -1,7 +1,11 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Avatar, Box, Center, Flex, Heading, Text } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+
+if (Meteor.isClient) {
+  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+}
 
 import { DateJust } from './FancyDate';
 import Tag from './Tag';
@@ -26,10 +30,12 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} cursor="pointer" borderRadius="8px">
-      <Box className="text-link-container" position="relative">
+    <Box _hover={{ bg: 'brand.50' }} borderRadius="8px" cursor="pointer" borderRadius="8px">
+      <Box borderRadius="8px" className="text-link-container" position="relative">
         <Center
-          bg={imageUrl ? 'none' : 'brand.100'}
+          bg={imageUrl ? 'white' : 'brand.100'}
+          borderTopLeftRadius="8px"
+          borderTopRightRadius="8px"
           h={fixedImageHeight ? '180px' : 'auto'}
           overflow="hidden"
         >
@@ -40,8 +46,6 @@ export default function NewGridThumb({
               fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
-                borderTopLeftRadius: '8px',
-                borderTopRightRadius: '8px',
                 margin: '0 auto',
                 position: 'relative',
               }}
@@ -60,7 +64,17 @@ export default function NewGridThumb({
           </Box>
         )}
 
-        <Flex align="flex-start" justify="space-between" py="2" px="4">
+        <Flex
+          align="flex-start"
+          bg="white"
+          borderBottomRadius="8px"
+          border="1px solid"
+          borderColor="gray.300"
+          borderTopWidth="0"
+          justify="space-between"
+          py="2"
+          px="4"
+        >
           <Box pb="2" pr="3">
             <Heading
               className="text-link"

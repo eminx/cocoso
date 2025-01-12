@@ -159,7 +159,7 @@ function LayoutPage({ currentUser, userLoading, children }) {
               setSelectedHue,
             }}
           >
-            <Box bg="gray.100">
+            <Box bg="gray.100" minH="1800px">
               <Header Host={currentHost} />
               {children}
             </Box>

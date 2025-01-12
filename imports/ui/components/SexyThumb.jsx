@@ -72,6 +72,8 @@ function SexyThumb({ activity, showPast = false }) {
     <Box
       _hover={{ bg: 'brand.400' }}
       bg="brand.500"
+      border="1px solid"
+      borderColor="white"
       borderRadius={8}
       className="thumb-cover-container"
       fontWeight="bold"
