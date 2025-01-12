@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Flex } from '@chakra-ui/react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import parseHtml from 'html-react-parser';
@@ -22,7 +22,7 @@ import PageHeading from '../../components/PageHeading';
 import { ContentLoader } from '../../components/SkeletonLoaders';
 import GroupsHybrid from '../../listing/GroupsHybrid';
 
-const yesterday = moment(new Date()).add(-1, 'days');
+const yesterday = dayjs(new Date()).add(-1, 'days');
 
 const getFutureOccurences = (dates) => {
   if (!dates || dates.length === 0) {
@@ -31,9 +31,9 @@ const getFutureOccurences = (dates) => {
 
   return dates
     .filter((date) => {
-      return moment(date?.startDate)?.isAfter(yesterday);
+      return dayjs(date?.startDate)?.isAfter(yesterday);
     })
-    .sort((a, b) => moment(a?.startDate) - moment(b?.startDate));
+    .sort((a, b) => dayjs(a?.startDate) - dayjs(b?.startDate));
 };
 
 export default function GroupsList() {
@@ -55,9 +55,7 @@ export default function GroupsList() {
 
   const getGroups = async () => {
     try {
-      const meetings = await call('getAllGroupMeetings', isPortalHost);
-      const retrievedGroups = await call('getGroups', isPortalHost);
-      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, meetings);
+      const parsedGroups = await call('getGroupsWithMeetings', isPortalHost);
       setGroups(parsedGroups);
     } catch (error) {
       message.error(error.reason);
@@ -122,7 +120,7 @@ export default function GroupsList() {
         if (
           meetings &&
           meetings.length > 0 &&
-          moment(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
+          dayjs(meetings[meetings.length - 1].startDate)?.isAfter(yesterday)
         ) {
           groupsWithFutureMeetings.push(group);
         } else {
@@ -158,85 +156,6 @@ export default function GroupsList() {
   }
 
   return <GroupsHybrid groups={groups} Host={currentHost} />;
-
-  return (
-    <Box w="100%">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta name="description" content={description?.substring(0, 150)} />
-        <meta property="og:title" content={title?.substring(0, 30)} />
-        <meta property="og:description" content={description?.substring(0, 60)} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={currentHost.host} />
-      </Helmet>
-
-      <PageHeading description={description} numberOfItems={groupsRendered?.length}>
-        <FiltrerSorter {...filtrerProps}>
-          {isPortalHost && (
-            <Flex justify={isDesktop ? 'flex-start' : 'center'}>
-              <HostFiltrer
-                allHosts={allHostsFiltered}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
-          <Tabs size="sm" tabs={tabs} />
-        </FiltrerSorter>
-      </PageHeading>
-
-      <Box mb="8" px={isDesktop ? '4' : '0'}>
-        <InfiniteScroller
-          canCreateContent={canCreateContent}
-          items={groupsRendered}
-          newHelperLink="/groups/new"
-        >
-          {(group) => (
-            <Box
-              key={group._id}
-              className="sexy-thumb-container"
-              onClick={() => setModalGroup(group)}
-            >
-              <SexyThumb
-                dates={getFutureOccurences(group.meetings)}
-                host={isPortalHost && allHosts.find((h) => h.host === group.host)?.name}
-                imageUrl={group.imageUrl}
-                subTitle={group.readingMaterial}
-                title={group.title}
-              />
-            </Box>
-          )}
-        </InfiniteScroller>
-      </Box>
-
-      {modalGroup && (
-        <Modal
-          actionButtonLabel={getButtonLabel()}
-          h="90%"
-          isCentered
-          isOpen
-          scrollBehavior="inside"
-          secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="5xl"
-          onClose={handleCloseModal}
-          onActionButtonClick={() => handleActionButtonClick()}
-          onSecondaryButtonClick={handleCopyLink}
-        >
-          <Tably
-            // action={getDatesForAction(modalGroup)}
-            content={modalGroup.description && parseHtml(modalGroup.description)}
-            images={[modalGroup.imageUrl]}
-            subTitle={modalGroup.readingMaterial}
-            tags={isPortalHost && [allHosts.find((h) => h.host === modalGroup.host)?.name]}
-            title={modalGroup.title}
-          />
-        </Modal>
-      )}
-    </Box>
-  );
 }
 
 const getDatesForAction = (group) => {
@@ -252,21 +171,6 @@ const getDatesForAction = (group) => {
     </Flex>
   );
 };
-
-function parseGroupsWithMeetings(groups, meetings) {
-  return groups.map((group) => {
-    const pId = group._id;
-    const allGroupActivities = meetings.filter((meeting) => meeting.groupId === pId);
-    const groupActivitiesFuture = allGroupActivities
-      .map((pA) => pA.datesAndTimes[0])
-      .filter((date) => moment(date.startDate)?.isAfter(yesterday))
-      .sort(compareMeetingDatesForSort);
-    return {
-      ...group,
-      meetings: groupActivitiesFuture,
-    };
-  });
-}
 
 function compareMeetingDatesForSort(a, b) {
   const dateA = new Date(a.startDate);

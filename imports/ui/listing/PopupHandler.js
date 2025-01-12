@@ -48,7 +48,6 @@ export default function PopupHandler({ item, kind, onClose }) {
   return (
     <Modal
       actionButtonLabel={getButtonLabel()}
-      // h="90%"
       isCentered
       isOpen={item}
       scrollBehavior="inside"

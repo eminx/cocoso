@@ -36,15 +36,14 @@ import Loader from '../components/Loader';
 const animatedComponents = makeAnimated();
 const maxResourceLabelsToShow = 13;
 
-function Calendar({ currentUser, tc }) {
+function Calendar({ tc }) {
   const [activities, setActivities] = useState([]);
   const [resources, setResources] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [calendarFilter, setCalendarFilter] = useState(null);
-
-  const { canCreateContent, currentHost, role } = useContext(StateContext);
+  const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
   const navigate = useNavigate();
 
   const activitiesParsed = useMemo(
@@ -247,7 +246,7 @@ function Calendar({ currentUser, tc }) {
       <PageHeading description={description} heading={heading} />
 
       <Box>
-        <Center>
+        <Center mb="2">
           {!selectFilterView ? (
             <Box>
               <Wrap justify="center" px="1" pb="1" mb="3">

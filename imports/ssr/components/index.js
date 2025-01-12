@@ -82,7 +82,7 @@ export function Activity({ host, sink }) {
 
 export function GroupsList({ host }) {
   const Host = Meteor.call('getHost', host);
-  const groups = Meteor.call('getGroups', Host.isPortalHost, host);
+  const groups = Meteor.call('getGroupsWithMeetings', Host.isPortalHost, host);
 
   const pageHeading = Host?.settings?.menu.find((item) => item.name === 'groups')?.label;
   const pageDescription = Host?.settings?.menu.find((item) => item.name === 'groups')?.description;

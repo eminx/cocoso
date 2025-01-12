@@ -35,9 +35,9 @@ export default function GroupsHybrid({ groups, Host, showPast }) {
   return (
     <>
       <PageHeading description={description} heading={heading} />
-      <Center p="4">
+      {/* <Center p="4">
         <Tabs tabs={tabs} />
-      </Center>
+      </Center> */}
 
       <Box px="2">
         <InfiniteScroller items={groups}>

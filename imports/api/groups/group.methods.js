@@ -8,6 +8,7 @@ import Groups from './group';
 import Activities from '../activities/activity';
 import Platform from '../platform/platform';
 import { getGroupRegistrationEmailBody, getInviteToPrivateGroupEmailBody } from './group.mails';
+import { parseGroupsWithMeetings } from '/imports/ui/utils/shared';
 
 const publicSettings = Meteor.settings.public;
 
@@ -28,6 +29,21 @@ Meteor.methods({
       throw new Meteor.Error('Group not found');
     }
     return group;
+  },
+
+  async getGroupsWithMeetings(isPortalHost = false, host) {
+    if (!host) {
+      host = getHost(this);
+    }
+    try {
+      const retrievedGroups = await Meteor.callAsync('getGroups', isPortalHost, host);
+      const meetings = await Meteor.callAsync('getAllGroupMeetings', isPortalHost, host);
+      const parsedGroups = parseGroupsWithMeetings(retrievedGroups, meetings);
+      return parsedGroups;
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
   },
 
   getGroups(isPortalHost = false, host) {
@@ -51,21 +67,23 @@ Meteor.methods({
       );
     });
 
-    return groupsFiltered.map((group) => ({
-      _id: group._id,
-      title: group.title,
-      readingMaterial: group.readingMaterial,
-      description: group.description,
-      imageUrl: group.imageUrl,
-      meetings: group.meetings,
-      host: group.host,
-      adminUsername: group.adminUsername,
-      isArchived: group.isArchived,
-      members: group.members,
-      creationDate: group.creationDate,
-      isPrivate: group.isPrivate,
-      peopleInvited: group.peopleInvited,
-    }));
+    return groupsFiltered
+      .map((group) => ({
+        _id: group._id,
+        title: group.title,
+        readingMaterial: group.readingMaterial,
+        description: group.description,
+        imageUrl: group.imageUrl,
+        meetings: group.meetings,
+        host: group.host,
+        adminUsername: group.adminUsername,
+        isArchived: group.isArchived,
+        members: group.members,
+        creationDate: group.creationDate,
+        isPrivate: group.isPrivate,
+        peopleInvited: group.peopleInvited,
+      }))
+      .sort((a, b) => b.creationDate - a.creationDate);
   },
 
   getGroupMeetings(groupId) {
