@@ -45,7 +45,7 @@ const EditPage = lazy(() => import('./pages/EditPage'));
 const Page = lazy(() => import('./pages/Page'));
 const NewPage = lazy(() => import('./pages/NewPage'));
 
-// Members
+// Users
 const Users = lazy(() => import('./users/Users'));
 
 // Admin

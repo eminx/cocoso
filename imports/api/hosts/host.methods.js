@@ -174,9 +174,13 @@ Meteor.methods({
       )
       .fetch();
 
-    return users
-      .filter((user) => user.memberships.find((m) => m.host === host)?.isPublic)
-      .reverse();
+    const usersWithImage = users.filter((u) => u.avatar?.src);
+    const usersWithoutImage = users.filter((u) => !u.avatar);
+
+    return [
+      ...usersWithImage.sort((a, b) => Math.random() - 1),
+      ...usersWithoutImage.sort((a, b) => Math.random() - 1),
+    ];
   },
 
   getAllMembersFromAllHosts() {

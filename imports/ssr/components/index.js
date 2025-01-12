@@ -269,16 +269,20 @@ export function Page({ host, sink }) {
 export function UsersList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const users = Meteor.call('getHostMembers', host);
+  const keywords = Meteor.call('getKeywords');
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ users, Host }).replace(/</g, '\\u003c')}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ keywords, users, Host }).replace(
+        /</g,
+        '\\u003c'
+      )}
     </script>
   `);
 
   return (
     <WrapperSSR Host={Host}>
-      <UsersHybrid Host={Host} users={users} />
+      <UsersHybrid Host={Host} keywords={keywords} users={users} />
     </WrapperSSR>
   );
 }
