@@ -9,6 +9,7 @@ import Tably from '../components/Tably';
 import { useTranslation } from 'react-i18next';
 import { StateContext } from '../LayoutContainer';
 import { DateJust } from '../components/FancyDate';
+import MemberAvatarEtc from '../components/MemberAvatarEtc';
 
 export default function PopupHandler({ item, kind, onClose }) {
   const [copied, setCopied] = useState(false);
@@ -38,6 +39,11 @@ export default function PopupHandler({ item, kind, onClose }) {
   };
 
   const handleActionButtonClick = () => {
+    if (kind === 'users') {
+      navigate(`/@${item.username}`);
+      return;
+    }
+
     if (item.host === currentHost.host) {
       navigate(`/${kind}/${item._id}/info`);
     } else {
@@ -48,6 +54,7 @@ export default function PopupHandler({ item, kind, onClose }) {
   return (
     <Modal
       actionButtonLabel={getButtonLabel()}
+      bg="gray.100"
       isCentered
       isOpen={item}
       scrollBehavior="inside"
@@ -58,17 +65,21 @@ export default function PopupHandler({ item, kind, onClose }) {
       onSecondaryButtonClick={handleCopyLink}
     >
       <ModalBody p="0">
-        <Tably
-          action={getDatesForAction(item)}
-          content={
-            (item.longDescription && parseHtml(item.longDescription)) ||
-            (item.description && parseHtml(item.description))
-          }
-          images={item.images || [item.imageUrl]}
-          subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
-          tags={isPortalHost && [allHosts?.find((h) => h.host === item.host)?.name]}
-          title={item.title || item.name}
-        />
+        {kind === 'users' ? (
+          <MemberAvatarEtc isThumb={false} user={item} />
+        ) : (
+          <Tably
+            action={getDatesForAction(item)}
+            content={
+              (item.longDescription && parseHtml(item.longDescription)) ||
+              (item.description && parseHtml(item.description))
+            }
+            images={item.images || [item.imageUrl]}
+            subTitle={item.subTitle || item.readingMaterial || item.shortDescription || null}
+            tags={isPortalHost && [allHosts?.find((h) => h.host === item.host)?.name]}
+            title={item.title || item.name}
+          />
+        )}
       </ModalBody>
     </Modal>
   );

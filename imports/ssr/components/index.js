@@ -17,6 +17,7 @@ import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
+import UsersHybrid from '/imports/ui/listing/UsersHybrid';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
@@ -239,7 +240,7 @@ export function Work({ host, sink }) {
   );
 }
 
-export function Page({ host }) {
+export function Page({ host, sink }) {
   const { pageTitle } = useParams();
   const pages = Meteor.call('getPages', host);
   const page = pages.find((page) => parseTitle(page.title) === pageTitle);
@@ -265,44 +266,24 @@ export function Page({ host }) {
   );
 }
 
-export function UsersList({ host }) {
+export function UsersList({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const users = Meteor.call('getHostMembers', host);
 
-  const pageHeading = Host.settings?.menu.find((item) => item.name === 'people')?.label;
-  const pageDescription = Host.settings?.menu.find((item) => item.name === 'people')?.description;
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ users, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{metaTitle}</title>
-        <meta name="title" content={metaTitle} />
-        <meta property="og:title" content={metaTitle?.substring(0, 30)} />
-        <meta property="og:description" content={pageDescription?.substring(0, 60)} />
-        <meta property="og:image" content={users.find((u) => u.avatar?.src)?.avatar?.src} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={host.host} />
-      </Helmet>
-
-      <PageHeading>{pageHeading}</PageHeading>
-
-      <Center>
-        <Wrap justify="center">
-          {users.map((user) => (
-            <VStack key={user._id}>
-              <Img w={240} h={240} objectFit="cover" src={user.avatar?.src} />
-              <Heading fontSize={22}>{user.username}</Heading>
-            </VStack>
-          ))}
-        </Wrap>
-      </Center>
+    <WrapperSSR Host={Host}>
+      <UsersHybrid Host={Host} users={users} />
     </WrapperSSR>
   );
 }
 
-export function User({ host }) {
+export function User({ host, sink }) {
   const Host = Meteor.call('getHost', host);
   const { usernameSlug } = useParams();
   if (usernameSlug[0] !== '@') {
@@ -330,7 +311,7 @@ export function User({ host }) {
   );
 }
 
-export function Communities({ host }) {
+export function Communities({ host, sink }) {
   const allHosts = Meteor.call('getAllHosts');
   const Host = Meteor.call('getHost', host);
   const pageHeading = 'Communities';

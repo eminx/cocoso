@@ -46,7 +46,7 @@ const Page = lazy(() => import('./pages/Page'));
 const NewPage = lazy(() => import('./pages/NewPage'));
 
 // Members
-const MembersPublic = lazy(() => import('./members/MembersPublic'));
+const Users = lazy(() => import('./users/Users'));
 
 // Admin
 const Settings = lazy(() => import('./admin/Settings'));
@@ -83,7 +83,7 @@ export default function () {
           <Route exact path="/" element={<Home />} />
 
           {/* Members list public */}
-          <Route path="/people" element={<MembersPublic />} />
+          <Route path="/people" element={<Users />} />
 
           {/* Calendar */}
           <Route exact path="/calendar" element={<CalendarContainer />} />
