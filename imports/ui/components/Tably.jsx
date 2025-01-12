@@ -73,7 +73,7 @@ function Tably({
           handleCopyLink={handleCopyLink}
         />
         <Center>
-          <NiceSlider alt={title} height="400px" images={images} isFade={false} />
+          <NiceSlider alt={title} images={images} isFade={false} />
         </Center>
         <Center mb="4" mx="4">
           {action}

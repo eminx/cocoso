@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ChakraProvider } from '@chakra-ui/react';
+import { Box, ChakraProvider, ColorModeProvider } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 import { I18nextProvider, useSSR } from 'react-i18next';
 
@@ -26,10 +26,12 @@ export default function WrapperSSR({ Host, isEntryPage = false, children }) {
 
       <I18nextProvider i18n={i18n}>
         <ChakraProvider theme={chakraTheme}>
-          <Box bg="gray.100">
-            <Header Host={Host} />
-            {children}
-          </Box>
+          <ColorModeProvider>
+            <Box bg="gray.100">
+              <Header Host={Host} />
+              {children}
+            </Box>
+          </ColorModeProvider>
         </ChakraProvider>
       </I18nextProvider>
     </>

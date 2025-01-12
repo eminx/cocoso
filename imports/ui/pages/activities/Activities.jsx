@@ -49,11 +49,7 @@ function Activities() {
     return <ContentLoader />;
   }
 
-  return (
-    <>
-      <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />
-    </>
-  );
+  return <ActivitiesHybrid activities={activities} Host={currentHost} showPast={showPast} />;
 }
 
 export default Activities;

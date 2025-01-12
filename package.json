@@ -58,7 +58,6 @@
     "@react-email/section": "0.0.12",
     "@react-email/text": "0.0.8",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@tanstack/react-query": "^5.64.0",
     "abort-controller": "^3.0.0",
     "antd": "^5.20.6",
     "array-move": "^2.2.2",
