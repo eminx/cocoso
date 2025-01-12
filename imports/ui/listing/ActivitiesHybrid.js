@@ -30,7 +30,7 @@ export default function ActivitiesHybrid({ activities, Host, showPast }) {
   return (
     <>
       <PageHeading description={description} heading={heading} />
-      <Center p="4">
+      <Center pb="4">
         <Tabs tabs={tabs} index={showPast ? 0 : 1} />
       </Center>
 

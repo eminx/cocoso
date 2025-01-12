@@ -11,9 +11,11 @@ import EntrySSR from '../../ui/entry/EntrySSR';
 import Gridder from '../../ui/layout/Gridder';
 import { getCategoriesAssignedToWorks, parseTitle } from '../../ui/utils/shared';
 import TablyCentered from '/imports/ui/components/TablyCentered';
-import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
+
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
+import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
+import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 
 export function Home({ host }) {
@@ -146,16 +148,9 @@ export function ResourcesList({ host, sink }) {
     </script>
   `);
 
-  const pageHeading = Host?.settings?.menu.find((item) => item.name === 'resources')?.label;
-  const pageDescription = Host?.settings?.menu.find(
-    (item) => item.name === 'resources'
-  )?.description;
-  const metaTitle = `${pageHeading} | ${Host.settings?.name}`;
-
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
-      <PageHeading>{pageHeading}</PageHeading>
-      <Gridder items={resources} />
+    <WrapperSSR Host={Host}>
+      <ResourcesHybrid Host={Host} resources={resources} />
     </WrapperSSR>
   );
 }
@@ -209,7 +204,7 @@ export function WorksList({ host, sink }) {
   );
 }
 
-export function Work({ host }) {
+export function Work({ host, sink }) {
   const { workId, usernameSlug } = useParams();
   const [empty, username] = usernameSlug.split('@');
   const work = Meteor.call('getWork', workId, username);
@@ -218,6 +213,12 @@ export function Work({ host }) {
   if (!work) {
     return null;
   }
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ work, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   return (
     <WrapperSSR

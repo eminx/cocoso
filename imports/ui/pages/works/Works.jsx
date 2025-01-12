@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Box, Center, Flex } from '@chakra-ui/react';
 
 import { StateContext } from '../../LayoutContainer';
@@ -14,9 +13,7 @@ function Works() {
 
   const [works, setWorks] = useState(initialWorks);
   const [loading, setLoading] = useState(false);
-  const [tc] = useTranslation('common');
-  const [t] = useTranslation('members');
-  const { currentHost } = useContext(StateContext);
+  let { currentHost } = useContext(StateContext);
 
   if (!currentHost) {
     currentHost = Host;

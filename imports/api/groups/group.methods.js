@@ -51,7 +51,9 @@ Meteor.methods({
     if (!host) {
       host = getHost(this);
     }
-    const allGroups = isPortalHost ? Groups.find().fetch() : Groups.find({ host }).fetch();
+    const allGroups = isPortalHost
+      ? Groups.find({}, { sort: { creationDate: -1 } }).fetch()
+      : Groups.find({ host }).fetch();
     const groupsFiltered = allGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
@@ -67,23 +69,21 @@ Meteor.methods({
       );
     });
 
-    return groupsFiltered
-      .map((group) => ({
-        _id: group._id,
-        title: group.title,
-        readingMaterial: group.readingMaterial,
-        description: group.description,
-        imageUrl: group.imageUrl,
-        meetings: group.meetings,
-        host: group.host,
-        adminUsername: group.adminUsername,
-        isArchived: group.isArchived,
-        members: group.members,
-        creationDate: group.creationDate,
-        isPrivate: group.isPrivate,
-        peopleInvited: group.peopleInvited,
-      }))
-      .sort((a, b) => b.creationDate - a.creationDate);
+    return groupsFiltered.map((group) => ({
+      _id: group._id,
+      title: group.title,
+      readingMaterial: group.readingMaterial,
+      description: group.description,
+      imageUrl: group.imageUrl,
+      meetings: group.meetings,
+      host: group.host,
+      adminUsername: group.adminUsername,
+      isArchived: group.isArchived,
+      members: group.members,
+      creationDate: group.creationDate,
+      isPrivate: group.isPrivate,
+      peopleInvited: group.peopleInvited,
+    }));
   },
 
   getGroupMeetings(groupId) {

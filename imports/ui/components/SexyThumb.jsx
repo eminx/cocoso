@@ -95,7 +95,7 @@ function SexyThumb({ activity, showPast = false }) {
                 alignItems: 'center',
                 display: 'flex',
                 flexWrap: 'wrap',
-                justifyContent: 'flex-end',
+                // justifyContent: 'flex-end',
               }}
             >
               {!showPast && futureDates && (
