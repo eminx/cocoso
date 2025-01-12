@@ -234,17 +234,17 @@ function Calendar({ currentUser, tc }) {
   );
 
   const { settings } = currentHost;
-  const title = settings?.menu.find((item) => item.name === 'calendar')?.label;
+  const calendarInMenu = settings?.menu.find((item) => item.name === 'calendar');
+  const heading = calendarInMenu?.label;
+  const description = calendarInMenu?.description;
 
   return (
     <Box>
       <Helmet>
-        <title>{title}</title>
+        <title>{heading}</title>
       </Helmet>
 
-      <PageHeading
-        description={settings.menu.find((item) => item.name === 'calendar')?.description}
-      />
+      <PageHeading description={description} heading={heading} />
 
       <Box>
         <Center>

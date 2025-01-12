@@ -58,6 +58,7 @@
     "@react-email/section": "0.0.12",
     "@react-email/text": "0.0.8",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@tanstack/react-query": "^5.64.0",
     "abort-controller": "^3.0.0",
     "antd": "^5.20.6",
     "array-move": "^2.2.2",
@@ -129,6 +130,7 @@
   "devDependencies": {
     "@babel/eslint-plugin": "^7.17.7",
     "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "@tanstack/eslint-plugin-query": "^5.62.16",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/parser": "^5.20.0",
     "autoprefixer": "^10.4.20",

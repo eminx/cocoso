@@ -169,7 +169,7 @@ input::placeholder {
 .thumb-text-container {
   font-family: Raleway, sans-serif;
   height: 100%;
-  padding: 24px 16px;
+  padding: 24px;
   position: absolute;
   z-index: 1;
   top: 0;

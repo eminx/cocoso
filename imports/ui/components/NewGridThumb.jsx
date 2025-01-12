@@ -26,7 +26,7 @@ export default function NewGridThumb({
   const remaining = dates?.length - 1;
 
   return (
-    <Box _hover={{ bg: 'brand.50' }} cursor="pointer" border="1px solid" borderColor="brand.500">
+    <Box _hover={{ bg: 'brand.50' }} cursor="pointer" borderRadius="8px">
       <Box className="text-link-container" position="relative">
         <Center
           bg={imageUrl ? 'none' : 'brand.100'}
@@ -40,8 +40,10 @@ export default function NewGridThumb({
               fit={fixedImageHeight ? 'cover' : 'contain'}
               src={imageUrl}
               style={{
-                position: 'relative',
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px',
                 margin: '0 auto',
+                position: 'relative',
               }}
             />
           ) : (

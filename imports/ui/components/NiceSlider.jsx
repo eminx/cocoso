@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Box, Center, Flex, HStack } from '@chakra-ui/react';
 import FsLightbox from 'fslightbox-react';
 import { Fade, Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+if (Meteor.isClient) {
+  import 'react-slideshow-image/dist/styles.css';
+}
 
 const imageStyle = {
   cursor: 'pointer',
@@ -23,7 +26,7 @@ function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = tr
       <ImageHandler height={height} images={images} isFade={isFade} width={width}>
         {(image, index) => (
           <Center key={image + index}>
-            <Flex bg="gray.50" flexDirection="column" justify="center">
+            <Flex flexDirection="column" justify="center">
               <LazyLoadImage
                 alt={alt + ' ' + ' ' + image}
                 src={image}

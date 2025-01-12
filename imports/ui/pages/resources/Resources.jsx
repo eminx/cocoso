@@ -198,7 +198,7 @@ function Resources() {
         <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading description={description} numberOfItems={resourcesRendered?.length}>
+      <PageHeading description={description} heading={title}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>

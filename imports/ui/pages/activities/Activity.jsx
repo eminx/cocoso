@@ -39,6 +39,9 @@ import FormField from '../../components/FormField';
 import Modal from '../../components/Modal';
 import TablyCentered from '../../components/TablyCentered';
 import Chattery from '../../components/chattery/Chattery';
+import WrapperSSR from '../../layout/WrapperSSR';
+import EntrySSR from '../../entry/EntrySSR';
+import ActivityHybrid from '../../entry/ActivityHybrid';
 
 const sexyBorder = {
   bg: 'white',
@@ -511,64 +514,6 @@ class Activity extends PureComponent {
 
     const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = this.state;
 
-    const tabs = [
-      {
-        title: tc('labels.info'),
-        content: (
-          <Box bg="white" className="text-content" p="6">
-            {activityData?.longDescription && parseHtml(activityData?.longDescription)}
-          </Box>
-        ),
-        path: 'info',
-      },
-      {
-        title: activityData?.isPublicActivity
-          ? t('public.labels.datesAndRegistration')
-          : t('public.labels.dates'),
-        content: this.renderDates(),
-        path: 'dates',
-      },
-    ];
-
-    if (activityData?.isPublicActivity) {
-      tabs.push({
-        title: t('public.labels.location'),
-        content: (
-          <Box px="4">
-            {activityData?.place && (
-              <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
-                {activityData?.place}
-              </Text>
-            )}
-            {activityData?.address && (
-              <Text fontSize="lg">{t('public.labels.address') + ': ' + activityData.address}</Text>
-            )}
-          </Box>
-        ),
-        path: 'location',
-      });
-    }
-
-    if (canCreateContent) {
-      tabs.push({
-        title: tc('labels.discussion'),
-        content: (
-          <>
-            <Text mb="2" px="2" textAlign="center">
-              {t('public.chat.heading')}
-            </Text>
-            <Chattery
-              isMember
-              messages={discussion}
-              onNewMessage={this.addNewChatMessage}
-              removeNotification={this.removeNotification}
-            />
-          </>
-        ),
-        path: 'discussion',
-      });
-    }
-
     const adminMenu = {
       label: 'Admin',
       items: [
@@ -590,6 +535,11 @@ class Activity extends PureComponent {
       value: activityData?.isPublicActivity ? '/activities' : '/calendar',
       label: activityData?.isPublicActivity ? activitiesInMenu?.label : calendarInMenu?.label,
     };
+
+    const Host = window?.__PRELOADED_STATE__?.Host || currentHost;
+    const activity = window?.__PRELOADED_STATE__?.activity || activityData;
+
+    return <ActivityHybrid activity={activity} Host={Host} />;
 
     return (
       <>

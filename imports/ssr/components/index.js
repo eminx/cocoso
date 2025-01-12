@@ -1,13 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
+import { useLocation, useParams } from 'react-router-dom';
+import { Box, Center, Heading, Img, Text, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
+import parseHtml from 'html-react-parser';
+import { parse } from 'query-string';
 
-import WrapperSSR from './WrapperSSR';
-import EntrySSR from './EntrySSR';
-import Gridder from './Gridder';
+import WrapperSSR from '../../ui/layout/WrapperSSR';
+import EntrySSR from '../../ui/entry/EntrySSR';
+import Gridder from '../../ui/layout/Gridder';
 import { parseTitle } from '../../ui/utils/shared';
+import TablyCentered from '/imports/ui/components/TablyCentered';
+import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
+import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
+import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
@@ -28,18 +34,16 @@ export function Home({ host }) {
 }
 
 export function ActivitiesList({ host, sink }) {
-  const activities = Meteor.call('getAllPublicActivities', host);
+  const location = useLocation();
+  const { search } = location;
+  const { showPast } = parse(search, { parseBooleans: true });
+
+  const activities = Meteor.call('getAllPublicActivities', Boolean(showPast), host);
   const Host = Meteor.call('getHost', host);
 
   if (!Host) {
     return null;
   }
-
-  const pageHeading = Host.settings?.menu.find((item) => item.name === 'activities')?.label;
-  const pageDescription = Host.settings?.menu.find(
-    (item) => item.name === 'activities'
-  )?.description;
-  const metaTitle = `${Host.settings?.name} | ${pageHeading}`;
 
   sink.appendToBody(`
     <script>
@@ -48,37 +52,30 @@ export function ActivitiesList({ host, sink }) {
   `);
 
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
-      <PageHeading>{pageHeading}</PageHeading>
-      <Gridder items={activities} />
+    <WrapperSSR Host={Host}>
+      <ActivitiesHybrid activities={activities} Host={Host} showPast={Boolean(showPast)} />
     </WrapperSSR>
   );
 }
 
-export function Activity({ host }) {
+export function Activity({ host, sink }) {
   const { activityId } = useParams();
   const activity = Meteor.call('getActivityById', activityId);
   const Host = Meteor.call('getHost', host);
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ activity, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   if (!activity) {
     return null;
   }
 
   return (
-    <WrapperSSR
-      description={activity.longDescription}
-      Host={Host}
-      isEntryPage
-      imageUrl={activity.images && activity.images[0]}
-      subTitle={activity.subTitle}
-      title={activity.title}
-    >
-      <EntrySSR
-        description={activity.longDescription}
-        imageUrl={(activity.images && activity.images[0]) || activity.imageUrl}
-        subTitle={activity.subTitle}
-        title={activity.title}
-      />
+    <WrapperSSR isEntryPage={true} Host={Host}>
+      <ActivityHybrid activity={activity} Host={Host} />
     </WrapperSSR>
   );
 }
@@ -92,9 +89,8 @@ export function GroupsList({ host }) {
   const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
 
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} subTitle={pageDescription} title={metaTitle}>
-      <PageHeading>{pageHeading}</PageHeading>
-      <Gridder items={groups} />
+    <WrapperSSR Host={Host}>
+      <GroupsHybrid groups={groups} Host={Host} />
     </WrapperSSR>
   );
 }

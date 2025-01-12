@@ -1,39 +1,23 @@
 import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Center, Heading, Divider } from '@chakra-ui/react';
-
-import { StateContext } from '../LayoutContainer';
-import NewButton from './NewButton';
+import { Helmet } from 'react-helmet';
 
 export default function PageHeading({ description, heading, children }) {
   const location = useLocation();
-  const { currentHost } = useContext(StateContext);
-
   const pathname = location.pathname;
-  const { menu } = currentHost?.settings;
-
-  if (!pathname || !menu) {
-    return null;
-  }
-
-  const activeMenuItem =
-    !heading &&
-    menu.find((item) => {
-      if (item.name === 'info') {
-        return pathname.substring(0, 6) === '/pages';
-      }
-      return pathname.split('/')?.includes(item.name);
-    });
 
   return (
     <>
-      <Center p="4">
+      <Helmet>
+        <title>{heading}</title>
+      </Helmet>
+      <Center>
         <Box>
           <Center wrap="wrap">
             <Heading as="h1" size="lg" textAlign="center">
-              {heading || activeMenuItem?.label}
+              {heading}
             </Heading>
-            <NewButton />
           </Center>
           <Box py="2">
             <Divider borderColor="brand.500" minW="280px" />

@@ -4,11 +4,12 @@ import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
 export default function Header({ Host, isLogoSmall = false }) {
   const currentHost = Host;
-  const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
   if (!currentHost) {
     return null;
   }
+
+  const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
 
   return (
     <Box w="100%">
@@ -33,10 +34,10 @@ export default function Header({ Host, isLogoSmall = false }) {
         </Link>
       </Center>
 
-      <Center p="4" mb="8">
+      <Center p="4" mb="4">
         <HStack alignItems="center" justify="center" mb="2" wrap="wrap">
           {menuItems?.map((item) => (
-            <Link key={item.name} to={item.route}>
+            <Link key={item.name} to={`/${item.name}`}>
               <Box px="2">
                 <Text
                   as="span"

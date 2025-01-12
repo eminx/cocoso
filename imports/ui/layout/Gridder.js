@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center, Heading, Img, VStack, Wrap } from '@chakra-ui/react';
+import { Center, Heading, Img, Text, VStack, Wrap } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
 
 export default function Gridder({ items }) {
@@ -35,6 +35,7 @@ export default function Gridder({ items }) {
                 src={item.imageUrl || (item.images && item.images[0]) || item.logo}
               />
               <Heading fontSize={18}>{item.title || item.label || item.settings?.name}</Heading>
+              <Text>{item._id}</Text>
             </VStack>
           ))}
         </Wrap>

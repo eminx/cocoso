@@ -48,6 +48,15 @@ function Page() {
 
   const { settings } = currentHost;
 
+  // const activeMenuItem =
+  //   !heading &&
+  //   menu.find((item) => {
+  //     if (item.name === 'info') {
+  //       return pathname.substring(0, 6) === '/pages';
+  //     }
+  //     return pathname.split('/')?.includes(item.name);
+  //   });
+
   return (
     <>
       <Helmet>

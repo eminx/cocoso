@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -38,29 +38,11 @@ function TablyCentered({
   title,
   tags = null,
 }) {
-  const [copied, setCopied] = useState(false);
   const location = useLocation();
-  const { currentHost, isDesktop } = useContext(StateContext);
   const [tc] = useTranslation('common');
-
-  useEffect(() => {
-    setCopied(false);
-  }, [location.pathname]);
 
   const pathnameLastPart = location.pathname.split('/').pop();
   const tabIndex = tabs && tabs.findIndex((tab) => tab.path === pathnameLastPart);
-  if (tabs && !tabs.find((tab) => tab.path === pathnameLastPart)) {
-    return <Navigate to={tabs[0].path} />;
-  }
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(`https://${currentHost.host}${location.pathname}`);
-      setCopied(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const description = subTitle || content || author?.username;
   const imageUrl = images && images[0];
@@ -76,7 +58,6 @@ function TablyCentered({
         <meta property="og:description" content={description?.substring(0, 60)} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={currentHost?.host} />
       </Helmet>
 
       <Center py="3" w="100%">
@@ -85,22 +66,14 @@ function TablyCentered({
             <Header
               author={author}
               backLink={backLink}
-              copied={copied}
-              isDesktop={isDesktop}
               subTitle={subTitle}
               tags={tags}
               tc={tc}
               title={title}
-              handleCopyLink={handleCopyLink}
             />
 
-            <Center py="2" mb={isDesktop ? '4' : '0'}>
-              <NiceSlider
-                alt={title}
-                height={isDesktop ? '400px' : 'auto'}
-                images={images}
-                isFade={isDesktop}
-              />
+            <Center py="2" mb="0">
+              <NiceSlider alt={title} images={images} />
             </Center>
             <Center mb="4" mx="4">
               {action}
@@ -116,10 +89,10 @@ function TablyCentered({
                     colorScheme="gray.800"
                     index={tabIndex}
                     mt="2"
-                    mb="6"
+                    mb="1"
                     tabs={tabs}
                   >
-                    {adminMenu && <AdminMenu adminMenu={adminMenu} isDesktop={isDesktop} />}
+                    {adminMenu && <AdminMenu adminMenu={adminMenu} />}
                   </Tabs>
                 )}
 
@@ -127,11 +100,7 @@ function TablyCentered({
                   {tabs ? (
                     <Routes>
                       {tabs.map((tab) => (
-                        <Route
-                          key={tab.title}
-                          path={tab.path}
-                          element={<Box px="2">{tab.content}</Box>}
-                        />
+                        <Route key={tab.title} path={tab.path} element={<Box>{tab.content}</Box>} />
                       ))}
                     </Routes>
                   ) : (
@@ -147,27 +116,30 @@ function TablyCentered({
   );
 }
 
-function Header({
-  author,
-  backLink,
-  copied,
-  isDesktop,
-  subTitle,
-  tags,
-  tc,
-  title,
-  handleCopyLink,
-}) {
+function Header({ author, backLink, subTitle, tags, tc, title }) {
+  const [copied, setCopied] = useState(false);
+  const location = useLocation();
+
+  const handleCopyLink = async () => {
+    const host = window?.location?.host;
+    try {
+      await navigator.clipboard.writeText(`https://${host}${location.pathname}`);
+      setCopied(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderTitles = () => {
     return (
-      <Flex px="4" justify={!isDesktop && author ? 'space-between' : 'center'} w="100%">
-        <Box pr="2" pl={!isDesktop && author ? '0' : '2'}>
+      <Flex px="4" justify={author ? 'space-between' : 'center'} w="100%">
+        <Box pr="2" pl={author ? '0' : '2'}>
           <Heading
             as="h1"
             lineHeight={1}
             my="2"
             size="lg"
-            textAlign={!isDesktop && author ? 'left' : 'center'}
+            textAlign={author ? 'left' : 'center'}
             textShadow="1px 1px 1px #fff"
           >
             {title}
@@ -179,13 +151,13 @@ function Header({
               fontWeight="400"
               lineHeight={1}
               my="2"
-              textAlign={!isDesktop && author ? 'left' : 'center'}
+              textAlign={author ? 'left' : 'center'}
             >
               {subTitle}
             </Heading>
           )}
           {tags && tags.length > 0 && (
-            <Flex flexGrow="0" justify={!isDesktop && author ? 'flex-start' : 'center'} mt="4">
+            <Flex flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="4">
               {tags.map(
                 (tag) =>
                   tag && (
@@ -197,43 +169,29 @@ function Header({
             </Flex>
           )}
         </Box>
-        {!isDesktop && author && <AvatarHolder size="md" author={author} />}
+        {author && <AvatarHolder size="md" author={author} />}
       </Flex>
     );
   };
 
   return (
     <Box mb="4" w="100%">
-      <Flex justify="space-between">
+      <Flex alignContent="center" justify="space-between">
         <Box flexGrow={0} flexShrink={0} pl="2" width="150px">
-          {backLink && <BackLink backLink={backLink} isSmall={!isDesktop} />}
+          {backLink && <BackLink backLink={backLink} />}
         </Box>
-        {isDesktop && renderTitles()}
-        <Flex
-          align="flex-end"
-          flexGrow={0}
-          flexShrink={0}
-          flexDirection="column"
-          pr="4"
-          width="150px"
+
+        <Button
+          leftIcon={<LinkIcon size={18} />}
+          mr="2"
+          size="sm"
+          variant="link"
+          onClick={() => handleCopyLink()}
         >
-          {copied ? (
-            <Text fontSize="sm">{tc('actions.copied')}</Text>
-          ) : (
-            <Button
-              leftIcon={<LinkIcon />}
-              mb="4"
-              size={isDesktop ? 'md' : 'sm'}
-              variant="link"
-              onClick={handleCopyLink}
-            >
-              {tc('actions.share')}
-            </Button>
-          )}
-          {isDesktop && author && <AvatarHolder size="md" author={author} />}
-        </Flex>
+          {copied ? tc('actions.copied') : tc('actions.share')}
+        </Button>
       </Flex>
-      {!isDesktop && renderTitles()}
+      {renderTitles()}
     </Box>
   );
 }

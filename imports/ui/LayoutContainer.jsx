@@ -25,19 +25,24 @@ import 'moment/locale/sv';
 import 'moment/locale/tr';
 import dayjs from 'dayjs';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import FeedbackForm from './components/FeedbackForm';
-import Header from './components/Header';
+// import Header from './components/Header';
 import { call } from './utils/shared';
 import { generateTheme } from './utils/constants/theme';
 import { message } from './components/message';
 import TopBar from './components/TopBar';
 import ChangeLanguageMenu from './components/ChangeLanguageMenu';
+import Header from './layout/Header';
+import HelmetHybrid from './layout/HelmetHybrid';
 
 export const StateContext = React.createContext(null);
 const publicSettings = Meteor.settings.public;
 
 dayjs.extend(updateLocale);
+
+const queryClient = new QueryClient();
 
 function LayoutPage({ currentUser, userLoading, children }) {
   const initialCurrentHost = window?.__PRELOADED_STATE__?.Host || null;
@@ -139,104 +144,45 @@ function LayoutPage({ currentUser, userLoading, children }) {
   const isFederationFooter = platform?.isFederationLayout && platform.footer;
 
   return (
-    <StateContext.Provider
-      value={{
-        allHosts,
-        canCreateContent,
-        currentUser,
-        currentHost,
-        hue,
-        isDesktop,
-        platform,
-        role,
-        userLoading,
-        getCurrentHost,
-        getPlatform,
-        setHue,
-        setSelectedHue,
-      }}
-    >
-      {children}
-    </StateContext.Provider>
-  );
-
-  return (
     <>
-      <Helmet>
-        <title>{currentHost?.settings?.name}</title>
-        <link
-          rel="android-chrome-192x192"
-          sizes="192x192"
-          href={`${publicSettings.iconsBaseUrl}/android-chrome-192x192.png`}
-        />
-        <link
-          rel="android-chrome-512x512"
-          sizes="512x512"
-          href={`${publicSettings.iconsBaseUrl}/android-chrome-512x512.png`}
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href={`${publicSettings.iconsBaseUrl}/apple-touch-icon.png`}
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href={`${publicSettings.iconsBaseUrl}/favicon-32x32.png`}
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href={`${publicSettings.iconsBaseUrl}/favicon-16x16.png`}
-        />
-      </Helmet>
+      <HelmetHybrid Host={currentHost} />
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={chakraTheme}>
+          <ColorModeProvider>
+            {/* {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />} */}
+            <StateContext.Provider
+              value={{
+                allHosts,
+                canCreateContent,
+                currentUser,
+                currentHost,
+                hue,
+                isDesktop,
+                platform,
+                role,
+                userLoading,
+                getCurrentHost,
+                getPlatform,
+                setHue,
+                setSelectedHue,
+              }}
+            >
+              <Box bg="gray.100">
+                <Header Host={currentHost} />
+                {children}
+              </Box>
 
-      <ChakraProvider theme={chakraTheme}>
-        <ColorModeProvider>
-          {!currentHost && <Progress size="xs" colorScheme="brand.500" isIndeterminate />}
-          <StateContext.Provider
-            value={{
-              allHosts,
-              canCreateContent,
-              currentUser,
-              currentHost,
-              hue,
-              isDesktop,
-              platform,
-              role,
-              userLoading,
-              getCurrentHost,
-              getPlatform,
-              setHue,
-              setSelectedHue,
-            }}
-          >
-            {/* {platform && platform.isFederationLayout && <TopBar />} */}
-
-            <Flex>
-              <Box id="main-viewport" flexGrow="2">
-                <Box w="100%">
-                  <Header isSmallerLogo={!isLargerLogo} />
-
-                  <Box mb="12" minHeight="90vh" px={isDesktop ? '2' : '0'}>
-                    {children}
-                  </Box>
-
-                  <Footer
+              {/* <Footer
                     currentHost={currentHost}
                     isFederationFooter={isFederationFooter}
                     tc={tc}
-                  />
+                  /> */}
 
-                  {isFederationFooter && <PlatformFooter platform={platform} />}
-                </Box>
-              </Box>
-            </Flex>
-          </StateContext.Provider>
-        </ColorModeProvider>
-      </ChakraProvider>
+              {/* {isFederationFooter && <PlatformFooter platform={platform} />} */}
+            </StateContext.Provider>
+          </ColorModeProvider>
+        </ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }

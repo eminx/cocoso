@@ -309,8 +309,9 @@ function MembersPublic() {
   const membersRendered = getMembersFiltered();
 
   const { settings } = currentHost;
-  const title = settings?.menu.find((item) => item.name === 'people')?.label;
-  const description = settings.menu.find((item) => item.name === 'people')?.description;
+  const peopleInMenu = settings?.menu.find((item) => item.name === 'people');
+  const title = peopleInMenu?.label;
+  const description = peopleInMenu?.description;
   const imageUrl = membersRendered.find((m) => m?.avatar && m.avatar.src)?.avatar.src;
 
   const tabs = [
@@ -338,19 +339,7 @@ function MembersPublic() {
         <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading description={description} numberOfItems={membersRendered.length}>
-        <FiltrerSorter {...filtrerProps}>
-          {isPortalHost && (
-            <Flex justify="center">
-              <HostFiltrer
-                allHosts={allHosts}
-                hostFilterValue={hostFilterValue}
-                onHostFilterValueChange={(value, meta) => setHostFilterValue(value)}
-              />
-            </Flex>
-          )}
-        </FiltrerSorter>
-      </PageHeading>
+      <PageHeading description={description} heading={title} />
 
       <Center>
         <Tabs index={showKeywordSearch ? 1 : 0} mb="4" size="sm" tabs={tabs} />
@@ -385,10 +374,9 @@ function MembersPublic() {
               {(member) => (
                 <Flex
                   key={member.username}
-                  _hover={{ bg: 'brand.50' }}
+                  _hover={{ bg: 'gray.50' }}
                   bg="white"
-                  border="1px solid"
-                  borderColor="brand.500"
+                  borderRadius="8px"
                   cursor="pointer"
                   justifyContent="center"
                   mb="2"

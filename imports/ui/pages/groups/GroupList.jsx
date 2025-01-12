@@ -20,6 +20,7 @@ import SexyThumb from '../../components/SexyThumb';
 import InfiniteScroller from '../../components/InfiniteScroller';
 import PageHeading from '../../components/PageHeading';
 import { ContentLoader } from '../../components/SkeletonLoaders';
+import GroupsHybrid from '../../listing/GroupsHybrid';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -36,25 +37,22 @@ const getFutureOccurences = (dates) => {
 };
 
 export default function GroupsList() {
-  const [loading, setLoading] = useState(true);
-  const [groups, setGroups] = useState([]);
-  const [filter, setFilter] = useState('active');
-  const [filterWord, setFilterWord] = useState('');
-  const [sorterValue, setSorterValue] = useState('date');
-  const [modalGroup, setModalGroup] = useState(null);
-  const [hostFilterValue, setHostFilterValue] = useState(null);
-  const [isCopied, setCopied] = useState(false);
-  const { allHosts, canCreateContent, currentHost, currentUser, isDesktop } =
-    useContext(StateContext);
-  const navigate = useNavigate();
-  const [t] = useTranslation('groups');
-  const [tc] = useTranslation('common');
+  const [loading, setLoading] = useState(false);
+  const initialGroups = window?.__PRELOADED_STATE__?.groups || [];
+  const Host = window?.__PRELOADED_STATE__?.Host || null;
+  const [groups, setGroups] = useState(initialGroups);
+  let { currentHost } = useContext(StateContext);
+
+  if (!currentHost) {
+    currentHost = Host;
+  }
 
   useEffect(() => {
     getGroups();
-  }, [currentHost?.isPortalHost]);
+  }, []);
 
   const isPortalHost = Boolean(currentHost?.isPortalHost);
+
   const getGroups = async () => {
     try {
       const meetings = await call('getAllGroupMeetings', isPortalHost);
@@ -145,78 +143,21 @@ export default function GroupsList() {
     return groupsRendered.filter((group) => group.host === hostFilterValue.host);
   };
 
-  const groupsRendered = useMemo(() => {
-    const groupsFiltered = getFilteredGroups();
-    const groupsHostFiltered = getGroupsHostFiltered(groupsFiltered);
-    return groupsHostFiltered;
-  }, [filter, filterWord, hostFilterValue, sorterValue, groups]);
+  // const groupsRendered = useMemo(() => {
+  //   const groupsFiltered = getFilteredGroups();
+  //   const groupsHostFiltered = getGroupsHostFiltered(groupsFiltered);
+  //   return groupsHostFiltered;
+  // }, [filter, filterWord, hostFilterValue, sorterValue, groups]);
 
-  const allHostsFiltered = allHosts?.filter((host) => {
-    return groupsRendered.some((group) => group.host === host.host);
-  });
+  // const allHostsFiltered = allHosts?.filter((host) => {
+  //   return groupsRendered.some((group) => group.host === host.host);
+  // });
 
   if (loading || !groups || !groups.length === 0) {
     return <ContentLoader />;
   }
 
-  const handleActionButtonClick = () => {
-    if (modalGroup.host === currentHost.host) {
-      navigate(`/groups/${modalGroup._id}/info`);
-    } else {
-      window.location.href = `https://${modalGroup.host}/groups/${modalGroup._id}/info`;
-    }
-  };
-
-  const handleCopyLink = async () => {
-    const link = `https://${modalGroup.host}/groups/${modalGroup._id}`;
-    try {
-      await navigator.clipboard.writeText(link);
-      setCopied(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setCopied(false);
-    setModalGroup(null);
-  };
-
-  const getButtonLabel = () => {
-    if (!isPortalHost || modalGroup?.host === currentHost?.host) {
-      return tc('actions.entryPage');
-    }
-    return tc('actions.toThePage', {
-      hostName: allHosts?.find((h) => h?.host === modalGroup?.host)?.name,
-    });
-  };
-
-  const tabs = [
-    {
-      title: t('tabs.active'),
-      onClick: () => setFilter('active'),
-    },
-    {
-      title: t('tabs.members'),
-      onClick: () => setFilter('my'),
-    },
-    {
-      title: t('tabs.archived'),
-      onClick: () => setFilter('archived'),
-    },
-  ];
-
-  const filtrerProps = {
-    filterWord,
-    setFilterWord,
-    sorterValue,
-    setSorterValue,
-  };
-
-  const { settings } = currentHost;
-  const title = settings?.menu.find((item) => item.name === 'groups')?.label;
-  const description = settings.menu.find((item) => item.name === 'groups')?.description;
-  const imageUrl = groupsRendered[0]?.imageUrl;
+  return <GroupsHybrid groups={groups} Host={currentHost} />;
 
   return (
     <Box w="100%">

@@ -30,7 +30,7 @@ function Tag({
   return (
     <Flex
       background={getBackground()}
-      border={gradientBackground && checkable ? 'none' : `2px solid ${filterColor || '#484848'}`}
+      border={gradientBackground && checkable ? 'none' : `1px solid ${filterColor || '#484848'}`}
       borderRadius="0px"
       display="inline-block"
       p={gradientBackground && checkable ? '2px' : '0'}

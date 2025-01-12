@@ -165,8 +165,9 @@ function Works() {
   };
 
   const settings = currentHost?.settings;
-  const title = settings?.menu.find((item) => item.name === 'works')?.label;
-  const description = settings.menu.find((item) => item.name === 'works')?.description;
+  const worksInMenu = settings?.menu.find((item) => item.name === 'works');
+  const title = worksInMenu?.label;
+  const description = worksInMenu?.description;
   const imageUrl = worksRenderedHostFiltered?.find((w) => w?.images && w.images[0])?.images[0];
 
   return (
@@ -183,7 +184,7 @@ function Works() {
         <link rel="canonical" href={currentHost.host} />
       </Helmet>
 
-      <PageHeading description={description} numberOfItems={worksRenderedHostFiltered?.length}>
+      <PageHeading description={description} heading={title}>
         <FiltrerSorter {...filtrerProps}>
           {isPortalHost && (
             <Flex justify={isDesktop ? 'flex-start' : 'center'}>
@@ -233,6 +234,7 @@ function Works() {
             <Box
               key={work._id}
               bg="white"
+              borderRadius={8}
               cursor="pointer"
               mb="2"
               onClick={() => setModalWork(work)}
@@ -266,7 +268,7 @@ function Works() {
           isOpen
           scrollBehavior="inside"
           secondaryButtonLabel={isCopied ? tc('actions.copied') : tc('actions.share')}
-          size="5xl"
+          size="xl"
           onActionButtonClick={() => handleActionButtonClick()}
           onClose={handleCloseModal}
           onSecondaryButtonClick={handleCopyLink}

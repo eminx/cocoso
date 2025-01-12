@@ -1,8 +1,12 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import moment from 'moment';
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-// import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+
+if (Meteor.isClient) {
+  import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+}
 
 import { DateJust } from './FancyDate';
 
@@ -19,6 +23,7 @@ const imageStyle = {
   maxWidth: '550px',
   objectFit: 'cover',
   width: '100%',
+  borderRadius: '8px',
 };
 
 function ThumbDate({ date }) {
@@ -41,7 +46,16 @@ function ThumbDate({ date }) {
   );
 }
 
-function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, title, tag }) {
+function SexyThumb({ activity, showPast = false }) {
+  if (!activity) {
+    return null;
+  }
+
+  const { avatar, datesAndTimes, hostName, subTitle, tag, title } = activity;
+  const imageUrl = (activity.images && activity.images[0]) || activity.imageUrl;
+
+  const dates = datesAndTimes;
+
   const futureDates =
     dates &&
     dates
@@ -58,8 +72,7 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
     <Box
       _hover={{ bg: 'brand.400' }}
       bg="brand.500"
-      border="1px solid"
-      borderColor="brand.500"
+      borderRadius={8}
       className="thumb-cover-container"
       fontWeight="bold"
     >
@@ -68,38 +81,49 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
       </div>
 
       <div className="thumb-text-container">
-        {dates && (
-          <div
-            style={{
-              alignItems: 'center',
-              display: 'flex',
-              flexWrap: 'wrap',
-            }}
-          >
-            {!showPast && futureDates && (
-              <HStack align="center" color="brand.50" mb="4" spacing="4">
-                {futureDates.slice(0, 3).map((date) => (
-                  <ThumbDate key={date?.startDate + date?.startTime} date={date} />
-                ))}
-                {remaining > 0 && (
-                  <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>+ {remaining}</div>
-                )}
-              </HStack>
-            )}
-            {showPast && (
-              <HStack spacing="4" mb="4">
-                {pastDates.slice(0, 3).map((date) => (
-                  <ThumbDate key={date?.startDate + date?.startTime} color="gray.400" date={date} />
-                ))}
-              </HStack>
-            )}
-          </div>
-        )}
+        <Flex direction="column" h="100%" justify="space-between">
+          <Box>
+            <h3 className="thumb-title">{title}</h3>
+            <h4 className="thumb-subtitle">{subTitle}</h4>
+          </Box>
 
-        <h3 className="thumb-title">{title}</h3>
-        <h4 className="thumb-subtitle">{subTitle}</h4>
+          {dates && (
+            <div
+              style={{
+                alignItems: 'center',
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-end',
+              }}
+            >
+              {!showPast && futureDates && (
+                <HStack align="center" color="brand.50" mb="4" spacing="4">
+                  {futureDates.slice(0, 3).map((date) => (
+                    <ThumbDate key={date?.startDate + date?.startTime} date={date} />
+                  ))}
+                  {remaining > 0 && (
+                    <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
+                      + {remaining}
+                    </div>
+                  )}
+                </HStack>
+              )}
+              {showPast && (
+                <HStack spacing="4" mb="4">
+                  {pastDates.slice(0, 3).map((date) => (
+                    <ThumbDate
+                      key={date?.startDate + date?.startTime}
+                      color="gray.400"
+                      date={date}
+                    />
+                  ))}
+                </HStack>
+              )}
+            </div>
+          )}
+        </Flex>
 
-        {(host || tag) && (
+        {(hostName || tag) && (
           <div
             style={{
               alignItems: 'center',
@@ -110,7 +134,7 @@ function SexyThumb({ avatar, dates, host, imageUrl, subTitle, showPast = false, 
               right: 12,
             }}
           >
-            <em style={{ color: '#fff' }}>{host || tag}</em>
+            <em style={{ color: '#fff' }}>{hostName || tag}</em>
           </div>
         )}
       </div>
