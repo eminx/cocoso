@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
+import { DateJust } from '../components/FancyDate';
 
 export default function ActivityHybrid({ activity, Host }) {
   const [t] = useTranslation('activities');
@@ -76,7 +78,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   return (
     <TablyCentered
-      action={null}
+      action={<ActionDates activity={activity} />}
       adminMenu={null}
       backLink={{ value: '/activities', label: activitiesInMenu?.label }}
       images={activity?.isPublicActivity ? activity?.images || [activity?.imageUrl] : null}
@@ -84,5 +86,36 @@ export default function ActivityHybrid({ activity, Host }) {
       tabs={tabs}
       title={activity?.title}
     />
+  );
+}
+
+function ActionDates({ activity }) {
+  return (
+    <Link to={`/activities/${activity?._id}/dates`}>
+      <Flex justify="center" pt="2" wrap="wrap">
+        {activity?.datesAndTimes.map(
+          (occurence, occurenceIndex) =>
+            occurence && (
+              <Flex
+                key={occurence.startDate + occurence.startTime}
+                color="gray.700"
+                mx="1"
+                ml={occurenceIndex === 0 && '0'}
+                textShadow="1px 1px 1px #fff"
+              >
+                <Box>
+                  <DateJust>{occurence.startDate}</DateJust>
+                </Box>
+                {occurence.startDate !== occurence.endDate && (
+                  <Flex>
+                    {'-'}
+                    <DateJust>{occurence.endDate}</DateJust>
+                  </Flex>
+                )}
+              </Flex>
+            )
+        )}
+      </Flex>
+    </Link>
   );
 }
