@@ -5,10 +5,10 @@ import ChevronDownIcon from 'lucide-react/dist/esm/icons/chevron-down';
 
 import { parseTitle } from '../utils/shared';
 
-function PagesList({ currentPage, pageTitles }) {
+function PagesList({ currentPage, pages }) {
   const navigate = useNavigate();
 
-  if (pageTitles?.length === 1) {
+  if (pages?.length === 1) {
     return (
       <Center zIndex="1400">
         <Heading color="gray.800" size="md">
@@ -31,15 +31,15 @@ function PagesList({ currentPage, pageTitles }) {
           {currentPage?.title}
         </MenuButton>
         <MenuList zIndex={2}>
-          {pageTitles.map((title) => (
+          {pages.map((p) => (
             <MenuItem
-              key={title}
-              isDisabled={currentPage?.title === parseTitle(title)}
+              key={p.title + p.creationDate}
+              isDisabled={currentPage?.title === parseTitle(p.title)}
               maxW="320px"
               whiteSpace="normal"
-              onClick={() => navigate(`/pages/${parseTitle(title)}`)}
+              onClick={() => navigate(`/pages/${parseTitle(p.title)}`)}
             >
-              {title}
+              {p.title}
             </MenuItem>
           ))}
         </MenuList>

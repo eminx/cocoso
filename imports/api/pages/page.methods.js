@@ -13,9 +13,12 @@ Meteor.methods({
     }
 
     try {
-      return Pages.find({
-        host,
-      }).fetch();
+      return Pages.find(
+        {
+          host,
+        },
+        { sort: { creationDate: -1 } }
+      ).fetch();
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't add to Collection");
     }
@@ -23,7 +26,7 @@ Meteor.methods({
 
   getPortalHostPages() {
     const portalHost = Hosts.findOne({ isPortalHost: true });
-    return Pages.find({ host: portalHost.host }).fetch();
+    return Pages.find({ host: portalHost.host }, { sort: { creationDate: -1 } }).fetch();
   },
 
   createPage(formValues, images) {

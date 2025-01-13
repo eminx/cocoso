@@ -44,5 +44,5 @@ export default function Resources() {
     return <ContentLoader items={4} />;
   }
 
-  return <ResourcesHybrid Host={Host} resources={resources} />;
+  return <ResourcesHybrid Host={currentHost} resources={resources} />;
 }

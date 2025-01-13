@@ -45,5 +45,5 @@ export default function Work() {
     return <ContentLoader />;
   }
 
-  return <WorkHybrid documents={documents} work={work} Host={Host} />;
+  return <WorkHybrid documents={documents} work={work} Host={currentHost} />;
 }

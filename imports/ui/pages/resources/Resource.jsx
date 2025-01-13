@@ -67,5 +67,5 @@ export default function Resource() {
     return <ContentLoader />;
   }
 
-  return <ResourceHybrid documents={documents} resource={resource} Host={Host} />;
+  return <ResourceHybrid documents={documents} resource={resource} Host={currentHost} />;
 }

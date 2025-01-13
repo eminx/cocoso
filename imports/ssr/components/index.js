@@ -9,7 +9,7 @@ import { parse } from 'query-string';
 import WrapperSSR from '../../ui/layout/WrapperSSR';
 import EntrySSR from '../../ui/entry/EntrySSR';
 import Gridder from '../../ui/layout/Gridder';
-import { getCategoriesAssignedToWorks, parseTitle } from '../../ui/utils/shared';
+import { getCategoriesAssignedToWorks } from '../../ui/utils/shared';
 import TablyCentered from '/imports/ui/components/TablyCentered';
 
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
@@ -21,6 +21,7 @@ import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import WorkHybrid from '/imports/ui/entry/WorkHybrid';
 import UsersHybrid from '/imports/ui/listing/UsersHybrid';
+import PageHybrid from '/imports/ui/entry/PageHybrid';
 
 export function Home({ host }) {
   const Host = Meteor.call('getHost', host);
@@ -215,24 +216,22 @@ export function Work({ host, sink }) {
 }
 
 export function Page({ host, sink }) {
-  const { pageTitle } = useParams();
   const pages = Meteor.call('getPages', host);
-  const page = pages.find((page) => parseTitle(page.title) === pageTitle);
   const Host = Meteor.call('getHost', host);
 
-  if (!page) {
+  if (!pages) {
     return null;
   }
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ pages, page, Host }).replace(/</g, '\\u003c')}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ pages, Host }).replace(/</g, '\\u003c')}
     </script>
   `);
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <PageHybrid pages={pages} page={page} Host={Host} />
+      <PageHybrid pages={pages} Host={Host} />
     </WrapperSSR>
   );
 }

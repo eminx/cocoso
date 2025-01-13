@@ -108,10 +108,11 @@ export default function () {
           <Route path="/resources/:resourceId/edit" element={<EditResource />} />
 
           {/* Pages */}
-          <Route exact path="/pages" element={<Page />} />
-          <Route exact path="/pages/new" element={<NewPage />} />
-          <Route path="/pages/:pageId/*" element={<Page />} />
-          <Route path="/pages/:pageId/edit" element={<EditPage />} />
+          <Route exact path="/info" element={<Page />} />
+          <Route exact path="/info/new" element={<NewPage />} />
+          <Route path="/info/:pageTitle/*" element={<Page />} />
+          <Route path="/pages/:pageTitle/*" element={<Page />} />
+          <Route path="/info/:pageTitle/edit" element={<EditPage />} />
 
           {/* Works */}
           <Route exact path="/works" element={<Works />} />

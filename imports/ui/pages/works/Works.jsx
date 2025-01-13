@@ -43,7 +43,7 @@ function Works() {
     return <ContentLoader items={4} />;
   }
 
-  return <WorksHybrid Host={Host} works={works} />;
+  return <WorksHybrid Host={currentHost} works={works} />;
 }
 
 export default Works;
