@@ -1,7 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './chattery.css';
+if (Meteor.isClient) {
+  import './chattery.css';
+}
 
 import { ChatteryWindow } from './ChatteryWindow';
 import { ChatteryInput } from './ChatteryInput';

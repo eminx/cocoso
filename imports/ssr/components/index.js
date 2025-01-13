@@ -16,6 +16,7 @@ import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
+import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
 import WorkHybrid from '/imports/ui/entry/WorkHybrid';
 import UsersHybrid from '/imports/ui/listing/UsersHybrid';
@@ -160,11 +161,15 @@ export function ResourcesList({ host, sink }) {
 export function Resource({ host, sink }) {
   const { resourceId } = useParams();
   const resource = Meteor.call('getResourceById', resourceId);
+  const documents = Meteor.call('getDocumentsByAttachments', resourceId);
   const Host = Meteor.call('getHost', host);
 
   sink.appendToBody(`
     <script>
-      window.__PRELOADED_STATE__ = ${JSON.stringify({ resource, Host }).replace(/</g, '\\u003c')}
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ documents, resource, Host }).replace(
+        /</g,
+        '\\u003c'
+      )}
     </script>
   `);
 
@@ -174,7 +179,7 @@ export function Resource({ host, sink }) {
 
   return (
     <WrapperSSR isEntryPage Host={Host}>
-      <ResourceHybrid resource={resource} Host={Host} />
+      <ResourceHybrid documents={documents} resource={resource} Host={Host} />
     </WrapperSSR>
   );
 }
