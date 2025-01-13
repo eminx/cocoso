@@ -49,6 +49,7 @@ import {
 import { StateContext } from '../../LayoutContainer.jsx';
 import { DocumentUploadHelper } from '../../components/UploadHelpers.jsx';
 import { MainLoader } from '../../components/SkeletonLoaders.jsx';
+import GroupHybrid from '../../entry/GroupHybrid.js';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -1061,6 +1062,8 @@ class Group extends Component {
       value: '/groups',
       label: groupsInMenu?.label,
     };
+
+    return <GroupHybrid group={group} Host={currentHost} />;
 
     return (
       <>

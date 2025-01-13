@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
@@ -35,13 +34,18 @@ export default function ActivityHybrid({ activity, Host }) {
     tabs.push({
       title: t('public.labels.location'),
       content: (
-        <Box px="4">
+        <Box bg="white" p="4">
           {activity?.place && (
             <Text fontWeight="bold" fontSize="lg" mb="2" textAlign="center">
               {activity?.place}
             </Text>
           )}
-          {activity?.address && <Text fontSize="lg">{'Address: ' + activity.address}</Text>}
+          {activity?.address && (
+            <Text fontSize="lg">
+              <b>{t('public.labels.address')}: </b>
+              {activity.address}
+            </Text>
+          )}
         </Box>
       ),
       path: 'location',

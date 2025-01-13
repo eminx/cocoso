@@ -15,6 +15,7 @@ import TablyCentered from '/imports/ui/components/TablyCentered';
 import ActivitiesHybrid from '/imports/ui/listing/ActivitiesHybrid';
 import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
+import GroupHybrid from '/imports/ui/entry/GroupHybrid';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import ResourceHybrid from '/imports/ui/entry/ResourceHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
@@ -123,20 +124,8 @@ export function Group({ host, sink }) {
   }
 
   return (
-    <WrapperSSR
-      description={group.description}
-      Host={Host}
-      isEntryPage
-      imageUrl={group.imageUrl}
-      subTitle={group.readingMaterial}
-      title={group.title}
-    >
-      <EntrySSR
-        description={group.longDescription}
-        imageUrl={group.imageUrl}
-        subTitle={group.readingMaterial}
-        title={group.title}
-      />
+    <WrapperSSR isEntryPage Host={Host}>
+      <GroupHybrid group={group} Host={Host} />
     </WrapperSSR>
   );
 }
