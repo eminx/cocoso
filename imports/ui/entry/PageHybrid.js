@@ -22,6 +22,10 @@ export default function PageHybrid({ pages, Host }) {
     navigate(`/pages/${parseTitle(pages[0].title)}`);
   }
 
+  if (!currentPage) {
+    return null;
+  }
+
   const pagesInMenu = Host?.settings?.menu.find((item) => item.name === 'info');
 
   return (

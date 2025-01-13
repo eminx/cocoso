@@ -10,11 +10,12 @@ if (Meteor.isClient) {
 
 const imageStyle = {
   cursor: 'pointer',
+  maxHeight: '480px',
   objectFit: 'contain',
   position: 'relative',
 };
 
-function NiceSlider({ alt, images, height = '400px', width = '100%', isFade = true }) {
+function NiceSlider({ alt, images, height = 'auto', width = '100%', isFade = true }) {
   const [toggler, setToggler] = useState(false);
 
   if (!images || images.length === 0) {

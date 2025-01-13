@@ -53,7 +53,7 @@ function InfiniteScroller({
             columnClassName="my-masonry-grid_column"
           >
             {currentItems?.map((item) => children(item))}
-            {hasMore && <Skeleton endColor="brand.500" h="315px" mt="2" />}
+            {hasMore && <Skeleton endColor="gray.300" w="185px" h="185px" m="4" />}
             {!hasMore && canCreateContent && (
               <NewEntryHelper buttonLink={newHelperLink} small={isMasonry || smallThumb} />
             )}
@@ -64,7 +64,7 @@ function InfiniteScroller({
             {hasMore && (
               <Skeleton
                 className="sexy-thumb-container"
-                endColor="brand.500"
+                endColor="gray.300"
                 h={skeletonHeight}
                 w={skeletonWidth}
               />

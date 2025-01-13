@@ -1,15 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 
 export default function Header({ Host, isLogoSmall = false }) {
   const currentHost = Host;
+  const location = useLocation();
+  console.log(location);
 
   if (!currentHost) {
     return null;
   }
 
   const menuItems = Host?.settings?.menu?.filter((item) => item.isVisible);
+  const currentMenuItem = menuItems.find((item) => '/' + item.name === location.pathname);
 
   return (
     <Box w="100%">
@@ -40,10 +43,14 @@ export default function Header({ Host, isLogoSmall = false }) {
             <Link key={item.name} to={`/${item.name}`}>
               <Box px="2">
                 <Text
+                  _hover={{ borderBottom: '1px solid' }}
                   as="span"
-                  color="brand.500"
-                  fontFamily="Raleway, Sarabun, sans-serif"
-                  fontWeight="bold"
+                  borderBottom={item?.name === currentMenuItem?.name ? '2px solid' : null}
+                  color="gray.700"
+                  fontFamily="Sarabun, sans-serif"
+                  fontSize={18}
+                  textShadow="1px 1px 1px #fff"
+                  fontWeight="400"
                 >
                   {item.label}
                 </Text>

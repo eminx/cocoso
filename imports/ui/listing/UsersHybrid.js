@@ -132,7 +132,7 @@ export default function UsersHybrid({ users, keywords, Host }) {
       <PageHeading description={description} heading={heading} />
 
       <Center>
-        <Tabs index={showKeywordSearch ? 1 : 0} mb="4" size="sm" tabs={tabs} />
+        <Tabs index={showKeywordSearch ? 1 : 0} mb="4" tabs={tabs} />
       </Center>
 
       {showKeywordSearch ? (
