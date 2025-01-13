@@ -17,6 +17,7 @@ import ActivityHybrid from '/imports/ui/entry/ActivityHybrid';
 import GroupsHybrid from '/imports/ui/listing/GroupsHybrid';
 import ResourcesHybrid from '/imports/ui/listing/ResourcesHybrid';
 import WorksHybrid from '/imports/ui/listing/WorksHybrid';
+import WorkHybrid from '/imports/ui/entry/WorkHybrid';
 import UsersHybrid from '/imports/ui/listing/UsersHybrid';
 
 export function Home({ host }) {
@@ -172,18 +173,8 @@ export function Resource({ host, sink }) {
   }
 
   return (
-    <WrapperSSR
-      description={resource.description}
-      Host={Host}
-      isEntryPage
-      imageUrl={resource.images && resource.images[0]}
-      title={resource.label}
-    >
-      <EntrySSR
-        description={resource.description}
-        imageUrl={resource.images && resource.images[0]}
-        title={resource.label}
-      />
+    <WrapperSSR isEntryPage Host={Host}>
+      <ResourceHybrid resource={resource} Host={Host} />
     </WrapperSSR>
   );
 }
@@ -209,6 +200,7 @@ export function Work({ host, sink }) {
   const { workId, usernameSlug } = useParams();
   const [empty, username] = usernameSlug.split('@');
   const work = Meteor.call('getWork', workId, username);
+  const documents = Meteor.call('getDocumentsByAttachments', workId);
   const Host = Meteor.call('getHost', host);
 
   if (!work) {
@@ -222,20 +214,8 @@ export function Work({ host, sink }) {
   `);
 
   return (
-    <WrapperSSR
-      description={work.longDescription}
-      Host={Host}
-      isEntryPage
-      imageUrl={work.images && work.images[0]}
-      subTitle={work.shortDescription}
-      title={work.title}
-    >
-      <EntrySSR
-        description={work.longDescription}
-        imageUrl={work.images && work.images[0]}
-        subTitle={work.shortDescription}
-        title={work.title}
-      />
+    <WrapperSSR isEntryPage Host={Host}>
+      <WorkHybrid documents={documents} work={work} Host={Host} />
     </WrapperSSR>
   );
 }
@@ -250,18 +230,15 @@ export function Page({ host, sink }) {
     return null;
   }
 
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ pages, page, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
+
   return (
-    <WrapperSSR
-      description={page.longDescription}
-      Host={Host}
-      imageUrl={page.images && page.images[0]}
-      title={page.title}
-    >
-      <EntrySSR
-        description={page.longDescription}
-        imageUrl={page.images && page.images[0]}
-        title={page.title}
-      />
+    <WrapperSSR isEntryPage Host={Host}>
+      <PageHybrid pages={pages} page={page} Host={Host} />
     </WrapperSSR>
   );
 }
@@ -296,21 +273,15 @@ export function User({ host, sink }) {
   const [empty, username] = usernameSlug.split('@');
   const user = Meteor.call('getUserInfo', username, host);
 
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ user, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
+
   return (
-    <WrapperSSR
-      description={user.bio}
-      Host={Host}
-      isEntryPage
-      imageUrl={user.avatar?.src}
-      subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
-      title={user.username}
-    >
-      <EntrySSR
-        description={user.bio}
-        imageUrl={user.avatar?.src}
-        subTitle={user.firstName ? `${user.firstName} ${user.lastName}` : null}
-        title={user.username}
-      />
+    <WrapperSSR isEntryPage Host={Host}>
+      <UsersHybrid Host={Host} user={user} />
     </WrapperSSR>
   );
 }
@@ -318,23 +289,16 @@ export function User({ host, sink }) {
 export function Communities({ host, sink }) {
   const allHosts = Meteor.call('getAllHosts');
   const Host = Meteor.call('getHost', host);
-  const pageHeading = 'Communities';
-  const metaTitle = `${Host?.settings?.name} | ${pageHeading}`;
+
+  sink.appendToBody(`
+    <script>
+      window.__PRELOADED_STATE__ = ${JSON.stringify({ allHosts, Host }).replace(/</g, '\\u003c')}
+    </script>
+  `);
 
   return (
-    <WrapperSSR Host={Host} imageUrl={Host.logo} title={metaTitle}>
-      <PageHeading>{pageHeading}</PageHeading>
-      <Gridder items={allHosts} />
+    <WrapperSSR Host={Host}>
+      <CommunitiesHybrid Host={Host} allHosts={allHosts} />
     </WrapperSSR>
-  );
-}
-
-export function PageHeading({ children }) {
-  return (
-    <Center mb="8">
-      <Heading fontFamily="'Arial', 'sans-serif" textAlign="center">
-        {children}
-      </Heading>
-    </Center>
   );
 }

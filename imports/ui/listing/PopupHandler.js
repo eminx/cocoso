@@ -45,9 +45,17 @@ export default function PopupHandler({ item, kind, onClose }) {
     }
 
     if (item.host === currentHost.host) {
-      navigate(`/${kind}/${item._id}/info`);
+      if (kind === 'works') {
+        navigate(`/@${item.authorUsername}/${kind}/${item._id}/info`);
+      } else {
+        navigate(`/${kind}/${item._id}/info`);
+      }
     } else {
-      window.location.href = `https://${item.host}/${kind}/${item._id}/info`;
+      if (kind === 'works') {
+        window.location.href = `https://${item.host}/@${item.authorUsername}/${kind}/${item._id}/info`;
+      } else {
+        window.location.href = `https://${item.host}/${kind}/${item._id}/info`;
+      }
     }
   };
 

@@ -4,12 +4,11 @@ import { Box, Text } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import parseHtml from 'html-react-parser';
 
-import WrapperSSR from '../layout/WrapperSSR';
 import TablyCentered from '../components/TablyCentered';
 
 export default function ActivityHybrid({ activity, Host }) {
-  const { t } = useTranslation('activities');
-  const { tc } = useTranslation('common');
+  const [t] = useTranslation('activities');
+  const [tc] = useTranslation('common');
 
   if (!activity) {
     return null;
@@ -17,7 +16,7 @@ export default function ActivityHybrid({ activity, Host }) {
 
   const tabs = [
     {
-      title: t('public.labels.info'),
+      title: tc('labels.info'),
       content: (
         <Box bg="white" className="text-content" p="6">
           {activity?.longDescription && parseHtml(activity?.longDescription)}
@@ -69,11 +68,13 @@ export default function ActivityHybrid({ activity, Host }) {
   //   });
   // }
 
+  const activitiesInMenu = Host.settings?.menu.find((item) => item.name === 'activities');
+
   return (
     <TablyCentered
       action={null}
       adminMenu={null}
-      backLink={{ value: '/activities', label: 'Activities' }}
+      backLink={{ value: '/activities', label: activitiesInMenu?.label }}
       images={activity?.isPublicActivity ? activity?.images || [activity?.imageUrl] : null}
       subTitle={activity?.subTitle}
       tabs={tabs}

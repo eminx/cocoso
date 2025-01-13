@@ -15,6 +15,7 @@ import {
   MenuButton,
   Text,
   VStack,
+  Wrap,
 } from '@chakra-ui/react';
 import LinkIcon from 'lucide-react/dist/esm/icons/link';
 import SettingsIcon from 'lucide-react/dist/esm/icons/settings';
@@ -60,7 +61,7 @@ function TablyCentered({
         <meta property="og:type" content="article" />
       </Helmet>
 
-      <Center py="3" w="100%">
+      <Center w="100%">
         <Box w="100%">
           <Box>
             <Header
@@ -132,51 +133,54 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
 
   const renderTitles = () => {
     return (
-      <Flex px="4" justify={author ? 'space-between' : 'center'} w="100%">
-        <Box pr="2" pl={author ? '0' : '2'}>
-          <Heading
-            as="h1"
-            lineHeight={1}
-            my="2"
-            size="lg"
-            textAlign={author ? 'left' : 'center'}
-            textShadow="1px 1px 1px #fff"
-          >
-            {title}
-          </Heading>
-          {subTitle && (
+      <Center>
+        <Flex p="4" justify={author ? 'space-between' : 'center'} w="100%">
+          {author && <Box w="48px" />}
+          <Box>
             <Heading
-              as="h2"
-              size="md"
-              fontWeight="400"
+              as="h1"
               lineHeight={1}
               my="2"
+              size="lg"
               textAlign={author ? 'left' : 'center'}
+              textShadow="1px 1px 1px #fff"
             >
-              {subTitle}
+              {title}
             </Heading>
-          )}
-          {tags && tags.length > 0 && (
-            <Flex flexGrow="0" justify={author ? 'flex-start' : 'center'} mt="4">
-              {tags.map(
-                (tag) =>
-                  tag && (
-                    <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
-                      {tag}
-                    </Badge>
-                  )
-              )}
-            </Flex>
-          )}
-        </Box>
-        {author && <AvatarHolder size="md" author={author} />}
-      </Flex>
+            {subTitle && (
+              <Heading
+                as="h2"
+                size="md"
+                fontWeight="400"
+                lineHeight={1}
+                my="2"
+                textAlign={author ? 'left' : 'center'}
+              >
+                {subTitle}
+              </Heading>
+            )}
+            {tags && tags.length > 0 && (
+              <Wrap flexGrow="0" justify="center" mt="4">
+                {tags.map(
+                  (tag) =>
+                    tag && (
+                      <Badge key={tag} bg="gray.50" color="gray.800" fontSize="14px">
+                        {tag}
+                      </Badge>
+                    )
+                )}
+              </Wrap>
+            )}
+          </Box>
+          {author && <AvatarHolder author={author} />}
+        </Flex>
+      </Center>
     );
   };
 
   return (
     <Box mb="4" w="100%">
-      <Flex alignContent="center" justify="space-between">
+      <Flex alignContent="flex-start" justify="space-between">
         <Box flexGrow={0} flexShrink={0} pl="2" width="150px">
           {backLink && <BackLink backLink={backLink} />}
         </Box>
@@ -196,27 +200,26 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
   );
 }
 
-function AvatarHolder({ author, size = 'lg' }) {
+function AvatarHolder({ author }) {
+  if (!author) {
+    return null;
+  }
   return (
     <Box>
-      <VStack justify="center" spacing="0">
-        <Avatar
-          borderRadius="8px"
-          elevation="medium"
-          src={author?.src}
-          name={author?.username}
-          size={size}
-        />
-        {author?.link ? (
-          <Link to={author?.link}>
-            <CLink as="span" fontSize={size}>
-              {author?.username}
-            </CLink>
-          </Link>
-        ) : (
-          <Text fontSize={size}>{author?.username}</Text>
-        )}
-      </VStack>
+      <Link to={`/@${author.username}/`}>
+        <VStack _hover={{ textDecoration: 'underline' }} justify="center" spacing="0">
+          <Avatar
+            borderRadius="8px"
+            elevation="medium"
+            name={author.username}
+            showBorder
+            src={author.src}
+          />
+          <CLink as="span" color="brand.500">
+            {author.username}
+          </CLink>
+        </VStack>
+      </Link>
     </Box>
   );
 }

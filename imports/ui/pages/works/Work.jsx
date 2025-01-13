@@ -6,20 +6,28 @@ import parseHtml from 'html-react-parser';
 import { Helmet } from 'react-helmet';
 
 import { StateContext } from '../../LayoutContainer';
-import Loader from '../../components/Loader';
+import { ContentLoader } from '../../components/SkeletonLoaders';
 import { message } from '../../components/message';
 import { call } from '../../utils/shared';
 import TablyCentered from '../../components/TablyCentered';
 import DocumentsField from '../resources/components/DocumentsField';
+import WorkHybrid from '../../entry/WorkHybrid';
 
 function Work() {
-  const [work, setWork] = useState(null);
-  const [documents, setDocuments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { currentHost, currentUser } = useContext(StateContext);
+  const initialWork = window?.__PRELOADED_STATE__?.work || null;
+  const initialDocuments = window?.__PRELOADED_STATE__?.documents || [];
+  const Host = window?.__PRELOADED_STATE__?.Host || null;
+  const [work, setWork] = useState(initialWork);
+  const [documents, setDocuments] = useState(initialDocuments);
+  const [loading, setLoading] = useState(false);
+  let { currentHost, currentUser } = useContext(StateContext);
   const { usernameSlug, workId } = useParams();
   const [empty, username] = usernameSlug.split('@');
   const [tc] = useTranslation('common');
+
+  if (!currentHost) {
+    currentHost = Host;
+  }
 
   useEffect(() => {
     getWork();
@@ -38,65 +46,9 @@ function Work() {
     }
   };
 
-  const isOwner = currentUser && currentUser.username === username;
-
-  const tabs = [
-    {
-      title: tc('labels.info'),
-      content: (
-        <Box bg="white" className="text-content" p="6">
-          {work?.longDescription && parseHtml(work.longDescription)}
-        </Box>
-      ),
-      path: 'info',
-    },
-  ];
-
-  if (work?.additionalInfo?.length > 2) {
-    tabs.push({
-      title: tc('labels.extra'),
-      content: (
-        <Box p="4">
-          <Text fontSize="lg">{work?.additionalInfo}</Text>
-        </Box>
-      ),
-      path: 'extra',
-    });
+  if (!work) {
+    return <ContentLoader />;
   }
-
-  if (documents && documents[0]) {
-    tabs.push({
-      title: tc('documents.label'),
-      content: (
-        <Box p="4">
-          <DocumentsField contextType="works" contextId={work?._id} />
-        </Box>
-      ),
-      path: 'documents',
-    });
-  }
-
-  if (work?.contactInfo) {
-    tabs.push({
-      title: tc('labels.contact'),
-      content: (
-        <Box className="text-content" p="4" textAlign="center">
-          {work?.contactInfo && parseHtml(work.contactInfo)}
-        </Box>
-      ),
-      path: 'contact',
-    });
-  }
-
-  const adminMenu = {
-    label: 'Admin',
-    items: [
-      {
-        label: tc('actions.update'),
-        link: 'edit',
-      },
-    ],
-  };
 
   const tags = work && [work.category?.label];
 
@@ -106,30 +58,7 @@ function Work() {
     label: worksInMenu?.label,
   };
 
-  return (
-    <>
-      <Helmet>
-        <title>{work?.title}</title>
-      </Helmet>
-      <TablyCentered
-        adminMenu={isOwner ? adminMenu : null}
-        author={
-          work &&
-          work.showAvatar && {
-            src: work.authorAvatar,
-            username: work.authorUsername,
-            link: `/@${work.authorUsername}`,
-          }
-        }
-        backLink={backLink}
-        images={work?.images}
-        subTitle={work?.shortDescription}
-        tabs={tabs}
-        tags={tags}
-        title={work?.title}
-      />
-    </>
-  );
+  return <WorkHybrid documents={documents} work={work} Host={Host} />;
 }
 
 export default Work;
