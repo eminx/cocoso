@@ -432,7 +432,7 @@ class Group extends Component {
                 color="brand.800"
               >
                 <Box flex="1" textAlign="left">
-                  <FancyDate occurence={meeting} resources={resources} />
+                  <FancyDate occurrence={meeting} resources={resources} />
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
@@ -1132,7 +1132,7 @@ class Group extends Component {
 function MeetingInfo({ meeting, isAttending, resources }) {
   return (
     <Box>
-      <FancyDate occurence={meeting} resources={resources} />
+      <FancyDate occurrence={meeting} resources={resources} />
 
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>

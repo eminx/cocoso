@@ -5,7 +5,6 @@ import { Box, Center, Heading, HStack, Img, Text } from '@chakra-ui/react';
 export default function Header({ Host, isLogoSmall = false }) {
   const currentHost = Host;
   const location = useLocation();
-  console.log(location);
 
   if (!currentHost) {
     return null;

@@ -22,26 +22,26 @@ function DateJust({ children, ...otherProps }) {
   );
 }
 
-function FancyDate({ occurence, resources, ...otherProps }) {
-  if (!occurence) {
+function FancyDate({ occurrence, resources, ...otherProps }) {
+  if (!occurrence) {
     return null;
   }
   return (
     <Flex justifyContent="space-between" p="1" mb="1" {...otherProps}>
       <div style={{ flexGrow: 1 }}>
-        {occurence.startDate === occurence.endDate ? (
-          <DateJust>{occurence.startDate}</DateJust>
+        {occurrence.startDate === occurrence.endDate ? (
+          <DateJust>{occurrence.startDate}</DateJust>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <DateJust style={{ paddingRight: 12 }}>{occurence.startDate}</DateJust>
+            <DateJust style={{ paddingRight: 12 }}>{occurrence.startDate}</DateJust>
             {' – '}
-            <DateJust style={{ paddingLeft: 12 }}>{occurence.endDate}</DateJust>
+            <DateJust style={{ paddingLeft: 12 }}>{occurrence.endDate}</DateJust>
           </div>
         )}
       </div>
       <div style={fancyDateStyle}>
         <div>
-          {occurence.startTime} – {occurence.endTime}
+          {occurrence.startTime} – {occurrence.endTime}
         </div>
         {resources && (
           <div
@@ -53,9 +53,9 @@ function FancyDate({ occurence, resources, ...otherProps }) {
             }}
           >
             <em>
-              {resources.map((place) => place.label).includes(occurence.resource)
-                ? `${occurence.resource}`
-                : occurence.resource}
+              {resources.map((place) => place.label).includes(occurrence.resource)
+                ? `${occurrence.resource}`
+                : occurrence.resource}
             </em>
           </div>
         )}

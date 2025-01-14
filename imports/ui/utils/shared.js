@@ -2,6 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
 import dayjs from 'dayjs';
 import { Slingshot } from 'meteor/edgee:slingshot';
+import isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(isBetween);
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 const today = dayjs();

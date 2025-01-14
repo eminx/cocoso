@@ -91,7 +91,7 @@ function Header({ copied, isDesktop, subTitle, tags, tc, title, handleCopyLink }
   const fontFamily = "'Raleway', sans-serif";
 
   return (
-    <Box mb="4">
+    <Box mb="8">
       <Heading
         as="h1"
         fontFamily={fontFamily}

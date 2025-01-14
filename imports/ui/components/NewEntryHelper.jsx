@@ -58,36 +58,5 @@ function NewEntryHelper({
       </Box>
     </Link>
   );
-
-  return (
-    <Box px="4">
-      <Alert
-        alignItems="center"
-        colorScheme="green"
-        flexDirection="column"
-        justifyContent="center"
-        my="4"
-        py="0"
-        textAlign="center"
-        variant="subtle"
-      >
-        <AlertTitle mt={4} mb={1} fontSize="lg">
-          {title ? parseHtml(title) : titleGeneric && parseHtml(titleGeneric)}
-        </AlertTitle>
-
-        <AlertDescription maxWidth="sm">
-          {(children && parseHtml(children)) ||
-            (descriptionGeneric && parseHtml(descriptionGeneric))}
-          <Center py="4">
-            <Link to={buttonLink}>
-              <Button colorScheme="green" as="span">
-                {buttonLabel || buttonLabelGeneric}
-              </Button>
-            </Link>
-          </Center>
-        </AlertDescription>
-      </Alert>
-    </Box>
-  );
 }
 export default NewEntryHelper;

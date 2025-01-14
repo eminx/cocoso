@@ -6,6 +6,7 @@ import parseHtml from 'html-react-parser';
 
 import TablyCentered from '../components/TablyCentered';
 import { DateJust } from '../components/FancyDate';
+import RsvpHandler from '../smart/RsvpHandler';
 
 export default function ActivityHybrid({ activity, Host }) {
   const [t] = useTranslation('activities');
@@ -27,7 +28,11 @@ export default function ActivityHybrid({ activity, Host }) {
     },
     {
       title: t('public.labels.dates'),
-      content: <div>Dates</div>,
+      content: (
+        <div>
+          <RsvpHandler activity={activity} />
+        </div>
+      ),
       path: 'dates',
     },
   ];
