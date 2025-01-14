@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { call } from '../../utils/shared';
 import { message } from '../../components/message';
@@ -11,6 +11,7 @@ export default function Activity() {
   const Host = window?.__PRELOADED_STATE__?.Host || null;
 
   const [activity, setActivity] = useState(initialActivity);
+  const { activityId } = useParams();
   // const { canCreateContent, currentHost, currentUser, role } = useContext(StateContext);
 
   useEffect(() => {
@@ -21,7 +22,8 @@ export default function Activity() {
     try {
       setActivity(await call('getActivityById', activityId));
     } catch (error) {
-      message(error.reason);
+      console.log(error);
+      message.error(error.reason);
     }
   };
 

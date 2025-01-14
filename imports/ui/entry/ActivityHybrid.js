@@ -26,15 +26,15 @@ export default function ActivityHybrid({ activity, Host }) {
       ),
       path: 'info',
     },
-    {
-      title: t('public.labels.dates'),
-      content: (
-        <div>
-          <RsvpHandler activity={activity} />
-        </div>
-      ),
-      path: 'dates',
-    },
+    // {
+    //   title: t('public.labels.dates'),
+    //   content: (
+    //     <div>
+    //       <RsvpHandler activity={activity} />
+    //     </div>
+    //   ),
+    //   path: 'dates',
+    // },
   ];
 
   if (activity?.isPublicActivity) {

@@ -193,7 +193,6 @@ function Header({ author, backLink, subTitle, tags, tc, title }) {
         <Button
           leftIcon={<LinkIcon size={18} />}
           mr="2"
-          size="sm"
           variant="link"
           onClick={() => handleCopyLink()}
         >
