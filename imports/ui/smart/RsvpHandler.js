@@ -85,7 +85,7 @@ function AccordionDates({ activity }) {
 
   return (
     <Box>
-      <Text mb="2" size="sm" textAlign="center">
+      <Text mb="2" mt="4" size="sm" textAlign="center">
         {t('public.register.disabled.false')}
       </Text>
       <Accordion allowToggle>
@@ -141,7 +141,7 @@ function RsvpContent({ activity, occurrence, occurrenceIndex }) {
 
   if (eventPast) {
     return (
-      <Box>
+      <Box py="2">
         <Text color="gray.800">{t('public.past')}</Text>
       </Box>
     );

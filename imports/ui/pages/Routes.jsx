@@ -11,7 +11,7 @@ const Communities = lazy(() => import('../pages/hosts/Communities'));
 
 // Activities
 const Activities = lazy(() => import('./activities/Activities'));
-const ActivityContainer = lazy(() => import('./activities/ActivityContainer'));
+const Activity = lazy(() => import('./activities/Activity'));
 const EditActivityContainer = lazy(() => import('./activities/EditActivityContainer'));
 const NewActivityContainer = lazy(() => import('./activities/NewActivityContainer'));
 
@@ -91,7 +91,7 @@ export default function () {
           {/* Activities */}
           <Route exact path="/activities" element={<Activities />} />
           <Route exact path="/activities/new" element={<NewActivityContainer />} />
-          <Route path="/activities/:activityId/*" element={<ActivityContainer />} />
+          <Route path="/activities/:activityId/*" element={<Activity />} />
           <Route exact path="/activities/:activityId/edit" element={<EditActivityContainer />} />
           <Route exact path="/my-activities" element={<MyActivities />} />
 
