@@ -21,6 +21,8 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import ReactTable from 'react-table';
+import { CSVLink } from 'react-csv';
 
 import { StateContext } from '../LayoutContainer';
 import { call } from '../utils/shared';
@@ -28,6 +30,7 @@ import { message } from '../components/message';
 import ConfirmModal from '../components/ConfirmModal';
 import FancyDate, { DateJust } from '../components/FancyDate';
 import FormField from '../components/FormField';
+import Modal from '../components/Modal';
 
 const yesterday = dayjs(new Date()).add(-1, 'days');
 
@@ -124,10 +127,11 @@ function RsvpContent({ activity, occurrence, occurrenceIndex }) {
   const [state, setState] = useState({
     isRsvpCancelModalOn: false,
     rsvpCancelModalInfo: null,
+    selectedOccurrence: null,
   });
   const [t] = useTranslation('activities');
   const { canCreateContent, currentUser } = useContext(StateContext);
-  const { isRsvpCancelModalOn, rsvpCancelModalInfo } = state;
+  const { isRsvpCancelModalOn, rsvpCancelModalInfo, selectedOccurrence } = state;
 
   if (!occurrence || !occurrence.attendees) {
     return null;
@@ -320,8 +324,6 @@ function RsvpContent({ activity, occurrence, occurrenceIndex }) {
     });
   };
 
-  const setSelectedOccurrence = () => console.log('setSelectedOccurrence');
-
   const defaultRsvpValues = {
     firstName: currentUser ? currentUser.firstName : '',
     lastName: currentUser ? currentUser.lastName : '',
@@ -360,7 +362,7 @@ function RsvpContent({ activity, occurrence, occurrenceIndex }) {
 
       {canCreateContent && (
         <Center mt="2">
-          <Button size="sm" onClick={() => setSelectedOccurrence(occurrence)}>
+          <Button size="sm" onClick={() => setState({ ...state, selectedOccurrence: occurrence })}>
             {t('public.attendance.show')}
           </Button>
         </Center>
@@ -421,6 +423,35 @@ function RsvpContent({ activity, occurrence, occurrenceIndex }) {
           </Box>
         )}
       </ConfirmModal>
+
+      <Modal
+        h="90%"
+        isCentered
+        isOpen={Boolean(selectedOccurrence)}
+        scrollBehavior="inside"
+        size="3xl"
+        title={
+          <Box mr="8">
+            <FancyDate occurrence={selectedOccurrence} />
+          </Box>
+        }
+        onClose={() => setState({ ...state, selectedOccurrence: null })}
+      >
+        <Box p="1">
+          <Heading as="h3" mb="2" size="md">
+            {t('public.attendance.label')}
+          </Heading>
+          {/* <span>{t('public.acceess.deny')}</span> */}
+          {/* <Flex justify="flex-end" py="2">
+              <ReactToPrint
+                trigger={() => <Button size="sm">{tc('actions.print')}</Button>}
+                content={() => this.printableElement}
+                pageStyle={{ margin: 144 }}
+              />
+            </Flex> */}
+          <RsvpListPrint occurrence={selectedOccurrence} title={activity?.title} />
+        </Box>
+      </Modal>
     </Box>
   );
 }
@@ -554,3 +585,5 @@ const getFileName = (occurrence, title) => {
     );
   }
 };
+
+const RsvpListPrint = React.forwardRef((props, ref) => <RsvpList {...props} ref={ref} />);
